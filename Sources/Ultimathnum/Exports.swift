@@ -13,3 +13,4 @@
 
 @_exported import UMNCoreKit
 @_exported import UMNDoubleIntKit
+@_exported import UMNNormalIntKit
