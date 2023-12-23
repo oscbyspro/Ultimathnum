@@ -1,0 +1,37 @@
+{
+  "configurations" : [
+    {
+      "id" : "D5A11D27-A394-46A7-962B-2E9D1550EE15",
+      "name" : "Main",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:",
+          "identifier" : "Ultimathnum",
+          "name" : "Ultimathnum"
+        },
+        {
+          "containerPath" : "container:",
+          "identifier" : "UMNCoreKit",
+          "name" : "UMNCoreKit"
+        }
+      ]
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "UMNCoreKitTests",
+        "name" : "UMNCoreKitTests"
+      }
+    }
+  ],
+  "version" : 1
+}

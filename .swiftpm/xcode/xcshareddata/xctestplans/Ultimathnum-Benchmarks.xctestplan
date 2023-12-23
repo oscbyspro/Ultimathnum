@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "E07B1298-1F29-478A-8B9C-197524070C77",
+      "name" : "Main",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "UMNCoreKitBenchmarks",
+        "name" : "UMNCoreKitBenchmarks"
+      }
+    }
+  ],
+  "version" : 1
+}
