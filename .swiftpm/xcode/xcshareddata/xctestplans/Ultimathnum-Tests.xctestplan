@@ -20,6 +20,11 @@
           "containerPath" : "container:",
           "identifier" : "UMNCoreKit",
           "name" : "UMNCoreKit"
+        },
+        {
+          "containerPath" : "container:",
+          "identifier" : "UMNDoubleIntKit",
+          "name" : "UMNDoubleIntKit"
         }
       ]
     }
@@ -30,6 +35,13 @@
         "containerPath" : "container:",
         "identifier" : "UMNCoreKitTests",
         "name" : "UMNCoreKitTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "UMNDoubleIntKitTests",
+        "name" : "UMNDoubleIntKitTests"
       }
     }
   ],

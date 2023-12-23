@@ -18,6 +18,13 @@
         "identifier" : "UMNCoreKitBenchmarks",
         "name" : "UMNCoreKitBenchmarks"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "UMNDoubleIntKitBenchmarks",
+        "name" : "UMNDoubleIntKitBenchmarks"
+      }
     }
   ],
   "version" : 1

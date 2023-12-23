@@ -12,3 +12,4 @@
 //*============================================================================*
 
 @_exported import UMNCoreKit
+@_exported import UMNDoubleIntKit
