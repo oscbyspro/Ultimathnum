@@ -30,6 +30,11 @@
           "containerPath" : "container:",
           "identifier" : "UMNNormalIntKit",
           "name" : "UMNNormalIntKit"
+        },
+        {
+          "containerPath" : "container:",
+          "identifier" : "UMNSignedIntKit",
+          "name" : "UMNSignedIntKit"
         }
       ]
     }
@@ -54,6 +59,13 @@
         "containerPath" : "container:",
         "identifier" : "UMNNormalIntKitTests",
         "name" : "UMNNormalIntKitTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "UMNSignedIntKitTests",
+        "name" : "UMNSignedIntKitTests"
       }
     }
   ],

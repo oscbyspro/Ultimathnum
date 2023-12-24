@@ -48,6 +48,12 @@ let package = Package(
         .library(
         name: "UMNNormalIntKit",
         targets: ["UMNNormalIntKit"]),
+        //=--------------------------------------=
+        // UMN x Signed Int Kit
+        //=--------------------------------------=
+        .library(
+        name: "UMNSignedIntKit",
+        targets: ["UMNSignedIntKit"]),
     ],
     targets: [
         //=--------------------------------------=
@@ -55,7 +61,7 @@ let package = Package(
         //=--------------------------------------=
         .target(
         name: "Ultimathnum",
-        dependencies: ["UMNCoreKit", "UMNDoubleIntKit", "UMNNormalIntKit"]),
+        dependencies: ["UMNCoreKit", "UMNDoubleIntKit", "UMNNormalIntKit", "UMNSignedIntKit"]),
         //=--------------------------------------=
         // UMN x Core Kit
         //=--------------------------------------=
@@ -98,5 +104,19 @@ let package = Package(
         .testTarget(
         name: "UMNNormalIntKitTests",
         dependencies: ["UMNNormalIntKit"]),
+        //=--------------------------------------=
+        // UMN x Signed Int Kit
+        //=--------------------------------------=
+        .target(
+        name: "UMNSignedIntKit",
+        dependencies: ["UMNCoreKit"]),
+        
+        .testTarget(
+        name: "UMNSignedIntKitBenchmarks",
+        dependencies: ["UMNSignedIntKit"]),
+        
+        .testTarget(
+        name: "UMNSignedIntKitTests",
+        dependencies: ["UMNSignedIntKit"]),
     ]
 )

@@ -32,6 +32,13 @@
         "identifier" : "UMNNormalIntKitBenchmarks",
         "name" : "UMNNormalIntKitBenchmarks"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "UMNSignedIntKitBenchmarks",
+        "name" : "UMNSignedIntKitBenchmarks"
+      }
     }
   ],
   "version" : 1
