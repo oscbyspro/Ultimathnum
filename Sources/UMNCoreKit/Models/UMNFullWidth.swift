@@ -8,37 +8,24 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * UMN x Bit Pattern Convertible
+// MARK: * UMN x Full Width
 //*============================================================================*
 
-public protocol UMNBitPatternConvertible<BitPattern> {
+@frozen public struct UMNFullWidth<High, Low> {
     
-    associatedtype BitPattern: UMNBitPatternConvertible<BitPattern> & Sendable
+    //=------------------------------------------------------------------------=
+    // MARK: State
+    //=------------------------------------------------------------------------=
+    
+    public var low:  Low
+    public var high: High
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable init(bitPattern: consuming BitPattern)
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Accessors
-    //=------------------------------------------------------------------------=
-    
-    @inlinable consuming func bitPattern() -> BitPattern
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Details
-//=----------------------------------------------------------------------------=
-
-extension UMNBitPatternConvertible {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(bitPattern source: consuming some UMNBitPatternConvertible<BitPattern>) {
-        self.init(bitPattern: source.bitPattern())
+    @inlinable init(high: High, low: Low) {
+        self.low  = low
+        self.high = high
     }
 }

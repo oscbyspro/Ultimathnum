@@ -8,37 +8,43 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * UMN x Bit Pattern Convertible
+// MARK: * UMN x Signed
 //*============================================================================*
 
-public protocol UMNBitPatternConvertible<BitPattern> {
-    
-    associatedtype BitPattern: UMNBitPatternConvertible<BitPattern> & Sendable
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable init(bitPattern: consuming BitPattern)
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Accessors
-    //=------------------------------------------------------------------------=
-    
-    @inlinable consuming func bitPattern() -> BitPattern
-}
+@_marker public protocol UMNSigned { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Details
 //=----------------------------------------------------------------------------=
 
-extension UMNBitPatternConvertible {
+extension UMNSigned {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern source: consuming some UMNBitPatternConvertible<BitPattern>) {
-        self.init(bitPattern: source.bitPattern())
+    @inlinable static var isSigned: Bool {
+        true
+    }
+}
+
+//*============================================================================*
+// MARK: * UMN x Unsigned
+//*============================================================================*
+
+@_marker public protocol UMNUnsigned { }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Details
+//=----------------------------------------------------------------------------=
+
+extension UMNUnsigned {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Accessors
+    //=------------------------------------------------------------------------=
+    
+    @inlinable static var isSigned: Bool {
+        false
     }
 }

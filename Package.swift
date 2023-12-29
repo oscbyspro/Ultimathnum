@@ -17,11 +17,11 @@ import PackageDescription
 let package = Package(
     name: "Ultimathnum",
     platforms: [
-        .iOS("16.4"),
-        .macCatalyst("16.4"),
-        .macOS("13.3"),
-        .tvOS("16.4"),
-        .watchOS("9.4"),
+        .iOS(.v17),
+        .macCatalyst(.v17),
+        .macOS(.v14),
+        .tvOS(.v17),
+        .watchOS(.v10),
     ],
     products: [
         //=--------------------------------------=

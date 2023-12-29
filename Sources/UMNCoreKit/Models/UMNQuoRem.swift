@@ -8,37 +8,24 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * UMN x Bit Pattern Convertible
+// MARK: * UMN x Quo(tient) Rem(ainder)
 //*============================================================================*
 
-public protocol UMNBitPatternConvertible<BitPattern> {
+@frozen public struct UMNQuoRem<Quotient, Remainder> {
     
-    associatedtype BitPattern: UMNBitPatternConvertible<BitPattern> & Sendable
+    //=------------------------------------------------------------------------=
+    // MARK: State
+    //=------------------------------------------------------------------------=
+    
+    public let quotient:  Quotient
+    public let remainder: Remainder
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable init(bitPattern: consuming BitPattern)
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Accessors
-    //=------------------------------------------------------------------------=
-    
-    @inlinable consuming func bitPattern() -> BitPattern
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Details
-//=----------------------------------------------------------------------------=
-
-extension UMNBitPatternConvertible {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(bitPattern source: consuming some UMNBitPatternConvertible<BitPattern>) {
-        self.init(bitPattern: source.bitPattern())
+    @inlinable public init(quotient: Quotient, remainder: Remainder) {
+        self.quotient  = quotient
+        self.remainder = remainder
     }
 }

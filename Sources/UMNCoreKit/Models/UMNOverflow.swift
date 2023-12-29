@@ -8,37 +8,33 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * UMN x Bit Pattern Convertible
+// MARK: * UMN x Overflow
 //*============================================================================*
 
-public protocol UMNBitPatternConvertible<BitPattern> {
+/// - TODO: Make this an error type when typed throws are introduced.
+@frozen public struct UMNOverflow<Value> {
     
-    associatedtype BitPattern: UMNBitPatternConvertible<BitPattern> & Sendable
+    //=------------------------------------------------------------------------=
+    // MARK: State
+    //=------------------------------------------------------------------------=
+    
+    public let value: Value
+    public let overflow: Bool
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable init(bitPattern: consuming BitPattern)
+    @inlinable public init(_ value: Value,  overflow: Bool) {
+        self.value = value; self.overflow = overflow
+    }
     
     //=------------------------------------------------------------------------=
-    // MARK: Accessors
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming func bitPattern() -> BitPattern
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Details
-//=----------------------------------------------------------------------------=
-
-extension UMNBitPatternConvertible {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(bitPattern source: consuming some UMNBitPatternConvertible<BitPattern>) {
-        self.init(bitPattern: source.bitPattern())
+    @inlinable consuming public func unwrapped(function: StaticString = #function, file: StaticString = #file, line: UInt = #line) -> Value {
+        precondition(!self.overflow, "overflow in \(function) at \(file):\(line)", file: file, line: line)
+        return self.value as Value
     }
 }

@@ -11,5 +11,134 @@
 // MARK: * UMN x Binary Integer
 //*============================================================================*
 
-public protocol  UMNBinaryInteger: Swift.BinaryInteger, LosslessStringConvertible, Sendable
-where Magnitude: UMNBinaryInteger, Words: Sendable { }
+public protocol UMNBinaryInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, Sendable {
+        
+    associatedtype Standard: Swift.BinaryInteger
+    
+    associatedtype Magnitude: UMNBinaryInteger where Magnitude.Magnitude == Magnitude
+    
+    associatedtype Words: RandomAccessCollection & Sendable where Words.Element == UInt, Words.Index == Int
+        
+    //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    @inlinable static var isSigned: Bool { get }
+    
+    @inlinable static var zero: Self { get }
+    
+    @inlinable static var one:  Self { get }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Complements
+    //=------------------------------------------------------------------------=
+    
+    @inlinable consuming func standard() -> Standard
+    
+    @inlinable consuming func magnitude() -> Magnitude
+    
+    @inlinable consuming func onesComplement() -> Self
+    
+    @inlinable consuming func twosComplement() -> UMNOverflow<Self>
+        
+    //=------------------------------------------------------------------------=
+    // MARK: Transformation x Addition
+    //=------------------------------------------------------------------------=
+    
+    @inlinable consuming func incremented(by addend: borrowing Self) -> UMNOverflow<Self>
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformation x Subtraction
+    //=------------------------------------------------------------------------=
+    
+    @inlinable consuming func decremented(by subtrahend: borrowing Self) -> UMNOverflow<Self>
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformation x Multiplication
+    //=------------------------------------------------------------------------=
+    
+    @inlinable consuming func multiplied(by multiplier: borrowing Self) -> UMNOverflow<Self>
+    
+    @inlinable consuming func squared() -> UMNOverflow<Self>
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformation x Division
+    //=------------------------------------------------------------------------=
+    
+    @inlinable consuming func quotient (dividingBy divisor: borrowing Self) -> UMNOverflow<Self>
+    
+    @inlinable consuming func remainder(dividingBy divisor: borrowing Self) -> UMNOverflow<Self>
+    
+    @inlinable consuming func divided(by divisor: borrowing Self) -> UMNOverflow<UMNQuoRem<Self, Self>>
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Details
+//=----------------------------------------------------------------------------=
+
+extension UMNBinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init() {
+        self = Self.zero
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Details x Complements
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static prefix func -(x: consuming Self) -> Self {
+        x.twosComplement().unwrapped()
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Details x Addition
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func +(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        lhs.incremented(by: rhs).unwrapped()
+    }
+    
+    @inlinable public static func &+(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        lhs.incremented(by: rhs).value
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Details x Subtraction
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func -(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        lhs.decremented(by: rhs).unwrapped()
+    }
+    
+    @inlinable public static func &-(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        lhs.decremented(by: rhs).value
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Details x Multiplication
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func *(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        lhs.multiplied(by: rhs).unwrapped()
+    }
+    
+    @inlinable public static func &*(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        lhs.multiplied(by: rhs).value
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Details x Division
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func /(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        lhs.quotient(dividingBy: rhs).unwrapped()
+    }
+    
+    @inlinable public static func %(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        lhs.remainder(dividingBy: rhs).unwrapped()
+    }
+}
