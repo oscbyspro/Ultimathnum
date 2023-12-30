@@ -11,7 +11,7 @@
 // MARK: * UMN x Signed
 //*============================================================================*
 
-@_marker public protocol UMNSigned { }
+public protocol UMNSigned { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Details
@@ -32,7 +32,7 @@ extension UMNSigned {
 // MARK: * UMN x Unsigned
 //*============================================================================*
 
-@_marker public protocol UMNUnsigned { }
+public protocol UMNUnsigned { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Details

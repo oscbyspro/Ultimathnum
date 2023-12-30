@@ -11,8 +11,9 @@
 // MARK: * UMN x Trivial Integer
 //*============================================================================*
 
-public protocol  UMNTrivialInteger: UMNBinaryInteger, UMNBitCastable
-where Magnitude: UMNTrivialInteger, Magnitude.BitPattern == BitPattern, Standard: Swift.FixedWidthInteger {
+public protocol UMNTrivialInteger: UMNBinaryInteger, UMNBitCastable where
+Magnitude: UMNTrivialInteger & UMNUnsigned, Magnitude.BitPattern == BitPattern,
+Standard: Swift.FixedWidthInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
