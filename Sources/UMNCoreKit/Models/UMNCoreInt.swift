@@ -11,11 +11,15 @@
 // MARK: * UMN x Core Int
 //*============================================================================*
 
-@frozen public struct UMNCoreInt<Base: UMNCoreInteger>: UMNFixedWidthInteger {
-        
+@frozen public struct UMNCoreInt<Base: UMNSystemInteger>: UMNCoreInteger {
+    
+    public typealias Base = Base
+    
     public typealias BitPattern = Base.BitPattern
     
     public typealias Magnitude = UMNCoreInt<Base.Magnitude>
+    
+    public typealias Standard = Base
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -23,6 +27,10 @@
     
     @inlinable public static var isSigned: Bool {
         Base.isSigned
+    }
+    
+    @inlinable public static var bitWidth: SX {
+        SX(Self.Base.bitWidth)
     }
     
     @inlinable public static var zero: Self {

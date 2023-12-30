@@ -8,37 +8,27 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * UMN x Bit Pattern Convertible
+// MARK: * UMN x Trivial Integer
 //*============================================================================*
 
-public protocol UMNBitPatternConvertible<BitPattern> {
-    
-    associatedtype BitPattern: UMNBitPatternConvertible<BitPattern> & Sendable
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable init(bitPattern: consuming BitPattern)
+public protocol  UMNTrivialInteger: UMNBinaryInteger, UMNBitCastable
+where Magnitude: UMNTrivialInteger, Magnitude.BitPattern == BitPattern, Standard: Swift.FixedWidthInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Accessors
+    // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming func bitPattern() -> BitPattern
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Details
-//=----------------------------------------------------------------------------=
-
-extension UMNBitPatternConvertible {
+    @inlinable static var bitWidth: SX { get }
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: Transformation x Multiplication
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern source: consuming some UMNBitPatternConvertible<BitPattern>) {
-        self.init(bitPattern: source.bitPattern())
-    }
+    @inlinable static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> UMNFullWidth<Self, Magnitude>
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformation x Division
+    //=------------------------------------------------------------------------=
+    
+    @inlinable static func dividing(_ dividend: consuming UMNFullWidth<Self, Magnitude>, by multiplier: borrowing Self) -> UMNOverflow<UMNQuoRem<Self, Self>>
 }

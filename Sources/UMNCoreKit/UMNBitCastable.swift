@@ -8,21 +8,37 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * UMN x Fixed Width Integer
+// MARK: * UMN x Bit Castable
 //*============================================================================*
 
-public protocol  UMNFixedWidthInteger: UMNBinaryInteger, UMNBitPatternConvertible
-where Magnitude: UMNFixedWidthInteger, Magnitude.BitPattern == BitPattern, Standard: Swift.FixedWidthInteger {
+public protocol UMNBitCastable<BitPattern> {
+    
+    associatedtype BitPattern: UMNBitCastable<BitPattern> & Sendable
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformation x Multiplication
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> UMNFullWidth<Self, Magnitude>
+    @inlinable init(bitPattern: consuming BitPattern)
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformation x Division
+    // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable static func dividing(_ dividend: consuming UMNFullWidth<Self, Magnitude>, by multiplier: borrowing Self) -> UMNOverflow<UMNQuoRem<Self, Self>>
+    @inlinable consuming func bitPattern() -> BitPattern
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Details
+//=----------------------------------------------------------------------------=
+
+extension UMNBitCastable {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(bitPattern source: consuming some UMNBitCastable<BitPattern>) {
+        self.init(bitPattern: source.bitPattern())
+    }
 }
