@@ -12,12 +12,10 @@
 //*============================================================================*
 
 @frozen public struct UMNCoreInt<Base: UMNCoreInteger>: UMNFixedWidthInteger {
-    
+        
     public typealias BitPattern = Base.BitPattern
     
     public typealias Magnitude = UMNCoreInt<Base.Magnitude>
-    
-    public typealias Words = Base.Words
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -78,7 +76,7 @@
     }
     
     @inlinable public consuming func words() -> Words {
-        self.base.words
+        Words(self.base.words)
     }
     
     //=------------------------------------------------------------------------=
@@ -152,6 +150,60 @@
     
     @inlinable public static func <  (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         lhs.base <  rhs.base
+    }
+    
+    //*========================================================================*
+    // MARK: * Words
+    //*========================================================================*
+    
+    /// - TODO: Implement better-than-default indices.
+    @frozen public struct Words: RandomAccessCollection {
+        
+        public typealias Element = UX
+        
+        //=--------------------------------------------------------------------=
+        // MARK: State
+        //=--------------------------------------------------------------------=
+        
+        @usableFromInline let base: Base.Words
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Initializers
+        //=--------------------------------------------------------------------=
+        
+        @inlinable init(_ base: Base.Words) { self.base = base }
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Utilities
+        //=--------------------------------------------------------------------=
+        
+        @inlinable public var startIndex: SX {
+            SX(self.base.startIndex)
+        }
+        
+        @inlinable public var endIndex: SX {
+            SX(self.base.startIndex)
+        }
+        
+        @inlinable public func index(before index: SX) -> SX {
+            SX(self.base.index(before: index.base))
+        }
+        
+        @inlinable public func index(after index: SX) -> SX {
+            SX(self.base.index(after: index.base))
+        }
+        
+        @inlinable public func index(_ index: SX, offsetBy distance: SX) -> SX {
+            SX(self.base.index(index.base, offsetBy: distance.base))
+        }
+        
+        @inlinable public func index(_ index: SX, offsetBy distance: SX, limitedBy limit: SX) -> SX? {
+            self.base.index(index.base, offsetBy: distance.base, limitedBy: limit.base).map(SX.init(_:))
+        }
+        
+        @inlinable public subscript(index: SX) -> UX {
+            UX(self.base[index.base])
+        }
     }
 }
 

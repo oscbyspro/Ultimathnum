@@ -17,7 +17,7 @@ public protocol UMNBinaryInteger: Comparable, Hashable, ExpressibleByIntegerLite
     
     associatedtype Magnitude: UMNBinaryInteger where Magnitude.Magnitude == Magnitude
     
-    associatedtype Words: RandomAccessCollection & Sendable where Words.Element == UInt, Words.Index == Int
+    associatedtype Words: RandomAccessCollection & Sendable where Words.Element == UX, Words.Index == SX
         
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
