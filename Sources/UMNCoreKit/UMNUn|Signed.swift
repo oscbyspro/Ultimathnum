@@ -11,7 +11,14 @@
 // MARK: * UMN x Signed
 //*============================================================================*
 
-public protocol UMNSigned { }
+public protocol UMNSigned { 
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable consuming func negated() -> UMNOverflow<Self>
+}
 
 //=----------------------------------------------------------------------------=
 // MARK: + Details
@@ -25,6 +32,14 @@ extension UMNSigned {
     
     @inlinable static var isSigned: Bool {
         true
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static prefix func - (operand: Self) -> Self {
+        operand.negated().unwrapped()
     }
 }
 

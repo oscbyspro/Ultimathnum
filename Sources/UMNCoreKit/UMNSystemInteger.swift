@@ -57,42 +57,42 @@ extension UMNSystemInteger {
 // MARK: * UMN x System Integer x Models
 //*============================================================================*
 
-extension Int: UMNSystemInteger, UMNSigned {
+extension Int: UMNSystemInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension Int8: UMNSystemInteger, UMNSigned {
+extension Int8: UMNSystemInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension Int16: UMNSystemInteger, UMNSigned {
+extension Int16: UMNSystemInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension Int32: UMNSystemInteger, UMNSigned {
+extension Int32: UMNSystemInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension Int64: UMNSystemInteger, UMNSigned {
+extension Int64: UMNSystemInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension UInt: UMNSystemInteger, UMNUnsigned {
+extension UInt: UMNSystemInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension UInt8: UMNSystemInteger, UMNUnsigned {
+extension UInt8: UMNSystemInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension UInt16: UMNSystemInteger, UMNUnsigned {
+extension UInt16: UMNSystemInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension UInt32: UMNSystemInteger, UMNUnsigned {
+extension UInt32: UMNSystemInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension UInt64: UMNSystemInteger, UMNUnsigned {
+extension UInt64: UMNSystemInteger {
     public typealias BitPattern = Magnitude
 }

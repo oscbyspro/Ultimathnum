@@ -79,7 +79,7 @@
         self.onesComplement().incremented(by: 1)
     }
     
-    @inlinable public consuming func standard() -> Base {
+    @inlinable public consuming func standard() -> Standard {
         self.base
     }
     
@@ -99,6 +99,10 @@
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Subtraction
     //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func negated() -> UMNOverflow<Self> where Self: UMNSigned {
+        self.twosComplement() // this works because the integer is signed
+    }
     
     @inlinable public consuming func decremented(by subtrahend: borrowing Self) -> UMNOverflow<Self> {
         let result = self.base.subtractingReportingOverflow(subtrahend.base)
