@@ -17,15 +17,33 @@
     // MARK: State
     //=------------------------------------------------------------------------=
     
+    #if _endian(big)
+    public var high: High
+    public var low:  Low
+    #else
     public var low:  Low
     public var high: High
+    #endif
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable init(high: High, low: Low) {
+    @inlinable public init(low: Low, high: High) {
         self.low  = low
         self.high = high
+    }
+    
+    @inlinable public init(high: High, low: Low) {
+        self.high = high
+        self.low  = low
+    }
+    
+    @inlinable public init(ascending components: (low: Low, high: High)) {
+        self.init(low: components.low, high: components.high)
+    }
+    
+    @inlinable public init(descending components: (high: High, low: Low)) {
+        self.init(high: components.high, low: components.low)
     }
 }

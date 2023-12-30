@@ -13,7 +13,11 @@
 
 @frozen public struct UMNCoreInt<Base: UMNCoreInteger>: UMNFixedWidthInteger {
     
-    public typealias Words = [UInt]
+    public typealias BitPattern = Base.BitPattern
+    
+    public typealias Magnitude = UMNCoreInt<Base.Magnitude>
+    
+    public typealias Words = Base.Words
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -53,80 +57,89 @@
     // MARK: Transformations x Complements
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming public func bitPattern() -> Base.BitPattern {
+    @inlinable public consuming func bitPattern() -> BitPattern {
         self.base.bitPattern()
     }
     
-    @inlinable consuming public func magnitude() -> UMNCoreInt<Base.Magnitude> {
-        fatalError("TODO")
+    @inlinable public consuming func magnitude() -> Magnitude {
+        Magnitude(self.base.magnitude)
     }
     
-    @inlinable consuming public func onesComplement() -> Self {
-        fatalError("TODO")
+    @inlinable public consuming func onesComplement() -> Self {
+        Self(~self.base)
     }
     
-    @inlinable consuming public func twosComplement() -> UMNOverflow<Self> {
-        fatalError("TODO")
+    @inlinable public consuming func twosComplement() -> UMNOverflow<Self> {
+        self.onesComplement().incremented(by: 1)
     }
     
-    @inlinable consuming public func standard() -> Base {
+    @inlinable public consuming func standard() -> Base {
         self.base
+    }
+    
+    @inlinable public consuming func words() -> Words {
+        self.base.words
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Addition
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming public func incremented(by addend: borrowing Self) -> UMNOverflow<Self> {
-        fatalError("TODO")
+    @inlinable public consuming func incremented(by addend: borrowing Self) -> UMNOverflow<Self> {
+        let result = self.base.addingReportingOverflow(addend.base)
+        return UMNOverflow(Self(result.partialValue), overflow: result.overflow)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Subtraction
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming public func decremented(by subtrahend: borrowing Self) -> UMNOverflow<Self> {
-        fatalError("TODO")
+    @inlinable public consuming func decremented(by subtrahend: borrowing Self) -> UMNOverflow<Self> {
+        let result = self.base.subtractingReportingOverflow(subtrahend.base)
+        return UMNOverflow(Self(result.partialValue), overflow: result.overflow)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Multiplication
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming public func multiplied(by multiplier: borrowing Self) -> UMNOverflow<Self> {
-        fatalError("TODO")
+    @inlinable public consuming func squared() -> UMNOverflow<Self> {
+        self.multiplied(by: copy self)
     }
     
-    @inlinable consuming public func squared() -> UMNOverflow<Self> {
-        fatalError("TODO")
+    @inlinable public consuming func multiplied(by multiplier: borrowing Self) -> UMNOverflow<Self> {
+        let result = self.base.multipliedReportingOverflow(by: multiplier.base)
+        return UMNOverflow(Self(result.partialValue), overflow: result.overflow)
+    }
+    
+    @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> UMNFullWidth<Self, Magnitude> {
+        let result = multiplicand.base.multipliedFullWidth(by: multiplier.base)
+        return UMNFullWidth(high: Self(result.high), low: Magnitude(result.low))
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Division
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming public func quotient(dividingBy divisor: borrowing Self) -> UMNOverflow<Self> {
-        fatalError("TODO")
+    @inlinable public consuming func quotient(dividingBy divisor: borrowing Self) -> UMNOverflow<Self> {
+        let result = self.base.dividedReportingOverflow(by: divisor.base)
+        return UMNOverflow(Self(result.partialValue), overflow: result.overflow)
     }
     
-    @inlinable consuming public func remainder(dividingBy divisor: borrowing Self) -> UMNOverflow<Self> {
-        fatalError("TODO")
+    @inlinable public consuming func remainder(dividingBy divisor: borrowing Self) -> UMNOverflow<Self> {
+        let result = self.base.remainderReportingOverflow(dividingBy: divisor.base)
+        return UMNOverflow(Self(result.partialValue), overflow: result.overflow)
     }
     
-    @inlinable consuming public func divided(by divisor: borrowing Self) -> UMNOverflow<UMNQuoRem<Self, Self>> {
-        fatalError("TODO")
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Fixed Width
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> UMNFullWidth<Self, Magnitude> {
-        fatalError("TODO")
+    @inlinable public consuming func divided(by divisor: borrowing Self) -> UMNOverflow<UMNQuoRem<Self, Self>> {
+        let quotient  = (copy    self).quotient (dividingBy: divisor)
+        let remainder = (consume self).remainder(dividingBy: divisor)
+        let overflow  = quotient.overflow || remainder.overflow
+        return UMNOverflow(UMNQuoRem(quotient: quotient.value, remainder: remainder.value), overflow: overflow)
     }
     
     @inlinable public static func dividing(_ dividend: consuming UMNFullWidth<Self, Magnitude>, by divisor: borrowing Self) -> UMNOverflow<UMNQuoRem<Self, Self>> {
-        fatalError("TODO")
+        fatalError("TOOD")
     }
     
     //=------------------------------------------------------------------------=
@@ -134,17 +147,33 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public static func == (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        fatalError("TODO")
+        lhs.base == rhs.base
     }
     
     @inlinable public static func <  (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        fatalError("TODO")
+        lhs.base <  rhs.base
     }
 }
 
-//*============================================================================*
-// MARK: * UMN x Core Int x Conditional Conformances
-//*============================================================================*
+//=----------------------------------------------------------------------------=
+// MARK: + Conditional Conformances
+//=----------------------------------------------------------------------------=
 
 extension UMNCoreInt:   UMNSigned where Base: Swift  .SignedInteger { }
 extension UMNCoreInt: UMNUnsigned where Base: Swift.UnsignedInteger { }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Aliases
+//=----------------------------------------------------------------------------=
+
+public typealias SX  = UMNCoreInt<Swift.Int>
+public typealias S8  = UMNCoreInt<Swift.Int8>
+public typealias S16 = UMNCoreInt<Swift.Int16>
+public typealias S32 = UMNCoreInt<Swift.Int32>
+public typealias S64 = UMNCoreInt<Swift.Int64>
+
+public typealias UX  = UMNCoreInt<Swift.UInt>
+public typealias U8  = UMNCoreInt<Swift.UInt8>
+public typealias U16 = UMNCoreInt<Swift.UInt16>
+public typealias U32 = UMNCoreInt<Swift.UInt32>
+public typealias U64 = UMNCoreInt<Swift.UInt64>

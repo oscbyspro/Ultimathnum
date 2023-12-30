@@ -15,10 +15,14 @@ public protocol  UMNFixedWidthInteger: UMNBinaryInteger, UMNBitPatternConvertibl
 where Magnitude: UMNFixedWidthInteger, Magnitude.BitPattern == BitPattern, Standard: Swift.FixedWidthInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Transformation x Multiplication
     //=------------------------------------------------------------------------=
     
     @inlinable static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> UMNFullWidth<Self, Magnitude>
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformation x Division
+    //=------------------------------------------------------------------------=
     
     @inlinable static func dividing(_ dividend: consuming UMNFullWidth<Self, Magnitude>, by multiplier: borrowing Self) -> UMNOverflow<UMNQuoRem<Self, Self>>
 }

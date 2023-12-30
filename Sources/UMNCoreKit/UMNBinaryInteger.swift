@@ -32,7 +32,7 @@ public protocol UMNBinaryInteger: Comparable, Hashable, ExpressibleByIntegerLite
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Complements
     //=------------------------------------------------------------------------=
-    
+        
     @inlinable consuming func standard() -> Standard
     
     @inlinable consuming func magnitude() -> Magnitude
@@ -40,7 +40,9 @@ public protocol UMNBinaryInteger: Comparable, Hashable, ExpressibleByIntegerLite
     @inlinable consuming func onesComplement() -> Self
     
     @inlinable consuming func twosComplement() -> UMNOverflow<Self>
-        
+    
+    @inlinable consuming func words() -> Words
+    
     //=------------------------------------------------------------------------=
     // MARK: Transformation x Addition
     //=------------------------------------------------------------------------=
@@ -57,9 +59,9 @@ public protocol UMNBinaryInteger: Comparable, Hashable, ExpressibleByIntegerLite
     // MARK: Transformation x Multiplication
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming func multiplied(by multiplier: borrowing Self) -> UMNOverflow<Self>
-    
     @inlinable consuming func squared() -> UMNOverflow<Self>
+    
+    @inlinable consuming func multiplied(by multiplier: borrowing Self) -> UMNOverflow<Self>
     
     //=------------------------------------------------------------------------=
     // MARK: Transformation x Division
