@@ -12,7 +12,27 @@
 //*============================================================================*
 
 public protocol UMNInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, Sendable {
-        
+    
+    /// A representation that conforms to `Swift.BinaryInteger`.
+    ///
+    /// You may call `standard()` when you need to interoperate with Swift
+    /// code that uses the standard library's protocol hierarchy.
+    ///
+    /// ```swift
+    /// let  int:  Int = SX().standard()
+    /// let uint: UInt = UX().standard()
+    /// ```
+    ///
+    /// ### Motivation
+    ///
+    /// This associated type let us return standard libary types when possible.
+    /// As such, we don't bloat the binary with redundant models or specialize
+    /// functions for those models.
+    ///
+    /// ### Alternatives
+    ///
+    /// You can use `UMNStandardInt<Base>` for core integers too.
+    ///
     associatedtype Standard: Swift.BinaryInteger
     
     associatedtype Magnitude: UMNBinaryInteger where Magnitude.Magnitude == Magnitude
