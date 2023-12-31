@@ -25,10 +25,6 @@ public protocol UMNBinaryInteger: Comparable, Hashable, ExpressibleByIntegerLite
     
     @inlinable static var isSigned: Bool { get }
     
-    @inlinable static var zero: Self { get }
-    
-    @inlinable static var one:  Self { get }
-    
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Complements
     //=------------------------------------------------------------------------=
@@ -81,14 +77,6 @@ public protocol UMNBinaryInteger: Comparable, Hashable, ExpressibleByIntegerLite
 extension UMNBinaryInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init() {
-        self = Self.zero
-    }
-    
-    //=------------------------------------------------------------------------=
     // MARK: Details x Addition
     //=------------------------------------------------------------------------=
     
@@ -129,7 +117,7 @@ extension UMNBinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func /(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs.quotient(dividingBy: rhs).unwrapped()
+        lhs.quotient (dividingBy: rhs).unwrapped()
     }
     
     @inlinable public static func %(lhs: consuming Self, rhs: borrowing Self) -> Self {

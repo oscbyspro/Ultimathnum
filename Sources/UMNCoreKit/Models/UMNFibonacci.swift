@@ -51,9 +51,9 @@
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    @usableFromInline var i = Integer.zero
-    @usableFromInline var a = Integer.one
-    @usableFromInline var b = Integer.one
+    @usableFromInline var i = 0 as Integer
+    @usableFromInline var a = 0 as Integer
+    @usableFromInline var b = 1 as Integer
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -63,7 +63,7 @@
     @inlinable public init() { }
     
     /// Creates the sequence pair at the given `index`.
-    @inlinable public init(_ index: UX) {
+    @inlinable public init(_ index: Integer) {
         fatalError("TODO")
     }
     
