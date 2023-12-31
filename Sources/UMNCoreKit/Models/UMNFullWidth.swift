@@ -39,7 +39,7 @@
         self.low  = low
     }
     
-    @inlinable public init(ascending components: (low: Low, high: High)) {
+    @inlinable public init(ascending  components: (low: Low, high: High)) {
         self.init(low: components.low, high: components.high)
     }
     

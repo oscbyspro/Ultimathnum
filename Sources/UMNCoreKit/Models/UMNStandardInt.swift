@@ -13,12 +13,6 @@
 
 @frozen public struct UMNStandardInt<Base: UMNBinaryInteger>: Swift.BinaryInteger {
     
-    public typealias IntegerLiteralType = Base.IntegerLiteralType
-    
-    public typealias Magnitude = UMNStandardInt<Base.Magnitude>
-    
-    public typealias Words = [UInt]
-    
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
@@ -41,8 +35,8 @@
         self.base = base
     }
     
-    @inlinable public init(integerLiteral value: consuming IntegerLiteralType) {
-        fatalError("TODO")
+    @inlinable public init(integerLiteral: consuming Base.IntegerLiteralType) {
+        self.base =  .init(integerLiteral: integerLiteral)
     }
     
     @inlinable public init(_ source: consuming some BinaryInteger) {
@@ -85,11 +79,11 @@
     // MARK: Transformations x Complements
     //=------------------------------------------------------------------------=
     
-    @inlinable public var words: Words {
+    @inlinable public var words: [UInt] {
         fatalError("TODO")
     }
     
-    @inlinable public var magnitude: Magnitude {
+    @inlinable public var magnitude: UMNStandardInt<Base.Magnitude> {
         fatalError("TODO")
     }
     
@@ -180,15 +174,15 @@ extension UMNStandardInt: Swift.FixedWidthInteger where Base: UMNTrivialInteger 
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bigEndian value: Self) {
+    @inlinable public init(bigEndian: consuming Self) {
         fatalError("TODO")
     }
     
-    @inlinable public init(littleEndian value: Self) {
+    @inlinable public init(littleEndian: consuming Self) {
         fatalError("TODO")
     }
     
-    @inlinable public init(_truncatingBits: UInt) {
+    @inlinable public init(_truncatingBits: consuming UInt) {
         fatalError("TODO")
     }
     
@@ -212,27 +206,33 @@ extension UMNStandardInt: Swift.FixedWidthInteger where Base: UMNTrivialInteger 
         fatalError("TODO")
     }
     
-    @inlinable public func addingReportingOverflow(_ rhs: Self) -> (partialValue: Self, overflow: Bool) {
+    @inlinable public func addingReportingOverflow(_ addend: Self)
+    -> (partialValue: Self, overflow: Bool) {
         fatalError("TODO")
     }
     
-    @inlinable public func subtractingReportingOverflow(_ rhs: Self) -> (partialValue: Self, overflow: Bool) {
+    @inlinable public func subtractingReportingOverflow(_ subtrahend: Self)
+    -> (partialValue: Self, overflow: Bool) {
         fatalError("TODO")
     }
     
-    @inlinable public func multipliedReportingOverflow(by rhs: Self) -> (partialValue: Self, overflow: Bool) {
+    @inlinable public func multipliedReportingOverflow(by multiplier: Self) 
+    -> (partialValue: Self, overflow: Bool) {
         fatalError("TODO")
     }
     
-    @inlinable public func dividedReportingOverflow(by rhs: Self) -> (partialValue: Self, overflow: Bool) {
+    @inlinable public func dividedReportingOverflow(by divisor: Self) 
+    -> (partialValue: Self, overflow: Bool) {
         fatalError("TODO")
     }
     
-    @inlinable public func remainderReportingOverflow(dividingBy rhs: Self) -> (partialValue: Self, overflow: Bool) {
+    @inlinable public func remainderReportingOverflow(dividingBy divisor: Self) 
+    -> (partialValue: Self, overflow: Bool) {
         fatalError("TODO")
     }
     
-    @inlinable public func dividingFullWidth(_ dividend: (high: Self, low: Magnitude)) -> (quotient: Self, remainder: Self) {
+    @inlinable public func dividingFullWidth(_ dividend: (high: Self, low: Magnitude)) 
+    -> (quotient: Self, remainder: Self) {
         fatalError("TODO")
     }
 }

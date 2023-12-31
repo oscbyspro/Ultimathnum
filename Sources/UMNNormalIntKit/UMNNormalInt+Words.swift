@@ -18,10 +18,6 @@ extension UMNNormalInt {
     /// - TODO: Implement better-than-default indices.
     @frozen public struct Words: RandomAccessCollection {
         
-        public typealias Element = UX
-        
-        public typealias Index = SX
-        
         //=--------------------------------------------------------------------=
         // MARK: State
         //=--------------------------------------------------------------------=
