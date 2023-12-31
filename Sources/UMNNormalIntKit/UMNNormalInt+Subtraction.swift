@@ -19,11 +19,7 @@ extension UMNNormalInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func -=(lhs: inout Self, rhs: Self) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public static func -(lhs: Self, rhs: Self) -> Self {
+    @inlinable public consuming func decremented(by subtrahend: borrowing Self) -> UMNOverflow<Self> {
         fatalError("TODO")
     }
 }

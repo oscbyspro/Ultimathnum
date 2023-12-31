@@ -173,6 +173,8 @@
         
         public typealias Element = UX
         
+        public typealias Index = SX
+        
         //=--------------------------------------------------------------------=
         // MARK: State
         //=--------------------------------------------------------------------=
@@ -183,7 +185,9 @@
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
-        @inlinable init(_ base: Base.Words) { self.base = base }
+        @inlinable init(_ base: Base.Words) {
+            self.base = base
+        }
         
         //=--------------------------------------------------------------------=
         // MARK: Utilities
@@ -198,23 +202,23 @@
         }
         
         @inlinable public func index(before index: SX) -> SX {
-            SX(self.base.index(before: index.base))
+            SX(self.base.index(before: index.standard()))
         }
         
         @inlinable public func index(after index: SX) -> SX {
-            SX(self.base.index(after: index.base))
+            SX(self.base.index(after: index.standard()))
         }
         
         @inlinable public func index(_ index: SX, offsetBy distance: SX) -> SX {
-            SX(self.base.index(index.base, offsetBy: distance.base))
+            SX(self.base.index(index.standard(), offsetBy: distance.standard()))
         }
         
         @inlinable public func index(_ index: SX, offsetBy distance: SX, limitedBy limit: SX) -> SX? {
-            self.base.index(index.base, offsetBy: distance.base, limitedBy: limit.base).map(SX.init(_:))
+            self.base.index(index.standard(), offsetBy: distance.standard(), limitedBy: limit.standard()).map(SX.init(_:))
         }
         
         @inlinable public subscript(index: SX) -> UX {
-            UX(self.base[index.base])
+            UX(self.base[index.standard()])
         }
     }
 }

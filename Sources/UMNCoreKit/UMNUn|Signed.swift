@@ -30,7 +30,7 @@ extension UMNSigned {
     // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable static var isSigned: Bool {
+    @inlinable public static var isSigned: Bool {
         true
     }
     
@@ -59,7 +59,7 @@ extension UMNUnsigned {
     // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable static var isSigned: Bool {
+    @inlinable public static var isSigned: Bool {
         false
     }
 }

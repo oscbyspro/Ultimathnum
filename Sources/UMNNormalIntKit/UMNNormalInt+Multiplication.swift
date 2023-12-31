@@ -18,12 +18,12 @@ extension UMNNormalInt {
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
-    
-    @inlinable public static func *=(lhs: inout Self, rhs: Self) {
+
+    @inlinable public consuming func squared() -> UMNOverflow<Self> {
         fatalError("TODO")
     }
     
-    @inlinable public static func *(lhs: Self, rhs: Self) -> Self {
+    @inlinable public consuming func multiplied(by multiplier: borrowing Self) -> UMNOverflow<Self> {
         fatalError("TODO")
     }
 }

@@ -10,7 +10,7 @@
 import UMNCoreKit
 
 //*============================================================================*
-// MARK: * UMN x Normal Int x Logic
+// MARK: * UMN x Normal Int x Comparisons
 //*============================================================================*
 
 extension UMNNormalInt {
@@ -19,31 +19,11 @@ extension UMNNormalInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static prefix func ~(x: Self) -> Self {
+    @inlinable public static func == (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         fatalError("TODO")
     }
     
-    @inlinable public static func &=(lhs: inout Self, rhs: Self) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public static func &(lhs: Self, rhs: Self) -> Self {
-        fatalError("TODO")
-    }
-    
-    @inlinable public static func |=(lhs: inout Self, rhs: Self) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public static func |(lhs: Self, rhs: Self) -> Self {
-        fatalError("TODO")
-    }
-    
-    @inlinable public static func ^=(lhs: inout Self, rhs: Self) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
+    @inlinable public static func <  (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         fatalError("TODO")
     }
 }

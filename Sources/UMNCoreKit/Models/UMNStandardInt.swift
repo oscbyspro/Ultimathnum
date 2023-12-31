@@ -28,6 +28,48 @@
     }
     
     //=------------------------------------------------------------------------=
+    // MARK: State
+    //=------------------------------------------------------------------------=
+    
+    @usableFromInline var base: Base
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(_ base: consuming Base) {
+        self.base = base
+    }
+    
+    @inlinable public init(integerLiteral value: consuming IntegerLiteralType) {
+        fatalError("TODO")
+    }
+    
+    @inlinable public init(_ source: consuming some BinaryInteger) {
+        fatalError("TODO")
+    }
+    
+    @inlinable public init?(exactly source: consuming some BinaryInteger) {
+        fatalError("TODO")
+    }
+    
+    @inlinable public init(clamping source: consuming some BinaryInteger) {
+        fatalError("TODO")
+    }
+    
+    @inlinable public init(truncatingIfNeeded source: consuming some BinaryInteger) {
+        fatalError("TODO")
+    }
+    
+    @inlinable public init(_ source: consuming some BinaryFloatingPoint) {
+        fatalError("TODO")
+    }
+    
+    @inlinable public init?(exactly source: consuming some BinaryFloatingPoint) {
+        fatalError("TODO")
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Accessors
     //=------------------------------------------------------------------------=
     
@@ -36,38 +78,6 @@
     }
     
     @inlinable public var trailingZeroBitCount: Int {
-        fatalError("TODO")
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(integerLiteral value: IntegerLiteralType) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public init(_ source: some BinaryInteger) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public init?(exactly source: some BinaryInteger) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public init(clamping source: some BinaryInteger) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public init(truncatingIfNeeded source: some BinaryInteger) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public init(_ source: some BinaryFloatingPoint) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public init?(exactly source: some BinaryFloatingPoint) {
         fatalError("TODO")
     }
     

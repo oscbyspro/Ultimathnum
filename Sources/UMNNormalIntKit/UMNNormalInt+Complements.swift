@@ -10,20 +10,32 @@
 import UMNCoreKit
 
 //*============================================================================*
-// MARK: * UNM x Normal Int x Bits
+// MARK: * UMN x Normal Int x Complements
 //*============================================================================*
 
 extension UMNNormalInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Accessors
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public var bitWidth: Int {
+    @inlinable public consuming func standard() -> UMNStandardInt<Self> {
+        UMNStandardInt(self)
+    }
+    
+    @inlinable public consuming func magnitude() -> Self {
+        self
+    }
+    
+    @inlinable public consuming func onesComplement() -> Self {
         fatalError("TODO")
     }
     
-    @inlinable public var trailingZeroBitCount: Int {
+    @inlinable public consuming func twosComplement() -> UMNOverflow<Self> {
         fatalError("TODO")
+    }
+    
+    @inlinable public consuming func words() -> Words {
+        Words(self)
     }
 }

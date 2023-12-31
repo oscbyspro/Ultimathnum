@@ -16,42 +16,22 @@ import UMNCoreKit
 extension UMNNormalInt {
     
     //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static var zero: Self {
+        fatalError("TODO")
+    }
+    
+    @inlinable public static var one:  Self {
+        fatalError("TODO")
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
     @inlinable public init(integerLiteral value: StaticBigInt) {
-        fatalError("TODO")
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers x Binary Integer
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(_ source: some BinaryInteger) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public init?(exactly source: some BinaryInteger) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public init(clamping source: some BinaryInteger) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public init(truncatingIfNeeded source: some BinaryInteger) {
-        fatalError("TODO")
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers x Binary Floating Point
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(_ source: some BinaryFloatingPoint) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public init?(exactly source: some BinaryFloatingPoint) {
         fatalError("TODO")
     }
 }

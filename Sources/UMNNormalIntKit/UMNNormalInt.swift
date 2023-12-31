@@ -13,7 +13,7 @@ import UMNCoreKit
 // MARK: * UMN x Normal Int
 //*============================================================================*
 
-@frozen public struct UMNNormalInt<Element>: UnsignedInteger where Element: FixedWidthInteger & UnsignedInteger {
+@frozen public struct UMNNormalInt<Element>: UMNUnsigned & UMNBinaryInteger where Element: UMNUnsigned & UMNTrivialInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -33,7 +33,7 @@ import UMNCoreKit
     // MARK: * Storage
     //*========================================================================*
     
-    @frozen @usableFromInline enum Storage: Hashable {
+    @frozen @usableFromInline enum Storage: Hashable, Sendable {
         case element(Element)
         case array(ContiguousArray<Element>)
     }
