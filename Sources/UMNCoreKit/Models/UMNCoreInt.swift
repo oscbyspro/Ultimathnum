@@ -11,7 +11,7 @@
 // MARK: * UMN x Core Int
 //*============================================================================*
 
-@frozen public struct UMNCoreInt<Base: UMNSystemInteger>: UMNCoreInteger {
+@frozen public struct UMNCoreInt<Base: UMNBaseInteger>: UMNCoreInteger {
     
     public typealias Base = Base
     

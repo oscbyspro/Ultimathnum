@@ -8,9 +8,15 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * UMN x System Integer
+// MARK: * UMN x Base Integer
 //*============================================================================*
 
+/// The stuff integers are made of.
+///
+/// - Note: Swift's integers are close enough to built-in.
+///
+/// ### Models
+///
 /// Only the following types conform to this protocol:
 ///
 /// - `Int`
@@ -28,17 +34,17 @@
 /// ### Existentials
 ///
 /// ```swift
-/// let integers: [any UMNSystemInteger] = [Int(), UInt()]
+/// let integers: [any UMNBaseInteger] = [Int(), UInt()]
 /// ```
 ///
-public protocol UMNSystemInteger: UMNBitCastable, Swift.FixedWidthInteger, Sendable
-where BitPattern == Magnitude.BitPattern, Magnitude: Swift.FixedWidthInteger & UMNSystemInteger { }
+public protocol UMNBaseInteger: UMNBitCastable, Swift.FixedWidthInteger, Sendable
+where BitPattern == Magnitude.BitPattern, Magnitude: Swift.FixedWidthInteger & UMNBaseInteger { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Details
 //=----------------------------------------------------------------------------=
 
-extension UMNSystemInteger {
+extension UMNBaseInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Details x Bit Pattern
@@ -54,45 +60,45 @@ extension UMNSystemInteger {
 }
 
 //*============================================================================*
-// MARK: * UMN x System Integer x Models
+// MARK: * UMN x Base Integer x Models
 //*============================================================================*
 
-extension Int: UMNSystemInteger {
+extension Int: UMNBaseInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension Int8: UMNSystemInteger {
+extension Int8: UMNBaseInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension Int16: UMNSystemInteger {
+extension Int16: UMNBaseInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension Int32: UMNSystemInteger {
+extension Int32: UMNBaseInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension Int64: UMNSystemInteger {
+extension Int64: UMNBaseInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension UInt: UMNSystemInteger {
+extension UInt: UMNBaseInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension UInt8: UMNSystemInteger {
+extension UInt8: UMNBaseInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension UInt16: UMNSystemInteger {
+extension UInt16: UMNBaseInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension UInt32: UMNSystemInteger {
+extension UInt32: UMNBaseInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension UInt64: UMNSystemInteger {
+extension UInt64: UMNBaseInteger {
     public typealias BitPattern = Magnitude
 }

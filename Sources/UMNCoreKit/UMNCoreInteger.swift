@@ -11,6 +11,10 @@
 // MARK: * UMN x Core Integer
 //*============================================================================*
 
+/// A core integer.
+///
+/// ### Models
+///
 /// Only the following types conform to this protocol:
 ///
 /// - `SX`
