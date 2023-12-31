@@ -12,7 +12,7 @@
 //*============================================================================*
 
 public protocol UMNTrivialInteger: UMNBinaryInteger, UMNBitCastable where
-Magnitude: UMNTrivialInteger & UMNUnsigned, Magnitude.BitPattern == BitPattern,
+Magnitude: UMNUnsigned & UMNTrivialInteger, Magnitude.BitPattern == BitPattern,
 Standard: Swift.FixedWidthInteger {
     
     //=------------------------------------------------------------------------=

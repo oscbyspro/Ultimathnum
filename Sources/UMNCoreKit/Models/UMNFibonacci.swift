@@ -45,15 +45,15 @@
 ///
 /// - TODO: Make each operation throwing when type errors are introduced.
 ///
-@frozen public struct UMNFibonacci<Integer>: CustomStringConvertible where Integer: UMNUnsigned & UMNBinaryInteger {
+@frozen public struct UMNFibonacci<Value>: CustomStringConvertible where Value: UMNInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    @usableFromInline var i = 0 as Integer
-    @usableFromInline var a = 0 as Integer
-    @usableFromInline var b = 1 as Integer
+    @usableFromInline var i = 0 as Value
+    @usableFromInline var a = 0 as Value
+    @usableFromInline var b = 1 as Value
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -63,7 +63,7 @@
     @inlinable public init() { }
     
     /// Creates the sequence pair at the given `index`.
-    @inlinable public init(_ index: Integer) {
+    @inlinable public init(_ index: Value) {
         fatalError("TODO")
     }
     
@@ -72,17 +72,17 @@
     //=------------------------------------------------------------------------=
     
     /// The sequence `index`.
-    @inlinable public var index: Integer {
+    @inlinable public var index: Value {
         self.i
     }
     
     /// The sequence `element` at `index`.
-    @inlinable public var element: Integer {
+    @inlinable public var element: Value {
         self.a
     }
     
     /// The sequence `element` at `index + 1`.
-    @inlinable public var next: Integer {
+    @inlinable public var next: Value {
         self.b
     }
     
@@ -110,12 +110,12 @@
     
     /// Forms the sequence pair at `index * 2`.
     @inlinable public mutating func double() {
-        var x: Integer // f(2 * index + 0)
+        var x: Value // f(2 * index + 0)
         x = b * 2
         x = x - a
         x = x * a
         
-        var y: Integer // f(2 * index + 1)
+        var y: Value // f(2 * index + 1)
         y = a.squared().unwrapped() + b.squared().unwrapped()
         
         i = i * 2
