@@ -25,12 +25,16 @@
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    @inlinable public static var isSigned: Bool {
-        Base.isSigned
+    @inlinable public static var min: Self {
+        Self(Base.min)
     }
     
-    @inlinable public static var bitWidth: Self {
-        fatalError("TODO")
+    @inlinable public static var max: Self {
+        Self(Base.max)
+    }
+    
+    @inlinable public static var isSigned: Bool {
+        Base.isSigned
     }
     
     //=------------------------------------------------------------------------=

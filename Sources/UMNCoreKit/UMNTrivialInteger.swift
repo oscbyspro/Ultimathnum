@@ -27,7 +27,9 @@ Stdlib: Swift.FixedWidthInteger {
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    @inlinable static var bitWidth: Self { get }
+    @inlinable static var min: Self { get }
+    
+    @inlinable static var max: Self { get }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Complements
