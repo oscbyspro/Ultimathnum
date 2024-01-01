@@ -40,6 +40,16 @@ Stdlib: Swift.FixedWidthInteger {
     @inlinable consuming func twosComplement() -> UMNOverflow<Self>
     
     //=------------------------------------------------------------------------=
+    // MARK: Transformations x Logic
+    //=------------------------------------------------------------------------=
+    
+    @inlinable static func &(lhs: consuming Self, rhs: consuming Self) -> Self
+    
+    @inlinable static func |(lhs: consuming Self, rhs: consuming Self) -> Self
+    
+    @inlinable static func ^(lhs: consuming Self, rhs: consuming Self) -> Self
+    
+    //=------------------------------------------------------------------------=
     // MARK: Transformations x Multiplication
     //=------------------------------------------------------------------------=
     

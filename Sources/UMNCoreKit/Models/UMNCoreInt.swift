@@ -154,6 +154,22 @@
     }
     
     //=------------------------------------------------------------------------=
+    // MARK: Transformations x Logic
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func &(lhs: consuming Self, rhs: consuming Self) -> Self {
+        Self(lhs.base & rhs.base)
+    }
+    
+    @inlinable public static func |(lhs: consuming Self, rhs: consuming Self) -> Self {
+        Self(lhs.base | rhs.base)
+    }
+    
+    @inlinable public static func ^(lhs: consuming Self, rhs: consuming Self) -> Self {
+        Self(lhs.base ^ rhs.base)
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
