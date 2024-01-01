@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * UMN x Standard Int
+// MARK: * UMN x Stdlib Int
 //*============================================================================*
 
-@frozen public struct UMNStandardInt<Base: UMNBinaryInteger>: Swift.BinaryInteger {
+@frozen public struct UMNStdlibInt<Base: UMNBinaryInteger>: Swift.BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -83,7 +83,7 @@
         fatalError("TODO")
     }
     
-    @inlinable public var magnitude: UMNStandardInt<Base.Magnitude> {
+    @inlinable public var magnitude: UMNStdlibInt<Base.Magnitude> {
         fatalError("TODO")
     }
     
@@ -152,7 +152,7 @@
 // MARK: + Fixed Width Integer
 //=----------------------------------------------------------------------------=
 
-extension UMNStandardInt: Swift.FixedWidthInteger where Base: UMNTrivialInteger {
+extension UMNStdlibInt: Swift.FixedWidthInteger where Base: UMNTrivialInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -241,7 +241,7 @@ extension UMNStandardInt: Swift.FixedWidthInteger where Base: UMNTrivialInteger 
 // MARK: + Conditional Conformances
 //=----------------------------------------------------------------------------=
 
-extension UMNStandardInt: Swift  .SignedNumeric where Base: UMNSigned   { }
-extension UMNStandardInt: Swift  .SignedInteger where Base: UMNSigned   { }
-extension UMNStandardInt: Swift.UnsignedInteger where Base: UMNUnsigned { }
-extension UMNStandardInt: Swift.LosslessStringConvertible where Base: UMNTrivialInteger { }
+extension UMNStdlibInt: Swift  .SignedNumeric where Base: UMNSigned   { }
+extension UMNStdlibInt: Swift  .SignedInteger where Base: UMNSigned   { }
+extension UMNStdlibInt: Swift.UnsignedInteger where Base: UMNUnsigned { }
+extension UMNStdlibInt: Swift.LosslessStringConvertible where Base: UMNTrivialInteger { }

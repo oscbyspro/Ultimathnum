@@ -13,7 +13,7 @@
 
 public protocol UMNTrivialInteger: UMNBinaryInteger, UMNBitCastable where
 Magnitude: UMNUnsigned & UMNTrivialInteger, Magnitude.BitPattern == BitPattern,
-Standard: Swift.FixedWidthInteger {
+Stdlib: Swift.FixedWidthInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data

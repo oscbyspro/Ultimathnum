@@ -39,8 +39,8 @@ import UMNCoreKit
         consuming get { self }
     }
     
-    @inlinable public var standard: some Swift.BinaryInteger {
-        consuming get { UMNStandardInt(self) }
+    @inlinable public var stdlib: UMNStdlibInt<Self> {
+        consuming get { UMNStdlibInt(self) }
     }
     
     @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<UX>) -> T) -> T {

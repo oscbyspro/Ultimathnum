@@ -17,12 +17,12 @@ public protocol UMNInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, S
     
     /// A representation that conforms to `Swift.BinaryInteger`.
     ///
-    /// You may call `standard` when you need to interoperate with Swift
-    /// code that uses the standard library's protocol hierarchy.
+    /// You may call `stdlib` to interoperate with code using the standard
+    /// library's protocol hierarchy.
     ///
     /// ```swift
-    /// let  int:  Int = SX().standard()
-    /// let uint: UInt = UX().standard()
+    /// let  int:  Int = SX().stdlib
+    /// let uint: UInt = UX().stdlib
     /// ```
     ///
     /// ### Motivation
@@ -33,9 +33,9 @@ public protocol UMNInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, S
     ///
     /// ### Alternatives
     ///
-    /// You can use `UMNStandardInt<Base>` for core integers too.
+    /// You can use `UMNStdlibInt<Base>` with core integers too.
     ///
-    associatedtype Standard: Swift.BinaryInteger
+    associatedtype Stdlib: Swift.BinaryInteger
     
     //=------------------------------------------------------------------------=
     // MARK: Accessors
@@ -43,7 +43,7 @@ public protocol UMNInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, S
     
     @inlinable var magnitude: Magnitude { consuming get }
     
-    @inlinable var standard: Standard { consuming get }
+    @inlinable var stdlib: Stdlib { consuming get }
     
     /// ### Development
     ///

@@ -19,7 +19,7 @@
     
     public typealias Magnitude = UMNCoreInt<Base.Magnitude>
     
-    public typealias Standard = Base
+    public typealias Stdlib = Base
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -63,7 +63,7 @@
         consuming get { Magnitude(self.base.magnitude) }
     }
     
-    @inlinable public var standard: Standard {
+    @inlinable public var stdlib: Stdlib {
         consuming get { self.base }
     }
     
