@@ -96,8 +96,9 @@
     // MARK: Transformations x Subtraction
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func negated() -> UMNOverflow<Self> where Self: UMNSigned {
-        self.twosComplement() // this works because the integer is signed
+    @inlinable public consuming func negated() -> UMNOverflow<Self> {
+        let result = self.twosComplement()
+        return UMNOverflow(result.value, overflow: result.overflow != Self.isSigned)
     }
     
     @inlinable public consuming func decremented(by subtrahend: borrowing Self) -> UMNOverflow<Self> {
@@ -127,19 +128,19 @@
     // MARK: Transformations x Division
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func quotient(dividingBy divisor: borrowing Self) -> UMNOverflow<Self> {
+    @inlinable public consuming func quotient(divisor: borrowing Self) -> UMNOverflow<Self> {
         let result = self.base.dividedReportingOverflow(by: divisor.base)
         return UMNOverflow(Self(result.partialValue), overflow: result.overflow)
     }
     
-    @inlinable public consuming func remainder(dividingBy divisor: borrowing Self) -> UMNOverflow<Self> {
+    @inlinable public consuming func remainder(divisor: borrowing Self) -> UMNOverflow<Self> {
         let result = self.base.remainderReportingOverflow(dividingBy: divisor.base)
         return UMNOverflow(Self(result.partialValue), overflow: result.overflow)
     }
     
     @inlinable public consuming func divided(by divisor: borrowing Self) -> UMNOverflow<UMNQuoRem<Self, Self>> {
-        let quotient  = (copy    self).quotient (dividingBy: divisor)
-        let remainder = (consume self).remainder(dividingBy: divisor)
+        let quotient  = (copy    self).quotient (divisor: divisor)
+        let remainder = (consume self).remainder(divisor: divisor)
         let overflow  = quotient.overflow || remainder.overflow
         return UMNOverflow(UMNQuoRem(quotient: quotient.value, remainder: remainder.value), overflow: overflow)
     }
@@ -165,8 +166,8 @@
 // MARK: + Conditional Conformances
 //=----------------------------------------------------------------------------=
 
-extension UMNCoreInt:   UMNSigned where Base: Swift  .SignedInteger { }
-extension UMNCoreInt: UMNUnsigned where Base: Swift.UnsignedInteger { }
+extension UMNCoreInt:   UMNSignedInteger where Base: Swift  .SignedInteger { }
+extension UMNCoreInt: UMNUnsignedInteger where Base: Swift.UnsignedInteger, Base.Magnitude == Base { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Aliases

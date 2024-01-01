@@ -13,7 +13,7 @@
 
 public protocol UMNInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, Sendable {
     
-    associatedtype Magnitude: UMNBinaryInteger where Magnitude.Magnitude == Magnitude
+    associatedtype Magnitude: UMNInteger where Magnitude.Magnitude == Magnitude
     
     /// A representation that conforms to `Swift.BinaryInteger`.
     ///
@@ -38,6 +38,12 @@ public protocol UMNInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, S
     associatedtype Stdlib: Swift.BinaryInteger
     
     //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    @inlinable static var isSigned: Bool { get }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Accessors
     //=------------------------------------------------------------------------=
     
@@ -45,6 +51,10 @@ public protocol UMNInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, S
     
     @inlinable var stdlib: Stdlib { consuming get }
     
+    /// Its un/signed two's complement words.
+    ///
+    /// The format is indicated by `isSigned`.
+    ///
     /// ### Development
     ///
     /// - TODO: Make this a buffer view at some point.
@@ -52,19 +62,21 @@ public protocol UMNInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, S
     @inlinable consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<UX>) -> T) -> T
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformation x Addition
+    // MARK: Transformations x Addition
     //=------------------------------------------------------------------------=
     
     @inlinable consuming func incremented(by addend: borrowing Self) -> UMNOverflow<Self>
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformation x Subtraction
+    // MARK: Transformations x Subtraction
     //=------------------------------------------------------------------------=
+    
+    @inlinable consuming func negated() -> UMNOverflow<Self>
     
     @inlinable consuming func decremented(by subtrahend: borrowing Self) -> UMNOverflow<Self>
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformation x Multiplication
+    // MARK: Transformations x Multiplication
     //=------------------------------------------------------------------------=
     
     @inlinable consuming func squared() -> UMNOverflow<Self>
@@ -72,12 +84,12 @@ public protocol UMNInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, S
     @inlinable consuming func multiplied(by multiplier: borrowing Self) -> UMNOverflow<Self>
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformation x Division
+    // MARK: Transformations x Division
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming func quotient (dividingBy divisor: borrowing Self) -> UMNOverflow<Self>
+    @inlinable consuming func quotient ( divisor: borrowing Self) -> UMNOverflow<Self>
     
-    @inlinable consuming func remainder(dividingBy divisor: borrowing Self) -> UMNOverflow<Self>
+    @inlinable consuming func remainder( divisor: borrowing Self) -> UMNOverflow<Self>
     
     @inlinable consuming func divided(by divisor: borrowing Self) -> UMNOverflow<UMNQuoRem<Self, Self>>
 }
@@ -100,6 +112,10 @@ extension UMNInteger {
     // MARK: Details x Subtraction
     //=------------------------------------------------------------------------=
     
+    @inlinable public static prefix func -(operand: Self) -> Self {
+        operand.negated().unwrapped()
+    }
+    
     @inlinable public static func -(lhs: consuming Self, rhs: borrowing Self) -> Self {
         lhs.decremented(by: rhs).unwrapped()
     }
@@ -117,10 +133,10 @@ extension UMNInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func /(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs.quotient (dividingBy: rhs).unwrapped()
+        lhs.quotient (divisor: rhs).unwrapped()
     }
     
     @inlinable public static func %(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs.remainder(dividingBy: rhs).unwrapped()
+        lhs.remainder(divisor: rhs).unwrapped()
     }
 }

@@ -11,8 +11,16 @@
 // MARK: * UMN x Trivial Integer
 //*============================================================================*
 
+/// ### Magnitude
+///
+/// The magnitude must have the same bit width as this type. It then follows that
+/// the magnitude must also be unsigned. This ensures that the type can represent
+/// the minimum signed value's magnitude.
+///
+/// - Requires: The magnitude must be unsigned and the same size as this type.
+///
 public protocol UMNTrivialInteger: UMNBinaryInteger, UMNBitCastable where
-Magnitude: UMNUnsigned & UMNTrivialInteger, Magnitude.BitPattern == BitPattern,
+Magnitude: UMNUnsignedInteger & UMNTrivialInteger, Magnitude.BitPattern == BitPattern,
 Stdlib: Swift.FixedWidthInteger {
     
     //=------------------------------------------------------------------------=
@@ -22,13 +30,21 @@ Stdlib: Swift.FixedWidthInteger {
     @inlinable static var bitWidth: Self { get }
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformation x Multiplication
+    // MARK: Transformations x Complements
+    //=------------------------------------------------------------------------=
+    
+    @inlinable consuming func onesComplement() -> Self
+    
+    @inlinable consuming func twosComplement() -> UMNOverflow<Self>
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Multiplication
     //=------------------------------------------------------------------------=
     
     @inlinable static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> UMNFullWidth<Self, Magnitude>
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformation x Division
+    // MARK: Transformations x Division
     //=------------------------------------------------------------------------=
     
     @inlinable static func dividing(_ dividend: consuming UMNFullWidth<Self, Magnitude>, by multiplier: borrowing Self) -> UMNOverflow<UMNQuoRem<Self, Self>>

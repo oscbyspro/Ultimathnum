@@ -91,59 +91,59 @@
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static prefix func ~ (x: Self) -> Self {
+    @inlinable public static prefix func ~(operand: Self) -> Self {
         fatalError("TODO")
     }
     
-    @inlinable public static func - (lhs: Self, rhs: Self) -> Self {
+    @inlinable public static func -(lhs: Self, rhs: Self) -> Self {
         fatalError("TODO")
     }
         
-    @inlinable public static func + (lhs: Self, rhs: Self) -> Self {
+    @inlinable public static func +(lhs: Self, rhs: Self) -> Self {
         fatalError("TODO")
     }
     
-    @inlinable public static func *= (lhs: inout Self, rhs: Self) {
+    @inlinable public static func *=(lhs: inout Self, rhs: Self) {
         fatalError("TODO")
     }
     
-    @inlinable public static func * (lhs: Self, rhs: Self) -> Self {
+    @inlinable public static func *(lhs: Self, rhs: Self) -> Self {
         fatalError("TODO")
     }
     
-    @inlinable public static func %= (lhs: inout Self, rhs: Self) {
+    @inlinable public static func %=(lhs: inout Self, rhs: Self) {
         fatalError("TODO")
     }
     
-    @inlinable public static func % (lhs: Self, rhs: Self) -> Self {
+    @inlinable public static func %(lhs: Self, rhs: Self) -> Self {
         fatalError("TODO")
     }
     
-    @inlinable public static func /= (lhs: inout Self, rhs: Self) {
+    @inlinable public static func /=(lhs: inout Self, rhs: Self) {
         fatalError("TODO")
     }
     
-    @inlinable public static func / (lhs: Self, rhs: Self) -> Self {
+    @inlinable public static func /(lhs: Self, rhs: Self) -> Self {
         fatalError("TODO")
     }
     
-    @inlinable public static func &= (lhs: inout Self, rhs: Self) {
+    @inlinable public static func &=(lhs: inout Self, rhs: Self) {
         fatalError("TODO")
     }
     
-    @inlinable public static func |= (lhs: inout Self, rhs: Self) {
+    @inlinable public static func |=(lhs: inout Self, rhs: Self) {
         fatalError("TODO")
     }
     
-    @inlinable public static func ^= (lhs: inout Self, rhs: Self) {
+    @inlinable public static func ^=(lhs: inout Self, rhs: Self) {
         fatalError("TODO")
     }
     
-    @inlinable public static func <<= (lhs: inout Self, rhs: some BinaryInteger) {
+    @inlinable public static func <<=(lhs: inout Self, rhs: some BinaryInteger) {
         fatalError("TODO")
     }
     
-    @inlinable public static func >>= (lhs: inout Self, rhs: some BinaryInteger) {
+    @inlinable public static func >>=(lhs: inout Self, rhs: some BinaryInteger) {
         fatalError("TODO")
     }
 }
@@ -226,7 +226,7 @@ extension UMNStdlibInt: Swift.FixedWidthInteger where Base: UMNTrivialInteger {
         fatalError("TODO")
     }
     
-    @inlinable public func remainderReportingOverflow(dividingBy divisor: Self) 
+    @inlinable public func remainderReportingOverflow(dividingBy divisor: Self)
     -> (partialValue: Self, overflow: Bool) {
         fatalError("TODO")
     }
@@ -241,7 +241,7 @@ extension UMNStdlibInt: Swift.FixedWidthInteger where Base: UMNTrivialInteger {
 // MARK: + Conditional Conformances
 //=----------------------------------------------------------------------------=
 
-extension UMNStdlibInt: Swift  .SignedNumeric where Base: UMNSigned   { }
-extension UMNStdlibInt: Swift  .SignedInteger where Base: UMNSigned   { }
-extension UMNStdlibInt: Swift.UnsignedInteger where Base: UMNUnsigned { }
+extension UMNStdlibInt: Swift  .SignedNumeric where Base: UMNSignedInteger   { }
+extension UMNStdlibInt: Swift  .SignedInteger where Base: UMNSignedInteger   { }
+extension UMNStdlibInt: Swift.UnsignedInteger where Base: UMNUnsignedInteger { }
 extension UMNStdlibInt: Swift.LosslessStringConvertible where Base: UMNTrivialInteger { }

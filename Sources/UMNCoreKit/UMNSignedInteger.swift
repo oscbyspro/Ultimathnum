@@ -7,23 +7,27 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import UMNCoreKit
-
 //*============================================================================*
-// MARK: * UNM x Normal Int x Subtraction
+// MARK: * UMN x Signed Integer
 //*============================================================================*
 
-extension UMNNormalInt {
+/// A signed integer.
+///
+/// - Note: Its static `isSigned` value is `true`.
+///
+public protocol UMNSignedInteger: UMNInteger where Stdlib: Swift.SignedInteger { }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Details
+//=----------------------------------------------------------------------------=
+
+extension UMNSignedInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func negated() -> UMNOverflow<Self> {
-        fatalError("TODO")
-    }
-    
-    @inlinable public consuming func decremented(by subtrahend: borrowing Self) -> UMNOverflow<Self> {
-        fatalError("TODO")
+    @inlinable public static var isSigned: Bool {
+        true
     }
 }

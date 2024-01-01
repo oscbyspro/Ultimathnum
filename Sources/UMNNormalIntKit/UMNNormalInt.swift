@@ -13,7 +13,7 @@ import UMNCoreKit
 // MARK: * UMN x Normal Int
 //*============================================================================*
 
-@frozen public struct UMNNormalInt: UMNUnsigned & UMNBinaryInteger {
+@frozen public struct UMNNormalInt: UMNUnsignedInteger & UMNBinaryInteger {
     
     @usableFromInline typealias Element = UX
     

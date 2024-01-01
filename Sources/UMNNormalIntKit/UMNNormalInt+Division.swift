@@ -19,11 +19,11 @@ extension UMNNormalInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func quotient (dividingBy divisor: borrowing Self) -> UMNOverflow<Self> {
+    @inlinable public consuming func quotient (divisor: borrowing Self) -> UMNOverflow<Self> {
         fatalError("TODO")
     }
     
-    @inlinable public consuming func remainder(dividingBy divisor: borrowing Self) -> UMNOverflow<Self> {
+    @inlinable public consuming func remainder(divisor: borrowing Self) -> UMNOverflow<Self> {
         fatalError("TODO")
     }
     

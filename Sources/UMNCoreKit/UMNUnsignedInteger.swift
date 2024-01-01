@@ -8,46 +8,42 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * UMN x Binary Integer
+// MARK: * UMN x Unsigned Integer
 //*============================================================================*
 
-/// A binary integer.
+/// An unsigned integer.
 ///
-/// ### Binary
+/// - Note: Its static `isSigned` value is `false`.
 ///
-/// Its signedness is with respect to un/signed two's complement.
+/// ### Magnitude
 ///
-/// - Requires: Negative values must use binary two's complement form.
+/// An unsigned integer can by definition represent its magnitude. As such, the
+/// magnitude should be of the same type. While alternative designs are possible,
+/// this design makes generic code simpler.
 ///
-public protocol UMNBinaryInteger: UMNInteger where Magnitude: UMNBinaryInteger { }
+/// - Requires: The magnitude must be of the same type.
+///
+public protocol UMNUnsignedInteger: UMNInteger where Magnitude == Self, Stdlib: Swift.UnsignedInteger { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Details
 //=----------------------------------------------------------------------------=
 
-extension UMNBinaryInteger {
+extension UMNUnsignedInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Details x Addition
+    // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func &+(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs.incremented(by: rhs).value
+    @inlinable public static var isSigned: Bool {
+        false
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Details x Subtraction
+    // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func &-(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs.decremented(by: rhs).value
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Details x Multiplication
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static func &*(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs.multiplied(by: rhs).value
+    @inlinable public var magnitude: Magnitude {
+        consuming get { self }
     }
 }
