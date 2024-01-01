@@ -46,9 +46,13 @@
     @inlinable public init(_ base: consuming Base) {
         self.base = base
     }
-    
+        
     @inlinable public init(integerLiteral: consuming Base.IntegerLiteralType) {
         self.base = Base(integerLiteral: integerLiteral)
+    }
+    
+    @inlinable public init?(words: some RandomAccessCollection<UX>, isSigned: Bool) {
+        fatalError("TODO")
     }
     
     //=------------------------------------------------------------------------=

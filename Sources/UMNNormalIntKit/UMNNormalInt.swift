@@ -39,10 +39,6 @@ import UMNCoreKit
         consuming get { self }
     }
     
-    @inlinable public var stdlib: UMNStdlibInt<Self> {
-        consuming get { UMNStdlibInt(self) }
-    }
-    
     @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<UX>) -> T) -> T {
         switch self.storage {
         case let .some(x): x.withUnsafeBufferPointer(body)

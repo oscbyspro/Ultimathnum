@@ -11,7 +11,7 @@
 // MARK: * UMN x Stdlib Int
 //*============================================================================*
 
-@frozen public struct UMNStdlibInt<Base: UMNBinaryInteger>: Swift.BinaryInteger {
+@frozen public struct UMNStdlibInt<Base: UMNInteger>: Swift.BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data

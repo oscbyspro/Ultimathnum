@@ -35,13 +35,21 @@ public protocol UMNInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, S
     ///
     /// You can use `UMNStdlibInt<Base>` with core integers too.
     ///
-    associatedtype Stdlib: Swift.BinaryInteger
+    associatedtype Stdlib: Swift.BinaryInteger = UMNStdlibInt<Self>
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
     @inlinable static var isSigned: Bool { get }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable init(_ stdlib: Stdlib)
+        
+    @inlinable init?(words: some RandomAccessCollection<UX>, isSigned: Bool)
     
     //=------------------------------------------------------------------------=
     // MARK: Accessors
@@ -101,7 +109,15 @@ public protocol UMNInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, S
 extension UMNInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Details x Addition
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init?(words: some RandomAccessCollection<UX>) {
+        self.init(words: words, isSigned: Self.isSigned)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Addition
     //=------------------------------------------------------------------------=
     
     @inlinable public static func +(lhs: consuming Self, rhs: borrowing Self) -> Self {
@@ -109,7 +125,7 @@ extension UMNInteger {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Details x Subtraction
+    // MARK: Transformations x Subtraction
     //=------------------------------------------------------------------------=
     
     @inlinable public static prefix func -(operand: Self) -> Self {
@@ -121,7 +137,7 @@ extension UMNInteger {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Details x Multiplication
+    // MARK: Transformations x Multiplication
     //=------------------------------------------------------------------------=
     
     @inlinable public static func *(lhs: consuming Self, rhs: borrowing Self) -> Self {
@@ -129,7 +145,7 @@ extension UMNInteger {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Details x Division
+    // MARK: Transformations x Division
     //=------------------------------------------------------------------------=
     
     @inlinable public static func /(lhs: consuming Self, rhs: borrowing Self) -> Self {
@@ -138,5 +154,24 @@ extension UMNInteger {
     
     @inlinable public static func %(lhs: consuming Self, rhs: borrowing Self) -> Self {
         lhs.remainder(divisor: rhs).unwrapped()
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Details where Stdlib is Default
+//=----------------------------------------------------------------------------=
+
+extension UMNInteger where Stdlib == UMNStdlibInt<Self> {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(_ stdlib: consuming Stdlib) {
+        self = stdlib.base
+    }
+    
+    @inlinable public var stdlib: UMNStdlibInt<Self> {
+        consuming get { UMNStdlibInt(self) }
     }
 }
