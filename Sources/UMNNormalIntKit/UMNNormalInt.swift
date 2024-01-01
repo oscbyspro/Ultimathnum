@@ -13,7 +13,9 @@ import UMNCoreKit
 // MARK: * UMN x Normal Int
 //*============================================================================*
 
-@frozen public struct UMNNormalInt<Element>: UMNUnsigned & UMNBinaryInteger where Element: UMNUnsigned & UMNTrivialInteger {
+@frozen public struct UMNNormalInt: UMNUnsigned & UMNBinaryInteger {
+    
+    @usableFromInline typealias Element = UX
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -41,8 +43,10 @@ import UMNCoreKit
         consuming get { UMNStandardInt(self) }
     }
     
-    @inlinable public var words: Words {
-        consuming get { Words(self) }
+    @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<UX>) -> T) -> T {
+        switch self.storage {
+        case let .some(x): x.withUnsafeBufferPointer(body)
+        case let .many(x): x.withUnsafeBufferPointer(body) }
     }
     
     //*========================================================================*
@@ -50,14 +54,7 @@ import UMNCoreKit
     //*========================================================================*
     
     @frozen @usableFromInline enum Storage: Hashable, Sendable {
-        case element(Element)
-        case array(ContiguousArray<Element>)
+        case some(Element) // one
+        case many(ContiguousArray<Element>) // at least one
     }
 }
-
-//=----------------------------------------------------------------------------=
-// MARK: + Aliases
-//=----------------------------------------------------------------------------=
-
-/// An unsigned big integer.
-public typealias UXL = UMNNormalInt<UX>

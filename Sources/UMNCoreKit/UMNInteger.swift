@@ -36,18 +36,20 @@ public protocol UMNInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, S
     /// You can use `UMNStandardInt<Base>` for core integers too.
     ///
     associatedtype Standard: Swift.BinaryInteger
-        
-    associatedtype Words: RandomAccessCollection & Sendable where Words.Element == UX, Words.Index == SX
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Complements
+    // MARK: Accessors
     //=------------------------------------------------------------------------=
     
     @inlinable var magnitude: Magnitude { consuming get }
     
     @inlinable var standard: Standard { consuming get }
     
-    @inlinable var words: Words { consuming get }
+    /// ### Development
+    ///
+    /// - TODO: Make this a buffer view at some point.
+    ///
+    @inlinable consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<UX>) -> T) -> T
     
     //=------------------------------------------------------------------------=
     // MARK: Transformation x Addition
