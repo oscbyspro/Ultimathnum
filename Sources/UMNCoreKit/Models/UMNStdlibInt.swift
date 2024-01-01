@@ -152,22 +152,22 @@
 // MARK: + Fixed Width Integer
 //=----------------------------------------------------------------------------=
 
-extension UMNStdlibInt: Swift.FixedWidthInteger where Base: UMNTrivialInteger {
+extension UMNStdlibInt: Swift.FixedWidthInteger where Base: UMNSystemInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    @inlinable public static var bitWidth: Int {
-        fatalError("TODO")
+    @inlinable public static var min: Self {
+        Self(Base.min)
     }
     
     @inlinable public static var max: Self {
-        fatalError("TODO")
+        Self(Base.max)
     }
     
-    @inlinable public static var min: Self {
-        fatalError("TODO")
+    @inlinable public static var bitWidth: Int {
+        MemoryLayout<Base>.size * 8
     }
     
     //=------------------------------------------------------------------------=
@@ -244,4 +244,4 @@ extension UMNStdlibInt: Swift.FixedWidthInteger where Base: UMNTrivialInteger {
 extension UMNStdlibInt: Swift  .SignedNumeric where Base: UMNSignedInteger   { }
 extension UMNStdlibInt: Swift  .SignedInteger where Base: UMNSignedInteger   { }
 extension UMNStdlibInt: Swift.UnsignedInteger where Base: UMNUnsignedInteger { }
-extension UMNStdlibInt: Swift.LosslessStringConvertible where Base: UMNTrivialInteger { }
+extension UMNStdlibInt: Swift.LosslessStringConvertible where Base: UMNSystemInteger { }

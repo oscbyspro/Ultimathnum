@@ -11,7 +11,7 @@
 // MARK: * UMN x Core Int
 //*============================================================================*
 
-@frozen public struct UMNCoreInt<Base: UMNBaseInteger>: UMNCoreInteger {
+@frozen public struct UMNCoreInt<Base: UMNBaseInteger>: UMNSystemInteger {
     
     public typealias Base = Base
     
@@ -25,16 +25,12 @@
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    @inlinable public static var min: Self {
-        Self(Base.min)
-    }
-    
-    @inlinable public static var max: Self {
-        Self(Base.max)
-    }
-    
     @inlinable public static var isSigned: Bool {
         Base.isSigned
+    }
+    
+    @inlinable public static var bitWidth: Self {
+        fatalError("TODO")
     }
     
     //=------------------------------------------------------------------------=
@@ -76,18 +72,6 @@
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Complements
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func onesComplement() -> Self {
-        Self(~self.base)
-    }
-    
-    @inlinable public consuming func twosComplement() -> UMNOverflow<Self> {
-        self.onesComplement().incremented(by: 1)
-    }
-    
-    //=------------------------------------------------------------------------=
     // MARK: Transformations x Addition
     //=------------------------------------------------------------------------=
     
@@ -101,7 +85,7 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func negated() -> UMNOverflow<Self> {
-        let result = self.twosComplement()
+        let result = (~self).incremented(by: 1)
         return UMNOverflow(result.value, overflow: result.overflow != Self.isSigned)
     }
     
@@ -157,6 +141,10 @@
     // MARK: Transformations x Logic
     //=------------------------------------------------------------------------=
     
+    @inlinable public static prefix func ~(operand: consuming Self) -> Self {
+        Self(~operand.base)
+    }
+    
     @inlinable public static func &(lhs: consuming Self, rhs: consuming Self) -> Self {
         Self(lhs.base & rhs.base)
     }
@@ -167,6 +155,26 @@
     
     @inlinable public static func ^(lhs: consuming Self, rhs: consuming Self) -> Self {
         Self(lhs.base ^ rhs.base)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Shifts
+    //=------------------------------------------------------------------------=
+    
+    @inlinable static public func  <<(lhs: consuming Self, rhs: consuming Self) -> Self {
+        Self(lhs.base  << rhs.base)
+    }
+    
+    @inlinable static public func &<<(lhs: consuming Self, rhs: consuming Self) -> Self {
+        Self(lhs.base &<< rhs.base)
+    }
+    
+    @inlinable static public func  >>(lhs: consuming Self, rhs: consuming Self) -> Self {
+        Self(lhs.base  >> rhs.base)
+    }
+    
+    @inlinable static public func &>>(lhs: consuming Self, rhs: consuming Self) -> Self {
+        Self(lhs.base &>> rhs.base)
     }
     
     //=------------------------------------------------------------------------=
