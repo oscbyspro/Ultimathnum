@@ -25,7 +25,7 @@ public protocol UMNBitCastable<BitPattern> {
     // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming func bitPattern() -> BitPattern
+    @inlinable var bitPattern: BitPattern { consuming get }
 }
 
 //=----------------------------------------------------------------------------=
@@ -39,6 +39,6 @@ extension UMNBitCastable {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(bitPattern source: consuming some UMNBitCastable<BitPattern>) {
-        self.init(bitPattern: source.bitPattern())
+        self.init(bitPattern: source.bitPattern)
     }
 }

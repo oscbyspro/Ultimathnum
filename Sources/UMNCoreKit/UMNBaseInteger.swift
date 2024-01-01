@@ -54,8 +54,8 @@ extension UMNBaseInteger {
         self = Swift.unsafeBitCast(bitPattern, to: Self.self)
     }
     
-    @inlinable public consuming func bitPattern() -> BitPattern {
-        Swift.unsafeBitCast(self, to: BitPattern.self)
+    @inlinable public var bitPattern: BitPattern {
+        consuming get { Swift.unsafeBitCast(self, to: BitPattern.self) }
     }
 }
 

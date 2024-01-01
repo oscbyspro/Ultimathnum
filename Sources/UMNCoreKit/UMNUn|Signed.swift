@@ -38,7 +38,7 @@ extension UMNSigned {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static prefix func - (operand: Self) -> Self {
+    @inlinable public static prefix func -(operand: Self) -> Self {
         operand.negated().unwrapped()
     }
 }

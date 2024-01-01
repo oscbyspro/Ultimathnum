@@ -28,7 +28,7 @@ extension UMNNormalInt {
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
-        @inlinable init(_ source: UMNNormalInt) {
+        @inlinable init(_ source: consuming UMNNormalInt) {
             fatalError("TODO")
         }
         
@@ -45,23 +45,23 @@ extension UMNNormalInt {
         }
         
         @inlinable public func index(before index: SX) -> SX {
-            SX(self.base.index(before: index.standard()))
+            SX(self.base.index(before: index.standard))
         }
         
         @inlinable public func index(after index: SX) -> SX {
-            SX(self.base.index(after: index.standard()))
+            SX(self.base.index(after: index.standard))
         }
         
         @inlinable public func index(_ index: SX, offsetBy distance: SX) -> SX {
-            SX(self.base.index(index.standard(), offsetBy: distance.standard()))
+            SX(self.base.index(index.standard, offsetBy: distance.standard))
         }
         
         @inlinable public func index(_ index: SX, offsetBy distance: SX, limitedBy limit: SX) -> SX? {
-            self.base.index(index.standard(), offsetBy: distance.standard(), limitedBy: limit.standard()).map(SX.init(_:))
+            self.base.index(index.standard, offsetBy: distance.standard, limitedBy: limit.standard).map(SX.init(_:))
         }
         
         @inlinable public subscript(index: SX) -> UX {
-            self.base[index.standard()]
+            self.base[index.standard]
         }
     }
 }

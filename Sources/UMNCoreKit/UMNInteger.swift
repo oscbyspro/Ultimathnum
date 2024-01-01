@@ -13,9 +13,11 @@
 
 public protocol UMNInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, Sendable {
     
+    associatedtype Magnitude: UMNBinaryInteger where Magnitude.Magnitude == Magnitude
+    
     /// A representation that conforms to `Swift.BinaryInteger`.
     ///
-    /// You may call `standard()` when you need to interoperate with Swift
+    /// You may call `standard` when you need to interoperate with Swift
     /// code that uses the standard library's protocol hierarchy.
     ///
     /// ```swift
@@ -34,20 +36,18 @@ public protocol UMNInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, S
     /// You can use `UMNStandardInt<Base>` for core integers too.
     ///
     associatedtype Standard: Swift.BinaryInteger
-    
-    associatedtype Magnitude: UMNBinaryInteger where Magnitude.Magnitude == Magnitude
-    
+        
     associatedtype Words: RandomAccessCollection & Sendable where Words.Element == UX, Words.Index == SX
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Complements
     //=------------------------------------------------------------------------=
-        
-    @inlinable consuming func standard() -> Standard
     
-    @inlinable consuming func magnitude() -> Magnitude
+    @inlinable var magnitude: Magnitude { consuming get }
     
-    @inlinable consuming func words() -> Words
+    @inlinable var standard: Standard { consuming get }
+    
+    @inlinable var words: Words { consuming get }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformation x Addition

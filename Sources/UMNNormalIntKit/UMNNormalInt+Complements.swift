@@ -19,23 +19,11 @@ extension UMNNormalInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func standard() -> UMNStandardInt<Self> {
-        UMNStandardInt(self)
-    }
-    
-    @inlinable public consuming func magnitude() -> Self {
-        self
-    }
-    
     @inlinable public consuming func onesComplement() -> Self {
         fatalError("TODO")
     }
     
     @inlinable public consuming func twosComplement() -> UMNOverflow<Self> {
         fatalError("TODO")
-    }
-    
-    @inlinable public consuming func words() -> Words {
-        Words(self)
     }
 }

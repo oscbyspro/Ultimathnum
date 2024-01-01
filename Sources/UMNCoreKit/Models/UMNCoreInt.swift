@@ -60,16 +60,28 @@
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Complements
+    // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func bitPattern() -> BitPattern {
-        self.base.bitPattern()
+    @inlinable public var bitPattern: BitPattern {
+        consuming get { self.base.bitPattern }
     }
     
-    @inlinable public consuming func magnitude() -> Magnitude {
-        Magnitude(self.base.magnitude)
+    @inlinable public var magnitude: Magnitude {
+        consuming get { Magnitude(self.base.magnitude) }
     }
+    
+    @inlinable public var standard: Standard {
+        consuming get { self.base }
+    }
+    
+    @inlinable public var words: Words {
+        consuming get { Words(self.base.words) }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Complements
+    //=------------------------------------------------------------------------=
     
     @inlinable public consuming func onesComplement() -> Self {
         Self(~self.base)
@@ -77,14 +89,6 @@
     
     @inlinable public consuming func twosComplement() -> UMNOverflow<Self> {
         self.onesComplement().incremented(by: 1)
-    }
-    
-    @inlinable public consuming func standard() -> Standard {
-        self.base
-    }
-    
-    @inlinable public consuming func words() -> Words {
-        Words(self.base.words)
     }
     
     //=------------------------------------------------------------------------=
@@ -156,11 +160,11 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func == (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         lhs.base == rhs.base
     }
     
-    @inlinable public static func <  (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         lhs.base <  rhs.base
     }
     
@@ -198,23 +202,23 @@
         }
         
         @inlinable public func index(before index: SX) -> SX {
-            SX(self.base.index(before: index.standard()))
+            SX(self.base.index(before: index.standard))
         }
         
         @inlinable public func index(after index: SX) -> SX {
-            SX(self.base.index(after: index.standard()))
+            SX(self.base.index(after: index.standard))
         }
         
         @inlinable public func index(_ index: SX, offsetBy distance: SX) -> SX {
-            SX(self.base.index(index.standard(), offsetBy: distance.standard()))
+            SX(self.base.index(index.standard, offsetBy: distance.standard))
         }
         
         @inlinable public func index(_ index: SX, offsetBy distance: SX, limitedBy limit: SX) -> SX? {
-            self.base.index(index.standard(), offsetBy: distance.standard(), limitedBy: limit.standard()).map(SX.init(_:))
+            self.base.index(index.standard, offsetBy: distance.standard, limitedBy: limit.standard).map(SX.init(_:))
         }
         
         @inlinable public subscript(index: SX) -> UX {
-            UX(self.base[index.standard()])
+            UX(self.base[index.standard])
         }
     }
 }

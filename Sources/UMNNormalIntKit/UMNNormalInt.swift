@@ -29,6 +29,22 @@ import UMNCoreKit
         self.storage = storage
     }
     
+    //=------------------------------------------------------------------------=
+    // MARK: Accessors
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var magnitude: Self {
+        consuming get { self }
+    }
+    
+    @inlinable public var standard: some Swift.BinaryInteger {
+        consuming get { UMNStandardInt(self) }
+    }
+    
+    @inlinable public var words: Words {
+        consuming get { Words(self) }
+    }
+    
     //*========================================================================*
     // MARK: * Storage
     //*========================================================================*
@@ -38,3 +54,10 @@ import UMNCoreKit
         case array(ContiguousArray<Element>)
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Aliases
+//=----------------------------------------------------------------------------=
+
+/// An unsigned big integer.
+public typealias UXL = UMNNormalInt<UX>

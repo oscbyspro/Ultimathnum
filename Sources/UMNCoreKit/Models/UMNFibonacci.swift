@@ -119,7 +119,7 @@
         y = a.squared().unwrapped() + b.squared().unwrapped()
         
         i = i * 2
-        a = x
-        b = y
+        a = consume x
+        b = consume y
     }
 }
