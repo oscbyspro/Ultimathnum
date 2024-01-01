@@ -16,22 +16,10 @@ import UMNCoreKit
 extension UMNNormalInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static var zero: Self {
-        fatalError("TODO")
-    }
-    
-    @inlinable public static var one:  Self {
-        fatalError("TODO")
-    }
-    
-    //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(integerLiteral value: StaticBigInt) {
+    @inlinable public init(integerLiteral: consuming StaticBigInt) {
         fatalError("TODO")
     }
 }

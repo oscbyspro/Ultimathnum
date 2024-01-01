@@ -29,16 +29,8 @@
         Base.isSigned
     }
     
-    @inlinable public static var bitWidth: SX {
-        SX(Self.Base.bitWidth)
-    }
-    
-    @inlinable public static var zero: Self {
-        0 as Self
-    }
-    
-    @inlinable public static var one:  Self {
-        1 as Self
+    @inlinable public static var bitWidth: Self {
+        fatalError("TODO")
     }
     
     //=------------------------------------------------------------------------=
@@ -213,7 +205,7 @@
             SX(self.base.index(index.standard, offsetBy: distance.standard))
         }
         
-        @inlinable public func index(_ index: SX, offsetBy distance: SX, limitedBy limit: SX) -> SX? {
+        @inlinable public func index(_ index: SX, offsetBy distance: SX, limitedBy  limit: SX) -> SX? {
             self.base.index(index.standard, offsetBy: distance.standard, limitedBy: limit.standard).map(SX.init(_:))
         }
         

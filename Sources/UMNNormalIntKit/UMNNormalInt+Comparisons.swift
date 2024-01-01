@@ -19,11 +19,11 @@ extension UMNNormalInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func == (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         fatalError("TODO")
     }
     
-    @inlinable public static func <  (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         fatalError("TODO")
     }
 }

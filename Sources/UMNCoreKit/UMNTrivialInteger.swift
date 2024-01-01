@@ -19,7 +19,7 @@ Standard: Swift.FixedWidthInteger {
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    @inlinable static var bitWidth: SX { get }
+    @inlinable static var bitWidth: Self { get }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformation x Multiplication
