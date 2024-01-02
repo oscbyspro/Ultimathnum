@@ -11,13 +11,25 @@
 // MARK: * UMN x Signum
 //*============================================================================*
 
-@frozen public enum UMNSignum: Comparable, Hashable, Sendable {
+@frozen public enum UMNSignum: Comparable, ExpressibleByIntegerLiteral, Hashable, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
-        
+    
     case less, same, more
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(integerLiteral: IX.IntegerLiteralType) {
+        self = switch integerLiteral {
+        case -1: .less
+        case  0: .same
+        case  1: .more
+        default: fatalError("invalid signum integer literal value") }
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -27,7 +39,6 @@
         switch self {
         case .less: .more
         case .same: .same
-        case .more: .less
-        }
+        case .more: .less }
     }
 }
