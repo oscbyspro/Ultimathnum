@@ -12,15 +12,7 @@
 //*============================================================================*
 
 @frozen public struct UMNCoreInt<Base: UMNBaseInteger>: UMNSystemInteger {
-    
-    public typealias Base = Base
-    
-    public typealias BitPattern = Base.BitPattern
-    
-    public typealias Magnitude = UMNCoreInt<Base.Magnitude>
-    
-    public typealias Stdlib = Base
-    
+        
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
@@ -37,7 +29,7 @@
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    @usableFromInline var base: Base
+    public var base: Base
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -48,27 +40,19 @@
     }
         
     @inlinable public init(integerLiteral: consuming Base.IntegerLiteralType) {
-        self.base = Base(integerLiteral: integerLiteral)
-    }
-    
-    @inlinable public init?(words: some RandomAccessCollection<UX>, isSigned: Bool) {
-        fatalError("TODO")
+        self.base =  .init(integerLiteral: integerLiteral)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable public var bitPattern: BitPattern {
+    @inlinable public var bitPattern: Base.BitPattern {
         consuming get { self.base.bitPattern }
     }
     
-    @inlinable public var magnitude: Magnitude {
+    @inlinable public var magnitude: UMNCoreInt<Base.Magnitude> {
         consuming get { Magnitude(self.base.magnitude) }
-    }
-    
-    @inlinable public var stdlib: Stdlib {
-        consuming get { self.base }
     }
     
     @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<UX>) -> T) -> T {
@@ -198,7 +182,7 @@
 // MARK: + Conditional Conformances
 //=----------------------------------------------------------------------------=
 
-extension UMNCoreInt:   UMNSignedInteger where Base: Swift  .SignedInteger { }
+extension UMNCoreInt:   UMNSignedInteger where Base: Swift  .SignedInteger  { }
 extension UMNCoreInt: UMNUnsignedInteger where Base: Swift.UnsignedInteger, Base.Magnitude == Base { }
 
 //=----------------------------------------------------------------------------=

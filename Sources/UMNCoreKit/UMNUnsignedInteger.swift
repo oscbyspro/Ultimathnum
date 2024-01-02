@@ -23,7 +23,7 @@
 ///
 /// - Requires: The magnitude must be of the same type.
 ///
-public protocol UMNUnsignedInteger: UMNInteger where Magnitude == Self, Stdlib: Swift.UnsignedInteger { }
+public protocol UMNUnsignedInteger: UMNInteger where Magnitude == Self { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Details

@@ -37,8 +37,8 @@
 /// let integers: [any UMNBaseInteger] = [Int(), UInt()]
 /// ```
 ///
-public protocol UMNBaseInteger: UMNBitCastable, Swift.FixedWidthInteger, Sendable
-where BitPattern == Magnitude.BitPattern, Magnitude: Swift.FixedWidthInteger & UMNBaseInteger { }
+public protocol UMNBaseInteger: UMNBitCastable, Swift.FixedWidthInteger,  Sendable where
+BitPattern == Magnitude.BitPattern,  Magnitude: Swift.FixedWidthInteger & UMNBaseInteger { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Details

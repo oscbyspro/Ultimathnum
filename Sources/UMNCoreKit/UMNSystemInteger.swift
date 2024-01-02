@@ -19,8 +19,6 @@
 ///
 /// - Requires: Its bit width must be a power of two.
 ///
-/// - Note: Write better algorithms; don't push anti-pattern models.
-///
 /// ### Endianess
 ///
 /// - Requires: It must match the platform's endianess.
@@ -40,8 +38,7 @@
 /// - Requires: Its storage must be trivial.
 ///
 public protocol UMNSystemInteger: UMNBinaryInteger, UMNBitCastable where
-Magnitude: UMNUnsignedInteger & UMNSystemInteger, Magnitude.BitPattern == BitPattern,
-Stdlib: Swift.FixedWidthInteger {
+Magnitude: UMNUnsignedInteger & UMNSystemInteger, Magnitude.BitPattern == BitPattern {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -50,19 +47,7 @@ Stdlib: Swift.FixedWidthInteger {
     @inlinable static var bitWidth: Self { get }
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Multiplication
-    //=------------------------------------------------------------------------=
-    
-    @inlinable static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> UMNFullWidth<Self, Magnitude>
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Division
-    //=------------------------------------------------------------------------=
-    
-    @inlinable static func dividing(_ dividend: consuming UMNFullWidth<Self, Magnitude>, by multiplier: borrowing Self) -> UMNOverflow<UMNQuoRem<Self, Self>>
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Logic
+    // MARK: Transformations x Bitwise Logic
     //=------------------------------------------------------------------------=
     
     @inlinable static prefix func ~(operand: consuming Self) -> Self
@@ -74,7 +59,7 @@ Stdlib: Swift.FixedWidthInteger {
     @inlinable static func ^(lhs: consuming Self, rhs: consuming Self) -> Self
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Shifts
+    // MARK: Transformations x Bitwise Shifts
     //=------------------------------------------------------------------------=
     
     @inlinable static func  <<(lhs: consuming Self, rhs: consuming Self) -> Self
@@ -84,6 +69,14 @@ Stdlib: Swift.FixedWidthInteger {
     @inlinable static func  >>(lhs: consuming Self, rhs: consuming Self) -> Self
     
     @inlinable static func &>>(lhs: consuming Self, rhs: consuming Self) -> Self
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Multiplication, Division
+    //=------------------------------------------------------------------------=
+    
+    @inlinable static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> UMNFullWidth<Self, Magnitude>
+    
+    @inlinable static func dividing(_ dividend: consuming UMNFullWidth<Self, Magnitude>, by multiplier: borrowing Self) -> UMNOverflow<UMNQuoRem<Self, Self>>
 }
 
 //=----------------------------------------------------------------------------=
@@ -93,14 +86,26 @@ Stdlib: Swift.FixedWidthInteger {
 extension UMNSystemInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
     @inlinable public static var min: Self {
-        Self.isSigned ? 1 &<<  Self.bitWidth &- 1 : 0
+        Self.isSigned ? (1 as Self) &<< (Self.bitWidth &- (1 as Self)) : (0 as Self)
     }
 
     @inlinable public static var max: Self {
         ~Self.min
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(_ bit: Bool) {
+        self = bit ?  (1 as Self) : (0 as Self)
+    }
+    
+    @inlinable public init(repeating bit: Bool) {
+        self = bit ? ~(0 as Self) : (0 as Self)
     }
 }

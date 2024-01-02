@@ -15,7 +15,7 @@
 ///
 /// - Note: Its static `isSigned` value is `true`.
 ///
-public protocol UMNSignedInteger: UMNInteger where Stdlib: Swift.SignedInteger { }
+public protocol UMNSignedInteger: UMNInteger { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Details

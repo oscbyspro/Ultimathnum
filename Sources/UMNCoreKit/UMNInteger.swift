@@ -15,28 +15,6 @@ public protocol UMNInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, S
     
     associatedtype Magnitude: UMNInteger where Magnitude.Magnitude == Magnitude
     
-    /// A representation that conforms to `Swift.BinaryInteger`.
-    ///
-    /// You may call `stdlib` to interoperate with code using the standard
-    /// library's protocol hierarchy.
-    ///
-    /// ```swift
-    /// let  int:  Int = SX().stdlib
-    /// let uint: UInt = UX().stdlib
-    /// ```
-    ///
-    /// ### Motivation
-    ///
-    /// This associated type let us return standard libary types when possible.
-    /// As such, we don't bloat the binary with redundant models or specialize
-    /// functions for those models.
-    ///
-    /// ### Alternatives
-    ///
-    /// You can use `UMNStdlibInt<Base>` with core integers too.
-    ///
-    associatedtype Stdlib: Swift.BinaryInteger = UMNStdlibInt<Self>
-    
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
@@ -44,21 +22,11 @@ public protocol UMNInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, S
     @inlinable static var isSigned: Bool { get }
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable init(_ stdlib: Stdlib)
-        
-    @inlinable init?(words: some RandomAccessCollection<UX>, isSigned: Bool)
-    
-    //=------------------------------------------------------------------------=
     // MARK: Accessors
     //=------------------------------------------------------------------------=
     
     @inlinable var magnitude: Magnitude { consuming get }
-    
-    @inlinable var stdlib: Stdlib { consuming get }
-    
+        
     /// Its un/signed two's complement words.
     ///
     /// The format is indicated by `isSigned`.
@@ -109,14 +77,6 @@ public protocol UMNInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, S
 extension UMNInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init?(words: some RandomAccessCollection<UX>) {
-        self.init(words: words, isSigned: Self.isSigned)
-    }
-    
-    //=------------------------------------------------------------------------=
     // MARK: Transformations x Addition
     //=------------------------------------------------------------------------=
     
@@ -154,24 +114,5 @@ extension UMNInteger {
     
     @inlinable public static func %(lhs: consuming Self, rhs: borrowing Self) -> Self {
         lhs.remainder(divisor: rhs).unwrapped()
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Details where Stdlib is Default
-//=----------------------------------------------------------------------------=
-
-extension UMNInteger where Stdlib == UMNStdlibInt<Self> {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(_ stdlib: consuming Stdlib) {
-        self = stdlib.base
-    }
-    
-    @inlinable public var stdlib: UMNStdlibInt<Self> {
-        consuming get { UMNStdlibInt(self) }
     }
 }

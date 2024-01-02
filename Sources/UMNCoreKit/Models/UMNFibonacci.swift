@@ -64,7 +64,7 @@
     
     /// Creates the sequence pair at the given `index`.
     @inlinable public init(_ index: Value) {
-        fatalError("TODO: for bit: Bool in BitSet(index.words)...")
+        fatalError("TODO: for bit: Bool in BitSequence<UX>(clamping: index.words).reversed()...")
     }
     
     //=------------------------------------------------------------------------=
