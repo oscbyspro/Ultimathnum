@@ -15,12 +15,4 @@
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum` development.
 ///
-@frozen public enum UMN {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Aliases
-    //=------------------------------------------------------------------------=
-    
-    /// The sign of a numeric value.
-    public typealias Sign = FloatingPointSign
-}
+@frozen public enum UMN { }

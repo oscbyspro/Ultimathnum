@@ -22,7 +22,7 @@
     }
     
     @inlinable public static var bitWidth: Self {
-        fatalError("TODO")
+        Self(Base(Base.bitWidth))
     }
     
     //=------------------------------------------------------------------------=
