@@ -166,8 +166,12 @@
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Utilities x Comparisons
     //=------------------------------------------------------------------------=
+    
+    @inlinable public func compared(to other: Self) -> UMNSignum {
+        self < other ? .less : self == other ? .same : .more
+    }
     
     @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         lhs.base == rhs.base

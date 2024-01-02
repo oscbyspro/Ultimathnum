@@ -19,11 +19,21 @@ extension UMNSignedInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    @inlinable public borrowing func compared(to other: Self) -> UMNSignum {
+        let signum: UMNSignum = if self.sign == other.sign {
+            self.magnitude.compared(to: other.magnitude)
+        }   else {
+            self.magnitude == 0 && other.magnitude == 0 ? .same : .more
+        }
+        
+        return self.sign == .plus ? signum : signum.negated()
+    }
+    
     @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        fatalError("TODO")
+        lhs.compared(to: rhs) == .same
     }
     
     @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        fatalError("TODO")
+        lhs.compared(to: rhs) == .less
     }
 }

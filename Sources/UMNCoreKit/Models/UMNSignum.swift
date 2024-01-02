@@ -7,30 +7,27 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import UMNCoreKit
-
 //*============================================================================*
-// MARK: * UMN x Signed Int x Addition
+// MARK: * UMN x Signum
 //*============================================================================*
 
-extension UMNSignedInt {
+@frozen public enum UMNSignum: Comparable, Hashable, Sendable {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: State
+    //=------------------------------------------------------------------------=
+        
+    case less, same, more
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func incremented(by increment: borrowing Self) -> UMNOverflow<Self> {
-        var sign: UMNSign = self.sign; var magnitude: UMNOverflow<Magnitude> = if self.sign == increment.sign {
-            self.magnitude.incremented(by: increment.magnitude)
-        }   else  {
-            self.magnitude.decremented(by: increment.magnitude)
+    @inlinable public consuming func negated() -> Self {
+        switch self {
+        case .less: .more
+        case .same: .same
+        case .more: .less
         }
-        
-        if  magnitude.overflow, sign != increment.sign {
-            sign = sign.toggled()
-            magnitude.value = magnitude.value.negated().value
-        }
-        
-        return UMNOverflow(sign: sign, magnitude: magnitude)
     }
 }

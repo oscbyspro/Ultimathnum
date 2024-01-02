@@ -19,6 +19,10 @@ extension UMNNormalInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    @inlinable borrowing public func compared(to other: borrowing Self) -> UMNSignum {
+        fatalError("TODO")
+    }
+    
     @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         fatalError("TODO")
     }

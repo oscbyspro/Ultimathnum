@@ -68,6 +68,12 @@ public protocol UMNInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, S
     @inlinable consuming func remainder( divisor: borrowing Self) -> UMNOverflow<Self>
     
     @inlinable consuming func divided(by divisor: borrowing Self) -> UMNOverflow<UMNQuoRem<Self, Self>>
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities x Comparisons
+    //=------------------------------------------------------------------------=
+        
+    @inlinable borrowing func compared(to other: borrowing Self) -> UMNSignum
 }
 
 //=----------------------------------------------------------------------------=
@@ -122,5 +128,13 @@ extension UMNInteger {
     
     @inlinable public static func %(lhs: consuming Self, rhs: borrowing Self) -> Self {
         lhs.remainder(divisor: rhs).unwrapped()
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities x Comparisons
+    //=------------------------------------------------------------------------=
+    
+    @inlinable borrowing public func signum() -> UMNSignum {
+        self.compared(to: 0)
     }
 }
