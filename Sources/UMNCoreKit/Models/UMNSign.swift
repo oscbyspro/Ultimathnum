@@ -28,8 +28,8 @@
         self = bit ? Self.minus : Self.plus
     }
     
-    @inlinable public init(_ stdlib: FloatingPointSign) {
-        self.init(stdlib == FloatingPointSign.minus)
+    @inlinable public init(_ other: FloatingPointSign) {
+        self.init(other == FloatingPointSign.minus)
     }
     
     //=------------------------------------------------------------------------=
@@ -50,5 +50,22 @@
     
     @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
         lhs == rhs ? Self.plus : Self.minus
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Conversions
+//=----------------------------------------------------------------------------=
+
+extension FloatingPointSign {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(_ other: UMNSign) {
+        self = switch other {
+        case UMNSign.plus:  Self.plus
+        case UMNSign.minus: Self.minus }
     }
 }

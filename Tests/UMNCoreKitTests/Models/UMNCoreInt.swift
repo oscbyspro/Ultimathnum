@@ -7,38 +7,23 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import Ultimathnum
+import UMNCoreKit
 import XCTest
 
 //*============================================================================*
-// MARK: * UMN x Core Int x Bit
+// MARK: * UMN x Core Int
 //*============================================================================*
 
-extension UMNCoreIntTests {
+final class UMNCoreIntTests: XCTestCase {
+    
+    typealias I = any (UMNSystemInteger &   UMNSignedInteger).Type
+    typealias U = any (UMNSystemInteger & UMNUnsignedInteger).Type
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests
+    // MARK: State
     //=------------------------------------------------------------------------=
     
-    func testInitBit() {
-        func whereIs<T>(_ type: T.Type) where T: UMNSystemInteger {
-            XCTAssertEqual(T(false), 0)
-            XCTAssertEqual(T(true ), 1)
-        }
-        
-        for type in Self.allIntegers {
-            whereIs(type)
-        }
-    }
-    
-    func testInitBitOnRepeat() {
-        func whereIs<T>(_ type: T.Type) where T: UMNSystemInteger {
-            XCTAssertEqual(T(repeating: false),  0)
-            XCTAssertEqual(T(repeating: true ), ~0)
-        }
-        
-        for type in Self.allIntegers {
-            whereIs(type)
-        }
-    }
+    static let allIntegers: [any UMNSystemInteger.Type] = allSigned + allUnsigned
+    static let allSigned:   [I] = [IX.self, I8.self, I16.self, I32.self, I64.self]
+    static let allUnsigned: [U] = [UX.self, U8.self, U16.self, U32.self, U64.self]
 }
