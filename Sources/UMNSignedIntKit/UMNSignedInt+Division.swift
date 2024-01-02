@@ -10,20 +10,24 @@
 import UMNCoreKit
 
 //*============================================================================*
-// MARK: * UMN x Normal Int x Complements
+// MARK: * UNM x Signed Int x Division
 //*============================================================================*
 
-extension UMNNormalInt {
+extension UMNSignedInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func onesComplement() -> Self {
+    @inlinable public consuming func quotient (divisor: borrowing Self) -> UMNOverflow<Self> {
         fatalError("TODO")
     }
     
-    @inlinable public consuming func twosComplement() -> UMNOverflow<Self> {
+    @inlinable public consuming func remainder(divisor: borrowing Self) -> UMNOverflow<Self> {
+        fatalError("TODO")
+    }
+    
+    @inlinable public consuming func divided(by divisor: borrowing Self) -> UMNOverflow<UMNQuoRem<Self, Self>> {
         fatalError("TODO")
     }
 }

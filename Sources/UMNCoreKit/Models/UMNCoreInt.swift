@@ -189,11 +189,11 @@ extension UMNCoreInt: UMNUnsignedInteger where Base: Swift.UnsignedInteger, Base
 // MARK: + Aliases
 //=----------------------------------------------------------------------------=
 
-public typealias SX  = UMNCoreInt<Swift.Int>
-public typealias S8  = UMNCoreInt<Swift.Int8>
-public typealias S16 = UMNCoreInt<Swift.Int16>
-public typealias S32 = UMNCoreInt<Swift.Int32>
-public typealias S64 = UMNCoreInt<Swift.Int64>
+public typealias IX  = UMNCoreInt<Swift.Int>
+public typealias I8  = UMNCoreInt<Swift.Int8>
+public typealias I16 = UMNCoreInt<Swift.Int16>
+public typealias I32 = UMNCoreInt<Swift.Int32>
+public typealias I64 = UMNCoreInt<Swift.Int64>
 
 public typealias UX  = UMNCoreInt<Swift.UInt>
 public typealias U8  = UMNCoreInt<Swift.UInt8>

@@ -18,8 +18,8 @@
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    public let value: Value
-    public let overflow: Bool
+    public var value: Value
+    public var overflow: Bool
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers

@@ -77,6 +77,14 @@ public protocol UMNInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, S
 extension UMNInteger {
     
     //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init() {
+        self = 0
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Transformations x Addition
     //=------------------------------------------------------------------------=
     
