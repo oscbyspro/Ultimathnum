@@ -14,17 +14,15 @@ import UMNCoreKit
 //*============================================================================*
 
 @frozen public struct UMNSignedInt<Magnitude>: UMNSignedInteger where Magnitude: UMNBinaryInteger & UMNUnsignedInteger {
-    
-    public typealias Sign = FloatingPointSign // TODO: custom model
-    
-    public typealias Components = (sign: Sign, magnitude: Magnitude)
+        
+    public typealias Components = (sign: UMNSign, magnitude: Magnitude)
     
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
     /// The sign of this value.
-    public var sign: Sign
+    public var sign: UMNSign
     
     /// The magnitude of this value.
     public var magnitude: Magnitude
@@ -34,7 +32,7 @@ import UMNCoreKit
     //=------------------------------------------------------------------------=
     
     /// Creates a new instance with the given sign and magnitude.
-    @inlinable public init(sign: Sign, magnitude: Magnitude) {
+    @inlinable public init(sign: UMNSign, magnitude: Magnitude) {
         self.sign = sign; self.magnitude = magnitude
     }
     
@@ -63,7 +61,7 @@ import UMNCoreKit
     
     /// Turns negative zero into positive zero.
     @inlinable consuming public func normalized() -> Self {
-        Self(sign: self.sign == Sign.plus || self != (0 as Self) ? self.sign : Sign.plus, magnitude: self.magnitude)
+        Self(sign: self.sign == UMNSign.plus || self != (0 as Self) ? self.sign : UMNSign.plus, magnitude: self.magnitude)
     }
 }
 
