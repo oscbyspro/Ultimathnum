@@ -19,7 +19,21 @@ extension UMNSignedInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func incremented(by increment: consuming Self) -> UMNOverflow<Self> {
-        fatalError("TODO")
+    @inlinable public consuming func incremented(by increment: borrowing Self) -> UMNOverflow<Self> {
+        var sign: UMNSign = self.sign, magnitude: UMNOverflow<Magnitude>
+        
+        
+        if  self.sign == increment.sign {
+            magnitude =  self.magnitude.incremented(by: increment.magnitude)
+        }   else  {
+            magnitude =  self.magnitude.decremented(by: increment.magnitude)
+        }
+        
+        if  magnitude.overflow, sign != increment.sign {
+            sign = sign.toggled()
+            magnitude.value = magnitude.value.negated().value
+        }
+        
+        return UMNOverflow(sign: sign, magnitude: magnitude)
     }
 }

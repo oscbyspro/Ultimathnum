@@ -20,14 +20,17 @@ extension UMNSignedInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func quotient (divisor: borrowing Self) -> UMNOverflow<Self> {
-        fatalError("TODO")
+        UMNOverflow(sign: self.sign ^ divisor.sign, magnitude: self.magnitude.quotient(divisor: divisor.magnitude))
     }
     
     @inlinable public consuming func remainder(divisor: borrowing Self) -> UMNOverflow<Self> {
-        fatalError("TODO")
+        UMNOverflow(sign: self.sign, magnitude: self.magnitude.remainder(divisor: divisor.magnitude))
     }
     
     @inlinable public consuming func divided(by divisor: borrowing Self) -> UMNOverflow<UMNQuoRem<Self, Self>> {
-        fatalError("TODO")
+        let magnitude = self.magnitude.divided(by: divisor.magnitude)
+        let quotient  = Self(sign: self.sign ^ divisor.sign, magnitude: magnitude.value.quotient )
+        let remainder = Self(sign: self.sign   /*--------*/, magnitude: magnitude.value.remainder)
+        return UMNOverflow(UMNQuoRem(quotient: quotient, remainder: remainder), overflow: magnitude.overflow)
     }
 }

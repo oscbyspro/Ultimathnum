@@ -10,20 +10,17 @@
 import UMNCoreKit
 
 //*============================================================================*
-// MARK: * UNM x Signed Int x Multiplication
+// MARK: * UMN x Signed Int x Overflow
 //*============================================================================*
 
-extension UMNSignedInt {
+extension UMNOverflow {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
-
-    @inlinable public consuming func squared() -> UMNOverflow<Self> {
-        UMNOverflow(sign: UMNSign.plus, magnitude: self.magnitude.squared())
-    }
     
-    @inlinable public consuming func multiplied(by multiplier: borrowing Self) -> UMNOverflow<Self> {
-        UMNOverflow(sign: self.sign ^ multiplier.sign, magnitude: self.magnitude.multiplied(by: multiplier.magnitude))
+    @inlinable public init<Magnitude>(sign: consuming UMNSign, magnitude: consuming UMNOverflow<Magnitude>) where Value == UMNSignedInt<Magnitude> {
+        self.init(Value(sign: sign, magnitude: magnitude.value), overflow: magnitude.overflow)
     }
 }
+

@@ -20,10 +20,10 @@ extension UMNSignedInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func negated() -> UMNOverflow<Self> {
-        fatalError("TODO")
+        UMNOverflow(Self(sign: self.sign.toggled(), magnitude: self.magnitude), overflow: false)
     }
     
-    @inlinable public consuming func decremented(by decrement: consuming Self) -> UMNOverflow<Self> {
-        fatalError("TODO")
+    @inlinable public consuming func decremented(by decrement: borrowing Self) -> UMNOverflow<Self> {
+        self.incremented(by: -decrement)
     }
 }
