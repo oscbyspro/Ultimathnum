@@ -47,11 +47,11 @@ Magnitude: UMNUnsignedInteger & UMNSystemInteger, Magnitude.BitPattern == BitPat
     @inlinable static var bitWidth: Self { get }
     
     //=------------------------------------------------------------------------=
-    // MARK: Accessors x Bits
+    // MARK: Accessors
     //=------------------------------------------------------------------------=
     
     @inlinable func count(repeating bit: Bool, direction order: UMNSortOrder) -> Self
-    
+
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Logic
     //=------------------------------------------------------------------------=
@@ -96,11 +96,15 @@ extension UMNSystemInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static var min: Self {
-        Self.isSigned ? (1 as Self) &<< (Self.bitWidth &- (1 as Self)) : (0 as Self)
+        isSigned ? msb : 0
     }
-
+    
+    @inlinable public static var msb: Self {
+        1 &<< (bitWidth &- 1)
+    }
+    
     @inlinable public static var max: Self {
-        ~Self.min
+        ~(min)
     }
     
     //=------------------------------------------------------------------------=

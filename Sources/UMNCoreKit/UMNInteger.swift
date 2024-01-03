@@ -90,6 +90,30 @@ extension UMNInteger {
         self = 0
     }
     
+    @inlinable public init(_ source: some UMNInteger) {
+        fatalError("TODO")
+    }
+    
+    @inlinable public init(exactly source: some UMNInteger) throws {
+        fatalError("TODO")
+    }
+    
+    @inlinable public init(clamping source: some UMNInteger) {
+        fatalError("TODO")
+    }
+    
+    @inlinable public init(truncating source: some UMNInteger) {
+        fatalError("TODO")
+    }
+    
+    @inlinable public init(stdlib source: some Swift.BinaryInteger) {
+        fatalError("TODO")
+    }
+    
+    @inlinable public init(sign: UMNSign, magnitude: Magnitude) throws {
+        fatalError("TODO")
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Addition
     //=------------------------------------------------------------------------=
