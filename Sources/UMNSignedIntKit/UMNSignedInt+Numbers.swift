@@ -22,8 +22,4 @@ extension UMNSignedInt {
     @inlinable public init(integerLiteral: consuming StaticBigInt) {
         fatalError("TODO")
     }
-    
-    @inlinable public init?(words: some RandomAccessCollection<UX>, isSigned: Bool) {
-        fatalError("TODO")
-    }
 }

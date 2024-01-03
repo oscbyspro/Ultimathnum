@@ -60,6 +60,18 @@
     }
     
     //=------------------------------------------------------------------------=
+    // MARK: Accessors x Bits
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public func count(repeating bit: Bool, direction order: UMNSortOrder) -> Self {
+        switch (order, bit) {
+        case ( .ascending, false): Self(Base(truncatingIfNeeded: ( self).base.trailingZeroBitCount))
+        case ( .ascending, true ): Self(Base(truncatingIfNeeded: (~self).base.trailingZeroBitCount))
+        case (.descending, false): Self(Base(truncatingIfNeeded: ( self).base .leadingZeroBitCount))
+        case (.descending, true ): Self(Base(truncatingIfNeeded: (~self).base .leadingZeroBitCount)) }
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Transformations x Addition
     //=------------------------------------------------------------------------=
     

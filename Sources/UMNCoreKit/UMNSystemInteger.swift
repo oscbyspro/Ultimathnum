@@ -47,7 +47,13 @@ Magnitude: UMNUnsignedInteger & UMNSystemInteger, Magnitude.BitPattern == BitPat
     @inlinable static var bitWidth: Self { get }
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Bitwise Logic
+    // MARK: Accessors x Bits
+    //=------------------------------------------------------------------------=
+    
+    @inlinable func count(repeating bit: Bool, direction order: UMNSortOrder) -> Self
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Logic
     //=------------------------------------------------------------------------=
     
     @inlinable static prefix func ~(operand: consuming Self) -> Self
@@ -59,7 +65,7 @@ Magnitude: UMNUnsignedInteger & UMNSystemInteger, Magnitude.BitPattern == BitPat
     @inlinable static func ^(lhs: consuming Self, rhs: consuming Self) -> Self
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Bitwise Shifts
+    // MARK: Transformations x Shifts
     //=------------------------------------------------------------------------=
     
     @inlinable static func  <<(lhs: consuming Self, rhs: consuming Self) -> Self

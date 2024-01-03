@@ -7,19 +7,16 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import UMNCoreKit
-
 //*============================================================================*
-// MARK: * UNM x Normal Int x Numbers
+// MARK: * UMN x Sort Order
 //*============================================================================*
 
-extension UMNNormalInt {
+@frozen public enum UMNSortOrder: Equatable {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: State
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(integerLiteral: consuming StaticBigInt) {
-        fatalError("TODO")
-    }
+    case  ascending
+    case descending
 }
