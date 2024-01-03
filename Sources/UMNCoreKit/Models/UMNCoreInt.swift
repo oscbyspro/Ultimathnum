@@ -82,8 +82,8 @@
     // MARK: Transformations x Addition
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func incremented(by addend: borrowing Self) -> UMNOverflow<Self> {
-        let result = self.base.addingReportingOverflow(addend.base)
+    @inlinable public consuming func incremented(by increment: borrowing Self) -> UMNOverflow<Self> {
+        let result = self.base.addingReportingOverflow(increment.base)
         return UMNOverflow(Self(result.partialValue), overflow: result.overflow)
     }
     
@@ -96,8 +96,8 @@
         return UMNOverflow(result.value, overflow: result.overflow != Self.isSigned)
     }
     
-    @inlinable public consuming func decremented(by subtrahend: borrowing Self) -> UMNOverflow<Self> {
-        let result = self.base.subtractingReportingOverflow(subtrahend.base)
+    @inlinable public consuming func decremented(by decrement: borrowing Self) -> UMNOverflow<Self> {
+        let result = self.base.subtractingReportingOverflow(decrement.base)
         return UMNOverflow(Self(result.partialValue), overflow: result.overflow)
     }
     
@@ -152,15 +152,15 @@
         Self(~operand.base)
     }
     
-    @inlinable public static func &(lhs: consuming Self, rhs: consuming Self) -> Self {
+    @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
         Self(lhs.base & rhs.base)
     }
     
-    @inlinable public static func |(lhs: consuming Self, rhs: consuming Self) -> Self {
+    @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
         Self(lhs.base | rhs.base)
     }
     
-    @inlinable public static func ^(lhs: consuming Self, rhs: consuming Self) -> Self {
+    @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
         Self(lhs.base ^ rhs.base)
     }
     
@@ -168,19 +168,19 @@
     // MARK: Transformations x Shifts
     //=------------------------------------------------------------------------=
     
-    @inlinable static public func  <<(lhs: consuming Self, rhs: consuming Self) -> Self {
+    @inlinable static public func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
         Self(lhs.base  << rhs.base)
     }
     
-    @inlinable static public func &<<(lhs: consuming Self, rhs: consuming Self) -> Self {
+    @inlinable static public func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
         Self(lhs.base &<< rhs.base)
     }
     
-    @inlinable static public func  >>(lhs: consuming Self, rhs: consuming Self) -> Self {
+    @inlinable static public func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
         Self(lhs.base  >> rhs.base)
     }
     
-    @inlinable static public func &>>(lhs: consuming Self, rhs: consuming Self) -> Self {
+    @inlinable static public func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
         Self(lhs.base &>> rhs.base)
     }
     

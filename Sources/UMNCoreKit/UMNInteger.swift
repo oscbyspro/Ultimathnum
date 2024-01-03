@@ -41,7 +41,7 @@ public protocol UMNInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, S
     // MARK: Transformations x Addition
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming func incremented(by addend: borrowing Self) -> UMNOverflow<Self>
+    @inlinable consuming func incremented(by increment: borrowing Self) -> UMNOverflow<Self>
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Subtraction
@@ -49,7 +49,7 @@ public protocol UMNInteger: Comparable, Hashable, ExpressibleByIntegerLiteral, S
     
     @inlinable consuming func negated() -> UMNOverflow<Self>
     
-    @inlinable consuming func decremented(by subtrahend: borrowing Self) -> UMNOverflow<Self>
+    @inlinable consuming func decremented(by decrement: borrowing Self) -> UMNOverflow<Self>
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Multiplication

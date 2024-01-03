@@ -23,7 +23,7 @@ extension UMNNormalInt {
         fatalError("TODO")
     }
     
-    @inlinable public consuming func decremented(by subtrahend: borrowing Self) -> UMNOverflow<Self> {
+    @inlinable public consuming func decremented(by decrement: borrowing Self) -> UMNOverflow<Self> {
         fatalError("TODO")
     }
 }

@@ -42,3 +42,26 @@ extension UMNBitCastable {
         self.init(bitPattern: source.bitPattern)
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Details where Bit Pattern is Self
+//=----------------------------------------------------------------------------=
+
+extension UMNBitCastable where BitPattern == Self {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(bitPattern: consuming BitPattern) {
+        self = bitPattern
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Accessors
+    //=------------------------------------------------------------------------=
+
+    @inlinable public var bitPattern: BitPattern {
+        consuming get { self }
+    }
+}

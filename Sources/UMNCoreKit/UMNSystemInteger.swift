@@ -58,23 +58,23 @@ Magnitude: UMNUnsignedInteger & UMNSystemInteger, Magnitude.BitPattern == BitPat
     
     @inlinable static prefix func ~(operand: consuming Self) -> Self
     
-    @inlinable static func &(lhs: consuming Self, rhs: consuming Self) -> Self
+    @inlinable static func &(lhs: consuming Self, rhs: borrowing Self) -> Self
     
-    @inlinable static func |(lhs: consuming Self, rhs: consuming Self) -> Self
+    @inlinable static func |(lhs: consuming Self, rhs: borrowing Self) -> Self
     
-    @inlinable static func ^(lhs: consuming Self, rhs: consuming Self) -> Self
+    @inlinable static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Shifts
     //=------------------------------------------------------------------------=
     
-    @inlinable static func  <<(lhs: consuming Self, rhs: consuming Self) -> Self
+    @inlinable static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self
     
-    @inlinable static func &<<(lhs: consuming Self, rhs: consuming Self) -> Self
+    @inlinable static func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self
     
-    @inlinable static func  >>(lhs: consuming Self, rhs: consuming Self) -> Self
+    @inlinable static func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self
     
-    @inlinable static func &>>(lhs: consuming Self, rhs: consuming Self) -> Self
+    @inlinable static func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Multiplication, Division
