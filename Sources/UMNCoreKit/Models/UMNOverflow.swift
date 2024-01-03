@@ -34,7 +34,7 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func unwrapped(function: StaticString = #function, file: StaticString = #file, line: UInt = #line) -> Value {
-        precondition(!self.overflow, "overflow in \(function) at \(file):\(line)", file: file, line: line)
+        precondition(!self.overflow, UMN.callsiteOverflowInfo(function: function, file: file, line: line), file: file, line: line)
         return self.value as Value
     }
 }

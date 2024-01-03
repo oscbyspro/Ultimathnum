@@ -67,11 +67,11 @@
     /// Creates the sequence pair at the given `index`.
     @inlinable public init(_ index: Value) {
         index.withUnsafeBufferPointer {
-            for bit in UMNBitSequence(trimming: $0, isSigned: false).reversed() {
+            for bit: UMNBitInt in UMNChunkedInt(normalizing: $0, isSigned: false).reversed() {
                 
                 self.double()
                 
-                if  bit {
+                if  bit == 1 {
                     self.increment()
                 }
             }
