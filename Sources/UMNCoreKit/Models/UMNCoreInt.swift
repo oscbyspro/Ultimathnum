@@ -29,7 +29,7 @@
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    public var base: Base
+    @usableFromInline var base: Base
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -46,6 +46,10 @@
     //=------------------------------------------------------------------------=
     // MARK: Accessors
     //=------------------------------------------------------------------------=
+    
+    @inlinable public var stdlib: Base {
+        consuming get { self.base }
+    }
     
     @inlinable public var bitPattern: Base.BitPattern {
         consuming get { self.base.bitPattern }

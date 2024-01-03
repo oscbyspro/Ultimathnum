@@ -43,6 +43,8 @@
 ///
 /// ### Development
 ///
+/// - TODO: Make index type same as element when bit sequence exists.
+///
 /// - TODO: Make each operation throwing when type errors are introduced.
 ///
 @frozen public struct UMNFibonacci<Value>: CustomStringConvertible where Value: UMNInteger {
@@ -64,7 +66,16 @@
     
     /// Creates the sequence pair at the given `index`.
     @inlinable public init(_ index: Value) {
-        fatalError("TODO: for bit: Bool in BitSequence<UX>(clamping: index.words).reversed()...")
+        index.withUnsafeBufferPointer {
+            for bit in UMNBitSequence(trimming: $0, isSigned: false).reversed() {
+                
+                self.double()
+                
+                if  bit {
+                    self.increment()
+                }
+            }
+        }
     }
     
     //=------------------------------------------------------------------------=
