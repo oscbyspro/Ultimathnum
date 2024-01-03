@@ -46,27 +46,37 @@ extension UMNCoreIntTests {
     // MARK: Tests x Accessors
     //=------------------------------------------------------------------------=
     
-    func testCountBitOnRepeatInDirection() {
+    func testCountBitOption() {
         func whereIs<T>(_ type: T.Type) where T: UMNSystemInteger {
-            XCTAssertEqual((~0 as T).count(repeating: false, direction: .ascending ), 0)
-            XCTAssertEqual((~1 as T).count(repeating: false, direction: .ascending ), 1)
-            XCTAssertEqual(( 0 as T).count(repeating: false, direction: .ascending ), T.bitWidth)
-            XCTAssertEqual(( 1 as T).count(repeating: false, direction: .ascending ), 0)
+            XCTAssertEqual((~0 as T).count(true,  option:        .any), T.bitWidth)
+            XCTAssertEqual((~1 as T).count(true,  option:        .any), T.bitWidth - 1)
+            XCTAssertEqual(( 0 as T).count(true,  option:        .any), 0)
+            XCTAssertEqual(( 1 as T).count(true,  option:        .any), 1)
             
-            XCTAssertEqual((~0 as T).count(repeating: false, direction: .descending), 0)
-            XCTAssertEqual((~1 as T).count(repeating: false, direction: .descending), 0)
-            XCTAssertEqual(( 0 as T).count(repeating: false, direction: .descending), T.bitWidth)
-            XCTAssertEqual(( 1 as T).count(repeating: false, direction: .descending), T.bitWidth - 1)
+            XCTAssertEqual((~0 as T).count(false, option:        .any), 0)
+            XCTAssertEqual((~1 as T).count(false, option:        .any), 1)
+            XCTAssertEqual(( 0 as T).count(false, option:        .any), T.bitWidth)
+            XCTAssertEqual(( 1 as T).count(false, option:        .any), T.bitWidth - 1)
             
-            XCTAssertEqual((~0 as T).count(repeating: true,  direction: .ascending ), T.bitWidth)
-            XCTAssertEqual((~1 as T).count(repeating: true,  direction: .ascending ), 0)
-            XCTAssertEqual(( 0 as T).count(repeating: true,  direction: .ascending ), 0)
-            XCTAssertEqual(( 1 as T).count(repeating: true,  direction: .ascending ), 1)
+            XCTAssertEqual((~0 as T).count(true,  option:  .ascending), T.bitWidth)
+            XCTAssertEqual((~1 as T).count(true,  option:  .ascending), 0)
+            XCTAssertEqual(( 0 as T).count(true,  option:  .ascending), 0)
+            XCTAssertEqual(( 1 as T).count(true,  option:  .ascending), 1)
             
-            XCTAssertEqual((~0 as T).count(repeating: true,  direction: .descending), T.bitWidth)
-            XCTAssertEqual((~1 as T).count(repeating: true,  direction: .descending), T.bitWidth - 1)
-            XCTAssertEqual(( 0 as T).count(repeating: true,  direction: .descending), 0)
-            XCTAssertEqual(( 1 as T).count(repeating: true,  direction: .descending), 0)
+            XCTAssertEqual((~0 as T).count(false, option:  .ascending), 0)
+            XCTAssertEqual((~1 as T).count(false, option:  .ascending), 1)
+            XCTAssertEqual(( 0 as T).count(false, option:  .ascending), T.bitWidth)
+            XCTAssertEqual(( 1 as T).count(false, option:  .ascending), 0)
+            
+            XCTAssertEqual((~0 as T).count(true,  option: .descending), T.bitWidth)
+            XCTAssertEqual((~1 as T).count(true,  option: .descending), T.bitWidth - 1)
+            XCTAssertEqual(( 0 as T).count(true,  option: .descending), 0)
+            XCTAssertEqual(( 1 as T).count(true,  option: .descending), 0)
+            
+            XCTAssertEqual((~0 as T).count(false, option: .descending), 0)
+            XCTAssertEqual((~1 as T).count(false, option: .descending), 0)
+            XCTAssertEqual(( 0 as T).count(false, option: .descending), T.bitWidth)
+            XCTAssertEqual(( 1 as T).count(false, option: .descending), T.bitWidth - 1)
         }
         
         for type in Self.allIntegers {

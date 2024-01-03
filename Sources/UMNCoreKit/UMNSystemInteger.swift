@@ -50,8 +50,8 @@ Magnitude: UMNUnsignedInteger & UMNSystemInteger, Magnitude.BitPattern == BitPat
     // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable func count(repeating bit: Bool, direction order: UMNSortOrder) -> Self
-
+    @inlinable func count(_ bit: Bool, option: UMNBitOption) -> Self
+    
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Logic
     //=------------------------------------------------------------------------=

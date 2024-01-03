@@ -37,7 +37,7 @@
         let bit = isSigned && (base.last ?? 0) & Base.Element.msb != 0
         let pattern = Base.Element(repeating: bit)
         let zeros = base.reversed().prefix(while:{ $0 == pattern })
-        let minor = base.dropLast(zeros.count).last?.count(repeating: bit, direction: .descending) ?? 0
+        let minor = base.dropLast(zeros.count).last?.count(bit, option: .descending) ?? 0
         let droppable = Swift.max(0, zeros.count * IX.bitWidth.stdlib + IX(minor).stdlib - IX(isSigned).stdlib)
         
         self.base  = base
@@ -58,7 +58,7 @@
     
     @inlinable public subscript(index: Int) -> Bool {
         precondition(self.indices ~=  index)
-        let quotient  = IX(index) &>> IX(Base.Element.bitWidth).count(repeating: false, direction: .ascending)
+        let quotient  = IX(index) &>> IX(Base.Element.bitWidth).count(false, option: .ascending)
         let remainder = IX(index) &   IX(Base.Element.bitWidth &- 1)
         let element = self.base[self.base.index(self.base.startIndex, offsetBy: quotient.stdlib)]
         return element &>> Base.Element(truncating: remainder) &  1 == 1
