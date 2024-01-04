@@ -25,7 +25,7 @@ extension UMN {
     ///
     /// Remaking this as a view when Swift gets view types might be neat.
     ///
-    @frozen public enum StrictUnsignedInteger<Base> where Base: RandomAccessCollection, Base.Element: UMNSystemInteger & UMNUnsignedInteger {
+    @frozen public enum StrictUnsignedInteger<Base> where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger {
         
         /// The binary integer namespace of this type.
         public typealias Binary = UMN.StrictBinaryInteger<Base>
