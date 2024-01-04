@@ -33,6 +33,10 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    @inlinable public consuming func optional() -> Value? {
+        if self.overflow { nil } else { self.value }
+    }
+    
     @inlinable public consuming func unwrapped(function: StaticString = #function, file: StaticString = #file, line: UInt = #line) -> Value {
         precondition(!self.overflow, UMN.callsiteOverflowInfo(function: function, file: file, line: line), file: file, line: line)
         return self.value as Value

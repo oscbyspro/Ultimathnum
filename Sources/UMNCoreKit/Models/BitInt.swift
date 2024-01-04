@@ -126,11 +126,11 @@ extension BitInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func negated() -> Overflow<Self> {
-        (0 as Self).decremented(by: self)
+        Overflow(self, overflow: self != 0)
     }
     
     @inlinable public consuming func decremented(by decrement: borrowing Self) -> Overflow<Self> {
-        Overflow(Self(bitPattern: Bit(self > decrement)), overflow: self > decrement)
+        Overflow(Self(bitPattern: (copy self).bitPattern ^ decrement.bitPattern), overflow: self > decrement)
     }
     
     //=------------------------------------------------------------------------=
@@ -269,11 +269,11 @@ extension BitInt.Magnitude {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func negated() -> Overflow<Self> {
-        (0 as Self).decremented(by: self)
+        Overflow(self, overflow: self != 0)
     }
     
     @inlinable public consuming func decremented(by decrement: borrowing Self) -> Overflow<Self> {
-        Overflow(Self(bitPattern: Bit(self > decrement)), overflow: self < decrement)
+        Overflow(Self(bitPattern: (copy self).bitPattern ^ decrement.bitPattern), overflow: self < decrement)
     }
     
     //=------------------------------------------------------------------------=
