@@ -37,20 +37,20 @@
 ///
 /// - Requires: Its storage must be trivial.
 ///
-public protocol SystemInteger: BinaryInteger, BitCastable 
-where Magnitude: UnsignedInteger & SystemInteger, Magnitude.BitPattern == BitPattern {
+public protocol SystemInteger: BinaryInteger, BitCastable where
+Magnitude: UnsignedInteger & SystemInteger, Magnitude.BitPattern == BitPattern {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    @inlinable static var bitWidth: Self { get }
+    @inlinable static var bitWidth: Magnitude { get }
     
     //=------------------------------------------------------------------------=
     // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable func count(_ bit: Bit, option: Bit.Selection) -> Self
+    @inlinable func count(_ bit: Bit, option: Bit.Selection) -> Magnitude
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Logic
@@ -100,7 +100,7 @@ extension SystemInteger {
     }
     
     @inlinable public static var msb: Self {
-        1 &<< (bitWidth &- 1)
+        1 &<< (Self(bitPattern: bitWidth) &- 1)
     }
     
     @inlinable public static var max: Self {

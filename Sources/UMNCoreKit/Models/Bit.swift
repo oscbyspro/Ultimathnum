@@ -11,7 +11,9 @@
 // MARK: * UMN x Bit
 //*============================================================================*
 
-@frozen public struct Bit: Hashable, ExpressibleByIntegerLiteral {
+@frozen public struct Bit: BitCastable, Hashable, ExpressibleByIntegerLiteral {
+    
+    public typealias BitPattern = Self
     
     //=------------------------------------------------------------------------=
     // MARK: State

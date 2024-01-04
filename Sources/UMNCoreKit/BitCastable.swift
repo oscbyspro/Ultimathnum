@@ -60,8 +60,8 @@ extension BitCastable where BitPattern == Self {
     //=------------------------------------------------------------------------=
     // MARK: Accessors
     //=------------------------------------------------------------------------=
-
+    
     @inlinable public var bitPattern: BitPattern {
-        consuming get { self }
+        consuming get { consume self }
     }
 }

@@ -40,21 +40,21 @@
 /// the input, the output, or both.
 ///
 /// ```swift
-/// [1, 2, 3, 4] == Array(ChunkedInt(([0x0201, 0x0403] as [I16]),            as: U8.self))
-/// [2, 1, 4, 3] == Array(ChunkedInt(([0x0201, 0x0403] as [I16]).reversed(), as: U8.self).reversed())
-/// [3, 4, 1, 2] == Array(ChunkedInt(([0x0201, 0x0403] as [I16]).reversed(), as: U8.self))
-/// [4, 3, 2, 1] == Array(ChunkedInt(([0x0201, 0x0403] as [I16]),            as: U8.self).reversed())
+/// [1, 2, 3, 4] == Array(ChunkedInt(([0x0201, 0x0403] as [U16]),            as: U8.self))
+/// [2, 1, 4, 3] == Array(ChunkedInt(([0x0201, 0x0403] as [U16]).reversed(), as: U8.self).reversed())
+/// [3, 4, 1, 2] == Array(ChunkedInt(([0x0201, 0x0403] as [U16]).reversed(), as: U8.self))
+/// [4, 3, 2, 1] == Array(ChunkedInt(([0x0201, 0x0403] as [U16]),            as: U8.self).reversed())
 /// ```
 ///
 /// ```swift
-/// [0x0201, 0x0403] == Array(ChunkedInt(([1, 2, 3, 4] as [U8]),            as: I16.self))
-/// [0x0102, 0x0304] == Array(ChunkedInt(([1, 2, 3, 4] as [U8]).reversed(), as: I16.self).reversed())
-/// [0x0403, 0x0201] == Array(ChunkedInt(([1, 2, 3, 4] as [U8]),            as: I16.self).reversed())
-/// [0x0304, 0x0102] == Array(ChunkedInt(([1, 2, 3, 4] as [U8]).reversed(), as: I16.self))
+/// [0x0201, 0x0403] == Array(ChunkedInt(([1, 2, 3, 4] as [U8]),            as: U16.self))
+/// [0x0102, 0x0304] == Array(ChunkedInt(([1, 2, 3, 4] as [U8]).reversed(), as: U16.self).reversed())
+/// [0x0403, 0x0201] == Array(ChunkedInt(([1, 2, 3, 4] as [U8]),            as: U16.self).reversed())
+/// [0x0304, 0x0102] == Array(ChunkedInt(([1, 2, 3, 4] as [U8]).reversed(), as: U16.self))
 /// ```
 ///
 @frozen public struct ChunkedInt<Base, Element>: RandomAccessCollection where
-Element: SystemInteger, Base: RandomAccessCollection, Base.Element: SystemInteger {
+Element: SystemInteger & UnsignedInteger, Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger {
     
     public typealias Base = Base
     
@@ -105,12 +105,12 @@ Element: SystemInteger, Base: RandomAccessCollection, Base.Element: SystemIntege
     ///   - isSigned: The signedness of the base sequence.
     ///   - element: The type of element produced by this sequence.
     ///
-    @inlinable public init(normalizing base: Base, isSigned: Bool, as element: Element.Type = Element.self) where Element == BitInt {
+    @inlinable public init(normalizing base: Base, isSigned: Bool, as element: Element.Type = Element.self) where Element == BitInt.Magnitude {
         let bit = Bit(isSigned && base.last.map({ $0 & Base.Element.msb != 0 }) == true) // TODO: convenience
         let sign  = Base.Element(repeating: bit)
         let major = base.reversed().prefix(while:{ $0 == sign })
-        let minor = base.dropLast(major.count).last?.count(bit, option: .descending) ??  0
-        let droppable = Swift.max(0, major.count * IX.bitWidth.stdlib + IX(minor).stdlib - IX(Bit(isSigned)).stdlib)
+        let minor = base.dropLast(major.count).last?.count(bit, option: .descending) ?? (0 as Base.Element)
+        let droppable = Swift.max(0, major.count * IX(bitPattern: IX.bitWidth).stdlib + IX(minor).stdlib - IX(Bit(isSigned)).stdlib)
         self.init(base, isSigned: isSigned, count: base.count - droppable)
     }
     

@@ -43,8 +43,6 @@
 ///
 /// ### Development
 ///
-/// - TODO: Make index type same as element when bit sequence exists.
-///
 /// - TODO: Make each operation throwing when type errors are introduced.
 ///
 @frozen public struct Fibonacci<Value>: CustomStringConvertible where Value: Integer {
@@ -55,7 +53,7 @@
     
     @usableFromInline var i = 0 as Value
     @usableFromInline var a = 0 as Value
-    @usableFromInline var b = 1 as Value
+    @usableFromInline var b = 1 as Value // TODO: throw when BitInt
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -67,7 +65,7 @@
     /// Creates the sequence pair at the given `index`.
     @inlinable public init(_ index: Value) {
         index.withUnsafeBufferPointer {
-            for bit: BitInt in ChunkedInt(normalizing: $0, isSigned: false).reversed() {
+            for bit: BitInt.Magnitude in ChunkedInt(normalizing: $0, isSigned: false).reversed() {
                 
                 self.double()
                 

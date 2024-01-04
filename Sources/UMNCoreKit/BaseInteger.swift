@@ -37,8 +37,8 @@
 /// let integers: [any BaseInteger] = [Int(), UInt()]
 /// ```
 ///
-public protocol BaseInteger: BitCastable, Swift.FixedWidthInteger,  Sendable where
-BitPattern == Magnitude.BitPattern,  Magnitude: Swift.FixedWidthInteger & BaseInteger { }
+public protocol BaseInteger: BitCastable, Swift.FixedWidthInteger, Sendable 
+where BitPattern == Magnitude.BitPattern, Magnitude: Swift.FixedWidthInteger & BaseInteger { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Details
@@ -55,7 +55,9 @@ extension BaseInteger {
     }
     
     @inlinable public var bitPattern: BitPattern {
-        consuming get { Swift.unsafeBitCast(self, to: BitPattern.self) }
+        consuming get {
+            Swift.unsafeBitCast(self, to: BitPattern.self)
+        }
     }
 }
 

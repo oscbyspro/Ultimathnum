@@ -11,14 +11,16 @@
 // MARK: * UMN x Bit Int
 //*============================================================================*
 
-/// An unsigned `1-bit` integer that can represent the values `0` and `1`.
-@frozen public struct BitInt: SystemInteger & UnsignedInteger {
+/// A signed `1-bit` integer that can represent the values `0` and `-1`.
+@frozen public struct BitInt: SystemInteger & SignedInteger {
+    
+    public typealias BitPattern = Bit
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    @inlinable public static var bitWidth: Self {
+    @inlinable public static var bitWidth: Magnitude {
         1
     }
     
@@ -26,21 +28,21 @@
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    @usableFromInline var base: Bit
+    public let bitPattern: Bit
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ base: Bit) {
-        self.base = base
+    @inlinable public init(bitPattern: consuming Bit) {
+        self.bitPattern = (bitPattern)
     }
     
-    @inlinable public init(integerLiteral: UInt.IntegerLiteralType) {
+    @inlinable public init(integerLiteral: Int.IntegerLiteralType) {
         if  integerLiteral == 0 {
-            self.base = 0
-        }   else if integerLiteral == 1 {
-            self.base = 1
+            self.bitPattern = 0
+        }   else if integerLiteral == -1 {
+            self.bitPattern = 1
         }   else {
             fatalError(UMN.callsiteOverflowInfo())
         }
@@ -50,8 +52,65 @@
     // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Self {
-        if bit == 0 { ~self } else { self }
+    @inlinable public var magnitude: Magnitude {
+        consuming get {
+            Magnitude(bitPattern: self.bitPattern)
+        }
+    }
+    
+    //*========================================================================*
+    // MARK: * Magnitude
+    //*========================================================================*
+    
+    /// An unsigned `1-bit` integer that can represent the values `0` and `1`.
+    @frozen public struct Magnitude: SystemInteger & UnsignedInteger {
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Meta Data
+        //=--------------------------------------------------------------------=
+        
+        @inlinable public static var bitWidth: Magnitude {
+            1
+        }
+        
+        //=--------------------------------------------------------------------=
+        // MARK: State
+        //=--------------------------------------------------------------------=
+        
+        public let bitPattern: Bit
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Initializers
+        //=--------------------------------------------------------------------=
+        
+        @inlinable public init(bitPattern: Bit) {
+            self.bitPattern = (bitPattern)
+        }
+        
+        @inlinable public init(integerLiteral: UInt.IntegerLiteralType) {
+            if  integerLiteral == 0 {
+                self.bitPattern = 0
+            }   else if integerLiteral == 1 {
+                self.bitPattern = 1
+            }   else {
+                fatalError(UMN.callsiteOverflowInfo())
+            }
+        }
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Signed
+//=----------------------------------------------------------------------------=
+
+extension BitInt {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Accessors
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
+        self.magnitude.count(bit, option: option)
     }
     
     //=------------------------------------------------------------------------=
@@ -59,7 +118,7 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func incremented(by increment: borrowing Self) -> Overflow<Self> {
-        Overflow(Self(self.base ^ increment.base), overflow: self & increment == 1)
+        Overflow(Self(bitPattern: (copy self).bitPattern ^ increment.bitPattern), overflow: self & increment != 0)
     }
     
     //=------------------------------------------------------------------------=
@@ -67,11 +126,11 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func negated() -> Overflow<Self> {
-        (0 as Self).decremented(by: 1)
+        (0 as Self).decremented(by: self)
     }
     
     @inlinable public consuming func decremented(by decrement: borrowing Self) -> Overflow<Self> {
-        Overflow(Self(self.base ^ decrement.base), overflow: self < decrement)
+        Overflow(Self(bitPattern: Bit(self > decrement)), overflow: self > decrement)
     }
     
     //=------------------------------------------------------------------------=
@@ -87,7 +146,7 @@
     }
     
     @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> FullWidth<Self, Magnitude> {
-        FullWidth(low: multiplicand & multiplier, high: 0)
+        FullWidth(low: Magnitude(bitPattern: multiplicand & multiplier), high: 0)
     }
     
     //=------------------------------------------------------------------------=
@@ -107,7 +166,7 @@
     }
     
     @inlinable public static func dividing(_ dividend: consuming FullWidth<Self, Magnitude>, by divisor: borrowing Self) -> Overflow<QuoRem<Self, Self>> {
-        Overflow(QuoRem(quotient: dividend.low, remainder: dividend.low & divisor), overflow: divisor == 0)
+        Overflow(QuoRem(quotient: Self(bitPattern: dividend.low), remainder: Self(bitPattern: dividend.low) & divisor), overflow: divisor == 0)
     }
     
     //=------------------------------------------------------------------------=
@@ -115,19 +174,19 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public static prefix func ~(operand: consuming Self) -> Self {
-        Self(~operand.base)
+        Self(bitPattern: ~operand.bitPattern)
     }
     
     @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(lhs.base & rhs.base)
+        Self(bitPattern: lhs.bitPattern & rhs.bitPattern)
     }
     
     @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(lhs.base | rhs.base)
+        Self(bitPattern: lhs.bitPattern | rhs.bitPattern)
     }
     
     @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(lhs.base ^ rhs.base)
+        Self(bitPattern: lhs.bitPattern ^ rhs.bitPattern)
     }
     
     //=------------------------------------------------------------------------=
@@ -135,7 +194,7 @@
     //=------------------------------------------------------------------------=
     
     @inlinable static public func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        rhs == 0 ? 0 : lhs
+        rhs == 0 ? lhs : 0
     }
     
     @inlinable static public func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
@@ -143,7 +202,7 @@
     }
     
     @inlinable static public func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        rhs == 0 ? 0 : lhs
+        lhs
     }
     
     @inlinable static public func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
@@ -159,11 +218,11 @@
     }
     
     @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.base == rhs.base
+        lhs.bitPattern == rhs.bitPattern
     }
     
     @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        (lhs, rhs) == (0, 1)
+        (lhs.bitPattern, rhs.bitPattern) == (1, 0)
     }
     
     //=------------------------------------------------------------------------=
@@ -172,7 +231,7 @@
     
     @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<UX>) -> T) -> T {
         UMN.withUnsafeTemporaryAllocation(of: UX.self) { pointer in
-            pointer.initialize(to: UX(self.base))
+            pointer.initialize(to: UX(repeating: self.bitPattern))
             
             defer {
                 pointer.deinitialize(count: 1)
@@ -182,3 +241,153 @@
         }
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Unsigned
+//=----------------------------------------------------------------------------=
+
+extension BitInt.Magnitude {
+        
+    //=------------------------------------------------------------------------=
+    // MARK: Accessors
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Self {
+        if bit == 0 { ~self } else { self }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Addition
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func incremented(by increment: borrowing Self) -> Overflow<Self> {
+        Overflow(Self(bitPattern: (copy self).bitPattern ^ increment.bitPattern), overflow: self & increment != 0)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Subtraction
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func negated() -> Overflow<Self> {
+        (0 as Self).decremented(by: self)
+    }
+    
+    @inlinable public consuming func decremented(by decrement: borrowing Self) -> Overflow<Self> {
+        Overflow(Self(bitPattern: Bit(self > decrement)), overflow: self < decrement)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Multiplication
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func squared() -> Overflow<Self> {
+        Overflow(self, overflow: false)
+    }
+    
+    @inlinable public consuming func multiplied(by multiplier: borrowing Self) -> Overflow<Self> {
+        Overflow(self & multiplier, overflow: false)
+    }
+    
+    @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> FullWidth<Self, Magnitude> {
+        FullWidth(low: Magnitude(bitPattern: multiplicand & multiplier), high: 0)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Division
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func quotient(divisor: borrowing Self) -> Overflow<Self> {
+        Overflow(self, overflow: divisor == 0)
+    }
+    
+    @inlinable public consuming func remainder(divisor: borrowing Self) -> Overflow<Self> {
+        Overflow(Self(Bit(self > divisor)), overflow: divisor == 0)
+    }
+    
+    @inlinable public consuming func divided(by divisor: borrowing Self) -> Overflow<QuoRem<Self, Self>> {
+        Overflow(QuoRem(quotient: self, remainder: Self(Bit(self > divisor))), overflow: divisor == 0)
+    }
+    
+    @inlinable public static func dividing(_ dividend: consuming FullWidth<Self, Magnitude>, by divisor: borrowing Self) -> Overflow<QuoRem<Self, Self>> {
+        Overflow(QuoRem(quotient: Self(bitPattern: dividend.low), remainder: Self(bitPattern: dividend.low) & divisor), overflow: divisor == 0)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Logic
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static prefix func ~(operand: consuming Self) -> Self {
+        Self(bitPattern: ~operand.bitPattern)
+    }
+    
+    @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        Self(bitPattern: lhs.bitPattern & rhs.bitPattern)
+    }
+    
+    @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        Self(bitPattern: lhs.bitPattern | rhs.bitPattern)
+    }
+    
+    @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        Self(bitPattern: lhs.bitPattern ^ rhs.bitPattern)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Shifts
+    //=------------------------------------------------------------------------=
+    
+    @inlinable static public func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        rhs == 0 ? lhs : 0
+    }
+    
+    @inlinable static public func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        lhs
+    }
+    
+    @inlinable static public func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        rhs == 0 ? lhs : 0
+    }
+    
+    @inlinable static public func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        lhs
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities x Comparisons
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public func compared(to other: Self) -> Signum {
+        self == other ? 0 : self < other ? -1 : 1
+    }
+    
+    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        lhs.bitPattern == rhs.bitPattern
+    }
+    
+    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        (lhs.bitPattern, rhs.bitPattern) == (0, 1)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities x Words
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<UX>) -> T) -> T {
+        UMN.withUnsafeTemporaryAllocation(of: UX.self) { pointer in
+            pointer.initialize(to: UX(self.bitPattern))
+            
+            defer {
+                pointer.deinitialize(count: 1)
+            }
+            
+            return body(UnsafeBufferPointer(start: pointer, count: 1))
+        }
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Aliaes
+//=----------------------------------------------------------------------------=
+
+public typealias I1 = BitInt
+public typealias U1 = BitInt.Magnitude

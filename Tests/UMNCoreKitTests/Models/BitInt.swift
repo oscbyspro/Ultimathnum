@@ -16,7 +16,7 @@ import XCTest
 
 final class BitIntTests: XCTestCase {
     
-    typealias T = BitInt
+    typealias T = BitInt.Magnitude
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
