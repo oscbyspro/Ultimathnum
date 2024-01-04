@@ -92,8 +92,8 @@ Element: UMNSystemInteger, Base: RandomAccessCollection, Base.Element: UMNSystem
         self.sign  = Self.Element(repeating: isSigned && self.base.last.map({ $0 & .msb != 0 }) == true)
         self.count = count ?? Self.count(of: self.base)
         precondition(self.count >= 0 as Int)
-        Swift.assert(Self.Element.bitWidth.count(true, option: .any) == 1)
-        Swift.assert(Base.Element.bitWidth.count(true, option: .any) == 1)
+        Swift.assert(Self.Element.bitWidth.count(true, option: .all) == 1)
+        Swift.assert(Base.Element.bitWidth.count(true, option: .all) == 1)
     }
     
     /// Creates a normalized bit sequence from an un/signed source.

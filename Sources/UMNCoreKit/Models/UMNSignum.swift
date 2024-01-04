@@ -30,7 +30,8 @@
         case -1: .less
         case  0: .same
         case  1: .more
-        default: fatalError("invalid signum integer literal value") }
+        default: fatalError(UMN.callsiteOverflowInfo())
+        }
     }
     
     //=------------------------------------------------------------------------=
@@ -41,6 +42,7 @@
         switch self {
         case .less: .more
         case .same: .same
-        case .more: .less }
+        case .more: .less
+        }
     }
 }

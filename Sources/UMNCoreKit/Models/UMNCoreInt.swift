@@ -68,9 +68,9 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public func count(_ bit: Bool, option: UMNBitOption) -> Self {
-        switch (bit, option) {
-        case (true,          .any): Self(Base(truncatingIfNeeded: ( self).base     .nonzeroBitCount))
-        case (false,         .any): Self(Base(truncatingIfNeeded: (~self).base     .nonzeroBitCount))
+        switch (bit,       option) {
+        case (true,          .all): Self(Base(truncatingIfNeeded: ( self).base     .nonzeroBitCount))
+        case (false,         .all): Self(Base(truncatingIfNeeded: (~self).base     .nonzeroBitCount))
         case (true,    .ascending): Self(Base(truncatingIfNeeded: (~self).base.trailingZeroBitCount))
         case (false,   .ascending): Self(Base(truncatingIfNeeded: ( self).base.trailingZeroBitCount))
         case (true,   .descending): Self(Base(truncatingIfNeeded: (~self).base .leadingZeroBitCount))

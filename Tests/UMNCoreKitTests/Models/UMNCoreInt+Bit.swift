@@ -48,15 +48,15 @@ extension UMNCoreIntTests {
     
     func testCountBitOption() {
         func whereIs<T>(_ type: T.Type) where T: UMNSystemInteger {
-            XCTAssertEqual((~0 as T).count(true,  option:        .any), T.bitWidth)
-            XCTAssertEqual((~1 as T).count(true,  option:        .any), T.bitWidth - 1)
-            XCTAssertEqual(( 0 as T).count(true,  option:        .any), 0)
-            XCTAssertEqual(( 1 as T).count(true,  option:        .any), 1)
+            XCTAssertEqual((~0 as T).count(true,  option:        .all), T.bitWidth)
+            XCTAssertEqual((~1 as T).count(true,  option:        .all), T.bitWidth - 1)
+            XCTAssertEqual(( 0 as T).count(true,  option:        .all), 0)
+            XCTAssertEqual(( 1 as T).count(true,  option:        .all), 1)
             
-            XCTAssertEqual((~0 as T).count(false, option:        .any), 0)
-            XCTAssertEqual((~1 as T).count(false, option:        .any), 1)
-            XCTAssertEqual(( 0 as T).count(false, option:        .any), T.bitWidth)
-            XCTAssertEqual(( 1 as T).count(false, option:        .any), T.bitWidth - 1)
+            XCTAssertEqual((~0 as T).count(false, option:        .all), 0)
+            XCTAssertEqual((~1 as T).count(false, option:        .all), 1)
+            XCTAssertEqual(( 0 as T).count(false, option:        .all), T.bitWidth)
+            XCTAssertEqual(( 1 as T).count(false, option:        .all), T.bitWidth - 1)
             
             XCTAssertEqual((~0 as T).count(true,  option:  .ascending), T.bitWidth)
             XCTAssertEqual((~1 as T).count(true,  option:  .ascending), 0)

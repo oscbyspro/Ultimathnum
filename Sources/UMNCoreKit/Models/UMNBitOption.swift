@@ -17,7 +17,7 @@
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    case any
+    case all
     case ascending
     case descending
 }

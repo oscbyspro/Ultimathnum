@@ -43,7 +43,7 @@
         switch integerLiteral {
         case 01: self.base = true
         case 00: self.base = false
-        default: fatalError("invalid bit integer literal value")
+        default: fatalError(UMN.callsiteOverflowInfo())
         }
     }
     
@@ -52,8 +52,14 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<UX>) -> T) -> T {
-        UMN.withUnsafeTemporaryAllocation(of: UX.self, count: 1) {
-            body(UnsafeBufferPointer($0))
+        UMN.withUnsafeTemporaryAllocation(of: UX.self) { pointer in
+            pointer.initialize(to: UX(self.base as Bool))
+            
+            defer {
+                pointer.deinitialize(count: 1)
+            }
+            
+            return body(UnsafeBufferPointer(start: pointer, count: 1))
         }
     }
     
