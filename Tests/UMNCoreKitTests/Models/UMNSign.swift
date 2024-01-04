@@ -23,8 +23,8 @@ final class UMNSignTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testInitBit() {
-        XCTAssertEqual(T(false), T.plus )
-        XCTAssertEqual(T(true ), T.minus)
+        XCTAssertEqual(T(UMNBit(false)), T.plus )
+        XCTAssertEqual(T(UMNBit(true )), T.minus)
     }
     
     func testInitFloatingPointSign() {

@@ -26,17 +26,23 @@
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    @usableFromInline var base: Bool
+    @usableFromInline var base: UMNBit
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(integerLiteral: consuming Int.IntegerLiteralType) {
-        switch integerLiteral {
-        case 01: self.base = true
-        case 00: self.base = false
-        default: fatalError(UMN.callsiteOverflowInfo())
+    @inlinable public init(_ base: UMNBit) {
+        self.base = base
+    }
+    
+    @inlinable public init(integerLiteral: UInt.IntegerLiteralType) {
+        if  integerLiteral == 0 {
+            self.base = 0
+        }   else if integerLiteral == 1 {
+            self.base = 1
+        }   else {
+            fatalError(UMN.callsiteOverflowInfo())
         }
     }
     
@@ -44,24 +50,8 @@
     // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<UX>) -> T) -> T {
-        UMN.withUnsafeTemporaryAllocation(of: UX.self) { pointer in
-            pointer.initialize(to: UX(self.base as Bool))
-            
-            defer {
-                pointer.deinitialize(count: 1)
-            }
-            
-            return body(UnsafeBufferPointer(start: pointer, count: 1))
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Accessors
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public func count(_ bit: Bool, option: UMNBitOption) -> Self {
-        switch bit { case true: self; case false: ~self }
+    @inlinable public func count(_ bit: UMNBit, option: UMNBit.Selection) -> Self {
+        if bit == 0 { ~self } else { self }
     }
     
     //=------------------------------------------------------------------------=
@@ -69,7 +59,7 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func incremented(by increment: borrowing Self) -> UMNOverflow<Self> {
-        UMNOverflow(Self(self != increment), overflow:(self & increment).base)
+        UMNOverflow(Self(self.base ^ increment.base), overflow: self & increment == 1)
     }
     
     //=------------------------------------------------------------------------=
@@ -81,7 +71,7 @@
     }
     
     @inlinable public consuming func decremented(by decrement: borrowing Self) -> UMNOverflow<Self> {
-        UMNOverflow(Self(self != decrement), overflow: self < decrement)
+        UMNOverflow(Self(self.base ^ decrement.base), overflow: self < decrement)
     }
     
     //=------------------------------------------------------------------------=
@@ -105,19 +95,19 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func quotient(divisor: borrowing Self) -> UMNOverflow<Self> {
-        UMNOverflow(self, overflow: !divisor.base)
+        UMNOverflow(self, overflow: divisor == 0)
     }
     
     @inlinable public consuming func remainder(divisor: borrowing Self) -> UMNOverflow<Self> {
-        UMNOverflow(Self(self > divisor), overflow: !divisor.base)
+        UMNOverflow(Self(UMNBit(self > divisor)), overflow: divisor == 0)
     }
     
     @inlinable public consuming func divided(by divisor: borrowing Self) -> UMNOverflow<UMNQuoRem<Self, Self>> {
-        UMNOverflow(UMNQuoRem(quotient: self, remainder: Self(self > divisor)), overflow: !divisor.base)
+        UMNOverflow(UMNQuoRem(quotient: self, remainder: Self(UMNBit(self > divisor))), overflow: divisor == 0)
     }
     
     @inlinable public static func dividing(_ dividend: consuming UMNFullWidth<Self, Magnitude>, by divisor: borrowing Self) -> UMNOverflow<UMNQuoRem<Self, Self>> {
-        UMNOverflow(UMNQuoRem(quotient: dividend.low, remainder: dividend.low & divisor), overflow: !divisor.base)
+        UMNOverflow(UMNQuoRem(quotient: dividend.low, remainder: dividend.low & divisor), overflow: divisor == 0)
     }
     
     //=------------------------------------------------------------------------=
@@ -125,19 +115,19 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public static prefix func ~(operand: consuming Self) -> Self {
-        switch operand.base { case true: 0; case false: 1 }
+        Self(~operand.base)
     }
     
     @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs == rhs ? lhs : 0
+        Self(lhs.base & rhs.base)
     }
     
     @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs == 0 ? rhs : lhs
+        Self(lhs.base | rhs.base)
     }
     
     @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs == rhs ? 0 : 1
+        Self(lhs.base ^ rhs.base)
     }
     
     //=------------------------------------------------------------------------=
@@ -145,7 +135,7 @@
     //=------------------------------------------------------------------------=
     
     @inlinable static public func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        rhs.base ? 0 : lhs
+        rhs == 0 ? 0 : lhs
     }
     
     @inlinable static public func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
@@ -153,7 +143,7 @@
     }
     
     @inlinable static public func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        rhs.base ? 0 : lhs
+        rhs == 0 ? 0 : lhs
     }
     
     @inlinable static public func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
@@ -174,5 +164,21 @@
     
     @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         (lhs, rhs) == (0, 1)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities x Words
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<UX>) -> T) -> T {
+        UMN.withUnsafeTemporaryAllocation(of: UX.self) { pointer in
+            pointer.initialize(to: UX(self.base))
+            
+            defer {
+                pointer.deinitialize(count: 1)
+            }
+            
+            return body(UnsafeBufferPointer(start: pointer, count: 1))
+        }
     }
 }

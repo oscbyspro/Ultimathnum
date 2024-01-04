@@ -50,7 +50,7 @@ Magnitude: UMNUnsignedInteger & UMNSystemInteger, Magnitude.BitPattern == BitPat
     // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable func count(_ bit: Bool, option: UMNBitOption) -> Self
+    @inlinable func count(_ bit: UMNBit, option: UMNBit.Selection) -> Self
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Logic
@@ -111,11 +111,11 @@ extension UMNSystemInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ bit: Bool) {
-        self = bit ?  (1 as Self) : (0 as Self)
+    @inlinable public init(_ bit: UMNBit) {
+        self = bit == (0 as UMNBit) ? (0 as Self) : ( 1 as Self)
     }
     
-    @inlinable public init(repeating bit: Bool) {
-        self = bit ? ~(0 as Self) : (0 as Self)
+    @inlinable public init(repeating bit: UMNBit) {
+        self = bit == (0 as UMNBit) ? (0 as Self) : (~0 as Self)
     }
 }

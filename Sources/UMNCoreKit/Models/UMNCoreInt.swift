@@ -12,7 +12,7 @@
 //*============================================================================*
 
 @frozen public struct UMNCoreInt<Base: UMNBaseInteger>: UMNSystemInteger {
-        
+    
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
@@ -67,8 +67,8 @@
     // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable public func count(_ bit: Bool, option: UMNBitOption) -> Self {
-        switch (bit,       option) {
+    @inlinable public func count(_ bit: UMNBit, option: UMNBit.Selection) -> Self {
+        switch (Bool(bit), option) {
         case (true,          .all): Self(Base(truncatingIfNeeded: ( self).base     .nonzeroBitCount))
         case (false,         .all): Self(Base(truncatingIfNeeded: (~self).base     .nonzeroBitCount))
         case (true,    .ascending): Self(Base(truncatingIfNeeded: (~self).base.trailingZeroBitCount))

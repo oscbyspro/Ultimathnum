@@ -89,11 +89,11 @@ Element: UMNSystemInteger, Base: RandomAccessCollection, Base.Element: UMNSystem
     ///
     @inlinable public init(_ base: Base, isSigned: Bool, count: Int? = nil, as element: Element.Type = Element.self) {
         self.base  = base
-        self.sign  = Self.Element(repeating: isSigned && self.base.last.map({ $0 & .msb != 0 }) == true)
+        self.sign  = Self.Element(repeating: UMNBit(isSigned && self.base.last.map({ $0 & .msb != 0 }) == true))
         self.count = count ?? Self.count(of: self.base)
         precondition(self.count >= 0 as Int)
-        Swift.assert(Self.Element.bitWidth.count(true, option: .all) == 1)
-        Swift.assert(Base.Element.bitWidth.count(true, option: .all) == 1)
+        Swift.assert(Self.Element.bitWidth.count(1, option: .all) == 1)
+        Swift.assert(Base.Element.bitWidth.count(1, option: .all) == 1)
     }
     
     /// Creates a normalized bit sequence from an un/signed source.
@@ -104,11 +104,11 @@ Element: UMNSystemInteger, Base: RandomAccessCollection, Base.Element: UMNSystem
     ///   - element: The type of element produced by this sequence.
     ///
     @inlinable public init(normalizing base: Base, isSigned: Bool, as element: Element.Type = Element.self) where Element == UMNBitInt {
-        let bit = isSigned && base.last.map({ $0 & Base.Element.msb != 0 }) == true // TODO: convenience
+        let bit = UMNBit(isSigned && base.last.map({ $0 & Base.Element.msb != 0 }) == true) // TODO: convenience
         let sign  = Base.Element(repeating: bit)
         let major = base.reversed().prefix(while:{ $0 == sign })
         let minor = base.dropLast(major.count).last?.count(bit, option: .descending) ??  0
-        let droppable = Swift.max(0, major.count * IX.bitWidth.stdlib + IX(minor).stdlib - IX(isSigned).stdlib)
+        let droppable = Swift.max(0, major.count * IX.bitWidth.stdlib + IX(minor).stdlib - IX(UMNBit(isSigned)).stdlib)
         self.init(base, isSigned: isSigned, count: base.count - droppable)
     }
     
@@ -159,7 +159,7 @@ extension UMNChunkedInt.Major {
     
     @inlinable static func count(of base: Base) -> Int {
         let division = base.count.quotientAndRemainder(dividingBy: self.ratio)
-        return division.quotient + IX(division.remainder != 0).stdlib
+        return division.quotient + IX(UMNBit(division.remainder != 0)).stdlib
     }
     
     @inlinable static func element(_ index: Int, base: Base, sign: Element) -> Element {
