@@ -14,8 +14,8 @@
 /// A sequence that chunks elements of an un/signed source.
 ///
 /// ```swift
-/// for word in ChunkedInt(source, isSigned: false, count: nil, as: UInt.self) { ... }
-/// for byte in ChunkedInt(source, isSigned: false, count: nil, as: Int8.self) { ... }
+/// for word: UX in ChunkedInt(source, isSigned: false, count: nil) { ... }
+/// for byte: U8 in ChunkedInt(source, isSigned: false, count: nil) { ... }
 /// ```
 ///
 /// ### Bit Sequence
@@ -109,9 +109,9 @@ Element: SystemInteger & UnsignedInteger, Base: RandomAccessCollection, Base.Ele
         let bit = Bit(isSigned && base.last.map({ $0 & Base.Element.msb != 0 }) == true) // TODO: convenience
         let sign  = Base.Element(repeating: bit)
         let major = base.reversed().prefix(while:{ $0 == sign })
-        let minor = base.dropLast(major.count).last?.count(bit, option: .descending) ?? (0 as Base.Element)
-        let droppable = Swift.max(0, major.count * IX(bitPattern: IX.bitWidth).stdlib + IX(minor).stdlib + IX(repeating: Bit(isSigned)).stdlib)
-        self.init(base, isSigned: isSigned, count: base.count - droppable)
+        let minor = base.dropLast(major.count).last?.count(bit, option: .descending) ??  0 as Base.Element
+        let descending = Swift.max(0, major.count * IX(bitPattern: IX.bitWidth).stdlib + IX(minor).stdlib)
+        self.init(base, isSigned: isSigned, count: base.count - descending - (isSigned ? 1 : 0))
     }
     
     //=------------------------------------------------------------------------=

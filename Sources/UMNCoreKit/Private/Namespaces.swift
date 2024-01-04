@@ -15,51 +15,50 @@
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum`.
 ///
-@frozen @usableFromInline package enum UMN {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Namespaces x Binary Integer
-    //=------------------------------------------------------------------------=
-    
-    /// A namespace for `Ultimathnum` development.
-    ///
-    /// - Warning: Do not use this namespace outside of `Ultimathnum`.
-    ///
-    public typealias SBI<Base> = UMN.StrictBinaryInteger<Base>
-    where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
+@frozen @usableFromInline package enum UMN { }
 
-    /// A namespace for `Ultimathnum` development.
-    ///
-    /// - Warning: Do not use this namespace outside of `Ultimathnum`.
-    ///
-    public typealias SBISS<Base> = UMN.StrictBinaryInteger<Base>.SubSequence
-    where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
-    
-    /// A namespace for `Ultimathnum` development.
-    ///
-    /// - Warning: Do not use this namespace outside of `Ultimathnum`.
-    ///
-    public typealias SSI<Base> = UMN.StrictSignedInteger<Base>
-    where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
+//=----------------------------------------------------------------------------=
+// MARK: + Binary Integer
+//=----------------------------------------------------------------------------=
 
-    /// A namespace for `Ultimathnum` development.
-    ///
-    /// - Warning: Do not use this namespace outside of `Ultimathnum`.
-    ///
-    public typealias SSISS<Base> = UMN.StrictSignedInteger<Base>.SubSequence
-    where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
+/// A namespace for `Ultimathnum` development.
+///
+/// - Warning: Do not use this namespace outside of `Ultimathnum`.
+///
+@usableFromInline package typealias SBI<Base> = UMN.StrictBinaryInteger<Base>
+where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
 
-    /// A namespace for `Ultimathnum` development.
-    ///
-    /// - Warning: Do not use this namespace outside of `Ultimathnum`.
-    ///
-    public typealias SUI<Base> = UMN.StrictUnsignedInteger<Base>
-    where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
+/// A namespace for `Ultimathnum` development.
+///
+/// - Warning: Do not use this namespace outside of `Ultimathnum`.
+///
+@usableFromInline package typealias SBISS<Base> = UMN.StrictBinaryInteger<Base>.SubSequence
+where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
 
-    /// A namespace for `Ultimathnum` development.
-    ///
-    /// - Warning: Do not use this namespace outside of `Ultimathnum`.
-    ///
-    public typealias SUISS<Base> = UMN.StrictUnsignedInteger<Base>.SubSequence
-    where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
-}
+/// A namespace for `Ultimathnum` development.
+///
+/// - Warning: Do not use this namespace outside of `Ultimathnum`.
+///
+@usableFromInline package typealias SSI<Base> = UMN.StrictSignedInteger<Base>
+where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
+
+/// A namespace for `Ultimathnum` development.
+///
+/// - Warning: Do not use this namespace outside of `Ultimathnum`.
+///
+@usableFromInline package typealias SSISS<Base> = UMN.StrictSignedInteger<Base>.SubSequence
+where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
+
+/// A namespace for `Ultimathnum` development.
+///
+/// - Warning: Do not use this namespace outside of `Ultimathnum`.
+///
+@usableFromInline package typealias SUI<Base> = UMN.StrictUnsignedInteger<Base>
+where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
+
+/// A namespace for `Ultimathnum` development.
+///
+/// - Warning: Do not use this namespace outside of `Ultimathnum`.
+///
+@usableFromInline package typealias SUISS<Base> = UMN.StrictUnsignedInteger<Base>.SubSequence
+where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger

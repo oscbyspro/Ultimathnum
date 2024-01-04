@@ -172,19 +172,19 @@
     // MARK: Transformations x Shifts
     //=------------------------------------------------------------------------=
     
-    @inlinable static public func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
         Self(lhs.base  << rhs.base)
     }
     
-    @inlinable static public func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
         Self(lhs.base &<< rhs.base)
     }
     
-    @inlinable static public func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
         Self(lhs.base  >> rhs.base)
     }
     
-    @inlinable static public func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
         Self(lhs.base &>> rhs.base)
     }
     
@@ -193,7 +193,7 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public func compared(to other: Self) -> Signum {
-        self < other ? .less : self == other ? .same : .more
+        self < other ? -1 : self == other ? 0 : 1
     }
     
     @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {

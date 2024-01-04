@@ -193,19 +193,19 @@ extension BitInt {
     // MARK: Transformations x Shifts
     //=------------------------------------------------------------------------=
     
-    @inlinable static public func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
         rhs == 0 ? lhs : 0
     }
     
-    @inlinable static public func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
         lhs
     }
     
-    @inlinable static public func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
         lhs
     }
     
-    @inlinable static public func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
         lhs
     }
     
@@ -336,19 +336,19 @@ extension BitInt.Magnitude {
     // MARK: Transformations x Shifts
     //=------------------------------------------------------------------------=
     
-    @inlinable static public func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
         rhs == 0 ? lhs : 0
     }
     
-    @inlinable static public func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
         lhs
     }
     
-    @inlinable static public func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
         rhs == 0 ? lhs : 0
     }
     
-    @inlinable static public func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
         lhs
     }
     
