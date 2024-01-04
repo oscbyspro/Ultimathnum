@@ -15,7 +15,7 @@
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum`.
 ///
-@frozen public enum UMN {
+@frozen @usableFromInline package enum UMN {
     
     //=------------------------------------------------------------------------=
     // MARK: Namespaces x Binary Integer
