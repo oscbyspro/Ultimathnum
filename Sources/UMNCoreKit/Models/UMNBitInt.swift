@@ -32,13 +32,6 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(booleanLiteral: Bool.BooleanLiteralType) {
-        switch booleanLiteral {
-        case  true: self.base = true
-        case false: self.base = false
-        }
-    }
-    
     @inlinable public init(integerLiteral: consuming Int.IntegerLiteralType) {
         switch integerLiteral {
         case 01: self.base = true
