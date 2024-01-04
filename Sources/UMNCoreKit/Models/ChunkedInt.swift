@@ -110,7 +110,7 @@ Element: SystemInteger & UnsignedInteger, Base: RandomAccessCollection, Base.Ele
         let sign  = Base.Element(repeating: bit)
         let major = base.reversed().prefix(while:{ $0 == sign })
         let minor = base.dropLast(major.count).last?.count(bit, option: .descending) ?? (0 as Base.Element)
-        let droppable = Swift.max(0, major.count * IX(bitPattern: IX.bitWidth).stdlib + IX(minor).stdlib - IX(Bit(isSigned)).stdlib)
+        let droppable = Swift.max(0, major.count * IX(bitPattern: IX.bitWidth).stdlib + IX(minor).stdlib + IX(repeating: Bit(isSigned)).stdlib)
         self.init(base, isSigned: isSigned, count: base.count - droppable)
     }
     
@@ -160,8 +160,7 @@ extension ChunkedInt.Major {
     }
     
     @inlinable static func count(of base: Base) -> Int {
-        let division = base.count.quotientAndRemainder(dividingBy: self.ratio)
-        return division.quotient + IX(Bit(division.remainder != 0)).stdlib
+        IX(base.count).divided(by: IX(self.ratio)).unwrapped().ceil().unwrapped().stdlib
     }
     
     @inlinable static func element(_ index: Int, base: Base, sign: Element) -> Element {

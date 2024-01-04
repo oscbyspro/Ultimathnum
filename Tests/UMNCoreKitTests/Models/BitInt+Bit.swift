@@ -21,48 +21,57 @@ extension BitIntTests {
     //=------------------------------------------------------------------------=
     
     func testInitBit() {
-        XCTAssertEqual(T(0 as Bit), 0)
-        XCTAssertEqual(T(1 as Bit), 1)
-    }
-    
-    func testInitBitOnRepeat() {
-        XCTAssertEqual(T(repeating: 0 as Bit),  0)
-        XCTAssertEqual(T(repeating: 1 as Bit), ~0)
+        func whereIs<T>(_ type: T.Type) where T: SystemInteger {
+            XCTAssertEqual(T(repeating: 0 as Bit),  0)
+            XCTAssertEqual(T(repeating: 1 as Bit), ~0)
+        }
+        
+        for type in Self.types {
+            whereIs(type)
+        }
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Tests x Accessors
     //=------------------------------------------------------------------------=
     
-    func testCountBitOption() {
-        XCTAssertEqual((~0 as T).count(1, option:        .all), 1)
-        XCTAssertEqual((~1 as T).count(1, option:        .all), 0)
-        XCTAssertEqual(( 0 as T).count(1, option:        .all), 0)
-        XCTAssertEqual(( 1 as T).count(1, option:        .all), 1)
+    func testBitCountSelection() {
+        func whereIs<T>(_ type: T.Type) where T: SystemInteger {
+            typealias M = T.Magnitude
+            
+            XCTAssertEqual(T(bitPattern: ~0 as M).count(1, option:        .all), 1)
+            XCTAssertEqual(T(bitPattern: ~1 as M).count(1, option:        .all), 0)
+            XCTAssertEqual(T(bitPattern:  0 as M).count(1, option:        .all), 0)
+            XCTAssertEqual(T(bitPattern:  1 as M).count(1, option:        .all), 1)
+            
+            XCTAssertEqual(T(bitPattern: ~0 as M).count(0, option:        .all), 0)
+            XCTAssertEqual(T(bitPattern: ~1 as M).count(0, option:        .all), 1)
+            XCTAssertEqual(T(bitPattern:  0 as M).count(0, option:        .all), 1)
+            XCTAssertEqual(T(bitPattern:  1 as M).count(0, option:        .all), 0)
+            
+            XCTAssertEqual(T(bitPattern: ~0 as M).count(1, option:  .ascending), 1)
+            XCTAssertEqual(T(bitPattern: ~1 as M).count(1, option:  .ascending), 0)
+            XCTAssertEqual(T(bitPattern:  0 as M).count(1, option:  .ascending), 0)
+            XCTAssertEqual(T(bitPattern:  1 as M).count(1, option:  .ascending), 1)
+            
+            XCTAssertEqual(T(bitPattern: ~0 as M).count(0, option:  .ascending), 0)
+            XCTAssertEqual(T(bitPattern: ~1 as M).count(0, option:  .ascending), 1)
+            XCTAssertEqual(T(bitPattern:  0 as M).count(0, option:  .ascending), 1)
+            XCTAssertEqual(T(bitPattern:  1 as M).count(0, option:  .ascending), 0)
+            
+            XCTAssertEqual(T(bitPattern: ~0 as M).count(1, option: .descending), 1)
+            XCTAssertEqual(T(bitPattern: ~1 as M).count(1, option: .descending), 0)
+            XCTAssertEqual(T(bitPattern:  0 as M).count(1, option: .descending), 0)
+            XCTAssertEqual(T(bitPattern:  1 as M).count(1, option: .descending), 1)
+            
+            XCTAssertEqual(T(bitPattern: ~0 as M).count(0, option: .descending), 0)
+            XCTAssertEqual(T(bitPattern: ~1 as M).count(0, option: .descending), 1)
+            XCTAssertEqual(T(bitPattern:  0 as M).count(0, option: .descending), 1)
+            XCTAssertEqual(T(bitPattern:  1 as M).count(0, option: .descending), 0)
+        }
         
-        XCTAssertEqual((~0 as T).count(0, option:        .all), 0)
-        XCTAssertEqual((~1 as T).count(0, option:        .all), 1)
-        XCTAssertEqual(( 0 as T).count(0, option:        .all), 1)
-        XCTAssertEqual(( 1 as T).count(0, option:        .all), 0)
-        
-        XCTAssertEqual((~0 as T).count(1, option:  .ascending), 1)
-        XCTAssertEqual((~1 as T).count(1, option:  .ascending), 0)
-        XCTAssertEqual(( 0 as T).count(1, option:  .ascending), 0)
-        XCTAssertEqual(( 1 as T).count(1, option:  .ascending), 1)
-        
-        XCTAssertEqual((~0 as T).count(0, option:  .ascending), 0)
-        XCTAssertEqual((~1 as T).count(0, option:  .ascending), 1)
-        XCTAssertEqual(( 0 as T).count(0, option:  .ascending), 1)
-        XCTAssertEqual(( 1 as T).count(0, option:  .ascending), 0)
-        
-        XCTAssertEqual((~0 as T).count(1, option: .descending), 1)
-        XCTAssertEqual((~1 as T).count(1, option: .descending), 0)
-        XCTAssertEqual(( 0 as T).count(1, option: .descending), 0)
-        XCTAssertEqual(( 1 as T).count(1, option: .descending), 1)
-        
-        XCTAssertEqual((~0 as T).count(0, option: .descending), 0)
-        XCTAssertEqual((~1 as T).count(0, option: .descending), 1)
-        XCTAssertEqual(( 0 as T).count(0, option: .descending), 1)
-        XCTAssertEqual(( 1 as T).count(0, option: .descending), 0)
+        for type in Self.types {
+            whereIs(type)
+        }
     }
 }

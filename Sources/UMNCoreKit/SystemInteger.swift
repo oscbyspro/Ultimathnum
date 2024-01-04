@@ -82,7 +82,7 @@ Magnitude: UnsignedInteger & SystemInteger, Magnitude.BitPattern == BitPattern {
     
     @inlinable static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> FullWidth<Self, Magnitude>
     
-    @inlinable static func dividing(_ dividend: consuming FullWidth<Self, Magnitude>, by multiplier: borrowing Self) -> Overflow<QuoRem<Self, Self>>
+    @inlinable static func dividing(_ dividend: consuming FullWidth<Self, Magnitude>, by multiplier: borrowing Self) -> Overflow<Division<Self>>
 }
 
 //=----------------------------------------------------------------------------=
@@ -99,21 +99,21 @@ extension SystemInteger {
         isSigned ? msb : 0
     }
     
-    @inlinable public static var msb: Self {
-        1 &<< (Self(bitPattern: bitWidth) &- 1)
-    }
-    
     @inlinable public static var max: Self {
         ~(min)
+    }
+    
+    @inlinable public static var lsb: Self {
+        Self(bitPattern: 1 as Magnitude)
+    }
+    
+    @inlinable public static var msb: Self {
+        Self(bitPattern: 1 as Magnitude &<< (bitWidth &- 1))
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
-    
-    @inlinable public init(_ bit: Bit) {
-        self = bit == (0 as Bit) ? (0 as Self) : ( 1 as Self)
-    }
     
     @inlinable public init(repeating bit: Bit) {
         self = bit == (0 as Bit) ? (0 as Self) : (~0 as Self)

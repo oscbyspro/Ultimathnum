@@ -67,7 +67,7 @@ public protocol Integer: Comparable, Hashable, ExpressibleByIntegerLiteral, Send
     
     @inlinable consuming func remainder( divisor: borrowing Self) -> Overflow<Self>
     
-    @inlinable consuming func divided(by divisor: borrowing Self) -> Overflow<QuoRem<Self, Self>>
+    @inlinable consuming func divided(by divisor: borrowing Self) -> Overflow<Division<Self>>
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities x Comparisons

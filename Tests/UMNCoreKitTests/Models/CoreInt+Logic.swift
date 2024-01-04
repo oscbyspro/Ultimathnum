@@ -26,7 +26,7 @@ extension CoreIntTests {
             XCTAssertEqual(~T.max, T.min as T)
         }
         
-        for type in Self.allIntegers {
+        for type in Self.types {
             whereIs(type)
         }
     }
@@ -54,7 +54,7 @@ extension CoreIntTests {
             XCTAssertEqual( 1 &  1,  1 as T)
         }
         
-        for type in Self.allIntegers {
+        for type in Self.types {
             whereIs(type)
         }
     }
@@ -82,7 +82,7 @@ extension CoreIntTests {
             XCTAssertEqual( 1 |  1,  1 as T)
         }
         
-        for type in Self.allIntegers {
+        for type in Self.types {
             whereIs(type)
         }
     }
@@ -110,7 +110,7 @@ extension CoreIntTests {
             XCTAssertEqual( 1 ^  1,  0 as T)
         }
         
-        for type in Self.allIntegers {
+        for type in Self.types {
             whereIs(type)
         }
     }

@@ -158,15 +158,15 @@ extension BitInt {
     }
     
     @inlinable public consuming func remainder(divisor: borrowing Self) -> Overflow<Self> {
-        Overflow(Self(Bit(self > divisor)), overflow: divisor == 0)
+        Overflow(Self(bitPattern: Bit(self > divisor)), overflow: divisor == 0)
     }
     
-    @inlinable public consuming func divided(by divisor: borrowing Self) -> Overflow<QuoRem<Self, Self>> {
-        Overflow(QuoRem(quotient: self, remainder: Self(Bit(self > divisor))), overflow: divisor == 0)
+    @inlinable public consuming func divided(by divisor: borrowing Self) -> Overflow<Division<Self>> {
+        Overflow(Division(quotient: self, remainder: Self(bitPattern: Bit(self > divisor))), overflow: divisor == 0)
     }
     
-    @inlinable public static func dividing(_ dividend: consuming FullWidth<Self, Magnitude>, by divisor: borrowing Self) -> Overflow<QuoRem<Self, Self>> {
-        Overflow(QuoRem(quotient: Self(bitPattern: dividend.low), remainder: Self(bitPattern: dividend.low) & divisor), overflow: divisor == 0)
+    @inlinable public static func dividing(_ dividend: consuming FullWidth<Self, Magnitude>, by divisor: borrowing Self) -> Overflow<Division<Self>> {
+        Overflow(Division(quotient: Self(bitPattern: dividend.low), remainder: Self(bitPattern: dividend.low) & divisor), overflow: divisor == 0)
     }
     
     //=------------------------------------------------------------------------=
@@ -301,15 +301,15 @@ extension BitInt.Magnitude {
     }
     
     @inlinable public consuming func remainder(divisor: borrowing Self) -> Overflow<Self> {
-        Overflow(Self(Bit(self > divisor)), overflow: divisor == 0)
+        Overflow(Self(bitPattern: Bit(self > divisor)), overflow: divisor == 0)
     }
     
-    @inlinable public consuming func divided(by divisor: borrowing Self) -> Overflow<QuoRem<Self, Self>> {
-        Overflow(QuoRem(quotient: self, remainder: Self(Bit(self > divisor))), overflow: divisor == 0)
+    @inlinable public consuming func divided(by divisor: borrowing Self) -> Overflow<Division<Self>> {
+        Overflow(Division(quotient: self, remainder: Self(bitPattern: Bit(self > divisor))), overflow: divisor == 0)
     }
     
-    @inlinable public static func dividing(_ dividend: consuming FullWidth<Self, Magnitude>, by divisor: borrowing Self) -> Overflow<QuoRem<Self, Self>> {
-        Overflow(QuoRem(quotient: Self(bitPattern: dividend.low), remainder: Self(bitPattern: dividend.low) & divisor), overflow: divisor == 0)
+    @inlinable public static func dividing(_ dividend: consuming FullWidth<Self, Magnitude>, by divisor: borrowing Self) -> Overflow<Division<Self>> {
+        Overflow(Division(quotient: Self(bitPattern: dividend.low), remainder: Self(bitPattern: dividend.low) & divisor), overflow: divisor == 0)
     }
     
     //=------------------------------------------------------------------------=
@@ -374,7 +374,7 @@ extension BitInt.Magnitude {
     
     @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<UX>) -> T) -> T {
         UMN.withUnsafeTemporaryAllocation(of: UX.self) { pointer in
-            pointer.initialize(to: UX(self.bitPattern))
+            pointer.initialize(to: self.bitPattern == 0 ? 0 : 1)
             
             defer {
                 pointer.deinitialize(count: 1)

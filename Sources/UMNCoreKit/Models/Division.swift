@@ -11,21 +11,37 @@
 // MARK: * UMN x Quo(tient) Rem(ainder)
 //*============================================================================*
 
-@frozen public struct QuoRem<Quotient, Remainder> {
+@frozen public struct Division<Value> where Value: Integer {
     
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    public let quotient:  Quotient
-    public let remainder: Remainder
+    public let quotient:  Value
+    public let remainder: Value
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(quotient: Quotient, remainder: Remainder) {
+    @inlinable public init(quotient: Value, remainder: Value) {
         self.quotient  = quotient
         self.remainder = remainder
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func ceil() -> Overflow<Value> {
+        let instance: Self = consume self
+        let increment = instance.remainder > 0 ?  1 : 0 as Value
+        return (consume instance).quotient.incremented(by: increment)
+    }
+    
+    @inlinable public consuming func floor() -> Overflow<Value> {
+        let instance: Self = consume self
+        let increment = instance.remainder < 0 ? -1 : 0 as Value
+        return (consume instance).quotient.incremented(by: increment)
     }
 }

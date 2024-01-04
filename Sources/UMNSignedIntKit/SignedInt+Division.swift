@@ -27,10 +27,10 @@ extension SignedInt {
         Overflow(sign: self.sign, magnitude: self.magnitude.remainder(divisor: divisor.magnitude))
     }
     
-    @inlinable public consuming func divided(by divisor: borrowing Self) -> Overflow<QuoRem<Self, Self>> {
+    @inlinable public consuming func divided(by divisor: borrowing Self) -> Overflow<Division<Self>> {
         let magnitude = self.magnitude.divided(by: divisor.magnitude)
         let quotient  = Self(sign: self.sign ^ divisor.sign, magnitude: magnitude.value.quotient )
         let remainder = Self(sign: self.sign   /*--------*/, magnitude: magnitude.value.remainder)
-        return Overflow(QuoRem(quotient: quotient, remainder: remainder), overflow: magnitude.overflow)
+        return Overflow(Division(quotient: quotient, remainder: remainder), overflow: magnitude.overflow)
     }
 }

@@ -27,7 +27,7 @@ extension NormalInt {
         fatalError("TODO")
     }
     
-    @inlinable public consuming func divided(by divisor: borrowing Self) -> Overflow<QuoRem<Self, Self>> {
+    @inlinable public consuming func divided(by divisor: borrowing Self) -> Overflow<Division<Self>> {
         fatalError("TODO")
     }
 }

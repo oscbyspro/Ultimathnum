@@ -137,14 +137,14 @@
         return Overflow(Self(result.partialValue), overflow: result.overflow)
     }
     
-    @inlinable public consuming func divided(by divisor: borrowing Self) -> Overflow<QuoRem<Self, Self>> {
+    @inlinable public consuming func divided(by divisor: borrowing Self) -> Overflow<Division<Self>> {
         let quotient  = (copy    self).quotient (divisor: divisor)
         let remainder = (consume self).remainder(divisor: divisor)
         let overflow  = quotient.overflow || remainder.overflow
-        return Overflow(QuoRem(quotient: quotient.value, remainder: remainder.value), overflow: overflow)
+        return Overflow(Division(quotient: quotient.value, remainder: remainder.value), overflow: overflow)
     }
     
-    @inlinable public static func dividing(_ dividend: consuming FullWidth<Self, Magnitude>, by divisor: borrowing Self) -> Overflow<QuoRem<Self, Self>> {
+    @inlinable public static func dividing(_ dividend: consuming FullWidth<Self, Magnitude>, by divisor: borrowing Self) -> Overflow<Division<Self>> {
         fatalError("TOOD")
     }
     
