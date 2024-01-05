@@ -20,23 +20,33 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func addition<T: Integer>(
-    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
-    file: StaticString = #file, line: UInt = #line) {
-        self.additionAsSomeInteger(lhs, rhs, value, overflow, file: file, line: line)
-    }
-    
     public static func addition<T: SystemInteger>(
     _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
     file: StaticString = #file, line: UInt = #line) {
         self.additionAsSomeSystemInteger(lhs, rhs, value, overflow, file: file, line: line)
     }
     
+    public static func addition<T: Integer>(
+    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
+    file: StaticString = #file, line: UInt = #line) {
+        self.additionAsSomeInteger(lhs, rhs, value, overflow, file: file, line: line)
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func additionAsSomeInteger<T: Integer>(
+    private static func additionAsSomeSystemInteger<T: SystemInteger>(
+    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
+    file: StaticString = #file, line: UInt = #line) {
+        //=--------------------------------------=
+        XCTAssertEqual(lhs &+ rhs, value, file: file, line: line)
+        XCTAssertEqual(rhs &+ lhs, value, file: file, line: line)
+        //=--------------------------------------=
+        Test.additionAsSomeInteger(lhs, rhs, value, overflow, file: file, line: line)
+    }
+    
+    private static func additionAsSomeInteger<T: Integer>(
     _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
     file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
@@ -46,18 +56,8 @@ extension Test {
         }
         //=--------------------------------------=
         XCTAssertEqual(lhs.incremented(by: rhs).value,    value,    file: file, line: line)
-        XCTAssertEqual(rhs.incremented(by: lhs).value,    value,    file: file, line: line)
         XCTAssertEqual(lhs.incremented(by: rhs).overflow, overflow, file: file, line: line)
+        XCTAssertEqual(rhs.incremented(by: lhs).value,    value,    file: file, line: line)
         XCTAssertEqual(rhs.incremented(by: lhs).overflow, overflow, file: file, line: line)
-    }
-    
-    public static func additionAsSomeSystemInteger<T: SystemInteger>(
-    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
-    file: StaticString = #file, line: UInt = #line) {
-        //=--------------------------------------=
-        XCTAssertEqual(lhs &+ rhs, value, file: file, line: line)
-        XCTAssertEqual(rhs &+ lhs, value, file: file, line: line)
-        //=--------------------------------------=
-        Test.additionAsSomeInteger(lhs, rhs, value, overflow, file: file, line: line)
     }
 }
