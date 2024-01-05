@@ -97,7 +97,7 @@
     
     @inlinable public consuming func negated() -> Overflow<Self> {
         let result = (~self).incremented(by: 1)
-        return Overflow(result.value, overflow: result.overflow != Self.isSigned)
+        return Overflow(result.value, overflow: result.overflow == Self.isSigned)
     }
     
     @inlinable public consuming func decremented(by decrement: borrowing Self) -> Overflow<Self> {
