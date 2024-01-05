@@ -85,11 +85,11 @@ let package = Package(
         
         .testTarget(
         name: "UMNDoubleIntKitBenchmarks",
-        dependencies: ["UMNDoubleIntKit"]),
+        dependencies: ["UMNDoubleIntKit", "UMNTestKit"]),
         
         .testTarget(
         name: "UMNDoubleIntKitTests",
-        dependencies: ["UMNDoubleIntKit"]),
+        dependencies: ["UMNDoubleIntKit", "UMNTestKit"]),
         //=--------------------------------------=
         // UMN x Normal Int Kit
         //=--------------------------------------=
@@ -99,11 +99,11 @@ let package = Package(
         
         .testTarget(
         name: "UMNNormalIntKitBenchmarks",
-        dependencies: ["UMNNormalIntKit"]),
+        dependencies: ["UMNNormalIntKit", "UMNTestKit"]),
         
         .testTarget(
         name: "UMNNormalIntKitTests",
-        dependencies: ["UMNNormalIntKit"]),
+        dependencies: ["UMNNormalIntKit", "UMNTestKit"]),
         //=--------------------------------------=
         // UMN x Signed Int Kit
         //=--------------------------------------=
@@ -113,10 +113,16 @@ let package = Package(
         
         .testTarget(
         name: "UMNSignedIntKitBenchmarks",
-        dependencies: ["UMNSignedIntKit"]),
+        dependencies: ["UMNSignedIntKit", "UMNTestKit"]),
         
         .testTarget(
         name: "UMNSignedIntKitTests",
-        dependencies: ["UMNSignedIntKit"]),
+        dependencies: ["UMNSignedIntKit", "UMNTestKit"]),
+        //=--------------------------------------=
+        // UMN x Test Kit
+        //=--------------------------------------=
+        .target(
+        name: "UMNTestKit",
+        dependencies: ["UMNCoreKit"]),
     ]
 )
