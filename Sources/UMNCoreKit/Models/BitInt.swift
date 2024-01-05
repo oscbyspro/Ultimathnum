@@ -190,7 +190,7 @@ extension BitInt {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Shifts
+    // MARK: Transformations x Shift
     //=------------------------------------------------------------------------=
     
     @inlinable public static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
@@ -210,7 +210,7 @@ extension BitInt {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities x Comparisons
+    // MARK: Utilities x Comparison
     //=------------------------------------------------------------------------=
     
     @inlinable public func compared(to other: Self) -> Signum {
@@ -333,7 +333,7 @@ extension BitInt.Magnitude {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Shifts
+    // MARK: Transformations x Shift
     //=------------------------------------------------------------------------=
     
     @inlinable public static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
@@ -353,7 +353,7 @@ extension BitInt.Magnitude {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities x Comparisons
+    // MARK: Utilities x Comparison
     //=------------------------------------------------------------------------=
     
     @inlinable public func compared(to other: Self) -> Signum {

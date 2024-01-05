@@ -169,7 +169,7 @@
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Shifts
+    // MARK: Transformations x Shift
     //=------------------------------------------------------------------------=
     
     @inlinable public static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
@@ -189,7 +189,7 @@
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities x Comparisons
+    // MARK: Utilities x Comparison
     //=------------------------------------------------------------------------=
     
     @inlinable public func compared(to other: Self) -> Signum {

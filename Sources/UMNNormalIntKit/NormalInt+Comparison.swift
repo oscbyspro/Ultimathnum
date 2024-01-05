@@ -10,7 +10,7 @@
 import UMNCoreKit
 
 //*============================================================================*
-// MARK: * Normal Int x Comparisons
+// MARK: * Normal Int x Comparison
 //*============================================================================*
 
 extension NormalInt {

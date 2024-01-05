@@ -70,7 +70,7 @@ public protocol Integer: Comparable, Hashable, ExpressibleByIntegerLiteral, Send
     @inlinable consuming func divided(by divisor: borrowing Self) -> Overflow<Division<Self>>
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities x Comparisons
+    // MARK: Utilities x Comparison
     //=------------------------------------------------------------------------=
         
     @inlinable borrowing func compared(to other: borrowing Self) -> Signum
@@ -155,7 +155,7 @@ extension Integer {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities x Comparisons
+    // MARK: Utilities x Comparison
     //=------------------------------------------------------------------------=
     
     @inlinable borrowing public func signum() -> Signum {

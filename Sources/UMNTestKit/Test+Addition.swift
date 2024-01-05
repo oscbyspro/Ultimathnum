@@ -33,7 +33,7 @@ extension Test {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Utilities x Private
     //=------------------------------------------------------------------------=
     
     private static func additionAsSomeSystemInteger<T: SystemInteger>(

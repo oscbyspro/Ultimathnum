@@ -65,7 +65,7 @@ Magnitude: UnsignedInteger & SystemInteger, Magnitude.BitPattern == BitPattern {
     @inlinable static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Shifts
+    // MARK: Transformations x Shift
     //=------------------------------------------------------------------------=
     
     @inlinable static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self

@@ -11,6 +11,7 @@
 // MARK: * Signum
 //*============================================================================*
 
+/// A comparison result represented by `-1` (less), `0` (same) or `1` (more).
 @frozen public enum Signum: Comparable, ExpressibleByIntegerLiteral, Hashable, Sendable {
     
     //=------------------------------------------------------------------------=
