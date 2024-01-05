@@ -28,7 +28,7 @@ extension Test {
     // MARK: Utilities x Private
     //=------------------------------------------------------------------------=
     
-    private static func comparisonAsSomeInteger<T: Integer>(_ lhs: T, _ rhs: T, _ expectation: Signum, file: StaticString = #file, line: UInt = #line) {
+    private static func comparisonAsSomeInteger<T: Integer>(_ lhs: T, _ rhs: T, _ expectation: Signum, file: StaticString, line: UInt) {
         for (lhs,  rhs, expectation) in [(lhs, rhs, expectation), (rhs, lhs, expectation.negated())] {
             signum: do {
                 let result:  Signum = lhs.compared(to:  rhs)

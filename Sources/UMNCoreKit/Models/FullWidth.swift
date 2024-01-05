@@ -11,7 +11,7 @@
 // MARK: * Full Width
 //*============================================================================*
 
-@frozen public struct FullWidth<High, Low> {
+@frozen public struct FullWidth<High: Integer, Low: UnsignedInteger>: Equatable {
     
     //=------------------------------------------------------------------------=
     // MARK: State

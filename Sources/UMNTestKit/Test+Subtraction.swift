@@ -37,8 +37,7 @@ extension Test {
     //=------------------------------------------------------------------------=
     
     private static func subtractionAsSomeSystemInteger<T: SystemInteger>(
-    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
-    file: StaticString = #file, line: UInt = #line) {
+    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
         XCTAssertEqual(lhs &- rhs, value, file: file, line: line)
         //=--------------------------------------=
@@ -46,8 +45,7 @@ extension Test {
     }
     
     private static func subtractionAsSomeInteger<T: Integer>(
-    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
-    file: StaticString = #file, line: UInt = #line) {
+    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
         if !overflow {
             XCTAssertEqual(lhs - rhs, value, file: file, line: line)
@@ -62,8 +60,7 @@ extension Test {
     }
     
     private static func subtractionByNegationAsSomeInteger<T: Integer>(
-    _ operand: T, _ value: T, _ overflow: Bool = false,
-    file: StaticString = #file, line: UInt = #line) {
+    _ operand: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=------------------------------------------=
         if !overflow {
             XCTAssertEqual(-operand, value, file: file, line: line)
