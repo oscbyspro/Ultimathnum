@@ -71,11 +71,11 @@ let package = Package(
         
         .testTarget(
         name: "UMNCoreKitBenchmarks",
-        dependencies: ["UMNCoreKit"]),
+        dependencies: ["UMNCoreKit", "UMNTestKit"]),
         
         .testTarget(
         name: "UMNCoreKitTests",
-        dependencies: ["UMNCoreKit"]),
+        dependencies: ["UMNCoreKit", "UMNTestKit"]),
         //=--------------------------------------=
         // UMN x Double Int Kit
         //=--------------------------------------=

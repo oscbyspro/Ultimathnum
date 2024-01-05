@@ -1,0 +1,63 @@
+//=----------------------------------------------------------------------------=
+// This source file is part of the Ultimathnum open source project.
+//
+// Copyright (c) 2023 Oscar Byström Ericsson
+// Licensed under Apache License, Version 2.0
+//
+// See http://www.apache.org/licenses/LICENSE-2.0 for license information.
+//=----------------------------------------------------------------------------=
+
+import UMNCoreKit
+import XCTest
+
+//*============================================================================*
+// MARK: * Tests x Addition
+//*============================================================================*
+
+extension Test {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    public static func addition<T: Integer>(
+    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
+    file: StaticString = #file, line: UInt = #line) {
+        self.additionAsSomeInteger(lhs, rhs, value, overflow, file: file, line: line)
+    }
+    
+    public static func addition<T: SystemInteger>(
+    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
+    file: StaticString = #file, line: UInt = #line) {
+        self.additionAsSomeSystemInteger(lhs, rhs, value, overflow, file: file, line: line)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    public static func additionAsSomeInteger<T: Integer>(
+    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
+    file: StaticString = #file, line: UInt = #line) {
+        //=--------------------------------------=
+        if !overflow {
+            XCTAssertEqual(lhs + rhs, value, file: file, line: line)
+            XCTAssertEqual(rhs + lhs, value, file: file, line: line)
+        }
+        //=--------------------------------------=
+        XCTAssertEqual(lhs.incremented(by: rhs).value,    value,    file: file, line: line)
+        XCTAssertEqual(rhs.incremented(by: lhs).value,    value,    file: file, line: line)
+        XCTAssertEqual(lhs.incremented(by: rhs).overflow, overflow, file: file, line: line)
+        XCTAssertEqual(rhs.incremented(by: lhs).overflow, overflow, file: file, line: line)
+    }
+    
+    public static func additionAsSomeSystemInteger<T: SystemInteger>(
+    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
+    file: StaticString = #file, line: UInt = #line) {
+        //=--------------------------------------=
+        XCTAssertEqual(lhs &+ rhs, value, file: file, line: line)
+        XCTAssertEqual(rhs &+ lhs, value, file: file, line: line)
+        //=--------------------------------------=
+        Test.additionAsSomeInteger(lhs, rhs, value, overflow, file: file, line: line)
+    }
+}
