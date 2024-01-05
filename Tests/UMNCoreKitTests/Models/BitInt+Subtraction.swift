@@ -12,7 +12,7 @@ import UMNTestKit
 import XCTest
 
 //*============================================================================*
-// MARK: * UMN x Bit Int x Subtraction
+// MARK: * Bit Int x Subtraction
 //*============================================================================*
 
 extension BitIntTests {

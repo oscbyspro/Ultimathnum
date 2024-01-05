@@ -11,7 +11,7 @@ import UMNCoreKit
 import XCTest
 
 //*============================================================================*
-// MARK: * UMN x Core Int x Logic
+// MARK: * Core Int x Logic
 //*============================================================================*
 
 extension CoreIntTests {

@@ -11,7 +11,7 @@ import UMNCoreKit
 import XCTest
 
 //*============================================================================*
-// MARK: * UMN x Signum
+// MARK: * Signum
 //*============================================================================*
 
 final class SignumTests: XCTestCase {

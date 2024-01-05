@@ -4,39 +4,47 @@ A number overhaul in Swift.
 
 ## Table of Contents
 
-* [UMNCoreKit](#umncorekit)
-* [UMNDoubleIntKit](#umndoubleintkit)
-* [UMNNormalIntKit](#umnnormalintkit)
-* [UMNSignedIntKit](#umnsignedintkit)
+* [UMNCoreKit](#corekit)
+* [UMNDoubleIntKit](#doubleintkit)
+* [UMNNormalIntKit](#normalintkit)
+* [UMNSignedIntKit](#signedintkit)
 * [Installation](#installation)
 
-<a name="umncorekit"/>
+<a name="corekit"/>
 
 ## UMNCoreKit ([Sources][CORE/S], [Tests][CORE/T], [Benchmarks][CORE/B])
 
 > [!IMPORTANT]
 > It's a work in progress.
 
-<a name="umndoubleintkit"/>
+<a name="doubleintkit"/>
 
 ## UMNDoubleIntKit ([Sources][DOUBLE/S], [Tests][DOUBLE/T], [Benchmarks][DOUBLE/B])
 
 > [!IMPORTANT]
 > It's a work in progress.
 
-<a name="umnnormalintkit"/>
+<a name="normalintkit"/>
 
 ## UMNNormalIntKit ([Sources][NORMAL/S], [Tests][NORMAL/T], [Benchmarks][NORMAL/B])
 
 > [!IMPORTANT]
 > It's a work in progress.
 
-<a name="umnsignedintkit"/>
+<a name="signedintkit"/>
 
 ## UMNSignedIntKit ([Sources][SIGNED/S], [Tests][SIGNED/T], [Benchmarks][SIGNED/B])
 
 > [!IMPORTANT]
 > It's a work in progress.
+
+<a name="installation"/>
+
+## Installation
+
+> [!IMPORTANT]
+> It's a work in progress.
+
 
 <!-- Links -->
 

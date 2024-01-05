@@ -11,7 +11,7 @@ import UMNCoreKit
 import XCTest
 
 //*============================================================================*
-// MARK: * Tests x Subtraction
+// MARK: * Test x Subtraction
 //*============================================================================*
 
 extension Test {

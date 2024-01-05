@@ -11,7 +11,7 @@ import UMNCoreKit
 import XCTest
 
 //*============================================================================*
-// MARK: * UMN x Core Int
+// MARK: * Core Int
 //*============================================================================*
 
 final class CoreIntTests: XCTestCase {

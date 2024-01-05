@@ -10,7 +10,7 @@
 import UMNCoreKit
 
 //*============================================================================*
-// MARK: * UMN x Signed Int x Comparisons
+// MARK: * Signed Int x Comparisons
 //*============================================================================*
 
 extension SignedInt {

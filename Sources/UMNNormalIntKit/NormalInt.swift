@@ -10,7 +10,7 @@
 import UMNCoreKit
 
 //*============================================================================*
-// MARK: * UMN x Normal Int
+// MARK: * Normal Int
 //*============================================================================*
 
 @frozen public struct NormalInt: UnsignedInteger & BinaryInteger {

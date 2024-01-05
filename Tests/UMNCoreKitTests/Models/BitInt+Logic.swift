@@ -11,7 +11,7 @@ import UMNCoreKit
 import XCTest
 
 //*============================================================================*
-// MARK: * UMN x Bit Int x Logic
+// MARK: * Bit Int x Logic
 //*============================================================================*
 
 extension BitIntTests {

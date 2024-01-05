@@ -10,7 +10,7 @@
 import UMNCoreKit
 
 //*============================================================================*
-// MARK: * UMN x Signed Int
+// MARK: * Signed Int
 //*============================================================================*
 
 @frozen public struct SignedInt<Magnitude>: SignedInteger where Magnitude: BinaryInteger & UnsignedInteger {
@@ -66,7 +66,7 @@ import UMNCoreKit
 }
 
 //*============================================================================*
-// MARK: * UMN x Signed x Aliases
+// MARK: * Signed x Aliases
 //*============================================================================*
 
 /// A signed integer with a pointer-bit magnitude.

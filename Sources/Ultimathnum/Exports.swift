@@ -8,9 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * UMN x Exports
+// MARK: * Exports
 //*============================================================================*
 
 @_exported import UMNCoreKit
 @_exported import UMNDoubleIntKit
 @_exported import UMNNormalIntKit
+@_exported import UMNSignedIntKit

@@ -12,7 +12,7 @@ import UMNTestKit
 import XCTest
 
 //*============================================================================*
-// MARK: * UMN x Core Int x Addition
+// MARK: * Core Int x Addition
 //*============================================================================*
 
 extension CoreIntTests {

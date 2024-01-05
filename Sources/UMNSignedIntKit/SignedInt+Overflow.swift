@@ -10,7 +10,7 @@
 import UMNCoreKit
 
 //*============================================================================*
-// MARK: * UMN x Signed Int x Overflow
+// MARK: * Signed Int x Overflow
 //*============================================================================*
 
 extension Overflow {
