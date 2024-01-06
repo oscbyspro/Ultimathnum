@@ -15,13 +15,9 @@
 ///
 /// ### Bit Width
 ///
-/// Non-power-of-two-bit-width integers are banned.
+/// Non-power-of-two-bit-width integers are banned. Keep it simple.
 ///
 /// - Requires: Its bit width must be a power of two.
-///
-/// ### Endianess
-///
-/// - Requires: It must match the platform's endianess.
 ///
 /// ### Magnitude
 ///
@@ -30,12 +26,6 @@
 /// the minimum signed value's magnitude.
 ///
 /// - Requires: Its magnitude must be unsigned and the same size as this type.
-///
-/// ### Storage
-///
-/// Its bit pattern must be its value. It may not contain any indirection.
-///
-/// - Requires: Its storage must be trivial.
 ///
 public protocol SystemInteger: BinaryInteger, BitCastable where
 Magnitude: UnsignedInteger & SystemInteger, Magnitude.BitPattern == BitPattern {
