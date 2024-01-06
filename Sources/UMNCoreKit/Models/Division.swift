@@ -11,7 +11,7 @@
 // MARK: * Quo(tient) Rem(ainder)
 //*============================================================================*
 
-@frozen public struct Division<Value> where Value: Integer {
+@frozen public struct Division<Value>: Equatable where Value: Integer {
     
     //=------------------------------------------------------------------------=
     // MARK: State
