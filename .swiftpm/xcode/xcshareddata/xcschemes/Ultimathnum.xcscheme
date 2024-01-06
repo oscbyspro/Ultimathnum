@@ -42,20 +42,6 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "UMNCoreKitBenchmarks"
-               BuildableName = "UMNCoreKitBenchmarks"
-               BlueprintName = "UMNCoreKitBenchmarks"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "UMNCoreKitTests"
                BuildableName = "UMNCoreKitTests"
                BlueprintName = "UMNCoreKitTests"
@@ -73,20 +59,6 @@
                BlueprintIdentifier = "UMNDoubleIntKit"
                BuildableName = "UMNDoubleIntKit"
                BlueprintName = "UMNDoubleIntKit"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "UMNDoubleIntKitBenchmarks"
-               BuildableName = "UMNDoubleIntKitBenchmarks"
-               BlueprintName = "UMNDoubleIntKitBenchmarks"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -126,20 +98,6 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "UMNNormalIntKitBenchmarks"
-               BuildableName = "UMNNormalIntKitBenchmarks"
-               BlueprintName = "UMNNormalIntKitBenchmarks"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "UMNNormalIntKitTests"
                BuildableName = "UMNNormalIntKitTests"
                BlueprintName = "UMNNormalIntKitTests"
@@ -168,20 +126,6 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "UMNSignedIntKitBenchmarks"
-               BuildableName = "UMNSignedIntKitBenchmarks"
-               BlueprintName = "UMNSignedIntKitBenchmarks"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "UMNSignedIntKitTests"
                BuildableName = "UMNSignedIntKitTests"
                BlueprintName = "UMNSignedIntKitTests"
@@ -197,10 +141,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:.swiftpm/xcode/xcshareddata/xctestplans/Ultimathnum-Benchmarks.xctestplan">
-         </TestPlanReference>
-         <TestPlanReference
-            reference = "container:.swiftpm/xcode/xcshareddata/xctestplans/Ultimathnum-Tests.xctestplan"
+            reference = "container:.swiftpm/xcode/xcshareddata/xctestplans/Ultimathnum.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>

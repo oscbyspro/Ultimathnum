@@ -12,28 +12,28 @@ A number overhaul in Swift.
 
 <a name="corekit"/>
 
-## UMNCoreKit ([Sources][CORE/S], [Tests][CORE/T], [Benchmarks][CORE/B])
+## UMNCoreKit ([Sources][CORE/S], [Tests][CORE/T])
 
 > [!IMPORTANT]
 > It's a work in progress.
 
 <a name="doubleintkit"/>
 
-## UMNDoubleIntKit ([Sources][DOUBLE/S], [Tests][DOUBLE/T], [Benchmarks][DOUBLE/B])
+## UMNDoubleIntKit ([Sources][DOUBLE/S], [Tests][DOUBLE/T])
 
 > [!IMPORTANT]
 > It's a work in progress.
 
 <a name="normalintkit"/>
 
-## UMNNormalIntKit ([Sources][NORMAL/S], [Tests][NORMAL/T], [Benchmarks][NORMAL/B])
+## UMNNormalIntKit ([Sources][NORMAL/S], [Tests][NORMAL/T])
 
 > [!IMPORTANT]
 > It's a work in progress.
 
 <a name="signedintkit"/>
 
-## UMNSignedIntKit ([Sources][SIGNED/S], [Tests][SIGNED/T], [Benchmarks][SIGNED/B])
+## UMNSignedIntKit ([Sources][SIGNED/S], [Tests][SIGNED/T])
 
 > [!IMPORTANT]
 > It's a work in progress.
@@ -57,8 +57,3 @@ A number overhaul in Swift.
 [DOUBLE/T]: Tests/UMNDoubleIntKitTests
 [NORMAL/T]: Tests/UMNNormalIntKitTests
 [SIGNED/T]: Tests/UMNSignedIntKitTests
-
-[CORE/B]:   Tests/UMNCoreKitBenchmarks
-[DOUBLE/B]: Tests/UMNDoubleIntKitBenchmarks
-[NORMAL/B]: Tests/UMNNormalIntKitBenchmarks
-[SIGNED/B]: Tests/UMNSignedIntKitBenchmarks
