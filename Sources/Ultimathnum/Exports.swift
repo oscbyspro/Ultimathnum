@@ -13,5 +13,6 @@
 
 @_exported import UMNCoreKit
 @_exported import UMNDoubleIntKit
+@_exported import UMNModelsKit
 @_exported import UMNNormalIntKit
 @_exported import UMNSignedIntKit

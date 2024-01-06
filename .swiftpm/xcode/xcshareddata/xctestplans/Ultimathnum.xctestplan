@@ -67,6 +67,13 @@
         "identifier" : "UMNSignedIntKitTests",
         "name" : "UMNSignedIntKitTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "UMNModelsKitTests",
+        "name" : "UMNModelsKitTests"
+      }
     }
   ],
   "version" : 1

@@ -7,6 +7,8 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import UMNCoreKit
+
 //*============================================================================*
 // MARK: * Fibonacci
 //*============================================================================*
@@ -65,7 +67,7 @@
     /// Creates the sequence pair at the given `index`.
     @inlinable public init(_ index: Value) {
         index.withUnsafeBufferPointer {
-            for bit: BitInt.Magnitude in ChunkedInt(normalizing: $0, isSigned: false).reversed() {
+            for bit: BitInt.Magnitude in Chunked(normalizing: $0, isSigned: false).reversed() {
                 
                 self.double()
                 
