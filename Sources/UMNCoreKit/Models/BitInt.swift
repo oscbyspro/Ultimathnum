@@ -166,7 +166,10 @@ extension BitInt {
     }
     
     @inlinable public static func dividing(_ dividend: consuming FullWidth<Self, Magnitude>, by divisor: borrowing Self) -> Overflow<Division<Self>> {
-        Overflow(Division(quotient: Self(bitPattern: dividend.low), remainder: Self(bitPattern: dividend.low) & divisor), overflow: divisor == 0)
+        let quotient  = Self(bitPattern: dividend.low)
+        let remainder = Self(bitPattern: dividend.low) &  ~(copy divisor)
+        let overflow  = divisor == 0 || (dividend.low) == 0 && dividend.high == -1
+        return Overflow(Division(quotient: quotient, remainder: remainder), overflow: overflow)
     }
     
     //=------------------------------------------------------------------------=
@@ -297,7 +300,7 @@ extension BitInt.Magnitude {
     // MARK: Transformations x Division
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func quotient(divisor: borrowing Self) -> Overflow<Self> {
+    @inlinable public consuming func quotient (divisor: borrowing Self) -> Overflow<Self> {
         Overflow(self, overflow: divisor == 0)
     }
     
@@ -310,7 +313,10 @@ extension BitInt.Magnitude {
     }
     
     @inlinable public static func dividing(_ dividend: consuming FullWidth<Self, Magnitude>, by divisor: borrowing Self) -> Overflow<Division<Self>> {
-        Overflow(Division(quotient: Self(bitPattern: dividend.low), remainder: Self(bitPattern: dividend.low) & divisor), overflow: divisor == 0)
+        let quotient  = Self(bitPattern: dividend.low)
+        let remainder = Self(bitPattern: dividend.low) &  ~(copy divisor)
+        let overflow  = divisor == 0 ||  dividend.high == 1
+        return Overflow(Division(quotient: quotient, remainder: remainder), overflow: overflow)
     }
     
     //=------------------------------------------------------------------------=

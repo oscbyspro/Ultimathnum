@@ -40,4 +40,36 @@ extension BitIntTests {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }
+    
+    func testDivision21() {
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
+            typealias X2 = FullWidth<T, T.Magnitude>
+            
+            Test.division(X2(low: 0, high:  0),  0 as T,  0 as T,  0 as T, (true,  true )) //  0 vs  0
+            Test.division(X2(low: 1, high:  0),  0 as T, -1 as T, -1 as T, (true,  true )) //  1 vs  0
+            Test.division(X2(low: 0, high: -1),  0 as T,  0 as T,  0 as T, (true,  true )) // -2 vs  0
+            Test.division(X2(low: 1, high: -1),  0 as T, -1 as T, -1 as T, (true,  true )) // -1 vs  0
+            Test.division(X2(low: 0, high:  0), -1 as T,  0 as T,  0 as T, (false, false)) //  0 vs -1
+            Test.division(X2(low: 1, high:  0), -1 as T, -1 as T,  0 as T, (false, false)) //  1 vs -1
+            Test.division(X2(low: 0, high: -1), -1 as T,  0 as T,  0 as T, (true,  false)) // -2 vs -1
+            Test.division(X2(low: 1, high: -1), -1 as T, -1 as T,  0 as T, (false, false)) // -1 vs -1
+        }
+        
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
+            typealias X2 = FullWidth<T, T.Magnitude>
+            
+            Test.division(X2(low: 0, high:  0),  0 as T,  0 as T,  0 as T, (true,  true )) //  0 vs  0
+            Test.division(X2(low: 1, high:  0),  0 as T,  1 as T,  1 as T, (true,  true )) //  1 vs  0
+            Test.division(X2(low: 0, high:  1),  0 as T,  0 as T,  0 as T, (true,  true )) //  2 vs  0
+            Test.division(X2(low: 1, high:  1),  0 as T,  1 as T,  1 as T, (true,  true )) //  3 vs  0
+            Test.division(X2(low: 0, high:  0),  1 as T,  0 as T,  0 as T, (false, false)) //  0 vs  1
+            Test.division(X2(low: 1, high:  0),  1 as T,  1 as T,  0 as T, (false, false)) //  1 vs  1
+            Test.division(X2(low: 0, high:  1),  1 as T,  0 as T,  0 as T, (true,  false)) //  2 vs  1
+            Test.division(X2(low: 1, high:  1),  1 as T,  1 as T,  0 as T, (true,  false)) //  3 vs  1
+        }
+        
+        for type in Self.types {
+            type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
+        }
+    }
 }
