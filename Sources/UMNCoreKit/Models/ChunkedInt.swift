@@ -200,7 +200,7 @@ extension ChunkedInt.Minor {
     }
     
     @inlinable static func element(_ index: Int, base: Base, sign: Element) -> Element {
-        precondition(index >= 0 as Int, UMN.callsiteOutOfBoundsInfo())
+        precondition(index >= 0 as Int, .overstep())
         let  (quotient, remainder) = index.quotientAndRemainder(dividingBy: self.ratio)
         guard quotient < base.count else { return sign }
         let major: Base.Element = base[base.index(base.startIndex, offsetBy: quotient)]

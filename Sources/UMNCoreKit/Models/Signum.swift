@@ -31,7 +31,7 @@
         case -1: .less
         case  0: .same
         case  1: .more
-        default: fatalError(UMN.callsiteOverflowInfo())
+        default: fatalError(.overflow())
         }
     }
     

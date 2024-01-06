@@ -35,7 +35,7 @@
         }   else if integerLiteral == 1 {
             self.base = true
         }   else {
-            fatalError(UMN.callsiteOverflowInfo())
+            fatalError(.overflow())
         }
     }
     

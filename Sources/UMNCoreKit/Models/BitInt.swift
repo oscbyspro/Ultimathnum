@@ -44,7 +44,7 @@
         }   else if integerLiteral == -1 {
             self.bitPattern = 1
         }   else {
-            fatalError(UMN.callsiteOverflowInfo())
+            fatalError(.overflow())
         }
     }
     
@@ -93,7 +93,7 @@
             }   else if integerLiteral == 1 {
                 self.bitPattern = 1
             }   else {
-                fatalError(UMN.callsiteOverflowInfo())
+                fatalError(.overflow())
             }
         }
     }
