@@ -230,8 +230,9 @@ extension BitInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<UX>) -> T) -> T {
-        UMN.withUnsafeTemporaryAllocation(of: UX.self) { pointer in
-            pointer.initialize(to: UX(repeating: self.bitPattern))
+        let bit = (consume self).bitPattern as Bit as Bit as Bit as Bit
+        return UMN.withUnsafeTemporaryAllocation(of: UX.self) { pointer in
+            pointer.initialize(to: UX(repeating: bit))
             
             defer {
                 pointer.deinitialize(count: 1)
@@ -373,8 +374,9 @@ extension BitInt.Magnitude {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<UX>) -> T) -> T {
-        UMN.withUnsafeTemporaryAllocation(of: UX.self) { pointer in
-            pointer.initialize(to: self.bitPattern == 0 ? 0 : 1)
+        let bit = (consume self).bitPattern as Bit as Bit as Bit as Bit
+        return UMN.withUnsafeTemporaryAllocation(of: UX.self) { pointer in
+            pointer.initialize(to: bit == 0 ? 0 : 1)
             
             defer {
                 pointer.deinitialize(count: 1)

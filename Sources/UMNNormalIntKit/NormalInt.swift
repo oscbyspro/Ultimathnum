@@ -35,10 +35,6 @@ import UMNCoreKit
     // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable public var magnitude: Self {
-        consuming get { self }
-    }
-    
     @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<UX>) -> T) -> T {
         switch self.storage {
         case let .some(x): x.withUnsafeBufferPointer(body)
