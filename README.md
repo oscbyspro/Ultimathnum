@@ -5,42 +5,49 @@ A number overhaul in Swift.
 ## Table of Contents
 
 * [UMNCoreKit](#corekit)
+* [UMNModelsKit](#modelskit)
+* [UMNBitIntKit](#bitintkit)
 * [UMNDoubleIntKit](#doubleintkit)
 * [UMNNormalIntKit](#normalintkit)
 * [UMNSignedIntKit](#signedintkit)
 * [Installation](#installation)
 
-<a name="corekit"/>
+<a name="bitintkit"/>
 
-## UMNCoreKit ([Sources][CORE/S], [Tests][CORE/T])
+## UMNCoreKit
+
+> [!IMPORTANT]
+> It's a work in progress.
+
+<a name="modelskit"/>
+
+## UMNModelsKit
+
+> [!IMPORTANT]
+> It's a work in progress.
+
+<a name="normalintkit"/>
+
+## UMNBitIntKit
 
 > [!IMPORTANT]
 > It's a work in progress.
 
 <a name="doubleintkit"/>
 
-## UMNDoubleIntKit ([Sources][DOUBLE/S], [Tests][DOUBLE/T])
+## UMNDoubleIntKit
 
 > [!IMPORTANT]
 > It's a work in progress.
 
-<a name="normalintkit"/>
-
-## UMNModelsKit ([Sources][MODELS/S], [Tests][MODELS/T])
-
-> [!IMPORTANT]
-> It's a work in progress.
-
-<a name="normalintkit"/>
-
-## UMNNormalIntKit ([Sources][NORMAL/S], [Tests][NORMAL/T])
+## UMNNormalIntKit
 
 > [!IMPORTANT]
 > It's a work in progress.
 
 <a name="signedintkit"/>
 
-## UMNSignedIntKit ([Sources][SIGNED/S], [Tests][SIGNED/T])
+## UMNSignedIntKit
 
 > [!IMPORTANT]
 > It's a work in progress.
@@ -51,18 +58,3 @@ A number overhaul in Swift.
 
 > [!IMPORTANT]
 > It's a work in progress.
-
-
-<!-- Links -->
-
-[CORE/S]:   Sources/UMNCoreKit
-[DOUBLE/S]: Sources/UMNDoubleIntKit
-[MODELS/S]: Sources/UMNModelsKit
-[NORMAL/S]: Sources/UMNNormalIntKit
-[SIGNED/S]: Sources/UMNSignedIntKit
-
-[CORE/T]:   Tests/UMNCoreKitTests
-[DOUBLE/T]: Tests/UMNDoubleIntKitTests
-[MODELS/T]: Tests/UMNModelsKitTests
-[NORMAL/T]: Tests/UMNNormalIntKitTests
-[SIGNED/T]: Tests/UMNSignedIntKitTests
