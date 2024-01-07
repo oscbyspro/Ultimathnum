@@ -19,16 +19,16 @@ extension BitInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<UX>) -> T) -> T {
-        let bit = (consume self).bitPattern as Bit as Bit as Bit as Bit
-        return UMN.withUnsafeTemporaryAllocation(of: UX.self) { pointer in
-            pointer.initialize(to: UX(repeating: bit))
-            
+    @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<Word>) throws -> T) rethrows -> T {
+        let bit: Bit = (consume self).bitPattern
+        return try UMN.withUnsafeTemporaryAllocation(of: Word.self) { pointer in
+            pointer.initialize(to: Word(bitPattern: bit == 0 ? 0 : ~0))
+
             defer {
                 pointer.deinitialize(count: 1)
             }
             
-            return body(UnsafeBufferPointer(start: pointer, count: 1))
+            return try body(UnsafeBufferPointer(start: pointer, count: 1))
         }
     }
 }
@@ -43,16 +43,16 @@ extension BitInt.Magnitude {
     // MARK: Utilities x Words
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<UX>) -> T) -> T {
-        let bit = (consume self).bitPattern as Bit as Bit as Bit as Bit
-        return UMN.withUnsafeTemporaryAllocation(of: UX.self) { pointer in
-            pointer.initialize(to: bit == 0 ? 0 : 1)
+    @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<Word>) throws -> T) rethrows -> T {
+        let bit: Bit = (consume self).bitPattern
+        return try UMN.withUnsafeTemporaryAllocation(of: Word.self) { pointer in
+            pointer.initialize(to: Word(bitPattern: bit == 0 ? 0 :  1))
             
             defer {
                 pointer.deinitialize(count: 1)
             }
             
-            return body(UnsafeBufferPointer(start: pointer, count: 1))
+            return try body(UnsafeBufferPointer(start: pointer, count: 1))
         }
     }
 }

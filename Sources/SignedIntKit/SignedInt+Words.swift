@@ -19,7 +19,7 @@ extension SignedInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<UX>) -> T) -> T {
+    @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<Word>) throws -> T) rethrows -> T {
         fatalError("TODO")
     }
 }

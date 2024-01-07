@@ -14,9 +14,7 @@ import CoreKit
 //*============================================================================*
 
 @frozen public struct NormalInt: UnsignedInteger & BinaryInteger {
-    
-    @usableFromInline typealias Element = UX
-    
+        
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
@@ -35,10 +33,10 @@ import CoreKit
     // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<UX>) -> T) -> T {
+    @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<Word>) throws -> T) rethrows -> T {
         switch self.storage {
-        case let .some(x): x.withUnsafeBufferPointer(body)
-        case let .many(x): x.withUnsafeBufferPointer(body) }
+        case let .some(x): try x.withUnsafeBufferPointer(body)
+        case let .many(x): try x.withUnsafeBufferPointer(body) }
     }
     
     //*========================================================================*
@@ -46,7 +44,7 @@ import CoreKit
     //*========================================================================*
     
     @frozen @usableFromInline enum Storage: Hashable, Sendable {
-        case some(Element) // one
-        case many(ContiguousArray<Element>) // at least one
+        case some(Word) // one
+        case many(ContiguousArray<Word>) // at least one
     }
 }

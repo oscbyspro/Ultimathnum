@@ -54,21 +54,29 @@ import CoreKit
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    @usableFromInline var i = 0 as Value
-    @usableFromInline var a = 0 as Value
-    @usableFromInline var b = 1 as Value // TODO: throw when BitInt
+    @usableFromInline var i: Value
+    @usableFromInline var a: Value
+    @usableFromInline var b: Value // TODO: throw when BitInt
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
     /// Creates the first sequence pair.
-    @inlinable public init() { }
+    @inlinable public init() { 
+        i = 0 as Value
+        a = 0 as Value
+        b = 1 as Value // TODO: throw when BitInt
+    }
     
     /// Creates the sequence pair at the given `index`.
     @inlinable public init(_ index: Value) {
+        self.init()
+        
+        // TODO: bit cast collection
+        
         index.withUnsafeBufferPointer {
-            for bit: BitInt.Magnitude in Chunked(normalizing: $0, isSigned: false).reversed() {
+            for bit: BitInt.Magnitude in Chunked(normalizing: $0.lazy.map(UX.init(bitPattern:)), isSigned: false).reversed() {
                 
                 self.double()
                 

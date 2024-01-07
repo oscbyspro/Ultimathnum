@@ -35,7 +35,7 @@ public protocol Integer: Comparable, Hashable, ExpressibleByIntegerLiteral, Send
     ///
     /// - TODO: Make this a buffer view at some point.
     ///
-    @inlinable consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<UX>) -> T) -> T
+    @inlinable consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<Word>) throws -> T) rethrows -> T
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Addition
