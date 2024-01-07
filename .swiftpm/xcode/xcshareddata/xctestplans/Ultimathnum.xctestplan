@@ -35,6 +35,16 @@
           "containerPath" : "container:",
           "identifier" : "UMNSignedIntKit",
           "name" : "UMNSignedIntKit"
+        },
+        {
+          "containerPath" : "container:",
+          "identifier" : "UMNBitIntKit",
+          "name" : "UMNBitIntKit"
+        },
+        {
+          "containerPath" : "container:",
+          "identifier" : "UMNModelsKit",
+          "name" : "UMNModelsKit"
         }
       ]
     }
@@ -73,6 +83,13 @@
         "containerPath" : "container:",
         "identifier" : "UMNModelsKitTests",
         "name" : "UMNModelsKitTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "UMNBitIntKitTests",
+        "name" : "UMNBitIntKitTests"
       }
     }
   ],

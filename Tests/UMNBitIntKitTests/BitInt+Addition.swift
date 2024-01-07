@@ -7,12 +7,13 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import UMNBitIntKit
 import UMNCoreKit
 import UMNTestKit
 import XCTest
 
 //*============================================================================*
-// MARK: * Bit Int x Comparison
+// MARK: * Bit Int x Addition
 //*============================================================================*
 
 extension BitIntTests {
@@ -21,19 +22,19 @@ extension BitIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testComparison() {
+    func testAddition() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
-            Test.comparison( 0 as T,  0 as T,  0 as Signum)
-            Test.comparison(-1 as T,  0 as T, -1 as Signum)
-            Test.comparison( 0 as T, -1 as T,  1 as Signum)
-            Test.comparison(-1 as T, -1 as T,  0 as Signum)
+            Test.addition( 0,  0,  0 as T)
+            Test.addition(-1,  0, -1 as T)
+            Test.addition( 0, -1, -1 as T)
+            Test.addition(-1, -1,  0 as T, true)
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
-            Test.comparison( 0 as T,  0 as T,  0 as Signum)
-            Test.comparison( 1 as T,  0 as T,  1 as Signum)
-            Test.comparison( 0 as T,  1 as T, -1 as Signum)
-            Test.comparison( 1 as T,  1 as T,  0 as Signum)
+            Test.addition( 0,  0,  0 as T)
+            Test.addition( 1,  0,  1 as T)
+            Test.addition( 0,  1,  1 as T)
+            Test.addition( 1,  1,  0 as T, true)
         }
         
         for type in Self.types {

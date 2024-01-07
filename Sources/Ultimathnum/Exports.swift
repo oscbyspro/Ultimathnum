@@ -11,6 +11,7 @@
 // MARK: * Exports
 //*============================================================================*
 
+@_exported import UMNBitIntKit
 @_exported import UMNCoreKit
 @_exported import UMNDoubleIntKit
 @_exported import UMNModelsKit
