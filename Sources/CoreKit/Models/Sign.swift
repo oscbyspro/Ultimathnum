@@ -25,7 +25,7 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public init(_ bit: Bit) {
-        self = bit == 0 ? Self.plus : Self.minus
+        self = bit == 0 ? .plus : .minus
     }
     
     @inlinable public init(_ other: FloatingPointSign) {

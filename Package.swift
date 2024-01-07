@@ -49,6 +49,12 @@ let package = Package(
         name: "DoubleIntKit",
         targets: ["DoubleIntKit"]),
         //=--------------------------------------=
+        // Main Int Kit
+        //=--------------------------------------=
+        .library(
+        name: "MainIntKit",
+        targets: ["MainIntKit"]),
+        //=--------------------------------------=
         // Models Kit
         //=--------------------------------------=
         .library(
@@ -73,9 +79,17 @@ let package = Package(
         //=--------------------------------------=
         .target(
         name: "Ultimathnum",
-        dependencies: ["BitIntKit", "CoreKit", "DoubleIntKit", "ModelsKit", "NormalIntKit", "SignedIntKit"]),
+        dependencies: [
+            "CoreKit",
+            "BitIntKit",
+            "DoubleIntKit",
+            "MainIntKit",
+            "ModelsKit",
+            "NormalIntKit",
+            "SignedIntKit",
+        ]),
         //=--------------------------------------=
-        // Core Kit
+        // Bit Int Kit
         //=--------------------------------------=
         .target(
         name: "BitIntKit",
@@ -105,11 +119,21 @@ let package = Package(
         name: "DoubleIntKitTests",
         dependencies: ["DoubleIntKit", "TestKit"]),
         //=--------------------------------------=
+        // Main Int Kit
+        //=--------------------------------------=
+        .target(
+        name: "MainIntKit",
+        dependencies: ["CoreKit"]),
+        
+        .testTarget(
+        name: "MainIntKitTests",
+        dependencies: ["MainIntKit", "TestKit"]),
+        //=--------------------------------------=
         // Models Kit
         //=--------------------------------------=
         .target(
         name: "ModelsKit",
-        dependencies: ["BitIntKit", "CoreKit"]),
+        dependencies: ["BitIntKit", "CoreKit", "MainIntKit"]),
         
         .testTarget(
         name: "ModelsKitTests",

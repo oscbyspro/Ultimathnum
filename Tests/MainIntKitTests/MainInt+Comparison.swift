@@ -8,6 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import MainIntKit
 import TestKit
 import XCTest
 
@@ -15,7 +16,7 @@ import XCTest
 // MARK: * Core Int x Comparison
 //*============================================================================*
 
-extension CoreIntTests {
+extension MainIntTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests

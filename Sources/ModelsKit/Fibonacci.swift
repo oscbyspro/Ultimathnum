@@ -9,6 +9,7 @@
 
 import BitIntKit
 import CoreKit
+import MainIntKit
 
 //*============================================================================*
 // MARK: * Fibonacci

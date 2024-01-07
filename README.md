@@ -8,11 +8,12 @@ Greatness.
 * [ModelsKit](#modelskit)
 * [BitIntKit](#bitintkit)
 * [DoubleIntKit](#doubleintkit)
+* [MainIntKit](#mainintkit)
 * [NormalIntKit](#normalintkit)
 * [SignedIntKit](#signedintkit)
 * [Installation](#installation)
 
-<a name="bitintkit"/>
+<a name="corekit"/>
 
 ## CoreKit
 
@@ -26,7 +27,7 @@ Greatness.
 > [!IMPORTANT]
 > It's a work in progress.
 
-<a name="normalintkit"/>
+<a name="bitintkit"/>
 
 ## BitIntKit
 
@@ -39,6 +40,15 @@ Greatness.
 
 > [!IMPORTANT]
 > It's a work in progress.
+
+<a name="mainintkit"/>
+
+## MainIntKit
+
+> [!IMPORTANT]
+> It's a work in progress.
+
+<a name="normalintkit"/>
 
 ## NormalIntKit
 

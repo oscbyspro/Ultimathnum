@@ -40,7 +40,7 @@ extension BitInt {
 extension BitInt.Magnitude {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities x Words
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<Word>) throws -> T) rethrows -> T {

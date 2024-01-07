@@ -7,15 +7,20 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Exports
+// MARK: * Main Int x Addition
 //*============================================================================*
 
-@_exported import CoreKit
-@_exported import ModelsKit
-
-@_exported import BitIntKit
-@_exported import DoubleIntKit
-@_exported import MainIntKit
-@_exported import NormalIntKit
-@_exported import SignedIntKit
+extension MainInt {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func incremented(by increment: borrowing Self) -> Overflow<Self> {
+        let result = self.base.addingReportingOverflow(increment.base)
+        return Overflow(Self(result.partialValue), overflow: result.overflow)
+    }
+}

@@ -64,22 +64,3 @@ import CoreKit
         Self(sign: self.sign == Sign.plus || self != (0 as Self) ? self.sign : Sign.plus, magnitude: self.magnitude)
     }
 }
-
-//*============================================================================*
-// MARK: * Signed x Aliases
-//*============================================================================*
-
-/// A signed integer with a pointer-bit magnitude.
-public typealias SX = SignedInt<UX>
-
-/// A signed integer with an 8-bit magnitude.
-public typealias S8 = SignedInt<U8>
-
-/// A signed integer with a 16-bit magnitude.
-public typealias S16 = SignedInt<U16>
-
-/// A signed integer with a 32-bit magnitude.
-public typealias S32 = SignedInt<U32>
-
-/// A signed integer with a 64-bit magnitude.
-public typealias S64 = SignedInt<U64>
