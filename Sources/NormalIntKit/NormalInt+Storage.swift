@@ -10,20 +10,17 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Normal Int x Multiplication x Unsigned
+// MARK: * Normal Int x Storage
 //*============================================================================*
 
-extension NormalInt.Magnitude {
+extension NormalInt {
     
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-
-    @inlinable public consuming func squared() -> Overflow<Self> {
-        fatalError("TODO")
-    }
+    //*========================================================================*
+    // MARK: * Storage
+    //*========================================================================*
     
-    @inlinable public consuming func multiplied(by multiplier: borrowing Self) -> Overflow<Self> {
-        fatalError("TODO")
+    @frozen @usableFromInline enum Storage: Hashable, Sendable {
+        case some(Word) // one
+        case many(ContiguousArray<Word>) // one or more
     }
 }

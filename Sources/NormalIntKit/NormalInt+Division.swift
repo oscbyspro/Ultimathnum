@@ -10,10 +10,10 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * UNM x Normal Int x Division
+// MARK: * Normal Int x Division x Unsigned
 //*============================================================================*
 
-extension NormalInt {
+extension NormalInt.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

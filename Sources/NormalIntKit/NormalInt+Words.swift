@@ -10,20 +10,18 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Normal Int x Multiplication x Unsigned
+// MARK: * Normal Int x Words x Unsigned
 //*============================================================================*
 
 extension NormalInt.Magnitude {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
-
-    @inlinable public consuming func squared() -> Overflow<Self> {
-        fatalError("TODO")
-    }
     
-    @inlinable public consuming func multiplied(by multiplier: borrowing Self) -> Overflow<Self> {
-        fatalError("TODO")
+    @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<Word>) throws -> T) rethrows -> T {
+        switch self.storage {
+        case let .some(x): try x.withUnsafeBufferPointer(body)
+        case let .many(x): try x.withUnsafeBufferPointer(body) }
     }
 }

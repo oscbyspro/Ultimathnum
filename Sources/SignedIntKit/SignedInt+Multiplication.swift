@@ -10,7 +10,7 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * UNM x Signed Int x Multiplication
+// MARK: * Signed Int x Multiplication
 //*============================================================================*
 
 extension SignedInt {

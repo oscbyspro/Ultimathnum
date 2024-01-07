@@ -13,38 +13,28 @@ import CoreKit
 // MARK: * Normal Int
 //*============================================================================*
 
-@frozen public struct NormalInt: UnsignedInteger & BinaryInteger {
+/// A signed, auto-normalized, arbitrary precision integer.
+@frozen public struct NormalInt {
+    
+    //*========================================================================*
+    // MARK: * Magnitude
+    //*========================================================================*
+    
+    /// An unsigned, auto-normalized, arbitrary precision integer.
+    @frozen public struct Magnitude: UnsignedInteger & BinaryInteger {
         
-    //=------------------------------------------------------------------------=
-    // MARK: State
-    //=------------------------------------------------------------------------=
-    
-    @usableFromInline var storage: Storage
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable init(storage: Storage) {
-        self.storage = storage
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Accessors
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<Word>) throws -> T) rethrows -> T {
-        switch self.storage {
-        case let .some(x): try x.withUnsafeBufferPointer(body)
-        case let .many(x): try x.withUnsafeBufferPointer(body) }
-    }
-    
-    //*========================================================================*
-    // MARK: * Storage
-    //*========================================================================*
-    
-    @frozen @usableFromInline enum Storage: Hashable, Sendable {
-        case some(Word) // one
-        case many(ContiguousArray<Word>) // at least one
+        //=--------------------------------------------------------------------=
+        // MARK: State
+        //=--------------------------------------------------------------------=
+        
+        @usableFromInline var storage: NormalInt.Storage
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Initializers
+        //=--------------------------------------------------------------------=
+        
+        @inlinable init(storage: consuming NormalInt.Storage) {
+            self.storage = storage
+        }
     }
 }
