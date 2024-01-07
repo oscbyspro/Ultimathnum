@@ -7,14 +7,20 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Exports
+// MARK: * Signed Int x Overflow
 //*============================================================================*
 
-@_exported import CoreKit
-@_exported import ModelsKit
+extension Overflow {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init<Magnitude>(sign: consuming Sign, magnitude: consuming Overflow<Magnitude>) where Value == SignedInt<Magnitude> {
+        self.init(Value(sign: sign, magnitude: magnitude.value), overflow: magnitude.overflow)
+    }
+}
 
-@_exported import BitIntKit
-@_exported import DoubleIntKit
-@_exported import NormalIntKit
-@_exported import SignedIntKit

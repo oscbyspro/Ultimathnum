@@ -7,14 +7,23 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Exports
+// MARK: * UNM x Normal Int x Multiplication
 //*============================================================================*
 
-@_exported import CoreKit
-@_exported import ModelsKit
+extension NormalInt {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
 
-@_exported import BitIntKit
-@_exported import DoubleIntKit
-@_exported import NormalIntKit
-@_exported import SignedIntKit
+    @inlinable public consuming func squared() -> Overflow<Self> {
+        fatalError("TODO")
+    }
+    
+    @inlinable public consuming func multiplied(by multiplier: borrowing Self) -> Overflow<Self> {
+        fatalError("TODO")
+    }
+}

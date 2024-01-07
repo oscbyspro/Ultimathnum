@@ -34,38 +34,38 @@ let package = Package(
         // Bit Int Kit
         //=--------------------------------------=
         .library(
-        name: "UMNBitIntKit",
-        targets: ["UMNBitIntKit"]),
+        name: "BitIntKit",
+        targets: ["BitIntKit"]),
         //=--------------------------------------=
         // Core Kit
         //=--------------------------------------=
         .library(
-        name: "UMNCoreKit",
-        targets: ["UMNCoreKit"]),
+        name: "CoreKit",
+        targets: ["CoreKit"]),
         //=--------------------------------------=
         // Double Int Kit
         //=--------------------------------------=
         .library(
-        name: "UMNDoubleIntKit",
-        targets: ["UMNDoubleIntKit"]),
+        name: "DoubleIntKit",
+        targets: ["DoubleIntKit"]),
         //=--------------------------------------=
         // Models Kit
         //=--------------------------------------=
         .library(
-        name: "UMNModelsKit",
-        targets: ["UMNModelsKit"]),
+        name: "ModelsKit",
+        targets: ["ModelsKit"]),
         //=--------------------------------------=
         // Normal Int Kit
         //=--------------------------------------=
         .library(
-        name: "UMNNormalIntKit",
-        targets: ["UMNNormalIntKit"]),
+        name: "NormalIntKit",
+        targets: ["NormalIntKit"]),
         //=--------------------------------------=
         // Signed Int Kit
         //=--------------------------------------=
         .library(
-        name: "UMNSignedIntKit",
-        targets: ["UMNSignedIntKit"]),
+        name: "SignedIntKit",
+        targets: ["SignedIntKit"]),
     ],
     targets: [
         //=--------------------------------------=
@@ -73,72 +73,72 @@ let package = Package(
         //=--------------------------------------=
         .target(
         name: "Ultimathnum",
-        dependencies: ["UMNBitIntKit", "UMNCoreKit", "UMNDoubleIntKit", "UMNModelsKit", "UMNNormalIntKit", "UMNSignedIntKit"]),
+        dependencies: ["BitIntKit", "CoreKit", "DoubleIntKit", "ModelsKit", "NormalIntKit", "SignedIntKit"]),
         //=--------------------------------------=
         // Core Kit
         //=--------------------------------------=
         .target(
-        name: "UMNBitIntKit",
-        dependencies: ["UMNCoreKit"]),
+        name: "BitIntKit",
+        dependencies: ["CoreKit"]),
         
         .testTarget(
-        name: "UMNBitIntKitTests",
-        dependencies: ["UMNBitIntKit", "UMNTestKit"]),
+        name: "BitIntKitTests",
+        dependencies: ["BitIntKit", "TestKit"]),
         //=--------------------------------------=
         // Core Kit
         //=--------------------------------------=
         .target(
-        name: "UMNCoreKit",
+        name: "CoreKit",
         dependencies: []),
         
         .testTarget(
-        name: "UMNCoreKitTests",
-        dependencies: ["UMNCoreKit", "UMNTestKit"]),
+        name: "CoreKitTests",
+        dependencies: ["CoreKit", "TestKit"]),
         //=--------------------------------------=
         // Double Int Kit
         //=--------------------------------------=
         .target(
-        name: "UMNDoubleIntKit",
-        dependencies: ["UMNCoreKit"]),
+        name: "DoubleIntKit",
+        dependencies: ["CoreKit"]),
         
         .testTarget(
-        name: "UMNDoubleIntKitTests",
-        dependencies: ["UMNDoubleIntKit", "UMNTestKit"]),
+        name: "DoubleIntKitTests",
+        dependencies: ["DoubleIntKit", "TestKit"]),
         //=--------------------------------------=
         // Models Kit
         //=--------------------------------------=
         .target(
-        name: "UMNModelsKit",
-        dependencies: ["UMNBitIntKit", "UMNCoreKit"]),
+        name: "ModelsKit",
+        dependencies: ["BitIntKit", "CoreKit"]),
         
         .testTarget(
-        name: "UMNModelsKitTests",
-        dependencies: ["UMNModelsKit", "UMNTestKit"]),
+        name: "ModelsKitTests",
+        dependencies: ["ModelsKit", "TestKit"]),
         //=--------------------------------------=
         // Normal Int Kit
         //=--------------------------------------=
         .target(
-        name: "UMNNormalIntKit",
-        dependencies: ["UMNCoreKit"]),
+        name: "NormalIntKit",
+        dependencies: ["CoreKit"]),
         
         .testTarget(
-        name: "UMNNormalIntKitTests",
-        dependencies: ["UMNNormalIntKit", "UMNTestKit"]),
+        name: "NormalIntKitTests",
+        dependencies: ["NormalIntKit", "TestKit"]),
         //=--------------------------------------=
         // Signed Int Kit
         //=--------------------------------------=
         .target(
-        name: "UMNSignedIntKit",
-        dependencies: ["UMNCoreKit"]),
+        name: "SignedIntKit",
+        dependencies: ["CoreKit"]),
         
         .testTarget(
-        name: "UMNSignedIntKitTests",
-        dependencies: ["UMNSignedIntKit", "UMNTestKit"]),
+        name: "SignedIntKitTests",
+        dependencies: ["SignedIntKit", "TestKit"]),
         //=--------------------------------------=
         // Test Kit
         //=--------------------------------------=
         .target(
-        name: "UMNTestKit",
-        dependencies: ["UMNCoreKit"]),
+        name: "TestKit",
+        dependencies: ["CoreKit"]),
     ]
 )

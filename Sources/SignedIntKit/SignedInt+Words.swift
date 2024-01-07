@@ -7,14 +7,19 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Exports
+// MARK: * Signed Int x Words
 //*============================================================================*
 
-@_exported import CoreKit
-@_exported import ModelsKit
-
-@_exported import BitIntKit
-@_exported import DoubleIntKit
-@_exported import NormalIntKit
-@_exported import SignedIntKit
+extension SignedInt {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<UX>) -> T) -> T {
+        fatalError("TODO")
+    }
+}

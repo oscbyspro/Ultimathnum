@@ -13,38 +13,38 @@
       "targets" : [
         {
           "containerPath" : "container:",
+          "identifier" : "BitIntKit",
+          "name" : "BitIntKit"
+        },
+        {
+          "containerPath" : "container:",
+          "identifier" : "CoreKit",
+          "name" : "CoreKit"
+        },
+        {
+          "containerPath" : "container:",
+          "identifier" : "DoubleIntKit",
+          "name" : "DoubleIntKit"
+        },
+        {
+          "containerPath" : "container:",
+          "identifier" : "ModelsKit",
+          "name" : "ModelsKit"
+        },
+        {
+          "containerPath" : "container:",
+          "identifier" : "NormalIntKit",
+          "name" : "NormalIntKit"
+        },
+        {
+          "containerPath" : "container:",
+          "identifier" : "SignedIntKit",
+          "name" : "SignedIntKit"
+        },
+        {
+          "containerPath" : "container:",
           "identifier" : "Ultimathnum",
           "name" : "Ultimathnum"
-        },
-        {
-          "containerPath" : "container:",
-          "identifier" : "UMNCoreKit",
-          "name" : "UMNCoreKit"
-        },
-        {
-          "containerPath" : "container:",
-          "identifier" : "UMNDoubleIntKit",
-          "name" : "UMNDoubleIntKit"
-        },
-        {
-          "containerPath" : "container:",
-          "identifier" : "UMNNormalIntKit",
-          "name" : "UMNNormalIntKit"
-        },
-        {
-          "containerPath" : "container:",
-          "identifier" : "UMNSignedIntKit",
-          "name" : "UMNSignedIntKit"
-        },
-        {
-          "containerPath" : "container:",
-          "identifier" : "UMNBitIntKit",
-          "name" : "UMNBitIntKit"
-        },
-        {
-          "containerPath" : "container:",
-          "identifier" : "UMNModelsKit",
-          "name" : "UMNModelsKit"
         }
       ]
     }
@@ -53,43 +53,43 @@
     {
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "UMNCoreKitTests",
-        "name" : "UMNCoreKitTests"
+        "identifier" : "BitIntKitTests",
+        "name" : "BitIntKitTests"
       }
     },
     {
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "UMNDoubleIntKitTests",
-        "name" : "UMNDoubleIntKitTests"
+        "identifier" : "CoreKitTests",
+        "name" : "CoreKitTests"
       }
     },
     {
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "UMNNormalIntKitTests",
-        "name" : "UMNNormalIntKitTests"
+        "identifier" : "DoubleIntKitTests",
+        "name" : "DoubleIntKitTests"
       }
     },
     {
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "UMNSignedIntKitTests",
-        "name" : "UMNSignedIntKitTests"
+        "identifier" : "ModelsKitTests",
+        "name" : "ModelsKitTests"
       }
     },
     {
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "UMNModelsKitTests",
-        "name" : "UMNModelsKitTests"
+        "identifier" : "NormalIntKitTests",
+        "name" : "NormalIntKitTests"
       }
     },
     {
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "UMNBitIntKitTests",
-        "name" : "UMNBitIntKitTests"
+        "identifier" : "SignedIntKitTests",
+        "name" : "SignedIntKitTests"
       }
     }
   ],

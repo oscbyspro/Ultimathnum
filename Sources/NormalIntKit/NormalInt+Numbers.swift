@@ -7,14 +7,19 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Exports
+// MARK: * UNM x Normal Int x Numbers
 //*============================================================================*
 
-@_exported import CoreKit
-@_exported import ModelsKit
-
-@_exported import BitIntKit
-@_exported import DoubleIntKit
-@_exported import NormalIntKit
-@_exported import SignedIntKit
+extension NormalInt {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(integerLiteral: consuming StaticBigInt) {
+        fatalError("TODO")
+    }
+}

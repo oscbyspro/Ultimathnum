@@ -7,14 +7,23 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Exports
+// MARK: * UNM x Normal Int x Subtraction
 //*============================================================================*
 
-@_exported import CoreKit
-@_exported import ModelsKit
-
-@_exported import BitIntKit
-@_exported import DoubleIntKit
-@_exported import NormalIntKit
-@_exported import SignedIntKit
+extension NormalInt {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func negated() -> Overflow<Self> {
+        fatalError("TODO")
+    }
+    
+    @inlinable public consuming func decremented(by decrement: borrowing Self) -> Overflow<Self> {
+        fatalError("TODO")
+    }
+}

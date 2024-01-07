@@ -4,50 +4,50 @@ A number overhaul in Swift.
 
 ## Table of Contents
 
-* [UMNCoreKit](#corekit)
-* [UMNModelsKit](#modelskit)
-* [UMNBitIntKit](#bitintkit)
-* [UMNDoubleIntKit](#doubleintkit)
-* [UMNNormalIntKit](#normalintkit)
-* [UMNSignedIntKit](#signedintkit)
+* [CoreKit](#corekit)
+* [ModelsKit](#modelskit)
+* [BitIntKit](#bitintkit)
+* [DoubleIntKit](#doubleintkit)
+* [NormalIntKit](#normalintkit)
+* [SignedIntKit](#signedintkit)
 * [Installation](#installation)
 
 <a name="bitintkit"/>
 
-## UMNCoreKit
+## CoreKit
 
 > [!IMPORTANT]
 > It's a work in progress.
 
 <a name="modelskit"/>
 
-## UMNModelsKit
+## ModelsKit
 
 > [!IMPORTANT]
 > It's a work in progress.
 
 <a name="normalintkit"/>
 
-## UMNBitIntKit
+## BitIntKit
 
 > [!IMPORTANT]
 > It's a work in progress.
 
 <a name="doubleintkit"/>
 
-## UMNDoubleIntKit
+## DoubleIntKit
 
 > [!IMPORTANT]
 > It's a work in progress.
 
-## UMNNormalIntKit
+## NormalIntKit
 
 > [!IMPORTANT]
 > It's a work in progress.
 
 <a name="signedintkit"/>
 
-## UMNSignedIntKit
+## SignedIntKit
 
 > [!IMPORTANT]
 > It's a work in progress.

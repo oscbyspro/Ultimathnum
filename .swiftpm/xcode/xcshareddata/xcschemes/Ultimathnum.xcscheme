@@ -28,9 +28,9 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "UMNBitIntKit"
-               BuildableName = "UMNBitIntKit"
-               BlueprintName = "UMNBitIntKit"
+               BlueprintIdentifier = "CoreKit"
+               BuildableName = "CoreKit"
+               BlueprintName = "CoreKit"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -42,9 +42,9 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "UMNBitIntKitTests"
-               BuildableName = "UMNBitIntKitTests"
-               BlueprintName = "UMNBitIntKitTests"
+               BlueprintIdentifier = "ModelsKit"
+               BuildableName = "ModelsKit"
+               BlueprintName = "ModelsKit"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -56,9 +56,9 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "UMNCoreKit"
-               BuildableName = "UMNCoreKit"
-               BlueprintName = "UMNCoreKit"
+               BlueprintIdentifier = "BitIntKit"
+               BuildableName = "BitIntKit"
+               BlueprintName = "BitIntKit"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -70,9 +70,9 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "UMNCoreKitTests"
-               BuildableName = "UMNCoreKitTests"
-               BlueprintName = "UMNCoreKitTests"
+               BlueprintIdentifier = "DoubleIntKit"
+               BuildableName = "DoubleIntKit"
+               BlueprintName = "DoubleIntKit"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -84,9 +84,9 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "UMNDoubleIntKit"
-               BuildableName = "UMNDoubleIntKit"
-               BlueprintName = "UMNDoubleIntKit"
+               BlueprintIdentifier = "NormalIntKit"
+               BuildableName = "NormalIntKit"
+               BlueprintName = "NormalIntKit"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -98,93 +98,9 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "UMNDoubleIntKitTests"
-               BuildableName = "UMNDoubleIntKitTests"
-               BlueprintName = "UMNDoubleIntKitTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "UMNModelsKit"
-               BuildableName = "UMNModelsKit"
-               BlueprintName = "UMNModelsKit"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "UMNModelsKitTests"
-               BuildableName = "UMNModelsKitTests"
-               BlueprintName = "UMNModelsKitTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "UMNNormalIntKit"
-               BuildableName = "UMNNormalIntKit"
-               BlueprintName = "UMNNormalIntKit"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "UMNNormalIntKitTests"
-               BuildableName = "UMNNormalIntKitTests"
-               BlueprintName = "UMNNormalIntKitTests"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "UMNSignedIntKit"
-               BuildableName = "UMNSignedIntKit"
-               BlueprintName = "UMNSignedIntKit"
-               ReferencedContainer = "container:">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "UMNSignedIntKitTests"
-               BuildableName = "UMNSignedIntKitTests"
-               BlueprintName = "UMNSignedIntKitTests"
+               BlueprintIdentifier = "SignedIntKit"
+               BuildableName = "SignedIntKit"
+               BlueprintName = "SignedIntKit"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
