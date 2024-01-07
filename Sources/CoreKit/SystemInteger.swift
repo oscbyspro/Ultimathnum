@@ -27,7 +27,7 @@
 ///
 /// - Requires: Its magnitude must be unsigned and the same size as this type.
 ///
-public protocol SystemInteger: BinaryInteger, BitCastable where
+public protocol SystemInteger: BinaryInteger, BitCastable, BitOperable where
 Magnitude: UnsignedInteger & SystemInteger, Magnitude.BitPattern == BitPattern {
     
     //=------------------------------------------------------------------------=
@@ -41,18 +41,6 @@ Magnitude: UnsignedInteger & SystemInteger, Magnitude.BitPattern == BitPattern {
     //=------------------------------------------------------------------------=
     
     @inlinable func count(_ bit: Bit, option: Bit.Selection) -> Magnitude
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Logic
-    //=------------------------------------------------------------------------=
-    
-    @inlinable static prefix func ~(operand: consuming Self) -> Self
-    
-    @inlinable static func &(lhs: consuming Self, rhs: borrowing Self) -> Self
-    
-    @inlinable static func |(lhs: consuming Self, rhs: borrowing Self) -> Self
-    
-    @inlinable static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Shift

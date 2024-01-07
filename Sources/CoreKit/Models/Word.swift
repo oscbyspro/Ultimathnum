@@ -19,7 +19,7 @@
 ///
 /// Ultimathnum cannot access Builtin.Word so it uses Swift.UInt instead.
 ///
-@frozen public struct Word: BitCastable, Hashable, Sendable {
+@frozen public struct Word: BitCastable, BitOperable, Hashable, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: State
