@@ -1,6 +1,6 @@
 # Ultimathnum
 
-A number overhaul in Swift.
+Greatness.
 
 ## Table of Contents
 
