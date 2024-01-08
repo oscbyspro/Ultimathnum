@@ -20,11 +20,11 @@ extension BitInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func squared() -> Overflow<Self> {
-        Overflow(self, overflow: false)
+        Overflow(copy self, overflow: self == -1)
     }
     
     @inlinable public consuming func multiplied(by multiplier: borrowing Self) -> Overflow<Self> {
-        Overflow(self & multiplier, overflow: false)
+        Overflow(copy self & multiplier, overflow: self & multiplier == -1)
     }
     
     @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> FullWidth<Self, Magnitude> {

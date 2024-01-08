@@ -21,9 +21,9 @@ extension Test {
     //=------------------------------------------------------------------------=
     
     public static func multiplication<T: SystemInteger>(
-    _ lhs: T, _ rhs: T, _ low: T, _ high: T,_ overflow: Bool = false,
+    _ lhs: T, _ rhs: T, _ product: FullWidth<T, T.Magnitude>,_ overflow: Bool = false,
     file: StaticString = #file, line: UInt = #line) {
-        self.multiplicationAsSomeSystemInteger(lhs, rhs, low, high, overflow, file: file, line: line)
+        self.multiplicationAsSomeSystemInteger(lhs, rhs, product, overflow, file: file, line: line)
     }
     
     public static func multiplication<T: Integer>(
@@ -37,21 +37,21 @@ extension Test {
     //=------------------------------------------------------------------------=
     
     private static func multiplicationAsSomeSystemInteger<T: SystemInteger>(
-    _ lhs: T, _ rhs: T, _ low: T, _ high: T, _ overflow: Bool, file: StaticString, line: UInt) {
+    _ lhs: T, _ rhs: T, _ product: FullWidth<T, T.Magnitude>, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
-        XCTAssertEqual(lhs &* rhs, low, file: file, line: line)
-        XCTAssertEqual(rhs &* lhs, low, file: file, line: line)
+        XCTAssertEqual(lhs &* rhs, T(bitPattern: product.low), file: file, line: line)
+        XCTAssertEqual(rhs &* lhs, T(bitPattern: product.low), file: file, line: line)
         //=--------------------------------------=
-        XCTAssertEqual(T.multiplying(lhs, by: rhs), FullWidth(low: T.Magnitude(bitPattern: low), high: high), file: file, line: line)
+        XCTAssertEqual(T.multiplying(lhs, by: rhs), product, file: file, line: line)
         //=--------------------------------------=
-        Test.multiplicationAsSomeInteger(lhs, rhs, low, overflow, file: file, line: line)
+        Test.multiplicationAsSomeInteger(lhs, rhs, T(bitPattern: product.low), overflow, file: file, line: line)
     }
     
     private static func multiplicationAsSomeInteger<T: Integer>(
     _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
         if !overflow {
-            XCTAssertEqual(lhs * rhs, value, file: file, line: line)
+            XCTAssertEqual(lhs * rhs,   value, file: file, line: line)
             XCTAssertEqual(rhs * lhs, value, file: file, line: line)
         }
         //=--------------------------------------=
