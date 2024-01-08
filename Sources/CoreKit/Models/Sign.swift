@@ -65,7 +65,8 @@ extension FloatingPointSign {
     
     @inlinable public init(_ other: Sign) {
         self = switch other {
-        case Sign.plus:  Self.plus
-        case Sign.minus: Self.minus }
+        case .plus:  .plus
+        case .minus: .minus
+        }
     }
 }

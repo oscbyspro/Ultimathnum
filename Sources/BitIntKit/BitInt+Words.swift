@@ -22,7 +22,7 @@ extension BitInt {
     @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<Word>) throws -> T) rethrows -> T {
         let bit: Bit = (consume self).bitPattern
         return try UMN.withUnsafeTemporaryAllocation(of: Word.self) { pointer in
-            pointer.initialize(to: Word(bitPattern: bit == 0 ? 0 : ~0))
+            pointer.initialize(to: bit == 0 ? 0 : ~0)
             
             defer {
                 pointer.deinitialize(count: 1)
@@ -46,7 +46,7 @@ extension BitInt.Magnitude {
     @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<Word>) throws -> T) rethrows -> T {
         let bit: Bit = (consume self).bitPattern
         return try UMN.withUnsafeTemporaryAllocation(of: Word.self) { pointer in
-            pointer.initialize(to: Word(bitPattern: bit == 0 ? 0 :  1))
+            pointer.initialize(to: bit == 0 ? 0 : 1)
             
             defer {
                 pointer.deinitialize(count: 1)
