@@ -36,7 +36,7 @@ public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Send
     //=------------------------------------------------------------------------=
     
     @inlinable var magnitude: Magnitude { consuming get }
-        
+    
     /// Its un/signed two's complement words.
     ///
     /// The format is indicated by `isSigned`.
