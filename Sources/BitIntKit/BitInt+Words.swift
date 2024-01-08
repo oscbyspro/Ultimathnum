@@ -23,7 +23,7 @@ extension BitInt {
         let bit: Bit = (consume self).bitPattern
         return try UMN.withUnsafeTemporaryAllocation(of: Word.self) { pointer in
             pointer.initialize(to: Word(bitPattern: bit == 0 ? 0 : ~0))
-
+            
             defer {
                 pointer.deinitialize(count: 1)
             }

@@ -9,6 +9,7 @@
 
 import BitIntKit
 import CoreKit
+import TestKit
 import XCTest
 
 //*============================================================================*
@@ -25,8 +26,8 @@ extension BitIntTests {
         func whereIs<T>(_ type: T.Type) where T: SystemInteger {
             typealias M = T.Magnitude
             
-            XCTAssertEqual(~T.min, T.max as T)
-            XCTAssertEqual(~T.max, T.min as T)
+            Test.not(T.min, T.max)
+            Test.not(T.max, T.min)
         }
         
         for type in Self.types {
@@ -37,26 +38,11 @@ extension BitIntTests {
     func testLogicalAnd() {
         func whereIs<T>(_ type: T.Type) where T: SystemInteger {
             typealias M = T.Magnitude
-            
-            XCTAssertEqual(T(bitPattern: ~1 & ~1 as M), T(bitPattern: ~1 as M))
-            XCTAssertEqual(T(bitPattern: ~1 & ~0 as M), T(bitPattern: ~1 as M))
-            XCTAssertEqual(T(bitPattern: ~1 &  0 as M), T(bitPattern:  0 as M))
-            XCTAssertEqual(T(bitPattern: ~1 &  1 as M), T(bitPattern:  0 as M))
-            
-            XCTAssertEqual(T(bitPattern: ~0 & ~1 as M), T(bitPattern: ~1 as M))
-            XCTAssertEqual(T(bitPattern: ~0 & ~0 as M), T(bitPattern: ~0 as M))
-            XCTAssertEqual(T(bitPattern: ~0 &  0 as M), T(bitPattern:  0 as M))
-            XCTAssertEqual(T(bitPattern: ~0 &  1 as M), T(bitPattern:  1 as M))
-            
-            XCTAssertEqual(T(bitPattern:  0 & ~1 as M), T(bitPattern:  0 as M))
-            XCTAssertEqual(T(bitPattern:  0 & ~0 as M), T(bitPattern:  0 as M))
-            XCTAssertEqual(T(bitPattern:  0 &  0 as M), T(bitPattern:  0 as M))
-            XCTAssertEqual(T(bitPattern:  0 &  1 as M), T(bitPattern:  0 as M))
-            
-            XCTAssertEqual(T(bitPattern:  1 & ~1 as M), T(bitPattern:  0 as M))
-            XCTAssertEqual(T(bitPattern:  1 & ~0 as M), T(bitPattern:  1 as M))
-            XCTAssertEqual(T(bitPattern:  1 &  0 as M), T(bitPattern:  0 as M))
-            XCTAssertEqual(T(bitPattern:  1 &  1 as M), T(bitPattern:  1 as M))
+                        
+            Test.and(T(bitPattern: 0 as M), T(bitPattern: 0 as M), T(bitPattern: 0 as M))
+            Test.and(T(bitPattern: 1 as M), T(bitPattern: 0 as M), T(bitPattern: 0 as M))
+            Test.and(T(bitPattern: 0 as M), T(bitPattern: 1 as M), T(bitPattern: 0 as M))
+            Test.and(T(bitPattern: 1 as M), T(bitPattern: 1 as M), T(bitPattern: 1 as M))
         }
         
         for type in Self.types {
@@ -68,25 +54,10 @@ extension BitIntTests {
         func whereIs<T>(_ type: T.Type) where T: SystemInteger {
             typealias M = T.Magnitude
             
-            XCTAssertEqual(T(bitPattern: ~1 | ~1 as M), T(bitPattern: ~1 as M))
-            XCTAssertEqual(T(bitPattern: ~1 | ~0 as M), T(bitPattern: ~0 as M))
-            XCTAssertEqual(T(bitPattern: ~1 |  0 as M), T(bitPattern: ~1 as M))
-            XCTAssertEqual(T(bitPattern: ~1 |  1 as M), T(bitPattern: ~0 as M))
-            
-            XCTAssertEqual(T(bitPattern: ~0 | ~1 as M), T(bitPattern: ~0 as M))
-            XCTAssertEqual(T(bitPattern: ~0 | ~0 as M), T(bitPattern: ~0 as M))
-            XCTAssertEqual(T(bitPattern: ~0 |  0 as M), T(bitPattern: ~0 as M))
-            XCTAssertEqual(T(bitPattern: ~0 |  1 as M), T(bitPattern: ~0 as M))
-            
-            XCTAssertEqual(T(bitPattern:  0 | ~1 as M), T(bitPattern: ~1 as M))
-            XCTAssertEqual(T(bitPattern:  0 | ~0 as M), T(bitPattern: ~0 as M))
-            XCTAssertEqual(T(bitPattern:  0 |  0 as M), T(bitPattern:  0 as M))
-            XCTAssertEqual(T(bitPattern:  0 |  1 as M), T(bitPattern:  1 as M))
-            
-            XCTAssertEqual(T(bitPattern:  1 | ~1 as M), T(bitPattern: ~0 as M))
-            XCTAssertEqual(T(bitPattern:  1 | ~0 as M), T(bitPattern: ~0 as M))
-            XCTAssertEqual(T(bitPattern:  1 |  0 as M), T(bitPattern:  1 as M))
-            XCTAssertEqual(T(bitPattern:  1 |  1 as M), T(bitPattern:  1 as M))
+            Test.or (T(bitPattern: 0 as M), T(bitPattern: 0 as M), T(bitPattern: 0 as M))
+            Test.or (T(bitPattern: 1 as M), T(bitPattern: 0 as M), T(bitPattern: 1 as M))
+            Test.or (T(bitPattern: 0 as M), T(bitPattern: 1 as M), T(bitPattern: 1 as M))
+            Test.or (T(bitPattern: 1 as M), T(bitPattern: 1 as M), T(bitPattern: 1 as M))
         }
         
         for type in Self.types {
@@ -98,25 +69,10 @@ extension BitIntTests {
         func whereIs<T>(_ type: T.Type) where T: SystemInteger {
             typealias M = T.Magnitude
             
-            XCTAssertEqual(T(bitPattern: ~1 ^ ~1 as M), T(bitPattern:  0 as M))
-            XCTAssertEqual(T(bitPattern: ~1 ^ ~0 as M), T(bitPattern:  1 as M))
-            XCTAssertEqual(T(bitPattern: ~1 ^  0 as M), T(bitPattern: ~1 as M))
-            XCTAssertEqual(T(bitPattern: ~1 ^  1 as M), T(bitPattern: ~0 as M))
-            
-            XCTAssertEqual(T(bitPattern: ~0 ^ ~1 as M), T(bitPattern:  1 as M))
-            XCTAssertEqual(T(bitPattern: ~0 ^ ~0 as M), T(bitPattern:  0 as M))
-            XCTAssertEqual(T(bitPattern: ~0 ^  0 as M), T(bitPattern: ~0 as M))
-            XCTAssertEqual(T(bitPattern: ~0 ^  1 as M), T(bitPattern: ~1 as M))
-            
-            XCTAssertEqual(T(bitPattern:  0 ^ ~1 as M), T(bitPattern: ~1 as M))
-            XCTAssertEqual(T(bitPattern:  0 ^ ~0 as M), T(bitPattern: ~0 as M))
-            XCTAssertEqual(T(bitPattern:  0 ^  0 as M), T(bitPattern:  0 as M))
-            XCTAssertEqual(T(bitPattern:  0 ^  1 as M), T(bitPattern:  1 as M))
-            
-            XCTAssertEqual(T(bitPattern:  1 ^ ~1 as M), T(bitPattern: ~0 as M))
-            XCTAssertEqual(T(bitPattern:  1 ^ ~0 as M), T(bitPattern: ~1 as M))
-            XCTAssertEqual(T(bitPattern:  1 ^  0 as M), T(bitPattern:  1 as M))
-            XCTAssertEqual(T(bitPattern:  1 ^  1 as M), T(bitPattern:  0 as M))
+            Test.xor(T(bitPattern: 0 as M), T(bitPattern: 0 as M), T(bitPattern: 0 as M))
+            Test.xor(T(bitPattern: 1 as M), T(bitPattern: 0 as M), T(bitPattern: 1 as M))
+            Test.xor(T(bitPattern: 0 as M), T(bitPattern: 1 as M), T(bitPattern: 1 as M))
+            Test.xor(T(bitPattern: 1 as M), T(bitPattern: 1 as M), T(bitPattern: 0 as M))
         }
         
         for type in Self.types {

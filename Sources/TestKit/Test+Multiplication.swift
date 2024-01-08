@@ -42,7 +42,7 @@ extension Test {
         XCTAssertEqual(lhs &* rhs, T(bitPattern: product.low), file: file, line: line)
         XCTAssertEqual(rhs &* lhs, T(bitPattern: product.low), file: file, line: line)
         //=--------------------------------------=
-        XCTAssertEqual(T.multiplying(lhs, by: rhs), product, file: file, line: line)
+        XCTAssertEqual(T.multiplying(lhs, by: rhs), (product), file: file, line: line)
         //=--------------------------------------=
         Test.multiplicationAsSomeInteger(lhs, rhs, T(bitPattern: product.low), overflow, file: file, line: line)
     }

@@ -9,6 +9,7 @@
 
 import CoreKit
 import MainIntKit
+import TestKit
 import XCTest
 
 //*============================================================================*
@@ -23,8 +24,8 @@ extension MainIntTests {
     
     func testLogicalNot() {
         func whereIs<T>(_ type: T.Type) where T: SystemInteger {
-            XCTAssertEqual(~T.min, T.max as T)
-            XCTAssertEqual(~T.max, T.min as T)
+            Test.not(T.min, T.max)
+            Test.not(T.max, T.min)
         }
         
         for type in Self.types {
@@ -34,25 +35,25 @@ extension MainIntTests {
     
     func testLogicalAnd() {
         func whereIs<T>(_ type: T.Type) where T: SystemInteger {
-            XCTAssertEqual(~1 & ~1, ~1 as T)
-            XCTAssertEqual(~1 & ~0, ~1 as T)
-            XCTAssertEqual(~1 &  0,  0 as T)
-            XCTAssertEqual(~1 &  1,  0 as T)
+            Test.and(~1 as T, ~1 as T, ~1 as T)
+            Test.and(~1 as T, ~0 as T, ~1 as T)
+            Test.and(~1 as T,  0 as T,  0 as T)
+            Test.and(~1 as T,  1 as T,  0 as T)
             
-            XCTAssertEqual(~0 & ~1, ~1 as T)
-            XCTAssertEqual(~0 & ~0, ~0 as T)
-            XCTAssertEqual(~0 &  0,  0 as T)
-            XCTAssertEqual(~0 &  1,  1 as T)
+            Test.and(~0 as T, ~1 as T, ~1 as T)
+            Test.and(~0 as T, ~0 as T, ~0 as T)
+            Test.and(~0 as T,  0 as T,  0 as T)
+            Test.and(~0 as T,  1 as T,  1 as T)
             
-            XCTAssertEqual( 0 & ~1,  0 as T)
-            XCTAssertEqual( 0 & ~0,  0 as T)
-            XCTAssertEqual( 0 &  0,  0 as T)
-            XCTAssertEqual( 0 &  1,  0 as T)
+            Test.and( 0 as T, ~1 as T,  0 as T)
+            Test.and( 0 as T, ~0 as T,  0 as T)
+            Test.and( 0 as T,  0 as T,  0 as T)
+            Test.and( 0 as T,  1 as T,  0 as T)
             
-            XCTAssertEqual( 1 & ~1,  0 as T)
-            XCTAssertEqual( 1 & ~0,  1 as T)
-            XCTAssertEqual( 1 &  0,  0 as T)
-            XCTAssertEqual( 1 &  1,  1 as T)
+            Test.and( 1 as T, ~1 as T,  0 as T)
+            Test.and( 1 as T, ~0 as T,  1 as T)
+            Test.and( 1 as T,  0 as T,  0 as T)
+            Test.and( 1 as T,  1 as T,  1 as T)
         }
         
         for type in Self.types {
@@ -62,25 +63,25 @@ extension MainIntTests {
     
     func testLogicalOr() {
         func whereIs<T>(_ type: T.Type) where T: SystemInteger {
-            XCTAssertEqual(~1 | ~1, ~1 as T)
-            XCTAssertEqual(~1 | ~0, ~0 as T)
-            XCTAssertEqual(~1 |  0, ~1 as T)
-            XCTAssertEqual(~1 |  1, ~0 as T)
+            Test.or (~1 as T, ~1 as T, ~1 as T)
+            Test.or (~1 as T, ~0 as T, ~0 as T)
+            Test.or (~1 as T,  0 as T, ~1 as T)
+            Test.or (~1 as T,  1 as T, ~0 as T)
             
-            XCTAssertEqual(~0 | ~1, ~0 as T)
-            XCTAssertEqual(~0 | ~0, ~0 as T)
-            XCTAssertEqual(~0 |  0, ~0 as T)
-            XCTAssertEqual(~0 |  1, ~0 as T)
+            Test.or (~0 as T, ~1 as T, ~0 as T)
+            Test.or (~0 as T, ~0 as T, ~0 as T)
+            Test.or (~0 as T,  0 as T, ~0 as T)
+            Test.or (~0 as T,  1 as T, ~0 as T)
             
-            XCTAssertEqual( 0 | ~1, ~1 as T)
-            XCTAssertEqual( 0 | ~0, ~0 as T)
-            XCTAssertEqual( 0 |  0,  0 as T)
-            XCTAssertEqual( 0 |  1,  1 as T)
+            Test.or ( 0 as T, ~1 as T, ~1 as T)
+            Test.or ( 0 as T, ~0 as T, ~0 as T)
+            Test.or ( 0 as T,  0 as T,  0 as T)
+            Test.or ( 0 as T,  1 as T,  1 as T)
             
-            XCTAssertEqual( 1 | ~1, ~0 as T)
-            XCTAssertEqual( 1 | ~0, ~0 as T)
-            XCTAssertEqual( 1 |  0,  1 as T)
-            XCTAssertEqual( 1 |  1,  1 as T)
+            Test.or ( 1 as T, ~1 as T, ~0 as T)
+            Test.or ( 1 as T, ~0 as T, ~0 as T)
+            Test.or ( 1 as T,  0 as T,  1 as T)
+            Test.or ( 1 as T,  1 as T,  1 as T)
         }
         
         for type in Self.types {
@@ -90,25 +91,25 @@ extension MainIntTests {
     
     func testLogicalXor() {
         func whereIs<T>(_ type: T.Type) where T: SystemInteger {
-            XCTAssertEqual(~1 ^ ~1,  0 as T)
-            XCTAssertEqual(~1 ^ ~0,  1 as T)
-            XCTAssertEqual(~1 ^  0, ~1 as T)
-            XCTAssertEqual(~1 ^  1, ~0 as T)
+            Test.xor(~1 as T, ~1 as T,  0 as T)
+            Test.xor(~1 as T, ~0 as T,  1 as T)
+            Test.xor(~1 as T,  0 as T, ~1 as T)
+            Test.xor(~1 as T,  1 as T, ~0 as T)
             
-            XCTAssertEqual(~0 ^ ~1,  1 as T)
-            XCTAssertEqual(~0 ^ ~0,  0 as T)
-            XCTAssertEqual(~0 ^  0, ~0 as T)
-            XCTAssertEqual(~0 ^  1, ~1 as T)
+            Test.xor(~0 as T, ~1 as T,  1 as T)
+            Test.xor(~0 as T, ~0 as T,  0 as T)
+            Test.xor(~0 as T,  0 as T, ~0 as T)
+            Test.xor(~0 as T,  1 as T, ~1 as T)
             
-            XCTAssertEqual( 0 ^ ~1, ~1 as T)
-            XCTAssertEqual( 0 ^ ~0, ~0 as T)
-            XCTAssertEqual( 0 ^  0,  0 as T)
-            XCTAssertEqual( 0 ^  1,  1 as T)
+            Test.xor( 0 as T, ~1 as T, ~1 as T)
+            Test.xor( 0 as T, ~0 as T, ~0 as T)
+            Test.xor( 0 as T,  0 as T,  0 as T)
+            Test.xor( 0 as T,  1 as T,  1 as T)
             
-            XCTAssertEqual( 1 ^ ~1, ~0 as T)
-            XCTAssertEqual( 1 ^ ~0, ~1 as T)
-            XCTAssertEqual( 1 ^  0,  1 as T)
-            XCTAssertEqual( 1 ^  1,  0 as T)
+            Test.xor( 1 as T, ~1 as T, ~0 as T)
+            Test.xor( 1 as T, ~0 as T, ~1 as T)
+            Test.xor( 1 as T,  0 as T,  1 as T)
+            Test.xor( 1 as T,  1 as T,  0 as T)
         }
         
         for type in Self.types {
