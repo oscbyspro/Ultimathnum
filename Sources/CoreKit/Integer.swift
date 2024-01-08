@@ -22,6 +22,16 @@ public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Send
     @inlinable static var isSigned: Bool { get }
     
     //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    /// ### Development
+    ///
+    /// - TODO: Is this method needed, or does `init(_:)` suffice?
+    ///
+    @inlinable init(magnitude: consuming Magnitude) throws
+    
+    //=------------------------------------------------------------------------=
     // MARK: Accessors
     //=------------------------------------------------------------------------=
     
@@ -157,6 +167,15 @@ extension Integer {
     //=------------------------------------------------------------------------=
     // MARK: Utilities x Comparison
     //=------------------------------------------------------------------------=
+    
+    /// Returns whether this value is less than zero.
+    ///
+    /// It first checks `isSigned` which makes it preferred over the `self < 0`
+    /// expression in `@inlinable` generic code.
+    ///
+    @inlinable public var isLessThanZero: Bool {
+        Self.isSigned &&  self < 0
+    }
     
     @inlinable borrowing public func signum() -> Signum {
         self.compared(to: 0)

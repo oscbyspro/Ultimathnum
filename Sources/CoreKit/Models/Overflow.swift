@@ -41,4 +41,10 @@
         precondition(!self.overflow, .overflow(function: function, file: file, line: line), file: file, line: line)
         return self.value as Value
     }
+    
+    //*========================================================================*
+    // MARK: * Error
+    //*========================================================================*
+    
+    @frozen public struct Error: Swift.Error { @inlinable public init() { } }
 }

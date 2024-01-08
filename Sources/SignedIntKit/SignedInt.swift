@@ -31,9 +31,15 @@ import CoreKit
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    @inlinable public init(magnitude: consuming Magnitude) throws {
+        self.sign = Sign.plus
+        self.magnitude = magnitude
+    }
+    
     /// Creates a new instance with the given sign and magnitude.
-    @inlinable public init(sign: Sign, magnitude: Magnitude) {
-        self.sign = sign; self.magnitude = magnitude
+    @inlinable public init(sign: consuming Sign, magnitude: consuming Magnitude) {
+        self.sign = sign
+        self.magnitude = magnitude
     }
     
     //=------------------------------------------------------------------------=

@@ -96,4 +96,16 @@ extension SystemInteger {
     @inlinable public init(repeating bit: Bit) {
         self = bit == (0 as Bit) ? (0 as Self) : (~0 as Self)
     }
+    
+    /// ### Development
+    ///
+    /// - TODO: Is this method needed, or does `init(_:)` suffice?
+    ///
+    @inlinable public init(magnitude: consuming Magnitude) throws {
+        self.init(bitPattern: magnitude)
+        
+        if  self.isLessThanZero {
+            throw Overflow<Self>.Error()
+        }
+    }
 }
