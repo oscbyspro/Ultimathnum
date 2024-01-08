@@ -8,6 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import TestKit
 import XCTest
 
 //*============================================================================*
@@ -23,8 +24,8 @@ final class SignTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testInitBit() {
-        XCTAssertEqual(T(Bit(false)), T.plus )
-        XCTAssertEqual(T(Bit(true )), T.minus)
+        XCTAssertEqual(T(0 as Bit), T.plus )
+        XCTAssertEqual(T(1 as Bit), T.minus)
     }
     
     func testInitFloatingPointSign() {
@@ -42,28 +43,28 @@ final class SignTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testNot() {
-        XCTAssertEqual(T.plus .toggled(), T.minus)
-        XCTAssertEqual(T.minus.toggled(), T.plus )
+        Test.not(T.plus,  T.minus)
+        Test.not(T.minus, T.plus )
     }
     
     func testAnd() {
-        XCTAssertEqual(T.plus  & T.plus , T.plus )
-        XCTAssertEqual(T.plus  & T.minus, T.plus )
-        XCTAssertEqual(T.minus & T.plus , T.plus )
-        XCTAssertEqual(T.minus & T.minus, T.minus)
+        Test.and(T.plus , T.plus , T.plus )
+        Test.and(T.plus , T.minus, T.plus )
+        Test.and(T.minus, T.plus , T.plus )
+        Test.and(T.minus, T.minus, T.minus)
     }
     
     func testOr() {
-        XCTAssertEqual(T.plus  | T.plus , T.plus )
-        XCTAssertEqual(T.plus  | T.minus, T.minus)
-        XCTAssertEqual(T.minus | T.plus , T.minus)
-        XCTAssertEqual(T.minus | T.minus, T.minus)
+        Test.or (T.plus , T.plus , T.plus )
+        Test.or (T.plus , T.minus, T.minus)
+        Test.or (T.minus, T.plus , T.minus)
+        Test.or (T.minus, T.minus, T.minus)
     }
     
     func testXor() {
-        XCTAssertEqual(T.plus  ^ T.plus , T.plus )
-        XCTAssertEqual(T.plus  ^ T.minus, T.minus)
-        XCTAssertEqual(T.minus ^ T.plus , T.minus)
-        XCTAssertEqual(T.minus ^ T.minus, T.plus )
+        Test.xor(T.plus , T.plus , T.plus )
+        Test.xor(T.plus , T.minus, T.minus)
+        Test.xor(T.minus, T.plus , T.minus)
+        Test.xor(T.minus, T.minus, T.plus )
     }
 }

@@ -28,7 +28,7 @@ final class SignumTests: XCTestCase {
         XCTAssertEqual( 1 as T, T.more)
     }
     
-    func testComparing() {
+    func testComparison() {
         XCTAssertEqual(      T.less, T.less)
         XCTAssertLessThan(   T.less, T.same)
         XCTAssertLessThan(   T.less, T.more)
@@ -42,7 +42,7 @@ final class SignumTests: XCTestCase {
         XCTAssertEqual(      T.more, T.more)
     }
     
-    func testNegating() {
+    func testNegation() {
         XCTAssertEqual(T.less.negated(), T.more)
         XCTAssertEqual(T.same.negated(), T.same)
         XCTAssertEqual(T.more.negated(), T.less)

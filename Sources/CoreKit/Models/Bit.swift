@@ -29,7 +29,7 @@
         self.base = base
     }
     
-    @inlinable public init(integerLiteral: UInt.IntegerLiteralType) {
+    @inlinable public init(integerLiteral: Swift.UInt.IntegerLiteralType) {
         if  integerLiteral == 0 {
             self.base = false
         }   else if integerLiteral == 1 {

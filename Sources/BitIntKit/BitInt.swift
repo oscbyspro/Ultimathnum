@@ -40,7 +40,7 @@ import CoreKit
         self.bitPattern = (bitPattern)
     }
     
-    @inlinable public init(integerLiteral: Int.IntegerLiteralType) {
+    @inlinable public init(integerLiteral: Swift.Int.IntegerLiteralType) {
         if  integerLiteral == 0 {
             self.bitPattern = 0
         }   else if integerLiteral == -1 {
@@ -89,7 +89,7 @@ import CoreKit
             self.bitPattern = (bitPattern)
         }
         
-        @inlinable public init(integerLiteral: UInt.IntegerLiteralType) {
+        @inlinable public init(integerLiteral: Swift.UInt.IntegerLiteralType) {
             if  integerLiteral == 0 {
                 self.bitPattern = 0
             }   else if integerLiteral == 1 {

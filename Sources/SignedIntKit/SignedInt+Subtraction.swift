@@ -20,7 +20,7 @@ extension SignedInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func negated() -> Overflow<Self> {
-        Overflow(Self(sign: self.sign.toggled(), magnitude: self.magnitude), overflow: false)
+        Overflow(Self(sign: ~self.sign, magnitude: self.magnitude), overflow: false)
     }
     
     @inlinable public consuming func decremented(by decrement: borrowing Self) -> Overflow<Self> {

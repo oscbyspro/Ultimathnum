@@ -25,7 +25,7 @@ extension Test {
     file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
         integer.withUnsafeBufferPointer {
-            XCTAssert($0.elementsEqual(expectation), "\(integer).words == \(Array($0))", file: file, line: line)
+            XCTAssert($0.elementsEqual(expectation), "\(integer).words -> \(Array($0))", file: file, line: line)
         }
     }
 }

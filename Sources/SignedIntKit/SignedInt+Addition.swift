@@ -20,14 +20,16 @@ extension SignedInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func incremented(by increment: borrowing Self) -> Overflow<Self> {
-        var sign: Sign = self.sign; var magnitude: Overflow<Magnitude> = if self.sign == increment.sign {
+        var sign: Sign = self.sign
+        var magnitude: Overflow<Magnitude> = 
+        if  self.sign == increment.sign {
             self.magnitude.incremented(by: increment.magnitude)
         }   else  {
             self.magnitude.decremented(by: increment.magnitude)
         }
         
         if  magnitude.overflow, sign != increment.sign {
-            sign = sign.toggled()
+            sign = ~sign
             magnitude.value = magnitude.value.negated().value
         }
         

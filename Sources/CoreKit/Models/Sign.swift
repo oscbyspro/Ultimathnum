@@ -11,7 +11,7 @@
 // MARK: * Sign
 //*============================================================================*
 
-@frozen public enum Sign: Hashable, Sendable {
+@frozen public enum Sign: BitOperable, Hashable, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -36,20 +36,20 @@
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func toggled() -> Self {
-        self ^ Self.minus
+    @inlinable public static prefix func ~(operand: Self) -> Self {
+        operand ^ minus
     }
     
     @inlinable public static func &(lhs: Self, rhs: Self) -> Self {
-        lhs == rhs ? lhs : Self.plus
+        lhs == rhs ? lhs : plus
     }
     
     @inlinable public static func |(lhs: Self, rhs: Self) -> Self {
-        lhs == Self.plus ? rhs : lhs
+        lhs == plus ? rhs : lhs
     }
     
     @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
-        lhs == rhs ? Self.plus : Self.minus
+        lhs == rhs ? plus : minus
     }
 }
 

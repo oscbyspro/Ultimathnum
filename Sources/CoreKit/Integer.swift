@@ -11,7 +11,7 @@
 // MARK: * Integer
 //*============================================================================*
 
-public protocol Integer: Comparable, Hashable, ExpressibleByIntegerLiteral, Sendable {
+public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Sendable {
     
     associatedtype Magnitude: Integer where Magnitude.Magnitude == Magnitude
     

@@ -74,15 +74,15 @@ import MainIntKit
     @inlinable public init(_ index: Value) {
         self.init()
         
-        // TODO: bit cast collection
-        
         index.withUnsafeBufferPointer {
-            for bit: BitInt.Magnitude in Chunked(normalizing: $0.lazy.map(UX.init(bitPattern:)), isSigned: false).reversed() {
-                
-                self.double()
-                
-                if  bit == 1 {
-                    self.increment()
+            $0.withMemoryRebound(to: UX.self) {
+                for bit: BitInt.Magnitude in Chunked(normalizing: $0, isSigned: false).reversed() {
+                    
+                    self.double()
+                    
+                    if  bit == 1 {
+                        self.increment()
+                    }
                 }
             }
         }
