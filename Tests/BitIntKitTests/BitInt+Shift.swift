@@ -9,6 +9,7 @@
 
 import BitIntKit
 import CoreKit
+import TestKit
 import XCTest
 
 //*============================================================================*
@@ -23,17 +24,17 @@ extension BitIntTests {
     
     func testShiftSmartLeft() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
-            XCTAssertEqual(( 0 as T)  << ( 0 as T),  0 as T)
-            XCTAssertEqual((-1 as T)  << ( 0 as T), -1 as T)
-            XCTAssertEqual(( 0 as T)  << (-1 as T),  0 as T)
-            XCTAssertEqual((-1 as T)  << (-1 as T), -1 as T)
+            Test.shift( 0 as T,  0 as T,  0 as T, .left,  .smart)
+            Test.shift(-1 as T,  0 as T, -1 as T, .left,  .smart)
+            Test.shift( 0 as T, -1 as T,  0 as T, .left,  .smart)
+            Test.shift(-1 as T, -1 as T, -1 as T, .left,  .smart)
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
-            XCTAssertEqual(( 0 as T)  << ( 0 as T),  0 as T)
-            XCTAssertEqual(( 1 as T)  << ( 0 as T),  1 as T)
-            XCTAssertEqual(( 0 as T)  << ( 1 as T),  0 as T)
-            XCTAssertEqual(( 1 as T)  << ( 1 as T),  0 as T)
+            Test.shift( 0 as T,  0 as T,  0 as T, .left,  .smart)
+            Test.shift( 1 as T,  0 as T,  1 as T, .left,  .smart)
+            Test.shift( 0 as T,  1 as T,  0 as T, .left,  .smart)
+            Test.shift( 1 as T,  1 as T,  0 as T, .left,  .smart)
         }
         
         for type in Self.types {
@@ -43,17 +44,17 @@ extension BitIntTests {
     
     func testShiftSmartRight() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
-            XCTAssertEqual(( 0 as T)  >> ( 0 as T),  0 as T)
-            XCTAssertEqual((-1 as T)  >> ( 0 as T), -1 as T)
-            XCTAssertEqual(( 0 as T)  >> (-1 as T),  0 as T)
-            XCTAssertEqual((-1 as T)  >> (-1 as T),  0 as T)
+            Test.shift( 0 as T,  0 as T,  0 as T, .right, .smart)
+            Test.shift(-1 as T,  0 as T, -1 as T, .right, .smart)
+            Test.shift( 0 as T, -1 as T,  0 as T, .right, .smart)
+            Test.shift(-1 as T, -1 as T,  0 as T, .right, .smart)
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
-            XCTAssertEqual(( 0 as T)  >> ( 0 as T),  0 as T)
-            XCTAssertEqual(( 1 as T)  >> ( 0 as T),  1 as T)
-            XCTAssertEqual(( 0 as T)  >> ( 1 as T),  0 as T)
-            XCTAssertEqual(( 1 as T)  >> ( 1 as T),  0 as T)
+            Test.shift( 0 as T,  0 as T,  0 as T, .right, .smart)
+            Test.shift( 1 as T,  0 as T,  1 as T, .right, .smart)
+            Test.shift( 0 as T,  1 as T,  0 as T, .right, .smart)
+            Test.shift( 1 as T,  1 as T,  0 as T, .right, .smart)
         }
         
         for type in Self.types {
@@ -61,20 +62,19 @@ extension BitIntTests {
         }
     }
     
-    
     func testShiftMaskedLeft() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
-            XCTAssertEqual(( 0 as T) &<< ( 0 as T),  0 as T)
-            XCTAssertEqual((-1 as T) &<< ( 0 as T), -1 as T)
-            XCTAssertEqual(( 0 as T) &<< (-1 as T),  0 as T)
-            XCTAssertEqual((-1 as T) &<< (-1 as T), -1 as T)
+            Test.shift( 0 as T,  0 as T,  0 as T, .left,  .masked)
+            Test.shift(-1 as T,  0 as T, -1 as T, .left,  .masked)
+            Test.shift( 0 as T, -1 as T,  0 as T, .left,  .masked)
+            Test.shift(-1 as T, -1 as T, -1 as T, .left,  .masked)
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
-            XCTAssertEqual(( 0 as T) &<< ( 0 as T),  0 as T)
-            XCTAssertEqual(( 1 as T) &<< ( 0 as T),  1 as T)
-            XCTAssertEqual(( 0 as T) &<< ( 1 as T),  0 as T)
-            XCTAssertEqual(( 1 as T) &<< ( 1 as T),  1 as T)
+            Test.shift( 0 as T,  0 as T,  0 as T, .left,  .masked)
+            Test.shift( 1 as T,  0 as T,  1 as T, .left,  .masked)
+            Test.shift( 0 as T,  1 as T,  0 as T, .left,  .masked)
+            Test.shift( 1 as T,  1 as T,  1 as T, .left,  .masked)
         }
         
         for type in Self.types {
@@ -85,17 +85,17 @@ extension BitIntTests {
     
     func testShiftMaskedRight() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
-            XCTAssertEqual(( 0 as T) &>> ( 0 as T),  0 as T)
-            XCTAssertEqual((-1 as T) &>> ( 0 as T), -1 as T)
-            XCTAssertEqual(( 0 as T) &>> (-1 as T),  0 as T)
-            XCTAssertEqual((-1 as T) &>> (-1 as T), -1 as T)
+            Test.shift( 0 as T,  0 as T,  0 as T, .right, .masked)
+            Test.shift(-1 as T,  0 as T, -1 as T, .right, .masked)
+            Test.shift( 0 as T, -1 as T,  0 as T, .right, .masked)
+            Test.shift(-1 as T, -1 as T, -1 as T, .right, .masked)
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
-            XCTAssertEqual(( 0 as T) &>> ( 0 as T),  0 as T)
-            XCTAssertEqual(( 1 as T) &>> ( 0 as T),  1 as T)
-            XCTAssertEqual(( 0 as T) &>> ( 1 as T),  0 as T)
-            XCTAssertEqual(( 1 as T) &>> ( 1 as T),  1 as T)
+            Test.shift( 0 as T,  0 as T,  0 as T, .right, .masked)
+            Test.shift( 1 as T,  0 as T,  1 as T, .right, .masked)
+            Test.shift( 0 as T,  1 as T,  0 as T, .right, .masked)
+            Test.shift( 1 as T,  1 as T,  1 as T, .right, .masked)
         }
         
         for type in Self.types {
