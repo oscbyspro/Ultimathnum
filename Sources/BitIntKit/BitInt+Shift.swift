@@ -20,7 +20,7 @@ extension BitInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        rhs == 0 ? lhs : 0
+        lhs
     }
     
     @inlinable public static func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
@@ -28,7 +28,7 @@ extension BitInt {
     }
     
     @inlinable public static func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs
+        rhs == 0 ? lhs : 0
     }
     
     @inlinable public static func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
