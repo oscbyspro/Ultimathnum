@@ -19,7 +19,7 @@
 ///
 /// Ultimathnum cannot access Builtin.Word so it uses Swift.UInt instead.
 ///
-@frozen public struct Word: BitCastable, BitOperable, Hashable, Sendable {
+@frozen public struct Word: BitCastable, BitOperable, ExpressibleByIntegerLiteral, Hashable, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -33,6 +33,10 @@
     
     @inlinable public init(bitPattern: consuming Swift.UInt) {
         self.bitPattern = bitPattern
+    }
+    
+    @inlinable public init(integerLiteral: Swift.UInt.IntegerLiteralType) {
+        self.bitPattern = Swift.UInt(integerLiteral: integerLiteral)
     }
     
     //=------------------------------------------------------------------------=
