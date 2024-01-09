@@ -24,7 +24,7 @@ extension BitInt {
     }
     
     @inlinable public consuming func remainder(divisor: borrowing Self) -> Overflow<Self> {
-        Overflow(Self(bitPattern: Bit(self < divisor)), overflow: divisor == 0)
+        Overflow(Self(bitPattern: Bit(self < divisor)), overflow: self <= divisor)
     }
     
     @inlinable public consuming func divided(by divisor: borrowing Self) -> Overflow<Division<Self>> {
