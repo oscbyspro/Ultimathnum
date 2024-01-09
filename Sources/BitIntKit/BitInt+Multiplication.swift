@@ -27,8 +27,8 @@ extension BitInt {
         Overflow(copy self & multiplier, overflow: self & multiplier == -1)
     }
     
-    @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> FullWidth<Self, Magnitude> {
-        FullWidth(low: Magnitude(bitPattern: multiplicand & multiplier), high: 0)
+    @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> Doublet<Self> {
+        Doublet(low: Magnitude(bitPattern: multiplicand & multiplier), high: 0)
     }
 }
 
@@ -50,7 +50,7 @@ extension BitInt.Magnitude {
         Overflow(self & multiplier, overflow: false)
     }
     
-    @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> FullWidth<Self, Magnitude> {
-        FullWidth(low: Magnitude(bitPattern: multiplicand & multiplier), high: 0)
+    @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> Doublet<Self> {
+        Doublet(low: Magnitude(bitPattern: multiplicand & multiplier), high: 0)
     }
 }

@@ -8,12 +8,12 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Full Width
+// MARK: * Doublet
 //*============================================================================*
 
-@frozen public struct FullWidth<High: SystemInteger, Low: SystemInteger & UnsignedInteger>: Equatable {
+@frozen public struct Doublet<High: SystemInteger>: Equatable {
     
-    public typealias Magnitude = FullWidth<High.Magnitude, Low.Magnitude>
+    public typealias Magnitude = Doublet<High.Magnitude>
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -21,9 +21,9 @@
     
     #if _endian(big)
     public var high: High
-    public var low:  Low
+    public var low:  High.Magnitude
     #else
-    public var low:  Low
+    public var low:  High.Magnitude
     public var high: High
     #endif
     
@@ -31,21 +31,21 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(low: Low, high: High) {
+    @inlinable public init(low: High.Magnitude, high: High) {
         self.low  = low
         self.high = high
     }
     
-    @inlinable public init(high: High, low: Low) {
+    @inlinable public init(high: High, low: High.Magnitude) {
         self.high = high
         self.low  = low
     }
     
-    @inlinable public init(ascending  components: (low: Low, high: High)) {
+    @inlinable public init(ascending  components: (low: High.Magnitude, high: High)) {
         self.init(low: components.low, high: components.high)
     }
     
-    @inlinable public init(descending components: (high: High, low: Low)) {
+    @inlinable public init(descending components: (high: High, low: High.Magnitude)) {
         self.init(high: components.high, low: components.low)
     }
     
@@ -53,7 +53,7 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public var ascending:  (low: Low, high: High) {
+    @inlinable public var ascending:  (low: High.Magnitude, high: High) {
         consuming get {
             (low: self.low, high: self.high)
         }
@@ -63,7 +63,7 @@
         }
     }
     
-    @inlinable public var descending: (high: High, low: Low) {
+    @inlinable public var descending: (high: High, low: High.Magnitude) {
         consuming get {
             (high: self.high, low: self.low)
         }
@@ -75,10 +75,10 @@
 }
 
 //*============================================================================*
-// MARK: * Full Width x Numbers
+// MARK: * Doublet x Numbers
 //*============================================================================*
 
-extension FullWidth {
+extension Doublet {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -93,7 +93,7 @@ extension FullWidth {
                 (value.high, carry) = (~value.high).incremented(by: carry ? 1 : 0).components
             }
                         
-            return Magnitude(high: High.Magnitude(bitPattern: value.high), low: Low.Magnitude(bitPattern: value.low))
+            return Magnitude(high: High.Magnitude(bitPattern: value.high), low: High.Magnitude(bitPattern: value.low))
         }
     }
 }

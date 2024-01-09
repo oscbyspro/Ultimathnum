@@ -58,9 +58,9 @@ Magnitude: UnsignedInteger & SystemInteger, Magnitude.BitPattern == BitPattern {
     // MARK: Transformations x Multiplication, Division
     //=------------------------------------------------------------------------=
     
-    @inlinable static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> FullWidth<Self, Magnitude>
+    @inlinable static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> Doublet<Self>
     
-    @inlinable static func dividing(_ dividend: consuming FullWidth<Self, Magnitude>, by multiplier: borrowing Self) -> Overflow<Division<Self>>
+    @inlinable static func dividing(_ dividend: consuming Doublet<Self>, by multiplier: borrowing Self) -> Overflow<Division<Self>>
 }
 
 //=----------------------------------------------------------------------------=

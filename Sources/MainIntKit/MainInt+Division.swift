@@ -36,7 +36,7 @@ extension MainInt {
         return Overflow(Division(quotient: quotient.value, remainder: remainder.value), overflow: overflow)
     }
     
-    @inlinable public static func dividing(_ dividend: FullWidth<Self, Magnitude>, by divisor: Self) -> Overflow<Division<Self>> {
+    @inlinable public static func dividing(_ dividend: Doublet<Self>, by divisor: Self) -> Overflow<Division<Self>> {
         let lhsIsLessThanZero = dividend.high    .isLessThanZero
         let rhsIsLessThanZero = divisor/*------*/.isLessThanZero
         let minus: Bool = lhsIsLessThanZero != rhsIsLessThanZero
@@ -70,7 +70,7 @@ extension MainInt where Self == Magnitude {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable @inline(__always) static func dividingAsUnsignedCodeBlock(_ dividend: FullWidth<Self, Magnitude>, by divisor: Self) -> Overflow<Division<Self>> {
+    @inlinable @inline(__always) static func dividingAsUnsignedCodeBlock(_ dividend: Doublet<Self>, by divisor: Self) -> Overflow<Division<Self>> {
         //=--------------------------------------=
         // divisor is zero
         //=--------------------------------------=

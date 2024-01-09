@@ -28,8 +28,8 @@ extension MainInt {
         return Overflow(Self(result.partialValue), overflow: result.overflow)
     }
     
-    @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> FullWidth<Self, Magnitude> {
+    @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> Doublet<Self> {
         let result = multiplicand.base.multipliedFullWidth(by: multiplier.base)
-        return FullWidth(high: Self(result.high), low: Magnitude(result.low))
+        return Doublet(high: Self(result.high), low: Magnitude(result.low))
     }
 }
