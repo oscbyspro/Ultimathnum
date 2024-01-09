@@ -24,21 +24,21 @@ extension BitIntTests {
     
     func testMultiplication() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
-            typealias T2 = FullWidth<T, T.Magnitude>
+            typealias F = FullWidth<T, T.Magnitude>
             
-            Test.multiplication( 0 as T,  0 as T, T2(low: 0, high:  0), false)
-            Test.multiplication(-1 as T,  0 as T, T2(low: 0, high:  0), false)
-            Test.multiplication( 0 as T, -1 as T, T2(low: 0, high:  0), false)
-            Test.multiplication(-1 as T, -1 as T, T2(low: 1, high:  0), true )
+            Test.multiplication( 0 as T,  0 as T, F(low: 0, high:  0), false)
+            Test.multiplication(-1 as T,  0 as T, F(low: 0, high:  0), false)
+            Test.multiplication( 0 as T, -1 as T, F(low: 0, high:  0), false)
+            Test.multiplication(-1 as T, -1 as T, F(low: 1, high:  0), true )
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
-            typealias T2 = FullWidth<T, T.Magnitude>
+            typealias F = FullWidth<T, T.Magnitude>
             
-            Test.multiplication( 0 as T,  0 as T, T2(low: 0, high:  0), false)
-            Test.multiplication( 1 as T,  0 as T, T2(low: 0, high:  0), false)
-            Test.multiplication( 0 as T,  1 as T, T2(low: 0, high:  0), false)
-            Test.multiplication( 1 as T,  1 as T, T2(low: 1, high:  0), false)
+            Test.multiplication( 0 as T,  0 as T, F(low: 0, high:  0), false)
+            Test.multiplication( 1 as T,  0 as T, F(low: 0, high:  0), false)
+            Test.multiplication( 0 as T,  1 as T, F(low: 0, high:  0), false)
+            Test.multiplication( 1 as T,  1 as T, F(low: 1, high:  0), false)
         }
         
         for type in Self.types {

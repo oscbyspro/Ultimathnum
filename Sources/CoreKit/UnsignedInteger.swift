@@ -44,7 +44,7 @@ extension UnsignedInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(magnitude: consuming Magnitude) {
-        self = magnitude
+        self = consume magnitude
     }
     
     //=------------------------------------------------------------------------=

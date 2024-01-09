@@ -51,7 +51,7 @@ extension Test {
     _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
         if !overflow {
-            XCTAssertEqual(lhs * rhs,   value, file: file, line: line)
+            XCTAssertEqual(lhs * rhs, value, file: file, line: line)
             XCTAssertEqual(rhs * lhs, value, file: file, line: line)
         }
         //=--------------------------------------=
