@@ -11,7 +11,9 @@
 // MARK: * Full Width
 //*============================================================================*
 
-@frozen public struct FullWidth<High: Integer, Low: UnsignedInteger>: Equatable {
+@frozen public struct FullWidth<High: SystemInteger, Low: SystemInteger & UnsignedInteger>: Equatable {
+    
+    public typealias Magnitude = FullWidth<High.Magnitude, Low.Magnitude>
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -45,5 +47,53 @@
     
     @inlinable public init(descending components: (high: High, low: Low)) {
         self.init(high: components.high, low: components.low)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var ascending:  (low: Low, high: High) {
+        consuming get {
+            (low: self.low, high: self.high)
+        }
+        
+        consuming set {
+            (low: self.low, high: self.high) = newValue
+        }
+    }
+    
+    @inlinable public var descending: (high: High, low: Low) {
+        consuming get {
+            (high: self.high, low: self.low)
+        }
+        
+        consuming set {
+            (high: self.high, low: self.low) = newValue
+        }
+    }
+}
+
+//*============================================================================*
+// MARK: * Full Width x Numbers
+//*============================================================================*
+
+extension FullWidth {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var magnitude: Magnitude {
+        consuming get { var value = consume self
+            
+            if  value.high.isLessThanZero {
+                var carry:   Bool
+                (value.low,  carry) = (~value.low ).incremented(by: 0000000000001).components
+                (value.high, carry) = (~value.high).incremented(by: carry ? 1 : 0).components
+            }
+                        
+            return Magnitude(high: High.Magnitude(bitPattern: value.high), low: Low.Magnitude(bitPattern: value.low))
+        }
     }
 }

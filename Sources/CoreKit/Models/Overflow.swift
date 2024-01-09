@@ -33,6 +33,12 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    @inlinable public var components: (value: Value, overflow: Bool) {
+        consuming get {
+            (value: self.value, overflow: self.overflow)
+        }
+    }
+    
     @inlinable public consuming func optional() -> Value? {
         if self.overflow { nil } else { self.value }
     }

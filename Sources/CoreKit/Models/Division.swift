@@ -13,12 +13,14 @@
 
 @frozen public struct Division<Value>: Equatable where Value: Integer {
     
+    public typealias Value = Value
+    
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    public let quotient:  Value
-    public let remainder: Value
+    public var quotient:  Value
+    public var remainder: Value
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -27,6 +29,11 @@
     @inlinable public init(quotient: Value, remainder: Value) {
         self.quotient  = quotient
         self.remainder = remainder
+    }
+    
+    @inlinable public init(_ components: (quotient: Value, remainder: Value)) {
+        self.quotient  = components.quotient
+        self.remainder = components.remainder
     }
     
     //=------------------------------------------------------------------------=
