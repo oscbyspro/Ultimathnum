@@ -9,6 +9,7 @@
 
 import CoreKit
 import MainIntKit
+import TestKit
 import XCTest
 
 //*============================================================================*

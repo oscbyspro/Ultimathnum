@@ -16,9 +16,9 @@ import XCTest
 
 extension Test {
     
-    public enum ShiftDirection { case left,  right  }
+    public enum ShiftDirection: Equatable { case left,  right  }
     
-    public enum ShiftSemantics { case smart, masked }
+    public enum ShiftSemantics: Equatable { case smart, masked }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

@@ -22,18 +22,18 @@ extension BitIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testShiftSmartLeft() {
+    func testShiftLS() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
             Test.shift( 0 as T,  0 as T,  0 as T, .left,  .smart)
-            Test.shift(-1 as T,  0 as T, -1 as T, .left,  .smart)
             Test.shift( 0 as T, -1 as T,  0 as T, .left,  .smart)
+            Test.shift(-1 as T,  0 as T, -1 as T, .left,  .smart)
             Test.shift(-1 as T, -1 as T, -1 as T, .left,  .smart)
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
             Test.shift( 0 as T,  0 as T,  0 as T, .left,  .smart)
-            Test.shift( 1 as T,  0 as T,  1 as T, .left,  .smart)
             Test.shift( 0 as T,  1 as T,  0 as T, .left,  .smart)
+            Test.shift( 1 as T,  0 as T,  1 as T, .left,  .smart)
             Test.shift( 1 as T,  1 as T,  0 as T, .left,  .smart)
         }
         
@@ -42,18 +42,18 @@ extension BitIntTests {
         }
     }
     
-    func testShiftSmartRight() {
+    func testShiftRS() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
             Test.shift( 0 as T,  0 as T,  0 as T, .right, .smart)
-            Test.shift(-1 as T,  0 as T, -1 as T, .right, .smart)
             Test.shift( 0 as T, -1 as T,  0 as T, .right, .smart)
+            Test.shift(-1 as T,  0 as T, -1 as T, .right, .smart)
             Test.shift(-1 as T, -1 as T,  0 as T, .right, .smart)
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
             Test.shift( 0 as T,  0 as T,  0 as T, .right, .smart)
-            Test.shift( 1 as T,  0 as T,  1 as T, .right, .smart)
             Test.shift( 0 as T,  1 as T,  0 as T, .right, .smart)
+            Test.shift( 1 as T,  0 as T,  1 as T, .right, .smart)
             Test.shift( 1 as T,  1 as T,  0 as T, .right, .smart)
         }
         
@@ -62,18 +62,18 @@ extension BitIntTests {
         }
     }
     
-    func testShiftMaskedLeft() {
+    func testShiftLM() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
             Test.shift( 0 as T,  0 as T,  0 as T, .left,  .masked)
-            Test.shift(-1 as T,  0 as T, -1 as T, .left,  .masked)
             Test.shift( 0 as T, -1 as T,  0 as T, .left,  .masked)
+            Test.shift(-1 as T,  0 as T, -1 as T, .left,  .masked)
             Test.shift(-1 as T, -1 as T, -1 as T, .left,  .masked)
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
             Test.shift( 0 as T,  0 as T,  0 as T, .left,  .masked)
-            Test.shift( 1 as T,  0 as T,  1 as T, .left,  .masked)
             Test.shift( 0 as T,  1 as T,  0 as T, .left,  .masked)
+            Test.shift( 1 as T,  0 as T,  1 as T, .left,  .masked)
             Test.shift( 1 as T,  1 as T,  1 as T, .left,  .masked)
         }
         
@@ -82,19 +82,18 @@ extension BitIntTests {
         }
     }
     
-    
-    func testShiftMaskedRight() {
+    func testShiftRM() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
             Test.shift( 0 as T,  0 as T,  0 as T, .right, .masked)
-            Test.shift(-1 as T,  0 as T, -1 as T, .right, .masked)
             Test.shift( 0 as T, -1 as T,  0 as T, .right, .masked)
+            Test.shift(-1 as T,  0 as T, -1 as T, .right, .masked)
             Test.shift(-1 as T, -1 as T, -1 as T, .right, .masked)
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
             Test.shift( 0 as T,  0 as T,  0 as T, .right, .masked)
-            Test.shift( 1 as T,  0 as T,  1 as T, .right, .masked)
             Test.shift( 0 as T,  1 as T,  0 as T, .right, .masked)
+            Test.shift( 1 as T,  0 as T,  1 as T, .right, .masked)
             Test.shift( 1 as T,  1 as T,  1 as T, .right, .masked)
         }
         

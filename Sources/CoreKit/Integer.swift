@@ -170,8 +170,7 @@ extension Integer {
     
     /// Returns whether this value is less than zero.
     ///
-    /// It first checks `isSigned` which makes it preferred over the `self < 0`
-    /// expression in `@inlinable` generic code.
+    /// It checks `isSigned` first which is preferred in inlinable generic code.
     ///
     @inlinable public var isLessThanZero: Bool {
         Self.isSigned &&  self < 0
