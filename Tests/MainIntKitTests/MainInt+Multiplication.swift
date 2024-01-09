@@ -13,7 +13,7 @@ import TestKit
 import XCTest
 
 //*============================================================================*
-// MARK: * Core Int x Multiplication
+// MARK: * Main Int x Multiplication
 //*============================================================================*
 
 extension MainIntTests {

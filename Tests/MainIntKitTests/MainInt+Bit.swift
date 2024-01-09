@@ -13,7 +13,7 @@ import TestKit
 import XCTest
 
 //*============================================================================*
-// MARK: * Core Int x Bit
+// MARK: * Main Int x Bit
 //*============================================================================*
 
 extension MainIntTests {
@@ -39,35 +39,18 @@ extension MainIntTests {
     
     func testBitCountSelection() {
         func whereIs<T>(_ type: T.Type) where T: SystemInteger {
-            XCTAssertEqual((~0 as T).count(1, option:        .all), T.bitWidth)
-            XCTAssertEqual((~1 as T).count(1, option:        .all), T.bitWidth - 1)
-            XCTAssertEqual(( 0 as T).count(1, option:        .all), 0)
-            XCTAssertEqual(( 1 as T).count(1, option:        .all), 1)
-            
-            XCTAssertEqual((~0 as T).count(0, option:        .all), 0)
-            XCTAssertEqual((~1 as T).count(0, option:        .all), 1)
-            XCTAssertEqual(( 0 as T).count(0, option:        .all), T.bitWidth)
-            XCTAssertEqual(( 1 as T).count(0, option:        .all), T.bitWidth - 1)
-            
-            XCTAssertEqual((~0 as T).count(1, option:  .ascending), T.bitWidth)
-            XCTAssertEqual((~1 as T).count(1, option:  .ascending), 0)
-            XCTAssertEqual(( 0 as T).count(1, option:  .ascending), 0)
-            XCTAssertEqual(( 1 as T).count(1, option:  .ascending), 1)
-            
-            XCTAssertEqual((~0 as T).count(0, option:  .ascending), 0)
-            XCTAssertEqual((~1 as T).count(0, option:  .ascending), 1)
-            XCTAssertEqual(( 0 as T).count(0, option:  .ascending), T.bitWidth)
-            XCTAssertEqual(( 1 as T).count(0, option:  .ascending), 0)
-            
-            XCTAssertEqual((~0 as T).count(1, option: .descending), T.bitWidth)
-            XCTAssertEqual((~1 as T).count(1, option: .descending), T.bitWidth - 1)
-            XCTAssertEqual(( 0 as T).count(1, option: .descending), 0)
-            XCTAssertEqual(( 1 as T).count(1, option: .descending), 0)
-            
-            XCTAssertEqual((~0 as T).count(0, option: .descending), 0)
-            XCTAssertEqual((~1 as T).count(0, option: .descending), 0)
-            XCTAssertEqual(( 0 as T).count(0, option: .descending), T.bitWidth)
-            XCTAssertEqual(( 1 as T).count(0, option: .descending), T.bitWidth - 1)
+            for bit: Bit in [0, 1] {
+                for selection: Bit.Selection in [.all, .ascending, .descending] {
+                    XCTAssertEqual(( 0 as T).count(bit, option: selection), bit == 0 ? T.bitWidth : 0)
+                    XCTAssertEqual((~0 as T).count(bit, option: selection), bit == 1 ? T.bitWidth : 0)
+                }
+                
+                for element: (integer: T, bit: Bit) in [(11, 0), (~11, 1)] {
+                    XCTAssertEqual(element.integer.count(bit, option:        .all), bit == element.bit ? T.bitWidth - 3 : 3)
+                    XCTAssertEqual(element.integer.count(bit, option:  .ascending), bit == element.bit ?              0 : 2)
+                    XCTAssertEqual(element.integer.count(bit, option: .descending), bit == element.bit ? T.bitWidth - 4 : 0)
+                }
+            }
         }
         
         for type in Self.types {

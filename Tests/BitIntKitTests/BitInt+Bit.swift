@@ -38,37 +38,12 @@ extension BitIntTests {
     
     func testBitCountSelection() {
         func whereIs<T>(_ type: T.Type) where T: SystemInteger {
-            typealias M = T.Magnitude
-            
-            XCTAssertEqual(T(bitPattern: ~0 as M).count(1, option:        .all), 1)
-            XCTAssertEqual(T(bitPattern: ~1 as M).count(1, option:        .all), 0)
-            XCTAssertEqual(T(bitPattern:  0 as M).count(1, option:        .all), 0)
-            XCTAssertEqual(T(bitPattern:  1 as M).count(1, option:        .all), 1)
-            
-            XCTAssertEqual(T(bitPattern: ~0 as M).count(0, option:        .all), 0)
-            XCTAssertEqual(T(bitPattern: ~1 as M).count(0, option:        .all), 1)
-            XCTAssertEqual(T(bitPattern:  0 as M).count(0, option:        .all), 1)
-            XCTAssertEqual(T(bitPattern:  1 as M).count(0, option:        .all), 0)
-            
-            XCTAssertEqual(T(bitPattern: ~0 as M).count(1, option:  .ascending), 1)
-            XCTAssertEqual(T(bitPattern: ~1 as M).count(1, option:  .ascending), 0)
-            XCTAssertEqual(T(bitPattern:  0 as M).count(1, option:  .ascending), 0)
-            XCTAssertEqual(T(bitPattern:  1 as M).count(1, option:  .ascending), 1)
-            
-            XCTAssertEqual(T(bitPattern: ~0 as M).count(0, option:  .ascending), 0)
-            XCTAssertEqual(T(bitPattern: ~1 as M).count(0, option:  .ascending), 1)
-            XCTAssertEqual(T(bitPattern:  0 as M).count(0, option:  .ascending), 1)
-            XCTAssertEqual(T(bitPattern:  1 as M).count(0, option:  .ascending), 0)
-            
-            XCTAssertEqual(T(bitPattern: ~0 as M).count(1, option: .descending), 1)
-            XCTAssertEqual(T(bitPattern: ~1 as M).count(1, option: .descending), 0)
-            XCTAssertEqual(T(bitPattern:  0 as M).count(1, option: .descending), 0)
-            XCTAssertEqual(T(bitPattern:  1 as M).count(1, option: .descending), 1)
-            
-            XCTAssertEqual(T(bitPattern: ~0 as M).count(0, option: .descending), 0)
-            XCTAssertEqual(T(bitPattern: ~1 as M).count(0, option: .descending), 1)
-            XCTAssertEqual(T(bitPattern:  0 as M).count(0, option: .descending), 1)
-            XCTAssertEqual(T(bitPattern:  1 as M).count(0, option: .descending), 0)
+            for bit: Bit in [0, 1] {
+                for selection: Bit.Selection in [.all, .ascending, .descending] {
+                    XCTAssertEqual(T(bitPattern: 0 as T.Magnitude).count(bit, option: selection), bit == 0 ? 1 : 0)
+                    XCTAssertEqual(T(bitPattern: 1 as T.Magnitude).count(bit, option: selection), bit == 1 ? 1 : 0)
+                }
+            }
         }
         
         for type in Self.types {
