@@ -11,10 +11,6 @@
 // MARK: * Overflow
 //*============================================================================*
 
-/// ### Development
-///
-/// Consider Overflow, Overflow.Value\<T\>, Overflow.Result\<T\>.
-///
 @frozen public struct Overflow<Value>: Swift.Error {
         
     //=------------------------------------------------------------------------=
@@ -26,6 +22,10 @@
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
+    
+    @inlinable public init() where Value == Void {
+        
+    }
     
     @inlinable public init(_ value: consuming Value) {
         self.value = value
@@ -45,7 +45,7 @@
     
     @inlinable public static func resolve(_ value: consuming Value, overflow: consuming Bool) throws -> Value {
         if  overflow {
-            throw  Self.init(value)
+            throw  Overflow(value)
         }   else {
             return value
         }
