@@ -11,7 +11,7 @@
 // MARK: * Division
 //*============================================================================*
 
-@frozen public struct Division<Value>: Equatable where Value: Integer {
+@frozen public struct Division<Value> {
     
     public typealias Value = Value
     
@@ -30,6 +30,44 @@
         self.quotient  = quotient
         self.remainder = remainder
     }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Equatable
+//=----------------------------------------------------------------------------=
+
+extension Division: Equatable where Value: Equatable { }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Bit Cast
+//=----------------------------------------------------------------------------=
+
+extension Division: BitCastable where Value: BitCastable {
+        
+    //=------------------------------------------------------------------------=
+    // MARK: Details x Bit Pattern
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(bitPattern: consuming Division<Value.BitPattern>) {
+        self.init(
+        quotient:  Value(bitPattern: bitPattern.quotient ),
+        remainder: Value(bitPattern: bitPattern.remainder))
+    }
+    
+    @inlinable public var bitPattern: Division<Value.BitPattern> {
+        consuming get {
+            Division<  Value.BitPattern>(
+            quotient:  Value.BitPattern(bitPattern: self.quotient ),
+            remainder: Value.BitPattern(bitPattern: self.remainder))
+        }
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Integer
+//=----------------------------------------------------------------------------=
+
+extension Division where Value: Integer {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

@@ -54,3 +54,28 @@
     
     @frozen public struct Error: Swift.Error { @inlinable public init() { } }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Equatable
+//=----------------------------------------------------------------------------=
+
+extension Overflow: Equatable where Value: Equatable { }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Bit Cast
+//=----------------------------------------------------------------------------=
+
+extension Overflow: BitCastable where Value: BitCastable {
+     
+    //=------------------------------------------------------------------------=
+    // MARK: Details x Bit Pattern
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(bitPattern: consuming Overflow<Value.BitPattern>) {
+        self.init(Value(bitPattern: bitPattern.value), overflow: bitPattern.overflow)
+    }
+    
+    @inlinable public var bitPattern: Overflow<Value.BitPattern> {
+        consuming get { Overflow<Value.BitPattern>(Value.BitPattern(bitPattern: self.value), overflow: self.overflow) }
+    }
+}

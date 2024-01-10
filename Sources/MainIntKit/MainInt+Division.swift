@@ -41,22 +41,21 @@ extension MainInt {
         let rhsIsLessThanZero = divisor/*------*/.isLessThanZero
         let minus: Bool = lhsIsLessThanZero != rhsIsLessThanZero
         //=--------------------------------------=
-        let _qro = Magnitude.dividingCodeBlock(TBI.magnitude(of: dividend), by: divisor.magnitude)
-        var  qro = Overflow(Division(quotient: Self(bitPattern: _qro.value.quotient), remainder: Self(bitPattern: _qro.value.remainder)), overflow: _qro.overflow)
+        var result = Overflow<Division<Self>>(bitPattern: Magnitude._dividing(TBI.magnitude(of: dividend), by: divisor.magnitude))
         //=--------------------------------------=
         if  minus {
-            qro.value.quotient  = qro.value.quotient .negated().value
+            result.value.quotient  = result.value.quotient .negated().value
         }
         
         if  lhsIsLessThanZero {
-            qro.value.remainder = qro.value.remainder.negated().value
+            result.value.remainder = result.value.remainder.negated().value
         }
         
-        if  minus != qro.value.quotient.isLessThanZero {
-            qro.overflow = qro.overflow || !(minus && qro.value.quotient == 0)
+        if  minus != result.value.quotient.isLessThanZero {
+            result.overflow = result.overflow || !(minus && result.value.quotient == 0)
         }
         //=--------------------------------------=
-        return qro as Overflow<Division<Self>>
+        return result as Overflow<Division<Self>>
     }
 }
 
@@ -70,15 +69,14 @@ extension MainInt where Self == Magnitude {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inline(__always) @inlinable static func dividingCodeBlock(_ dividend: Doublet<Self>, by divisor: Self) -> Overflow<Division<Self>> {
+    @inline(__always) @inlinable static func _dividing(_ dividend: Doublet<Self>, by divisor: Self) -> Overflow<Division<Self>> {
         //=--------------------------------------=
         // divisor is zero
         //=--------------------------------------=
         if  divisor == 0 {
-            let quotient = Self(bitPattern: dividend.low), remainder = Self(bitPattern: dividend.low)
-            return Overflow(Division(quotient: consume quotient, remainder: consume remainder), overflow: true)
+            return Overflow(Division(quotient: dividend.low,   remainder: dividend.low),    overflow: true)
         //=--------------------------------------=
-        // quotient does not fit in two halves
+        // quotient does not fit in one part
         //=--------------------------------------=
         }   else if divisor <= dividend.high {
             let (quotient, remainder) = divisor.base.dividingFullWidth((high: dividend.high.base % divisor.base, low: dividend.low.base))
