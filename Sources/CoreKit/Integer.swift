@@ -13,23 +13,27 @@
 
 public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Sendable {
     
+    associatedtype Words: RandomAccessCollection<Word>
+    
     associatedtype Magnitude: Integer where Magnitude.Magnitude == Magnitude
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
+    /// ### Development
+    ///
+    /// - TODO: Consider moving `isSigned` to `BinaryInteger`.
+    ///
     @inlinable static var isSigned: Bool { get }
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
+            
+    @inlinable init(sign:  consuming Sign, magnitude: consuming Magnitude) throws
     
-    /// ### Development
-    ///
-    /// - TODO: Is this method needed, or does `init(_:)` suffice?
-    ///
-    @inlinable init(magnitude: consuming Magnitude) throws
+    @inlinable init(words: consuming some RandomAccessCollection<Word>, isSigned: consuming Bool) throws
     
     //=------------------------------------------------------------------------=
     // MARK: Accessors
@@ -37,15 +41,7 @@ public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Send
     
     @inlinable var magnitude: Magnitude { consuming get }
     
-    /// Its un/signed two's complement words.
-    ///
-    /// The format is indicated by `isSigned`.
-    ///
-    /// ### Development
-    ///
-    /// - TODO: Make this a buffer view at some point.
-    ///
-    @inlinable consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<Word>) throws -> T) rethrows -> T
+    @inlinable var words: Words { consuming get }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Addition
@@ -100,28 +96,16 @@ extension Integer {
         self = 0
     }
     
-    @inlinable public init(_ source: some Integer) {
-        fatalError("TODO")
+    @inlinable public init(magnitude:  consuming Magnitude) throws {
+        try  self.init(sign: Sign.plus, magnitude: consume magnitude)
     }
     
-    @inlinable public init(exactly source: some Integer) throws {
-        fatalError("TODO")
+    @inlinable public init<T>(_ source: T) where T: Integer {
+        try! self.init(exactly: source)
     }
     
-    @inlinable public init(clamping source: some Integer) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public init(truncating source: some Integer) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public init(stdlib source: some Swift.BinaryInteger) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public init(sign: Sign, magnitude: Magnitude) throws {
-        fatalError("TODO")
+    @inlinable public init<T>(exactly source: T) throws where T: Integer {
+        try  self.init(words: source.words, isSigned: T.isSigned)
     }
     
     //=------------------------------------------------------------------------=

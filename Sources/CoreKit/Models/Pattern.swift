@@ -8,35 +8,41 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Bit Operable
+// MARK: * Pattern
 //*============================================================================*
 
-public protocol BitOperable {
-    
+/// The integer currency type.
+///
+/// ### Development
+///
+/// - Consider helper methods like matches(\_:), etc.
+///
+@frozen public struct Pattern<Base> where Base: RandomAccessCollection<Word> {
+        
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: State
     //=------------------------------------------------------------------------=
     
-    @inlinable static prefix func ~(operand: consuming Self) -> Self
-    
-    @inlinable static func &(lhs: consuming Self, rhs: borrowing Self) -> Self
-    
-    @inlinable static func |(lhs: consuming Self, rhs: borrowing Self) -> Self
-    
-    @inlinable static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Expressible By Integer Literal
-//=----------------------------------------------------------------------------=
-
-extension BitOperable where Self: ExpressibleByIntegerLiteral {
+    public let base: Base
+    public let sign: Word
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(repeating bit: Bit) {
-        self = bit == (0 as Bit) ? (0 as Self) : (~0 as Self)
+    @inlinable public init(_ base: Base, isSigned: Bool) {
+        self.base = base; self.sign = Word(repeating: Bit(isSigned && Swift.Int(bitPattern: base.last ?? 0) < 0))
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Accessors
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var isLessThanZero: Bool {
+        self.sign != (0 as Word)
+    }
+    
+    @inlinable public func load(as type: Word.Type) -> Word {
+        self.base.first ?? self.sign
     }
 }

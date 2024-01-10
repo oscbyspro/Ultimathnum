@@ -7,21 +7,22 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Normal Int x Words x Unsigned
+// MARK: * Proper Binary Integer
 //*============================================================================*
 
-extension NormalInt.Magnitude {
+extension UMN {
     
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<Word>) throws -> T) rethrows -> T {
-        switch self.storage {
-        case let .some(x): try x.withUnsafeBufferPointer(body)
-        case let .many(x): try x.withUnsafeBufferPointer(body) }
+    /// A namespace for proper binary integer algorithms.
+    ///
+    /// - Note: Proper binary integer models conform to ``BinaryInteger``.
+    ///
+    @frozen public enum ProperBinaryInteger<Integer> where Integer: BinaryInteger {
+        
+        //*====================================================================*
+        // MARK: * Magnitude
+        //*====================================================================*
+        
+        public typealias Magnitude = ProperBinaryInteger<Integer.Magnitude>
     }
 }

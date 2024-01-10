@@ -60,12 +60,20 @@ import CoreKit
         }
     }
     
+    @inlinable public var words: some RandomAccessCollection<Word> {
+        consuming get {
+            CollectionOfOne(self.load(as: Word.self))
+        }
+    }
+    
     //*========================================================================*
     // MARK: * Magnitude
     //*========================================================================*
     
     /// An unsigned `1-bit` integer that can represent the values `0` and `1`.
-    @frozen public struct Magnitude: SystemInteger & UnsignedInteger {
+    @frozen public struct Magnitude: SystemInteger & UnsignedInteger {        
+        
+        public typealias Magnitude = Self
         
         //=--------------------------------------------------------------------=
         // MARK: Meta Data
@@ -96,6 +104,16 @@ import CoreKit
                 self.bitPattern = 1
             }   else {
                 fatalError(.overflow())
+            }
+        }
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Accessors
+        //=--------------------------------------------------------------------=
+        
+        @inlinable public var words: some RandomAccessCollection<Word> {
+            consuming get {
+                CollectionOfOne(self.load(as: Word.self))
             }
         }
     }

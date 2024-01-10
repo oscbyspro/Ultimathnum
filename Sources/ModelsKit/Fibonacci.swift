@@ -76,18 +76,17 @@ import MainIntKit
     
     /// Creates the sequence pair at the given `index`.
     @inlinable public init(_ index: Value) throws {
+        // TODO: throw or use magnitudes
+        precondition(!index.isLessThanZero)
+        
         try self.init()
         
         brr: do {
-            try index.withUnsafeBufferPointer {
-                try $0.withMemoryRebound(to: UX.self) {
-                    for bit: BitInt.Magnitude in Chunked(normalizing: $0, isSigned: false).reversed() {
-                        try  self.double()
-                        
-                        if  bit == 1 {
-                            try self.increment()
-                        }
-                    }
+            for bit: BitInt.Magnitude in Chunked(normalizing: BitCastSequence(index.words, as: UX.self), isSigned: false).reversed() {
+                try  self.double()
+                
+                if  bit == 1 {
+                    try self.increment()
                 }
             }
         }   catch {

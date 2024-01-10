@@ -19,6 +19,8 @@
 ///
 /// - Requires: Its bit width must be a power of two.
 ///
+/// - Requires: Its bit width must fit in a signed word (e.g. Swift.Int).
+///
 /// ### Magnitude
 ///
 /// The magnitude must have the same bit width as this type. It then follows that
@@ -35,6 +37,16 @@ Magnitude: UnsignedInteger & SystemInteger, Magnitude.BitPattern == BitPattern {
     //=------------------------------------------------------------------------=
     
     @inlinable static var bitWidth: Magnitude { get }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable init(load source: consuming Word)
+    
+    @inlinable init(load source: consuming Pattern<some RandomAccessCollection<Word>>)
+    
+    @inlinable func load(as type: Word.Type) -> Word
     
     //=------------------------------------------------------------------------=
     // MARK: Accessors
@@ -93,19 +105,49 @@ extension SystemInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(repeating bit: Bit) {
-        self = bit == (0 as Bit) ? (0 as Self) : (~0 as Self)
+    @inlinable public init<T>(clamping source: T) where T: Integer {
+        let minus =  source.isLessThanZero
+        self = (try? Self(exactly: source)) ?? (minus ? Self.min : Self.max)
     }
     
-    /// ### Development
-    ///
-    /// - TODO: Is this method needed, or does `init(_:)` suffice?
-    ///
-    @inlinable public init(magnitude: consuming Magnitude) throws {
-        self.init(bitPattern: magnitude)
+    @inlinable public init<T>(truncating source: T) where T: Integer {
+        self.init(load: Pattern(source.words, isSigned: T.isSigned))
+    }
+    
+    @inlinable public func load<T>(as type: T.Type) -> T where T: BitCastable<Word.BitPattern> {
+        T(bitPattern: self.load(as: Word.self))
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(sign: consuming Sign, magnitude: consuming Magnitude) throws {
+        var bitPattern = consume magnitude
+        var isLessThanZero = sign == Sign.minus
+        if  isLessThanZero {
+            (bitPattern, isLessThanZero) = Overflow.capture({ try bitPattern.negated() }).components
+        }
+                
+        self.init(bitPattern: consume bitPattern)
+        if  self.isLessThanZero != isLessThanZero {
+            throw Overflow(consume self)
+        }
+    }
+    
+    @inlinable public init(words: consuming some RandomAccessCollection<Word>, isSigned: consuming Bool) throws {
+        let pattern = Pattern(words, isSigned: isSigned)
+        self.init(load: pattern)
         
-        if  self.isLessThanZero {
-            throw Overflow(self)
+        // TODO: clean up and add a comprehensive test suite
+        
+        let value   = self.words
+        let success = self.isLessThanZero == pattern.isLessThanZero &&
+        value.last == pattern.base.dropFirst(value.count - 1).first &&
+        pattern.base.dropFirst(value.count).allSatisfy({ $0 == pattern.sign })
+        
+        if !success {
+            throw Overflow(consume self)
         }
     }
 }

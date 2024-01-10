@@ -23,6 +23,27 @@
 
 /// A namespace for `Ultimathnum` development.
 ///
+/// - Warning: Do not use this namespace outside of `Ultimathnum` development.
+///
+@usableFromInline package typealias PBI<Integer> = UMN.ProperBinaryInteger<Integer>
+where Integer: BinaryInteger
+
+/// A namespace for `Ultimathnum` development.
+///
+/// - Warning: Do not use this namespace outside of `Ultimathnum` development.
+///
+@usableFromInline package typealias PSI<Integer> = UMN.ProperBinaryInteger<Integer>
+where Integer: BinaryInteger & SignedInteger
+
+/// A namespace for `Ultimathnum` development.
+///
+/// - Warning: Do not use this namespace outside of `Ultimathnum` development.
+///
+@usableFromInline package typealias PUI<Integer> = UMN.ProperBinaryInteger<Integer>
+where Integer: BinaryInteger & UnsignedInteger
+
+/// A namespace for `Ultimathnum` development.
+///
 /// - Warning: Do not use this namespace outside of `Ultimathnum`.
 ///
 @usableFromInline package typealias SBI<Base> = UMN.StrictBinaryInteger<Base>

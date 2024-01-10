@@ -24,8 +24,7 @@ extension Test {
     _ integer: T,_ expectation: [Word],
     file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
-        integer.withUnsafeBufferPointer {
-            XCTAssert($0.elementsEqual(expectation), "\(integer).words -> \(Array($0))", file: file, line: line)
-        }
+        let words: T.Words = integer.words
+        XCTAssert(integer.words.elementsEqual(expectation), "\(integer).words -> \(Array(words))", file: file, line: line)
     }
 }

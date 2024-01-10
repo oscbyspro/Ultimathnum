@@ -11,7 +11,7 @@
 // MARK: * Word
 //*============================================================================*
 
-/// The system integer currency.
+/// The system integer currency type.
 ///
 /// Integers of different types can interoperate using a common model.
 ///
@@ -20,7 +20,7 @@
 /// Ultimathnum cannot access Builtin.Word so it uses Swift.UInt instead.
 ///
 @frozen public struct Word: BitCastable, BitOperable, ExpressibleByIntegerLiteral, Hashable, Sendable {
-    
+        
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
@@ -67,5 +67,20 @@
         try Swift.withUnsafePointer(to: consume self) { pointer in
             try body(UnsafeBufferPointer(start: pointer, count: 1))
         }
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + System Integer
+//=----------------------------------------------------------------------------=
+
+extension Word {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(truncating source: consuming some SystemInteger) {
+        self = source.load(as: Self.self)
     }
 }

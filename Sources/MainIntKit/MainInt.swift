@@ -15,6 +15,8 @@ import CoreKit
 
 @frozen public struct MainInt<Base: BaseInteger>: SystemInteger {
     
+    public typealias Magnitude = MainInt<Base.Magnitude>
+    
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
@@ -63,6 +65,10 @@ import CoreKit
     
     @inlinable public var magnitude: MainInt<Base.Magnitude> {
         consuming get { Magnitude(self.base.magnitude) }
+    }
+    
+    @inlinable public var words: some RandomAccessCollection<Word> {
+        consuming get { BitCastSequence(self.base.words) }
     }
 }
 

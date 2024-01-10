@@ -22,4 +22,12 @@ extension NormalInt.Magnitude {
     @inlinable public init(integerLiteral: consuming StaticBigInt) {
         fatalError("TODO")
     }
+    
+    @inlinable public init(sign: consuming Sign, magnitude: consuming Magnitude) throws {
+        fatalError("TODO")
+    }
+    
+    @inlinable public init(words: consuming some RandomAccessCollection<Word>, isSigned: consuming Bool) throws {
+        fatalError("TODO")
+    }
 }

@@ -22,6 +22,8 @@ import CoreKit
     
     /// An unsigned, auto-normalized, arbitrary precision integer.
     @frozen public struct Magnitude: UnsignedInteger & BinaryInteger {
+                
+        public typealias Magnitude = Self
         
         //=--------------------------------------------------------------------=
         // MARK: State
@@ -35,6 +37,19 @@ import CoreKit
         
         @inlinable init(storage: consuming NormalInt.Storage) {
             self.storage = storage
+        }
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Utilities
+        //=--------------------------------------------------------------------=
+        
+        @inlinable public var words: some RandomAccessCollection<Word> {
+            consuming get {
+                switch self.storage {
+                case let .some(x): return [x] as ContiguousArray<Word>
+                case let .many(x): return (x) as ContiguousArray<Word>
+                }
+            }
         }
     }
 }

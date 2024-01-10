@@ -16,13 +16,23 @@ import CoreKit
 extension BitInt {
     
     //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(load source: Word) {
+        self.init(bitPattern: Bit(source & 1 == 1))
+    }
+    
+    @inlinable public init(load source: Pattern<some RandomAccessCollection<Word>>) {
+        self.init(load: source.load(as: Word.self))
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<Word>) throws -> T) rethrows -> T {
-        try UMN.withUnsafeTemporaryAllocation(copying: self.bitPattern == 0 ? 0 : ~0 as Word) {
-            try body(UnsafeBufferPointer(start: $0, count: 1))
-        }
+    @inlinable public func load(as type: Word.Type) -> Word {
+        Word(repeating: self.bitPattern)
     }
 }
 
@@ -33,12 +43,22 @@ extension BitInt {
 extension BitInt.Magnitude {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<Word>) throws -> T) rethrows -> T {
-        try UMN.withUnsafeTemporaryAllocation(copying: self.bitPattern == 0 ? 0 : 1 as Word) {
-            try body(UnsafeBufferPointer(start: $0, count: 1))
-        }
+    @inlinable public init(load source: Word) {
+        self.init(bitPattern: Bit(source & 1 == 1))
+    }
+    
+    @inlinable public init(load source: Pattern<some RandomAccessCollection<Word>>) {
+        self.init(load: source.load(as: Word.self))
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+        
+    @inlinable public func load(as type: Word.Type) -> Word {
+        self.bitPattern == 0 ? 0 : 1
     }
 }

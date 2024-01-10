@@ -19,7 +19,9 @@ extension SignedInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<Word>) throws -> T) rethrows -> T {
-        fatalError("TODO")
+    @inlinable public var words: [Word] {
+        consuming get {
+            fatalError("TODO")
+        }
     }
 }
