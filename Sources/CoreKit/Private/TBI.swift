@@ -11,7 +11,7 @@
 // MARK: * Tuple Binary Integer
 //*============================================================================*
 
-extension UMN {
+extension Namespace {
     
     /// A namespace for tuple binary integer algorithms.
     ///

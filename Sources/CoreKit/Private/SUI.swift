@@ -11,7 +11,7 @@
 // MARK: * Strict Unsigned Integer
 //*============================================================================*
 
-extension UMN {
+extension Namespace {
     
     /// A namespace for strict unsigned integer algorithms.
     ///
@@ -28,10 +28,10 @@ extension UMN {
     @frozen public enum StrictUnsignedInteger<Base> where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger {
         
         /// The binary integer namespace of this type.
-        public typealias Binary = UMN.StrictBinaryInteger<Base>
+        public typealias Binary = Namespace.StrictBinaryInteger<Base>
         
         /// The signed integer namespace of this type.
-        public typealias Signed = UMN.StrictSignedInteger<Base>
+        public typealias Signed = Namespace.StrictSignedInteger<Base>
         
         //*====================================================================*
         // MARK: * Sub Sequence
@@ -44,10 +44,10 @@ extension UMN {
         @frozen public enum SubSequence {
             
             /// The binary integer namespace of this type.
-            public typealias Binary = UMN.StrictBinaryInteger<Base>.SubSequence
+            public typealias Binary = Namespace.StrictBinaryInteger<Base>.SubSequence
             
             /// The signed integer namespace of this type.
-            public typealias Signed = UMN.StrictSignedInteger<Base>.SubSequence
+            public typealias Signed = Namespace.StrictSignedInteger<Base>.SubSequence
         }
     }
 }

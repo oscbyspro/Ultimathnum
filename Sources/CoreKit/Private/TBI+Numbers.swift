@@ -11,7 +11,7 @@
 // MARK: * Tuple Binary Integer x Numbers
 //*============================================================================*
 
-extension UMN.TupleBinaryInteger {
+extension Namespace.TupleBinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Details x Magnitude

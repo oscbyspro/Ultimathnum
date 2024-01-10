@@ -11,7 +11,7 @@
 // MARK: * Proper Binary Integer
 //*============================================================================*
 
-extension UMN {
+extension Namespace {
     
     /// A namespace for proper binary integer algorithms.
     ///

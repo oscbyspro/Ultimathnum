@@ -8,14 +8,14 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Namespaces
+// MARK: * Namespace
 //*============================================================================*
 
 /// A namespace for `Ultimathnum` development.
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum`.
 ///
-@frozen @usableFromInline package enum UMN { }
+@frozen @usableFromInline package enum Namespace { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Binary Integer
@@ -25,82 +25,82 @@
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum` development.
 ///
-@usableFromInline package typealias PBI<Integer> = UMN.ProperBinaryInteger<Integer>
+@usableFromInline package typealias PBI<Integer> = Namespace.ProperBinaryInteger<Integer>
 where Integer: BinaryInteger
 
 /// A namespace for `Ultimathnum` development.
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum` development.
 ///
-@usableFromInline package typealias PSI<Integer> = UMN.ProperBinaryInteger<Integer>
+@usableFromInline package typealias PSI<Integer> = Namespace.ProperBinaryInteger<Integer>
 where Integer: BinaryInteger & SignedInteger
 
 /// A namespace for `Ultimathnum` development.
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum` development.
 ///
-@usableFromInline package typealias PUI<Integer> = UMN.ProperBinaryInteger<Integer>
+@usableFromInline package typealias PUI<Integer> = Namespace.ProperBinaryInteger<Integer>
 where Integer: BinaryInteger & UnsignedInteger
 
 /// A namespace for `Ultimathnum` development.
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum`.
 ///
-@usableFromInline package typealias SBI<Base> = UMN.StrictBinaryInteger<Base>
+@usableFromInline package typealias SBI<Base> = Namespace.StrictBinaryInteger<Base>
 where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
 
 /// A namespace for `Ultimathnum` development.
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum`.
 ///
-@usableFromInline package typealias SBISS<Base> = UMN.StrictBinaryInteger<Base>.SubSequence
+@usableFromInline package typealias SBISS<Base> = Namespace.StrictBinaryInteger<Base>.SubSequence
 where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
 
 /// A namespace for `Ultimathnum` development.
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum`.
 ///
-@usableFromInline package typealias SSI<Base> = UMN.StrictSignedInteger<Base>
+@usableFromInline package typealias SSI<Base> = Namespace.StrictSignedInteger<Base>
 where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
 
 /// A namespace for `Ultimathnum` development.
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum`.
 ///
-@usableFromInline package typealias SSISS<Base> = UMN.StrictSignedInteger<Base>.SubSequence
+@usableFromInline package typealias SSISS<Base> = Namespace.StrictSignedInteger<Base>.SubSequence
 where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
 
 /// A namespace for `Ultimathnum` development.
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum`.
 ///
-@usableFromInline package typealias SUI<Base> = UMN.StrictUnsignedInteger<Base>
+@usableFromInline package typealias SUI<Base> = Namespace.StrictUnsignedInteger<Base>
 where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
 
 /// A namespace for `Ultimathnum` development.
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum`.
 ///
-@usableFromInline package typealias SUISS<Base> = UMN.StrictUnsignedInteger<Base>.SubSequence
+@usableFromInline package typealias SUISS<Base> = Namespace.StrictUnsignedInteger<Base>.SubSequence
 where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
 
 /// A namespace for `Ultimathnum` development.
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum` development.
 ///
-@usableFromInline package typealias TBI<High> = UMN.TupleBinaryInteger<High>
+@usableFromInline package typealias TBI<High> = Namespace.TupleBinaryInteger<High>
 where High: SystemInteger
 
 /// A namespace for `Ultimathnum` development.
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum` development.
 ///
-@usableFromInline package typealias TSI<High> = UMN.TupleBinaryInteger<High>
+@usableFromInline package typealias TSI<High> = Namespace.TupleBinaryInteger<High>
 where High: SystemInteger & SignedInteger
 
 /// A namespace for `Ultimathnum` development.
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum` development.
 ///
-@usableFromInline package typealias TUI<High> = UMN.TupleBinaryInteger<High>
+@usableFromInline package typealias TUI<High> = Namespace.TupleBinaryInteger<High>
 where High: SystemInteger & UnsignedInteger

@@ -11,7 +11,7 @@
 // MARK: * Allocation
 //*============================================================================*
 
-extension UMN {
+extension Namespace {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -49,7 +49,7 @@ extension UMN {
     ///
     @inline(__always) @inlinable public static func withUnsafeTemporaryAllocation<Element, Result>(
     copying collection: Element, perform: (UnsafeMutablePointer<Element>) throws -> Result) rethrows -> Result {
-        try UMN.withUnsafeTemporaryAllocation(of: Element.self) { pointer in
+        try Namespace.withUnsafeTemporaryAllocation(of: Element.self) { pointer in
             //=----------------------------------=
             // pointee: initialization
             //=----------------------------------=
@@ -71,7 +71,7 @@ extension UMN {
     ///
     @inline(__always) @inlinable public static func withUnsafeTemporaryAllocation<Element, Result>(
     copying collection: some Collection<Element>, perform: (UnsafeMutableBufferPointer<Element>) throws -> Result) rethrows -> Result {
-        try UMN.withUnsafeTemporaryAllocation(of: Element.self, count: collection.count) { buffer in
+        try Namespace.withUnsafeTemporaryAllocation(of: Element.self, count: collection.count) { buffer in
             //=----------------------------------=
             // pointee: initialization
             //=----------------------------------=
