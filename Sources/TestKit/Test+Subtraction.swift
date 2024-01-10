@@ -51,8 +51,8 @@ extension Test {
             XCTAssertEqual(lhs - rhs, value, file: file, line: line)
         }
         //=--------------------------------------=
-        XCTAssertEqual(lhs.decremented(by: rhs).value,    value,    file: file, line: line)
-        XCTAssertEqual(lhs.decremented(by: rhs).overflow, overflow, file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try lhs.decremented(by: rhs) }).value,    value,    file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try lhs.decremented(by: rhs) }).overflow, overflow, file: file, line: line)
         //=--------------------------------------=
         if  lhs == 0 {
             Test.subtractionByNegationAsSomeInteger(rhs, value, overflow, file: file, line: line)
@@ -67,9 +67,9 @@ extension Test {
             XCTAssertEqual(-value, operand, file: file, line: line)
         }
         //=------------------------------------------=
-        XCTAssertEqual(operand.negated().value,    value,    file: file, line: line)
-        XCTAssertEqual(value  .negated().value,    operand,  file: file, line: line)
-        XCTAssertEqual(operand.negated().overflow, overflow, file: file, line: line)
-        XCTAssertEqual(value  .negated().overflow, overflow, file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try operand.negated() }).value,    value,    file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try value  .negated() }).value,    operand,  file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try operand.negated() }).overflow, overflow, file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try value  .negated() }).overflow, overflow, file: file, line: line)
     }
 }

@@ -19,11 +19,11 @@ extension SignedInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func negated() -> Overflow<Self> {
-        Overflow(Self(sign: ~self.sign, magnitude: self.magnitude), overflow: false)
+    @inlinable public consuming func negated() -> Self {
+        Self(sign: ~self.sign, magnitude: self.magnitude)
     }
     
-    @inlinable public consuming func decremented(by decrement: borrowing Self) -> Overflow<Self> {
-        self.incremented(by: -decrement)
+    @inlinable public consuming func decremented(by decrement: borrowing Self) throws -> Self {
+        try self.incremented(by: -decrement)
     }
 }

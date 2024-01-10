@@ -19,11 +19,11 @@ extension SignedInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
 
-    @inlinable public consuming func squared() -> Overflow<Self> {
-        Overflow(sign: Sign.plus, magnitude: self.magnitude.squared())
+    @inlinable public consuming func squared() throws -> Self {
+        try Self(sign: Sign.plus, magnitude:{ try self.magnitude.squared() })
     }
     
-    @inlinable public consuming func multiplied(by multiplier: borrowing Self) -> Overflow<Self> {
-        Overflow(sign: self.sign ^ multiplier.sign, magnitude: self.magnitude.multiplied(by: multiplier.magnitude))
+    @inlinable public consuming func multiplied(by  multiplier: Self) throws -> Self {
+        try Self(sign: self.sign ^ multiplier.sign, magnitude:{ try self.magnitude.multiplied(by: multiplier.magnitude) })
     }
 }

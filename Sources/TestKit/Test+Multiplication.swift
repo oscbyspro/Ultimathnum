@@ -55,10 +55,10 @@ extension Test {
             XCTAssertEqual(rhs * lhs, value, file: file, line: line)
         }
         //=--------------------------------------=
-        XCTAssertEqual(lhs.multiplied(by: rhs).value,    value,    file: file, line: line)
-        XCTAssertEqual(lhs.multiplied(by: rhs).overflow, overflow, file: file, line: line)
-        XCTAssertEqual(rhs.multiplied(by: lhs).value,    value,    file: file, line: line)
-        XCTAssertEqual(rhs.multiplied(by: lhs).overflow, overflow, file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try lhs.multiplied(by: rhs) }).value,    value,    file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try lhs.multiplied(by: rhs) }).overflow, overflow, file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try rhs.multiplied(by: lhs) }).value,    value,    file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try rhs.multiplied(by: lhs) }).overflow, overflow, file: file, line: line)
         //=--------------------------------------=
         if  lhs == rhs {
             Test.multiplicationBySquareProductAsSomeInteger(lhs, value, overflow, file: file, line: line)
@@ -69,7 +69,7 @@ extension Test {
     private static func multiplicationBySquareProductAsSomeInteger<T: Integer>(
     _ operand: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
-        XCTAssertEqual(operand.squared().value,    value,    file: file, line: line)
-        XCTAssertEqual(operand.squared().overflow, overflow, file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try operand.squared() }).value,    value,    file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try operand.squared() }).overflow, overflow, file: file, line: line)
     }
 }

@@ -19,7 +19,7 @@ extension NormalInt.Magnitude {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable borrowing public func compared(to other: borrowing Self) -> Signum {
+    @inlinable public borrowing func compared(to other: borrowing Self) -> Signum {
         fatalError("TODO")
     }
     

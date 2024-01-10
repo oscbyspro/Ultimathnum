@@ -42,6 +42,15 @@ import CoreKit
         self.magnitude = magnitude
     }
     
+    @inlinable public init(sign: Sign, magnitude: () throws -> Magnitude) throws {
+        let magnitude = Overflow.capture(magnitude)
+        self.init(sign: sign, magnitude: magnitude.value)
+        
+        if  magnitude.overflow {
+            throw Overflow(consume self)
+        }
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Details x Components
     //=------------------------------------------------------------------------=
@@ -66,7 +75,7 @@ import CoreKit
     //=------------------------------------------------------------------------=
     
     /// Turns negative zero into positive zero.
-    @inlinable consuming public func normalized() -> Self {
+    @inlinable public consuming func normalized() -> Self {
         Self(sign: self.sign == Sign.plus || self != (0 as Self) ? self.sign : Sign.plus, magnitude: self.magnitude)
     }
 }

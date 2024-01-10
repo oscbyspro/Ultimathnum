@@ -11,71 +11,131 @@
 // MARK: * Overflow
 //*============================================================================*
 
-/// - TODO: Make this an error type when typed throws are introduced.
-@frozen public struct Overflow<Value> {
-    
+/// ### Development
+///
+/// Consider Overflow, Overflow.Value\<T\>, Overflow.Result\<T\>.
+///
+@frozen public struct Overflow<Value>: Swift.Error {
+        
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
-    
+
     public var value: Value
-    public var overflow: Bool
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ value: Value,  overflow: Bool) {
-        self.value = value; self.overflow = overflow
+    @inlinable public init(_ value: consuming Value) {
+        self.value = value
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public var components: (value: Value, overflow: Bool) {
-        consuming get {
-            (value: self.value, overflow: self.overflow)
+    @inlinable public static func ignore (_ value: () throws -> Value) -> Value  {
+        Result(value).value
+    }
+    
+    @inlinable public static func capture(_ value: () throws -> Value) -> Result {
+        Result(value)
+    }
+    
+    @inlinable public static func resolve(_ value: consuming Value, overflow: consuming Bool) throws -> Value {
+        if  overflow {
+            throw  Self.init(value)
+        }   else {
+            return value
         }
     }
     
-    @inlinable public consuming func optional() -> Value? {
-        if self.overflow { nil } else { self.value }
-    }
-    
-    @inlinable public consuming func unwrapped(function: StaticString = #function, file: StaticString = #file, line: UInt = #line) -> Value {
-        precondition(!self.overflow, .overflow(function: function, file: file, line: line), file: file, line: line)
-        return self.value as Value
-    }
-    
     //*========================================================================*
-    // MARK: * Error
+    // MARK: * Result
     //*========================================================================*
     
-    @frozen public struct Error: Swift.Error { @inlinable public init() { } }
+    @frozen public struct Result {
+        
+        //=--------------------------------------------------------------------=
+        // MARK: State
+        //=--------------------------------------------------------------------=
+
+        public var value: Value
+        public var overflow: Bool
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Initializers
+        //=--------------------------------------------------------------------=
+
+        @inlinable public init(_ value: consuming Value, overflow: consuming Bool) {
+            self.value = value; self.overflow = overflow
+        }
+        
+        @inlinable public init(_ value: () throws -> Value) {
+            brr: do {
+                self.init(try value(), overflow: false)
+            }   catch let error as Overflow<Value> {
+                self.init((consume error).value, overflow: true)
+            }   catch {
+                fatalError("await typed throws")
+            }
+        }
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Accessors
+        //=--------------------------------------------------------------------=
+
+        @inlinable public var components: (value: Value, overflow: Bool) {
+            consuming get {
+                (value: self.value, overflow: self.overflow)
+            }
+            
+            consuming set {
+                (value: self.value,  overflow: self.overflow) = newValue
+            }
+        }
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Utilities
+        //=--------------------------------------------------------------------=
+        
+        @inlinable public consuming func resolve() throws -> Value {
+            try Overflow.resolve(self.value, overflow: self.overflow)
+        }
+    }
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Equatable
-//=----------------------------------------------------------------------------=
-
-extension Overflow: Equatable where Value: Equatable { }
-
-//=----------------------------------------------------------------------------=
-// MARK: + Bit Cast
+// MARK: + Bit Castable
 //=----------------------------------------------------------------------------=
 
 extension Overflow: BitCastable where Value: BitCastable {
-     
+    
     //=------------------------------------------------------------------------=
     // MARK: Details x Bit Pattern
     //=------------------------------------------------------------------------=
     
     @inlinable public init(bitPattern: consuming Overflow<Value.BitPattern>) {
-        self.init(Value(bitPattern: bitPattern.value), overflow: bitPattern.overflow)
+        self.init(Value(bitPattern: bitPattern.value))
     }
     
     @inlinable public var bitPattern: Overflow<Value.BitPattern> {
-        consuming get { Overflow<Value.BitPattern>(Value.BitPattern(bitPattern: self.value), overflow: self.overflow) }
+        consuming get { Overflow<Value.BitPattern>(Value.BitPattern(bitPattern: self.value)) }
+    }
+}
+
+extension Overflow.Result: BitCastable where Value: BitCastable {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Details x Bit Pattern
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(bitPattern: consuming Overflow<Value.BitPattern>.Result) {
+        self.init(Value(bitPattern: bitPattern.value), overflow: bitPattern.overflow)
+    }
+    
+    @inlinable public var bitPattern: Overflow<Value.BitPattern>.Result {
+        consuming get { Overflow<Value.BitPattern>.Result(Value.BitPattern(bitPattern: self.value), overflow: self.overflow) }
     }
 }

@@ -19,7 +19,7 @@ extension NormalInt.Magnitude {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func incremented(by increment: borrowing Self) -> Overflow<Self> {
+    @inlinable public consuming func incremented(by increment: borrowing Self) throws -> Self {
         fatalError("TODO")
     }
 }

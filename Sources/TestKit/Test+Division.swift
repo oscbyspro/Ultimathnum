@@ -40,13 +40,13 @@ extension Test {
             XCTAssertEqual(dividend % divisor, remainder, file: file, line: line)
         }
         //=--------------------------------------=
-        XCTAssertEqual(dividend.quotient (divisor: divisor).value,    quotient,  file: file, line: line)
-        XCTAssertEqual(dividend.quotient (divisor: divisor).overflow, overflow,  file: file, line: line)
-        XCTAssertEqual(dividend.remainder(divisor: divisor).value,    remainder, file: file, line: line)
-        XCTAssertEqual(dividend.remainder(divisor: divisor).overflow, overflow,  file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try dividend.quotient (divisor: divisor) }).value,    quotient,  file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try dividend.quotient (divisor: divisor) }).overflow, overflow,  file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try dividend.remainder(divisor: divisor) }).value,    remainder, file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try dividend.remainder(divisor: divisor) }).overflow, overflow,  file: file, line: line)
         
-        XCTAssertEqual(dividend.divided(by: divisor).value,    expectation, file: file, line: line)
-        XCTAssertEqual(dividend.divided(by: divisor).overflow, overflow,    file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try dividend.divided(by: divisor) }).value,    expectation, file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try dividend.divided(by: divisor) }).overflow, overflow,    file: file, line: line)
     }
 }
 
@@ -75,7 +75,7 @@ extension Test {
         //=--------------------------------------=
         let expectation = Division(quotient: quotient, remainder: remainder)
         //=--------------------------------------=
-        XCTAssertEqual(T.dividing(dividend, by: divisor).value,    expectation, file: file, line: line)
-        XCTAssertEqual(T.dividing(dividend, by: divisor).overflow, overflow,    file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try T.dividing(dividend, by: divisor) }).value,    expectation, file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try T.dividing(dividend, by: divisor) }).overflow, overflow,    file: file, line: line)
     }
 }

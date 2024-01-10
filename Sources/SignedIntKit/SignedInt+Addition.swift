@@ -19,20 +19,7 @@ extension SignedInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func incremented(by increment: borrowing Self) -> Overflow<Self> {
-        var sign: Sign = self.sign
-        var magnitude: Overflow<Magnitude> = 
-        if  self.sign == increment.sign {
-            self.magnitude.incremented(by: increment.magnitude)
-        }   else  {
-            self.magnitude.decremented(by: increment.magnitude)
-        }
-        
-        if  magnitude.overflow, sign != increment.sign {
-            sign = ~sign
-            magnitude.value = magnitude.value.negated().value
-        }
-        
-        return Overflow(sign: sign, magnitude: magnitude)
+    @inlinable public consuming func incremented(by increment: borrowing Self) throws -> Self {
+        fatalError("TODO")
     }
 }

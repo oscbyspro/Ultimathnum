@@ -39,7 +39,7 @@
 extension Division: Equatable where Value: Equatable { }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Bit Cast
+// MARK: + Bit Castable
 //=----------------------------------------------------------------------------=
 
 extension Division: BitCastable where Value: BitCastable {
@@ -73,15 +73,15 @@ extension Division where Value: Integer {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func ceil() -> Overflow<Value> {
+    @inlinable public consuming func ceil() throws -> Value {
         let instance: Self = consume self
-        let increment = instance.remainder > 0 ?  1 : 0 as Value
-        return (consume instance).quotient.incremented(by: increment)
+        let increment: Value = instance.remainder > 0 ?  1 : 0
+        return try (consume instance).quotient.incremented(by: increment)
     }
     
-    @inlinable public consuming func floor() -> Overflow<Value> {
+    @inlinable public consuming func floor() throws -> Value {
         let instance: Self = consume self
-        let increment = instance.remainder < 0 ? -1 : 0 as Value
-        return (consume instance).quotient.incremented(by: increment)
+        let increment: Value = instance.remainder < 0 ? -1 : 0
+        return try (consume instance).quotient.incremented(by: increment)
     }
 }

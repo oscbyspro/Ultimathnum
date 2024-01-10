@@ -19,15 +19,15 @@ extension NormalInt.Magnitude {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func quotient (divisor: borrowing Self) -> Overflow<Self> {
+    @inlinable public consuming func quotient (divisor: borrowing Self) throws -> Self {
         fatalError("TODO")
     }
     
-    @inlinable public consuming func remainder(divisor: borrowing Self) -> Overflow<Self> {
+    @inlinable public consuming func remainder(divisor: borrowing Self) throws -> Self {
         fatalError("TODO")
     }
     
-    @inlinable public consuming func divided(by divisor: borrowing Self) -> Overflow<Division<Self>> {
+    @inlinable public consuming func divided(by divisor: borrowing Self) throws -> Division<Self> {
         fatalError("TODO")
     }
 }

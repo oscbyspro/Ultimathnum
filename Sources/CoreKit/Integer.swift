@@ -51,33 +51,33 @@ public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Send
     // MARK: Transformations x Addition
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming func incremented(by increment: borrowing Self) -> Overflow<Self>
+    @inlinable consuming func incremented(by increment: borrowing Self) throws -> Self
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Subtraction
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming func negated() -> Overflow<Self>
+    @inlinable consuming func negated() throws -> Self
     
-    @inlinable consuming func decremented(by decrement: borrowing Self) -> Overflow<Self>
+    @inlinable consuming func decremented(by decrement: borrowing Self) throws -> Self
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Multiplication
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming func squared() -> Overflow<Self>
+    @inlinable consuming func squared() throws -> Self
     
-    @inlinable consuming func multiplied(by multiplier: borrowing Self) -> Overflow<Self>
+    @inlinable consuming func multiplied(by multiplier: borrowing Self) throws -> Self
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Division
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming func quotient ( divisor: borrowing Self) -> Overflow<Self>
+    @inlinable consuming func quotient ( divisor: borrowing Self) throws -> Self
     
-    @inlinable consuming func remainder( divisor: borrowing Self) -> Overflow<Self>
+    @inlinable consuming func remainder( divisor: borrowing Self) throws -> Self
     
-    @inlinable consuming func divided(by divisor: borrowing Self) -> Overflow<Division<Self>>
+    @inlinable consuming func divided(by divisor: borrowing Self) throws -> Division<Self>
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities x Comparison
@@ -129,7 +129,7 @@ extension Integer {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func +(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs.incremented(by: rhs).unwrapped()
+        try! lhs.incremented(by: rhs)
     }
     
     //=------------------------------------------------------------------------=
@@ -137,11 +137,11 @@ extension Integer {
     //=------------------------------------------------------------------------=
     
     @inlinable public static prefix func -(operand: Self) -> Self {
-        operand.negated().unwrapped()
+        try! operand.negated()
     }
     
     @inlinable public static func -(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs.decremented(by: rhs).unwrapped()
+        try! lhs.decremented(by: rhs)
     }
     
     //=------------------------------------------------------------------------=
@@ -149,7 +149,7 @@ extension Integer {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func *(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs.multiplied(by: rhs).unwrapped()
+        try! lhs.multiplied(by: rhs)
     }
     
     //=------------------------------------------------------------------------=
@@ -157,11 +157,11 @@ extension Integer {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func /(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs.quotient (divisor: rhs).unwrapped()
+        try! lhs.quotient (divisor: rhs)
     }
     
     @inlinable public static func %(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs.remainder(divisor: rhs).unwrapped()
+        try! lhs.remainder(divisor: rhs)
     }
     
     //=------------------------------------------------------------------------=
@@ -176,7 +176,7 @@ extension Integer {
         Self.isSigned &&  self < 0
     }
     
-    @inlinable borrowing public func signum() -> Signum {
+    @inlinable public borrowing func signum() -> Signum {
         self.compared(to: 0)
     }
 }

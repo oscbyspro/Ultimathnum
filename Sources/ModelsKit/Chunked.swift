@@ -27,7 +27,7 @@ import MainIntKit
 /// You can create a bit sequence by chunking as `UMNBitInt`.
 ///
 /// ```swift
-/// for bit: UMNBitInt in Chunked(normalizing: base, isSigned: false).reversed() {
+/// for bit: U1 in Chunked(normalizing: base, isSigned: false).reversed() {
 ///
 ///     double()
 ///
@@ -164,7 +164,7 @@ extension Chunked.Major {
     }
     
     @inlinable static func count(of base: Base) -> Int {
-        IX(base.count).divided(by: IX(self.ratio)).unwrapped().ceil().unwrapped().stdlib
+        try! IX(base.count).divided(by: IX(self.ratio)).ceil().stdlib
     }
     
     @inlinable static func element(_ index: Int, base: Base, sign: Element) -> Element {

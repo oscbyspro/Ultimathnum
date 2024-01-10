@@ -19,13 +19,13 @@ extension MainInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func negated() -> Overflow<Self> {
-        let result = (~self).incremented(by: 1)
-        return Overflow(result.value, overflow: result.overflow == Self.isSigned)
+    @inlinable public consuming func negated() throws -> Self {
+        let result = Overflow.capture({ try (~self).incremented(by: 1) })
+        return try Overflow.resolve(result.value, overflow: result.overflow == Self.isSigned)
     }
     
-    @inlinable public consuming func decremented(by decrement: borrowing Self) -> Overflow<Self> {
+    @inlinable public consuming func decremented(by decrement: borrowing Self) throws -> Self {
         let result = self.base.subtractingReportingOverflow(decrement.base)
-        return Overflow(Self(result.partialValue), overflow: result.overflow)
+        return try Overflow.resolve(Self(result.partialValue), overflow: result.overflow)
     }
 }

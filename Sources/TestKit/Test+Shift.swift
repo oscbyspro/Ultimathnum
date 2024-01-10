@@ -45,7 +45,7 @@ extension Test {
         //=--------------------------------------=
         XCTAssertEqual(operand  << shift, result, file: file, line: line)
         //=--------------------------------------=
-        if  let shift = shift.negated().optional() {
+        if  let shift = try? shift.negated() {
             XCTAssertEqual(operand  >> shift, result, file: file, line: line)
         }
         
@@ -59,7 +59,7 @@ extension Test {
         //=--------------------------------------=
         XCTAssertEqual(operand  >> shift, result, file: file, line: line)
         //=--------------------------------------=
-        if  let shift = shift.negated().optional() {
+        if  let shift = try? shift.negated() {
             XCTAssertEqual(operand  << shift, result, file: file, line: line)
         }
         
@@ -74,19 +74,19 @@ extension Test {
         XCTAssertEqual(operand &<< shift, result, file: file, line: line)
         //=--------------------------------------=
         if  let increment = try? T(magnitude: T.bitWidth) {
-            if  let shift = shift.incremented(by: increment).optional() {
+            if  let shift = try? shift.incremented(by: increment) {
                 XCTAssertEqual(operand &<< shift, result, file: file, line: line)
             }
             
-            if  let shift = shift.incremented(by: increment).optional()?.incremented(by: increment).optional() {
+            if  let shift = try? shift.incremented(by: increment).incremented(by: increment) {
                 XCTAssertEqual(operand &<< shift, result, file: file, line: line)
             }
             
-            if  let shift = shift.decremented(by: increment).optional() {
+            if  let shift = try? shift.decremented(by: increment) {
                 XCTAssertEqual(operand &<< shift, result, file: file, line: line)
             }
             
-            if  let shift = shift.decremented(by: increment).optional()?.decremented(by: increment).optional() {
+            if  let shift = try? shift.decremented(by: increment).decremented(by: increment) {
                 XCTAssertEqual(operand &<< shift, result, file: file, line: line)
             }
         }
@@ -98,19 +98,19 @@ extension Test {
         XCTAssertEqual(operand &>> shift, result, file: file, line: line)
         //=--------------------------------------=
         if  let increment = try? T(magnitude: T.bitWidth) {
-            if  let shift = shift.incremented(by: increment).optional() {
+            if  let shift = try? shift.incremented(by: increment) {
                 XCTAssertEqual(operand &>> shift, result, file: file, line: line)
             }
             
-            if  let shift = shift.incremented(by: increment).optional()?.incremented(by: increment).optional() {
+            if  let shift = try? shift.incremented(by: increment).incremented(by: increment) {
                 XCTAssertEqual(operand &>> shift, result, file: file, line: line)
             }
             
-            if  let shift = shift.decremented(by: increment).optional() {
+            if  let shift = try? shift.decremented(by: increment) {
                 XCTAssertEqual(operand &>> shift, result, file: file, line: line)
             }
             
-            if  let shift = shift.decremented(by: increment).optional()?.decremented(by: increment).optional() {
+            if  let shift = try? shift.decremented(by: increment).decremented(by: increment) {
                 XCTAssertEqual(operand &>> shift, result, file: file, line: line)
             }
         }

@@ -19,11 +19,11 @@ extension NormalInt.Magnitude {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func negated() -> Overflow<Self> {
+    @inlinable public consuming func negated() throws -> Self {
         fatalError("TODO")
     }
     
-    @inlinable public consuming func decremented(by decrement: borrowing Self) -> Overflow<Self> {
+    @inlinable public consuming func decremented(by decrement: borrowing Self) throws -> Self {
         fatalError("TODO")
     }
 }

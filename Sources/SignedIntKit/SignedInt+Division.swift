@@ -19,18 +19,18 @@ extension SignedInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func quotient (divisor: borrowing Self) -> Overflow<Self> {
-        Overflow(sign: self.sign ^ divisor.sign, magnitude: self.magnitude.quotient(divisor: divisor.magnitude))
+    @inlinable public consuming func quotient(divisor: Self) throws -> Self {
+        try Self(sign: self.sign ^ divisor.sign, magnitude:{ try self.magnitude.quotient(divisor: divisor.magnitude) })
     }
     
-    @inlinable public consuming func remainder(divisor: borrowing Self) -> Overflow<Self> {
-        Overflow(sign: self.sign, magnitude: self.magnitude.remainder(divisor: divisor.magnitude))
+    @inlinable public consuming func remainder(divisor: Self) throws -> Self {
+        try Self(sign: self.sign, magnitude:{ try self.magnitude.remainder(divisor: divisor.magnitude) })
     }
     
-    @inlinable public consuming func divided(by divisor: borrowing Self) -> Overflow<Division<Self>> {
-        let magnitude = self.magnitude.divided(by: divisor.magnitude)
+    @inlinable public consuming func divided(by divisor: Self) throws -> Division<Self> {
+        let magnitude = Overflow.capture({ try self.magnitude.divided(by: divisor.magnitude) })
         let quotient  = Self(sign: self.sign ^ divisor.sign, magnitude: magnitude.value.quotient )
         let remainder = Self(sign: self.sign   /*--------*/, magnitude: magnitude.value.remainder)
-        return Overflow(Division(quotient: quotient, remainder: remainder), overflow: magnitude.overflow)
+        return try Overflow.resolve(Division(quotient: quotient, remainder: remainder), overflow: magnitude.overflow)
     }
 }

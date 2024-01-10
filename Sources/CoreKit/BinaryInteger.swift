@@ -31,23 +31,23 @@ extension BinaryInteger {
     // MARK: Details x Addition
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func &+(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs.incremented(by: rhs).value
+    @inlinable public static func &+(lhs: consuming Self, rhs: Self) -> Self {
+        Overflow.capture({ try lhs.incremented(by: rhs) }).value
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Details x Subtraction
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func &-(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs.decremented(by: rhs).value
+    @inlinable public static func &-(lhs: consuming Self, rhs: Self) -> Self {
+        Overflow.capture({ try lhs.decremented(by: rhs) }).value
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Details x Multiplication
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func &*(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs.multiplied(by: rhs).value
+    @inlinable public static func &*(lhs: consuming Self, rhs: Self) -> Self {
+        Overflow.capture({ try lhs.multiplied(by: rhs) }).value
     }
 }

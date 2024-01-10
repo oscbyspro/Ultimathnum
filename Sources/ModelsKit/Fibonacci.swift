@@ -57,34 +57,41 @@ import MainIntKit
     
     @usableFromInline var i: Value
     @usableFromInline var a: Value
-    @usableFromInline var b: Value // TODO: throw when BitInt
+    @usableFromInline var b: Value
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
     /// Creates the first sequence pair.
-    @inlinable public init() { 
-        i = 0 as Value
-        a = 0 as Value
-        b = 1 as Value // TODO: throw when BitInt
+    @inlinable public init() throws {
+        do  {
+            i = try Value(exactly: 0 as BitInt.Magnitude)
+            a = try Value(exactly: 0 as BitInt.Magnitude)
+            b = try Value(exactly: 1 as BitInt.Magnitude)
+        }   catch {
+            throw Failure.overflow
+        }
     }
     
     /// Creates the sequence pair at the given `index`.
-    @inlinable public init(_ index: Value) {
-        self.init()
+    @inlinable public init(_ index: Value) throws {
+        try self.init()
         
-        index.withUnsafeBufferPointer {
-            $0.withMemoryRebound(to: UX.self) {
-                for bit: BitInt.Magnitude in Chunked(normalizing: $0, isSigned: false).reversed() {
-                    
-                    self.double()
-                    
-                    if  bit == 1 {
-                        self.increment()
+        brr: do {
+            try index.withUnsafeBufferPointer {
+                try $0.withMemoryRebound(to: UX.self) {
+                    for bit: BitInt.Magnitude in Chunked(normalizing: $0, isSigned: false).reversed() {
+                        try  self.double()
+                        
+                        if  bit == 1 {
+                            try self.increment()
+                        }
                     }
                 }
             }
+        }   catch {
+            throw Failure.overflow
         }
     }
     
@@ -116,31 +123,66 @@ import MainIntKit
     //=------------------------------------------------------------------------=
     
     /// Forms the sequence pair at `index + 1`.
-    @inlinable public mutating func increment() {
-        i = i + 1
-        a = a + b
-        Swift.swap(&a, &b)
+    @inlinable public mutating func increment() throws {
+        brr: do {
+            let n : Value
+            try n = i.incremented(by: 1)
+            
+            let x : Value
+            try x = a.incremented(by: b)
+            
+            self.i = consume n
+            self.a = consume x
+            Swift.swap(&a, &b)
+        }   catch {
+            throw Failure.overflow
+        }
     }
     
     /// Forms the sequence pair at `index - 1`.
-    @inlinable public mutating func decrement() {
-        i = i - 1
-        b = b - a
-        Swift.swap(&a, &b)
+    @inlinable public mutating func decrement() throws {
+        brr: do {
+            let n : Value
+            try n = i.decremented(by: 1)
+            
+            let y : Value
+            try y = b.decremented(by: a)
+            
+            self.i = consume n
+            self.b = consume y
+            Swift.swap(&a, &b)
+        }   catch {
+            throw Failure.overflow
+        }
     }
     
     /// Forms the sequence pair at `index * 2`.
-    @inlinable public mutating func double() {
-        var x: Value // f(2 * index + 0)
-        x = b * 2
-        x = x - a
-        x = x * a
-        
-        var y: Value // f(2 * index + 1)
-        y = a.squared().unwrapped() + b.squared().unwrapped()
-        
-        i = i * 2
-        a = consume x
-        b = consume y
+    @inlinable public mutating func double() throws {
+        brr: do {
+            let n : Value
+            try n = i.multiplied (by: 2)
+            
+            var x : Value
+            try x = b.multiplied (by: 2)
+            try x = x.decremented(by: a)
+            try x = x.multiplied (by: a)
+            
+            var y : Value
+            try y = b.squared().incremented(by: a.squared())
+            
+            self.i = consume n
+            self.a = consume x
+            self.b = consume y
+        }   catch {
+            throw Failure.overflow
+        }
+    }
+    
+    //*========================================================================*
+    // MARK: * Failure
+    //*========================================================================*
+    
+    @frozen public enum Failure: Swift.Error {
+        case overflow
     }
 }

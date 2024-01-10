@@ -19,13 +19,13 @@ extension MainInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func squared() -> Overflow<Self> {
-        self.multiplied(by: copy self)
+    @inlinable public consuming func squared() throws -> Self {
+        try self.multiplied(by: copy self)
     }
     
-    @inlinable public consuming func multiplied(by multiplier: borrowing Self) -> Overflow<Self> {
+    @inlinable public consuming func multiplied(by multiplier: borrowing Self) throws -> Self {
         let result = self.base.multipliedReportingOverflow(by: multiplier.base)
-        return Overflow(Self(result.partialValue), overflow: result.overflow)
+        return try Overflow.resolve(Self(result.partialValue), overflow: result.overflow)
     }
     
     @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> Doublet<Self> {

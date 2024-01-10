@@ -60,7 +60,7 @@ Magnitude: UnsignedInteger & SystemInteger, Magnitude.BitPattern == BitPattern {
     
     @inlinable static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> Doublet<Self>
     
-    @inlinable static func dividing(_ dividend: consuming Doublet<Self>, by multiplier: borrowing Self) -> Overflow<Division<Self>>
+    @inlinable static func dividing(_ dividend: consuming Doublet<Self>, by multiplier: borrowing Self) throws -> Division<Self>
 }
 
 //=----------------------------------------------------------------------------=
@@ -105,7 +105,7 @@ extension SystemInteger {
         self.init(bitPattern: magnitude)
         
         if  self.isLessThanZero {
-            throw Overflow<Self>.Error()
+            throw Overflow(self)
         }
     }
 }
