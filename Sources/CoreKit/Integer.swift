@@ -21,16 +21,12 @@ public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Send
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    /// ### Development
-    ///
-    /// - TODO: Consider moving `isSigned` to `BinaryInteger`.
-    ///
     @inlinable static var isSigned: Bool { get }
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
-            
+    
     @inlinable init(sign:  consuming Sign, magnitude: consuming Magnitude) throws
     
     @inlinable init(words: consuming some RandomAccessCollection<Word>, isSigned: consuming Bool) throws
@@ -95,9 +91,13 @@ extension Integer {
     @inlinable public init() {
         self = 0
     }
-    
-    @inlinable public init(magnitude:  consuming Magnitude) throws {
+        
+    @inlinable public init(magnitude: consuming Magnitude) throws {
         try  self.init(sign: Sign.plus, magnitude: consume magnitude)
+    }
+    
+    @inlinable public init(words: consuming some RandomAccessCollection<Word>) throws {
+        try  self.init(words: consume words, isSigned: Self.isSigned)
     }
     
     @inlinable public init<T>(_ source: T) where T: Integer {

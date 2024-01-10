@@ -25,6 +25,16 @@ extension Test {
     file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
         let words: T.Words = integer.words
-        XCTAssert(integer.words.elementsEqual(expectation), "\(integer).words -> \(Array(words))", file: file, line: line)
+        //=--------------------------------------=
+        brr: do {
+            let success = words.elementsEqual(expectation)
+            XCTAssert(success, "\(integer).words -> \(Array(words))", file: file, line: line)
+        }
+
+        brr: do {
+            let result  = try? T.init(words: words)
+            let success = integer == result
+            XCTAssert(success, "T(words: \(integer).words) -> \(String(describing: result))", file: file,line: line)
+        }
     }
 }
