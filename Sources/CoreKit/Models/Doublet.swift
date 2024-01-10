@@ -11,7 +11,8 @@
 // MARK: * Doublet
 //*============================================================================*
 
-@frozen public struct Doublet<High: SystemInteger>: Equatable {
+/// A `high` and a `low` integer.
+@frozen public struct Doublet<High>: Equatable where High: SystemInteger {
     
     public typealias Magnitude = Doublet<High.Magnitude>
     
@@ -70,30 +71,6 @@
         
         consuming set {
             (high: self.high, low: self.low) = newValue
-        }
-    }
-}
-
-//*============================================================================*
-// MARK: * Doublet x Numbers
-//*============================================================================*
-
-extension Doublet {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public var magnitude: Magnitude {
-        consuming get { var value = consume self
-            
-            if  value.high.isLessThanZero {
-                var carry:   Bool
-                (value.low,  carry) = (~value.low ).incremented(by: 0000000000001).components
-                (value.high, carry) = (~value.high).incremented(by: carry ? 1 : 0).components
-            }
-                        
-            return Magnitude(high: High.Magnitude(bitPattern: value.high), low: High.Magnitude(bitPattern: value.low))
         }
     }
 }

@@ -41,7 +41,7 @@ extension MainInt {
         let rhsIsLessThanZero = divisor/*------*/.isLessThanZero
         let minus: Bool = lhsIsLessThanZero != rhsIsLessThanZero
         //=--------------------------------------=
-        let _qro = Magnitude.dividingAsUnsignedCodeBlock(dividend.magnitude, by: divisor.magnitude)
+        let _qro = Magnitude.dividingAsUnsigned(TBI.magnitude(of: dividend), by: divisor.magnitude)
         var  qro = Overflow(Division(quotient: Self(bitPattern: _qro.value.quotient), remainder: Self(bitPattern: _qro.value.remainder)), overflow: _qro.overflow)
         //=--------------------------------------=
         if  minus {
@@ -70,7 +70,7 @@ extension MainInt where Self == Magnitude {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable @inline(__always) static func dividingAsUnsignedCodeBlock(_ dividend: Doublet<Self>, by divisor: Self) -> Overflow<Division<Self>> {
+    @inlinable @inline(__always) static func dividingAsUnsigned(_ dividend: Doublet<Self>, by divisor: Self) -> Overflow<Division<Self>> {
         //=--------------------------------------=
         // divisor is zero
         //=--------------------------------------=

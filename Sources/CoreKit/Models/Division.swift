@@ -31,11 +31,6 @@
         self.remainder = remainder
     }
     
-    @inlinable public init(_ components: (quotient: Value, remainder: Value)) {
-        self.quotient  = components.quotient
-        self.remainder = components.remainder
-    }
-    
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
