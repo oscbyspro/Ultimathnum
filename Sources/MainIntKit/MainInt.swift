@@ -64,10 +64,6 @@ import CoreKit
     @inlinable public var magnitude: MainInt<Base.Magnitude> {
         consuming get { Magnitude(self.base.magnitude) }
     }
-    
-    @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<Word>) throws -> T) rethrows -> T {
-        try self.base.words.withContiguousStorageIfAvailable({ try  $0.withMemoryRebound(to: Word.self, body) })!
-    }
 }
 
 //=----------------------------------------------------------------------------=

@@ -7,25 +7,21 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Tuple Binary Integer x Numbers
+// MARK: * Main Int x Words
 //*============================================================================*
 
-extension UMN.TupleBinaryInteger {
+extension MainInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Details x Magnitude
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable package static func magnitude(of value: consuming X2) -> X2.Magnitude {
-        var value = consume value
-        
-        if  value.high.isLessThanZero {
-            var carry:   Bool
-            (value.low,  carry) = (~value.low ).incremented(by: 0000000000001).components
-            (value.high, carry) = (~value.high).incremented(by: carry ? 1 : 0).components
+    @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<Word>) throws -> T) rethrows -> T {
+        try UMN.withUnsafeTemporaryAllocation(copying: self.base.words) {
+            try UnsafeBufferPointer($0).withMemoryRebound(to: Word.self, body)
         }
-        
-        return X2.Magnitude(high: High.Magnitude(bitPattern: value.high), low: High.Magnitude(bitPattern: value.low))
     }
 }
