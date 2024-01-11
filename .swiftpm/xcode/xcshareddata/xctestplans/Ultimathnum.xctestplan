@@ -103,6 +103,13 @@
         "identifier" : "MainIntKitTests",
         "name" : "MainIntKitTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "UltimathnumTests",
+        "name" : "UltimathnumTests"
+      }
     }
   ],
   "version" : 1

@@ -88,6 +88,10 @@ let package = Package(
             "NormalIntKit",
             "SignedIntKit",
         ]),
+        
+        .testTarget(
+        name: "UltimathnumTests",
+        dependencies: ["Ultimathnum", "TestKit"]),
         //=--------------------------------------=
         // Bit Int Kit
         //=--------------------------------------=
