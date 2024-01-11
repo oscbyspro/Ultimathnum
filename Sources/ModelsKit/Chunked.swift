@@ -115,7 +115,8 @@ Element: SystemInteger & UnsignedInteger, Base: RandomAccessCollection, Base.Ele
         let major = base.reversed().prefix(while:{ $0 == sign })
         let minor = base.dropLast(major.count).last?.count(bit, option: .descending) ??  0 as Base.Element
         let descending = Swift.max(0, major.count * IX(bitPattern: IX.bitWidth).stdlib + IX(minor).stdlib)
-        self.init(base, isSigned: isSigned, count: base.count - descending - (isSigned ? 1 : 0))
+        let count = base.count * UInt.bitWidth - descending - (isSigned ? 1 : 0)
+        self.init(base, isSigned: isSigned, count: count)
     }
     
     //=------------------------------------------------------------------------=

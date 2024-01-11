@@ -45,11 +45,11 @@ import MainIntKit
 /// f(x + x + 1) == f(x) ^ 0002 + f(x + 1) ^ 00000002
 /// ```
 ///
-/// ### Development
+/// ### Un/signed vs Magnitude
 ///
-/// - TODO: Make each operation throwing when type errors are introduced.
+/// It permits both signed and unsigned values for testing purposes.
 ///
-@frozen public struct Fibonacci<Value>: CustomStringConvertible where Value: Integer {
+@frozen public struct Fibonacci<Value> where Value: Integer {
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -76,21 +76,22 @@ import MainIntKit
     
     /// Creates the sequence pair at the given `index`.
     @inlinable public init(_ index: Value) throws {
-        // TODO: throw or use magnitudes
-        precondition(!index.isLessThanZero)
+        if  index.isLessThanZero {
+            throw Failure.overflow
+        }
         
         try self.init()
         
-        brr: do {
-            for bit: BitInt.Magnitude in Chunked(normalizing: BitCastSequence(index.words, as: UX.self), isSigned: false).reversed() {
-                try  self.double()
-                
-                if  bit == 1 {
-                    try self.increment()
-                }
+        if  index > 0 {
+            try self.increment()
+        }
+        
+        for bit: BitInt.Magnitude in Chunked(normalizing: BitCastSequence(index.words, as: UX.self), isSigned: false).dropLast().reversed() {
+            try self.double()
+            
+            if  bit == 1 {
+                try self.increment()
             }
-        }   catch {
-            throw Failure.overflow
         }
     }
     
@@ -111,10 +112,6 @@ import MainIntKit
     /// The sequence `element` at `index + 1`.
     @inlinable public var next: Value {
         self.b
-    }
-    
-    @inlinable public var description: String {
-        String(describing: self.element)
     }
     
     //=------------------------------------------------------------------------=
@@ -140,6 +137,10 @@ import MainIntKit
     
     /// Forms the sequence pair at `index - 1`.
     @inlinable public mutating func decrement() throws {
+        if  self.i == 0 {
+            throw Failure.overflow
+        }
+        
         brr: do {
             let n : Value
             try n = i.decremented(by: 1)
@@ -183,5 +184,20 @@ import MainIntKit
     
     @frozen public enum Failure: Swift.Error {
         case overflow
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Description
+//=----------------------------------------------------------------------------=
+
+extension Fibonacci: CustomStringConvertible {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var description: String {
+        String(describing: self.element)
     }
 }
