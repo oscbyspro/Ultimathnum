@@ -28,7 +28,6 @@ import MainIntKit
 ///
 /// ```swift
 /// for bit: U1 in Chunked(normalizing: base, isSigned: false).reversed() {
-///
 ///     double()
 ///
 ///     if  bit == 1 {
@@ -57,8 +56,9 @@ import MainIntKit
 /// [0x0304, 0x0102] == Array(Chunked(([1, 2, 3, 4] as [U8]).reversed(), as: U16.self))
 /// ```
 ///
-@frozen public struct Chunked<Base, Element>: RandomAccessCollection where
-Element: SystemInteger & UnsignedInteger, Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger {
+@frozen public struct Chunked<Base, Element>: RandomAccessCollection 
+where Element: SystemInteger  & UnsignedInteger,
+Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger {
     
     public typealias Base = Base
     
@@ -113,7 +113,7 @@ Element: SystemInteger & UnsignedInteger, Base: RandomAccessCollection, Base.Ele
         let bit = Bit(isSigned && base.last.map({ $0 & Base.Element.msb != 0 }) == true) // TODO: convenience
         let sign  = Base.Element(repeating: bit)
         let major = base.reversed().prefix(while:{ $0 == sign })
-        let minor = base.dropLast(major.count).last?.count(bit, option: .descending) ??  0 as Base.Element
+        let minor = base.dropLast(major.count).last?.count(bit, option: Bit.Selection.descending) ?? 0000
         let descending = Swift.max(0, major.count * IX(bitPattern: IX.bitWidth).stdlib + IX(minor).stdlib)
         let count = base.count * UInt.bitWidth - descending - (isSigned ? 1 : 0)
         self.init(base, isSigned: isSigned, count: count)

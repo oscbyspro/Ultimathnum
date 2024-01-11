@@ -68,9 +68,9 @@ import MainIntKit
     /// Creates the first sequence pair.
     @inlinable public init() throws {
         do  {
-            i = try Value(exactly: 0 as BitInt.Magnitude)
-            a = try Value(exactly: 0 as BitInt.Magnitude)
-            b = try Value(exactly: 1 as BitInt.Magnitude)
+            self.i = try Value(literally: 0)
+            self.a = try Value(literally: 0)
+            self.b = try Value(literally: 1)
         }   catch {
             throw Error.overflow
         }
@@ -120,7 +120,7 @@ import MainIntKit
     @inlinable public mutating func increment() throws {
         brr: do {
             let n : Value
-            try n = i.incremented(by: 1)
+            try n = i.incremented(by: Value(literally: 1))
             
             let x : Value
             try x = a.incremented(by: b)
@@ -135,13 +135,13 @@ import MainIntKit
     
     /// Forms the sequence pair at `index - 1`.
     @inlinable public mutating func decrement() throws {
-        if  self.i == 0 {
-            throw Overflow()
+        if  try i == Value(literally: 0) {
+            throw Error.overflow
         }
         
         brr: do {
             let n : Value
-            try n = i.decremented(by: 1)
+            try n = i.decremented(by: Value(literally: 1))
             
             let y : Value
             try y = b.decremented(by: a)
@@ -156,7 +156,7 @@ import MainIntKit
     
     /// Forms the sequence pair at `index * 2`.
     @inlinable public mutating func double() throws {
-        if  self.i == 0 {
+        if  try i == Value(literally: 0) {
             return
         }
         

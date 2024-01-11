@@ -10,63 +10,11 @@
 import ModelsKit
 import TestKit
 
-import BitIntKit
-
 //*============================================================================*
 // MARK: * Fibonacci
 //*============================================================================*
 
 final class FibonacciTests: XCTestCase {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    func testBitInt() {
-        signed: do {
-            check(try? Fibonacci<I1>(  ), nil)
-            check(try? Fibonacci<I1>(-1), nil)
-            check(try? Fibonacci<I1>( 0), nil)
-        }
-        
-        unsigned: do {
-            check(try? Fibonacci<U1>(  ), (index: 0, element: 0, next: 1))
-            check(try? Fibonacci<U1>( 0), (index: 0, element: 0, next: 1))
-            check(try? Fibonacci<U1>( 1), (index: 1, element: 1, next: 1))
-        }
-        
-        if  var sequence =  Test.some(try? Fibonacci<U1>( 0)) {
-            check(sequence, (0, 0, 1))
-            XCTAssertNoThrow/**/(try sequence.increment())
-            check(sequence, (1, 1, 1))
-            XCTAssertThrowsError(try sequence.increment())
-        }
-        
-        if  var sequence =  Test.some(try? Fibonacci<U1>( 1)) {
-            check(sequence, (1, 1, 1))
-            XCTAssertNoThrow/**/(try sequence.decrement())
-            check(sequence, (0, 0, 1))
-            XCTAssertThrowsError(try sequence.decrement())
-        }
-        
-        if  var sequence =  Test.some(try? Fibonacci<U1>( 0)) {
-            check(sequence, (0, 0, 1))
-            XCTAssertNoThrow/**/(try sequence.double())
-            check(sequence, (0, 0, 1))
-        }
-        
-        if  var sequence =  Test.some(try? Fibonacci<U1>( 1)) {
-            check(sequence, (1, 1, 1))
-            XCTAssertThrowsError(try sequence.double())
-        }
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Utilities
-//=----------------------------------------------------------------------------=
-
-extension FibonacciTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

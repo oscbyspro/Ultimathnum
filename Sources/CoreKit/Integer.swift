@@ -11,6 +11,12 @@
 // MARK: * Integer
 //*============================================================================*
 
+/// An integer type.
+///
+/// ### Zero
+///
+/// - Requires: Zero must be representable.
+///
 public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Sendable {
     
     associatedtype Words: RandomAccessCollection<Word>
@@ -21,6 +27,18 @@ public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Send
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
+    /// Indicates whether this type can represent negative values.
+    ///
+    /// ```
+    /// ┌──────┬──────────┬─────┬─────┐
+    /// │ type │ isSigned │ min │ max │
+    /// ├──────┼──────────┼─────┼─────┤
+    /// │ I1   │ true     │ -1  │   0 │
+    /// │ S1   │ true     │ -1  │   1 │
+    /// │ U1   │ false    │  0  │  -1 │
+    /// └──────┴──────────┴─────┴─────┘
+    /// ```
+    ///
     @inlinable static var isSigned: Bool { get }
     
     //=------------------------------------------------------------------------=
