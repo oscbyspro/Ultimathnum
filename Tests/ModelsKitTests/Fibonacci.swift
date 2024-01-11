@@ -37,28 +37,28 @@ final class FibonacciTests: XCTestCase {
         
         if  var sequence =  try? Fibonacci<U1>( 0) {
             check(sequence, (0, 0, 1))
-            XCTAssertNoThrow(    try sequence.increment())
+            XCTAssertNoThrow/**/(try sequence.increment())
             check(sequence, (1, 1, 1))
             XCTAssertThrowsError(try sequence.increment())
         }
         
         if  var sequence =  try? Fibonacci<U1>( 1) {
             check(sequence, (1, 1, 1))
-            XCTAssertNoThrow(    try sequence.decrement())
+            XCTAssertNoThrow/**/(try sequence.decrement())
             check(sequence, (0, 0, 1))
             XCTAssertThrowsError(try sequence.decrement())
         }
         
-        //if  var sequence =  try? Fibonacci<U1>( 0) {
-        //    check(sequence, (0, 0, 0))
-        //    XCTAssertNoThrow(try sequence.double())
-        //    check(sequence, (0, 0, 0))
-        //}
-        //
-        //if  var sequence =  try? Fibonacci<U1>( 1) {
-        //    check(sequence, (1, 1, 1))
-        //    XCTAssertThrowsError(try sequence.double())
-        //}
+        if  var sequence =  try? Fibonacci<U1>( 0) {
+            check(sequence, (0, 0, 1))
+            XCTAssertNoThrow/**/(try sequence.double())
+            check(sequence, (0, 0, 1))
+        }
+        
+        if  var sequence =  try? Fibonacci<U1>( 1) {
+            check(sequence, (1, 1, 1))
+            XCTAssertThrowsError(try sequence.double())
+        }
     }
 }
 

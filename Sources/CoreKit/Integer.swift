@@ -108,6 +108,10 @@ extension Integer {
         try  self.init(words: source.words, isSigned: T.isSigned)
     }
     
+    @inlinable public init(literally source: StaticBigInt) throws {
+        try  self.init(words: BitCastSequence(StaticBigIntWords(source)), isSigned: true)
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Addition
     //=------------------------------------------------------------------------=

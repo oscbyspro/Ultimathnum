@@ -51,6 +51,8 @@ import MainIntKit
 ///
 @frozen public struct Fibonacci<Value> where Value: Integer {
     
+    public enum Error: Swift.Error { case overflow }
+    
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
@@ -70,23 +72,19 @@ import MainIntKit
             a = try Value(exactly: 0 as BitInt.Magnitude)
             b = try Value(exactly: 1 as BitInt.Magnitude)
         }   catch {
-            throw Failure.overflow
+            throw Error.overflow
         }
     }
     
     /// Creates the sequence pair at the given `index`.
     @inlinable public init(_ index: Value) throws {
         if  index.isLessThanZero {
-            throw Failure.overflow
+            throw Error.overflow
         }
         
         try self.init()
         
-        if  index > 0 {
-            try self.increment()
-        }
-        
-        for bit: BitInt.Magnitude in Chunked(normalizing: BitCastSequence(index.words, as: UX.self), isSigned: false).dropLast().reversed() {
+        for bit: BitInt.Magnitude in Chunked(normalizing: BitCastSequence(index.words, as: UX.self), isSigned: false).reversed() {
             try self.double()
             
             if  bit == 1 {
@@ -131,14 +129,14 @@ import MainIntKit
             self.a = consume x
             Swift.swap(&a, &b)
         }   catch {
-            throw Failure.overflow
+            throw Error.overflow
         }
     }
     
     /// Forms the sequence pair at `index - 1`.
     @inlinable public mutating func decrement() throws {
         if  self.i == 0 {
-            throw Failure.overflow
+            throw Overflow()
         }
         
         brr: do {
@@ -152,18 +150,22 @@ import MainIntKit
             self.b = consume y
             Swift.swap(&a, &b)
         }   catch {
-            throw Failure.overflow
+            throw Error.overflow
         }
     }
     
     /// Forms the sequence pair at `index * 2`.
     @inlinable public mutating func double() throws {
+        if  self.i == 0 {
+            return
+        }
+        
         brr: do {
             let n : Value
-            try n = i.multiplied (by: 2)
+            try n = i.multiplied (by: Value(literally: 2))
             
             var x : Value
-            try x = b.multiplied (by: 2)
+            try x = b.multiplied (by: Value(literally: 2))
             try x = x.decremented(by: a)
             try x = x.multiplied (by: a)
             
@@ -174,16 +176,8 @@ import MainIntKit
             self.a = consume x
             self.b = consume y
         }   catch {
-            throw Failure.overflow
+            throw Error.overflow
         }
-    }
-    
-    //*========================================================================*
-    // MARK: * Failure
-    //*========================================================================*
-    
-    @frozen public enum Failure: Swift.Error {
-        case overflow
     }
 }
 
