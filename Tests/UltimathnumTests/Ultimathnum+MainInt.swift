@@ -9,10 +9,9 @@
 
 import Ultimathnum
 import TestKit
-import XCTest
 
 //*============================================================================*
-// MARK: * Main Int
+// MARK: * Ultimathnum x Main Int
 //*============================================================================*
 
 extension UltimathnumTests {

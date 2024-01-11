@@ -9,10 +9,9 @@
 
 import Ultimathnum
 import TestKit
-import XCTest
 
 //*============================================================================*
-// MARK: * Bit Int
+// MARK: * Ultimathnum x Bit Int
 //*============================================================================*
 
 extension UltimathnumTests {
@@ -55,7 +54,7 @@ extension UltimathnumTests {
                 XCTAssertEqual(try? T(exactly: i), T.max)
             }
             
-            if  let i = try? U(exactly: T.max).incremented(by: U(magnitude: 001)) {
+            if  let i = try? U(exactly: T.max).incremented(by: U(magnitude: 1)) {
                 XCTAssertEqual(try? T(exactly: i), nil as T?)
             }
             

@@ -9,7 +9,6 @@
 
 import CoreKit
 import TestKit
-import XCTest
 
 //*============================================================================*
 // MARK: * Sign

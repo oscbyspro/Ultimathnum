@@ -10,7 +10,6 @@
 import BitIntKit
 import CoreKit
 import TestKit
-import XCTest
 
 //*============================================================================*
 // MARK: * Bit Int x Subtraction

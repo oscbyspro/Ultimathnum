@@ -9,7 +9,6 @@
 
 import Ultimathnum
 import TestKit
-import XCTest
 
 //*============================================================================*
 // MARK: * Ultimathnum
