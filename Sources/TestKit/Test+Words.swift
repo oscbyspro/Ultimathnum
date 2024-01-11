@@ -27,14 +27,28 @@ extension Test {
         let words: T.Words = integer.words
         //=--------------------------------------=
         brr: do {
-            let success = words.elementsEqual(expectation)
-            XCTAssert(success, "\(integer).words -> \(Array(words))", file: file, line: line)
+            XCTAssert(words.elementsEqual(expectation), "\(integer).words -> \(Array(words))", file: file, line: line)
         }
-
+        
         brr: do {
-            let result  = try? T.init(words: words)
-            let success = integer == result
-            XCTAssert(success, "T(words: \(integer).words) -> \(String(describing: result))", file: file,line: line)
+            Test.words(words, T.isSigned, integer, file: file, line: line)
+        }
+    }
+    
+    public static func words<T: Integer>(
+    _ words: some RandomAccessCollection<Word>, _ isSigned: Bool, _ expectation: T?,
+    file: StaticString = #file, line: UInt = #line) {
+        //=--------------------------------------=
+        if  isSigned == T.isSigned {
+            XCTAssertEqual(try? T.init(words: words), expectation, file: file, line: line)
+        }
+        
+        brr: do {
+            XCTAssertEqual(try? T.init(words: words, isSigned: isSigned), expectation, file: file, line: line)
+        }
+        
+        if  type(of: words) != [Word].self {
+            Test.words([Word](words), isSigned, expectation, file: file, line: line)
         }
     }
 }

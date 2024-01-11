@@ -25,34 +25,32 @@ extension BitIntTests {
     func testInitWords() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
             typealias M = T.Magnitude
-            let count = T.max.words.count; let isExact = false; for isSigned in [true, false] {
-                XCTAssertEqual(try? T(words: ( T.min).words, isSigned: isSigned),  isSigned ? T.min : nil)
-                XCTAssertEqual(try? T(words: ( T.max).words, isSigned: isSigned),  T.max)
+            let count = T.max.words.count
+            for isSigned in [true, false] {
+                Test.words((-1 as T).words, isSigned, isSigned ? T.min : nil as T?)
+                Test.words(( 0 as T).words, isSigned, T.max)
                 
-                XCTAssertEqual(try? T(words: ( M.min).words, isSigned: isSigned),  00000)
-                XCTAssertEqual(try? T(words: ( M.max).words, isSigned: isSigned),  isSigned && isExact ?  -001 : nil)
-                XCTAssertEqual(try? T(words: ( M.msb).words, isSigned: isSigned),  isSigned && isExact ? T.min : nil)
-                XCTAssertEqual(try? T(words: (~M.msb).words, isSigned: isSigned), ~T.msb)
+                Test.words(( 0 as M).words, isSigned, 000 as T?)
+                Test.words(( 1 as M).words, isSigned, nil as T?)
                 
-                XCTAssertEqual(try? T(words: Array(repeating:  0, count: count + 1), isSigned: isSigned), 000)
-                XCTAssertEqual(try? T(words: Array(repeating:  1, count: count + 1), isSigned: isSigned), nil)
-                XCTAssertEqual(try? T(words: Array(repeating: ~1, count: count + 1), isSigned: isSigned), nil)
-                XCTAssertEqual(try? T(words: Array(repeating: ~0, count: count + 1), isSigned: isSigned), isSigned ? -1 : nil)
+                Test.words(Array(repeating:  0, count: count + 1), isSigned, 000 as T?)
+                Test.words(Array(repeating:  1, count: count + 1), isSigned, nil as T?)
+                Test.words(Array(repeating: ~1, count: count + 1), isSigned, nil as T?)
+                Test.words(Array(repeating: ~0, count: count + 1), isSigned, isSigned ? -1 : nil as T?)
             }
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
             typealias M = T.Magnitude
-            let count = T.max.words.count; let isExact = false; for isSigned in [true, false] {
-                XCTAssertEqual(try? T(words: ( M.min).words, isSigned: isSigned),  00000)
-                XCTAssertEqual(try? T(words: ( M.max).words, isSigned: isSigned),  isSigned && isExact ? nil : T.max)
-                XCTAssertEqual(try? T(words: ( M.msb).words, isSigned: isSigned),  isSigned && isExact ? nil : T.msb)
-                XCTAssertEqual(try? T(words: (~M.msb).words, isSigned: isSigned), ~T.msb)
+            let count = T.max.words.count
+            for isSigned in [true, false] {
+                Test.words(( 0 as M).words, isSigned, 00000 as T?)
+                Test.words(( 1 as M).words, isSigned, T.max as T?)
                 
-                XCTAssertEqual(try? T(words: Array(repeating:  0, count: count + 1), isSigned: isSigned), 000)
-                XCTAssertEqual(try? T(words: Array(repeating:  1, count: count + 1), isSigned: isSigned), nil)
-                XCTAssertEqual(try? T(words: Array(repeating: ~1, count: count + 1), isSigned: isSigned), nil)
-                XCTAssertEqual(try? T(words: Array(repeating: ~0, count: count + 1), isSigned: isSigned), nil)
+                Test.words(Array(repeating:  0, count: count + 1), isSigned, 000 as T?)
+                Test.words(Array(repeating:  1, count: count + 1), isSigned, nil as T?)
+                Test.words(Array(repeating: ~1, count: count + 1), isSigned, nil as T?)
+                Test.words(Array(repeating: ~0, count: count + 1), isSigned, nil as T?)
             }
         }
         

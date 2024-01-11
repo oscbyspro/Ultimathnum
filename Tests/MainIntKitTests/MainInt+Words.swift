@@ -28,18 +28,18 @@ extension MainIntTests {
             let count   = T.max.words.count
             let isExact = T.bitWidth % M(load: Word(bitPattern: UX.bitWidth)) == 0
             for isSigned in [true, false] {
-                XCTAssertEqual(try? T(words: ( T.min).words, isSigned: isSigned),  isSigned ? T.min : nil)
-                XCTAssertEqual(try? T(words: ( T.max).words, isSigned: isSigned),  T.max)
+                Test.words(( T.min).words, isSigned,  isSigned ? T.min : nil)
+                Test.words(( T.max).words, isSigned,  T.max)
                 
-                XCTAssertEqual(try? T(words: ( M.min).words, isSigned: isSigned),  00000)
-                XCTAssertEqual(try? T(words: ( M.max).words, isSigned: isSigned),  isSigned && isExact ?  -001 : nil)
-                XCTAssertEqual(try? T(words: ( M.msb).words, isSigned: isSigned),  isSigned && isExact ? T.min : nil)
-                XCTAssertEqual(try? T(words: (~M.msb).words, isSigned: isSigned), ~T.msb)
+                Test.words(( M.min).words, isSigned,  00000 as T)
+                Test.words(( M.max).words, isSigned,  isSigned && isExact ? -1 as T : nil as T?)
+                Test.words(( M.msb).words, isSigned,  isSigned && isExact ?  T .min : nil as T?)
+                Test.words((~M.msb).words, isSigned, ~T.msb)
                 
-                XCTAssertEqual(try? T(words: Array(repeating:  0, count: count + 1), isSigned: isSigned), 000)
-                XCTAssertEqual(try? T(words: Array(repeating:  1, count: count + 1), isSigned: isSigned), nil)
-                XCTAssertEqual(try? T(words: Array(repeating: ~1, count: count + 1), isSigned: isSigned), nil)
-                XCTAssertEqual(try? T(words: Array(repeating: ~0, count: count + 1), isSigned: isSigned), isSigned ? -1 : nil)
+                Test.words(Array(repeating:  0, count: count + 1), isSigned, 000 as T?)
+                Test.words(Array(repeating:  1, count: count + 1), isSigned, nil as T?)
+                Test.words(Array(repeating: ~1, count: count + 1), isSigned, nil as T?)
+                Test.words(Array(repeating: ~0, count: count + 1), isSigned, isSigned ? -1 as T : nil as T?)
             }
         }
         
@@ -48,15 +48,15 @@ extension MainIntTests {
             let count   = T.max.words.count
             let isExact = T.bitWidth % M(load: Word(bitPattern: UX.bitWidth)) == 0
             for isSigned in [true, false] {
-                XCTAssertEqual(try? T(words: ( M.min).words, isSigned: isSigned),  00000)
-                XCTAssertEqual(try? T(words: ( M.max).words, isSigned: isSigned),  isSigned && isExact ? nil : T.max)
-                XCTAssertEqual(try? T(words: ( M.msb).words, isSigned: isSigned),  isSigned && isExact ? nil : T.msb)
-                XCTAssertEqual(try? T(words: (~M.msb).words, isSigned: isSigned), ~T.msb)
+                Test.words(( M.min).words, isSigned,   00000 as T?)
+                Test.words(( M.max).words, isSigned,   isSigned && isExact ? nil : T.max as T?)
+                Test.words(( M.msb).words, isSigned,   isSigned && isExact ? nil : T.msb as T?)
+                Test.words((~M.msb).words, isSigned,  ~T.msb as T?)
                 
-                XCTAssertEqual(try? T(words: Array(repeating:  0, count: count + 1), isSigned: isSigned), 000)
-                XCTAssertEqual(try? T(words: Array(repeating:  1, count: count + 1), isSigned: isSigned), nil)
-                XCTAssertEqual(try? T(words: Array(repeating: ~1, count: count + 1), isSigned: isSigned), nil)
-                XCTAssertEqual(try? T(words: Array(repeating: ~0, count: count + 1), isSigned: isSigned), nil)
+                Test.words(Array(repeating:  0, count: count + 1), isSigned, 000 as T?)
+                Test.words(Array(repeating:  1, count: count + 1), isSigned, nil as T?)
+                Test.words(Array(repeating: ~1, count: count + 1), isSigned, nil as T?)
+                Test.words(Array(repeating: ~0, count: count + 1), isSigned, nil as T?)
             }
         }
         
