@@ -109,13 +109,8 @@ Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger {
     ///   - isSigned: The signedness of the base sequence.
     ///   - element: The type of element produced by this sequence.
     ///
-    @inlinable public init(normalizing base: Base, isSigned: Bool, as element: Element.Type = Element.self) where Element == BitInt.Magnitude {
-        let bit = Bit(isSigned && base.last.map({ $0 & Base.Element.msb != 0 }) == true) // TODO: convenience
-        let sign  = Base.Element(repeating: bit)
-        let major = base.reversed().prefix(while:{ $0 == sign })
-        let minor = base.dropLast(major.count).last?.count(bit, option: Bit.Selection.descending) ?? 0000
-        let descending = Swift.max(0, major.count * IX(bitPattern: IX.bitWidth).stdlib + IX(minor).stdlib)
-        let count = base.count * UInt.bitWidth - descending - (isSigned ? 1 : 0)
+    @inlinable public init(normalizing base: Base, isSigned: Bool, as element: Element.Type = Element.self) {
+        let count = Self.count(normalizing:  base, isSigned: isSigned)
         self.init(base, isSigned: isSigned, count: count)
     }
     
@@ -130,6 +125,16 @@ Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger {
             return Minor.count(of:  base)
         }   else {
             return Equal.count(of:  base)
+        }
+    }
+    
+    @inlinable static func count(normalizing base: Base, isSigned: Bool) -> Int {
+        if  UX(Self.Element.bitWidth) > UX(Base.Element.bitWidth) {
+            return Major.count(normalizing: base, isSigned: isSigned)
+        }   else if UX(Self.Element.bitWidth) < UX(Base.Element.bitWidth) {
+            return Minor.count(normalizing: base, isSigned: isSigned)
+        }   else {
+            return Equal.count(normalizing: base, isSigned: isSigned)
         }
     }
     
@@ -164,8 +169,15 @@ extension Chunked.Major {
         IX(Element.bitWidth).stdlib / IX(Base.Element.bitWidth).stdlib
     }
     
-    @inlinable static func count(of base: Base) -> Int {
+    @inlinable static func count(of base: some Collection<Base.Element>) -> Int {
         try! IX(base.count).divided(by: IX(self.ratio)).ceil().stdlib
+    }
+    
+    @inlinable static func count(normalizing base: Base, isSigned: Bool) -> Int {
+        let bit  = Bit(isSigned && base.last.map({ $0 & Base.Element.msb != 0 }) == true)
+        let sign = Base.Element(repeating: bit)
+        
+        return Swift.max(1, self.count(of: base.reversed().trimmingPrefix(while:{ $0 == sign })))
     }
     
     @inlinable static func element(_ index: Int, base: Base, sign: Element) -> Element {
@@ -200,12 +212,23 @@ extension Chunked.Minor {
         IX(Base.Element.bitWidth).stdlib / IX(Element.bitWidth).stdlib
     }
     
-    @inlinable static func count(of base: Base) -> Int {
+    @inlinable static func count(of base: some Collection<Base.Element>) -> Int {
         base.count *  self.ratio
     }
     
+    @inlinable static func count(normalizing base: Base, isSigned: Bool) -> Int {
+        let bit  = Bit(isSigned && base.last.map({ $0 & Base.Element.msb != 0 }) == true)
+        let sign = Base.Element(repeating: bit)
+        
+        let majorSuffix = base.reversed().prefix(while:{ $0 == sign })
+        let minorSuffix = base.dropLast(majorSuffix.count).last?.count(bit, option: Bit.Selection.descending) ?? (0000)
+        let totalSuffix = majorSuffix.count * Base.Element.bitWidth.load(as: Int.self) + minorSuffix.load(as: Int.self)
+
+        return Swift.max(1, self.count(of: base) - totalSuffix / Element.bitWidth.load(as: Int.self))
+    }
+    
     @inlinable static func element(_ index: Int, base: Base, sign: Element) -> Element {
-        precondition(index >= 0 as Int, .overstep())
+        precondition(index >= 0 as Int, .indexOutOfBounds())
         let  (quotient, remainder) = index.quotientAndRemainder(dividingBy: self.ratio)
         guard quotient < base.count else { return sign }
         let major: Base.Element = base[base.index(base.startIndex, offsetBy: quotient)]
@@ -224,8 +247,15 @@ extension Chunked.Equal {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable static func count(of base: Base) -> Int {
+    @inlinable static func count(of base: some Collection<Base.Element>) -> Int {
         base.count
+    }
+    
+    @inlinable static func count(normalizing base: Base, isSigned: Bool) -> Int {
+        let bit  = Bit(isSigned && base.last.map({ $0 & Base.Element.msb != 0 }) == true)
+        let sign = Base.Element(repeating: bit)
+        
+        return Swift.max(1, self.count(of: base.reversed().trimmingPrefix(while:{ $0 == sign })))
     }
     
     @inlinable static func element(_ index: Int, base: Base, sign: Element) -> Element {

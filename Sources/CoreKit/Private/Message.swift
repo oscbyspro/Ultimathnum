@@ -24,7 +24,7 @@ extension String {
     }
     
     /// A message describing the location of an out-of-bounds error.
-    @inlinable package static func overstep(
+    @inlinable package static func indexOutOfBounds(
     function: StaticString = #function, file: StaticString = #file, line: UInt = #line) -> String {
         "out of bounds in \(function) at \(file):\(line)"
     }
