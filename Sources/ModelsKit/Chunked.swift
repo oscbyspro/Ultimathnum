@@ -94,12 +94,9 @@ Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger {
     ///   - element: The type of element produced by this sequence.
     ///
     @inlinable public init(_ base: Base, isSigned: Bool, count: Int? = nil, as element: Element.Type = Element.self) {
-        self.base  = base
-        self.sign  = Self.Element(repeating: Bit(isSigned && self.base.last.map({ $0 & .msb != 0 }) == true))
-        self.count = count ?? Self.count(of: self.base)
-        precondition(self.count >= 0 as Int)
-        Swift.assert(Self.Element.bitWidth.count(1, option: .all) == 1)
-        Swift.assert(Base.Element.bitWidth.count(1, option: .all) == 1)
+        let bit = Bit(isSigned && (base.last ?? 0) & .msb != 0)
+        let count = count ?? Self.count(of: base)
+        self.init(base, repeating: bit, count: count)
     }
     
     /// Creates a normalized bit sequence from an un/signed source.
@@ -110,15 +107,29 @@ Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger {
     ///   - element: The type of element produced by this sequence.
     ///
     @inlinable public init(normalizing base: Base, isSigned: Bool, as element: Element.Type = Element.self) {
-        let count = Self.count(normalizing:  base, isSigned: isSigned)
-        self.init(base, isSigned: isSigned, count: count)
+        let bit = Bit(isSigned && (base.last ?? 0) & .msb != 0)
+        let count = Self.count(normalizing: base, repeating: bit)
+        self.init(base, repeating: bit, count: count)
+    }
+
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable internal init(_ base: Base, repeating bit: Bit, count: Int) {
+        self.base  = base
+        self.sign  = Self.Element(repeating: bit)
+        self.count = count
+        precondition(self.count >= 0 as Int)
+        Swift.assert(Self.Element.bitWidth.count(1, option: .all) == 1)
+        Swift.assert(Base.Element.bitWidth.count(1, option: .all) == 1)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable static func count(of base: Base) -> Int {
+    @inlinable internal static func count(of base: Base) -> Int {
         if  UX(Self.Element.bitWidth) > UX(Base.Element.bitWidth) {
             return Major.count(of:  base)
         }   else if UX(Self.Element.bitWidth) < UX(Base.Element.bitWidth) {
@@ -128,17 +139,17 @@ Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger {
         }
     }
     
-    @inlinable static func count(normalizing base: Base, isSigned: Bool) -> Int {
+    @inlinable internal static func count(normalizing base: Base, repeating bit: Bit) -> Int {
         if  UX(Self.Element.bitWidth) > UX(Base.Element.bitWidth) {
-            return Major.count(normalizing: base, isSigned: isSigned)
+            return Major.count(normalizing: base, repeating: bit)
         }   else if UX(Self.Element.bitWidth) < UX(Base.Element.bitWidth) {
-            return Minor.count(normalizing: base, isSigned: isSigned)
+            return Minor.count(normalizing: base, repeating: bit)
         }   else {
-            return Equal.count(normalizing: base, isSigned: isSigned)
+            return Equal.count(normalizing: base, repeating: bit)
         }
     }
     
-    @inlinable static func element(_ index: Int, base: Base, sign: Element) -> Element {
+    @inlinable internal static func element(_ index: Int, base: Base, sign: Element) -> Element {
         if  UX(Self.Element.bitWidth) > UX(Base.Element.bitWidth) {
             return Major.element(index, base: base, sign: sign)
         }   else if UX(Self.Element.bitWidth) < UX(Base.Element.bitWidth) {
@@ -173,10 +184,8 @@ extension Chunked.Major {
         try! IX(base.count).divided(by: IX(self.ratio)).ceil().stdlib
     }
     
-    @inlinable static func count(normalizing base: Base, isSigned: Bool) -> Int {
-        let bit  = Bit(isSigned && base.last.map({ $0 & Base.Element.msb != 0 }) == true)
+    @inlinable static func count(normalizing base: Base, repeating bit: Bit) -> Int {
         let sign = Base.Element(repeating: bit)
-        
         return Swift.max(1, self.count(of: base.reversed().trimmingPrefix(while:{ $0 == sign })))
     }
     
@@ -216,14 +225,11 @@ extension Chunked.Minor {
         base.count *  self.ratio
     }
     
-    @inlinable static func count(normalizing base: Base, isSigned: Bool) -> Int {
-        let bit  = Bit(isSigned && base.last.map({ $0 & Base.Element.msb != 0 }) == true)
+    @inlinable static func count(normalizing base: Base, repeating bit: Bit) -> Int {
         let sign = Base.Element(repeating: bit)
-        
         let majorSuffix = base.reversed().prefix(while:{ $0 == sign })
         let minorSuffix = base.dropLast(majorSuffix.count).last?.count(bit, option: Bit.Selection.descending) ?? (0000)
         let totalSuffix = majorSuffix.count * Base.Element.bitWidth.load(as: Int.self) + minorSuffix.load(as: Int.self)
-
         return Swift.max(1, self.count(of: base) - totalSuffix / Element.bitWidth.load(as: Int.self))
     }
     
@@ -251,10 +257,8 @@ extension Chunked.Equal {
         base.count
     }
     
-    @inlinable static func count(normalizing base: Base, isSigned: Bool) -> Int {
-        let bit  = Bit(isSigned && base.last.map({ $0 & Base.Element.msb != 0 }) == true)
+    @inlinable static func count(normalizing base: Base, repeating bit: Bit) -> Int {
         let sign = Base.Element(repeating: bit)
-        
         return Swift.max(1, self.count(of: base.reversed().trimmingPrefix(while:{ $0 == sign })))
     }
     

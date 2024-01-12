@@ -48,6 +48,11 @@ extension ChunkedTests {
         XCTAssertEqual([0x0000        ],        Array(Chunked(normalizing: [0, 0, 0, 0]        as [U8], isSigned: false, as: U16.self)))
         XCTAssertEqual([0x0000        ].map(~), Array(Chunked(normalizing: [0, 0, 0, 0].map(~) as [U8], isSigned: true,  as: U16.self)))
         XCTAssertEqual([0x0000, 0x0000].map(~), Array(Chunked(normalizing: [0, 0, 0, 0].map(~) as [U8], isSigned: false, as: U16.self)))
+                
+        XCTAssertEqual([0x8000                ].map(~), Array(Chunked(normalizing: [0, 0x80, 0, 0, 0, 0].map(~) as [U8], isSigned: true, as: U16.self)))
+        XCTAssertEqual([0x0000, 0x0001        ].map(~), Array(Chunked(normalizing: [0, 0, 0x01, 0, 0, 0].map(~) as [U8], isSigned: true, as: U16.self)))
+        XCTAssertEqual([0x0000, 0x8000        ].map(~), Array(Chunked(normalizing: [0, 0, 0, 0x80, 0, 0].map(~) as [U8], isSigned: true, as: U16.self)))
+        XCTAssertEqual([0x0000, 000000, 0x0001].map(~), Array(Chunked(normalizing: [0, 0, 0, 0, 0x01, 0].map(~) as [U8], isSigned: true, as: U16.self)))
         
         for isSigned in [true, false] {
             XCTAssertEqual([0x8000                ], Array(Chunked(normalizing: [0, 0x80, 0, 0, 0, 0] as [U8], isSigned: isSigned, as: U16.self)))
@@ -55,11 +60,6 @@ extension ChunkedTests {
             XCTAssertEqual([0x0000, 0x8000        ], Array(Chunked(normalizing: [0, 0, 0, 0x80, 0, 0] as [U8], isSigned: isSigned, as: U16.self)))
             XCTAssertEqual([0x0000, 000000, 0x0001], Array(Chunked(normalizing: [0, 0, 0, 0, 0x01, 0] as [U8], isSigned: isSigned, as: U16.self)))
         }
-        
-        XCTAssertEqual([0x8000                ].map(~), Array(Chunked(normalizing: [0, 0x80, 0, 0, 0, 0].map(~) as [U8], isSigned: true, as: U16.self)))
-        XCTAssertEqual([0x0000, 0x0001        ].map(~), Array(Chunked(normalizing: [0, 0, 0x01, 0, 0, 0].map(~) as [U8], isSigned: true, as: U16.self)))
-        XCTAssertEqual([0x0000, 0x8000        ].map(~), Array(Chunked(normalizing: [0, 0, 0, 0x80, 0, 0].map(~) as [U8], isSigned: true, as: U16.self)))
-        XCTAssertEqual([0x0000, 000000, 0x0001].map(~), Array(Chunked(normalizing: [0, 0, 0, 0, 0x01, 0].map(~) as [U8], isSigned: true, as: U16.self)))
     }
     
     func testNormalizeMajorSequenceAsMinorSequence() {
@@ -67,17 +67,17 @@ extension ChunkedTests {
         XCTAssertEqual([0         ],        Array(Chunked(normalizing: [0, 0]        as [U16], isSigned: false, as: U8.self)))
         XCTAssertEqual([0         ].map(~), Array(Chunked(normalizing: [0, 0].map(~) as [U16], isSigned: true,  as: U8.self)))
         XCTAssertEqual([0, 0, 0, 0].map(~), Array(Chunked(normalizing: [0, 0].map(~) as [U16], isSigned: false, as: U8.self)))
-
+        
+        XCTAssertEqual([0, 0x80         ], Array(Chunked(normalizing: [0x8000, 0x0000, 0x0000] as [U16], isSigned: true, as: U8.self)))
+        XCTAssertEqual([0, 0, 0x01      ], Array(Chunked(normalizing: [0x0000, 0x0001, 0x0000] as [U16], isSigned: true, as: U8.self)))
+        XCTAssertEqual([0, 0, 0, 0x80   ], Array(Chunked(normalizing: [0x0000, 0x8000, 0x0000] as [U16], isSigned: true, as: U8.self)))
+        XCTAssertEqual([0, 0, 0, 0, 0x01], Array(Chunked(normalizing: [0x0000, 0x0000, 0x0001] as [U16], isSigned: true, as: U8.self)))
+        
         for isSigned in [true, false] {
             XCTAssertEqual([0, 0x80         ], Array(Chunked(normalizing: [0x8000, 0x0000, 0x0000] as [U16], isSigned: isSigned, as: U8.self)))
             XCTAssertEqual([0, 0, 0x01      ], Array(Chunked(normalizing: [0x0000, 0x0001, 0x0000] as [U16], isSigned: isSigned, as: U8.self)))
             XCTAssertEqual([0, 0, 0, 0x80   ], Array(Chunked(normalizing: [0x0000, 0x8000, 0x0000] as [U16], isSigned: isSigned, as: U8.self)))
             XCTAssertEqual([0, 0, 0, 0, 0x01], Array(Chunked(normalizing: [0x0000, 0x0000, 0x0001] as [U16], isSigned: isSigned, as: U8.self)))
         }
-        
-        XCTAssertEqual([0, 0x80         ], Array(Chunked(normalizing: [0x8000, 0x0000, 0x0000] as [U16], isSigned: true, as: U8.self)))
-        XCTAssertEqual([0, 0, 0x01      ], Array(Chunked(normalizing: [0x0000, 0x0001, 0x0000] as [U16], isSigned: true, as: U8.self)))
-        XCTAssertEqual([0, 0, 0, 0x80   ], Array(Chunked(normalizing: [0x0000, 0x8000, 0x0000] as [U16], isSigned: true, as: U8.self)))
-        XCTAssertEqual([0, 0, 0, 0, 0x01], Array(Chunked(normalizing: [0x0000, 0x0000, 0x0001] as [U16], isSigned: true, as: U8.self)))
     }
 }
