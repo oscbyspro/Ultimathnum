@@ -106,8 +106,4 @@ extension StaticBigIntWords {
     @inlinable public func index(_ index: Int, offsetBy distance: Int) -> Int {
         index + distance
     }
-    
-    @inlinable public func index(_ index: Int, offsetBy distance: Int, limitedBy limit: Int) -> Int? {
-        Namespace.arrayIndex(index, offsetBy: distance, limitedBy: limit)
-    }
 }

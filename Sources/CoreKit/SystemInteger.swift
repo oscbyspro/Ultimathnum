@@ -138,13 +138,11 @@ extension SystemInteger {
     @inlinable public init(words: consuming some RandomAccessCollection<Word>, isSigned: consuming Bool) throws {
         let pattern = Pattern(words, isSigned: isSigned)
         self.init(load: pattern)
-        
-        // TODO: clean up and add a comprehensive test suite
-        
-        let value   = self.words
-        let success = self.isLessThanZero == pattern.isLessThanZero &&
-        value.last == pattern.base.dropFirst(value.count - 1).first &&
-        pattern.base.dropFirst(value.count).allSatisfy({ $0 == pattern.sign })
+                        
+        let current = self.words as Words
+        let success = self.isLessThanZero == pattern.isLessThanZero as Bool as Bool as Bool
+        &&  current.last == pattern.base.dropFirst(Swift.max(0, current.count - 01 )).first
+        &&  pattern.base.dropFirst(current.count).allSatisfy({  $0 == pattern.sign })
         
         if !success {
             throw Overflow(consume self)
