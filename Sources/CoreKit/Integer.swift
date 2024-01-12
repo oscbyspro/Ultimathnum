@@ -61,7 +61,7 @@ public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Send
     // MARK: Transformations x Addition
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming func incremented(by increment: borrowing Self) throws -> Self
+    @inlinable consuming func plus(_ increment: borrowing Self) throws -> Self
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Subtraction
@@ -69,7 +69,7 @@ public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Send
     
     @inlinable consuming func negated() throws -> Self
     
-    @inlinable consuming func decremented(by decrement: borrowing Self) throws -> Self
+    @inlinable consuming func minus(_ decrement: borrowing Self) throws -> Self
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Multiplication
@@ -77,7 +77,7 @@ public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Send
     
     @inlinable consuming func squared() throws -> Self
     
-    @inlinable consuming func multiplied(by multiplier: borrowing Self) throws -> Self
+    @inlinable consuming func times(_ multiplier: borrowing Self) throws -> Self
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Division
@@ -135,7 +135,7 @@ extension Integer {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func +(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        try! lhs.incremented(by: rhs)
+        try! lhs.plus(rhs)
     }
     
     //=------------------------------------------------------------------------=
@@ -147,7 +147,7 @@ extension Integer {
     }
     
     @inlinable public static func -(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        try! lhs.decremented(by: rhs)
+        try! lhs.minus(rhs)
     }
     
     //=------------------------------------------------------------------------=
@@ -155,7 +155,7 @@ extension Integer {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func *(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        try! lhs.multiplied(by: rhs)
+        try! lhs.times(rhs)
     }
     
     //=------------------------------------------------------------------------=

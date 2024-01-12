@@ -44,11 +44,11 @@ final class FibonacciTests: XCTestCase {
             for divisor: T in [2, 3, 5, 7].compactMap({ try? T(literally: $0) }) {
                 brrrrrr: do {
                     let a = sequence
-                    let b = try F(index.quotient(divisor:  divisor))
-                    let c = try F(a.index.decremented(by:  b.index))
-                    let d = try a.next.divided(by: b.next)
-                    let e = try b.element .multiplied (by: c.element)
-                    let f = try d.quotient.decremented(by: c.next).multiplied(by: b.next).incremented(by: d.remainder)
+                    let b = try F(index.quotient(divisor: divisor))
+                    let c = try F(a.index.minus(b.index))
+                    let d = try a.next.divided(by:  b.next)
+                    let e = try b.element .times(c.element)
+                    let f = try d.quotient.minus(c.next).times(b.next).plus(d.remainder)
                     XCTAssertEqual(e, f, "arithmetic invariant error", file: file, line: line)
                 }   catch let error {
                     XCTFail("unexpected arithmetic failure: \(error)", file: file, line: line)
@@ -72,7 +72,7 @@ final class FibonacciTests: XCTestCase {
             XCTAssertNoThrow/**/(try F( ))
             XCTAssertNoThrow/**/(try F(0))
             
-            let components  = Components(0, 0, one)
+            let components = Components(0, 0, one)
             check(sequence, components, file: file, line: line)
             XCTAssertThrowsError(try sequence.decrement())
             check(sequence, components, file: file, line: line)

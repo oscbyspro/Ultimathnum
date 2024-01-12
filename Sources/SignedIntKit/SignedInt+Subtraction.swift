@@ -23,7 +23,7 @@ extension SignedInt {
         Self(sign: ~self.sign, magnitude: self.magnitude)
     }
     
-    @inlinable public consuming func decremented(by decrement: borrowing Self) throws -> Self {
-        try self.incremented(by: -decrement)
+    @inlinable public consuming func minus(_ decrement: borrowing Self) throws -> Self {
+        try self.plus(-decrement)
     }
 }

@@ -23,7 +23,7 @@ extension BitInt {
         try Overflow.resolve(self, overflow: self != 0)
     }
     
-    @inlinable public consuming func decremented(by decrement: borrowing Self) throws -> Self {
+    @inlinable public consuming func minus(_ decrement: borrowing Self) throws -> Self {
         try Overflow.resolve(Self(bitPattern: (copy self).bitPattern ^ decrement.bitPattern), overflow: self > decrement)
     }
 }
@@ -42,7 +42,7 @@ extension BitInt.Magnitude {
         try Overflow.resolve(self, overflow: self != 0)
     }
     
-    @inlinable public consuming func decremented(by decrement: borrowing Self) throws -> Self {
+    @inlinable public consuming func minus(_ decrement: borrowing Self) throws -> Self {
         try Overflow.resolve(Self(bitPattern: (copy self).bitPattern ^ decrement.bitPattern), overflow: self < decrement)
     }
 }

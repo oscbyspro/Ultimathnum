@@ -53,9 +53,9 @@ extension Test {
             XCTAssertEqual(rhs + lhs, value, file: file, line: line)
         }
         //=--------------------------------------=
-        XCTAssertEqual(Overflow.capture({ try lhs.incremented(by: rhs) }).value,    value,    file: file, line: line)
-        XCTAssertEqual(Overflow.capture({ try lhs.incremented(by: rhs) }).overflow, overflow, file: file, line: line)
-        XCTAssertEqual(Overflow.capture({ try rhs.incremented(by: lhs) }).value,    value,    file: file, line: line)
-        XCTAssertEqual(Overflow.capture({ try rhs.incremented(by: lhs) }).overflow, overflow, file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try lhs.plus(rhs) }).value,    value,    file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try lhs.plus(rhs) }).overflow, overflow, file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try rhs.plus(lhs) }).value,    value,    file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try rhs.plus(lhs) }).overflow, overflow, file: file, line: line)
     }
 }

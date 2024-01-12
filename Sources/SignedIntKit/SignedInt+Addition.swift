@@ -19,7 +19,7 @@ extension SignedInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func incremented(by increment: borrowing Self) throws -> Self {
+    @inlinable public consuming func plus(_ increment: borrowing Self) throws -> Self {
         fatalError("TODO")
     }
 }

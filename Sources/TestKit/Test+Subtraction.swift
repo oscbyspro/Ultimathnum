@@ -51,8 +51,8 @@ extension Test {
             XCTAssertEqual(lhs - rhs, value, file: file, line: line)
         }
         //=--------------------------------------=
-        XCTAssertEqual(Overflow.capture({ try lhs.decremented(by: rhs) }).value,    value,    file: file, line: line)
-        XCTAssertEqual(Overflow.capture({ try lhs.decremented(by: rhs) }).overflow, overflow, file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try lhs.minus(rhs) }).value,    value,    file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try lhs.minus(rhs) }).overflow, overflow, file: file, line: line)
         //=--------------------------------------=
         if  lhs == 0 {
             Test.subtractionByNegationAsSomeInteger(rhs, value, overflow, file: file, line: line)

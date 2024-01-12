@@ -23,7 +23,7 @@ extension SignedInt {
         try Self(sign: Sign.plus, magnitude:{ try self.magnitude.squared() })
     }
     
-    @inlinable public consuming func multiplied(by  multiplier: Self) throws -> Self {
-        try Self(sign: self.sign ^ multiplier.sign, magnitude:{ try self.magnitude.multiplied(by: multiplier.magnitude) })
+    @inlinable public consuming func times(_  multiplier: Self) throws -> Self {
+        try Self(sign: self.sign ^ multiplier.sign, magnitude:{ try self.magnitude.times(multiplier.magnitude) })
     }
 }

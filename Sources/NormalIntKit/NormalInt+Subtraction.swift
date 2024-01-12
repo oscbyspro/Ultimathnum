@@ -23,7 +23,7 @@ extension NormalInt.Magnitude {
         fatalError("TODO")
     }
     
-    @inlinable public consuming func decremented(by decrement: borrowing Self) throws -> Self {
+    @inlinable public consuming func minus(_ decrement: borrowing Self) throws -> Self {
         fatalError("TODO")
     }
 }

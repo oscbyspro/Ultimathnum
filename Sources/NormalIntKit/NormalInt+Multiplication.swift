@@ -23,7 +23,7 @@ extension NormalInt.Magnitude {
         fatalError("TODO")
     }
     
-    @inlinable public consuming func multiplied(by multiplier: borrowing Self) throws -> Self {
+    @inlinable public consuming func times(_ multiplier: borrowing Self) throws -> Self {
         fatalError("TODO")
     }
 }

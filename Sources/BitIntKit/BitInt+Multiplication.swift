@@ -23,7 +23,7 @@ extension BitInt {
         try Overflow.resolve(copy self, overflow: self == -1)
     }
     
-    @inlinable public consuming func multiplied(by multiplier: borrowing Self) throws -> Self {
+    @inlinable public consuming func times(_ multiplier: borrowing Self) throws -> Self {
         try Overflow.resolve(copy self & multiplier, overflow: self & multiplier == -1)
     }
     
@@ -46,7 +46,7 @@ extension BitInt.Magnitude {
         try Overflow.resolve(self, overflow: false)
     }
     
-    @inlinable public consuming func multiplied(by multiplier: borrowing Self) throws -> Self {
+    @inlinable public consuming func times(_ multiplier: borrowing Self) throws -> Self {
         try Overflow.resolve(self & multiplier, overflow: false)
     }
     

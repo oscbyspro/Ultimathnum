@@ -120,10 +120,10 @@ import MainIntKit
     @inlinable public mutating func increment() throws {
         brr: do {
             let n : Value
-            try n = i.incremented(by: Value(literally: 1))
+            try n = i.plus(Value(literally: 1))
             
             let x : Value
-            try x = a.incremented(by: b)
+            try x = a.plus(b)
             
             self.i = consume n
             self.a = consume x
@@ -141,10 +141,10 @@ import MainIntKit
         
         brr: do {
             let n : Value
-            try n = i.decremented(by: Value(literally: 1))
+            try n = i.minus(Value(literally: 1))
             
             let y : Value
-            try y = b.decremented(by: a)
+            try y = b.minus(a)
             
             self.i = consume n
             self.b = consume y
@@ -162,15 +162,15 @@ import MainIntKit
         
         brr: do {
             let n : Value
-            try n = i.multiplied (by: Value(literally: 2))
+            try n = i.times(Value(literally: 2))
             
             var x : Value
-            try x = b.multiplied (by: Value(literally: 2))
-            try x = x.decremented(by: a)
-            try x = x.multiplied (by: a)
+            try x = b.times(Value(literally: 2))
+            try x = x.minus(a)
+            try x = x.times(a)
             
             var y : Value
-            try y = b.squared().incremented(by: a.squared())
+            try y = b.squared().plus(a.squared())
             
             self.i = consume n
             self.a = consume x

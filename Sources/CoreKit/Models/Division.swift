@@ -77,13 +77,13 @@ extension Division where Value: Integer {
     @inlinable public consuming func ceil() throws -> Value {
         let instance: Self = consume self
         let increment: Value = instance.remainder > 0 ?  1 : 0
-        return try (consume instance).quotient.incremented(by: increment)
+        return try (consume instance).quotient.plus(increment)
     }
     
     /// Decrements the `quotient` if the `remainder` is negative.
     @inlinable public consuming func floor() throws -> Value {
         let instance: Self = consume self
         let increment: Value = instance.remainder.isLessThanZero ? -1 : 0
-        return try (consume instance).quotient.incremented(by: increment)
+        return try (consume instance).quotient.plus(increment)
     }
 }

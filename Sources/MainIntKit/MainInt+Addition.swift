@@ -19,7 +19,7 @@ extension MainInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func incremented(by increment: borrowing Self) throws -> Self {
+    @inlinable public consuming func plus(_ increment: borrowing Self) throws -> Self {
         let result = self.base.addingReportingOverflow(increment.base)
         return try Overflow.resolve(Self(result.partialValue), overflow: result.overflow)
     }

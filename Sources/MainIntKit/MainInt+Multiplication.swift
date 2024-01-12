@@ -20,10 +20,10 @@ extension MainInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func squared() throws -> Self {
-        try self.multiplied(by: copy self)
+        try self.times(copy self)
     }
     
-    @inlinable public consuming func multiplied(by multiplier: borrowing Self) throws -> Self {
+    @inlinable public consuming func times(_ multiplier: borrowing Self) throws -> Self {
         let result = self.base.multipliedReportingOverflow(by: multiplier.base)
         return try Overflow.resolve(Self(result.partialValue), overflow: result.overflow)
     }

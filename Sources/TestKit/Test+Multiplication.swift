@@ -55,10 +55,10 @@ extension Test {
             XCTAssertEqual(rhs * lhs, value, file: file, line: line)
         }
         //=--------------------------------------=
-        XCTAssertEqual(Overflow.capture({ try lhs.multiplied(by: rhs) }).value,    value,    file: file, line: line)
-        XCTAssertEqual(Overflow.capture({ try lhs.multiplied(by: rhs) }).overflow, overflow, file: file, line: line)
-        XCTAssertEqual(Overflow.capture({ try rhs.multiplied(by: lhs) }).value,    value,    file: file, line: line)
-        XCTAssertEqual(Overflow.capture({ try rhs.multiplied(by: lhs) }).overflow, overflow, file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try lhs.times(rhs) }).value,    value,    file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try lhs.times(rhs) }).overflow, overflow, file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try rhs.times(lhs) }).value,    value,    file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try rhs.times(lhs) }).overflow, overflow, file: file, line: line)
         //=--------------------------------------=
         if  lhs == rhs {
             Test.multiplicationBySquareProductAsSomeInteger(lhs, value, overflow, file: file, line: line)
