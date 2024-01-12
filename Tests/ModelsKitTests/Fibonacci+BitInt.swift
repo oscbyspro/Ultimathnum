@@ -8,6 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 import BitIntKit
+import CoreKit
 import ModelsKit
 import TestKit
 
@@ -18,10 +19,24 @@ import TestKit
 extension FibonacciTests {
     
     //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    private static let bitIntKit: [any SystemInteger.Type] = [
+        I1.self,
+        U1.self
+    ]
+    
+    //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     func testBitInt() {
+        min: do {
+            checkLowerBound(Fibonacci<I1>.self)
+            checkLowerBound(Fibonacci<U1>.self)
+        }
+        
         signed: do {
             check(try? Fibonacci<I1>(  ), nil)
             check(try? Fibonacci<I1>(-1), nil)
