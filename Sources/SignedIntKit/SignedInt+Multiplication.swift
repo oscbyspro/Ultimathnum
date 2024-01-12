@@ -20,10 +20,14 @@ extension SignedInt {
     //=------------------------------------------------------------------------=
 
     @inlinable public consuming func squared() throws -> Self {
-        try Self(sign: Sign.plus, magnitude:{ try self.magnitude.squared() })
+        try Self(sign: Sign.plus) {
+            try self.magnitude.squared()
+        }
     }
     
     @inlinable public consuming func times(_  multiplier: Self) throws -> Self {
-        try Self(sign: self.sign ^ multiplier.sign, magnitude:{ try self.magnitude.times(multiplier.magnitude) })
+        try Self(sign: self.sign ^ multiplier.sign) {
+            try self.magnitude.times(multiplier.magnitude)
+        }
     }
 }

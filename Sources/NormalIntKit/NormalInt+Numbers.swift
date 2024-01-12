@@ -19,10 +19,6 @@ extension NormalInt.Magnitude {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(integerLiteral: consuming StaticBigInt) {
-        fatalError("TODO")
-    }
-    
     @inlinable public init(sign: consuming Sign, magnitude: consuming Magnitude) throws {
         fatalError("TODO")
     }

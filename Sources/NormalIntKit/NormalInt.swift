@@ -25,6 +25,8 @@ import CoreKit
                 
         public typealias Magnitude = Self
         
+        public typealias IntegerLiteralType = StaticBigInt
+        
         //=--------------------------------------------------------------------=
         // MARK: State
         //=--------------------------------------------------------------------=

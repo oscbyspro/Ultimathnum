@@ -20,11 +20,15 @@ extension SignedInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func quotient(divisor: Self) throws -> Self {
-        try Self(sign: self.sign ^ divisor.sign, magnitude:{ try self.magnitude.quotient(divisor: divisor.magnitude) })
+        try Self(sign: self.sign ^ divisor.sign) {
+            try self.magnitude.quotient(divisor: divisor.magnitude)
+        }
     }
     
     @inlinable public consuming func remainder(divisor: Self) throws -> Self {
-        try Self(sign: self.sign, magnitude:{ try self.magnitude.remainder(divisor: divisor.magnitude) })
+        try Self(sign: self.sign) {
+            try self.magnitude.remainder(divisor: divisor.magnitude)
+        }
     }
     
     @inlinable public consuming func divided(by divisor: Self) throws -> Division<Self> {

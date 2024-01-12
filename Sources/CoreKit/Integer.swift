@@ -130,6 +130,10 @@ extension Integer {
         try  self.init(words: BitCastSequence(StaticBigIntWords(source)), isSigned: true)
     }
     
+    @inlinable public init(integerLiteral: IntegerLiteralType) where IntegerLiteralType == StaticBigInt {
+        try! self.init(literally: integerLiteral)
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Addition
     //=------------------------------------------------------------------------=

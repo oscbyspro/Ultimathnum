@@ -14,7 +14,9 @@ import CoreKit
 //*============================================================================*
 
 @frozen public struct SignedInt<Magnitude>: SignedInteger where Magnitude: BinaryInteger & UnsignedInteger {
-        
+    
+    public typealias IntegerLiteralType = StaticBigInt
+    
     public typealias Components = (sign: Sign, magnitude: Magnitude)
     
     //=------------------------------------------------------------------------=
