@@ -23,11 +23,43 @@ final class FibonacciTests: XCTestCase {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    func check<T>(_ sequence: Fibonacci<T>?, _ expectation: Components<T>?, file: StaticString = #file, line: UInt = #line) {
+    func check<T>(_ sequence: Fibonacci<T>?, _ expectation: Components<T>?, invariants: Bool = true, file: StaticString = #file, line: UInt = #line) {
         XCTAssertEqual(sequence?.index,   expectation?.index,   file: file, line: line)
         XCTAssertEqual(sequence?.element, expectation?.element, file: file, line: line)
         XCTAssertEqual(sequence?.next,    expectation?.next,    file: file, line: line)
+        
+        if  invariants, let  expectation, let sequence =  Test.some(sequence) {
+            XCTAssertNoThrow(check(index: sequence.index, element: expectation.element, file: file, line: line))
+        }
     }
+    
+    func check<T: Integer>(index: T, element: T?, invariants: Bool = true, file: StaticString = #file, line: UInt = #line) {
+        typealias F = Fibonacci<T>
+        //=--------------------------------------=
+        let sequence = try? F(index)
+        //=--------------------------------------=
+        XCTAssertEqual(sequence?.element, element, file: file, line: line)
+        //=--------------------------------------=
+        if  invariants, let sequence {
+            for divisor: T in [2, 3, 5, 7].compactMap({ try? T(literally: $0) }) {
+                brrrrrr: do {
+                    let a = sequence
+                    let b = try F(index.quotient(divisor:  divisor))
+                    let c = try F(a.index.decremented(by:  b.index))
+                    let d = try a.next.divided(by: b.next)
+                    let e = try b.element .multiplied (by: c.element)
+                    let f = try d.quotient.decremented(by: c.next).multiplied(by: b.next).incremented(by: d.remainder)
+                    XCTAssertEqual(e, f, "arithmetic invariant error", file: file, line: line)
+                }   catch let error {
+                    XCTFail("unexpected arithmetic failure: \(error)", file: file, line: line)
+                }
+            }
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities x Min, Max
+    //=------------------------------------------------------------------------=
     
     func checkLowerBound<T>(_ sequence: Fibonacci<T>.Type, file: StaticString = #file, line: UInt = #line) {
         typealias F = Fibonacci<T>
@@ -54,10 +86,10 @@ final class FibonacciTests: XCTestCase {
     
     func checkUpperBound<T>(_ sequence: Fibonacci<T>, _ expectation: Components<T>, file: StaticString = #file, line: UInt = #line) {
         var ((sequence)) = sequence
-        check(sequence, expectation, file: file, line: line)
+        check(sequence, expectation, invariants: true,  file: file, line: line)
         XCTAssertThrowsError(try sequence.increment())
-        check(sequence, expectation, file: file, line: line)
+        check(sequence, expectation, invariants: false, file: file, line: line)
         XCTAssertThrowsError(try sequence.double())
-        check(sequence, expectation, file: file, line: line)
+        check(sequence, expectation, invariants: false, file: file, line: line)
     }
 }
