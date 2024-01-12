@@ -56,9 +56,8 @@ import MainIntKit
 /// [0x0304, 0x0102] == Array(Chunked(([1, 2, 3, 4] as [U8]).reversed(), as: U16.self))
 /// ```
 ///
-@frozen public struct Chunked<Base, Element>: RandomAccessCollection 
-where Element: SystemInteger  & UnsignedInteger,
-Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger {
+@frozen public struct Chunked<Base, Element>: RandomAccessCollection where
+Element: SystemInteger, Base: RandomAccessCollection, Base.Element: SystemInteger {
     
     public typealias Base = Base
     
@@ -190,20 +189,20 @@ extension Chunked.Major {
     }
     
     @inlinable static func element(_ index: Int, base: Base, sign: Element) -> Element {
-        var shift = 0 as Element
         var major = 0 as Element
-        let minor = index as Int * self.ratio
+        var shift = 0 as Element.Magnitude
+        let minor = self.ratio * index
         
         if  minor < base.count {
             var   baseIndex = base.index(base.startIndex, offsetBy: minor)
             while baseIndex < base.endIndex, shift < Element.bitWidth {
-                major = major | Element(truncating: Base.Element.Magnitude(bitPattern: base[baseIndex])) &<< shift
-                shift = shift + Element(truncating: Base.Element.bitWidth)
+                major = major | Element(truncating: Base.Element.Magnitude(bitPattern: base[baseIndex])) &<< Element(bitPattern: shift)
+                shift = shift + Element.Magnitude(load: Base.Element.bitWidth.load(as: Word.self))
                 base.formIndex(after: &baseIndex)
             }
         }
         
-        return shift >= Element.bitWidth ? major : major | sign &<< shift
+        return shift >= Element.bitWidth ? major : major | sign &<< Element(bitPattern: shift)
     }
 }
 

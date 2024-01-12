@@ -21,15 +21,15 @@ final class ChunkedTests: XCTestCase {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    func check<A: SystemInteger & UnsignedInteger, B: SystemInteger & UnsignedInteger>(
+    func check<A: SystemInteger & SignedInteger, B: SystemInteger & SignedInteger>(
     _ lhs: [A], _ rhs: [B], isSigned: Bool? = nil,
     file: StaticString = #file, line: UInt  = #line) {
         //=--------------------------------------=
-        checkOneWay(lhs, rhs, isSigned: isSigned, file: file, line: line)
-        checkOneWay(rhs, lhs, isSigned: isSigned, file: file, line: line)
+        checkOneWayOnly(lhs, rhs, isSigned: isSigned, file: file, line: line)
+        checkOneWayOnly(rhs, lhs, isSigned: isSigned, file: file, line: line)
     }
-
-    func checkOneWay<A: SystemInteger & UnsignedInteger, B: SystemInteger & UnsignedInteger>(
+    
+    func checkOneWayOnly<A: SystemInteger & SignedInteger, B: SystemInteger & SignedInteger>(
     _ lhs: [A], _ rhs: [B], isSigned: Bool? = nil,
     file: StaticString = #file, line: UInt  = #line) {
         //=--------------------------------------=
@@ -38,6 +38,8 @@ final class ChunkedTests: XCTestCase {
         //=--------------------------------------=
         func with(isSigned: Bool) {
             Test.collection(Chunked(lhs,         isSigned: isSigned), rhs,         file: file, line: line)
+            Test.collection(Chunked(lhs,         isSigned: isSigned), rhsUnsigned, file: file, line: line)
+            Test.collection(Chunked(lhsUnsigned, isSigned: isSigned), rhs,         file: file, line: line)
             Test.collection(Chunked(lhsUnsigned, isSigned: isSigned), rhsUnsigned, file: file, line: line)
         }
         //=--------------------------------------=
