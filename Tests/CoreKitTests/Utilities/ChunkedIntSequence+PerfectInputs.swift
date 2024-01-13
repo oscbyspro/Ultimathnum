@@ -8,15 +8,14 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import ModelsKit
 import MainIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Chunked x Perfect Inputs
+// MARK: * Chunked Int Sequence x Perfect Inputs
 //*============================================================================*
 
-extension ChunkedTests {
+extension ChunkedIntSequenceTests {
             
     //=------------------------------------------------------------------------=
     // MARK: Tests

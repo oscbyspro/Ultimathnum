@@ -111,7 +111,7 @@ let package = Package(
         
         .testTarget(
         name: "CoreKitTests",
-        dependencies: ["CoreKit", "TestKit"]),
+        dependencies: ["CoreKit", "MainIntKit", "TestKit"]),
         //=--------------------------------------=
         // Double Int Kit
         //=--------------------------------------=

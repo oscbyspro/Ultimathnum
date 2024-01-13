@@ -8,14 +8,15 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import ModelsKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Chunked
+// MARK: * Chunked Int Sequence
 //*============================================================================*
 
-final class ChunkedTests: XCTestCase {
+final class ChunkedIntSequenceTests: XCTestCase {
+    
+    typealias T = ChunkedIntSequence
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -37,10 +38,10 @@ final class ChunkedTests: XCTestCase {
         let rhsUnsigned = rhs.map(B.Magnitude.init(bitPattern:))
         //=--------------------------------------=
         func with(isSigned: Bool) {
-            Test.collection(Chunked(lhs,         isSigned: isSigned), rhs,         file: file, line: line)
-            Test.collection(Chunked(lhs,         isSigned: isSigned), rhsUnsigned, file: file, line: line)
-            Test.collection(Chunked(lhsUnsigned, isSigned: isSigned), rhs,         file: file, line: line)
-            Test.collection(Chunked(lhsUnsigned, isSigned: isSigned), rhsUnsigned, file: file, line: line)
+            Test.collection(T(lhs,         isSigned: isSigned), rhs,         file: file, line: line)
+            Test.collection(T(lhs,         isSigned: isSigned), rhsUnsigned, file: file, line: line)
+            Test.collection(T(lhsUnsigned, isSigned: isSigned), rhs,         file: file, line: line)
+            Test.collection(T(lhsUnsigned, isSigned: isSigned), rhsUnsigned, file: file, line: line)
         }
         //=--------------------------------------=
         if  isSigned == nil || isSigned == true {

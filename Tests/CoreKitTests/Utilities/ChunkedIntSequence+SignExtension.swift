@@ -8,40 +8,39 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import ModelsKit
 import MainIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Chunked x Sign Extension
+// MARK: * Chunked Int Sequence x Sign Extension
 //*============================================================================*
 
-extension ChunkedTests {
+extension ChunkedIntSequenceTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     func testSubscriptSignExtension() {
-        XCTAssertEqual(Chunked([ 0] as [I32], isSigned: false, as: I32.self)[144],  0)
-        XCTAssertEqual(Chunked([ 0] as [I32], isSigned: true,  as: I32.self)[144],  0)
-        XCTAssertEqual(Chunked([~0] as [I32], isSigned: false, as: I32.self)[144],  0)
-        XCTAssertEqual(Chunked([~0] as [I32], isSigned: true,  as: I32.self)[144], ~0)
+        XCTAssertEqual(T([ 0] as [I32], isSigned: false, as: I32.self)[144],  0)
+        XCTAssertEqual(T([ 0] as [I32], isSigned: true,  as: I32.self)[144],  0)
+        XCTAssertEqual(T([~0] as [I32], isSigned: false, as: I32.self)[144],  0)
+        XCTAssertEqual(T([~0] as [I32], isSigned: true,  as: I32.self)[144], ~0)
         
-        XCTAssertEqual(Chunked([ 0] as [I32], isSigned: false, as: I64.self)[144],  0)
-        XCTAssertEqual(Chunked([ 0] as [I32], isSigned: true,  as: I64.self)[144],  0)
-        XCTAssertEqual(Chunked([~0] as [I32], isSigned: false, as: I64.self)[144],  0)
-        XCTAssertEqual(Chunked([~0] as [I32], isSigned: true,  as: I64.self)[144], ~0)
+        XCTAssertEqual(T([ 0] as [I32], isSigned: false, as: I64.self)[144],  0)
+        XCTAssertEqual(T([ 0] as [I32], isSigned: true,  as: I64.self)[144],  0)
+        XCTAssertEqual(T([~0] as [I32], isSigned: false, as: I64.self)[144],  0)
+        XCTAssertEqual(T([~0] as [I32], isSigned: true,  as: I64.self)[144], ~0)
         
-        XCTAssertEqual(Chunked([ 0] as [I64], isSigned: false, as: I32.self)[144],  0)
-        XCTAssertEqual(Chunked([ 0] as [I64], isSigned: true,  as: I32.self)[144],  0)
-        XCTAssertEqual(Chunked([~0] as [I64], isSigned: false, as: I32.self)[144],  0)
-        XCTAssertEqual(Chunked([~0] as [I64], isSigned: true,  as: I32.self)[144], ~0)
+        XCTAssertEqual(T([ 0] as [I64], isSigned: false, as: I32.self)[144],  0)
+        XCTAssertEqual(T([ 0] as [I64], isSigned: true,  as: I32.self)[144],  0)
+        XCTAssertEqual(T([~0] as [I64], isSigned: false, as: I32.self)[144],  0)
+        XCTAssertEqual(T([~0] as [I64], isSigned: true,  as: I32.self)[144], ~0)
         
-        XCTAssertEqual(Chunked([ 0] as [I64], isSigned: false, as: I64.self)[144],  0)
-        XCTAssertEqual(Chunked([ 0] as [I64], isSigned: true,  as: I64.self)[144],  0)
-        XCTAssertEqual(Chunked([~0] as [I64], isSigned: false, as: I64.self)[144],  0)
-        XCTAssertEqual(Chunked([~0] as [I64], isSigned: true,  as: I64.self)[144], ~0)
+        XCTAssertEqual(T([ 0] as [I64], isSigned: false, as: I64.self)[144],  0)
+        XCTAssertEqual(T([ 0] as [I64], isSigned: true,  as: I64.self)[144],  0)
+        XCTAssertEqual(T([~0] as [I64], isSigned: false, as: I64.self)[144],  0)
+        XCTAssertEqual(T([~0] as [I64], isSigned: true,  as: I64.self)[144], ~0)
     }
     
     func testMajorSequenceFromIncompleteMinorSequence() {

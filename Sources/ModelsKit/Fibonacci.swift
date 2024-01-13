@@ -84,7 +84,7 @@ import MainIntKit
         
         try self.init()
         
-        for bit: BitInt.Magnitude in Chunked(normalizing: BitCastSequence(index.words, as: UX.self), isSigned: false).reversed() {
+        for bit: BitInt.Magnitude in ChunkedIntSequence(normalizing: BitCastSequence(index.words, as: UX.self), isSigned: false).reversed() {
             try self.double()
             
             if  bit == 1 {

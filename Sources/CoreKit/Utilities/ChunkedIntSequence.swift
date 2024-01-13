@@ -7,18 +7,15 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-import MainIntKit
-
 //*============================================================================*
-// MARK: * Chunked
+// MARK: * Chunked Int Sequence
 //*============================================================================*
 
 /// A sequence that chunks elements of an un/signed source.
 ///
 /// ```swift
-/// for word: UX in Chunked(source, isSigned: false, count: nil) { ... }
-/// for byte: U8 in Chunked(source, isSigned: false, count: nil) { ... }
+/// for word: UX in ChunkedIntSequence(source, isSigned: false, count: nil) { ... }
+/// for byte: U8 in ChunkedIntSequence(source, isSigned: false, count: nil) { ... }
 /// ```
 ///
 /// ### Bit Sequence
@@ -26,7 +23,7 @@ import MainIntKit
 /// You can create a bit sequence by chunking as `UMNBitInt`.
 ///
 /// ```swift
-/// for bit: U1 in Chunked(normalizing: base, isSigned: false).reversed() {
+/// for bit: U1 in ChunkedIntSequence(normalizing: base, isSigned: false).reversed() {
 ///     double()
 ///
 ///     if  bit == 1 {
@@ -42,20 +39,20 @@ import MainIntKit
 /// the input, the output, or both.
 ///
 /// ```swift
-/// [1, 2, 3, 4] == Array(Chunked(([0x0201, 0x0403] as [U16]),            as: U8.self))
-/// [2, 1, 4, 3] == Array(Chunked(([0x0201, 0x0403] as [U16]).reversed(), as: U8.self).reversed())
-/// [3, 4, 1, 2] == Array(Chunked(([0x0201, 0x0403] as [U16]).reversed(), as: U8.self))
-/// [4, 3, 2, 1] == Array(Chunked(([0x0201, 0x0403] as [U16]),            as: U8.self).reversed())
+/// [1, 2, 3, 4] == Array(ChunkedIntSequence(([0x0201, 0x0403] as [U16]),            as: U8.self))
+/// [2, 1, 4, 3] == Array(ChunkedIntSequence(([0x0201, 0x0403] as [U16]).reversed(), as: U8.self).reversed())
+/// [3, 4, 1, 2] == Array(ChunkedIntSequence(([0x0201, 0x0403] as [U16]).reversed(), as: U8.self))
+/// [4, 3, 2, 1] == Array(ChunkedIntSequence(([0x0201, 0x0403] as [U16]),            as: U8.self).reversed())
 /// ```
 ///
 /// ```swift
-/// [0x0201, 0x0403] == Array(Chunked(([1, 2, 3, 4] as [U8]),            as: U16.self))
-/// [0x0102, 0x0304] == Array(Chunked(([1, 2, 3, 4] as [U8]).reversed(), as: U16.self).reversed())
-/// [0x0403, 0x0201] == Array(Chunked(([1, 2, 3, 4] as [U8]),            as: U16.self).reversed())
-/// [0x0304, 0x0102] == Array(Chunked(([1, 2, 3, 4] as [U8]).reversed(), as: U16.self))
+/// [0x0201, 0x0403] == Array(ChunkedIntSequence(([1, 2, 3, 4] as [U8]),            as: U16.self))
+/// [0x0102, 0x0304] == Array(ChunkedIntSequence(([1, 2, 3, 4] as [U8]).reversed(), as: U16.self).reversed())
+/// [0x0403, 0x0201] == Array(ChunkedIntSequence(([1, 2, 3, 4] as [U8]),            as: U16.self).reversed())
+/// [0x0304, 0x0102] == Array(ChunkedIntSequence(([1, 2, 3, 4] as [U8]).reversed(), as: U16.self))
 /// ```
 ///
-@frozen public struct Chunked<Base, Element>: RandomAccessCollection where
+@frozen public struct ChunkedIntSequence<Base, Element>: RandomAccessCollection where
 Element: SystemInteger, Base: RandomAccessCollection, Base.Element: SystemInteger {
     
     public typealias Base = Base
@@ -131,9 +128,9 @@ Element: SystemInteger, Base: RandomAccessCollection, Base.Element: SystemIntege
     //=------------------------------------------------------------------------=
     
     @inlinable internal static func count(of base: Base) -> Int {
-        if  UX(Self.Element.bitWidth) > UX(Base.Element.bitWidth) {
+        if  PBI.compareIsMoreThan(Self.Element.bitWidth, to: Base.Element.bitWidth) {
             return Major.count(of:  base)
-        }   else if UX(Self.Element.bitWidth) < UX(Base.Element.bitWidth) {
+        }   else if PBI.compareIsLessThan(Self.Element.bitWidth, to: Base.Element.bitWidth) {
             return Minor.count(of:  base)
         }   else {
             return Equal.count(of:  base)
@@ -141,9 +138,9 @@ Element: SystemInteger, Base: RandomAccessCollection, Base.Element: SystemIntege
     }
     
     @inlinable internal static func count(normalizing base: Base, repeating bit: Bit) -> Int {
-        if  UX(Self.Element.bitWidth) > UX(Base.Element.bitWidth) {
+        if  PBI.compareIsMoreThan(Self.Element.bitWidth, to: Base.Element.bitWidth) {
             return Major.count(normalizing: base, repeating: bit)
-        }   else if UX(Self.Element.bitWidth) < UX(Base.Element.bitWidth) {
+        }   else if PBI.compareIsLessThan(Self.Element.bitWidth, to: Base.Element.bitWidth) {
             return Minor.count(normalizing: base, repeating: bit)
         }   else {
             return Equal.count(normalizing: base, repeating: bit)
@@ -151,9 +148,9 @@ Element: SystemInteger, Base: RandomAccessCollection, Base.Element: SystemIntege
     }
     
     @inlinable internal static func element(_ index: Int, base: Base, sign: Element) -> Element {
-        if  UX(Self.Element.bitWidth) > UX(Base.Element.bitWidth) {
+        if  PBI.compareIsMoreThan(Self.Element.bitWidth, to: Base.Element.bitWidth) {
             return Major.element(index, base: base, sign: sign)
-        }   else if UX(Self.Element.bitWidth) < UX(Base.Element.bitWidth) {
+        }   else if PBI.compareIsLessThan(Self.Element.bitWidth, to: Base.Element.bitWidth) {
             return Minor.element(index, base: base, sign: sign)
         }   else {
             return Equal.element(index, base: base, sign: sign)
@@ -165,13 +162,13 @@ Element: SystemInteger, Base: RandomAccessCollection, Base.Element: SystemIntege
 // MARK: + Sendable
 //=----------------------------------------------------------------------------=
 
-extension Chunked: Sendable where Base: Sendable { }
+extension ChunkedIntSequence: Sendable where Base: Sendable { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Major
 //=----------------------------------------------------------------------------=
 
-extension Chunked.Major {
+extension ChunkedIntSequence.Major {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -184,7 +181,8 @@ extension Chunked.Major {
     }
     
     @inlinable static func count(of base: some Collection<Base.Element>) -> Int {
-        try! IX(base.count).divided(by: IX(self.ratio)).ceil().stdlib
+        let division = base.count.quotientAndRemainder(dividingBy: self.ratio)
+        return division.quotient + (division.remainder > 0 ? 1 : 0)
     }
     
     @inlinable static func count(normalizing base: Base, repeating bit: Bit) -> Int {
@@ -214,7 +212,7 @@ extension Chunked.Major {
 // MARK: + Minor
 //=----------------------------------------------------------------------------=
 
-extension Chunked.Minor {
+extension ChunkedIntSequence.Minor {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -243,8 +241,8 @@ extension Chunked.Minor {
         let  (quotient, remainder) = index.quotientAndRemainder(dividingBy: self.ratio)
         guard quotient < base.count else { return sign }
         let major: Base.Element = base[base.index(base.startIndex, offsetBy: quotient)]
-        let shift: Base.Element = Base.Element(truncating: IX(remainder)) &* Base.Element(truncating: Element.bitWidth)
-        return Element(truncating: major &>> shift) // truncating shift means truncating multiplication is fine
+        let shift: Base.Element = Base.Element(load: Word(bitPattern: remainder)) &* Base.Element(truncating: Element.bitWidth)
+        return Element(truncating: major &>> shift) // truncating shift means truncating multiplication is OK
     }
 }
 
@@ -252,7 +250,7 @@ extension Chunked.Minor {
 // MARK: + Equal
 //=----------------------------------------------------------------------------=
 
-extension Chunked.Equal {
+extension ChunkedIntSequence.Equal {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -277,7 +275,7 @@ extension Chunked.Equal {
 // MARK: + Collection
 //=----------------------------------------------------------------------------=
 
-extension Chunked {
+extension ChunkedIntSequence {
     
     //=------------------------------------------------------------------------=
     // MARK: Accessors
