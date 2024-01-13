@@ -7,7 +7,6 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import BitIntKit
 import CoreKit
 import MainIntKit
 
@@ -61,10 +60,13 @@ Element: SystemInteger, Base: RandomAccessCollection, Base.Element: SystemIntege
     
     public typealias Base = Base
     
+    /// A namespace for Element.bitWidth \> Base.Element.bitWidth.
     @frozen @usableFromInline enum Major { }
     
+    /// A namespace for Element.bitWidth \< Base.Element.bitWidth.
     @frozen @usableFromInline enum Minor { }
     
+    /// A namespace for Element.bitWidth == Base.Element.bitWidth.
     @frozen @usableFromInline enum Equal { }
     
     //=------------------------------------------------------------------------=
@@ -176,7 +178,9 @@ extension Chunked.Major {
     //=------------------------------------------------------------------------=
     
     @inlinable static var ratio: Int {
-        IX(Element.bitWidth).stdlib / IX(Base.Element.bitWidth).stdlib
+        let major = Element.bitWidth
+        let minor = Element.Magnitude(truncating: Base.Element.bitWidth)
+        return (major / minor).load(as: Int.self)
     }
     
     @inlinable static func count(of base: some Collection<Base.Element>) -> Int {
@@ -217,7 +221,9 @@ extension Chunked.Minor {
     //=------------------------------------------------------------------------=
     
     @inlinable static var ratio: Int {
-        IX(Base.Element.bitWidth).stdlib / IX(Element.bitWidth).stdlib
+        let major = Base.Element.bitWidth
+        let minor = Base.Element.Magnitude(truncating: Element.bitWidth)
+        return (major / minor).load(as: Int.self)
     }
     
     @inlinable static func count(of base: some Collection<Base.Element>) -> Int {

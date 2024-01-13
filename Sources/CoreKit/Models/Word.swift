@@ -19,6 +19,25 @@
 ///
 /// Ultimathnum cannot access Builtin.Word so it uses Swift.UInt instead.
 ///
+/// ### Integerless collection abstraction
+///
+/// You may define a collection abstraction similar to Swift that does not
+/// require concrete integer types, which is my justification for adding generic
+/// collection conformances to this module. It may look like the following:
+///
+/// ```swift
+/// protocol Collection {
+///     associatedtype  Stride:
+///     SignedInteger & SystemInteger where
+///     Stride.BitPattern == Word
+///
+///     var count: Stride { get }
+/// }
+/// ```
+///
+/// So, when you see `Int` or `UInt` referenced in a collection from this module,
+/// you can imagine it being `Stride` or `Stride.Magnitude` instead.
+///
 @frozen public struct Word: BitCastable, BitOperable, ExpressibleByIntegerLiteral, Hashable, Sendable {
         
     //=------------------------------------------------------------------------=

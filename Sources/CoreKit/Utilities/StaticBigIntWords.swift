@@ -69,9 +69,9 @@ extension StaticBigIntWords {
     //=------------------------------------------------------------------------=
     
     @inlinable public var count: Int {
-        let width: Swift.Int = self.bitWidth
-        let major: Swift.Int = width &>> (Swift.UInt.bitWidth.trailingZeroBitCount)
-        let minor: Swift.Int = width &   (Swift.UInt.bitWidth &- 1)
+        let width = self.bitWidth as Int
+        let major = width &>> UInt.bitWidth.trailingZeroBitCount
+        let minor = width &  (UInt.bitWidth &- 1)
         return major &+ (minor > 0 ? 1 : 0)
     }
     

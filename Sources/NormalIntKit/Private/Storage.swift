@@ -15,7 +15,7 @@ import CoreKit
 
 @frozen @usableFromInline struct Storage<Element> where Element: SystemInteger & UnsignedInteger {
     
-    @usableFromInline typealias Element  = Word
+    @usableFromInline typealias Element = Word
     
     @usableFromInline typealias Allocation = ContiguousArray<Element>
     

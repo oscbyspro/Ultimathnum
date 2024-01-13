@@ -28,7 +28,6 @@ extension Storage {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    
     @inlinable mutating func append(_ element: Element) {
         self.allocate()
         self.allocation.append(element)
