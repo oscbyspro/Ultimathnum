@@ -7,8 +7,7 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-import ModelsKit
+import Ultimathnum
 import TestKit
 
 //*============================================================================*

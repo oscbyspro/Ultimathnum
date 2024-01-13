@@ -5,7 +5,6 @@ Greatness.
 ## Table of Contents
 
 * [CoreKit](#corekit)
-* [ModelsKit](#modelskit)
 * [BitIntKit](#bitintkit)
 * [DoubleIntKit](#doubleintkit)
 * [MainIntKit](#mainintkit)
@@ -16,13 +15,6 @@ Greatness.
 <a name="corekit"/>
 
 ## CoreKit
-
-> [!IMPORTANT]
-> It's a work in progress.
-
-<a name="modelskit"/>
-
-## ModelsKit
 
 > [!IMPORTANT]
 > It's a work in progress.
