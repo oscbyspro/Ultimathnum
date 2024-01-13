@@ -129,11 +129,11 @@ Element: SystemInteger, Base: RandomAccessCollection, Base.Element: SystemIntege
     
     @inlinable internal static func count(of base: Base) -> Int {
         if  PBI.compareIsMoreThan(Self.Element.bitWidth, to: Base.Element.bitWidth) {
-            return Major.count(of:  base)
+            return Major.count(of: base)
         }   else if PBI.compareIsLessThan(Self.Element.bitWidth, to: Base.Element.bitWidth) {
-            return Minor.count(of:  base)
+            return Minor.count(of: base)
         }   else {
-            return Equal.count(of:  base)
+            return Equal.count(of: base)
         }
     }
     

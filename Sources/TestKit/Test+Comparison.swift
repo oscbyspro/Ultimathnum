@@ -20,7 +20,15 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func comparison<T: Integer>(_ lhs: T, _ rhs: T, _ expectation: Signum, file: StaticString = #file, line: UInt = #line) {
+    public static func comparison<T: SystemInteger>(
+    _ lhs: T, _ rhs: T, _ expectation: Signum,
+    file: StaticString = #file, line: UInt = #line) {
+        self.comparisonAsSomeSystemInteger(lhs, rhs, expectation, file: file, line: line)
+    }
+    
+    public static func comparison<T: Integer>(
+    _ lhs: T, _ rhs: T, _ expectation: Signum,
+    file: StaticString = #file, line: UInt = #line) {
         self.comparisonAsSomeInteger(lhs, rhs, expectation, file: file, line: line)
     }
     
@@ -28,10 +36,61 @@ extension Test {
     // MARK: Utilities x Private
     //=------------------------------------------------------------------------=
     
-    private static func comparisonAsSomeInteger<T: Integer>(_ lhs: T, _ rhs: T, _ expectation: Signum, file: StaticString, line: UInt) {
+    private static func comparisonAsSomeSystemInteger<T: SystemInteger>(
+    _   lhs: T, _ rhs: T, _ expectation: Signum, file: StaticString, line: UInt) {
+        //=--------------------------------------=
+        Test.comparisonAsSomeInteger(lhs, rhs, expectation, file: file, line: line)
+        //=--------------------------------------=
+        for (lhs, rhs, expectation) in [(lhs, rhs, expectation), (rhs, lhs, expectation.negated())] {
+            signum: do {
+                let result:  Signum = PBI.compare(lhs, to: rhs)
+                let success: Bool = result == expectation
+                XCTAssert(success, "\(lhs).compared(to: \(rhs) -> \(result)", file: file, line: line)
+            }
+            
+            less: do {
+                let result:  Bool = PBI.compareIsLessThan(lhs, to: rhs)
+                let success: Bool = result == (expectation == .less)
+                XCTAssert(success, "\(lhs) <  \(rhs) -> \(result)", file: file, line: line)
+            }
+            
+            same: do {
+                let result:  Bool = PBI.compareIsEqual(lhs, to: rhs)
+                let success: Bool = result == (expectation == .same)
+                XCTAssert(success, "\(lhs) == \(rhs) -> \(result)", file: file, line: line)
+            }
+            
+            more: do {
+                let result:  Bool = PBI.compareIsMoreThan(lhs, to: rhs)
+                let success: Bool = result == (expectation == .more)
+                XCTAssert(success, "\(lhs) >  \(rhs) -> \(result)", file: file, line: line)
+            }
+            
+            nonless: do {
+                let result:  Bool = PBI.compareIsMoreThanOrEqual(lhs, to: rhs)
+                let success: Bool = result == (expectation != .less)
+                XCTAssert(success, "\(lhs) >= \(rhs) -> \(result)", file: file, line: line)
+            }
+            
+            nonsame: do {
+                let result:  Bool = PBI.compareIsNotEqual(lhs, to: rhs)
+                let success: Bool = result == (expectation != .same)
+                XCTAssert(success, "\(lhs) != \(rhs) -> \(result)", file: file, line: line)
+            }
+            
+            nonmore: do {
+                let result:  Bool = PBI.compareIsLessThanOrEqual(lhs, to: rhs)
+                let success: Bool = result == (expectation != .more)
+                XCTAssert(success, "\(lhs) <= \(rhs) -> \(result)", file: file, line: line)
+            }
+        }
+    }
+    
+    private static func comparisonAsSomeInteger<T: Integer>(
+    _   lhs: T, _ rhs: T, _ expectation: Signum, file: StaticString, line: UInt) {
         for (lhs,  rhs, expectation) in [(lhs, rhs, expectation), (rhs, lhs, expectation.negated())] {
             signum: do {
-                let result:  Signum = lhs.compared(to:  rhs)
+                let result:  Signum = lhs.compared(to: rhs)
                 let success: Bool = result == expectation
                 XCTAssert(success, "\(lhs).compared(to: \(rhs) -> \(result)", file: file, line: line)
             }
@@ -58,6 +117,12 @@ extension Test {
                 let result:  Bool = lhs >= rhs
                 let success: Bool = result == (expectation != .less)
                 XCTAssert(success, "\(lhs) >= \(rhs) -> \(result)", file: file, line: line)
+            }
+            
+            nonsame: do {
+                let result:  Bool = lhs != rhs
+                let success: Bool = result == (expectation != .same)
+                XCTAssert(success, "\(lhs) != \(rhs) -> \(result)", file: file, line: line)
             }
             
             nonmore: do {

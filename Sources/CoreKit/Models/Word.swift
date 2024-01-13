@@ -39,7 +39,7 @@
 /// you can imagine it being `Stride` or `Stride.Magnitude` instead.
 ///
 @frozen public struct Word: BitCastable, BitOperable, Comparable, ExpressibleByIntegerLiteral, Hashable, Sendable {
-        
+    
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
