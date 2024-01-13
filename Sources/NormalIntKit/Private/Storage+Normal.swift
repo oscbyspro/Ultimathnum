@@ -7,35 +7,44 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Normal Int x Comparison
+// MARK: * Storage x Normal
 //*============================================================================*
 
-extension NormalInt {
+extension Storage {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Accessors
+    //=------------------------------------------------------------------------=
+    
+    @inlinable var isNormal: Bool {
+        switch self.mode {
+        case .inline: 
+            
+            return true
+            
+        case .allocation:
+            
+            return self.allocation.count == (1 as Int) || self.allocation.last! != (0 as Element)
+        }
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func compared(to other: borrowing Self) -> Signum {
-        fatalError("TODO")
-    }
-    
-    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        fatalError("TODO")
-    }
-    
-    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        fatalError("TODO")
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public func hash(into hasher: inout Hasher) {
-        fatalError("TODO")
+    @inlinable mutating func normalize() {
+        switch self.mode {
+        case .inline:
+            
+            break
+            
+        case .allocation:
+            
+            trimming: while self.allocation.count > (1 as Int) && self.allocation.last! == (0 as Element) {
+                self.allocation.removeLast()
+            }
+        }
     }
 }
+

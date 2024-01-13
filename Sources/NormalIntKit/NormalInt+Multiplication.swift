@@ -10,15 +10,15 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Normal Int x Multiplication x Unsigned
+// MARK: * Normal Int x Multiplication
 //*============================================================================*
 
-extension NormalInt.Magnitude {
+extension NormalInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
-
+    
     @inlinable public consuming func squared() throws -> Self {
         fatalError("TODO")
     }

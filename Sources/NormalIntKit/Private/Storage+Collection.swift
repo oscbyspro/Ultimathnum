@@ -7,35 +7,41 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Normal Int x Comparison
+// MARK: * Storage x Collection
 //*============================================================================*
 
-extension NormalInt {
+extension Storage {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Accessors
+    //=------------------------------------------------------------------------=
+    
+    @inlinable var count: Swift.Int {
+        switch self.mode {
+        case .inline: 1
+        case .allocation: self.allocation.count
+        }
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func compared(to other: borrowing Self) -> Signum {
-        fatalError("TODO")
+    
+    @inlinable mutating func append(_ element: Element) {
+        self.allocate()
+        self.allocation.append(element)
     }
     
-    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        fatalError("TODO")
-    }
-    
-    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        fatalError("TODO")
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public func hash(into hasher: inout Hasher) {
-        fatalError("TODO")
+    @inlinable mutating func resize(minCount: Int) {
+        guard minCount > 1 else { return }
+        
+        self.allocate()
+        self.allocation.reserveCapacity(minCount)
+        
+        appending: while self.allocation.count < minCount {
+            self.allocation.append(0 as Element)
+        }
     }
 }

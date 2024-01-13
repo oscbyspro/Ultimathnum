@@ -64,8 +64,15 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func withUnsafeBufferPointer<T>(_ body: (UnsafeBufferPointer<Self>) throws -> T) rethrows -> T {
-        try Swift.withUnsafePointer(to: consume self) { pointer in
-            try body(UnsafeBufferPointer(start: pointer, count: 1))
+        try Swift.withUnsafePointer(to: consume self) { buffer in
+            try body(UnsafeBufferPointer(start: buffer, count: 1))
+        }
+    }
+    
+    @inlinable public mutating func withUnsafeMutableBufferPointer<T>(_ body: (inout UnsafeMutableBufferPointer<Self>) throws -> T) rethrows -> T {
+        try Swift.withUnsafeMutablePointer(to: &self) {
+            var buffer = UnsafeMutableBufferPointer(start: $0, count: 1)
+            return try body(&buffer)
         }
     }
 }

@@ -20,7 +20,7 @@ final class UltimathnumTests: XCTestCase {
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    static let signed:   [any Integer.Type] = [
+    static let signed: [any Integer.Type] = [
         I1 .self,
         IX .self,
         I8 .self,

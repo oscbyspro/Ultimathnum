@@ -13,45 +13,34 @@ import CoreKit
 // MARK: * Normal Int
 //*============================================================================*
 
-/// A signed, auto-normalized, arbitrary precision integer.
-@frozen public struct NormalInt {
+/// An unsigned, auto-normalized, arbitrary precision integer.
+@frozen public struct NormalInt<Element>: UnsignedInteger & BinaryInteger where Element: UnsignedInteger & SystemInteger {
     
-    //*========================================================================*
-    // MARK: * Magnitude
-    //*========================================================================*
+    public typealias Magnitude = Self
     
-    /// An unsigned, auto-normalized, arbitrary precision integer.
-    @frozen public struct Magnitude: UnsignedInteger & BinaryInteger {
-                
-        public typealias Magnitude = Self
-        
-        public typealias IntegerLiteralType = StaticBigInt
-        
-        //=--------------------------------------------------------------------=
-        // MARK: State
-        //=--------------------------------------------------------------------=
-        
-        @usableFromInline var storage: NormalInt.Storage
-        
-        //=--------------------------------------------------------------------=
-        // MARK: Initializers
-        //=--------------------------------------------------------------------=
-        
-        @inlinable init(storage: consuming NormalInt.Storage) {
-            self.storage = storage
-        }
-        
-        //=--------------------------------------------------------------------=
-        // MARK: Utilities
-        //=--------------------------------------------------------------------=
-        
-        @inlinable public var words: some RandomAccessCollection<Word> {
-            consuming get {
-                switch self.storage {
-                case let .some(x): return [x] as ContiguousArray<Word>
-                case let .many(x): return (x) as ContiguousArray<Word>
-                }
-            }
-        }
+    public typealias IntegerLiteralType = StaticBigInt
+    
+    @usableFromInline typealias Storage = NormalIntKit.Storage<Element>
+    
+    //=--------------------------------------------------------------------=
+    // MARK: State
+    //=--------------------------------------------------------------------=
+    
+    @usableFromInline var storage: Storage
+    
+    //=--------------------------------------------------------------------=
+    // MARK: Initializers
+    //=--------------------------------------------------------------------=
+    
+    @inlinable init(storage: consuming NormalInt.Storage) {
+        self.storage = storage
+    }
+    
+    //=--------------------------------------------------------------------=
+    // MARK: Utilities
+    //=--------------------------------------------------------------------=
+    
+    @inlinable public var words: some RandomAccessCollection<Word> {
+        consuming get { self.storage.words }
     }
 }

@@ -10,17 +10,16 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Normal Int x Storage
+// MARK: * Storage x Words
 //*============================================================================*
 
-extension NormalInt {
+extension Storage {
     
-    //*========================================================================*
-    // MARK: * Storage
-    //*========================================================================*
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
     
-    @frozen @usableFromInline enum Storage: Hashable, Sendable {
-        case some(Word) // one
-        case many(ContiguousArray<Word>) // one or more
+    @inlinable var words: [Word] {
+        fatalError("TODO")
     }
 }

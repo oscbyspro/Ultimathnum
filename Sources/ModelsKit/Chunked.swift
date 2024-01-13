@@ -115,7 +115,7 @@ Element: SystemInteger, Base: RandomAccessCollection, Base.Element: SystemIntege
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable internal init(_ base: Base, repeating bit: Bit, count: Int) {
+    @inlinable internal init(_ base: Base, repeating bit: Bit, count: Int, as element: Element.Type = Element.self) {
         self.base  = base
         self.sign  = Self.Element(repeating: bit)
         self.count = count

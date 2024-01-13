@@ -10,10 +10,10 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Normal Int x Numbers x Unsigned
+// MARK: * Normal Int x Numbers
 //*============================================================================*
 
-extension NormalInt.Magnitude {
+extension NormalInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
