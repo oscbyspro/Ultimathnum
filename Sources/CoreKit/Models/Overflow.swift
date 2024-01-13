@@ -50,6 +50,12 @@
             return value
         }
     }
+        
+    @inlinable public static func transform(_ value: inout Value, map: (consuming Value) throws -> Value) -> Bool {
+        let overflow: Bool
+        (value, overflow) = Overflow.capture({ try map(value) }).components
+        return (overflow)
+    }
     
     //*========================================================================*
     // MARK: * Result
