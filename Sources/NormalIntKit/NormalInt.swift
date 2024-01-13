@@ -14,7 +14,8 @@ import CoreKit
 //*============================================================================*
 
 /// An unsigned, auto-normalized, arbitrary precision integer.
-@frozen public struct NormalInt<Element>: UnsignedInteger & BinaryInteger where Element: UnsignedInteger & SystemInteger {
+@frozen public struct NormalInt<Element>: UnsignedInteger & BinaryInteger where 
+Element: UnsignedInteger & SystemInteger, Element.BitPattern == Word.BitPattern {
     
     public typealias Magnitude = Self
     

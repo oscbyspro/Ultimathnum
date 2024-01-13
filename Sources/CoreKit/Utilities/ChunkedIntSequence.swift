@@ -128,9 +128,9 @@ Element: SystemInteger, Base: RandomAccessCollection, Base.Element: SystemIntege
     //=------------------------------------------------------------------------=
     
     @inlinable internal static func count(of base: Base) -> Int {
-        if  PBI.compareIsMoreThan(Self.Element.bitWidth, to: Base.Element.bitWidth) {
+        if  Self.Element.bitWidth.load(as: Word.self) > Base.Element.bitWidth.load(as: Word.self) {
             return Major.count(of: base)
-        }   else if PBI.compareIsLessThan(Self.Element.bitWidth, to: Base.Element.bitWidth) {
+        }   else if Self.Element.bitWidth.load(as: Word.self) < Base.Element.bitWidth.load(as: Word.self) {
             return Minor.count(of: base)
         }   else {
             return Equal.count(of: base)
@@ -138,9 +138,9 @@ Element: SystemInteger, Base: RandomAccessCollection, Base.Element: SystemIntege
     }
     
     @inlinable internal static func count(normalizing base: Base, repeating bit: Bit) -> Int {
-        if  PBI.compareIsMoreThan(Self.Element.bitWidth, to: Base.Element.bitWidth) {
+        if  Self.Element.bitWidth.load(as: Word.self) > Base.Element.bitWidth.load(as: Word.self) {
             return Major.count(normalizing: base, repeating: bit)
-        }   else if PBI.compareIsLessThan(Self.Element.bitWidth, to: Base.Element.bitWidth) {
+        }   else if Self.Element.bitWidth.load(as: Word.self) < Base.Element.bitWidth.load(as: Word.self) {
             return Minor.count(normalizing: base, repeating: bit)
         }   else {
             return Equal.count(normalizing: base, repeating: bit)
@@ -148,9 +148,9 @@ Element: SystemInteger, Base: RandomAccessCollection, Base.Element: SystemIntege
     }
     
     @inlinable internal static func element(_ index: Int, base: Base, sign: Element) -> Element {
-        if  PBI.compareIsMoreThan(Self.Element.bitWidth, to: Base.Element.bitWidth) {
+        if  Self.Element.bitWidth.load(as: Word.self) > Base.Element.bitWidth.load(as: Word.self) {
             return Major.element(index, base: base, sign: sign)
-        }   else if PBI.compareIsLessThan(Self.Element.bitWidth, to: Base.Element.bitWidth) {
+        }   else if Self.Element.bitWidth.load(as: Word.self) < Base.Element.bitWidth.load(as: Word.self) {
             return Minor.element(index, base: base, sign: sign)
         }   else {
             return Equal.element(index, base: base, sign: sign)
@@ -177,7 +177,7 @@ extension ChunkedIntSequence.Major {
     @inlinable static var ratio: Int {
         let major = Element.bitWidth
         let minor = Element.Magnitude(truncating: Base.Element.bitWidth)
-        return (major / minor).load(as: Int.self)
+        return (major &>> minor.count(0, option: .ascending)).load(as: Int.self)
     }
     
     @inlinable static func count(of base: some Collection<Base.Element>) -> Int {
@@ -221,7 +221,7 @@ extension ChunkedIntSequence.Minor {
     @inlinable static var ratio: Int {
         let major = Base.Element.bitWidth
         let minor = Base.Element.Magnitude(truncating: Element.bitWidth)
-        return (major / minor).load(as: Int.self)
+        return (major &>> minor.count(0, option: .ascending)).load(as: Int.self)
     }
     
     @inlinable static func count(of base: some Collection<Base.Element>) -> Int {
@@ -240,9 +240,9 @@ extension ChunkedIntSequence.Minor {
         precondition(index >= 0 as Int, .indexOutOfBounds())
         let  (quotient, remainder) = index.quotientAndRemainder(dividingBy: self.ratio)
         guard quotient < base.count else { return sign }
-        let major: Base.Element = base[base.index(base.startIndex, offsetBy: quotient)]
-        let shift: Base.Element = Base.Element(load: Word(bitPattern: remainder)) &* Base.Element(truncating: Element.bitWidth)
-        return Element(truncating: major &>> shift) // truncating shift means truncating multiplication is OK
+        let major = base[base.index(base.startIndex, offsetBy: quotient)]
+        let shift = Base.Element(load: Word(bitPattern: remainder)) &<< Base.Element(truncating: Element.bitWidth.count(0, option: .ascending))
+        return Element(truncating: major &>> shift)
     }
 }
 

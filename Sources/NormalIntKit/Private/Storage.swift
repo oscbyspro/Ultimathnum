@@ -13,9 +13,10 @@ import CoreKit
 // MARK: * Normal Int Storage
 //*============================================================================*
 
-@frozen @usableFromInline struct Storage<Element> where Element: SystemInteger & UnsignedInteger {
+@frozen @usableFromInline struct Storage<Element> where 
+Element: UnsignedInteger & SystemInteger, Element.BitPattern == Word.BitPattern {
     
-    @usableFromInline typealias Element = Word
+    @usableFromInline typealias Element = Element
     
     @usableFromInline typealias Allocation = ContiguousArray<Element>
     
@@ -53,6 +54,15 @@ import CoreKit
             self.mode = Self.Mode.allocation
             
         case .allocation: break }
+    }
+    
+    @inlinable var words: some RandomAccessCollection<Word> {
+        consuming get {
+            
+            self.allocate()
+            
+            return BitCastSequence(self.allocation)
+        }
     }
     
     //*========================================================================*
