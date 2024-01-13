@@ -17,12 +17,12 @@ extension Namespace {
     ///
     /// - Note: Proper binary integer models conform to ``BinaryInteger``.
     ///
-    @frozen public enum ProperBinaryInteger<Integer> where Integer: BinaryInteger {
+    @frozen public enum ProperBinaryInteger<Base> where Base: BinaryInteger {
         
         //*====================================================================*
         // MARK: * Magnitude
         //*====================================================================*
         
-        public typealias Magnitude = ProperBinaryInteger<Integer.Magnitude>
+        public typealias Magnitude = ProperBinaryInteger<Base.Magnitude>
     }
 }

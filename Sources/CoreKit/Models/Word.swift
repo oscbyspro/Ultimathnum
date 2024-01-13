@@ -38,7 +38,7 @@
 /// So, when you see `Int` or `UInt` referenced in a collection from this module,
 /// you can imagine it being `Stride` or `Stride.Magnitude` instead.
 ///
-@frozen public struct Word: BitCastable, BitOperable, ExpressibleByIntegerLiteral, Hashable, Sendable {
+@frozen public struct Word: BitCastable, BitOperable, Comparable, ExpressibleByIntegerLiteral, Hashable, Sendable {
         
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -76,6 +76,18 @@
     
     @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
         Self(bitPattern: lhs.bitPattern ^ rhs.bitPattern)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public func compared(to other: Self) -> Signum {
+        self < other ? -1 : self == other ? 0 : 1
+    }
+    
+    @inlinable public static func <(lhs: Self, rhs: Self) -> Bool {
+        lhs.bitPattern < rhs.bitPattern
     }
     
     //=------------------------------------------------------------------------=

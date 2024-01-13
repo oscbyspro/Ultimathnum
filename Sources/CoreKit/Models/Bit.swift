@@ -11,7 +11,11 @@
 // MARK: * Bit
 //*============================================================================*
 
-@frozen public struct Bit: BitCastable, BitOperable, Hashable, ExpressibleByIntegerLiteral, Sendable {
+/// ### Development
+///
+/// - TODO: Consider BitPattern as Bool.
+///
+@frozen public struct Bit: BitCastable, BitOperable, Comparable, Hashable, ExpressibleByIntegerLiteral, Sendable {
     
     public typealias BitPattern = Self
     
@@ -40,7 +44,7 @@
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Logic
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     @inlinable public static prefix func ~(operand: Self) -> Self {
@@ -57,6 +61,18 @@
     
     @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
         lhs == rhs ? 0 : 1
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public func compared(to other: Self) -> Signum {
+        self == other ? 0 : self < other ? -1 : 1
+    }
+    
+    @inlinable public static func <(lhs: Self, rhs: Self) -> Bool {
+        (lhs, rhs) == (0, 1)
     }
     
     //*========================================================================*
