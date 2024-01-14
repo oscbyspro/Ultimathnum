@@ -41,6 +41,14 @@ Element: UnsignedInteger & SystemInteger, Element.BitPattern == Word.BitPattern 
         self.allocation = elements
     }
     
+    @inlinable init(_ elements: some RandomAccessCollection<Element>) {
+        if  elements.count < 2 {
+            self.init(elements.first ?? 0)
+        }   else {
+            self.init(Allocation(elements))
+        }
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=

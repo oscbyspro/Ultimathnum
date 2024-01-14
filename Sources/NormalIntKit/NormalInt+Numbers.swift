@@ -20,10 +20,21 @@ extension NormalInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(sign: consuming Sign, magnitude: consuming Magnitude) throws {
-        fatalError("TODO")
+        self = consume magnitude
+        let overflow = sign == Sign.minus && self != 0
+        
+        if  overflow {
+            throw Overflow(self)
+        }
     }
     
     @inlinable public init(words: consuming some RandomAccessCollection<Word>, isSigned: consuming Bool) throws {
-        fatalError("TODO")
+        self.storage = Storage(BitCastSequence(consume words))
+        let overflow = isSigned && self.storage.last & .msb != 0
+        self.storage.normalize()
+        
+        if  overflow {
+            throw Overflow(self)
+        }
     }
 }

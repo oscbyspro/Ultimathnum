@@ -142,7 +142,7 @@ let package = Package(
         
         .testTarget(
         name: "NormalIntKitTests",
-        dependencies: ["NormalIntKit", "TestKit"]),
+        dependencies: ["MainIntKit", "NormalIntKit", "TestKit"]),
         //=--------------------------------------=
         // Signed Int Kit
         //=--------------------------------------=

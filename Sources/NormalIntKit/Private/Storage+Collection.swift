@@ -7,6 +7,8 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
 // MARK: * Storage x Collection
 //*============================================================================*
@@ -17,10 +19,25 @@ extension Storage {
     // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable var count: Swift.Int {
+    @inlinable var count: Int {
         switch self.mode {
         case .inline: 1
         case .allocation: self.allocation.count
+        }
+    }
+    
+    @inlinable var first: Element {
+        self[0]
+    }
+    
+    @inlinable var last:  Element {
+        self[self.count - 1]
+    }
+    
+    @inlinable subscript(index: Int) -> Element {
+        self.withUnsafeBufferPointer { elements in
+            precondition(elements.indices ~= index, .indexOutOfBounds())
+            return elements[index]
         }
     }
     
