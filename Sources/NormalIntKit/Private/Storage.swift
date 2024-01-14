@@ -13,7 +13,7 @@ import CoreKit
 // MARK: * Normal Int Storage
 //*============================================================================*
 
-@frozen @usableFromInline struct Storage<Element> where 
+@frozen @usableFromInline struct Storage<Element> where
 Element: UnsignedInteger & SystemInteger, Element.BitPattern == Word.BitPattern {
     
     @usableFromInline typealias Element = Element

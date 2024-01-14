@@ -19,16 +19,16 @@ extension NormalInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func compared(to other: borrowing Self) -> Signum {
+    @inlinable public borrowing func compared(to other: Self) -> Signum {
         fatalError("TODO")
     }
     
-    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        fatalError("TODO")
+    @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
+        lhs.compared(to: rhs) ==  0
     }
     
-    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        fatalError("TODO")
+    @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
+        lhs.compared(to: rhs) == -1
     }
     
     //=------------------------------------------------------------------------=
@@ -36,6 +36,10 @@ extension NormalInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public func hash(into hasher: inout Hasher) {
-        fatalError("TODO")
+        self.storage.withUnsafeBufferPointer {
+            for element in $0 {
+                hasher.combine(element)
+            }
+        }
     }
 }
