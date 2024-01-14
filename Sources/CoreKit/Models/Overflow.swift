@@ -43,18 +43,18 @@
         Result(value)
     }
     
+    @inlinable public static func capture(_ value: inout Value, map: (consuming Value) throws -> Value) -> Bool {
+        let overflow: Bool
+        (value, overflow) = Overflow.capture({ try map(value) }).components
+        return (overflow)
+    }
+    
     @inlinable public static func resolve(_ value: consuming Value, overflow: consuming Bool) throws -> Value {
         if  overflow {
             throw  Overflow(value)
         }   else {
             return value
         }
-    }
-        
-    @inlinable public static func transform(_ value: inout Value, map: (consuming Value) throws -> Value) -> Bool {
-        let overflow: Bool
-        (value, overflow) = Overflow.capture({ try map(value) }).components
-        return (overflow)
     }
     
     //*========================================================================*
