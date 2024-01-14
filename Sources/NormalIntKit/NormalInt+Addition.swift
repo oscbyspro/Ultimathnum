@@ -19,7 +19,22 @@ extension NormalInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func plus(_ increment: borrowing Self) throws -> Self {
-        fatalError("TODO")
+    @inlinable public consuming func plus(_ increment: Self) -> Self {
+        if  increment != 0 {
+            self.storage.resize(minCount: increment.storage.count)
+            
+            let overflow = self.storage.withUnsafeMutableBufferPointer { instance in
+                increment.storage.withUnsafeBufferPointer { increment in
+                    SUISS.increment(&instance, by: increment).overflow
+                }
+            }
+            
+            if  overflow {
+                self.storage.append(1)
+            }
+        }
+        
+        Swift.assert(self.storage.isNormal)
+        return consume self as Self as Self
     }
 }
