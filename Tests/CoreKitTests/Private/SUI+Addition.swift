@@ -163,28 +163,30 @@ final class StrictUnsignedIntegerSubSequenceTestsOnAddition: XCTestCase {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
 
-    private func checkElementsBit(_ lhs: [UX], _ rhs: [UX], _ bit: Bool, _ result: [UX], _ overflow: Bool = false, file: StaticString = #file, line: UInt = #line) {
+    private func checkElementsBit(
+    _ base: [UX], _ elements: [UX], _ bit: Bool, _ result: [UX], _ overflow: Bool = false,
+    file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
         // increment: elements + bit
         //=--------------------------------------=
         brr: do {
-            var lhs = lhs
-            let max = SUISS.increment(&lhs, by: rhs, plus: bit)
+            var lhs = base
+            let max = SUISS.increment(&lhs, by: elements, plus: bit)
             XCTAssertEqual(lhs,          result,   file: file, line: line)
             XCTAssertEqual(max.overflow, overflow, file: file, line: line)
         }
         
         brr: do {
-            var lhs = lhs
-            let min = SUISS.incrementInIntersection(&lhs, by: rhs,  plus: bit)
+            var lhs = base
+            let min = SUISS.incrementInIntersection(&lhs, by: elements, plus: bit)
             let max = SUISS.increment(&lhs[min.index...], by: min.overflow)
             XCTAssertEqual(lhs,          result,   file: file, line: line)
             XCTAssertEqual(max.overflow, overflow, file: file, line: line)
         }
         
         brr: do {
-            var lhs = lhs, rhs = rhs
-            let min = SUISS.incrementInIntersection(&lhs, by: rhs,  plus: bit)
+            var lhs = base, elements = elements
+            let min = SUISS.incrementInIntersection(&lhs, by: elements, plus: bit)
             let sfx = Array(repeating: 0 as UX, count: lhs[min.index... ].count)
             let max = SUISS.increment(&lhs[min.index...], by: sfx,  plus: min.overflow)
             XCTAssertEqual(lhs,          result,   file: file, line: line)
@@ -192,47 +194,49 @@ final class StrictUnsignedIntegerSubSequenceTestsOnAddition: XCTestCase {
         }
     }
 
-    func checkIncrementBit(_ lhs: [UX], _ rhs: UX, _ bit: Bool, _ result: [UX], _ overflow: Bool = false, file: StaticString = #file, line: UInt = #line) {
+    func checkIncrementBit(
+    _ base: [UX], _ increment: UX, _ bit: Bool, _ result: [UX], _ overflow: Bool = false,
+    file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
-        checkElementsBit(lhs, [rhs], bit, result, overflow, file: file, line: line)
+        checkElementsBit(base, [increment], bit, result, overflow, file: file, line: line)
         //=--------------------------------------=
-        // increment: digit
+        // increment: some
         //=--------------------------------------=
         if !bit {
-            var lhs = lhs
-            let max = SUISS.increment(&lhs, by: rhs)
+            var lhs = base
+            let max = SUISS.increment(&lhs, by: increment)
             XCTAssertEqual(lhs,          result,   file: file, line: line)
             XCTAssertEqual(max.overflow, overflow, file: file, line: line)
         }
         
         if !bit {
-            var lhs = lhs
-            let min = SUISS.incrementInIntersection(&lhs, by: rhs)
+            var lhs = base
+            let min = SUISS.incrementInIntersection(&lhs, by: increment)
             let max = SUISS.increment(&lhs[min.index...], by: min.overflow)
             XCTAssertEqual(lhs,          result,   file: file, line: line)
             XCTAssertEqual(max.overflow, overflow, file: file, line: line)
         }
         //=--------------------------------------=
-        // increment: digit + bit
+        // increment: some + bit
         //=--------------------------------------=
         brr: do {
-            var lhs = lhs
-            let max = SUISS.increment(&lhs, by: rhs, plus: bit)
+            var lhs = base
+            let max = SUISS.increment(&lhs, by: increment, plus: bit)
             XCTAssertEqual(lhs,          result,   file: file, line: line)
             XCTAssertEqual(max.overflow, overflow, file: file, line: line)
         }
         
         brr: do {
-            var lhs = lhs
-            let min = SUISS.incrementInIntersection(&lhs, by: rhs, plus: bit)
+            var lhs = base
+            let min = SUISS.incrementInIntersection(&lhs, by: increment, plus: bit)
             let max = SUISS.increment(&lhs[min.index...], by: min.overflow)
             XCTAssertEqual(lhs,          result,   file: file, line: line)
             XCTAssertEqual(max.overflow, overflow, file: file, line: line)
         }
         
         brr: do {
-            var lhs = lhs, rhs = rhs
-            let min = SUISS.incrementInIntersection(&lhs, by: rhs,  plus: bit)
+            var lhs = base, increment = increment
+            let min = SUISS.incrementInIntersection(&lhs, by: increment,  plus: bit)
             let sfx = Array(repeating: 0 as UX, count: lhs[min.index... ].count)
             let max = SUISS.increment(&lhs[min.index...], by: sfx,  plus: min.overflow)
             XCTAssertEqual(lhs,          result,   file: file, line: line)
@@ -240,19 +244,21 @@ final class StrictUnsignedIntegerSubSequenceTestsOnAddition: XCTestCase {
         }
     }
 
-    func checkProductIncrement(_ lhs: [UX], _ product: ([UX], UX), _ increment: UX, _ result: [UX], _ overflow: Bool = false, file: StaticString = #file, line: UInt = #line) {
+    func checkProductIncrement(
+    _ base: [UX], _ product: ([UX], UX), _ increment: UX, _ result: [UX], _ overflow: Bool = false,
+    file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
         // increment: elements × digit + digit
         //=--------------------------------------=
         brr: do {
-            var lhs = lhs
+            var lhs = base
             let max = SUISS.increment(&lhs, by: product.0, times: product.1, plus: increment)
             XCTAssertEqual(lhs,          result,   file: file, line: line)
             XCTAssertEqual(max.overflow, overflow, file: file, line: line)
         }
         
         brr: do {
-            var lhs = lhs
+            var lhs = base
             let min = SUISS.incrementInIntersection(&lhs, by: product.0, times: product.1, plus: increment)
             let max = SUISS.increment(&lhs[min.index...], by: min.overflow)
             XCTAssertEqual(lhs,          result,   file: file, line: line)
