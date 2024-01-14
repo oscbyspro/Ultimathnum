@@ -20,10 +20,23 @@ extension NormalInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func negated() throws -> Self {
-        fatalError("TODO")
+        fatalError("TODO: use SBISS.formTwosComplement(_:)...")
     }
     
-    @inlinable public consuming func minus(_ decrement: borrowing Self) throws -> Self {
-        fatalError("TODO")
+    @inlinable public consuming func minus(_ increment: Self) throws -> Self {
+        var overflow: Bool = false
+        if  increment != 0 {
+            self.storage.resize(minCount: increment.storage.count)
+            
+            overflow = self.storage.withUnsafeMutableBufferPointer { instance in
+                increment.storage.withUnsafeBufferPointer { increment in
+                    SUISS.decrement(&instance, by: increment).overflow
+                }
+            }
+            
+            self.storage.normalize()
+        }
+        
+        return try Overflow.resolve(consume self, overflow: overflow)
     }
 }
