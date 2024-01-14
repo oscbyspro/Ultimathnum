@@ -32,7 +32,7 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func &+(lhs: consuming Self, rhs: Self) -> Self {
-        Overflow.capture({ try lhs.plus(rhs) }).value
+        Overflow.ignore({ try lhs.plus(rhs) })
     }
     
     //=------------------------------------------------------------------------=
@@ -40,7 +40,7 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func &-(lhs: consuming Self, rhs: Self) -> Self {
-        Overflow.capture({ try lhs.minus(rhs) }).value
+        Overflow.ignore({ try lhs.minus(rhs) })
     }
     
     //=------------------------------------------------------------------------=
@@ -48,6 +48,6 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func &*(lhs: consuming Self, rhs: Self) -> Self {
-        Overflow.capture({ try lhs.times(rhs) }).value
+        Overflow.ignore({ try lhs.times(rhs) })
     }
 }

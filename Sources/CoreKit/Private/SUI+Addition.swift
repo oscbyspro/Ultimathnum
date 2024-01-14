@@ -204,7 +204,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
         Swift.assert(index >= base.startIndex)
         Swift.assert(index <  base.endIndex  )
         //=--------------------------------------=
-        var increment: Base.Element = (increment)
+        var increment = increment as Base.Element
         //=--------------------------------------=
         if  bit {
             bit = Overflow.transform(&(increment), map:{ try $0.plus(1) })
