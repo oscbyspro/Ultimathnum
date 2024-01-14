@@ -105,6 +105,18 @@ extension SystemInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    @inlinable public init(_ bit: Bit) where Self: UnsignedInteger {
+        self = Bool(bit) ?  1 : 0
+    }
+    
+    @inlinable public init(repeating bit: Bit) {
+        self = Bool(bit) ? ~0 : 0
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
     @inlinable public init<T>(clamping source: T) where T: Integer {
         let minus =  source.isLessThanZero
         self = (try? Self(exactly: source)) ?? (minus ? Self.min : Self.max)

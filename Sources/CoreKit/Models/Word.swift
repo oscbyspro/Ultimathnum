@@ -50,6 +50,14 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    @inlinable public init(_ bit: Bit) {
+        self = Bool(bit) ?  1 : 0
+    }
+    
+    @inlinable public init(repeating bit: Bit) {
+        self = Bool(bit) ? ~0 : 0
+    }
+    
     @inlinable public init(bitPattern: consuming Swift.UInt) {
         self.bitPattern = bitPattern
     }

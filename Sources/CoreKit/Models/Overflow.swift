@@ -35,7 +35,7 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func ignore (_ value: () throws -> Value) -> Value  {
+    @inlinable public static func ignore(_ value: () throws -> Value) -> Value {
         Result(value).value
     }
     

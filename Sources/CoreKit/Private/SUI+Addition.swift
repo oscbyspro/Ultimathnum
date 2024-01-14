@@ -60,7 +60,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Digit
+// MARK: + Some
 //=----------------------------------------------------------------------------=
 
 extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollection {
@@ -69,32 +69,32 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
     // MARK: Transformations
     //=------------------------------------------------------------------------=
 
-    /// Increments `base` by `digit`.
+    /// Increments `base` by `increment`.
     ///
     /// - Returns: An overflow indicator and its index in `base`.
     ///
     @discardableResult @inlinable package static func increment(
-    _   base: inout Base, by digit: Base.Element) -> (index: Base.Index, overflow: Bool) {
+    _   base: inout Base, by increment: Base.Element) -> (index: Base.Index, overflow: Bool) {
         //=--------------------------------------=
         var index: Base.Index = base.startIndex, bit: Bool
         //=--------------------------------------=
-        bit = self.increment(&base, by: digit, at: &index)
+        bit = self.increment(&base, by: increment, at: &index)
         //=--------------------------------------=
         return (index: index as Base.Index, overflow: bit as Bool)
     }
 
-    /// Partially increments `base` by `digit`.
+    /// Partially increments `base` by `increment`.
     ///
     /// - This operation does not continue beyond the operand intersection.
     ///
     /// - Returns: An overflow indicator and its index in `base`.
     ///
     @discardableResult @inlinable package static func incrementInIntersection(
-    _   base: inout Base, by digit: Base.Element) -> (index: Base.Index, overflow: Bool) {
+    _   base: inout Base, by increment: Base.Element) -> (index: Base.Index, overflow: Bool) {
         //=--------------------------------------=
         var index: Base.Index = base.startIndex, bit: Bool
         //=--------------------------------------=
-        bit = self.incrementInIntersection(&base, by: digit, at: &index)
+        bit = self.incrementInIntersection(&base, by: increment, at: &index)
         //=--------------------------------------=
         return (index: index as Base.Index, overflow: bit as Bool)
     }
@@ -103,25 +103,27 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
     // MARK: Transformations x Inout
     //=------------------------------------------------------------------------=
 
-    /// Increments `base` by `digit` at `index`.
+    /// Increments `base` by `increment` at `index`.
     ///
     /// - Returns: An overflow indicator and its index in `base`.
     ///
     @discardableResult @inlinable package static func increment(
-    _   base: inout Base, by digit: Base.Element, at index: inout Base.Index) -> Bool {
-        var bit = self.incrementInIntersection(&base, by: digit, at: &index)
+    _   base: inout Base, by increment: Base.Element, at index: inout Base.Index) -> Bool {
+        //=--------------------------------------=
+        var bit = self.incrementInIntersection(&base, by: increment, at: &index)
+        //=--------------------------------------=
         self.increment(&base, by: &bit, at: &index)
         return bit as Bool as Bool as Bool as Bool
     }
 
-    /// Partially increments `base` by `digit` at `index`.
+    /// Partially increments `base` by `increment` at `index`.
     ///
     /// - This operation does not continue beyond the operand intersection.
     ///
     /// - Returns: An overflow indicator and its index in `base`.
     ///
     @discardableResult @inlinable package static func incrementInIntersection(
-    _   base: inout Base, by digit: Base.Element, at index: inout Base.Index) -> Bool {
+    _   base: inout Base, by increment: Base.Element, at index: inout Base.Index) -> Bool {
         //=--------------------------------------=
         Swift.assert(index >= base.startIndex)
         Swift.assert(index <  base.endIndex  )
@@ -130,12 +132,12 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
             base.formIndex(after: &index)
         }
         
-        return Overflow.transform(&base[index], map:{ try $0.plus(digit) })
+        return Overflow.transform(&base[index], map:{ try $0.plus(increment) })
     }
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Digit + Bit
+// MARK: + Some + Bit
 //=----------------------------------------------------------------------------=
 
 extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollection {
@@ -144,32 +146,32 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
     // MARK: Transformations
     //=------------------------------------------------------------------------=
 
-    /// Increments `base` by the sum of `digit` and `bit`.
+    /// Increments `base` by the sum of `increment` and `bit`.
     ///
     /// - Returns: An overflow indicator and its index in `base`.
     ///
     @discardableResult @inlinable package static func increment(
-    _   base: inout Base, by digit: Base.Element, plus bit: Bool) -> (index: Base.Index, overflow: Bool) {
+    _   base: inout Base, by increment: Base.Element, plus bit: Bool) -> (index: Base.Index, overflow: Bool) {
         //=--------------------------------------=
         var index: Base.Index = base.startIndex, bit: Bool = bit
         //=--------------------------------------=
-        self.increment(&base, by: digit, plus: &bit, at: &index)
+        self.increment(&base, by: increment, plus: &bit, at: &index)
         //=--------------------------------------=
         return (index: index as Base.Index, overflow: bit as Bool)
     }
 
-    /// Partially increments `base` by the sum of `digit` and `bit`.
+    /// Partially increments `base` by the sum of `increment` and `bit`.
     ///
     /// - This operation does not continue beyond the operand intersection.
     ///
     /// - Returns: An overflow indicator and its index in `base`.
     ///
     @discardableResult @inlinable package static func incrementInIntersection(
-    _   base: inout Base, by digit: Base.Element, plus bit: Bool) -> (index: Base.Index, overflow: Bool) {
+    _   base: inout Base, by increment: Base.Element, plus bit: Bool) -> (index: Base.Index, overflow: Bool) {
         //=--------------------------------------=
         var index: Base.Index = base.startIndex, bit: Bool = bit
         //=--------------------------------------=
-        self.incrementInIntersection(&base, by: digit, plus: &bit, at: &index)
+        self.incrementInIntersection(&base, by: increment, plus: &bit, at: &index)
         //=--------------------------------------=
         return (index: index as Base.Index, overflow: bit as Bool)
     }
@@ -178,38 +180,38 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
     // MARK: Transformations x Inout
     //=------------------------------------------------------------------------=
     
-    /// Partially increments `base` by the sum of `digit` and `bit` at `index`.
+    /// Partially increments `base` by the sum of `increment` and `bit` at `index`.
     ///
     /// - This operation does not continue beyond the operand intersection.
     ///
     /// - Returns: An overflow indicator and its index in `base`.
     ///
     @inlinable package static func increment(
-    _   base: inout Base, by digit: Base.Element, plus bit: inout Bool, at index: inout Base.Index) {
-        self.incrementInIntersection(&base, by: digit, plus: &bit, at: &index)
+    _   base: inout Base, by increment: Base.Element, plus bit: inout Bool, at index: inout Base.Index) {
+        self.incrementInIntersection(&base, by: increment, plus: &bit, at: &index)
         self.increment(&base, by: &bit, at: &index)
     }
 
-    /// Partially increments `base` by the sum of `digit` and `bit` at `index`.
+    /// Partially increments `base` by the sum of `increment` and `bit` at `index`.
     ///
     /// - This operation does not continue beyond the operand intersection.
     ///
     /// - Returns: An overflow indicator and its index in `base`.
     ///
     @inlinable package static func incrementInIntersection(
-    _   base: inout Base, by digit: Base.Element, plus bit: inout Bool, at index: inout Base.Index) {
+    _   base: inout Base, by increment: Base.Element, plus bit: inout Bool, at index: inout Base.Index) {
         //=--------------------------------------=
         Swift.assert(index >= base.startIndex)
         Swift.assert(index <  base.endIndex  )
         //=--------------------------------------=
-        var digit: Base.Element = digit
+        var increment: Base.Element = (increment)
         //=--------------------------------------=
         if  bit {
-            bit = Overflow.transform(&digit, map:{ try $0.plus(1) })
+            bit = Overflow.transform(&(increment), map:{ try $0.plus(1) })
         }
         
         if !bit {
-            bit = Overflow.transform(&base[index], map:{ try $0.plus(digit) })
+            bit = Overflow.transform(&base[index], map:{ try $0.plus(increment) })
         }
         
         base.formIndex(after: &index)
@@ -217,7 +219,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Elements + Bit
+// MARK: + Many + Bit
 //=----------------------------------------------------------------------------=
 
 extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollection {
@@ -266,6 +268,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
     ///
     @inlinable package static func increment(
     _   base: inout Base, by elements: some Sequence<Base.Element>, plus bit: inout Bool, at index: inout Base.Index) {
+        //=--------------------------------------=
         self.incrementInIntersection(&base, by: elements, plus: &bit, at: &index)
         self.increment(&base, by: &bit, at: &index)
     }
@@ -278,6 +281,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
     ///
     @inlinable package static func incrementInIntersection(
     _   base: inout Base, by elements: some Sequence<Base.Element>, plus bit: inout Bool, at index: inout Base.Index) {
+        //=--------------------------------------=
         for element in elements {
             self.incrementInIntersection(&base, by: element, plus: &bit, at: &index)
         }
@@ -285,7 +289,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Elements × Digit + Digit
+// MARK: + Many × Some + Some
 //=----------------------------------------------------------------------------=
 
 extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollection {
@@ -294,22 +298,22 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Increments `base` by `elements` times `multiplier` plus `digit`.
+    /// Increments `base` by `elements` times `multiplier` plus `increment`.
     ///
     /// - Returns: An overflow indicator and its index in `base`.
     ///
     @discardableResult @inlinable package static func increment(
     _ base: inout Base, by elements: some Sequence<Base.Element>, times multiplier: Base.Element,
-    plus digit: Base.Element = 0) -> (index: Base.Index, overflow: Bool) {
+    plus increment: Base.Element = 0) -> (index: Base.Index, overflow: Bool) {
         //=--------------------------------------=
         var index: Base.Index = base.startIndex
         //=--------------------------------------=
-        let bit = self.increment(&base, by: elements, times: multiplier, plus: digit, at: &index)
+        let bit = self.increment(&base, by: elements, times: multiplier, plus: increment, at: &index)
         //=--------------------------------------=
         return (index: index as Base.Index, overflow: bit as Bool)
     }
     
-    /// Partially increments `base` by `elements` times `multiplier` plus `digit`.
+    /// Partially increments `base` by `elements` times `multiplier` plus `increment`.
     ///
     /// - This operation does not continue beyond the operand intersection.
     ///
@@ -317,11 +321,11 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
     ///
     @discardableResult @inlinable package static func incrementInIntersection(
     _ base: inout Base, by elements: some Sequence<Base.Element>, times multiplier: Base.Element,
-    plus digit: Base.Element = 0) -> (index: Base.Index, overflow: Bool) {
+    plus increment: Base.Element = 0) -> (index: Base.Index, overflow: Bool) {
         //=--------------------------------------=
         var index: Base.Index = base.startIndex
         //=--------------------------------------=
-        let bit = self.incrementInIntersection(&base, by: elements, times: multiplier, plus: digit, at: &index)
+        let bit = self.incrementInIntersection(&base, by: elements, times: multiplier, plus: increment, at: &index)
         //=--------------------------------------=
         return (index: index as Base.Index, overflow: bit as Bool)
     }
@@ -330,19 +334,21 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
     // MARK: Transformations x Inout
     //=------------------------------------------------------------------------=
     
-    /// Increments `base` by `elements` times `multiplier` plus `digit` at `index`.
+    /// Increments `base` by `elements` times `multiplier` plus `increment` at `index`.
     ///
     /// - Returns: An overflow indicator.
     ///
     @discardableResult @inlinable package static func increment(
     _ base: inout Base, by elements: some Sequence<Base.Element>, times multiplier: Base.Element,
-    plus digit: Base.Element, at index: inout Base.Index) -> Bool {
-        var bit = self.incrementInIntersection(&base, by: elements, times: multiplier, plus: digit, at: &index)
+    plus increment: Base.Element, at index: inout Base.Index) -> Bool {
+        //=--------------------------------------=
+        var bit = self.incrementInIntersection(&base, by: elements, times: multiplier, plus: increment, at: &index)
+        //=--------------------------------------=
         self.increment(&base, by: &bit, at: &index)
         return bit as Bool as Bool as Bool as Bool
     }
     
-    /// Partially increments `base` by `elements` times `multiplier` plus `digit` at `index`.
+    /// Partially increments `base` by `elements` times `multiplier` plus `increment` at `index`.
     ///
     /// - This operation does not continue beyond the operand intersection.
     ///
@@ -350,17 +356,17 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
     ///
     @discardableResult @inlinable package static func incrementInIntersection(
     _ base: inout Base, by elements: some Sequence<Base.Element>, times multiplier: Base.Element,
-    plus digit: Base.Element, at index: inout Base.Index) -> Bool {
+    plus increment: Base.Element, at index: inout Base.Index) -> Bool {
         //=--------------------------------------=
-        var last: Base.Element = digit
+        var last: Base.Element = increment
         //=--------------------------------------=
         for element in elements {
             //  maximum == (high: ~1, low: 1)
             var wide = Base.Element.multiplying(element, by: multiplier)
             //  maximum == (high: ~0, low: 0)
-            last = wide.high &+ (Overflow.transform(&wide.low, map:{ try $0.plus(last) }) ? 1 : 0)
+            last = wide.high &+ Base.Element(Bit(Overflow.transform(&wide.low, map:{ try $0.plus(last) })))
             //  this cannot overflow because low == 0 when high == ~0
-            last = last &+ (self.incrementInIntersection(&base, by: wide.low, at: &index) ? 1 : 0)
+            last = last &+ Base.Element(Bit(self.incrementInIntersection(&base, by: wide.low, at: &index)))
         }
         
         return self.incrementInIntersection(&base, by: last, at: &index)

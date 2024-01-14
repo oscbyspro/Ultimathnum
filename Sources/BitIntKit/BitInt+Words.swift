@@ -59,6 +59,6 @@ extension BitInt.Magnitude {
     //=------------------------------------------------------------------------=
         
     @inlinable public func load(as type: Word.Type) -> Word {
-        self.bitPattern == 0 ? 0 : 1
+        Word(self.bitPattern)
     }
 }

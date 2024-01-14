@@ -25,18 +25,3 @@ public protocol BitOperable {
     
     @inlinable static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self
 }
-
-//=----------------------------------------------------------------------------=
-// MARK: + Expressible By Integer Literal
-//=----------------------------------------------------------------------------=
-
-extension BitOperable where Self: ExpressibleByIntegerLiteral {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(repeating bit: Bit) {
-        self = bit == (0 as Bit) ? (0 as Self) : (~0 as Self)
-    }
-}
