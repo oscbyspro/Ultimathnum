@@ -26,6 +26,12 @@ extension Test {
         self.subtractionAsSomeSystemInteger(lhs, rhs, value, overflow, file: file, line: line)
     }
     
+    public static func subtraction<T: BinaryInteger>(
+    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
+    file: StaticString = #file, line: UInt = #line) {
+        self.subtractionAsSomeBinaryInteger(lhs, rhs, value, overflow, file: file, line: line)
+    }
+    
     public static func subtraction<T: Integer>(
     _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
     file: StaticString = #file, line: UInt = #line) {
@@ -40,6 +46,22 @@ extension Test {
     _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
         XCTAssertEqual(lhs &- rhs, value, file: file, line: line)
+        //=--------------------------------------=
+        Test.subtractionAsSomeBinaryInteger(lhs, rhs, value, overflow, file: file, line: line)
+    }
+    
+    private static func subtractionAsSomeBinaryInteger<T: BinaryInteger>(
+    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
+        //=--------------------------------------=
+        if  overflow {
+            let abc: T = Overflow.ignore({ try rhs.minus(lhs) })
+            let xyz: T = Overflow.ignore({ try lhs.minus(rhs) }).irreversibleTwosComplement()
+            XCTAssertEqual(abc, xyz, file: file, line:  line)
+        }   else {
+            let abc: T = Overflow.ignore({ try rhs.minus(lhs) }).irreversibleTwosComplement()
+            let xyz: T = Overflow.ignore({ try lhs.minus(rhs) })
+            XCTAssertEqual(abc, xyz, file: file, line:  line)
+        }
         //=--------------------------------------=
         Test.subtractionAsSomeInteger(lhs, rhs, value, overflow, file: file, line: line)
     }
@@ -66,10 +88,13 @@ extension Test {
             XCTAssertEqual(-operand, value, file: file, line: line)
             XCTAssertEqual(-value, operand, file: file, line: line)
         }
+
+        if !overflow {
+            XCTAssertEqual(Overflow.capture({ try value.negated() }).value,    operand,  file: file, line: line)
+            XCTAssertEqual(Overflow.capture({ try value.negated() }).overflow, overflow, file: file, line: line)
+        }
         //=------------------------------------------=
         XCTAssertEqual(Overflow.capture({ try operand.negated() }).value,    value,    file: file, line: line)
-        XCTAssertEqual(Overflow.capture({ try value  .negated() }).value,    operand,  file: file, line: line)
         XCTAssertEqual(Overflow.capture({ try operand.negated() }).overflow, overflow, file: file, line: line)
-        XCTAssertEqual(Overflow.capture({ try value  .negated() }).overflow, overflow, file: file, line: line)
     }
 }

@@ -82,6 +82,61 @@ Magnitude: UnsignedInteger & SystemInteger, Magnitude.BitPattern == BitPattern {
 extension SystemInteger {
     
     //=------------------------------------------------------------------------=
+    // MARK: Transformations x Complement
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func irreversibleOnesComplement() -> Self {
+        ~(consume self)
+    }
+    
+    @inlinable public consuming func irreversibleTwosComplement() -> Self {
+        self.irreversibleOnesComplement() &+ Overflow.ignore({ try Self(literally: 1) })
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Addition
+    //=------------------------------------------------------------------------=
+    
+    /// ### Development
+    ///
+    /// - FIXME: Consuming caues bad accesss (2024-01-13, Swift 5.9).
+    ///
+    @inlinable public static func &+(lhs: Self, rhs: Self) -> Self {
+        Overflow.ignore({ try lhs.plus(rhs) })
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Subtraction
+    //=------------------------------------------------------------------------=
+    
+    /// ### Development
+    ///
+    /// - FIXME: Consuming caues bad accesss (2024-01-13, Swift 5.9).
+    ///
+    @inlinable public static func &-(lhs: Self, rhs: Self) -> Self {
+        Overflow.ignore({ try lhs.minus(rhs) })
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Multiplication
+    //=------------------------------------------------------------------------=
+    
+    /// ### Development
+    ///
+    /// - FIXME: Consuming caues bad accesss (2024-01-13, Swift 5.9).
+    ///
+    @inlinable public static func &*(lhs: Self, rhs: Self) -> Self {
+        Overflow.ignore({ try lhs.times(rhs) })
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Details
+//=----------------------------------------------------------------------------=
+
+extension SystemInteger {
+    
+    //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
@@ -138,7 +193,7 @@ extension SystemInteger {
         var bitPattern = consume magnitude
         var isLessThanZero = sign == Sign.minus
         if  isLessThanZero {
-            (bitPattern, isLessThanZero) = Overflow.capture({ try bitPattern.negated() }).components
+            isLessThanZero = !Overflow.capture(&bitPattern, map:{ try (~$0).plus(1) })
         }
                 
         self.init(bitPattern: consume bitPattern)

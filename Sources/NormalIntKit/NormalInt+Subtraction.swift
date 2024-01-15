@@ -20,11 +20,16 @@ extension NormalInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func negated() throws -> Self {
-        let overflow: Bool = self.storage.withUnsafeMutableBufferPointer {
+        let overflow: Bool = !self.storage.withUnsafeMutableBufferPointer {
             SUISS.formTwosComplementSubSequence(&$0, increment: true)
         }
         
-        self.storage.normalize()
+        if  overflow, self.storage.msb == 0 {
+            self.storage.append(Element(repeating: 1))
+        }   else {
+            self.storage.normalize()
+        }
+        
         return try Overflow.resolve(consume self, overflow: overflow)
     }
     
@@ -38,8 +43,12 @@ extension NormalInt {
                     SUISS.decrement(&instance, by: increment).overflow
                 }
             }
-            
-            self.storage.normalize()
+                        
+            if  overflow, self.storage.msb == 0 {
+                self.storage.append(Element(repeating: 1))
+            }   else {
+                self.storage.normalize()
+            }
         }
         
         return try Overflow.resolve(consume self, overflow: overflow)

@@ -7,25 +7,19 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Binary Integer
+// MARK: * Storage x Bit
 //*============================================================================*
 
-/// A binary integer.
-///
-/// ### Binary
-///
-/// Its signedness is with respect to un/signed two's complement.
-///
-/// - Requires: Negative values must use binary two's complement form.
-///
-public protocol BinaryInteger: Integer where Magnitude: BinaryInteger {
+extension Storage {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming func irreversibleOnesComplement() -> Self
-    
-    @inlinable consuming func irreversibleTwosComplement() -> Self
+    @inlinable var msb: Bit {
+        Bit(self.last & Element.msb != Element())
+    }
 }

@@ -7,25 +7,33 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Binary Integer
+// MARK: * Normal Int x Complement
 //*============================================================================*
 
-/// A binary integer.
-///
-/// ### Binary
-///
-/// Its signedness is with respect to un/signed two's complement.
-///
-/// - Requires: Negative values must use binary two's complement form.
-///
-public protocol BinaryInteger: Integer where Magnitude: BinaryInteger {
+extension NormalInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Transformatinos
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming func irreversibleOnesComplement() -> Self
+    @inlinable public consuming func irreversibleOnesComplement() -> Self {
+        self.storage.withUnsafeMutableBufferPointer {
+            SBISS.formOnesComplement(&$0)
+        }
+        
+        self.storage.normalize()
+        return consume self as Self
+    }
     
-    @inlinable consuming func irreversibleTwosComplement() -> Self
+    @inlinable public consuming func irreversibleTwosComplement() -> Self {
+        self.storage.withUnsafeMutableBufferPointer {
+            SBISS.formTwosComplement(&$0)
+        }
+        
+        self.storage.normalize()
+        return consume self as Self
+    }
 }

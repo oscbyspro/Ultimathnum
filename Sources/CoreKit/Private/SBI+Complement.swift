@@ -19,7 +19,7 @@ extension Namespace.StrictBinaryInteger.SubSequence where Base: MutableCollectio
     
     @inlinable package static func formOnesComplement(_ base: inout Base) {
         for index in base.indices {
-            base[index] = Overflow.ignore({ try (~base[index]).plus(1) })
+            base[index] = ~base[index]
         }
     }
     
