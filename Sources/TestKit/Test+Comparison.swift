@@ -42,10 +42,10 @@ extension Test {
         Test.comparisonAsSomeInteger(lhs, rhs, expectation, file: file, line: line)
         //=--------------------------------------=
         for (lhs, rhs, expectation) in [(lhs, rhs, expectation), (rhs, lhs, expectation.negated())] {
-            signum: do {
+            comparison: do {
                 let result:  Signum = PBI.compare(lhs, to: rhs)
                 let success: Bool = result == expectation
-                XCTAssert(success, "\(lhs).compared(to: \(rhs) -> \(result)", file: file, line: line)
+                XCTAssert(success, "\(lhs).compared(to: \(rhs)) -> \(result)", file: file, line: line)
             }
             
             less: do {
@@ -88,11 +88,17 @@ extension Test {
     
     private static func comparisonAsSomeInteger<T: Integer>(
     _   lhs: T, _ rhs: T, _ expectation: Signum, file: StaticString, line: UInt) {
-        for (lhs,  rhs, expectation) in [(lhs, rhs, expectation), (rhs, lhs, expectation.negated())] {
+        for (lhs, rhs, expectation) in [(lhs, rhs, expectation), (rhs, lhs, expectation.negated())] {
             signum: do {
+                let result:  Signum = lhs.signum()
+                let success: Bool = result == lhs.compared(to: 0 as T)
+                XCTAssert(success, "\(lhs).signum() -> \(result)", file: file, line: line)
+            }
+            
+            comparison: do {
                 let result:  Signum = lhs.compared(to: rhs)
                 let success: Bool = result == expectation
-                XCTAssert(success, "\(lhs).compared(to: \(rhs) -> \(result)", file: file, line: line)
+                XCTAssert(success, "\(lhs).compared(to: \(rhs)) -> \(result)", file: file, line: line)
             }
             
             less: do {
