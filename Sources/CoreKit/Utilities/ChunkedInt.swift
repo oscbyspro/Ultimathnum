@@ -8,22 +8,22 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Chunked Int Sequence
+// MARK: * Chunked Int
 //*============================================================================*
 
 /// A sequence that chunks elements of an un/signed source.
 ///
 /// ```swift
-/// for word: UX in ChunkedIntSequence(source, isSigned: false, count: nil) { ... }
-/// for byte: U8 in ChunkedIntSequence(source, isSigned: false, count: nil) { ... }
+/// for word: UX in ChunkedInt(source, isSigned: false, count: nil) { ... }
+/// for byte: U8 in ChunkedInt(source, isSigned: false, count: nil) { ... }
 /// ```
 ///
 /// ### Bit Sequence
 ///
-/// You can create a bit sequence by chunking as `UMNBitInt`.
+/// You can create a bit sequence by chunking as `BitInt.Magnitude`.
 ///
 /// ```swift
-/// for bit: U1 in ChunkedIntSequence(normalizing: base, isSigned: false).reversed() {
+/// for bit: BitInt.Magnitude in ChunkedInt(normalizing: base, isSigned: false).reversed() {
 ///     double()
 ///
 ///     if  bit == 1 {
@@ -39,21 +39,21 @@
 /// the input, the output, or both.
 ///
 /// ```swift
-/// [1, 2, 3, 4] == Array(ChunkedIntSequence(([0x0201, 0x0403] as [U16]),            as: U8.self))
-/// [2, 1, 4, 3] == Array(ChunkedIntSequence(([0x0201, 0x0403] as [U16]).reversed(), as: U8.self).reversed())
-/// [3, 4, 1, 2] == Array(ChunkedIntSequence(([0x0201, 0x0403] as [U16]).reversed(), as: U8.self))
-/// [4, 3, 2, 1] == Array(ChunkedIntSequence(([0x0201, 0x0403] as [U16]),            as: U8.self).reversed())
+/// [1, 2, 3, 4] == Array(ChunkedInt(([0x0201, 0x0403] as [U16]),            as: U8.self))
+/// [2, 1, 4, 3] == Array(ChunkedInt(([0x0201, 0x0403] as [U16]).reversed(), as: U8.self).reversed())
+/// [3, 4, 1, 2] == Array(ChunkedInt(([0x0201, 0x0403] as [U16]).reversed(), as: U8.self))
+/// [4, 3, 2, 1] == Array(ChunkedInt(([0x0201, 0x0403] as [U16]),            as: U8.self).reversed())
 /// ```
 ///
 /// ```swift
-/// [0x0201, 0x0403] == Array(ChunkedIntSequence(([1, 2, 3, 4] as [U8]),            as: U16.self))
-/// [0x0102, 0x0304] == Array(ChunkedIntSequence(([1, 2, 3, 4] as [U8]).reversed(), as: U16.self).reversed())
-/// [0x0403, 0x0201] == Array(ChunkedIntSequence(([1, 2, 3, 4] as [U8]),            as: U16.self).reversed())
-/// [0x0304, 0x0102] == Array(ChunkedIntSequence(([1, 2, 3, 4] as [U8]).reversed(), as: U16.self))
+/// [0x0201, 0x0403] == Array(ChunkedInt(([1, 2, 3, 4] as [U8]),            as: U16.self))
+/// [0x0102, 0x0304] == Array(ChunkedInt(([1, 2, 3, 4] as [U8]).reversed(), as: U16.self).reversed())
+/// [0x0403, 0x0201] == Array(ChunkedInt(([1, 2, 3, 4] as [U8]),            as: U16.self).reversed())
+/// [0x0304, 0x0102] == Array(ChunkedInt(([1, 2, 3, 4] as [U8]).reversed(), as: U16.self))
 /// ```
 ///
-@frozen public struct ChunkedIntSequence<Base, Element>: RandomAccessCollection where
-Element: SystemInteger, Base: RandomAccessCollection, Base.Element: SystemInteger {
+@frozen public struct ChunkedInt<Base, Element>: RandomAccessCollection where
+Element: SystemInteger & UnsignedInteger,  Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger {
     
     public typealias Base = Base
     
@@ -92,9 +92,9 @@ Element: SystemInteger, Base: RandomAccessCollection, Base.Element: SystemIntege
     ///   - element: The type of element produced by this sequence.
     ///
     @inlinable public init(_ base: Base, isSigned: Bool, count: Int? = nil, as element: Element.Type = Element.self) {
-        let bit = Bit(isSigned && (base.last ?? 0) & .msb != 0)
+        let isLessThanZero = SBISS.isLessThanZero(base, isSigned: isSigned)
         let count = count ?? Self.count(of: base)
-        self.init(base, repeating: bit, count: count)
+        self.init(base, repeating: Bit(isLessThanZero), count: count)
     }
     
     /// Creates a normalized bit sequence from an un/signed source.
@@ -105,11 +105,11 @@ Element: SystemInteger, Base: RandomAccessCollection, Base.Element: SystemIntege
     ///   - element: The type of element produced by this sequence.
     ///
     @inlinable public init(normalizing base: Base, isSigned: Bool, as element: Element.Type = Element.self) {
-        let bit = Bit(isSigned && (base.last ?? 0) & .msb != 0)
-        let count = Self.count(normalizing: base, repeating: bit)
-        self.init(base, repeating: bit, count: count)
+        let isLessThanZero = SBISS.isLessThanZero(base, isSigned: isSigned)
+        let count = Self.count(normalizing: base, repeating: Bit(isLessThanZero))
+        self.init(base, repeating: Bit(isLessThanZero), count: count)
     }
-
+    
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
@@ -162,13 +162,13 @@ Element: SystemInteger, Base: RandomAccessCollection, Base.Element: SystemIntege
 // MARK: + Sendable
 //=----------------------------------------------------------------------------=
 
-extension ChunkedIntSequence: Sendable where Base: Sendable { }
+extension ChunkedInt: Sendable where Base: Sendable { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Major
 //=----------------------------------------------------------------------------=
 
-extension ChunkedIntSequence.Major {
+extension ChunkedInt.Major {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -212,7 +212,7 @@ extension ChunkedIntSequence.Major {
 // MARK: + Minor
 //=----------------------------------------------------------------------------=
 
-extension ChunkedIntSequence.Minor {
+extension ChunkedInt.Minor {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -250,7 +250,7 @@ extension ChunkedIntSequence.Minor {
 // MARK: + Equal
 //=----------------------------------------------------------------------------=
 
-extension ChunkedIntSequence.Equal {
+extension ChunkedInt.Equal {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -275,7 +275,7 @@ extension ChunkedIntSequence.Equal {
 // MARK: + Collection
 //=----------------------------------------------------------------------------=
 
-extension ChunkedIntSequence {
+extension ChunkedInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Accessors

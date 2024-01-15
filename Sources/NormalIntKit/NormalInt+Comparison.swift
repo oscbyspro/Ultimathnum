@@ -42,9 +42,9 @@ extension NormalInt {
     @inlinable public borrowing func compared(to other: Self) -> Signum {
         self.storage.withUnsafeBufferPointer { lhs in
             other.storage.withUnsafeBufferPointer { rhs in
-                let lhs = SuccinctInt(rebasing: SuccinctInt(lhs, isSigned: Self.isSigned))
-                let rhs = SuccinctInt(rebasing: SuccinctInt(rhs, isSigned: Self.isSigned))
-                return (lhs).compared(to: rhs)
+                let lhs = SuccinctInt(lhs, isSigned: Self.isSigned)
+                let rhs = SuccinctInt(rhs, isSigned: Self.isSigned)
+                return (lhs).compared(to:  rhs)
             }
         }
     }

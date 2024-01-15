@@ -80,8 +80,8 @@ final class SuccinctIntTests: XCTestCase {
         var source = source
         
         brr: do {
-            XCTAssertEqual(SuccinctInt(source, isSigned: isSigned).sign,             sign, file: file, line: line)
-            XCTAssertEqual(SuccinctInt(source, isSigned: isSigned).body.map({ $0 }), body, file: file, line: line)
+            XCTAssertEqual(SuccinctInt(source[...], isSigned: isSigned).sign,              sign, file: file, line: line)
+            XCTAssertEqual(SuccinctInt(source[...], isSigned: isSigned).body.map({ $0 }),  body, file: file, line: line)
         }
         
         source.withUnsafeBufferPointer { source in
@@ -90,8 +90,8 @@ final class SuccinctIntTests: XCTestCase {
         }
         
         source.withUnsafeBufferPointer { source in
-            XCTAssertEqual(SuccinctInt(rebasing: SuccinctInt(source, isSigned: isSigned)).sign,              sign, file: file, line: line)
-            XCTAssertEqual(SuccinctInt(rebasing: SuccinctInt(source, isSigned: isSigned)).body.map({ $0 }),  body, file: file, line: line)
+            XCTAssertEqual(SuccinctInt(source[...], isSigned: isSigned).sign,              sign, file: file, line: line)
+            XCTAssertEqual(SuccinctInt(source[...], isSigned: isSigned).body.map({ $0 }),  body, file: file, line: line)
         }
         
         source.withUnsafeMutableBufferPointer { source in
@@ -100,8 +100,8 @@ final class SuccinctIntTests: XCTestCase {
         }
         
         source.withUnsafeMutableBufferPointer { source in
-            XCTAssertEqual(SuccinctInt(rebasing: SuccinctInt(source, isSigned: isSigned)).sign,              sign, file: file, line: line)
-            XCTAssertEqual(SuccinctInt(rebasing: SuccinctInt(source, isSigned: isSigned)).body.map({ $0 }),  body, file: file, line: line)
+            XCTAssertEqual(SuccinctInt(source[...], isSigned: isSigned).sign,              sign, file: file, line: line)
+            XCTAssertEqual(SuccinctInt(source[...], isSigned: isSigned).body.map({ $0 }),  body, file: file, line: line)
         }
     }
 }

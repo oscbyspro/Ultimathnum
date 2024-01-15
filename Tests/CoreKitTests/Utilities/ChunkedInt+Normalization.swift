@@ -11,10 +11,10 @@ import MainIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Chunked Int Sequence x Normalization
+// MARK: * Chunked Int x Normalization
 //*============================================================================*
 
-extension ChunkedIntSequenceTests {
+extension ChunkedIntTests {
             
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -67,10 +67,10 @@ extension ChunkedIntSequenceTests {
         XCTAssertEqual([0         ].map(~), Array(T(normalizing: [0, 0].map(~) as [U16], isSigned: true,  as: U8.self)))
         XCTAssertEqual([0, 0, 0, 0].map(~), Array(T(normalizing: [0, 0].map(~) as [U16], isSigned: false, as: U8.self)))
         
-        XCTAssertEqual([0, 0x80         ], Array(T(normalizing: [0x8000, 0x0000, 0x0000] as [U16], isSigned: true, as: U8.self)))
-        XCTAssertEqual([0, 0, 0x01      ], Array(T(normalizing: [0x0000, 0x0001, 0x0000] as [U16], isSigned: true, as: U8.self)))
-        XCTAssertEqual([0, 0, 0, 0x80   ], Array(T(normalizing: [0x0000, 0x8000, 0x0000] as [U16], isSigned: true, as: U8.self)))
-        XCTAssertEqual([0, 0, 0, 0, 0x01], Array(T(normalizing: [0x0000, 0x0000, 0x0001] as [U16], isSigned: true, as: U8.self)))
+        XCTAssertEqual([0, 0x80         ],  Array(T(normalizing: [0x8000, 0x0000, 0x0000] as [U16], isSigned: true, as: U8.self)))
+        XCTAssertEqual([0, 0, 0x01      ],  Array(T(normalizing: [0x0000, 0x0001, 0x0000] as [U16], isSigned: true, as: U8.self)))
+        XCTAssertEqual([0, 0, 0, 0x80   ],  Array(T(normalizing: [0x0000, 0x8000, 0x0000] as [U16], isSigned: true, as: U8.self)))
+        XCTAssertEqual([0, 0, 0, 0, 0x01],  Array(T(normalizing: [0x0000, 0x0000, 0x0001] as [U16], isSigned: true, as: U8.self)))
         
         for isSigned in [true, false] {
             XCTAssertEqual([0, 0x80         ], Array(T(normalizing: [0x8000, 0x0000, 0x0000] as [U16], isSigned: isSigned, as: U8.self)))

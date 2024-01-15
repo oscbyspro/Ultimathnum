@@ -127,7 +127,7 @@ extension Integer {
     }
     
     @inlinable public init(literally source: StaticBigInt) throws {
-        try  self.init(words: BitCastSequence(StaticBigIntWords(source)), isSigned: true)
+        try  self.init(words: BigIntLiteral(source), isSigned: true)
     }
     
     @inlinable public init(integerLiteral: IntegerLiteralType) where IntegerLiteralType == StaticBigInt {

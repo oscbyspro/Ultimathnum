@@ -54,10 +54,10 @@ extension NormalInt {
     //=------------------------------------------------------------------------=
     
     init(x64: [U64]) {
-        try! self.init(words: BitCastSequence(ChunkedIntSequence(x64, isSigned: false, as: UX.self)))
+        try! self.init(words: BitCastSequence(ChunkedInt(x64, isSigned: Self.isSigned, as: UX.self)))
     }
     
     init(x32: [U32]) {
-        try! self.init(words: BitCastSequence(ChunkedIntSequence(x32, isSigned: false, as: UX.self)))
+        try! self.init(words: BitCastSequence(ChunkedInt(x32, isSigned: Self.isSigned, as: UX.self)))
     }
 }

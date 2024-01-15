@@ -11,7 +11,20 @@
 // MARK: * Succinct Int
 //*============================================================================*
 
-@frozen @usableFromInline package struct SuccinctInt<Base>: Comparable where
+/// A succinct binary integer.
+///
+/// ### Comparison
+///
+/// You can use this model to compare arbitrary untyped binary integers.
+///
+/// ```swift
+/// SuccintInt(UX.max.words[...], isSigned: true ).compated(to: SuccintInt(UX.max.words[...], isSigned: true )) //  0
+/// SuccintInt(UX.max.words[...], isSigned: true ).compated(to: SuccintInt(UX.max.words[...], isSigned: false)) // -1
+/// SuccintInt(UX.max.words[...], isSigned: false).compated(to: SuccintInt(UX.max.words[...], isSigned: true )) //  1
+/// SuccintInt(UX.max.words[...], isSigned: false).compated(to: SuccintInt(UX.max.words[...], isSigned: false)) //  0
+/// ```
+///
+@frozen public struct SuccinctInt<Base>: Comparable where
 Base: RandomAccessCollection, Base.Element: UnsignedInteger & SystemInteger {
     
     public enum Error: Swift.Error { case validation }
@@ -26,11 +39,6 @@ Base: RandomAccessCollection, Base.Element: UnsignedInteger & SystemInteger {
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
-    
-    @inlinable public init<T: RandomAccessCollection>(_ source: T, isSigned: Bool) where Base == T.SubSequence {
-        let sign = Base.Element(repeating: Bit(isSigned && (source.last ?? Base.Element()) & Base.Element.msb != Base.Element()))
-        self.init(unchecked: source.dropLast(while:{ $0 == sign }), sign: sign)
-    }
     
     @inlinable public init(unchecked body: Base, sign: Base.Element) {
         Swift.assert(Self.validate(body, sign: sign))
@@ -58,7 +66,7 @@ Base: RandomAccessCollection, Base.Element: UnsignedInteger & SystemInteger {
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + where Base is Unsafe Buffer Pointer
+// MARK: + Trimming
 //=----------------------------------------------------------------------------=
 
 extension SuccinctInt {
@@ -66,6 +74,20 @@ extension SuccinctInt {
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
+    
+    @inlinable public init(_ source: Base, isSigned: Bool) where Base == Base.SubSequence {
+        let isLessThanZero = SBISS.isLessThanZero(source, isSigned: isSigned)
+        let sign = Base.Element.init(repeating: Bit.init(isLessThanZero))
+        self.init(unchecked: source.dropLast(while:{ $0 == sign }), sign: sign)
+    }
+    
+    @inlinable public init<T>(_ source: Base, isSigned: Bool) where Base == UnsafeBufferPointer<T> {
+        self.init(rebasing: CoreKit.SuccinctInt(source[...], isSigned: isSigned))
+    }
+    
+    @inlinable public init<T>(_ source: Base, isSigned: Bool) where Base == UnsafeMutableBufferPointer<T> {
+        self.init(rebasing: CoreKit.SuccinctInt(source[...], isSigned: isSigned))
+    }
     
     /// Creates an instance using the memory as the given sub sequence.
     @inlinable public init<T>(rebasing other: SuccinctInt<Base.SubSequence>) where Base == UnsafeBufferPointer<T> {
@@ -113,7 +135,7 @@ extension SuccinctInt {
     }
     
     /// A three-way comparison of `self` against `other`.
-    @inlinable public func compared<T>(toSameSignUnchecked other: SuccinctInt<T>) -> Signum where T.Element == Base.Element {
+    @inlinable package func compared<T>(toSameSignUnchecked other: SuccinctInt<T>) -> Signum where T.Element == Base.Element {
         //=--------------------------------------=
         Swift.assert(self.sign == other.sign)
         //=--------------------------------------=
@@ -127,7 +149,7 @@ extension SuccinctInt {
     }
     
     /// A three-way comparison of `self` against `other`.
-    @inlinable public func compared<T>(toSameSignSameSizeUnchecked other: SuccinctInt<T>) -> Signum where T.Element == Base.Element {
+    @inlinable package func compared<T>(toSameSignSameSizeUnchecked other: SuccinctInt<T>) -> Signum where T.Element == Base.Element {
         //=--------------------------------------=
         Swift.assert(self.sign == other.sign)
         Swift.assert(self.body.count == other.body.count)

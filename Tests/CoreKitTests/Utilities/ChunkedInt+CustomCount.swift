@@ -12,10 +12,10 @@ import MainIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Chunked Int Sequence x Custom Count
+// MARK: * Chunked Int x Custom Count
 //*============================================================================*
 
-extension ChunkedIntSequenceTests {
+extension ChunkedIntTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests

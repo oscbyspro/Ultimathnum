@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Static Big Int Words
+// MARK: * Big Int Literal
 //*============================================================================*
 
-@frozen public struct StaticBigIntWords: RandomAccessCollection, Sendable {
+@frozen public struct BigIntLiteral: RandomAccessCollection, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -53,8 +53,8 @@
     }
     
     /// Accesses the word at the given index, from least significant to most.
-    @inlinable public subscript(index: Int) -> UInt {
-        self.base[index]
+    @inlinable public subscript(index: Int) -> Word {
+        Word(bitPattern: self.base[index])
     }
 }
 
@@ -62,7 +62,7 @@
 // MARK: + Collection
 //=----------------------------------------------------------------------------=
 
-extension StaticBigIntWords {
+extension BigIntLiteral {
     
     //=------------------------------------------------------------------------=
     // MARK: Accessors
