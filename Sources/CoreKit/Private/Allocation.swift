@@ -18,7 +18,7 @@ extension Namespace {
     //=------------------------------------------------------------------------=
     
     /// Grants unsafe access to a temporary allocation of `1` element.
-    @inline(__always) @inlinable public static func withUnsafeTemporaryAllocation<Element, Result>(
+    @inlinable public static func withUnsafeTemporaryAllocation<Element, Result>(
     of  type: Element.Type, perform: (UnsafeMutablePointer<Element>) throws -> Result) rethrows -> Result {
         try Swift.withUnsafeTemporaryAllocation(of: Element.self, capacity: 1) {
             //=----------------------------------=
@@ -29,7 +29,7 @@ extension Namespace {
     }
     
     /// Grants unsafe access to a temporary allocation of `count` elements.
-    @inline(__always) @inlinable public static func withUnsafeTemporaryAllocation<Element, Result>(
+    @inlinable public static func withUnsafeTemporaryAllocation<Element, Result>(
     of  type: Element.Type, count: Int, perform: (UnsafeMutableBufferPointer<Element>) throws -> Result) rethrows -> Result {
         try Swift.withUnsafeTemporaryAllocation(of: Element.self, capacity: count) {
             //=----------------------------------=
@@ -47,7 +47,7 @@ extension Namespace {
     ///
     /// - Requires: The pointee type must be trivial.
     ///
-    @inline(__always) @inlinable public static func withUnsafeTemporaryAllocation<Element, Result>(
+    @inlinable public static func withUnsafeTemporaryAllocation<Element, Result>(
     copying collection: Element, perform: (UnsafeMutablePointer<Element>) throws -> Result) rethrows -> Result {
         try Namespace.withUnsafeTemporaryAllocation(of: Element.self) { pointer in
             //=----------------------------------=
@@ -69,7 +69,7 @@ extension Namespace {
     ///
     /// - Requires: The pointee type must be trivial.
     ///
-    @inline(__always) @inlinable public static func withUnsafeTemporaryAllocation<Element, Result>(
+    @inlinable public static func withUnsafeTemporaryAllocation<Element, Result>(
     copying collection: some Collection<Element>, perform: (UnsafeMutableBufferPointer<Element>) throws -> Result) rethrows -> Result {
         try Namespace.withUnsafeTemporaryAllocation(of: Element.self, count: collection.count) { buffer in
             //=----------------------------------=

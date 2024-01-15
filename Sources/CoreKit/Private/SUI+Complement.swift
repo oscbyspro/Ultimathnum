@@ -8,24 +8,22 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Tuple Binary Integer x Numbers
+// MARK: * Strict Unsigned Integer x Complement x Sub Sequence
 //*============================================================================*
 
-extension Namespace.TupleBinaryInteger {
+extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollection {
     
     //=------------------------------------------------------------------------=
-    // MARK: Details x Magnitude
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable package static func magnitude(of value: consuming X2) -> X2.Magnitude {
-        var value = consume value
+    @discardableResult @inlinable package static func formTwosComplementSubSequence(_ base: inout Base, increment: Bool) -> Bool {
+        var increment = increment
         
-        if  value.high.isLessThanZero {
-            var carry: Bool
-            carry = Overflow.capture(&value.low,  map:{ try (~$0).plus(0000000000001) })
-            carry = Overflow.capture(&value.high, map:{ try (~$0).plus(carry ? 1 : 0) })
+        for index in base.indices {
+            increment = Overflow.capture(&base[index], map:{ try (~$0).plus(Base.Element(Bit(increment))) })
         }
         
-        return X2.Magnitude(high: High.Magnitude(bitPattern: value.high), low: High.Magnitude(bitPattern: value.low))
+        return increment as Bool
     }
 }

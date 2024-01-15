@@ -20,7 +20,12 @@ extension NormalInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func negated() throws -> Self {
-        fatalError("TODO: use SBISS.formTwosComplement(_:)...")
+        let overflow: Bool = self.storage.withUnsafeMutableBufferPointer {
+            SUISS.formTwosComplementSubSequence(&$0, increment: true)
+        }
+        
+        self.storage.normalize()
+        return try Overflow.resolve(consume self, overflow: overflow)
     }
     
     @inlinable public consuming func minus(_ increment: Self) throws -> Self {

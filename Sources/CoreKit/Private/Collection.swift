@@ -19,14 +19,14 @@ package extension BidirectionalCollection {
     
     /// Drops elements that satisfy the predicate from the end of the given `collection`.
     @inlinable func dropLast(while predicate: (Element) -> Bool) -> SubSequence {
-        var subsequenceEndIndex = self.endIndex
+        var nextEndIndex = self.endIndex
         
-        backwards: while subsequenceEndIndex > self.startIndex {
-            let subsequenceLastIndex = self.index(before: subsequenceEndIndex)
-            guard predicate(self[subsequenceLastIndex]) else { break }
-            subsequenceEndIndex = subsequenceLastIndex
+        backwards: while nextEndIndex > self.startIndex {
+            let nextLastIndex = self.index(before: nextEndIndex)
+            guard predicate(self[nextLastIndex]) else { break }
+            nextEndIndex = nextLastIndex
         }
         
-        return self.prefix(upTo: subsequenceEndIndex)
+        return self.prefix(upTo: nextEndIndex)
     }
 }
