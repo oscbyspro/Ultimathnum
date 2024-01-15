@@ -35,14 +35,17 @@ extension Storage {
         switch self.mode {
         case .inline(var payload):
             
-            try Swift.withUnsafeMutablePointer(to: &payload) {
+            let result = try Swift.withUnsafeMutablePointer(to: &payload) {
                 var buffer = UnsafeMutableBufferPointer(start: $0, count: 1)
                 return try body(&buffer)
             }
             
+            self.mode = Mode.inline(payload)
+            return result as T
+            
         case .allocation:
             
-            try self.allocation.withUnsafeMutableBufferPointer(body)
+            return try self.allocation.withUnsafeMutableBufferPointer(body)
         }
     }
 }
