@@ -16,12 +16,8 @@ import CoreKit
 extension NormalInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
-    
-    @inlinable public borrowing func compared(to other: Self) -> Signum {
-        fatalError("TODO")
-    }
     
     @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
         lhs.compared(to: rhs) ==  0
@@ -39,6 +35,16 @@ extension NormalInt {
         self.storage.withUnsafeBufferPointer {
             for element in $0 {
                 hasher.combine(element)
+            }
+        }
+    }
+    
+    @inlinable public borrowing func compared(to other: Self) -> Signum {
+        self.storage.withUnsafeBufferPointer { lhs in
+            other.storage.withUnsafeBufferPointer { rhs in
+                let lhs = SuccinctInt(rebasing: SuccinctInt(lhs, isSigned: Self.isSigned))
+                let rhs = SuccinctInt(rebasing: SuccinctInt(rhs, isSigned: Self.isSigned))
+                return (lhs).compared(to: rhs)
             }
         }
     }
