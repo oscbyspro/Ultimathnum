@@ -14,6 +14,8 @@
 @frozen @usableFromInline package struct SuccinctInt<Base>: Comparable where
 Base: RandomAccessCollection, Base.Element: UnsignedInteger & SystemInteger {
     
+    public enum Error: Swift.Error { case validation }
+    
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
@@ -37,11 +39,20 @@ Base: RandomAccessCollection, Base.Element: UnsignedInteger & SystemInteger {
         self.sign = sign
     }
     
+    @inlinable public init(exactly body: Base, sign: Base.Element) throws {
+        if  Self.validate(body, sign: sign) {
+            self.body = body
+            self.sign = sign
+        }   else {
+            throw Error.validation
+        }
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func validate(_ body: Base, sign: Base.Element) -> Bool {
+    @inlinable static func validate(_ body: Base, sign: Base.Element) -> Bool {
         body.last != sign && (sign &+ 1 < 2)
     }
 }
