@@ -22,19 +22,19 @@ extension Namespace.ProperBinaryInteger where Base: SystemInteger {
     }
     
     @inlinable package static func compareIsNotEqual(_ lhs: Base, to rhs: some SystemInteger) -> Bool {
-        !PBI .compareIsEqual(rhs, to: lhs)
+        PBI.compareIsEqual(rhs, to: lhs) == false
     }
     
     @inlinable package static func compareIsMoreThan(_ lhs: Base, to rhs: some SystemInteger) -> Bool {
-        (PBI).compareIsLessThan(rhs, to: lhs)
+        PBI.compareIsLessThan(rhs, to: lhs)
     }
     
     @inlinable package static func compareIsLessThanOrEqual(_ lhs: Base, to rhs: some SystemInteger) -> Bool {
-        !PBI .compareIsMoreThan(lhs, to: rhs)
+        PBI.compareIsMoreThan(lhs, to: rhs) == false
     }
     
     @inlinable package static func compareIsMoreThanOrEqual(_ lhs: Base, to rhs: some SystemInteger) -> Bool {
-        !PBI .compareIsLessThan(lhs, to: rhs)
+        PBI.compareIsLessThan(lhs, to: rhs) == false
     }
     
     @inlinable package static func compareIsEqual<Other: SystemInteger>(_ lhs: Base, to rhs: Other) -> Bool {

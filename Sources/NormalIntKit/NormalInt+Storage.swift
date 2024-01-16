@@ -113,6 +113,10 @@ extension Storage {
         }
     }
     
+    @inlinable var first: Element {
+        self[0]
+    }
+    
     @inlinable var last: Element {
         self[self.count - 1]
     }

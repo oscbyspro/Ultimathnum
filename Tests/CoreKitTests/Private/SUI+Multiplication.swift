@@ -12,7 +12,7 @@ import MainIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Strict Unsigned Integer x Multiplication x Sub Sequence
+// MARK: * Strict Unsigned Integer x Sub Sequence x Multiplication
 //*============================================================================*
 
 final class StrictUnsignedIntegerSubSequenceTestsOnMultiplication: XCTestCase {
@@ -22,7 +22,7 @@ final class StrictUnsignedIntegerSubSequenceTestsOnMultiplication: XCTestCase {
     private typealias X32 = [U32]
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests x Some + Some
+    // MARK: Tests
     //=------------------------------------------------------------------------=
     
     func testSomeSome() {

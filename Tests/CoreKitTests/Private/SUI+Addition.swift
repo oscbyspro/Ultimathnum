@@ -12,7 +12,7 @@ import MainIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Strict Unsigned Integer x Addition x Sub Sequence
+// MARK: * Strict Unsigned Integer x Sub Sequence x Addition
 //*============================================================================*
 
 final class StrictUnsignedIntegerSubSequenceTestsOnAddition: XCTestCase {

@@ -38,62 +38,39 @@ extension NormalInt {
     }
     
     @inlinable public consuming func divided(by divisor: Self) throws -> Division<Self> {
-        var value = copy self
         //=--------------------------------------=
-        // divisor is zero
-        //=--------------------------------------=
-        if  divisor == 0 {
-            throw Overflow(Division(quotient: copy value, remainder: value))
-        }
-        //=--------------------------------------=
-        // divisor is one word
+        // divisor is one word, includes is zero
         //=--------------------------------------=
         if  divisor.storage.count == 1 {
-            
-            //  TODO: add single element division to core kit
-            
-            let divisor = divisor.storage.last as Element
-            let remainder = value.storage.withUnsafeMutableBufferPointer { base in
-                var remainder = Element()
-                
-                var index = base.endIndex; while index > base.startIndex {
-                    (base).formIndex(before: &index)
-                    (base[index], remainder) = try! Element.dividing(Doublet(high: remainder, low: base[index]), by: divisor).components
-                }
-                
-                return remainder as Element
-            }
-            
-            value.storage.normalize()
-            return Division(quotient: value, remainder: Self(remainder))
+            return try self.divided(by: divisor.storage.first)
         }
         //=--------------------------------------=
-        // divisor is greater than or equal
+        // divisor is comparison
         //=--------------------------------------=
-        let comparison = divisor.compared(to: value)
+        let comparison = divisor.compared(to: self)
         if  comparison < 0 {
         }   else if comparison == 0 {
-            return Division(quotient: 1, remainder: 0)
+            return Division(quotient: 1, remainder: 0000)
         }   else {
-            return Division(quotient: 0, remainder: value)
+            return Division(quotient: 0, remainder: self)
         }
         //=--------------------------------------=
         // normalization
         //=--------------------------------------=
-        value.storage.append(0 as Element)
+        self.storage.append(0 as Element)
         
         var divisor: Self = divisor
         let shift = divisor.storage.last.count(0, option: .descending).load(as: Int.self)
         
         if  shift != 0 {
-            ((value)).storage.withUnsafeMutableBufferPointer({ SUI.bitShiftLeft(&$0, major: 0 as Int, minorAtLeastOne: shift) })
+            ((self)).storage.withUnsafeMutableBufferPointer({ SUI.bitShiftLeft(&$0, major: 0 as Int, minorAtLeastOne: shift) })
             divisor .storage.withUnsafeMutableBufferPointer({ SUI.bitShiftLeft(&$0, major: 0 as Int, minorAtLeastOne: shift) })
         }
         //=--------------------------------------=
         // division
         //=--------------------------------------=
-        let quotient = Self.uninitialized(count: value.storage.count - divisor.storage.count) { quotient in
-        ((value)).storage.withUnsafeMutableBufferPointer { dividend in
+        let quotient = Self.uninitialized(count: self.storage.count - divisor.storage.count) { quotient in
+        ((self)).storage.withUnsafeMutableBufferPointer { dividend in
         divisor .storage.withUnsafeBufferPointer/*---*/ { divisor  in
             SUI.initializeToQuotientFormRemainderByLongAlgorithm2111MSB(&quotient, dividing: &dividend, by: divisor)
         }}}
@@ -101,12 +78,32 @@ extension NormalInt {
         // normalization
         //=--------------------------------------=
         if  shift != 0 {
-            ((value)).storage.withUnsafeMutableBufferPointer({ SUI.bitShiftRight(&$0, major: 0 as Int, minorAtLeastOne: shift) })
+            ((self)).storage.withUnsafeMutableBufferPointer({ SUI.bitShiftRight(&$0, major: 0 as Int, minorAtLeastOne: shift) })
         }
         
-        value .storage.normalize()
+        self .storage.normalize()
         Swift.assert(quotient.storage.isNormal)
         //=--------------------------------------=
-        return Division(quotient: quotient, remainder: value)
+        return Division(quotient: quotient, remainder: self)
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Private
+//=----------------------------------------------------------------------------=
+
+extension NormalInt {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable internal consuming func divided(by divisor: Element) throws -> Division<Self> {
+        let remainder = self.storage.withUnsafeMutableBufferPointer { base in
+            SUISS.formQuotientWithRemainderReportingOverflow(dividing: &base, by: divisor)
+        }
+        
+        self.storage.normalize()
+        return try Overflow.resolve(Division(quotient: self, remainder: Self(remainder.partialValue)), overflow: remainder.overflow)
     }
 }

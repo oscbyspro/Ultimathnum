@@ -12,7 +12,7 @@ import MainIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Strict Unsigned Integer x Partition x Sub Sequence
+// MARK: * Strict Unsigned Integer x Sub Sequence x Partition
 //*============================================================================*
 
 final class StrictUnsignedIntegerSubSequenceTestsOnPartition: XCTestCase {
