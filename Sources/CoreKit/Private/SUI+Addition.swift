@@ -188,7 +188,9 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
     ///
     @inlinable package static func increment(
     _   base: inout Base, by increment: Base.Element, plus bit: inout Bool, at index: inout Base.Index) {
+        //=--------------------------------------=
         self.incrementInIntersection(&base, by: increment, plus: &bit, at: &index)
+        //=--------------------------------------=
         self.increment(&base, by: &bit, at: &index)
     }
 
@@ -270,6 +272,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
     _   base: inout Base, by elements: some Sequence<Base.Element>, plus bit: inout Bool, at index: inout Base.Index) {
         //=--------------------------------------=
         self.incrementInIntersection(&base, by: elements, plus: &bit, at: &index)
+        //=--------------------------------------=
         self.increment(&base, by: &bit, at: &index)
     }
 

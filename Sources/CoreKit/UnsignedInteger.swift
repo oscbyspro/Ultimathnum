@@ -11,7 +11,7 @@
 // MARK: * Unsigned Integer
 //*============================================================================*
 
-/// An unsigned integer.
+/// An unsigned binary integer.
 ///
 /// - Note: Its static `isSigned` value is `false`.
 ///
@@ -23,7 +23,7 @@
 ///
 /// - Requires: The magnitude must be of the same type.
 ///
-public protocol UnsignedInteger: Integer where Magnitude == Self { }
+public protocol UnsignedInteger: BinaryInteger where Magnitude == Self { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Details
@@ -52,6 +52,6 @@ extension UnsignedInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public var magnitude: Magnitude {
-        consuming get { self }
+        consuming get { consume self }
     }
 }

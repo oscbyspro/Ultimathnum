@@ -11,9 +11,6 @@
 // MARK: * Aliases
 //*============================================================================*
 
-public typealias UXL = NormalInt<UX>
-public typealias SXL = SignedInt<UXL>
-
 public typealias SX  = SignedInt<UX>
 public typealias S1  = SignedInt<U1>
 public typealias S8  = SignedInt<U8>

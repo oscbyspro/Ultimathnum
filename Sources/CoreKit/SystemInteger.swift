@@ -29,8 +29,7 @@
 ///
 /// - Requires: Its magnitude must be unsigned and the same size as this type.
 ///
-public protocol SystemInteger: BinaryInteger, BitCastable, BitInvertible, BitOperable 
-where Magnitude: UnsignedInteger & SystemInteger, Magnitude.BitPattern == BitPattern {
+public protocol SystemInteger: BinaryInteger where Magnitude: UnsignedInteger & SystemInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -80,18 +79,6 @@ where Magnitude: UnsignedInteger & SystemInteger, Magnitude.BitPattern == BitPat
 //=----------------------------------------------------------------------------=
 
 extension SystemInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Complement
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func irreversibleOnesComplement() -> Self {
-        ~(consume self)
-    }
-    
-    @inlinable public consuming func irreversibleTwosComplement() -> Self {
-        self.irreversibleOnesComplement() &+ Overflow.ignore({ try Self(literally: 1) })
-    }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Addition
@@ -173,7 +160,7 @@ extension SystemInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public init<T>(clamping source: T) where T: Integer {
-        let minus =  source.isLessThanZero
+        let minus =  source < (0 as T)
         self = (try? Self(exactly: source)) ?? (minus ? Self.min : Self.max)
     }
     

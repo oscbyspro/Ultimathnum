@@ -24,8 +24,9 @@ extension NormalInt {
             SUISS.formTwosComplementSubSequence(&$0, increment: true)
         }
         
-        if  overflow, self.storage.msb == 0 {
-            self.storage.append(Element(repeating: 1))
+        //  form its signed two's complement on overflow
+        if  overflow, self.storage.last & Element.msb == 0 {
+            self.storage.append(Element.Magnitude(repeating: 1))
         }   else {
             self.storage.normalize()
         }
@@ -43,9 +44,10 @@ extension NormalInt {
                     SUISS.decrement(&instance, by: increment).overflow
                 }
             }
-                        
-            if  overflow, self.storage.msb == 0 {
-                self.storage.append(Element(repeating: 1))
+            
+            //  form its signed two's complement on overflow
+            if  overflow, self.storage.last & Element.msb == 0 {
+                self.storage.append(Element.Magnitude(repeating: 1))
             }   else {
                 self.storage.normalize()
             }

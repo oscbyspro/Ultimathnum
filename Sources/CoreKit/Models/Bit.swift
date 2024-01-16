@@ -15,7 +15,7 @@
 ///
 /// - TODO: Consider BitPattern as Bool.
 ///
-@frozen public struct Bit: BitCastable, BitInvertible, BitOperable, Comparable,
+@frozen public struct Bit: BitCastable, BitOperable, Comparable,
 Hashable, ExpressibleByIntegerLiteral, Sendable {
     
     public typealias BitPattern = Self

@@ -19,13 +19,45 @@
 ///
 /// - Requires: Negative values must use binary two's complement form.
 ///
-public protocol BinaryInteger: BitOperable, Integer where Magnitude: BinaryInteger {
+/// ### Magnitude
+///
+/// Its magnitude may be signed to accomodate lone big integers.
+///
+public protocol BinaryInteger: BitCastable, BitOperable, Integer where Magnitude: BinaryInteger, Magnitude.BitPattern == BitPattern {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming func irreversibleOnesComplement() -> Self
+    /// Indicates whether this type can represent negative values.
+    ///
+    /// ```
+    /// ┌──────┬──────────┬─────┬─────┐
+    /// │ type │ isSigned │ min │ max │
+    /// ├──────┼──────────┼─────┼─────┤
+    /// │ I1   │ true     │ -1  │   0 │
+    /// │ U1   │ false    │  0  │  -1 │
+    /// └──────┴──────────┴─────┴─────┘
+    /// ```
+    ///
+    @inlinable static var isSigned: Bool { get }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Details
+//=----------------------------------------------------------------------------=
+
+extension BinaryInteger {
     
-    @inlinable consuming func irreversibleTwosComplement() -> Self
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities x Comparison
+    //=------------------------------------------------------------------------=
+    
+    /// Returns whether this value is less than zero.
+    ///
+    /// It checks `isSigned` first which is preferred in inlinable generic code.
+    ///
+    @inlinable public var isLessThanZero: Bool {
+        Self.isSigned &&  self < 0
+    }
 }

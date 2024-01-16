@@ -20,7 +20,7 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func not<T: BitInvertible & Equatable>(
+    public static func not<T: BitOperable & Equatable>(
     _ instance: T, _ value: T,
     file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=

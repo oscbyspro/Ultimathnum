@@ -11,11 +11,11 @@
 // MARK: * Signed Integer
 //*============================================================================*
 
-/// A signed integer.
+/// A signed binary integer.
 ///
 /// - Note: Its static `isSigned` value is `true`.
 ///
-public protocol SignedInteger: Integer { }
+public protocol SignedInteger: BinaryInteger { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Details

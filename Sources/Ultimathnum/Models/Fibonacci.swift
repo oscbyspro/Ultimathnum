@@ -74,7 +74,7 @@
     
     /// Creates the sequence pair at the given `index`.
     @inlinable public init(_ index: Value) throws {
-        if  index.isLessThanZero {
+        if  index < 0 {
             throw Error.overflow
         }
         

@@ -15,7 +15,8 @@
 ///
 /// ### Development
 ///
-/// - Consider helper methods like matches(\_:), etc.
+/// - TODO: Consider helper methods like matches(\_:), etc.
+/// - TODO: Consider alternative EndlessInt model.
 ///
 @frozen public struct Pattern<Base> where Base: RandomAccessCollection<Word> {
         

@@ -178,14 +178,6 @@ extension Integer {
     // MARK: Utilities x Comparison
     //=------------------------------------------------------------------------=
     
-    /// Returns whether this value is less than zero.
-    ///
-    /// It checks `isSigned` first which is preferred in inlinable generic code.
-    ///
-    @inlinable public var isLessThanZero: Bool {
-        Self.isSigned &&  self < 0
-    }
-    
     @inlinable public borrowing func signum() -> Signum {
         self.compared(to: 0)
     }

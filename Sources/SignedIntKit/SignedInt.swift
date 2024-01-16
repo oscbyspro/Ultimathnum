@@ -13,11 +13,23 @@ import CoreKit
 // MARK: * Signed Int
 //*============================================================================*
 
-@frozen public struct SignedInt<Magnitude>: SignedInteger where Magnitude: BinaryInteger & UnsignedInteger {
+/// ### Development
+///
+/// - TODO: Consider non-binary magnitude requirement.
+///
+@frozen public struct SignedInt<Magnitude>: Integer where Magnitude: BinaryInteger, Magnitude.Magnitude == Magnitude {
     
     public typealias IntegerLiteralType = StaticBigInt
     
     public typealias Components = (sign: Sign, magnitude: Magnitude)
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static var isSigned: Bool {
+        true
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: State

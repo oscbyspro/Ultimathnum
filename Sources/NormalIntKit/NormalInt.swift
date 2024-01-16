@@ -13,33 +13,45 @@ import CoreKit
 // MARK: * Normal Int
 //*============================================================================*
 
-/// An unsigned, auto-normalized, arbitrary precision integer.
-@frozen public struct NormalInt<Element>: UnsignedInteger & BinaryInteger where 
+/// A normalized big integer magnitude.
+@frozen public struct NormalInt<Element>: Integer where
 Element: UnsignedInteger & SystemInteger, Element.BitPattern == Word.BitPattern {
-
-    public typealias Magnitude = Self
     
     public typealias IntegerLiteralType = StaticBigInt
     
-    @usableFromInline typealias Storage = NormalIntKit.Storage<Element>
+    public typealias Magnitude = Self
     
-    //=--------------------------------------------------------------------=
+    @usableFromInline typealias Storage = NormalIntKit.Storage<Element.Magnitude>
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static var isSigned: Bool {
+        false
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: State
-    //=--------------------------------------------------------------------=
-    
+    //=------------------------------------------------------------------------=
+
     @usableFromInline var storage: Storage
     
-    //=--------------------------------------------------------------------=
+    //=------------------------------------------------------------------------=
     // MARK: Initializers
-    //=--------------------------------------------------------------------=
-    
+    //=------------------------------------------------------------------------=
+
     @inlinable init(storage: consuming NormalInt.Storage) {
         self.storage = storage
     }
     
-    //=--------------------------------------------------------------------=
+    //=------------------------------------------------------------------------=
     // MARK: Utilities
-    //=--------------------------------------------------------------------=
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var magnitude: Magnitude {
+        consuming get { consume self }
+    }
     
     @inlinable public var words: some RandomAccessCollection<Word> {
         consuming get { self.storage.words }

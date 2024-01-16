@@ -36,5 +36,5 @@ extension NormalInt {
         
         Swift.assert(self.storage.isNormal)
         return consume self as Self as Self
-    }    
+    }
 }
