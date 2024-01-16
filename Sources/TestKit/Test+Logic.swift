@@ -20,12 +20,12 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func not<T: BitOperable & Equatable>(
-    _ operand: T, _ value: T,
+    public static func not<T: BitInvertible & Equatable>(
+    _ instance: T, _ value: T,
     file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
-        XCTAssertEqual(~operand,  value, file: file, line: line)
-        XCTAssertEqual(~value,  operand, file: file, line: line)
+        XCTAssertEqual(~instance, value, file: file, line: line)
+        XCTAssertEqual(~value, instance, file: file, line: line)
     }
     
     public static func and<T: BitOperable & Equatable>(

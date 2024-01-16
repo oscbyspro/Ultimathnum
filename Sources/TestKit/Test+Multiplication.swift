@@ -67,9 +67,9 @@ extension Test {
     }
     
     private static func multiplicationBySquareProductAsSomeInteger<T: Integer>(
-    _ operand: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
+    _ instance: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
-        XCTAssertEqual(Overflow.capture({ try operand.squared() }).value,    value,    file: file, line: line)
-        XCTAssertEqual(Overflow.capture({ try operand.squared() }).overflow, overflow, file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try instance.squared() }).value,    value,    file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try instance.squared() }).overflow, overflow, file: file, line: line)
     }
 }

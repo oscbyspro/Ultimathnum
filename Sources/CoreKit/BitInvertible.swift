@@ -7,31 +7,15 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Main Int x Logic
+// MARK: * Bit Invertible
 //*============================================================================*
 
-extension MainInt {
+public protocol BitInvertible {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Logic
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static prefix func ~(instance: consuming Self) -> Self {
-        Self(~instance.base)
-    }
-    
-    @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(lhs.base & rhs.base)
-    }
-    
-    @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(lhs.base | rhs.base)
-    }
-    
-    @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(lhs.base ^ rhs.base)
-    }
+    @inlinable static prefix func ~(instance: consuming Self) -> Self
 }

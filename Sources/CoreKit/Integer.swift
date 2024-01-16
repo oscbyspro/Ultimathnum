@@ -146,8 +146,8 @@ extension Integer {
     // MARK: Transformations x Subtraction
     //=------------------------------------------------------------------------=
     
-    @inlinable public static prefix func -(operand: Self) -> Self {
-        try! operand.negated()
+    @inlinable public static prefix func -(instance: Self) -> Self {
+        try! instance.negated()
     }
     
     @inlinable public static func -(lhs: consuming Self, rhs: borrowing Self) -> Self {

@@ -7,31 +7,25 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Main Int x Logic
+// MARK: * Normal Int x Logic
 //*============================================================================*
 
-extension MainInt {
+extension NormalInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Logic
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
-    
-    @inlinable public static prefix func ~(instance: consuming Self) -> Self {
-        Self(~instance.base)
-    }
     
     @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(lhs.base & rhs.base)
+        fatalError("TODO")
     }
     
     @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(lhs.base | rhs.base)
+        fatalError("TODO")
     }
     
     @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(lhs.base ^ rhs.base)
+        fatalError("TODO")
     }
 }

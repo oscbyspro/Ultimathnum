@@ -16,9 +16,7 @@ public protocol BitOperable {
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
-    
-    @inlinable static prefix func ~(operand: consuming Self) -> Self
-    
+        
     @inlinable static func &(lhs: consuming Self, rhs: borrowing Self) -> Self
     
     @inlinable static func |(lhs: consuming Self, rhs: borrowing Self) -> Self

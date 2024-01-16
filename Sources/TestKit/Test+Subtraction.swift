@@ -82,19 +82,19 @@ extension Test {
     }
     
     private static func subtractionByNegationAsSomeInteger<T: Integer>(
-    _ operand: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
+    _ instance: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=------------------------------------------=
         if !overflow {
-            XCTAssertEqual(-operand, value, file: file, line: line)
-            XCTAssertEqual(-value, operand, file: file, line: line)
+            XCTAssertEqual(-instance, value, file: file, line: line)
+            XCTAssertEqual(-value, instance, file: file, line: line)
         }
 
         if !overflow {
-            XCTAssertEqual(Overflow.capture({ try value.negated() }).value,    operand,  file: file, line: line)
+            XCTAssertEqual(Overflow.capture({ try value.negated() }).value,    instance, file: file, line: line)
             XCTAssertEqual(Overflow.capture({ try value.negated() }).overflow, overflow, file: file, line: line)
         }
         //=------------------------------------------=
-        XCTAssertEqual(Overflow.capture({ try operand.negated() }).value,    value,    file: file, line: line)
-        XCTAssertEqual(Overflow.capture({ try operand.negated() }).overflow, overflow, file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try instance.negated() }).value,    value,    file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try instance.negated() }).overflow, overflow, file: file, line: line)
     }
 }

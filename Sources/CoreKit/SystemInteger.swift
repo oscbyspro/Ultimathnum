@@ -29,8 +29,8 @@
 ///
 /// - Requires: Its magnitude must be unsigned and the same size as this type.
 ///
-public protocol SystemInteger: BinaryInteger, BitCastable, BitOperable where
-Magnitude: UnsignedInteger & SystemInteger, Magnitude.BitPattern == BitPattern {
+public protocol SystemInteger: BinaryInteger, BitCastable, BitInvertible, BitOperable 
+where Magnitude: UnsignedInteger & SystemInteger, Magnitude.BitPattern == BitPattern {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data

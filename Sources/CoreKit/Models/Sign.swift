@@ -11,7 +11,7 @@
 // MARK: * Sign
 //*============================================================================*
 
-@frozen public enum Sign: BitOperable, Hashable, Sendable {
+@frozen public enum Sign: BitInvertible, BitOperable, Hashable, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -36,8 +36,8 @@
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static prefix func ~(operand: Self) -> Self {
-        operand ^ minus
+    @inlinable public static prefix func ~(instance: Self) -> Self {
+        instance ^ minus
     }
     
     @inlinable public static func &(lhs: Self, rhs: Self) -> Self {

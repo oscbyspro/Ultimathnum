@@ -19,8 +19,8 @@ extension BitInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static prefix func ~(operand: consuming Self) -> Self {
-        Self(bitPattern: ~operand.bitPattern)
+    @inlinable public static prefix func ~(instance: consuming Self) -> Self {
+        Self(bitPattern: ~instance.bitPattern)
     }
     
     @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
@@ -46,8 +46,8 @@ extension BitInt.Magnitude {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static prefix func ~(operand: consuming Self) -> Self {
-        Self(bitPattern: ~operand.bitPattern)
+    @inlinable public static prefix func ~(instance: consuming Self) -> Self {
+        Self(bitPattern: ~instance.bitPattern)
     }
     
     @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {

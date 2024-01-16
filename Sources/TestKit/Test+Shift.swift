@@ -25,93 +25,92 @@ extension Test {
     //=------------------------------------------------------------------------=
     
     public static func shift<T: SystemInteger>(
-    _ operand: T, _ shift: T, _ result: T, _ direction: ShiftDirection, _ semantics: ShiftSemantics,
+    _ instance: T, _ shift: T, _ result: T, _ direction: ShiftDirection, _ semantics: ShiftSemantics,
     file: StaticString = #file, line: UInt = #line) {
         switch (direction, semantics) {
-        case (.left,  .smart ): Test .smartShiftLeft (operand, shift, result, file: file, line: line)
-        case (.right, .smart ): Test .smartShiftRight(operand, shift, result, file: file, line: line)
-        case (.left,  .masked): Test.maskedShiftLeft (operand, shift, result, file: file, line: line)
-        case (.right, .masked): Test.maskedShiftRight(operand, shift, result, file: file, line: line)
+        case (.left,  .smart ): Test .smartShiftLeft (instance, shift, result, file: file, line: line)
+        case (.right, .smart ): Test .smartShiftRight(instance, shift, result, file: file, line: line)
+        case (.left,  .masked): Test.maskedShiftLeft (instance, shift, result, file: file, line: line)
+        case (.right, .masked): Test.maskedShiftRight(instance, shift, result, file: file, line: line)
         }
     }
     
-    // TODO: add shift invariants when integer conversion is possible
     //=------------------------------------------------------------------------=
     // MARK: Utilities x Private
     //=------------------------------------------------------------------------=
         
     private static func smartShiftLeft<T: SystemInteger>(
-    _ operand: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
+    _ instance: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
         //=--------------------------------------=
-        XCTAssertEqual(operand  << shift, result, file: file, line: line)
+        XCTAssertEqual(instance << shift, result, file: file, line: line)
         //=--------------------------------------=
         if  let shift = try? shift.negated() {
-            XCTAssertEqual(operand  >> shift, result, file: file, line: line)
+            XCTAssertEqual(instance  >> shift, result, file: file, line: line)
         }
         
         if !shift.isLessThanZero, shift.magnitude < T.bitWidth {
-            XCTAssertEqual(operand &<< shift, result, file: file, line: line)
+            XCTAssertEqual(instance &<< shift, result, file: file, line: line)
         }
     }
     
     private static func smartShiftRight<T: SystemInteger>(
-    _ operand: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
+    _ instance: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
         //=--------------------------------------=
-        XCTAssertEqual(operand  >> shift, result, file: file, line: line)
+        XCTAssertEqual(instance >> shift, result, file: file, line: line)
         //=--------------------------------------=
         if  let shift = try? shift.negated() {
-            XCTAssertEqual(operand  << shift, result, file: file, line: line)
+            XCTAssertEqual(instance  << shift, result, file: file, line: line)
         }
         
         if !shift.isLessThanZero, shift.magnitude < T.bitWidth {
-            XCTAssertEqual(operand &>> shift, result, file: file, line: line)
+            XCTAssertEqual(instance &>> shift, result, file: file, line: line)
         }
     }
     
     private static func maskedShiftLeft<T: SystemInteger>(
-    _ operand: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
+    _ instance: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
         //=--------------------------------------=
-        XCTAssertEqual(operand &<< shift, result, file: file, line: line)
+        XCTAssertEqual(instance &<< shift, result, file: file, line: line)
         //=--------------------------------------=
         if  let increment = try? T(magnitude: T.bitWidth) {
             if  let shift = try? shift.plus(increment) {
-                XCTAssertEqual(operand &<< shift, result, file: file, line: line)
+                XCTAssertEqual(instance &<< shift, result, file: file, line: line)
             }
             
             if  let shift = try? shift.plus(increment).plus(increment) {
-                XCTAssertEqual(operand &<< shift, result, file: file, line: line)
+                XCTAssertEqual(instance &<< shift, result, file: file, line: line)
             }
             
             if  let shift = try? shift.minus(increment) {
-                XCTAssertEqual(operand &<< shift, result, file: file, line: line)
+                XCTAssertEqual(instance &<< shift, result, file: file, line: line)
             }
             
             if  let shift = try? shift.minus(increment).minus(increment) {
-                XCTAssertEqual(operand &<< shift, result, file: file, line: line)
+                XCTAssertEqual(instance &<< shift, result, file: file, line: line)
             }
         }
     }
     
     private static func maskedShiftRight<T: SystemInteger>(
-    _ operand: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
+    _ instance: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
         //=--------------------------------------=
-        XCTAssertEqual(operand &>> shift, result, file: file, line: line)
+        XCTAssertEqual(instance &>> shift, result, file: file, line: line)
         //=--------------------------------------=
         if  let increment = try? T(magnitude: T.bitWidth) {
             if  let shift = try? shift.plus(increment) {
-                XCTAssertEqual(operand &>> shift, result, file: file, line: line)
+                XCTAssertEqual(instance &>> shift, result, file: file, line: line)
             }
             
             if  let shift = try? shift.plus(increment).plus(increment) {
-                XCTAssertEqual(operand &>> shift, result, file: file, line: line)
+                XCTAssertEqual(instance &>> shift, result, file: file, line: line)
             }
             
             if  let shift = try? shift.minus(increment) {
-                XCTAssertEqual(operand &>> shift, result, file: file, line: line)
+                XCTAssertEqual(instance &>> shift, result, file: file, line: line)
             }
             
             if  let shift = try? shift.minus(increment).minus(increment) {
-                XCTAssertEqual(operand &>> shift, result, file: file, line: line)
+                XCTAssertEqual(instance &>> shift, result, file: file, line: line)
             }
         }
     }

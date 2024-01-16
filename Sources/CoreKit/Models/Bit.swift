@@ -15,7 +15,8 @@
 ///
 /// - TODO: Consider BitPattern as Bool.
 ///
-@frozen public struct Bit: BitCastable, BitOperable, Comparable, Hashable, ExpressibleByIntegerLiteral, Sendable {
+@frozen public struct Bit: BitCastable, BitInvertible, BitOperable, Comparable,
+Hashable, ExpressibleByIntegerLiteral, Sendable {
     
     public typealias BitPattern = Self
     
@@ -47,8 +48,8 @@
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static prefix func ~(operand: Self) -> Self {
-        operand ^ 1
+    @inlinable public static prefix func ~(instance: Self) -> Self {
+        instance ^ 1
     }
     
     @inlinable public static func &(lhs: Self, rhs: Self) -> Self {

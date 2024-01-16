@@ -19,7 +19,7 @@
 ///
 /// - Requires: Negative values must use binary two's complement form.
 ///
-public protocol BinaryInteger: Integer where Magnitude: BinaryInteger {
+public protocol BinaryInteger: BitOperable, Integer where Magnitude: BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
