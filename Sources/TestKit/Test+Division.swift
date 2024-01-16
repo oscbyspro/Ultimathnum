@@ -33,7 +33,7 @@ extension Test {
     private static func divisionAsSomeInteger<T: Integer>(
     _ dividend: T, _ divisor: T, _ quotient: T, _ remainder: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
-        let expectation = Division(quotient: quotient,remainder: remainder)
+        let division = Division(quotient: quotient, remainder: remainder)
         //=--------------------------------------=
         if !overflow {
             XCTAssertEqual(dividend / divisor, quotient,  file: file, line: line)
@@ -44,14 +44,13 @@ extension Test {
         XCTAssertEqual(Overflow.capture({ try dividend.quotient (divisor: divisor) }).overflow, overflow,  file: file, line: line)
         XCTAssertEqual(Overflow.capture({ try dividend.remainder(divisor: divisor) }).value,    remainder, file: file, line: line)
         XCTAssertEqual(Overflow.capture({ try dividend.remainder(divisor: divisor) }).overflow, overflow,  file: file, line: line)
-        
-        XCTAssertEqual(Overflow.capture({ try dividend.divided(by: divisor) }).value,    expectation, file: file, line: line)
-        XCTAssertEqual(Overflow.capture({ try dividend.divided(by: divisor) }).overflow, overflow,    file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try dividend.divided  (by:      divisor) }).value,    division,  file: file, line: line)
+        XCTAssertEqual(Overflow.capture({ try dividend.divided  (by:      divisor) }).overflow, overflow,  file: file, line: line)
     }
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + 2 by 1
+// MARK: + 2 vs 1
 //=----------------------------------------------------------------------------=
 
 extension Test {

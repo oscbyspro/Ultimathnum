@@ -35,6 +35,10 @@ extension MainInt {
         return try Overflow.resolve(Division(quotient: quotient.value, remainder: remainder.value), overflow: quotient.overflow || remainder.overflow)
     }
     
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x 2 vs 1
+    //=------------------------------------------------------------------------=
+    
     @inlinable public static func dividing(_ dividend: Doublet<Self>, by divisor: Self) throws -> Division<Self> {
         let lhsIsLessThanZero = dividend.high/**/.isLessThanZero
         let rhsIsLessThanZero = divisor/*------*/.isLessThanZero

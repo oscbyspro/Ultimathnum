@@ -30,6 +30,20 @@
         self.quotient  = quotient
         self.remainder = remainder
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Accessors
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var components: (quotient: Value, remainder: Value) {
+        consuming get {
+            (quotient: self.quotient, remainder: self.remainder)
+        }
+        
+        consuming set {
+            (quotient: self.quotient, remainder: self.remainder) = newValue
+        }
+    }
 }
 
 //=----------------------------------------------------------------------------=
