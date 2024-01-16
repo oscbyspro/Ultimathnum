@@ -32,10 +32,11 @@ final class ChunkedIntTests: XCTestCase {
     func checkOneWayOnly<A: SystemInteger & UnsignedInteger, B: SystemInteger & UnsignedInteger>(
     _ lhs: [A], _ rhs: [B], isSigned: Bool? = nil, file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
-        if  isSigned == nil || isSigned == true {
+        if  isSigned != false {
             Test.collection(T(lhs, isSigned: true), rhs, file: file, line: line)
         }
-        if  isSigned == nil || isSigned == false {
+        
+        if  isSigned != true {
             Test.collection(T(lhs, isSigned: false), rhs, file: file, line: line)
         }
     }
