@@ -20,10 +20,20 @@ extension NormalInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func squared() throws -> Self {
-        fatalError("TODO")
+        self.storage.withUnsafeBufferPointer{ words in
+            Self.uninitialized(count: words.count * 2) {
+                SUISS.initialize(&$0, toSquareProductOf: words)
+            }
+        }
     }
     
-    @inlinable public consuming func times(_ multiplier: borrowing Self) throws -> Self {
-        fatalError("TODO")
+    @inlinable public consuming func times(_ multiplier: Self) throws -> Self {
+        self.storage.withUnsafeBufferPointer { lhs in
+            multiplier.storage.withUnsafeBufferPointer { rhs in
+                Self.uninitialized(count: lhs.count + rhs.count) {
+                    SUISS.initialize(&$0, to: lhs, times: rhs)
+                }
+            }
+        }
     }
 }

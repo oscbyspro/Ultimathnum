@@ -9,6 +9,7 @@
 
 import CoreKit
 import MainIntKit
+import NormalIntKit
 import TestKit
 
 //*============================================================================*

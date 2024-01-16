@@ -28,7 +28,7 @@ final class FibonacciTests: XCTestCase {
         XCTAssertEqual(sequence?.next,    expectation?.next,    file: file, line: line)
         
         if  invariants, let  expectation, let sequence =  Test.some(sequence) {
-            XCTAssertNoThrow(check(index: sequence.index, element: expectation.element, file: file, line: line))
+            XCTAssertNoThrow(check(index: sequence.index, element: expectation.element, invariants: invariants, file: file, line: line))
         }
     }
     
@@ -60,7 +60,7 @@ final class FibonacciTests: XCTestCase {
     // MARK: Utilities x Min, Max
     //=------------------------------------------------------------------------=
     
-    func checkLowerBound<T>(_ sequence: Fibonacci<T>.Type, file: StaticString = #file, line: UInt = #line) {
+    func checkLowerBound<T>(_ sequence: Fibonacci<T>.Type, invariants: Bool = true, file: StaticString = #file, line: UInt = #line) {
         typealias F = Fibonacci<T>
         
         if  T.isSigned {
@@ -72,23 +72,23 @@ final class FibonacciTests: XCTestCase {
             XCTAssertNoThrow/**/(try F(0))
             
             let components = Components(0, 0, one)
-            check(sequence, components, file: file, line: line)
+            check(sequence, components, invariants: invariants,  file: file, line: line)
             XCTAssertThrowsError(try sequence.decrement())
-            check(sequence, components, file: file, line: line)
+            check(sequence, components, invariants: (((false))), file: file, line: line)
             XCTAssertNoThrow/**/(try sequence.double())
-            check(sequence, components, file: file, line: line)
+            check(sequence, components, invariants: (((false))), file: file, line: line)
         }   else {
             XCTAssertThrowsError(try F( ))
             XCTAssertThrowsError(try F(0))
         }
     }
     
-    func checkUpperBound<T>(_ sequence: Fibonacci<T>, _ expectation: Components<T>, file: StaticString = #file, line: UInt = #line) {
+    func checkUpperBound<T>(_ sequence: Fibonacci<T>, invariants: Bool = true, _ expectation: Components<T>, file: StaticString = #file, line: UInt = #line) {
         var ((sequence)) = sequence
-        check(sequence, expectation, invariants: true,  file: file, line: line)
+        check(sequence, expectation, invariants: invariants,  file: file, line: line)
         XCTAssertThrowsError(try sequence.increment())
-        check(sequence, expectation, invariants: false, file: file, line: line)
+        check(sequence, expectation, invariants: (((false))), file: file, line: line)
         XCTAssertThrowsError(try sequence.double())
-        check(sequence, expectation, invariants: false, file: file, line: line)
+        check(sequence, expectation, invariants: (((false))), file: file, line: line)
     }
 }

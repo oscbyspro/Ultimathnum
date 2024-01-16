@@ -49,7 +49,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
         Swift.assert(index >= base.startIndex)
         Swift.assert(index <= limit)
         Swift.assert(limit <= base.endIndex  )
-        //=--------------------------------------=        
+        //=--------------------------------------=
         forwards: while index < limit {
             var  wide = Base.Element.multiplying(base[index], by: multiplier)
             wide.high = wide.high &+ Base.Element(Bit(Overflow.capture(&wide.low, map:{ try $0.plus(increment) })))

@@ -45,6 +45,21 @@ Element: UnsignedInteger & SystemInteger, Element.BitPattern == Word.BitPattern 
         self.storage = storage
     }
     
+    @inlinable init(normalizing storage: consuming NormalInt.Storage) {
+        self.storage = storage
+        self.storage.normalize()
+    }
+    
+    @inlinable static func uninitialized(
+    count: Int, init: (inout UnsafeMutableBufferPointer<Element>) -> Void) -> Self {
+        Self.uninitialized(capacity: count, init:{ $1 = $0.count; `init`(&$0) })
+    }
+    
+    @inlinable static func uninitialized(
+    capacity: Int, init: (inout UnsafeMutableBufferPointer<Element>, inout Int) throws -> Void) rethrows -> Self {
+        Self(normalizing: try Storage.uninitialized(capacity: capacity, init: `init`))
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
