@@ -23,6 +23,12 @@
 ///
 /// Its magnitude may be signed to accomodate lone big integers.
 ///
+/// ### Development
+///
+/// - TODO: Consider a static { get throws } bit width requirement.
+///
+/// - TODO: Consider &+ operations with infinite width requirement.
+///
 public protocol BinaryInteger: BitCastable, BitOperable, Integer where Magnitude: BinaryInteger, Magnitude.BitPattern == BitPattern {
     
     //=------------------------------------------------------------------------=
