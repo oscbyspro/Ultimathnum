@@ -50,6 +50,8 @@ public protocol BinaryInteger: BitCastable, BitOperable, Integer where Magnitude
     ///
     @inlinable static var isSigned: Bool { get }
     
+    
+    #warning("remove this")
     /// The bit width of this type.
     ///
     /// ```

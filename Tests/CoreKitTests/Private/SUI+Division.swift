@@ -12,7 +12,7 @@ import MainIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * NBK x Strict Unsigned Integer x Sub Sequence x Division
+// MARK: * Strict Unsigned Integer x Sub Sequence x Division
 //*============================================================================*
 
 final class StrictUnsignedIntegerSubSequenceTestsOnDivision: XCTestCase {

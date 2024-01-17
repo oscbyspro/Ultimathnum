@@ -175,7 +175,7 @@ extension Integer {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities x Comparison
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
     @inlinable public borrowing func signum() -> Signum {

@@ -42,9 +42,9 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ModelsKit"
-               BuildableName = "ModelsKit"
-               BlueprintName = "ModelsKit"
+               BlueprintIdentifier = "BigIntKit"
+               BuildableName = "BigIntKit"
+               BlueprintName = "BigIntKit"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
