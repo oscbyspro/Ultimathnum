@@ -40,30 +40,8 @@ extension Namespace {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities x Copy
+    // MARK: Utilities x Copying
     //=------------------------------------------------------------------------=
-    
-    /// Copies the elements of the given `collection` to a temporary allocation of `1` element.
-    ///
-    /// - Requires: The pointee type must be trivial.
-    ///
-    @inlinable public static func withUnsafeTemporaryAllocation<Element, Result>(
-    copying collection: Element, perform: (UnsafeMutablePointer<Element>) throws -> Result) rethrows -> Result {
-        try Namespace.withUnsafeTemporaryAllocation(of: Element.self) { pointer in
-            //=----------------------------------=
-            // pointee: initialization
-            //=----------------------------------=
-            pointer.initialize(to: collection)
-            //=----------------------------------=
-            // pointee: deferred deinitialization
-            //=----------------------------------=
-            defer {
-                pointer.deinitialize(count: 1)
-            }
-            
-            return try perform(pointer) as Result
-        }
-    }
     
     /// Copies the elements of the given `collection` to a temporary allocation of `collection.count` elements.
     ///
