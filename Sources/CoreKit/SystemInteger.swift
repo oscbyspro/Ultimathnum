@@ -29,7 +29,32 @@
 ///
 /// - Requires: Its magnitude must be unsigned and the same size as this type.
 ///
+/// ### Development
+///
+/// - TODO: Consider naming it `System(s)Integer`.
+///
 public protocol SystemInteger: BinaryInteger where Magnitude: UnsignedInteger & SystemInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    /// The bit width of this type.
+    ///
+    /// ```
+    /// ┌──────┬──────────┐
+    /// │ type │ bitWidth │
+    /// ├──────┼──────────┤
+    /// │ I64  │ 64       │
+    /// │ IXL  │ IX.max   │
+    /// └──────┴──────────┘
+    /// ```
+    ///
+    /// ### Development
+    ///
+    /// - TODO: Consider moving this to binary integer with typed throws.
+    ///
+    @inlinable static var bitWidth: Magnitude { get }
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -45,10 +70,14 @@ public protocol SystemInteger: BinaryInteger where Magnitude: UnsignedInteger & 
     // MARK: Accessors
     //=------------------------------------------------------------------------=
     
+    /// ### Development
+    ///
+    /// - TODO: Consider moving this to binary integer with typed throws.
+    ///
     @inlinable func count(_ bit: Bit, option: Bit.Selection) -> Magnitude
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Shift
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     @inlinable static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self
@@ -60,7 +89,7 @@ public protocol SystemInteger: BinaryInteger where Magnitude: UnsignedInteger & 
     @inlinable static func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Multiplication, Division
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     @inlinable static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> Doublet<Self>
@@ -151,7 +180,7 @@ extension SystemInteger {
     @inlinable public init(words: consuming some RandomAccessCollection<Word>, isSigned: consuming Bool) throws {
         let pattern = Pattern(words, isSigned: isSigned)
         self.init(load: pattern)
-                        
+        
         let current = self.words as Words
         let success = self.isLessThanZero == pattern.isLessThanZero as Bool as Bool as Bool
         &&  current.last == pattern.base.dropFirst(Swift.max(0, current.count - 01 )).first

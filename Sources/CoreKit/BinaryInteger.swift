@@ -29,42 +29,7 @@
 ///
 /// - TODO: Consider &+ operations with infinite width requirement.
 ///
-public protocol BinaryInteger: BitCastable, BitOperable, Integer where Magnitude: BinaryInteger, Magnitude.BitPattern == BitPattern {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Meta Date
-    //=------------------------------------------------------------------------=
-    
-    /// Indicates whether this type can represent negative values.
-    ///
-    /// Negative binary integers must be in two's complement form.
-    ///
-    /// ```
-    /// ┌──────┬──────────┬─────┬─────┐
-    /// │ type │ isSigned │ min │ max │
-    /// ├──────┼──────────┼─────┼─────┤
-    /// │ I1   │ true     │ -1  │   0 │
-    /// │ U1   │ false    │  0  │  -1 │
-    /// └──────┴──────────┴─────┴─────┘
-    /// ```
-    ///
-    @inlinable static var isSigned: Bool { get }
-    
-    
-    #warning("remove this")
-    /// The bit width of this type.
-    ///
-    /// ```
-    /// ┌──────┬──────────┐
-    /// │ type │ bitWidth │
-    /// ├──────┼──────────┤
-    /// │ I64  │ 64       │
-    /// │ IXL  │ infinity │
-    /// └──────┴──────────┘
-    /// ```
-    ///
-    @inlinable static var bitWidth: Magnitude { get }
-}
+public protocol BinaryInteger: BitCastable, BitOperable, Integer where Magnitude: BinaryInteger, Magnitude.BitPattern == BitPattern { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Details

@@ -50,38 +50,18 @@ public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Send
     @inlinable init(words: consuming some RandomAccessCollection<Word>, isSigned: consuming Bool) throws
     
     //=------------------------------------------------------------------------=
-    // MARK: Accessors
-    //=------------------------------------------------------------------------=
-    
-    @inlinable var magnitude: Magnitude { consuming get }
-    
-    @inlinable var words: Words { consuming get }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Addition
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     @inlinable consuming func plus(_ increment: borrowing Self) throws -> Self
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Subtraction
-    //=------------------------------------------------------------------------=
     
     @inlinable consuming func negated() throws -> Self
     
     @inlinable consuming func minus(_ decrement: borrowing Self) throws -> Self
     
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Multiplication
-    //=------------------------------------------------------------------------=
-    
     @inlinable consuming func squared() throws -> Self
     
     @inlinable consuming func times(_ multiplier: borrowing Self) throws -> Self
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Division
-    //=------------------------------------------------------------------------=
     
     @inlinable consuming func quotient ( divisor: borrowing Self) throws -> Self
     
@@ -90,9 +70,13 @@ public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Send
     @inlinable consuming func divided(by divisor: borrowing Self) throws -> Division<Self>
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities x Comparison
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
-        
+    
+    @inlinable var magnitude: Magnitude { consuming get }
+    
+    @inlinable var words: Words { consuming get }
+    
     @inlinable borrowing func compared(to other: borrowing Self) -> Signum
 }
 
@@ -109,7 +93,7 @@ extension Integer {
     @inlinable public init() {
         self = 0
     }
-        
+    
     @inlinable public init(magnitude: consuming Magnitude) throws {
         try  self.init(sign: Sign.plus, magnitude: consume magnitude)
     }
@@ -135,16 +119,12 @@ extension Integer {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Addition
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     @inlinable public static func +(lhs: consuming Self, rhs: borrowing Self) -> Self {
         try! lhs.plus(rhs)
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Subtraction
-    //=------------------------------------------------------------------------=
     
     @inlinable public static prefix func -(instance: Self) -> Self {
         try! instance.negated()
@@ -154,17 +134,9 @@ extension Integer {
         try! lhs.minus(rhs)
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Multiplication
-    //=------------------------------------------------------------------------=
-    
     @inlinable public static func *(lhs: consuming Self, rhs: borrowing Self) -> Self {
         try! lhs.times(rhs)
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Division
-    //=------------------------------------------------------------------------=
     
     @inlinable public static func /(lhs: consuming Self, rhs: borrowing Self) -> Self {
         try! lhs.quotient (divisor: rhs)

@@ -47,7 +47,7 @@ where BitPattern == Magnitude.BitPattern, Magnitude: Swift.FixedWidthInteger & B
 extension BaseInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Details x Bit Pattern
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
     @inlinable public init(bitPattern: consuming BitPattern) {

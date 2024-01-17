@@ -48,7 +48,7 @@ extension UnsignedInteger {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Accessors
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
     @inlinable public var magnitude: Magnitude {

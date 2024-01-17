@@ -42,7 +42,7 @@
     @inlinable public static func ignore(_ value: inout Value, map: (consuming Value) throws -> Value) {
         value = Overflow.capture({ try map(value) }).value
     }
-    
+        
     @inlinable public static func capture(_ value: () throws -> Value) -> Result {
         Result(value)
     }
