@@ -65,7 +65,7 @@
         consuming get { Magnitude(self.base.magnitude) }
     }
     
-    @inlinable public var words: some RandomAccessCollection<Word> {
+    @inlinable public var words: some RandomAccessCollection<UX> {
         consuming get { BitCastSequence(self.base.words) }
     }
 }

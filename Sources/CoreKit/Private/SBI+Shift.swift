@@ -92,7 +92,7 @@ extension Namespace.StrictBinaryInteger where Base: MutableCollection {
         //=--------------------------------------=
         precondition(1 <= minor && minor < Base.Element.bitWidth.load(as: Int.self), .indexOutOfBounds())
         //=--------------------------------------=
-        let push = Base.Element(load: Word(bitPattern: minor))
+        let push = Base.Element(load: UX(bitPattern: minor))
         let pull = ~push &+ 1
         //=--------------------------------------=
         var destination = base.endIndex as Base.Index
@@ -203,7 +203,7 @@ extension Namespace.StrictBinaryInteger where Base: MutableCollection {
         //=--------------------------------------=
         precondition(1 <= minor && minor < Base.Element.bitWidth.load(as: Int.self), .indexOutOfBounds())
         //=--------------------------------------=
-        let push = Base.Element(load: Word(bitPattern: minor))
+        let push = Base.Element(load: UX(bitPattern: minor))
         let pull = ~push &+ 1
         //=--------------------------------------=
         var destination = base.startIndex as Base.Index

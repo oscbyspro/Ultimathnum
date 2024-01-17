@@ -40,7 +40,7 @@ extension Namespace.ProperBinaryInteger where Base: SystemInteger {
     @inlinable package static func compareIsEqual<Other: SystemInteger>(_ lhs: Base, to rhs: Other) -> Bool {
         if  Base.isSigned == Other.isSigned {
             
-            if  Base.bitWidth.load(as: Word.self) >= Other.bitWidth.load(as: Word.self) {
+            if  Base.bitWidth.load(as: UX.self) >= Other.bitWidth.load(as: UX.self) {
                 return lhs == Base(truncating: rhs)
             }   else {
                 return Other(truncating: lhs) == rhs
@@ -48,7 +48,7 @@ extension Namespace.ProperBinaryInteger where Base: SystemInteger {
             
         }   else if Base.isSigned {
             
-            if  Base.bitWidth.load(as: Word.self) >  Other.bitWidth.load(as: Word.self) {
+            if  Base.bitWidth.load(as: UX.self) >  Other.bitWidth.load(as: UX.self) {
                 return lhs == Base(truncating: rhs)
             }   else {
                 return lhs >= 0 && Other(truncating: lhs) == rhs
@@ -56,7 +56,7 @@ extension Namespace.ProperBinaryInteger where Base: SystemInteger {
             
         }   else {
             
-            if  Base.bitWidth.load(as: Word.self) <  Other.bitWidth.load(as: Word.self) {
+            if  Base.bitWidth.load(as: UX.self) <  Other.bitWidth.load(as: UX.self) {
                 return Other(truncating: lhs) == rhs
             }   else {
                 return rhs >= 0 && lhs == Base(truncating: rhs)
@@ -68,7 +68,7 @@ extension Namespace.ProperBinaryInteger where Base: SystemInteger {
     @inlinable package static func compareIsLessThan<Other: SystemInteger>(_ lhs: Base, to rhs: Other) -> Bool {
         if  Base.isSigned == Other.isSigned {
             
-            if  Base.bitWidth.load(as: Word.self) >= Other.bitWidth.load(as: Word.self) {
+            if  Base.bitWidth.load(as: UX.self) >= Other.bitWidth.load(as: UX.self) {
                 return lhs < Base(truncating: rhs)
             }   else {
                 return Other(truncating: lhs) < rhs
@@ -76,7 +76,7 @@ extension Namespace.ProperBinaryInteger where Base: SystemInteger {
             
         }   else if Base.isSigned {
             
-            if  Base.bitWidth.load(as: Word.self) >  Other.bitWidth.load(as: Word.self) {
+            if  Base.bitWidth.load(as: UX.self) >  Other.bitWidth.load(as: UX.self) {
                 return lhs < Base(truncating: rhs)
             }   else {
                 return lhs < 0 || Other(truncating: lhs) < rhs
@@ -84,7 +84,7 @@ extension Namespace.ProperBinaryInteger where Base: SystemInteger {
             
         }   else {
             
-            if  Base.bitWidth.load(as: Word.self) <  Other.bitWidth.load(as: Word.self) {
+            if  Base.bitWidth.load(as: UX.self) <  Other.bitWidth.load(as: UX.self) {
                 return Other(truncating: lhs) < rhs
             }   else {
                 return rhs > 0 && lhs < Base(truncating: rhs)

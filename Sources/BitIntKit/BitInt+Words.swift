@@ -19,20 +19,20 @@ extension BitInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(load source: Word) {
+    @inlinable public init(load source: UX) {
         self.init(bitPattern: Bit(source & 1 == 1))
     }
     
-    @inlinable public init(load source: Pattern<some RandomAccessCollection<Word>>) {
-        self.init(load: source.load(as: Word.self))
+    @inlinable public init(load source: Pattern<some RandomAccessCollection<UX>>) {
+        self.init(load: source.load(as: UX.self))
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func load(as type: Word.Type) -> Word {
-        Word(repeating: self.bitPattern)
+    @inlinable public func load(as type: UX.Type) -> UX {
+        UX(repeating: self.bitPattern)
     }
 }
 
@@ -46,19 +46,19 @@ extension BitInt.Magnitude {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(load source: Word) {
+    @inlinable public init(load source: UX) {
         self.init(bitPattern: Bit(source & 1 == 1))
     }
     
-    @inlinable public init(load source: Pattern<some RandomAccessCollection<Word>>) {
-        self.init(load: source.load(as: Word.self))
+    @inlinable public init(load source: Pattern<some RandomAccessCollection<UX>>) {
+        self.init(load: source.load(as: UX.self))
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
         
-    @inlinable public func load(as type: Word.Type) -> Word {
-        Word(self.bitPattern)
+    @inlinable public func load(as type: UX.Type) -> UX {
+        UX(self.bitPattern)
     }
 }

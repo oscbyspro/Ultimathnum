@@ -13,22 +13,22 @@
 
 extension Namespace.IntegerDescriptionFormat {
     
-    @frozen public struct Radix<Element> where Element: SystemInteger & UnsignedInteger, Element.BitPattern == Word.BitPattern {
+    @frozen public struct Radix {
         
         //=--------------------------------------------------------------------=
         // MARK: State
         //=--------------------------------------------------------------------=
         
-        public let exponent: Element
-        public let power:    Element
+        public let exponent: IX
+        public let power:    UX
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
         @inlinable public init() {
-            var exponent = 01 as Element
-            var power = 00010 as Element
+            var exponent = 01 as IX
+            var power = 00010 as UX
             
             while let next = try? power.times(10) {
                 exponent = exponent &+ 01; power = next
@@ -41,12 +41,12 @@ extension Namespace.IntegerDescriptionFormat {
         // MARK: Utilities
         //=------------------------------------------------------------------------=
         
-        @inlinable public var base: Element {
+        @inlinable public var base: UX {
             10
         }
         
-        @inlinable public func divisibilityByPowerUpperBound(magnitude: some Collection<Element>) -> Int {
-            magnitude.count * Element.bitWidth.load(as: Int.self) / base.load(as: Int.self).leadingZeroBitCount &+ 1
+        @inlinable public func divisibilityByPowerUpperBound(magnitude: some Collection<UX>) -> IX {
+            IX(magnitude.count) * UX.bitWidth.load(as: IX.self) / base.count(0, option: .descending).load(as: IX.self) + 1
         }
     }
 }

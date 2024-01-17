@@ -21,7 +21,7 @@ extension Test {
     //=------------------------------------------------------------------------=
     
     public static func words<T: Integer>(
-    _ integer: T,_ expectation: [Word],
+    _ integer: T,_ expectation: [UX],
     file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
         let words: T.Words = integer.words
@@ -36,7 +36,7 @@ extension Test {
     }
     
     public static func words<T: Integer>(
-    _ words: some RandomAccessCollection<Word>, _ isSigned: Bool, _ expectation: T?,
+    _ words: some RandomAccessCollection<UX>, _ isSigned: Bool, _ expectation: T?,
     file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
         if  isSigned == T.isSigned {
@@ -47,8 +47,8 @@ extension Test {
             XCTAssertEqual(try? T.init(words: words, isSigned: isSigned), expectation, file: file, line: line)
         }
         
-        if  type(of: words) != [Word].self {
-            Test.words([Word](words), isSigned, expectation, file: file, line: line)
+        if  type(of: words) != [UX].self {
+            Test.words([UX](words), isSigned, expectation, file: file, line: line)
         }
     }
 }

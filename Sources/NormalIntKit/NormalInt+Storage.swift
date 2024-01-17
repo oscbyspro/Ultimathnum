@@ -14,7 +14,7 @@ import CoreKit
 //*============================================================================*
 
 @frozen @usableFromInline struct Storage<Element>: Sendable where
-Element: UnsignedInteger & SystemInteger, Element.BitPattern == Word.BitPattern {
+Element: UnsignedInteger & SystemInteger, Element.BitPattern == UX.BitPattern {
     
     @usableFromInline typealias Element = Element
     
@@ -64,7 +64,7 @@ Element: UnsignedInteger & SystemInteger, Element.BitPattern == Word.BitPattern 
         case .allocation: break }
     }
     
-    @inlinable var words: some RandomAccessCollection<Word> {
+    @inlinable var words: some RandomAccessCollection<UX> {
         consuming get {
             
             self.allocate()

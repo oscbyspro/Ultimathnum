@@ -15,7 +15,7 @@ import CoreKit
 
 /// A normalized big integer magnitude.
 @frozen public struct NormalInt<Element>: Integer where
-Element: UnsignedInteger & SystemInteger, Element.BitPattern == Word.BitPattern {
+Element: UnsignedInteger & SystemInteger, Element.BitPattern == UX.BitPattern {
     
     public typealias IntegerLiteralType = StaticBigInt
     
@@ -68,7 +68,7 @@ Element: UnsignedInteger & SystemInteger, Element.BitPattern == Word.BitPattern 
         consuming get { consume self }
     }
     
-    @inlinable public var words: some RandomAccessCollection<Word> {
+    @inlinable public var words: some RandomAccessCollection<UX> {
         consuming get { self.storage.words }
     }
 }

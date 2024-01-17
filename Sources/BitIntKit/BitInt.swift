@@ -60,9 +60,9 @@ import CoreKit
         }
     }
     
-    @inlinable public var words: some RandomAccessCollection<Word> {
+    @inlinable public var words: some RandomAccessCollection<UX> {
         consuming get {
-            CollectionOfOne(self.load(as: Word.self))
+            CollectionOfOne(self.load(as: UX.self))
         }
     }
     
@@ -111,9 +111,9 @@ import CoreKit
         // MARK: Accessors
         //=--------------------------------------------------------------------=
         
-        @inlinable public var words: some RandomAccessCollection<Word> {
+        @inlinable public var words: some RandomAccessCollection<UX> {
             consuming get {
-                CollectionOfOne(self.load(as: Word.self))
+                CollectionOfOne(self.load(as: UX.self))
             }
         }
     }

@@ -128,9 +128,9 @@ Element: SystemInteger & UnsignedInteger,  Base: RandomAccessCollection, Base.El
     //=------------------------------------------------------------------------=
     
     @inlinable internal static func count(of base: Base) -> Int {
-        if  Self.Element.bitWidth.load(as: Word.self) > Base.Element.bitWidth.load(as: Word.self) {
+        if  Self.Element.bitWidth.load(as: UX.self) > Base.Element.bitWidth.load(as: UX.self) {
             return Major.count(of: base)
-        }   else if Self.Element.bitWidth.load(as: Word.self) < Base.Element.bitWidth.load(as: Word.self) {
+        }   else if Self.Element.bitWidth.load(as: UX.self) < Base.Element.bitWidth.load(as: UX.self) {
             return Minor.count(of: base)
         }   else {
             return Equal.count(of: base)
@@ -138,9 +138,9 @@ Element: SystemInteger & UnsignedInteger,  Base: RandomAccessCollection, Base.El
     }
     
     @inlinable internal static func count(normalizing base: Base, repeating bit: Bit) -> Int {
-        if  Self.Element.bitWidth.load(as: Word.self) > Base.Element.bitWidth.load(as: Word.self) {
+        if  Self.Element.bitWidth.load(as: UX.self) > Base.Element.bitWidth.load(as: UX.self) {
             return Major.count(normalizing: base, repeating: bit)
-        }   else if Self.Element.bitWidth.load(as: Word.self) < Base.Element.bitWidth.load(as: Word.self) {
+        }   else if Self.Element.bitWidth.load(as: UX.self) < Base.Element.bitWidth.load(as: UX.self) {
             return Minor.count(normalizing: base, repeating: bit)
         }   else {
             return Equal.count(normalizing: base, repeating: bit)
@@ -148,9 +148,9 @@ Element: SystemInteger & UnsignedInteger,  Base: RandomAccessCollection, Base.El
     }
     
     @inlinable internal static func element(_ index: Int, base: Base, sign: Element) -> Element {
-        if  Self.Element.bitWidth.load(as: Word.self) > Base.Element.bitWidth.load(as: Word.self) {
+        if  Self.Element.bitWidth.load(as: UX.self) > Base.Element.bitWidth.load(as: UX.self) {
             return Major.element(index, base: base, sign: sign)
-        }   else if Self.Element.bitWidth.load(as: Word.self) < Base.Element.bitWidth.load(as: Word.self) {
+        }   else if Self.Element.bitWidth.load(as: UX.self) < Base.Element.bitWidth.load(as: UX.self) {
             return Minor.element(index, base: base, sign: sign)
         }   else {
             return Equal.element(index, base: base, sign: sign)
@@ -199,7 +199,7 @@ extension ChunkedInt.Major {
             var   baseIndex = base.index(base.startIndex, offsetBy: minor)
             while baseIndex < base.endIndex, shift < Element.bitWidth {
                 major = major | Element(truncating: Base.Element.Magnitude(bitPattern: base[baseIndex])) &<< Element(bitPattern: shift)
-                shift = shift + Element.Magnitude(load: Base.Element.bitWidth.load(as: Word.self))
+                shift = shift + Element.Magnitude(load: Base.Element.bitWidth.load(as: UX.self))
                 base.formIndex(after: &baseIndex)
             }
         }
@@ -241,7 +241,7 @@ extension ChunkedInt.Minor {
         let  (quotient, remainder) = index.quotientAndRemainder(dividingBy: self.ratio)
         guard quotient < base.count else { return sign }
         let major = base[base.index(base.startIndex, offsetBy: quotient)]
-        let shift = Base.Element(load: Word(bitPattern: remainder)) &<< Base.Element(truncating: Element.bitWidth.count(0, option: .ascending))
+        let shift = Base.Element(load: UX(bitPattern: remainder)) &<< Base.Element(truncating: Element.bitWidth.count(0, option: .ascending))
         return Element(truncating: major &>> shift)
     }
 }

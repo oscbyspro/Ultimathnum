@@ -60,11 +60,11 @@ public protocol SystemInteger: BinaryInteger where Magnitude: UnsignedInteger & 
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable init(load source: consuming Word)
+    @inlinable init(load source: consuming UX)
     
-    @inlinable init(load source: consuming Pattern<some RandomAccessCollection<Word>>)
+    @inlinable init(load source: consuming Pattern<some RandomAccessCollection<UX>>)
     
-    @inlinable func load(as type: Word.Type) -> Word
+    @inlinable func load(as type: UX.Type) -> UX
     
     //=------------------------------------------------------------------------=
     // MARK: Accessors
@@ -156,8 +156,8 @@ extension SystemInteger {
         self.init(load: Pattern(source.words, isSigned: T.isSigned))
     }
     
-    @inlinable public func load<T>(as type: T.Type) -> T where T: BitCastable<Word.BitPattern> {
-        T(bitPattern: self.load(as: Word.self))
+    @inlinable public func load<T>(as type: T.Type) -> T where T: BitCastable<UX.BitPattern> {
+        T(bitPattern: self.load(as: UX.self))
     }
     
     //=------------------------------------------------------------------------=
@@ -177,7 +177,7 @@ extension SystemInteger {
         }
     }
     
-    @inlinable public init(words: consuming some RandomAccessCollection<Word>, isSigned: consuming Bool) throws {
+    @inlinable public init(words: consuming some RandomAccessCollection<UX>, isSigned: consuming Bool) throws {
         let pattern = Pattern(words, isSigned: isSigned)
         self.init(load: pattern)
         

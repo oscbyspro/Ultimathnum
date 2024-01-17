@@ -19,7 +19,7 @@
 ///
 public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Sendable {
     
-    associatedtype Words: RandomAccessCollection<Word>
+    associatedtype Words: RandomAccessCollection<UX>
     
     associatedtype Magnitude: Integer where Magnitude.Magnitude == Magnitude
     
@@ -47,7 +47,7 @@ public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Send
     
     @inlinable init(sign:  consuming Sign, magnitude: consuming Magnitude) throws
     
-    @inlinable init(words: consuming some RandomAccessCollection<Word>, isSigned: consuming Bool) throws
+    @inlinable init(words: consuming some RandomAccessCollection<UX>, isSigned: consuming Bool) throws
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -98,7 +98,7 @@ extension Integer {
         try  self.init(sign: Sign.plus, magnitude: consume magnitude)
     }
     
-    @inlinable public init(words: consuming some RandomAccessCollection<Word>) throws {
+    @inlinable public init(words: consuming some RandomAccessCollection<UX>) throws {
         try  self.init(words: consume words, isSigned: Self.isSigned)
     }
     

@@ -19,7 +19,7 @@ extension SignedInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(words: consuming some RandomAccessCollection<Word>, isSigned: consuming Bool) throws {
+    @inlinable public init(words: consuming some RandomAccessCollection<UX>, isSigned: consuming Bool) throws {
         fatalError("TODO")
     }
 }

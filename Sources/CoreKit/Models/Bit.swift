@@ -34,7 +34,7 @@ Hashable, ExpressibleByIntegerLiteral, Sendable {
         self.base = base
     }
     
-    @inlinable public init(integerLiteral: Swift.UInt.IntegerLiteralType) {
+    @inlinable public init(integerLiteral: UX.IntegerLiteralType) {
         if  integerLiteral == 0 {
             self.base = false
         }   else if integerLiteral == 1 {

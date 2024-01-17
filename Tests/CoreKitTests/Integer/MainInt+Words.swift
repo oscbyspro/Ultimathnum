@@ -24,7 +24,7 @@ extension CoreIntTests {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
             typealias M = T.Magnitude
             let count   = T.max.words.count
-            let isExact = T.bitWidth % M(load: Word(bitPattern: UX.bitWidth)) == 0
+            let isExact = T.bitWidth % M(load: UX(bitPattern: UX.bitWidth)) == 0
             for isSigned in [true, false] {
                 Test.words(( T.min).words, isSigned,  isSigned ? T.min : nil)
                 Test.words(( T.max).words, isSigned,  T.max)
@@ -44,7 +44,7 @@ extension CoreIntTests {
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
             typealias M = T.Magnitude
             let count   = T.max.words.count
-            let isExact = T.bitWidth % M(load: Word(bitPattern: UX.bitWidth)) == 0
+            let isExact = T.bitWidth % M(load: UX(bitPattern: UX.bitWidth)) == 0
             for isSigned in [true, false] {
                 Test.words(( M.min).words, isSigned,   00000 as T?)
                 Test.words(( M.max).words, isSigned,   isSigned && isExact ? nil : T.max as T?)
@@ -65,17 +65,17 @@ extension CoreIntTests {
     
     func testMakeWords() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
-            Test.words(-2 as T, [~1] as [Word])
-            Test.words(-1 as T, [~0] as [Word])
-            Test.words( 0 as T, [ 0] as [Word])
-            Test.words( 1 as T, [ 1] as [Word])
+            Test.words(-2 as T, [~1] as [UX])
+            Test.words(-1 as T, [~0] as [UX])
+            Test.words( 0 as T, [ 0] as [UX])
+            Test.words( 1 as T, [ 1] as [UX])
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
-            Test.words( 0 as T, [ 0] as [Word])
-            Test.words( 1 as T, [ 1] as [Word])
-            Test.words( 2 as T, [ 2] as [Word])
-            Test.words( 3 as T, [ 3] as [Word])
+            Test.words( 0 as T, [ 0] as [UX])
+            Test.words( 1 as T, [ 1] as [UX])
+            Test.words( 2 as T, [ 2] as [UX])
+            Test.words( 3 as T, [ 3] as [UX])
         }
         
         for type in Self.types {

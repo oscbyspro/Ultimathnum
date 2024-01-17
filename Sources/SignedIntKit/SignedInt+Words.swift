@@ -19,7 +19,7 @@ extension SignedInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public var words: [Word] {
+    @inlinable public var words: [UX] {
         consuming get {
             fatalError("TODO")
         }

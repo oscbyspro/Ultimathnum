@@ -28,7 +28,7 @@ extension NormalInt {
         }
     }
     
-    @inlinable public init(words: consuming some RandomAccessCollection<Word>, isSigned: consuming Bool) throws {
+    @inlinable public init(words: consuming some RandomAccessCollection<UX>, isSigned: consuming Bool) throws {
         self.storage = Storage(BitCastSequence(consume words))
         let overflow = isSigned && self.storage.last & Element.msb != 0
         self.storage.normalize()

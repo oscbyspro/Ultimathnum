@@ -18,21 +18,21 @@
 /// - TODO: Consider helper methods like matches(\_:), etc.
 /// - TODO: Consider alternative EndlessInt model.
 ///
-@frozen public struct Pattern<Base> where Base: RandomAccessCollection<Word> {
+@frozen public struct Pattern<Base> where Base: RandomAccessCollection<UX> {
         
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
     public let base: Base
-    public let sign: Word
+    public let sign: UX
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
     @inlinable public init(_ base: Base, isSigned: Bool) {
-        self.base = base; self.sign = Word(repeating: Bit(isSigned && Swift.Int(bitPattern: base.last ?? 0) < 0))
+        self.base = base; self.sign = UX(repeating: Bit(isSigned && Swift.Int(bitPattern: base.last ?? 0) < 0))
     }
     
     //=------------------------------------------------------------------------=
@@ -40,10 +40,10 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public var isLessThanZero: Bool {
-        self.sign != (0 as Word)
+        self.sign != (0 as UX)
     }
     
-    @inlinable public func load(as type: Word.Type) -> Word {
+    @inlinable public func load(as type: UX.Type) -> UX {
         self.base.first ?? self.sign
     }
 }

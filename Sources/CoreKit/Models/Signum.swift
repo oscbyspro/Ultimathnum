@@ -26,7 +26,7 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(integerLiteral: Swift.Int.IntegerLiteralType) {
+    @inlinable public init(integerLiteral: IX.IntegerLiteralType) {
         self = switch integerLiteral {
         case -1: .less
         case  0: .same

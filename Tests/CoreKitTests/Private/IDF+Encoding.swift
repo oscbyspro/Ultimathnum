@@ -20,7 +20,7 @@ final class IntegerDescriptionFormatTestsOnEncoding: XCTestCase {
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    let encoder = Namespace.IntegerDescriptionFormat.Encoder<UX>()
+    let encoder = Namespace.IntegerDescriptionFormat.Encoder()
     
     //=------------------------------------------------------------------------=
     // MARK: Tests

@@ -154,7 +154,7 @@ extension SuccinctInt {
         Swift.assert(self.sign == other.sign)
         Swift.assert(self.body.count == other.body.count)
         //=--------------------------------------=
-        // Word By Word, Back To Front
+        // UX By UX, Back To Front
         //=--------------------------------------=
         var lhsIndex = self .body.endIndex
         var rhsIndex = other.body.endIndex

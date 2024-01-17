@@ -60,13 +60,13 @@ extension BitIntTests {
     
     func testMakeWords() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
-            Test.words( 0 as T, [ 0] as [Word])
-            Test.words(-1 as T, [~0] as [Word])
+            Test.words( 0 as T, [ 0] as [UX])
+            Test.words(-1 as T, [~0] as [UX])
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
-            Test.words( 0 as T, [ 0] as [Word])
-            Test.words( 1 as T, [ 1] as [Word])
+            Test.words( 0 as T, [ 0] as [UX])
+            Test.words( 1 as T, [ 1] as [UX])
         }
         
         for type in Self.types {

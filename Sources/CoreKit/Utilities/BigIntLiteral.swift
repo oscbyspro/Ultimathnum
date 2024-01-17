@@ -53,8 +53,8 @@
     }
     
     /// Accesses the word at the given index, from least significant to most.
-    @inlinable public subscript(index: Int) -> Word {
-        Word(bitPattern: self.base[index])
+    @inlinable public subscript(index: Int) -> UX {
+        UX(bitPattern: self.base[index])
     }
 }
 
