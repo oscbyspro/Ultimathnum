@@ -7,31 +7,18 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Main Int x Shift
+// MARK: * Core Int x Addition
 //*============================================================================*
 
-extension MainInt {
+extension CoreInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(lhs.base  << rhs.base)
-    }
-    
-    @inlinable public static func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(lhs.base &<< rhs.base)
-    }
-    
-    @inlinable public static func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(lhs.base  >> rhs.base)
-    }
-    
-    @inlinable public static func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(lhs.base &>> rhs.base)
+    @inlinable public consuming func plus(_ increment: borrowing Self) throws -> Self {
+        let result = self.base.addingReportingOverflow(increment.base)
+        return try Overflow.resolve(Self(result.partialValue), overflow: result.overflow)
     }
 }

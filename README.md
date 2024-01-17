@@ -5,10 +5,9 @@ Greatness.
 ## Table of Contents
 
 * [CoreKit](#corekit)
-* [BitIntKit](#bigintkit)
+* [BigIntKit](#bigintkit)
 * [BitIntKit](#bitintkit)
 * [DoubleIntKit](#doubleintkit)
-* [MainIntKit](#mainintkit)
 * [NormalIntKit](#normalintkit)
 * [SignedIntKit](#signedintkit)
 * [Installation](#installation)
@@ -37,13 +36,6 @@ Greatness.
 <a name="doubleintkit"/>
 
 ## DoubleIntKit
-
-> [!IMPORTANT]
-> It's a work in progress.
-
-<a name="mainintkit"/>
-
-## MainIntKit
 
 > [!IMPORTANT]
 > It's a work in progress.

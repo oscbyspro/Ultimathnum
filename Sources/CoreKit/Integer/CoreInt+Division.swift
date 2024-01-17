@@ -7,13 +7,11 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Main Int x Division
+// MARK: * Core Int x Division
 //*============================================================================*
 
-extension MainInt {
+extension CoreInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -65,10 +63,10 @@ extension MainInt {
 }
 
 //*============================================================================*
-// MARK: * Main Int x Division x Unsigned
+// MARK: * Core Int x Division x Unsigned
 //*============================================================================*
 
-extension MainInt where Self == Magnitude {
+extension CoreInt where Self == Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

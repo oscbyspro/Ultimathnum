@@ -11,7 +11,7 @@ import Ultimathnum
 import TestKit
 
 //*============================================================================*
-// MARK: * Fibonacci x Main Int
+// MARK: * Fibonacci x Core Int
 //*============================================================================*
 
 extension FibonacciTests {
@@ -20,7 +20,7 @@ extension FibonacciTests {
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    private static let mainIntKit: [any SystemInteger.Type] = [
+    private static let coreIntList: [any SystemInteger.Type] = [
         IX .self,
         I8 .self,
         I16.self,
@@ -37,7 +37,7 @@ extension FibonacciTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testMainInt() {
+    func testCoreInt() {
         func whereIs<T>(_ type: T.Type) where T: SystemInteger {
             typealias F = Fibonacci<T>
             
@@ -84,12 +84,12 @@ extension FibonacciTests {
             }
         }
         
-        for type in Self.mainIntKit {
+        for type in Self.coreIntList {
             whereIs(type)
         }
     }
     
-    func testMainIntLimit() {
+    func testCoreIntLimit() {
         if  let sequence = Test.some(try? Fibonacci<I8>(10)) {
             checkUpperBound(sequence, (index: 10, element: 0000000000000000055, next: 00000000000000000089))
         }

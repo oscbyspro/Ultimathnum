@@ -71,7 +71,7 @@ extension UltimathnumTests {
             }
         }
         
-        for type in Self.bitInt {
+        for type in Self.bitIntList {
             for other in Self.types {
                 whereIs(type, other)
             }

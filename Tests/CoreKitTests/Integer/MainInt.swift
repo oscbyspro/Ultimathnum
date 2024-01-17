@@ -8,14 +8,13 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import MainIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Main Int
+// MARK: * Core Int
 //*============================================================================*
 
-final class MainIntTests: XCTestCase {
+final class CoreIntTests: XCTestCase {
     
     typealias I = any (SystemInteger &   SignedInteger).Type
     typealias U = any (SystemInteger & UnsignedInteger).Type

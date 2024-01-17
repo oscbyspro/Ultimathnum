@@ -11,9 +11,14 @@
 // MARK: * Exports
 //*============================================================================*
 
-@_exported import BitIntKit
 @_exported import CoreKit
+
+//=----------------------------------------------------------------------------=
+// MARK: + Integers
+//=----------------------------------------------------------------------------=
+
+@_exported import BigIntKit
+@_exported import BitIntKit
 @_exported import DoubleIntKit
-@_exported import MainIntKit
 @_exported import NormalIntKit
 @_exported import SignedIntKit

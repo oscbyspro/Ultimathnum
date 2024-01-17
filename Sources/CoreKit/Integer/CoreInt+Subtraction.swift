@@ -7,20 +7,23 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Main Int x Addition
+// MARK: * Core Int x Subtraction
 //*============================================================================*
 
-extension MainInt {
+extension CoreInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func plus(_ increment: borrowing Self) throws -> Self {
-        let result = self.base.addingReportingOverflow(increment.base)
+    @inlinable public consuming func negated() throws -> Self {
+        let result = Overflow.capture({ try (~self).plus(1) })
+        return try Overflow.resolve(result.value, overflow: result.overflow == Self.isSigned)
+    }
+    
+    @inlinable public consuming func minus(_ decrement: borrowing Self) throws -> Self {
+        let result = self.base.subtractingReportingOverflow(decrement.base)
         return try Overflow.resolve(Self(result.partialValue), overflow: result.overflow)
     }
 }

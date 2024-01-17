@@ -7,13 +7,11 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Main Int x Comparison
+// MARK: * Core Int x Comparison
 //*============================================================================*
 
-extension MainInt {
+extension CoreInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

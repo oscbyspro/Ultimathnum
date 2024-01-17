@@ -7,15 +7,13 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Main Int
+// MARK: * Core Int
 //*============================================================================*
 
-@frozen public struct MainInt<Base: BaseInteger>: SystemInteger {
+@frozen public struct CoreInt<Base: BaseInteger>: SystemInteger {
     
-    public typealias Magnitude = MainInt<Base.Magnitude>
+    public typealias Magnitude = CoreInt<Base.Magnitude>
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -63,7 +61,7 @@ import CoreKit
         consuming get { self.base.bitPattern }
     }
     
-    @inlinable public var magnitude: MainInt<Base.Magnitude> {
+    @inlinable public var magnitude: CoreInt<Base.Magnitude> {
         consuming get { Magnitude(self.base.magnitude) }
     }
     
@@ -76,21 +74,21 @@ import CoreKit
 // MARK: + Un/signed
 //=----------------------------------------------------------------------------=
 
-extension MainInt:   SignedInteger where Base: Swift  .SignedInteger  { }
-extension MainInt: UnsignedInteger where Base: Swift.UnsignedInteger, Base.Magnitude == Base { }
+extension CoreInt:   SignedInteger where Base: Swift  .SignedInteger  { }
+extension CoreInt: UnsignedInteger where Base: Swift.UnsignedInteger, Base.Magnitude == Base { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Aliases
 //=----------------------------------------------------------------------------=
 
-public typealias IX  = MainInt<Swift.Int>
-public typealias I8  = MainInt<Swift.Int8>
-public typealias I16 = MainInt<Swift.Int16>
-public typealias I32 = MainInt<Swift.Int32>
-public typealias I64 = MainInt<Swift.Int64>
+public typealias IX  = CoreInt<Swift.Int>
+public typealias I8  = CoreInt<Swift.Int8>
+public typealias I16 = CoreInt<Swift.Int16>
+public typealias I32 = CoreInt<Swift.Int32>
+public typealias I64 = CoreInt<Swift.Int64>
 
-public typealias UX  = MainInt<Swift.UInt>
-public typealias U8  = MainInt<Swift.UInt8>
-public typealias U16 = MainInt<Swift.UInt16>
-public typealias U32 = MainInt<Swift.UInt32>
-public typealias U64 = MainInt<Swift.UInt64>
+public typealias UX  = CoreInt<Swift.UInt>
+public typealias U8  = CoreInt<Swift.UInt8>
+public typealias U16 = CoreInt<Swift.UInt16>
+public typealias U32 = CoreInt<Swift.UInt32>
+public typealias U64 = CoreInt<Swift.UInt64>

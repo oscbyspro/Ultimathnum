@@ -11,7 +11,7 @@ import Ultimathnum
 import TestKit
 
 //*============================================================================*
-// MARK: * Ultimathnum x Main Int
+// MARK: * Ultimathnum x Core Int
 //*============================================================================*
 
 extension UltimathnumTests {
@@ -20,7 +20,7 @@ extension UltimathnumTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testMainIntToFromExactly() {
+    func testCoreIntToFromExactly() {
         func whereIs<T, U>(_ type: T.Type, _ other: U.Type) where T: SystemInteger, U: Integer {
             if  let i = try? U(exactly: T.min).plus(U(exactly: T.min)).minus(U(magnitude: 1)) {
                 XCTAssertEqual(try? T(exactly: i), nil as T?)
@@ -75,7 +75,7 @@ extension UltimathnumTests {
             }
         }
         
-        for type in Self.mainInt {
+        for type in Self.coreIntList {
             for other in Self.types {
                 whereIs(type, other)
             }

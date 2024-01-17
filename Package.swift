@@ -55,12 +55,6 @@ let package = Package(
         name: "DoubleIntKit",
         targets: ["DoubleIntKit"]),
         //=--------------------------------------=
-        // Main Int Kit
-        //=--------------------------------------=
-        .library(
-        name: "MainIntKit",
-        targets: ["MainIntKit"]),
-        //=--------------------------------------=
         // Normal Int Kit
         //=--------------------------------------=
         .library(
@@ -84,7 +78,6 @@ let package = Package(
             "BigIntKit",
             "BitIntKit",
             "DoubleIntKit",
-            "MainIntKit",
             "NormalIntKit",
             "SignedIntKit",
         ]),
@@ -126,7 +119,6 @@ let package = Package(
             "BigIntKit",
             "BitIntKit",
             "DoubleIntKit",
-            "MainIntKit",
             "NormalIntKit",
             "SignedIntKit",
             "TestKit",
@@ -142,16 +134,6 @@ let package = Package(
         name: "DoubleIntKitTests",
         dependencies: ["DoubleIntKit", "TestKit"]),
         //=--------------------------------------=
-        // Main Int Kit
-        //=--------------------------------------=
-        .target(
-        name: "MainIntKit",
-        dependencies: ["CoreKit"]),
-        
-        .testTarget(
-        name: "MainIntKitTests",
-        dependencies: ["MainIntKit", "TestKit"]),
-        //=--------------------------------------=
         // Normal Int Kit
         //=--------------------------------------=
         .target(
@@ -160,7 +142,7 @@ let package = Package(
         
         .testTarget(
         name: "NormalIntKitTests",
-        dependencies: ["MainIntKit", "NormalIntKit", "TestKit"]),
+        dependencies: ["NormalIntKit", "TestKit"]),
         //=--------------------------------------=
         // Signed Int Kit
         //=--------------------------------------=
