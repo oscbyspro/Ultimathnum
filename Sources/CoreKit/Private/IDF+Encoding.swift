@@ -19,7 +19,7 @@ extension Namespace.IntegerDescriptionFormat {
         // MARK: State
         //=--------------------------------------------------------------------=
         
-        @usableFromInline let radix = Radix()
+        @usableFromInline let radix = Solution()
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers

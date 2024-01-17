@@ -18,8 +18,14 @@
 @frozen @usableFromInline package enum Namespace { }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Binary Integer
+// MARK: + Integer
 //=----------------------------------------------------------------------------=
+
+/// A namespace for `Ultimathnum` development.
+///
+/// - Warning: Do not use this namespace outside of `Ultimathnum` development.
+///
+@usableFromInline package typealias IDF = Namespace.IntegerDescriptionFormat
 
 /// A namespace for `Ultimathnum` development.
 ///

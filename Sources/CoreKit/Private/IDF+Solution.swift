@@ -8,12 +8,12 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Integer Description Format x Radix
+// MARK: * Integer Description Format x Solution
 //*============================================================================*
 
 extension Namespace.IntegerDescriptionFormat {
     
-    @frozen public struct Radix {
+    @frozen public struct Solution {
         
         //=--------------------------------------------------------------------=
         // MARK: State
