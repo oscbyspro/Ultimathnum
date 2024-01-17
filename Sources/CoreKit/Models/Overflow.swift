@@ -102,7 +102,7 @@
             }
             
             consuming set {
-                (value: self.value,  overflow: self.overflow) = newValue
+                (value: self.value, overflow: self.overflow) = newValue
             }
         }
         

@@ -11,14 +11,14 @@
 // MARK: * Collection
 //*============================================================================*
 
-package extension BidirectionalCollection {
+extension BidirectionalCollection {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     /// Drops elements that satisfy the predicate from the end of the given `collection`.
-    @inlinable func dropLast(while predicate: (Element) -> Bool) -> SubSequence {
+    @inlinable package func dropLast(while predicate: (Element) -> Bool) -> SubSequence {
         var nextEndIndex = self.endIndex
         
         backwards: while nextEndIndex > self.startIndex {
