@@ -20,10 +20,10 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func addition<T: SystemInteger>(
+    public static func addition<T: BinaryInteger>(
     _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
     file: StaticString = #file, line: UInt = #line) {
-        self.additionAsSomeSystemInteger(lhs, rhs, value, overflow, file: file, line: line)
+        self.additionAsSomeBinaryInteger(lhs, rhs, value, overflow, file: file, line: line)
     }
     
     public static func addition<T: Integer>(
@@ -36,7 +36,7 @@ extension Test {
     // MARK: Utilities x Private
     //=------------------------------------------------------------------------=
     
-    private static func additionAsSomeSystemInteger<T: SystemInteger>(
+    private static func additionAsSomeBinaryInteger<T: BinaryInteger>(
     _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
         XCTAssertEqual(lhs &+ rhs, value, file: file, line: line)

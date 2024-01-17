@@ -32,10 +32,12 @@
 public protocol BinaryInteger: BitCastable, BitOperable, Integer where Magnitude: BinaryInteger, Magnitude.BitPattern == BitPattern {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Meta Date
     //=------------------------------------------------------------------------=
     
     /// Indicates whether this type can represent negative values.
+    ///
+    /// Negative binary integers must be in two's complement form.
     ///
     /// ```
     /// ┌──────┬──────────┬─────┬─────┐
@@ -47,6 +49,19 @@ public protocol BinaryInteger: BitCastable, BitOperable, Integer where Magnitude
     /// ```
     ///
     @inlinable static var isSigned: Bool { get }
+    
+    /// The bit width of this type.
+    ///
+    /// ```
+    /// ┌──────┬──────────┐
+    /// │ type │ bitWidth │
+    /// ├──────┼──────────┤
+    /// │ I64  │ 64       │
+    /// │ IXL  │ infinity │
+    /// └──────┴──────────┘
+    /// ```
+    ///
+    @inlinable static var bitWidth: Magnitude { get }
 }
 
 //=----------------------------------------------------------------------------=
@@ -56,7 +71,35 @@ public protocol BinaryInteger: BitCastable, BitOperable, Integer where Magnitude
 extension BinaryInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities x Comparison
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// ### Development
+    ///
+    /// - FIXME: Consuming caues bad accesss (2024-01-13, Swift 5.9).
+    ///
+    @inlinable public static func &+(lhs: Self, rhs: Self) -> Self {
+        Overflow.ignore({ try lhs.plus(rhs) })
+    }
+    
+    /// ### Development
+    ///
+    /// - FIXME: Consuming caues bad accesss (2024-01-13, Swift 5.9).
+    ///
+    @inlinable public static func &-(lhs: Self, rhs: Self) -> Self {
+        Overflow.ignore({ try lhs.minus(rhs) })
+    }
+    
+    /// ### Development
+    ///
+    /// - FIXME: Consuming caues bad accesss (2024-01-13, Swift 5.9).
+    ///
+    @inlinable public static func &*(lhs: Self, rhs: Self) -> Self {
+        Overflow.ignore({ try lhs.times(rhs) })
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
     /// Returns whether this value is less than zero.

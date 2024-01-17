@@ -26,6 +26,12 @@ extension Test {
         self.multiplicationAsSomeSystemInteger(lhs, rhs, product, overflow, file: file, line: line)
     }
     
+    public static func multiplication<T: BinaryInteger>(
+    _ lhs: T, _ rhs: T, _ value: T,_ overflow: Bool = false,
+    file: StaticString = #file, line: UInt = #line) {
+        self.multiplicationAsSomeBinaryInteger(lhs, rhs, value, overflow, file: file, line: line)
+    }
+    
     public static func multiplication<T: Integer>(
     _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
     file: StaticString = #file, line: UInt = #line) {
@@ -39,12 +45,18 @@ extension Test {
     private static func multiplicationAsSomeSystemInteger<T: SystemInteger>(
     _ lhs: T, _ rhs: T, _ product: Doublet<T>, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
-        XCTAssertEqual(lhs &* rhs, T(bitPattern: product.low), file: file, line: line)
-        XCTAssertEqual(rhs &* lhs, T(bitPattern: product.low), file: file, line: line)
-        //=--------------------------------------=
         XCTAssertEqual(T.multiplying(lhs, by: rhs), (product), file: file, line: line)
         //=--------------------------------------=
-        Test.multiplicationAsSomeInteger(lhs, rhs, T(bitPattern: product.low), overflow, file: file, line: line)
+        Test.multiplicationAsSomeBinaryInteger(lhs, rhs, T(bitPattern: product.low), overflow, file: file, line: line)
+    }
+    
+    private static func multiplicationAsSomeBinaryInteger<T: BinaryInteger>(
+    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
+        //=--------------------------------------=
+        XCTAssertEqual(lhs &* rhs, value, file: file, line: line)
+        XCTAssertEqual(rhs &* lhs, value, file: file, line: line)
+        //=--------------------------------------=
+        Test.multiplicationAsSomeInteger(lhs, rhs, value, overflow, file: file, line: line)
     }
     
     private static func multiplicationAsSomeInteger<T: Integer>(

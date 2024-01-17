@@ -32,12 +32,6 @@
 public protocol SystemInteger: BinaryInteger where Magnitude: UnsignedInteger & SystemInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
-    //=------------------------------------------------------------------------=
-    
-    @inlinable static var bitWidth: Magnitude { get }
-    
-    //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
@@ -85,49 +79,6 @@ public protocol SystemInteger: BinaryInteger where Magnitude: UnsignedInteger & 
 extension SystemInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Addition
-    //=------------------------------------------------------------------------=
-    
-    /// ### Development
-    ///
-    /// - FIXME: Consuming caues bad accesss (2024-01-13, Swift 5.9).
-    ///
-    @inlinable public static func &+(lhs: Self, rhs: Self) -> Self {
-        Overflow.ignore({ try lhs.plus(rhs) })
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Subtraction
-    //=------------------------------------------------------------------------=
-    
-    /// ### Development
-    ///
-    /// - FIXME: Consuming caues bad accesss (2024-01-13, Swift 5.9).
-    ///
-    @inlinable public static func &-(lhs: Self, rhs: Self) -> Self {
-        Overflow.ignore({ try lhs.minus(rhs) })
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Multiplication
-    //=------------------------------------------------------------------------=
-    
-    /// ### Development
-    ///
-    /// - FIXME: Consuming caues bad accesss (2024-01-13, Swift 5.9).
-    ///
-    @inlinable public static func &*(lhs: Self, rhs: Self) -> Self {
-        Overflow.ignore({ try lhs.times(rhs) })
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Details
-//=----------------------------------------------------------------------------=
-
-extension SystemInteger {
-    
-    //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
@@ -155,6 +106,10 @@ extension SystemInteger {
         self = Bool(bit) ?  1 : 0
     }
     
+    /// ### Development
+    ///
+    /// - Consider adding this every binary integer.
+    ///
     @inlinable public init(repeating bit: Bit) {
         self = Bool(bit) ? ~0 : 0
     }

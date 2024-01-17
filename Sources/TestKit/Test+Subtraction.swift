@@ -20,12 +20,6 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func subtraction<T: SystemInteger>(
-    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
-    file: StaticString = #file, line: UInt = #line) {
-        self.subtractionAsSomeSystemInteger(lhs, rhs, value, overflow, file: file, line: line)
-    }
-    
     public static func subtraction<T: BinaryInteger>(
     _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
     file: StaticString = #file, line: UInt = #line) {
@@ -42,16 +36,10 @@ extension Test {
     // MARK: Utilities x Private
     //=------------------------------------------------------------------------=
     
-    private static func subtractionAsSomeSystemInteger<T: SystemInteger>(
+    private static func subtractionAsSomeBinaryInteger<T: BinaryInteger>(
     _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
         XCTAssertEqual(lhs &- rhs, value, file: file, line: line)
-        //=--------------------------------------=
-        Test.subtractionAsSomeBinaryInteger(lhs, rhs, value, overflow, file: file, line: line)
-    }
-    
-    private static func subtractionAsSomeBinaryInteger<T: BinaryInteger>(
-    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
         if  overflow {
             let abc: T = Overflow.ignore({ try rhs.minus(lhs) })
