@@ -182,9 +182,9 @@ extension SystemInteger {
         self.init(load: pattern)
         
         let current = self.words as Words
-        let success = self.isLessThanZero == pattern.isLessThanZero as Bool as Bool as Bool
-        &&  current.last == pattern.base.dropFirst(Swift.max(0, current.count - 01 )).first
-        &&  pattern.base.dropFirst(current.count).allSatisfy({  $0 == pattern.sign })
+        let success = self.isLessThanZero == pattern.isLessThanZero as Bool as Bool
+        && (current.last ?? 0) == (pattern.base.dropFirst(Swift.max(0, current.count - 1 )).first ?? 0)
+        &&  pattern.base.dropFirst(current.count).allSatisfy({ $0 == pattern.sign })
         
         if !success {
             throw Overflow(consume self)

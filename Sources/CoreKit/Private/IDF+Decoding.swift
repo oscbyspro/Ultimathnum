@@ -81,7 +81,7 @@ extension Namespace.IntegerDescriptionFormat {
         // MARK: State
         //=--------------------------------------------------------------------=
         
-        @usableFromInline let radix = Solution()
+        @usableFromInline let radix = Exponentiation()
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers
@@ -93,21 +93,19 @@ extension Namespace.IntegerDescriptionFormat {
         // MARK: Utilities
         //=--------------------------------------------------------------------=
         
-        @inlinable public func decode<Magnitude>(_ description: StaticString)
-        -> (sign: Sign, magnitude: Magnitude) where Magnitude: Integer, Magnitude.Magnitude == Magnitude {
+        @inlinable public func decode<T: Integer>(_ description: StaticString) -> T {
             description.withUTF8Buffer({ try! self.decode($0) })
         }
         
-        @inlinable public func decode<Magnitude>(_ description: some StringProtocol)
-        throws -> (sign: Sign, magnitude: Magnitude) where Magnitude: Integer, Magnitude.Magnitude == Magnitude {
+        @inlinable public func decode<T: Integer>(_ description: some StringProtocol) throws -> T {
             var description = String(description); return try description.withUTF8(self.decode)
         }
         
-        @inlinable public func decode<Magnitude>(_ description: UnsafeBufferPointer<UInt8>)
-        throws -> (sign: Sign, magnitude: Magnitude) where Magnitude: Integer, Magnitude.Magnitude == Magnitude {
-            let inputs = Namespace.IntegerDescriptionFormat.makeSignBody(from: description)
-            let numerals = UnsafeBufferPointer(rebasing: inputs.body)
-            return (sign: inputs.sign, magnitude: try self.magnitude(numerals: (numerals)))
+        @inlinable public func decode<T: Integer>(_ description: UnsafeBufferPointer<UInt8>) throws -> T {
+            let components = Namespace.IntegerDescriptionFormat.makeSignBody(from: description)
+            let numerals = UnsafeBufferPointer(rebasing: components.body)
+            let magnitude: T.Magnitude = try self.magnitude(numerals: numerals)
+            return try T(sign: components.sign, magnitude: magnitude)
         }
     }
 }
@@ -131,7 +129,6 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
         //=--------------------------------------=
         var digits: UnsafeBufferPointer<UInt8>.SubSequence = numerals.drop(while:{ $0 == UInt8(ascii: "0") })
         let division = try! IX(digits.count).divided(by: self.radix.exponent)
-        //=--------------------------------------=
         return try Namespace.withUnsafeTemporaryAllocation(of: UX.self, count: try! division.ceil().stdlib) {
             var words = consume $0
             var index = words.startIndex
@@ -167,7 +164,7 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
             }
             
             Swift.assert(digits.isEmpty)
-            Swift.assert(index == words.endIndex)
+            Swift.assert(index == words.endIndex)            
             return try Magnitude(words: words, isSigned: false)
         }
     }

@@ -8,12 +8,12 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Integer Description Format x Solution
+// MARK: * Integer Description Format x Exponentiation
 //*============================================================================*
 
 extension Namespace.IntegerDescriptionFormat {
     
-    @frozen public struct Solution {
+    @frozen public struct Exponentiation {
         
         //=--------------------------------------------------------------------=
         // MARK: State
@@ -46,7 +46,7 @@ extension Namespace.IntegerDescriptionFormat {
         }
         
         @inlinable public func divisibilityByPowerUpperBound(magnitude: some Collection<UX>) -> IX {
-            IX(magnitude.count) * UX.bitWidth.load(as: IX.self) / base.count(0, option: .descending).load(as: IX.self) + 1
+            IX(magnitude.count) * IX(bitPattern: UX.bitWidth) / IX(bitPattern: base.count(0, option: .descending)) + 1
         }
     }
 }
