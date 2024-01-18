@@ -52,8 +52,8 @@ extension Namespace.StrictUnsignedInteger where Base: MutableCollection {
     /// ```
     ///
     @inlinable package static func initializeToQuotientFormRemainderByLongAlgorithm2111MSB<T>(
-    _ base: inout Base, dividing dividend: inout Base, by divisor: UnsafeBufferPointer<T>)
-    where Base == UnsafeMutableBufferPointer<T> {
+    _ base: inout Base, dividing dividend: inout Base, by divisor: UnsafeBufferPointer<T>) where
+    Base == UnsafeMutableBufferPointer<T> {
         //=--------------------------------------=
         Swift.assert(base.count >= 1 && base.count == dividend.count - divisor.count,
         "the dividend must be wider than the divisor")

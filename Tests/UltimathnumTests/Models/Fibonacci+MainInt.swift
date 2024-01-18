@@ -42,7 +42,7 @@ extension FibonacciTests {
             typealias F = Fibonacci<T>
             
             min: do {
-                checkLowerBound(F.self)
+                checkInvariantsAtZero(F.self)
             }
             
             brr: do {
@@ -91,35 +91,35 @@ extension FibonacciTests {
     
     func testCoreIntLimit() {
         if  let sequence = Test.some(try? Fibonacci<I8>(10)) {
-            checkUpperBound(sequence, (index: 10, element: 0000000000000000055, next: 00000000000000000089))
+            checkInvariantsAtLastElement(sequence, (index: 10, element: 0000000000000000055, next: 00000000000000000089))
         }
         
         if  let sequence = Test.some(try? Fibonacci<U8>(12)) {
-            checkUpperBound(sequence, (index: 12, element: 0000000000000000144, next: 00000000000000000233))
+            checkInvariantsAtLastElement(sequence, (index: 12, element: 0000000000000000144, next: 00000000000000000233))
         }
                 
         if  let sequence = Test.some(try? Fibonacci<I16>(22)) {
-            checkUpperBound(sequence, (index: 22, element: 0000000000000017711, next: 00000000000000028657))
+            checkInvariantsAtLastElement(sequence, (index: 22, element: 0000000000000017711, next: 00000000000000028657))
         }
         
         if  let sequence = Test.some(try? Fibonacci<U16>(23)) {
-            checkUpperBound(sequence, (index: 23, element: 0000000000000028657, next: 00000000000000046368))
+            checkInvariantsAtLastElement(sequence, (index: 23, element: 0000000000000028657, next: 00000000000000046368))
         }
         
         if  let sequence = Test.some(try? Fibonacci<I32>(45)) {
-            checkUpperBound(sequence, (index: 45, element: 0000000001134903170, next: 00000000001836311903))
+            checkInvariantsAtLastElement(sequence, (index: 45, element: 0000000001134903170, next: 00000000001836311903))
         }
         
         if  let sequence = Test.some(try? Fibonacci<U32>(46)) {
-            checkUpperBound(sequence, (index: 46, element: 0000000001836311903, next: 00000000002971215073))
+            checkInvariantsAtLastElement(sequence, (index: 46, element: 0000000001836311903, next: 00000000002971215073))
         }
         
         if  let sequence = Test.some(try? Fibonacci<I64>(91)) {
-            checkUpperBound(sequence, (index: 91, element: 4660046610375530309, next: 07540113804746346429))
+            checkInvariantsAtLastElement(sequence, (index: 91, element: 4660046610375530309, next: 07540113804746346429))
         }
         
         if  let sequence = Test.some(try? Fibonacci<U64>(92)) {
-            checkUpperBound(sequence, (index: 92, element: 7540113804746346429, next: 12200160415121876738))
+            checkInvariantsAtLastElement(sequence, (index: 92, element: 7540113804746346429, next: 12200160415121876738))
         }
     }
 }

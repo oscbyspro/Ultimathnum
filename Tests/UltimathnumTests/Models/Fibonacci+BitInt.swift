@@ -31,8 +31,8 @@ extension FibonacciTests {
     
     func testBitInt() {
         min: do {
-            checkLowerBound(Fibonacci<I1>.self)
-            checkLowerBound(Fibonacci<U1>.self)
+            checkInvariantsAtZero(Fibonacci<I1>.self)
+            checkInvariantsAtZero(Fibonacci<U1>.self)
         }
         
         signed: do {

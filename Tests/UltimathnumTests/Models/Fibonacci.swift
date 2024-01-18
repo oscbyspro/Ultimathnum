@@ -60,7 +60,7 @@ final class FibonacciTests: XCTestCase {
     // MARK: Utilities x Min, Max
     //=------------------------------------------------------------------------=
     
-    func checkLowerBound<T>(_ sequence: Fibonacci<T>.Type, invariants: Bool = true, file: StaticString = #file, line: UInt = #line) {
+    func checkInvariantsAtZero<T>(_ sequence: Fibonacci<T>.Type, invariants: Bool = true, file: StaticString = #file, line: UInt = #line) {
         typealias F = Fibonacci<T>
         
         if  T.isSigned {
@@ -83,7 +83,7 @@ final class FibonacciTests: XCTestCase {
         }
     }
     
-    func checkUpperBound<T>(_ sequence: Fibonacci<T>, invariants: Bool = true, _ expectation: Components<T>, file: StaticString = #file, line: UInt = #line) {
+    func checkInvariantsAtLastElement<T>(_ sequence: Fibonacci<T>, invariants: Bool = true, _ expectation: Components<T>, file: StaticString = #file, line: UInt = #line) {
         var ((sequence)) = sequence
         check(sequence, expectation, invariants: invariants,  file: file, line: line)
         XCTAssertThrowsError(try sequence.increment())
