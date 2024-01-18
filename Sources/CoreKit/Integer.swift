@@ -17,7 +17,7 @@
 ///
 /// - Requires: Zero must be representable.
 ///
-public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Sendable {
+public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Sendable, _MaybeLosslessStringConvertible {
     
     associatedtype Words: RandomAccessCollection<UX>
     
@@ -152,5 +152,26 @@ extension Integer {
     
     @inlinable public borrowing func signum() -> Signum {
         self.compared(to: 0)
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Lossless String Convertible
+//=----------------------------------------------------------------------------=
+// TODO: @_unavailableInEmbedded is not a known attribute in Swift 5.9
+//=----------------------------------------------------------------------------=
+
+/* @_unavailableInEmbedded */ extension Integer {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init?(_ description: String) {
+        if let value: Self = try? IDF.Decoder().decode(description) { self = value } else { return nil }
+    }
+    
+    @inlinable public var description: String {
+        IDF.Encoder().encode(self)
     }
 }
