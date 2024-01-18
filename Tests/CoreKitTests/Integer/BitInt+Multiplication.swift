@@ -7,12 +7,11 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import BitIntKit
 import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Bit Int x Addition
+// MARK: * Bit Int x Multiplication
 //*============================================================================*
 
 extension BitIntTests {
@@ -21,35 +20,23 @@ extension BitIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testAddition() {
+    func testMultiplication() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.addition( 0 as T,  0 as T,  0 as T)
-            Test.addition(-1 as T,  0 as T, -1 as T)
-            Test.addition( 0 as T, -1 as T, -1 as T)
-            Test.addition(-1 as T, -1 as T,  0 as T, true)
+            typealias P = Doublet<T>
+            
+            Test.multiplication( 0 as T,  0 as T, P(low: 0, high:  0), false)
+            Test.multiplication(-1 as T,  0 as T, P(low: 0, high:  0), false)
+            Test.multiplication( 0 as T, -1 as T, P(low: 0, high:  0), false)
+            Test.multiplication(-1 as T, -1 as T, P(low: 1, high:  0), true )
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.addition( 0 as T,  0 as T,  0 as T)
-            Test.addition( 1 as T,  0 as T,  1 as T)
-            Test.addition( 0 as T,  1 as T,  1 as T)
-            Test.addition( 1 as T,  1 as T,  0 as T, true)
-        }
-        
-        for type in Self.types {
-            type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
-        }
-    }
-    
-    func testIncrementation() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.incrementation(-1 as T,  0 as T)
-            Test.incrementation( 0 as T, -1 as T, true)
-        }
-        
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.incrementation( 0 as T,  1 as T)
-            Test.incrementation( 1 as T,  0 as T, true)
+            typealias P = Doublet<T>
+            
+            Test.multiplication( 0 as T,  0 as T, P(low: 0, high:  0), false)
+            Test.multiplication( 1 as T,  0 as T, P(low: 0, high:  0), false)
+            Test.multiplication( 0 as T,  1 as T, P(low: 0, high:  0), false)
+            Test.multiplication( 1 as T,  1 as T, P(low: 1, high:  0), false)
         }
         
         for type in Self.types {

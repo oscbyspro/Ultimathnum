@@ -13,11 +13,6 @@
       "targets" : [
         {
           "containerPath" : "container:",
-          "identifier" : "BitIntKit",
-          "name" : "BitIntKit"
-        },
-        {
-          "containerPath" : "container:",
           "identifier" : "CoreKit",
           "name" : "CoreKit"
         },
@@ -50,13 +45,6 @@
     }
   },
   "testTargets" : [
-    {
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "BitIntKitTests",
-        "name" : "BitIntKitTests"
-      }
-    },
     {
       "target" : {
         "containerPath" : "container:",

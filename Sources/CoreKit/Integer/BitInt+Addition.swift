@@ -7,34 +7,32 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Bit Int x Bit x Signed
+// MARK: * Bit Int x Addition x Signed
 //*============================================================================*
 
 extension BitInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Accessors
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
-        self.magnitude.count(bit, option: option)
+    @inlinable public consuming func plus(_ increment: borrowing Self) throws -> Self {
+        try Overflow.resolve(Self(bitPattern: (copy self).bitPattern ^ increment.bitPattern), overflow: self & increment != 0)
     }
 }
 
 //*============================================================================*
-// MARK: * Bit Int x Bit x Unsigned
+// MARK: * Bit Int x Addition x Unsigned
 //*============================================================================*
 
 extension BitInt.Magnitude {
     
     //=------------------------------------------------------------------------=
-    // MARK: Accessors
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
-        if bit == 0 { ~self } else { self }
+    @inlinable public consuming func plus(_ increment: borrowing Self) throws -> Self {
+        try Overflow.resolve(Self(bitPattern: (copy self).bitPattern ^ increment.bitPattern), overflow: self & increment != 0)
     }
 }

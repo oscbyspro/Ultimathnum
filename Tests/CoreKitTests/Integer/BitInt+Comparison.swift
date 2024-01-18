@@ -7,12 +7,11 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import BitIntKit
 import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Bit Int x Multiplication
+// MARK: * Bit Int x Comparison
 //*============================================================================*
 
 extension BitIntTests {
@@ -21,23 +20,19 @@ extension BitIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testMultiplication() {
+    func testComparison() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias P = Doublet<T>
-            
-            Test.multiplication( 0 as T,  0 as T, P(low: 0, high:  0), false)
-            Test.multiplication(-1 as T,  0 as T, P(low: 0, high:  0), false)
-            Test.multiplication( 0 as T, -1 as T, P(low: 0, high:  0), false)
-            Test.multiplication(-1 as T, -1 as T, P(low: 1, high:  0), true )
+            Test.comparison( 0 as T,  0 as T,  0 as Signum)
+            Test.comparison(-1 as T,  0 as T, -1 as Signum)
+            Test.comparison( 0 as T, -1 as T,  1 as Signum)
+            Test.comparison(-1 as T, -1 as T,  0 as Signum)
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias P = Doublet<T>
-            
-            Test.multiplication( 0 as T,  0 as T, P(low: 0, high:  0), false)
-            Test.multiplication( 1 as T,  0 as T, P(low: 0, high:  0), false)
-            Test.multiplication( 0 as T,  1 as T, P(low: 0, high:  0), false)
-            Test.multiplication( 1 as T,  1 as T, P(low: 1, high:  0), false)
+            Test.comparison( 0 as T,  0 as T,  0 as Signum)
+            Test.comparison( 1 as T,  0 as T,  1 as Signum)
+            Test.comparison( 0 as T,  1 as T, -1 as Signum)
+            Test.comparison( 1 as T,  1 as T,  0 as Signum)
         }
         
         for type in Self.types {

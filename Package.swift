@@ -37,12 +37,6 @@ let package = Package(
         name: "BigIntKit",
         targets: ["BigIntKit"]),
         //=--------------------------------------=
-        // Bit Int Kit
-        //=--------------------------------------=
-        .library(
-        name: "BitIntKit",
-        targets: ["BitIntKit"]),
-        //=--------------------------------------=
         // Core Kit
         //=--------------------------------------=
         .library(
@@ -76,7 +70,6 @@ let package = Package(
         dependencies: [
             "CoreKit",
             "BigIntKit",
-            "BitIntKit",
             "DoubleIntKit",
             "NormalIntKit",
             "SignedIntKit",
@@ -96,16 +89,6 @@ let package = Package(
         name: "BigIntKitTests",
         dependencies: ["BigIntKit", "TestKit"]),
         //=--------------------------------------=
-        // Bit Int Kit
-        //=--------------------------------------=
-        .target(
-        name: "BitIntKit",
-        dependencies: ["CoreKit"]),
-        
-        .testTarget(
-        name: "BitIntKitTests",
-        dependencies: ["BitIntKit", "TestKit"]),
-        //=--------------------------------------=
         // Core Kit
         //=--------------------------------------=
         .target(
@@ -117,7 +100,6 @@ let package = Package(
         dependencies: [
             "CoreKit",
             "BigIntKit",
-            "BitIntKit",
             "DoubleIntKit",
             "NormalIntKit",
             "SignedIntKit",

@@ -7,10 +7,8 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Bit Int x Addition x Signed
+// MARK: * Bit Int x Subtraction x Signed
 //*============================================================================*
 
 extension BitInt {
@@ -19,13 +17,17 @@ extension BitInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func plus(_ increment: borrowing Self) throws -> Self {
-        try Overflow.resolve(Self(bitPattern: (copy self).bitPattern ^ increment.bitPattern), overflow: self & increment != 0)
+    @inlinable public consuming func negated() throws -> Self {
+        try Overflow.resolve(self, overflow: self != 0)
+    }
+    
+    @inlinable public consuming func minus(_ decrement: borrowing Self) throws -> Self {
+        try Overflow.resolve(Self(bitPattern: (copy self).bitPattern ^ decrement.bitPattern), overflow: self > decrement)
     }
 }
 
 //*============================================================================*
-// MARK: * Bit Int x Addition x Unsigned
+// MARK: * Bit Int x Subtraction x Unsigned
 //*============================================================================*
 
 extension BitInt.Magnitude {
@@ -34,7 +36,11 @@ extension BitInt.Magnitude {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func plus(_ increment: borrowing Self) throws -> Self {
-        try Overflow.resolve(Self(bitPattern: (copy self).bitPattern ^ increment.bitPattern), overflow: self & increment != 0)
+    @inlinable public consuming func negated() throws -> Self {
+        try Overflow.resolve(self, overflow: self != 0)
+    }
+    
+    @inlinable public consuming func minus(_ decrement: borrowing Self) throws -> Self {
+        try Overflow.resolve(Self(bitPattern: (copy self).bitPattern ^ decrement.bitPattern), overflow: self < decrement)
     }
 }

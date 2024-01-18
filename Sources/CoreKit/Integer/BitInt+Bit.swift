@@ -7,58 +7,32 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Bit Int x Shift x Signed
+// MARK: * Bit Int x Bit x Signed
 //*============================================================================*
 
 extension BitInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs
-    }
-    
-    @inlinable public static func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs
-    }
-    
-    @inlinable public static func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        rhs == 0 ? lhs : 0
-    }
-    
-    @inlinable public static func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs
+    @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
+        self.magnitude.count(bit, option: option)
     }
 }
 
 //*============================================================================*
-// MARK: * Bit Int x Shift x Unsigned
+// MARK: * Bit Int x Bit x Unsigned
 //*============================================================================*
 
 extension BitInt.Magnitude {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        rhs == 0 ? lhs : 0
-    }
-    
-    @inlinable public static func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs
-    }
-    
-    @inlinable public static func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        rhs == 0 ? lhs : 0
-    }
-    
-    @inlinable public static func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs
+    @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
+        if bit == 0 { ~self } else { self }
     }
 }

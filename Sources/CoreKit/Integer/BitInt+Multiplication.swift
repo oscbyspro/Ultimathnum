@@ -7,58 +7,48 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Bit Int x Words x Signed
+// MARK: * Bit Int x Multiplication x Signed
 //*============================================================================*
 
 extension BitInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(load source: UX) {
-        self.init(bitPattern: Bit(source & 1 == 1))
+    @inlinable public consuming func squared() throws -> Self {
+        try Overflow.resolve(copy self, overflow: self == -1)
     }
     
-    @inlinable public init(load source: Pattern<some RandomAccessCollection<UX>>) {
-        self.init(load: source.load(as: UX.self))
+    @inlinable public consuming func times(_ multiplier: borrowing Self) throws -> Self {
+        try Overflow.resolve(copy self & multiplier, overflow: self & multiplier == -1)
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public func load(as type: UX.Type) -> UX {
-        UX(repeating: self.bitPattern)
+    @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> Doublet<Self> {
+        Doublet(low: Magnitude(bitPattern: multiplicand & multiplier), high: 0)
     }
 }
 
 //*============================================================================*
-// MARK: * Bit Int x Words x Unsigned
+// MARK: * Bit Int x Multiplication x Unsigned
 //*============================================================================*
 
 extension BitInt.Magnitude {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(load source: UX) {
-        self.init(bitPattern: Bit(source & 1 == 1))
+    @inlinable public consuming func squared() throws -> Self {
+        try Overflow.resolve(self, overflow: false)
     }
     
-    @inlinable public init(load source: Pattern<some RandomAccessCollection<UX>>) {
-        self.init(load: source.load(as: UX.self))
+    @inlinable public consuming func times(_ multiplier: borrowing Self) throws -> Self {
+        try Overflow.resolve(self & multiplier, overflow: false)
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-        
-    @inlinable public func load(as type: UX.Type) -> UX {
-        UX(self.bitPattern)
+    @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> Doublet<Self> {
+        Doublet(low: Magnitude(bitPattern: multiplicand & multiplier), high: 0)
     }
 }

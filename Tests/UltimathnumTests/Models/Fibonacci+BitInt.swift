@@ -20,7 +20,7 @@ extension FibonacciTests {
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    private static let bitIntKit: [any SystemsInteger.Type] = [
+    private static let bitIntList: [any SystemsInteger.Type] = [
         I1.self,
         U1.self
     ]

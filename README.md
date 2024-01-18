@@ -6,7 +6,6 @@ Greatness.
 
 * [CoreKit](#corekit)
 * [BigIntKit](#bigintkit)
-* [BitIntKit](#bitintkit)
 * [DoubleIntKit](#doubleintkit)
 * [NormalIntKit](#normalintkit)
 * [SignedIntKit](#signedintkit)
@@ -22,13 +21,6 @@ Greatness.
 <a name="bigintkit"/>
 
 ## BigIntKit
-
-> [!IMPORTANT]
-> It's a work in progress.
-
-<a name="bitintkit"/>
-
-## BitIntKit
 
 > [!IMPORTANT]
 > It's a work in progress.

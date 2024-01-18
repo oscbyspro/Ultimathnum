@@ -18,7 +18,6 @@
 //=----------------------------------------------------------------------------=
 
 @_exported import BigIntKit
-@_exported import BitIntKit
 @_exported import DoubleIntKit
 @_exported import NormalIntKit
 @_exported import SignedIntKit

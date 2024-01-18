@@ -7,50 +7,56 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Bit Int x Comparison x Signed
+// MARK: * Bit Int x Shift x Signed
 //*============================================================================*
 
 extension BitInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func compared(to other: Self) -> Signum {
-        self == other ? 0 : self < other ? -1 : 1
+    @inlinable public static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        lhs
     }
     
-    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.bitPattern == rhs.bitPattern
+    @inlinable public static func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        lhs
     }
     
-    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        (lhs.bitPattern, rhs.bitPattern) == (1, 0)
+    @inlinable public static func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        rhs == 0 ? lhs : 0
+    }
+    
+    @inlinable public static func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        lhs
     }
 }
 
 //*============================================================================*
-// MARK: * Bit Int x Comparison x Unsigned
+// MARK: * Bit Int x Shift x Unsigned
 //*============================================================================*
 
 extension BitInt.Magnitude {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func compared(to other: Self) -> Signum {
-        self == other ? 0 : self < other ? -1 : 1
+    @inlinable public static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        rhs == 0 ? lhs : 0
     }
     
-    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.bitPattern == rhs.bitPattern
+    @inlinable public static func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        lhs
     }
     
-    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        (lhs.bitPattern, rhs.bitPattern) == (0, 1)
+    @inlinable public static func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        rhs == 0 ? lhs : 0
+    }
+    
+    @inlinable public static func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        lhs
     }
 }

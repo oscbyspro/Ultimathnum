@@ -7,50 +7,48 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Bit Int x Multiplication x Signed
+// MARK: * Bit Int x Comparison x Signed
 //*============================================================================*
 
 extension BitInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func squared() throws -> Self {
-        try Overflow.resolve(copy self, overflow: self == -1)
+    @inlinable public func compared(to other: Self) -> Signum {
+        self == other ? 0 : self < other ? -1 : 1
     }
     
-    @inlinable public consuming func times(_ multiplier: borrowing Self) throws -> Self {
-        try Overflow.resolve(copy self & multiplier, overflow: self & multiplier == -1)
+    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        lhs.bitPattern == rhs.bitPattern
     }
     
-    @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> Doublet<Self> {
-        Doublet(low: Magnitude(bitPattern: multiplicand & multiplier), high: 0)
+    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        (lhs.bitPattern, rhs.bitPattern) == (1, 0)
     }
 }
 
 //*============================================================================*
-// MARK: * Bit Int x Multiplication x Unsigned
+// MARK: * Bit Int x Comparison x Unsigned
 //*============================================================================*
 
 extension BitInt.Magnitude {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func squared() throws -> Self {
-        try Overflow.resolve(self, overflow: false)
+    @inlinable public func compared(to other: Self) -> Signum {
+        self == other ? 0 : self < other ? -1 : 1
     }
     
-    @inlinable public consuming func times(_ multiplier: borrowing Self) throws -> Self {
-        try Overflow.resolve(self & multiplier, overflow: false)
+    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        lhs.bitPattern == rhs.bitPattern
     }
     
-    @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> Doublet<Self> {
-        Doublet(low: Magnitude(bitPattern: multiplicand & multiplier), high: 0)
+    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        (lhs.bitPattern, rhs.bitPattern) == (0, 1)
     }
 }

@@ -7,12 +7,11 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import BitIntKit
 import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Bit Int x Subtraction
+// MARK: * Bit Int x Addition
 //*============================================================================*
 
 extension BitIntTests {
@@ -21,15 +20,19 @@ extension BitIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testNegation() {
+    func testAddition() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.subtraction( 0,  0,  0 as T)
-            Test.subtraction( 0, -1, -1 as T, true)
+            Test.addition( 0 as T,  0 as T,  0 as T)
+            Test.addition(-1 as T,  0 as T, -1 as T)
+            Test.addition( 0 as T, -1 as T, -1 as T)
+            Test.addition(-1 as T, -1 as T,  0 as T, true)
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.subtraction( 0,  0,  0 as T)
-            Test.subtraction( 0,  1,  1 as T, true)
+            Test.addition( 0 as T,  0 as T,  0 as T)
+            Test.addition( 1 as T,  0 as T,  1 as T)
+            Test.addition( 0 as T,  1 as T,  1 as T)
+            Test.addition( 1 as T,  1 as T,  0 as T, true)
         }
         
         for type in Self.types {
@@ -37,35 +40,15 @@ extension BitIntTests {
         }
     }
     
-    func testSubtraction() {
+    func testIncrementation() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.subtraction( 0,  0,  0 as T)
-            Test.subtraction(-1,  0, -1 as T)
-            Test.subtraction( 0, -1, -1 as T, true)
-            Test.subtraction(-1, -1,  0 as T)
+            Test.incrementation(-1 as T,  0 as T)
+            Test.incrementation( 0 as T, -1 as T, true)
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.subtraction( 0,  0,  0 as T)
-            Test.subtraction( 1,  0,  1 as T)
-            Test.subtraction( 0,  1,  1 as T, true)
-            Test.subtraction( 1,  1,  0 as T)
-        }
-        
-        for type in Self.types {
-            type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
-        }
-    }
-    
-    func testDecrementation() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.decrementation(-1 as T,  0 as T, true)
-            Test.decrementation( 0 as T, -1 as T)
-        }
-        
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.decrementation( 0 as T,  1 as T, true)
-            Test.decrementation( 1 as T,  0 as T)
+            Test.incrementation( 0 as T,  1 as T)
+            Test.incrementation( 1 as T,  0 as T, true)
         }
         
         for type in Self.types {
