@@ -59,13 +59,14 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
         let (y1s, y0s) = SUISS.partitionNoRedundantZeros(rhs, at: k1c)
         let (z1c, z0c) = (x1s.count + y1s.count, x0s.count + y0s.count)
         
-        Namespace.withUnsafeTemporaryAllocation(of: Base.Element.self, count: 2  * (z0c + z1c)) { buffer in
+        Namespace.withUnsafeTemporaryAllocation(of: Base.Element.self, count: 2 * (z0c + z1c)) { buffer in
             var pointer: UnsafeMutablePointer<Base.Element>
+            var index:   UnsafeMutableBufferPointer<Base.Element>.Index
             //=----------------------------------=
             // pointee: deferred deinitialization
             //=----------------------------------=
             defer {
-                buffer.baseAddress!.deinitialize(count: buffer.count)
+                buffer.deinitialize()
             }
             //=----------------------------------=
             // regions
@@ -75,28 +76,28 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
             var x1 = UnsafeMutableBufferPointer(start: pointer, count: x1s.count); pointer += x1.count
             var y0 = UnsafeMutableBufferPointer(start: pointer, count: y0s.count); pointer += y0.count
             var y1 = UnsafeMutableBufferPointer(start: pointer, count: y1s.count); pointer += y1.count
-            var z0 = UnsafeMutableBufferPointer(start: pointer, count: z0c);       pointer += z0.count
-            var z1 = UnsafeMutableBufferPointer(start: pointer, count: z1c);       pointer += z1.count
+            var z0 = UnsafeMutableBufferPointer(start: pointer, count: z0c/*--*/); pointer += z0.count
+            var z1 = UnsafeMutableBufferPointer(start: pointer, count: z1c/*--*/); pointer += z1.count
             Swift.assert(buffer.baseAddress!.distance(to: pointer) == buffer.count)
             //=----------------------------------=
             // pointee: initialization 1
             //=----------------------------------=
-            x0.baseAddress!.initialize(from: x0s.baseAddress!, count: x0s.count)
-            x1.baseAddress!.initialize(from: x1s.baseAddress!, count: x1s.count)
-            y0.baseAddress!.initialize(from: y0s.baseAddress!, count: y0s.count)
-            y1.baseAddress!.initialize(from: y1s.baseAddress!, count: y1s.count)
+            _ = x0.initialize(fromContentsOf: x0s)
+            _ = x1.initialize(fromContentsOf: x1s)
+            _ = y0.initialize(fromContentsOf: y0s)
+            _ = y1.initialize(fromContentsOf: y1s)
             
             SUISS.initialize(&z0, to: UnsafeBufferPointer(x0), times: UnsafeBufferPointer(y0))
             SUISS.initialize(&z1, to: UnsafeBufferPointer(x1), times: UnsafeBufferPointer(y1))
             
-            let xs = SUISS.compare(x1, to: x0) < 0
+            let xs = SUISS.compare(x1, to: x0) == -1 as Signum
             if  xs {
-                Swift.swap(&x0,  &x1)
+                Swift.swap(&x0, &x1)
             }
             
-            let ys = SUISS.compare(y1, to: y0) < 0
+            let ys = SUISS.compare(y1, to: y0) == -1 as Signum
             if  ys {
-                Swift.swap(&y0,  &y1)
+                Swift.swap(&y0, &y1)
             }
             
             SUISS.decrement( &x1, by: UnsafeBufferPointer(x0))
@@ -104,24 +105,22 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
             //=----------------------------------=
             // product must fit in combined width
             //=----------------------------------=
-            Swift.assert(z1.dropFirst(base[k2c...].count).allSatisfy({ $0 == 0 }))
+            Swift.assert(z1.dropFirst(base[k2c...].count).allSatisfy({ $0 == 000 }))
             z1 = UnsafeMutableBufferPointer(rebasing: z1.prefix(base[k2c...].count))
             //=----------------------------------=
             // pointee: initialization 2
             //=----------------------------------=
-            pointer  = base.baseAddress! as  UnsafeMutablePointer<Base.Element>
-            pointer += Namespace.initializeGetCount(pointer, to: UnsafeBufferPointer(z0))
-            pointer += Namespace.initializeGetCount(pointer, repeating: Base.Element(), count: k2c - z0.count)
-            pointer += Namespace.initializeGetCount(pointer, to: UnsafeBufferPointer(z1))
-            pointer += Namespace.initializeGetCount(pointer, repeating: Base.Element(), count: base.count - (k2c + z1.count))
-            Swift.assert(base.baseAddress!.distance(to: pointer) == base.count)
+            index = base/*---------*/.initialize(fromContentsOf: UnsafeBufferPointer(z0))
+            /*-*/   base[index..<k2c].initialize(repeating: 0000000000000000000000000000)
+            index = base[  k2c...   ].initialize(fromContentsOf: UnsafeBufferPointer(z1))
+            /*-*/   base[index...   ].initialize(repeating: 0000000000000000000000000000)
             //=----------------------------------=
-            var slice = UnsafeMutableBufferPointer(rebasing: base.suffix(from: k1c))
+            var slice = UnsafeMutableBufferPointer(rebasing: base[k1c...])
             SUISS.increment(&slice, by: UnsafeBufferPointer(z0))
             SUISS.increment(&slice, by: UnsafeBufferPointer(z1))
             
             z2: do { // reuse z0 and z1 to form z2. pointee is trivial
-                z0 = UnsafeMutableBufferPointer(start: z0.baseAddress!,  count: x1.count + y1.count)
+                z0 = UnsafeMutableBufferPointer(start: z0.baseAddress!, count: x1.count &+ y1.count)
                 SUISS.initialize(&(z0), to: UnsafeBufferPointer(x1), times: UnsafeBufferPointer(y1))
             };  if xs == ys {
                 SUISS.decrement(&slice, by: UnsafeBufferPointer(z0))
@@ -172,11 +171,12 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
         
         Namespace.withUnsafeTemporaryAllocation(of: Base.Element.self, count: 3 * (x1s.count + x0s.count)) { buffer in
             var pointer: UnsafeMutablePointer<Base.Element>
+            var index:   UnsafeMutableBufferPointer<Base.Element>.Index
             //=----------------------------------=
             // pointee: deferred deinitialization
             //=----------------------------------=
             defer {
-                buffer.baseAddress!.deinitialize(count: buffer.count)
+                buffer.deinitialize()
             }
             //=----------------------------------=
             // regions
@@ -190,33 +190,31 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
             //=----------------------------------=
             // pointee: initialization 1
             //=----------------------------------=
-            x0.baseAddress!.initialize(from: x0s.baseAddress!, count: x0s.count)
-            x1.baseAddress!.initialize(from: x1s.baseAddress!, count: x1s.count)
+            _ = x0.initialize(fromContentsOf: x0s)
+            _ = x1.initialize(fromContentsOf: x1s)
             
             SUISS.initialize(&z0, toSquareProductOf: UnsafeBufferPointer(x0))
             SUISS.initialize(&z1, toSquareProductOf: UnsafeBufferPointer(x1))
             
-            if  SUISS.compare(x1, to: x0) < 0 {
-                Swift.swap(&x0,  &x1)
+            if  SUISS.compare(x1, to: x0) == -1 as Signum {
+                Swift.swap(&x0, &x1)
             }
             
-            SUISS.decrement( &x1, by: UnsafeBufferPointer(x0))
+            SUISS.decrement(&x1, by: UnsafeBufferPointer(x0))
             //=----------------------------------=
             // product must fit in combined width
             //=----------------------------------=
-            Swift.assert(z1.dropFirst(base[k2c...].count).allSatisfy({ $0 == 0 }))
+            Swift.assert(z1.dropFirst(base[k2c...].count).allSatisfy({ $0 == 000 }))
             z1 = UnsafeMutableBufferPointer(rebasing: z1.prefix(base[k2c...].count))
             //=----------------------------------=
             // pointee: initialization 2
             //=----------------------------------=
-            pointer  = base.baseAddress! as  UnsafeMutablePointer<Base.Element>
-            pointer += Namespace.initializeGetCount(pointer, to: UnsafeBufferPointer(z0))
-            pointer += Namespace.initializeGetCount(pointer, repeating: Base.Element(), count: k2c - z0.count)
-            pointer += Namespace.initializeGetCount(pointer, to: UnsafeBufferPointer(z1))
-            pointer += Namespace.initializeGetCount(pointer, repeating: Base.Element(), count: base.count - (k2c + z1.count))
-            Swift.assert(base.baseAddress!.distance(to: pointer) == base.count)
+            index = base/*---------*/.initialize(fromContentsOf: UnsafeBufferPointer(z0))
+            /*-*/   base[index..<k2c].initialize(repeating: 0000000000000000000000000000)
+            index = base[  k2c...   ].initialize(fromContentsOf: UnsafeBufferPointer(z1))
+            /*-*/   base[index...   ].initialize(repeating: 0000000000000000000000000000)
             //=----------------------------------=
-            var slice = UnsafeMutableBufferPointer(rebasing: base.suffix(from: k1c))
+            var slice = UnsafeMutableBufferPointer(rebasing: base[k1c...])
             SUISS.increment(&slice, by: UnsafeBufferPointer(z0))
             SUISS.increment(&slice, by: UnsafeBufferPointer(z1))
             

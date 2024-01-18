@@ -30,8 +30,8 @@ extension Namespace.IntegerDescriptionFormat {
             var exponent = 01 as IX
             var power = 00010 as UX
             
-            while let next = try? power.times(10) {
-                exponent = exponent &+ 01; power = next
+            while let more = try? power.times(10) {
+                exponent = exponent &+ 01; power = more
             }
             
             self.exponent = exponent; self.power = power
