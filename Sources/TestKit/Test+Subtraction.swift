@@ -61,6 +61,10 @@ extension Test {
             XCTAssertEqual(lhs - rhs, value, file: file, line: line)
         }
         //=--------------------------------------=
+        if  let one = try? T(literally: 1), rhs == one {
+            Test.decrementation(lhs, value, overflow, file: file, line: line)
+        }
+        //=--------------------------------------=
         XCTAssertEqual(Overflow.capture({ try lhs.minus(rhs) }).value,    value,    file: file, line: line)
         XCTAssertEqual(Overflow.capture({ try lhs.minus(rhs) }).overflow, overflow, file: file, line: line)
         //=--------------------------------------=
@@ -84,5 +88,22 @@ extension Test {
         //=------------------------------------------=
         XCTAssertEqual(Overflow.capture({ try instance.negated() }).value,    value,    file: file, line: line)
         XCTAssertEqual(Overflow.capture({ try instance.negated() }).overflow, overflow, file: file, line: line)
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Stride
+//=----------------------------------------------------------------------------=
+
+extension Test {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    public static func decrementation<T: Integer>(_ instance: T, _ expectation: T, _ overflow: Bool = false, file: StaticString = #file, line: UInt = #line) {
+        let result = Overflow.capture({ try instance.decremented() })
+        XCTAssertEqual(result.value, expectation, file: file, line: line)
+        XCTAssertEqual(result.overflow, overflow, file: file, line: line)
     }
 }

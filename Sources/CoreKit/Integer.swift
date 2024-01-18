@@ -168,10 +168,53 @@ extension Integer {
     //=------------------------------------------------------------------------=
     
     @inlinable public init?(_ description: String) {
-        if let value: Self = try? IDF.Decoder().decode(description) { self = value } else { return nil }
+        do { self = try IDF.Decoder().decode(description) } catch { return nil }        
     }
     
     @inlinable public var description: String {
         IDF.Encoder().encode(self)
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Stride by 1
+//=----------------------------------------------------------------------------=
+
+extension Integer {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// The next value in arithmetic progression.
+    ///
+    /// - Note: It works with **0-bit** and **1-bit** integers.
+    ///
+    @inlinable public consuming func incremented() throws -> Self {
+        if  let positive = try? Self(literally:  1) {
+            return try (consume self).plus (positive)
+        }
+        
+        if  let negative = try? Self(literally: -1) {
+            return try (consume self).minus(negative)
+        }
+        
+        throw Overflow (consume self) // must be zero
+    }
+    
+    /// The previous value in arithmetic progression.
+    ///
+    /// - Note: It works with **0-bit** and **1-bit** integers.
+    ///
+    @inlinable public consuming func decremented() throws -> Self {
+        if  let positive = try? Self(literally:  1) {
+            return try (consume self).minus(positive)
+        }
+        
+        if  let negative = try? Self(literally: -1) {
+            return try (consume self).plus (negative)
+        }
+        
+        throw Overflow (consume self) // must be zero
     }
 }

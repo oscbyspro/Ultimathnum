@@ -53,9 +53,30 @@ extension Test {
             XCTAssertEqual(rhs + lhs, value, file: file, line: line)
         }
         //=--------------------------------------=
+        if  let one = try? T(literally: 1), rhs == one {
+            Test.incrementation(lhs, value, overflow, file: file, line: line)
+        }
+        //=--------------------------------------=
         XCTAssertEqual(Overflow.capture({ try lhs.plus(rhs) }).value,    value,    file: file, line: line)
         XCTAssertEqual(Overflow.capture({ try lhs.plus(rhs) }).overflow, overflow, file: file, line: line)
         XCTAssertEqual(Overflow.capture({ try rhs.plus(lhs) }).value,    value,    file: file, line: line)
         XCTAssertEqual(Overflow.capture({ try rhs.plus(lhs) }).overflow, overflow, file: file, line: line)
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Stride
+//=----------------------------------------------------------------------------=
+
+extension Test {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    public static func incrementation<T: Integer>(_ instance: T, _ expectation: T, _ overflow: Bool = false, file: StaticString = #file, line: UInt = #line) {
+        let result = Overflow.capture({ try instance.incremented() })
+        XCTAssertEqual(result.value, expectation, file: file, line: line)
+        XCTAssertEqual(result.overflow, overflow, file: file, line: line)
     }
 }
