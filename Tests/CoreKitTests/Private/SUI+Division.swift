@@ -52,7 +52,7 @@ final class StrictUnsignedIntegerSubSequenceTestsOnDivision: XCTestCase {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    private func checkDivisionManyBySome<Element: SystemInteger & UnsignedInteger>(
+    private func checkDivisionManyBySome<Element: SystemsInteger & UnsignedInteger>(
     _ dividend: [Element], _ divisor: Element, _ quotient: [Element], _ remainder: Element, _ overflow: Bool = false,
     file: StaticString = #file, line: UInt = #line) {
         if  divisor   != 0 {

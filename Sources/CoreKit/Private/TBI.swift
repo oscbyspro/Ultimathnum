@@ -17,7 +17,7 @@ extension Namespace {
     ///
     /// A tuple binary integer's signedness is determined by its `High` type.
     ///
-    @frozen public enum TupleBinaryInteger<High> where High: SystemInteger {
+    @frozen public enum TupleBinaryInteger<High> where High: SystemsInteger {
         
         /// An integer.
         public typealias X1 = High

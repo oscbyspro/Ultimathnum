@@ -22,12 +22,12 @@ extension BitIntTests {
     //=------------------------------------------------------------------------=
     
     func testNegation() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test.subtraction( 0,  0,  0 as T)
             Test.subtraction( 0, -1, -1 as T, true)
         }
         
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test.subtraction( 0,  0,  0 as T)
             Test.subtraction( 0,  1,  1 as T, true)
         }
@@ -38,14 +38,14 @@ extension BitIntTests {
     }
     
     func testSubtraction() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test.subtraction( 0,  0,  0 as T)
             Test.subtraction(-1,  0, -1 as T)
             Test.subtraction( 0, -1, -1 as T, true)
             Test.subtraction(-1, -1,  0 as T)
         }
         
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test.subtraction( 0,  0,  0 as T)
             Test.subtraction( 1,  0,  1 as T)
             Test.subtraction( 0,  1,  1 as T, true)
@@ -58,12 +58,12 @@ extension BitIntTests {
     }
     
     func testDecrementation() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test.decrementation(-1 as T,  0 as T, true)
             Test.decrementation( 0 as T, -1 as T)
         }
         
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test.decrementation( 0 as T,  1 as T, true)
             Test.decrementation( 1 as T,  0 as T)
         }

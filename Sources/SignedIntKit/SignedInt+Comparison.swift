@@ -23,7 +23,7 @@ extension SignedInt {
         let signum: Signum = if self.sign == other.sign {
             self.magnitude.compared(to: other.magnitude)
         }   else {
-            self.magnitude == 0 && other.magnitude == 0 ? .same : .more
+            self.magnitude == 0 && other.magnitude == 0 ? 0 : 1 as Signum
         }
         
         return self.sign == .plus ? signum : signum.negated()

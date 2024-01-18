@@ -14,7 +14,7 @@ import CoreKit
 //*============================================================================*
 
 @frozen @usableFromInline struct Storage<Element>: Sendable where
-Element: UnsignedInteger & SystemInteger, Element.BitPattern == UX.BitPattern {
+Element: UnsignedInteger & SystemsInteger, Element.BitPattern == UX.BitPattern {
     
     @usableFromInline typealias Element = Element
     
@@ -36,16 +36,17 @@ Element: UnsignedInteger & SystemInteger, Element.BitPattern == UX.BitPattern {
         self.allocation = Allocation()
     }
     
-    @inlinable init(_ elements: Allocation) {
+    @inlinable init(unchecked elements: Allocation) {
         self.mode = Mode.allocation
         self.allocation = elements
+        Swift.assert(!allocation.isEmpty)
     }
     
     @inlinable init(_ elements: some RandomAccessCollection<Element>) {
         if  elements.count < 2 {
-            self.init(elements.first ?? 0)
+            self.init(elements.first ?? Element())
         }   else {
-            self.init(Allocation(elements))
+            self.init(unchecked: Allocation(elements))
         }
     }
     
@@ -224,7 +225,7 @@ extension Storage {
             }
             
             self.mode = Mode.inline(payload)
-            return result as T
+            return consume result
             
         case .allocation:
             
@@ -267,6 +268,6 @@ extension Storage {
     ///
     @inlinable public static func uninitialized(
     capacity: Int, init: (inout UnsafeMutableBufferPointer<Element>, inout Int) throws -> Void) rethrows -> Self {
-        Self(try Allocation(unsafeUninitializedCapacity: capacity, initializingWith: `init`))
+        try Self(Allocation(unsafeUninitializedCapacity: capacity, initializingWith: `init`))
     }
 }

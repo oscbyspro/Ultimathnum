@@ -21,7 +21,7 @@ extension CoreIntTests {
     //=------------------------------------------------------------------------=
     
     func testNegation() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test.subtraction( 0,  0,  0 as T)
             Test.subtraction( 0,  1, ~0 as T)
             Test.subtraction( 0, -1,  1 as T)
@@ -30,7 +30,7 @@ extension CoreIntTests {
             Test.subtraction( 0, T.min, T.min + 0, true)
         }
         
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test.subtraction( 0,  0,  0 as T)
             Test.subtraction( 0,  1, ~0 as T, true)
             Test.subtraction( 0,  2, ~1 as T, true)
@@ -45,7 +45,7 @@ extension CoreIntTests {
     }
     
     func testSubtraction() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test.subtraction( 0,  0,  0 as T)
             Test.subtraction(-1,  0, -1 as T)
             Test.subtraction( 0, -1,  1 as T)
@@ -64,7 +64,7 @@ extension CoreIntTests {
             Test.subtraction(T.min, -1, T.min + 1)
         }
         
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test.subtraction( 0,  0,  0 as T)
             Test.subtraction( 1,  0,  1 as T)
             Test.subtraction( 0,  1, ~0 as T, true)

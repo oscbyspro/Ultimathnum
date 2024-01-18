@@ -22,7 +22,7 @@ extension BitIntTests {
     //=------------------------------------------------------------------------=
     
     func testMultiplication() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias P = Doublet<T>
             
             Test.multiplication( 0 as T,  0 as T, P(low: 0, high:  0), false)
@@ -31,7 +31,7 @@ extension BitIntTests {
             Test.multiplication(-1 as T, -1 as T, P(low: 1, high:  0), true )
         }
         
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias P = Doublet<T>
             
             Test.multiplication( 0 as T,  0 as T, P(low: 0, high:  0), false)

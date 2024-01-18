@@ -24,7 +24,7 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func shift<T: SystemInteger>(
+    public static func shift<T: SystemsInteger>(
     _ instance: T, _ shift: T, _ result: T, _ direction: ShiftDirection, _ semantics: ShiftSemantics,
     file: StaticString = #file, line: UInt = #line) {
         switch (direction, semantics) {
@@ -39,7 +39,7 @@ extension Test {
     // MARK: Utilities x Private
     //=------------------------------------------------------------------------=
         
-    private static func smartShiftLeft<T: SystemInteger>(
+    private static func smartShiftLeft<T: SystemsInteger>(
     _ instance: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
         //=--------------------------------------=
         XCTAssertEqual(instance << shift, result, file: file, line: line)
@@ -53,7 +53,7 @@ extension Test {
         }
     }
     
-    private static func smartShiftRight<T: SystemInteger>(
+    private static func smartShiftRight<T: SystemsInteger>(
     _ instance: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
         //=--------------------------------------=
         XCTAssertEqual(instance >> shift, result, file: file, line: line)
@@ -67,7 +67,7 @@ extension Test {
         }
     }
     
-    private static func maskedShiftLeft<T: SystemInteger>(
+    private static func maskedShiftLeft<T: SystemsInteger>(
     _ instance: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
         //=--------------------------------------=
         XCTAssertEqual(instance &<< shift, result, file: file, line: line)
@@ -91,7 +91,7 @@ extension Test {
         }
     }
     
-    private static func maskedShiftRight<T: SystemInteger>(
+    private static func maskedShiftRight<T: SystemsInteger>(
     _ instance: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
         //=--------------------------------------=
         XCTAssertEqual(instance &>> shift, result, file: file, line: line)

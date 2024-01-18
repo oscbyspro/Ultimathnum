@@ -22,14 +22,14 @@ extension BitIntTests {
     //=------------------------------------------------------------------------=
     
     func testAddition() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test.addition( 0 as T,  0 as T,  0 as T)
             Test.addition(-1 as T,  0 as T, -1 as T)
             Test.addition( 0 as T, -1 as T, -1 as T)
             Test.addition(-1 as T, -1 as T,  0 as T, true)
         }
         
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test.addition( 0 as T,  0 as T,  0 as T)
             Test.addition( 1 as T,  0 as T,  1 as T)
             Test.addition( 0 as T,  1 as T,  1 as T)
@@ -42,12 +42,12 @@ extension BitIntTests {
     }
     
     func testIncrementation() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test.incrementation(-1 as T,  0 as T)
             Test.incrementation( 0 as T, -1 as T, true)
         }
         
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test.incrementation( 0 as T,  1 as T)
             Test.incrementation( 1 as T,  0 as T, true)
         }

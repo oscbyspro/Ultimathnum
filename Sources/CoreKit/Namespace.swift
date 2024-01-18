@@ -53,60 +53,60 @@ where Integer: BinaryInteger & UnsignedInteger
 /// - Warning: Do not use this namespace outside of `Ultimathnum`.
 ///
 @usableFromInline package typealias SBI<Base> = Namespace.StrictBinaryInteger<Base>
-where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
+where Base: RandomAccessCollection, Base.Element: SystemsInteger & UnsignedInteger
 
 /// A namespace for `Ultimathnum` development.
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum`.
 ///
 @usableFromInline package typealias SBISS<Base> = Namespace.StrictBinaryInteger<Base>.SubSequence
-where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
+where Base: RandomAccessCollection, Base.Element: SystemsInteger & UnsignedInteger
 
 /// A namespace for `Ultimathnum` development.
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum`.
 ///
 @usableFromInline package typealias SSI<Base> = Namespace.StrictSignedInteger<Base>
-where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
+where Base: RandomAccessCollection, Base.Element: SystemsInteger & UnsignedInteger
 
 /// A namespace for `Ultimathnum` development.
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum`.
 ///
 @usableFromInline package typealias SSISS<Base> = Namespace.StrictSignedInteger<Base>.SubSequence
-where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
+where Base: RandomAccessCollection, Base.Element: SystemsInteger & UnsignedInteger
 
 /// A namespace for `Ultimathnum` development.
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum`.
 ///
 @usableFromInline package typealias SUI<Base> = Namespace.StrictUnsignedInteger<Base>
-where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
+where Base: RandomAccessCollection, Base.Element: SystemsInteger & UnsignedInteger
 
 /// A namespace for `Ultimathnum` development.
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum`.
 ///
 @usableFromInline package typealias SUISS<Base> = Namespace.StrictUnsignedInteger<Base>.SubSequence
-where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger
+where Base: RandomAccessCollection, Base.Element: SystemsInteger & UnsignedInteger
 
 /// A namespace for `Ultimathnum` development.
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum` development.
 ///
 @usableFromInline package typealias TBI<High> = Namespace.TupleBinaryInteger<High>
-where High: SystemInteger
+where High: SystemsInteger
 
 /// A namespace for `Ultimathnum` development.
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum` development.
 ///
 @usableFromInline package typealias TSI<High> = Namespace.TupleBinaryInteger<High>
-where High: SystemInteger & SignedInteger
+where High: SystemsInteger & SignedInteger
 
 /// A namespace for `Ultimathnum` development.
 ///
 /// - Warning: Do not use this namespace outside of `Ultimathnum` development.
 ///
 @usableFromInline package typealias TUI<High> = Namespace.TupleBinaryInteger<High>
-where High: SystemInteger & UnsignedInteger
+where High: SystemsInteger & UnsignedInteger

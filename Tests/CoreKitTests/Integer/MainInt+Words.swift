@@ -21,7 +21,7 @@ extension CoreIntTests {
     //=------------------------------------------------------------------------=
     
     func testInitWords() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             let count   = T.max.words.count
             let isExact = T.bitWidth % M(load: UX(bitPattern: UX.bitWidth)) == 0
@@ -41,7 +41,7 @@ extension CoreIntTests {
             }
         }
         
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             let count   = T.max.words.count
             let isExact = T.bitWidth % M(load: UX(bitPattern: UX.bitWidth)) == 0
@@ -64,14 +64,14 @@ extension CoreIntTests {
     }
     
     func testMakeWords() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test.words(-2 as T, [~1] as [UX])
             Test.words(-1 as T, [~0] as [UX])
             Test.words( 0 as T, [ 0] as [UX])
             Test.words( 1 as T, [ 1] as [UX])
         }
         
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test.words( 0 as T, [ 0] as [UX])
             Test.words( 1 as T, [ 1] as [UX])
             Test.words( 2 as T, [ 2] as [UX])

@@ -12,7 +12,7 @@
 //*============================================================================*
 
 /// A `high` and a `low` integer.
-@frozen public struct Doublet<High>: Equatable where High: SystemInteger {
+@frozen public struct Doublet<High>: Equatable where High: SystemsInteger {
     
     public typealias Magnitude = Doublet<High.Magnitude>
     

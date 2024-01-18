@@ -21,7 +21,7 @@ extension CoreIntTests {
     //=------------------------------------------------------------------------=
     
     func testInitMagnitude() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             
             XCTAssertEqual(try? T(magnitude:      0),   000 as T?)
@@ -31,7 +31,7 @@ extension CoreIntTests {
             XCTAssertEqual(try? T(magnitude:  M.max),   nil as T?)
         }
         
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             
             XCTAssertEqual(try? T(magnitude:  M.min), T.min as T?)
@@ -44,7 +44,7 @@ extension CoreIntTests {
     }
     
     func testMakeMagnitude() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             
             XCTAssertEqual((-1 as T).magnitude,  1 as M)
@@ -53,7 +53,7 @@ extension CoreIntTests {
             XCTAssertEqual(( T .min).magnitude,  M .msb)
         }
         
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             
             XCTAssertEqual(( 0 as T).magnitude, 0 as M)

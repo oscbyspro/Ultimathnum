@@ -8,10 +8,16 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * System Integer
+// MARK: * Systems Integer
 //*============================================================================*
 
-/// A binary system integer.
+/// A binary systems integer.
+///
+/// ### Trivial
+///
+/// Its bit pattern must represent its value. It may not use indirection.
+///
+/// - Requires: It must be bitwise copyable.
 ///
 /// ### Bit Width
 ///
@@ -31,9 +37,17 @@
 ///
 /// ### Development
 ///
-/// - TODO: Consider naming it `System(s)Integer`.
+/// Consider primitive static base methods that match stdlib operations:
 ///
-public protocol SystemInteger: BinaryInteger where Magnitude: UnsignedInteger & SystemInteger {
+/// ```swift
+/// static func addition(_:_:) -> Overflow<Self>.Result
+/// static func multiplication112(_:_:) -> Doublet<Self>
+/// static func division2111(_:_:) -> Optional<Division<Self>>
+/// ```
+///
+/// - Note: It is an alternative in case typed throws don't perform well.
+///
+public protocol SystemsInteger: BinaryInteger where Magnitude: UnsignedInteger & SystemsInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -105,7 +119,7 @@ public protocol SystemInteger: BinaryInteger where Magnitude: UnsignedInteger & 
 // MARK: + Details
 //=----------------------------------------------------------------------------=
 
-extension SystemInteger {
+extension SystemsInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data

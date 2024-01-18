@@ -83,6 +83,7 @@ extension NormalInt {
         
         self .storage.normalize()
         Swift.assert(quotient.storage.isNormal)
+        //=--------------------------------------=
         return Division(quotient: quotient, remainder: consume self)
     }
 }

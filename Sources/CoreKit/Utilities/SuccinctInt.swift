@@ -25,7 +25,7 @@
 /// ```
 ///
 @frozen public struct SuccinctInt<Base>: Comparable where
-Base: RandomAccessCollection, Base.Element: UnsignedInteger & SystemInteger {
+Base: RandomAccessCollection, Base.Element: UnsignedInteger & SystemsInteger {
     
     public enum Error: Swift.Error { case validation }
     

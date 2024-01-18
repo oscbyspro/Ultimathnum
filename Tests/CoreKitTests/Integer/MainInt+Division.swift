@@ -21,7 +21,7 @@ extension CoreIntTests {
     //=------------------------------------------------------------------------=
     
     func testDivision() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             
             Test.division( 7 as T,  3 as T,  2 as T,  1 as T)
@@ -45,7 +45,7 @@ extension CoreIntTests {
             Test.division( T .max,  1 as T,  T(bitPattern: T.max >> 0 + 0),  0 as T)
         }
         
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test.division( 7 as T,  0 as T,  7 as T,  7 as T, true)
             Test.division( 7 as T,  1 as T,  7 as T,  0 as T)
             Test.division( 7 as T,  2 as T,  3 as T,  1 as T)
@@ -63,7 +63,7 @@ extension CoreIntTests {
     }
     
     func testDivision21() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             typealias D = Doublet<T>
             //=----------------------------------=
@@ -90,7 +90,7 @@ extension CoreIntTests {
             Test.division(D(low:  0 as M, high: ~0 as T),  8 as T, ~0 << T(bitPattern: T.bitWidth - 3),  0 as T)
         }
         
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             typealias D = Doublet<T>
             //=----------------------------------=

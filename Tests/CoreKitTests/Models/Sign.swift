@@ -44,6 +44,9 @@ final class SignTests: XCTestCase {
     func testNot() {
         Test.not(T.plus,  T.minus)
         Test.not(T.minus, T.plus )
+        
+        XCTAssertEqual({ var x = T.plus;  x.toggle(); return x }(), T.minus)
+        XCTAssertEqual({ var x = T.minus; x.toggle(); return x }(), T.plus )
     }
     
     func testAnd() {

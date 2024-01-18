@@ -21,10 +21,6 @@ public protocol BitCastable<BitPattern> {
     
     @inlinable init(bitPattern: consuming BitPattern)
     
-    //=------------------------------------------------------------------------=
-    // MARK: Accessors
-    //=------------------------------------------------------------------------=
-    
     @inlinable var bitPattern: BitPattern { consuming get }
 }
 
@@ -56,10 +52,6 @@ extension BitCastable where BitPattern == Self {
     @inlinable public init(bitPattern: consuming BitPattern) {
         self = bitPattern
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Accessors
-    //=------------------------------------------------------------------------=
     
     @inlinable public var bitPattern: BitPattern {
         consuming get { consume self }

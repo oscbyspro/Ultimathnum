@@ -20,7 +20,7 @@ extension SignedInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func negated() -> Self {
-        Self(sign: ~self.sign, magnitude: self.magnitude)
+        self.sign = ~self.sign; return consume self
     }
     
     @inlinable public consuming func minus(_ decrement: borrowing Self) throws -> Self {

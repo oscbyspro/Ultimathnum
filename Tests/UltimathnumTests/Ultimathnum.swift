@@ -44,12 +44,12 @@ final class UltimathnumTests: XCTestCase {
     // MARK: State x Modules
     //=------------------------------------------------------------------------=
     
-    static let bitIntList: [any SystemInteger.Type] = [
+    static let bitIntList: [any SystemsInteger.Type] = [
         I1.self,
         U1.self,
     ]
         
-    static let coreIntList: [any SystemInteger.Type] = [
+    static let coreIntList: [any SystemsInteger.Type] = [
         IX .self,
         I8 .self,
         I16.self,

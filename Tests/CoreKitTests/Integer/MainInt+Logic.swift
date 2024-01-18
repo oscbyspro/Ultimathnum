@@ -21,7 +21,7 @@ extension CoreIntTests {
     //=------------------------------------------------------------------------=
     
     func testLogicalNot() {
-        func whereIs<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             Test.not(T.min, T.max)
             Test.not(T.max, T.min)
         }
@@ -32,7 +32,7 @@ extension CoreIntTests {
     }
     
     func testLogicalAnd() {
-        func whereIs<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             Test.and(~1 as T, ~1 as T, ~1 as T)
             Test.and(~1 as T, ~0 as T, ~1 as T)
             Test.and(~1 as T,  0 as T,  0 as T)
@@ -60,7 +60,7 @@ extension CoreIntTests {
     }
     
     func testLogicalOr() {
-        func whereIs<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             Test.or (~1 as T, ~1 as T, ~1 as T)
             Test.or (~1 as T, ~0 as T, ~0 as T)
             Test.or (~1 as T,  0 as T, ~1 as T)
@@ -88,7 +88,7 @@ extension CoreIntTests {
     }
     
     func testLogicalXor() {
-        func whereIs<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             Test.xor(~1 as T, ~1 as T,  0 as T)
             Test.xor(~1 as T, ~0 as T,  1 as T)
             Test.xor(~1 as T,  0 as T, ~1 as T)

@@ -59,7 +59,7 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func division<T: SystemInteger>(
+    public static func division<T: SystemsInteger>(
     _ dividend: Doublet<T>, _ divisor: T, _ quotient: T, _ remainder: T, _ overflow: Bool = false,
     file: StaticString = #file, line: UInt = #line) {
         self.divisionAsSomeSystemInteger(dividend, divisor, quotient, remainder, overflow, file: file, line: line)
@@ -69,7 +69,7 @@ extension Test {
     // MARK: Utiliites x Private
     //=------------------------------------------------------------------------=
     
-    private static func divisionAsSomeSystemInteger<T: SystemInteger>(
+    private static func divisionAsSomeSystemInteger<T: SystemsInteger>(
     _ dividend: Doublet<T>, _ divisor: T, _ quotient: T, _ remainder: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
         let expectation = Division(quotient: quotient, remainder: remainder)

@@ -124,7 +124,7 @@ final class StrictBinaryIntegerTestsOnShifts: XCTestCase {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    private func checkShiftLeft<T: SystemInteger & UnsignedInteger>(
+    private func checkShiftLeft<T: SystemsInteger & UnsignedInteger>(
     _ base: [T], _ environment: T, _ distance: Int, _ result: [T],
     file: StaticString = #file, line: UInt  = #line) {
         //=------------------------------------------=
@@ -143,7 +143,7 @@ final class StrictBinaryIntegerTestsOnShifts: XCTestCase {
         }
     }
 
-    private func checkShiftRight<T: SystemInteger & UnsignedInteger>(
+    private func checkShiftRight<T: SystemsInteger & UnsignedInteger>(
     _ base: [T], _ environment: T, _ distance: Int, _ result: [T],
     file: StaticString = #file, line: UInt  = #line) {
         //=------------------------------------------=

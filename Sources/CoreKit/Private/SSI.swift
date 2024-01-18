@@ -25,7 +25,7 @@ extension Namespace {
     ///
     /// Remaking this as a view when Swift gets view types might be neat.
     ///
-    @frozen public enum StrictSignedInteger<Base> where Base: RandomAccessCollection, Base.Element: SystemInteger & UnsignedInteger {
+    @frozen public enum StrictSignedInteger<Base> where Base: RandomAccessCollection, Base.Element: SystemsInteger & UnsignedInteger {
         
         /// The binary integer namespace of this type.
         public typealias Binary = Namespace.StrictBinaryInteger<Base>

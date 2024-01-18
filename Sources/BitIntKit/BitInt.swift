@@ -14,7 +14,7 @@ import CoreKit
 //*============================================================================*
 
 /// A signed `1-bit` integer that can represent the values `0` and `-1`.
-@frozen public struct BitInt: SystemInteger & SignedInteger {
+@frozen public struct BitInt: SystemsInteger & SignedInteger {
     
     public typealias BitPattern = Bit
     
@@ -71,7 +71,7 @@ import CoreKit
     //*========================================================================*
     
     /// An unsigned `1-bit` integer that can represent the values `0` and `1`.
-    @frozen public struct Magnitude: SystemInteger & UnsignedInteger {        
+    @frozen public struct Magnitude: SystemsInteger & UnsignedInteger {        
         
         public typealias Magnitude = Self
         

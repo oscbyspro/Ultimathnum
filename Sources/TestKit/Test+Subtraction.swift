@@ -44,11 +44,11 @@ extension Test {
         if  overflow {
             let abc: T = Overflow.ignore({ try rhs.minus(lhs) })
             let xyz: T = Overflow.ignore({ try Overflow.ignore({ try lhs.minus(rhs) }).negated() })
-            XCTAssertEqual(abc, xyz, "binary integer subtraction must be reversible", file: file, line:  line)
+            XCTAssertEqual(abc, xyz, "binary integer subtraction must be reversible", file: file, line: line)
         }   else {
             let abc: T = Overflow.ignore({ try Overflow.ignore({ try rhs.minus(lhs) }).negated() })
             let xyz: T = Overflow.ignore({ try lhs.minus(rhs) })
-            XCTAssertEqual(abc, xyz, "binary integer subtraction must be reversible", file: file, line:  line)
+            XCTAssertEqual(abc, xyz, "binary integer subtraction must be reversible", file: file, line: line)
         }
         //=--------------------------------------=
         Test.subtractionAsSomeInteger(lhs, rhs, value, overflow, file: file, line: line)

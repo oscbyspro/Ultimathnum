@@ -20,7 +20,7 @@ extension FibonacciTests {
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    private static let coreIntList: [any SystemInteger.Type] = [
+    private static let coreIntList: [any SystemsInteger.Type] = [
         IX .self,
         I8 .self,
         I16.self,
@@ -38,7 +38,7 @@ extension FibonacciTests {
     //=------------------------------------------------------------------------=
     
     func testCoreInt() {
-        func whereIs<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             typealias F = Fibonacci<T>
             
             min: do {

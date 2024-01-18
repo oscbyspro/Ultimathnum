@@ -36,6 +36,14 @@
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    @inlinable public mutating func toggle() {
+        self = ~self
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
     @inlinable public static prefix func ~(instance: Self) -> Self {
         instance ^ minus
     }

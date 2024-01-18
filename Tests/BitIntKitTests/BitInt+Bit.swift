@@ -22,7 +22,7 @@ extension BitIntTests {
     //=------------------------------------------------------------------------=
     
     func testInitBit() {
-        func whereIs<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             XCTAssertEqual(T(repeating: 0 as Bit),  0)
             XCTAssertEqual(T(repeating: 1 as Bit), ~0)
         }
@@ -37,7 +37,7 @@ extension BitIntTests {
     //=------------------------------------------------------------------------=
     
     func testBitCountSelection() {
-        func whereIs<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             for bit: Bit in [0, 1] {
                 for selection: Bit.Selection in [.all, .ascending, .descending] {
                     XCTAssertEqual(T(bitPattern: 0 as T.Magnitude).count(bit, option: selection), bit == 0 ? 1 : 0)

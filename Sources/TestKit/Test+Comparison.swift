@@ -20,7 +20,7 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func comparison<T: SystemInteger>(
+    public static func comparison<T: SystemsInteger>(
     _ lhs: T, _ rhs: T, _ expectation: Signum,
     file: StaticString = #file, line: UInt = #line) {
         self.comparisonAsSomeSystemInteger(lhs, rhs, expectation, file: file, line: line)
@@ -36,7 +36,7 @@ extension Test {
     // MARK: Utilities x Private
     //=------------------------------------------------------------------------=
     
-    private static func comparisonAsSomeSystemInteger<T: SystemInteger>(
+    private static func comparisonAsSomeSystemInteger<T: SystemsInteger>(
     _   lhs: T, _ rhs: T, _ expectation: Signum, file: StaticString, line: UInt) {
         //=--------------------------------------=
         Test.comparisonAsSomeInteger(lhs, rhs, expectation, file: file, line: line)

@@ -43,11 +43,6 @@
         },
         {
           "containerPath" : "container:",
-          "identifier" : "MainIntKit",
-          "name" : "MainIntKit"
-        },
-        {
-          "containerPath" : "container:",
           "identifier" : "BigIntKit",
           "name" : "BigIntKit"
         }
@@ -88,13 +83,6 @@
         "containerPath" : "container:",
         "identifier" : "SignedIntKitTests",
         "name" : "SignedIntKitTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "MainIntKitTests",
-        "name" : "MainIntKitTests"
       }
     },
     {

@@ -8,36 +8,36 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Proper Binary Integer x Comparison x System Integer
+// MARK: * Proper Binary Integer x Comparison x Systems Integer
 //*============================================================================*
 
-extension Namespace.ProperBinaryInteger where Base: SystemInteger {
+extension Namespace.ProperBinaryInteger where Base: SystemsInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable package static func compare(_ lhs: Base, to rhs: some SystemInteger) -> Signum {
+    @inlinable package static func compare(_ lhs: Base, to rhs: some SystemsInteger) -> Signum {
         self.compareIsLessThan(lhs, to: rhs) ? -1 : self.compareIsEqual(lhs, to: rhs) ? 0 : 1
     }
     
-    @inlinable package static func compareIsNotEqual(_ lhs: Base, to rhs: some SystemInteger) -> Bool {
+    @inlinable package static func compareIsNotEqual(_ lhs: Base, to rhs: some SystemsInteger) -> Bool {
         PBI.compareIsEqual(rhs, to: lhs) == false
     }
     
-    @inlinable package static func compareIsMoreThan(_ lhs: Base, to rhs: some SystemInteger) -> Bool {
+    @inlinable package static func compareIsMoreThan(_ lhs: Base, to rhs: some SystemsInteger) -> Bool {
         PBI.compareIsLessThan(rhs, to: lhs)
     }
     
-    @inlinable package static func compareIsLessThanOrEqual(_ lhs: Base, to rhs: some SystemInteger) -> Bool {
+    @inlinable package static func compareIsLessThanOrEqual(_ lhs: Base, to rhs: some SystemsInteger) -> Bool {
         PBI.compareIsMoreThan(lhs, to: rhs) == false
     }
     
-    @inlinable package static func compareIsMoreThanOrEqual(_ lhs: Base, to rhs: some SystemInteger) -> Bool {
+    @inlinable package static func compareIsMoreThanOrEqual(_ lhs: Base, to rhs: some SystemsInteger) -> Bool {
         PBI.compareIsLessThan(lhs, to: rhs) == false
     }
     
-    @inlinable package static func compareIsEqual<Other: SystemInteger>(_ lhs: Base, to rhs: Other) -> Bool {
+    @inlinable package static func compareIsEqual<Other: SystemsInteger>(_ lhs: Base, to rhs: Other) -> Bool {
         if  Base.isSigned == Other.isSigned {
             
             if  Base.bitWidth.load(as: UX.self) >= Other.bitWidth.load(as: UX.self) {
@@ -65,7 +65,7 @@ extension Namespace.ProperBinaryInteger where Base: SystemInteger {
         }
     }
     
-    @inlinable package static func compareIsLessThan<Other: SystemInteger>(_ lhs: Base, to rhs: Other) -> Bool {
+    @inlinable package static func compareIsLessThan<Other: SystemsInteger>(_ lhs: Base, to rhs: Other) -> Bool {
         if  Base.isSigned == Other.isSigned {
             
             if  Base.bitWidth.load(as: UX.self) >= Other.bitWidth.load(as: UX.self) {

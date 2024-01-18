@@ -21,7 +21,7 @@ extension CoreIntTests {
     //=------------------------------------------------------------------------=
     
     func testAddition() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test.addition( 0,  0,  0 as T)
             Test.addition(-1,  0, -1 as T)
             Test.addition( 0, -1, -1 as T)
@@ -40,7 +40,7 @@ extension CoreIntTests {
             Test.addition(T.max,  1, T.min, true)
         }
         
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test.addition( 0,  0,  0 as T)
             Test.addition( 1,  0,  1 as T)
             Test.addition( 0,  1,  1 as T)

@@ -22,7 +22,7 @@ extension BitIntTests {
     //=------------------------------------------------------------------------=
     
     func testLogicalNot() {
-        func whereIs<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             
             Test.not(T.min, T.max)
@@ -35,7 +35,7 @@ extension BitIntTests {
     }
     
     func testLogicalAnd() {
-        func whereIs<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
                         
             Test.and(T(bitPattern: 0 as M), T(bitPattern: 0 as M), T(bitPattern: 0 as M))
@@ -50,7 +50,7 @@ extension BitIntTests {
     }
     
     func testLogicalOr() {
-        func whereIs<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             
             Test.or (T(bitPattern: 0 as M), T(bitPattern: 0 as M), T(bitPattern: 0 as M))
@@ -65,7 +65,7 @@ extension BitIntTests {
     }
     
     func testLogicalXor() {
-        func whereIs<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             
             Test.xor(T(bitPattern: 0 as M), T(bitPattern: 0 as M), T(bitPattern: 0 as M))

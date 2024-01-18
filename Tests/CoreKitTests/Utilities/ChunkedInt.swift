@@ -22,14 +22,14 @@ final class ChunkedIntTests: XCTestCase {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    func check<A: SystemInteger & UnsignedInteger, B: SystemInteger & UnsignedInteger>(
+    func check<A: SystemsInteger & UnsignedInteger, B: SystemsInteger & UnsignedInteger>(
     _ lhs: [A], _ rhs: [B], isSigned: Bool? = nil, file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
         checkOneWayOnly(lhs, rhs, isSigned: isSigned, file: file, line: line)
         checkOneWayOnly(rhs, lhs, isSigned: isSigned, file: file, line: line)
     }
     
-    func checkOneWayOnly<A: SystemInteger & UnsignedInteger, B: SystemInteger & UnsignedInteger>(
+    func checkOneWayOnly<A: SystemsInteger & UnsignedInteger, B: SystemsInteger & UnsignedInteger>(
     _ lhs: [A], _ rhs: [B], isSigned: Bool? = nil, file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
         if  isSigned != false {

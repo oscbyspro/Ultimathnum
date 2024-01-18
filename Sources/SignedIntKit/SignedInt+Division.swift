@@ -33,8 +33,8 @@ extension SignedInt {
     
     @inlinable public consuming func divided(by divisor: Self) throws -> Division<Self> {
         let magnitude = Overflow.capture({ try self.magnitude.divided(by: divisor.magnitude) })
-        let quotient  = Self(sign: self.sign ^ divisor.sign, magnitude: magnitude.value.quotient )
-        let remainder = Self(sign: self.sign   /*--------*/, magnitude: magnitude.value.remainder)
+        let quotient  = Overflow.ignore ({ try Self(sign: self.sign ^ divisor.sign, magnitude: magnitude.value.quotient ) })
+        let remainder = Overflow.ignore ({ try Self(sign: self.sign   /*--------*/, magnitude: magnitude.value.remainder) })
         return try Overflow.resolve(Division(quotient: quotient, remainder: remainder), overflow: magnitude.overflow)
     }
 }

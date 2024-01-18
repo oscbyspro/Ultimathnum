@@ -15,7 +15,7 @@ import CoreKit
 
 /// A normalized big integer magnitude.
 @frozen public struct NormalInt<Element>: Integer where
-Element: UnsignedInteger & SystemInteger, Element.BitPattern == UX.BitPattern {
+Element: UnsignedInteger & SystemsInteger, Element.BitPattern == UX.BitPattern {
     
     public typealias IntegerLiteralType = StaticBigInt
     
@@ -72,3 +72,9 @@ Element: UnsignedInteger & SystemInteger, Element.BitPattern == UX.BitPattern {
         consuming get { self.storage.words }
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Aliases
+//=----------------------------------------------------------------------------=
+
+public typealias UXL = NormalInt<UX>

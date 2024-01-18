@@ -17,7 +17,7 @@ import CoreKit
 ///
 /// - TODO: Consider non-binary magnitude requirement.
 ///
-@frozen public struct SignedInt<Magnitude>: Integer where Magnitude: BinaryInteger, Magnitude.Magnitude == Magnitude {
+@frozen public struct SignedInt<Magnitude>: Integer where Magnitude: Integer, Magnitude.Magnitude == Magnitude {
     
     public typealias IntegerLiteralType = StaticBigInt
     
@@ -45,20 +45,19 @@ import CoreKit
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(magnitude: consuming Magnitude) throws {
-        self.sign = Sign.plus
-        self.magnitude = magnitude
-    }
-    
     /// Creates a new instance with the given sign and magnitude.
-    @inlinable public init(sign: consuming Sign, magnitude: consuming Magnitude) {
+    @inlinable public init(sign: consuming Sign, magnitude: consuming Magnitude) throws {
         self.sign = sign
         self.magnitude = magnitude
+        
+        if  self.magnitude < 0 {
+            throw Overflow(self)
+        }
     }
     
     @inlinable public init(sign: Sign, magnitude: () throws -> Magnitude) throws {
         let magnitude = Overflow.capture(magnitude)
-        self.init(sign: sign, magnitude: magnitude.value)
+        try self.init(sign: sign, magnitude: magnitude.value)
         
         if  magnitude.overflow {
             throw Overflow(consume self)
@@ -81,7 +80,7 @@ import CoreKit
     
     /// The `sign` and `magnitude` of this value.
     @inlinable public var components: Components {
-        consuming get { Components(sign: self.sign, magnitude: self.magnitude) }
+        consuming get {( sign: self.sign, magnitude: self.magnitude )}
     }
     
     //=------------------------------------------------------------------------=
@@ -90,6 +89,8 @@ import CoreKit
     
     /// Turns negative zero into positive zero.
     @inlinable public consuming func normalized() -> Self {
-        Self(sign: self.sign == Sign.plus || self != (0 as Self) ? self.sign : Sign.plus, magnitude: self.magnitude)
+        if  self.sign == .minus, self.magnitude == 0 {
+            self.sign =   .plus
+        };  return consume self
     }
 }

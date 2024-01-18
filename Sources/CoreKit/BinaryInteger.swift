@@ -29,6 +29,8 @@
 ///
 /// - TODO: Consider &+ operations with infinite width requirement.
 ///
+/// - TODO: Consider binary integer as an alias for a bit invertible integer.
+///
 public protocol BinaryInteger: BitCastable, BitOperable, Integer where Magnitude: BinaryInteger, Magnitude.BitPattern == BitPattern { }
 
 //=----------------------------------------------------------------------------=

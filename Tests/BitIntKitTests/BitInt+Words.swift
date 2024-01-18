@@ -22,7 +22,7 @@ extension BitIntTests {
     //=------------------------------------------------------------------------=
     
     func testInitWords() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             let count = T.max.words.count
             for isSigned in [true, false] {
@@ -39,7 +39,7 @@ extension BitIntTests {
             }
         }
         
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             let count = T.max.words.count
             for isSigned in [true, false] {
@@ -59,12 +59,12 @@ extension BitIntTests {
     }
     
     func testMakeWords() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test.words( 0 as T, [ 0] as [UX])
             Test.words(-1 as T, [~0] as [UX])
         }
         
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemInteger {
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test.words( 0 as T, [ 0] as [UX])
             Test.words( 1 as T, [ 1] as [UX])
         }
