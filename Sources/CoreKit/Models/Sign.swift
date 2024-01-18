@@ -11,7 +11,7 @@
 // MARK: * Sign
 //*============================================================================*
 
-@frozen public enum Sign: BitOperable, Hashable, Sendable {
+@frozen public enum Sign: BitCastable, BitOperable, Hashable, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -24,8 +24,8 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ bit: Bit) {
-        self = bit == 0 ? .plus : .minus
+    @inlinable public init(bitPattern: Bool) {
+        self = bitPattern ? .minus : .plus
     }
     
     @inlinable public init(_ other: FloatingPointSign) {
@@ -35,6 +35,10 @@
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
+    
+    @inlinable public var bitPattern: Bool {
+        self == Self.minus
+    }
     
     @inlinable public mutating func toggle() {
         self = ~self

@@ -57,3 +57,51 @@ extension BitCastable where BitPattern == Self {
         consuming get { consume self }
     }
 }
+
+//*============================================================================*
+// MARK: * Bit Castable x Models
+//*============================================================================*
+
+extension Bool: BitCastable {
+    public typealias BitPattern = Self
+}
+
+extension Int: BitCastable {
+    public typealias BitPattern = Magnitude
+}
+
+extension Int8: BitCastable {
+    public typealias BitPattern = Magnitude
+}
+
+extension Int16: BitCastable {
+    public typealias BitPattern = Magnitude
+}
+
+extension Int32: BitCastable {
+    public typealias BitPattern = Magnitude
+}
+
+extension Int64: BitCastable {
+    public typealias BitPattern = Magnitude
+}
+
+extension UInt: BitCastable {
+    public typealias BitPattern = Magnitude
+}
+
+extension UInt8: BitCastable {
+    public typealias BitPattern = Magnitude
+}
+
+extension UInt16: BitCastable {
+    public typealias BitPattern = Magnitude
+}
+
+extension UInt32: BitCastable {
+    public typealias BitPattern = Magnitude
+}
+
+extension UInt64: BitCastable {
+    public typealias BitPattern = Magnitude
+}

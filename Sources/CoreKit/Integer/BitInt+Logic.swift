@@ -18,19 +18,19 @@ extension BitInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public static prefix func ~(instance: consuming Self) -> Self {
-        Self(bitPattern: ~instance.bitPattern)
+        Self(bitPattern: !instance.bitPattern)
     }
     
-    @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(bitPattern: lhs.bitPattern & rhs.bitPattern)
+    @inlinable public static func &(lhs: Self, rhs: Self) -> Self {
+        Self(bitPattern: lhs.bitPattern == rhs.bitPattern ? lhs.bitPattern : false)
     }
     
-    @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(bitPattern: lhs.bitPattern | rhs.bitPattern)
+    @inlinable public static func |(lhs: Self, rhs: Self) -> Self {
+        Self(bitPattern: lhs.bitPattern == rhs.bitPattern ? lhs.bitPattern : true )
     }
     
-    @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(bitPattern: lhs.bitPattern ^ rhs.bitPattern)
+    @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
+        Self(bitPattern: lhs.bitPattern != rhs.bitPattern)
     }
 }
 
@@ -45,18 +45,18 @@ extension BitInt.Magnitude {
     //=------------------------------------------------------------------------=
     
     @inlinable public static prefix func ~(instance: consuming Self) -> Self {
-        Self(bitPattern: ~instance.bitPattern)
+        Self(bitPattern: !instance.bitPattern)
     }
     
-    @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(bitPattern: lhs.bitPattern & rhs.bitPattern)
+    @inlinable public static func &(lhs: Self, rhs: Self) -> Self {
+        Self(bitPattern: lhs.bitPattern == rhs.bitPattern ? lhs.bitPattern : false)
     }
     
-    @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(bitPattern: lhs.bitPattern | rhs.bitPattern)
+    @inlinable public static func |(lhs: Self, rhs: Self) -> Self {
+        Self(bitPattern: lhs.bitPattern == rhs.bitPattern ? lhs.bitPattern : true )
     }
     
-    @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(bitPattern: lhs.bitPattern ^ rhs.bitPattern)
+    @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
+        Self(bitPattern: lhs.bitPattern != rhs.bitPattern)
     }
 }

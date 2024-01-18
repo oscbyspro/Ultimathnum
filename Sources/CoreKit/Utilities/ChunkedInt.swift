@@ -23,7 +23,7 @@
 /// You can create a bit sequence by chunking as `BitInt.Magnitude`.
 ///
 /// ```swift
-/// for bit: BitInt.Magnitude in ChunkedInt(normalizing: base, isSigned: false).reversed() {
+/// for bit: U1 in ChunkedInt(normalizing: base, isSigned: false).reversed() {
 ///     double()
 ///
 ///     if  bit == 1 {
@@ -94,7 +94,7 @@ Element: SystemsInteger & UnsignedInteger,  Base: RandomAccessCollection, Base.E
     @inlinable public init(_ base: Base, isSigned: Bool, count: Int? = nil, as element: Element.Type = Element.self) {
         let isLessThanZero = SBISS.isLessThanZero(base, isSigned: isSigned)
         let count = count ?? Self.count(of: base)
-        self.init(base, repeating: Bit(isLessThanZero), count: count)
+        self.init(base, repeating: U1(bitPattern: isLessThanZero), count: count)
     }
     
     /// Creates a normalized bit sequence from an un/signed source.
@@ -106,15 +106,15 @@ Element: SystemsInteger & UnsignedInteger,  Base: RandomAccessCollection, Base.E
     ///
     @inlinable public init(normalizing base: Base, isSigned: Bool, as element: Element.Type = Element.self) {
         let isLessThanZero = SBISS.isLessThanZero(base, isSigned: isSigned)
-        let count = Self.count(normalizing: base, repeating: Bit(isLessThanZero))
-        self.init(base, repeating: Bit(isLessThanZero), count: count)
+        let count = Self.count(normalizing: base, repeating: U1(bitPattern: isLessThanZero))
+        self.init(base, repeating: U1(bitPattern: isLessThanZero), count: count)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable internal init(_ base: Base, repeating bit: Bit, count: Int, as element: Element.Type = Element.self) {
+    @inlinable internal init(_ base: Base, repeating bit: BitInt.Magnitude, count: Int, as element: Element.Type = Element.self) {
         self.base  = base
         self.sign  = Self.Element(repeating: bit)
         self.count = count
@@ -137,7 +137,7 @@ Element: SystemsInteger & UnsignedInteger,  Base: RandomAccessCollection, Base.E
         }
     }
     
-    @inlinable internal static func count(normalizing base: Base, repeating bit: Bit) -> Int {
+    @inlinable internal static func count(normalizing base: Base, repeating bit: U1) -> Int {
         if  Self.Element.bitWidth.load(as: UX.self) > Base.Element.bitWidth.load(as: UX.self) {
             return Major.count(normalizing: base, repeating: bit)
         }   else if Self.Element.bitWidth.load(as: UX.self) < Base.Element.bitWidth.load(as: UX.self) {
@@ -185,7 +185,7 @@ extension ChunkedInt.Major {
         return division.quotient + (division.remainder > 0 ? 1 : 0)
     }
     
-    @inlinable static func count(normalizing base: Base, repeating bit: Bit) -> Int {
+    @inlinable static func count(normalizing base: Base, repeating bit: U1) -> Int {
         let sign = Base.Element(repeating: bit)
         return Swift.max(1, self.count(of: base.reversed().trimmingPrefix(while:{ $0 == sign })))
     }
@@ -228,10 +228,10 @@ extension ChunkedInt.Minor {
         base.count *  self.ratio
     }
     
-    @inlinable static func count(normalizing base: Base, repeating bit: Bit) -> Int {
+    @inlinable static func count(normalizing base: Base, repeating bit: BitInt.Magnitude) -> Int {
         let sign = Base.Element(repeating: bit)
         let majorSuffix = base.reversed().prefix(while:{ $0 == sign })
-        let minorSuffix = base.dropLast(majorSuffix.count).last?.count(bit, option: Bit.Selection.descending) ?? (0000)
+        let minorSuffix = base.dropLast(majorSuffix.count).last?.count(bit, option: BitInt.Selection.descending) ?? (0)
         let totalSuffix = majorSuffix.count * Base.Element.bitWidth.load(as: Int.self) + minorSuffix.load(as: Int.self)
         return Swift.max(1, self.count(of: base) - totalSuffix / Element.bitWidth.load(as: Int.self))
     }
@@ -260,7 +260,7 @@ extension ChunkedInt.Equal {
         base.count
     }
     
-    @inlinable static func count(normalizing base: Base, repeating bit: Bit) -> Int {
+    @inlinable static func count(normalizing base: Base, repeating bit: U1) -> Int {
         let sign = Base.Element(repeating: bit)
         return Swift.max(1, self.count(of: base.reversed().trimmingPrefix(while:{ $0 == sign })))
     }

@@ -23,8 +23,8 @@ final class SignTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testInitBit() {
-        XCTAssertEqual(T(0 as Bit), T.plus )
-        XCTAssertEqual(T(1 as Bit), T.minus)
+        XCTAssertEqual(T(bitPattern: 0 as U1), T.plus )
+        XCTAssertEqual(T(bitPattern: 1 as U1), T.minus)
     }
     
     func testInitFloatingPointSign() {

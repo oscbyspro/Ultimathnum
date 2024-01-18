@@ -40,7 +40,7 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
     //=------------------------------------------------------------------------=
     
     @inlinable public func encode(_ integer: some Integer) -> String {
-        let sign = Sign(Bit(integer < 0))
+        let sign = Sign(bitPattern: integer < 0)
         let magnitude = integer.magnitude.words
         return self.encode(sign: sign, magnitude: magnitude)
     }

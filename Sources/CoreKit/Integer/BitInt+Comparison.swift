@@ -26,7 +26,7 @@ extension BitInt {
     }
     
     @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        (lhs.bitPattern, rhs.bitPattern) == (1, 0)
+        (lhs.bitPattern, rhs.bitPattern) == (true, false)
     }
 }
 
@@ -49,6 +49,6 @@ extension BitInt.Magnitude {
     }
     
     @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        (lhs.bitPattern, rhs.bitPattern) == (0, 1)
+        (lhs.bitPattern, rhs.bitPattern) == (false, true)
     }
 }

@@ -17,12 +17,12 @@ extension BitInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func negated() throws -> Self {
+    @inlinable public func negated() throws -> Self {
         try Overflow.resolve(self, overflow: self != 0)
     }
     
-    @inlinable public consuming func minus(_ decrement: borrowing Self) throws -> Self {
-        try Overflow.resolve(Self(bitPattern: (copy self).bitPattern ^ decrement.bitPattern), overflow: self > decrement)
+    @inlinable public func minus( _ decrement: Self) throws -> Self {
+        try Overflow.resolve(self ^ decrement, overflow: self > decrement)
     }
 }
 
@@ -36,11 +36,11 @@ extension BitInt.Magnitude {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func negated() throws -> Self {
+    @inlinable public func negated() throws -> Self {
         try Overflow.resolve(self, overflow: self != 0)
     }
     
-    @inlinable public consuming func minus(_ decrement: borrowing Self) throws -> Self {
-        try Overflow.resolve(Self(bitPattern: (copy self).bitPattern ^ decrement.bitPattern), overflow: self < decrement)
+    @inlinable public func minus( _ decrement: Self) throws -> Self {
+        try Overflow.resolve(self ^ decrement, overflow: self < decrement)
     }
 }

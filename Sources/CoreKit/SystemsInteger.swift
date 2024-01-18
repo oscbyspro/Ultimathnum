@@ -88,7 +88,7 @@ public protocol SystemsInteger: BinaryInteger where Magnitude: UnsignedInteger &
     ///
     /// - TODO: Consider moving this to binary integer with typed throws.
     ///
-    @inlinable func count(_ bit: Bit, option: Bit.Selection) -> Magnitude
+    @inlinable func count(_ bit: BitInt.Magnitude, option: BitInt.Selection) -> Magnitude
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -145,16 +145,14 @@ extension SystemsInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ bit: Bit) where Self: UnsignedInteger {
-        self = Bool(bit) ?  1 : 0
-    }
-    
     /// ### Development
     ///
-    /// - Consider adding this every binary integer.
+    /// - TODo: Consider adding this every binary integer.
     ///
-    @inlinable public init(repeating bit: Bit) {
-        self = Bool(bit) ? ~0 : 0
+    /// - TODo: Consider adding this every bit invertible integer.
+    ///
+    @inlinable public init(repeating bit: U1) {
+        self = Bool(bitPattern: bit) ? ~0 : 0
     }
     
     //=------------------------------------------------------------------------=

@@ -17,8 +17,8 @@ extension CoreInt {
     // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
-        switch (Bool(bit), option) {
+    @inlinable public func count(_ bit: BitInt.Magnitude, option: BitInt.Selection) -> Magnitude {
+        switch (Bool(bitPattern: bit), option) {
         case (true,         .all): Magnitude(Base.Magnitude(truncatingIfNeeded: ( self).base     .nonzeroBitCount))
         case (false,        .all): Magnitude(Base.Magnitude(truncatingIfNeeded: (~self).base     .nonzeroBitCount))
         case (true,   .ascending): Magnitude(Base.Magnitude(truncatingIfNeeded: (~self).base.trailingZeroBitCount))

@@ -65,42 +65,13 @@ extension BaseInteger {
 // MARK: * Base Integer x Models
 //*============================================================================*
 
-extension Int: BaseInteger {
-    public typealias BitPattern = Magnitude
-}
-
-extension Int8: BaseInteger {
-    public typealias BitPattern = Magnitude
-}
-
-extension Int16: BaseInteger {
-    public typealias BitPattern = Magnitude
-}
-
-extension Int32: BaseInteger {
-    public typealias BitPattern = Magnitude
-}
-
-extension Int64: BaseInteger {
-    public typealias BitPattern = Magnitude
-}
-
-extension UInt: BaseInteger {
-    public typealias BitPattern = Magnitude
-}
-
-extension UInt8: BaseInteger {
-    public typealias BitPattern = Magnitude
-}
-
-extension UInt16: BaseInteger {
-    public typealias BitPattern = Magnitude
-}
-
-extension UInt32: BaseInteger {
-    public typealias BitPattern = Magnitude
-}
-
-extension UInt64: BaseInteger {
-    public typealias BitPattern = Magnitude
-}
+extension Int:    BaseInteger { }
+extension Int8:   BaseInteger { }
+extension Int16:  BaseInteger { }
+extension Int32:  BaseInteger { }
+extension Int64:  BaseInteger { }
+extension UInt:   BaseInteger { }
+extension UInt8:  BaseInteger { }
+extension UInt16: BaseInteger { }
+extension UInt32: BaseInteger { }
+extension UInt64: BaseInteger { }

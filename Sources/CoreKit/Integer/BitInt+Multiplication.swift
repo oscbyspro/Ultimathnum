@@ -17,15 +17,15 @@ extension BitInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func squared() throws -> Self {
-        try Overflow.resolve(copy self, overflow: self == -1)
+    @inlinable public func squared() throws -> Self {
+        try Overflow.resolve(self, overflow: self == -1)
     }
     
-    @inlinable public consuming func times(_ multiplier: borrowing Self) throws -> Self {
-        try Overflow.resolve(copy self & multiplier, overflow: self & multiplier == -1)
+    @inlinable public func times(_ multiplier: Self) throws -> Self {
+        try Overflow.resolve(self & multiplier, overflow: self & multiplier == -1)
     }
     
-    @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> Doublet<Self> {
+    @inlinable public static func multiplying(_ multiplicand: Self, by multiplier: Self) -> Doublet<Self> {
         Doublet(low: Magnitude(bitPattern: multiplicand & multiplier), high: 0)
     }
 }
@@ -40,15 +40,15 @@ extension BitInt.Magnitude {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func squared() throws -> Self {
+    @inlinable public func squared() throws -> Self {
         try Overflow.resolve(self, overflow: false)
     }
     
-    @inlinable public consuming func times(_ multiplier: borrowing Self) throws -> Self {
+    @inlinable public func times(_ multiplier: Self) throws -> Self {
         try Overflow.resolve(self & multiplier, overflow: false)
     }
     
-    @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> Doublet<Self> {
+    @inlinable public static func multiplying(_ multiplicand: Self, by multiplier: Self) -> Doublet<Self> {
         Doublet(low: Magnitude(bitPattern: multiplicand & multiplier), high: 0)
     }
 }

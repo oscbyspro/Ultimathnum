@@ -30,7 +30,7 @@ extension CoreInt {
             self.init(load:  source.load(as: UX.self))
         }   else {
             let minus = source.isLessThanZero
-            self.init(repeating: Bit(minus))
+            self.init(repeating: U1(bitPattern: minus))
             var bitIndex: Self = 0000000000000000000000000000000
             let bitWidth: Self = Self(bitPattern: Self.bitWidth)
             var index = source.base.startIndex;  while index < source.base.endIndex, bitIndex < bitWidth {

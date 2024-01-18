@@ -18,7 +18,7 @@ extension BitInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(load source: UX) {
-        self.init(bitPattern: Bit(source & 1 == 1))
+        self.init(bitPattern: source & 1 == 1)
     }
     
     @inlinable public init(load source: Pattern<some RandomAccessCollection<UX>>) {
@@ -30,7 +30,7 @@ extension BitInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public func load(as type: UX.Type) -> UX {
-        UX(repeating: self.bitPattern)
+        UX(repeating: U1(bitPattern: self.bitPattern))
     }
 }
 
@@ -45,7 +45,7 @@ extension BitInt.Magnitude {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(load source: UX) {
-        self.init(bitPattern: Bit(source & 1 == 1))
+        self.init(bitPattern: source & 1 == 1)
     }
     
     @inlinable public init(load source: Pattern<some RandomAccessCollection<UX>>) {
@@ -57,6 +57,6 @@ extension BitInt.Magnitude {
     //=------------------------------------------------------------------------=
         
     @inlinable public func load(as type: UX.Type) -> UX {
-        UX(self.bitPattern)
+        self.bitPattern ? 1 as UX : 0 as UX
     }
 }

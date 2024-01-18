@@ -13,9 +13,7 @@
 
 /// A signed `1-bit` integer that can represent the values `0` and `-1`.
 @frozen public struct BitInt: SystemsInteger & SignedInteger {
-    
-    public typealias BitPattern = Bit
-    
+        
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
@@ -28,21 +26,21 @@
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    public let bitPattern: Bit
+    public let bitPattern: Bool
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: consuming Bit) {
+    @inlinable public init(bitPattern: Bool) {
         self.bitPattern = (bitPattern)
     }
     
     @inlinable public init(integerLiteral: Swift.Int.IntegerLiteralType) {
         if  integerLiteral == 0 {
-            self.bitPattern = 0
+            self.bitPattern = false
         }   else if integerLiteral == -1 {
-            self.bitPattern = 1
+            self.bitPattern = true
         }   else {
             fatalError(.overflow())
         }
@@ -85,21 +83,21 @@
         // MARK: State
         //=--------------------------------------------------------------------=
         
-        public let bitPattern: Bit
+        public let bitPattern: Bool
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
-        @inlinable public init(bitPattern: Bit) {
+        @inlinable public init(bitPattern: Bool) {
             self.bitPattern = (bitPattern)
         }
         
         @inlinable public init(integerLiteral: Swift.UInt.IntegerLiteralType) {
             if  integerLiteral == 0 {
-                self.bitPattern = 0
+                self.bitPattern = false
             }   else if integerLiteral == 1 {
-                self.bitPattern = 1
+                self.bitPattern = true
             }   else {
                 fatalError(.overflow())
             }
@@ -114,6 +112,16 @@
                 CollectionOfOne(self.load(as: UX.self))
             }
         }
+    }
+    
+    //*========================================================================*
+    // MARK: * Selection
+    //*========================================================================*
+    
+    @frozen public enum Selection {
+        case all
+        case ascending
+        case descending
     }
 }
 
