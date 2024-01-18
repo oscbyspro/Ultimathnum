@@ -38,7 +38,7 @@ extension CoreInt {
                 index = source.base.index(after: index)
                 
                 ((self)) = ((self)) ^ Self(load: minus ? ~element : element) &<< bitIndex
-                bitIndex = bitIndex + Self(load: UX(bitPattern:   Swift.UInt.bitWidth))
+                bitIndex = bitIndex + Self(load: UX(bitPattern: Swift.UInt.bitWidth))
             }
         }
     }

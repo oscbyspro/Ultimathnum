@@ -31,12 +31,6 @@ let package = Package(
         name: "Ultimathnum",
         targets: ["Ultimathnum"]),
         //=--------------------------------------=
-        // Big Int Kit
-        //=--------------------------------------=
-        .library(
-        name: "BigIntKit",
-        targets: ["BigIntKit"]),
-        //=--------------------------------------=
         // Core Kit
         //=--------------------------------------=
         .library(
@@ -69,7 +63,6 @@ let package = Package(
         name: "Ultimathnum",
         dependencies: [
             "CoreKit",
-            "BigIntKit",
             "DoubleIntKit",
             "NormalIntKit",
             "SignedIntKit",
@@ -78,16 +71,6 @@ let package = Package(
         .testTarget(
         name: "UltimathnumTests",
         dependencies: ["Ultimathnum", "TestKit"]),
-        //=--------------------------------------=
-        // Big Int Kit
-        //=--------------------------------------=
-        .target(
-        name: "BigIntKit",
-        dependencies: ["CoreKit"]),
-        
-        .testTarget(
-        name: "BigIntKitTests",
-        dependencies: ["BigIntKit", "TestKit"]),
         //=--------------------------------------=
         // Core Kit
         //=--------------------------------------=
@@ -99,7 +82,6 @@ let package = Package(
         name: "CoreKitTests",
         dependencies: [
             "CoreKit",
-            "BigIntKit",
             "DoubleIntKit",
             "NormalIntKit",
             "SignedIntKit",

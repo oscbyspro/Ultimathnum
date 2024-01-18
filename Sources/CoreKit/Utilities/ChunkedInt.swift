@@ -53,7 +53,7 @@
 /// ```
 ///
 @frozen public struct ChunkedInt<Base, Element>: RandomAccessCollection where
-Element: SystemsInteger & UnsignedInteger,  Base: RandomAccessCollection, Base.Element: SystemsInteger & UnsignedInteger {
+Element: SystemsInteger & UnsignedInteger, Base: RandomAccessCollection, Base.Element: SystemsInteger & UnsignedInteger {
     
     public typealias Base = Base
     

@@ -74,8 +74,16 @@ public protocol SystemsInteger: BinaryInteger where Magnitude: UnsignedInteger &
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// ### Development
+    ///
+    /// - TODO: Consider the name `init(store:)`.
+    ///
     @inlinable init(load source: consuming UX)
     
+    /// ### Development
+    ///
+    /// - TODO: Consider the name `init(store:)`.
+    ///
     @inlinable init(load source: consuming Pattern<some RandomAccessCollection<UX>>)
     
     @inlinable func load(as type: UX.Type) -> UX
@@ -147,9 +155,17 @@ extension SystemsInteger {
     
     /// ### Development
     ///
-    /// - TODo: Consider adding this every binary integer.
+    /// - Note: This method is **important** for performance.
     ///
-    /// - TODo: Consider adding this every bit invertible integer.
+    @inlinable public init(_ bit: U1) {
+        self = Bool(bitPattern: bit) ? 1 : 0 // TODO: 0 and 1-bit
+    }
+    
+    /// ### Development
+    ///
+    /// - TODO: Consider adding this every binary integer.
+    ///
+    /// - TODO: Consider adding this every bit invertible integer.
     ///
     @inlinable public init(repeating bit: U1) {
         self = Bool(bitPattern: bit) ? ~0 : 0

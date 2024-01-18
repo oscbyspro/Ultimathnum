@@ -17,7 +17,6 @@
 // MARK: + Integers
 //=----------------------------------------------------------------------------=
 
-@_exported import BigIntKit
 @_exported import DoubleIntKit
 @_exported import NormalIntKit
 @_exported import SignedIntKit

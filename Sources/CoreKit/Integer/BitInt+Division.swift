@@ -31,7 +31,7 @@ extension BitInt {
     
     @inlinable public static func dividing(_ dividend: Doublet<Self>, by divisor: Self) throws -> Division<Self> {
         let quotient  = Self(bitPattern: dividend.low)
-        let remainder = Self(bitPattern: dividend.low) &  ~(divisor)
+        let remainder = Self(bitPattern: dividend.low) & ~divisor
         let overflow  = divisor == 0 || (dividend.low) == 0 && dividend.high == -1
         return try Overflow.resolve(Division(quotient: quotient, remainder: remainder), overflow: overflow)
     }
@@ -61,7 +61,7 @@ extension BitInt.Magnitude {
     
     @inlinable public static func dividing(_ dividend: Doublet<Self>, by divisor: Self) throws -> Division<Self> {
         let quotient  = Self(bitPattern: dividend.low)
-        let remainder = Self(bitPattern: dividend.low) &  ~(divisor)
+        let remainder = Self(bitPattern: dividend.low) & ~divisor
         let overflow  = divisor == 0 ||  dividend.high == 1
         return try Overflow.resolve(Division(quotient: quotient, remainder: remainder), overflow: overflow)
     }

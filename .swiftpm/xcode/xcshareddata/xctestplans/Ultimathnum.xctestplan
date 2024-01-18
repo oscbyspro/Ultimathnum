@@ -35,11 +35,6 @@
           "containerPath" : "container:",
           "identifier" : "Ultimathnum",
           "name" : "Ultimathnum"
-        },
-        {
-          "containerPath" : "container:",
-          "identifier" : "BigIntKit",
-          "name" : "BigIntKit"
         }
       ]
     }
@@ -78,13 +73,6 @@
         "containerPath" : "container:",
         "identifier" : "UltimathnumTests",
         "name" : "UltimathnumTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "BigIntKitTests",
-        "name" : "BigIntKitTests"
       }
     }
   ],

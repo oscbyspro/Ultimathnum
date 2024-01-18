@@ -68,9 +68,7 @@
     
     /// An unsigned `1-bit` integer that can represent the values `0` and `1`.
     @frozen public struct Magnitude: SystemsInteger & UnsignedInteger {        
-        
-        public typealias Magnitude = Self
-        
+                
         //=--------------------------------------------------------------------=
         // MARK: Meta Data
         //=--------------------------------------------------------------------=
