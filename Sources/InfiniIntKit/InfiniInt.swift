@@ -91,7 +91,7 @@ import CoreKit
         //=--------------------------------------------------------------------=
         
         @inlinable public static var bitWidth: Magnitude {
-            Self(repeating: 1)
+            Magnitude.max
         }
         
         //=--------------------------------------------------------------------=
