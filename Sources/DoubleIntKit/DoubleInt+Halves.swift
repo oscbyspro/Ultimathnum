@@ -57,6 +57,26 @@ extension DoubleInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// The `low` half of this value.
+    @inlinable public var low: Low {
+        get {
+            self.storage.low
+        }
+        set {
+            self.storage.low = newValue
+        }
+    }
+    
+    /// The `high` half of this value.
+    @inlinable public var high: High {
+        get {
+            self.storage.high
+        }
+        set {
+            self.storage.high = newValue
+        }
+    }
+    
     /// The `low` and `high` halves of this value.
     @inlinable public var ascending: (low: Low, high: High) {
         consuming get {

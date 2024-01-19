@@ -13,15 +13,17 @@ import CoreKit
 // MARK: * Double Int
 //*============================================================================*
 
-@frozen public struct DoubleInt<Base: SystemsInteger> {
-    
-    @usableFromInline typealias Storage = Doublet<Base>
+@frozen public struct DoubleInt<Base: SystemsInteger>: SystemsInteger {
     
     public typealias High = Base
     
     public typealias Low  = Base.Magnitude
     
+    public typealias IntegerLiteralType = StaticBigInt
+    
     public typealias Magnitude = DoubleInt<Base.Magnitude>
+    
+    @usableFromInline typealias Storage = Doublet<Base>
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -49,44 +51,71 @@ import CoreKit
     @inlinable public init(_ storage: consuming Doublet<Base>) {
         self.storage = storage
     }
+    
+    /// ### Development
+    ///
+    /// - TODO: Consider using storage as bit pattern type.
+    ///
+    @inlinable public init(bitPattern: consuming Magnitude) {
+        self.init(low: bitPattern.low, high: Base(bitPattern: bitPattern.high))
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var bitPattern: Magnitude {
+        Magnitude(low: self.low, high: Base.Magnitude(bitPattern: self.high))
+    }
+    
+    @inlinable public var magnitude: Magnitude {
+        fatalError("TODO")
+    }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Un/signed
+//=----------------------------------------------------------------------------=
+
+extension DoubleInt:   SignedInteger where Base:   SignedInteger { }
+extension DoubleInt: UnsignedInteger where Base: UnsignedInteger { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Aliases
 //=----------------------------------------------------------------------------=
 
-///// A signed, 128-bit, integer.
-//public typealias I128  = DoubleInt<I64>
-//
-///// An unsigned, 128-bit, integer.
-//public typealias U128  = DoubleInt<U64>
-//
-///// A signed, 256-bit, integer.
-//public typealias I256  = DoubleInt<I128>
-//
-///// An unsigned, 256-bit, integer.
-//public typealias U256  = DoubleInt<U128>
-//
-///// A signed, 512-bit, integer.
-//public typealias I512  = DoubleInt<I256>
-//
-///// An unsigned, 512-bit, integer.
-//public typealias U512  = DoubleInt<U256>
-//
-///// A signed, 1024-bit, integer.
-//public typealias I1024 = DoubleInt<I512>
-//
-///// An unsigned, 1024-bit, integer.
-//public typealias U1024 = DoubleInt<U512>
-//
-///// A signed, 2048-bit, integer.
-//public typealias I2048 = DoubleInt<I1024>
-//
-///// An unsigned, 2048-bit, integer.
-//public typealias U2048 = DoubleInt<U1024>
-//
-///// A signed, 4096-bit, integer.
-//public typealias I4096 = DoubleInt<I2048>
-//
-///// An unsigned, 4096-bit, integer.
-//public typealias U4096 = DoubleInt<U2048>
+/// A signed, 128-bit, integer.
+public typealias I128  = DoubleInt<I64>
+
+/// An unsigned, 128-bit, integer.
+public typealias U128  = DoubleInt<U64>
+
+/// A signed, 256-bit, integer.
+public typealias I256  = DoubleInt<I128>
+
+/// An unsigned, 256-bit, integer.
+public typealias U256  = DoubleInt<U128>
+
+/// A signed, 512-bit, integer.
+public typealias I512  = DoubleInt<I256>
+
+/// An unsigned, 512-bit, integer.
+public typealias U512  = DoubleInt<U256>
+
+/// A signed, 1024-bit, integer.
+public typealias I1024 = DoubleInt<I512>
+
+/// An unsigned, 1024-bit, integer.
+public typealias U1024 = DoubleInt<U512>
+
+/// A signed, 2048-bit, integer.
+public typealias I2048 = DoubleInt<I1024>
+
+/// An unsigned, 2048-bit, integer.
+public typealias U2048 = DoubleInt<U1024>
+
+/// A signed, 4096-bit, integer.
+public typealias I4096 = DoubleInt<I2048>
+
+/// An unsigned, 4096-bit, integer.
+public typealias U4096 = DoubleInt<U2048>
