@@ -19,7 +19,7 @@
 /// - TODO: Consider alternative EndlessInt model.
 ///
 @frozen public struct Pattern<Base> where Base: RandomAccessCollection<UX> {
-        
+    
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=

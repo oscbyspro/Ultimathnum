@@ -47,28 +47,7 @@
 ///
 /// - Note: It is an alternative in case typed throws don't perform well.
 ///
-public protocol SystemsInteger: BinaryInteger where Magnitude: UnsignedInteger & SystemsInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Meta Data
-    //=------------------------------------------------------------------------=
-    
-    /// The bit width of this type.
-    ///
-    /// ```
-    /// ┌──────┬──────────┐
-    /// │ type │ bitWidth │
-    /// ├──────┼──────────┤
-    /// │ I64  │ 64       │
-    /// │ IXL  │ IX.max   │
-    /// └──────┴──────────┘
-    /// ```
-    ///
-    /// ### Development
-    ///
-    /// - TODO: Consider moving this to binary integer with typed throws.
-    ///
-    @inlinable static var bitWidth: Magnitude { get }
+public protocol SystemsInteger: BinaryInteger where Magnitude: SystemsInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -87,28 +66,6 @@ public protocol SystemsInteger: BinaryInteger where Magnitude: UnsignedInteger &
     @inlinable init(load source: consuming Pattern<some RandomAccessCollection<UX>>)
     
     @inlinable func load(as type: UX.Type) -> UX
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Accessors
-    //=------------------------------------------------------------------------=
-    
-    /// ### Development
-    ///
-    /// - TODO: Consider moving this to binary integer with typed throws.
-    ///
-    @inlinable func count(_ bit: BitInt.Magnitude, option: BitInt.Selection) -> Magnitude
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self
-    
-    @inlinable static func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self
-    
-    @inlinable static func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self
-    
-    @inlinable static func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -147,28 +104,6 @@ extension SystemsInteger {
     
     @inlinable public static var msb: Self {
         Self(bitPattern: 1 as Magnitude &<< (bitWidth &- 1))
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    /// ### Development
-    ///
-    /// - Note: This method is **important** for performance.
-    ///
-    @inlinable public init(_ bit: U1) {
-        self = Bool(bitPattern: bit) ? 1 : 0 // TODO: 0 and 1-bit
-    }
-    
-    /// ### Development
-    ///
-    /// - TODO: Consider adding this every binary integer.
-    ///
-    /// - TODO: Consider adding this every bit invertible integer.
-    ///
-    @inlinable public init(repeating bit: U1) {
-        self = Bool(bitPattern: bit) ? ~0 : 0
     }
     
     //=------------------------------------------------------------------------=

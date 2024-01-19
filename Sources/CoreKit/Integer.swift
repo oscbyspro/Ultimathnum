@@ -39,14 +39,22 @@ public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Send
     /// └──────┴──────────┴─────┴─────┘
     /// ```
     ///
+    /// ### Development
+    ///
+    /// - TODO: It belongs to binary integer but moving it requires some changes.
+    ///
     @inlinable static var isSigned: Bool { get }
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable init(sign:  consuming Sign, magnitude: consuming Magnitude) throws
+    @inlinable init(sign: consuming Sign, magnitude: consuming Magnitude) throws
     
+    /// ### Development
+    ///
+    /// - TODO: Consider moving it to the binary integer protocol.
+    ///
     @inlinable init(words: consuming some RandomAccessCollection<UX>, isSigned: consuming Bool) throws
     
     //=------------------------------------------------------------------------=
@@ -75,6 +83,10 @@ public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Send
     
     @inlinable var magnitude: Magnitude { consuming get }
     
+    /// ### Development
+    ///
+    /// - TODO: Consider moving it to the binary integer protocol.
+    ///
     @inlinable var words: Words { consuming get }
     
     @inlinable borrowing func compared(to other: borrowing Self) -> Signum

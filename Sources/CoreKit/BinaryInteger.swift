@@ -23,21 +23,78 @@
 ///
 /// Its magnitude may be signed to accomodate lone big integers.
 ///
-/// ### Development
-///
-/// - TODO: Consider a static { get throws } bit width requirement.
-///
-/// - TODO: Consider &+ operations with infinite width requirement.
-///
-/// - TODO: Consider binary integer as an alias for a bit invertible integer.
-///
-public protocol BinaryInteger: BitCastable, BitOperable, Integer where Magnitude: BinaryInteger, Magnitude.BitPattern == BitPattern { }
+public protocol BinaryInteger: BitCastable, BitOperable, Integer where Magnitude: UnsignedInteger, Magnitude.BitPattern == BitPattern {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    /// Indicates whether this type can represent negative values.
+    ///
+    /// ```
+    /// ┌──────┬──────────┬─────┬─────┐
+    /// │ type │ isSigned │ min │ max │
+    /// ├──────┼──────────┼─────┼─────┤
+    /// │ I1   │ true     │ -1  │   0 │
+    /// │ U1   │ false    │  0  │  -1 │
+    /// └──────┴──────────┴─────┴─────┘
+    /// ```
+    ///
+    @inlinable static var isSigned: Bool { get }
+    
+    /// The bit width of this type.
+    ///
+    /// ```
+    /// ┌──────┬───────────────────┐
+    /// │ type │ bitWidth          │
+    /// ├──────┼───────────────────┤
+    /// │ I64  │ U64(repeating: 1) │ // 64
+    /// │ IXL  │ UXL(repeating: 1) │ // infinite
+    /// └──────┴───────────────────┘
+    /// ```
+    ///
+    @inlinable static var bitWidth: Magnitude { get }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self
+    
+    @inlinable static func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self
+    
+    @inlinable static func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self
+    
+    @inlinable static func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable func count(_ bit: BitInt.Magnitude, option: BitInt.Selection) -> Magnitude
+}
 
 //=----------------------------------------------------------------------------=
 // MARK: + Details
 //=----------------------------------------------------------------------------=
 
 extension BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    /// ### Development
+    ///
+    /// - Note: This method is **important** for performance.
+    ///
+    @inlinable public init(_ bit: U1) {
+        self = Bool(bitPattern: bit) ?  1 : 0 // TODO: 0 and 1-bit
+    }
+    
+    @inlinable public init(repeating bit: U1) {
+        self = Bool(bitPattern: bit) ? ~0 : 0
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

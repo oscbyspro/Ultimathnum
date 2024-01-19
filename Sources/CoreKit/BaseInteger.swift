@@ -37,7 +37,7 @@
 /// let integers: [any BaseInteger] = [Int(), UInt()]
 /// ```
 ///
-public protocol BaseInteger: BitCastable, Swift.FixedWidthInteger, Sendable 
+public protocol BaseInteger: BitCastable, BitOperable, Swift.FixedWidthInteger, Swift.Sendable
 where BitPattern == Magnitude.BitPattern, Magnitude: Swift.FixedWidthInteger & BaseInteger { }
 
 //=----------------------------------------------------------------------------=
