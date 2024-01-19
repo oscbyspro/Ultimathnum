@@ -18,7 +18,7 @@ import CoreKit
 /// Consider making the storage model the same model that is used by init(load:)
 /// and perhaps words. This would maximize interoperability.
 ///
-@frozen public struct InfiniInt {
+@frozen public struct InfiniInt: SignedInteger {
     
     public typealias IntegerLiteralType = StaticBigInt
     
@@ -52,11 +52,35 @@ import CoreKit
         self.storage.normalize()
     }
     
+    @inlinable public init(bitPattern: consuming Magnitude) {
+        self.init(unchecked: bitPattern.storage)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var bitPattern: Magnitude {
+        consuming get {
+            Magnitude(unchecked: self.storage)
+        }
+    }
+    
+    @inlinable public var magnitude: Magnitude {
+        consuming get {
+            if  self  < 0 {
+                Overflow.ignore(&self, map:{ try $0.negated() })
+            }
+            
+            return Magnitude(bitPattern: self)
+        }
+    }
+    
     //*========================================================================*
     // MARK: * Magnitude
     //*========================================================================*
     
-    @frozen public struct Magnitude {
+    @frozen public struct Magnitude: UnsignedInteger {
                 
         public typealias IntegerLiteralType = StaticBigInt
         
@@ -67,7 +91,7 @@ import CoreKit
         //=--------------------------------------------------------------------=
         
         @inlinable public static var bitWidth: Magnitude {
-            fatalError("TODO")
+            Self(repeating: 1)
         }
         
         //=--------------------------------------------------------------------=
