@@ -23,3 +23,22 @@ extension SignedInt {
         fatalError("TODO")
     }
 }
+
+//*============================================================================*
+// MARK: * Signed Int x Numbers x Systems
+//*============================================================================*
+
+extension SignedInt where Magnitude: SystemsInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static var min: Self {
+        try! Self(sign: Sign.minus, magnitude: Magnitude.max)
+    }
+    
+    @inlinable public static var max: Self {
+        try! Self(sign: Sign.plus,  magnitude: Magnitude.max)
+    }
+}

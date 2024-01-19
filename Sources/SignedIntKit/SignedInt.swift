@@ -46,7 +46,7 @@ import CoreKit
     //=------------------------------------------------------------------------=
     
     /// Creates a new instance with the given sign and magnitude.
-    @inlinable public init(sign: consuming Sign, magnitude: consuming Magnitude) throws {
+    @inlinable public init(sign: Sign, magnitude: consuming Magnitude) throws {
         self.sign = sign
         self.magnitude = magnitude
         
