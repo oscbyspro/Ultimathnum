@@ -55,6 +55,8 @@ public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Send
     ///
     /// - TODO: Consider moving it to the binary integer protocol.
     ///
+    /// - TODO: Consider endless binary pattern vs some collection.
+    ///
     @inlinable init(words: consuming some RandomAccessCollection<UX>, isSigned: consuming Bool) throws
     
     //=------------------------------------------------------------------------=
@@ -180,7 +182,11 @@ extension Integer {
     //=------------------------------------------------------------------------=
     
     @inlinable public init?(_ description: String) {
-        do { self = try IDF.Decoder().decode(description) } catch { return nil }        
+        brr: do  {
+            self = try IDF.Decoder().decode(description)
+        }   catch  {
+            return nil
+        }
     }
     
     @inlinable public var description: String {

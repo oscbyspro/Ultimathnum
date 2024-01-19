@@ -56,6 +56,12 @@ public protocol BinaryInteger: BitCastable, BitOperable, Integer where Magnitude
     @inlinable static var bitWidth: Magnitude { get }
     
     //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable init(load source: consuming Pattern<some RandomAccessCollection<UX>>)
+        
+    //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
@@ -94,6 +100,41 @@ extension BinaryInteger {
     
     @inlinable public init(repeating bit: U1) {
         self = Bool(bitPattern: bit) ? ~0 : 0
+    }
+    
+    @inlinable public init<T>(truncating source: T) where T: Integer {
+        self.init(load: Pattern(source.words, isSigned: T.isSigned))
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(sign: consuming Sign, magnitude: consuming Magnitude) throws {
+        var bitPattern = consume magnitude
+        var isLessThanZero = sign == Sign.minus
+        if  isLessThanZero {
+            isLessThanZero = Overflow.capture(&bitPattern, map:{ try $0.negated() })
+        }
+        
+        self.init(bitPattern: consume bitPattern)
+        if  self.isLessThanZero != isLessThanZero {
+            throw Overflow(consume self)
+        }
+    }
+    
+    @inlinable public init(words: consuming some RandomAccessCollection<UX>, isSigned: consuming Bool) throws {
+        let pattern = Pattern(words, isSigned: isSigned)
+        self.init(load: pattern)
+        
+        let current = self.words as Words
+        let success = self.isLessThanZero == pattern.isLessThanZero as Bool as Bool
+        && (current.last ?? 0) == (pattern.base.dropFirst(Swift.max(0, current.count - 1 )).first ?? 0)
+        &&  pattern.base.dropFirst(current.count).allSatisfy({ $0 == pattern.sign })
+        
+        if !success {
+            throw Overflow(consume self)
+        }
     }
     
     //=------------------------------------------------------------------------=

@@ -53,17 +53,7 @@ public protocol SystemsInteger: BinaryInteger where Magnitude: SystemsInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// ### Development
-    ///
-    /// - TODO: Consider the name `init(store:)`.
-    ///
     @inlinable init(load source: consuming UX)
-    
-    /// ### Development
-    ///
-    /// - TODO: Consider the name `init(store:)`.
-    ///
-    @inlinable init(load source: consuming Pattern<some RandomAccessCollection<UX>>)
     
     @inlinable func load(as type: UX.Type) -> UX
     
@@ -111,46 +101,14 @@ extension SystemsInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public init<T>(clamping source: T) where T: Integer {
-        let minus =  source < (0 as T)
-        self = (try? Self(exactly: source)) ?? (minus ? Self.min : Self.max)
-    }
-    
-    @inlinable public init<T>(truncating source: T) where T: Integer {
-        self.init(load: Pattern(source.words, isSigned: T.isSigned))
+        brr: do {
+            try self.init(exactly: source)
+        }   catch {
+            self = source < 0 as T ? Self.min : Self.max
+        }
     }
     
     @inlinable public func load<T>(as type: T.Type) -> T where T: BitCastable<UX.BitPattern> {
         T(bitPattern: self.load(as: UX.self))
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(sign: consuming Sign, magnitude: consuming Magnitude) throws {
-        var bitPattern = consume magnitude
-        var isLessThanZero = sign == Sign.minus
-        if  isLessThanZero {
-            isLessThanZero = !Overflow.capture(&bitPattern, map:{ try (~$0).plus(1) })
-        }
-                
-        self.init(bitPattern: consume bitPattern)
-        if  self.isLessThanZero != isLessThanZero {
-            throw Overflow(consume self)
-        }
-    }
-    
-    @inlinable public init(words: consuming some RandomAccessCollection<UX>, isSigned: consuming Bool) throws {
-        let pattern = Pattern(words, isSigned: isSigned)
-        self.init(load: pattern)
-        
-        let current = self.words as Words
-        let success = self.isLessThanZero == pattern.isLessThanZero as Bool as Bool
-        && (current.last ?? 0) == (pattern.base.dropFirst(Swift.max(0, current.count - 1 )).first ?? 0)
-        &&  pattern.base.dropFirst(current.count).allSatisfy({ $0 == pattern.sign })
-        
-        if !success {
-            throw Overflow(consume self)
-        }
     }
 }
