@@ -20,18 +20,18 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public static prefix func ~(instance: consuming Self) -> Self {
-        fatalError("TODO")
+        Self(low: ~instance.low, high: ~instance.high)
     }
     
-    @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        fatalError("TODO")
+    @inlinable public static func &(lhs: consuming Self, rhs: Self) -> Self {
+        Self(low: lhs.low & rhs.low, high: lhs.high & rhs.high)
     }
     
-    @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        fatalError("TODO")
+    @inlinable public static func |(lhs: consuming Self, rhs: Self) -> Self {
+        Self(low: lhs.low | rhs.low, high: lhs.high | rhs.high)
     }
     
-    @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        fatalError("TODO")
+    @inlinable public static func ^(lhs: consuming Self, rhs: Self) -> Self {
+        Self(low: lhs.low ^ rhs.low, high: lhs.high ^ rhs.high)
     }
 }

@@ -24,4 +24,15 @@ final class DoubleIntTests: XCTestCase {
     
     typealias IXx2 = DoubleInt<IX>
     typealias UXx2 = DoubleInt<UX>
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    static let types: [any SystemsInteger.Type] = [
+        DoubleInt<IX>.self,
+        DoubleInt<I8>.self,
+        DoubleInt<UX>.self,
+        DoubleInt<U8>.self,
+    ]
 }
