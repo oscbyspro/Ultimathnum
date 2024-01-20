@@ -19,16 +19,16 @@ extension DoubleInt {
     // MARK: Initializes
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(load source: consuming UX) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public init<T>(load source: consuming Pattern<T>) {
-        fatalError("TODO")
+    @inlinable public init(load source: UX) {
+        let low  = Low (load: source)
+        let high = High(load: source >> Low.bitWidth.load(as: UX.self))
+        self.init(low: low, high: high)
     }
     
     @inlinable public func load(as type: UX.Type) -> UX {
-        fatalError("TODO")
+        let low  = self.low .load(as: UX.self)
+        let high = self.high.load(as: UX.self) << Low.bitWidth.load(as: UX.self)
+        return low | high
     }
 
     //=------------------------------------------------------------------------=
