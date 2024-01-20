@@ -19,15 +19,31 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        fatalError("TODO")
+    @inlinable public static func <<(lhs: consuming Self, rhs: Self) -> Self {
+        if  rhs.isLessThanZero {
+            return lhs >> -rhs
+        }   else if Self.bitWidth  <= Magnitude(bitPattern: rhs) {
+            return Self(repeating: U1())
+        }   else {
+            return lhs &>> rhs
+        }
     }
+    
+    @inlinable public static func >>(lhs: consuming Self, rhs: Self) -> Self {
+        if  rhs.isLessThanZero {
+            return lhs << -rhs
+        }   else if Self.bitWidth  <= Magnitude(bitPattern: rhs) {
+            return Self(repeating: U1(bitPattern: lhs.isLessThanZero))
+        }   else {
+            return lhs &<< rhs
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
     
     @inlinable public static func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        fatalError("TODO")
-    }
-    
-    @inlinable public static func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
         fatalError("TODO")
     }
     
