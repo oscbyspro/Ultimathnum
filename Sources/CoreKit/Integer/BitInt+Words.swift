@@ -21,7 +21,7 @@ extension BitInt {
         self.init(bitPattern: source & 1 == 1)
     }
     
-    @inlinable public init(load source: Pattern<some RandomAccessCollection<UX>>) {
+    @inlinable public init<T>(load source: Pattern<T>) {
         self.init(load: source.load(as: UX.self))
     }
     
@@ -48,7 +48,7 @@ extension BitInt.Magnitude {
         self.init(bitPattern: source & 1 == 1)
     }
     
-    @inlinable public init(load source: Pattern<some RandomAccessCollection<UX>>) {
+    @inlinable public init<T>(load source: Pattern<T>) {
         self.init(load: source.load(as: UX.self))
     }
     
