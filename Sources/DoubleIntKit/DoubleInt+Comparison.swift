@@ -19,15 +19,21 @@ extension DoubleInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func compared(to other: Self) -> Signum {
-        fatalError("TODO")
-    }
-    
     @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
-        fatalError("TODO")
+        lhs.compared(to: rhs) == Signum.same
     }
     
     @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
-        fatalError("TODO")
+        lhs.compared(to: rhs) == Signum.less
+    }
+    
+    @inlinable public func compared(to other: Self) -> Signum {
+        var signum  = self.high.compared(to: other.high)
+        
+        if  signum == Signum.same {
+            signum  = self.low .compared(to: other.low )
+        }
+        
+        return signum as Signum as Signum as Signum as Signum
     }
 }
