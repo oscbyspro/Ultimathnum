@@ -13,7 +13,7 @@
 
 /// A signed `1-bit` integer that can represent the values `0` and `-1`.
 @frozen public struct BitInt: SystemsInteger & SignedInteger {
-        
+    
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
@@ -56,12 +56,6 @@
         }
     }
     
-    @inlinable public var words: some RandomAccessCollection<UX> {
-        consuming get {
-            CollectionOfOne(self.load(as: UX.self))
-        }
-    }
-    
     //*========================================================================*
     // MARK: * Magnitude
     //*========================================================================*
@@ -98,16 +92,6 @@
                 self.bitPattern = true
             }   else {
                 fatalError(.overflow())
-            }
-        }
-        
-        //=--------------------------------------------------------------------=
-        // MARK: Accessors
-        //=--------------------------------------------------------------------=
-        
-        @inlinable public var words: some RandomAccessCollection<UX> {
-            consuming get {
-                CollectionOfOne(self.load(as: UX.self))
             }
         }
     }

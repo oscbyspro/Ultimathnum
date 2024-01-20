@@ -35,6 +35,10 @@
 ///
 /// - Requires: Its magnitude must be unsigned and the same size as this type.
 ///
+/// ### Words
+///
+/// - Requires: Its words collection view must have an identical memory layout.
+///
 /// ### Development
 ///
 /// Consider primitive static base methods that match stdlib operations:

@@ -23,12 +23,27 @@ final class CoreIntTests: XCTestCase {
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    static let signed:   [I] = [IX.self, I8.self, I16.self, I32.self, I64.self]
-    static let unsigned: [U] = [UX.self, U8.self, U16.self, U32.self, U64.self]
-    static let types: [any SystemsInteger.Type] = signed + unsigned
+    static let types: [any SystemsInteger.Type] = [
+        IX.self, I8.self, I16.self, I32.self, I64.self,
+        UX.self, U8.self, U16.self, U32.self, U64.self,
+    ]
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testInvariants() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            Test.invariants(type)
+        }
+        
+        for type in Self.types {
+            whereIs(type)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Miscellaneous
     //=------------------------------------------------------------------------=
     
     func testMinMax() {
@@ -48,18 +63,6 @@ final class CoreIntTests: XCTestCase {
             XCTAssertEqual(T.lsb.count(0, option: .descending), T.bitWidth - 1)
             XCTAssertEqual(T.msb.count(0, option: .ascending ), T.bitWidth - 1)
             XCTAssertEqual(T.msb.count(1, option: .descending), 1)
-        }
-        
-        for type in Self.types {
-            whereIs(type)
-        }
-    }
-    
-    func testMetaData() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            XCTAssertEqual(T.bitWidth.count(1, option: .all), 1)
-            XCTAssertEqual(T.isSigned == true,  T.self is any   SignedInteger.Type)
-            XCTAssertEqual(T.isSigned == false, T.self is any UnsignedInteger.Type)
         }
         
         for type in Self.types {

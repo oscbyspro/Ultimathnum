@@ -23,7 +23,7 @@ extension Test {
     public static func multiplication<T: SystemsInteger>(
     _ lhs: T, _ rhs: T, _ product: Doublet<T>,_ overflow: Bool = false,
     file: StaticString = #file, line: UInt = #line) {
-        self.multiplicationAsSomeSystemInteger(lhs, rhs, product, overflow, file: file, line: line)
+        self.multiplicationAsSomeSystemsInteger(lhs, rhs, product, overflow, file: file, line: line)
     }
     
     public static func multiplication<T: BinaryInteger>(
@@ -42,7 +42,7 @@ extension Test {
     // MARK: Utilities x Private
     //=------------------------------------------------------------------------=
     
-    private static func multiplicationAsSomeSystemInteger<T: SystemsInteger>(
+    private static func multiplicationAsSomeSystemsInteger<T: SystemsInteger>(
     _ lhs: T, _ rhs: T, _ product: Doublet<T>, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
         XCTAssertEqual(T.multiplying(lhs, by: rhs), (product), file: file, line: line)

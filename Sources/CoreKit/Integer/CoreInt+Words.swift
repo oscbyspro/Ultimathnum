@@ -25,7 +25,7 @@ extension CoreInt {
         UX(bitPattern: UInt(truncatingIfNeeded: self.base))
     }
     
-    @inlinable public init(load source: Pattern<some RandomAccessCollection<UX>>) {
+    @inlinable public init<T>(load source: Pattern<T>) {
         if  Self.bitWidth <= Magnitude(load: UX(bitPattern: Swift.UInt.bitWidth)) {
             self.init(load:  source.load(as: UX.self))
         }   else {

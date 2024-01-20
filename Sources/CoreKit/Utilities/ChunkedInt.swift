@@ -74,7 +74,7 @@ Element: SystemsInteger & UnsignedInteger, Base: RandomAccessCollection, Base.El
     public let base: Base
     
     /// The sign extension of the un/signed source.
-    public let sign:  Element
+    public let sign: Element
     
     /// The length of this sequence.
     public let count: Int

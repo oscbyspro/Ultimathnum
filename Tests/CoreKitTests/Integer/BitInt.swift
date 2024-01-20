@@ -23,12 +23,27 @@ final class BitIntTests: XCTestCase {
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    static let signed:   [I] = [BitInt.self]
-    static let unsigned: [U] = [BitInt.Magnitude.self]
-    static let types: [any SystemsInteger.Type] = signed + unsigned
+    static let types: [any SystemsInteger.Type] = [
+        BitInt.self,
+        BitInt.Magnitude.self,
+    ]
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testInvariants() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            Test.invariants(type)
+        }
+        
+        for type in Self.types {
+            whereIs(type)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Miscellaneous
     //=------------------------------------------------------------------------=
     
     func testMinMax() {
@@ -46,18 +61,6 @@ final class BitIntTests: XCTestCase {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             XCTAssertEqual(T.lsb, T.isSigned ? -1 : 1)
             XCTAssertEqual(T.msb, T.isSigned ? -1 : 1)
-        }
-        
-        for type in Self.types {
-            whereIs(type)
-        }
-    }
-    
-    func testMetaData() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            XCTAssertEqual(T.bitWidth, 1)
-            XCTAssertEqual(T.isSigned == true,  T.self is any   SignedInteger.Type)
-            XCTAssertEqual(T.isSigned == false, T.self is any UnsignedInteger.Type)
         }
         
         for type in Self.types {
