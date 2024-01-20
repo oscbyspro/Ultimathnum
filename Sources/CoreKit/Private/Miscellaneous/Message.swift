@@ -17,6 +17,12 @@ extension String {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// A message describing the location of unreachable code.
+    @inlinable package static func unreachable(
+    function: StaticString = #function, file: StaticString = #file, line: UInt = #line) -> String {
+        "unreachable code path taken in \(function) at \(file):\(line)"
+    }
+    
     /// A message describing the location of an overflow error.
     @inlinable package static func overflow(
     function: StaticString = #function, file: StaticString = #file, line: UInt = #line) -> String {

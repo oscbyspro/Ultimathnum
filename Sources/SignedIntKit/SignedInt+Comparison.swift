@@ -30,10 +30,10 @@ extension SignedInt {
     }
     
     @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.compared(to: rhs) == .same
+        lhs.compared(to: rhs) ==  Signum.same
     }
     
     @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.compared(to: rhs) == .less
+        lhs.compared(to: rhs) ==  Signum.less
     }
 }

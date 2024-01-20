@@ -77,6 +77,11 @@ Element: SystemsInteger & UnsignedInteger, Base: RandomAccessCollection, Base.El
     public let sign: Element
     
     /// The length of this sequence.
+    ///
+    /// ### Development
+    ///
+    /// - TODO: Consider consider deriving the `count` instead (measure it).
+    ///
     public let count: Int
     
     //=------------------------------------------------------------------------=
@@ -127,33 +132,31 @@ Element: SystemsInteger & UnsignedInteger, Base: RandomAccessCollection, Base.El
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    @inlinable internal static var comparison: Signum {
+        Self.Element.bitWidth.load(as: UX.self).compared(to: Base.Element.bitWidth.load(as: UX.self))
+    }
+    
     @inlinable internal static func count(of base: Base) -> Int {
-        if  Self.Element.bitWidth.load(as: UX.self) > Base.Element.bitWidth.load(as: UX.self) {
-            return Major.count(of: base)
-        }   else if Self.Element.bitWidth.load(as: UX.self) < Base.Element.bitWidth.load(as: UX.self) {
-            return Minor.count(of: base)
-        }   else {
-            return Equal.count(of: base)
+        switch comparison {
+        case Signum.less: return Minor.count(of: base)
+        case Signum.same: return Equal.count(of: base)
+        case Signum.more: return Major.count(of: base)
         }
     }
     
     @inlinable internal static func count(normalizing base: Base, repeating bit: U1) -> Int {
-        if  Self.Element.bitWidth.load(as: UX.self) > Base.Element.bitWidth.load(as: UX.self) {
-            return Major.count(normalizing: base, repeating: bit)
-        }   else if Self.Element.bitWidth.load(as: UX.self) < Base.Element.bitWidth.load(as: UX.self) {
-            return Minor.count(normalizing: base, repeating: bit)
-        }   else {
-            return Equal.count(normalizing: base, repeating: bit)
+        switch comparison {
+        case Signum.less: return Minor.count(normalizing: base, repeating: bit)
+        case Signum.same: return Equal.count(normalizing: base, repeating: bit)
+        case Signum.more: return Major.count(normalizing: base, repeating: bit)
         }
     }
     
     @inlinable internal static func element(_ index: Int, base: Base, sign: Element) -> Element {
-        if  Self.Element.bitWidth.load(as: UX.self) > Base.Element.bitWidth.load(as: UX.self) {
-            return Major.element(index, base: base, sign: sign)
-        }   else if Self.Element.bitWidth.load(as: UX.self) < Base.Element.bitWidth.load(as: UX.self) {
-            return Minor.element(index, base: base, sign: sign)
-        }   else {
-            return Equal.element(index, base: base, sign: sign)
+        switch comparison {
+        case Signum.less: return Minor.element(index, base: base, sign: sign)
+        case Signum.same: return Equal.element(index, base: base, sign: sign)
+        case Signum.more: return Major.element(index, base: base, sign: sign)
         }
     }
 }
@@ -175,22 +178,34 @@ extension ChunkedInt.Major {
     //=------------------------------------------------------------------------=
     
     @inlinable static var ratio: Int {
+        //=--------------------------------------=
+        precondition(ChunkedInt.comparison == Signum.more, String.unreachable())
+        //=--------------------------------------=
         let major = Element.bitWidth
         let minor = Element.Magnitude(truncating: Base.Element.bitWidth)
         return (major &>> minor.count(0, option: .ascending)).load(as: Int.self)
     }
     
     @inlinable static func count(of base: some Collection<Base.Element>) -> Int {
+        //=--------------------------------------=
+        precondition(ChunkedInt.comparison == Signum.more, String.unreachable())
+        //=--------------------------------------=
         let division = base.count.quotientAndRemainder(dividingBy: self.ratio)
         return division.quotient + (division.remainder > 0 ? 1 : 0)
     }
     
     @inlinable static func count(normalizing base: Base, repeating bit: U1) -> Int {
+        //=--------------------------------------=
+        precondition(ChunkedInt.comparison == Signum.more, String.unreachable())
+        //=--------------------------------------=
         let sign = Base.Element(repeating: bit)
         return Swift.max(1, self.count(of: base.reversed().trimmingPrefix(while:{ $0 == sign })))
     }
     
     @inlinable static func element(_ index: Int, base: Base, sign: Element) -> Element {
+        //=--------------------------------------=
+        precondition(ChunkedInt.comparison == Signum.more, String.unreachable())
+        //=--------------------------------------=
         var major = 0 as Element
         var shift = 0 as Element.Magnitude
         let minor = self.ratio * index
@@ -219,16 +234,25 @@ extension ChunkedInt.Minor {
     //=------------------------------------------------------------------------=
     
     @inlinable static var ratio: Int {
+        //=--------------------------------------=
+        precondition(ChunkedInt.comparison == Signum.less, String.unreachable())
+        //=--------------------------------------=
         let major = Base.Element.bitWidth
         let minor = Base.Element.Magnitude(truncating: Element.bitWidth)
         return (major &>> minor.count(0, option: .ascending)).load(as: Int.self)
     }
     
     @inlinable static func count(of base: some Collection<Base.Element>) -> Int {
-        base.count *  self.ratio
+        //=--------------------------------------=
+        precondition(ChunkedInt.comparison == Signum.less, String.unreachable())
+        //=--------------------------------------=
+        return base.count * self.ratio as Int
     }
     
     @inlinable static func count(normalizing base: Base, repeating bit: BitInt.Magnitude) -> Int {
+        //=--------------------------------------=
+        precondition(ChunkedInt.comparison == Signum.less, String.unreachable())
+        //=--------------------------------------=
         let sign = Base.Element(repeating: bit)
         let majorSuffix = base.reversed().prefix(while:{ $0 == sign })
         let minorSuffix = base.dropLast(majorSuffix.count).last?.count(bit, option: BitInt.Selection.descending) ?? (0)
@@ -237,9 +261,15 @@ extension ChunkedInt.Minor {
     }
     
     @inlinable static func element(_ index: Int, base: Base, sign: Element) -> Element {
-        precondition(index >= 0 as Int, .indexOutOfBounds())
-        let  (quotient, remainder) = index.quotientAndRemainder(dividingBy: self.ratio)
-        guard quotient < base.count else { return sign }
+        //=--------------------------------------=
+        precondition(ChunkedInt.comparison == Signum.less, String.unreachable())
+        //=--------------------------------------=
+        precondition(index >= 0 as Int, String.indexOutOfBounds())
+        let quotient  = index &>> self.ratio.trailingZeroBitCount
+        let remainder = index &  (self.ratio &- 1)
+        //=--------------------------------------=
+        if  quotient >= base.count { return sign }
+        //=--------------------------------------=
         let major = base[base.index(base.startIndex, offsetBy: quotient)]
         let shift = Base.Element(load: UX(bitPattern: remainder)) &<< Base.Element(truncating: Element.bitWidth.count(0, option: .ascending))
         return Element(truncating: major &>> shift)
@@ -257,16 +287,26 @@ extension ChunkedInt.Equal {
     //=------------------------------------------------------------------------=
     
     @inlinable static func count(of base: some Collection<Base.Element>) -> Int {
-        base.count
+        //=--------------------------------------=
+        precondition(ChunkedInt.comparison == Signum.same, String.unreachable())
+        //=--------------------------------------=
+        return base.count as Int as Int as Int
     }
     
     @inlinable static func count(normalizing base: Base, repeating bit: U1) -> Int {
+        //=--------------------------------------=
+        precondition(ChunkedInt.comparison == Signum.same, String.unreachable())
+        //=--------------------------------------=
         let sign = Base.Element(repeating: bit)
         return Swift.max(1, self.count(of: base.reversed().trimmingPrefix(while:{ $0 == sign })))
     }
     
     @inlinable static func element(_ index: Int, base: Base, sign: Element) -> Element {
-        guard  index < base.count else { return  sign }
+        //=--------------------------------------=
+        precondition(ChunkedInt.comparison == Signum.same, String.unreachable())
+        //=--------------------------------------=
+        if  index >= base.count { return sign }
+        //=--------------------------------------=
         return Element(truncating: base[base.index(base.startIndex, offsetBy: index)])
     }
 }
@@ -293,9 +333,9 @@ extension ChunkedInt {
         0 as Int ..< self.count
     }
     
-    /// Returns the element at the given index.
+    /// The element at the given index.
     ///
-    /// The elements are ordered from least significant to most, with infinite sign extension.
+    /// Its elements are ordered from least significant to most, with infinite sign extension.
     ///
     @inlinable public subscript(index: Int) -> Element {
         Self.element(index, base: self.base, sign: self.sign)

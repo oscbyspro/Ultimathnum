@@ -60,7 +60,7 @@ public protocol BinaryInteger: BitCastable, BitOperable, Integer where Magnitude
     //=------------------------------------------------------------------------=
     
     @inlinable init(load source: consuming Pattern<some RandomAccessCollection<UX>>)
-        
+    
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
