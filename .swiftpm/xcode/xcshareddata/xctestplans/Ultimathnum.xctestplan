@@ -28,11 +28,6 @@
         },
         {
           "containerPath" : "container:",
-          "identifier" : "SignedIntKit",
-          "name" : "SignedIntKit"
-        },
-        {
-          "containerPath" : "container:",
           "identifier" : "Ultimathnum",
           "name" : "Ultimathnum"
         },
@@ -64,13 +59,6 @@
         "containerPath" : "container:",
         "identifier" : "NormalIntKitTests",
         "name" : "NormalIntKitTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "SignedIntKitTests",
-        "name" : "SignedIntKitTests"
       }
     },
     {

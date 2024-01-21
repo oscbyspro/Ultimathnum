@@ -8,7 +8,6 @@ Greatness.
 * [DoubleIntKit](#doubleintkit)
 * [InfiniIntKit](#infiniintkit)
 * [NormalIntKit](#normalintkit)
-* [SignedIntKit](#signedintkit)
 * [Installation](#installation)
 
 <a name="corekit"/>
@@ -35,13 +34,6 @@ Greatness.
 <a name="normalintkit"/>
 
 ## NormalIntKit
-
-> [!IMPORTANT]
-> It's a work in progress.
-
-<a name="signedintkit"/>
-
-## SignedIntKit
 
 > [!IMPORTANT]
 > It's a work in progress.
