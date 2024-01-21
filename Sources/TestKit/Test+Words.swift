@@ -20,7 +20,7 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func words<T: Integer>(
+    public static func words<T: BinaryInteger>(
     _ integer: T,_ expectation: [UX],
     file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
@@ -35,7 +35,7 @@ extension Test {
         }
     }
     
-    public static func words<T: Integer>(
+    public static func words<T: BinaryInteger>(
     _ words: some RandomAccessCollection<UX>, _ isSigned: Bool, _ expectation: T?,
     file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=

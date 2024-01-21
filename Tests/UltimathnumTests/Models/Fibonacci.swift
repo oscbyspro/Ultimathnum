@@ -32,7 +32,7 @@ final class FibonacciTests: XCTestCase {
         }
     }
     
-    func check<T: Integer>(index: T, element: T?, invariants: Bool = true, file: StaticString = #file, line: UInt = #line) {
+    func check<T: BinaryInteger>(index: T, element: T?, invariants: Bool = true, file: StaticString = #file, line: UInt = #line) {
         typealias F = Fibonacci<T>
         //=--------------------------------------=
         let sequence = try? F(index)

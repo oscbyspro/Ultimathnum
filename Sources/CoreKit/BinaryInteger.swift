@@ -23,7 +23,17 @@
 ///
 /// Its magnitude may be signed to accomodate lone big integers.
 ///
-public protocol BinaryInteger: BitCastable, BitOperable, Integer where Magnitude: UnsignedInteger, Magnitude.BitPattern == BitPattern {
+public protocol BinaryInteger: BitCastable, BitOperable, Comparable, ExpressibleByIntegerLiteral, Hashable, Sendable, _MaybeLosslessStringConvertible {
+    
+    /// ### Development
+    ///
+    /// - TODO: Consider a concrete contiguous memory buffer.
+    ///
+    associatedtype Element: SystemsInteger = Self
+    
+    associatedtype Words: RandomAccessCollection<UX>
+        
+    associatedtype Magnitude: UnsignedInteger where Magnitude.Magnitude == Magnitude, Magnitude.BitPattern == BitPattern
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -59,7 +69,31 @@ public protocol BinaryInteger: BitCastable, BitOperable, Integer where Magnitude
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    @inlinable init(sign: consuming Sign, magnitude: consuming Magnitude) throws
+    
+    @inlinable init(words: consuming some RandomAccessCollection<UX>, isSigned: consuming Bool) throws
+    
     @inlinable init(load source: consuming Pattern<some RandomAccessCollection<UX>>)
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable consuming func plus(_ increment: borrowing Self) throws -> Self
+    
+    @inlinable consuming func negated() throws -> Self
+    
+    @inlinable consuming func minus(_ decrement: borrowing Self) throws -> Self
+    
+    @inlinable consuming func squared() throws -> Self
+    
+    @inlinable consuming func times(_ multiplier: borrowing Self) throws -> Self
+    
+    @inlinable consuming func quotient ( divisor: borrowing Self) throws -> Self
+    
+    @inlinable consuming func remainder( divisor: borrowing Self) throws -> Self
+    
+    @inlinable consuming func divided(by divisor: borrowing Self) throws -> Division<Self>
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -77,7 +111,17 @@ public protocol BinaryInteger: BitCastable, BitOperable, Integer where Magnitude
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    @inlinable borrowing func compared(to other: borrowing Self) -> Signum
+    
     @inlinable func count(_ bit: BitInt.Magnitude, option: BitInt.Selection) -> Magnitude
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+
+    @inlinable var words: Words { consuming get }
+    
+    @inlinable var magnitude: Magnitude { consuming get }
 }
 
 //=----------------------------------------------------------------------------=
@@ -85,6 +129,42 @@ public protocol BinaryInteger: BitCastable, BitOperable, Integer where Magnitude
 //=----------------------------------------------------------------------------=
 
 extension BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init() {
+        self = 0
+    }
+    
+    @inlinable public init(magnitude: consuming Magnitude) throws {
+        try  self.init(sign: Sign.plus, magnitude: consume magnitude)
+    }
+    
+    @inlinable public init(words: consuming some RandomAccessCollection<UX>) throws {
+        try  self.init(words: consume words, isSigned: Self.isSigned)
+    }
+    
+    @inlinable public init<T>(_ source: T) where T: BinaryInteger {
+        try! self.init(exactly: source)
+    }
+    
+    @inlinable public init<T>(exactly source: T) throws where T: BinaryInteger {
+        try  self.init(words: source.words, isSigned: T.isSigned)
+    }
+    
+    @inlinable public init<T>(truncating source: T) where T: BinaryInteger {
+        self.init(load: Pattern(source.words, isSigned: T.isSigned))
+    }
+    
+    @inlinable public init(literally source: StaticBigInt) throws {
+        try  self.init(words: BigIntLiteral(source), isSigned: true)
+    }
+    
+    @inlinable public init(integerLiteral: IntegerLiteralType) where IntegerLiteralType == StaticBigInt {
+        try! self.init(literally: integerLiteral)
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -102,9 +182,148 @@ extension BinaryInteger {
         self = Bool(bitPattern: bit) ? ~0 : 0
     }
     
-    @inlinable public init<T>(truncating source: T) where T: Integer {
-        self.init(load: Pattern(source.words, isSigned: T.isSigned))
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func +(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        try! lhs.plus(rhs)
     }
+    
+    /// ### Development
+    ///
+    /// - FIXME: Consuming caues bad accesss (2024-01-13, Swift 5.9).
+    ///
+    @inlinable public static func &+(lhs: Self, rhs: Self) -> Self {
+        Overflow.ignore({ try lhs.plus(rhs) })
+    }
+    
+    @inlinable public static prefix func -(instance: Self) -> Self {
+        try! instance.negated()
+    }
+    
+    @inlinable public static func -(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        try! lhs.minus(rhs)
+    }
+    
+    /// ### Development
+    ///
+    /// - FIXME: Consuming caues bad accesss (2024-01-13, Swift 5.9).
+    ///
+    @inlinable public static func &-(lhs: Self, rhs: Self) -> Self {
+        Overflow.ignore({ try lhs.minus(rhs) })
+    }
+    
+    @inlinable public static func *(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        try! lhs.times(rhs)
+    }
+    
+    /// ### Development
+    ///
+    /// - FIXME: Consuming caues bad accesss (2024-01-13, Swift 5.9).
+    ///
+    @inlinable public static func &*(lhs: Self, rhs: Self) -> Self {
+        Overflow.ignore({ try lhs.times(rhs) })
+    }
+    
+    @inlinable public static func /(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        try! lhs.quotient (divisor: rhs)
+    }
+    
+    @inlinable public static func %(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        try! lhs.remainder(divisor: rhs)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public borrowing func signum() -> Signum {
+        self.compared(to: 0)
+    }
+    
+    /// Returns whether this value is less than zero.
+    ///
+    /// It checks `isSigned` first which is preferred in inlinable generic code.
+    ///
+    @inlinable public var isLessThanZero: Bool {
+        borrowing get { if Self.isSigned { self < 0 } else { false } }
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Stride by 1
+//=----------------------------------------------------------------------------=
+
+extension BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// The next value in arithmetic progression.
+    ///
+    /// - Note: It works with **0-bit** and **1-bit** integers.
+    ///
+    @inlinable public consuming func incremented() throws -> Self {
+        if  let positive = try? Self(literally:  1) {
+            return try (consume self).plus (positive)
+        }
+        
+        if  let negative = try? Self(literally: -1) {
+            return try (consume self).minus(negative)
+        }
+        
+        throw Overflow (consume self) // must be zero
+    }
+    
+    /// The previous value in arithmetic progression.
+    ///
+    /// - Note: It works with **0-bit** and **1-bit** integers.
+    ///
+    @inlinable public consuming func decremented() throws -> Self {
+        if  let positive = try? Self(literally:  1) {
+            return try (consume self).minus(positive)
+        }
+        
+        if  let negative = try? Self(literally: -1) {
+            return try (consume self).plus (negative)
+        }
+        
+        throw Overflow (consume self) // must be zero
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Defaults x Lossless String Convertible
+//=----------------------------------------------------------------------------=
+// TODO: @_unavailableInEmbedded is not a known attribute in Swift 5.9
+//=----------------------------------------------------------------------------=
+
+/* @_unavailableInEmbedded */ extension BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init?(_ description: String) {
+        brr: do  {
+            self = try IDF.Decoder().decode(description)
+        }   catch  {
+            return nil
+        }
+    }
+    
+    @inlinable public var description: String {
+        IDF.Encoder().encode(self)
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Defaults x Representations
+//=----------------------------------------------------------------------------=
+
+extension BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -135,45 +354,5 @@ extension BinaryInteger {
         if !success {
             throw Overflow(consume self)
         }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    /// ### Development
-    ///
-    /// - FIXME: Consuming caues bad accesss (2024-01-13, Swift 5.9).
-    ///
-    @inlinable public static func &+(lhs: Self, rhs: Self) -> Self {
-        Overflow.ignore({ try lhs.plus(rhs) })
-    }
-    
-    /// ### Development
-    ///
-    /// - FIXME: Consuming caues bad accesss (2024-01-13, Swift 5.9).
-    ///
-    @inlinable public static func &-(lhs: Self, rhs: Self) -> Self {
-        Overflow.ignore({ try lhs.minus(rhs) })
-    }
-    
-    /// ### Development
-    ///
-    /// - FIXME: Consuming caues bad accesss (2024-01-13, Swift 5.9).
-    ///
-    @inlinable public static func &*(lhs: Self, rhs: Self) -> Self {
-        Overflow.ignore({ try lhs.times(rhs) })
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    /// Returns whether this value is less than zero.
-    ///
-    /// It checks `isSigned` first which is preferred in inlinable generic code.
-    ///
-    @inlinable public var isLessThanZero: Bool {
-        borrowing get { if Self.isSigned { self < 0 } else { false } }
     }
 }

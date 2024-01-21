@@ -45,7 +45,7 @@
 ///
 /// It permits both signed and unsigned values for testing purposes.
 ///
-@frozen public struct Fibonacci<Value> where Value: Integer {
+@frozen public struct Fibonacci<Value> where Value: BinaryInteger {
     
     public enum Error: Swift.Error { case overflow }
     

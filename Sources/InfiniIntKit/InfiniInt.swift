@@ -83,10 +83,12 @@ import CoreKit
     //*========================================================================*
     
     @frozen public struct Magnitude: UnsignedInteger {
-        
-        public typealias Element = UX
                 
+        public typealias Element = UX
+        
         public typealias IntegerLiteralType = StaticBigInt
+        
+        public typealias Magnitude = Self
         
         public typealias Words = ContiguousArray<UX>
         

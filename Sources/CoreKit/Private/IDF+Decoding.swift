@@ -93,15 +93,15 @@ extension Namespace.IntegerDescriptionFormat {
         // MARK: Utilities
         //=--------------------------------------------------------------------=
         
-        @inlinable public func decode<T: Integer>(_ description: StaticString) -> T {
+        @inlinable public func decode<T: BinaryInteger>(_ description: StaticString) -> T {
             description.withUTF8Buffer({ try! self.decode($0) })
         }
         
-        @inlinable public func decode<T: Integer>(_ description: some StringProtocol) throws -> T {
+        @inlinable public func decode<T: BinaryInteger>(_ description: some StringProtocol) throws -> T {
             var description = String(description); return try description.withUTF8(self.decode)
         }
         
-        @inlinable public func decode<T: Integer>(_ description: UnsafeBufferPointer<UInt8>) throws -> T {
+        @inlinable public func decode<T: BinaryInteger>(_ description: UnsafeBufferPointer<UInt8>) throws -> T {
             let components = Namespace.IntegerDescriptionFormat.makeSignBody(from: description)
             let numerals = UnsafeBufferPointer(rebasing: components.body)
             let magnitude: T.Magnitude = try self.magnitude(numerals: numerals)
@@ -120,8 +120,7 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable func magnitude<Magnitude>(numerals: UnsafeBufferPointer<UInt8>) throws -> Magnitude
-    where Magnitude: Integer, Magnitude.Magnitude == Magnitude {
+    @inlinable func magnitude<Magnitude>(numerals: UnsafeBufferPointer<UInt8>) throws -> Magnitude where Magnitude: BinaryInteger {
         //=--------------------------------------=
         if  numerals.isEmpty {
             throw Error.unknown

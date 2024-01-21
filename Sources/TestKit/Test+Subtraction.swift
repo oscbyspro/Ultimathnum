@@ -26,12 +26,6 @@ extension Test {
         self.subtractionAsSomeBinaryInteger(lhs, rhs, value, overflow, file: file, line: line)
     }
     
-    public static func subtraction<T: Integer>(
-    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
-    file: StaticString = #file, line: UInt = #line) {
-        self.subtractionAsSomeInteger(lhs, rhs, value, overflow, file: file, line: line)
-    }
-    
     //=------------------------------------------------------------------------=
     // MARK: Utilities x Private
     //=------------------------------------------------------------------------=
@@ -41,24 +35,18 @@ extension Test {
         //=--------------------------------------=
         XCTAssertEqual(lhs &- rhs, value, file: file, line: line)
         //=--------------------------------------=
-        if  overflow {
-            let abc: T = Overflow.ignore({ try rhs.minus(lhs) })
-            let xyz: T = Overflow.ignore({ try Overflow.ignore({ try lhs.minus(rhs) }).negated() })
-            XCTAssertEqual(abc, xyz, "binary integer subtraction must be reversible", file: file, line: line)
-        }   else {
+        if !overflow {
+            XCTAssertEqual(lhs - rhs, value, file: file, line: line)
+        }
+        //=--------------------------------------=
+        if !overflow {
             let abc: T = Overflow.ignore({ try Overflow.ignore({ try rhs.minus(lhs) }).negated() })
             let xyz: T = Overflow.ignore({ try lhs.minus(rhs) })
             XCTAssertEqual(abc, xyz, "binary integer subtraction must be reversible", file: file, line: line)
-        }
-        //=--------------------------------------=
-        Test.subtractionAsSomeInteger(lhs, rhs, value, overflow, file: file, line: line)
-    }
-    
-    private static func subtractionAsSomeInteger<T: Integer>(
-    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
-        //=--------------------------------------=
-        if !overflow {
-            XCTAssertEqual(lhs - rhs, value, file: file, line: line)
+        }   else {
+            let abc: T = Overflow.ignore({ try rhs.minus(lhs) })
+            let xyz: T = Overflow.ignore({ try Overflow.ignore({ try lhs.minus(rhs) }).negated() })
+            XCTAssertEqual(abc, xyz, "binary integer subtraction must be reversible", file: file, line: line)
         }
         //=--------------------------------------=
         if  let one = try? T(literally: 1), rhs == one {
@@ -68,26 +56,23 @@ extension Test {
         XCTAssertEqual(Overflow.capture({ try lhs.minus(rhs) }).value,    value,    file: file, line: line)
         XCTAssertEqual(Overflow.capture({ try lhs.minus(rhs) }).overflow, overflow, file: file, line: line)
         //=--------------------------------------=
+        // same as rhs negation when lhs is zero
+        //=--------------------------------------=
         if  lhs == 0 {
-            Test.subtractionByNegationAsSomeInteger(rhs, value, overflow, file: file, line: line)
+            XCTAssertEqual(Overflow.capture({ try rhs.negated() }).value,    value,    file: file, line: line)
+            XCTAssertEqual(Overflow.capture({ try rhs.negated() }).overflow, overflow, file: file, line: line)
         }
-    }
-    
-    private static func subtractionByNegationAsSomeInteger<T: Integer>(
-    _ instance: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
-        //=------------------------------------------=
-        if !overflow {
-            XCTAssertEqual(-instance, value, file: file, line: line)
-            XCTAssertEqual(-value, instance, file: file, line: line)
+        
+        if  lhs == 0, !overflow {
+            XCTAssertEqual(-rhs, value, file: file, line: line)
+            XCTAssertEqual(-value, rhs, file: file, line: line)
         }
-
-        if !overflow {
-            XCTAssertEqual(Overflow.capture({ try value.negated() }).value,    instance, file: file, line: line)
+        
+        
+        if  lhs == 0, !overflow {
+            XCTAssertEqual(Overflow.capture({ try value.negated() }).value,    rhs, file: file, line: line)
             XCTAssertEqual(Overflow.capture({ try value.negated() }).overflow, overflow, file: file, line: line)
         }
-        //=------------------------------------------=
-        XCTAssertEqual(Overflow.capture({ try instance.negated() }).value,    value,    file: file, line: line)
-        XCTAssertEqual(Overflow.capture({ try instance.negated() }).overflow, overflow, file: file, line: line)
     }
 }
 
@@ -101,8 +86,11 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func decrementation<T: Integer>(_ instance: T, _ expectation: T, _ overflow: Bool = false, file: StaticString = #file, line: UInt = #line) {
-        let result = Overflow.capture({ try instance.decremented() })
+    public static func decrementation<T: BinaryInteger>(_ instance: T, _ expectation: T, _ overflow: Bool = false, file: StaticString = #file, line: UInt = #line) {
+        let result = Overflow.capture {
+            try instance.decremented()
+        }
+        
         XCTAssertEqual(result.value, expectation, file: file, line: line)
         XCTAssertEqual(result.overflow, overflow, file: file, line: line)
     }

@@ -32,12 +32,6 @@ extension Test {
         self.multiplicationAsSomeBinaryInteger(lhs, rhs, value, overflow, file: file, line: line)
     }
     
-    public static func multiplication<T: Integer>(
-    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
-    file: StaticString = #file, line: UInt = #line) {
-        self.multiplicationAsSomeInteger(lhs, rhs, value, overflow, file: file, line: line)
-    }
-    
     //=------------------------------------------------------------------------=
     // MARK: Utilities x Private
     //=------------------------------------------------------------------------=
@@ -56,12 +50,6 @@ extension Test {
         XCTAssertEqual(lhs &* rhs, value, file: file, line: line)
         XCTAssertEqual(rhs &* lhs, value, file: file, line: line)
         //=--------------------------------------=
-        Test.multiplicationAsSomeInteger(lhs, rhs, value, overflow, file: file, line: line)
-    }
-    
-    private static func multiplicationAsSomeInteger<T: Integer>(
-    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
-        //=--------------------------------------=
         if !overflow {
             XCTAssertEqual(lhs * rhs, value, file: file, line: line)
             XCTAssertEqual(rhs * lhs, value, file: file, line: line)
@@ -73,15 +61,10 @@ extension Test {
         XCTAssertEqual(Overflow.capture({ try rhs.times(lhs) }).overflow, overflow, file: file, line: line)
         //=--------------------------------------=
         if  lhs == rhs {
-            Test.multiplicationBySquareProductAsSomeInteger(lhs, value, overflow, file: file, line: line)
-            Test.multiplicationBySquareProductAsSomeInteger(rhs, value, overflow, file: file, line: line)
+            XCTAssertEqual(Overflow.capture({ try lhs.squared() }).value,    value,    file: file, line: line)
+            XCTAssertEqual(Overflow.capture({ try lhs.squared() }).overflow, overflow, file: file, line: line)
+            XCTAssertEqual(Overflow.capture({ try rhs.squared() }).value,    value,    file: file, line: line)
+            XCTAssertEqual(Overflow.capture({ try rhs.squared() }).overflow, overflow, file: file, line: line)
         }
-    }
-    
-    private static func multiplicationBySquareProductAsSomeInteger<T: Integer>(
-    _ instance: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
-        //=--------------------------------------=
-        XCTAssertEqual(Overflow.capture({ try instance.squared() }).value,    value,    file: file, line: line)
-        XCTAssertEqual(Overflow.capture({ try instance.squared() }).overflow, overflow, file: file, line: line)
     }
 }

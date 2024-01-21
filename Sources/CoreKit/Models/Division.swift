@@ -81,7 +81,7 @@ extension Division: BitCastable where Value: BitCastable {
 // MARK: + Integer
 //=----------------------------------------------------------------------------=
 
-extension Division where Value: Integer {
+extension Division where Value: BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

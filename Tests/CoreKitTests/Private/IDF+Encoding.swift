@@ -102,7 +102,7 @@ final class IntegerDescriptionFormatTestsOnEncoding: XCTestCase {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    func check(_ integer: some Integer, _ expectation: String, file: StaticString = #file, line: UInt = #line) {
+    func check(_ integer: some BinaryInteger, _ expectation: String, file: StaticString = #file, line: UInt = #line) {
         let sign = Sign(bitPattern: integer < 0)
         let magnitude = [UX](ChunkedInt(integer.magnitude.words, isSigned: false))
         

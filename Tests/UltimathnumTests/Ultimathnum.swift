@@ -17,31 +17,13 @@ import TestKit
 final class UltimathnumTests: XCTestCase {
     
     //=------------------------------------------------------------------------=
-    // MARK: State
+    // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    static let signed: [any Integer.Type] = [
-        I1 .self,
-        IX .self,
-        I8 .self,
-        I16.self,
-        I32.self,
-        I64.self,
-    ]
-    
-    static let unsigned: [any Integer.Type] = [
-        U1 .self,
-        UX .self,
-        U8 .self,
-        U16.self,
-        U32.self,
-        U64.self,
-    ]
-    
-    static let types: [any Integer.Type] = signed + unsigned
+    static let types = bitIntList + coreIntList
     
     //=------------------------------------------------------------------------=
-    // MARK: State x Modules
+    // MARK: Meta Data x Modules
     //=------------------------------------------------------------------------=
     
     static let bitIntList: [any SystemsInteger.Type] = [

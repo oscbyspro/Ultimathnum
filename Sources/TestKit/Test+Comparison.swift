@@ -26,10 +26,10 @@ extension Test {
         self.comparisonAsSomeSystemsInteger(lhs, rhs, expectation, file: file, line: line)
     }
     
-    public static func comparison<T: Integer>(
+    public static func comparison<T: BinaryInteger>(
     _ lhs: T, _ rhs: T, _ expectation: Signum,
     file: StaticString = #file, line: UInt = #line) {
-        self.comparisonAsSomeInteger(lhs, rhs, expectation, file: file, line: line)
+        self.comparisonAsSomeBinaryInteger(lhs, rhs, expectation, file: file, line: line)
     }
     
     //=------------------------------------------------------------------------=
@@ -39,7 +39,7 @@ extension Test {
     private static func comparisonAsSomeSystemsInteger<T: SystemsInteger>(
     _   lhs: T, _ rhs: T, _ expectation: Signum, file: StaticString, line: UInt) {
         //=--------------------------------------=
-        Test.comparisonAsSomeInteger(lhs, rhs, expectation, file: file, line: line)
+        Test.comparisonAsSomeBinaryInteger(lhs, rhs, expectation, file: file, line: line)
         //=--------------------------------------=
         for (lhs, rhs, expectation) in [(lhs, rhs, expectation), (rhs, lhs, expectation.negated())] {
             comparison: do {
@@ -86,7 +86,7 @@ extension Test {
         }
     }
     
-    private static func comparisonAsSomeInteger<T: Integer>(
+    private static func comparisonAsSomeBinaryInteger<T: BinaryInteger>(
     _   lhs: T, _ rhs: T, _ expectation: Signum, file: StaticString, line: UInt) {
         for (lhs, rhs, expectation) in [(lhs, rhs, expectation), (rhs, lhs, expectation.negated())] {
             signum: do {

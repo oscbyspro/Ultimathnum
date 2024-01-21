@@ -21,7 +21,7 @@ extension UltimathnumTests {
     //=------------------------------------------------------------------------=
     
     func testBitIntToFromExactly() {
-        func whereIs<T, U>(_ type: T.Type, _ other: U.Type) where T: SystemsInteger, U: Integer {
+        func whereIs<T, U>(_ type: T.Type, _ other: U.Type) where T: SystemsInteger, U: BinaryInteger {
             if  let i = try? U(exactly: T.min).plus(U(exactly: T.min)).minus(U(magnitude: 1)) {
                 XCTAssertEqual(try? T(exactly: i), nil as T?)
             }

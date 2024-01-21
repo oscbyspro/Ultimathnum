@@ -26,12 +26,6 @@ extension Test {
         self.additionAsSomeBinaryInteger(lhs, rhs, value, overflow, file: file, line: line)
     }
     
-    public static func addition<T: Integer>(
-    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
-    file: StaticString = #file, line: UInt = #line) {
-        self.additionAsSomeInteger(lhs, rhs, value, overflow, file: file, line: line)
-    }
-    
     //=------------------------------------------------------------------------=
     // MARK: Utilities x Private
     //=------------------------------------------------------------------------=
@@ -41,12 +35,6 @@ extension Test {
         //=--------------------------------------=
         XCTAssertEqual(lhs &+ rhs, value, file: file, line: line)
         XCTAssertEqual(rhs &+ lhs, value, file: file, line: line)
-        //=--------------------------------------=
-        Test.additionAsSomeInteger(lhs, rhs, value, overflow, file: file, line: line)
-    }
-    
-    private static func additionAsSomeInteger<T: Integer>(
-    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
         if !overflow {
             XCTAssertEqual(lhs + rhs, value, file: file, line: line)
@@ -74,7 +62,7 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func incrementation<T: Integer>(_ instance: T, _ expectation: T, _ overflow: Bool = false, file: StaticString = #file, line: UInt = #line) {
+    public static func incrementation<T: BinaryInteger>(_ instance: T, _ expectation: T, _ overflow: Bool = false, file: StaticString = #file, line: UInt = #line) {
         let result = Overflow.capture({ try instance.incremented() })
         XCTAssertEqual(result.value, expectation, file: file, line: line)
         XCTAssertEqual(result.overflow, overflow, file: file, line: line)

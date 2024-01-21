@@ -29,11 +29,6 @@ extension Test {
         Test.invariantsAsSomeBinaryInteger(type, file: file, line: line)
     }
     
-    @inlinable public static func invariants<T: Integer>(
-    _   type: T.Type, file: StaticString = #file, line: UInt = #line) {
-        Test.invariantsAsSomeInteger(type, file: file, line: line)
-    }
-    
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
@@ -56,12 +51,6 @@ extension Test {
         //=--------------------------------------=
         XCTAssertEqual(T.isSigned == true,  T.self is any   SignedInteger.Type)
         XCTAssertEqual(T.isSigned == false, T.self is any UnsignedInteger.Type)
-        //=--------------------------------------=
-        Test.invariantsAsSomeInteger(type, file: file, line: line)
-    }
-    
-    @inlinable public static func invariantsAsSomeInteger<T: Integer>(
-    _   type: T.Type, file: StaticString, line: UInt) {
         //=--------------------------------------=
         XCTAssert(T.Element.bitWidth.count(1, option: .all) == 1, "T.Element.bitWidth must be a power of 2", file: file, line: line)
     }

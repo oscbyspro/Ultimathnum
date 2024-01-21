@@ -24,7 +24,7 @@ final class InfiniIntTests: XCTestCase {
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
         
-    static let types: [any Integer.Type] = [
+    static let types: [any BinaryInteger.Type] = [
         InfiniInt.self,
         InfiniInt.Magnitude.self,
     ]
