@@ -19,3 +19,4 @@
 
 @_exported import DoubleIntKit
 @_exported import InfiniIntKit
+@_exported import MinimiIntKit

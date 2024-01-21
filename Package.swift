@@ -48,6 +48,12 @@ let package = Package(
         .library(
         name: "InfiniIntKit",
         targets: ["InfiniIntKit"]),
+        //=--------------------------------------=
+        // Minimi Int Kit
+        //=--------------------------------------=
+        .library(
+        name: "MinimiIntKit",
+        targets: ["MinimiIntKit"]),
     ],
     targets: [
         //=--------------------------------------=
@@ -59,6 +65,7 @@ let package = Package(
             "CoreKit",
             "DoubleIntKit",
             "InfiniIntKit",
+            "MinimiIntKit",
         ]),
         
         .testTarget(
@@ -77,6 +84,7 @@ let package = Package(
             "CoreKit",
             "DoubleIntKit",
             "InfiniIntKit",
+            "MinimiIntKit",
             "TestKit",
         ]),
         //=--------------------------------------=
@@ -99,6 +107,16 @@ let package = Package(
         .testTarget(
         name: "InfiniIntKitTests",
         dependencies: ["InfiniIntKit", "TestKit"]),
+        //=--------------------------------------=
+        // Minimi Int Kit
+        //=--------------------------------------=
+        .target(
+        name: "MinimiIntKit",
+        dependencies: ["CoreKit"]),
+        
+        .testTarget(
+        name: "MinimiIntKitTests",
+        dependencies: ["MinimiIntKit", "TestKit"]),
         //=--------------------------------------=
         // Test Kit
         //=--------------------------------------=

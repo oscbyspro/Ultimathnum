@@ -319,7 +319,7 @@ extension BinaryInteger {
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Defaults x Lossless String Convertible
+// MARK: + Lossless String Convertible
 //=----------------------------------------------------------------------------=
 // TODO: @_unavailableInEmbedded is not a known attribute in Swift 5.9
 //=----------------------------------------------------------------------------=
@@ -344,7 +344,7 @@ extension BinaryInteger {
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Defaults x Representations
+// MARK: + Conversions
 //=----------------------------------------------------------------------------=
 
 extension BinaryInteger {
