@@ -19,8 +19,14 @@
 ///
 public protocol Integer: Comparable, ExpressibleByIntegerLiteral, Hashable, Sendable, _MaybeLosslessStringConvertible {
     
-    associatedtype Words: RandomAccessCollection<UX>
+    /// ### Development
+    ///
+    /// - TODO: Consider a concrete contiguous memory buffer.
+    ///
+    associatedtype Element: SystemsInteger = Self
     
+    associatedtype Words: RandomAccessCollection<UX>
+        
     associatedtype Magnitude: Integer where Magnitude.Magnitude == Magnitude
     
     //=------------------------------------------------------------------------=

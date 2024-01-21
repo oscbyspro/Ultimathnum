@@ -20,6 +20,8 @@ import CoreKit
 ///
 @frozen public struct InfiniInt: SignedInteger {
     
+    public typealias Element = IX
+    
     public typealias IntegerLiteralType = StaticBigInt
     
     public typealias Words = ContiguousArray<UX>
@@ -81,6 +83,8 @@ import CoreKit
     //*========================================================================*
     
     @frozen public struct Magnitude: UnsignedInteger {
+        
+        public typealias Element = UX
                 
         public typealias IntegerLiteralType = StaticBigInt
         

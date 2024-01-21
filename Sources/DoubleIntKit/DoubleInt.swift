@@ -29,6 +29,8 @@ import CoreKit
     
     public typealias Low  = Base.Magnitude
     
+    public typealias Element = Base.Element
+    
     public typealias IntegerLiteralType = StaticBigInt
     
     public typealias Magnitude = DoubleInt<Base.Magnitude>

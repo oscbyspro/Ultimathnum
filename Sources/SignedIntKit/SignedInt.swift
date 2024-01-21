@@ -19,6 +19,8 @@ import CoreKit
 ///
 @frozen public struct SignedInt<Magnitude>: Integer where Magnitude: Integer, Magnitude.Magnitude == Magnitude {
     
+    public typealias Element = Magnitude.Element
+    
     public typealias IntegerLiteralType = StaticBigInt
     
     public typealias Components = (sign: Sign, magnitude: Magnitude)
