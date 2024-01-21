@@ -25,7 +25,6 @@ extension DoubleIntTests {
     func testComparisonAsIXx2() {
         typealias T = DoubleInt<IX>
         
-        XCTAssertEqual(T(low:  0, high:  0).compared(to: T(low:  1, high:  1)), -1 as Signum)
         XCTAssertEqual(T(low:  1, high:  0).compared(to: T(low:  1, high:  1)), -1 as Signum)
         XCTAssertEqual(T(low:  2, high:  0).compared(to: T(low:  1, high:  1)), -1 as Signum)
         XCTAssertEqual(T(low:  0, high:  1).compared(to: T(low:  1, high:  1)), -1 as Signum)

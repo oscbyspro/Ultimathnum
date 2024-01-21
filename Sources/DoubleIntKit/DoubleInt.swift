@@ -43,6 +43,10 @@ import CoreKit
         Base.isSigned
     }
     
+    /// The bit width of this type.
+    ///
+    /// - Note: Values in `0 ..< bitWidth` always fit in Base.Magnitude.
+    ///
     @inlinable public static var bitWidth: Magnitude {
         fatalError("TODO")
     }
