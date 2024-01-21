@@ -113,7 +113,7 @@ public protocol BinaryInteger: BitCastable, BitOperable, Comparable, Expressible
     
     @inlinable borrowing func compared(to other: borrowing Self) -> Signum
     
-    @inlinable func count(_ bit: BitInt.Magnitude, option: BitInt.Selection) -> Magnitude
+    @inlinable func count(_ bit: Bit, option: Bit.Selection) -> Magnitude
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -186,11 +186,11 @@ extension BinaryInteger {
     ///
     /// - Note: This method is **important** for performance.
     ///
-    @inlinable public init(_ bit: U1) {
+    @inlinable public init(bit: Bit) {
         self = Bool(bitPattern: bit) ?  1 : 0 // TODO: 0 and 1-bit
     }
     
-    @inlinable public init(repeating bit: U1) {
+    @inlinable public init(repeating bit: Bit) {
         self = Bool(bitPattern: bit) ? ~0 : 0
     }
     

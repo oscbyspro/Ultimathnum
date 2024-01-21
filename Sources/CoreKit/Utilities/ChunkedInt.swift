@@ -99,7 +99,7 @@ Element: SystemsInteger & UnsignedInteger, Base: RandomAccessCollection, Base.El
     @inlinable public init(_ base: Base, isSigned: Bool, count: Int? = nil, as element: Element.Type = Element.self) {
         let isLessThanZero = SBISS.isLessThanZero(base, isSigned: isSigned)
         let count = count ?? Self.count(of: base)
-        self.init(base, repeating: U1(bitPattern: isLessThanZero), count: count)
+        self.init(base, repeating: Bit(bitPattern: isLessThanZero), count: count)
     }
     
     /// Creates a normalized bit sequence from an un/signed source.
@@ -111,15 +111,15 @@ Element: SystemsInteger & UnsignedInteger, Base: RandomAccessCollection, Base.El
     ///
     @inlinable public init(normalizing base: Base, isSigned: Bool, as element: Element.Type = Element.self) {
         let isLessThanZero = SBISS.isLessThanZero(base, isSigned: isSigned)
-        let count = Self.count(normalizing: base, repeating: U1(bitPattern: isLessThanZero))
-        self.init(base, repeating: U1(bitPattern: isLessThanZero), count: count)
+        let count = Self.count(normalizing: base, repeating: Bit(bitPattern: isLessThanZero))
+        self.init(base, repeating: Bit(bitPattern: isLessThanZero), count: count)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable internal init(_ base: Base, repeating bit: BitInt.Magnitude, count: Int, as element: Element.Type = Element.self) {
+    @inlinable internal init(_ base: Base, repeating bit: Bit, count: Int, as element: Element.Type = Element.self) {
         self.base  = base
         self.sign  = Self.Element(repeating: bit)
         self.count = count
@@ -144,7 +144,7 @@ Element: SystemsInteger & UnsignedInteger, Base: RandomAccessCollection, Base.El
         }
     }
     
-    @inlinable internal static func count(normalizing base: Base, repeating bit: U1) -> Int {
+    @inlinable internal static func count(normalizing base: Base, repeating bit: Bit) -> Int {
         switch comparison {
         case Signum.less: return Minor.count(normalizing: base, repeating: bit)
         case Signum.same: return Equal.count(normalizing: base, repeating: bit)
@@ -194,7 +194,7 @@ extension ChunkedInt.Major {
         return division.quotient + (division.remainder > 0 ? 1 : 0)
     }
     
-    @inlinable static func count(normalizing base: Base, repeating bit: U1) -> Int {
+    @inlinable static func count(normalizing base: Base, repeating bit: Bit) -> Int {
         //=--------------------------------------=
         precondition(ChunkedInt.comparison == Signum.more, String.unreachable())
         //=--------------------------------------=
@@ -249,13 +249,13 @@ extension ChunkedInt.Minor {
         return base.count * self.ratio as Int
     }
     
-    @inlinable static func count(normalizing base: Base, repeating bit: BitInt.Magnitude) -> Int {
+    @inlinable static func count(normalizing base: Base, repeating bit: Bit) -> Int {
         //=--------------------------------------=
         precondition(ChunkedInt.comparison == Signum.less, String.unreachable())
         //=--------------------------------------=
         let sign = Base.Element(repeating: bit)
         let majorSuffix = base.reversed().prefix(while:{ $0 == sign })
-        let minorSuffix = base.dropLast(majorSuffix.count).last?.count(bit, option: BitInt.Selection.descending) ?? (0)
+        let minorSuffix = base.dropLast(majorSuffix.count).last?.count(bit, option: Bit.Selection.descending) ?? (0000)
         let totalSuffix = majorSuffix.count * Base.Element.bitWidth.load(as: Int.self) + minorSuffix.load(as: Int.self)
         return Swift.max(1, self.count(of: base) - totalSuffix / Element.bitWidth.load(as: Int.self))
     }
@@ -293,7 +293,7 @@ extension ChunkedInt.Equal {
         return base.count as Int as Int as Int
     }
     
-    @inlinable static func count(normalizing base: Base, repeating bit: U1) -> Int {
+    @inlinable static func count(normalizing base: Base, repeating bit: Bit) -> Int {
         //=--------------------------------------=
         precondition(ChunkedInt.comparison == Signum.same, String.unreachable())
         //=--------------------------------------=

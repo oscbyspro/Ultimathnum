@@ -19,7 +19,7 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func count(_ bit: BitInt.Magnitude, option: BitInt.Selection) -> Magnitude {
+    @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
         fatalError("TODO")
     }
 }

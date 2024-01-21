@@ -108,7 +108,7 @@ extension SystemsInteger {
         brr: do {
             try self.init(exactly: source)
         }   catch {
-            self = source < 0 as T ? Self.min : Self.max
+            self = source.isLessThanZero ? Self.min : Self.max
         }
     }
 }
@@ -132,7 +132,7 @@ extension SystemsInteger {
             self.init(load:  source.load(as: UX.self))
         }   else {
             let minus = source.isLessThanZero
-            self.init(repeating: U1(bitPattern: minus))
+            self.init(repeating: Bit(bitPattern: minus))
             var bitIndex: Self = 0000000000000000000000000000000
             let bitWidth: Self = Self(bitPattern: Self.bitWidth)
             var index = source.base.startIndex; while index < source.base.endIndex, bitIndex < bitWidth {

@@ -77,7 +77,7 @@ extension SuccinctInt {
     
     @inlinable public init(_ source: Base, isSigned: Bool) where Base == Base.SubSequence {
         let isLessThanZero = SBISS.isLessThanZero(source, isSigned: isSigned)
-        let sign = Base.Element(repeating: U1(bitPattern: isLessThanZero))
+        let sign = Base.Element(repeating: Bit(bitPattern: isLessThanZero))
         self.init(unchecked: source.dropLast(while:{ $0 == sign }), sign: sign)
     }
     

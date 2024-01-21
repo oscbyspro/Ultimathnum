@@ -32,7 +32,7 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public init(_ base: Base, isSigned: Bool) {
-        self.base = base; self.sign = UX(repeating: U1(bitPattern: isSigned && Swift.Int(bitPattern: base.last ?? 0) < 0))
+        self.base = base; self.sign = UX(repeating: Bit(bitPattern: isSigned && Swift.Int(bitPattern: base.last ?? 0) < 0))
     }
     
     //=------------------------------------------------------------------------=

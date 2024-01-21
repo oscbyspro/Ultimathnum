@@ -23,7 +23,7 @@ extension DoubleInt {
         if  rhs.isLessThanZero {
             return lhs >> -rhs
         }   else if Magnitude(bitPattern: rhs) >= Self.bitWidth {
-            return Self(repeating: U1(bitPattern: false))
+            return Self(repeating: Bit(bitPattern: false))
         }   else {
             return lhs &>> rhs
         }
@@ -33,7 +33,7 @@ extension DoubleInt {
         if  rhs.isLessThanZero {
             return lhs << -rhs
         }   else if Magnitude(bitPattern: rhs) >= Self.bitWidth {
-            return Self(repeating: U1(bitPattern: lhs.isLessThanZero))
+            return Self(repeating: Bit(bitPattern: lhs.isLessThanZero))
         }   else {
             return lhs &<< rhs
         }
@@ -52,7 +52,7 @@ extension DoubleInt {
             lhs.high = lhs.high |   Base(bitPattern: lhs.low &>> (Base.bitWidth &- rhs))
             lhs.low  = lhs.low  &<< rhs
         }   else if rhs.load(as: UX.self) > Base.bitWidth.load(as: UX.self) {
-            lhs.low  = Base.Magnitude(repeating: U1(bitPattern: false))
+            lhs.low  = Base.Magnitude(repeating: Bit(bitPattern: false))
             lhs.high = Base(bitPattern: lhs.low &<< (rhs &- Base.bitWidth))
         }
         //=--------------------------------------=
@@ -69,7 +69,7 @@ extension DoubleInt {
             lhs.high = lhs.high &>> Base(bitPattern: rhs)
         }   else if rhs.load(as: UX.self) > Base.bitWidth.load(as: UX.self) {
             lhs.low  = Base.Magnitude(bitPattern: lhs.high &>> Base(bitPattern: rhs &- Base.bitWidth))
-            lhs.high = Base(repeating: U1(bitPattern: lhs.high.isLessThanZero))
+            lhs.high = Base(repeating: Bit(bitPattern: lhs.high.isLessThanZero))
         }
         //=--------------------------------------=
         return lhs as Self as Self as Self as Self

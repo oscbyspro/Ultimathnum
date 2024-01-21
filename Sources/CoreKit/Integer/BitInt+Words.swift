@@ -26,7 +26,7 @@ extension BitInt {
     }
     
     @inlinable public func load(as type: UX.Type) -> UX {
-        UX(repeating: U1(bitPattern: self.bitPattern))
+        UX(repeating: Bit(bitPattern: self.bitPattern))
     }
     
     //=------------------------------------------------------------------------=

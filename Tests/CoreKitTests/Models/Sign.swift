@@ -41,7 +41,7 @@ final class SignTests: XCTestCase {
     // MARK: Tests x Transformations
     //=------------------------------------------------------------------------=
     
-    func testNot() {
+    func testLogicalNot() {
         Test.not(T.plus,  T.minus)
         Test.not(T.minus, T.plus )
         
@@ -49,21 +49,21 @@ final class SignTests: XCTestCase {
         XCTAssertEqual({ var x = T.minus; x.toggle(); return x }(), T.plus )
     }
     
-    func testAnd() {
+    func testLogicalAnd() {
         Test.and(T.plus , T.plus , T.plus )
         Test.and(T.plus , T.minus, T.plus )
         Test.and(T.minus, T.plus , T.plus )
         Test.and(T.minus, T.minus, T.minus)
     }
     
-    func testOr() {
+    func testLogicalOr() {
         Test.or (T.plus , T.plus , T.plus )
         Test.or (T.plus , T.minus, T.minus)
         Test.or (T.minus, T.plus , T.minus)
         Test.or (T.minus, T.minus, T.minus)
     }
     
-    func testXor() {
+    func testLogcialXor() {
         Test.xor(T.plus , T.plus , T.plus )
         Test.xor(T.plus , T.minus, T.minus)
         Test.xor(T.minus, T.plus , T.minus)
