@@ -48,12 +48,6 @@ let package = Package(
         .library(
         name: "InfiniIntKit",
         targets: ["InfiniIntKit"]),
-        //=--------------------------------------=
-        // Normal Int Kit
-        //=--------------------------------------=
-        .library(
-        name: "NormalIntKit",
-        targets: ["NormalIntKit"]),
     ],
     targets: [
         //=--------------------------------------=
@@ -65,7 +59,6 @@ let package = Package(
             "CoreKit",
             "DoubleIntKit",
             "InfiniIntKit",
-            "NormalIntKit",
         ]),
         
         .testTarget(
@@ -84,7 +77,6 @@ let package = Package(
             "CoreKit",
             "DoubleIntKit",
             "InfiniIntKit",
-            "NormalIntKit",
             "TestKit",
         ]),
         //=--------------------------------------=
@@ -107,16 +99,6 @@ let package = Package(
         .testTarget(
         name: "InfiniIntKitTests",
         dependencies: ["InfiniIntKit", "TestKit"]),
-        //=--------------------------------------=
-        // Normal Int Kit
-        //=--------------------------------------=
-        .target(
-        name: "NormalIntKit",
-        dependencies: ["CoreKit"]),
-        
-        .testTarget(
-        name: "NormalIntKitTests",
-        dependencies: ["NormalIntKit", "TestKit"]),
         //=--------------------------------------=
         // Test Kit
         //=--------------------------------------=

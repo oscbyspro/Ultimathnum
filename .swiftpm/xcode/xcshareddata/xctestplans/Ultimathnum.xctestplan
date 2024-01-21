@@ -23,11 +23,6 @@
         },
         {
           "containerPath" : "container:",
-          "identifier" : "NormalIntKit",
-          "name" : "NormalIntKit"
-        },
-        {
-          "containerPath" : "container:",
           "identifier" : "Ultimathnum",
           "name" : "Ultimathnum"
         },
@@ -52,13 +47,6 @@
         "containerPath" : "container:",
         "identifier" : "DoubleIntKitTests",
         "name" : "DoubleIntKitTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "NormalIntKitTests",
-        "name" : "NormalIntKitTests"
       }
     },
     {
