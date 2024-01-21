@@ -138,6 +138,10 @@ extension BinaryInteger {
         self = 0
     }
     
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
     @inlinable public init(magnitude: consuming Magnitude) throws {
         try  self.init(sign: Sign.plus, magnitude: consume magnitude)
     }
@@ -145,6 +149,10 @@ extension BinaryInteger {
     @inlinable public init(words: consuming some RandomAccessCollection<UX>) throws {
         try  self.init(words: consume words, isSigned: Self.isSigned)
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
     
     @inlinable public init<T>(_ source: T) where T: BinaryInteger {
         try! self.init(exactly: source)
@@ -157,6 +165,10 @@ extension BinaryInteger {
     @inlinable public init<T>(truncating source: T) where T: BinaryInteger {
         self.init(load: Pattern(source.words, isSigned: T.isSigned))
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
     
     @inlinable public init(literally source: StaticBigInt) throws {
         try  self.init(words: BigIntLiteral(source), isSigned: true)
@@ -198,6 +210,10 @@ extension BinaryInteger {
         Overflow.ignore({ try lhs.plus(rhs) })
     }
     
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
     @inlinable public static prefix func -(instance: Self) -> Self {
         try! instance.negated()
     }
@@ -214,6 +230,10 @@ extension BinaryInteger {
         Overflow.ignore({ try lhs.minus(rhs) })
     }
     
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
     @inlinable public static func *(lhs: consuming Self, rhs: borrowing Self) -> Self {
         try! lhs.times(rhs)
     }
@@ -225,6 +245,10 @@ extension BinaryInteger {
     @inlinable public static func &*(lhs: Self, rhs: Self) -> Self {
         Overflow.ignore({ try lhs.times(rhs) })
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
     
     @inlinable public static func /(lhs: consuming Self, rhs: borrowing Self) -> Self {
         try! lhs.quotient (divisor: rhs)
