@@ -21,7 +21,7 @@ extension DoubleInt {
     
     @inlinable public consuming func plus(_ increment: Self) throws -> Self {
         var overflow = Overflow.capture(&self.low) {
-            try $0.plus(increment.low )
+            try $0.plus(increment.low)
         }
     
         overflow = overflow && Overflow.capture(&self.high) {

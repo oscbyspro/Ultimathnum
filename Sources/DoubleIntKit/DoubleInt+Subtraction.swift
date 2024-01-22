@@ -20,10 +20,22 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func negated() throws -> Self {
-        fatalError("TODO")
+        try Self().minus(self)
     }
     
-    @inlinable public consuming func minus(_ increment: borrowing Self) throws -> Self {
-        fatalError("TODO")
+    @inlinable public consuming func minus(_ decrement: Self) throws -> Self {
+        var overflow = Overflow.capture(&self.low) {
+            try $0.minus(decrement.low)
+        }
+    
+        overflow = overflow && Overflow.capture(&self.high) {
+            try $0.decremented()
+        }
+        
+        overflow = overflow != Overflow.capture(&self.high) {
+            try $0.minus(decrement.high)
+        }
+        
+        return try Overflow.resolve(self, overflow: overflow)
     }
 }
