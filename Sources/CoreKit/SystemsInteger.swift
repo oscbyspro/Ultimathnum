@@ -73,4 +73,3 @@ public protocol SystemsInteger: BinaryInteger where Magnitude: SystemsInteger {
     ///
     @inlinable static func dividing(_ dividend: consuming Doublet<Self>, by multiplier: borrowing Self) throws -> Division<Self>
 }
-

@@ -20,15 +20,15 @@ extension MinimiInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public func compared(to other: Self) -> Signum {
-        self == other ? 0 : self < other ? -1 : 1
+        self == other ? 0 : self == 0 ? 1 : -1
     }
     
-    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.bitPattern == rhs.bitPattern
+    @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
+        lhs.base == rhs.base
     }
     
-    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        (lhs.bitPattern, rhs.bitPattern) == (true, false)
+    @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
+        (lhs.base, rhs.base) == (1, 0)
     }
 }
 
@@ -43,14 +43,14 @@ extension MinimiInt.Magnitude {
     //=------------------------------------------------------------------------=
     
     @inlinable public func compared(to other: Self) -> Signum {
-        self == other ? 0 : self < other ? -1 : 1
+        self == other ? 0 : self == 0 ? -1 : 1
     }
     
-    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.bitPattern == rhs.bitPattern
+    @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
+        lhs.base == rhs.base
     }
     
-    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        (lhs.bitPattern, rhs.bitPattern) == (false, true)
+    @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
+        (lhs.base, rhs.base) == (0, 1)
     }
 }

@@ -20,19 +20,19 @@ extension MinimiInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public static prefix func ~(instance: consuming Self) -> Self {
-        Self(bitPattern: !instance.bitPattern)
+        Self(bitPattern: ~instance.base)
     }
     
     @inlinable public static func &(lhs: Self, rhs: Self) -> Self {
-        Self(bitPattern: lhs.bitPattern == rhs.bitPattern ? lhs.bitPattern : false)
+        Self(bitPattern: lhs.base & rhs.base)
     }
     
     @inlinable public static func |(lhs: Self, rhs: Self) -> Self {
-        Self(bitPattern: lhs.bitPattern == rhs.bitPattern ? lhs.bitPattern : true )
+        Self(bitPattern: lhs.base | rhs.base)
     }
     
     @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
-        Self(bitPattern: lhs.bitPattern != rhs.bitPattern)
+        Self(bitPattern: lhs.base ^ rhs.base)
     }
 }
 
@@ -47,18 +47,18 @@ extension MinimiInt.Magnitude {
     //=------------------------------------------------------------------------=
     
     @inlinable public static prefix func ~(instance: consuming Self) -> Self {
-        Self(bitPattern: !instance.bitPattern)
+        Self(bitPattern: ~instance.base)
     }
     
     @inlinable public static func &(lhs: Self, rhs: Self) -> Self {
-        Self(bitPattern: lhs.bitPattern == rhs.bitPattern ? lhs.bitPattern : false)
+        Self(bitPattern: lhs.base & rhs.base)
     }
     
     @inlinable public static func |(lhs: Self, rhs: Self) -> Self {
-        Self(bitPattern: lhs.bitPattern == rhs.bitPattern ? lhs.bitPattern : true )
+        Self(bitPattern: lhs.base | rhs.base)
     }
     
     @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
-        Self(bitPattern: lhs.bitPattern != rhs.bitPattern)
+        Self(bitPattern: lhs.base ^ rhs.base)
     }
 }

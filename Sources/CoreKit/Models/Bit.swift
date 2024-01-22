@@ -62,7 +62,7 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public func compared(to other: Self) -> Signum {
-        self == other ? 0 : self < other ? -1 : 1
+        self == other ? 0 : self == 0 ? -1 : 1
     }
     
     @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {

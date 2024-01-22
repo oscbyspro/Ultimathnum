@@ -22,7 +22,7 @@ extension BinaryInteger {
     /// - Note: This method is **important** for performance.
     ///
     @inlinable public init(_ bit: Bit) {
-        self = Bool(bitPattern: bit) ?  1 : 0 // TODO: 0 and 1-bit
+        self = Bool(bitPattern: bit) ?  1 : 0
     }
     
     @inlinable public init(repeating bit: Bit) {

@@ -28,29 +28,35 @@ import CoreKit
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    public let bitPattern: Bool
+    @usableFromInline let base: Bit
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: Bool) {
-        self.bitPattern = (bitPattern)
+    @inlinable public init(bitPattern: Bit.BitPattern) {
+        self.base = Bit(bitPattern: bitPattern)
     }
     
     @inlinable public init(integerLiteral: Swift.Int.IntegerLiteralType) {
         if  integerLiteral == 0 {
-            self.bitPattern = false
+            self.base = 0
         }   else if integerLiteral == -1 {
-            self.bitPattern = true
+            self.base = 1
         }   else {
             fatalError(.overflow())
         }
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Accessors
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
+    
+    @inlinable public var bitPattern: Bit.BitPattern {
+        consuming get {
+            Bit.BitPattern(bitPattern: self.base)
+        }
+    }
     
     @inlinable public var magnitude: Magnitude {
         consuming get {
@@ -79,23 +85,33 @@ import CoreKit
         // MARK: State
         //=--------------------------------------------------------------------=
         
-        public let bitPattern: Bool
+        @usableFromInline let base: Bit
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
-        @inlinable public init(bitPattern: Bool) {
-            self.bitPattern = (bitPattern)
+        @inlinable public init(bitPattern: Bit.BitPattern) {
+            self.base = Bit(bitPattern: bitPattern)
         }
         
-        @inlinable public init(integerLiteral: Swift.UInt.IntegerLiteralType) {
+        @inlinable public init(integerLiteral: Swift.Int.IntegerLiteralType) {
             if  integerLiteral == 0 {
-                self.bitPattern = false
+                self.base = 0
             }   else if integerLiteral == 1 {
-                self.bitPattern = true
+                self.base = 1
             }   else {
                 fatalError(.overflow())
+            }
+        }
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Utilities
+        //=--------------------------------------------------------------------=
+        
+        @inlinable public var bitPattern: Bit.BitPattern {
+            consuming get {
+                Bit.BitPattern(bitPattern: self.base)
             }
         }
     }
