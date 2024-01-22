@@ -20,6 +20,34 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
-        fatalError("TODO")
+        var count: Magnitude
+        
+        switch option {
+        case .all:
+            
+            brr: do {
+                count = /*-*/   Magnitude(low: self.low .count(bit, option: option))
+                count = count + Magnitude(low: self.high.count(bit, option: option))
+            }
+        
+        case .ascending:
+                        
+            brr: do {
+                count = /*-*/   Magnitude(low: self.low .count(bit, option: option))
+            };  if count.low == Low.bitWidth {
+                count = count + Magnitude(low: self.high.count(bit, option: option))
+            }
+            
+        case .descending:
+            
+            brr: do {
+                count = /*-*/   Magnitude(low: self.high.count(bit, option: option))
+            };  if count.low == High.bitWidth {
+                count = count + Magnitude(low: self.low .count(bit, option: option))
+            }
+            
+        }
+        
+        return count as Magnitude
     }
 }
