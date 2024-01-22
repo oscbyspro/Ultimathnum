@@ -8,11 +8,20 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Signed Integer
+// MARK: * Systems Integer x Bit
 //*============================================================================*
 
-/// A signed binary integer.
-///
-/// - Note: Its static `isSigned` value is `true`.
-///
-public protocol SignedInteger: BinaryInteger { }
+extension SystemsInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static var lsb: Self {
+        Self(bitPattern: 1 as Magnitude)
+    }
+    
+    @inlinable public static var msb: Self {
+        Self(bitPattern: 1 as Magnitude &<< (bitWidth &- 1))
+    }
+}

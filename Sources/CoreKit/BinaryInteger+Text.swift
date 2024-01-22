@@ -8,20 +8,27 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Bit Operable
+// MARK: * Binary Integer x Text
 //*============================================================================*
+//=----------------------------------------------------------------------------=
+// TODO: @_unavailableInEmbedded is not a known attribute in Swift 5.9
+//=----------------------------------------------------------------------------=
 
-public protocol BitOperable {
+/* @_unavailableInEmbedded */ extension BinaryInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable static prefix func ~(instance: consuming Self) -> Self
+    @inlinable public init?(_ description: String) {
+        brr: do  {
+            self = try IDF.Decoder().decode(description)
+        }   catch  {
+            return nil
+        }
+    }
     
-    @inlinable static func &(lhs: consuming Self, rhs: borrowing Self) -> Self
-    
-    @inlinable static func |(lhs: consuming Self, rhs: borrowing Self) -> Self
-    
-    @inlinable static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self
+    @inlinable public var description: String {
+        IDF.Encoder().encode(self)
+    }
 }

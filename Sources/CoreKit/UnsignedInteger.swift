@@ -24,34 +24,3 @@
 /// - Requires: The magnitude must be of the same type.
 ///
 public protocol UnsignedInteger: BinaryInteger where Magnitude == Self { }
-
-//=----------------------------------------------------------------------------=
-// MARK: + Details
-//=----------------------------------------------------------------------------=
-
-extension UnsignedInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Meta Data
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static var isSigned: Bool {
-        false
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializeres
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(magnitude: consuming Magnitude) {
-        self = consume magnitude
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public var magnitude: Magnitude {
-        consuming get { consume self }
-    }
-}

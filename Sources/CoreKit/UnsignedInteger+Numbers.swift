@@ -8,11 +8,20 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Signed Integer
+// MARK: * Unsigned Integer x Numbers
 //*============================================================================*
 
-/// A signed binary integer.
-///
-/// - Note: Its static `isSigned` value is `true`.
-///
-public protocol SignedInteger: BinaryInteger { }
+extension UnsignedInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializeres
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(magnitude: consuming Magnitude) {
+        self = consume magnitude
+    }
+    
+    @inlinable public var magnitude: Magnitude {
+        consuming get { consume self }
+    }
+}

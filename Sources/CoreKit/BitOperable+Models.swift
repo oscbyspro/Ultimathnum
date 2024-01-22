@@ -8,11 +8,16 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Signed Integer
+// MARK: * Bit Operable x Models
 //*============================================================================*
 
-/// A signed binary integer.
-///
-/// - Note: Its static `isSigned` value is `true`.
-///
-public protocol SignedInteger: BinaryInteger { }
+extension Int:    BitOperable { }
+extension Int8:   BitOperable { }
+extension Int16:  BitOperable { }
+extension Int32:  BitOperable { }
+extension Int64:  BitOperable { }
+extension UInt:   BitOperable { }
+extension UInt8:  BitOperable { }
+extension UInt16: BitOperable { }
+extension UInt32: BitOperable { }
+extension UInt64: BitOperable { }

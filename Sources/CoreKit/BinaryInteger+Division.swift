@@ -8,11 +8,20 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Signed Integer
+// MARK: * Binary Integer x Division
 //*============================================================================*
 
-/// A signed binary integer.
-///
-/// - Note: Its static `isSigned` value is `true`.
-///
-public protocol SignedInteger: BinaryInteger { }
+extension BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func /(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        try! lhs.quotient (divisor: rhs)
+    }
+    
+    @inlinable public static func %(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        try! lhs.remainder(divisor: rhs)
+    }
+}

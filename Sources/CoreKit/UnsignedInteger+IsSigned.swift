@@ -8,11 +8,16 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Signed Integer
+// MARK: * Unsigned Integer x Is Signed
 //*============================================================================*
 
-/// A signed binary integer.
-///
-/// - Note: Its static `isSigned` value is `true`.
-///
-public protocol SignedInteger: BinaryInteger { }
+extension UnsignedInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static var isSigned: Bool {
+        false
+    }
+}

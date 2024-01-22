@@ -8,20 +8,24 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Bit Operable
+// MARK: * Binary Integer x Bit
 //*============================================================================*
 
-public protocol BitOperable {
-    
+extension BinaryInteger {
+ 
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable static prefix func ~(instance: consuming Self) -> Self
+    /// ### Development
+    ///
+    /// - Note: This method is **important** for performance.
+    ///
+    @inlinable public init(_ bit: Bit) {
+        self = Bool(bitPattern: bit) ?  1 : 0 // TODO: 0 and 1-bit
+    }
     
-    @inlinable static func &(lhs: consuming Self, rhs: borrowing Self) -> Self
-    
-    @inlinable static func |(lhs: consuming Self, rhs: borrowing Self) -> Self
-    
-    @inlinable static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self
+    @inlinable public init(repeating bit: Bit) {
+        self = Bool(bitPattern: bit) ? ~0 : 0
+    }
 }

@@ -8,20 +8,24 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Bit Operable
+// MARK: * Binary Integer x Comparison
 //*============================================================================*
 
-public protocol BitOperable {
+extension BinaryInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable static prefix func ~(instance: consuming Self) -> Self
+    @inlinable public borrowing func signum() -> Signum {
+        self.compared(to: 0)
+    }
     
-    @inlinable static func &(lhs: consuming Self, rhs: borrowing Self) -> Self
-    
-    @inlinable static func |(lhs: consuming Self, rhs: borrowing Self) -> Self
-    
-    @inlinable static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self
+    /// Returns whether this value is less than zero.
+    ///
+    /// It checks `isSigned` first which is preferred in inlinable generic code.
+    ///
+    @inlinable public var isLessThanZero: Bool {
+        borrowing get { if Self.isSigned { self < 0 } else { false } }
+    }
 }

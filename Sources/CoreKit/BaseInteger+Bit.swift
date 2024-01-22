@@ -8,11 +8,22 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Signed Integer
+// MARK: * Base Integer x Bit
 //*============================================================================*
 
-/// A signed binary integer.
-///
-/// - Note: Its static `isSigned` value is `true`.
-///
-public protocol SignedInteger: BinaryInteger { }
+extension BaseInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(bitPattern: consuming BitPattern) {
+        self = Swift.unsafeBitCast(bitPattern, to: Self.self)
+    }
+    
+    @inlinable public var bitPattern: BitPattern {
+        consuming get {
+            Swift.unsafeBitCast(self, to: BitPattern.self)
+        }
+    }
+}

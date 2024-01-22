@@ -8,11 +8,21 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Signed Integer
+// MARK: * Binary Integer x Literal
 //*============================================================================*
 
-/// A signed binary integer.
-///
-/// - Note: Its static `isSigned` value is `true`.
-///
-public protocol SignedInteger: BinaryInteger { }
+extension BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+
+    @inlinable public init(literally source: StaticBigInt) throws {
+        try  self.init(words: BigIntLiteral(source), isSigned: true)
+    }
+
+    @inlinable public init(integerLiteral: IntegerLiteralType) where IntegerLiteralType == StaticBigInt {
+        try! self.init(literally: integerLiteral)
+    }
+
+}

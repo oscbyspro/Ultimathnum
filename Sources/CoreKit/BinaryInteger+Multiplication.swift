@@ -8,20 +8,24 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Bit Operable
+// MARK: * Binary Integer x Multiplication
 //*============================================================================*
 
-public protocol BitOperable {
+extension BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable static prefix func ~(instance: consuming Self) -> Self
+    @inlinable public static func *(lhs: Self, rhs: Self) -> Self {
+        try! lhs.times(rhs)
+    }
     
-    @inlinable static func &(lhs: consuming Self, rhs: borrowing Self) -> Self
-    
-    @inlinable static func |(lhs: consuming Self, rhs: borrowing Self) -> Self
-    
-    @inlinable static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self
+    /// ### Development
+    ///
+    /// - FIXME: Consuming caues bad accesss (2024-01-13, Swift 5.9).
+    ///
+    @inlinable public static func &*(lhs: Self, rhs: Self) -> Self {
+        Overflow.ignore({ try lhs.times(rhs) })
+    }
 }

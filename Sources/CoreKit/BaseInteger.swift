@@ -33,39 +33,3 @@
 ///
 public protocol BaseInteger: BitCastable, BitOperable, Swift.FixedWidthInteger, Swift.Sendable
 where BitPattern == Magnitude.BitPattern, Magnitude: Swift.FixedWidthInteger & BaseInteger { }
-
-//=----------------------------------------------------------------------------=
-// MARK: + Details
-//=----------------------------------------------------------------------------=
-
-extension BaseInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(bitPattern: consuming BitPattern) {
-        self = Swift.unsafeBitCast(bitPattern, to: Self.self)
-    }
-    
-    @inlinable public var bitPattern: BitPattern {
-        consuming get {
-            Swift.unsafeBitCast(self, to: BitPattern.self)
-        }
-    }
-}
-
-//*============================================================================*
-// MARK: * Base Integer x Models
-//*============================================================================*
-
-extension Int:    BaseInteger { }
-extension Int8:   BaseInteger { }
-extension Int16:  BaseInteger { }
-extension Int32:  BaseInteger { }
-extension Int64:  BaseInteger { }
-extension UInt:   BaseInteger { }
-extension UInt8:  BaseInteger { }
-extension UInt16: BaseInteger { }
-extension UInt32: BaseInteger { }
-extension UInt64: BaseInteger { }

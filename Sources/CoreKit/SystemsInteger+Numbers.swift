@@ -8,20 +8,32 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Bit Operable
+// MARK: * Systems Integer x Numbers
 //*============================================================================*
 
-public protocol BitOperable {
+extension SystemsInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    @inlinable static prefix func ~(instance: consuming Self) -> Self
+    @inlinable public static var min: Self {
+        isSigned ? msb : 0
+    }
     
-    @inlinable static func &(lhs: consuming Self, rhs: borrowing Self) -> Self
+    @inlinable public static var max: Self {
+        ~(min)
+    }
     
-    @inlinable static func |(lhs: consuming Self, rhs: borrowing Self) -> Self
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
     
-    @inlinable static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self
+    @inlinable public init(clamping source: some BinaryInteger) {
+        brr: do {
+            try self.init(exactly: source)
+        }   catch {
+            self = source.isLessThanZero ? Self.min : Self.max
+        }
+    }
 }

@@ -8,11 +8,16 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Signed Integer
+// MARK: * Base Integer x Models
 //*============================================================================*
 
-/// A signed binary integer.
-///
-/// - Note: Its static `isSigned` value is `true`.
-///
-public protocol SignedInteger: BinaryInteger { }
+extension Int:    BaseInteger { }
+extension Int8:   BaseInteger { }
+extension Int16:  BaseInteger { }
+extension Int32:  BaseInteger { }
+extension Int64:  BaseInteger { }
+extension UInt:   BaseInteger { }
+extension UInt8:  BaseInteger { }
+extension UInt16: BaseInteger { }
+extension UInt32: BaseInteger { }
+extension UInt64: BaseInteger { }
