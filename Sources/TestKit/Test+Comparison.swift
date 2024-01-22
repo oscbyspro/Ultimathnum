@@ -33,10 +33,10 @@ extension Test {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities x Private
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    private static func comparisonAsSomeSystemsInteger<T: SystemsInteger>(
+    public static func comparisonAsSomeSystemsInteger<T: SystemsInteger>(
     _   lhs: T, _ rhs: T, _ expectation: Signum, file: StaticString, line: UInt) {
         //=--------------------------------------=
         Test.comparisonAsSomeBinaryInteger(lhs, rhs, expectation, file: file, line: line)
@@ -86,7 +86,7 @@ extension Test {
         }
     }
     
-    private static func comparisonAsSomeBinaryInteger<T: BinaryInteger>(
+    public static func comparisonAsSomeBinaryInteger<T: BinaryInteger>(
     _   lhs: T, _ rhs: T, _ expectation: Signum, file: StaticString, line: UInt) {
         for (lhs, rhs, expectation) in [(lhs, rhs, expectation), (rhs, lhs, expectation.negated())] {
             signum: do {

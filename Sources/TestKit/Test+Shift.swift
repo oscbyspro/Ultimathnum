@@ -36,10 +36,10 @@ extension Test {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities x Private
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
         
-    private static func smartShiftLeft<T: SystemsInteger>(
+    public static func smartShiftLeft<T: SystemsInteger>(
     _ instance: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
         //=--------------------------------------=
         XCTAssertEqual(instance << shift, result, file: file, line: line)
@@ -53,7 +53,7 @@ extension Test {
         }
     }
     
-    private static func smartShiftRight<T: SystemsInteger>(
+    public static func smartShiftRight<T: SystemsInteger>(
     _ instance: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
         //=--------------------------------------=
         XCTAssertEqual(instance >> shift, result, file: file, line: line)
@@ -67,7 +67,7 @@ extension Test {
         }
     }
     
-    private static func maskedShiftLeft<T: SystemsInteger>(
+    public static func maskedShiftLeft<T: SystemsInteger>(
     _ instance: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
         //=--------------------------------------=
         XCTAssertEqual(instance &<< shift, result, file: file, line: line)
@@ -91,7 +91,7 @@ extension Test {
         }
     }
     
-    private static func maskedShiftRight<T: SystemsInteger>(
+    public static func maskedShiftRight<T: SystemsInteger>(
     _ instance: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
         //=--------------------------------------=
         XCTAssertEqual(instance &>> shift, result, file: file, line: line)

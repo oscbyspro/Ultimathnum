@@ -104,7 +104,7 @@ extension SystemsInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<T>(clamping source: T) where T: BinaryInteger {
+    @inlinable public init(clamping source: some BinaryInteger) {
         brr: do {
             try self.init(exactly: source)
         }   catch {

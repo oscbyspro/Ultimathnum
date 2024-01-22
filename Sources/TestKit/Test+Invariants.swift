@@ -19,12 +19,12 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func invariants<T: SystemsInteger>(
+    public static func invariants<T: SystemsInteger>(
     _   type: T.Type, file: StaticString = #file, line: UInt = #line) {
         Test.invariantsAsSomeSystemsInteger(type, file: file, line: line)
     }
     
-    @inlinable public static func invariants<T: BinaryInteger>(
+    public static func invariants<T: BinaryInteger>(
     _   type: T.Type, file: StaticString = #file, line: UInt = #line) {
         Test.invariantsAsSomeBinaryInteger(type, file: file, line: line)
     }
@@ -33,7 +33,7 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func invariantsAsSomeSystemsInteger<T: SystemsInteger>(
+    public static func invariantsAsSomeSystemsInteger<T: SystemsInteger>(
     _   type: T.Type, file: StaticString, line: UInt) {
         //=--------------------------------------=
         XCTAssert(T.bitWidth.count(1, option: .all) == 1, "T.bitWidth must be a power of 2", file: file, line: line)
@@ -46,12 +46,22 @@ extension Test {
         Test.invariantsAsSomeBinaryInteger(type, file: file, line: line)
     }
     
-    @inlinable public static func invariantsAsSomeBinaryInteger<T: BinaryInteger>(
+    public static func invariantsAsSomeBinaryInteger<T: BinaryInteger>(
     _   type: T.Type, file: StaticString, line: UInt) {
         //=--------------------------------------=
         XCTAssertEqual(T.isSigned == true,  T.self is any   SignedInteger.Type)
         XCTAssertEqual(T.isSigned == false, T.self is any UnsignedInteger.Type)
         //=--------------------------------------=
         XCTAssert(T.Element.bitWidth.count(1, option: .all) == 1, "T.Element.bitWidth must be a power of 2", file: file, line: line)
+        //=--------------------------------------=
+        Test.invariantsAsSomeBitCastable(type, file: file, line: line)
+    }
+    
+    public static func invariantsAsSomeBitCastable<T: BitCastable>(
+    _   type: T.Type, file: StaticString, line: UInt) {
+        //=--------------------------------------=
+        XCTAssertEqual(MemoryLayout<T>.size,      MemoryLayout<T.BitPattern>.size,      "MemoryLayout<T.BitPattern>.size",      file: file, line: line)
+        XCTAssertEqual(MemoryLayout<T>.stride,    MemoryLayout<T.BitPattern>.stride,    "MemoryLayout<T.BitPattern>.stride",    file: file, line: line)
+        XCTAssertEqual(MemoryLayout<T>.alignment, MemoryLayout<T.BitPattern>.alignment, "MemoryLayout<T.BitPattern>.alignment", file: file, line: line)
     }
 }

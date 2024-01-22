@@ -33,10 +33,10 @@ extension Test {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities x Private
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    private static func multiplicationAsSomeSystemsInteger<T: SystemsInteger>(
+    public static func multiplicationAsSomeSystemsInteger<T: SystemsInteger>(
     _ lhs: T, _ rhs: T, _ product: Doublet<T>, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
         XCTAssertEqual(T.multiplying(lhs, by: rhs), (product), file: file, line: line)
@@ -44,7 +44,7 @@ extension Test {
         Test.multiplicationAsSomeBinaryInteger(lhs, rhs, T(bitPattern: product.low), overflow, file: file, line: line)
     }
     
-    private static func multiplicationAsSomeBinaryInteger<T: BinaryInteger>(
+    public static func multiplicationAsSomeBinaryInteger<T: BinaryInteger>(
     _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
         XCTAssertEqual(lhs &* rhs, value, file: file, line: line)

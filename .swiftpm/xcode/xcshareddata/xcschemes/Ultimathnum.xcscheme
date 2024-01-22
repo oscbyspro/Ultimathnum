@@ -56,9 +56,23 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "NormalIntKit"
-               BuildableName = "NormalIntKit"
-               BlueprintName = "NormalIntKit"
+               BlueprintIdentifier = "InfiniIntKit"
+               BuildableName = "InfiniIntKit"
+               BlueprintName = "InfiniIntKit"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "MinimiIntKit"
+               BuildableName = "MinimiIntKit"
+               BlueprintName = "MinimiIntKit"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>

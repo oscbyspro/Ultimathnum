@@ -22,6 +22,14 @@ final class BitTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
+    func testInvariants() {
+        Test.invariantsAsSomeBitCastable(T.self, file: #file, line: #line)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
     func testBitPattern() {
         XCTAssertEqual(T(bitPattern: false as Bool), 0)
         XCTAssertEqual(T(bitPattern: true  as Bool), 1)

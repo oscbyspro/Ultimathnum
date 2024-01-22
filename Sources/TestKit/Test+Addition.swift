@@ -27,10 +27,10 @@ extension Test {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities x Private
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    private static func additionAsSomeBinaryInteger<T: BinaryInteger>(
+    public static func additionAsSomeBinaryInteger<T: BinaryInteger>(
     _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
         XCTAssertEqual(lhs &+ rhs, value, file: file, line: line)

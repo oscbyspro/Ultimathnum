@@ -27,10 +27,10 @@ extension Test {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Utiliites x Private
+    // MARK: Utiliites
     //=------------------------------------------------------------------------=
     
-    private static func divisionAsSomeInteger<T: BinaryInteger>(
+    public static func divisionAsSomeInteger<T: BinaryInteger>(
     _ dividend: T, _ divisor: T, _ quotient: T, _ remainder: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
         let division = Division(quotient: quotient, remainder: remainder)
@@ -66,10 +66,10 @@ extension Test {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Utiliites x Private
+    // MARK: Utiliites
     //=------------------------------------------------------------------------=
     
-    private static func divisionAsSomeSystemsInteger<T: SystemsInteger>(
+    public static func divisionAsSomeSystemsInteger<T: SystemsInteger>(
     _ dividend: Doublet<T>, _ divisor: T, _ quotient: T, _ remainder: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
         let expectation = Division(quotient: quotient, remainder: remainder)
