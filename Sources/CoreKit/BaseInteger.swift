@@ -31,12 +31,6 @@
 /// - `UInt32`
 /// - `UInt64`
 ///
-/// ### Existentials
-///
-/// ```swift
-/// let integers: [any BaseInteger] = [Int(), UInt()]
-/// ```
-///
 public protocol BaseInteger: BitCastable, BitOperable, Swift.FixedWidthInteger, Swift.Sendable
 where BitPattern == Magnitude.BitPattern, Magnitude: Swift.FixedWidthInteger & BaseInteger { }
 

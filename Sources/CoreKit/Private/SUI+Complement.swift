@@ -21,7 +21,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
         var increment = increment
         
         for index in base.indices {
-            increment = Overflow.capture(&base[index], map:{ try (~$0).plus(Base.Element(bit: Bit(bitPattern: increment))) })
+            increment = Overflow.capture(&base[index], map:{ try (~$0).plus(Base.Element(Bit(bitPattern: increment))) })
         }
         
         return increment as Bool

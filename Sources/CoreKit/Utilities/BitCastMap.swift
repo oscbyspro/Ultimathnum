@@ -8,11 +8,12 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Bit Cast Sequence
+// MARK: * Bit Cast Map
 //*============================================================================*
 
-@frozen public struct BitCastSequence<Base, Element>: Sequence where Element: BitCastable,
-Base: Sequence, Base.Element: BitCastable, Base.Element.BitPattern == Element.BitPattern {
+@frozen public struct BitCastMap<Base, Element>: Sequence where 
+Element: BitCastable, Base: Sequence, Base.Element: BitCastable,
+Base.Element.BitPattern == Element.BitPattern {
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -74,10 +75,10 @@ Base: Sequence, Base.Element: BitCastable, Base.Element.BitPattern == Element.Bi
 // MARK: + Collection
 //=----------------------------------------------------------------------------=
 
-extension BitCastSequence:              Collection where Base:              Collection { }
-extension BitCastSequence: BidirectionalCollection where Base: BidirectionalCollection { }
-extension BitCastSequence:  RandomAccessCollection where Base:  RandomAccessCollection { }
-extension BitCastSequence where Base: Collection {
+extension BitCastMap: Collection where Base: Collection { }
+extension BitCastMap: BidirectionalCollection where Base: BidirectionalCollection { }
+extension BitCastMap:  RandomAccessCollection where Base:  RandomAccessCollection { }
+extension BitCastMap where Base: Collection {
     
     //=------------------------------------------------------------------------=
     // MARK: Accessors

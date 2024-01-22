@@ -186,7 +186,7 @@ extension BinaryInteger {
     ///
     /// - Note: This method is **important** for performance.
     ///
-    @inlinable public init(bit: Bit) {
+    @inlinable public init(_ bit: Bit) {
         self = Bool(bitPattern: bit) ?  1 : 0 // TODO: 0 and 1-bit
     }
     

@@ -131,7 +131,9 @@ extension Overflow: BitCastable where Value: BitCastable {
     }
     
     @inlinable public var bitPattern: Overflow<Value.BitPattern> {
-        consuming get { Overflow<Value.BitPattern>(Value.BitPattern(bitPattern: self.value)) }
+        consuming get {
+            .init(Value.BitPattern(bitPattern: self.value))
+        }
     }
 }
 
@@ -146,6 +148,8 @@ extension Overflow.Result: BitCastable where Value: BitCastable {
     }
     
     @inlinable public var bitPattern: Overflow<Value.BitPattern>.Result {
-        consuming get { Overflow<Value.BitPattern>.Result(Value.BitPattern(bitPattern: self.value), overflow: self.overflow) }
+        consuming get {
+            .init(Value.BitPattern(bitPattern: self.value), overflow: self.overflow)
+        }
     }
 }

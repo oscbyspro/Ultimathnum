@@ -80,7 +80,7 @@
         
         try self.init()
         
-        for bit: MinimiInt.Magnitude in ChunkedInt(normalizing: BitCastSequence(index.words, as: UX.self), isSigned: false).reversed() {
+        for bit: MinimiInt.Magnitude in ChunkedInt(normalizing: index.words, isSigned: false).reversed() {
             try self.double()
             
             if  bit == 1 {

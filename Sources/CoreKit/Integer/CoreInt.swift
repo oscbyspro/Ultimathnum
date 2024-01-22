@@ -66,7 +66,7 @@
     }
     
     @inlinable public var words: some RandomAccessCollection<UX> {
-        consuming get { BitCastSequence(self.base.words) }
+        consuming get { BitCastMap(self.base.words) }
     }
 }
 
