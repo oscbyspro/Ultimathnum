@@ -25,3 +25,18 @@ public protocol BitOperable {
     
     @inlinable static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self
 }
+
+//*============================================================================*
+// MARK: * Bit Operable x Models
+//*============================================================================*
+
+extension Int:    BitOperable { }
+extension Int8:   BitOperable { }
+extension Int16:  BitOperable { }
+extension Int32:  BitOperable { }
+extension Int64:  BitOperable { }
+extension UInt:   BitOperable { }
+extension UInt8:  BitOperable { }
+extension UInt16: BitOperable { }
+extension UInt32: BitOperable { }
+extension UInt64: BitOperable { }
