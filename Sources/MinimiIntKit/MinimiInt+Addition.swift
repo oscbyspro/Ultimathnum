@@ -7,48 +7,34 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Bit Int x Comparison x Signed
+// MARK: * Minimi Int x Addition x Signed
 //*============================================================================*
 
-extension BitInt {
+extension MinimiInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func compared(to other: Self) -> Signum {
-        self == other ? 0 : self < other ? -1 : 1
-    }
-    
-    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.bitPattern == rhs.bitPattern
-    }
-    
-    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        (lhs.bitPattern, rhs.bitPattern) == (true, false)
+    @inlinable public func plus(_ increment: Self) throws -> Self {
+        try Overflow.resolve(self ^ increment, overflow: self & increment != 0)
     }
 }
 
 //*============================================================================*
-// MARK: * Bit Int x Comparison x Unsigned
+// MARK: * Minimi Int x Addition x Unsigned
 //*============================================================================*
 
-extension BitInt.Magnitude {
+extension MinimiInt.Magnitude {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func compared(to other: Self) -> Signum {
-        self == other ? 0 : self < other ? -1 : 1
-    }
-    
-    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.bitPattern == rhs.bitPattern
-    }
-    
-    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        (lhs.bitPattern, rhs.bitPattern) == (false, true)
+    @inlinable public func plus(_ increment: Self) throws -> Self {
+        try Overflow.resolve(self ^ increment, overflow: self & increment != 0)
     }
 }

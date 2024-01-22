@@ -11,19 +11,30 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Bit Int x Bit
+// MARK: * Minimi Int
 //*============================================================================*
 
-extension BitIntTests {
+final class MinimiIntTests: XCTestCase {
+    
+    typealias I = any (SystemsInteger &   SignedInteger).Type
+    typealias U = any (SystemsInteger & UnsignedInteger).Type
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests x Initializers
+    // MARK: State
     //=------------------------------------------------------------------------=
     
-    func testInitBit() {
+    static let types: [any SystemsInteger.Type] = [
+        MinimiInt.self,
+        MinimiInt.Magnitude.self,
+    ]
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testInvariants() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            XCTAssertEqual(T(repeating: 0 as Bit),  0)
-            XCTAssertEqual(T(repeating: 1 as Bit), ~0)
+            Test.invariants(type)
         }
         
         for type in Self.types {
@@ -32,17 +43,24 @@ extension BitIntTests {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests x Accessors
+    // MARK: Tests x Miscellaneous
     //=------------------------------------------------------------------------=
     
-    func testBitCountSelection() {
+    func testMinMax() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            for bit: Bit in [0, 1] {
-                for selection: Bit.Selection in [.all, .ascending, .descending] {
-                    XCTAssertEqual(T(bitPattern: 0 as T.Magnitude).count(bit, option: selection), bit == 0 ? 1 : 0)
-                    XCTAssertEqual(T(bitPattern: 1 as T.Magnitude).count(bit, option: selection), bit == 1 ? 1 : 0)
-                }
-            }
+            XCTAssertEqual(T.min, T.isSigned ? -1 : 0)
+            XCTAssertEqual(T.max, T.isSigned ?  0 : 1)
+        }
+        
+        for type in Self.types {
+            whereIs(type)
+        }
+    }
+    
+    func testLsbMsb() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            XCTAssertEqual(T.lsb, T.isSigned ? -1 : 1)
+            XCTAssertEqual(T.msb, T.isSigned ? -1 : 1)
         }
         
         for type in Self.types {

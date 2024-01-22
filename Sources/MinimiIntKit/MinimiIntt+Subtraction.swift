@@ -7,32 +7,42 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Bit Int x Bit x Signed
+// MARK: * Minimi Int x Subtraction x Signed
 //*============================================================================*
 
-extension BitInt {
+extension MinimiInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Accessors
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
-        self.magnitude.count(bit, option: option)
+    @inlinable public func negated() throws -> Self {
+        try Overflow.resolve(self, overflow: self != 0)
+    }
+    
+    @inlinable public func minus( _ decrement: Self) throws -> Self {
+        try Overflow.resolve(self ^ decrement, overflow: self > decrement)
     }
 }
 
 //*============================================================================*
-// MARK: * Bit Int x Bit x Unsigned
+// MARK: * Minimi Int x Subtraction x Unsigned
 //*============================================================================*
 
-extension BitInt.Magnitude {
+extension MinimiInt.Magnitude {
     
     //=------------------------------------------------------------------------=
-    // MARK: Accessors
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
-        if bit == 0 { ~self } else { self }
+    @inlinable public func negated() throws -> Self {
+        try Overflow.resolve(self, overflow: self != 0)
+    }
+    
+    @inlinable public func minus( _ decrement: Self) throws -> Self {
+        try Overflow.resolve(self ^ decrement, overflow: self < decrement)
     }
 }

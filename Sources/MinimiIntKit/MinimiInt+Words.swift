@@ -7,11 +7,13 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Bit Int x Words x Signed
+// MARK: * Minimi Int x Words x Signed
 //*============================================================================*
 
-extension BitInt {
+extension MinimiInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -47,13 +49,13 @@ extension BitInt {
         // MARK: State
         //=--------------------------------------------------------------------=
         
-        @usableFromInline var base: BitInt
+        @usableFromInline var base: MinimiInt
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
-        @inlinable public init(_ base: BitInt) {
+        @inlinable public init(_ base: MinimiInt) {
             self.base = base
         }
         
@@ -79,10 +81,10 @@ extension BitInt {
 }
 
 //*============================================================================*
-// MARK: * Bit Int x Words x Unsigned
+// MARK: * Minimi Int x Words x Unsigned
 //*============================================================================*
 
-extension BitInt.Magnitude {
+extension MinimiInt.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -118,13 +120,13 @@ extension BitInt.Magnitude {
         // MARK: State
         //=--------------------------------------------------------------------=
         
-        @usableFromInline var base: BitInt.Magnitude
+        @usableFromInline var base: MinimiInt.Magnitude
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
-        @inlinable public init(_ base: BitInt.Magnitude) {
+        @inlinable public init(_ base: MinimiInt.Magnitude) {
             self.base = base
         }
         

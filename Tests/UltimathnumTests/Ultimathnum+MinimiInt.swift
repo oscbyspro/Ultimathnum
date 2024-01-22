@@ -11,7 +11,7 @@ import Ultimathnum
 import TestKit
 
 //*============================================================================*
-// MARK: * Ultimathnum x Bit Int
+// MARK: * Ultimathnum x Minimi Int
 //*============================================================================*
 
 extension UltimathnumTests {
@@ -20,7 +20,7 @@ extension UltimathnumTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testBitIntToFromExactly() {
+    func testMinimiIntToFromExactly() {
         func whereIs<T, U>(_ type: T.Type, _ other: U.Type) where T: SystemsInteger, U: BinaryInteger {
             if  let i = try? U(exactly: T.min).plus(U(exactly: T.min)).minus(U(magnitude: 1)) {
                 XCTAssertEqual(try? T(exactly: i), nil as T?)
@@ -71,7 +71,7 @@ extension UltimathnumTests {
             }
         }
         
-        for type in Self.bitIntList {
+        for type in Self.minimiIntList {
             for other in Self.types {
                 whereIs(type, other)
             }

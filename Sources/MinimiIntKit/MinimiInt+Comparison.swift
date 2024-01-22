@@ -7,56 +7,50 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Bit Int x Shift x Signed
+// MARK: * Minimi Int x Comparison x Signed
 //*============================================================================*
 
-extension BitInt {
+extension MinimiInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs
+    @inlinable public func compared(to other: Self) -> Signum {
+        self == other ? 0 : self < other ? -1 : 1
     }
     
-    @inlinable public static func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs
+    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        lhs.bitPattern == rhs.bitPattern
     }
     
-    @inlinable public static func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        rhs == 0 ? lhs : 0
-    }
-    
-    @inlinable public static func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs
+    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        (lhs.bitPattern, rhs.bitPattern) == (true, false)
     }
 }
 
 //*============================================================================*
-// MARK: * Bit Int x Shift x Unsigned
+// MARK: * Minimi Int x Comparison x Unsigned
 //*============================================================================*
 
-extension BitInt.Magnitude {
+extension MinimiInt.Magnitude {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        rhs == 0 ? lhs : 0
+    @inlinable public func compared(to other: Self) -> Signum {
+        self == other ? 0 : self < other ? -1 : 1
     }
     
-    @inlinable public static func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs
+    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        lhs.bitPattern == rhs.bitPattern
     }
     
-    @inlinable public static func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        rhs == 0 ? lhs : 0
-    }
-    
-    @inlinable public static func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs
+    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        (lhs.bitPattern, rhs.bitPattern) == (false, true)
     }
 }

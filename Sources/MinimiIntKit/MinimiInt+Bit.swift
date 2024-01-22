@@ -7,40 +7,34 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Bit Int x Subtraction x Signed
+// MARK: * Minimi Int x Bit x Signed
 //*============================================================================*
 
-extension BitInt {
+extension MinimiInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable public func negated() throws -> Self {
-        try Overflow.resolve(self, overflow: self != 0)
-    }
-    
-    @inlinable public func minus( _ decrement: Self) throws -> Self {
-        try Overflow.resolve(self ^ decrement, overflow: self > decrement)
+    @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
+        self.magnitude.count(bit, option: option)
     }
 }
 
 //*============================================================================*
-// MARK: * Bit Int x Subtraction x Unsigned
+// MARK: * Minimi Int x Bit x Unsigned
 //*============================================================================*
 
-extension BitInt.Magnitude {
+extension MinimiInt.Magnitude {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable public func negated() throws -> Self {
-        try Overflow.resolve(self, overflow: self != 0)
-    }
-    
-    @inlinable public func minus( _ decrement: Self) throws -> Self {
-        try Overflow.resolve(self ^ decrement, overflow: self < decrement)
+    @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
+        if bit == 0 { ~self } else { self }
     }
 }

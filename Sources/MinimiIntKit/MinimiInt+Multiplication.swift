@@ -7,11 +7,13 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Bit Int x Multiplication x Signed
+// MARK: * Minimi Int x Multiplication x Signed
 //*============================================================================*
 
-extension BitInt {
+extension MinimiInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -31,10 +33,10 @@ extension BitInt {
 }
 
 //*============================================================================*
-// MARK: * Bit Int x Multiplication x Unsigned
+// MARK: * Minimi Int x Multiplication x Unsigned
 //*============================================================================*
 
-extension BitInt.Magnitude {
+extension MinimiInt.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

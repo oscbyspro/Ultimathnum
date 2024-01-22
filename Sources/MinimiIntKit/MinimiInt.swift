@@ -7,12 +7,14 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Bit Int
+// MARK: * Minimi Int
 //*============================================================================*
 
 /// A signed `1-bit` integer that can represent the values `0` and `-1`.
-@frozen public struct BitInt: SystemsInteger & SignedInteger {
+@frozen public struct MinimiInt: SystemsInteger & SignedInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -113,5 +115,5 @@
 // MARK: + Aliases
 //=----------------------------------------------------------------------------=
 
-public typealias I1 = BitInt
-public typealias U1 = BitInt.Magnitude
+public typealias I1 = MinimiInt
+public typealias U1 = MinimiInt.Magnitude

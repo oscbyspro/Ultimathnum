@@ -20,16 +20,11 @@ final class UltimathnumTests: XCTestCase {
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    static let types = bitIntList + coreIntList
+    static let types = coreIntList + minimiIntList
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data x Modules
     //=------------------------------------------------------------------------=
-    
-    static let bitIntList: [any SystemsInteger.Type] = [
-        I1.self,
-        U1.self,
-    ]
         
     static let coreIntList: [any SystemsInteger.Type] = [
         IX .self,
@@ -42,5 +37,10 @@ final class UltimathnumTests: XCTestCase {
         U16.self,
         U32.self,
         U64.self,
+    ]
+    
+    static let minimiIntList: [any SystemsInteger.Type] = [
+        I1.self,
+        U1.self,
     ]
 }

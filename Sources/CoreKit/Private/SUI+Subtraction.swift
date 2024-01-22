@@ -364,9 +364,9 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
             //  maximum == (high: ~1, low: 1)
             var wide = Base.Element.multiplying(element, by: multiplier)
             //  maximum == (high: ~0, low: 0)
-            last = wide.high &+ Base.Element(U1(bitPattern: Overflow.capture(&wide.low, map:{ try $0.plus(last) })))
+            last = wide.high &+ Base.Element(bit: Bit(bitPattern: Overflow.capture(&wide.low, map:{ try $0.plus(last) })))
             //  this cannot overflow because low == 0 when high == ~0
-            last = last &+ Base.Element(U1(bitPattern: self.decrementInIntersection(&base, by: wide.low, at: &index)))
+            last = last &+ Base.Element(bit: Bit(bitPattern: self.decrementInIntersection(&base, by: wide.low, at: &index)))
         }
         
         return self.decrementInIntersection(&base, by: last, at: &index)

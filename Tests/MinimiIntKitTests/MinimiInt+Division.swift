@@ -11,10 +11,10 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Bit Int x Division
+// MARK: * Minimi Int x Division
 //*============================================================================*
 
-extension BitIntTests {
+extension MinimiIntTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests

@@ -11,7 +11,7 @@ import Ultimathnum
 import TestKit
 
 //*============================================================================*
-// MARK: * Fibonacci x Bit Int
+// MARK: * Fibonacci x Minimi Int
 //*============================================================================*
 
 extension FibonacciTests {
@@ -20,7 +20,7 @@ extension FibonacciTests {
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    private static let bitIntList: [any SystemsInteger.Type] = [
+    private static let minimiIntList: [any SystemsInteger.Type] = [
         I1.self,
         U1.self
     ]
@@ -29,7 +29,7 @@ extension FibonacciTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testBitInt() {
+    func testMinimiInt() {
         min: do {
             checkInvariantsAtZero(Fibonacci<I1>.self)
             checkInvariantsAtZero(Fibonacci<U1>.self)

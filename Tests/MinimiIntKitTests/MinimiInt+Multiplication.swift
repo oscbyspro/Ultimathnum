@@ -11,40 +11,32 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Bit Int x Numbers
+// MARK: * Minimi Int x Multiplication
 //*============================================================================*
 
-extension BitIntTests {
+extension MinimiIntTests {
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests x Magnitude
+    // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testInitMagnitude() {
+    func testMultiplication() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            XCTAssertEqual(try? T(magnitude: 0), 000 as T?)
-            XCTAssertEqual(try? T(magnitude: 1), nil as T?)
+            typealias P = Doublet<T>
+            
+            Test.multiplication( 0 as T,  0 as T, P(low: 0, high:  0), false)
+            Test.multiplication(-1 as T,  0 as T, P(low: 0, high:  0), false)
+            Test.multiplication( 0 as T, -1 as T, P(low: 0, high:  0), false)
+            Test.multiplication(-1 as T, -1 as T, P(low: 1, high:  0), true )
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            XCTAssertEqual(try? T(magnitude: 0), 000 as T?)
-            XCTAssertEqual(try? T(magnitude: 1), 001 as T?)
-        }
-        
-        for type in Self.types {
-            type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
-        }
-    }
-    
-    func testMakeMagnitude() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            XCTAssertEqual(( 0 as T).magnitude, 0 as T.Magnitude)
-            XCTAssertEqual((-1 as T).magnitude, 1 as T.Magnitude)
-        }
-        
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            XCTAssertEqual(( 0 as T).magnitude, 0 as T.Magnitude)
-            XCTAssertEqual(( 1 as T).magnitude, 1 as T.Magnitude)
+            typealias P = Doublet<T>
+            
+            Test.multiplication( 0 as T,  0 as T, P(low: 0, high:  0), false)
+            Test.multiplication( 1 as T,  0 as T, P(low: 0, high:  0), false)
+            Test.multiplication( 0 as T,  1 as T, P(low: 0, high:  0), false)
+            Test.multiplication( 1 as T,  1 as T, P(low: 1, high:  0), false)
         }
         
         for type in Self.types {

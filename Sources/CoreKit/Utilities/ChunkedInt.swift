@@ -20,7 +20,7 @@
 ///
 /// ### Bit Sequence
 ///
-/// You can create a bit sequence by chunking as `BitInt.Magnitude`.
+/// You can create a bit sequence by chunking as `MinimiInt.Magnitude`.
 ///
 /// ```swift
 /// for bit: U1 in ChunkedInt(normalizing: base, isSigned: false).reversed() {
