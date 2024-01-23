@@ -23,7 +23,7 @@ import CoreKit
 /// }
 /// ```
 ///
-@frozen public struct DoubleInt<Base: SystemsInteger>: SystemsInteger {
+@frozen public struct DoubleInt<Base: SystemsInteger>: SystemsInteger {    
     
     public typealias High = Base
     

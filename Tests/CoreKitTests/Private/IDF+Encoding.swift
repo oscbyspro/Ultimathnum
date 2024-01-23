@@ -104,7 +104,7 @@ final class IntegerDescriptionFormatTestsOnEncoding: XCTestCase {
     
     func check(_ integer: some BinaryInteger, _ expectation: String, file: StaticString = #file, line: UInt = #line) {
         let sign = Sign(bitPattern: integer < 0)
-        let magnitude = [UX](ChunkedInt(integer.magnitude.words, isSigned: false))
+        let magnitude = [UX](ChunkedInt(integer.magnitude.elements.base, isSigned: false))
         
         XCTAssertEqual(encoder.encode(integer), expectation, file: file, line: line)
         XCTAssertEqual(encoder.encode(sign: sign, magnitude: magnitude), expectation, file: file, line: line)

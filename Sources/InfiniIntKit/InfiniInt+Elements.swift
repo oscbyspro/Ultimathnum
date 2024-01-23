@@ -10,7 +10,7 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Infini Int x Words x Signed
+// MARK: * Infini Int x Elements x Signed
 //*============================================================================*
 
 extension InfiniInt {
@@ -19,21 +19,25 @@ extension InfiniInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(load source: consuming Pattern<some RandomAccessCollection<UX>>) {
+    @inlinable public init<T>(load source: T) where T: BitCastable<Element.BitPattern> {
+        fatalError("TODO")
+    }
+
+    @inlinable public init<T>(load source: inout EndlessInt<T>.Stream) where T.Element == Element.Magnitude {
         fatalError("TODO")
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
+    @inlinable public func load<T>(as type: T.Type) -> T where T: BitCastable<Element.BitPattern> {
+        fatalError("TODO")
+    }
     
-    @inlinable public var words: ContiguousArray<UX> {
+    @inlinable public var elements: EndlessInt<ContiguousArray<Element.Magnitude>> {
         fatalError("TODO")
     }
 }
 
 //*============================================================================*
-// MARK: * Infini Int x Words x Unsigned
+// MARK: * Infini Int x Elements x Unsigned
 //*============================================================================*
 
 extension InfiniInt.Magnitude {
@@ -41,16 +45,20 @@ extension InfiniInt.Magnitude {
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
-    
-    @inlinable public init(load source: consuming Pattern<some RandomAccessCollection<UX>>) {
+
+    @inlinable public init<T>(load source: T) where T: BitCastable<Element.BitPattern> {
+        fatalError("TODO")
+    }
+
+    @inlinable public init<T>(load source: inout EndlessInt<T>.Stream) where T.Element == Element.Magnitude {
         fatalError("TODO")
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
+    @inlinable public func load<T>(as type: T.Type) -> T where T: BitCastable<Element.BitPattern> {
+        fatalError("TODO")
+    }
     
-    @inlinable public var words: ContiguousArray<UX> {
+    @inlinable public var elements: EndlessInt<ContiguousArray<Element.Magnitude>> {
         fatalError("TODO")
     }
 }

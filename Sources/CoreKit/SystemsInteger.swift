@@ -54,14 +54,6 @@
 public protocol SystemsInteger: BinaryInteger where Magnitude: SystemsInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable init(load source: consuming UX)
-    
-    @inlinable func load(as type: UX.Type) -> UX
-    
-    //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     

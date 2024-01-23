@@ -23,17 +23,19 @@
 ///
 /// Its magnitude may be signed to accomodate lone big integers.
 ///
-public protocol BinaryInteger: BitCastable, BitOperable, Comparable, ExpressibleByIntegerLiteral, Hashable, Sendable, _MaybeLosslessStringConvertible {
+public protocol BinaryInteger: BitCastable, BitOperable, Comparable, 
+ExpressibleByIntegerLiteral, Hashable, Sendable, _MaybeLosslessStringConvertible where
+Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude {
+    
+    associatedtype Element: SystemsInteger = Self where Element.Element == Element
     
     /// ### Development
     ///
-    /// - TODO: Consider a concrete contiguous memory buffer.
+    /// Ideally, every type uses a common buffer view of contiguous memory.
     ///
-    associatedtype Element: SystemsInteger = Self
+    associatedtype Elements: RandomAccessCollection<Element.Magnitude> = CollectionOfOne<Element.Magnitude>
     
-    associatedtype Words: RandomAccessCollection<UX>
-        
-    associatedtype Magnitude: UnsignedInteger where Magnitude.Magnitude == Magnitude, Magnitude.BitPattern == BitPattern
+    associatedtype Magnitude: UnsignedInteger where Magnitude.Magnitude == Magnitude
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -69,11 +71,29 @@ public protocol BinaryInteger: BitCastable, BitOperable, Comparable, Expressible
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// ### Development
+    ///
+    /// - TODO: Consider whether this can be derived by bit casting.
+    ///
     @inlinable init(sign: consuming Sign, magnitude: consuming Magnitude) throws
     
-    @inlinable init(words: consuming some RandomAccessCollection<UX>, isSigned: consuming Bool) throws
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+        
+    @inlinable init<T>(load source: T) where T: BitCastable<Element.BitPattern>
     
-    @inlinable init(load source: consuming Pattern<some RandomAccessCollection<UX>>)
+    @inlinable init<T>(load source: inout EndlessInt<T>.Stream) where T.Element == Element.Magnitude
+    
+    @inlinable func load<T>(as type: T.Type) -> T where T: BitCastable<Element.BitPattern>
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable init<T>(load source: T) where T: BitCastable<UX.BitPattern>
+        
+    @inlinable func load<T>(as type: T.Type) -> T where T: BitCastable<UX.BitPattern>
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -111,15 +131,17 @@ public protocol BinaryInteger: BitCastable, BitOperable, Comparable, Expressible
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// ### Development
+    ///
+    /// It must be endless because the repeating last element cannot be derived
+    /// from `isSigned` if unsigned integers can be infinitely large. Alternatively, 
+    /// you could add an `isLastBitExtended` as additional meta data.
+    ///
+    @inlinable var elements: EndlessInt<Elements> { consuming get }
+    
+    @inlinable var magnitude: Magnitude { consuming get }
+    
     @inlinable borrowing func compared(to other: borrowing Self) -> Signum
     
     @inlinable func count(_ bit: Bit, option: Bit.Selection) -> Magnitude
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-
-    @inlinable var words: Words { consuming get }
-    
-    @inlinable var magnitude: Magnitude { consuming get }
 }

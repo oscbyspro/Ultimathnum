@@ -23,9 +23,7 @@ import CoreKit
     public typealias Element = IX
     
     public typealias IntegerLiteralType = StaticBigInt
-    
-    public typealias Words = ContiguousArray<UX>
-    
+        
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
@@ -89,8 +87,6 @@ import CoreKit
         public typealias IntegerLiteralType = StaticBigInt
         
         public typealias Magnitude = Self
-        
-        public typealias Words = ContiguousArray<UX>
         
         //=--------------------------------------------------------------------=
         // MARK: Meta Data

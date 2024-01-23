@@ -16,6 +16,8 @@ import CoreKit
 /// A signed `1-bit` integer that can represent the values `0` and `-1`.
 @frozen public struct MinimiInt: SystemsInteger & SignedInteger {
     
+    public typealias Element = Self
+    
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
@@ -70,6 +72,8 @@ import CoreKit
     
     /// An unsigned `1-bit` integer that can represent the values `0` and `1`.
     @frozen public struct Magnitude: SystemsInteger & UnsignedInteger {        
+        
+        public typealias Element = Self
         
         public typealias Magnitude = Self
         

@@ -74,13 +74,14 @@
     
     /// Creates the sequence pair at the given `index`.
     @inlinable public init(_ index: Value) throws {
-        if  index < 0 {
-            throw Error.overflow
-        }
-        
         try self.init()
         
-        for bit: MinimiInt.Magnitude in ChunkedInt(normalizing: index.words, isSigned: false).reversed() {
+        let elements: EndlessInt<Value.Elements> = index.elements
+        if  elements.endlessLast != Value.Element.Magnitude() {
+            throw Error.overflow // is negative or infinite
+        }
+        
+        for bit: MinimiInt.Magnitude in ChunkedInt(normalizing: elements.base, isSigned: false).reversed() {
             try self.double()
             
             if  bit == 1 {
