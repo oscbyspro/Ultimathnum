@@ -155,8 +155,6 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
     ///
     /// - TODO: Add a test case where `elements` has redundant zeros.
     ///
-    /// - TODO: [Swift 5.8](https://github.com/apple/swift-evolution/blob/main/proposals/0370-pointer-family-initialization-improvements.md)
-    ///
     @inline(never) @inlinable package static func initializeByKaratsubaAlgorithm<T>(
     _   base: inout Base, toSquareProductOf elements: UnsafeBufferPointer<Base.Element>) where Base == UnsafeMutableBufferPointer<T> {
         //=--------------------------------------=

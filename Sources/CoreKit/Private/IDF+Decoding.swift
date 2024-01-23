@@ -163,8 +163,8 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
             }
             
             Swift.assert(digits.isEmpty)
-            Swift.assert(index == words.endIndex)            
-            return try Magnitude(words: words, isSigned: false)
+            Swift.assert(index == words.endIndex)  
+            fatalError("return try Magnitude(words: words, isSigned: false)")
         }
     }
 }

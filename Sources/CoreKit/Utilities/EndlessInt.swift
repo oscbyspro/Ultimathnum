@@ -11,6 +11,14 @@
 // MARK: * Endless Int
 //*============================================================================*
 
+/// ### Development
+///
+/// - TODO: Repalce this model with `ChunkedInt<Base, Base.Element>`.
+///
+/// That way there there will not be needless same-element-type duplication.
+/// It would also prevent duplicate sign extensions in the case where one is
+/// wrapped in the other.
+///
 @frozen public struct EndlessInt<Base> where Base: RandomAccessCollection, Base.Element: SystemsInteger & UnsignedInteger {
     
     public typealias Element = Base.Element
@@ -40,12 +48,18 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func load(as type: UX.Type) -> UX {
-        fatalError("TODO")
-    }
-    
     @inlinable public func stream() -> Stream {
         Stream(self.base.makeIterator(), endlessLast: self.endlessLast)
+    }
+    
+    /// ### Development
+    ///
+    /// - TODO: `EndlessInt<Base>` to `ChunkedInt<Base>` (both are infinite).
+    ///
+    @inlinable public func chunked<T>(as type: T.Type) -> EndlessInt<ChunkedInt<Base, T>> {
+        let bit = Bit(bitPattern: self.endlessLast != 0)
+        let chunked = ChunkedInt(self.base, repeating: bit, count: self.base.count, as: T.self)
+        return CoreKit.EndlessInt(unchecked: chunked, endlessLast: chunked.sign)
     }
     
     //*========================================================================*

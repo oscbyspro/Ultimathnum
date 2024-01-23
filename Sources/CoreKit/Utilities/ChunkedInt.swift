@@ -20,7 +20,7 @@
 ///
 /// ### Bit Sequence
 ///
-/// You can create a bit sequence by chunking as `MinimiInt.Magnitude`.
+/// You can create a bit sequence by chunking as `1-bit` integers.
 ///
 /// ```swift
 /// for bit: U1 in ChunkedInt(normalizing: base, isSigned: false).reversed() {
@@ -51,6 +51,14 @@
 /// [0x0403, 0x0201] == Array(ChunkedInt(([1, 2, 3, 4] as [U8]),            as: U16.self).reversed())
 /// [0x0304, 0x0102] == Array(ChunkedInt(([1, 2, 3, 4] as [U8]).reversed(), as: U16.self))
 /// ```
+///
+/// ### Development
+///
+/// - TODO: Remove the stored `count`. It needs to be light-weight.
+///
+/// - TODO: The normalized method should return a subsequence, or similar.
+///
+/// - TODO: Add a `chunked(as:)` method (perhaps when input == output).
 ///
 @frozen public struct ChunkedInt<Base, Element>: RandomAccessCollection where
 Element: SystemsInteger & UnsignedInteger, Base: RandomAccessCollection, Base.Element: SystemsInteger & UnsignedInteger {

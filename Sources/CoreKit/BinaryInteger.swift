@@ -135,7 +135,7 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude {
     ///
     /// It must be endless because the repeating last element cannot be derived
     /// from `isSigned` if unsigned integers can be infinitely large. Alternatively, 
-    /// you could add an `isLastBitExtended` as additional meta data.
+    /// you could add something like `isLastBitExtended` as additional meta data.
     ///
     @inlinable var elements: EndlessInt<Elements> { consuming get }
     
