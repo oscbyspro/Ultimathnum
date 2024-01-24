@@ -11,12 +11,12 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Chunked Int
+// MARK: * Sequence Int
 //*============================================================================*
 
-final class ChunkedIntTests: XCTestCase {
+final class SequenceIntTests: XCTestCase {
     
-    typealias T = ChunkedInt
+    typealias T = SequenceInt
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

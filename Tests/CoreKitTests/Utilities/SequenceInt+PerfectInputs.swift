@@ -11,10 +11,10 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Chunked Int x Perfect Inputs
+// MARK: * Sequence Int x Perfect Inputs
 //*============================================================================*
 
-extension ChunkedIntTests {
+extension SequenceIntTests {
             
     //=------------------------------------------------------------------------=
     // MARK: Tests

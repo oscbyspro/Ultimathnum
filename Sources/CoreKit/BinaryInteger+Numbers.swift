@@ -30,11 +30,12 @@ extension BinaryInteger {
     }
     
     @inlinable public init<T>(exactly source: T) throws where T: BinaryInteger {
-        fatalError("TODO")
+        try  self.init(elements: source.elements, isSigned: T.isSigned)
     }
     
     @inlinable public init<T>(truncating source: T) where T: BinaryInteger {
-        fatalError("TODO")
+        var stream = source.elements.chunked(as: Element.Magnitude.self).makeBinaryIntegerStream()
+        self.init(load: &stream)
     }
     
     //=------------------------------------------------------------------------=

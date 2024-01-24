@@ -10,6 +10,26 @@
 //*============================================================================*
 // MARK: * Binary Integer x Elements
 //*============================================================================*
+
+extension BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init<T>(elements: SequenceInt<T, T.Element.Magnitude>, isSigned: Bool) throws {
+        let isLessThanZero = SBISS.isLessThanZero(elements, isSigned: isSigned)
+        var stream = elements.chunked(as: Element.Magnitude.self).makeBinaryIntegerStream()
+        
+        self.init(load: &stream)
+                
+        let success = self.isLessThanZero == isLessThanZero && stream.succinct().count == Int.zero
+        if !success {
+            throw Overflow(consume self)
+        }
+    }
+}
+
 //=----------------------------------------------------------------------------=
 // MARK: + where Element is Self
 //=----------------------------------------------------------------------------=
@@ -24,7 +44,7 @@ extension BinaryInteger where Element == Self {
         self.init(bitPattern: source)
     }
     
-    @inlinable public init<T>(load source: inout EndlessInt<T>.Stream) where T.Element == Element.Magnitude {
+    @inlinable public init<T>(load source: inout SequenceInt<T, Element.Magnitude>.BinaryIntegerStream) {
         self.init(load: source.next())
     }
     
@@ -43,9 +63,7 @@ extension BinaryInteger where Element == Self, Elements == CollectionOfOne<Eleme
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public var elements: EndlessInt<Elements> {
-        let endlessLast = Bit(bitPattern: self.isLessThanZero)
-        let base = CollectionOfOne(Magnitude(bitPattern: self))
-        return EndlessInt(base, endlessLast: endlessLast)
+    @inlinable public var elements: SequenceInt<Elements, Element.Magnitude> {
+        SequenceInt(CollectionOfOne(Magnitude(bitPattern: self)), isSigned: Self.isSigned)
     }
 }

@@ -33,6 +33,10 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude {
     ///
     /// Ideally, every type uses a common buffer view of contiguous memory.
     ///
+    /// ### Development
+    ///
+    /// - TODO: Consider the name `Body`, `Content` (+) or `Region`.
+    ///
     associatedtype Elements: RandomAccessCollection<Element.Magnitude> = CollectionOfOne<Element.Magnitude>
     
     associatedtype Magnitude: UnsignedInteger where Magnitude.Magnitude == Magnitude
@@ -83,7 +87,7 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude {
         
     @inlinable init<T>(load source: T) where T: BitCastable<Element.BitPattern>
     
-    @inlinable init<T>(load source: inout EndlessInt<T>.Stream) where T.Element == Element.Magnitude
+    @inlinable init<T>(load source: inout SequenceInt<T, Element.Magnitude>.BinaryIntegerStream)
     
     @inlinable func load<T>(as type: T.Type) -> T where T: BitCastable<Element.BitPattern>
     
@@ -137,7 +141,7 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude {
     /// from `isSigned` if unsigned integers can be infinitely large. Alternatively, 
     /// you could add something like `isLastBitExtended` as additional meta data.
     ///
-    @inlinable var elements: EndlessInt<Elements> { consuming get }
+    @inlinable var elements: SequenceInt<Elements, Element.Magnitude> { consuming get }
     
     @inlinable var magnitude: Magnitude { consuming get }
     

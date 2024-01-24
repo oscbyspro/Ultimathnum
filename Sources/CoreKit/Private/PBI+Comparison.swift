@@ -8,7 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Proper Binary Integer x Comparison x Systems Integer
+// MARK: * Proper Binary Integer x Comparison x Systems
 //*============================================================================*
 
 extension Namespace.ProperBinaryInteger where Base: SystemsInteger {

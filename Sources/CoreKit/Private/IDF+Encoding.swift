@@ -40,7 +40,9 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
     //=------------------------------------------------------------------------=
     
     @inlinable public func encode(_ integer: some BinaryInteger) -> String {
-        fatalError("TODO")
+        let sign = Sign(bitPattern: integer.isLessThanZero)
+        let magnitude = integer.magnitude.elements.chunked(as: UX.self)
+        return self.encode(sign: sign, magnitude: magnitude)
     }
     
     @inlinable public func encode(sign: Sign, magnitude: some Collection<UX>) -> String {

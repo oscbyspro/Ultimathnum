@@ -76,12 +76,12 @@
     @inlinable public init(_ index: Value) throws {
         try self.init()
         
-        let elements: EndlessInt<Value.Elements> = index.elements
-        if  elements.endlessLast != Value.Element.Magnitude() {
+        let elements = index.elements
+        if  elements.sign != Value.Element.Magnitude() {
             throw Error.overflow // is negative or infinite
         }
         
-        for bit: MinimiInt.Magnitude in ChunkedInt(normalizing: elements.base, isSigned: false).reversed() {
+        for bit: MinimiInt.Magnitude in SequenceInt(elements.base, isSigned: false).succinct().reversed() {
             try self.double()
             
             if  bit == 1 {
