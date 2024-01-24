@@ -101,15 +101,17 @@ Element: SystemsInteger & UnsignedInteger, Base: RandomAccessCollection, Base.El
     ///   - element: The type of element produced by this sequence.
     ///
     @inlinable public init(_ base: Base, isSigned: Bool, as element: Element.Type = Element.self) {
-        let count = Self.count(of: base)
-        let element = Element(repeating: Bit(bitPattern: SBISS.isLessThanZero(base, isSigned: isSigned)))
-        self.init(unchecked: base, repeating: element, count: count)
+        self.init(base, repeating: Bit(bitPattern: SBISS.isLessThanZero(base, isSigned: isSigned)))
+    }
+    
+    @inlinable public init(_ base: Base, repeating bit: Bit, as element: Element.Type = Element.self) {
+        self.init(unchecked: base, repeating: Element(repeating: bit), count: Self.count(of: base))
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
-    
+        
     @inlinable internal init(unchecked base: Base, repeating element: Element, count: Int) {
         //=--------------------------------------=
         self.base  = base
@@ -147,16 +149,13 @@ Element: SystemsInteger & UnsignedInteger, Base: RandomAccessCollection, Base.El
     //=------------------------------------------------------------------------=
     
     @inlinable public func succinct() -> Self {
-        let bit = Bit(bitPattern: self.sign != 0 as Element)
+        let bit = Bit(bitPattern: self.sign != 0)
         let count = Self.count(trimming: self.base, repeating: bit)
         return self.prefix(count) as Self
     }
     
-    @inlinable public /* consuming */ func chunked<T>(as type: T.Type) -> SequenceInt<Base, T> where Element == Base.Element {
-        
-        // TODO: bit cast or load does not work for here since unsigned integers are not sign extended
-        
-        SequenceInt<Base, T>(unchecked: self.base, repeating: PBI.bitCastOrLoad(self.sign, as: T.self), count: self.count)
+    @inlinable public /* consuming */ func chunked<Other>(as type: Other.Type) -> SequenceInt<Base, Other> where Element == Base.Element {
+        SequenceInt<Base, Other>(self.base, repeating: Bit(bitPattern: self.sign != 0))
     }
     
     //=------------------------------------------------------------------------=
@@ -166,7 +165,6 @@ Element: SystemsInteger & UnsignedInteger, Base: RandomAccessCollection, Base.El
     @inlinable public consuming func makeIterator() -> Iterator {
         Iterator(self, from: Int.zero)
     }
-    
     
     @inlinable public consuming func makeBinaryIntegerStream() -> BinaryIntegerStream {
         BinaryIntegerStream(self, from: Int.zero)
@@ -286,15 +284,15 @@ Element: SystemsInteger & UnsignedInteger, Base: RandomAccessCollection, Base.El
         //=--------------------------------------------------------------------=
         
         @inlinable public consuming func succinct() -> Iterator {
-            var count: SequenceInt.Index = self.instance.count
-            
-            trimming: while count > self.position {
-                let predecessorIndex = self.instance.index(before: self.position)
+            var index: SequenceInt.Index = self.instance.endIndex
+                        
+            trimming: while self.position < index {
+                let predecessorIndex = self.instance.index(before: index)
                 guard self.instance[predecessorIndex] == self.instance.sign else { break }
-                count = predecessorIndex as SequenceInt.Index
+                index = predecessorIndex as SequenceInt.Index
             }
             
-            return Iterator(self.instance.prefix(count), from: self.position)
+            return Iterator(self.instance.prefix(index), from: self.position)
         }
     }
 }

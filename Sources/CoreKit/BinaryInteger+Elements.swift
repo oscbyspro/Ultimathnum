@@ -22,7 +22,9 @@ extension BinaryInteger {
         var stream = elements.chunked(as: Element.Magnitude.self).makeBinaryIntegerStream()
         
         self.init(load: &stream)
-                
+        
+        // TODO: it should also work for infinity (unsigned, 1...)
+        
         let success = self.isLessThanZero == isLessThanZero && stream.succinct().count == Int.zero
         if !success {
             throw Overflow(consume self)
