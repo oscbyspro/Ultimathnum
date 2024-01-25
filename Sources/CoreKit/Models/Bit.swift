@@ -14,6 +14,23 @@
 @frozen public struct Bit: BitCastable, BitOperable, Comparable, Hashable, ExpressibleByIntegerLiteral {
     
     //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    /// A bit set to `0`.
+    ///
+    /// - Note: A bit can only bet set to `0` or `1`.
+    ///
+    public static let zero = 0 as Self
+    
+    
+    /// A bit set to `1`.
+    ///
+    /// - Note: A bit can only bet set to `0` or `1`.
+    ///
+    public static let one  = 1 as Self
+    
+    //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     

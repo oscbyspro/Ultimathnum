@@ -8,20 +8,40 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Core Int x Words
+// MARK: * Sequence Int x Index
 //*============================================================================*
 
-extension CoreInt {
+extension SequenceInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<T>(load source: T) where T: BitCastable<UX.BitPattern> {
-        self.init(Base(truncatingIfNeeded: UInt(bitPattern: source)))
+    @inlinable public var startIndex: Int {
+        0 as Int
     }
-        
-    @inlinable public func load<T>(as type: T.Type) -> T where T: BitCastable<UX.BitPattern> {
-        T(bitPattern: UInt(truncatingIfNeeded: self.base))
+    
+    @inlinable public var endIndex: Int {
+        self.count
+    }
+    
+    @inlinable public var indices: Range<Int> {
+        0 as Int ..< self.count
+    }
+    
+    @inlinable public func distance(from start: Int, to end: Int) -> Int {
+        end - start
+    }
+    
+    @inlinable public func index(after index: Int) -> Int {
+        index + 1 as Int
+    }
+    
+    @inlinable public func index(before index: Int) -> Int {
+        index - 1 as Int
+    }
+    
+    @inlinable public func index(_ index: Int, offsetBy distance: Int) -> Int {
+        index + distance
     }
 }

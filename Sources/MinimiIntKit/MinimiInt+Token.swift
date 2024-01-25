@@ -10,7 +10,7 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Minimi Int x Words x Signed
+// MARK: * Minimi Int x Token x Signed
 //*============================================================================*
 
 extension MinimiInt {
@@ -29,7 +29,7 @@ extension MinimiInt {
 }
 
 //*============================================================================*
-// MARK: * Minimi Int x Words x Unsigned
+// MARK: * Minimi Int x Token x Unsigned
 //*============================================================================*
 
 extension MinimiInt.Magnitude {

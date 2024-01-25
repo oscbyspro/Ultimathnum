@@ -23,7 +23,7 @@ extension DoubleInt {
         self.init(low: Low(load: source))
     }
 
-    @inlinable public init<T>(load source: inout SequenceInt<T, Element.Magnitude>.BinaryIntegerStream) {
+    @inlinable public init<T>(load source: inout SequenceInt<T, Element.Magnitude>.Stream) {
         //=--------------------------------------=
         let low  = Low (load: &source)
         let high = High(load: &source)

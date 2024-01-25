@@ -164,7 +164,7 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
             
             Swift.assert(digits.isEmpty)
             Swift.assert(index == words.endIndex)
-            return try Magnitude(elements: SequenceInt(words, isSigned: false), isSigned: false)
+            return try Magnitude(elements: SequenceInt(words, repeating: Bit.zero), isSigned: false)
         }
     }
 }

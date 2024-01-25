@@ -8,62 +8,56 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Binary Integer x Elements
+// MARK: * Sequence Int x Ratio
 //*============================================================================*
 
-extension BinaryInteger {
+extension SequenceInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<T>(elements: SequenceInt<T, T.Element.Magnitude>, isSigned: Bool) throws {
-        let appendix = elements.extension.bit
-        var stream = elements.chunked(as: Element.Magnitude.self).stream()
-        
-        self.init(load: &stream)
-        
-        let success = (self.appendix == appendix) && (Self.isSigned == isSigned || appendix == 0) && stream.succinct().count == 0
-        if !success {
-            throw Overflow(consume self)
-        }
+    @inlinable internal static var comparison: Signum {
+        Element.bitWidth.load(as: UX.self).compared(to: Base.Element.bitWidth.load(as: UX.self))
     }
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + where Element is Self
+// MARK: + Minor
 //=----------------------------------------------------------------------------=
 
-extension BinaryInteger where Element == Self {
-    
+extension SequenceInt.Minor {
+
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<T>(load source: T) where T: BitCastable<Element.BitPattern> {
-        self.init(bitPattern: source)
-    }
-    
-    @inlinable public init<T>(load source: inout SequenceInt<T, Element.Magnitude>.Stream) {
-        self.init(load: source.next())
-    }
-    
-    @inlinable public func load<T>(as type: T.Type) -> T where T: BitCastable<Element.BitPattern> {
-        T(bitPattern: self)
+    @inlinable internal static var ratio: Int {
+        //=--------------------------------------=
+        precondition(SequenceInt.comparison == Signum.less, String.unreachable())
+        //=--------------------------------------=
+        let major = Base.Element.bitWidth
+        let minor = Base.Element.Magnitude(load: Element.bitWidth.load(as: UX.self))
+        return (major &>> minor.count(0, option: .ascending)).load(as: Int.self)
     }
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + where Element is Self
+// MARK: + Major
 //=----------------------------------------------------------------------------=
 
-extension BinaryInteger where Element == Self, Content == CollectionOfOne<Element.Magnitude> {
+extension SequenceInt.Major {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public var elements: SequenceInt<Content, Element.Magnitude> {
-        SequenceInt(CollectionOfOne(Magnitude(bitPattern: self)), repeating: self.appendix)
+    @inlinable internal static var ratio: Int {
+        //=--------------------------------------=
+        precondition(SequenceInt.comparison == Signum.more, String.unreachable())
+        //=--------------------------------------=
+        let major = Element.bitWidth
+        let minor = Element.Magnitude(load: Base.Element.bitWidth.load(as: UX.self))
+        return (major &>> minor.count(0, option: .ascending)).load(as: Int.self)
     }
 }

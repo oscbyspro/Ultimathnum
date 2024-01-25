@@ -34,7 +34,7 @@ extension BinaryInteger {
     }
     
     @inlinable public init<T>(truncating source: T) where T: BinaryInteger {
-        var stream = source.elements.chunked(as: Element.Magnitude.self).makeBinaryIntegerStream()
+        var stream = source.elements.chunked(as: Element.Magnitude.self).stream()
         self.init(load: &stream)
     }
     

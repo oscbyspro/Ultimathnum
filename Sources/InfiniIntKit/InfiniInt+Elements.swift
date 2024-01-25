@@ -23,7 +23,7 @@ extension InfiniInt {
         fatalError("TODO")
     }
 
-    @inlinable public init<T>(load source: inout SequenceInt<T, Element.Magnitude>.BinaryIntegerStream) {
+    @inlinable public init<T>(load source: inout SequenceInt<T, Element.Magnitude>.Stream) {
         fatalError("TODO")
     }
     
@@ -50,7 +50,7 @@ extension InfiniInt.Magnitude {
         fatalError("TODO")
     }
 
-    @inlinable public init<T>(load source: inout SequenceInt<T, Element.Magnitude>.BinaryIntegerStream) {
+    @inlinable public init<T>(load source: inout SequenceInt<T, Element.Magnitude>.Stream) {
         fatalError("TODO")
     }
     

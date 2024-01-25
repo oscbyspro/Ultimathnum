@@ -79,7 +79,7 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude {
         
     @inlinable init<T>(load source: T) where T: BitCastable<Element.BitPattern>
     
-    @inlinable init<T>(load source: inout SequenceInt<T, Element.Magnitude>.BinaryIntegerStream)
+    @inlinable init<T>(load source: inout SequenceInt<T, Element.Magnitude>.Stream)
     
     @inlinable func load<T>(as type: T.Type) -> T where T: BitCastable<Element.BitPattern>
     

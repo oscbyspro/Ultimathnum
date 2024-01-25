@@ -20,7 +20,7 @@ extension Namespace.IntegerDescriptionFormat {
         //=--------------------------------------------------------------------=
         
         public let exponent: IX
-        public let power:    UX
+        public let power: UX
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers
