@@ -24,4 +24,12 @@ extension SystemsInteger {
     @inlinable public static var msb: Self {
         Self(bitPattern: 1 as Magnitude &<< (bitWidth &- 1))
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var appendix: Bit {
+        Bit(bitPattern: self.isLessThanZero)
+    }
 }

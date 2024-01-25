@@ -19,6 +19,10 @@ extension InfiniInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    @inlinable public var appendix: Bit {
+        fatalError("TODO")
+    }
+    
     @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
         fatalError("TODO")
     }
@@ -33,6 +37,10 @@ extension InfiniInt.Magnitude {
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
+    
+    @inlinable public var appendix: Bit {
+        fatalError("TOOD")
+    }
     
     @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
         fatalError("TODO")

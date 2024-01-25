@@ -18,14 +18,12 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public init<T>(elements: SequenceInt<T, T.Element.Magnitude>, isSigned: Bool) throws {
-        let isLessThanZero = SBISS.isLessThanZero(elements, isSigned: isSigned)
+        let appendix = elements.extension.bit
         var stream = elements.chunked(as: Element.Magnitude.self).makeBinaryIntegerStream()
         
         self.init(load: &stream)
         
-        // TODO: it should also work for infinity (unsigned, 1...)
-        
-        let success = self.isLessThanZero == isLessThanZero && stream.succinct().count == Int.zero
+        let success = (self.appendix == appendix) && (Self.isSigned == isSigned || appendix == 0) && stream.succinct().count == 0
         if !success {
             throw Overflow(consume self)
         }
@@ -59,13 +57,13 @@ extension BinaryInteger where Element == Self {
 // MARK: + where Element is Self
 //=----------------------------------------------------------------------------=
 
-extension BinaryInteger where Element == Self, Elements == CollectionOfOne<Element.Magnitude> {
+extension BinaryInteger where Element == Self, Content == CollectionOfOne<Element.Magnitude> {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public var elements: SequenceInt<Elements, Element.Magnitude> {
-        SequenceInt(CollectionOfOne(Magnitude(bitPattern: self)), isSigned: Self.isSigned)
+    @inlinable public var elements: SequenceInt<Content, Element.Magnitude> {
+        SequenceInt(CollectionOfOne(Magnitude(bitPattern: self)), repeating: self.appendix)
     }
 }

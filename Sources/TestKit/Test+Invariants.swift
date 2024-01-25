@@ -39,9 +39,9 @@ extension Test {
         XCTAssert(T.bitWidth.count(1, option: .all) == 1, "T.bitWidth must be a power of 2", file: file, line: line)
         XCTAssert(T.bitWidth.load(as: UX.self) >= T.Element.bitWidth.load(as: UX.self), "T.bitWidth >= T.Element.bitWidth", file: file, line: line)
         //=--------------------------------------=
-        XCTAssertEqual(MemoryLayout<T>.size,      MemoryLayout<T.Elements>.size,      "MemoryLayout<T.Elements>.size",      file: file, line: line)
-        XCTAssertEqual(MemoryLayout<T>.stride,    MemoryLayout<T.Elements>.stride,    "MemoryLayout<T.Elements>.stride",    file: file, line: line)
-        XCTAssertEqual(MemoryLayout<T>.alignment, MemoryLayout<T.Elements>.alignment, "MemoryLayout<T.Elements>.alignment", file: file, line: line)
+        XCTAssertEqual(MemoryLayout<T>.size,      MemoryLayout<T.Content>.size,      "MemoryLayout<T.Content>.size",      file: file, line: line)
+        XCTAssertEqual(MemoryLayout<T>.stride,    MemoryLayout<T.Content>.stride,    "MemoryLayout<T.Content>.stride",    file: file, line: line)
+        XCTAssertEqual(MemoryLayout<T>.alignment, MemoryLayout<T.Content>.alignment, "MemoryLayout<T.Content>.alignment", file: file, line: line)
         //=--------------------------------------=
         Test.invariantsAsSomeBinaryInteger(type, file: file, line: line)
     }

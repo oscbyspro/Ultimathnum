@@ -77,11 +77,11 @@
         try self.init()
         
         let elements = index.elements
-        if  elements.sign != Value.Element.Magnitude() {
+        if  elements.extension.bit == 1 {
             throw Error.overflow // is negative or infinite
         }
         
-        for bit: MinimiInt.Magnitude in SequenceInt(elements.base, isSigned: false).succinct().reversed() {
+        for bit: MinimiInt.Magnitude in elements.chunked().succinct().reversed() {
             try self.double()
             
             if  bit == 1 {

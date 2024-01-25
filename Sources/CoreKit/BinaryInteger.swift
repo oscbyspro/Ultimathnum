@@ -29,15 +29,7 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude {
     
     associatedtype Element: SystemsInteger = Self where Element.Element == Element
     
-    /// ### Development
-    ///
-    /// Ideally, every type uses a common buffer view of contiguous memory.
-    ///
-    /// ### Development
-    ///
-    /// - TODO: Consider the name `Body`, `Content` (+) or `Region`.
-    ///
-    associatedtype Elements: RandomAccessCollection<Element.Magnitude> = CollectionOfOne<Element.Magnitude>
+    associatedtype Content: RandomAccessCollection<Element.Magnitude> = CollectionOfOne<Element.Magnitude>
     
     associatedtype Magnitude: UnsignedInteger where Magnitude.Magnitude == Magnitude
     
@@ -135,17 +127,40 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// The bit that may extend the bit pattern of this instance.
+    ///
+    /// If this value is `signed`, then the `appendix` is `1` for `negative`
+    /// values and `0` otherwise. If this value is `unsigned`, then the `appendix`
+    /// is `1` for `infinite` values and `0` otherwise.
+    ///
+    /// ### Development
+    ///
+    /// This requirement is an alternative to a static `isInfinite` value. One
+    /// can derive the other, so it is a design choice. See:
+    ///
+    /// ```swift
+    /// @inlinable public static var isInfinite: Bool {
+    ///     Self.bitWidth.appendix == 1
+    /// }
+    ///
+    /// @inlnable public var appendix: Bit {
+    ///     Bit(bitPattern: (Self.isSigned || Self.isInfinite) && self.count(0, option: .descending) == 0)
+    /// }
+    /// ```
+    ///
+    @inlinable var appendix: Bit { borrowing get }
+    
     /// ### Development
     ///
     /// It must be endless because the repeating last element cannot be derived
     /// from `isSigned` if unsigned integers can be infinitely large. Alternatively, 
     /// you could add something like `isLastBitExtended` as additional meta data.
     ///
-    @inlinable var elements: SequenceInt<Elements, Element.Magnitude> { consuming get }
+    @inlinable var elements: SequenceInt<Content, Element.Magnitude> { consuming get }
     
     @inlinable var magnitude: Magnitude { consuming get }
     
     @inlinable borrowing func compared(to other: borrowing Self) -> Signum
     
-    @inlinable func count(_ bit: Bit, option: Bit.Selection) -> Magnitude
+    @inlinable borrowing func count(_ bit: Bit, option: Bit.Selection) -> Magnitude
 }

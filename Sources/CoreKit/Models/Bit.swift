@@ -74,9 +74,48 @@
     }
     
     //*========================================================================*
+    // MARK: * Extension
+    //*========================================================================*
+    
+    /// A system integer with its bits set to only `0` or only `1`.
+    ///
+    /// - Note: It's a nice compile-time gurantee for something rather common.
+    ///
+    @frozen public struct Extension<Element> where Element: SystemsInteger {
+        
+        //=--------------------------------------------------------------------=
+        // MARK: State
+        //=--------------------------------------------------------------------=
+        
+        public let element: Element
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Initializers
+        //=--------------------------------------------------------------------=
+        
+        @inlinable public init(repeating bit: Bit) {
+            self.element = Element(repeating: bit)
+        }
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Utilities
+        //=--------------------------------------------------------------------=
+        
+        @inlinable public var bit: Bit {
+            Bit(bitPattern: self.element != 0)
+        }
+    }
+    
+    //*========================================================================*
     // MARK: * Selection
     //*========================================================================*
     
+    /// Some selection options for bits in a binary integer.
+    ///
+    /// ```swift
+    /// I64.min.count(0, option: .ascending) // 63
+    /// ```
+    ///
     @frozen public enum Selection {
         case all
         case ascending

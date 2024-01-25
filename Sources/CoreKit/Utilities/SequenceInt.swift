@@ -23,7 +23,7 @@
 /// You can create a bit sequence by chunking as `1-bit` integers.
 ///
 /// ```swift
-/// for bit: U1 in SequenceInt(base, isSigned: false).normalized().reversed() {
+/// for bit: U1 in SequenceInt(base, isSigned: false).succinct().reversed() {
 ///     double()
 ///
 ///     if  bit == 1 {
@@ -54,9 +54,7 @@
 ///
 /// ### Development
 ///
-/// - TODO: Add a `chunked(as:)` method (perhaps when input == output).
-///
-/// - TODO: Consider the name `SequenceInt` or somesuch.
+/// - TODO: Consider `appendix` bit vs current `sign` element.
 ///
 /// - TODO: Consider using this model to replace `EndlessInt` and `SuccintInt`.
 ///
@@ -81,13 +79,13 @@ Element: SystemsInteger & UnsignedInteger, Base: RandomAccessCollection, Base.El
     //=------------------------------------------------------------------------=
     
     /// The un/signed source.
-    public let base: Base
+    public let `base`: Base
     
-    /// The sign extension of the un/signed source.
-    public let sign: Element
+    /// The bit extension of the un/signed source.
+    public let `extension`: Bit.Extension<Element>
     
     /// The length of this sequence.
-    public var count: Int
+    public var `count`: Int
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -96,7 +94,7 @@ Element: SystemsInteger & UnsignedInteger, Base: RandomAccessCollection, Base.El
     /// Creates a sequence of the given type from an un/signed source.
     ///
     /// - Parameters:
-    ///   - base: The base sequence viewed through this sequence.
+    ///   - base: The source viewed through this sequence.
     ///   - isSigned: The signedness of the base sequence.
     ///   - element: The type of element produced by this sequence.
     ///
@@ -105,20 +103,15 @@ Element: SystemsInteger & UnsignedInteger, Base: RandomAccessCollection, Base.El
     }
     
     @inlinable public init(_ base: Base, repeating bit: Bit, as element: Element.Type = Element.self) {
-        self.init(unchecked: base, repeating: Element(repeating: bit), count: Self.count(of: base))
+        self.init(base, repeating: Bit.Extension(repeating: bit), count: Self.count(of: base))
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-        
-    @inlinable internal init(unchecked base: Base, repeating element: Element, count: Int) {
+    @inlinable public init(_ base: Base, repeating element: Bit.Extension<Element>, count: Int) {
         //=--------------------------------------=
         self.base  = base
-        self.sign  = element
+        self.extension = element
         self.count = count
         //=--------------------------------------=
-        Swift.assert(element == 0 || element == ~0)
         Swift.assert(count >= Int.zero, String.indexOutOfBounds())
         Swift.assert(Self.Element.bitWidth.count(1, option: .all) == 1)
         Swift.assert(Base.Element.bitWidth.count(1, option: .all) == 1)
@@ -149,13 +142,12 @@ Element: SystemsInteger & UnsignedInteger, Base: RandomAccessCollection, Base.El
     //=------------------------------------------------------------------------=
     
     @inlinable public func succinct() -> Self {
-        let bit = Bit(bitPattern: self.sign != 0)
-        let count = Self.count(trimming: self.base, repeating: bit)
+        let count = Self.count(trimming: self.base, repeating: self.extension.bit)
         return self.prefix(count) as Self
     }
     
-    @inlinable public /* consuming */ func chunked<Other>(as type: Other.Type) -> SequenceInt<Base, Other> where Element == Base.Element {
-        SequenceInt<Base, Other>(self.base, repeating: Bit(bitPattern: self.sign != 0))
+    @inlinable public /* consuming */ func chunked<Other>(as type: Other.Type = Other.self) -> SequenceInt<Base, Other> where Element == Base.Element {
+        SequenceInt<Base, Other>(self.base, repeating: self.extension.bit)
     }
     
     //=------------------------------------------------------------------------=
@@ -288,7 +280,7 @@ Element: SystemsInteger & UnsignedInteger, Base: RandomAccessCollection, Base.El
                         
             trimming: while self.position < index {
                 let predecessorIndex = self.instance.index(before: index)
-                guard self.instance[predecessorIndex] == self.instance.sign else { break }
+                guard self.instance[predecessorIndex] == self.instance.extension.element else { break }
                 index = predecessorIndex as SequenceInt.Index
             }
             
@@ -330,8 +322,10 @@ extension SequenceInt.Major {
         //=--------------------------------------=
         precondition(SequenceInt.comparison == Signum.more, String.unreachable())
         //=--------------------------------------=
-        let division = base.count.quotientAndRemainder(dividingBy: self.ratio)
-        return division.quotient + (division.remainder > 0 ? 1 : 0)
+        let dividend  = base.count
+        let quotient  = dividend &>> self.ratio.trailingZeroBitCount
+        let remainder = dividend &  (self.ratio - 1)
+        return quotient + (remainder > 0 ? 1 : 0)
     }
     
     @inlinable static func count(trimming base: Base, repeating bit: Bit) -> Int {
@@ -406,7 +400,7 @@ extension SequenceInt.Minor {
         //=--------------------------------------=
         precondition(index >= 0 as Int, String.indexOutOfBounds())
         let quotient  = index &>> self.ratio.trailingZeroBitCount
-        let remainder = index &  (self.ratio &- 1)
+        let remainder = index &  (self.ratio - 1)
         //=--------------------------------------=
         if  quotient >= base.count { return sign }
         //=--------------------------------------=
@@ -466,7 +460,7 @@ extension SequenceInt {
     /// Its elements are ordered from least significant to most, with infinite sign extension.
     ///
     @inlinable public subscript(index: Int) -> Element {
-        Self.element(index, base: self.base, sign: self.sign)
+        Self.element(index, base: self.base, sign: self.extension.element)
     }
     
     //=------------------------------------------------------------------------=
