@@ -11,12 +11,12 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Sequence Int
+// MARK: * Exchange Int
 //*============================================================================*
 
-final class SequenceIntTests: XCTestCase {
+final class ExchangeIntTests: XCTestCase {
     
-    typealias T = SequenceInt
+    typealias T = ExchangeInt
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -33,11 +33,11 @@ final class SequenceIntTests: XCTestCase {
     _ lhs: [A], _ rhs: [B], isSigned: Bool? = nil, file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
         if  isSigned != false {
-            Test.collection(T(lhs, isSigned: true), rhs, file: file, line: line)
+            Test.collection(T(lhs, isSigned: true ).source(), rhs, file: file, line: line)
         }
         
         if  isSigned != true {
-            Test.collection(T(lhs, isSigned: false), rhs, file: file, line: line)
+            Test.collection(T(lhs, isSigned: false).source(), rhs, file: file, line: line)
         }
     }
 }

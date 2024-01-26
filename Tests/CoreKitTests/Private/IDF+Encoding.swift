@@ -104,14 +104,14 @@ final class IntegerDescriptionFormatTestsOnEncoding: XCTestCase {
     
     func check(_ integer: some BinaryInteger, _ expectation: String, file: StaticString = #file, line: UInt = #line) {
         let sign = Sign(bitPattern: integer < 0)
-        let magnitude = [UX](SequenceInt(integer.magnitude.elements.base, isSigned: false))
+        let magnitude = [UX](ExchangeInt(integer.magnitude.elements.base, isSigned: false).source())
         
         XCTAssertEqual(encoder.encode(integer), expectation, file: file, line: line)
         XCTAssertEqual(encoder.encode(sign: sign, magnitude: magnitude), expectation, file: file, line: line)
     }
     
     func check(_ sign: Sign, _ magnitude: [U64], _ expectation: String, file: StaticString = #file, line: UInt = #line) {
-        let magnitude = [UX](SequenceInt(magnitude, isSigned: false))
+        let magnitude = [UX](ExchangeInt(magnitude, isSigned: false).source())
         XCTAssertEqual(encoder.encode(sign: sign, magnitude: magnitude), expectation, file: file, line: line)
     }
 }

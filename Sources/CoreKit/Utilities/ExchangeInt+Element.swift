@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Sequence Int x Element
+// MARK: * Exchange Int x Element
 //*============================================================================*
 
-extension SequenceInt {
+extension ExchangeInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -31,9 +31,9 @@ extension SequenceInt {
     
     @inlinable internal static func element(_ index: Int, base: Base, sign: Element) -> Element {
         switch comparison {
-        case Signum.same: return Equal.element(index, base: base, sign: sign)
-        case Signum.less: return Minor.element(index, base: base, sign: sign)
-        case Signum.more: return Major.element(index, base: base, sign: sign)
+        case Signum.same: Equal.element(index, base: base, sign: sign)
+        case Signum.less: Minor.element(index, base: base, sign: sign)
+        case Signum.more: Major.element(index, base: base, sign: sign)
         }
     }
 }
@@ -42,7 +42,7 @@ extension SequenceInt {
 // MARK: + Equal
 //=----------------------------------------------------------------------------=
 
-extension SequenceInt.Equal {
+extension ExchangeInt.Equal {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -50,11 +50,11 @@ extension SequenceInt.Equal {
     
     @inlinable internal static func element(_ index: Int, base: Base, sign: Element) -> Element {
         //=--------------------------------------=
-        precondition(SequenceInt.comparison == Signum.same, String.unreachable())
+        precondition(ExchangeInt.comparison == Signum.same, String.unreachable())
         //=--------------------------------------=
         if  index >= base.count { return sign }
         //=--------------------------------------=
-        return PBI.bitCastOrLoad(base[base.index(base.startIndex, offsetBy: index)], as: Element.self)
+        return Element.tokenized(bitCastOrLoad: base[base.index(base.startIndex, offsetBy: index)])
     }
 }
 
@@ -62,7 +62,7 @@ extension SequenceInt.Equal {
 // MARK: + Minor
 //=----------------------------------------------------------------------------=
 
-extension SequenceInt.Minor {
+extension ExchangeInt.Minor {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -70,7 +70,7 @@ extension SequenceInt.Minor {
     
     @inlinable internal static func element(_ index: Int, base: Base, sign: Element) -> Element {
         //=--------------------------------------=
-        precondition(SequenceInt.comparison == Signum.less, String.unreachable())
+        precondition(ExchangeInt.comparison == Signum.less, String.unreachable())
         //=--------------------------------------=
         precondition(index >= 0 as Int, String.indexOutOfBounds())
         let quotient  = index &>> self.ratio.trailingZeroBitCount
@@ -80,7 +80,7 @@ extension SequenceInt.Minor {
         //=--------------------------------------=
         let major = base[base.index(base.startIndex, offsetBy: quotient)]
         let shift = Base.Element(load: UX(bitPattern: remainder)) &<< Base.Element(load: Element.bitWidth.count(0, option: .ascending).load(as: UX.self))
-        return PBI.load(major &>> shift, as: Element.self)
+        return Element.tokenized(load: major &>> shift)
     }
 }
 
@@ -88,7 +88,7 @@ extension SequenceInt.Minor {
 // MARK: + Major
 //=----------------------------------------------------------------------------=
 
-extension SequenceInt.Major {
+extension ExchangeInt.Major {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -96,7 +96,7 @@ extension SequenceInt.Major {
     
     @inlinable internal static func element(_ index: Int, base: Base, sign: Element) -> Element {
         //=--------------------------------------=
-        precondition(SequenceInt.comparison == Signum.more, String.unreachable())
+        precondition(ExchangeInt.comparison == Signum.more, String.unreachable())
         //=--------------------------------------=
         var major = 0 as Element
         var shift = 0 as Element.Magnitude
@@ -105,7 +105,7 @@ extension SequenceInt.Major {
         if  minor < base.count {
             var   baseIndex = base.index(base.startIndex, offsetBy: minor)
             while baseIndex < base.endIndex, shift < Element.bitWidth {
-                major = major | PBI.load(Base.Element.Magnitude(bitPattern: base[baseIndex]), as: Element.self) &<< Element(bitPattern: shift)
+                major = major | Element.tokenized(load: Base.Element.Magnitude(bitPattern: base[baseIndex])) &<< Element(bitPattern: shift)
                 shift = shift + Element.Magnitude(load: Base.Element.bitWidth.load(as: UX.self))
                 base.formIndex(after: &baseIndex)
             }

@@ -11,16 +11,28 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Sequence Int x Succint
+// MARK: * Exchange Int x Prefix Length
 //*============================================================================*
 
-extension SequenceIntTests {
-            
+extension ExchangeIntTests {
+    
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testSuccinctEqualSequenceFromEqualSequence() {
+    func testPrefixLength() {
+        XCTAssertEqual([          ], Array(T([0, 0] as [U8], repeating: 0, as: U8.self).prefix(0)))
+        XCTAssertEqual([0         ], Array(T([0, 0] as [U8], repeating: 0, as: U8.self).prefix(1)))
+        XCTAssertEqual([0, 0      ], Array(T([0, 0] as [U8], repeating: 0, as: U8.self).prefix(2)))
+        XCTAssertEqual([0, 0, 0   ], Array(T([0, 0] as [U8], repeating: 0, as: U8.self).prefix(3)))
+        XCTAssertEqual([0, 0, 0, 0], Array(T([0, 0] as [U8], repeating: 0, as: U8.self).prefix(4)))
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Succinct
+    //=------------------------------------------------------------------------=
+    
+    func testSuccinctEqualSequence() {
         XCTAssertEqual([       ],        Array(T([0, 0, 0]        as [U8], isSigned: true,  as: U8.self).succinct()))
         XCTAssertEqual([1      ],        Array(T([1, 0, 0]        as [U8], isSigned: true,  as: U8.self).succinct()))
         XCTAssertEqual([1, 2   ],        Array(T([1, 2, 0]        as [U8], isSigned: true,  as: U8.self).succinct()))
@@ -42,7 +54,7 @@ extension SequenceIntTests {
         XCTAssertEqual([1, 2, 3].map(~), Array(T([1, 2, 3].map(~) as [U8], isSigned: false, as: U8.self).succinct()))
     }
     
-    func testSuccinctMajorSequenceFromMinorSequence() {
+    func testSuccinctMajorSequence() {
         XCTAssertEqual([              ],        Array(T([0, 0, 0, 0]        as [U8], isSigned: true,  as: U16.self).succinct()))
         XCTAssertEqual([              ],        Array(T([0, 0, 0, 0]        as [U8], isSigned: false, as: U16.self).succinct()))
         XCTAssertEqual([              ].map(~), Array(T([0, 0, 0, 0].map(~) as [U8], isSigned: true,  as: U16.self).succinct()))
@@ -61,7 +73,7 @@ extension SequenceIntTests {
         }
     }
     
-    func testSuccintMinorSequenceFromMajorSequence() {
+    func testSuccintMinorSequence() {
         XCTAssertEqual([          ],        Array(T([0, 0]        as [U16], isSigned: true,  as: U8.self).succinct()))
         XCTAssertEqual([          ],        Array(T([0, 0]        as [U16], isSigned: false, as: U8.self).succinct()))
         XCTAssertEqual([          ].map(~), Array(T([0, 0].map(~) as [U16], isSigned: true,  as: U8.self).succinct()))

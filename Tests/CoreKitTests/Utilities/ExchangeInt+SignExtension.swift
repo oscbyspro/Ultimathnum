@@ -11,10 +11,10 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Sequence Int x Sign Extension
+// MARK: * Exchange Int x Sign Extension
 //*============================================================================*
 
-extension SequenceIntTests {
+extension ExchangeIntTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests

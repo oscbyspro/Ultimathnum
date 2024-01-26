@@ -8,14 +8,14 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Sequence Int
+// MARK: * Exchange Int
 //*============================================================================*
 
 /// A sequence that chunks elements of an un/signed source.
 ///
 /// ```swift
-/// for word: UX in SequenceInt(source, isSigned: false, count: nil) { ... }
-/// for byte: U8 in SequenceInt(source, isSigned: false, count: nil) { ... }
+/// for word: UX in ExchangeInt(base, isSigned: false).source() { ... }
+/// for byte: U8 in ExchangeInt(base, isSigned: false).source() { ... }
 /// ```
 ///
 /// ### Bit Sequence
@@ -23,7 +23,7 @@
 /// You can create a bit sequence by chunking as `1-bit` integers.
 ///
 /// ```swift
-/// for bit: U1 in SequenceInt(base, isSigned: false).succinct().reversed() {
+/// for bit: U1 in ExchangeInt(base, isSigned: false).succinct().reversed() {
 ///     double()
 ///
 ///     if  bit == 1 {
@@ -39,32 +39,35 @@
 /// the input, the output, or both.
 ///
 /// ```swift
-/// [1, 2, 3, 4] == Array(SequenceInt(([0x0201, 0x0403] as [U16]),            as: U8.self))
-/// [2, 1, 4, 3] == Array(SequenceInt(([0x0201, 0x0403] as [U16]).reversed(), as: U8.self).reversed())
-/// [3, 4, 1, 2] == Array(SequenceInt(([0x0201, 0x0403] as [U16]).reversed(), as: U8.self))
-/// [4, 3, 2, 1] == Array(SequenceInt(([0x0201, 0x0403] as [U16]),            as: U8.self).reversed())
+/// [1, 2, 3, 4] == Array(ExchangeInt(([0x0201, 0x0403] as [U16]),            as: U8.self).source())
+/// [2, 1, 4, 3] == Array(ExchangeInt(([0x0201, 0x0403] as [U16]).reversed(), as: U8.self).source().reversed())
+/// [3, 4, 1, 2] == Array(ExchangeInt(([0x0201, 0x0403] as [U16]).reversed(), as: U8.self).source())
+/// [4, 3, 2, 1] == Array(ExchangeInt(([0x0201, 0x0403] as [U16]),            as: U8.self).source().reversed())
 /// ```
 ///
 /// ```swift
-/// [0x0201, 0x0403] == Array(SequenceInt(([1, 2, 3, 4] as [U8]),            as: U16.self))
-/// [0x0102, 0x0304] == Array(SequenceInt(([1, 2, 3, 4] as [U8]).reversed(), as: U16.self).reversed())
-/// [0x0403, 0x0201] == Array(SequenceInt(([1, 2, 3, 4] as [U8]),            as: U16.self).reversed())
-/// [0x0304, 0x0102] == Array(SequenceInt(([1, 2, 3, 4] as [U8]).reversed(), as: U16.self))
+/// [0x0201, 0x0403] == Array(ExchangeInt(([1, 2, 3, 4] as [U8]),            as: U16.self).source())
+/// [0x0102, 0x0304] == Array(ExchangeInt(([1, 2, 3, 4] as [U8]).reversed(), as: U16.self).source().reversed())
+/// [0x0403, 0x0201] == Array(ExchangeInt(([1, 2, 3, 4] as [U8]),            as: U16.self).source().reversed())
+/// [0x0304, 0x0102] == Array(ExchangeInt(([1, 2, 3, 4] as [U8]).reversed(), as: U16.self).source())
 /// ```
 ///
 /// ### Development
 ///
-/// - TODO: Consider `appendix` bit vs current `sign` element.
+/// - TODO: Consider static `isSigned` via `Element` to enable comparisons.
 ///
-/// - TODO: Consider using this model to replace `SuccintInt`.
-///
-@frozen public struct SequenceInt<Base, Element>: RandomAccessCollection  where
-Element: SystemsInteger & UnsignedInteger, Base:  RandomAccessCollection, Base.Element: SystemsInteger & UnsignedInteger {
+@frozen public struct ExchangeInt<Base, Element> where
+Element: SystemsInteger & UnsignedInteger, Base: RandomAccessCollection,
+Base.Element: SystemsInteger & UnsignedInteger {
     
     public typealias Base = Base
     
-    public typealias Indices = Range<Int>
-        
+    public typealias Index = Int
+    
+    public typealias Element = Element
+    
+    public typealias Magnitude = ExchangeInt<Base, Element.Magnitude>
+    
     /// A namespace for Element.bitWidth \> Base.Element.bitWidth.
     @frozen @usableFromInline enum Major { }
     
@@ -83,9 +86,6 @@ Element: SystemsInteger & UnsignedInteger, Base:  RandomAccessCollection, Base.E
     
     /// The bit extension of the un/signed source.
     public let `extension`: Bit.Extension<Element>
-    
-    /// The length of this sequence.
-    public var `count`: Int
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -110,7 +110,7 @@ Element: SystemsInteger & UnsignedInteger, Base:  RandomAccessCollection, Base.E
     ///   - element: The type of element produced by this sequence.
     ///
     @inlinable public init(_ base: Base, repeating bit: Bit, as element: Element.Type = Element.self) {
-        self.init(base, repeating: Bit.Extension(repeating: bit), count: Self.count(of: base))
+        self.init(base, repeating: Bit.Extension(repeating: bit))
     }
     
     /// Creates a sequence of the given type from a bit pattern source.
@@ -120,23 +120,21 @@ Element: SystemsInteger & UnsignedInteger, Base:  RandomAccessCollection, Base.E
     ///   - element: The element which extends the base sequence.
     ///   - count: The number of prefixing elements to view.
     ///
-    @inlinable public init(_ base: Base, repeating element: Bit.Extension<Element>, count: Int) {
+    @inlinable public init(_ base: Base, repeating element: Bit.Extension<Element>) {
         //=--------------------------------------=
-        self.base  = base
+        self.base = base
         self.extension = element
-        self.count = count
         //=--------------------------------------=
-        Swift.assert(count >= Int.zero, String.indexOutOfBounds())
         Swift.assert(Self.Element.bitWidth.count(1, option: .all) == 1)
         Swift.assert(Base.Element.bitWidth.count(1, option: .all) == 1)
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func chunked<Other>(as type: Other.Type = Other.self) -> SequenceInt<Base, Other> where Element == Base.Element {
-        CoreKit.SequenceInt(self.base, repeating: self.extension.bit)
+    @inlinable public func chunked<Other>(as type: Other.Type = Other.self) -> ExchangeInt<Base, Other> {
+        CoreKit.ExchangeInt(self.base, repeating: self.extension.bit)
     }
 }
 
@@ -144,4 +142,4 @@ Element: SystemsInteger & UnsignedInteger, Base:  RandomAccessCollection, Base.E
 // MARK: + Sendable
 //=----------------------------------------------------------------------------=
 
-extension SequenceInt: Sendable where Base: Sendable { }
+extension ExchangeInt: Sendable where Base: Sendable { }

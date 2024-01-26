@@ -23,7 +23,7 @@ extension InfiniInt {
         fatalError("TODO")
     }
 
-    @inlinable public init<T>(load source: inout SequenceInt<T, Element.Magnitude>.Stream) {
+    @inlinable public init<T>(load source: inout ExchangeInt<T, Element.Magnitude>.Stream) {
         fatalError("TODO")
     }
     
@@ -31,7 +31,7 @@ extension InfiniInt {
         fatalError("TODO")
     }
     
-    @inlinable public var elements: SequenceInt<ContiguousArray<Element.Magnitude>, Element.Magnitude> {
+    @inlinable public var elements: ExchangeInt<ContiguousArray<Element.Magnitude>, Element.Magnitude> {
         fatalError("TODO")
     }
 }
@@ -50,7 +50,7 @@ extension InfiniInt.Magnitude {
         fatalError("TODO")
     }
 
-    @inlinable public init<T>(load source: inout SequenceInt<T, Element.Magnitude>.Stream) {
+    @inlinable public init<T>(load source: inout ExchangeInt<T, Element.Magnitude>.Stream) {
         fatalError("TODO")
     }
     
@@ -58,7 +58,7 @@ extension InfiniInt.Magnitude {
         fatalError("TODO")
     }
     
-    @inlinable public var elements: SequenceInt<ContiguousArray<Element.Magnitude>, Element.Magnitude> {
+    @inlinable public var elements: ExchangeInt<ContiguousArray<Element.Magnitude>, Element.Magnitude> {
         fatalError("TODO")
     }
 }

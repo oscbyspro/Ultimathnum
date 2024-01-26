@@ -26,6 +26,13 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    @inlinable public static func one(_ sign: Sign) -> Self {
+        switch sign {
+        case Sign.plus:  return Self.more
+        case Sign.minus: return Self.less
+        }
+    }
+    
     @inlinable public init(integerLiteral: IX.IntegerLiteralType) {
         self = switch integerLiteral {
         case -1: .less

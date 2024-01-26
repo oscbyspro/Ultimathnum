@@ -8,55 +8,69 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Sequence Int x Iterator
+// MARK: * Exchange Int x Stream
 //*============================================================================*
 
-extension SequenceInt {
+extension ExchangeInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func makeIterator() -> Iterator {
-        Iterator(self, from: Int.zero)
+    @inlinable public consuming func stream() -> Stream {
+        Stream(self, from: Int.zero)
     }
     
     //*========================================================================*
-    // MARK: * Iterator
+    // MARK: * Stream
     //*========================================================================*
     
-    @frozen public struct Iterator: IteratorProtocol {
+    @frozen public struct Stream {
         
         //=--------------------------------------------------------------------=
         // MARK: State
         //=--------------------------------------------------------------------=
         
-        @usableFromInline var instance: SequenceInt
-        @usableFromInline var position: SequenceInt.Index
+        @usableFromInline let base:  ExchangeInt
+        @usableFromInline let limit: ExchangeInt.Index
+        @usableFromInline var index: ExchangeInt.Index
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
-        @inlinable init(_ instance: SequenceInt, from position: SequenceInt.Index) {
-            self.instance = instance
-            self.position = position
+        @inlinable init(_ base: ExchangeInt, from position: ExchangeInt.Index) {
+            self.base  = base
+            self.limit = ExchangeInt.count(of: base.base)
+            self.index = position
+        }
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Transformations
+        //=--------------------------------------------------------------------=
+        
+        @inlinable mutating public func next() -> Element {
+            defer {
+                self.index = self.index + self.index < self.limit ? 1 : 0
+            }
+            
+            return self.base[self.index] as Element
         }
         
         //=--------------------------------------------------------------------=
         // MARK: Utilities
         //=--------------------------------------------------------------------=
         
-        @inlinable public var count: Int {
-            self.instance.distance(from: self.position, to: self.instance.endIndex)
-        }
-        
-        @inlinable mutating public func next() -> Element? {
-            guard self.position < self.instance.endIndex else {
-                return nil
-            };  defer {
-                self.instance.formIndex(after: &self.position)
-            };  return self.instance[self.position] as Element
+        @inlinable public func succinct() -> ExchangeInt.Prefix.Iterator {
+            var index: ExchangeInt.Index = self.limit
+                        
+            trimming: while self.index < index {
+                let predecessorIndex = index - 1
+                guard self.base[predecessorIndex] == self.base.extension.element else { break }
+                index = predecessorIndex as ExchangeInt.Index
+            }
+            
+            return ExchangeInt.Prefix.Iterator(self.base.prefix(index), from: self.index)
         }
     }
 }

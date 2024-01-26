@@ -28,31 +28,23 @@
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Accessors
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// A three-way comparison against zero.
-    ///
-    /// ```
-    /// ┌────── → ────────┐
-    /// │ self  │ signum  │
-    /// ├────── → ────────┤
-    /// │ -2    │ Int(-1) │ - less
-    /// │  0    │ Int( 0) │ - same
-    /// │  2    │ Int( 1) │ - more
-    /// └────── → ────────┘
-    /// ```
-    ///
-    @inlinable public func signum() -> Int {
-        self.base.signum()
-    }
-    
-    /// The number of bits in this value's binary representation.
     @inlinable public var bitWidth: Int {
         self.base.bitWidth
     }
     
-    /// Accesses the word at the given index, from least significant to most.
+    /// A three-way comparison against zero.
+    @inlinable public func signum() -> Signum {
+        IX(self.base.signum()).signum()
+    }
+    
+    @inlinable public var elements: ExchangeInt<Self, Element> {
+        ExchangeInt(self, repeating: Bit(bitPattern: self.signum() < 0))
+    }
+    
+    /// The word at the given index, from least significant to most.
     @inlinable public subscript(index: Int) -> UX {
         UX(bitPattern: self.base[index])
     }

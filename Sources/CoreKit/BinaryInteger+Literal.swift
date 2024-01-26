@@ -18,7 +18,7 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
 
     @inlinable public init(literally source: StaticBigInt) throws {
-        try  self.init(elements: SequenceInt(BigIntLiteral(source), isSigned: true), isSigned: true)        
+        try self.init(elements: BigIntLiteral(source).elements, isSigned: true)
     }
 
     @inlinable public init(integerLiteral: IntegerLiteralType) where IntegerLiteralType == StaticBigInt {

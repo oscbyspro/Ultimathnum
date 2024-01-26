@@ -8,20 +8,24 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Sequence Int x Count
+// MARK: * Exchange Int x Prefix
 //*============================================================================*
 
-extension SequenceInt {
+extension ExchangeInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable internal static func count(of base: Base) -> Int {
+    @inlinable public func succinct() -> Prefix {
+        self.prefix(Self.count(trimming: self.base, repeating: self.extension.bit))
+    }
+    
+    @inlinable internal static func count(trimming base: Base, repeating bit: Bit) -> Int {
         switch comparison {
-        case Signum.same: return Equal.count(of: base)
-        case Signum.less: return Minor.count(of: base)
-        case Signum.more: return Major.count(of: base)
+        case Signum.same: Equal.count(trimming: base, repeating: bit)
+        case Signum.less: Minor.count(trimming: base, repeating: bit)
+        case Signum.more: Major.count(trimming: base, repeating: bit)
         }
     }
 }
@@ -30,17 +34,18 @@ extension SequenceInt {
 // MARK: + Equal
 //=----------------------------------------------------------------------------=
 
-extension SequenceInt.Equal {
+extension ExchangeInt.Equal {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable internal static func count(of base: some Collection<Base.Element>) -> Int {
+    @inlinable internal static func count(trimming base: Base, repeating bit: Bit) -> Int {
         //=--------------------------------------=
-        precondition(SequenceInt.comparison == Signum.same, String.unreachable())
+        precondition(ExchangeInt.comparison == Signum.same, String.unreachable())
         //=--------------------------------------=
-        return base.count as Int as Int as Int
+        let sign = Base.Element(repeating: bit)
+        return self.count(of: base.reversed().trimmingPrefix(while:{ $0 == sign }))
     }
 }
 
@@ -48,17 +53,21 @@ extension SequenceInt.Equal {
 // MARK: + Minor
 //=----------------------------------------------------------------------------=
 
-extension SequenceInt.Minor {
+extension ExchangeInt.Minor {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
-
-    @inlinable internal static func count(of base: some Collection<Base.Element>) -> Int {
+    
+    @inlinable internal static func count(trimming base: Base, repeating bit: Bit) -> Int {
         //=--------------------------------------=
-        precondition(SequenceInt.comparison == Signum.less, String.unreachable())
+        precondition(ExchangeInt.comparison == Signum.less, String.unreachable())
         //=--------------------------------------=
-        return base.count * self.ratio as Int
+        let sign = Base.Element(repeating: bit)
+        let majorSuffix = base.reversed().prefix(while:{ $0 == sign })
+        let minorSuffix = base.dropLast(majorSuffix.count).last?.count(bit, option: Bit.Selection.descending) ?? (00000)
+        let totalSuffix = majorSuffix.count *  Base.Element.bitWidth.load(as: Int.self) + minorSuffix.load(as: Int.self)
+        return self.count(of: base) - totalSuffix / Element.bitWidth.load(as: Int.self)
     }
 }
 
@@ -66,19 +75,17 @@ extension SequenceInt.Minor {
 // MARK: + Major
 //=----------------------------------------------------------------------------=
 
-extension SequenceInt.Major {
+extension ExchangeInt.Major {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable internal static func count(of base: some Collection<Base.Element>) -> Int {
+    @inlinable internal static func count(trimming base: Base, repeating bit: Bit) -> Int {
         //=--------------------------------------=
-        precondition(SequenceInt.comparison == Signum.more, String.unreachable())
+        precondition(ExchangeInt.comparison == Signum.more, String.unreachable())
         //=--------------------------------------=
-        let dividend  = base.count
-        let quotient  = dividend &>> self.ratio.trailingZeroBitCount
-        let remainder = dividend &  (self.ratio - 1)
-        return quotient + (remainder > 0 ? 1 : 0)
+        let sign = Base.Element(repeating: bit)
+        return self.count(of: base.reversed().trimmingPrefix(while:{ $0 == sign }))
     }
 }

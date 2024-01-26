@@ -25,9 +25,9 @@ extension Namespace.StrictUnsignedInteger.SubSequence {
     /// - Note: This operation interprets empty collections as zero.
     ///
     @inlinable public static func compare(_ lhs: Base, to rhs: some RandomAccessCollection<Base.Element>) -> Signum {
-        let lhs = SuccinctInt(lhs[...],  isSigned: false)
-        let rhs = SuccinctInt(rhs[...],  isSigned: false)
-        return (lhs).compared(toSameSignUnchecked: rhs)
+        let lhs = ExchangeInt(lhs[...], isSigned: false, as: Base.Element.self)
+        let rhs = ExchangeInt(rhs[...], isSigned: false, as: Base.Element.self)
+        return lhs.compared(to: rhs)
     }
     
     /// A three-way comparison of `lhs` against `rhs` at `index`.

@@ -50,7 +50,7 @@ import CoreKit
     /// - Note: Values in `0 ..< bitWidth` always fit in Base.Magnitude.
     ///
     @inlinable public static var bitWidth: Magnitude {
-        fatalError("TODO")
+        Magnitude(low: Base.bitWidth) + Magnitude(low: Base.bitWidth)
     }
     
     //=------------------------------------------------------------------------=

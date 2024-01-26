@@ -16,8 +16,12 @@ import CoreKit
 extension DoubleInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
+    
+    @inlinable public var appendix: Bit {
+        self.high.appendix
+    }
     
     @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
         var count: Magnitude

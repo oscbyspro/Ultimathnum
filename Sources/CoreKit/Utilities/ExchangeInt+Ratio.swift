@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Sequence Int x Ratio
+// MARK: * Exchange Int x Ratio
 //*============================================================================*
 
-extension SequenceInt {
+extension ExchangeInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -26,7 +26,7 @@ extension SequenceInt {
 // MARK: + Minor
 //=----------------------------------------------------------------------------=
 
-extension SequenceInt.Minor {
+extension ExchangeInt.Minor {
 
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -34,11 +34,11 @@ extension SequenceInt.Minor {
     
     @inlinable internal static var ratio: Int {
         //=--------------------------------------=
-        precondition(SequenceInt.comparison == Signum.less, String.unreachable())
+        precondition(ExchangeInt.comparison == Signum.less, String.unreachable())
         //=--------------------------------------=
         let major = Base.Element.bitWidth
         let minor = Base.Element.Magnitude(load: Element.bitWidth.load(as: UX.self))
-        return (major &>> minor.count(0, option: .ascending)).load(as: Int.self)
+        return (major &>> minor.count(0, option: Bit.Selection.ascending)).load(as: Int.self)
     }
 }
 
@@ -46,7 +46,7 @@ extension SequenceInt.Minor {
 // MARK: + Major
 //=----------------------------------------------------------------------------=
 
-extension SequenceInt.Major {
+extension ExchangeInt.Major {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -54,10 +54,10 @@ extension SequenceInt.Major {
     
     @inlinable internal static var ratio: Int {
         //=--------------------------------------=
-        precondition(SequenceInt.comparison == Signum.more, String.unreachable())
+        precondition(ExchangeInt.comparison == Signum.more, String.unreachable())
         //=--------------------------------------=
         let major = Element.bitWidth
         let minor = Element.Magnitude(load: Base.Element.bitWidth.load(as: UX.self))
-        return (major &>> minor.count(0, option: .ascending)).load(as: Int.self)
+        return (major &>> minor.count(0, option: Bit.Selection.ascending)).load(as: Int.self)
     }
 }

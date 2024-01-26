@@ -79,7 +79,7 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude {
         
     @inlinable init<T>(load source: T) where T: BitCastable<Element.BitPattern>
     
-    @inlinable init<T>(load source: inout SequenceInt<T, Element.Magnitude>.Stream)
+    @inlinable init<T>(load source: inout ExchangeInt<T, Element.Magnitude>.Stream)
     
     @inlinable func load<T>(as type: T.Type) -> T where T: BitCastable<Element.BitPattern>
     
@@ -140,9 +140,11 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude {
     ///
     /// ```swift
     /// @inlinable public static var isInfinite: Bool {
-    ///     Self.bitWidth.appendix == 1
+    ///     !Self.isSigned && Self.bitWidth.appendix == 1
     /// }
+    /// ```
     ///
+    /// ```swift
     /// @inlnable public var appendix: Bit {
     ///     Bit(bitPattern: (Self.isSigned || Self.isInfinite) && self.count(0, option: .descending) == 0)
     /// }
@@ -150,13 +152,7 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude {
     ///
     @inlinable var appendix: Bit { borrowing get }
     
-    /// ### Development
-    ///
-    /// It must be endless because the repeating last element cannot be derived
-    /// from `isSigned` if unsigned integers can be infinitely large. Alternatively, 
-    /// you could add something like `isLastBitExtended` as additional meta data.
-    ///
-    @inlinable var elements: SequenceInt<Content, Element.Magnitude> { consuming get }
+    @inlinable var elements: ExchangeInt<Content, Element.Magnitude> { consuming get }
     
     @inlinable var magnitude: Magnitude { consuming get }
     
