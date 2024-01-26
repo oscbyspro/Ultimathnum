@@ -8,32 +8,29 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Exchange Int x Element
+// MARK: * Exchange Int x Element x Bit Pattern
 //*============================================================================*
 
-extension ExchangeInt {
+extension ExchangeInt where Element == Element.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// The element at the given index.
-    ///
-    /// Its elements are ordered from least significant to most, with infinite sign extension.
-    ///
+    /// The element at the given `index`, ordered from least significant to most.
     @inlinable public subscript(index: Int) -> Element {
-        Self.element(index, base: self.base, sign: self.extension.element)
+        BitPattern.element(index, base: self.base, extension: self.extension.bitPattern)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable internal static func element(_ index: Int, base: Base, sign: Element) -> Element {
+    @inlinable internal static func element(_ index: Int, base: Base, `extension`: Bit.Extension<Element>) -> Element {
         switch comparison {
-        case Signum.same: Equal.element(index, base: base, sign: sign)
-        case Signum.less: Minor.element(index, base: base, sign: sign)
-        case Signum.more: Major.element(index, base: base, sign: sign)
+        case Signum.same: Equal.element(index, base: base, extension: `extension`)
+        case Signum.less: Minor.element(index, base: base, extension: `extension`)
+        case Signum.more: Major.element(index, base: base, extension: `extension`)
         }
     }
 }
@@ -42,17 +39,19 @@ extension ExchangeInt {
 // MARK: + Equal
 //=----------------------------------------------------------------------------=
 
-extension ExchangeInt.Equal {
+extension ExchangeInt.Equal where Element == Element.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable internal static func element(_ index: Int, base: Base, sign: Element) -> Element {
+    @inlinable internal static func element(_ index: Int, base: Base, `extension`: Bit.Extension<Element>) -> Element {
         //=--------------------------------------=
         precondition(ExchangeInt.comparison == Signum.same, String.unreachable())
         //=--------------------------------------=
-        if  index >= base.count { return sign }
+        if  index >= base.count {
+            return `extension`.element
+        }
         //=--------------------------------------=
         return Element.tokenized(bitCastOrLoad: base[base.index(base.startIndex, offsetBy: index)])
     }
@@ -62,13 +61,13 @@ extension ExchangeInt.Equal {
 // MARK: + Minor
 //=----------------------------------------------------------------------------=
 
-extension ExchangeInt.Minor {
+extension ExchangeInt.Minor where Element == Element.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable internal static func element(_ index: Int, base: Base, sign: Element) -> Element {
+    @inlinable internal static func element(_ index: Int, base: Base, `extension`: Bit.Extension<Element>) -> Element {
         //=--------------------------------------=
         precondition(ExchangeInt.comparison == Signum.less, String.unreachable())
         //=--------------------------------------=
@@ -76,7 +75,9 @@ extension ExchangeInt.Minor {
         let quotient  = index &>> self.ratio.trailingZeroBitCount
         let remainder = index &  (self.ratio - 1)
         //=--------------------------------------=
-        if  quotient >= base.count { return sign }
+        if  quotient >= base.count {
+            return `extension`.element
+        }
         //=--------------------------------------=
         let major = base[base.index(base.startIndex, offsetBy: quotient)]
         let shift = Base.Element(load: UX(bitPattern: remainder)) &<< Base.Element(load: Element.bitWidth.count(0, option: .ascending).load(as: UX.self))
@@ -88,13 +89,13 @@ extension ExchangeInt.Minor {
 // MARK: + Major
 //=----------------------------------------------------------------------------=
 
-extension ExchangeInt.Major {
+extension ExchangeInt.Major where Element == Element.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable internal static func element(_ index: Int, base: Base, sign: Element) -> Element {
+    @inlinable internal static func element(_ index: Int, base: Base, `extension`: Bit.Extension<Element>) -> Element {
         //=--------------------------------------=
         precondition(ExchangeInt.comparison == Signum.more, String.unreachable())
         //=--------------------------------------=
@@ -111,6 +112,6 @@ extension ExchangeInt.Major {
             }
         }
         
-        return shift >= Element.bitWidth ? major : major | sign &<< Element(bitPattern: shift)
+        return shift >= Element.bitWidth ? major : major | `extension`.element &<< Element(bitPattern: shift)
     }
 }

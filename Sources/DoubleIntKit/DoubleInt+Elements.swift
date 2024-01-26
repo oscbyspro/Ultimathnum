@@ -23,7 +23,7 @@ extension DoubleInt {
         self.init(low: Low(load: source))
     }
 
-    @inlinable public init<T>(load source: inout ExchangeInt<T, Element.Magnitude>.Stream) {
+    @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
         //=--------------------------------------=
         let low  = Low (load: &source)
         let high = High(load: &source)
@@ -37,9 +37,9 @@ extension DoubleInt {
     
     /// ### Development
     ///
-    /// - TODO: Improve it.
+    /// - TODO: Build it. Break it. Fix it.
     ///
-    @inlinable public var elements: ExchangeInt<ContiguousArray<Element.Magnitude>, Element.Magnitude> {
+    @inlinable public var elements: ExchangeInt<ContiguousArray<Element.Magnitude>, Element> {
         //=--------------------------------------=
         let low  = self.low .elements
         let high = self.high.elements

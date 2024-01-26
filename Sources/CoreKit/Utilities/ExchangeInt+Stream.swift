@@ -8,17 +8,17 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Exchange Int x Stream
+// MARK: * Exchange Int x Stream x Bit Pattern
 //*============================================================================*
 
-extension ExchangeInt {
+extension ExchangeInt where Element == Element.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func stream() -> Stream {
-        Stream(self, from: Int.zero)
+        Stream(self.bitPattern, from: Int.zero)
     }
     
     //*========================================================================*

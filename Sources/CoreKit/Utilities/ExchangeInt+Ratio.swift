@@ -10,24 +10,12 @@
 //*============================================================================*
 // MARK: * Exchange Int x Ratio
 //*============================================================================*
-
-extension ExchangeInt {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable internal static var comparison: Signum {
-        Element.bitWidth.load(as: UX.self).compared(to: Base.Element.bitWidth.load(as: UX.self))
-    }
-}
-
 //=----------------------------------------------------------------------------=
 // MARK: + Minor
 //=----------------------------------------------------------------------------=
 
-extension ExchangeInt.Minor {
-
+extension ExchangeInt.Minor where Element == Element.Magnitude {
+    
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
@@ -46,7 +34,7 @@ extension ExchangeInt.Minor {
 // MARK: + Major
 //=----------------------------------------------------------------------------=
 
-extension ExchangeInt.Major {
+extension ExchangeInt.Major where Element == Element.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

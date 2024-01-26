@@ -30,7 +30,7 @@ extension BinaryInteger {
     }
     
     @inlinable public init<T>(exactly source: T) throws where T: BinaryInteger {
-        try  self.init(elements: source.elements, isSigned: T.isSigned)
+        try  self.init(elements: source.elements.bitPattern.chunked(), isSigned: T.isSigned)
     }
     
     @inlinable public init<T>(truncating source: T) where T: BinaryInteger {

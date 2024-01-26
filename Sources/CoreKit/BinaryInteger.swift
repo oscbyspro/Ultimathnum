@@ -79,7 +79,7 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude {
         
     @inlinable init<T>(load source: T) where T: BitCastable<Element.BitPattern>
     
-    @inlinable init<T>(load source: inout ExchangeInt<T, Element.Magnitude>.Stream)
+    @inlinable init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream)
     
     @inlinable func load<T>(as type: T.Type) -> T where T: BitCastable<Element.BitPattern>
     
@@ -140,7 +140,7 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude {
     ///
     /// ```swift
     /// @inlinable public static var isInfinite: Bool {
-    ///     !Self.isSigned && Self.bitWidth.appendix == 1
+    ///     Self.bitWidth.appendix == 1
     /// }
     /// ```
     ///
@@ -152,7 +152,7 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude {
     ///
     @inlinable var appendix: Bit { borrowing get }
     
-    @inlinable var elements: ExchangeInt<Content, Element.Magnitude> { consuming get }
+    @inlinable var elements: ExchangeInt<Content, Element> { consuming get }
     
     @inlinable var magnitude: Magnitude { consuming get }
     

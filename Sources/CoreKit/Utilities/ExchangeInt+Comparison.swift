@@ -12,23 +12,27 @@
 //*============================================================================*
 
 extension ExchangeInt {
- 
+    
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// ### Development
-    ///
-    /// This method is possible if this type has a static `isSigned` value.
-    ///
+    @inlinable public static func ==<T, U>(lhs: Self, rhs: ExchangeInt<T, U>) -> Bool {
+        lhs.compared(to: rhs) == Signum.same
+    }
+    
+    @inlinable public static func < <T, U>(lhs: Self, rhs: ExchangeInt<T, U>) -> Bool {
+        lhs.compared(to: rhs) == Signum.less
+    }
+    
     @inlinable public func compared<T, U>(to other: ExchangeInt<T, U>) -> Signum {
-        fatalError("TODO")
+        BitPattern.compare(self.bitPattern, isSigned: Self.isSigned, to: other.chunked(), isSigned: ExchangeInt<T, U>.isSigned)
     }
 }
 
-//=----------------------------------------------------------------------------=
-// MARK: + Algorithms
-//=----------------------------------------------------------------------------=
+//*============================================================================*
+// MARK: * Exchange Int x Comparison x Bit Pattern
+//*============================================================================*
 
 extension ExchangeInt where Element == Element.Magnitude {
     
@@ -39,6 +43,9 @@ extension ExchangeInt where Element == Element.Magnitude {
     @inline(never) @inlinable internal static func compare<T>(
     _  lhs: Self, isSigned lhsIsSigned: Bool,
     to rhs: ExchangeInt<T, Element>, isSigned rhsIsSigned: Bool) -> Signum {
+        //=--------------------------------------=
+        typealias LHS = Self
+        typealias RHS = ExchangeInt<T, Element>
         //=--------------------------------------=
         let lhsAppendix = Bool(bitPattern: lhs.extension.bit)
         let rhsAppendix = Bool(bitPattern: rhs.extension.bit)
@@ -51,8 +58,8 @@ extension ExchangeInt where Element == Element.Magnitude {
         //=--------------------------------------=
         // comparison: succinct count
         //=--------------------------------------=
-        let lhsSuccinctCount  = lhs.succinct().count
-        let rhsSuccinctCount  = rhs.succinct().count
+        let lhsSuccinctCount  = LHS.count(trimming: lhs.base, repeating: Bit(bitPattern: lhsAppendix))
+        let rhsSuccinctCount  = RHS.count(trimming: rhs.base, repeating: Bit(bitPattern: rhsAppendix))
         //=--------------------------------------=
         if  lhsSuccinctCount != rhsSuccinctCount {
             return Signum.one(Sign(bitPattern: lhsAppendix == ((lhsSuccinctCount) > (rhsSuccinctCount))))

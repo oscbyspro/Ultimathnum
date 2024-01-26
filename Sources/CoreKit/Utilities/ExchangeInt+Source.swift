@@ -8,18 +8,22 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Exchange Int x Count
+// MARK: * Exchange Int x Source x Bit Pattern
 //*============================================================================*
 
-extension ExchangeInt {
+extension ExchangeInt where Element == Element.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
     @inlinable public func source() -> Prefix {
-        self.prefix(Self.count(of: self.base))
+        self.prefix(BitPattern.count(of: self.base))
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
     
     @inlinable internal static func count(of base: Base) -> Int {
         switch comparison {
@@ -34,7 +38,7 @@ extension ExchangeInt {
 // MARK: + Equal
 //=----------------------------------------------------------------------------=
 
-extension ExchangeInt.Equal {
+extension ExchangeInt.Equal where Element == Element.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -52,7 +56,7 @@ extension ExchangeInt.Equal {
 // MARK: + Minor
 //=----------------------------------------------------------------------------=
 
-extension ExchangeInt.Minor {
+extension ExchangeInt.Minor where Element == Element.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -70,7 +74,7 @@ extension ExchangeInt.Minor {
 // MARK: + Major
 //=----------------------------------------------------------------------------=
 
-extension ExchangeInt.Major {
+extension ExchangeInt.Major where Element == Element.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -83,6 +87,7 @@ extension ExchangeInt.Major {
         let dividend  = base.count
         let quotient  = dividend &>> self.ratio.trailingZeroBitCount
         let remainder = dividend &  (self.ratio - 1)
-        return quotient + (remainder > 0 ? 1 : 0)
+        //=--------------------------------------=
+        return quotient + (remainder > 0 as Int ? 1 as Int : 0 as Int)
     }
 }

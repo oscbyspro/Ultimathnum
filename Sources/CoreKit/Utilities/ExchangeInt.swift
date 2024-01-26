@@ -31,7 +31,7 @@
 ///     }
 /// }
 /// ```
-///
+/// 
 /// ### Binary Integer Order
 ///
 /// This sequence is ordered like a binary integer, meaning it merges and splits
@@ -52,21 +52,14 @@
 /// [0x0304, 0x0102] == Array(ExchangeInt(([1, 2, 3, 4] as [U8]).reversed(), as: U16.self).source())
 /// ```
 ///
-/// ### Development
-///
-/// - TODO: Consider static `isSigned` via `Element` to enable comparisons.
-///
-@frozen public struct ExchangeInt<Base, Element> where
-Element: SystemsInteger & UnsignedInteger, Base: RandomAccessCollection,
-Base.Element: SystemsInteger & UnsignedInteger {
+@frozen public struct ExchangeInt<Base, Element>: BitCastable, Comparable where
+Element: SystemsInteger, Base: RandomAccessCollection, Base.Element: SystemsInteger & UnsignedInteger {
     
     public typealias Base = Base
     
     public typealias Index = Int
     
     public typealias Element = Element
-    
-    public typealias Magnitude = ExchangeInt<Base, Element.Magnitude>
     
     /// A namespace for Element.bitWidth \> Base.Element.bitWidth.
     @frozen @usableFromInline enum Major { }
@@ -76,6 +69,20 @@ Base.Element: SystemsInteger & UnsignedInteger {
     
     /// A namespace for Element.bitWidth == Base.Element.bitWidth.
     @frozen @usableFromInline enum Equal { }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    /// Indicate whether this type is signed or unsigned.
+    @inlinable public static var isSigned: Bool {
+        Element.isSigned
+    }
+    
+    /// Indicates whether this type produces larger, smaller or similar chunks.
+    @inlinable public static var comparison: Signum {
+        Element.bitWidth.load(as: UX.self).compared(to: Base.Element.bitWidth.load(as: UX.self))
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: State

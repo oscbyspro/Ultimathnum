@@ -40,7 +40,7 @@
         IX(self.base.signum()).signum()
     }
     
-    @inlinable public var elements: ExchangeInt<Self, Element> {
+    @inlinable public var elements:  ExchangeInt<Self, IX> {
         ExchangeInt(self, repeating: Bit(bitPattern: self.signum() < 0))
     }
     

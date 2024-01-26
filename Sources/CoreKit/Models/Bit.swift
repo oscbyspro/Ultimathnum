@@ -89,16 +89,23 @@
     @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         (lhs.bitPattern, rhs.bitPattern) == (false, true)
     }
-    
-    //*========================================================================*
-    // MARK: * Extension
-    //*========================================================================*
+}
+
+//*============================================================================*
+// MARK: * Bit x Extension
+//*============================================================================*
+
+extension Bit {
     
     /// A system integer with its bits set to only `0` or only `1`.
     ///
     /// - Note: It's a nice compile-time gurantee for something rather common.
     ///
-    @frozen public struct Extension<Element> where Element: SystemsInteger {
+    @frozen public struct Extension<Element>: BitCastable where Element: SystemsInteger {
+        
+        public typealias Element = Element
+        
+        public typealias BitPattern = Bit.Extension<Element.Magnitude>
         
         //=--------------------------------------------------------------------=
         // MARK: State
@@ -111,7 +118,17 @@
         //=--------------------------------------------------------------------=
         
         @inlinable public init(repeating bit: Bit) {
-            self.element = Element(repeating: bit)
+            self.init(unchecked: Element(repeating: bit))
+        }
+        
+        @inlinable public init(bitPattern: consuming BitPattern) {
+            self.init(unchecked: Element(bitPattern: bitPattern.element))
+        }
+        
+        @inlinable internal init(unchecked element: Element) {
+            Swift.assert(element.count(1, option: .all) % Element.bitWidth == 0)
+            Swift.assert(element.count(0, option: .all) % Element.bitWidth == 0)
+            self.element = element
         }
         
         //=--------------------------------------------------------------------=
@@ -121,11 +138,21 @@
         @inlinable public var bit: Bit {
             Bit(bitPattern: self.element != 0)
         }
+        
+        @inlinable public var bitPattern: BitPattern {
+            consuming get {
+                BitPattern(unchecked: BitPattern.Element(bitPattern: self.element))
+            }
+        }
     }
+}
+
+//*============================================================================*
+// MARK: * Bit x Selection
+//*============================================================================*
+
+extension Bit {
     
-    //*========================================================================*
-    // MARK: * Selection
-    //*========================================================================*
     
     /// Some selection options for bits in a binary integer.
     ///

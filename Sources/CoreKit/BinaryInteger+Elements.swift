@@ -17,9 +17,9 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<T>(elements: ExchangeInt<T, T.Element.Magnitude>, isSigned: Bool) throws {
+    @inlinable public init<T>(elements: ExchangeInt<T, Element>.BitPattern, isSigned: Bool) throws {
         let appendix = elements.extension.bit
-        var (stream) = elements.chunked(as: Element.Magnitude.self).stream()
+        var (stream) = elements.stream()
         
         self.init(load: &stream)
         
@@ -63,7 +63,7 @@ extension BinaryInteger where Element == Self, Content == CollectionOfOne<Elemen
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public var elements: ExchangeInt<Content, Element.Magnitude> {
+    @inlinable public var elements: ExchangeInt<Content, Element> {
         ExchangeInt(CollectionOfOne(Magnitude(bitPattern: self)), repeating: self.appendix)
     }
 }

@@ -8,18 +8,22 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Exchange Int x Prefix
+// MARK: * Exchange Int x Succinct x Bit Pattern
 //*============================================================================*
 
-extension ExchangeInt {
+extension ExchangeInt where Element == Element.Magnitude {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
     @inlinable public func succinct() -> Prefix {
-        self.prefix(Self.count(trimming: self.base, repeating: self.extension.bit))
+        self.prefix(BitPattern.count(trimming: self.base, repeating: self.extension.bit))
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
     
     @inlinable internal static func count(trimming base: Base, repeating bit: Bit) -> Int {
         switch comparison {
@@ -34,7 +38,7 @@ extension ExchangeInt {
 // MARK: + Equal
 //=----------------------------------------------------------------------------=
 
-extension ExchangeInt.Equal {
+extension ExchangeInt.Equal where Element == Element.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -53,7 +57,7 @@ extension ExchangeInt.Equal {
 // MARK: + Minor
 //=----------------------------------------------------------------------------=
 
-extension ExchangeInt.Minor {
+extension ExchangeInt.Minor where Element == Element.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -75,7 +79,7 @@ extension ExchangeInt.Minor {
 // MARK: + Major
 //=----------------------------------------------------------------------------=
 
-extension ExchangeInt.Major {
+extension ExchangeInt.Major where Element == Element.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

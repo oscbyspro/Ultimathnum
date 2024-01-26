@@ -33,11 +33,11 @@ final class ExchangeIntTests: XCTestCase {
     _ lhs: [A], _ rhs: [B], isSigned: Bool? = nil, file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
         if  isSigned != false {
-            Test.collection(T(lhs, isSigned: true ).source(), rhs, file: file, line: line)
+            Test.collection(T(lhs as [A], isSigned: true,  as: B.self).source(), rhs, file: file, line: line)
         }
         
         if  isSigned != true {
-            Test.collection(T(lhs, isSigned: false).source(), rhs, file: file, line: line)
+            Test.collection(T(lhs as [A], isSigned: false, as: B.self).source(), rhs, file: file, line: line)
         }
     }
 }

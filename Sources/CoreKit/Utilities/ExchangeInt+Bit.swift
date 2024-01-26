@@ -8,20 +8,20 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Binary Integer x Literal
+// MARK: * Exchange Int x Bit
 //*============================================================================*
 
-extension BinaryInteger {
+extension ExchangeInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
-
-    @inlinable public init(literally source: StaticBigInt) throws {
-        try self.init(elements: BigIntLiteral(source).elements.bitPattern.chunked(), isSigned: true)
+    
+    @inlinable public init(bitPattern: ExchangeInt<Base, Element.Magnitude>) {
+        self.init(bitPattern.base, repeating: Bit.Extension(bitPattern: bitPattern.extension))
     }
-
-    @inlinable public init(integerLiteral: IntegerLiteralType) where IntegerLiteralType == StaticBigInt {
-        try! self.init(literally: integerLiteral)
+    
+    @inlinable public var bitPattern: ExchangeInt<Base, Element.Magnitude> {
+        BitPattern(self.base, repeating: Bit.Extension(bitPattern: self.extension))
     }
 }

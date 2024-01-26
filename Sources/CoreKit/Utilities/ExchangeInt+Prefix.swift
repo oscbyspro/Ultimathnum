@@ -8,17 +8,17 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Exchange Int x Prefix
+// MARK: * Exchange Int x Prefix x Bit Pattern
 //*============================================================================*
 
-extension ExchangeInt {
+extension ExchangeInt where Element == Element.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
     @inlinable public func prefix(_ count: Int) -> Prefix {
-        Prefix(self, count: count)
+        Prefix(self.bitPattern, count: count)
     }
     
     //*========================================================================*
