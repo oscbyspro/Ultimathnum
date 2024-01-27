@@ -55,9 +55,9 @@
 @frozen public struct ExchangeInt<Base, Element>: BitCastable, Comparable where
 Element: SystemsInteger, Base: RandomAccessCollection, Base.Element: SystemsInteger & UnsignedInteger {
     
-    public typealias Base = Base
+    public typealias Base  = Base
     
-    public typealias Index = Int
+    public typealias Index = Swift.Int
     
     public typealias Element = Element
     

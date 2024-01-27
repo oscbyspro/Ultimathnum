@@ -13,16 +13,6 @@ import CoreKit
 // MARK: * Double Int
 //*============================================================================*
 
-/// ### Development
-///
-/// Is there a more composable `words` abstraction? Recursion. Iteration.
-///
-/// ```swift
-/// protocol SystemsInteger {
-///     static func words112(_ lhs: Self, rhs: Self) -> ???
-/// }
-/// ```
-///
 @frozen public struct DoubleInt<Base: SystemsInteger>: SystemsInteger {    
     
     public typealias High = Base

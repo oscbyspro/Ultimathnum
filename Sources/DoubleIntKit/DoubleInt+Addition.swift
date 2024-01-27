@@ -23,7 +23,7 @@ extension DoubleInt {
         var overflow = Overflow.capture(&self.low) {
             try $0.plus(increment.low)
         }
-    
+        
         overflow = overflow && Overflow.capture(&self.high) {
             try $0.incremented()
         }
