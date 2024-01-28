@@ -34,6 +34,9 @@ extension Test {
         //=--------------------------------------=
         XCTAssertEqual(lhs & rhs, value, file: file, line: line)
         XCTAssertEqual(rhs & lhs, value, file: file, line: line)
+        //=--------------------------------------=
+        XCTAssertEqual({ var x = lhs; x &= rhs; return x }(), value, file: file, line: line)
+        XCTAssertEqual({ var x = rhs; x &= lhs; return x }(), value, file: file, line: line)
     }
     
     public static func or<T: BitOperable & Equatable>(
@@ -42,6 +45,9 @@ extension Test {
         //=--------------------------------------=
         XCTAssertEqual(lhs | rhs, value, file: file, line: line)
         XCTAssertEqual(rhs | lhs, value, file: file, line: line)
+        //=--------------------------------------=
+        XCTAssertEqual({ var x = lhs; x |= rhs; return x }(), value, file: file, line: line)
+        XCTAssertEqual({ var x = rhs; x |= lhs; return x }(), value, file: file, line: line)
     }
     
     public static func xor<T: BitOperable & Equatable>(
@@ -50,5 +56,8 @@ extension Test {
         //=--------------------------------------=
         XCTAssertEqual(lhs ^ rhs, value, file: file, line: line)
         XCTAssertEqual(rhs ^ lhs, value, file: file, line: line)
+        //=--------------------------------------=
+        XCTAssertEqual({ var x = lhs; x ^= rhs; return x }(), value, file: file, line: line)
+        XCTAssertEqual({ var x = rhs; x ^= lhs; return x }(), value, file: file, line: line)
     }
 }

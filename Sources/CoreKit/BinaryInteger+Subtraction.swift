@@ -32,6 +32,18 @@ extension BinaryInteger {
     @inlinable public static func &-(lhs: Self, rhs: Self) -> Self {
         Overflow.ignore({ try lhs.minus(rhs) })
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Inout
+    //=------------------------------------------------------------------------=
+
+    @inlinable public static func -=(lhs: inout Self, rhs: Self) {
+        lhs = lhs - rhs
+    }
+
+    @inlinable public static func &-=(lhs: inout Self, rhs: Self) {
+        lhs = lhs &- rhs
+    }
 }
 
 //=----------------------------------------------------------------------------=

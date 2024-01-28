@@ -33,10 +33,16 @@ extension Test {
     public static func subtractionAsSomeBinaryInteger<T: BinaryInteger>(
     _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
-        XCTAssertEqual(lhs &- rhs, value, file: file, line: line)
-        //=--------------------------------------=
-        if !overflow {
-            XCTAssertEqual(lhs - rhs, value, file: file, line: line)
+        brr: do {
+            XCTAssertEqual(lhs &- rhs, value, file: file, line: line)
+        };  if !overflow {
+            XCTAssertEqual(lhs  - rhs, value, file: file, line: line)
+        }
+        
+        brr: do {
+            XCTAssertEqual({ var x = lhs; x &-= rhs; return x }(), value, file: file, line: line)
+        };  if !overflow {
+            XCTAssertEqual({ var x = lhs; x  -= rhs; return x }(), value, file: file, line: line)
         }
         //=--------------------------------------=
         if !overflow {

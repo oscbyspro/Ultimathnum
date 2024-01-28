@@ -39,6 +39,11 @@ extension Test {
             XCTAssertEqual(dividend / divisor, quotient,  file: file, line: line)
             XCTAssertEqual(dividend % divisor, remainder, file: file, line: line)
         }
+        
+        if !overflow {
+            XCTAssertEqual({ var x = dividend; x /= divisor; return x }(), quotient,  file: file, line: line)
+            XCTAssertEqual({ var x = dividend; x %= divisor; return x }(), remainder, file: file, line: line)
+        }
         //=--------------------------------------=
         XCTAssertEqual(Overflow.capture({ try dividend.quotient (divisor: divisor) }).value,    quotient,  file: file, line: line)
         XCTAssertEqual(Overflow.capture({ try dividend.quotient (divisor: divisor) }).overflow, overflow,  file: file, line: line)

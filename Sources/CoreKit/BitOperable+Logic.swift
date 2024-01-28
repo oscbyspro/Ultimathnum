@@ -8,32 +8,24 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Binary Integer x Division
+// MARK: * Bit Operable x Logic
 //*============================================================================*
 
-extension BinaryInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static func /(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        try! lhs.quotient (divisor: rhs)
-    }
-    
-    @inlinable public static func %(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        try! lhs.remainder(divisor: rhs)
-    }
-    
+extension BitOperable {
+        
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Inout
     //=------------------------------------------------------------------------=
 
-    @inlinable public static func /=(lhs: inout Self, rhs: Self) {
-        lhs = lhs / rhs
+    @inlinable public static func &=(lhs: inout Self, rhs: Self) {
+        lhs = lhs & rhs
     }
 
-    @inlinable public static func %=(lhs: inout Self, rhs: Self) {
-        lhs = lhs % rhs
+    @inlinable public static func |=(lhs: inout Self, rhs: Self) {
+        lhs = lhs | rhs
+    }
+    
+    @inlinable public static func ^=(lhs: inout Self, rhs: Self) {
+        lhs = lhs ^ rhs
     }
 }

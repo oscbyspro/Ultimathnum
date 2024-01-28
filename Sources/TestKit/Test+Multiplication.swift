@@ -47,12 +47,20 @@ extension Test {
     public static func multiplicationAsSomeBinaryInteger<T: BinaryInteger>(
     _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
-        XCTAssertEqual(lhs &* rhs, value, file: file, line: line)
-        XCTAssertEqual(rhs &* lhs, value, file: file, line: line)
-        //=--------------------------------------=
-        if !overflow {
-            XCTAssertEqual(lhs * rhs, value, file: file, line: line)
-            XCTAssertEqual(rhs * lhs, value, file: file, line: line)
+        brr: do {
+            XCTAssertEqual(lhs &* rhs, value, file: file, line: line)
+            XCTAssertEqual(rhs &* lhs, value, file: file, line: line)
+        };  if !overflow {
+            XCTAssertEqual(lhs  * rhs, value, file: file, line: line)
+            XCTAssertEqual(rhs  * lhs, value, file: file, line: line)
+        }
+        
+        brr: do {
+            XCTAssertEqual({ var x = lhs; x &*= rhs; return x }(), value, file: file, line: line)
+            XCTAssertEqual({ var x = rhs; x &*= lhs; return x }(), value, file: file, line: line)
+        };  if !overflow {
+            XCTAssertEqual({ var x = lhs; x  *= rhs; return x }(), value, file: file, line: line)
+            XCTAssertEqual({ var x = rhs; x  *= lhs; return x }(), value, file: file, line: line)
         }
         //=--------------------------------------=
         XCTAssertEqual(Overflow.capture({ try lhs.times(rhs) }).value,    value,    file: file, line: line)

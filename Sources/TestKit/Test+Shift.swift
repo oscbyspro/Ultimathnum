@@ -41,52 +41,63 @@ extension Test {
         
     public static func smartShiftLeft<T: SystemsInteger>(
     _ instance: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
-        //=--------------------------------------=
-        XCTAssertEqual(instance << shift, result, file: file, line: line)
-        //=--------------------------------------=
+        brr: do {
+            XCTAssertEqual({         instance    <<  shift           }(), result, file: file, line: line)
+            XCTAssertEqual({ var x = instance; x <<= shift; return x }(), result, file: file, line: line)
+        }
+        
         if  let shift = try? shift.negated() {
-            XCTAssertEqual(instance  >> shift, result, file: file, line: line)
+            XCTAssertEqual({         instance    >>  shift           }(), result, file: file, line: line)
+            XCTAssertEqual({ var x = instance; x >>= shift; return x }(), result, file: file, line: line)
         }
         
         if !shift.isLessThanZero, shift.magnitude < T.bitWidth {
-            XCTAssertEqual(instance &<< shift, result, file: file, line: line)
+            Test.maskedShiftLeft(instance, shift, result, file: file, line: line)
         }
     }
     
     public static func smartShiftRight<T: SystemsInteger>(
     _ instance: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
-        //=--------------------------------------=
-        XCTAssertEqual(instance >> shift, result, file: file, line: line)
-        //=--------------------------------------=
+        brr: do {
+            XCTAssertEqual({         instance    >>  shift           }(), result, file: file, line: line)
+            XCTAssertEqual({ var x = instance; x >>= shift; return x }(), result, file: file, line: line)
+        }
+        
         if  let shift = try? shift.negated() {
-            XCTAssertEqual(instance  << shift, result, file: file, line: line)
+            XCTAssertEqual({         instance    <<  shift           }(), result, file: file, line: line)
+            XCTAssertEqual({ var x = instance; x <<= shift; return x }(), result, file: file, line: line)
         }
         
         if !shift.isLessThanZero, shift.magnitude < T.bitWidth {
-            XCTAssertEqual(instance &>> shift, result, file: file, line: line)
+            Test.maskedShiftRight(instance, shift, result, file: file, line: line)
         }
     }
     
     public static func maskedShiftLeft<T: SystemsInteger>(
     _ instance: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
         //=--------------------------------------=
-        XCTAssertEqual(instance &<< shift, result, file: file, line: line)
+        func check(_ instance: T, _ shift: T, _ result: T) {
+            XCTAssertEqual({         instance    &<<  shift           }(), result, file: file, line: line)
+            XCTAssertEqual({ var x = instance; x &<<= shift; return x }(), result, file: file, line: line)
+        }
+        //=--------------------------------------=
+        check(instance, shift, result)
         //=--------------------------------------=
         if  let increment = try? T(magnitude: T.bitWidth) {
             if  let shift = try? shift.plus(increment) {
-                XCTAssertEqual(instance &<< shift, result, file: file, line: line)
+                check(instance, shift, result)
             }
             
             if  let shift = try? shift.plus(increment).plus(increment) {
-                XCTAssertEqual(instance &<< shift, result, file: file, line: line)
+                check(instance, shift, result)
             }
             
             if  let shift = try? shift.minus(increment) {
-                XCTAssertEqual(instance &<< shift, result, file: file, line: line)
+                check(instance, shift, result)
             }
             
             if  let shift = try? shift.minus(increment).minus(increment) {
-                XCTAssertEqual(instance &<< shift, result, file: file, line: line)
+                check(instance, shift, result)
             }
         }
     }
@@ -94,23 +105,28 @@ extension Test {
     public static func maskedShiftRight<T: SystemsInteger>(
     _ instance: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
         //=--------------------------------------=
-        XCTAssertEqual(instance &>> shift, result, file: file, line: line)
+        func check(_ instance: T, _ shift: T, _ result: T) {
+            XCTAssertEqual({         instance    &>>  shift           }(), result, file: file, line: line)
+            XCTAssertEqual({ var x = instance; x &>>= shift; return x }(), result, file: file, line: line)
+        }
+        //=--------------------------------------=
+        check(instance, shift, result)
         //=--------------------------------------=
         if  let increment = try? T(magnitude: T.bitWidth) {
             if  let shift = try? shift.plus(increment) {
-                XCTAssertEqual(instance &>> shift, result, file: file, line: line)
+                check(instance, shift, result)
             }
             
             if  let shift = try? shift.plus(increment).plus(increment) {
-                XCTAssertEqual(instance &>> shift, result, file: file, line: line)
+                check(instance, shift, result)
             }
             
             if  let shift = try? shift.minus(increment) {
-                XCTAssertEqual(instance &>> shift, result, file: file, line: line)
+                check(instance, shift, result)
             }
             
             if  let shift = try? shift.minus(increment).minus(increment) {
-                XCTAssertEqual(instance &>> shift, result, file: file, line: line)
+                check(instance, shift, result)
             }
         }
     }
