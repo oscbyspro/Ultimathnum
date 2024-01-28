@@ -41,7 +41,7 @@ extension ExchangeInt where Element == Element.Magnitude {
         
         @inlinable init(_ base: ExchangeInt, from position: ExchangeInt.Index) {
             self.base  = base
-            self.limit = ExchangeInt.count(of: base.base)
+            self.limit = ExchangeInt.count(chunking: base.base)
             self.index = position
         }
         

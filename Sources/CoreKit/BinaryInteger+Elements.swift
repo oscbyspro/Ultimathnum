@@ -44,7 +44,7 @@ extension BinaryInteger where Element == Self {
         self.init(bitPattern: source)
     }
     
-    @inlinable public init<T>(load source: inout ExchangeInt<T, Element.Magnitude>.Stream) {
+    @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
         self.init(load: source.next())
     }
     

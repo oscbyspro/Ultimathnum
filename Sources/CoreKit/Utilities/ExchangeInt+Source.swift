@@ -18,18 +18,18 @@ extension ExchangeInt where Element == Element.Magnitude {
     //=------------------------------------------------------------------------=
     
     @inlinable public func source() -> Prefix {
-        self.prefix(BitPattern.count(of: self.base))
+        self.prefix(BitPattern.count(chunking: self.base))
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable internal static func count(of base: Base) -> Int {
+    @inlinable internal static func count(chunking base: Base) -> Int {
         switch comparison {
-        case Signum.same: Equal.count(of: base)
-        case Signum.less: Minor.count(of: base)
-        case Signum.more: Major.count(of: base)
+        case Signum.same: Equal.count(chunking: base)
+        case Signum.less: Minor.count(chunking: base)
+        case Signum.more: Major.count(chunking: base)
         }
     }
 }
@@ -44,7 +44,7 @@ extension ExchangeInt.Equal where Element == Element.Magnitude {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable internal static func count(of base: some Collection<Base.Element>) -> Int {
+    @inlinable internal static func count(chunking base: some Collection<Base.Element>) -> Int {
         //=--------------------------------------=
         precondition(ExchangeInt.comparison == Signum.same, String.unreachable())
         //=--------------------------------------=
@@ -62,7 +62,7 @@ extension ExchangeInt.Minor where Element == Element.Magnitude {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
 
-    @inlinable internal static func count(of base: some Collection<Base.Element>) -> Int {
+    @inlinable internal static func count(chunking base: some Collection<Base.Element>) -> Int {
         //=--------------------------------------=
         precondition(ExchangeInt.comparison == Signum.less, String.unreachable())
         //=--------------------------------------=
@@ -80,7 +80,7 @@ extension ExchangeInt.Major where Element == Element.Magnitude {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable internal static func count(of base: some Collection<Base.Element>) -> Int {
+    @inlinable internal static func count(chunking base: some Collection<Base.Element>) -> Int {
         //=--------------------------------------=
         precondition(ExchangeInt.comparison == Signum.more, String.unreachable())
         //=--------------------------------------=

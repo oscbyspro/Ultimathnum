@@ -23,9 +23,14 @@
 ///
 /// Its magnitude may be signed to accomodate lone big integers.
 ///
+/// ### Stride
+///
+/// Its stride is Swift.Int which is used to step through Swift's ranges.
+///
 public protocol BinaryInteger: BitCastable, BitOperable, Comparable, 
-ExpressibleByIntegerLiteral, Hashable, Sendable, _MaybeLosslessStringConvertible where
-Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude {
+ExpressibleByIntegerLiteral, Hashable, Sendable, Strideable,
+_MaybeLosslessStringConvertible where Magnitude.BitPattern == BitPattern,
+Magnitude.Element == Element.Magnitude, Stride == Swift.Int {
     
     associatedtype Element: SystemsInteger = Self where Element.Element == Element
     

@@ -35,6 +35,14 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    @inlinable public static func void(_ value: () throws -> Value) throws -> Value {
+        attempt: do {
+            return try value()
+        }   catch {
+            throw Overflow<Void>()
+        }
+    }
+    
     @inlinable public static func ignore(_ value: () throws -> Value) -> Value {
         Result(value).value
     }

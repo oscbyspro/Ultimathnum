@@ -49,7 +49,7 @@ extension ExchangeInt.Equal where Element == Element.Magnitude {
         precondition(ExchangeInt.comparison == Signum.same, String.unreachable())
         //=--------------------------------------=
         let sign = Base.Element(repeating: bit)
-        return self.count(of: base.reversed().trimmingPrefix(while:{ $0 == sign }))
+        return self.count(chunking: base.reversed().trimmingPrefix(while:{ $0 == sign }))
     }
 }
 
@@ -69,9 +69,9 @@ extension ExchangeInt.Minor where Element == Element.Magnitude {
         //=--------------------------------------=
         let sign = Base.Element(repeating: bit)
         let majorSuffix = base.reversed().prefix(while:{ $0 == sign })
-        let minorSuffix = base.dropLast(majorSuffix.count).last?.count(bit, option: Bit.Selection.descending) ?? (00000)
-        let totalSuffix = majorSuffix.count *  Base.Element.bitWidth.load(as: Int.self) + minorSuffix.load(as: Int.self)
-        return self.count(of: base) - totalSuffix / Element.bitWidth.load(as: Int.self)
+        let minorSuffix = base.dropLast(majorSuffix.count).last?.count(bit, option: Bit.Selection.descending) ?? (0000)
+        let totalSuffix = majorSuffix.count * Base.Element.bitWidth.load(as: Int.self) + minorSuffix.load(as: Int.self)
+        return self.count(chunking: base) - totalSuffix / Element.bitWidth.load(as: Int.self)
     }
 }
 
@@ -90,6 +90,6 @@ extension ExchangeInt.Major where Element == Element.Magnitude {
         precondition(ExchangeInt.comparison == Signum.more, String.unreachable())
         //=--------------------------------------=
         let sign = Base.Element(repeating: bit)
-        return self.count(of: base.reversed().trimmingPrefix(while:{ $0 == sign }))
+        return self.count(chunking: base.reversed().trimmingPrefix(while:{ $0 == sign }))
     }
 }
