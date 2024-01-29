@@ -22,7 +22,7 @@ extension DoubleInt {
     @inlinable public init<T>(load source: T) where T: BitCastable<Element.BitPattern> {
         self.init(low: Low(load: source))
     }
-
+    
     @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
         //=--------------------------------------=
         let low  = Low (load: &source)

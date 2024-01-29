@@ -120,13 +120,13 @@ Magnitude.Element == Element.Magnitude, Stride == Swift.Int {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self
+    @inlinable static func  <<(instance: consuming Self, shift: borrowing Self) -> Self
     
-    @inlinable static func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self
+    @inlinable static func &<<(instance: consuming Self, shift: borrowing Self) -> Self
     
-    @inlinable static func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self
+    @inlinable static func  >>(instance: consuming Self, shift: borrowing Self) -> Self
     
-    @inlinable static func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self
+    @inlinable static func &>>(instance: consuming Self, shift: borrowing Self) -> Self
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

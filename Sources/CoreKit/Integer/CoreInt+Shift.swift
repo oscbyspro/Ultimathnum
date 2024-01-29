@@ -17,19 +17,19 @@ extension CoreInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(lhs.base  << rhs.base)
+    @inlinable public static func  <<(instance: consuming Self, shift: borrowing Self) -> Self {
+        Self(instance.base  << shift.base)
     }
     
-    @inlinable public static func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(lhs.base &<< rhs.base)
+    @inlinable public static func &<<(instance: consuming Self, shift: borrowing Self) -> Self {
+        Self(instance.base &<< shift.base)
     }
     
-    @inlinable public static func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(lhs.base  >> rhs.base)
+    @inlinable public static func  >>(instance: consuming Self, shift: borrowing Self) -> Self {
+        Self(instance.base  >> shift.base)
     }
     
-    @inlinable public static func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(lhs.base &>> rhs.base)
+    @inlinable public static func &>>(instance: consuming Self, shift: borrowing Self) -> Self {
+        Self(instance.base &>> shift.base)
     }
 }

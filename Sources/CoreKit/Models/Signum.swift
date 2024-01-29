@@ -60,4 +60,8 @@
         case .more: .less
         }
     }
+    
+    @inlinable public static prefix func -(instance: consuming Self) -> Self {
+        instance.negated()
+    }
 }

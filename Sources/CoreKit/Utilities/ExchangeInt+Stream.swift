@@ -51,7 +51,7 @@ extension ExchangeInt where Element == Element.Magnitude {
         
         @inlinable mutating public func next() -> Element {
             defer {
-                self.index = self.index + self.index < self.limit ? 1 : 0
+                self.index += (self.index < self.limit) ? 1 : 0
             }
             
             return self.base[self.index] as Element

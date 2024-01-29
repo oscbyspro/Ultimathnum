@@ -43,8 +43,12 @@ final class SignumTests: XCTestCase {
     }
     
     func testNegation() {
-        XCTAssertEqual(T.less.negated(), T.more)
-        XCTAssertEqual(T.same.negated(), T.same)
-        XCTAssertEqual(T.more.negated(), T.less)
+        XCTAssertEqual(-T.less, T.more)
+        XCTAssertEqual(-T.same, T.same)
+        XCTAssertEqual(-T.more, T.less)
+        
+        XCTAssertEqual( T.less.negated(), T.more)
+        XCTAssertEqual( T.same.negated(), T.same)
+        XCTAssertEqual( T.more.negated(), T.less)
     }
 }

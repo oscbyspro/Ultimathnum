@@ -75,7 +75,7 @@ import CoreKit
     }
     
     @inlinable public var magnitude: Magnitude {
-        fatalError("TODO")
+        Magnitude(bitPattern: self.isLessThanZero ? ~self &+ 1 : self)
     }
 }
 

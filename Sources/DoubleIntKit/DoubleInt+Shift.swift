@@ -19,23 +19,23 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func <<(lhs: consuming Self, rhs: Self) -> Self {
-        if  rhs.isLessThanZero {
-            return lhs >> -rhs
-        }   else if Magnitude(bitPattern: rhs) >= Self.bitWidth {
+    @inlinable public static func <<(instance: consuming Self, shift: Self) -> Self {
+        if  shift.isLessThanZero {
+            return instance >> -shift
+        }   else if Magnitude(bitPattern: shift) >= Self.bitWidth {
             return Self(repeating: Bit(bitPattern: false))
         }   else {
-            return lhs &>> rhs
+            return instance &<< shift
         }
     }
     
-    @inlinable public static func >>(lhs: consuming Self, rhs: Self) -> Self {
-        if  rhs.isLessThanZero {
-            return lhs << -rhs
-        }   else if Magnitude(bitPattern: rhs) >= Self.bitWidth {
-            return Self(repeating: Bit(bitPattern: lhs.isLessThanZero))
+    @inlinable public static func >>(instance: consuming Self, shift: Self) -> Self {
+        if  shift.isLessThanZero {
+            return instance << -shift
+        }   else if Magnitude(bitPattern: shift) >= Self.bitWidth {
+            return Self(repeating: Bit(bitPattern: instance.isLessThanZero))
         }   else {
-            return lhs &<< rhs
+            return instance &>> shift
         }
     }
     
@@ -43,35 +43,39 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func &<<(lhs: consuming Self, rhs: Self) -> Self {
+    @inlinable public static func &<<(instance: consuming Self, shift: Self) -> Self {
         //=--------------------------------------=
-        let rhs: Base.Magnitude = rhs.low & (Self.bitWidth &- 1).low
+        // Self.bitWidth - 1 fits in Base.Magnitude
         //=--------------------------------------=
-        if  rhs.load(as: UX.self) < Base.bitWidth.load(as: UX.self) {
-            lhs.high = lhs.high &<< Base(bitPattern: rhs)
-            lhs.high = lhs.high |   Base(bitPattern: lhs.low &>> (Base.bitWidth &- rhs))
-            lhs.low  = lhs.low  &<< rhs
-        }   else if rhs.load(as: UX.self) > Base.bitWidth.load(as: UX.self) {
-            lhs.low  = Base.Magnitude(repeating: Bit(bitPattern: false))
-            lhs.high = Base(bitPattern: lhs.low &<< (rhs &- Base.bitWidth))
+        let shift: Base.Magnitude = shift.low & (Self.bitWidth &- 1).low
+        //=--------------------------------------=
+        if  shift.load(as: UX.self) >= Base.bitWidth.load(as: UX.self) {
+            instance.high    = Base(bitPattern: instance.low &<< (shift &- Base.bitWidth))
+            instance.low     = Base.Magnitude(repeating: Bit(bitPattern: false))
+        }   else if shift   != Base.Magnitude() {
+            instance.high &<<= Base(bitPattern: shift)
+            instance.high   |= Base(bitPattern: instance.low &>> (Base.bitWidth &- shift))
+            instance.low  &<<= shift
         }
         //=--------------------------------------=
-        return lhs as Self as Self as Self as Self
+        return instance as Self as Self as Self as Self
     }
     
-    @inlinable public static func &>>(lhs: consuming Self, rhs: Self) -> Self {
+    @inlinable public static func &>>(instance: consuming Self, shift: Self) -> Self {
         //=--------------------------------------=
-        let rhs: Base.Magnitude = rhs.low & (Self.bitWidth &- 1).low
+        // Self.bitWidth - 1 fits in Base.Magnitude
         //=--------------------------------------=
-        if  rhs.load(as: UX.self) < Base.bitWidth.load(as: UX.self) {
-            lhs.low  = lhs.low  &>> rhs
-            lhs.low  = lhs.low  |   Base.Magnitude(bitPattern: lhs.high &<< Base(bitPattern: Base.bitWidth &- rhs))
-            lhs.high = lhs.high &>> Base(bitPattern: rhs)
-        }   else if rhs.load(as: UX.self) > Base.bitWidth.load(as: UX.self) {
-            lhs.low  = Base.Magnitude(bitPattern: lhs.high &>> Base(bitPattern: rhs &- Base.bitWidth))
-            lhs.high = Base(repeating: Bit(bitPattern: lhs.high.isLessThanZero))
+        let shift: Base.Magnitude = shift.low & (Self.bitWidth &- 1).low
+        //=--------------------------------------=
+        if  shift.load(as: UX.self) >= Base.bitWidth.load(as: UX.self) {
+            instance.low     = Base.Magnitude(bitPattern: instance.high &>> Base(bitPattern: shift &- Base.bitWidth))
+            instance.high    = Base(repeating: Bit(bitPattern: instance.high.isLessThanZero))
+        }   else if shift   != Base.Magnitude() {
+            instance.low  &>>= shift
+            instance.low    |= Base.Magnitude(bitPattern: instance.high &<< Base(bitPattern: Base.bitWidth &- shift))
+            instance.high &>>= Base(bitPattern: shift)
         }
         //=--------------------------------------=
-        return lhs as Self as Self as Self as Self
+        return instance as Self as Self as Self as Self
     }
 }
