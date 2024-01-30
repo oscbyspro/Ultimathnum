@@ -131,7 +131,7 @@
 extension Overflow: BitCastable where Value: BitCastable {
     
     //=------------------------------------------------------------------------=
-    // MARK: Details x Bit Pattern
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
     @inlinable public init(bitPattern: consuming Overflow<Value.BitPattern>) {
@@ -148,7 +148,7 @@ extension Overflow: BitCastable where Value: BitCastable {
 extension Overflow.Result: BitCastable where Value: BitCastable {
     
     //=------------------------------------------------------------------------=
-    // MARK: Details x Bit Pattern
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
     @inlinable public init(bitPattern: consuming Overflow<Value.BitPattern>.Result) {

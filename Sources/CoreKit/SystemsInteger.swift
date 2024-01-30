@@ -51,6 +51,10 @@
 ///
 /// - Note: It is an alternative in case typed throws don't perform well.
 ///
+/// ### Development
+///
+/// - TODO: Consider `static func squaring(_:) -> Doublet<Self>`
+///
 public protocol SystemsInteger: BinaryInteger where Magnitude: SystemsInteger {
     
     //=------------------------------------------------------------------------=
