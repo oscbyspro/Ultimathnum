@@ -61,7 +61,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
         
         Namespace.withUnsafeTemporaryAllocation(of: Base.Element.self, count: 2 * (z0c + z1c)) { buffer in
             var pointer: UnsafeMutablePointer<Base.Element>
-            var index:   UnsafeMutableBufferPointer<Base.Element>.Index
+            var (index): UnsafeMutableBufferPointer<Base.Element>.Index
             //=----------------------------------=
             // pointee: deferred deinitialization
             //=----------------------------------=
@@ -169,7 +169,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
         
         Namespace.withUnsafeTemporaryAllocation(of: Base.Element.self, count: 3 * (x1s.count + x0s.count)) { buffer in
             var pointer: UnsafeMutablePointer<Base.Element>
-            var index:   UnsafeMutableBufferPointer<Base.Element>.Index
+            var (index): UnsafeMutableBufferPointer<Base.Element>.Index
             //=----------------------------------=
             // pointee: deferred deinitialization
             //=----------------------------------=

@@ -38,22 +38,22 @@ final class DoubleIntTests: XCTestCase {
     static let types: [any SystemsInteger.Type] = [
         I8x2.self,
         U8x2.self,
-        //I8x4.self,
-        //U8x4.self,
+        I8x4.self,
+        U8x4.self,
         IXx2.self,
         UXx2.self,
-        //IXx4.self,
-        //UXx4.self,
+        IXx4.self,
+        UXx4.self,
     ]
     
     static let bases: [any SystemsInteger.Type] = [
         I8x2.High.self,
         U8x2.High.self,
-        //I8x4.High.self,
-        //U8x4.High.self,
+        I8x4.High.self,
+        U8x4.High.self,
         IXx2.High.self,
         UXx2.High.self,
-        //IXx4.High.self,
-        //UXx4.High.self,
+        IXx4.High.self,
+        UXx4.High.self,
     ]
 }

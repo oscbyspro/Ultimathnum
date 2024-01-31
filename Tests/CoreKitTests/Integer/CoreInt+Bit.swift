@@ -22,8 +22,8 @@ extension CoreIntTests {
     
     func testInitBit() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            XCTAssertEqual(T(repeating: 0 as Bit),  0)
-            XCTAssertEqual(T(repeating: 1 as Bit), ~0)
+            XCTAssertEqual(T(repeating: 0 as Bit),  0 as T)
+            XCTAssertEqual(T(repeating: 1 as Bit), ~0 as T)
         }
         
         for type in Self.types {
@@ -43,10 +43,10 @@ extension CoreIntTests {
                     XCTAssertEqual((~0 as T).count(bit, option: selection), bit == 1 ? T.bitWidth : 0)
                 }
                 
-                for element: (integer: T, bit: Bit) in [(11, 0), (~11, 1)] {
-                    XCTAssertEqual(element.integer.count(bit, option:        .all), bit == element.bit ? T.bitWidth - 3 : 3)
-                    XCTAssertEqual(element.integer.count(bit, option:  .ascending), bit == element.bit ?              0 : 2)
-                    XCTAssertEqual(element.integer.count(bit, option: .descending), bit == element.bit ? T.bitWidth - 4 : 0)
+                for element: (value: T, bit: Bit) in [(11, 0), (~11, 1)] {
+                    XCTAssertEqual(element.value.count(bit, option:        .all), bit == element.bit ? T.bitWidth - 3 : 3)
+                    XCTAssertEqual(element.value.count(bit, option:  .ascending), bit == element.bit ?              0 : 2)
+                    XCTAssertEqual(element.value.count(bit, option: .descending), bit == element.bit ? T.bitWidth - 4 : 0)
                 }
             }
         }

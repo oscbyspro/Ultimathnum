@@ -80,7 +80,7 @@ extension DoubleInt where Base == Base.Magnitude {
         let o0 = Overflow.capture(&ax.high, map:{ try $0.plus(ay.value) })
         let o1 = Overflow.capture(&ax.high, map:{ try $0.plus(bx.value) })
         //=--------------------------------------=
-        return try Overflow.resolve(Self(ax), overflow: by || ay.overflow || bx.overflow ||  o0 || o1)
+        return try Overflow.resolve(Self(ax), overflow: by || ay.overflow || bx.overflow || o0 || o1)
     }
     
     //=------------------------------------------------------------------------=
@@ -101,12 +101,9 @@ extension DoubleInt where Base == Base.Magnitude {
         let b1 = Overflow.capture(&by.low,  map:{ try $0.plus(bx.high) })
         let b2 = Base(Bit(bitPattern: b0))  &+  Base(Bit(bitPattern: b1))
         //=--------------------------------------=
-        let lo = Magnitude(ax)
-        var hi = Magnitude(by)
-        
-        let o0 = Overflow.capture(&hi.low,  map:{ try $0.plus(a2) })
-        let _  = Overflow.capture(&hi.high, map:{ try $0.plus(b2 &+ Base(Bit(bitPattern: o0))) })
-        
-        return Doublet(low: lo, high: hi)
+        let o0 = Overflow.capture(&by.low,  map:{ try $0.plus(a2) })
+        let _  = Overflow.capture(&by.high, map:{ try $0.plus(b2 &+ Base(Bit(bitPattern: o0))) })
+        //=--------------------------------------=
+        return Doublet(low: Magnitude(ax), high: Magnitude(by))
     }
 }
