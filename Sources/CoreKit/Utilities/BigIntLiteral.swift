@@ -11,25 +11,33 @@
 // MARK: * Big Int Literal
 //*============================================================================*
 
-@frozen public struct BigIntLiteral: RandomAccessCollection, Sendable {
+@frozen public struct BigIntLiteral: ExpressibleByIntegerLiteral, RandomAccessCollection, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    @usableFromInline let base: StaticBigInt
+    @usableFromInline let base: Swift.StaticBigInt
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ base: StaticBigInt) {
+    @inlinable public init(_ base: Swift.StaticBigInt) {
         self.base = base
+    }
+    
+    @inlinable public init(integerLiteral: Swift.StaticBigInt) {
+        self.base = Swift.StaticBigInt(integerLiteral: integerLiteral)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
+    
+    @inlinable public var appendix: Bit {
+        Bit(bitPattern: self.signum() < 0)
+    }
     
     @inlinable public var bitWidth: Int {
         self.base.bitWidth
@@ -38,10 +46,6 @@
     /// A three-way comparison against zero.
     @inlinable public func signum() -> Signum {
         IX(self.base.signum()).signum()
-    }
-    
-    @inlinable public var elements:  ExchangeInt<Self, IX> {
-        ExchangeInt(self, repeating: Bit(bitPattern: self.signum() < 0))
     }
     
     /// The word at the given index, from least significant to most.

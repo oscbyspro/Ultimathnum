@@ -31,7 +31,7 @@ extension InfiniInt {
         fatalError("TODO")
     }
     
-    @inlinable public var elements: ExchangeInt<ContiguousArray<Element.Magnitude>, Element> {
+    @inlinable public var elements: ContiguousArray<Element.Magnitude> {
         fatalError("TODO")
     }
 }
@@ -58,7 +58,7 @@ extension InfiniInt.Magnitude {
         fatalError("TODO")
     }
     
-    @inlinable public var elements: ExchangeInt<ContiguousArray<Element.Magnitude>, Element> {
+    @inlinable public var elements: ContiguousArray<Element.Magnitude> {
         fatalError("TODO")
     }
 }

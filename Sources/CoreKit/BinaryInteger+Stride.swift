@@ -49,7 +49,8 @@ extension BinaryInteger {
             
             if  Self.isSigned {
                 
-                if  Self.bitWidth.elements < T.bitWidth.elements {
+                if  ExchangeInt(Self.bitWidth, as: Element.Magnitude.self) < 
+                    ExchangeInt(   T.bitWidth, as: Element.Magnitude.self) {
                     return try Self(exactly: T(truncating: instance).plus(stride))
                 }   else {
                     return try instance.plus(Self(truncating: stride))

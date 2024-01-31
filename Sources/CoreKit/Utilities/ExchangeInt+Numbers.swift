@@ -8,20 +8,28 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Binary Integer x Literal
+// MARK: * Exchange Int x Numbers
 //*============================================================================*
 
-extension BinaryInteger {
+extension ExchangeInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(literally source: BigIntLiteral) throws {
-        try self.init(elements: ExchangeInt(source).chunked(), isSigned: true)
+    @inlinable public init(_ source: Base) where Base == BigIntLiteral, Element == IX {
+        self.init(source, as: Element.self)
     }
-
-    @inlinable public init(integerLiteral: BigIntLiteral.IntegerLiteralType) {
-        try! self.init(literally: BigIntLiteral(integerLiteral: integerLiteral))
+    
+    @inlinable public init(_ source: Base, as element: Element.Type = Element.self) where Base == BigIntLiteral {
+        self.init(source, repeating: source.appendix)
+    }
+    
+    @inlinable public init<T>(_ source: T) where T: BinaryInteger, Base == T.Content, Element == T.Element {
+        self.init(source, as: Element.self)
+    }
+    
+    @inlinable public init<T>(_ source: T, as element: Element.Type = Element.self) where T: BinaryInteger, Base == T.Content {
+        self.init(source.elements, repeating: source.appendix)
     }
 }

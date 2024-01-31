@@ -39,11 +39,7 @@ extension DoubleInt {
     ///
     /// - TODO: Build it. Break it. Fix it.
     ///
-    @inlinable public var elements: ExchangeInt<ContiguousArray<Element.Magnitude>, Element> {
-        //=--------------------------------------=
-        let low  = self.low .elements
-        let high = self.high.elements
-        //=--------------------------------------=
-        return ExchangeInt(ContiguousArray(low.base) + ContiguousArray(high.base), isSigned: Self.isSigned)
+    @inlinable public var elements: ContiguousArray<Element.Magnitude> {
+        ContiguousArray(self.low.elements) + ContiguousArray(self.high.elements)
     }
 }

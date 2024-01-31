@@ -30,11 +30,11 @@ extension BinaryInteger {
     }
     
     @inlinable public init<T>(exactly source: T) throws where T: BinaryInteger {
-        try  self.init(elements: source.elements.bitPattern.chunked(), isSigned: T.isSigned)
+        try  self.init(elements: ExchangeInt(source), isSigned: T.isSigned)
     }
     
     @inlinable public init<T>(truncating source: T) where T: BinaryInteger {
-        var stream = source.elements.chunked(as: Element.Magnitude.self).stream()
+        var stream = ExchangeInt(source, as: Element.Magnitude.self).stream()
         self.init(load: &stream)
     }
     

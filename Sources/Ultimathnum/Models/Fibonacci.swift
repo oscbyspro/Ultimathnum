@@ -76,7 +76,7 @@
     @inlinable public init(_ index: Value) throws {
         try self.init()
         
-        let elements = index.elements
+        let elements = ExchangeInt(index)
         if  elements.extension.bit == 1 {
             throw Error.overflow // is negative or infinite
         }

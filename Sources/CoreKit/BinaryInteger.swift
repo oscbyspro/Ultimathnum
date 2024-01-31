@@ -157,7 +157,7 @@ Magnitude.Element == Element.Magnitude, Stride == Swift.Int {
     ///
     @inlinable var appendix: Bit { borrowing get }
     
-    @inlinable var elements: ExchangeInt<Content, Element> { consuming get }
+    @inlinable var elements: Content { consuming get }
     
     @inlinable var magnitude: Magnitude { consuming get }
     

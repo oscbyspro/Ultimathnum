@@ -63,7 +63,7 @@ extension BinaryInteger where Element == Self, Content == CollectionOfOne<Elemen
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public var elements: ExchangeInt<Content, Element> {
-        ExchangeInt(CollectionOfOne(Magnitude(bitPattern: self)), repeating: self.appendix)
+    @inlinable public var elements: Content {
+        CollectionOfOne(Magnitude(bitPattern: self))
     }
 }

@@ -33,7 +33,10 @@ extension Test {
     public static func comparisonAsSomeBinaryInteger<T: BinaryInteger, U: BinaryInteger>(
     _   lhs: T, _ rhs: U, _ expectation: Signum, file: StaticString, line: UInt) {
         //=--------------------------------------=
-        Test.comparisonAsSomeExchangeInt(lhs.elements, rhs.elements, expectation, file: file, line: line)
+        Test.comparisonAsSomeExchangeInt(
+        ExchangeInt(lhs, as: T.Element.self),
+        ExchangeInt(rhs, as: U.Element.self),
+        expectation, file: file, line: line)
         //=--------------------------------------=
         guard let rhs = rhs as? T else { return }
         //=--------------------------------------=
@@ -91,6 +94,9 @@ extension Test {
     public static func comparisonAsSomeExchangeInt<A, B, C, D>(
     _   lhs: ExchangeInt<A, B>, _ rhs: ExchangeInt<C, D>, _ expectation: Signum, file: StaticString, line: UInt) {
         func unidirectional<E, F, G, H>(_ lhs: ExchangeInt<E, F>, _ rhs: ExchangeInt<G, H>, _ expectation: Signum) {
+            //=----------------------------------=
+            let lhs = lhs, rhs = rhs.chunked(as: F.self)
+            //=----------------------------------=
             signum: if rhs.signum() == Signum.same {
                 let result:  Signum = lhs.signum()
                 let success: Bool = result == expectation

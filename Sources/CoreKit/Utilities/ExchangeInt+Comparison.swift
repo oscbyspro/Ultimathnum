@@ -17,27 +17,27 @@ extension ExchangeInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func ==<T, U>(lhs: Self, rhs: ExchangeInt<T, U>) -> Bool {
+    @inlinable public static func ==<T, U>(lhs: Self, rhs: ExchangeInt<T, U>) -> Bool where U.Magnitude == Element.Magnitude {
         lhs.compared(to: rhs) == Signum.same
     }
     
-    @inlinable public static func !=<T, U>(lhs: Self, rhs: ExchangeInt<T, U>) -> Bool {
+    @inlinable public static func !=<T, U>(lhs: Self, rhs: ExchangeInt<T, U>) -> Bool where U.Magnitude == Element.Magnitude {
         lhs.compared(to: rhs) != Signum.same
     }
     
-    @inlinable public static func < <T, U>(lhs: Self, rhs: ExchangeInt<T, U>) -> Bool {
+    @inlinable public static func < <T, U>(lhs: Self, rhs: ExchangeInt<T, U>) -> Bool where U.Magnitude == Element.Magnitude {
         lhs.compared(to: rhs) == Signum.less
     }
     
-    @inlinable public static func >=<T, U>(lhs: Self, rhs: ExchangeInt<T, U>) -> Bool {
+    @inlinable public static func >=<T, U>(lhs: Self, rhs: ExchangeInt<T, U>) -> Bool where U.Magnitude == Element.Magnitude {
         lhs.compared(to: rhs) != Signum.less
     }
     
-    @inlinable public static func > <T, U>(lhs: Self, rhs: ExchangeInt<T, U>) -> Bool {
+    @inlinable public static func > <T, U>(lhs: Self, rhs: ExchangeInt<T, U>) -> Bool where U.Magnitude == Element.Magnitude {
         lhs.compared(to: rhs) == Signum.more
     }
     
-    @inlinable public static func <=<T, U>(lhs: Self, rhs: ExchangeInt<T, U>) -> Bool {
+    @inlinable public static func <=<T, U>(lhs: Self, rhs: ExchangeInt<T, U>) -> Bool where U.Magnitude == Element.Magnitude {
         lhs.compared(to: rhs) != Signum.more
     }
     
@@ -45,8 +45,8 @@ extension ExchangeInt {
         BitPattern.signum(of: self.bitPattern, isSigned: Self.isSigned)
     }
     
-    @inlinable public func compared<T, U>(to other: ExchangeInt<T, U>) -> Signum {
-        BitPattern.compare(self.bitPattern, isSigned: Self.isSigned, to: other.chunked(), isSigned: ExchangeInt<T, U>.isSigned)
+    @inlinable public func compared<T, U>(to other: ExchangeInt<T, U>) -> Signum where U.Magnitude == Element.Magnitude {
+        BitPattern.compare(self.bitPattern, isSigned: Self.isSigned, to: other.bitPattern, isSigned: ExchangeInt<T, U>.isSigned)
     }
 }
 
@@ -64,7 +64,7 @@ extension ExchangeInt where Element == Element.Magnitude {
         //=--------------------------------------=
         // comparison: appendix
         //=--------------------------------------=
-        if  instance.extension.bit == 1 {
+        if  instance.extension.bit == Bit.one {
             return Signum.one(Sign(bitPattern: isSigned))
         }
         //=--------------------------------------=
