@@ -20,14 +20,18 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public init<T>(load source: T) where T: BitCastable<UX.BitPattern> {
+        //=--------------------------------------=
         let low  = Low (load: UX(bitPattern: source))
         let high = High(load: UX(bitPattern: source) >> Low.bitWidth.load(as: UX.self))
+        //=--------------------------------------=
         self.init(low: low, high: high)
     }
     
     @inlinable public func load<T>(as type: T.Type) -> T where T: BitCastable<UX.BitPattern> {
+        //=--------------------------------------=
         let low  = self.low .load(as: UX.self)
         let high = self.high.load(as: UX.self) << Low.bitWidth.load(as: UX.self)
+        //=--------------------------------------=
         return T.init(bitPattern: low |  high)
     }
 }

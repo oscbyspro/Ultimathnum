@@ -18,7 +18,9 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
-    
+    // TODO: consider composable aritmetic, like plus(Base.Magnitude) -> Self
+    //=------------------------------------------------------------------------=
+
     @inlinable public consuming func plus(_ increment: Self) throws -> Self {
         var overflow = Overflow.capture(&self.low) {
             try $0.plus(increment.low)

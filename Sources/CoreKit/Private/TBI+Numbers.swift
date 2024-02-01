@@ -26,6 +26,6 @@ extension Namespace.TupleBinaryInteger {
             carry = Overflow.capture(&value.high, map:{ try (~$0).plus(carry ? 1 : 0) })
         }
         
-        return X2.Magnitude(high: High.Magnitude(bitPattern: value.high), low: High.Magnitude(bitPattern: value.low))
+        return X2.Magnitude(low: value.low, high: Base.Magnitude(bitPattern: value.high))
     }
 }

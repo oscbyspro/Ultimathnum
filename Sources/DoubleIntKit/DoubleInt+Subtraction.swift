@@ -18,6 +18,8 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
+    // TODO: consider composable aritmetic, like minus(Base.Magnitude) -> Self
+    //=------------------------------------------------------------------------=
     
     @inlinable public consuming func negated() throws -> Self {
         try Self().minus(self)

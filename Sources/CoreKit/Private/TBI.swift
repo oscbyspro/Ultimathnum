@@ -17,18 +17,21 @@ extension Namespace {
     ///
     /// A tuple binary integer's signedness is determined by its `High` type.
     ///
-    @frozen public enum TupleBinaryInteger<High> where High: SystemsInteger {
+    @frozen public enum TupleBinaryInteger<Base> where Base: SystemsInteger {
         
         /// An integer.
-        public typealias X1 = High
+        public typealias X1 = Base
         
         /// An integer split into 2 parts.
-        public typealias X2 = Doublet<High>
+        public typealias X2 = Doublet<Base>
+        
+        /// An integer split into 3 parts.
+        public typealias X3 = Triplet<Base>
         
         //*====================================================================*
         // MARK: * Magnitude
         //*====================================================================*
         
-        public typealias Magnitude = TupleBinaryInteger<High.Magnitude>
+        public typealias Magnitude = TupleBinaryInteger<Base.Magnitude>
     }
 }

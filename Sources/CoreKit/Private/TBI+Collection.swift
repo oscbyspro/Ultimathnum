@@ -18,29 +18,29 @@ extension Namespace.TupleBinaryInteger {
     //=------------------------------------------------------------------------=
     
     /// Returns the first element.
-    @inlinable package static func prefix1<Base: Collection>(
-    _   base: Base) -> X1 where Base.Element == High.Magnitude {
-        var index = base.startIndex as Base.Index
+    @inlinable package static func prefix1<T: Collection>(
+    _   base: T) -> X1 where T.Element == Base.Magnitude {
+        var index = base.startIndex as T.Index
         return self.prefix1(base, pushing: &index)
     }
     
     /// Returns the first element by pushing the given `index`.
-    @inlinable package static func prefix1<Base: Collection>(
-    _   base: Base, pushing index: inout Base.Index) -> X1 where Base.Element == High.Magnitude {
+    @inlinable package static func prefix1<T: Collection>(
+    _   base: T, pushing index: inout T.Index) -> X1 where T.Element == Base.Magnitude {
         defer{ base.formIndex(after: &index) }
-        return High(bitPattern: base[index])
+        return Base(bitPattern: base[index])
     }
     
     /// Returns the first two elements.
-    @inlinable package static func prefix2<Base: Collection>(
-    _   base: Base) -> X2 where Base.Element == High.Magnitude {
-        var index = base.startIndex as Base.Index
+    @inlinable package static func prefix2<T: Collection>(
+    _   base: T) -> X2 where T.Element == Base.Magnitude {
+        var index = base.startIndex as T.Index
         return self.prefix2(base, pushing: &index)
     }
     
     /// Returns the first two elements by pushing the given `index`.
-    @inlinable package static func prefix2<Base: Collection>(
-    _   base: Base, pushing index: inout Base.Index) -> X2 where Base.Element == High.Magnitude {
+    @inlinable package static func prefix2<T: Collection>(
+    _   base: T, pushing index: inout T.Index) -> X2 where T.Element == Base.Magnitude {
         let low  = TBI.prefix1(base, pushing: &index) as X1.Magnitude
         let high = TBI.prefix1(base, pushing: &index) as X1
         return X2(high: consume high, low: consume low)
@@ -51,29 +51,29 @@ extension Namespace.TupleBinaryInteger {
     //=------------------------------------------------------------------------=
     
     /// Returns the last element.
-    @inlinable package static func suffix1<Base: BidirectionalCollection>(
-    _   base: Base) -> X1 where Base.Element == High.Magnitude {
-        var index = base.endIndex as Base.Index
+    @inlinable package static func suffix1<T: BidirectionalCollection>(
+    _   base: T) -> X1 where T.Element == Base.Magnitude {
+        var index = base.endIndex as T.Index
         return self.suffix1(base, pulling: &index)
     }
     
     /// Returns the last element by pulling the given `index`.
-    @inlinable package static func suffix1<Base: BidirectionalCollection>(
-    _   base: Base, pulling index: inout Base.Index) -> X1 where Base.Element == High.Magnitude {
+    @inlinable package static func suffix1<T: BidirectionalCollection>(
+    _   base: T, pulling index: inout T.Index) -> X1 where T.Element == Base.Magnitude {
         base.formIndex(before: &index)
-        return High(bitPattern: base[index])
+        return Base(bitPattern: base[index])
     }
     
     /// Returns the last two elements.
-    @inlinable package static func suffix2<Base: BidirectionalCollection>(
-    _   base: Base) -> X2 where Base.Element == High.Magnitude {
-        var index = base.endIndex as Base.Index
+    @inlinable package static func suffix2<T: BidirectionalCollection>(
+    _   base: T) -> X2 where T.Element == Base.Magnitude {
+        var index = base.endIndex as T.Index
         return self.suffix2(base, pulling: &index)
     }
     
     /// Returns the last two elements by pulling the given `index`.
-    @inlinable package static func suffix2<Base: BidirectionalCollection>(
-    _   base: Base, pulling index: inout Base.Index) -> X2 where Base.Element == High.Magnitude {
+    @inlinable package static func suffix2<T: BidirectionalCollection>(
+    _   base: T, pulling index: inout T.Index) -> X2 where T.Element == Base.Magnitude {
         let high = TBI.suffix1(base, pulling: &index) as X1
         let low  = TBI.suffix1(base, pulling: &index) as X1.Magnitude
         return X2(high: consume high, low: consume low)

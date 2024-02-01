@@ -8,11 +8,11 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Doublet
+// MARK: * Triplet
 //*============================================================================*
 
-/// An integer split into 2 parts.
-@frozen public struct Doublet<Base>: Hashable where Base: SystemsInteger {
+/// An integer split into 3 parts.
+@frozen public struct Triplet<Base>: Hashable where Base: SystemsInteger {
     
     public typealias Magnitude = Doublet<Base.Magnitude>
     
@@ -22,9 +22,11 @@
     
     #if _endian(big)
     public var high: Base
+    public var mid:  Base.Magnitude
     public var low:  Base.Magnitude
     #else
     public var low:  Base.Magnitude
+    public var mid:  Base.Magnitude
     public var high: Base
     #endif
     
@@ -32,45 +34,47 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(low: Base.Magnitude, high: Base) {
+    @inlinable public init(low: Base.Magnitude, mid: Base.Magnitude, high: Base) {
         self.low  = low
+        self.mid  = mid
         self.high = high
     }
     
-    @inlinable public init(high: Base, low: Base.Magnitude) {
+    @inlinable public init(high: Base, mid: Base.Magnitude, low: Base.Magnitude) {
         self.high = high
+        self.mid  = mid
         self.low  = low
     }
     
-    @inlinable public init(ascending  components: (low: Base.Magnitude, high: Base)) {
-        self.init(low: components.low, high: components.high)
+    @inlinable public init(ascending  components: (low: Base.Magnitude, mid: Base.Magnitude, high: Base)) {
+        self.init(low: components.low, mid: components.mid, high: components.high)
     }
     
-    @inlinable public init(descending components: (high: Base, low: Base.Magnitude)) {
-        self.init(high: components.high, low: components.low)
+    @inlinable public init(descending components: (high: Base, mid: Base.Magnitude, low: Base.Magnitude)) {
+        self.init(high: components.high, mid: components.mid, low: components.low)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public var ascending:  (low: Base.Magnitude, high: Base) {
+    @inlinable public var ascending:  (low: Base.Magnitude, mid: Base.Magnitude, high: Base) {
         consuming get {
-            (low: self.low, high: self.high)
+            (low: self.low, mid: self.mid, high: self.high)
         }
         
         consuming set {
-            (low: self.low, high: self.high) = newValue
+            (low: self.low, mid: self.mid, high: self.high) = newValue
         }
     }
     
-    @inlinable public var descending: (high: Base, low: Base.Magnitude) {
+    @inlinable public var descending: (high: Base, mid: Base.Magnitude, low: Base.Magnitude) {
         consuming get {
-            (high: self.high, low: self.low)
+            (high: self.high, mid: self.mid, low: self.low)
         }
         
         consuming set {
-            (high: self.high, low: self.low) = newValue
+            (high: self.high, mid: self.mid, low: self.low) = newValue
         }
     }
 }
@@ -79,19 +83,19 @@
 // MARK: + Bit Castable
 //=----------------------------------------------------------------------------=
 
-extension Doublet: BitCastable {
+extension Triplet: BitCastable {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: consuming Doublet<Base.Magnitude>) {
-        self.init(low: bitPattern.low, high: Base(bitPattern: bitPattern.high))
+    @inlinable public init(bitPattern: consuming Triplet<Base.Magnitude>) {
+        self.init(low: bitPattern.low, mid: bitPattern.mid, high: Base(bitPattern: bitPattern.high))
     }
     
-    @inlinable public var bitPattern: Doublet<Base.Magnitude> {
+    @inlinable public var bitPattern: Triplet<Base.Magnitude> {
         consuming get {
-            .init(low: self.low, high: Base.Magnitude(bitPattern: self.high))
+            .init(low: self.low, mid: self.mid, high: Base.Magnitude(bitPattern: self.high))
         }
     }
 }
