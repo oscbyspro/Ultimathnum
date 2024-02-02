@@ -30,13 +30,13 @@ extension Namespace.TupleBinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable package static func bitShiftL12(_ instance: consuming Base, by shift: Base) -> Doublet<Base> {
-        let overshift = shift == Base() ? Base() : self.bitShiftR11(copy instance, by: shift)
+        let overshift = shift == Base() ? Base() : self.bitShiftR11(copy instance, by: ~shift &+ 1)
         instance = self.bitShiftL11(instance, by: shift)
         return Doublet(low: Base.Magnitude(bitPattern: instance), high: overshift)
     }
     
     @inlinable package static func bitShiftL23(_ instance: consuming Doublet<Base>, by shift: Base) -> Triplet<Base> {
-        let overshift = shift == Base() ? Base() : self.bitShiftR11(instance.high, by: shift)
+        let overshift = shift == Base() ? Base() : self.bitShiftR11(instance.high, by: ~shift &+ 1)
         instance = self.bitShiftL22(instance, by: shift)
         return Triplet(low: instance.low, mid: Base.Magnitude(bitPattern: instance.high), high: overshift)
     }

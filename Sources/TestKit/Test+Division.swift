@@ -35,6 +35,11 @@ extension Test {
         //=--------------------------------------=
         let division = Division(quotient: quotient, remainder: remainder)
         //=--------------------------------------=
+        //=--------------------------------------=
+        if !overflow {
+            XCTAssertEqual(dividend, divisor * quotient + remainder, "dividend != divisor * quotient + remainder", file: file, line: line)
+        }
+        
         if !overflow {
             XCTAssertEqual(dividend / divisor, quotient,  file: file, line: line)
             XCTAssertEqual(dividend % divisor, remainder, file: file, line: line)
@@ -71,7 +76,7 @@ extension Test {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Utiliites
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
     public static func divisionAsSomeSystemsInteger<T: SystemsInteger>(

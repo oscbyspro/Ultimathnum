@@ -108,12 +108,10 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         // divisor is greater than or equal
         //=--------------------------------------=
-        let comparison: Signum = rhs.compared(to: lhs)
-        if  comparison >= 0 {
-            switch comparison == Signum.same {
-            case  true: return Division(quotient: 1, remainder: 000)
-            case false: return Division(quotient: 0, remainder: lhs)
-            }
+        switch rhs.compared(to: lhs) {
+        case Signum.less: break
+        case Signum.same: return Division(quotient: 1, remainder: 000)
+        case Signum.more: return Division(quotient: 0, remainder: lhs)
         }
         //=--------------------------------------=
         // division: 1111
@@ -159,7 +157,7 @@ extension DoubleInt where Base == Base.Magnitude {
         // quotient does not fit in two halves
         //=--------------------------------------=
         if  rhs <= lhs.high {
-            let high = Self._divide2222(lhs.high,  by: rhs, shift: shift)
+            let high = Self._divide2222(lhs.high, by: rhs, shift: shift)
             let truncated = Doublet<Self>(high: high.remainder, low: lhs.low)
             return Overflow.Result(Self._divide4222(truncated, by: rhs, shift: shift), overflow: true)
         }
@@ -169,9 +167,9 @@ extension DoubleInt where Base == Base.Magnitude {
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
     @inlinable static func _divide4222(_ lhs: Doublet<Self>, by rhs: Self, shift: Self) -> Division<Self> {
-        assert(rhs != 0, "must not divide by zero")
-        assert(rhs.count(0, option: .descending) == shift, "save shift distance")
-        assert(rhs > lhs.high, "quotient must fit in two halves")
+        Swift.assert(rhs != 0, "must not divide by zero")
+        Swift.assert(rhs.count(0, option: .descending) == shift, "save shift distance")
+        Swift.assert(rhs > lhs.high, "quotient must fit in two halves")
         //=--------------------------------------=
         // division: 2222
         //=--------------------------------------=
@@ -182,8 +180,8 @@ extension DoubleInt where Base == Base.Magnitude {
         // division: 3121
         //=--------------------------------------=
         if  shift.load(as: UX.self) >= Base.bitWidth.load(as: UX.self) {
-            assert(lhs.high.high == 0, "quotient must fit in two halves") // because  lhs.high < rhs && rhs.high == 0
-            let result = Self._divide3121(Triplet(high: lhs.high.low, mid: lhs.low.high, low: lhs.low.low), by: rhs.low)
+            Swift.assert(lhs.high.high == 0, "quotient must fit in two halves") // lhs.high < rhs && rhs.high == 0
+            let result = Self._divide3121(Triplet(low: lhs.low.low, mid: lhs.low.high, high: lhs.high.low), by: rhs.low)
             return Division(quotient: result.quotient, remainder: Self(low: result.remainder))
         }
         //=--------------------------------------=
@@ -195,7 +193,7 @@ extension DoubleInt where Base == Base.Magnitude {
         // division: 3212 (normalized)
         //=--------------------------------------=
         if  lhs.high.high == 0, rhs > Self(high: lhs.high.low, low: lhs.low.high) {
-            let result = Self._divide3212MSB(Triplet(high: lhs.high.low, mid: lhs.low.high, low: lhs.low.low), by: rhs)
+            let result = Self._divide3212MSB(Triplet(low: lhs.low.low, mid: lhs.low.high, high: lhs.high.low), by: rhs)
             return Division(quotient: Self(low: result.quotient), remainder: result.remainder &>> shift)
         }
         //=--------------------------------------=
@@ -210,16 +208,16 @@ extension DoubleInt where Base == Base.Magnitude {
     //=------------------------------------------------------------------------=
     
     @inlinable static func _divide2121(_ lhs: Self, by rhs: Base) -> (quotient: Self, remainder: Base) {
-        let (x, a) = try! lhs.high.divided(by: rhs).components
-        let (y, b) = a == 0 ? try! lhs.low.divided(by: rhs).components : try! Base.dividing(Doublet(high: a, low: lhs.low), by: rhs).components
-        return (quotient: Self(high: x, low: y), remainder: b)
+        let x = try! lhs.high.divided(by: rhs)
+        let y = x.remainder == 0 ? try! lhs.low.divided(by: rhs) : try! Base.dividing(Doublet(low: lhs.low, high: x.remainder), by: rhs)
+        return (quotient: Self(high: x.quotient, low: y.quotient), remainder: y.remainder)
     }
     
     @inlinable static func _divide3121(_ lhs: Triplet<Base>, by rhs: Base) -> (quotient: Self, remainder: Base) {
         Swift.assert(rhs > lhs.high, "quotient must fit in two halves")
-        let (x, a) = try! Base.dividing(Doublet(high: lhs.high, low: lhs.low), by: rhs).components
-        let (y, b) = a == 0 ? try! lhs.low.divided(by: rhs).components : try! Base.dividing(Doublet(high: a, low: lhs.low), by: rhs).components
-        return (quotient: Self(high: x, low: y), remainder: b)
+        let x = try! Base.dividing(Doublet(low: lhs.mid, high: lhs.high), by: rhs)
+        let y = x.remainder == 0 ? try! lhs.low.divided(by: rhs) : try! Base.dividing(Doublet(low: lhs.low, high: x.remainder), by: rhs)
+        return (quotient: Self(high: x.quotient, low: y.quotient), remainder: y.remainder)
     }
     
     //=------------------------------------------------------------------------=
@@ -235,8 +233,8 @@ extension DoubleInt where Base == Base.Magnitude {
     
     /// Divides 4 halves by 2 normalized halves, assuming the quotient fits in 2 halves.
     @inlinable static func _divide4222MSB(_ lhs: Doublet<Self>, by rhs: Self) -> (quotient: Self, remainder: Self) {
-        let (x, a) =  Self._divide3212MSB(Triplet(high: lhs.high.high, mid: lhs.high.low, low: lhs.low.high), by: rhs)
-        let (y, b) =  Self._divide3212MSB(Triplet(high: /*---*/a.high, mid: /*---*/a.low, low: lhs.low.low ), by: rhs)
-        return (quotient: Self(high: x, low: y), remainder: b)
+        let x = Self._divide3212MSB(Triplet(low: lhs.low.high, mid:    lhs.high.low, high:    lhs.high.high), by: rhs)
+        let y = Self._divide3212MSB(Triplet(low: lhs.low.low , mid: x.remainder.low, high: x.remainder.high), by: rhs)
+        return (quotient: Self(high: x.quotient, low: y.quotient), remainder: y.remainder)
     }
 }

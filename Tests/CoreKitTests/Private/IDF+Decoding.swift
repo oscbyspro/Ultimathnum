@@ -25,7 +25,7 @@ final class IntegerDescriptionFormatTestsOnDecoding: XCTestCase {
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
-        
+    
     func testI32() {
         check( "0000000000", I32(truncating: 0x00000000 as U32))
         check( "0050462976", I32(truncating: 0x03020100 as U32))
@@ -35,7 +35,7 @@ final class IntegerDescriptionFormatTestsOnDecoding: XCTestCase {
         check("-0000066052", I32(truncating: 0xfffefdfc as U32))
         check("-0000000001", I32(truncating: 0xffffffff as U32))
     }
-
+    
     func testU32() {
         check( "0000000000", U32(truncating: 0x00000000 as U32))
         check( "0050462976", U32(truncating: 0x03020100 as U32))
