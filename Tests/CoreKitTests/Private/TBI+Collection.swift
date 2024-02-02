@@ -14,33 +14,47 @@ import TestKit
 // MARK: * Tuple Binary Integer x Collection
 //*============================================================================*
 
-final class TupleBinaryIntegerTestsOnCollection: XCTestCase {
+extension TupleBinaryIntegerTests {
     
-    typealias TS = Namespace.TupleBinaryInteger<I64>
-    typealias TU = Namespace.TupleBinaryInteger<U64>
+    private typealias TS = Namespace.TupleBinaryInteger<I64>
+    private typealias TU = Namespace.TupleBinaryInteger<U64>
     
-    typealias S1 = TS.X1
-    typealias S2 = TS.X2
+    private typealias S1 = TS.X1
+    private typealias S2 = TS.X2
     
-    typealias U1 = TU.X1
-    typealias U2 = TU.X2
+    private typealias U1 = TU.X1
+    private typealias U2 = TU.X2
 
     //=------------------------------------------------------------------------=
     // MARK: Tests x Prefix
     //=------------------------------------------------------------------------=
     
     func testPrefix1() {
-        XCTAssert(TS.prefix1([~0    ] as [U64]) == ~0 as TS.X1)
-        XCTAssert(TS.prefix1([~0, ~1] as [U64]) == ~0 as TS.X1)
-        XCTAssert(TU.prefix1([~0    ] as [U64]) == ~0 as TU.X1)
-        XCTAssert(TU.prefix1([~0, ~1] as [U64]) == ~0 as TU.X1)
+        func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
+            typealias X2 = Doublet<Base>
+            typealias X3 = Triplet<Base>
+            
+            XCTAssert(TBI.prefix1([~0    ] as [Base.Magnitude]) == ~0 as Base)
+            XCTAssert(TBI.prefix1([~0, ~1] as [Base.Magnitude]) == ~0 as Base)
+        }
+        
+        for base in Self.bases {
+            whereTheBaseIs(base)
+        }
     }
     
     func testPrefix2() {
-        XCTAssert(TS.prefix2([~0, ~1    ] as [U64]) == TS.X2(low: ~0, high: ~1))
-        XCTAssert(TS.prefix2([~0, ~1, ~2] as [U64]) == TS.X2(low: ~0, high: ~1))
-        XCTAssert(TU.prefix2([~0, ~1    ] as [U64]) == TU.X2(low: ~0, high: ~1))
-        XCTAssert(TU.prefix2([~0, ~1, ~2] as [U64]) == TU.X2(low: ~0, high: ~1))
+        func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
+            typealias X2 = Doublet<Base>
+            typealias X3 = Triplet<Base>
+            
+            XCTAssert(TBI.prefix2([~0, ~1    ] as [Base.Magnitude]) == X2(low: ~0, high: ~1))
+            XCTAssert(TBI.prefix2([~0, ~1, ~2] as [Base.Magnitude]) == X2(low: ~0, high: ~1))
+        }
+        
+        for base in Self.bases {
+            whereTheBaseIs(base)
+        }
     }
     
     //=------------------------------------------------------------------------=
@@ -48,16 +62,30 @@ final class TupleBinaryIntegerTestsOnCollection: XCTestCase {
     //=------------------------------------------------------------------------=
 
     func testSuffix1() {
-        XCTAssert(TS.suffix1([~0    ] as [U64]) == ~0 as S1)
-        XCTAssert(TS.suffix1([~0, ~1] as [U64]) == ~1 as S1)
-        XCTAssert(TU.suffix1([~0    ] as [U64]) == ~0 as U1)
-        XCTAssert(TU.suffix1([~0, ~1] as [U64]) == ~1 as U1)
+        func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
+            typealias X2 = Doublet<Base>
+            typealias X3 = Triplet<Base>
+            
+            XCTAssert(TBI.suffix1([~0    ] as [Base.Magnitude]) == ~0 as Base)
+            XCTAssert(TBI.suffix1([~0, ~1] as [Base.Magnitude]) == ~1 as Base)
+        }
+        
+        for base in Self.bases {
+            whereTheBaseIs(base)
+        }
     }
     
     func testSuffix2() {
-        XCTAssert(TS.suffix2([~0, ~1    ] as [U64]) == TS.X2(low: ~0, high: ~1))
-        XCTAssert(TS.suffix2([~0, ~1, ~2] as [U64]) == TS.X2(low: ~1, high: ~2))
-        XCTAssert(TU.suffix2([~0, ~1    ] as [U64]) == TU.X2(low: ~0, high: ~1))
-        XCTAssert(TU.suffix2([~0, ~1, ~2] as [U64]) == TU.X2(low: ~1, high: ~2))
+        func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
+            typealias X2 = Doublet<Base>
+            typealias X3 = Triplet<Base>
+            
+            XCTAssert(TBI.suffix2([~0, ~1    ] as [Base.Magnitude]) == X2(low: ~0, high: ~1))
+            XCTAssert(TBI.suffix2([~0, ~1, ~2] as [Base.Magnitude]) == X2(low: ~1, high: ~2))
+        }
+        
+        for base in Self.bases {
+            whereTheBaseIs(base)
+        }
     }
 }

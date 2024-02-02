@@ -31,6 +31,10 @@ extension Namespace.TupleBinaryInteger where Base == Base.Magnitude {
     ///
     /// The approximation needs at most two corrections, but looping is faster.
     ///
+    /// ### Development 3
+    ///
+    /// - TODO: `Division<Base, Doublet<Base>>`.
+    ///
     @inlinable package static func formRemainderWithQuotient3212MSB(
     dividing dividend: inout Triplet<Base>, by divisor: Doublet<Base>) -> Base {
         //=--------------------------------------=
@@ -48,8 +52,8 @@ extension Namespace.TupleBinaryInteger where Base == Base.Magnitude {
         //=--------------------------------------=
         var product = self.multiplying213(divisor, by: quotient)
         
-        while self.compare33S(dividend, to: product) == -1 {
-            _ = Overflow.capture(&quotient, map:{ try $0.plus(1) })
+        while self.compare33S(dividend, to: product) == Signum.less {
+            _ = Overflow.capture(&quotient, map:{ try $0.minus(1) })
             _ = self.decrement32B(&product,  by: divisor)
         };  _ = self.decrement33B(&dividend, by: product)
         

@@ -8,26 +8,28 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import TestKit
 
 //*============================================================================*
-// MARK: * Double Int x Comparison
+// MARK: * Tuple Binary Integer
 //*============================================================================*
 
-extension DoubleInt {
+final class TupleBinaryIntegerTests: XCTestCase {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.same
-    }
+    static let bases: [any SystemsInteger.Type] = {
+        basesWhereIsSigned +
+        basesWhereIsUnsigned
+    }()
     
-    @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.less
-    }
+    static let basesWhereIsSigned: [any (SystemsInteger & SignedInteger).Type] = [
+        IX.self, I8.self, I16.self, I32.self, I64.self,
+    ]
     
-    @inlinable public func compared(to other: Self) -> Signum {
-        TBI.compare22S(self.storage, to: other.storage)
-    }
+    static let basesWhereIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = [
+        UX.self, U8.self, U16.self, U32.self, U64.self,
+    ]
 }
