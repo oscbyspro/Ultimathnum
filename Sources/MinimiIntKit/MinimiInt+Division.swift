@@ -31,11 +31,18 @@ extension MinimiInt {
         try Overflow.resolve(Division(quotient: self, remainder: Self(bitPattern: self < divisor)), overflow: self <= divisor)
     }
     
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
     @inlinable public static func dividing(_ dividend: Doublet<Self>, by divisor: Self) throws -> Division<Self> {
-        let quotient  = Self(bitPattern: dividend.low)
-        let remainder = Self(bitPattern: dividend.low) & ~divisor
-        let overflow  = divisor == 0 || (dividend.low) == 0 && dividend.high == -1
-        return try Overflow.resolve(Division(quotient: quotient, remainder: remainder), overflow: overflow)
+        if  divisor == 0 || (dividend.low) == 0 && dividend.high == -1 {
+            throw  Overflow()
+        }   else {
+            let quotient  = Self(bitPattern: dividend.low)
+            let remainder = Self(bitPattern: dividend.low) & ~divisor
+            return Division(quotient: quotient, remainder: remainder)
+        }
     }
 }
 
@@ -61,10 +68,17 @@ extension MinimiInt.Magnitude {
         try Overflow.resolve(Division(quotient: self, remainder: Self(bitPattern: self > divisor)), overflow: divisor == 0)
     }
     
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
     @inlinable public static func dividing(_ dividend: Doublet<Self>, by divisor: Self) throws -> Division<Self> {
-        let quotient  = Self(bitPattern: dividend.low)
-        let remainder = Self(bitPattern: dividend.low) & ~divisor
-        let overflow  = divisor == 0 ||  dividend.high == 1
-        return try Overflow.resolve(Division(quotient: quotient, remainder: remainder), overflow: overflow)
+        if  divisor == 0 || dividend.high == 1 {
+            throw  Overflow()
+        }   else {
+            let quotient  = Self(bitPattern: dividend.low)
+            let remainder = Self(bitPattern: dividend.low) & ~divisor
+            return Division(quotient: quotient, remainder: remainder)
+        }
     }
 }

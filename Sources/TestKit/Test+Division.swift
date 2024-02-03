@@ -35,7 +35,6 @@ extension Test {
         //=--------------------------------------=
         let division = Division(quotient: quotient, remainder: remainder)
         //=--------------------------------------=
-        //=--------------------------------------=
         if !overflow {
             XCTAssertEqual(dividend, divisor * quotient + remainder, "dividend != divisor * quotient + remainder", file: file, line: line)
         }
@@ -69,22 +68,10 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func division<T: SystemsInteger>(
-    _ dividend: Doublet<T>, _ divisor: T, _ quotient: T, _ remainder: T, _ overflow: Bool = false,
+    public static func division2111<T: SystemsInteger>(
+    _ dividend: Doublet<T>, _ divisor: T, _ expectation: Division<T>?, _ overflow: Bool = false,
     file: StaticString = #file, line: UInt = #line) {
-        self.divisionAsSomeSystemsInteger(dividend, divisor, quotient, remainder, overflow, file: file, line: line)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    public static func divisionAsSomeSystemsInteger<T: SystemsInteger>(
-    _ dividend: Doublet<T>, _ divisor: T, _ quotient: T, _ remainder: T, _ overflow: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
-        let expectation = Division(quotient: quotient, remainder: remainder)
-        //=--------------------------------------=
-        XCTAssertEqual(Overflow.capture({ try T.dividing(dividend, by: divisor) }).value,    expectation, file: file, line: line)
-        XCTAssertEqual(Overflow.capture({ try T.dividing(dividend, by: divisor) }).overflow, overflow,    file: file, line: line)
+        XCTAssertEqual(try? T.dividing(dividend, by: divisor), expectation, file: file, line: line)
     }
 }

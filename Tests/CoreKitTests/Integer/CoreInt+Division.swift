@@ -62,51 +62,49 @@ extension CoreIntTests {
         }
     }
     
-    func testDivision21() {
+    func testDivision2111() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
-            typealias D = Doublet<T>
+            typealias D = Division<T>
             //=----------------------------------=
-            Test.division(D(low:  1 as M, high:  T .max >> 1 + 0),  T .max,  T .max,      0 as T    )
-            Test.division(D(low: ~M .msb, high:  T .max >> 1 + 0),  T .max,  T .max,      T .max - 1)
-            Test.division(D(low:  0 as M, high:  T .max >> 1 + 1),  T .min,  T .min,      0 as T    )
-            Test.division(D(low: ~M .msb, high:  T .max >> 1 + 1),  T .min,  T .min,      T .max - 0)
+            Test.division2111(Doublet(low:  1 as M, high:  T .max >> 1 + 0), T.max, D(quotient: T.max, remainder: 0 as T))
+            Test.division2111(Doublet(low: ~M .msb, high:  T .max >> 1 + 0), T.max, D(quotient: T.max, remainder: T .max - 1))
+            Test.division2111(Doublet(low:  M .msb, high:  T .max >> 1 + 0), T.max, nil)
+            Test.division2111(Doublet(low:  0 as M, high:  T .max >> 1 + 1), T.min, D(quotient: T.min, remainder: 0 as T))
+            Test.division2111(Doublet(low: ~M .msb, high:  T .max >> 1 + 1), T.min, D(quotient: T.min, remainder: T .max))
+            Test.division2111(Doublet(low:  M .msb, high:  T .max >> 1 + 1), T.min, nil)
             //=----------------------------------=
-            Test.division(D(low:  1 as M, high:  0 as T         ), -2 as T,  0 as T,      1 as T)
-            Test.division(D(low: ~0 as M, high: -1 as T         ),  2 as T,  0 as T,     -1 as T)
-            Test.division(D(low:  7 as M, high:  0 as T         ),  0 as T,  7 as T,      7 as T, true)
-            Test.division(D(low:  7 as M, high: -1 as T         ),  0 as T,  7 as T,      7 as T, true)
-            Test.division(D(low: ~M .msb, high:  0 as T         ), -1 as T,  T .min + 1,  0 as T)
-            Test.division(D(low:  M .msb, high: -1 as T         ), -1 as T,  T .min + 0,  0 as T, true)
-            Test.division(D(low: ~M .msb, high:  T .max >> 1 + 0),  T .max,  T .max,      T .max  -  1)
-            Test.division(D(low:  M .msb, high:  T .max >> 1 + 0),  T .max,  T .min,      0 as T, true)
-            Test.division(D(low: ~M .msb, high:  T .max >> 1 + 1),  T .min,  T .min,      T .max  -  0)
-            Test.division(D(low:  M .msb, high:  T .max >> 1 + 1),  T .min,  T .max,      0 as T, true)
+            Test.division2111(Doublet(low:  1 as M, high:  0 as T), -2 as T, D(quotient: 0000 as T, remainder:  1 as T))
+            Test.division2111(Doublet(low: ~0 as M, high: -1 as T),  2 as T, D(quotient: 0000 as T, remainder: -1 as T))
+            Test.division2111(Doublet(low:  7 as M, high:  0 as T),  0 as T, nil)
+            Test.division2111(Doublet(low:  7 as M, high: -1 as T),  0 as T, nil)
+            Test.division2111(Doublet(low: ~M .msb, high:  0 as T), -1 as T, D(quotient: T.min + 1, remainder:  0 as T))
+            Test.division2111(Doublet(low:  M .msb, high: -1 as T), -1 as T, nil)
             //=----------------------------------=
-            Test.division(D(low:  0 as M, high: ~0 as T),  0 as T, ~0 << T(bitPattern: T.bitWidth - 0),  0 as T, true)
-            Test.division(D(low:  0 as M, high: ~0 as T),  1 as T, ~0 << T(bitPattern: T.bitWidth - 0),  0 as T, true)
-            Test.division(D(low:  0 as M, high: ~0 as T),  2 as T, ~0 << T(bitPattern: T.bitWidth - 1),  0 as T)
-            Test.division(D(low:  0 as M, high: ~0 as T),  4 as T, ~0 << T(bitPattern: T.bitWidth - 2),  0 as T)
-            Test.division(D(low:  0 as M, high: ~0 as T),  8 as T, ~0 << T(bitPattern: T.bitWidth - 3),  0 as T)
+            Test.division2111(Doublet(low:  0 as M, high: ~0 as T),  0 as T, nil)
+            Test.division2111(Doublet(low:  0 as M, high: ~0 as T),  1 as T, nil)
+            Test.division2111(Doublet(low:  0 as M, high: ~0 as T),  2 as T, D(quotient: ~0 << T(bitPattern: T.bitWidth - 1), remainder: 0 as T))
+            Test.division2111(Doublet(low:  0 as M, high: ~0 as T),  4 as T, D(quotient: ~0 << T(bitPattern: T.bitWidth - 2), remainder: 0 as T))
+            Test.division2111(Doublet(low:  0 as M, high: ~0 as T),  8 as T, D(quotient: ~0 << T(bitPattern: T.bitWidth - 3), remainder: 0 as T))
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
-            typealias D = Doublet<T>
+            typealias D = Division<T>
             //=----------------------------------=
-            Test.division(D(low:  1 as M, high: ~1 as T), ~0 as T, ~0 as T,  0 as T)
-            Test.division(D(low: ~0 as M, high: ~1 as T), ~0 as T, ~0 as T, ~1 as T)
+            Test.division2111(Doublet(low:  1 as M, high: ~1 as T), ~0 as T, D(quotient: ~0 as T, remainder:  0 as T))
+            Test.division2111(Doublet(low: ~0 as M, high: ~1 as T), ~0 as T, D(quotient: ~0 as T, remainder: ~1 as T))
             //=----------------------------------=
-            Test.division(D(low:  7 as M, high:  0 as T),  0 as T,  7 as T,  7 as T, true)
-            Test.division(D(low:  7 as M, high: ~0 as T),  0 as T,  7 as T,  7 as T, true)
-            Test.division(D(low:  0 as M, high: ~0 as T), ~0 as T,  0 as T,  0 as T, true)
-            Test.division(D(low: ~0 as M, high: ~1 as T), ~0 as T, ~0 as T, ~1 as T)
+            Test.division2111(Doublet(low:  7 as M, high:  0 as T),  0 as T, nil)
+            Test.division2111(Doublet(low:  7 as M, high: ~0 as T),  0 as T, nil)
+            Test.division2111(Doublet(low:  0 as M, high: ~0 as T), ~0 as T, nil)
+            Test.division2111(Doublet(low: ~0 as M, high: ~1 as T), ~0 as T, D(quotient: ~0 as T, remainder: ~1 as T))
             //=----------------------------------=
-            Test.division(D(low:  0 as M, high: ~0 as T),  0 as T, ~0 << T(bitPattern: T.bitWidth - 0),  0 as T, true)
-            Test.division(D(low:  0 as M, high: ~0 as T),  1 as T, ~0 << T(bitPattern: T.bitWidth - 0),  0 as T, true)
-            Test.division(D(low:  0 as M, high: ~0 as T),  2 as T, ~0 << T(bitPattern: T.bitWidth - 1),  0 as T, true)
-            Test.division(D(low:  0 as M, high: ~0 as T),  4 as T, ~0 << T(bitPattern: T.bitWidth - 2),  0 as T, true)
-            Test.division(D(low:  0 as M, high: ~0 as T),  8 as T, ~0 << T(bitPattern: T.bitWidth - 3),  0 as T, true)
+            Test.division2111(Doublet(low:  0 as M, high: ~0 as T),  0 as T, nil)
+            Test.division2111(Doublet(low:  0 as M, high: ~0 as T),  1 as T, nil)
+            Test.division2111(Doublet(low:  0 as M, high: ~0 as T),  2 as T, nil)
+            Test.division2111(Doublet(low:  0 as M, high: ~0 as T),  4 as T, nil)
+            Test.division2111(Doublet(low:  0 as M, high: ~0 as T),  8 as T, nil)
         }
         
         for type in Self.types {

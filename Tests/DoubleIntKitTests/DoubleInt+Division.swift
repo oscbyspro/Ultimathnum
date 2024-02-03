@@ -21,7 +21,7 @@ extension DoubleIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testDivision11() {
+    func testDivision1111() {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
             
@@ -43,7 +43,7 @@ extension DoubleIntTests {
         }
     } 
     
-    func testDivision21() {
+    func testDivision2121() {
         func whereTheBaseTypeIsSigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
                         
@@ -67,7 +67,7 @@ extension DoubleIntTests {
         }
     }
     
-    func testDivision22() {
+    func testDivision2211() {
         func whereTheBaseTypeIsSigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
                         
@@ -75,11 +75,6 @@ extension DoubleIntTests {
             Test.division( T(low: ~3, high:  8), -T(low: ~1, high:  2), -3 as T,  2 as T)
             Test.division(-T(low: ~4, high: 11),  T(low: ~1, high:  2), -4 as T, -3 as T)
             Test.division(-T(low: ~5, high: 14), -T(low: ~1, high:  2),  5 as T, -4 as T)
-            
-            Test.division( T(low:  1, high:  2 &+ Base.msb),  T(low: 1, high: 2 &+ Base.msb),  1 as T, -T(low: 0, high: 0))
-            Test.division( T(low:  1, high:  2 &+ Base.msb), -T(low: 2, high: 3 &+ Base.msb), -1 as T, -T(low: 1, high: 1))
-            Test.division(-T(low:  1, high:  2 &+ Base.msb),  T(low: 3, high: 4 &+ Base.msb), -1 as T,  T(low: 2, high: 2))
-            Test.division(-T(low:  1, high:  2 &+ Base.msb), -T(low: 4, high: 5 &+ Base.msb),  1 as T,  T(low: 3, high: 3))
         }
         
         func whereTheBaseTypeIsUnsigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
@@ -96,7 +91,26 @@ extension DoubleIntTests {
         }
     }
     
-    func testDivision22Overflow() {
+    func testDivision2212() {
+        func whereTheBaseTypeIsSigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
+            typealias T = DoubleInt<Base>
+            
+            Test.division( T(low:  1, high:  2 &+ Base.msb),  T(low: 1, high: 2 &+ Base.msb),  1 as T, -T(low: 0, high: 0))
+            Test.division( T(low:  1, high:  2 &+ Base.msb), -T(low: 2, high: 3 &+ Base.msb), -1 as T, -T(low: 1, high: 1))
+            Test.division(-T(low:  1, high:  2 &+ Base.msb),  T(low: 3, high: 4 &+ Base.msb), -1 as T,  T(low: 2, high: 2))
+            Test.division(-T(low:  1, high:  2 &+ Base.msb), -T(low: 4, high: 5 &+ Base.msb),  1 as T,  T(low: 3, high: 3))
+        }
+        
+        func whereTheBaseTypeIsUnsigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
+            typealias T = DoubleInt<Base>
+        }
+        
+        for base in Self.bases {
+            base.isSigned ? whereTheBaseTypeIsSigned(base) : whereTheBaseTypeIsUnsigned(base)
+        }
+    }
+    
+    func testDivisionOverflow() {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
             
@@ -117,36 +131,34 @@ extension DoubleIntTests {
         }
     }
     
-    /// ### Development
-    ///
-    /// - TODO: Overflow should be nil.
-    ///
-    func testDivision42Overflow() {
+    func testDivisionOverflow4222() {
         func whereTheBaseTypeIsSigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
             typealias M = DoubleInt<Base>.Magnitude
-                        
-            Test.division(Doublet(low:  7 as M, high:  0 as T),  0 as T,  7 as T,  7 as T, true)
-            Test.division(Doublet(low:  7 as M, high: ~0 as T),  0 as T,  7 as T,  7 as T, true)
-            Test.division(Doublet(low: ~0 as M, high: -1 as T),  2 as T,  0 as T, -1 as T)
-            Test.division(Doublet(low:  1 as M, high:  0 as T), -2 as T,  0 as T,  1 as T)
-            Test.division(Doublet(low: ~M .msb, high:  0 as T), -1 as T, -T .max,  0 as T)
-            Test.division(Doublet(low:  M .msb, high: -1 as T), -1 as T,  T .min,  0 as T, true)
+            typealias D = Division<T>
             
-            Test.division(Doublet(low:  M .max >> 1 + 0, high:  T.max >> 1 + 0), T.max,  T.max,  T .max - 1)
-            Test.division(Doublet(low:  M .max >> 1 + 1, high:  T.max >> 1 + 0), T.max,  T.min,  0 as T - 0, true)
-            Test.division(Doublet(low:  M .max >> 1 + 0, high:  T.max >> 1 + 1), T.min,  T.min,  T .max - 0)
-            Test.division(Doublet(low:  M .max >> 1 + 1, high:  T.max >> 1 + 1), T.min,  T.max,  0 as T - 0, true)
+            Test.division2111(Doublet(low:  7 as M, high:  0 as T),  0 as T, nil)
+            Test.division2111(Doublet(low:  7 as M, high: ~0 as T),  0 as T, nil)
+            Test.division2111(Doublet(low: ~0 as M, high: -1 as T),  2 as T, D(quotient:  0 as T, remainder: -1 as T))
+            Test.division2111(Doublet(low:  1 as M, high:  0 as T), -2 as T, D(quotient:  0 as T, remainder:  1 as T))
+            Test.division2111(Doublet(low: ~M .msb, high:  0 as T), -1 as T, D(quotient: -T .max, remainder:  0 as T))
+            Test.division2111(Doublet(low:  M .msb, high: -1 as T), -1 as T, nil)
+            
+            Test.division2111(Doublet(low:  M .max >> 1 + 0, high:  T.max >> 1 + 0), T.max, D(quotient: T.max, remainder: T.max - 1))
+            Test.division2111(Doublet(low:  M .max >> 1 + 1, high:  T.max >> 1 + 0), T.max, nil)
+            Test.division2111(Doublet(low:  M .max >> 1 + 0, high:  T.max >> 1 + 1), T.min, D(quotient: T.min, remainder: T.max - 0))
+            Test.division2111(Doublet(low:  M .max >> 1 + 1, high:  T.max >> 1 + 1), T.min, nil)
         }
         
         func whereTheBaseTypeIsUnsigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
             typealias M = DoubleInt<Base>.Magnitude
+            typealias D = Division<T>
             
-            Test.division(Doublet(low:  7 as M, high:  0 as T),  0 as T,  7 as T,  7 as T, true)
-            Test.division(Doublet(low:  7 as M, high: ~0 as T),  0 as T,  7 as T,  7 as T, true)
-            Test.division(Doublet(low: ~0 as M, high: ~1 as T), ~0 as T, ~0 as T, ~1 as T)
-            Test.division(Doublet(low:  0 as M, high: ~0 as T), ~0 as T,  0 as T,  0 as T, true)
+            Test.division2111(Doublet(low:  7 as M, high:  0 as T),  0 as T, nil)
+            Test.division2111(Doublet(low:  7 as M, high: ~0 as T),  0 as T, nil)
+            Test.division2111(Doublet(low: ~0 as M, high: ~1 as T), ~0 as T, D(quotient: ~0 as T, remainder: ~1 as T))
+            Test.division2111(Doublet(low:  0 as M, high: ~0 as T), ~0 as T, nil)
         }
         
         for base in Self.bases {

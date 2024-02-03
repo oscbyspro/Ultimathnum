@@ -30,6 +30,11 @@
           "containerPath" : "container:",
           "identifier" : "InfiniIntKit",
           "name" : "InfiniIntKit"
+        },
+        {
+          "containerPath" : "container:",
+          "identifier" : "MinimiIntKit",
+          "name" : "MinimiIntKit"
         }
       ]
     }
@@ -61,6 +66,13 @@
         "containerPath" : "container:",
         "identifier" : "InfiniIntKitTests",
         "name" : "InfiniIntKitTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "MinimiIntKitTests",
+        "name" : "MinimiIntKitTests"
       }
     }
   ],

@@ -60,21 +60,21 @@ extension DoubleInt {
         let rhsIsLessThanZero: Bool = (((divisor))).isLessThanZero
         let minus = lhsIsLessThanZero != rhsIsLessThanZero
         //=--------------------------------------=
-        var result = Overflow<Division<Self>>.Result(bitPattern: Magnitude._divide4222(TBI.magnitude(of: dividend), by: divisor.magnitude))
+        var result = Division<Self>(bitPattern: try Magnitude._divide4222(TBI.magnitude(of: dividend), by: divisor.magnitude))
         //=--------------------------------------=
         if  minus {
-            result.value.quotient  = ~result.value.quotient  &+ 1
+            result.quotient  = Overflow.ignore({ try result.quotient .negated() })
         }
         
         if  lhsIsLessThanZero {
-            result.value.remainder = ~result.value.remainder &+ 1
+            result.remainder = Overflow.ignore({ try result.remainder.negated() })
         }
         
-        if  minus != result.value.quotient.isLessThanZero {
-            result.overflow = result.overflow || !(minus && result.value.quotient == 0)
+        if  minus != result.quotient.isLessThanZero, !(minus && result.quotient == 0) {
+            throw Overflow()
         }
         //=--------------------------------------=
-        return try result.resolve() as Division<Self>
+        return result as Division<Self>
     }
 }
 
@@ -145,24 +145,22 @@ extension DoubleInt where Base == Base.Magnitude {
     //=------------------------------------------------------------------------=
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
-    @inlinable static func _divide4222(_ lhs: Doublet<Self>, by rhs: Self) -> Overflow<Division<Self>>.Result {
+    @inlinable static func _divide4222(_ lhs: Doublet<Self>, by rhs: Self) throws -> Division<Self> {
         let shift = rhs.count(0, option: .descending)
         //=--------------------------------------=
         // divisor is zero
         //=--------------------------------------=
         if  shift.load(as: UX.self) == Self.bitWidth.load(as: UX.self) {
-            return Overflow.Result(Division(quotient: lhs.low, remainder: lhs.low), overflow: true)
+            throw Overflow()
         }
         //=--------------------------------------=
         // quotient does not fit in two halves
         //=--------------------------------------=
         if  rhs <= lhs.high {
-            let high = Self._divide2222(lhs.high, by: rhs, shift: shift)
-            let truncated = Doublet<Self>(high: high.remainder, low: lhs.low)
-            return Overflow.Result(Self._divide4222(truncated, by: rhs, shift: shift), overflow: true)
+            throw Overflow()
         }
         //=--------------------------------------=
-        return Overflow.Result(Self._divide4222(lhs, by: rhs, shift: shift), overflow: false)
+        return Self._divide4222(lhs, by: rhs, shift: shift)
     }
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.

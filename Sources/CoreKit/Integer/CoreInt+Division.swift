@@ -42,23 +42,21 @@ extension CoreInt {
         let rhsIsLessThanZero = divisor/*------*/.isLessThanZero
         let minus: Bool = lhsIsLessThanZero != rhsIsLessThanZero
         //=--------------------------------------=
-        var result = Overflow<Division<Self>>.Result(bitPattern: Overflow.capture {
-            try Magnitude._dividing(TBI.magnitude(of: dividend), by: divisor.magnitude)
-        })
+        var result = Division<Self>(bitPattern: try Magnitude._dividing(TBI.magnitude(of: dividend), by: divisor.magnitude))
         //=--------------------------------------=
         if  minus {
-            result.value.quotient  = Overflow.ignore({ try result.value.quotient .negated() })
+            result.quotient  = Overflow.ignore({ try result.quotient .negated() })
         }
         
         if  lhsIsLessThanZero {
-            result.value.remainder = Overflow.ignore({ try result.value.remainder.negated() })
+            result.remainder = Overflow.ignore({ try result.remainder.negated() })
         }
         
-        if  minus != result.value.quotient.isLessThanZero {
-            result.overflow = result.overflow || !(minus && result.value.quotient == 0)
+        if  minus != result.quotient.isLessThanZero, !(minus && result.quotient == 0) {
+            throw Overflow()
         }
         //=--------------------------------------=
-        return try result.resolve() as Division<Self>
+        return result as Division<Self>
     }
 }
 
@@ -77,13 +75,12 @@ extension CoreInt where Self == Magnitude {
         // divisor is zero
         //=--------------------------------------=
         if  divisor == 0 {
-            return try Overflow.resolve(Division(quotient: dividend.low, remainder: dividend.low), overflow: true)
+            throw Overflow()
         //=--------------------------------------=
         // quotient does not fit in one part
         //=--------------------------------------=
         }   else if divisor <= dividend.high {
-            let (quotient, remainder) = divisor.base.dividingFullWidth((high: dividend.high.base % divisor.base, low: dividend.low.base))
-            return try Overflow.resolve(Division(quotient: Self(quotient), remainder: Self(remainder)), overflow: true)
+            throw Overflow()
         //=--------------------------------------=
         // quotient does fit in one part
         //=--------------------------------------=
