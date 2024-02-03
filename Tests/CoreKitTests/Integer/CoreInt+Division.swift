@@ -65,7 +65,7 @@ extension CoreIntTests {
     func testDivision2111() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
-            typealias D = Division<T>
+            typealias D = Division<T, T>
             //=----------------------------------=
             Test.division2111(Doublet(low:  1 as M, high:  T .max >> 1 + 0), T.max, D(quotient: T.max, remainder: 0 as T))
             Test.division2111(Doublet(low: ~M .msb, high:  T .max >> 1 + 0), T.max, D(quotient: T.max, remainder: T .max - 1))
@@ -90,7 +90,7 @@ extension CoreIntTests {
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
-            typealias D = Division<T>
+            typealias D = Division<T, T>
             //=----------------------------------=
             Test.division2111(Doublet(low:  1 as M, high: ~1 as T), ~0 as T, D(quotient: ~0 as T, remainder:  0 as T))
             Test.division2111(Doublet(low: ~0 as M, high: ~1 as T), ~0 as T, D(quotient: ~0 as T, remainder: ~1 as T))

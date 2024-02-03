@@ -27,7 +27,7 @@ extension MinimiInt {
         try Overflow.resolve(Self(bitPattern: self < divisor), overflow: self <= divisor)
     }
     
-    @inlinable public func divided(by divisor: Self) throws -> Division<Self> {
+    @inlinable public func divided(by divisor: Self) throws -> Division<Self, Self> {
         try Overflow.resolve(Division(quotient: self, remainder: Self(bitPattern: self < divisor)), overflow: self <= divisor)
     }
     
@@ -35,7 +35,7 @@ extension MinimiInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func dividing(_ dividend: Doublet<Self>, by divisor: Self) throws -> Division<Self> {
+    @inlinable public static func dividing(_ dividend: Doublet<Self>, by divisor: Self) throws -> Division<Self, Self> {
         if  divisor == 0 || (dividend.low) == 0 && dividend.high == -1 {
             throw  Overflow()
         }   else {
@@ -64,7 +64,7 @@ extension MinimiInt.Magnitude {
         try Overflow.resolve(Self(bitPattern: self > divisor), overflow: divisor == 0)
     }
     
-    @inlinable public func divided(by divisor: Self) throws -> Division<Self> {
+    @inlinable public func divided(by divisor: Self) throws -> Division<Self, Self> {
         try Overflow.resolve(Division(quotient: self, remainder: Self(bitPattern: self > divisor)), overflow: divisor == 0)
     }
     
@@ -72,7 +72,7 @@ extension MinimiInt.Magnitude {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func dividing(_ dividend: Doublet<Self>, by divisor: Self) throws -> Division<Self> {
+    @inlinable public static func dividing(_ dividend: Doublet<Self>, by divisor: Self) throws -> Division<Self, Self> {
         if  divisor == 0 || dividend.high == 1 {
             throw  Overflow()
         }   else {

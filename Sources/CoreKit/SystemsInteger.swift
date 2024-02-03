@@ -46,7 +46,7 @@
 /// ```swift
 /// static func addition(_:_:) -> Overflow<Self>.Result
 /// static func multiplication112(_:_:) -> Doublet<Self>
-/// static func division2111(_:_:) -> Optional<Division<Self>>
+/// static func division2111(_:_:) -> Optional<Division<Self, Self>>
 /// ```
 ///
 /// - Note: It is an alternative in case typed throws don't perform well.
@@ -67,5 +67,5 @@ public protocol SystemsInteger: BinaryInteger where Magnitude: SystemsInteger {
     ///
     /// - Consider throwing `Overflow<Void>`.
     ///
-    @inlinable static func dividing(_ dividend: consuming Doublet<Self>, by multiplier: borrowing Self) throws -> Division<Self>
+    @inlinable static func dividing(_ dividend: consuming Doublet<Self>, by multiplier: borrowing Self) throws -> Division<Self, Self>
 }

@@ -11,22 +11,24 @@
 // MARK: * Division
 //*============================================================================*
 
-@frozen public struct Division<Value> {
+@frozen public struct Division<Quotient, Remainder> {
     
-    public typealias Value = Value
+    public typealias Quotient = Quotient
+    
+    public typealias Remainder = Remainder
     
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    public var quotient:  Value
-    public var remainder: Value
+    public var quotient:  Quotient
+    public var remainder: Remainder
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(quotient: Value, remainder: Value) {
+    @inlinable public init(quotient: Quotient, remainder: Remainder) {
         self.quotient  = quotient
         self.remainder = remainder
     }
@@ -35,7 +37,7 @@
     // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable public var components: (quotient: Value, remainder: Value) {
+    @inlinable public var components: (quotient: Quotient, remainder: Remainder) {
         consuming get {
             (quotient: self.quotient, remainder: self.remainder)
         }
@@ -50,29 +52,29 @@
 // MARK: + Equatable
 //=----------------------------------------------------------------------------=
 
-extension Division: Equatable where Value: Equatable { }
+extension Division: Equatable where Quotient: Equatable, Remainder: Equatable { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Bit Castable
 //=----------------------------------------------------------------------------=
 
-extension Division: BitCastable where Value: BitCastable {
+extension Division: BitCastable where Quotient: BitCastable, Remainder: BitCastable {
         
     //=------------------------------------------------------------------------=
     // MARK: Details x Bit Pattern
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: consuming Division<Value.BitPattern>) {
+    @inlinable public init(bitPattern: consuming Division<Quotient.BitPattern, Remainder.BitPattern>) {
         self.init(
-        quotient:  Value(bitPattern: bitPattern.quotient ),
-        remainder: Value(bitPattern: bitPattern.remainder))
+        quotient:  Quotient (bitPattern: bitPattern.quotient ),
+        remainder: Remainder(bitPattern: bitPattern.remainder))
     }
     
-    @inlinable public var bitPattern: Division<Value.BitPattern> {
+    @inlinable public var bitPattern: Division<Quotient.BitPattern, Remainder.BitPattern> {
         consuming get {
-            Division<  Value.BitPattern>(
-            quotient:  Value.BitPattern(bitPattern: self.quotient ),
-            remainder: Value.BitPattern(bitPattern: self.remainder))
+            Division<Quotient.BitPattern, Remainder.BitPattern>(
+            quotient:  Quotient .BitPattern(bitPattern: self.quotient ),
+            remainder: Remainder.BitPattern(bitPattern: self.remainder))
         }
     }
 }
@@ -81,23 +83,23 @@ extension Division: BitCastable where Value: BitCastable {
 // MARK: + Integer
 //=----------------------------------------------------------------------------=
 
-extension Division where Value: BinaryInteger {
+extension Division where Quotient: BinaryInteger, Remainder: BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     /// Increments the `quotient` if the `remainder` is positive.
-    @inlinable public consuming func ceil() throws -> Value {
+    @inlinable public consuming func ceil() throws -> Quotient {
         let instance: Self = consume self
-        let increment: Value = instance.remainder > 0 ?  1 : 0
+        let increment: Quotient = instance.remainder > 0 ?  1 : 0
         return try (consume instance).quotient.plus(increment)
     }
     
     /// Decrements the `quotient` if the `remainder` is negative.
-    @inlinable public consuming func floor() throws -> Value {
+    @inlinable public consuming func floor() throws -> Quotient {
         let instance: Self = consume self
-        let increment: Value = instance.remainder < 0 ? -1 : 0
+        let increment: Quotient = instance.remainder < 0 ? -1 : 0
         return try (consume instance).quotient.plus(increment)
     }
 }

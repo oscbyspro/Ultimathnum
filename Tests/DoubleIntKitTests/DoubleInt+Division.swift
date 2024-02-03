@@ -135,7 +135,7 @@ extension DoubleIntTests {
         func whereTheBaseTypeIsSigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
             typealias M = DoubleInt<Base>.Magnitude
-            typealias D = Division<T>
+            typealias D = Division<T, T>
             
             Test.division2111(Doublet(low:  7 as M, high:  0 as T),  0 as T, nil)
             Test.division2111(Doublet(low:  7 as M, high: ~0 as T),  0 as T, nil)
@@ -153,7 +153,7 @@ extension DoubleIntTests {
         func whereTheBaseTypeIsUnsigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
             typealias M = DoubleInt<Base>.Magnitude
-            typealias D = Division<T>
+            typealias D = Division<T, T>
             
             Test.division2111(Doublet(low:  7 as M, high:  0 as T),  0 as T, nil)
             Test.division2111(Doublet(low:  7 as M, high: ~0 as T),  0 as T, nil)

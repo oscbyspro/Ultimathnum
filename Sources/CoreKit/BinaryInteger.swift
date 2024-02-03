@@ -114,7 +114,7 @@ Magnitude.Element == Element.Magnitude, Stride == Swift.Int {
     
     @inlinable consuming func remainder( divisor: borrowing Self) throws -> Self
     
-    @inlinable consuming func divided(by divisor: borrowing Self) throws -> Division<Self>
+    @inlinable consuming func divided(by divisor: borrowing Self) throws -> Division<Self, Self>
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

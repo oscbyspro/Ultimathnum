@@ -27,7 +27,7 @@ extension CoreInt {
         return try Overflow.resolve(Self(result.partialValue), overflow: result.overflow)
     }
     
-    @inlinable public consuming func divided(by divisor: Self) throws -> Division<Self> {
+    @inlinable public consuming func divided(by divisor: Self) throws -> Division<Self, Self> {
         let quotient  = Overflow.capture({ try self.quotient (divisor: divisor) })
         let remainder = Overflow.capture({ try self.remainder(divisor: divisor) })
         return try Overflow.resolve(Division(quotient: quotient.value, remainder: remainder.value), overflow: quotient.overflow || remainder.overflow)
@@ -37,12 +37,12 @@ extension CoreInt {
     // MARK: Transformations x 2 vs 1
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func dividing(_ dividend: Doublet<Self>, by divisor: Self) throws -> Division<Self> {
+    @inlinable public static func dividing(_ dividend: Doublet<Self>, by divisor: Self) throws -> Division<Self, Self> {
         let lhsIsLessThanZero = dividend.high/**/.isLessThanZero
         let rhsIsLessThanZero = divisor/*------*/.isLessThanZero
         let minus: Bool = lhsIsLessThanZero != rhsIsLessThanZero
         //=--------------------------------------=
-        var result = Division<Self>(bitPattern: try Magnitude._dividing(TBI.magnitude(of: dividend), by: divisor.magnitude))
+        var result = Division<Self, Self>(bitPattern: try Magnitude._dividing(TBI.magnitude(of: dividend), by: divisor.magnitude))
         //=--------------------------------------=
         if  minus {
             result.quotient  = Overflow.ignore({ try result.quotient .negated() })
@@ -56,7 +56,7 @@ extension CoreInt {
             throw Overflow()
         }
         //=--------------------------------------=
-        return result as Division<Self>
+        return result as Division<Self, Self>
     }
 }
 
@@ -70,7 +70,7 @@ extension CoreInt where Self == Magnitude {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inline(__always) @inlinable static func _dividing(_ dividend: Doublet<Self>, by divisor: Self) throws -> Division<Self> {
+    @inline(__always) @inlinable static func _dividing(_ dividend: Doublet<Self>, by divisor: Self) throws -> Division<Self, Self> {
         //=--------------------------------------=
         // divisor is zero
         //=--------------------------------------=
@@ -86,7 +86,7 @@ extension CoreInt where Self == Magnitude {
         //=--------------------------------------=
         }   else {
             let (quotient, remainder) = divisor.base.dividingFullWidth((high: dividend.high.base, low: dividend.low.base))
-            return try Overflow.resolve(Division(quotient: Self(quotient), remainder: Self(remainder)), overflow: false)
+            return Division(quotient: Self(quotient), remainder: Self(remainder))
         }
     }
 }

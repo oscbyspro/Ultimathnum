@@ -69,7 +69,7 @@ extension Test {
     //=------------------------------------------------------------------------=
     
     public static func division2111<T: SystemsInteger>(
-    _ dividend: Doublet<T>, _ divisor: T, _ expectation: Division<T>?, _ overflow: Bool = false,
+    _ dividend: Doublet<T>, _ divisor: T, _ expectation: Division<T, T>?, _ overflow: Bool = false,
     file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
         XCTAssertEqual(try? T.dividing(dividend, by: divisor), expectation, file: file, line: line)

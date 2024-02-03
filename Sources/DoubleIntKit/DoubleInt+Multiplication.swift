@@ -102,7 +102,7 @@ extension DoubleInt where Base == Base.Magnitude {
         let b2 = Base(Bit(bitPattern: b0))  &+  Base(Bit(bitPattern: b1))
         //=--------------------------------------=
         let o0 = Overflow.capture(&by.low,  map:{ try $0.plus(a2) })
-        let _  = Overflow.capture(&by.high, map:{ try $0.plus(b2 &+ Base(Bit(bitPattern: o0))) })
+        let _  = Overflow.capture(&by.high, map:{ try $0.plus(b2  &+ Base(Bit(bitPattern: o0))) })
         //=--------------------------------------=
         return Doublet(low: Magnitude(ax), high: Magnitude(by))
     }

@@ -27,7 +27,7 @@ extension InfiniInt {
         fatalError("TODO")
     }
     
-    @inlinable consuming public func divided(by divisor: borrowing Self) throws -> Division<Self> {
+    @inlinable consuming public func divided(by divisor: borrowing Self) throws -> Division<Self, Self> {
         fatalError("TODO")
     }
 }
@@ -50,7 +50,7 @@ extension InfiniInt.Magnitude {
         fatalError("TODO")
     }
     
-    @inlinable consuming public func divided(by divisor: borrowing Self) throws -> Division<Self> {
+    @inlinable consuming public func divided(by divisor: borrowing Self) throws -> Division<Self, Self> {
         fatalError("TODO")
     }
 }
