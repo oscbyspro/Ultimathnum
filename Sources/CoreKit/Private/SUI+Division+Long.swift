@@ -58,7 +58,7 @@ extension Namespace.StrictUnsignedInteger where Base: MutableCollection {
         Swift.assert(base.count >= 1 && base.count == dividend.count - divisor.count,
         "the dividend must be wider than the divisor")
         
-        Swift.assert(SUISS.compare(dividend.dropFirst(base.count), to: divisor) == -1,
+        Swift.assert(SUISS.compare(dividend.dropFirst(base.count), to: divisor) == Signum.less,
         "the quotient must fit in dividend.count - divisor.count elements")
         //=--------------------------------------=
         for index in base.indices.reversed() {
@@ -117,7 +117,7 @@ extension Namespace.StrictUnsignedInteger where Base: MutableCollection {
         Swift.assert(dividend.count == divisor.count + 1,
         "the dividend must be exactly one element wider than the divisor")
         
-        Swift.assert(SUISS.compare(dividend.dropFirst(), to: divisor) == -1,
+        Swift.assert(SUISS.compare(dividend.dropFirst(), to: divisor) == Signum.less,
         "the quotient of each iteration must fit in one element")
         //=--------------------------------------=
         let numerator   = TBI<Base.Element>.suffix2(dividend)
@@ -136,7 +136,7 @@ extension Namespace.StrictUnsignedInteger where Base: MutableCollection {
             overflow = !SUISS .increment(&dividend, by: divisor).overflow
         }
         
-        Swift.assert(SUISS.compare(dividend, to: divisor) == -1)
+        Swift.assert(SUISS.compare(dividend, to: divisor) == Signum.less)
         return quotient as Base.Element
     }
 }

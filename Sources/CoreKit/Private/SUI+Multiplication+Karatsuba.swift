@@ -49,7 +49,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
     _ base: inout Base, to lhs: UnsafeBufferPointer<Base.Element>, times rhs: UnsafeBufferPointer<Base.Element>)
     where Base == UnsafeMutableBufferPointer<T> {
         //=--------------------------------------=
-        Swift.assert(base.count == lhs.count + rhs.count, .indexOutOfBounds())
+        Swift.assert(base.count == lhs.count + rhs.count, String.indexOutOfBounds())
         //=--------------------------------------=
         let (k0c): Int = Swift.max(lhs.count,  rhs.count)
         let (k1c): Int = k0c &>> 1
@@ -158,7 +158,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
     @inline(never) @inlinable package static func initializeByKaratsubaAlgorithm<T>(
     _   base: inout Base, toSquareProductOf elements: UnsafeBufferPointer<Base.Element>) where Base == UnsafeMutableBufferPointer<T> {
         //=--------------------------------------=
-        Swift.assert(base.count == 2 * elements.count, .indexOutOfBounds())
+        Swift.assert(base.count == 2 * elements.count, String.indexOutOfBounds())
         //=--------------------------------------=
         let (k0c): Int = elements.count
         let (k1c): Int = k0c &>> 1

@@ -32,7 +32,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
     _ base: inout Base, to lhs: UnsafeBufferPointer<Base.Element>, times rhs: UnsafeBufferPointer<Base.Element>,
     plus increment: Base.Element = 0) where Base == UnsafeMutableBufferPointer<T> {
         //=--------------------------------------=
-        Swift.assert(base.count == lhs.count + rhs.count, .indexOutOfBounds())
+        Swift.assert(base.count == lhs.count + rhs.count, String.indexOutOfBounds())
         //=--------------------------------------=
         var pointer = base.baseAddress!
         //=--------------------------------------=
@@ -78,7 +78,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
     _ base: inout Base, toSquareProductOf elements: UnsafeBufferPointer<Base.Element>, plus increment: Base.Element = 0)
     where Base == UnsafeMutableBufferPointer<T> {
         //=--------------------------------------=
-        Swift.assert(base.count == 2 * elements.count, .indexOutOfBounds())
+        Swift.assert(base.count == 2 * elements.count, String.indexOutOfBounds())
         //=--------------------------------------=
         // pointee: initialization
         //=--------------------------------------=
