@@ -224,8 +224,7 @@ extension DoubleInt where Base == Base.Magnitude {
     
     /// Divides 3 halves by 2 normalized halves, assuming the quotient fits in 1 half.
     @inlinable static func _divide3212MSB(_ lhs: consuming Triplet<Base>, by rhs: borrowing Self) -> Division<Base, Self> {
-        let quotient = TUI.formRemainderWithQuotient3212MSB(dividing: &lhs, by: rhs.storage)
-        return Division(quotient: quotient, remainder: Self(high: lhs.mid, low: lhs.low))
+        Division(bitPattern: TBI.division3212MSB(dividing: lhs, by: rhs.storage))
     }
     
     /// Divides 4 halves by 2 normalized halves, assuming the quotient fits in 2 halves.

@@ -56,19 +56,16 @@ extension Test {
     _ dividend: Triplet<Base>, _ divisor: Doublet<Base>, _ quotient: Base, _ remainder: Doublet<Base>,
     file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
-        var result: (quotient: Base, remainder: Triplet<Base>)
-        result.remainder = dividend
-        result.quotient  = TBI.formRemainderWithQuotient3212MSB(dividing: &result.remainder, by: divisor)
+        let result = TBI.division3212MSB(dividing: dividend, by: divisor)
         //=------------------------------------------=
-        XCTAssertEqual(result.quotient,       quotient,       file: file, line: line)
-        XCTAssertEqual(result.remainder.high, 000000 as Base, file: file, line: line)
-        XCTAssertEqual(result.remainder.mid,  remainder.high, file: file, line: line)
-        XCTAssertEqual(result.remainder.low,  remainder.low,  file: file, line: line)
+        XCTAssertEqual(result.quotient,  quotient,  file: file, line: line)
+        XCTAssertEqual(result.remainder, remainder, file: file, line: line)
         //=------------------------------------------=
         reversed: do {
             var backtracked = TBI.multiplying213(divisor, by: result.quotient)
-            let _ = TBI.increment33B(&backtracked, by: result.remainder)
+            let overflow = TBI.increment32B(&backtracked, by: result.remainder)
             XCTAssert(dividend == backtracked, "dividend != divisor * quotient + remainder", file: file, line: line)
+            XCTAssertFalse(overflow, file: file, line: line)
         }
     }
 }

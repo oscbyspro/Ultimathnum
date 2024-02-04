@@ -25,6 +25,8 @@ import CoreKit
     
     public typealias Magnitude = DoubleInt<Base.Magnitude>
     
+    public typealias BitPattern = Doublet<Base>.BitPattern
+    
     @usableFromInline typealias Storage = Doublet<Base>
     
     //=------------------------------------------------------------------------=
@@ -62,7 +64,7 @@ import CoreKit
     ///
     /// - TODO: Consider using storage as bit pattern type.
     ///
-    @inlinable public init(bitPattern: consuming Magnitude) {
+    @inlinable public init(bitPattern: consuming Doublet<Base>.BitPattern) {
         self.init(low: bitPattern.low, high: Base(bitPattern: bitPattern.high))
     }
     
@@ -70,8 +72,8 @@ import CoreKit
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public var bitPattern: Magnitude {
-        Magnitude(low: self.low, high: Base.Magnitude(bitPattern: self.high))
+    @inlinable public var bitPattern: BitPattern {
+        BitPattern(low: self.low, high: Base.Magnitude(bitPattern: self.high))
     }
     
     @inlinable public var magnitude: Magnitude {
