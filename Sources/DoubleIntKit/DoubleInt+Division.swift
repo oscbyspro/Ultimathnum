@@ -37,11 +37,11 @@ extension DoubleInt {
         var result = Overflow<Division<Self, Self>>.Result(bitPattern: Magnitude._divide2222(self.magnitude, by: divisor.magnitude))
         //=--------------------------------------=
         if  minus {
-            result.value.quotient  = Overflow.ignore({ try result.value.quotient .negated() })
+            Overflow.ignore(&result.value.quotient,  map:{ try $0.negated() })
         }
         
         if  lhsIsLessThanZero {
-            result.value.remainder = Overflow.ignore({ try result.value.remainder.negated() })
+            Overflow.ignore(&result.value.remainder, map:{ try $0.negated() })
         }
         
         if  lhsIsLessThanZero && rhsIsLessThanZero && result.value.quotient.isLessThanZero {
@@ -63,11 +63,11 @@ extension DoubleInt {
         var result = Division<Self, Self>(bitPattern: try Magnitude._divide4222(TBI.magnitude(of: dividend), by: divisor.magnitude))
         //=--------------------------------------=
         if  minus {
-            result.quotient  = Overflow.ignore({ try result.quotient .negated() })
+            Overflow.ignore(&result.quotient,  map:{ try $0.negated() })
         }
         
         if  lhsIsLessThanZero {
-            result.remainder = Overflow.ignore({ try result.remainder.negated() })
+            Overflow.ignore(&result.remainder, map:{ try $0.negated() })
         }
         
         if  minus != result.quotient.isLessThanZero, !(minus && result.quotient == 0) {
@@ -190,7 +190,7 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         // division: 3212 (normalized)
         //=--------------------------------------=
-        if  lhs.high.high == 0, rhs > Self(high: lhs.high.low, low: lhs.low.high) {
+        if  lhs.high.high == 0, rhs > Self(low: lhs.low.high, high: lhs.high.low) {
             let result = Self._divide3212MSB(Triplet(low: lhs.low.low, mid: lhs.low.high, high: lhs.high.low), by: rhs)
             return Division(quotient: Self(low: result.quotient), remainder: result.remainder &>> shift)
         }
@@ -208,14 +208,14 @@ extension DoubleInt where Base == Base.Magnitude {
     @inlinable static func _divide2121(_ lhs: consuming Self, by rhs: borrowing Base) -> Division<Self, Base> {
         let x = try! lhs.high.divided(by: rhs)
         let y = x.remainder == 0 ? try! lhs.low.divided(by: rhs) : try! Base.dividing(Doublet(low: lhs.low, high: x.remainder), by: rhs)
-        return Division(quotient: Self(high: x.quotient, low: y.quotient), remainder: y.remainder)
+        return Division(quotient: Self(low: y.quotient, high: x.quotient), remainder: y.remainder)
     }
     
     @inlinable static func _divide3121(_ lhs: consuming Triplet<Base>, by rhs: Base) -> Division<Self, Base> {
         Swift.assert(rhs > lhs.high, "quotient must fit in two halves")
         let x = try! Base.dividing(Doublet(low: lhs.mid, high: lhs.high), by: rhs)
         let y = x.remainder == 0 ? try! lhs.low.divided(by: rhs) : try! Base.dividing(Doublet(low: lhs.low, high: x.remainder), by: rhs)
-        return Division(quotient: Self(high: x.quotient, low: y.quotient), remainder: y.remainder)
+        return Division(quotient: Self(low: y.quotient, high: x.quotient), remainder: y.remainder)
     }
     
     //=------------------------------------------------------------------------=
@@ -231,6 +231,6 @@ extension DoubleInt where Base == Base.Magnitude {
     @inlinable static func _divide4222MSB(_ lhs: consuming Doublet<Self>, by rhs: borrowing Self) -> Division<Self, Self> {
         let x = Self._divide3212MSB(Triplet(low: lhs.low.high, mid:    lhs.high.low, high:    lhs.high.high), by: rhs)
         let y = Self._divide3212MSB(Triplet(low: lhs.low.low,  mid: x.remainder.low, high: x.remainder.high), by: rhs)
-        return Division(quotient: Self(high: x.quotient, low: y.quotient), remainder: y.remainder)
+        return Division(quotient: Self(low: y.quotient, high: x.quotient), remainder: y.remainder)
     }
 }

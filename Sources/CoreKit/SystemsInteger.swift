@@ -63,9 +63,5 @@ public protocol SystemsInteger: BinaryInteger where Magnitude: SystemsInteger {
     
     @inlinable static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> Doublet<Self>
     
-    /// ### Development
-    ///
-    /// - Consider throwing `Overflow<Void>`.
-    ///
     @inlinable static func dividing(_ dividend: consuming Doublet<Self>, by multiplier: borrowing Self) throws -> Division<Self, Self>
 }

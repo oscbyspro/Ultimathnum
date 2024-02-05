@@ -22,7 +22,11 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func negated() throws -> Self {
-        try Self().minus(self)
+        let overflow = Self.isSigned == Overflow.capture(&self) {
+            try (~$0).plus(1)
+        }
+        
+        return try Overflow.resolve(self, overflow: overflow)
     }
     
     @inlinable public consuming func minus(_ decrement: Self) throws -> Self {

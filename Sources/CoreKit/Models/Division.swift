@@ -72,7 +72,7 @@ extension Division: BitCastable where Quotient: BitCastable, Remainder: BitCasta
     
     @inlinable public var bitPattern: Division<Quotient.BitPattern, Remainder.BitPattern> {
         consuming get {
-            Division<Quotient.BitPattern, Remainder.BitPattern>(
+            Division<  Quotient .BitPattern, Remainder.BitPattern>(
             quotient:  Quotient .BitPattern(bitPattern: self.quotient ),
             remainder: Remainder.BitPattern(bitPattern: self.remainder))
         }

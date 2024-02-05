@@ -13,7 +13,7 @@ import CoreKit
 // MARK: * Double Int
 //*============================================================================*
 
-@frozen public struct DoubleInt<Base: SystemsInteger>: SystemsInteger {    
+@frozen public struct DoubleInt<Base: SystemsInteger>: SystemsInteger {
     
     public typealias High = Base
     
@@ -37,12 +37,10 @@ import CoreKit
         Base.isSigned
     }
     
-    /// The bit width of this type.
-    ///
-    /// - Note: Values in `0 ..< bitWidth` always fit in Base.Magnitude.
-    ///
     @inlinable public static var bitWidth: Magnitude {
-        Magnitude(low: Base.bitWidth) + Magnitude(low: Base.bitWidth)
+        precondition(UX.max &>> 2 >= Base.bitWidth.load(as: UX.self), 
+        "each systems integer bit width must fit in one IX instance")
+        return Magnitude(low: Base.bitWidth) * 2
     }
     
     //=------------------------------------------------------------------------=
@@ -73,11 +71,21 @@ import CoreKit
     //=------------------------------------------------------------------------=
     
     @inlinable public var bitPattern: BitPattern {
-        BitPattern(low: self.low, high: Base.Magnitude(bitPattern: self.high))
+        consuming get {
+            BitPattern(low: self.low, high: Base.Magnitude(bitPattern: self.high))
+        }
     }
     
     @inlinable public var magnitude: Magnitude {
-        Magnitude(bitPattern: self.isLessThanZero ? ~self &+ 1 : self)
+        consuming get {
+            Magnitude(bitPattern: self.high.isLessThanZero ? Overflow.ignore({ try self.negated() }) : self)
+        }
+    }
+    
+    @inlinable public var elements: Magnitude._Content {
+        consuming get {
+            Magnitude._Content(low: self.low.elements, high: Base.Magnitude(bitPattern: self.high).elements)
+        }
     }
 }
 

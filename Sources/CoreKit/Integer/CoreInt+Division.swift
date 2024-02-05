@@ -37,7 +37,7 @@ extension CoreInt {
     // MARK: Transformations x 2 vs 1
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func dividing(_ dividend: Doublet<Self>, by divisor: Self) throws -> Division<Self, Self> {
+    @inlinable public static func dividing(_ dividend: consuming Doublet<Self>, by divisor: Self) throws -> Division<Self, Self> {
         let lhsIsLessThanZero = dividend.high/**/.isLessThanZero
         let rhsIsLessThanZero = divisor/*------*/.isLessThanZero
         let minus: Bool = lhsIsLessThanZero != rhsIsLessThanZero
@@ -45,11 +45,11 @@ extension CoreInt {
         var result = Division<Self, Self>(bitPattern: try Magnitude._dividing(TBI.magnitude(of: dividend), by: divisor.magnitude))
         //=--------------------------------------=
         if  minus {
-            result.quotient  = Overflow.ignore({ try result.quotient .negated() })
+            Overflow.ignore(&result.quotient,  map:{ try $0.negated() })
         }
         
         if  lhsIsLessThanZero {
-            result.remainder = Overflow.ignore({ try result.remainder.negated() })
+            Overflow.ignore(&result.remainder, map:{ try $0.negated() })
         }
         
         if  minus != result.quotient.isLessThanZero, !(minus && result.quotient == 0) {
@@ -70,7 +70,7 @@ extension CoreInt where Self == Magnitude {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inline(__always) @inlinable static func _dividing(_ dividend: Doublet<Self>, by divisor: Self) throws -> Division<Self, Self> {
+    @inline(__always) @inlinable static func _dividing(_ dividend: consuming Doublet<Self>, by divisor: borrowing Self) throws -> Division<Self, Self> {
         //=--------------------------------------=
         // divisor is zero
         //=--------------------------------------=
@@ -85,8 +85,8 @@ extension CoreInt where Self == Magnitude {
         // quotient does fit in one part
         //=--------------------------------------=
         }   else {
-            let (quotient, remainder) = divisor.base.dividingFullWidth((high: dividend.high.base, low: dividend.low.base))
-            return Division(quotient: Self(quotient), remainder: Self(remainder))
+            let result = divisor.base.dividingFullWidth((high: dividend.high.base, low: dividend.low.base))
+            return Division(quotient: Self(result.quotient), remainder: Self(result.remainder))
         }
     }
 }
