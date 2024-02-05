@@ -22,17 +22,17 @@ extension MinimiIntTests {
     
     func testDivision() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.division( 0 as T,  0 as T,  0 as T,  0 as T, true )
-            Test.division( 0 as T, -1 as T,  0 as T,  0 as T, false)
-            Test.division(-1 as T,  0 as T, -1 as T, -1 as T, true )
-            Test.division(-1 as T, -1 as T, -1 as T,  0 as T, true )
+            Test.division( 0 as T,  0 as T, nil)
+            Test.division( 0 as T, -1 as T, Division(quotient: 0 as T, remainder: 0 as T))
+            Test.division(-1 as T,  0 as T, nil)
+            Test.division(-1 as T, -1 as T, nil)
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.division( 0 as T,  0 as T,  0 as T,  0 as T, true )
-            Test.division( 0 as T,  1 as T,  0 as T,  0 as T, false)
-            Test.division( 1 as T,  0 as T,  1 as T,  1 as T, true )
-            Test.division( 1 as T,  1 as T,  1 as T,  0 as T, false)
+            Test.division( 0 as T,  0 as T, nil)
+            Test.division( 0 as T,  1 as T, Division(quotient: 0 as T, remainder: 0 as T))
+            Test.division( 1 as T,  0 as T, nil)
+            Test.division( 1 as T,  1 as T, Division(quotient: 1 as T, remainder: 0 as T))
         }
         
         for type in Self.types {

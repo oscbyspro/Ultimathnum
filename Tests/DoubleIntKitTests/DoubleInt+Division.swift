@@ -24,18 +24,19 @@ extension DoubleIntTests {
     func testDivision1111() {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
+            typealias D = Division<T, T>
             
-            Test.division( 0 as T,  1 as T,  0 as T,  0 as T)
-            Test.division( 0 as T,  2 as T,  0 as T,  0 as T)
-            Test.division( 7 as T,  1 as T,  7 as T,  0 as T)
-            Test.division( 7 as T,  2 as T,  3 as T,  1 as T)
+            Test.division( 0 as T,  1 as T, D(quotient:  0 as T, remainder:  0 as T))
+            Test.division( 0 as T,  2 as T, D(quotient:  0 as T, remainder:  0 as T))
+            Test.division( 7 as T,  1 as T, D(quotient:  7 as T, remainder:  0 as T))
+            Test.division( 7 as T,  2 as T, D(quotient:  3 as T, remainder:  1 as T))
             
             guard T.isSigned else { return }
-                    
-            Test.division( 7 as T,  3 as T,  2 as T,  1 as T)
-            Test.division( 7 as T, -3 as T, -2 as T,  1 as T)
-            Test.division(-7 as T,  3 as T, -2 as T, -1 as T)
-            Test.division(-7 as T, -3 as T,  2 as T, -1 as T)
+            
+            Test.division( 7 as T,  3 as T, D(quotient:  2 as T, remainder:  1 as T))
+            Test.division( 7 as T, -3 as T, D(quotient: -2 as T, remainder:  1 as T))
+            Test.division(-7 as T,  3 as T, D(quotient: -2 as T, remainder: -1 as T))
+            Test.division(-7 as T, -3 as T, D(quotient:  2 as T, remainder: -1 as T))
         }
         
         for base in Self.bases {
@@ -46,20 +47,22 @@ extension DoubleIntTests {
     func testDivision2121() {
         func whereTheBaseTypeIsSigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
-                        
-            Test.division( T(low:  7, high:  8),  4 as T,  T(low:  1, high:  2),  3 as T)
-            Test.division( T(low:  7, high:  8), -4 as T, -T(low:  1, high:  2),  3 as T)
-            Test.division(-T(low:  7, high:  8),  4 as T, -T(low:  1, high:  2), -3 as T)
-            Test.division(-T(low:  7, high:  8), -4 as T,  T(low:  1, high:  2), -3 as T)
+            typealias D = Division<T, T>
+            
+            Test.division( T(low:  7, high:  8),  4 as T, D(quotient:  T(low:  1, high:  2), remainder:  3 as T))
+            Test.division( T(low:  7, high:  8), -4 as T, D(quotient: -T(low:  1, high:  2), remainder:  3 as T))
+            Test.division(-T(low:  7, high:  8),  4 as T, D(quotient: -T(low:  1, high:  2), remainder: -3 as T))
+            Test.division(-T(low:  7, high:  8), -4 as T, D(quotient:  T(low:  1, high:  2), remainder: -3 as T))
         }
         
         func whereTheBaseTypeIsUnsigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
+            typealias D = Division<T, T>
             
-            Test.division( T(low: ~2, high:  5),  2 as T,  T(low: ~1, high:  2),  1 as T)
-            Test.division( T(low: ~3, high:  8),  3 as T,  T(low: ~1, high:  2),  2 as T)
-            Test.division( T(low: ~4, high: 11),  4 as T,  T(low: ~1, high:  2),  3 as T)
-            Test.division( T(low: ~5, high: 14),  5 as T,  T(low: ~1, high:  2),  4 as T)
+            Test.division( T(low: ~2, high:  5),  2 as T, D(quotient:  T(low: ~1, high:  2), remainder:  1 as T))
+            Test.division( T(low: ~3, high:  8),  3 as T, D(quotient:  T(low: ~1, high:  2), remainder:  2 as T))
+            Test.division( T(low: ~4, high: 11),  4 as T, D(quotient:  T(low: ~1, high:  2), remainder:  3 as T))
+            Test.division( T(low: ~5, high: 14),  5 as T, D(quotient:  T(low: ~1, high:  2), remainder:  4 as T))
         }
         
         for base in Self.bases {
@@ -70,20 +73,22 @@ extension DoubleIntTests {
     func testDivision2211() {
         func whereTheBaseTypeIsSigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
-                        
-            Test.division( T(low: ~2, high:  5),  T(low: ~1, high:  2),  2 as T,  1 as T)
-            Test.division( T(low: ~3, high:  8), -T(low: ~1, high:  2), -3 as T,  2 as T)
-            Test.division(-T(low: ~4, high: 11),  T(low: ~1, high:  2), -4 as T, -3 as T)
-            Test.division(-T(low: ~5, high: 14), -T(low: ~1, high:  2),  5 as T, -4 as T)
+            typealias D = Division<T, T>
+            
+            Test.division( T(low: ~2, high:  5),  T(low: ~1, high:  2), D(quotient:  2 as T, remainder:  1 as T))
+            Test.division( T(low: ~3, high:  8), -T(low: ~1, high:  2), D(quotient: -3 as T, remainder:  2 as T))
+            Test.division(-T(low: ~4, high: 11),  T(low: ~1, high:  2), D(quotient: -4 as T, remainder: -3 as T))
+            Test.division(-T(low: ~5, high: 14), -T(low: ~1, high:  2), D(quotient:  5 as T, remainder: -4 as T))
         }
         
         func whereTheBaseTypeIsUnsigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
+            typealias D = Division<T, T>
             
-            Test.division( T(low: ~2, high:  5),  T(low: ~1, high:  2),  2 as T,  1 as T)
-            Test.division( T(low: ~3, high:  8),  T(low: ~1, high:  2),  3 as T,  2 as T)
-            Test.division( T(low: ~4, high: 11),  T(low: ~1, high:  2),  4 as T,  3 as T)
-            Test.division( T(low: ~5, high: 14),  T(low: ~1, high:  2),  5 as T,  4 as T)
+            Test.division( T(low: ~2, high:  5),  T(low: ~1, high:  2), D(quotient:  2 as T, remainder:  1 as T))
+            Test.division( T(low: ~3, high:  8),  T(low: ~1, high:  2), D(quotient:  3 as T, remainder:  2 as T))
+            Test.division( T(low: ~4, high: 11),  T(low: ~1, high:  2), D(quotient:  4 as T, remainder:  3 as T))
+            Test.division( T(low: ~5, high: 14),  T(low: ~1, high:  2), D(quotient:  5 as T, remainder:  4 as T))
         }
         
         for base in Self.bases {
@@ -94,20 +99,22 @@ extension DoubleIntTests {
     func testDivision2212() {
         func whereTheBaseTypeIsSigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
+            typealias D = Division<T, T>
             
-            Test.division( T(low:  1, high:  2 &+ Base.msb),  T(low:  1, high: 2 &+ Base.msb),  1 as T, -T(low: 0, high: 0))
-            Test.division( T(low:  1, high:  2 &+ Base.msb), -T(low:  2, high: 3 &+ Base.msb), -1 as T, -T(low: 1, high: 1))
-            Test.division(-T(low:  1, high:  2 &+ Base.msb),  T(low:  3, high: 4 &+ Base.msb), -1 as T,  T(low: 2, high: 2))
-            Test.division(-T(low:  1, high:  2 &+ Base.msb), -T(low:  4, high: 5 &+ Base.msb),  1 as T,  T(low: 3, high: 3))
+            Test.division( T(low:  1, high:  2 &+ Base.msb),  T(low:  1, high: 2 &+ Base.msb), D(quotient:  1 as T, remainder: -T(low: 0, high: 0)))
+            Test.division( T(low:  1, high:  2 &+ Base.msb), -T(low:  2, high: 3 &+ Base.msb), D(quotient: -1 as T, remainder: -T(low: 1, high: 1)))
+            Test.division(-T(low:  1, high:  2 &+ Base.msb),  T(low:  3, high: 4 &+ Base.msb), D(quotient: -1 as T, remainder:  T(low: 2, high: 2)))
+            Test.division(-T(low:  1, high:  2 &+ Base.msb), -T(low:  4, high: 5 &+ Base.msb), D(quotient:  1 as T, remainder:  T(low: 3, high: 3)))
         }
         
         func whereTheBaseTypeIsUnsigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
-                        
-            Test.division( T(low:  1, high:  2 &+ Base.msb),  T(low:  1, high: Base.msb &+ 2),  1 as T,  T(low: 0, high: 0))
-            Test.division( T(low:  1, high:  2 &+ Base.msb),  T(low:  0, high: Base.msb &+ 1),  1 as T,  T(low: 1, high: 1))
-            Test.division( T(low:  1, high:  2 &+ Base.msb),  T(low: ~0, high: Base.msb &- 1),  1 as T,  T(low: 2, high: 2))
-            Test.division( T(low:  1, high:  2 &+ Base.msb),  T(low: ~1, high: Base.msb &- 2),  1 as T,  T(low: 3, high: 3))
+            typealias D = Division<T, T>
+            
+            Test.division( T(low:  1, high:  2 &+ Base.msb),  T(low:  1, high: Base.msb &+ 2), D(quotient:  1 as T, remainder:  T(low: 0, high: 0)))
+            Test.division( T(low:  1, high:  2 &+ Base.msb),  T(low:  0, high: Base.msb &+ 1), D(quotient:  1 as T, remainder:  T(low: 1, high: 1)))
+            Test.division( T(low:  1, high:  2 &+ Base.msb),  T(low: ~0, high: Base.msb &- 1), D(quotient:  1 as T, remainder:  T(low: 2, high: 2)))
+            Test.division( T(low:  1, high:  2 &+ Base.msb),  T(low: ~1, high: Base.msb &- 2), D(quotient:  1 as T, remainder:  T(low: 3, high: 3)))
         }
         
         for base in Self.bases {
@@ -118,17 +125,18 @@ extension DoubleIntTests {
     func testDivisionOverflow() {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
+            typealias D = Division<T, T>
             
-            Test.division(~1 as T,  0 as T, ~1 as T, ~1 as T, true)
-            Test.division(~0 as T,  0 as T, ~0 as T, ~0 as T, true)
-            Test.division( 0 as T,  0 as T,  0 as T,  0 as T, true)
-            Test.division( 1 as T,  0 as T,  1 as T,  1 as T, true)
-            Test.division( 2 as T,  0 as T,  2 as T,  2 as T, true)
+            Test.division(~1 as T,  0 as T, nil)
+            Test.division(~0 as T,  0 as T, nil)
+            Test.division( 0 as T,  0 as T, nil)
+            Test.division( 1 as T,  0 as T, nil)
+            Test.division( 2 as T,  0 as T, nil)
             
             guard T.isSigned else { return }
             
-            Test.division( T .min, -1 as T,  T .min,  0 as T, true)
-            Test.division( T .max, -1 as T, -T .max,  0 as T)
+            Test.division( T .min, -1 as T, nil)
+            Test.division( T .max, -1 as T, D(quotient: -T.max, remainder: 0 as T))
         }
         
         for base in Self.bases {

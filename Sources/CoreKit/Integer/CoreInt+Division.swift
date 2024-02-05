@@ -19,18 +19,28 @@ extension CoreInt {
     
     @inlinable public consuming func quotient(divisor: Self) throws -> Self {
         let result = self.base.dividedReportingOverflow(by: divisor.base)
-        return try Overflow.resolve(Self(result.partialValue), overflow: result.overflow)
+        
+        if  result.overflow {
+            throw Overflow()
+        }
+        
+        return Self(result.partialValue)
     }
     
     @inlinable public consuming func remainder(divisor: Self) throws -> Self {
         let result = self.base.remainderReportingOverflow(dividingBy: divisor.base)
-        return try Overflow.resolve(Self(result.partialValue), overflow: result.overflow)
+        
+        if  result.overflow {
+            throw Overflow()
+        }
+        
+        return Self(result.partialValue)
     }
     
     @inlinable public consuming func divided(by divisor: Self) throws -> Division<Self, Self> {
-        let quotient  = Overflow.capture({ try self.quotient (divisor: divisor) })
-        let remainder = Overflow.capture({ try self.remainder(divisor: divisor) })
-        return try Overflow.resolve(Division(quotient: quotient.value, remainder: remainder.value), overflow: quotient.overflow || remainder.overflow)
+        let quotient  = try (copy    self) .quotient (divisor: divisor)
+        let remainder = try (consume self) .remainder(divisor: divisor)
+        return Division(quotient: quotient, remainder: remainder)
     }
     
     //=------------------------------------------------------------------------=

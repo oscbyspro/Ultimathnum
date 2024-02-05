@@ -47,7 +47,7 @@ extension Namespace.TupleBinaryInteger {
     
     @inlinable package static func bitShiftL22(_ instance: consuming Doublet<Base>, by shift: Base) -> Doublet<Base> {
         //=--------------------------------------=
-        let shift: Base.Magnitude = Base.Magnitude(bitPattern: shift) & (Base.bitWidth &<< 1 &- 1)
+        let shift = Base.Magnitude(bitPattern: shift) & (Base.bitWidth &<< 1 &- 1)
         //=--------------------------------------=
         if  shift.load(as: UX.self) >= Base.bitWidth.load(as: UX.self) {
             instance.high    = Base(bitPattern: instance.low &<< (shift &- Base.bitWidth))
@@ -63,7 +63,7 @@ extension Namespace.TupleBinaryInteger {
     
     @inlinable package static func bitShiftR22(_ instance: consuming Doublet<Base>, by shift: Base) -> Doublet<Base> {
         //=--------------------------------------=
-        let shift: Base.Magnitude = Base.Magnitude(bitPattern: shift) & (Base.bitWidth &<< 1 &- 1)
+        let shift = Base.Magnitude(bitPattern: shift) & (Base.bitWidth &<< 1 &- 1)
         //=--------------------------------------=
         if  shift.load(as: UX.self) >= Base.bitWidth.load(as: UX.self) {
             instance.low     = Base.Magnitude(bitPattern: instance.high &>> Base(bitPattern: shift &- Base.bitWidth))

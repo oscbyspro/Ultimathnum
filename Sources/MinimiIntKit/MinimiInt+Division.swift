@@ -20,15 +20,27 @@ extension MinimiInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public func quotient(divisor: Self) throws -> Self {
-        try Overflow.resolve(self, overflow: self <= divisor)
+        if  self  <= divisor {
+            throw Overflow()
+        }
+        
+        return consume self
     }
     
     @inlinable public func remainder(divisor: Self) throws -> Self {
-        try Overflow.resolve(Self(bitPattern: self < divisor), overflow: self <= divisor)
+        if  self  <= divisor {
+            throw Overflow()
+        }
+        
+        return Self(bitPattern: self < divisor)
     }
     
     @inlinable public func divided(by divisor: Self) throws -> Division<Self, Self> {
-        try Overflow.resolve(Division(quotient: self, remainder: Self(bitPattern: self < divisor)), overflow: self <= divisor)
+        if  self  <= divisor {
+            throw Overflow()
+        }
+        
+        return Division(quotient: self, remainder: Self(bitPattern: self < divisor))
     }
     
     //=------------------------------------------------------------------------=
@@ -56,16 +68,28 @@ extension MinimiInt.Magnitude {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func quotient (divisor: Self) throws -> Self {
-        try Overflow.resolve(self, overflow: divisor == 0)
+    @inlinable public func quotient(divisor: Self) throws -> Self {
+        if  divisor == 0 {
+            throw Overflow()
+        }
+        
+        return consume self
     }
     
     @inlinable public func remainder(divisor: Self) throws -> Self {
-        try Overflow.resolve(Self(bitPattern: self > divisor), overflow: divisor == 0)
+        if  divisor == 0 {
+            throw Overflow()
+        }
+        
+        return Self(bitPattern: self > divisor)
     }
     
     @inlinable public func divided(by divisor: Self) throws -> Division<Self, Self> {
-        try Overflow.resolve(Division(quotient: self, remainder: Self(bitPattern: self > divisor)), overflow: divisor == 0)
+        if  divisor == 0 {
+            throw Overflow()
+        }
+        
+        return Division(quotient: self, remainder: Self(bitPattern: self > divisor))
     }
     
     //=------------------------------------------------------------------------=

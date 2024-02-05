@@ -27,6 +27,10 @@
 ///
 /// Its stride is Swift.Int which is used to step through Swift's ranges.
 ///
+/// ### Development
+///
+/// Consider using `Overflow<Void>` error type in 1-by-1 division too.
+///
 public protocol BinaryInteger: BitCastable, BitOperable, Comparable, 
 ExpressibleByIntegerLiteral, Hashable, Sendable, Strideable,
 _MaybeLosslessStringConvertible where Magnitude.BitPattern == BitPattern,
