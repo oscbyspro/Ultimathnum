@@ -90,3 +90,32 @@ extension CoreIntTests {
         }
     }
 }
+
+//*============================================================================*
+// MARK: * Core Int x Stride x Open Source Issues
+//*============================================================================*
+
+final class CoreIntTestsOnStrideOpenSourceIssues: XCTestCase {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    /// https://github.com/apple/swift/pull/71369
+    ///
+    /// - Note: Checks two unnecessary traps in Swift 5.9.
+    ///
+    func testGitHubAppleSwiftPull71369() {
+        XCTAssertEqual(I8.min.advanced(by: Swift.Int(Int8.max)) + 1, 0 as I8)
+        XCTAssertEqual(UX.max.advanced(by: Swift.Int.min), UX.max /  2 as UX)
+    }
+    
+    /// https://github.com/apple/swift/pull/71387
+    ///
+    /// - Note: Checks two unnecessary traps in Swift 5.9.
+    ///
+    func testGitHubAppleSwiftPull71387() {
+        XCTAssertEqual(UX.max.distance(to: UX.max/2), Int.min)
+        XCTAssertEqual(IX.max.distance(to: -1 as IX), Int.min)
+    }
+}
