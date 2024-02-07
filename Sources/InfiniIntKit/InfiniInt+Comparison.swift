@@ -27,8 +27,8 @@ extension InfiniInt {
         lhs.compared(to: rhs) == Signum.same
     }
     
-    @inlinable public func compared(to other: borrowing Self) -> Signum {
-        fatalError("TODO")
+    @inlinable public func compared(to other: Self) -> Signum {
+        ExchangeInt(self).compared(to: ExchangeInt(other))
     }
 }
 
@@ -50,7 +50,7 @@ extension InfiniInt.Magnitude {
         lhs.compared(to: rhs) == Signum.same
     }
     
-    @inlinable public func compared(to other: borrowing Self) -> Signum {
-        fatalError("TODO")
+    @inlinable public func compared(to other: Self) -> Signum {
+        ExchangeInt(self).compared(to: ExchangeInt(other))
     }
 }
