@@ -52,6 +52,10 @@
 /// [0x0304, 0x0102] == Array(ExchangeInt(([1, 2, 3, 4] as [U8]).reversed(), as: U16.self).source())
 /// ```
 ///
+/// ### Development
+///
+/// - TODO: Consider making this a view type (borrowing the base sequence).
+///
 @frozen public struct ExchangeInt<Base, Element>: BitCastable, Comparable where
 Element: SystemsInteger, Base: RandomAccessCollection, Base.Element: SystemsInteger & UnsignedInteger {
     

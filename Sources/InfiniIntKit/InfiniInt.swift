@@ -13,17 +13,12 @@ import CoreKit
 // MARK: * Infini Int
 //*============================================================================*
 
-/// ### Development
-///
-/// Consider making the storage model the same model that is used by init(load:)
-/// and perhaps words. This would maximize interoperability.
-///
 @frozen public struct InfiniInt: SignedInteger {
     
     public typealias Element = IX
     
     public typealias IntegerLiteralType = StaticBigInt
-        
+    
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
@@ -127,23 +122,24 @@ import CoreKit
     ///
     /// - TODO: Consider short array optimization based on emptiness.
     ///
+    /// - TODO: Consider tail with appendix bit vs repeating bit.
+    ///
     @frozen @usableFromInline struct Storage: Hashable {
         
         @usableFromInline typealias Body = ContiguousArray<UX>
-        @usableFromInline typealias Tail = Body.Element
         
         //=--------------------------------------------------------------------=
         // MARK: State
         //=--------------------------------------------------------------------=
         
         @usableFromInline var body: Body
-        @usableFromInline var tail: Tail
+        @usableFromInline var tail: Body.Element
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
-        @inlinable init(body: Body, tail: Tail) {
+        @inlinable init(body: Body, tail: Body.Element) {
             self.body = body
             self.tail = tail
         }

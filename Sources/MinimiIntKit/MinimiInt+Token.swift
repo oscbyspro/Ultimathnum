@@ -22,7 +22,7 @@ extension MinimiInt {
     @inlinable public init<T>(load source: T) where T: BitCastable<UX.BitPattern> {
         self.init(bitPattern: UX(bitPattern: source) & 1 == 1)
     }
-        
+    
     @inlinable public func load<T>(as type: T.Type) -> T where T: BitCastable<UX.BitPattern> {
         T(bitPattern: self.bitPattern ? 1 as UX : 0 as UX)
     }

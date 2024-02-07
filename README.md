@@ -38,6 +38,8 @@ Greatness.
 > [!IMPORTANT]
 > It's a work in progress.
 
+<a name="installation"/>
+
 ## Installation
 
 > [!IMPORTANT]
