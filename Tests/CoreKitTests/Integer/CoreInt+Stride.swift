@@ -51,11 +51,7 @@ extension CoreIntTests {
         }
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    func testStrideOverflowAdvanced() {
+    func testStrideAdvancedBy() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             XCTAssertEqual(try? T.advanced(T.min, by: -1 as IX),   nil)
             XCTAssertEqual(try? T.advanced(T.min, by:  0 as IX), T.min)
@@ -75,7 +71,7 @@ extension CoreIntTests {
         }
     }
     
-    func testStrideOverflowDistance() {
+    func testStrideDistanceTo() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             XCTAssertEqual(try? T.distance(T.max, to: T.max.advanced(by: -129), as: I8.self),    nil)
             XCTAssertEqual(try? T.distance(T.max, to: T.max.advanced(by: -128), as: I8.self), I8.min)
