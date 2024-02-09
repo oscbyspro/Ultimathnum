@@ -44,24 +44,31 @@ extension BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
 
-    @inlinable package static func advanced<T>(_ instance: consuming Self, by stride: T) throws -> Self where T: SignedInteger {
+    @inlinable package static func advanced<T>(_ instance: consuming Self, by distance: T) throws -> Self where T: SignedInteger {
         try Overflow.void {
             
             if  Self.isSigned {
                 
-                if  ExchangeInt(Self.bitWidth, as: Element.Magnitude.self) < 
-                    ExchangeInt(   T.bitWidth, as: Element.Magnitude.self) {
-                    return try Self(exactly: T(truncating: instance).plus(stride))
+                if  ExchangeInt(Self.bitWidth) >= ExchangeInt(T.bitWidth, as: Element.Magnitude.self) {
+                    
+                    return try instance.plus(Self(truncating: distance))
+                    
                 }   else {
-                    return try instance.plus(Self(truncating: stride))
+                    
+                    return try Self(exactly: T(truncating: instance).plus(distance))
+                    
                 }
                 
             }   else {
                 
-                if  stride.isLessThanZero {
-                    return try instance.minus(Self(exactly: stride.magnitude))
+                if  distance.isLessThanZero {
+                    
+                    return try instance.minus(Self(exactly: distance.magnitude))
+                    
                 }   else {
-                    return try instance.plus (Self(exactly: stride.magnitude))
+                    
+                    return try instance.plus (Self(exactly: distance.magnitude))
+                    
                 }
                 
             }
@@ -73,14 +80,13 @@ extension BinaryInteger {
             
             if  Self.isSigned {
                 
-                let isLessThanZero = instance.isLessThanZero
-                if  isLessThanZero == (other).isLessThanZero {
+                if  ExchangeInt(Self.bitWidth) <= ExchangeInt(T.bitWidth, as: Element.Magnitude.self) {
                     
-                    return try T(exactly: other - instance)
+                    return try T(truncating: other).minus(T(truncating: instance))
                     
                 }   else {
                     
-                    return try T(sign: Sign(bitPattern: !isLessThanZero), magnitude: T.Magnitude(exactly: instance.magnitude + other.magnitude))
+                    return try T(exactly: other.minus(instance))
                     
                 }
                 
