@@ -21,7 +21,7 @@ extension BinaryInteger {
         attempt: do {
             return try Self.advanced(self, by: IX(other))
         }   catch {
-            fatalError(String.overflow())
+            Swift.fatalError(String.overflow())
         }
     }
     
@@ -29,7 +29,7 @@ extension BinaryInteger {
         attempt: do {
             return try Self.distance(self, to: other, as: IX.self).stdlib
         }   catch {
-            fatalError(String.overflow())
+            Swift.fatalError(String.overflow())
         }
     }
 }
