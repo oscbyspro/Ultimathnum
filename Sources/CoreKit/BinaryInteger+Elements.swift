@@ -20,9 +20,9 @@ extension BinaryInteger {
     @inlinable public init<T>(elements: ExchangeInt<T, Element>.BitPattern, isSigned: Bool) throws {
         let appendix = elements.extension.bit
         var (stream) = elements.stream()
-        
+        //=--------------------------------------=
         self.init(load: &stream)
-        
+        //=--------------------------------------=
         let success = (self.appendix == appendix) && (Self.isSigned == isSigned || appendix == 0) && stream.succinct().count == 0
         if !success {
             throw Overflow(consume self)

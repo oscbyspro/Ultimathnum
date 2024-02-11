@@ -81,19 +81,10 @@ extension CoreInt where Self == Magnitude {
     //=------------------------------------------------------------------------=
     
     @inline(__always) @inlinable static func _dividing(_ dividend: consuming Doublet<Self>, by divisor: borrowing Self) throws -> Division<Self, Self> {
-        //=--------------------------------------=
-        // divisor is zero
-        //=--------------------------------------=
         if  divisor == 0 {
             throw Overflow()
-        //=--------------------------------------=
-        // quotient does not fit in one part
-        //=--------------------------------------=
         }   else if divisor <= dividend.high {
             throw Overflow()
-        //=--------------------------------------=
-        // quotient does fit in one part
-        //=--------------------------------------=
         }   else {
             let result = divisor.base.dividingFullWidth((high: dividend.high.base, low: dividend.low.base))
             return Division(quotient: Self(result.quotient), remainder: Self(result.remainder))

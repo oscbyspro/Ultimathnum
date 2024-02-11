@@ -25,15 +25,15 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<T>(_ source: T) where T: BinaryInteger {
+    @inlinable public init<T>(_ source: consuming T) where T: BinaryInteger {
         try! self.init(exactly: source)
     }
     
-    @inlinable public init<T>(exactly source: T) throws where T: BinaryInteger {
+    @inlinable public init<T>(exactly source: consuming T) throws where T: BinaryInteger {
         try  self.init(elements: ExchangeInt(source), isSigned: T.isSigned)
     }
     
-    @inlinable public init<T>(truncating source: T) where T: BinaryInteger {
+    @inlinable public init<T>(truncating source: consuming T) where T: BinaryInteger {
         var stream = ExchangeInt(source, as: Element.Magnitude.self).stream()
         self.init(load: &stream)
     }
@@ -47,13 +47,13 @@ extension BinaryInteger {
     }
     
     @inlinable public init(sign: consuming Sign, magnitude: consuming Magnitude) throws {
-        var bitPattern = consume magnitude
-        var isLessThanZero = sign == Sign.minus
+        var isLessThanZero = Bool(bitPattern: consume sign)
         if  isLessThanZero {
-            isLessThanZero = Overflow.capture(&bitPattern, map:{ try $0.negated() })
+            isLessThanZero = Overflow.capture(&magnitude, map:{ try $0.negated() })
         }
-        
-        self.init(bitPattern: consume bitPattern)
+        //=--------------------------------------=
+        self.init(bitPattern: consume magnitude)
+        //=--------------------------------------=
         if  self.isLessThanZero != isLessThanZero {
             throw Overflow(consume self)
         }
