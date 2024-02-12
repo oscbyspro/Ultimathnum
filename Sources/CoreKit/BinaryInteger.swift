@@ -85,20 +85,16 @@ Magnitude.Element == Element.Magnitude, Stride == Swift.Int {
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
-        
-    @inlinable init<T>(load source: T) where T: BitCastable<Element.BitPattern>
     
     @inlinable init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream)
-    
-    @inlinable func load<T>(as type: T.Type) -> T where T: BitCastable<Element.BitPattern>
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable init<T>(load source: T) where T: BitCastable<UX.BitPattern>
         
-    @inlinable func load<T>(as type: T.Type) -> T where T: BitCastable<UX.BitPattern>
+    @inlinable init<T>(load source: T) where T: SystemsInteger<Element.BitPattern>
+    
+    @inlinable func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern>
+    
+    @inlinable init<T>(load source: T) where T: SystemsInteger<UX.BitPattern>
+    
+    @inlinable func load<T>(as type: T.Type) -> T where T: SystemsInteger<UX.BitPattern>
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

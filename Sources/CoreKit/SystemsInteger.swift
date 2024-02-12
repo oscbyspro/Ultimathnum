@@ -55,7 +55,7 @@
 ///
 /// - TODO: Consider `static func squaring(_:) -> Doublet<Self>`
 ///
-public protocol SystemsInteger: BinaryInteger where Magnitude: SystemsInteger {
+public protocol SystemsInteger<BitPattern>: BinaryInteger where Magnitude: SystemsInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

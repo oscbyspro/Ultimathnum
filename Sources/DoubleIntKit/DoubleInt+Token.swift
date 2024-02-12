@@ -19,19 +19,19 @@ extension DoubleInt {
     // MARK: Initializes
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<T>(load source: T) where T: BitCastable<UX.BitPattern> {
+    @inlinable public init<T>(load source: T) where T: SystemsInteger<UX.BitPattern> {
         //=--------------------------------------=
-        let low  = Low (load: UX(bitPattern: source))
-        let high = High(load: UX(bitPattern: source) >> Low.bitWidth.load(as: UX.self))
+        let low  = Low (load: source)
+        let high = High(load: source >> Low.bitWidth.load(as: T.self))
         //=--------------------------------------=
         self.init(low: low, high: high)
     }
     
-    @inlinable public func load<T>(as type: T.Type) -> T where T: BitCastable<UX.BitPattern> {
+    @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<UX.BitPattern> {
         //=--------------------------------------=
-        let low  = self.low .load(as: UX.self)
-        let high = self.high.load(as: UX.self) << Low.bitWidth.load(as: UX.self)
+        let low  = self.low .load(as: T.self)
+        let high = self.high.load(as: T.self) << Low.bitWidth.load(as: T.self)
         //=--------------------------------------=
-        return T.init(bitPattern: low |  high)
+        return T.init(bitPattern: low | high)
     }
 }

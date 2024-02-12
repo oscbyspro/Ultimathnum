@@ -101,7 +101,7 @@ extension Bit {
     ///
     /// - Note: It's a nice compile-time gurantee for something rather common.
     ///
-    @frozen public struct Extension<Element>: BitCastable where Element: SystemsInteger {
+    @frozen public struct Extension<Element>: BitCastable, Comparable, Hashable where Element: SystemsInteger {
         
         public typealias Element = Element
         
@@ -143,6 +143,10 @@ extension Bit {
             consuming get {
                 BitPattern(unchecked: BitPattern.Element(bitPattern: self.element))
             }
+        }
+        
+        @inlinable public static func <(lhs: Self, rhs: Self) -> Bool {
+            lhs.element < rhs.element
         }
     }
 }

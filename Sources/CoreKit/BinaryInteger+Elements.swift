@@ -40,7 +40,7 @@ extension BinaryInteger where Element == Self {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<T>(load source: T) where T: BitCastable<Element.BitPattern> {
+    @inlinable public init<T>(load source: T) where T: SystemsInteger<Element.BitPattern> {
         self.init(bitPattern: source)
     }
     
@@ -48,7 +48,7 @@ extension BinaryInteger where Element == Self {
         self.init(load: source.next())
     }
     
-    @inlinable public func load<T>(as type: T.Type) -> T where T: BitCastable<Element.BitPattern> {
+    @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern> {
         T(bitPattern: self)
     }
 }

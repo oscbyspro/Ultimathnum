@@ -56,19 +56,27 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public var stdlib: Base {
-        consuming get { self.base }
+        consuming get {
+            self.base
+        }
     }
     
     @inlinable public var bitPattern: Base.BitPattern {
-        consuming get { self.base.bitPattern }
+        consuming get { 
+            self.base.bitPattern
+        }
     }
     
     @inlinable public var magnitude: CoreInt<Base.Magnitude> {
-        consuming get { Magnitude(self.base.magnitude) }
+        consuming get {
+            Magnitude(self.base.magnitude)
+        }
     }
     
     @inlinable public var words: some RandomAccessCollection<UX> {
-        consuming get { BitCastMap(self.base.words) }
+        consuming get {
+            BitCastMap(self.base.words)
+        }
     }
 }
 

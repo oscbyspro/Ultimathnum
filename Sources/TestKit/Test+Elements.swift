@@ -16,7 +16,27 @@ import CoreKit
 extension Test {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Utilities x Some
+    //=------------------------------------------------------------------------=
+    
+    public static func load<Integer: BinaryInteger, Element: SystemsInteger<Integer.Element.BitPattern>>(
+    _ element: Element, _ integer: Integer, file: StaticString = #file, line: UInt = #line) {
+        //=--------------------------------------=
+        XCTAssertEqual(Integer(load:/*--*/ element), integer, file: file, line: line)
+        XCTAssertEqual(Integer(truncating: element), integer, file: file, line: line)
+        XCTAssertEqual(Integer(load:/*--*/ element).load(as:  Element.self), element, file: file, line: line)
+    }
+    
+    public static func load<Integer: BinaryInteger, Element: SystemsInteger<Integer.Element.BitPattern>>(
+    _ integer: Integer, _ element: Element, file: StaticString = #file, line: UInt = #line) {
+        //=--------------------------------------=
+        XCTAssertEqual(integer.load(as: Element.self), element, file: file, line: line)
+        XCTAssertEqual(integer.load(as: Element.self), Element(truncating: integer), file: file, line: line)
+        XCTAssertEqual(Integer(load: element).load(as: Element.self), element, file: file, line: line)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities x Many
     //=------------------------------------------------------------------------=
     
     public static func elements<Integer: BinaryInteger, Element: SystemsInteger & UnsignedInteger>(

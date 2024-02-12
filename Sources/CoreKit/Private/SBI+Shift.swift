@@ -90,7 +90,7 @@ extension Namespace.StrictBinaryInteger where Base: MutableCollection {
     @inline(__always) @inlinable package static func bitShiftLeftCodeBlock(
     _   base: inout Base, environment: Base.Element, major: Int, minorAtLeastOne minor: Int) {
         //=--------------------------------------=
-        precondition(1 <= minor && minor < Base.Element.bitWidth.load(as: Int.self), .indexOutOfBounds())
+        precondition(1 <= minor && minor < Base.Element.bitWidth.load(as: IX.self).stdlib, .indexOutOfBounds())
         //=--------------------------------------=
         let push = Base.Element(load: UX(bitPattern: minor))
         let pull = ~push &+ 1
@@ -201,7 +201,7 @@ extension Namespace.StrictBinaryInteger where Base: MutableCollection {
     @inline(__always) @inlinable package static func bitShiftRightCodeBlock(
     _   base: inout Base, environment: Base.Element, major: Int, minorAtLeastOne minor: Int) {
         //=--------------------------------------=
-        precondition(1 <= minor && minor < Base.Element.bitWidth.load(as: Int.self), .indexOutOfBounds())
+        precondition(1 <= minor && minor < Base.Element.bitWidth.load(as: IX.self).stdlib, .indexOutOfBounds())
         //=--------------------------------------=
         let push = Base.Element(load: UX(bitPattern: minor))
         let pull = ~push &+ 1

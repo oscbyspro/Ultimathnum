@@ -19,7 +19,7 @@ extension InfiniInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<T>(load source: T) where T: BitCastable<Element.BitPattern> {
+    @inlinable public init<T>(load source: T) where T: SystemsInteger<Element.BitPattern> {
         fatalError("TODO")
     }
 
@@ -27,7 +27,7 @@ extension InfiniInt {
         fatalError("TODO")
     }
     
-    @inlinable public func load<T>(as type: T.Type) -> T where T: BitCastable<Element.BitPattern> {
+    @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern> {
         fatalError("TODO")
     }
     
@@ -46,7 +46,7 @@ extension InfiniInt.Magnitude {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
 
-    @inlinable public init<T>(load source: T) where T: BitCastable<Element.BitPattern> {
+    @inlinable public init<T>(load source: T) where T: SystemsInteger<Element.BitPattern> {
         fatalError("TODO")
     }
 
@@ -54,7 +54,7 @@ extension InfiniInt.Magnitude {
         fatalError("TODO")
     }
     
-    @inlinable public func load<T>(as type: T.Type) -> T where T: BitCastable<Element.BitPattern> {
+    @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern> {
         fatalError("TODO")
     }
     

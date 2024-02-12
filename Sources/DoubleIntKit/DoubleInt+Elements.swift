@@ -19,8 +19,8 @@ extension DoubleInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
 
-    @inlinable public init<T>(load source: T) where T: BitCastable<Element.BitPattern> {
-        self.init(low: Low(load: source))
+    @inlinable public init<T>(load source: T) where T: SystemsInteger<Element.BitPattern> {
+        self.init(low: Low(load: source), high: High(repeating: source.appendix))
     }
     
     @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
@@ -31,7 +31,7 @@ extension DoubleInt {
         self.init(low: consume low, high: consume high)
     }
     
-    @inlinable public func load<T>(as type: T.Type) -> T where T: BitCastable<Element.BitPattern> {
+    @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern> {
         self.low.load(as: T.self)
     }
 }
