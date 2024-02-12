@@ -63,11 +63,7 @@ import CoreKit
     
     @inlinable public var magnitude: Magnitude {
         consuming get {
-            if  self  < 0 {
-                Overflow.ignore(&self, map:{ try $0.negated() })
-            }
-            
-            return Magnitude(bitPattern: self)
+            Magnitude(bitPattern: Overflow.ignore({ self < 0 ? try self.negated() : self }))
         }
     }
     
@@ -118,30 +114,29 @@ import CoreKit
     
     /// ### Development
     ///
-    /// - TODO: Consider short array optimization based on enum.
-    ///
-    /// - TODO: Consider short array optimization based on emptiness.
-    ///
-    /// - TODO: Consider tail with appendix bit vs repeating bit.
+    /// - TODO: This is a minimum viable product. Improve it at some point.
     ///
     @frozen @usableFromInline struct Storage: Hashable {
         
-        @usableFromInline typealias Body = ContiguousArray<UX>
+        @usableFromInline typealias Base = ContiguousArray<UX>
         
         //=--------------------------------------------------------------------=
         // MARK: State
         //=--------------------------------------------------------------------=
         
-        @usableFromInline var body: Body
-        @usableFromInline var tail: Body.Element
+        /// The un/signed source.
+        public var `base`: Base
+        
+        /// The bit extension of the un/signed source.
+        public var `extension`: Bit.Extension<Element.Magnitude>
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
-        @inlinable init(body: Body, tail: Body.Element) {
-            self.body = body
-            self.tail = tail
+        @inlinable init(_ base: Base, repeating element: Bit.Extension<Element.Magnitude>) {
+            self.base = base
+            self.extension = element
         }
         
         //=--------------------------------------------------------------------=
@@ -149,12 +144,12 @@ import CoreKit
         //=--------------------------------------------------------------------=
         
         @inlinable var isNormal: Bool {
-            self.body.last != self.tail
+            self.base.last != self.extension.element
         }
         
         @inlinable mutating func normalize() {
-            while self.body.last == self.tail {
-                ((self.body)).removeLast()
+            while self.base.last == self.extension.element {
+                ((self.base)).removeLast()
             }
         }
     }

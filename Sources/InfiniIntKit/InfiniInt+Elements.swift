@@ -20,19 +20,19 @@ extension InfiniInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public init<T>(load source: T) where T: SystemsInteger<Element.BitPattern> {
-        fatalError("TODO")
+        self.init(normalizing: InfiniInt.Storage([Element.Magnitude(bitPattern: source)], repeating: Bit.Extension(repeating: 0)))
     }
-
+    
     @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
         fatalError("TODO")
     }
     
     @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern> {
-        fatalError("TODO")
+        T(bitPattern: self.storage.base.first ?? self.storage.extension.element)
     }
     
     @inlinable public var elements: ContiguousArray<Element.Magnitude> {
-        fatalError("TODO")
+        self.storage.base
     }
 }
 
@@ -47,7 +47,7 @@ extension InfiniInt.Magnitude {
     //=------------------------------------------------------------------------=
 
     @inlinable public init<T>(load source: T) where T: SystemsInteger<Element.BitPattern> {
-        fatalError("TODO")
+        self.init(normalizing: InfiniInt.Storage([Element.Magnitude(bitPattern: source)], repeating: Bit.Extension(repeating: 0)))
     }
 
     @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
@@ -55,10 +55,10 @@ extension InfiniInt.Magnitude {
     }
     
     @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern> {
-        fatalError("TODO")
+        T(bitPattern: self.storage.base.first ?? self.storage.extension.element)
     }
     
     @inlinable public var elements: ContiguousArray<Element.Magnitude> {
-        fatalError("TODO")
+        self.storage.base
     }
 }
