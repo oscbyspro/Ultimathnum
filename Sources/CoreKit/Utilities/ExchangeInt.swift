@@ -144,8 +144,8 @@ Element: SystemsInteger, Base: RandomAccessCollection, Base.Element: SystemsInte
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func chunked<Other>(as type: Other.Type = Other.self) -> ExchangeInt<Base, Other> {
-        CoreKit.ExchangeInt(self.base, repeating: self.extension.bit)
+    @inlinable public func reinterpreted<Other>(as type: Other.Type = Other.self) -> ExchangeInt<Base, Other> {
+        CoreKit.ExchangeInt(self.base, repeating: Bit.Extension(repeating: self.extension))
     }
 }
 

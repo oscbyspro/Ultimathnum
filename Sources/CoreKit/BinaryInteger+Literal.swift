@@ -18,7 +18,7 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(literally source: BigIntLiteral) throws {
-        try self.init(elements: ExchangeInt(source).chunked(), isSigned: true)
+        try self.init(elements: ExchangeInt(source).reinterpreted(), isSigned: true)
     }
 
     @inlinable public init(integerLiteral: BigIntLiteral.IntegerLiteralType) {

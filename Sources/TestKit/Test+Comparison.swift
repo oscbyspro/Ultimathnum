@@ -95,8 +95,6 @@ extension Test {
     _   lhs: ExchangeInt<A, B>, _ rhs: ExchangeInt<C, D>, _ expectation: Signum, file: StaticString, line: UInt) {
         func unidirectional<E, F, G, H>(_ lhs: ExchangeInt<E, F>, _ rhs: ExchangeInt<G, H>, _ expectation: Signum) {
             //=----------------------------------=
-            let lhs = lhs, rhs = rhs.chunked(as: F.self)
-            //=----------------------------------=
             signum: if rhs.signum() == Signum.same {
                 let result:  Signum = lhs.signum()
                 let success: Bool = result == expectation

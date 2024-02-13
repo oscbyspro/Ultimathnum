@@ -17,7 +17,7 @@ import TestKit
 extension MinimiIntTests {
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests x Initializers
+    // MARK: Tests
     //=------------------------------------------------------------------------=
     
     func testInitBit() {
@@ -30,10 +30,6 @@ extension MinimiIntTests {
             whereIs(type)
         }
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests x Accessors
-    //=------------------------------------------------------------------------=
     
     func testBitCountSelection() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {

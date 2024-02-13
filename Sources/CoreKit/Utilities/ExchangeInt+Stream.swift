@@ -39,10 +39,10 @@ extension ExchangeInt where Element == Element.Magnitude {
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
-        @inlinable init(_ base: ExchangeInt, from position: ExchangeInt.Index) {
-            self.base  = base
+        @inlinable init(_ base: ExchangeInt, from index: ExchangeInt.Index) {
+            self.base  = (base)
             self.limit = ExchangeInt.count(chunking: base.base)
-            self.index = position
+            self.index = (index)
         }
         
         //=--------------------------------------------------------------------=

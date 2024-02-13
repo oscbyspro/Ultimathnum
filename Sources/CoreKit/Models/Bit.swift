@@ -97,10 +97,7 @@
 
 extension Bit {
     
-    /// A system integer with its bits set to only `0` or only `1`.
-    ///
-    /// - Note: It's a nice compile-time gurantee for something rather common.
-    ///
+    /// A system integer with all bits set to only `0` or only `1`.
     @frozen public struct Extension<Element>: BitCastable, Comparable, Hashable where Element: SystemsInteger {
         
         public typealias Element = Element
@@ -119,6 +116,11 @@ extension Bit {
         
         @inlinable public init(repeating bit: Bit) {
             self.init(unchecked: Element(repeating: bit))
+        }
+        
+        @inlinable public init<T>(repeating other: Bit.Extension<T>) {
+            let bitCastOrLoad =  T.isSigned ||   Element.bitWidth.load(as: UX.self) <= T.bitWidth.load(as: UX.self)
+            self.init(unchecked: bitCastOrLoad ? Element.tokenized(bitCastOrLoad: other.element) : Element(repeating: other.bit))
         }
         
         @inlinable public init(bitPattern: consuming BitPattern) {

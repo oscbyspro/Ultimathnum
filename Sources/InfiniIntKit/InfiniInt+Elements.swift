@@ -23,6 +23,10 @@ extension InfiniInt {
         self.init(normalizing: InfiniInt.Storage([Element.Magnitude(bitPattern: source)], repeating: Bit.Extension(repeating: 0)))
     }
     
+    /// ### Development
+    ///
+    /// - TODO: The stream needs properties enabling efficient consumption.
+    /// 
     @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
         fatalError("TODO")
     }
@@ -50,6 +54,10 @@ extension InfiniInt.Magnitude {
         self.init(normalizing: InfiniInt.Storage([Element.Magnitude(bitPattern: source)], repeating: Bit.Extension(repeating: 0)))
     }
 
+    /// ### Development
+    ///
+    /// - TODO: The stream needs properties enabling efficient consumption.
+    ///
     @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
         fatalError("TODO")
     }
