@@ -75,4 +75,29 @@ extension DoubleIntTests {
             whereTheBaseTypeIs(base)
         }
     }
+    
+    func testLeastSignificantBit() {
+        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
+            typealias T = DoubleInt<Base>
+            typealias M = DoubleInt<Base>.Magnitude
+            
+            XCTAssertEqual(( T .min).leastSignificantBit, 0 as Bit)
+            XCTAssertEqual(( T .max).leastSignificantBit, 1 as Bit)
+            XCTAssertEqual((~1 as T).leastSignificantBit, 0 as Bit)
+            XCTAssertEqual((~0 as T).leastSignificantBit, 1 as Bit)
+            XCTAssertEqual(( 0 as T).leastSignificantBit, 0 as Bit)
+            XCTAssertEqual(( 1 as T).leastSignificantBit, 1 as Bit)
+            XCTAssertEqual(( 2 as T).leastSignificantBit, 0 as Bit)
+            XCTAssertEqual(( 3 as T).leastSignificantBit, 1 as Bit)
+            
+            XCTAssertEqual(T(low:  0, high:  0).leastSignificantBit, 0 as Bit)
+            XCTAssertEqual(T(low:  0, high: ~0).leastSignificantBit, 0 as Bit)
+            XCTAssertEqual(T(low: ~0, high:  0).leastSignificantBit, 1 as Bit)
+            XCTAssertEqual(T(low: ~0, high: ~0).leastSignificantBit, 1 as Bit)
+        }
+        
+        for base in Self.bases {
+            whereTheBaseTypeIs(base)
+        }
+    }
 }

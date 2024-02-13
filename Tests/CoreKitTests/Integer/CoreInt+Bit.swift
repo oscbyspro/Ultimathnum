@@ -55,4 +55,21 @@ extension CoreIntTests {
             whereIs(type)
         }
     }
+    
+    func testLeastSignificantBit() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            XCTAssertEqual(( T .min).leastSignificantBit, 0 as Bit)
+            XCTAssertEqual(( T .max).leastSignificantBit, 1 as Bit)
+            XCTAssertEqual((~1 as T).leastSignificantBit, 0 as Bit)
+            XCTAssertEqual((~0 as T).leastSignificantBit, 1 as Bit)
+            XCTAssertEqual(( 0 as T).leastSignificantBit, 0 as Bit)
+            XCTAssertEqual(( 1 as T).leastSignificantBit, 1 as Bit)
+            XCTAssertEqual(( 2 as T).leastSignificantBit, 0 as Bit)
+            XCTAssertEqual(( 3 as T).leastSignificantBit, 1 as Bit)
+        }
+        
+        for type in Self.types {
+            whereIs(type)
+        }
+    }
 }

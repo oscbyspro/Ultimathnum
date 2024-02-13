@@ -28,4 +28,18 @@ extension BinaryInteger {
     @inlinable public init(repeating bit: Bit) {
         self = Bool(bitPattern: bit) ? ~0 : 0
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    /// The least significant bit in its bit pattern.
+    ///
+    /// It returns `0` when this value is even, and `1` when it is odd.
+    ///
+    /// - Note: This accessor tests only the least significant element.
+    ///
+    @inlinable public var leastSignificantBit: Bit {
+        Bit(bitPattern: self.load(as: Element.self) & Element.lsb != 0)
+    }
 }

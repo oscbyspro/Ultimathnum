@@ -45,4 +45,20 @@ extension MinimiIntTests {
             whereIs(type)
         }
     }
+    
+    func testLeastSignificantBit() {
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
+            XCTAssertEqual((-1 as T).leastSignificantBit, 1 as Bit)
+            XCTAssertEqual(( 0 as T).leastSignificantBit, 0 as Bit)
+        }
+        
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
+            XCTAssertEqual(( 0 as T).leastSignificantBit, 0 as Bit)
+            XCTAssertEqual(( 1 as T).leastSignificantBit, 1 as Bit)
+        }
+        
+        for type in Self.types {
+            type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
+        }
+    }
 }
