@@ -96,7 +96,7 @@ extension ExchangeInt where Element == Element.Magnitude {
         // MARK: * Iterator
         //*====================================================================*
         
-        @frozen public struct Iterator: IteratorProtocol {
+        @frozen public struct Iterator: Sequence, IteratorProtocol {
             
             //=----------------------------------------------------------------=
             // MARK: State
@@ -116,7 +116,11 @@ extension ExchangeInt where Element == Element.Magnitude {
             //=----------------------------------------------------------------=
             // MARK: Utilities
             //=----------------------------------------------------------------=
-
+            
+            @inlinable public var `extension`: Bit.Extension<Element> {
+                self.base.extension
+            }
+            
             @inlinable public var count: Int {
                 self.base.distance(from: self.index, to: self.base.endIndex)
             }

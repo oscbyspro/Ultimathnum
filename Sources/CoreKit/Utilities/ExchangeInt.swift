@@ -54,6 +54,8 @@
 ///
 /// ### Development
 ///
+/// - TODO: Consider the name `appendix` vs `extension`.
+///
 /// - TODO: Consider making this a view type (borrowing the base sequence).
 ///
 @frozen public struct ExchangeInt<Base, Element>: BitCastable, Comparable where

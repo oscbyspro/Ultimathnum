@@ -19,16 +19,17 @@ extension InfiniInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<T>(load source: T) where T: SystemsInteger<Element.BitPattern> {
-        self.init(normalizing: InfiniInt.Storage([Element.Magnitude(bitPattern: source)], repeating: Bit.Extension(repeating: 0)))
+    @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
+        let `extension` = source.extension
+        let `base` = InfiniInt.Storage.Base(source.succinct())
+        //=--------------------------------------=
+        source.consume()
+        //=--------------------------------------=
+        self.init(unchecked: InfiniInt.Storage(`base`, repeating: `extension`))
     }
     
-    /// ### Development
-    ///
-    /// - TODO: The stream needs properties enabling efficient consumption.
-    /// 
-    @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
-        fatalError("TODO")
+    @inlinable public init<T>(load source: T) where T: SystemsInteger<Element.BitPattern> {
+        self.init(normalizing: InfiniInt.Storage([Element.Magnitude(bitPattern: source)], repeating: Bit.Extension(repeating: 0)))
     }
     
     @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern> {
@@ -49,17 +50,18 @@ extension InfiniInt.Magnitude {
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
+    
+    @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
+        let `extension` = source.extension
+        let `base` = InfiniInt.Storage.Base(source.succinct())
+        //=--------------------------------------=
+        source.consume()
+        //=--------------------------------------=
+        self.init(unchecked: InfiniInt.Storage(`base`, repeating: `extension`))
+    }
 
     @inlinable public init<T>(load source: T) where T: SystemsInteger<Element.BitPattern> {
         self.init(normalizing: InfiniInt.Storage([Element.Magnitude(bitPattern: source)], repeating: Bit.Extension(repeating: 0)))
-    }
-
-    /// ### Development
-    ///
-    /// - TODO: The stream needs properties enabling efficient consumption.
-    ///
-    @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
-        fatalError("TODO")
     }
     
     @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern> {

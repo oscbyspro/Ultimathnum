@@ -56,14 +56,22 @@ extension ExchangeInt where Element == Element.Magnitude {
             
             return self.base[self.index] as Element
         }
-        
+                
         //=--------------------------------------------------------------------=
         // MARK: Utilities
         //=--------------------------------------------------------------------=
         
+        @inlinable public var `extension`: Bit.Extension<Element> {
+            self.base.extension
+        }
+        
+        @inlinable public mutating func consume() {
+            self.index = self.limit
+        }
+        
         @inlinable public func succinct() -> ExchangeInt.Prefix.Iterator {
             var index: ExchangeInt.Index = self.limit
-                        
+            
             trimming: while self.index < index {
                 let predecessorIndex = index - 1
                 guard self.base[predecessorIndex] == self.base.extension.element else { break }
