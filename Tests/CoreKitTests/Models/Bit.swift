@@ -91,3 +91,49 @@ final class BitTests: XCTestCase {
         }
     }
 }
+
+//*============================================================================*
+// MARK: * Bit x Extension
+//*============================================================================*
+
+final class BitExtensionTests: XCTestCase {
+    
+    typealias T = Bit.Extension
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testInvariants() {
+        Test.invariantsAsSomeBitCastable(T<IX>.self, file: #file, line: #line)
+        Test.invariantsAsSomeBitCastable(T<UX>.self, file: #file, line: #line)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testInitOtherInstance() {
+        for bit: Bit in [0, 1] {
+            XCTAssertEqual(T<I64>(repeating: T<U64>(repeating: bit)), T(repeating: bit))
+            XCTAssertEqual(T<I64>(repeating: T<I64>(repeating: bit)), T(repeating: bit))
+            XCTAssertEqual(T<U64>(repeating: T<U64>(repeating: bit)), T(repeating: bit))
+            XCTAssertEqual(T<U64>(repeating: T<I64>(repeating: bit)), T(repeating: bit))
+            
+            XCTAssertEqual(T<I64>(repeating: T<U32>(repeating: bit)), T(repeating: bit))
+            XCTAssertEqual(T<I64>(repeating: T<I32>(repeating: bit)), T(repeating: bit))
+            XCTAssertEqual(T<U64>(repeating: T<U32>(repeating: bit)), T(repeating: bit))
+            XCTAssertEqual(T<U64>(repeating: T<I32>(repeating: bit)), T(repeating: bit))
+            
+            XCTAssertEqual(T<I32>(repeating: T<U64>(repeating: bit)), T(repeating: bit))
+            XCTAssertEqual(T<I32>(repeating: T<I64>(repeating: bit)), T(repeating: bit))
+            XCTAssertEqual(T<U32>(repeating: T<U64>(repeating: bit)), T(repeating: bit))
+            XCTAssertEqual(T<U32>(repeating: T<I64>(repeating: bit)), T(repeating: bit))
+            
+            XCTAssertEqual(T<I32>(repeating: T<U32>(repeating: bit)), T(repeating: bit))
+            XCTAssertEqual(T<I32>(repeating: T<I32>(repeating: bit)), T(repeating: bit))
+            XCTAssertEqual(T<U32>(repeating: T<U32>(repeating: bit)), T(repeating: bit))
+            XCTAssertEqual(T<U32>(repeating: T<I32>(repeating: bit)), T(repeating: bit))
+        }
+    }
+}
