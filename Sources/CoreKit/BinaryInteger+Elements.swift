@@ -18,7 +18,7 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public init<T>(elements: ExchangeInt<T, Element>.BitPattern, isSigned: Bool) throws {
-        let appendix = elements.extension.bit
+        let appendix = elements.appendix.bit
         var (stream) = elements.stream()
         //=--------------------------------------=
         self.init(load: &stream)

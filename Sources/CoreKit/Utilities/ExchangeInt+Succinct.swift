@@ -18,7 +18,7 @@ extension ExchangeInt where Element == Element.Magnitude {
     //=------------------------------------------------------------------------=
     
     @inlinable public func succinct() -> Prefix {
-        self.prefix(BitPattern.count(trimming: self.base, repeating: self.extension.bit))
+        self.prefix(BitPattern.count(trimming: self.base, repeating: self.appendix.bit))
     }
     
     //=------------------------------------------------------------------------=

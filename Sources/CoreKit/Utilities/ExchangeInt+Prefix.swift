@@ -47,8 +47,8 @@ extension ExchangeInt where Element == Element.Magnitude {
         // MARK: Utilities
         //=--------------------------------------------------------------------=
         
-        @inlinable public var `extension`: Bit.Extension<Element> {
-            self.base.extension
+        @inlinable public var appendix: Bit.Extension<Element> {
+            self.base.appendix
         }
         
         //=--------------------------------------------------------------------=
@@ -117,8 +117,8 @@ extension ExchangeInt where Element == Element.Magnitude {
             // MARK: Utilities
             //=----------------------------------------------------------------=
             
-            @inlinable public var `extension`: Bit.Extension<Element> {
-                self.base.extension
+            @inlinable public var appendix: Bit.Extension<Element> {
+                self.base.appendix
             }
             
             @inlinable public var count: Int {

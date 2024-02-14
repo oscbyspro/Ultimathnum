@@ -77,7 +77,7 @@
         try self.init()
         
         let elements = ExchangeInt(index, as: MinimiInt.Magnitude.self)
-        if  elements.extension.bit == 1 {
+        if  elements.appendix.bit == 1 {
             throw Error.overflow // is negative or infinite
         }
         

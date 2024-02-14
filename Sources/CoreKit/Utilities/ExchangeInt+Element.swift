@@ -19,18 +19,18 @@ extension ExchangeInt where Element == Element.Magnitude {
     
     /// The element at the given `index`, ordered from least significant to most.
     @inlinable public subscript(index: Int) -> Element {
-        BitPattern.element(index, base: self.base, extension: self.extension.bitPattern)
+        BitPattern.element(index, base: self.base, appendix: self.appendix.bitPattern)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable internal static func element(_ index: Int, base: Base, `extension`: Bit.Extension<Element>) -> Element {
+    @inlinable internal static func element(_ index: Int, base: Base, appendix: Bit.Extension<Element>) -> Element {
         switch comparison {
-        case Signum.same: Equal.element(index, base: base, extension: `extension`)
-        case Signum.less: Minor.element(index, base: base, extension: `extension`)
-        case Signum.more: Major.element(index, base: base, extension: `extension`)
+        case Signum.same: Equal.element(index, base: base, appendix: appendix)
+        case Signum.less: Minor.element(index, base: base, appendix: appendix)
+        case Signum.more: Major.element(index, base: base, appendix: appendix)
         }
     }
 }
@@ -45,12 +45,12 @@ extension ExchangeInt.Equal where Element == Element.Magnitude {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable internal static func element(_ index: Int, base: Base, `extension`: Bit.Extension<Element>) -> Element {
+    @inlinable internal static func element(_ index: Int, base: Base, appendix: Bit.Extension<Element>) -> Element {
         //=--------------------------------------=
         precondition(ExchangeInt.comparison == Signum.same, String.unreachable())
         //=--------------------------------------=
         if  index >= base.count {
-            return `extension`.element
+            return appendix.element
         }
         //=--------------------------------------=
         return Element.tokenized(bitCastOrLoad: base[base.index(base.startIndex, offsetBy: index)])
@@ -67,7 +67,7 @@ extension ExchangeInt.Minor where Element == Element.Magnitude {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable internal static func element(_ index: Int, base: Base, `extension`: Bit.Extension<Element>) -> Element {
+    @inlinable internal static func element(_ index: Int, base: Base, appendix: Bit.Extension<Element>) -> Element {
         //=--------------------------------------=
         precondition(ExchangeInt.comparison == Signum.less, String.unreachable())
         //=--------------------------------------=
@@ -76,7 +76,7 @@ extension ExchangeInt.Minor where Element == Element.Magnitude {
         let remainder = index &  (self.ratio - 1)
         //=--------------------------------------=
         if  quotient >= base.count {
-            return `extension`.element
+            return appendix.element
         }
         //=--------------------------------------=
         let major = base[base.index(base.startIndex, offsetBy: quotient)]
@@ -95,7 +95,7 @@ extension ExchangeInt.Major where Element == Element.Magnitude {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable internal static func element(_ index: Int, base: Base, `extension`: Bit.Extension<Element>) -> Element {
+    @inlinable internal static func element(_ index: Int, base: Base, appendix: Bit.Extension<Element>) -> Element {
         //=--------------------------------------=
         precondition(ExchangeInt.comparison == Signum.more, String.unreachable())
         //=--------------------------------------=
@@ -112,6 +112,6 @@ extension ExchangeInt.Major where Element == Element.Magnitude {
             }
         }
         
-        return shift >= Element.bitWidth ? major : major | `extension`.element &<< Element(bitPattern: shift)
+        return shift >= Element.bitWidth ? major : major | appendix.element &<< Element(bitPattern: shift)
     }
 }

@@ -54,8 +54,6 @@
 ///
 /// ### Development
 ///
-/// - TODO: Consider the name `appendix` vs `extension`.
-///
 /// - TODO: Consider making this a view type (borrowing the base sequence).
 ///
 @frozen public struct ExchangeInt<Base, Element>: BitCastable, Comparable where
@@ -95,10 +93,10 @@ Element: SystemsInteger, Base: RandomAccessCollection, Base.Element: SystemsInte
     //=------------------------------------------------------------------------=
     
     /// The un/signed source.
-    public let `base`: Base
+    public let base: Base
     
     /// The bit extension of the un/signed source.
-    public let `extension`: Bit.Extension<Element>
+    public let appendix: Bit.Extension<Element>
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -119,11 +117,11 @@ Element: SystemsInteger, Base: RandomAccessCollection, Base.Element: SystemsInte
     ///
     /// - Parameters:
     ///   - base: The source viewed through this sequence.
-    ///   - bit:  The bit which extends the base sequence.
+    ///   - appendix: The bit extending the base sequence.
     ///   - element: The type of element produced by this sequence.
     ///
-    @inlinable public init(_ base: Base, repeating bit: Bit, as element: Element.Type = Element.self) {
-        self.init(base, repeating: Bit.Extension(repeating: bit))
+    @inlinable public init(_ base: Base, repeating appendix: Bit, as element: Element.Type = Element.self) {
+        self.init(base, repeating: Bit.Extension(repeating: appendix))
     }
     
     /// Creates a sequence of the given type from a bit pattern source.
@@ -133,10 +131,10 @@ Element: SystemsInteger, Base: RandomAccessCollection, Base.Element: SystemsInte
     ///   - element: The element which extends the base sequence.
     ///   - count: The number of prefixing elements to view.
     ///
-    @inlinable public init(_ base: Base, repeating element: Bit.Extension<Element>) {
+    @inlinable public init(_ base: Base, repeating appendix: Bit.Extension<Element>) {
         //=--------------------------------------=
         self.base = base
-        self.extension = element
+        self.appendix = appendix
         //=--------------------------------------=
         Swift.assert(Self.Element.bitWidth.count(1, option: .all) == 1)
         Swift.assert(Base.Element.bitWidth.count(1, option: .all) == 1)
@@ -147,7 +145,7 @@ Element: SystemsInteger, Base: RandomAccessCollection, Base.Element: SystemsInte
     //=------------------------------------------------------------------------=
     
     @inlinable public func reinterpreted<Other>(as type: Other.Type = Other.self) -> ExchangeInt<Base, Other> {
-        CoreKit.ExchangeInt(self.base, repeating: Bit.Extension(repeating: self.extension))
+        CoreKit.ExchangeInt(self.base, repeating: Bit.Extension(repeating: self.appendix))
     }
 }
 

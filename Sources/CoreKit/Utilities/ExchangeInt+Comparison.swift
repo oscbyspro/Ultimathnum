@@ -64,7 +64,7 @@ extension ExchangeInt where Element == Element.Magnitude {
         //=--------------------------------------=
         // comparison: appendix
         //=--------------------------------------=
-        if  instance.extension.bit == Bit.one {
+        if  instance.appendix.bit == Bit.one {
             return Signum.one(Sign(bitPattern: isSigned))
         }
         //=--------------------------------------=
@@ -80,8 +80,8 @@ extension ExchangeInt where Element == Element.Magnitude {
         typealias LHS = ExchangeInt<Base, Element>
         typealias RHS = ExchangeInt<T,    Element>
         //=--------------------------------------=
-        let lhsAppendix = Bool(bitPattern: lhs.extension.bit)
-        let rhsAppendix = Bool(bitPattern: rhs.extension.bit)
+        let lhsAppendix = Bool(bitPattern: lhs.appendix.bit)
+        let rhsAppendix = Bool(bitPattern: rhs.appendix.bit)
         //=--------------------------------------=
         // comparison: appendix
         //=--------------------------------------=

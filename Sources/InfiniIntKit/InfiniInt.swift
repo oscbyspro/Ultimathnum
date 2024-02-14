@@ -128,15 +128,15 @@ import CoreKit
         public var `base`: Base
         
         /// The bit extension of the un/signed source.
-        public var `extension`: Bit.Extension<Element.Magnitude>
+        public var appendix: Bit.Extension<Element.Magnitude>
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
-        @inlinable init(_ base: Base, repeating element: Bit.Extension<Element.Magnitude>) {
+        @inlinable init(_ base: Base, repeating appendix: Bit.Extension<Element.Magnitude>) {
             self.base = base
-            self.extension = element
+            self.appendix = appendix
         }
         
         //=--------------------------------------------------------------------=
@@ -144,11 +144,11 @@ import CoreKit
         //=--------------------------------------------------------------------=
         
         @inlinable var isNormal: Bool {
-            self.base.last != self.extension.element
+            self.base.last != self.appendix.element
         }
         
         @inlinable mutating func normalize() {
-            while self.base.last == self.extension.element {
+            while self.base.last == self.appendix.element {
                 ((self.base)).removeLast()
             }
         }

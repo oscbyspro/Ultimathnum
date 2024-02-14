@@ -18,10 +18,10 @@ extension ExchangeInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(bitPattern: ExchangeInt<Base, Element.Magnitude>) {
-        self.init(bitPattern.base, repeating: Bit.Extension(bitPattern: bitPattern.extension))
+        self.init(bitPattern.base, repeating: Bit.Extension(bitPattern: bitPattern.appendix))
     }
     
     @inlinable public var bitPattern: ExchangeInt<Base, Element.Magnitude> {
-        BitPattern(self.base, repeating: Bit.Extension(bitPattern: self.extension))
+        BitPattern(self.base, repeating: Bit.Extension(bitPattern: self.appendix))
     }
 }

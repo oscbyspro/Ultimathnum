@@ -20,12 +20,12 @@ extension InfiniInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
-        let `extension` = source.extension
-        let `base` = InfiniInt.Storage.Base(source.succinct())
+        let appendix = source.appendix
+        let base = InfiniInt.Storage.Base(source.succinct())
         //=--------------------------------------=
         source.consume()
         //=--------------------------------------=
-        self.init(unchecked: InfiniInt.Storage(`base`, repeating: `extension`))
+        self.init(unchecked: InfiniInt.Storage(base, repeating: appendix))
     }
     
     @inlinable public init<T>(load source: T) where T: SystemsInteger<Element.BitPattern> {
@@ -33,7 +33,7 @@ extension InfiniInt {
     }
     
     @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern> {
-        T(bitPattern: self.storage.base.first ?? self.storage.extension.element)
+        T(bitPattern: self.storage.base.first ?? self.storage.appendix.element)
     }
     
     @inlinable public var elements: ContiguousArray<Element.Magnitude> {
@@ -52,12 +52,12 @@ extension InfiniInt.Magnitude {
     //=------------------------------------------------------------------------=
     
     @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
-        let `extension` = source.extension
-        let `base` = InfiniInt.Storage.Base(source.succinct())
+        let appendix = source.appendix
+        let base = InfiniInt.Storage.Base(source.succinct())
         //=--------------------------------------=
         source.consume()
         //=--------------------------------------=
-        self.init(unchecked: InfiniInt.Storage(`base`, repeating: `extension`))
+        self.init(unchecked: InfiniInt.Storage(base, repeating: appendix))
     }
 
     @inlinable public init<T>(load source: T) where T: SystemsInteger<Element.BitPattern> {
@@ -65,7 +65,7 @@ extension InfiniInt.Magnitude {
     }
     
     @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern> {
-        T(bitPattern: self.storage.base.first ?? self.storage.extension.element)
+        T(bitPattern: self.storage.base.first ?? self.storage.appendix.element)
     }
     
     @inlinable public var elements: ContiguousArray<Element.Magnitude> {

@@ -20,7 +20,7 @@ extension InfiniInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public var appendix: Bit {
-        self.storage.extension.bit
+        self.storage.appendix.bit
     }
     
     @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
@@ -39,7 +39,7 @@ extension InfiniInt.Magnitude {
     //=------------------------------------------------------------------------=
     
     @inlinable public var appendix: Bit {
-        self.storage.extension.bit
+        self.storage.appendix.bit
     }
     
     @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
