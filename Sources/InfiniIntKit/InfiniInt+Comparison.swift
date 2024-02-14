@@ -10,33 +10,10 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Infini Int x Comparison x Signed
+// MARK: * Infini Int x Comparison
 //*============================================================================*
 
 extension InfiniInt {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.less
-    }
-    
-    @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.same
-    }
-    
-    @inlinable public func compared(to other: Self) -> Signum {
-        ExchangeInt(self).compared(to: ExchangeInt(other))
-    }
-}
-
-//*============================================================================*
-// MARK: * Infini Int x Comparison x Unsigned
-//*============================================================================*
-
-extension InfiniInt.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

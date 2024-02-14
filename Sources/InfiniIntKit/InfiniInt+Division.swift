@@ -10,33 +10,10 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Infini Int x Division x Signed
+// MARK: * Infini Int x Division
 //*============================================================================*
 
 extension InfiniInt {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable consuming public func quotient(divisor: borrowing Self) throws -> Self {
-        fatalError("TODO")
-    }
-    
-    @inlinable consuming public func remainder(divisor: borrowing Self) throws -> Self {
-        fatalError("TODO")
-    }
-    
-    @inlinable consuming public func divided(by divisor: borrowing Self) throws -> Division<Self, Self> {
-        fatalError("TODO")
-    }
-}
-
-//*============================================================================*
-// MARK: * Infini Int x Division x Unsigned
-//*============================================================================*
-
-extension InfiniInt.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

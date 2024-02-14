@@ -13,7 +13,7 @@ import CoreKit
 // MARK: * Infini Int x Numbers x Unsigned
 //*============================================================================*
 
-extension InfiniInt.Magnitude {
+extension InfiniInt where Element == Element.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data

@@ -10,29 +10,10 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Infini Int x Bit x Signed
+// MARK: * Infini Int x Bit
 //*============================================================================*
 
 extension InfiniInt {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public var appendix: Bit {
-        self.storage.appendix.bit
-    }
-    
-    @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
-        fatalError("TODO")
-    }
-}
-
-//*============================================================================*
-// MARK: * Infini Int x Bit x Unsigned
-//*============================================================================*
-
-extension InfiniInt.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

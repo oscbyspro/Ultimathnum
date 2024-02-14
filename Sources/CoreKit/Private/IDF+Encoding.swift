@@ -85,7 +85,7 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
                     let remainder: UX; (firstChunk, remainder) = Overflow.ignore({ try firstChunk.divided(by: radix.base).components })
                     precondition(firstIndex >  first.startIndex)
                     firstIndex = first.index(before: firstIndex)
-                    first.initializeElement(at: firstIndex, to: UInt8(ascii: "0") &+ U8(load: remainder.load(as: UX.self)).stdlib)
+                    first.initializeElement(at: firstIndex, to: UInt8(ascii: "0") &+ U8(load: remainder).stdlib)
                     
                 }   while firstChunk != 0
                 //=------------------------------=
@@ -109,7 +109,7 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
                             let remainder: UX; (chunk, remainder) = Overflow.ignore({ try chunk.divided(by: radix.base).components })
                             precondition(asciiIndex > ascii.startIndex)
                             ascii.formIndex(before: &asciiIndex)
-                            ascii.initializeElement(at: asciiIndex, to: UInt8(ascii: "0") &+ U8(load: remainder.load(as: UX.self)).stdlib)
+                            ascii.initializeElement(at: asciiIndex, to: UInt8(ascii: "0") &+ U8(load: remainder).stdlib)
                         }
                     }
                     

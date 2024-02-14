@@ -10,29 +10,10 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Infini Int x Subtraction x Signed
+// MARK: * Infini Int x Subtraction
 //*============================================================================*
 
 extension InfiniInt {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func negated() throws -> Self {
-        fatalError("TODO")
-    }
-    
-    @inlinable public consuming func minus(_ increment: borrowing Self) throws -> Self {
-        fatalError("TODO")
-    }
-}
-
-//*============================================================================*
-// MARK: * Infini Int x Subtraction x Unsigned
-//*============================================================================*
-
-extension InfiniInt.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

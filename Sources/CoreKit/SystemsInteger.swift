@@ -58,6 +58,14 @@
 public protocol SystemsInteger<BitPattern>: BinaryInteger where Magnitude: SystemsInteger {
     
     //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable init<T>(load source: T) where T: SystemsInteger<UX.BitPattern>
+    
+    @inlinable func load<T>(as type: T.Type) -> T where T: SystemsInteger<UX.BitPattern>
+    
+    //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     

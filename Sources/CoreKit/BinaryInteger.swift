@@ -32,9 +32,8 @@
 /// Consider using `Overflow<Void>` error type in 1-by-1 division too.
 ///
 public protocol BinaryInteger: BitCastable, BitOperable, Comparable, 
-ExpressibleByIntegerLiteral, Hashable, Sendable, Strideable,
-_MaybeLosslessStringConvertible where Magnitude.BitPattern == BitPattern,
-Magnitude.Element == Element.Magnitude, Stride == Swift.Int {
+ExpressibleByIntegerLiteral, Hashable, Sendable, Strideable, _MaybeLosslessStringConvertible where
+Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stride == Swift.Int {
     
     associatedtype Element: SystemsInteger = Self where Element.Element == Element
     
@@ -91,10 +90,6 @@ Magnitude.Element == Element.Magnitude, Stride == Swift.Int {
     @inlinable init<T>(load source: T) where T: SystemsInteger<Element.BitPattern>
     
     @inlinable func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern>
-    
-    @inlinable init<T>(load source: T) where T: SystemsInteger<UX.BitPattern>
-    
-    @inlinable func load<T>(as type: T.Type) -> T where T: SystemsInteger<UX.BitPattern>
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

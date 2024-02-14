@@ -10,7 +10,7 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Infini Int x Elements x Signed
+// MARK: * Infini Int x Elements
 //*============================================================================*
 
 extension InfiniInt {
@@ -37,38 +37,9 @@ extension InfiniInt {
         T(bitPattern: self.storage.base.first ?? self.storage.appendix.element)
     }
     
-    @inlinable public var elements: ContiguousArray<Element.Magnitude> {
-        self.storage.base
-    }
-}
-
-//*============================================================================*
-// MARK: * Infini Int x Elements x Unsigned
-//*============================================================================*
-
-extension InfiniInt.Magnitude {
-    
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
-    
-    @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
-        let appendix = source.appendix
-        let base = InfiniInt.Storage.Base(source.succinct())
-        //=--------------------------------------=
-        source.consume()
-        //=--------------------------------------=
-        self.init(unchecked: InfiniInt.Storage(base, repeating: appendix))
-    }
-
-    @inlinable public init<T>(load source: T) where T: SystemsInteger<Element.BitPattern> {
-        let appendix = Bit.Extension<Element.Magnitude>(repeating: source.appendix)
-        self.init(normalizing: InfiniInt.Storage([Element.Magnitude(bitPattern: source)], repeating: appendix))
-    }
-    
-    @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern> {
-        T(bitPattern: self.storage.base.first ?? self.storage.appendix.element)
-    }
     
     @inlinable public var elements: ContiguousArray<Element.Magnitude> {
         self.storage.base

@@ -17,15 +17,12 @@ import TestKit
 
 final class InfiniIntTests: XCTestCase {
     
-    typealias I = InfiniInt
-    typealias U = InfiniInt.Magnitude
-    
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
         
     static let types: [any BinaryInteger.Type] = [
-        InfiniInt.self,
-        InfiniInt.Magnitude.self,
+        InfiniInt<IX>.self, InfiniInt<I8>.self,
+        InfiniInt<UX>.self, InfiniInt<U8>.self,
     ]
 }

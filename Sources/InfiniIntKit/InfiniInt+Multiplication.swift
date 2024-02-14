@@ -10,29 +10,10 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Infini Int x Multiplication x Signed
+// MARK: * Infini Int x Multiplication
 //*============================================================================*
 
 extension InfiniInt {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func squared() throws -> Self {
-        fatalError("TODO")
-    }
-    
-    @inlinable public consuming func times(_ multiplier: borrowing Self) throws -> Self {
-        fatalError("TODO")
-    }
-}
-
-//*============================================================================*
-// MARK: * Infini Int x Multiplication x Unsigned
-//*============================================================================*
-
-extension InfiniInt.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

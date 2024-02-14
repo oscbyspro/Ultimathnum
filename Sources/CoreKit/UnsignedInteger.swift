@@ -23,4 +23,4 @@
 ///
 /// - Requires: The magnitude must be of the same type.
 ///
-public protocol UnsignedInteger: BinaryInteger where Magnitude == Self { }
+public protocol UnsignedInteger: BinaryInteger where Element: UnsignedInteger, Magnitude == Self { }

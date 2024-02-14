@@ -10,37 +10,10 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Infini Int x Logic x Signed
+// MARK: * Infini Int x Logic
 //*============================================================================*
 
 extension InfiniInt {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static prefix func ~(instance: consuming Self) -> Self {
-        fatalError("TOOD")
-    }
-    
-    @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        fatalError("TODO")
-    }
-    
-    @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        fatalError("TODO")
-    }
-    
-    @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        fatalError("TODO")
-    }
-}
-
-//*============================================================================*
-// MARK: * Infini Int x Logic x Unsigned
-//*============================================================================*
-
-extension InfiniInt.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

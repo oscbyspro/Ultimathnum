@@ -13,18 +13,28 @@ import CoreKit
 // MARK: * Infini Int
 //*============================================================================*
 
-@frozen public struct InfiniInt: SignedInteger {
-    
-    public typealias Element = IX
+/// ### Development
+///
+/// - TODO: It should be generic over its `Element` type (please send help).
+///
+@frozen public struct InfiniInt<Base>: BinaryInteger where Base: SystemsInteger {
+
+    public typealias Element = Base.Element
     
     public typealias IntegerLiteralType = StaticBigInt
     
+    public typealias Magnitude = InfiniInt<Base.Magnitude>
+            
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
+    @inlinable public static var isSigned: Bool {
+        Element.isSigned
+    }
+    
     @inlinable public static var bitWidth: Magnitude {
-        Magnitude.bitWidth
+        Magnitude.max
     }
     
     //=------------------------------------------------------------------------=
@@ -63,101 +73,21 @@ import CoreKit
     
     @inlinable public var magnitude: Magnitude {
         consuming get {
-            Magnitude(bitPattern: Overflow.ignore({ self < 0 ? try self.negated() : self }))
-        }
-    }
-    
-    //*========================================================================*
-    // MARK: * Magnitude
-    //*========================================================================*
-    
-    @frozen public struct Magnitude: UnsignedInteger {
-                
-        public typealias Element = UX
-        
-        public typealias IntegerLiteralType = StaticBigInt
-        
-        public typealias Magnitude = Self
-        
-        //=--------------------------------------------------------------------=
-        // MARK: Meta Data
-        //=--------------------------------------------------------------------=
-        
-        @inlinable public static var bitWidth: Magnitude {
-            Magnitude.max
-        }
-        
-        //=--------------------------------------------------------------------=
-        // MARK: State
-        //=--------------------------------------------------------------------=
-        
-        @usableFromInline var storage: Storage
-        
-        //=--------------------------------------------------------------------=
-        // MARK: Initializers
-        //=--------------------------------------------------------------------=
-        
-        @inlinable init(unchecked storage: consuming Storage) {
-            self.storage = storage
-            Swift.assert(self.storage.isNormal)
-        }
-        
-        @inlinable init(normalizing storage: consuming Storage) {
-            self.storage = storage
-            self.storage.normalize()
-        }
-    }
-    
-    //*========================================================================*
-    // MARK: * Storage
-    //*========================================================================*
-    
-    /// ### Development
-    ///
-    /// - TODO: This is a minimum viable product. Improve it at some point.
-    ///
-    @frozen @usableFromInline struct Storage: Hashable {
-        
-        @usableFromInline typealias Base = ContiguousArray<UX>
-        
-        //=--------------------------------------------------------------------=
-        // MARK: State
-        //=--------------------------------------------------------------------=
-        
-        /// The un/signed source.
-        public var `base`: Base
-        
-        /// The bit extension of the un/signed source.
-        public var appendix: Bit.Extension<Element.Magnitude>
-        
-        //=--------------------------------------------------------------------=
-        // MARK: Initializers
-        //=--------------------------------------------------------------------=
-        
-        @inlinable init(_ base: Base, repeating appendix: Bit.Extension<Element.Magnitude>) {
-            self.base = base
-            self.appendix = appendix
-        }
-        
-        //=--------------------------------------------------------------------=
-        // MARK: Utilities
-        //=--------------------------------------------------------------------=
-        
-        @inlinable var isNormal: Bool {
-            self.base.last != self.appendix.element
-        }
-        
-        @inlinable mutating func normalize() {
-            while self.base.last == self.appendix.element {
-                ((self.base)).removeLast()
-            }
+            Magnitude(bitPattern: Overflow.ignore({ self.isLessThanZero ? try self.negated() : self }))
         }
     }
 }
 
 //=----------------------------------------------------------------------------=
+// MARK: + Un/signed
+//=----------------------------------------------------------------------------=
+
+extension InfiniInt:   SignedInteger where Base:   SignedInteger { }
+extension InfiniInt: UnsignedInteger where Base: UnsignedInteger { }
+
+//=----------------------------------------------------------------------------=
 // MARK: + Aliases
 //=----------------------------------------------------------------------------=
 
-public typealias IXL = InfiniInt
-public typealias UXL = InfiniInt.Magnitude
+public typealias IXL = InfiniInt<IX>
+public typealias UXL = InfiniInt<UX>
