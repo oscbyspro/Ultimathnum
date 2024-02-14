@@ -18,8 +18,6 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
-    // TODO: consider composable aritmetic, like minus(Base.Magnitude) -> Self
-    //=------------------------------------------------------------------------=
     
     @inlinable public consuming func negated() throws -> Self {
         let overflow = Self.isSigned == Overflow.capture(&self) {

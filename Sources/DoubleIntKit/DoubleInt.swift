@@ -56,10 +56,6 @@ import CoreKit
         self.storage = storage
     }
     
-    /// ### Development
-    ///
-    /// - TODO: Consider using storage as bit pattern type.
-    ///
     @inlinable public init(bitPattern: consuming Doublet<Base>.BitPattern) {
         self.init(low: bitPattern.low, high: Base(bitPattern: bitPattern.high))
     }

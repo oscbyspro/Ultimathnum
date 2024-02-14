@@ -29,7 +29,8 @@ extension InfiniInt {
     }
     
     @inlinable public init<T>(load source: T) where T: SystemsInteger<Element.BitPattern> {
-        self.init(normalizing: InfiniInt.Storage([Element.Magnitude(bitPattern: source)], repeating: Bit.Extension(repeating: 0)))
+        let appendix = Bit.Extension<Element.Magnitude>(repeating: source.appendix)
+        self.init(normalizing: InfiniInt.Storage([Element.Magnitude(bitPattern: source)], repeating: appendix))
     }
     
     @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern> {
@@ -61,7 +62,8 @@ extension InfiniInt.Magnitude {
     }
 
     @inlinable public init<T>(load source: T) where T: SystemsInteger<Element.BitPattern> {
-        self.init(normalizing: InfiniInt.Storage([Element.Magnitude(bitPattern: source)], repeating: Bit.Extension(repeating: 0)))
+        let appendix = Bit.Extension<Element.Magnitude>(repeating: source.appendix)
+        self.init(normalizing: InfiniInt.Storage([Element.Magnitude(bitPattern: source)], repeating: appendix))
     }
     
     @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern> {
