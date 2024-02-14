@@ -85,7 +85,7 @@ Element: SystemsInteger, Base: RandomAccessCollection, Base.Element: SystemsInte
     
     /// Indicates whether this type produces larger, smaller or similar chunks.
     @inlinable public static var comparison: Signum {
-        Element.bitWidth.load(as: UX.self).compared(to: Base.Element.bitWidth.load(as: UX.self))
+        UX(bitWidth: Element.self).compared(to: UX(bitWidth: Base.Element.self))
     }
     
     //=------------------------------------------------------------------------=

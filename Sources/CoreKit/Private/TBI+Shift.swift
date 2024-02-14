@@ -49,7 +49,7 @@ extension Namespace.TupleBinaryInteger {
         //=--------------------------------------=
         let shift = Base.Magnitude(bitPattern: shift) & (Base.bitWidth &<< 1 &- 1)
         //=--------------------------------------=
-        if  shift.load(as: UX.self) >= Base.bitWidth.load(as: UX.self) {
+        if  shift.load(as: UX.self) >= UX(bitWidth: Base.self) {
             instance.high    = Base(bitPattern: instance.low &<< (shift &- Base.bitWidth))
             instance.low     = Base.Magnitude(repeating: Bit(bitPattern: false))
         }   else if shift   != Base.Magnitude() {
@@ -65,7 +65,7 @@ extension Namespace.TupleBinaryInteger {
         //=--------------------------------------=
         let shift = Base.Magnitude(bitPattern: shift) & (Base.bitWidth &<< 1 &- 1)
         //=--------------------------------------=
-        if  shift.load(as: UX.self) >= Base.bitWidth.load(as: UX.self) {
+        if  shift.load(as: UX.self) >= UX(bitWidth: Base.self) {
             instance.low     = Base.Magnitude(bitPattern: instance.high &>> Base(bitPattern: shift &- Base.bitWidth))
             instance.high    = Base(repeating: Bit(bitPattern: instance.high.isLessThanZero))
         }   else if shift   != Base.Magnitude() {

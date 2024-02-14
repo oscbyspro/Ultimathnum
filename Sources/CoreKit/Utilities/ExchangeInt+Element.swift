@@ -107,7 +107,7 @@ extension ExchangeInt.Major where Element == Element.Magnitude {
             var   baseIndex = base.index(base.startIndex, offsetBy: minor)
             while baseIndex < base.endIndex, shift < Element.bitWidth {
                 major = major | Element.tokenized(load: Base.Element.Magnitude(bitPattern: base[baseIndex])) &<< Element(bitPattern: shift)
-                shift = shift + Element.Magnitude(load: Base.Element.bitWidth.load(as: UX.self))
+                shift = shift + Element.Magnitude(load: UX(bitWidth: Base.Element.self))
                 base.formIndex(after: &baseIndex)
             }
         }

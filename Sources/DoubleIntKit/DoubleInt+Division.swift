@@ -92,7 +92,7 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         // divisor is zero
         //=--------------------------------------=
-        if  shift.load(as: UX.self) == Self.bitWidth.load(as: UX.self) {
+        if  shift.load(as: UX.self) == UX(bitWidth: Self.self) {
             throw Overflow()
         }
         //=--------------------------------------=
@@ -122,7 +122,7 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         // division: 2121
         //=--------------------------------------=
-        if  shift.load(as: UX.self) >= Base.bitWidth.load(as: UX.self) {
+        if  shift.load(as: UX.self) >= UX(bitWidth: Base.self) {
             let result = Self._divide2121(lhs, by: rhs.low)
             return Division(quotient: result.quotient, remainder: Self(low: result.remainder))
         }
@@ -148,7 +148,7 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         // divisor is zero
         //=--------------------------------------=
-        if  shift.load(as: UX.self) == Self.bitWidth.load(as: UX.self) {
+        if  shift.load(as: UX.self) == UX(bitWidth: Self.self) {
             throw Overflow()
         }
         //=--------------------------------------=
@@ -175,7 +175,7 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         // division: 3121
         //=--------------------------------------=
-        if  shift.load(as: UX.self) >= Base.bitWidth.load(as: UX.self) {
+        if  shift.load(as: UX.self) >= UX(bitWidth: Base.self) {
             Swift.assert(lhs.high.high == 0, "quotient must fit in two halves") // lhs.high < rhs && rhs.high == 0
             let result = Self._divide3121(Triplet(low: lhs.low.low, mid: lhs.low.high, high: lhs.high.low), by: rhs.low)
             return Division(quotient: result.quotient, remainder: Self(low: result.remainder))

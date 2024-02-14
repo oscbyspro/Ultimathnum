@@ -32,7 +32,7 @@ extension DoubleIntTests {
             XCTAssertEqual(try? T.advanced(T.max, by:  0 as IX), T.max)
             XCTAssertEqual(try? T.advanced(T.max, by:  1 as IX),   nil)
             
-            if  T.bitWidth.load(as: UX.self) < IX.bitWidth.load(as: UX.self) {
+            if  UX(bitWidth: T.self) < IX.bitWidth {
                 XCTAssertNil(try? T.advanced(0 as T, by: IX.min))
                 XCTAssertNil(try? T.advanced(0 as T, by: IX.max))
             }

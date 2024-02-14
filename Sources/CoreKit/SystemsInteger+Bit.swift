@@ -33,3 +33,22 @@ extension SystemsInteger {
         Bit(bitPattern: self.isLessThanZero)
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Machine Word
+//=----------------------------------------------------------------------------=
+
+extension SystemsInteger where BitPattern == UX.BitPattern {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    /// Returns the bit width of the given type as an un/signed machine word.
+    ///
+    /// - Note: A systems integer's bit width must fit in this type per definition.
+    ///
+    @inlinable public init<T>(bitWidth type: T.Type) where T: SystemsInteger {
+        self = T.bitWidth.load(as: Self.self)
+    }
+}

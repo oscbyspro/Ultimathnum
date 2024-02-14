@@ -25,7 +25,7 @@ extension ExchangeInt.Minor where Element == Element.Magnitude {
         precondition(ExchangeInt.comparison == Signum.less, String.unreachable())
         //=--------------------------------------=
         let major = Base.Element.bitWidth
-        let minor = Base.Element.Magnitude(load: Element.bitWidth.load(as: UX.self))
+        let minor = Base.Element.Magnitude(load: UX(bitWidth: Element.self))
         let value = major &>> minor.count(0, option: Bit.Selection.ascending)
         return value.load(as: IX.self).stdlib
     }
@@ -46,7 +46,7 @@ extension ExchangeInt.Major where Element == Element.Magnitude {
         precondition(ExchangeInt.comparison == Signum.more, String.unreachable())
         //=--------------------------------------=
         let major = Element.bitWidth
-        let minor = Element.Magnitude(load: Base.Element.bitWidth.load(as: UX.self))
+        let minor = Element.Magnitude(load: UX(bitWidth: Base.Element.self))
         let value = major &>> minor.count(0, option: Bit.Selection.ascending)
         return value.load(as: IX.self).stdlib
     }

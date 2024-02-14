@@ -38,9 +38,7 @@ import CoreKit
     }
     
     @inlinable public static var bitWidth: Magnitude {
-        precondition(UX.max &>> 2 >= Base.bitWidth.load(as: UX.self), 
-        "each systems integer bit width must fit in one IX instance")
-        return Magnitude(low: Base.bitWidth) * 2
+        Magnitude(load: IX(bitWidth: Base.self) * 2)
     }
     
     //=------------------------------------------------------------------------=

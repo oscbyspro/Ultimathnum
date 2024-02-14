@@ -71,7 +71,7 @@ extension Bit.Extension {
     }
     
     @inlinable public init<T>(repeating other: Bit.Extension<T>) {
-        let bitCastOrLoad =  T.isSigned ||   Element.bitWidth.load(as: UX.self) <= T.bitWidth.load(as: UX.self)
+        let bitCastOrLoad = T.isSigned || UX(bitWidth: Element.self) <= UX(bitWidth: T.self)
         self.init(unchecked: bitCastOrLoad ? Element.tokenized(bitCastOrLoad: other.element) : Element(repeating: other.bit))
     }
 }
