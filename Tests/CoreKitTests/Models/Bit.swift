@@ -11,7 +11,7 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Bit x Logic
+// MARK: * Bit
 //*============================================================================*
 
 final class BitTests: XCTestCase {
@@ -40,8 +40,8 @@ final class BitTests: XCTestCase {
     
     func testComparison() {
         checkComparison( 0 as T,  0 as T,  0 as Signum)
-        checkComparison( 1 as T,  0 as T,  1 as Signum)
         checkComparison( 0 as T,  1 as T, -1 as Signum)
+        checkComparison( 1 as T,  0 as T,  1 as Signum)
         checkComparison( 1 as T,  1 as T,  0 as Signum)
     }
     

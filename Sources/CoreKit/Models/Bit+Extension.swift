@@ -14,7 +14,7 @@
 extension Bit {
     
     /// A system integer with all bits set to only `0` or only `1`.
-    @frozen public struct Extension<Element>: BitCastable, Comparable, Hashable where Element: SystemsInteger {
+    @frozen public struct Extension<Element>: BitCastable, BitOperable, Comparable, Hashable where Element: SystemsInteger {
         
         public typealias Element = Element
         
@@ -29,15 +29,6 @@ extension Bit {
         //=--------------------------------------------------------------------=
         // MARK: Initializers
         //=--------------------------------------------------------------------=
-        
-        @inlinable public init(repeating bit: Bit) {
-            self.init(unchecked: Element(repeating: bit))
-        }
-        
-        @inlinable public init<T>(repeating other: Bit.Extension<T>) {
-            let bitCastOrLoad =  T.isSigned ||   Element.bitWidth.load(as: UX.self) <= T.bitWidth.load(as: UX.self)
-            self.init(unchecked: bitCastOrLoad ? Element.tokenized(bitCastOrLoad: other.element) : Element(repeating: other.bit))
-        }
         
         @inlinable public init(bitPattern: consuming BitPattern) {
             self.init(unchecked: Element(bitPattern: bitPattern.element))
@@ -62,9 +53,75 @@ extension Bit {
                 BitPattern(unchecked: BitPattern.Element(bitPattern: self.element))
             }
         }
-        
-        @inlinable public static func <(lhs: Self, rhs: Self) -> Bool {
-            lhs.element < rhs.element
-        }
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Bit
+//=----------------------------------------------------------------------------=
+
+extension Bit.Extension {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(repeating bit: Bit) {
+        self.init(unchecked: Element(repeating: bit))
+    }
+    
+    @inlinable public init<T>(repeating other: Bit.Extension<T>) {
+        let bitCastOrLoad =  T.isSigned ||   Element.bitWidth.load(as: UX.self) <= T.bitWidth.load(as: UX.self)
+        self.init(unchecked: bitCastOrLoad ? Element.tokenized(bitCastOrLoad: other.element) : Element(repeating: other.bit))
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Comparison
+//=----------------------------------------------------------------------------=
+
+extension Bit.Extension {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public func compared(to other: Self) -> Signum {
+        self.element.compared(to: other.element)
+    }
+    
+    @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
+        lhs.element == rhs.element
+    }
+    
+    @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
+        lhs.element <  rhs.element
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Logic
+//=----------------------------------------------------------------------------=
+
+extension Bit.Extension {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static prefix func ~(instance: consuming Self) -> Self {
+        Self(unchecked: ~instance.element)
+    }
+    
+    @inlinable public static func &(lhs: Self, rhs: Self) -> Self {
+        Self(unchecked: lhs.element & rhs.element)
+    }
+    
+    @inlinable public static func |(lhs: Self, rhs: Self) -> Self {
+        Self(unchecked: lhs.element | rhs.element)
+    }
+    
+    @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
+        Self(unchecked: lhs.element | rhs.element)
     }
 }
