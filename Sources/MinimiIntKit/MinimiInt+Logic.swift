@@ -10,37 +10,10 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Minimi Int x Logic x Signed
+// MARK: * Minimi Int x Logic
 //*============================================================================*
 
 extension MinimiInt {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static prefix func ~(instance: consuming Self) -> Self {
-        Self(bitPattern: ~instance.base)
-    }
-    
-    @inlinable public static func &(lhs: Self, rhs: Self) -> Self {
-        Self(bitPattern: lhs.base & rhs.base)
-    }
-    
-    @inlinable public static func |(lhs: Self, rhs: Self) -> Self {
-        Self(bitPattern: lhs.base | rhs.base)
-    }
-    
-    @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
-        Self(bitPattern: lhs.base ^ rhs.base)
-    }
-}
-
-//*============================================================================*
-// MARK: * Minimi Int x Logic x Unsigned
-//*============================================================================*
-
-extension MinimiInt.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

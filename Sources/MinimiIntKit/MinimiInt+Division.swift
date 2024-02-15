@@ -10,7 +10,7 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Minimi Int x Division x Signed
+// MARK: * Minimi Int x Division
 //*============================================================================*
 
 extension MinimiInt {
@@ -20,7 +20,7 @@ extension MinimiInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public func quotient(divisor: Self) throws -> Self {
-        if  self  <= divisor {
+        if  divisor == 0 || Self.isSigned && Bool(bitPattern: self & divisor) {
             throw Overflow()
         }
         
@@ -28,19 +28,15 @@ extension MinimiInt {
     }
     
     @inlinable public func remainder(divisor: Self) throws -> Self {
-        if  self  <= divisor {
+        if  divisor == 0 || Self.isSigned && Bool(bitPattern: self & divisor) {
             throw Overflow()
         }
         
-        return Self(bitPattern: self < divisor)
+        return Self(bitPattern: self.base > divisor.base)
     }
     
     @inlinable public func divided(by divisor: Self) throws -> Division<Self, Self> {
-        if  self  <= divisor {
-            throw Overflow()
-        }
-        
-        return Division(quotient: self, remainder: Self(bitPattern: self < divisor))
+        Division(quotient: self, remainder: try self.remainder(divisor: divisor))
     }
     
     //=------------------------------------------------------------------------=
@@ -48,56 +44,7 @@ extension MinimiInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func dividing(_ dividend: Doublet<Self>, by divisor: Self) throws -> Division<Self, Self> {
-        if  divisor == 0 || (dividend.low) == 0 && dividend.high == -1 {
-            throw  Overflow()
-        }   else {
-            let quotient  = Self(bitPattern: dividend.low)
-            let remainder = Self(bitPattern: dividend.low) & ~divisor
-            return Division(quotient: quotient, remainder: remainder)
-        }
-    }
-}
-
-//*============================================================================*
-// MARK: * Minimi Int x Division x Unsigned
-//*============================================================================*
-
-extension MinimiInt.Magnitude {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public func quotient(divisor: Self) throws -> Self {
-        if  divisor == 0 {
-            throw Overflow()
-        }
-        
-        return consume self
-    }
-    
-    @inlinable public func remainder(divisor: Self) throws -> Self {
-        if  divisor == 0 {
-            throw Overflow()
-        }
-        
-        return Self(bitPattern: self > divisor)
-    }
-    
-    @inlinable public func divided(by divisor: Self) throws -> Division<Self, Self> {
-        if  divisor == 0 {
-            throw Overflow()
-        }
-        
-        return Division(quotient: self, remainder: Self(bitPattern: self > divisor))
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static func dividing(_ dividend: Doublet<Self>, by divisor: Self) throws -> Division<Self, Self> {
-        if  divisor == 0 || dividend.high == 1 {
+        if  divisor == 0 || Bool(bitPattern: dividend.high) && !(Self.isSigned && Bool(bitPattern: dividend.low)) {
             throw  Overflow()
         }   else {
             let quotient  = Self(bitPattern: dividend.low)

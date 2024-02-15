@@ -10,7 +10,7 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Minimi Int x Multiplication x Signed
+// MARK: * Minimi Int x Multiplication
 //*============================================================================*
 
 extension MinimiInt {
@@ -20,37 +20,14 @@ extension MinimiInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public func squared() throws -> Self {
-        try Overflow.resolve(self, overflow: self == -1)
+        try Overflow.resolve(self, overflow: Self.isSigned && Bool(bitPattern: self))
     }
     
     @inlinable public func times(_ multiplier: Self) throws -> Self {
-        try Overflow.resolve(self & multiplier, overflow: self & multiplier == -1)
+        try Overflow.resolve(self & multiplier, overflow: Self.isSigned && Bool(bitPattern: self & multiplier))
     }
     
     @inlinable public static func multiplying(_ multiplicand: Self, by multiplier: Self) -> Doublet<Self> {
-        Doublet(low: Magnitude(bitPattern: multiplicand & multiplier), high: 0)
-    }
-}
-
-//*============================================================================*
-// MARK: * Minimi Int x Multiplication x Unsigned
-//*============================================================================*
-
-extension MinimiInt.Magnitude {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public func squared() throws -> Self {
-        try Overflow.resolve(self, overflow: false)
-    }
-    
-    @inlinable public func times(_ multiplier: Self) throws -> Self {
-        try Overflow.resolve(self & multiplier, overflow: false)
-    }
-    
-    @inlinable public static func multiplying(_ multiplicand: Self, by multiplier: Self) -> Doublet<Self> {
-        Doublet(low: Magnitude(bitPattern: multiplicand & multiplier), high: 0)
+        Doublet(low: Magnitude(bitPattern: multiplicand & multiplier), high: 0 as  Self)
     }
 }

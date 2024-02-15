@@ -76,12 +76,12 @@
     @inlinable public init(_ index: Value) throws {
         try self.init()
         
-        let elements = ExchangeInt(index, as: MinimiInt.Magnitude.self)
+        let elements = ExchangeInt(index, as: U1.self)
         if  elements.appendix.bit == 1 {
             throw Error.overflow // is negative or infinite
         }
         
-        for bit: MinimiInt.Magnitude in elements.succinct().reversed() {
+        for bit: U1 in elements.succinct().reversed() {
             try self.double()
             
             if  bit == 1 {

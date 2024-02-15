@@ -10,7 +10,7 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Minimi Int x Bit x Signed
+// MARK: * Minimi Int x Bit
 //*============================================================================*
 
 extension MinimiInt {
@@ -20,21 +20,6 @@ extension MinimiInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
-        self.magnitude.count(bit, option: option)
-    }
-}
-
-//*============================================================================*
-// MARK: * Minimi Int x Bit x Unsigned
-//*============================================================================*
-
-extension MinimiInt.Magnitude {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Accessors
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
-        if bit == 0 { ~self } else { self }
+        Magnitude(bitPattern: ~(self.base ^ bit))
     }
 }

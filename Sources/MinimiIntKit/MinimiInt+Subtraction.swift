@@ -10,7 +10,7 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Minimi Int x Subtraction x Signed
+// MARK: * Minimi Int x Subtraction
 //*============================================================================*
 
 extension MinimiInt {
@@ -20,29 +20,10 @@ extension MinimiInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public func negated() throws -> Self {
-        try Overflow.resolve(self, overflow: self != 0)
+        try Overflow.resolve(self, overflow: Bool(bitPattern: self))
     }
     
     @inlinable public func minus( _ decrement: Self) throws -> Self {
-        try Overflow.resolve(self ^ decrement, overflow: self > decrement)
-    }
-}
-
-//*============================================================================*
-// MARK: * Minimi Int x Subtraction x Unsigned
-//*============================================================================*
-
-extension MinimiInt.Magnitude {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public func negated() throws -> Self {
-        try Overflow.resolve(self, overflow: self != 0)
-    }
-    
-    @inlinable public func minus( _ decrement: Self) throws -> Self {
-        try Overflow.resolve(self ^ decrement, overflow: self < decrement)
+        try Overflow.resolve(self ^ decrement, overflow: Bool(bitPattern: self.base < decrement.base))
     }
 }

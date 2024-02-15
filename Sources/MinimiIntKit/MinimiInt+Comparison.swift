@@ -10,7 +10,7 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Minimi Int x Comparison x Signed
+// MARK: * Minimi Int x Comparison
 //*============================================================================*
 
 extension MinimiInt {
@@ -19,38 +19,15 @@ extension MinimiInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func compared(to other: Self) -> Signum {
-        self == other ? 0 : self == 0 ? 1 : -1
-    }
-    
     @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
         lhs.base == rhs.base
     }
     
     @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
-        (lhs.base, rhs.base) == (1, 0)
+        (lhs, rhs) == (Self(bitPattern: Self.isSigned), Self(bitPattern: !Self.isSigned))
     }
-}
-
-//*============================================================================*
-// MARK: * Minimi Int x Comparison x Unsigned
-//*============================================================================*
-
-extension MinimiInt.Magnitude {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
     
     @inlinable public func compared(to other: Self) -> Signum {
-        self == other ? 0 : self == 0 ? -1 : 1
-    }
-    
-    @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
-        lhs.base == rhs.base
-    }
-    
-    @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
-        (lhs.base, rhs.base) == (0, 1)
+        self == other ? Signum.same : Signum.one(Sign(bitPattern: Self.isSigned == Bool(bitPattern: self)))
     }
 }

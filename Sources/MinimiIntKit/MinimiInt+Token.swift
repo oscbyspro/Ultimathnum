@@ -10,7 +10,7 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Minimi Int x Token x Signed
+// MARK: * Minimi Int x Token
 //*============================================================================*
 
 extension MinimiInt {
@@ -19,30 +19,11 @@ extension MinimiInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<T>(load source: T) where T: BitCastable<UX.BitPattern> {
-        self.init(bitPattern: UX(bitPattern: source) & 1 == 1)
+    @inlinable public init<T>(load source: T) where T: SystemsInteger<UX.BitPattern> {
+        self.init(bitPattern: source.leastSignificantBit)
     }
     
-    @inlinable public func load<T>(as type: T.Type) -> T where T: BitCastable<UX.BitPattern> {
-        T(bitPattern: self.bitPattern ? 1 as UX : 0 as UX)
-    }
-}
-
-//*============================================================================*
-// MARK: * Minimi Int x Token x Unsigned
-//*============================================================================*
-
-extension MinimiInt.Magnitude {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init<T>(load source: T) where T: BitCastable<UX.BitPattern> {
-        self.init(bitPattern: UX(bitPattern: source) & 1 == 1)
-    }
-        
-    @inlinable public func load<T>(as type: T.Type) -> T where T: BitCastable<UX.BitPattern> {
-        T(bitPattern: self.bitPattern ? 1 as UX : 0 as UX)
+    @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<UX.BitPattern> {
+        T(bitPattern: Bool(bitPattern: self) ? Self.isSigned ? ~0 as UX : 1 as UX : 0 as UX)
     }
 }

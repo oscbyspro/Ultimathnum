@@ -10,7 +10,7 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Minimi Int x Shift x Signed
+// MARK: * Minimi Int x Shift
 //*============================================================================*
 
 extension MinimiInt {
@@ -19,46 +19,19 @@ extension MinimiInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func  <<(lhs: consuming Self, rhs: Self) -> Self {
+        Self.isSigned || rhs == 0 ? lhs : 0
+    }
+    
+    @inlinable public static func &<<(lhs: consuming Self, rhs: Self) -> Self {
         lhs
     }
     
-    @inlinable public static func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs
-    }
-    
-    @inlinable public static func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func  >>(lhs: consuming Self, rhs: Self) -> Self {
         rhs == 0 ? lhs : 0
     }
     
-    @inlinable public static func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs
-    }
-}
-
-//*============================================================================*
-// MARK: * Minimi Int x Shift x Unsigned
-//*============================================================================*
-
-extension MinimiInt.Magnitude {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static func  <<(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        rhs == 0 ? lhs : 0
-    }
-    
-    @inlinable public static func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs
-    }
-    
-    @inlinable public static func  >>(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        rhs == 0 ? lhs : 0
-    }
-    
-    @inlinable public static func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func &>>(lhs: consuming Self, rhs: Self) -> Self {
         lhs
     }
 }

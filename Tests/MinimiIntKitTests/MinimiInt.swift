@@ -25,8 +25,8 @@ final class MinimiIntTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     static let types: [any SystemsInteger.Type] = [
-        MinimiInt.self,
-        MinimiInt.Magnitude.self,
+        I1.self,
+        U1.self,
     ]
     
     //=------------------------------------------------------------------------=

@@ -13,14 +13,18 @@ import CoreKit
 // MARK: * Minimi Int
 //*============================================================================*
 
-/// A signed `1-bit` integer that can represent the values `0` and `-1`.
-@frozen public struct MinimiInt: SystemsInteger & SignedInteger {
-    
-    public typealias Element = Self
+/// An un/signed `1-bit` integer.
+@frozen public struct MinimiInt<Signedness>: SystemsInteger where Signedness: SystemsInteger<UX.BitPattern> {
+        
+    public typealias Magnitude = MinimiInt<Signedness.Magnitude>
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
+    
+    @inlinable public static var isSigned: Bool {
+        Signedness.isSigned
+    }
     
     @inlinable public static var bitWidth: Magnitude {
         1
@@ -40,10 +44,10 @@ import CoreKit
         self.base = Bit(bitPattern: bitPattern)
     }
     
-    @inlinable public init(integerLiteral: Swift.Int.IntegerLiteralType) {
-        if  integerLiteral == 0 {
+    @inlinable public init(integerLiteral: Signedness.IntegerLiteralType) {
+        if  Signedness(integerLiteral: integerLiteral) == 0 {
             self.base = 0
-        }   else if integerLiteral == -1 {
+        }   else if Signedness(integerLiteral: integerLiteral) == (Self.isSigned ? -1 : 1) {
             self.base = 1
         }   else {
             fatalError(.overflow())
@@ -65,75 +69,18 @@ import CoreKit
             Magnitude(bitPattern: self.bitPattern)
         }
     }
-    
-    //*========================================================================*
-    // MARK: * Magnitude
-    //*========================================================================*
-    
-    /// An unsigned `1-bit` integer that can represent the values `0` and `1`.
-    @frozen public struct Magnitude: SystemsInteger & UnsignedInteger {        
-        
-        public typealias Element = Self
-        
-        public typealias Magnitude = Self
-        
-        //=--------------------------------------------------------------------=
-        // MARK: Meta Data
-        //=--------------------------------------------------------------------=
-        
-        @inlinable public static var bitWidth: Magnitude {
-            1
-        }
-        
-        //=--------------------------------------------------------------------=
-        // MARK: State
-        //=--------------------------------------------------------------------=
-        
-        @usableFromInline let base: Bit
-        
-        //=--------------------------------------------------------------------=
-        // MARK: Initializers
-        //=--------------------------------------------------------------------=
-        
-        @inlinable public init(bitPattern: Bit.BitPattern) {
-            self.base = Bit(bitPattern: bitPattern)
-        }
-        
-        @inlinable public init(integerLiteral: Swift.Int.IntegerLiteralType) {
-            if  integerLiteral == 0 {
-                self.base = 0
-            }   else if integerLiteral == 1 {
-                self.base = 1
-            }   else {
-                fatalError(.overflow())
-            }
-        }
-        
-        //=--------------------------------------------------------------------=
-        // MARK: Utilities
-        //=--------------------------------------------------------------------=
-        
-        @inlinable public var bitPattern: Bit.BitPattern {
-            consuming get {
-                Bit.BitPattern(bitPattern: self.base)
-            }
-        }
-    }
-    
-    //*========================================================================*
-    // MARK: * Selection
-    //*========================================================================*
-    
-    @frozen public enum Selection {
-        case all
-        case ascending
-        case descending
-    }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Un/signed
+//=----------------------------------------------------------------------------=
+
+extension MinimiInt:   SignedInteger where Signedness:   SignedInteger { }
+extension MinimiInt: UnsignedInteger where Signedness: UnsignedInteger { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Aliases
 //=----------------------------------------------------------------------------=
 
-public typealias I1 = MinimiInt
-public typealias U1 = MinimiInt.Magnitude
+public typealias I1 = MinimiInt<IX>
+public typealias U1 = MinimiInt<UX>
