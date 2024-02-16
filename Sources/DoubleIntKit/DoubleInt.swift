@@ -55,32 +55,6 @@ import CoreKit
     @inlinable public init(_ storage: consuming Doublet<Base>) {
         self.storage = storage
     }
-    
-    @inlinable public init(bitPattern: consuming Doublet<Base>.BitPattern) {
-        self.init(low: bitPattern.low, high: Base(bitPattern: bitPattern.high))
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public var bitPattern: BitPattern {
-        consuming get {
-            BitPattern(low: self.low, high: Base.Magnitude(bitPattern: self.high))
-        }
-    }
-    
-    @inlinable public var magnitude: Magnitude {
-        consuming get {
-            Magnitude(bitPattern: self.high.isLessThanZero ? Overflow.ignore({ try self.negated() }) : self)
-        }
-    }
-    
-    @inlinable public var elements: Magnitude._Content {
-        consuming get {
-            Magnitude._Content(low: self.low.elements, high: Base.Magnitude(bitPattern: self.high).elements)
-        }
-    }
 }
 
 //=----------------------------------------------------------------------------=

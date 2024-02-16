@@ -27,7 +27,7 @@ extension BinaryInteger {
     
     @inlinable public consuming func distance(to other: Self) -> Swift.Int {
         attempt: do {
-            return try Self.distance(self, to: other, as: IX.self).stdlib
+            return try Self.distance(self, to: other, as: IX.self).base
         }   catch {
             Swift.fatalError(String.overflow())
         }
@@ -49,7 +49,7 @@ extension BinaryInteger {
             
             if  Self.isSigned {
                 
-                if  ExchangeInt(Self.bitWidth) >= ExchangeInt(T.bitWidth, as: Element.Magnitude.self) {
+                if  ExchangeInt(Self.bitWidth) >= ExchangeInt(T.bitWidth) {
                     
                     return try instance.plus(Self(truncating: distance))
                     
@@ -80,7 +80,7 @@ extension BinaryInteger {
             
             if  Self.isSigned {
                 
-                if  ExchangeInt(Self.bitWidth) <= ExchangeInt(T.bitWidth, as: Element.Magnitude.self) {
+                if  ExchangeInt(Self.bitWidth) <= ExchangeInt(T.bitWidth) {
                     
                     return try T(truncating: other).minus(T(truncating: instance))
                     

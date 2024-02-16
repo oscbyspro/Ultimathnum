@@ -7,21 +7,21 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Core Int x Token
+// MARK: * Double Int x Numbers
 //*============================================================================*
 
-extension CoreInt {
+extension DoubleInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<T>(load source: T) where T: BitCastable<UX.BitPattern> {
-        self.init(Base(truncatingIfNeeded: UInt(bitPattern: source)))
-    }
-        
-    @inlinable public func load<T>(as type: T.Type) -> T where T: BitCastable<UX.BitPattern> {
-        T(bitPattern: UInt(truncatingIfNeeded: self.base))
+    @inlinable public var magnitude: Magnitude {
+        consuming get {
+            Magnitude(bitPattern: self.high.isLessThanZero ? Overflow.ignore({ try self.negated() }) : self)
+        }
     }
 }

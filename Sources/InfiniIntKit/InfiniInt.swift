@@ -17,14 +17,14 @@ import CoreKit
 ///
 /// - TODO: It should be generic over its `Element` type (please send help).
 ///
-@frozen public struct InfiniInt<Base>: BinaryInteger where Base: SystemsInteger {
+@frozen public struct InfiniInt<Source>: BinaryInteger where Source: SystemsInteger {
 
-    public typealias Element = Base.Element
+    public typealias Element = Source.Element
     
     public typealias IntegerLiteralType = StaticBigInt
     
-    public typealias Magnitude = InfiniInt<Base.Magnitude>
-            
+    public typealias Magnitude = InfiniInt<Source.Magnitude>
+    
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
@@ -34,7 +34,7 @@ import CoreKit
     }
     
     @inlinable public static var bitWidth: Magnitude {
-        Magnitude.max
+        Magnitude(repeating: 1)
     }
     
     //=------------------------------------------------------------------------=
@@ -56,34 +56,14 @@ import CoreKit
         self.storage = storage
         self.storage.normalize()
     }
-    
-    @inlinable public init(bitPattern: consuming Magnitude) {
-        self.init(unchecked: bitPattern.storage)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public var bitPattern: Magnitude {
-        consuming get {
-            Magnitude(unchecked: self.storage)
-        }
-    }
-    
-    @inlinable public var magnitude: Magnitude {
-        consuming get {
-            Magnitude(bitPattern: Overflow.ignore({ self.isLessThanZero ? try self.negated() : self }))
-        }
-    }
 }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Un/signed
 //=----------------------------------------------------------------------------=
 
-extension InfiniInt:   SignedInteger where Base:   SignedInteger { }
-extension InfiniInt: UnsignedInteger where Base: UnsignedInteger { }
+extension InfiniInt:   SignedInteger where Source:   SignedInteger { }
+extension InfiniInt: UnsignedInteger where Source: UnsignedInteger { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Aliases

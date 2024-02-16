@@ -24,14 +24,6 @@ extension SystemsInteger {
     @inlinable public static var msb: Self {
         Self(bitPattern: 1 as Magnitude &<< (bitWidth &- 1))
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public var appendix: Bit {
-        Bit(bitPattern: self.isLessThanZero)
-    }
 }
 
 //=----------------------------------------------------------------------------=
@@ -50,5 +42,50 @@ extension SystemsInteger where BitPattern == UX.BitPattern {
     ///
     @inlinable public init<T>(bitWidth type: T.Type) where T: SystemsInteger {
         self = T.bitWidth.load(as: Self.self)
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Algorithms
+//=----------------------------------------------------------------------------=
+
+extension SystemsInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    /// - Note: This method can be used when `init(truncating:)` cannot.
+    @inlinable package static func tokenized<T>(bitCastOrLoad source: T) -> Self where T: SystemsInteger {
+        if  Self.BitPattern.self == T.BitPattern.self {
+            return Self(bitPattern: Swift.unsafeBitCast(source.bitPattern, to: Self.BitPattern.self))
+        }   else {
+            return Self.tokenized(load: source)
+        }
+    }
+    
+    /// - Note: This method can be used when `init(truncating:)` cannot.
+    @inlinable package static func tokenized<T: SystemsInteger>(load source: T) -> Self where T: SystemsInteger {
+        if  UX(bitWidth: Self.self) <= UX.bitWidth {
+            return Self.init(load: source.load(as: UX.self))
+        }   else {
+            var source = source as T
+            let minus  = source.isLessThanZero
+            
+            var bitIndex: Self = 0000000000000000000000000000000
+            let bitWidth: Self = Self(bitPattern: Self.bitWidth)
+            var instance: Self = Self(repeating: Bit(bitPattern: minus))
+            
+            if  UX(bitWidth: T.self) >  UX.bitWidth {
+                chunking: while bitIndex < bitWidth {
+                    let element = (source).load(as: UX.self)
+                    (source) = (source) &>> T(load: UX.bitWidth)
+                    instance = instance ^   Self(load: minus ? ~element : element) &<< bitIndex
+                    bitIndex = bitIndex +   Self(load: UX.bitWidth)
+                }
+            }
+            
+            return instance as Self as Self as Self
+        }
     }
 }

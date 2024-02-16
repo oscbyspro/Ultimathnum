@@ -10,20 +10,18 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Infini Int x Numbers x Unsigned
+// MARK: * Infini Int x Numbers
 //*============================================================================*
 
-extension InfiniInt where Element == Element.Magnitude {
+extension InfiniInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public static var min: Self {
-        Self(repeating: 0)
-    }
-    
-    @inlinable public static var max: Self {
-        Self(repeating: 1)
+    @inlinable public var magnitude: Magnitude {
+        consuming get {
+            Magnitude(bitPattern: Overflow.ignore({ self.isLessThanZero ? try self.negated() : self }))
+        }
     }
 }

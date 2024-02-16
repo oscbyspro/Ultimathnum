@@ -61,4 +61,28 @@ extension MinimiIntTests {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Elements
+    //=------------------------------------------------------------------------=
+    
+    func testMakeToken() {
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
+            XCTAssertEqual(( 0 as T).load(as: IX.self),  0 as IX)
+            XCTAssertEqual((-1 as T).load(as: IX.self), ~0 as IX)
+            XCTAssertEqual(( 0 as T).load(as: UX.self),  0 as UX)
+            XCTAssertEqual((-1 as T).load(as: UX.self), ~0 as UX)
+        }
+        
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
+            XCTAssertEqual(( 0 as T).load(as: IX.self),  0 as IX)
+            XCTAssertEqual(( 1 as T).load(as: IX.self),  1 as IX)
+            XCTAssertEqual(( 0 as T).load(as: UX.self),  0 as UX)
+            XCTAssertEqual(( 1 as T).load(as: UX.self),  1 as UX)
+        }
+        
+        for type in Self.types {
+            type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
+        }
+    }
 }

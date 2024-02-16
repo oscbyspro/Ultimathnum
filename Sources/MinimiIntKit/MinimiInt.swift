@@ -15,7 +15,9 @@ import CoreKit
 
 /// An un/signed `1-bit` integer.
 @frozen public struct MinimiInt<Signedness>: SystemsInteger where Signedness: SystemsInteger<UX.BitPattern> {
-        
+    
+    public typealias Element = Self
+    
     public typealias Magnitude = MinimiInt<Signedness.Magnitude>
     
     //=------------------------------------------------------------------------=
@@ -35,40 +37,6 @@ import CoreKit
     //=------------------------------------------------------------------------=
     
     @usableFromInline let base: Bit
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(bitPattern: Bit.BitPattern) {
-        self.base = Bit(bitPattern: bitPattern)
-    }
-    
-    @inlinable public init(integerLiteral: Signedness.IntegerLiteralType) {
-        if  Signedness(integerLiteral: integerLiteral) == 0 {
-            self.base = 0
-        }   else if Signedness(integerLiteral: integerLiteral) == (Self.isSigned ? -1 : 1) {
-            self.base = 1
-        }   else {
-            fatalError(.overflow())
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public var bitPattern: Bit.BitPattern {
-        consuming get {
-            Bit.BitPattern(bitPattern: self.base)
-        }
-    }
-    
-    @inlinable public var magnitude: Magnitude {
-        consuming get {
-            Magnitude(bitPattern: self.bitPattern)
-        }
-    }
 }
 
 //=----------------------------------------------------------------------------=

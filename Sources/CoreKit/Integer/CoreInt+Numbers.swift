@@ -7,23 +7,27 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Minimi Int x Token
+// MARK: * Core Int x Numbers
 //*============================================================================*
 
-extension MinimiInt {
+extension CoreInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<T>(load source: T) where T: SystemsInteger<UX.BitPattern> {
-        self.init(bitPattern: source.leastSignificantBit)
+    @inlinable public init(integerLiteral: consuming Base.IntegerLiteralType) {
+        self.init(Base(integerLiteral: integerLiteral))
     }
+        
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
     
-    @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<UX.BitPattern> {
-        T(bitPattern: Bool(bitPattern: self) ? Self.isSigned ? ~0 as UX : 1 as UX : 0 as UX)
+    @inlinable public var magnitude: CoreInt<Base.Magnitude> {
+        consuming get {
+            Magnitude(self.base.magnitude)
+        }
     }
 }

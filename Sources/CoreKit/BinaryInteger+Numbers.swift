@@ -25,6 +25,27 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    @inlinable public init(magnitude: consuming Magnitude) throws {
+        try self.init(sign: Sign.plus, magnitude: consume magnitude)
+    }
+    
+    @inlinable public init(sign: consuming Sign, magnitude: consuming Magnitude) throws {
+        var isLessThanZero = Bool(bitPattern: consume sign)
+        if  isLessThanZero {
+            isLessThanZero = Overflow.capture(&magnitude, map:{ try $0.negated() })
+        }
+        //=--------------------------------------=
+        self.init(bitPattern: consume magnitude)
+        //=--------------------------------------=
+        if  self.isLessThanZero != isLessThanZero {
+            throw Overflow(consume self)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
     @inlinable public init<T>(_ source: consuming T) where T: BinaryInteger {
         try! self.init(exactly: source)
     }
@@ -38,23 +59,14 @@ extension BinaryInteger {
         self.init(load: &stream)
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers x Sign & Magnitude
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(magnitude: consuming Magnitude) throws {
-        try  self.init(sign: Sign.plus, magnitude: consume magnitude)
-    }
-    
-    @inlinable public init(sign: consuming Sign, magnitude: consuming Magnitude) throws {
-        var isLessThanZero = Bool(bitPattern: consume sign)
-        if  isLessThanZero {
-            isLessThanZero = Overflow.capture(&magnitude, map:{ try $0.negated() })
-        }
+    @inlinable public init<T>(elements: ExchangeInt<T, Element>.BitPattern, isSigned: Bool) throws {
+        let appendix = elements.appendix.bit
+        var (stream) = elements.stream()
         //=--------------------------------------=
-        self.init(bitPattern: consume magnitude)
+        self.init(load: &stream)
         //=--------------------------------------=
-        if  self.isLessThanZero != isLessThanZero {
+        let success = (self.appendix == appendix) && (Self.isSigned == isSigned || appendix == 0) && stream.succinct().count == 0
+        if !success {
             throw Overflow(consume self)
         }
     }

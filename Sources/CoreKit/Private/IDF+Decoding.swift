@@ -128,7 +128,7 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
         //=--------------------------------------=
         var digits: UnsafeBufferPointer<UInt8>.SubSequence = numerals.drop(while:{ $0 == UInt8(ascii: "0") })
         let division = try! IX(digits.count).divided(by: self.radix.exponent)
-        return try Namespace.withUnsafeTemporaryAllocation(of: UX.self, count: try! division.ceil().stdlib) {
+        return try Namespace.withUnsafeTemporaryAllocation(of: UX.self, count: try! division.ceil().base) {
             var words = consume $0
             var index = words.startIndex
             //=----------------------------------=
@@ -143,7 +143,7 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
             forwards: if division.remainder > 0 {
                 var element = 0 as UX
                 
-                for (ascii) in UnsafeBufferPointer(rebasing: digits.removePrefix(count: division.remainder.stdlib)) {
+                for (ascii) in UnsafeBufferPointer(rebasing: digits.removePrefix(count: division.remainder.base)) {
                     element = try element &* 10 &+ U8(IDF.decode(ascii: ascii)).load(as: UX.self)
                 }
                 
@@ -154,7 +154,7 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
             forwards: while index < words.endIndex {
                 var element = 0 as UX
                 
-                for (ascii) in UnsafeBufferPointer(rebasing: digits.removePrefix(count: self.radix.exponent.stdlib)) {
+                for (ascii) in UnsafeBufferPointer(rebasing: digits.removePrefix(count: self.radix.exponent.base)) {
                     element = try element &* 10 &+ U8(IDF.decode(ascii: ascii)).load(as: UX.self)
                 }
                 

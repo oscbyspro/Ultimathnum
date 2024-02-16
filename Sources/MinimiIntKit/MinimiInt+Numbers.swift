@@ -10,24 +10,32 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Infini Int x Comparison
+// MARK: * Minimi Int x Numbers
 //*============================================================================*
 
-extension InfiniInt {
+extension MinimiInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.same
+    @inlinable public init(integerLiteral: Signedness.IntegerLiteralType) {
+        if  Signedness(integerLiteral: integerLiteral) == 0 {
+            self.base = 0
+        }   else if Signedness(integerLiteral: integerLiteral) == (Self.isSigned ? -1 : 1) {
+            self.base = 1
+        }   else {
+            fatalError(.overflow())
+        }
     }
     
-    @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.less
-    }
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
     
-    @inlinable public func compared(to other: Self) -> Signum {
-        ExchangeInt(self).compared(to: ExchangeInt(other))
+    @inlinable public var magnitude: Magnitude {
+        consuming get {
+            Magnitude(bitPattern: self.bitPattern)
+        }
     }
 }

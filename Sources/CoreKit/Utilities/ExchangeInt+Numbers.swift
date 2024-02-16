@@ -30,6 +30,6 @@ extension ExchangeInt {
     }
     
     @inlinable public init<T>(_ source: T, as element: Element.Type = Element.self) where T: BinaryInteger, Base == T.Content {
-        self.init(source.elements, repeating: source.appendix)
+        self.init(source.content, repeating: source.appendix)
     }
 }

@@ -27,18 +27,14 @@
 ///
 /// Its stride is Swift.Int which is used to step through Swift's ranges.
 ///
-/// ### Development
-///
-/// Consider using `Overflow<Void>` error type in 1-by-1 division too.
-///
 public protocol BinaryInteger: BitCastable, BitOperable, Comparable, 
 ExpressibleByIntegerLiteral, Hashable, Sendable, Strideable, _MaybeLosslessStringConvertible where
 Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stride == Swift.Int {
     
-    associatedtype Element: SystemsInteger = Self where Element.Element == Element
+    associatedtype Content: RandomAccessCollection<Element.Magnitude>
     
-    associatedtype Content: RandomAccessCollection<Element.Magnitude> = CollectionOfOne<Element.Magnitude>
-    
+    associatedtype Element: SystemsInteger where Element.Element == Element
+        
     associatedtype Magnitude: UnsignedInteger where Magnitude.Magnitude == Magnitude
     
     //=------------------------------------------------------------------------=
@@ -75,20 +71,18 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    @inlinable init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream)
+    
     /// ### Development
     ///
-    /// - TODO: Consider whether this can be derived by bit casting.
+    /// - TODO: Consider whether it is needed.
     ///
-    @inlinable init(sign: consuming Sign, magnitude: consuming Magnitude) throws
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream)
-        
     @inlinable init<T>(load source: T) where T: SystemsInteger<Element.BitPattern>
     
+    /// ### Development
+    ///
+    /// - TODO: Consider whether it is needed.
+    ///
     @inlinable func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern>
     
     //=------------------------------------------------------------------------=
@@ -150,9 +144,9 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     /// }
     /// ```
     ///
-    @inlinable var appendix: Bit { borrowing get }
+    @inlinable var appendix: Bit { get }
     
-    @inlinable var elements: Content { consuming get }
+    @inlinable var content: Content { get }
     
     @inlinable var magnitude: Magnitude { consuming get }
     

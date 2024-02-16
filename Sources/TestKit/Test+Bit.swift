@@ -16,7 +16,7 @@ import CoreKit
 extension Test {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities x Some
+    // MARK: Utilities x Elements
     //=------------------------------------------------------------------------=
     
     public static func load<Integer: BinaryInteger, Element: SystemsInteger<Integer.Element.BitPattern>>(
@@ -35,12 +35,8 @@ extension Test {
         XCTAssertEqual(Integer(load: element).load(as: Element.self), element, file: file, line: line)
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities x Many
-    //=------------------------------------------------------------------------=
-    
     public static func elements<Integer: BinaryInteger, Element: SystemsInteger & UnsignedInteger>(
-    _ integer: Integer,_ expectation: [Element], file: StaticString = #file, line: UInt = #line) {
+    _ integer: Integer, _ expectation: [Element], file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
         let elements = ExchangeInt(integer, as: Element.self).source()
         //=--------------------------------------=

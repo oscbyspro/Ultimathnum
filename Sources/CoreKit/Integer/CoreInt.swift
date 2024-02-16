@@ -33,7 +33,7 @@
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    @usableFromInline var base: Base
+    public var base: Base
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -41,42 +41,6 @@
     
     @inlinable public init(_ base: consuming Base) {
         self.base = base
-    }
-    
-    @inlinable public init(bitPattern: consuming Base.BitPattern) {
-        self.base =  .init(bitPattern: bitPattern)
-    }
-        
-    @inlinable public init(integerLiteral: consuming Base.IntegerLiteralType) {
-        self.base =  .init(integerLiteral: integerLiteral)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Accessors
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public var stdlib: Base {
-        consuming get {
-            self.base
-        }
-    }
-    
-    @inlinable public var bitPattern: Base.BitPattern {
-        consuming get { 
-            self.base.bitPattern
-        }
-    }
-    
-    @inlinable public var magnitude: CoreInt<Base.Magnitude> {
-        consuming get {
-            Magnitude(self.base.magnitude)
-        }
-    }
-    
-    @inlinable public var words: some RandomAccessCollection<UX> {
-        consuming get {
-            BitCastMap(self.base.words)
-        }
     }
 }
 

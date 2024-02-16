@@ -53,7 +53,7 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
     }
     
     @inline(never) @inlinable func encode(sign: Sign, magnitude: inout UnsafeMutableBufferPointer<UX>) -> String {
-        let maxChunkCount = self.radix.divisibilityByPowerUpperBound(magnitude: magnitude).stdlib
+        let maxChunkCount = self.radix.divisibilityByPowerUpperBound(magnitude: magnitude).base
         return Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: maxChunkCount) { chunks in
             var magnitude = magnitude[...]
             var chunksIndex = chunks.startIndex
@@ -73,7 +73,7 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
                 chunks[..<chunksIndex].deinitialize()
             }
             //=----------------------------------=
-            return Namespace.withUnsafeTemporaryAllocation(of: UInt8.self, count: radix.exponent.stdlib) { first in
+            return Namespace.withUnsafeTemporaryAllocation(of: UInt8.self, count: radix.exponent.base) { first in
                 var remainders = chunks[..<chunksIndex]
                 var firstChunk = remainders.removeLast()
                 var firstIndex = first.endIndex
@@ -85,7 +85,7 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
                     let remainder: UX; (firstChunk, remainder) = Overflow.ignore({ try firstChunk.divided(by: radix.base).components })
                     precondition(firstIndex >  first.startIndex)
                     firstIndex = first.index(before: firstIndex)
-                    first.initializeElement(at: firstIndex, to: UInt8(ascii: "0") &+ U8(load: remainder).stdlib)
+                    first.initializeElement(at: firstIndex, to: UInt8(ascii: "0") &+ U8(load: remainder).base)
                     
                 }   while firstChunk != 0
                 //=------------------------------=
@@ -95,7 +95,7 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
                     first[firstIndex...].deinitialize()
                 }
                 //=------------------------------=
-                let count: Int = (minus ? 1 : 0) + first[firstIndex...].count + radix.exponent.stdlib * remainders.count
+                let count: Int = (minus ? 1 : 0) + first[firstIndex...].count + radix.exponent.base * remainders.count
                 return String(unsafeUninitializedCapacity: count) { ascii in
                     //=--------------------------=
                     // allocation: count <= $0.count
@@ -105,11 +105,11 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
                     // pointee: initialization
                     //=--------------------------=
                     for var chunk in remainders {
-                        for _  in 0 as Int ..< radix.exponent.stdlib {
+                        for _  in 0 as Int ..< radix.exponent.base {
                             let remainder: UX; (chunk, remainder) = Overflow.ignore({ try chunk.divided(by: radix.base).components })
                             precondition(asciiIndex > ascii.startIndex)
                             ascii.formIndex(before: &asciiIndex)
-                            ascii.initializeElement(at: asciiIndex, to: UInt8(ascii: "0") &+ U8(load: remainder).stdlib)
+                            ascii.initializeElement(at: asciiIndex, to: UInt8(ascii: "0") &+ U8(load: remainder).base)
                         }
                     }
                     
