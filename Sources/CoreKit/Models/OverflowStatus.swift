@@ -8,47 +8,55 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Bit x Extension
+// MARK: * Overflow Status
 //*============================================================================*
     
-/// A system integer with all bits set to only `0` or only `1`.
-@frozen public struct BitExtension<Element>: BitCastable, BitOperable, Comparable, Hashable where Element: SystemsInteger {
-    
-    public typealias Element = Element
-    
-    public typealias BitPattern = BitExtension<Element.Magnitude>
+@frozen public struct OverflowStatus<Value> {
     
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
 
-    public let element: Element
+    public var value: Value
+    public var overflow: Bool
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
 
-    @inlinable public init(bitPattern: consuming BitPattern) {
-        self.init(unchecked: Element(bitPattern: bitPattern.element))
+    @inlinable public init(_ value: consuming Value, overflow: consuming Bool) {
+        self.value = value; self.overflow = overflow
     }
     
-    @inlinable internal init(unchecked element: Element) {
-        Swift.assert(element.count(1, option: .all) % Element.bitWidth == 0)
-        Swift.assert(element.count(0, option: .all) % Element.bitWidth == 0)
-        self.element = element
+    @inlinable public init(_ value: () throws -> Value) {
+        brr: do {
+            self.init(try value(), overflow: false)
+        }   catch let error as Overflow<Value> {
+            self.init((consume error).value, overflow: true)
+        }   catch {
+            fatalError("await typed throws")
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Accessors
+    //=------------------------------------------------------------------------=
+
+    @inlinable public var components: (value: Value, overflow: Bool) {
+        consuming get {
+            (value: self.value, overflow: self.overflow)
+        }
+        
+        consuming set {
+            (value: self.value, overflow: self.overflow) = newValue
+        }
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
-
-    @inlinable public var bit: Bit {
-        Bit(bitPattern: self.element != 0)
-    }
     
-    @inlinable public var bitPattern: BitPattern {
-        consuming get {
-            BitPattern(unchecked: BitPattern.Element(bitPattern: self.element))
-        }
+    @inlinable public consuming func resolve() throws -> Value {
+        try Overflow.resolve(self.value, overflow: self.overflow)
     }
 }

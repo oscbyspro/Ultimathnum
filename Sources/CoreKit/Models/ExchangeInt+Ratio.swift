@@ -26,7 +26,7 @@ extension ExchangeInt.Minor where Element == Element.Magnitude {
         //=--------------------------------------=
         let major = Base.Element.bitWidth
         let minor = Base.Element.Magnitude(load: UX(bitWidth: Element.self))
-        let value = major &>> minor.count(0, option: Bit.Selection.ascending)
+        let value = major &>> minor.count(0, option: BitSelection.ascending)
         return value.load(as: IX.self).base
     }
 }
@@ -47,7 +47,7 @@ extension ExchangeInt.Major where Element == Element.Magnitude {
         //=--------------------------------------=
         let major = Element.bitWidth
         let minor = Element.Magnitude(load: UX(bitWidth: Base.Element.self))
-        let value = major &>> minor.count(0, option: Bit.Selection.ascending)
+        let value = major &>> minor.count(0, option: BitSelection.ascending)
         return value.load(as: IX.self).base
     }
 }

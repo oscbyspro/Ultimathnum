@@ -8,21 +8,18 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Bit x Selection
+// MARK: * Bit Selection
 //*============================================================================*
-
-extension Bit {
     
-    /// Some selection options for the bits in a binary integer.
-    ///
-    /// ```swift
-    /// I64.min.count(0, option:  .ascending) // 63
-    /// I64.min.count(1, option: .descending) // 01
-    /// ```
-    ///
-    @frozen public enum Selection {
-        case all
-        case ascending
-        case descending
-    }
+/// Some selection options for the bits in a binary integer.
+///
+/// ```swift
+/// I64.min.count(0, option:  .ascending) // 63
+/// I64.min.count(1, option: .descending) // 01
+/// ```
+///
+@frozen public enum BitSelection {
+    case all
+    case ascending
+    case descending
 }

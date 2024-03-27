@@ -152,5 +152,5 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     
     @inlinable borrowing func compared(to other: borrowing Self) -> Signum
     
-    @inlinable borrowing func count(_ bit: Bit, option: Bit.Selection) -> Magnitude
+    @inlinable borrowing func count(_ bit: Bit, option: BitSelection) -> Magnitude
 }

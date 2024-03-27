@@ -11,7 +11,7 @@
 // MARK: * Bit Extension x Comparison
 //*============================================================================*
 
-extension Bit.Extension {
+extension BitExtension {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

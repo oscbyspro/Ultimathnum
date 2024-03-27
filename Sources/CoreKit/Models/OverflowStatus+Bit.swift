@@ -8,22 +8,22 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Overflow Result x Bit
+// MARK: * Overflow Status x Bit
 //*============================================================================*
 
-extension Overflow.Result: BitCastable where Value: BitCastable {
+extension OverflowStatus: BitCastable where Value: BitCastable {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: consuming Overflow<Value.BitPattern>.Result) {
+    @inlinable public init(bitPattern: consuming OverflowStatus<Value.BitPattern>) {
         self.init(Value(bitPattern: bitPattern.value), overflow: bitPattern.overflow)
     }
     
-    @inlinable public var bitPattern: Overflow<Value.BitPattern>.Result {
+    @inlinable public var bitPattern: OverflowStatus<Value.BitPattern> {
         consuming get {
-            Overflow<Value.BitPattern>.Result(Value.BitPattern(bitPattern: self.value), overflow: self.overflow)
+            OverflowStatus<Value.BitPattern>(Value.BitPattern(bitPattern: self.value), overflow: self.overflow)
         }
     }
 }

@@ -44,15 +44,15 @@
     }
     
     @inlinable public static func ignore(_ value: () throws -> Value) -> Value {
-        Result(value).value
+        OverflowStatus(value).value
     }
     
     @inlinable public static func ignore(_ value: inout Value, map: (consuming Value) throws -> Value) {
         value = Overflow.capture({ try map(value) }).value
     }
         
-    @inlinable public static func capture(_ value: () throws -> Value) -> Result {
-        Result(value)
+    @inlinable public static func capture(_ value: () throws -> Value) -> OverflowStatus<Value> {
+        OverflowStatus(value)
     }
     
     @inlinable public static func capture(_ value: inout Value, map: (consuming Value) throws -> Value) -> Bool {

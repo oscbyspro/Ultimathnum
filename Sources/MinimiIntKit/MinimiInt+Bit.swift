@@ -69,7 +69,7 @@ extension MinimiInt {
         CollectionOfOne(Magnitude(bitPattern: self))
     }
     
-    @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
+    @inlinable public func count(_ bit: Bit, option: BitSelection) -> Magnitude {
         Magnitude(bitPattern: ~(self.base ^ bit))
     }
 }

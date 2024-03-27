@@ -96,7 +96,7 @@ Element: SystemsInteger, Base: RandomAccessCollection, Base.Element: SystemsInte
     public let base: Base
     
     /// The bit extension of the un/signed source.
-    public let appendix: Bit.Extension<Element>
+    public let appendix: BitExtension<Element>
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -121,7 +121,7 @@ Element: SystemsInteger, Base: RandomAccessCollection, Base.Element: SystemsInte
     ///   - element: The type of element produced by this sequence.
     ///
     @inlinable public init(_ base: Base, repeating appendix: Bit, as element: Element.Type = Element.self) {
-        self.init(base, repeating: Bit.Extension(repeating: appendix))
+        self.init(base, repeating: BitExtension(repeating: appendix))
     }
     
     /// Creates a sequence of the given type from a bit pattern source.
@@ -131,7 +131,7 @@ Element: SystemsInteger, Base: RandomAccessCollection, Base.Element: SystemsInte
     ///   - element: The element which extends the base sequence.
     ///   - count: The number of prefixing elements to view.
     ///
-    @inlinable public init(_ base: Base, repeating appendix: Bit.Extension<Element>) {
+    @inlinable public init(_ base: Base, repeating appendix: BitExtension<Element>) {
         //=--------------------------------------=
         self.base = base
         self.appendix = appendix
@@ -145,7 +145,7 @@ Element: SystemsInteger, Base: RandomAccessCollection, Base.Element: SystemsInte
     //=------------------------------------------------------------------------=
     
     @inlinable public func reinterpreted<Other>(as type: Other.Type = Other.self) -> ExchangeInt<Base, Other> {
-        CoreKit.ExchangeInt(self.base, repeating: Bit.Extension(repeating: self.appendix))
+        CoreKit.ExchangeInt(self.base, repeating: BitExtension(repeating: self.appendix))
     }
 }
 

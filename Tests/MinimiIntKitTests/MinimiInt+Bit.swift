@@ -34,7 +34,7 @@ extension MinimiIntTests {
     func testBitCountSelection() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             for bit: Bit in [0, 1] {
-                for selection: Bit.Selection in [.all, .ascending, .descending] {
+                for selection: BitSelection in [.all, .ascending, .descending] {
                     XCTAssertEqual(T(bitPattern: 0 as T.Magnitude).count(bit, option: selection), bit == 0 ? 1 : 0)
                     XCTAssertEqual(T(bitPattern: 1 as T.Magnitude).count(bit, option: selection), bit == 1 ? 1 : 0)
                 }

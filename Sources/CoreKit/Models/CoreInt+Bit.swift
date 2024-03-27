@@ -67,7 +67,7 @@ extension CoreInt {
         CollectionOfOne(Magnitude(bitPattern: self))
     }
     
-    @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
+    @inlinable public func count(_ bit: Bit, option: BitSelection) -> Magnitude {
         switch (Bool(bitPattern: bit), option) {
         case (true,         .all): Magnitude(Base.Magnitude(truncatingIfNeeded: ( self).base     .nonzeroBitCount))
         case (false,        .all): Magnitude(Base.Magnitude(truncatingIfNeeded: (~self).base     .nonzeroBitCount))

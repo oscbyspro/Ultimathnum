@@ -28,7 +28,7 @@ extension DoubleInt {
         let rhsIsLessThanZero: Bool = other.isLessThanZero
         let minus = lhsIsLessThanZero != rhsIsLessThanZero
         //=--------------------------------------=
-        var result = Overflow<Self>.Result(bitPattern: Overflow.capture {
+        var result = OverflowStatus<Self>(bitPattern: Overflow.capture {
             try self.magnitude._times(other.magnitude)
         })
         //=--------------------------------------=

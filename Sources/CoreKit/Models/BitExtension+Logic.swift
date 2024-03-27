@@ -11,7 +11,7 @@
 // MARK: * Bit Extension x Logic
 //*============================================================================*
 
-extension Bit.Extension {
+extension BitExtension {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

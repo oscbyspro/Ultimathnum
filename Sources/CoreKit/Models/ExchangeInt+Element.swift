@@ -26,7 +26,7 @@ extension ExchangeInt where Element == Element.Magnitude {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable internal static func element(_ index: Int, base: Base, appendix: Bit.Extension<Element>) -> Element {
+    @inlinable internal static func element(_ index: Int, base: Base, appendix: BitExtension<Element>) -> Element {
         switch comparison {
         case Signum.same: Equal.element(index, base: base, appendix: appendix)
         case Signum.less: Minor.element(index, base: base, appendix: appendix)
@@ -45,7 +45,7 @@ extension ExchangeInt.Equal where Element == Element.Magnitude {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable internal static func element(_ index: Int, base: Base, appendix: Bit.Extension<Element>) -> Element {
+    @inlinable internal static func element(_ index: Int, base: Base, appendix: BitExtension<Element>) -> Element {
         //=--------------------------------------=
         precondition(ExchangeInt.comparison == Signum.same, String.unreachable())
         //=--------------------------------------=
@@ -67,7 +67,7 @@ extension ExchangeInt.Minor where Element == Element.Magnitude {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable internal static func element(_ index: Int, base: Base, appendix: Bit.Extension<Element>) -> Element {
+    @inlinable internal static func element(_ index: Int, base: Base, appendix: BitExtension<Element>) -> Element {
         //=--------------------------------------=
         precondition(ExchangeInt.comparison == Signum.less, String.unreachable())
         //=--------------------------------------=
@@ -95,7 +95,7 @@ extension ExchangeInt.Major where Element == Element.Magnitude {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable internal static func element(_ index: Int, base: Base, appendix: Bit.Extension<Element>) -> Element {
+    @inlinable internal static func element(_ index: Int, base: Base, appendix: BitExtension<Element>) -> Element {
         //=--------------------------------------=
         precondition(ExchangeInt.comparison == Signum.more, String.unreachable())
         //=--------------------------------------=

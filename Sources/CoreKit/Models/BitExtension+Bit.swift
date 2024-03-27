@@ -11,7 +11,7 @@
 // MARK: * Bit Extension x Bit
 //*============================================================================*
 
-extension Bit.Extension {
+extension BitExtension {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -21,7 +21,7 @@ extension Bit.Extension {
         self.init(unchecked: Element(repeating: bit))
     }
     
-    @inlinable public init<T>(repeating other: Bit.Extension<T>) {
+    @inlinable public init<T>(repeating other: BitExtension<T>) {
         let bitCastOrLoad = T.isSigned || UX(bitWidth: Element.self) <= UX(bitWidth: T.self)
         self.init(unchecked: bitCastOrLoad ? Element.tokenized(bitCastOrLoad: other.element) : Element(repeating: other.bit))
     }

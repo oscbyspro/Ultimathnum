@@ -98,7 +98,7 @@ final class BitTests: XCTestCase {
 
 final class BitExtensionTests: XCTestCase {
     
-    typealias T = Bit.Extension
+    typealias T = BitExtension
     
     //=------------------------------------------------------------------------=
     // MARK: Tests

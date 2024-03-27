@@ -81,7 +81,7 @@ extension DoubleInt {
         Magnitude._Content(low: self.low.content, high: Base.Magnitude(bitPattern: self.high).content)
     }
     
-    @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
+    @inlinable public func count(_ bit: Bit, option: BitSelection) -> Magnitude {
         var count: Magnitude
         
         switch option {
@@ -126,9 +126,9 @@ extension DoubleInt where Base == Base.Magnitude {
     
     @frozen public struct _Content: RandomAccessCollection {
         
-        //=--------------------------------------------------------------------=
+        //=------------------------------------------------------------------------=
         // MARK: State
-        //=--------------------------------------------------------------------=
+        //=------------------------------------------------------------------------=
         
         #if _endian(big)
         @usableFromInline var high: Base.Content
@@ -138,18 +138,18 @@ extension DoubleInt where Base == Base.Magnitude {
         @usableFromInline var high: Base.Content
         #endif
         
-        //=--------------------------------------------------------------------=
+        //=------------------------------------------------------------------------=
         // MARK: Initializers
-        //=--------------------------------------------------------------------=
+        //=------------------------------------------------------------------------=
         
         @inlinable public init(low: consuming Base.Content, high: consuming Base.Content) {
             self.low  = low
             self.high = high
         }
         
-        //=--------------------------------------------------------------------=
+        //=------------------------------------------------------------------------=
         // MARK: Utilities
-        //=--------------------------------------------------------------------=
+        //=------------------------------------------------------------------------=
         
         @inlinable public var count: Int {
             self.low.count + self.high.count // pray for compile time constant

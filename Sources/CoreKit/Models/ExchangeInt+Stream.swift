@@ -27,17 +27,17 @@ extension ExchangeInt where Element == Element.Magnitude {
     
     @frozen public struct Stream {
         
-        //=--------------------------------------------------------------------=
+        //=------------------------------------------------------------------------=
         // MARK: State
-        //=--------------------------------------------------------------------=
+        //=------------------------------------------------------------------------=
         
         @usableFromInline let base:  ExchangeInt
         @usableFromInline let limit: ExchangeInt.Index
         @usableFromInline var index: ExchangeInt.Index
         
-        //=--------------------------------------------------------------------=
+        //=------------------------------------------------------------------------=
         // MARK: Initializers
-        //=--------------------------------------------------------------------=
+        //=------------------------------------------------------------------------=
         
         @inlinable init(_ base: ExchangeInt, from index: ExchangeInt.Index) {
             self.base  = (base)
@@ -45,9 +45,9 @@ extension ExchangeInt where Element == Element.Magnitude {
             self.index = (index)
         }
         
-        //=--------------------------------------------------------------------=
+        //=------------------------------------------------------------------------=
         // MARK: Transformations
-        //=--------------------------------------------------------------------=
+        //=------------------------------------------------------------------------=
         
         @inlinable mutating public func next() -> Element {
             defer {
@@ -57,11 +57,11 @@ extension ExchangeInt where Element == Element.Magnitude {
             return self.base[self.index] as Element
         }
                 
-        //=--------------------------------------------------------------------=
+        //=------------------------------------------------------------------------=
         // MARK: Utilities
-        //=--------------------------------------------------------------------=
+        //=------------------------------------------------------------------------=
         
-        @inlinable public var appendix: Bit.Extension<Element> {
+        @inlinable public var appendix: BitExtension<Element> {
             self.base.appendix
         }
         

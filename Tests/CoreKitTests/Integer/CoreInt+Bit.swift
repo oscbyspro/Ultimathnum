@@ -34,7 +34,7 @@ extension CoreIntTests {
     func testBitCountSelection() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             for bit: Bit in [0, 1] {
-                for selection: Bit.Selection in [.all, .ascending, .descending] {
+                for selection: BitSelection in [.all, .ascending, .descending] {
                     XCTAssertEqual(( 0 as T).count(bit, option: selection), bit == 0 ? T.bitWidth : 0)
                     XCTAssertEqual((~0 as T).count(bit, option: selection), bit == 1 ? T.bitWidth : 0)
                 }

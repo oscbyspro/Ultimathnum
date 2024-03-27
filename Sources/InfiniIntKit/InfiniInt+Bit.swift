@@ -43,7 +43,7 @@ extension InfiniInt {
     }
     
     @inlinable public init<T>(load source: T) where T: SystemsInteger<Element.BitPattern> {
-        let appendix = Bit.Extension<Element.Magnitude>(repeating: source.appendix)
+        let appendix = BitExtension<Element.Magnitude>(repeating: source.appendix)
         self.init(normalizing: InfiniInt.Storage([Element.Magnitude(bitPattern: source)], repeating: appendix))
     }
     
@@ -63,7 +63,7 @@ extension InfiniInt {
         self.storage.base
     }
     
-    @inlinable public func count(_ bit: Bit, option: Bit.Selection) -> Magnitude {
+    @inlinable public func count(_ bit: Bit, option: BitSelection) -> Magnitude {
         fatalError("TODO")
     }
 }

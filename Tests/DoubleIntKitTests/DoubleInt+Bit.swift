@@ -40,19 +40,19 @@ extension DoubleIntTests {
             typealias M = DoubleInt<Base>.Magnitude
             
             for bit: Bit in [0, 1] {
-                for selection: Bit.Selection in [.all, .ascending, .descending] {
+                for selection: BitSelection in [.all, .ascending, .descending] {
                     XCTAssertEqual(T(low:  0, high:  0).count(bit, option: selection), bit == 0 ? T.bitWidth : 0)
                     XCTAssertEqual(T(low: ~0, high: ~0).count(bit, option: selection), bit == 1 ? T.bitWidth : 0)
                 }
                 
-                for selection: Bit.Selection in [.all] {
+                for selection: BitSelection in [.all] {
                     XCTAssertEqual(T(low:  .lsb, high:  .msb).count(bit, option: selection), bit == 0 ? T.bitWidth - 2 : 2)
                     XCTAssertEqual(T(low:  .lsb, high: ~.msb).count(bit, option: selection), M(low: Base.bitWidth))
                     XCTAssertEqual(T(low: ~.lsb, high:  .msb).count(bit, option: selection), M(low: Base.bitWidth))
                     XCTAssertEqual(T(low: ~.lsb, high: ~.msb).count(bit, option: selection), bit == 1 ? T.bitWidth - 2 : 2)
                 }
                 
-                for selection: Bit.Selection in [.ascending, .descending] {
+                for selection: BitSelection in [.ascending, .descending] {
                     XCTAssertEqual(T(low:  .lsb, high:  .msb).count(bit, option: selection), (bit == 0) ? 0 : 1)
                     XCTAssertEqual(T(low:  .lsb, high: ~.msb).count(bit, option: selection), (bit == 0) == (selection == .ascending) ? 0 : 1)
                     XCTAssertEqual(T(low: ~.lsb, high:  .msb).count(bit, option: selection), (bit == 1) == (selection == .ascending) ? 0 : 1)
