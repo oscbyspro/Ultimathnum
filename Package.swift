@@ -28,100 +28,116 @@ let package = Package(
         // Ultimathnum
         //=--------------------------------------=
         .library(
-        name: "Ultimathnum",
-        targets: ["Ultimathnum"]),
+            name: "Ultimathnum",
+            targets: ["Ultimathnum"]
+        ),
         //=--------------------------------------=
         // Core Kit
         //=--------------------------------------=
         .library(
-        name: "CoreKit",
-        targets: ["CoreKit"]),
+            name: "CoreKit",
+            targets: ["CoreKit"]
+        ),
         //=--------------------------------------=
         // Double Int Kit
         //=--------------------------------------=
         .library(
-        name: "DoubleIntKit",
-        targets: ["DoubleIntKit"]),
+            name: "DoubleIntKit",
+            targets: ["DoubleIntKit"]
+        ),
         //=--------------------------------------=
         // Infini Int Kit
         //=--------------------------------------=
         .library(
-        name: "InfiniIntKit",
-        targets: ["InfiniIntKit"]),
+            name: "InfiniIntKit",
+            targets: ["InfiniIntKit"]
+        ),
         //=--------------------------------------=
         // Minimi Int Kit
         //=--------------------------------------=
         .library(
-        name: "MinimiIntKit",
-        targets: ["MinimiIntKit"]),
+            name: "MinimiIntKit",
+            targets: ["MinimiIntKit"]
+        ),
     ],
     targets: [
         //=--------------------------------------=
         // Ultimathnum
         //=--------------------------------------=
         .target(
-        name: "Ultimathnum",
-        dependencies: [
-            "CoreKit",
-            "DoubleIntKit",
-            "InfiniIntKit",
-            "MinimiIntKit",
-        ]),
+            name: "Ultimathnum",
+            dependencies: [
+                "CoreKit",
+                "DoubleIntKit",
+                "InfiniIntKit",
+                "MinimiIntKit",
+            ]
+        ),
         
         .testTarget(
-        name: "UltimathnumTests",
-        dependencies: ["Ultimathnum", "TestKit"]),
+            name: "UltimathnumTests",
+            dependencies: ["Ultimathnum", "TestKit"]
+        ),
         //=--------------------------------------=
         // Core Kit
         //=--------------------------------------=
         .target(
-        name: "CoreKit",
-        dependencies: []),
+            name: "CoreKit",
+            dependencies: []
+        ),
         
         .testTarget(
-        name: "CoreKitTests",
-        dependencies: [
-            "CoreKit",
-            "DoubleIntKit",
-            "InfiniIntKit",
-            "MinimiIntKit",
-            "TestKit",
-        ]),
+            name: "CoreKitTests",
+            dependencies: [
+                "CoreKit",
+                "DoubleIntKit",
+                "InfiniIntKit",
+                "MinimiIntKit",
+                "TestKit",
+            ]
+        ),
         //=--------------------------------------=
         // Double Int Kit
         //=--------------------------------------=
         .target(
-        name: "DoubleIntKit",
-        dependencies: ["CoreKit"]),
+            name: "DoubleIntKit",
+            dependencies: ["CoreKit"]
+        ),
         
         .testTarget(
-        name: "DoubleIntKitTests",
-        dependencies: ["DoubleIntKit", "TestKit"]),
+            name: "DoubleIntKitTests",
+            dependencies: ["DoubleIntKit", "TestKit"]
+        ),
         //=--------------------------------------=
         // Infini Int Kit
         //=--------------------------------------=
         .target(
-        name: "InfiniIntKit",
-        dependencies: ["CoreKit"]),
+            name: "InfiniIntKit",
+            dependencies: ["CoreKit"]
+        ),
         
         .testTarget(
-        name: "InfiniIntKitTests",
-        dependencies: ["InfiniIntKit", "TestKit"]),
+            name: "InfiniIntKitTests",
+            dependencies: ["InfiniIntKit", "TestKit"]
+        ),
         //=--------------------------------------=
         // Minimi Int Kit
         //=--------------------------------------=
         .target(
-        name: "MinimiIntKit",
-        dependencies: ["CoreKit"]),
+            name: "MinimiIntKit",
+            dependencies: ["CoreKit"]
+        ),
         
         .testTarget(
-        name: "MinimiIntKitTests",
-        dependencies: ["MinimiIntKit", "TestKit"]),
+            name: "MinimiIntKitTests",
+            dependencies: ["MinimiIntKit", "TestKit"]
+        ),
         //=--------------------------------------=
         // Test Kit
         //=--------------------------------------=
         .target(
-        name: "TestKit",
-        dependencies: ["CoreKit"]),
+            name: "TestKit",
+            dependencies: ["CoreKit"]
+        ),
     ]
 )
