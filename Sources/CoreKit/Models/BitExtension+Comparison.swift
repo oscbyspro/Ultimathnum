@@ -8,16 +8,24 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Unsigned Integer x Is Signed
+// MARK: * Bit Extension x Comparison
 //*============================================================================*
 
-extension UnsignedInteger {
+extension Bit.Extension {
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static var isSigned: Bool {
-        false
+    @inlinable public func compared(to other: Self) -> Signum {
+        self.element.compared(to: other.element)
+    }
+    
+    @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
+        lhs.element == rhs.element
+    }
+    
+    @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
+        lhs.element <  rhs.element
     }
 }

@@ -11,8 +11,8 @@
 // MARK: * Maybe Lossless String Convertible
 //*============================================================================*
 
-#if !$Embedded
-public typealias _MaybeLosslessStringConvertible = LosslessStringConvertible
-#else
+#if $Embedded
 public typealias _MaybeLosslessStringConvertible = Any
+#else
+public typealias _MaybeLosslessStringConvertible = LosslessStringConvertible
 #endif

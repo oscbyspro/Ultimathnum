@@ -8,16 +8,22 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Unsigned Integer x Is Signed
+// MARK: * Doublet x Bit
 //*============================================================================*
 
-extension UnsignedInteger {
+extension Doublet: BitCastable {
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public static var isSigned: Bool {
-        false
+    @inlinable public init(bitPattern: consuming Doublet<Base.Magnitude>) {
+        self.init(low: bitPattern.low, high: Base(bitPattern: bitPattern.high))
+    }
+    
+    @inlinable public var bitPattern: Doublet<Base.Magnitude> {
+        consuming get {
+            .init(low: self.low, high: Base.Magnitude(bitPattern: self.high))
+        }
     }
 }

@@ -8,16 +8,22 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Unsigned Integer x Is Signed
+// MARK: * Overflow x Bit
 //*============================================================================*
 
-extension UnsignedInteger {
+extension Overflow: BitCastable where Value: BitCastable {
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public static var isSigned: Bool {
-        false
+    @inlinable public init(bitPattern: consuming Overflow<Value.BitPattern>) {
+        self.init(Value(bitPattern: bitPattern.value))
+    }
+    
+    @inlinable public var bitPattern: Overflow<Value.BitPattern> {
+        consuming get {
+            .init(Value.BitPattern(bitPattern: self.value))
+        }
     }
 }

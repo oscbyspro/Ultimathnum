@@ -74,24 +74,3 @@
         }
     }
 }
-
-//=----------------------------------------------------------------------------=
-// MARK: + Bit Castable
-//=----------------------------------------------------------------------------=
-
-extension Doublet: BitCastable {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(bitPattern: consuming Doublet<Base.Magnitude>) {
-        self.init(low: bitPattern.low, high: Base(bitPattern: bitPattern.high))
-    }
-    
-    @inlinable public var bitPattern: Doublet<Base.Magnitude> {
-        consuming get {
-            .init(low: self.low, high: Base.Magnitude(bitPattern: self.high))
-        }
-    }
-}

@@ -8,16 +8,30 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Unsigned Integer x Is Signed
+// MARK: * Triplet x Bit
 //*============================================================================*
 
-extension UnsignedInteger {
+extension Triplet: BitCastable {
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public static var isSigned: Bool {
-        false
+    @inlinable public init(bitPattern: consuming Triplet<Base.Magnitude>) {
+        self.init(
+            low:  bitPattern.low,
+            mid:  bitPattern.mid,
+            high: Base(bitPattern: bitPattern.high)
+        )
+    }
+    
+    @inlinable public var bitPattern: Triplet<Base.Magnitude> {
+        consuming get {
+            Triplet<Base.Magnitude>(
+                low:  self.low,
+                mid:  self.mid,
+                high: Base.Magnitude(bitPattern: self.high)
+            )
+        }
     }
 }

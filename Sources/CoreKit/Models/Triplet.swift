@@ -78,24 +78,3 @@
         }
     }
 }
-
-//=----------------------------------------------------------------------------=
-// MARK: + Bit Castable
-//=----------------------------------------------------------------------------=
-
-extension Triplet: BitCastable {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(bitPattern: consuming Triplet<Base.Magnitude>) {
-        self.init(low: bitPattern.low, mid: bitPattern.mid, high: Base(bitPattern: bitPattern.high))
-    }
-    
-    @inlinable public var bitPattern: Triplet<Base.Magnitude> {
-        consuming get {
-            .init(low: self.low, mid: self.mid, high: Base.Magnitude(bitPattern: self.high))
-        }
-    }
-}

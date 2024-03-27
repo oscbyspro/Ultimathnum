@@ -11,8 +11,8 @@
 // MARK: * Maybe Custom String Convertible
 //*============================================================================*
 
-#if !$Embedded
-public typealias _MaybeCustomStringConvertible = CustomStringConvertible
-#else
+#if $Embedded
 public typealias _MaybeCustomStringConvertible = Any
+#else
+public typealias _MaybeCustomStringConvertible = CustomStringConvertible
 #endif

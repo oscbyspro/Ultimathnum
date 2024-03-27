@@ -8,16 +8,21 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Unsigned Integer x Is Signed
+// MARK: * Bit Extension x Bit
 //*============================================================================*
 
-extension UnsignedInteger {
+extension Bit.Extension {
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public static var isSigned: Bool {
-        false
+    @inlinable public init(repeating bit: Bit) {
+        self.init(unchecked: Element(repeating: bit))
+    }
+    
+    @inlinable public init<T>(repeating other: Bit.Extension<T>) {
+        let bitCastOrLoad = T.isSigned || UX(bitWidth: Element.self) <= UX(bitWidth: T.self)
+        self.init(unchecked: bitCastOrLoad ? Element.tokenized(bitCastOrLoad: other.element) : Element(repeating: other.bit))
     }
 }

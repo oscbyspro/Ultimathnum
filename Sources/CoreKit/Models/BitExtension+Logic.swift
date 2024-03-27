@@ -8,16 +8,28 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Unsigned Integer x Is Signed
+// MARK: * Bit Extension x Logic
 //*============================================================================*
 
-extension UnsignedInteger {
+extension Bit.Extension {
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static var isSigned: Bool {
-        false
+    @inlinable public static prefix func ~(instance: consuming Self) -> Self {
+        Self(unchecked: ~instance.element)
+    }
+    
+    @inlinable public static func &(lhs: Self, rhs: Self) -> Self {
+        Self(unchecked: lhs.element & rhs.element)
+    }
+    
+    @inlinable public static func |(lhs: Self, rhs: Self) -> Self {
+        Self(unchecked: lhs.element | rhs.element)
+    }
+    
+    @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
+        Self(unchecked: lhs.element | rhs.element)
     }
 }
