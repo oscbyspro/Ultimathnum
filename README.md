@@ -1,7 +1,5 @@
 # Ultimathnum
 
-Greatness.
-
 ## Table of Contents
 
 * [CoreKit](#corekit)
@@ -15,32 +13,32 @@ Greatness.
 ## CoreKit
 
 > [!IMPORTANT]
-> It's a work in progress.
+> Work in progress...
 
 <a name="doubleintkit"/>
 
 ## DoubleIntKit
 
 > [!IMPORTANT]
-> It's a work in progress.
+> Work in progress...
 
 <a name="infiniintkit"/>
 
 ## InfiniIntKit
 
 > [!IMPORTANT]
-> It's a work in progress.
+> Work in progress...
 
 <a name="minimiintkit"/>
 
 ## MinimiIntKit
 
 > [!IMPORTANT]
-> It's a work in progress.
+> Work in progress...
 
 <a name="installation"/>
 
 ## Installation
 
 > [!IMPORTANT]
-> It's a work in progress.
+> Work in progress...
