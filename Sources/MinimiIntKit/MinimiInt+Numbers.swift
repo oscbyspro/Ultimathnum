@@ -34,8 +34,6 @@ extension MinimiInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public var magnitude: Magnitude {
-        consuming get {
-            Magnitude(bitPattern: self.bitPattern)
-        }
+        Magnitude(bitPattern: self.bitPattern)
     }
 }
