@@ -49,7 +49,7 @@ extension Test {
             XCTAssertEqual({ var x = rhs; x  += lhs; return x }(), value, file: file, line: line)
         }
         //=--------------------------------------=
-        if  let one = T.exactly(literal: 1).optional(), rhs == one {
+        if  let one = T.exactly(1).optional(), rhs == one {
             Test.incrementation(lhs, value, error, file: file, line: line)
         }
         //=--------------------------------------=

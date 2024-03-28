@@ -55,7 +55,7 @@ extension Test {
             XCTAssertEqual(abc, xyz, "binary integer subtraction must be reversible", file: file, line: line)
         }
         //=--------------------------------------=
-        if  let one = T.exactly(literal: 1).optional(), rhs == one {
+        if  let one = T.exactly(1).optional(), rhs == one {
             Test.decrementation(lhs, value, error, file: file, line: line)
         }
         //=--------------------------------------=

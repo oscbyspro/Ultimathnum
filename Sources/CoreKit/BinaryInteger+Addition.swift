@@ -53,11 +53,11 @@ extension BinaryInteger {
     /// - Note: It works with **0-bit** and **1-bit** integers.
     ///
     @inlinable public consuming func incremented() -> ArithmeticResult<Self> {
-        if  let positive = Self.exactly(literal:  1).optional() {
+        if  let positive = Self.exactly( 1).optional() {
             return self.plus (positive)
         }
         
-        if  let negative = Self.exactly(literal: -1).optional() {
+        if  let negative = Self.exactly(-1).optional() {
             return self.minus(negative)
         }
         

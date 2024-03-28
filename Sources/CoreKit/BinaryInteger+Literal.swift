@@ -18,10 +18,10 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(integerLiteral: BigIntLiteral.IntegerLiteralType) {
-        self = Self.exactly(literal: BigIntLiteral(integerLiteral: integerLiteral)).unwrap()        
+        self = Self.exactly(BigIntLiteral(integerLiteral: integerLiteral)).unwrap()        
     }
     
-    @inlinable public static func exactly(literal source: consuming BigIntLiteral) -> ArithmeticResult<Self> {
+    @inlinable public static func exactly(_ source: consuming BigIntLiteral) -> ArithmeticResult<Self> {
         Self.exactly(elements: ExchangeInt(source).reinterpreted(), isSigned: true)
     }
 }
