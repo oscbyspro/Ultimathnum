@@ -19,7 +19,7 @@ extension DoubleInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: consuming Doublet<Base>.BitPattern) {        
+    @inlinable public init(bitPattern: consuming DoubleIntLayout<Base>.BitPattern) {        
         self.init(low: bitPattern.low, high: Base(bitPattern: bitPattern.high))
     }
     

@@ -22,8 +22,8 @@ extension TupleBinaryIntegerTests {
     
     func testMultiplication213() {
         func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger & UnsignedInteger {
-            typealias X2 = Doublet<Base>
-            typealias X3 = Triplet<Base>
+            typealias X2 = DoubleIntLayout<Base>
+            typealias X3 = TripleIntLayout<Base>
             
             Test.multiplication213(X2(low:  0, high:  0),  0 as Base, X3(low:  0, mid:  0, high:  0))
             Test.multiplication213(X2(low:  0, high:  0), ~0 as Base, X3(low:  0, mid:  0, high:  0))
@@ -53,7 +53,7 @@ extension Test {
     //=------------------------------------------------------------------------=
     
     static func multiplication213<Base: SystemsInteger & UnsignedInteger>(
-    _ lhs: Doublet<Base>, _ rhs:  Base, _ expectation: Triplet<Base>,
+    _ lhs: DoubleIntLayout<Base>, _ rhs:  Base, _ expectation: TripleIntLayout<Base>,
     file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
         XCTAssertEqual(TBI.multiplying213(lhs, by: rhs), expectation, file: file, line: line)

@@ -45,7 +45,7 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func multiplying(_ lhs: Self, by rhs: Self) -> Doublet<Self> {
+    @inlinable public static func multiplying(_ lhs: Self, by rhs: Self) -> DoubleIntLayout<Self> {
         let lhsIsLessThanZero: Bool = (lhs).isLessThanZero
         let rhsIsLessThanZero: Bool = (rhs).isLessThanZero
         var minus = lhsIsLessThanZero != rhsIsLessThanZero
@@ -57,7 +57,7 @@ extension DoubleInt {
             minus = Overflow.capture(&product.high, map:{ try (~$0).plus(Magnitude(Bit(bitPattern: minus))) })
         }
         //=--------------------------------------=
-        return Doublet(bitPattern: product)
+        return DoubleIntLayout(bitPattern: product)
     }
 }
 
@@ -87,7 +87,7 @@ extension DoubleInt where Base == Base.Magnitude {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inline(__always) @inlinable internal static func _multiplying(_ lhs: consuming Self, by rhs: Self) -> Doublet<Self> {
+    @inline(__always) @inlinable internal static func _multiplying(_ lhs: consuming Self, by rhs: Self) -> DoubleIntLayout<Self> {
         var ax = Base.multiplying(lhs.low,  by: rhs.low ) as Storage
         let ay = Base.multiplying(lhs.low,  by: rhs.high) as Storage
         let bx = Base.multiplying(lhs.high, by: rhs.low ) as Storage
@@ -104,6 +104,6 @@ extension DoubleInt where Base == Base.Magnitude {
         let o0 = Overflow.capture(&by.low,  map:{ try $0.plus(a2) })
         let _  = Overflow.capture(&by.high, map:{ try $0.plus(b2  &+ Base(Bit(bitPattern: o0))) })
         //=--------------------------------------=
-        return Doublet(low: Magnitude(ax), high: Magnitude(by))
+        return DoubleIntLayout(low: Magnitude(ax), high: Magnitude(by))
     }
 }

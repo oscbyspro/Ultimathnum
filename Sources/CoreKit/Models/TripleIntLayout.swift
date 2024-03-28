@@ -8,13 +8,13 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Triplet
+// MARK: * Triple Int Layout
 //*============================================================================*
 
 /// An integer split into 3 parts.
-@frozen public struct Triplet<Base>: Hashable where Base: SystemsInteger {
+@frozen public struct TripleIntLayout<Base>: Hashable where Base: SystemsInteger {
     
-    public typealias Magnitude = Doublet<Base.Magnitude>
+    public typealias Magnitude = DoubleIntLayout<Base.Magnitude>
     
     //=------------------------------------------------------------------------=
     // MARK: State

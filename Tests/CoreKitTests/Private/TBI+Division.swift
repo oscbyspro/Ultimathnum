@@ -22,8 +22,8 @@ extension TupleBinaryIntegerTests {
     
     func testDivision3212MSB() {
         func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger & UnsignedInteger {
-            typealias X2 = Doublet<Base>
-            typealias X3 = Triplet<Base>
+            typealias X2 = DoubleIntLayout<Base>
+            typealias X3 = TripleIntLayout<Base>
             
             Test.division3212MSB(X3(low:  0, mid:  0, high: ~0), X2(low:  1, high: ~0), ~0 as Base, X2(low:  1, high: ~1))
             Test.division3212MSB(X3(low:  0, mid:  0, high: ~0), X2(low: ~1, high: ~0), ~0 as Base, X2(low: ~1, high:  1))
@@ -53,7 +53,7 @@ extension Test {
     //=------------------------------------------------------------------------=
     
     static func division3212MSB<Base: SystemsInteger & UnsignedInteger>(
-    _ dividend: Triplet<Base>, _ divisor: Doublet<Base>, _ quotient: Base, _ remainder: Doublet<Base>,
+    _ dividend: TripleIntLayout<Base>, _ divisor: DoubleIntLayout<Base>, _ quotient: Base, _ remainder: DoubleIntLayout<Base>,
     file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
         let result = TBI.division3212MSB(dividing: dividend, by: divisor)

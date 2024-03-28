@@ -26,8 +26,8 @@ extension CoreInt {
         return try Overflow.resolve(Self(result.partialValue), overflow: result.overflow)
     }
     
-    @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> Doublet<Self> {
+    @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> DoubleIntLayout<Self> {
         let result = multiplicand.base.multipliedFullWidth(by: multiplier.base)
-        return Doublet(high: Self(result.high), low: Magnitude(result.low))
+        return DoubleIntLayout(high: Self(result.high), low: Magnitude(result.low))
     }
 }

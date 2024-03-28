@@ -43,7 +43,7 @@ extension MinimiInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func dividing(_ dividend: Doublet<Self>, by divisor: Self) throws -> Division<Self, Self> {
+    @inlinable public static func dividing(_ dividend: DoubleIntLayout<Self>, by divisor: Self) throws -> Division<Self, Self> {
         if  divisor == 0 || Bool(bitPattern: dividend.high) && !(Self.isSigned && Bool(bitPattern: dividend.low)) {
             throw  Overflow()
         }   else {

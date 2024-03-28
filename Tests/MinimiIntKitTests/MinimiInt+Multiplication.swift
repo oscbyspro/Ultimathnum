@@ -22,7 +22,7 @@ extension MinimiIntTests {
     
     func testMultiplication() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias P = Doublet<T>
+            typealias P = DoubleIntLayout<T>
             
             Test.multiplication( 0 as T,  0 as T, P(low: 0, high:  0), false)
             Test.multiplication(-1 as T,  0 as T, P(low: 0, high:  0), false)
@@ -31,7 +31,7 @@ extension MinimiIntTests {
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias P = Doublet<T>
+            typealias P = DoubleIntLayout<T>
             
             Test.multiplication( 0 as T,  0 as T, P(low: 0, high:  0), false)
             Test.multiplication( 1 as T,  0 as T, P(low: 0, high:  0), false)

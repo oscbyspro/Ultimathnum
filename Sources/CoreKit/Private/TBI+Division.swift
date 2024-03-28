@@ -29,17 +29,17 @@ extension Namespace.TupleBinaryInteger where Base == Base.Magnitude {
     /// The approximation needs at most two corrections, but looping is faster.
     ///
     @inlinable package static func division3212MSB(
-    dividing remainder: consuming Triplet<Base>, by divisor: Doublet<Base>) -> Division<Base, Doublet<Base>> {
+    dividing remainder: consuming TripleIntLayout<Base>, by divisor: DoubleIntLayout<Base>) -> Division<Base, DoubleIntLayout<Base>> {
         //=--------------------------------------=
         Swift.assert(divisor.high.count(0, option: .descending) == 0,
         "the divisor must be normalized")
         
-        Swift.assert(self.compare22S(Doublet(high: remainder.high, low: remainder.mid), to: divisor) == Signum.less,
+        Swift.assert(self.compare22S(DoubleIntLayout(high: remainder.high, low: remainder.mid), to: divisor) == Signum.less,
         "the quotient must fit in one element")
         //=--------------------------------------=
         var quotient: Base = divisor.high == remainder.high
         ? Base.max // the quotient must fit in one element
-        : try! Base.dividing(Doublet(high: remainder.high, low: remainder.mid), by: divisor.high).quotient
+        : try! Base.dividing(DoubleIntLayout(high: remainder.high, low: remainder.mid), by: divisor.high).quotient
         //=--------------------------------------=
         // decrement when overestimated (max 2)
         //=--------------------------------------=
@@ -50,7 +50,7 @@ extension Namespace.TupleBinaryInteger where Base == Base.Magnitude {
             _ = self.decrement32B(&(product), by: divisor)
         };  _ = self.decrement33B(&remainder, by: product)
         
-        Swift.assert(self.compare33S(remainder, to: Triplet(high: 0, mid: divisor.high, low: divisor.low)) == Signum.less)
-        return Division(quotient: quotient, remainder: Doublet(low: remainder.low, high: remainder.mid))
+        Swift.assert(self.compare33S(remainder, to: TripleIntLayout(high: 0, mid: divisor.high, low: divisor.low)) == Signum.less)
+        return Division(quotient: quotient, remainder: DoubleIntLayout(low: remainder.low, high: remainder.mid))
     }
 }

@@ -47,7 +47,7 @@ extension CoreInt {
     // MARK: Transformations x 2 vs 1
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func dividing(_ dividend: consuming Doublet<Self>, by divisor: Self) throws -> Division<Self, Self> {
+    @inlinable public static func dividing(_ dividend: consuming DoubleIntLayout<Self>, by divisor: Self) throws -> Division<Self, Self> {
         let lhsIsLessThanZero = dividend.high/**/.isLessThanZero
         let rhsIsLessThanZero = divisor/*------*/.isLessThanZero
         let minus: Bool = lhsIsLessThanZero != rhsIsLessThanZero
@@ -80,7 +80,7 @@ extension CoreInt where Self == Magnitude {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inline(__always) @inlinable static func _dividing(_ dividend: consuming Doublet<Self>, by divisor: borrowing Self) throws -> Division<Self, Self> {
+    @inline(__always) @inlinable static func _dividing(_ dividend: consuming DoubleIntLayout<Self>, by divisor: borrowing Self) throws -> Division<Self, Self> {
         if  divisor == 0 {
             throw Overflow()
         }   else if divisor <= dividend.high {

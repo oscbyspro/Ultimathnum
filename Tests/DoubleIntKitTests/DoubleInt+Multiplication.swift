@@ -26,20 +26,20 @@ extension DoubleIntTests {
             typealias T = DoubleInt<Base>
             typealias M = DoubleInt<Base>.Magnitude
             
-            Test.multiplication(T(low:  1, high:  2), T(low:  3, high:  4), Doublet(low: M(low:  3, high:  10), high: T(low:  8, high:  0)), true)
-            Test.multiplication(T(low:  1, high:  2), T(low: ~3, high: ~4), Doublet(low: M(low: ~3, high: ~12), high: T(low: ~8, high: ~0)), true)
-            Test.multiplication(T(low: ~1, high: ~2), T(low:  3, high:  4), Doublet(low: M(low: ~5, high: ~14), high: T(low: ~8, high: ~0)), true)
-            Test.multiplication(T(low: ~1, high: ~2), T(low: ~3, high: ~4), Doublet(low: M(low:  8, high:  16), high: T(low:  8, high:  0)), true)
+            Test.multiplication(T(low:  1, high:  2), T(low:  3, high:  4), DoubleIntLayout(low: M(low:  3, high:  10), high: T(low:  8, high:  0)), true)
+            Test.multiplication(T(low:  1, high:  2), T(low: ~3, high: ~4), DoubleIntLayout(low: M(low: ~3, high: ~12), high: T(low: ~8, high: ~0)), true)
+            Test.multiplication(T(low: ~1, high: ~2), T(low:  3, high:  4), DoubleIntLayout(low: M(low: ~5, high: ~14), high: T(low: ~8, high: ~0)), true)
+            Test.multiplication(T(low: ~1, high: ~2), T(low: ~3, high: ~4), DoubleIntLayout(low: M(low:  8, high:  16), high: T(low:  8, high:  0)), true)
         }
         
         func whereTheBaseTypeIsUnsigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
             typealias M = DoubleInt<Base>.Magnitude
             
-            Test.multiplication(T(low:  1, high:  2), T(low:  3, high:  4), Doublet(low: M(low:  3, high:  10), high: T(low:  8, high:  0)), true)
-            Test.multiplication(T(low:  1, high:  2), T(low: ~3, high: ~4), Doublet(low: M(low: ~3, high: ~12), high: T(low: ~7, high:  1)), true)
-            Test.multiplication(T(low: ~1, high: ~2), T(low:  3, high:  4), Doublet(low: M(low: ~5, high: ~14), high: T(low: ~5, high:  3)), true)
-            Test.multiplication(T(low: ~1, high: ~2), T(low: ~3, high: ~4), Doublet(low: M(low:  8, high:  16), high: T(low:  2, high: ~5)), true)
+            Test.multiplication(T(low:  1, high:  2), T(low:  3, high:  4), DoubleIntLayout(low: M(low:  3, high:  10), high: T(low:  8, high:  0)), true)
+            Test.multiplication(T(low:  1, high:  2), T(low: ~3, high: ~4), DoubleIntLayout(low: M(low: ~3, high: ~12), high: T(low: ~7, high:  1)), true)
+            Test.multiplication(T(low: ~1, high: ~2), T(low:  3, high:  4), DoubleIntLayout(low: M(low: ~5, high: ~14), high: T(low: ~5, high:  3)), true)
+            Test.multiplication(T(low: ~1, high: ~2), T(low: ~3, high: ~4), DoubleIntLayout(low: M(low:  8, high:  16), high: T(low:  2, high: ~5)), true)
         }
         
         for base in Self.bases {
@@ -52,44 +52,44 @@ extension DoubleIntTests {
             typealias T = DoubleInt<Base>
             typealias M = DoubleInt<Base>.Magnitude
             
-            Test.multiplication(T.min,  T .min, Doublet(low: 0 as M, high: T(bitPattern:  M.msb >> 1)), true)
-            Test.multiplication(T.min,  T .max, Doublet(low: M .msb, high: T(bitPattern:  T.msb >> 1)), true)
-            Test.multiplication(T.max,  T .min, Doublet(low: M .msb, high: T(bitPattern:  T.msb >> 1)), true)
-            Test.multiplication(T.max,  T .max, Doublet(low: 1 as M, high: T(bitPattern: ~M.msb >> 1)), true)
+            Test.multiplication(T.min,  T .min, DoubleIntLayout(low: 0 as M, high: T(bitPattern:  M.msb >> 1)), true)
+            Test.multiplication(T.min,  T .max, DoubleIntLayout(low: M .msb, high: T(bitPattern:  T.msb >> 1)), true)
+            Test.multiplication(T.max,  T .min, DoubleIntLayout(low: M .msb, high: T(bitPattern:  T.msb >> 1)), true)
+            Test.multiplication(T.max,  T .max, DoubleIntLayout(low: 1 as M, high: T(bitPattern: ~M.msb >> 1)), true)
             
-            Test.multiplication(T.min, ~1 as T, Doublet(low:  0 as M, high:  1 as T), true)
-            Test.multiplication(T.min, ~0 as T, Doublet(low:  M .msb, high:  0 as T), true)
-            Test.multiplication(T.min,  0 as T, Doublet(low:  0 as M, high:  0 as T))
-            Test.multiplication(T.min,  1 as T, Doublet(low:  M .msb, high: ~0 as T))
-            Test.multiplication(T.min,  2 as T, Doublet(low:  0 as M, high: ~0 as T), true)
+            Test.multiplication(T.min, ~1 as T, DoubleIntLayout(low:  0 as M, high:  1 as T), true)
+            Test.multiplication(T.min, ~0 as T, DoubleIntLayout(low:  M .msb, high:  0 as T), true)
+            Test.multiplication(T.min,  0 as T, DoubleIntLayout(low:  0 as M, high:  0 as T))
+            Test.multiplication(T.min,  1 as T, DoubleIntLayout(low:  M .msb, high: ~0 as T))
+            Test.multiplication(T.min,  2 as T, DoubleIntLayout(low:  0 as M, high: ~0 as T), true)
             
-            Test.multiplication(T.max, ~1 as T, Doublet(low:  2 as M, high: ~0 as T), true)
-            Test.multiplication(T.max, ~0 as T, Doublet(low:  .msb+1, high: ~0 as T))
-            Test.multiplication(T.max,  0 as T, Doublet(low:  0 as M, high:  0 as T))
-            Test.multiplication(T.max,  1 as T, Doublet(low: ~M .msb, high:  0 as T))
-            Test.multiplication(T.max,  2 as T, Doublet(low: ~1 as M, high:  0 as T), true)
+            Test.multiplication(T.max, ~1 as T, DoubleIntLayout(low:  2 as M, high: ~0 as T), true)
+            Test.multiplication(T.max, ~0 as T, DoubleIntLayout(low:  .msb+1, high: ~0 as T))
+            Test.multiplication(T.max,  0 as T, DoubleIntLayout(low:  0 as M, high:  0 as T))
+            Test.multiplication(T.max,  1 as T, DoubleIntLayout(low: ~M .msb, high:  0 as T))
+            Test.multiplication(T.max,  2 as T, DoubleIntLayout(low: ~1 as M, high:  0 as T), true)
         }
         
         func whereTheBaseTypeIsUnsigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
             typealias M = DoubleInt<Base>.Magnitude
             
-            Test.multiplication(T.min,  T .min, Doublet(low:  0 as M, high:  0 as T))
-            Test.multiplication(T.min,  T .max, Doublet(low:  0 as M, high:  0 as T))
-            Test.multiplication(T.max,  T .min, Doublet(low:  0 as M, high:  0 as T))
-            Test.multiplication(T.max,  T .max, Doublet(low:  1 as M, high: ~1 as T), true)
+            Test.multiplication(T.min,  T .min, DoubleIntLayout(low:  0 as M, high:  0 as T))
+            Test.multiplication(T.min,  T .max, DoubleIntLayout(low:  0 as M, high:  0 as T))
+            Test.multiplication(T.max,  T .min, DoubleIntLayout(low:  0 as M, high:  0 as T))
+            Test.multiplication(T.max,  T .max, DoubleIntLayout(low:  1 as M, high: ~1 as T), true)
             
-            Test.multiplication(T.min, ~1 as T, Doublet(low:  0 as M, high:  0 as T))
-            Test.multiplication(T.min, ~0 as T, Doublet(low:  0 as M, high:  0 as T))
-            Test.multiplication(T.min,  0 as T, Doublet(low:  0 as M, high:  0 as T))
-            Test.multiplication(T.min,  1 as T, Doublet(low:  0 as M, high:  0 as T))
-            Test.multiplication(T.min,  2 as T, Doublet(low:  0 as M, high:  0 as T))
+            Test.multiplication(T.min, ~1 as T, DoubleIntLayout(low:  0 as M, high:  0 as T))
+            Test.multiplication(T.min, ~0 as T, DoubleIntLayout(low:  0 as M, high:  0 as T))
+            Test.multiplication(T.min,  0 as T, DoubleIntLayout(low:  0 as M, high:  0 as T))
+            Test.multiplication(T.min,  1 as T, DoubleIntLayout(low:  0 as M, high:  0 as T))
+            Test.multiplication(T.min,  2 as T, DoubleIntLayout(low:  0 as M, high:  0 as T))
             
-            Test.multiplication(T.max, ~1 as T, Doublet(low:  2 as M, high: ~2 as T), true)
-            Test.multiplication(T.max, ~0 as T, Doublet(low:  1 as M, high: ~1 as T), true)
-            Test.multiplication(T.max,  0 as T, Doublet(low:  0 as M, high:  0 as T))
-            Test.multiplication(T.max,  1 as T, Doublet(low: ~0 as M, high:  0 as T))
-            Test.multiplication(T.max,  2 as T, Doublet(low: ~1 as M, high:  1 as T), true)
+            Test.multiplication(T.max, ~1 as T, DoubleIntLayout(low:  2 as M, high: ~2 as T), true)
+            Test.multiplication(T.max, ~0 as T, DoubleIntLayout(low:  1 as M, high: ~1 as T), true)
+            Test.multiplication(T.max,  0 as T, DoubleIntLayout(low:  0 as M, high:  0 as T))
+            Test.multiplication(T.max,  1 as T, DoubleIntLayout(low: ~0 as M, high:  0 as T))
+            Test.multiplication(T.max,  2 as T, DoubleIntLayout(low: ~1 as M, high:  1 as T), true)
         }
         
         for base in Self.bases {

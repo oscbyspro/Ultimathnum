@@ -23,10 +23,10 @@ extension Namespace {
         public typealias X1 = Base
         
         /// An integer split into 2 parts.
-        public typealias X2 = Doublet<Base>
+        public typealias X2 = DoubleIntLayout<Base>
         
         /// An integer split into 3 parts.
-        public typealias X3 = Triplet<Base>
+        public typealias X3 = TripleIntLayout<Base>
         
         //*====================================================================*
         // MARK: * Magnitude

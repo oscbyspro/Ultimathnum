@@ -29,13 +29,13 @@ extension Namespace.TupleBinaryInteger where Base == Base.Magnitude {
     /// └────────┴──── → ───────────┘
     /// ```
     ///
-    @inlinable package static func multiplying213(_ lhs: Doublet<Base>, by rhs: Base) -> Triplet<Base> {
+    @inlinable package static func multiplying213(_ lhs: DoubleIntLayout<Base>, by rhs: Base) -> TripleIntLayout<Base> {
         let a = Base.multiplying(lhs.low,  by: rhs)
         var b = Base.multiplying(lhs.high, by: rhs)
         
         let x =      Overflow.capture(&b.low,  map:{ try $0.plus(a.high) })
         let _ = x && Overflow.capture(&b.high, map:{ try $0.plus(000001) })
         
-        return Triplet(high: b.high, mid: b.low, low: a.low)
+        return TripleIntLayout(high: b.high, mid: b.low, low: a.low)
     }
 }

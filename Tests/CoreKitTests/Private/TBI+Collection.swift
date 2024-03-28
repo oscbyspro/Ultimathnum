@@ -31,8 +31,8 @@ extension TupleBinaryIntegerTests {
     
     func testPrefix1() {
         func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias X2 = Doublet<Base>
-            typealias X3 = Triplet<Base>
+            typealias X2 = DoubleIntLayout<Base>
+            typealias X3 = TripleIntLayout<Base>
             
             XCTAssert(TBI.prefix1([~0    ] as [Base.Magnitude]) == ~0 as Base)
             XCTAssert(TBI.prefix1([~0, ~1] as [Base.Magnitude]) == ~0 as Base)
@@ -45,8 +45,8 @@ extension TupleBinaryIntegerTests {
     
     func testPrefix2() {
         func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias X2 = Doublet<Base>
-            typealias X3 = Triplet<Base>
+            typealias X2 = DoubleIntLayout<Base>
+            typealias X3 = TripleIntLayout<Base>
             
             XCTAssert(TBI.prefix2([~0, ~1    ] as [Base.Magnitude]) == X2(low: ~0, high: ~1))
             XCTAssert(TBI.prefix2([~0, ~1, ~2] as [Base.Magnitude]) == X2(low: ~0, high: ~1))
@@ -63,8 +63,8 @@ extension TupleBinaryIntegerTests {
 
     func testSuffix1() {
         func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias X2 = Doublet<Base>
-            typealias X3 = Triplet<Base>
+            typealias X2 = DoubleIntLayout<Base>
+            typealias X3 = TripleIntLayout<Base>
             
             XCTAssert(TBI.suffix1([~0    ] as [Base.Magnitude]) == ~0 as Base)
             XCTAssert(TBI.suffix1([~0, ~1] as [Base.Magnitude]) == ~1 as Base)
@@ -77,8 +77,8 @@ extension TupleBinaryIntegerTests {
     
     func testSuffix2() {
         func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias X2 = Doublet<Base>
-            typealias X3 = Triplet<Base>
+            typealias X2 = DoubleIntLayout<Base>
+            typealias X3 = TripleIntLayout<Base>
             
             XCTAssert(TBI.suffix2([~0, ~1    ] as [Base.Magnitude]) == X2(low: ~0, high: ~1))
             XCTAssert(TBI.suffix2([~0, ~1, ~2] as [Base.Magnitude]) == X2(low: ~1, high: ~2))

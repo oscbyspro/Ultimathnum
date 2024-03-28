@@ -8,13 +8,13 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Doublet
+// MARK: * Double Int Layout
 //*============================================================================*
 
 /// An integer split into 2 parts.
-@frozen public struct Doublet<Base>: Hashable where Base: SystemsInteger {
+@frozen public struct DoubleIntLayout<Base>: Hashable where Base: SystemsInteger {
     
-    public typealias Magnitude = Doublet<Base.Magnitude>
+    public typealias Magnitude = DoubleIntLayout<Base.Magnitude>
     
     //=------------------------------------------------------------------------=
     // MARK: State

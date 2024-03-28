@@ -31,7 +31,7 @@ extension Namespace.TupleBinaryInteger where Base == Base.Magnitude {
     /// └────────────┴─────── → ───────────┴──────────┘
     /// ```
     ///
-    @inlinable package static func increment32B(_ lhs: inout Triplet<Base>, by rhs: Doublet<Base>) -> Bool {
+    @inlinable package static func increment32B(_ lhs: inout TripleIntLayout<Base>, by rhs: DoubleIntLayout<Base>) -> Bool {
         let a = Overflow.capture(&lhs.low, map:{ try $0.plus(rhs.low ) })
         let b = Overflow.capture(&lhs.mid, map:{ try $0.plus(rhs.high) })
         
@@ -54,7 +54,7 @@ extension Namespace.TupleBinaryInteger where Base == Base.Magnitude {
     /// └────────────┴─────────── → ───────────┴──────────┘
     /// ```
     ///
-    @inlinable package static func increment33B(_ lhs: inout Triplet<Base>, by rhs: Triplet<Base>) -> Bool {
+    @inlinable package static func increment33B(_ lhs: inout TripleIntLayout<Base>, by rhs: TripleIntLayout<Base>) -> Bool {
         let a = Overflow.capture(&lhs.low,  map:{ try $0.plus(rhs.low ) })
         let b = Overflow.capture(&lhs.mid,  map:{ try $0.plus(rhs.mid ) })
         let c = Overflow.capture(&lhs.high, map:{ try $0.plus(rhs.high) })

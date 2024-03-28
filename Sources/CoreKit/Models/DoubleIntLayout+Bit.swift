@@ -8,20 +8,20 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Doublet x Bit
+// MARK: * Double Int Layout x Bit
 //*============================================================================*
 
-extension Doublet: BitCastable {
+extension DoubleIntLayout: BitCastable {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: consuming Doublet<Base.Magnitude>) {
+    @inlinable public init(bitPattern: consuming DoubleIntLayout<Base.Magnitude>) {
         self.init(low: bitPattern.low, high: Base(bitPattern: bitPattern.high))
     }
     
-    @inlinable public var bitPattern: Doublet<Base.Magnitude> {
+    @inlinable public var bitPattern: DoubleIntLayout<Base.Magnitude> {
         consuming get {
             .init(low: self.low, high: Base.Magnitude(bitPattern: self.high))
         }

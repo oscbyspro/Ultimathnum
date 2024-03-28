@@ -25,7 +25,7 @@ extension DoubleInt {
     /// - Parameter high: The most  significant half of this value.
     ///
     @inlinable public init(low: Low, high: High = 0) {
-        self.init(Doublet (low: low, high: high))
+        self.init(DoubleIntLayout (low: low, high: high))
     }
     
     /// Creates a new instance from the given `low` and `high` halves.
@@ -33,7 +33,7 @@ extension DoubleInt {
     /// - Parameter ascending: Both halves of this value, from least significant to most.
     ///
     @inlinable public init(ascending  halves: (low: Low, high: High)) {
-        self.init(Doublet (ascending: halves))
+        self.init(DoubleIntLayout (ascending: halves))
     }
     
     /// Creates a new instance from the given `high` and `low` halves.
@@ -42,7 +42,7 @@ extension DoubleInt {
     /// - Parameter low:  The least significant half of this value.
     ///
     @inlinable public init(high: High, low: Low = 0) {
-        self.init(Doublet (high: high, low: low))
+        self.init(DoubleIntLayout (high: high, low: low))
     }
     
     /// Creates a new instance from the given `high` and `low` halves.
@@ -50,7 +50,7 @@ extension DoubleInt {
     /// - Parameter descending: Both halves of this value, from most significant to least.
     ///
     @inlinable public init(descending  halves: (high: High, low: Low)) {
-        self.init(Doublet (descending: halves))
+        self.init(DoubleIntLayout (descending: halves))
     }
     
     //=------------------------------------------------------------------------=

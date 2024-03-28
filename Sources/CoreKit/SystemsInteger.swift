@@ -69,7 +69,7 @@ public protocol SystemsInteger<BitPattern>: BinaryInteger where Magnitude: Syste
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> Doublet<Self>
+    @inlinable static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> DoubleIntLayout<Self>
     
-    @inlinable static func dividing(_ dividend: consuming Doublet<Self>, by multiplier: borrowing Self) throws -> Division<Self, Self>
+    @inlinable static func dividing(_ dividend: consuming DoubleIntLayout<Self>, by multiplier: borrowing Self) throws -> Division<Self, Self>
 }

@@ -8,16 +8,16 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Triplet x Bit
+// MARK: * Triple Int Layout x Bit
 //*============================================================================*
 
-extension Triplet: BitCastable {
+extension TripleIntLayout: BitCastable {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: consuming Triplet<Base.Magnitude>) {
+    @inlinable public init(bitPattern: consuming TripleIntLayout<Base.Magnitude>) {
         self.init(
             low:  bitPattern.low,
             mid:  bitPattern.mid,
@@ -25,9 +25,9 @@ extension Triplet: BitCastable {
         )
     }
     
-    @inlinable public var bitPattern: Triplet<Base.Magnitude> {
+    @inlinable public var bitPattern: TripleIntLayout<Base.Magnitude> {
         consuming get {
-            Triplet<Base.Magnitude>(
+            TripleIntLayout<Base.Magnitude>(
                 low:  self.low,
                 mid:  self.mid,
                 high: Base.Magnitude(bitPattern: self.high)

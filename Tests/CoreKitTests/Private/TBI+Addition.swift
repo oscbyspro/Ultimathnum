@@ -22,8 +22,8 @@ extension TupleBinaryIntegerTests {
     
     func testAddition32B() {
         func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger & UnsignedInteger {
-            typealias X2 = Doublet<Base>
-            typealias X3 = Triplet<Base>
+            typealias X2 = DoubleIntLayout<Base>
+            typealias X3 = TripleIntLayout<Base>
             
             Test.addition32B(X3(low:  0, mid:  0, high:  0), X2(low: ~4, high: ~5), X3(low: ~4, mid: ~5, high:  0))
             Test.addition32B(X3(low:  1, mid:  2, high:  3), X2(low: ~4, high: ~5), X3(low: ~3, mid: ~3, high:  3))
@@ -38,8 +38,8 @@ extension TupleBinaryIntegerTests {
     
     func testAddition33B() {
         func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger & UnsignedInteger {
-            typealias X2 = Doublet<Base>
-            typealias X3 = Triplet<Base>
+            typealias X2 = DoubleIntLayout<Base>
+            typealias X3 = TripleIntLayout<Base>
             
             Test.addition33B(X3(low:  0, mid:  0, high:  0), X3(low: ~4, mid: ~5, high: ~6), X3(low: ~4, mid: ~5, high: ~6))
             Test.addition33B(X3(low:  1, mid:  2, high:  3), X3(low: ~4, mid: ~5, high: ~6), X3(low: ~3, mid: ~3, high: ~3))
@@ -64,7 +64,7 @@ extension Test {
     //=------------------------------------------------------------------------=
     
     static func addition32B<Base: SystemsInteger & UnsignedInteger>(
-    _ lhs: Triplet<Base>, _ rhs: Doublet<Base>, _ expectation: Triplet<Base>, _ overflow: Bool = false,
+    _ lhs: TripleIntLayout<Base>, _ rhs: DoubleIntLayout<Base>, _ expectation: TripleIntLayout<Base>, _ overflow: Bool = false,
     file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
         var x = lhs
@@ -75,7 +75,7 @@ extension Test {
     }
 
     static func addition33B<Base: SystemsInteger & UnsignedInteger>(
-    _ lhs: Triplet<Base>, _ rhs: Triplet<Base>, _ expectation: Triplet<Base>, _ overflow: Bool = false,
+    _ lhs: TripleIntLayout<Base>, _ rhs: TripleIntLayout<Base>, _ expectation: TripleIntLayout<Base>, _ overflow: Bool = false,
     file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
         var x = lhs

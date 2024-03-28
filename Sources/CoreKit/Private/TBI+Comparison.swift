@@ -29,7 +29,7 @@ extension Namespace.TupleBinaryInteger {
     /// └─────────── → ────────┘
     /// ```
     ///
-    @inlinable package static func compare22S(_ lhs: Doublet<Base>, to rhs: Doublet<Base>) -> Signum {
+    @inlinable package static func compare22S(_ lhs: DoubleIntLayout<Base>, to rhs: DoubleIntLayout<Base>) -> Signum {
         let a = lhs.high.compared(to: rhs.high); if a != Signum.same { return a }
         return  lhs.low .compared(to: rhs.low );
     }
@@ -46,7 +46,7 @@ extension Namespace.TupleBinaryInteger {
     /// └─────────── → ────────┘
     /// ```
     ///
-    @inlinable package static func compare33S(_ lhs: Triplet<Base>, to rhs: Triplet<Base>) -> Signum {
+    @inlinable package static func compare33S(_ lhs: TripleIntLayout<Base>, to rhs: TripleIntLayout<Base>) -> Signum {
         let a = lhs.high.compared(to: rhs.high); if a != Signum.same { return a }
         let b = lhs.mid .compared(to: rhs.mid ); if b != Signum.same { return b }
         return  lhs.low .compared(to: rhs.low );

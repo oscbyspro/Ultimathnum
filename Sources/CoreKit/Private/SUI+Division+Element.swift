@@ -44,7 +44,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence {
         //=--------------------------------------=
         backwards: while index > base.startIndex {
             base.formIndex(before: &index)
-            remainder = try! Base.Element.dividing(Doublet(high: remainder, low: base[index]), by: divisor).remainder
+            remainder = try! Base.Element.dividing(DoubleIntLayout(high: remainder, low: base[index]), by: divisor).remainder
         }
         //=--------------------------------------=
         return remainder  as Base.Element
@@ -88,7 +88,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
         //=--------------------------------------=
         backwards: while index > base.startIndex {
             (base).formIndex(before: &index)
-            (base[index], remainder) = try! Base.Element.dividing(Doublet(high: remainder, low: base[index]), by: divisor).components
+            (base[index], remainder) = try! Base.Element.dividing(DoubleIntLayout(high: remainder, low: base[index]), by: divisor).components
         }
         //=--------------------------------------=
         return remainder  as Base.Element

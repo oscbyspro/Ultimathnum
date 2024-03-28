@@ -27,7 +27,7 @@ extension MinimiInt {
         try Overflow.resolve(self & multiplier, overflow: Self.isSigned && Bool(bitPattern: self & multiplier))
     }
     
-    @inlinable public static func multiplying(_ multiplicand: Self, by multiplier: Self) -> Doublet<Self> {
-        Doublet(low: Magnitude(bitPattern: multiplicand & multiplier), high: 0 as  Self)
+    @inlinable public static func multiplying(_ multiplicand: Self, by multiplier: Self) -> DoubleIntLayout<Self> {
+        DoubleIntLayout(low: Magnitude(bitPattern: multiplicand & multiplier), high: 0 as  Self)
     }
 }
