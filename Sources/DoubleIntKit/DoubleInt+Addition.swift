@@ -19,19 +19,19 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
 
-    @inlinable public consuming func plus(_ increment: Self) throws -> Self {
-        var overflow = Overflow.capture(&self.low) {
-            try $0.plus(increment.low)
+    @inlinable public consuming func plus(_ increment: Self) -> ArithmeticResult<Self> {
+        var overflow = self.low.capture {
+            $0.plus(increment.low)
         }
         
-        overflow = overflow && Overflow.capture(&self.high) {
-            try $0.incremented()
+        overflow = overflow && self.high.capture {
+            $0.incremented()
         }
         
-        overflow = overflow != Overflow.capture(&self.high) {
-            try $0.plus(increment.high)
+        overflow = overflow != self.high.capture {
+            $0.plus(increment.high)
         }
         
-        return try Overflow.resolve(self, overflow: overflow)
+        return ArithmeticResult(self, error: overflow)
     }
 }

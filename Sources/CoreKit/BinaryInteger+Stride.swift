@@ -18,19 +18,11 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func advanced(by other: Swift.Int) -> Self {
-        attempt: do {
-            return try Self.advanced(self, by: IX(other))
-        }   catch {
-            Swift.fatalError(String.overflow())
-        }
+        Self.advanced(self, by: IX(other)).unwrap()
     }
     
     @inlinable public consuming func distance(to other: Self) -> Swift.Int {
-        attempt: do {
-            return try Self.distance(self, to: other, as: IX.self).base
-        }   catch {
-            Swift.fatalError(String.overflow())
-        }
+        Self.distance(self, to: other, as: IX.self).unwrap().base
     }
 }
 
@@ -44,63 +36,65 @@ extension BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
 
-    @inlinable package static func advanced<T>(_ instance: consuming Self, by distance: T) throws -> Self where T: SignedInteger {
-        try Overflow.void {
+    /// ### Development
+    ///
+    /// - TODO: Rework.
+    ///
+    @inlinable package static func advanced<T>(_ instance: consuming Self, by distance: T) -> ArithmeticResult<Self> where T: SignedInteger {
+        if  Self.isSigned {
             
-            if  Self.isSigned {
+            if  ExchangeInt(Self.bitWidth) >= ExchangeInt(T.bitWidth) {
                 
-                if  ExchangeInt(Self.bitWidth) >= ExchangeInt(T.bitWidth) {
-                    
-                    return try instance.plus(Self(truncating: distance))
-                    
-                }   else {
-                    
-                    return try Self(exactly: T(truncating: instance).plus(distance))
-                    
-                }
+                return instance.plus(Self(truncating: distance))
                 
             }   else {
                 
-                if  distance.isLessThanZero {
-                    
-                    return try instance.minus(Self(exactly: distance.magnitude))
-                    
-                }   else {
-                    
-                    return try instance.plus (Self(exactly: distance.magnitude))
-                    
-                }
+                return T(truncating: instance).plus(distance).map(Self.exactly)
                 
             }
+            
+        }   else {
+            
+            if  distance.isLessThanZero {
+                
+                return Self.exactly(distance.magnitude).map({ instance.minus($0) })
+                
+            }   else {
+                
+                return Self.exactly(distance.magnitude).map({ instance.plus ($0) })
+                                
+            }
+            
         }
     }
     
-    @inlinable package static func distance<T>(_ instance: Self, to other: Self, as stride: T.Type) throws -> T where T: SignedInteger {
-        try Overflow.void {
+    /// ### Development
+    ///
+    /// - TODO: Rework.
+    ///
+    @inlinable package static func distance<T>(_ instance: Self, to other: Self, as stride: T.Type) -> ArithmeticResult<T> where T: SignedInteger {
+        if  Self.isSigned {
             
-            if  Self.isSigned {
+            if  ExchangeInt(Self.bitWidth) <= ExchangeInt(T.bitWidth) {
                 
-                if  ExchangeInt(Self.bitWidth) <= ExchangeInt(T.bitWidth) {
-                    
-                    return try T(truncating: other).minus(T(truncating: instance))
-                    
-                }   else {
-                    
-                    return try T(exactly: other.minus(instance))
-                    
-                }
+                return T(truncating: other).minus(T(truncating: instance))
                 
             }   else {
                 
-                if  instance < other {
-                    
-                    return try T(exactly: other - instance)
-                                        
-                }   else {
-                    
-                    return try T(sign: Sign.minus, magnitude: T.Magnitude(exactly: instance - other))
-                    
-                }
+                return other.minus(instance).map(T.exactly)
+                
+            }
+            
+        }   else {
+            
+            if  instance < other {
+                
+                return T.exactly(other - instance)
+                                    
+            }   else {
+                
+                return T.Magnitude.exactly(instance - other).map({ T.exactly(sign: Sign.minus, magnitude: $0) })
+                
             }
         }
     }

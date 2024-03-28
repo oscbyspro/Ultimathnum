@@ -46,7 +46,7 @@ extension Test {
             XCTAssertEqual({ var x = instance; x <<= shift; return x }(), result, file: file, line: line)
         }
         
-        if  let shift = try? shift.negated() {
+        if  let shift = shift.negated().optional() {
             XCTAssertEqual({         instance    >>  shift           }(), result, file: file, line: line)
             XCTAssertEqual({ var x = instance; x >>= shift; return x }(), result, file: file, line: line)
         }
@@ -63,7 +63,7 @@ extension Test {
             XCTAssertEqual({ var x = instance; x >>= shift; return x }(), result, file: file, line: line)
         }
         
-        if  let shift = try? shift.negated() {
+        if  let shift = shift.negated().optional() {
             XCTAssertEqual({         instance    <<  shift           }(), result, file: file, line: line)
             XCTAssertEqual({ var x = instance; x <<= shift; return x }(), result, file: file, line: line)
         }
@@ -83,20 +83,20 @@ extension Test {
         //=--------------------------------------=
         check(instance, shift, result)
         //=--------------------------------------=
-        if  let increment = try? T(magnitude: T.bitWidth) {
-            if  let shift = try? shift.plus(increment) {
+        if  let increment = T.exactly(magnitude: T.bitWidth).optional() {
+            if  let shift = try? shift.plus(increment).get() {
                 check(instance, shift, result)
             }
             
-            if  let shift = try? shift.plus(increment).plus(increment) {
+            if  let shift = try? shift.plus(increment).get().plus(increment).get() {
                 check(instance, shift, result)
             }
             
-            if  let shift = try? shift.minus(increment) {
+            if  let shift = try? shift.minus(increment).get() {
                 check(instance, shift, result)
             }
             
-            if  let shift = try? shift.minus(increment).minus(increment) {
+            if  let shift = try? shift.minus(increment).get().minus(increment).get() {
                 check(instance, shift, result)
             }
         }
@@ -112,20 +112,20 @@ extension Test {
         //=--------------------------------------=
         check(instance, shift, result)
         //=--------------------------------------=
-        if  let increment = try? T(magnitude: T.bitWidth) {
-            if  let shift = try? shift.plus(increment) {
+        if  let increment = T.exactly(magnitude: T.bitWidth).optional() {
+            if  let shift = try? shift.plus(increment).get() {
                 check(instance, shift, result)
             }
             
-            if  let shift = try? shift.plus(increment).plus(increment) {
+            if  let shift = try? shift.plus(increment).get().plus(increment).get() {
                 check(instance, shift, result)
             }
             
-            if  let shift = try? shift.minus(increment) {
+            if  let shift = try? shift.minus(increment).get() {
                 check(instance, shift, result)
             }
             
-            if  let shift = try? shift.minus(increment).minus(increment) {
+            if  let shift = try? shift.minus(increment).get().minus(increment).get() {
                 check(instance, shift, result)
             }
         }

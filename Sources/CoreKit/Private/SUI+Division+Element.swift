@@ -39,12 +39,14 @@ extension Namespace.StrictUnsignedInteger.SubSequence {
     @inlinable package static func remainder(
     dividing base: Base, by divisor: Base.Element) -> Base.Element {
         //=--------------------------------------=
+        precondition(divisor != 0, String.overflow())
+        //=--------------------------------------=
         var remainder = 0 as Base.Element
         var index = base.endIndex as Base.Index
         //=--------------------------------------=
         backwards: while index > base.startIndex {
             base.formIndex(before: &index)
-            remainder = try! Base.Element.dividing(DoubleIntLayout(high: remainder, low: base[index]), by: divisor).remainder
+            remainder = Base.Element.dividing(DoubleIntLayout(high: remainder, low: base[index]), by: divisor).assert().remainder
         }
         //=--------------------------------------=
         return remainder  as Base.Element
@@ -83,12 +85,14 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
     @inlinable package static func formQuotientWithRemainder(
     dividing base: inout Base, by divisor: Base.Element) -> Base.Element {
         //=--------------------------------------=
+        precondition(divisor != 0, String.overflow())
+        //=--------------------------------------=
         var remainder = 0 as Base.Element
         var index = base.endIndex as Base.Index
         //=--------------------------------------=
         backwards: while index > base.startIndex {
             (base).formIndex(before: &index)
-            (base[index], remainder) = try! Base.Element.dividing(DoubleIntLayout(high: remainder, low: base[index]), by: divisor).components
+            (base[index], remainder) = Base.Element.dividing(DoubleIntLayout(high: remainder, low: base[index]), by: divisor).assert().components
         }
         //=--------------------------------------=
         return remainder  as Base.Element

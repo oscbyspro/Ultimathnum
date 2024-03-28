@@ -123,9 +123,9 @@ extension Namespace.StrictUnsignedInteger where Base: MutableCollection {
         let numerator   = TBI<Base.Element>.suffix2(dividend)
         let denominator = TBI<Base.Element>.suffix1(divisor )
         //=--------------------------------------=
-        var quotient: Base.Element = try! denominator == numerator.high
+        var quotient: Base.Element = denominator == numerator.high
         ? Base.Element.max // the quotient must fit in one element
-        : Base.Element.dividing(numerator, by: denominator).quotient
+        : Base.Element.dividing(numerator, by: denominator).assert().quotient
         //=--------------------------------------=
         if  quotient == 0 { return quotient }
         //=--------------------------------------=

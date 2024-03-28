@@ -30,9 +30,9 @@ extension SystemsInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(clamping source: some BinaryInteger) {
-        brr: do {
-            try self.init(exactly: source)
-        }   catch {
+        if  let instance = Self.exactly(source).optional() {
+            self = instance
+        }   else {
             self = source.isLessThanZero ? Self.min : Self.max
         }
     }

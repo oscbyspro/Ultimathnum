@@ -31,12 +31,12 @@ extension Test {
     //=------------------------------------------------------------------------=
     
     public static func additionAsSomeBinaryInteger<T: BinaryInteger>(
-    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
+    _ lhs: T, _ rhs: T, _ value: T, _ error: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
         brr: do {
             XCTAssertEqual(lhs &+ rhs, value, file: file, line: line)
             XCTAssertEqual(rhs &+ lhs, value, file: file, line: line)
-        };  if !overflow {
+        };  if !error {
             XCTAssertEqual(lhs  + rhs, value, file: file, line: line)
             XCTAssertEqual(rhs  + lhs, value, file: file, line: line)
         }
@@ -44,19 +44,19 @@ extension Test {
         brr: do {
             XCTAssertEqual({ var x = lhs; x &+= rhs; return x }(), value, file: file, line: line)
             XCTAssertEqual({ var x = rhs; x &+= lhs; return x }(), value, file: file, line: line)
-        };  if !overflow {
+        };  if !error {
             XCTAssertEqual({ var x = lhs; x  += rhs; return x }(), value, file: file, line: line)
             XCTAssertEqual({ var x = rhs; x  += lhs; return x }(), value, file: file, line: line)
         }
         //=--------------------------------------=
-        if  let one = try? T(literally: 1), rhs == one {
-            Test.incrementation(lhs, value, overflow, file: file, line: line)
+        if  let one = T.exactly(literal: 1).optional(), rhs == one {
+            Test.incrementation(lhs, value, error, file: file, line: line)
         }
         //=--------------------------------------=
-        XCTAssertEqual(Overflow.capture({ try lhs.plus(rhs) }).value,    value,    file: file, line: line)
-        XCTAssertEqual(Overflow.capture({ try lhs.plus(rhs) }).overflow, overflow, file: file, line: line)
-        XCTAssertEqual(Overflow.capture({ try rhs.plus(lhs) }).value,    value,    file: file, line: line)
-        XCTAssertEqual(Overflow.capture({ try rhs.plus(lhs) }).overflow, overflow, file: file, line: line)
+        XCTAssertEqual(lhs.plus(rhs).value, value, file: file, line: line)
+        XCTAssertEqual(lhs.plus(rhs).error, error, file: file, line: line)
+        XCTAssertEqual(rhs.plus(lhs).value, value, file: file, line: line)
+        XCTAssertEqual(rhs.plus(lhs).error, error, file: file, line: line)
     }
 }
 
@@ -70,9 +70,9 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func incrementation<T: BinaryInteger>(_ instance: T, _ expectation: T, _ overflow: Bool = false, file: StaticString = #file, line: UInt = #line) {
-        let result = Overflow.capture({ try instance.incremented() })
-        XCTAssertEqual(result.value, expectation, file: file, line: line)
-        XCTAssertEqual(result.overflow, overflow, file: file, line: line)
+    public static func incrementation<T: BinaryInteger>(_ instance: T, _ value: T, _ error: Bool = false, file: StaticString = #file, line: UInt = #line) {
+        let result = instance.incremented()
+        XCTAssertEqual(result.value, value, file: file, line: line)
+        XCTAssertEqual(result.error, error, file: file, line: line)
     }
 }

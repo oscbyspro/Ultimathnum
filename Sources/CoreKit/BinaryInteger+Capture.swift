@@ -7,27 +7,23 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Minimi Int x Multiplication
+// MARK: * Binary Integer x Capture
 //*============================================================================*
 
-extension MinimiInt {
+extension BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func squared() -> ArithmeticResult<Self> {
-        ArithmeticResult(self, error: Self.isSigned && Bool(bitPattern: self))
+    @inlinable public mutating func capture(_ map: (Self) throws -> Self) rethrows {
+        self = try map(self)
     }
     
-    @inlinable public func times(_ multiplier: Self) -> ArithmeticResult<Self> {
-        ArithmeticResult(self & multiplier, error: Self.isSigned && Bool(bitPattern: self & multiplier))
-    }
-    
-    @inlinable public static func multiplying(_ multiplicand: Self, by multiplier: Self) -> DoubleIntLayout<Self> {
-        DoubleIntLayout(low: Magnitude(bitPattern: multiplicand & multiplier), high: 0 as  Self)
+    @inlinable public mutating func capture(_ map: (Self) throws -> ArithmeticResult<Self>) rethrows -> Bool {
+        let overflow: Bool
+        (self, overflow) = try map(self).components
+        return overflow
     }
 }

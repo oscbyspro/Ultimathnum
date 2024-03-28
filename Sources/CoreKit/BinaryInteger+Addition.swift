@@ -17,27 +17,23 @@ extension BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func +(lhs: Self, rhs: Self) -> Self {
-        try! lhs.plus(rhs)
+    @inlinable public static func +(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        lhs.plus(rhs).unwrap()
     }
     
-    /// ### Development
-    ///
-    /// - FIXME: Consuming caues bad accesss (2024-01-13, Swift 5.9).
-    ///
-    @inlinable public static func &+(lhs: Self, rhs: Self) -> Self {
-        Overflow.ignore({ try lhs.plus(rhs) })
+    @inlinable public static func &+(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        lhs.plus(rhs).value
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Inout
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func +=(lhs: inout Self, rhs: Self) {
+    @inlinable public static func +=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs + rhs
     }
     
-    @inlinable public static func &+=(lhs: inout Self, rhs: Self) {
+    @inlinable public static func &+=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs &+ rhs
     }
 }
@@ -56,15 +52,15 @@ extension BinaryInteger {
     ///
     /// - Note: It works with **0-bit** and **1-bit** integers.
     ///
-    @inlinable public consuming func incremented() throws -> Self {
-        if  let positive = try? Self(literally:  1) {
-            return try (consume self).plus (positive)
+    @inlinable public consuming func incremented() -> ArithmeticResult<Self> {
+        if  let positive = Self.exactly(literal:  1).optional() {
+            return self.plus (positive)
         }
         
-        if  let negative = try? Self(literally: -1) {
-            return try (consume self).minus(negative)
+        if  let negative = Self.exactly(literal: -1).optional() {
+            return self.minus(negative)
         }
         
-        throw Overflow (consume self) // must be zero
+        return ArithmeticResult.failure(self)
     }
 }

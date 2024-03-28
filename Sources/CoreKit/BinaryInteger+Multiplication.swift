@@ -17,27 +17,23 @@ extension BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func *(lhs: Self, rhs: Self) -> Self {
-        try! lhs.times(rhs)
+    @inlinable public static func *(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        lhs.times(rhs).unwrap()
     }
     
-    /// ### Development
-    ///
-    /// - FIXME: Consuming caues bad accesss (2024-01-13, Swift 5.9).
-    ///
-    @inlinable public static func &*(lhs: Self, rhs: Self) -> Self {
-        Overflow.ignore({ try lhs.times(rhs) })
+    @inlinable public static func &*(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        lhs.times(rhs).value
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Inout
     //=------------------------------------------------------------------------=
 
-    @inlinable public static func *=(lhs: inout Self, rhs: Self) {
+    @inlinable public static func *=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs * rhs
     }
 
-    @inlinable public static func &*=(lhs: inout Self, rhs: Self) {
+    @inlinable public static func &*=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs &* rhs
     }
 }

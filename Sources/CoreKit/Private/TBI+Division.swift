@@ -39,14 +39,14 @@ extension Namespace.TupleBinaryInteger where Base == Base.Magnitude {
         //=--------------------------------------=
         var quotient: Base = divisor.high == remainder.high
         ? Base.max // the quotient must fit in one element
-        : try! Base.dividing(DoubleIntLayout(high: remainder.high, low: remainder.mid), by: divisor.high).quotient
+        : Base.dividing(DoubleIntLayout(high: remainder.high, low: remainder.mid), by: divisor.high).assert().quotient
         //=--------------------------------------=
         // decrement when overestimated (max 2)
         //=--------------------------------------=
         var product = self.multiplying213(divisor, by: quotient)
         
         while self.compare33S(remainder, to: product) == Signum.less {
-            _ = Overflow.capture(&(quotient), map:{ try $0.minus(1) })
+            _ = quotient &-= 1
             _ = self.decrement32B(&(product), by: divisor)
         };  _ = self.decrement33B(&remainder, by: product)
         

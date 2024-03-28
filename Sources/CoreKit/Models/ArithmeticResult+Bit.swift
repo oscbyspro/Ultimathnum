@@ -7,27 +7,23 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Minimi Int x Multiplication
+// MARK: * Arithmetic Result x Bit
 //*============================================================================*
 
-extension MinimiInt {
+extension ArithmeticResult: BitCastable where Value: BitCastable {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public func squared() -> ArithmeticResult<Self> {
-        ArithmeticResult(self, error: Self.isSigned && Bool(bitPattern: self))
+    @inlinable public init(bitPattern: consuming ArithmeticResult<Value.BitPattern>) {
+        self.init(Value(bitPattern: bitPattern.value), error: bitPattern.error)
     }
     
-    @inlinable public func times(_ multiplier: Self) -> ArithmeticResult<Self> {
-        ArithmeticResult(self & multiplier, error: Self.isSigned && Bool(bitPattern: self & multiplier))
-    }
-    
-    @inlinable public static func multiplying(_ multiplicand: Self, by multiplier: Self) -> DoubleIntLayout<Self> {
-        DoubleIntLayout(low: Magnitude(bitPattern: multiplicand & multiplier), high: 0 as  Self)
+    @inlinable public var bitPattern: ArithmeticResult<Value.BitPattern> {
+        consuming get {
+            ArithmeticResult<Value.BitPattern>(Value.BitPattern(bitPattern: self.value), error: self.error)
+        }
     }
 }

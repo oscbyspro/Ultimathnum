@@ -21,22 +21,23 @@ extension DoubleIntTests {
     // MARK: Tests x Magnitude
     //=------------------------------------------------------------------------=
     
+    #warning("perform nonoptional comparisons")
     func testInitMagnitude() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             
-            XCTAssertEqual(try? T(magnitude:      0),   000 as T?)
-            XCTAssertEqual(try? T(magnitude:      1),   001 as T?)
-            XCTAssertEqual(try? T(magnitude: ~M.msb), T.max as T?)
-            XCTAssertEqual(try? T(magnitude:  M.msb),   nil as T?)
-            XCTAssertEqual(try? T(magnitude:  M.max),   nil as T?)
+            XCTAssertEqual(try? T.exactly(magnitude:      0).get(),   000 as T?)
+            XCTAssertEqual(try? T.exactly(magnitude:      1).get(),   001 as T?)
+            XCTAssertEqual(try? T.exactly(magnitude: ~M.msb).get(), T.max as T?)
+            XCTAssertEqual(try? T.exactly(magnitude:  M.msb).get(),   nil as T?)
+            XCTAssertEqual(try? T.exactly(magnitude:  M.max).get(),   nil as T?)
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             
-            XCTAssertEqual(try? T(magnitude:  M.min), T.min as T?)
-            XCTAssertEqual(try? T(magnitude:  M.max), T.max as T?)
+            XCTAssertEqual(try? T.exactly(magnitude:  M.min).get(), T.min as T?)
+            XCTAssertEqual(try? T.exactly(magnitude:  M.max).get(), T.max as T?)
         }
         
         for type in Self.types {

@@ -19,7 +19,7 @@ extension InfiniInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func plus(_ increment: borrowing Self) throws -> Self {
+    @inlinable public consuming func plus(_ increment: borrowing Self) -> ArithmeticResult<Self> {
         fatalError("TODO")
     }
 }

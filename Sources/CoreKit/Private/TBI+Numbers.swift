@@ -17,13 +17,11 @@ extension Namespace.TupleBinaryInteger {
     // MARK: Details x Magnitude
     //=------------------------------------------------------------------------=
     
-    @inlinable package static func magnitude(of value: consuming X2) -> X2.Magnitude {
-        var value = consume value
-        
+    @inlinable package static func magnitude(of value: consuming X2) -> X2.Magnitude {        
         if  value.high.isLessThanZero {
             var carry: Bool
-            carry = Overflow.capture(&value.low,  map:{ try (~$0).plus(0000000000001) })
-            carry = Overflow.capture(&value.high, map:{ try (~$0).plus(carry ? 1 : 0) })
+            carry = value.low .capture({ (~$0).plus(0000000000001) })
+            carry = value.high.capture({ (~$0).plus(carry ? 1 : 0) })
         }
         
         return X2.Magnitude(low: value.low, high: Base.Magnitude(bitPattern: value.high))

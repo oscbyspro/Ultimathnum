@@ -52,7 +52,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
         Swift.assert(index <= base.endIndex  )
         //=--------------------------------------=
         while index < base.endIndex, bit {
-            bit = Overflow.capture(&base[index], map:{ try $0.minus(1) })
+            bit = base[index].capture({ $0.minus(1) })
             base.formIndex(after: &index)
         }
     }
@@ -131,7 +131,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
             base.formIndex(after: &index)
         }
         
-        return Overflow.capture(&base[index], map:{ try $0.minus(increment) })
+        return base[index].capture({ $0.minus(increment) })
     }
 }
 
@@ -206,11 +206,11 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
         var increment = increment as Base.Element
         //=--------------------------------------=
         if  bit {
-            bit = Overflow.capture(&(increment), map:{ try $0.plus(1) })
+            bit = (increment).capture({ $0.plus(1) })
         }
 
         if !bit {
-            bit = Overflow.capture(&base[index], map:{ try $0.minus(increment) })
+            bit = base[index].capture({ $0.minus(increment) })
         }
         
         base.formIndex(after: &index)
@@ -364,7 +364,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
             //  maximum == (high: ~1, low: 1)
             var wide = Base.Element.multiplying(element, by: multiplier)
             //  maximum == (high: ~0, low: 0)
-            last = wide.high &+ Base.Element(Bit(bitPattern: Overflow.capture(&wide.low, map:{ try $0.plus(last) })))
+            last = wide.high &+ Base.Element(Bit(bitPattern: wide.low.capture({ $0.plus(last) })))
             //  this cannot overflow because low == 0 when high == ~0
             last = last &+ Base.Element(Bit(bitPattern: self.decrementInIntersection(&base, by: wide.low, at: &index)))
         }

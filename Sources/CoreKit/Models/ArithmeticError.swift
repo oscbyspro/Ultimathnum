@@ -8,22 +8,14 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Overflow Status x Bit
+// MARK: * Arithmetic Error
 //*============================================================================*
 
-extension OverflowStatus: BitCastable where Value: BitCastable {
+@frozen public struct ArithmeticError: Swift.Error {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: consuming OverflowStatus<Value.BitPattern>) {
-        self.init(Value(bitPattern: bitPattern.value), overflow: bitPattern.overflow)
-    }
-    
-    @inlinable public var bitPattern: OverflowStatus<Value.BitPattern> {
-        consuming get {
-            OverflowStatus<Value.BitPattern>(Value.BitPattern(bitPattern: self.value), overflow: self.overflow)
-        }
-    }
+    @inlinable public init() { }
 }

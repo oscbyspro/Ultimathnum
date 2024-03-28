@@ -21,7 +21,7 @@ extension InfiniInt {
     
     @inlinable public var magnitude: Magnitude {
         consuming get {
-            Magnitude(bitPattern: Overflow.ignore({ self.isLessThanZero ? try self.negated() : self }))
+            Magnitude(bitPattern: self.isLessThanZero ? self.negated().value : self)
         }
     }
 }

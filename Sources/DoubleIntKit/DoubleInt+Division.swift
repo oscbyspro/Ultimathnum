@@ -12,6 +12,9 @@ import CoreKit
 //*============================================================================*
 // MARK: * Double Int x Division
 //*============================================================================*
+//=----------------------------------------------------------------------------=
+// TODO: * Moar tests. Moar overflow tests. Moar!
+//=----------------------------------------------------------------------------=
 
 extension DoubleInt {
     
@@ -19,60 +22,60 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func quotient(divisor: Self) throws -> Self {
-        try self.divided(by: divisor).quotient
+    @inlinable public consuming func quotient(divisor: Self) -> ArithmeticResult<Self> {
+        self.divided(by: divisor).map({ $0.quotient })
     }
     
-    @inlinable public consuming func remainder(divisor: Self) throws -> Self {
-        try self.divided(by: divisor).remainder
+    @inlinable public consuming func remainder(divisor: Self) -> ArithmeticResult<Self> {
+        self.divided(by: divisor).map({ $0.remainder })
     }
     
-    @inlinable public func divided(by divisor: Self) throws -> Division<Self, Self> {
+    @inlinable public func divided(by divisor: Self) -> ArithmeticResult<Division<Self, Self>> {
+        typealias T = ArithmeticResult<Division<Self, Self>>
+        //=--------------------------------------=
         let lhsIsLessThanZero: Bool = (self ).isLessThanZero
         let rhsIsLessThanZero: Bool = divisor.isLessThanZero
         let minus = (lhsIsLessThanZero) != rhsIsLessThanZero
         //=--------------------------------------=
-        var result = try Division<Self, Self>(bitPattern: Magnitude._divide2222(self.magnitude, by: divisor.magnitude))
+        var result = T(bitPattern: Magnitude._divide2222(self.magnitude, by: divisor.magnitude))
         //=--------------------------------------=
         if  minus {
-            Overflow.ignore(&result.quotient,  map:{ try $0.negated() })
+            result.value.quotient .capture({ $0.negated().value })
         }
         
         if  lhsIsLessThanZero {
-            Overflow.ignore(&result.remainder, map:{ try $0.negated() })
+            result.value.remainder.capture({ $0.negated().value })
         }
         
-        if  lhsIsLessThanZero && rhsIsLessThanZero && result.quotient.isLessThanZero {
-            throw Overflow()
-        }
+        let overflow = lhsIsLessThanZero && rhsIsLessThanZero && result.value.quotient.isLessThanZero
         //=--------------------------------------=
-        return result as Division<Self, Self>
+        return result.combine(overflow)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func dividing(_ dividend: consuming DoubleIntLayout<Self>, by divisor: Self) throws -> Division<Self, Self> {
+    @inlinable public static func dividing(_ dividend: consuming DoubleIntLayout<Self>, by divisor: Self) -> ArithmeticResult<Division<Self, Self>> {
+        typealias T = ArithmeticResult<Division<Self, Self>>
+        //=--------------------------------------=
         let lhsIsLessThanZero: Bool = dividend.high.isLessThanZero
         let rhsIsLessThanZero: Bool = (((divisor))).isLessThanZero
         let minus: Bool = (lhsIsLessThanZero) != rhsIsLessThanZero
         //=--------------------------------------=
-        var result = try Division<Self, Self>(bitPattern: Magnitude._divide4222(TBI.magnitude(of: dividend), by: divisor.magnitude))
+        var result = T(bitPattern: Magnitude._divide4222(TBI.magnitude(of: dividend), by: divisor.magnitude))
         //=--------------------------------------=
         if  minus {
-            Overflow.ignore(&result.quotient,  map:{ try $0.negated() })
+            result.value.quotient .capture({ $0.negated().value })
         }
         
         if  lhsIsLessThanZero {
-            Overflow.ignore(&result.remainder, map:{ try $0.negated() })
+            result.value.remainder.capture({ $0.negated().value })
         }
         
-        if  minus != result.quotient.isLessThanZero, !(minus && result.quotient == 0) {
-            throw Overflow()
-        }
+        let overflow = minus != result.value.quotient.isLessThanZero && !(minus && result.value.quotient == 0)
         //=--------------------------------------=
-        return result as Division<Self, Self>
+        return result.combine(overflow)
     }
 }
 
@@ -87,16 +90,16 @@ extension DoubleInt where Base == Base.Magnitude {
     //=------------------------------------------------------------------------=
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
-    @inlinable static func _divide2222(_ lhs: consuming Self, by rhs: borrowing Self) throws -> Division<Self, Self> {
+    @inlinable static func _divide2222(_ lhs: consuming Self, by rhs: borrowing Self) -> ArithmeticResult<Division<Self, Self>> {
         let shift = rhs.count(0, option: .descending)
         //=--------------------------------------=
         // divisor is zero
         //=--------------------------------------=
         if  shift.load(as: UX.self) == UX(bitWidth: Self.self) {
-            throw Overflow()
+            return ArithmeticResult.failure(Division(quotient: 0, remainder: lhs))
         }
         //=--------------------------------------=
-        return Self._divide2222(lhs, by: rhs, shift: shift)
+        return ArithmeticResult.success(Self._divide2222(lhs, by: rhs, shift: shift))
     }
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
@@ -116,7 +119,7 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         if  lhs.high == 0 {
             Swift.assert(rhs.high == 0, "divisors greater than or equal should go fast path")
-            let result = try! lhs.low.divided(by: rhs.low)
+            let result = lhs.low.divided(by: rhs.low).unwrap()
             return Division(quotient: Self(low: result.quotient), remainder: Self(low: result.remainder))
         }
         //=--------------------------------------=
@@ -143,22 +146,25 @@ extension DoubleInt where Base == Base.Magnitude {
     //=------------------------------------------------------------------------=
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
-    @inlinable static func _divide4222(_ lhs: consuming DoubleIntLayout<Self>, by rhs: borrowing Self) throws -> Division<Self, Self> {
+    @inlinable static func _divide4222(_ lhs: consuming DoubleIntLayout<Self>, by rhs: borrowing Self) -> ArithmeticResult<Division<Self, Self>> {
         let shift = rhs.count(0, option: .descending)
         //=--------------------------------------=
         // divisor is zero
         //=--------------------------------------=
         if  shift.load(as: UX.self) == UX(bitWidth: Self.self) {
-            throw Overflow()
+            return ArithmeticResult.failure(Division(quotient: 0, remainder: lhs.low))
         }
+        //=--------------------------------------=
+        var overflow = false
         //=--------------------------------------=
         // quotient does not fit in two halves
         //=--------------------------------------=
         if  rhs <= lhs.high {
-            throw Overflow()
+            overflow = true
+            lhs.high = Self._divide2222(lhs.high, by: rhs, shift: shift).remainder
         }
         //=--------------------------------------=
-        return Self._divide4222(lhs, by: rhs, shift: shift)
+        return ArithmeticResult(Self._divide4222(lhs, by: rhs, shift: shift), error: overflow)
     }
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
@@ -204,15 +210,15 @@ extension DoubleInt where Base == Base.Magnitude {
     //=------------------------------------------------------------------------=
     
     @inlinable static func _divide2121(_ lhs: consuming Self, by rhs: borrowing Base) -> Division<Self, Base> {
-        let x1 = try! lhs.high.divided(by: rhs)
-        let x0 = try! x1.remainder == 0 ? lhs.low.divided(by: rhs) : Base.dividing(DoubleIntLayout(low: lhs.low, high: x1.remainder), by: rhs)
+        let x1 = lhs.high.divided(by: rhs).unwrap()
+        let x0 = x1.remainder == 0 ? lhs.low.divided(by: rhs).unwrap() : Base.dividing(DoubleIntLayout(low: lhs.low, high: x1.remainder), by: rhs).unwrap()
         return Division(quotient: Self(low: x0.quotient, high: x1.quotient), remainder: x0.remainder)
     }
     
     @inlinable static func _divide3121(_ lhs: consuming TripleIntLayout<Base>, by rhs: Base) -> Division<Self, Base> {
         Swift.assert(rhs > lhs.high, "quotient must fit in two halves")
-        let x1 = try! Base.dividing(DoubleIntLayout(low: lhs.mid, high: lhs.high), by: rhs)
-        let x0 = try! x1.remainder == 0 ? lhs.low.divided(by: rhs) : Base.dividing(DoubleIntLayout(low: lhs.low, high: x1.remainder), by: rhs)
+        let x1 = Base.dividing(DoubleIntLayout(low: lhs.mid, high: lhs.high), by: rhs).unwrap()
+        let x0 = x1.remainder == 0 ? lhs.low.divided(by: rhs).unwrap() : Base.dividing(DoubleIntLayout(low: lhs.low, high: x1.remainder), by: rhs).unwrap()
         return Division(quotient: Self(low: x0.quotient, high: x1.quotient), remainder: x0.remainder)
     }
     

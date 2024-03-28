@@ -21,7 +21,7 @@ extension DoubleInt {
     
     @inlinable public var magnitude: Magnitude {
         consuming get {
-            Magnitude(bitPattern: self.high.isLessThanZero ? Overflow.ignore({ try self.negated() }) : self)
+            Magnitude(bitPattern: self.high.isLessThanZero ? self.negated().value : self)
         }
     }
 }

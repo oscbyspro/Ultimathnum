@@ -89,21 +89,69 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming func plus(_ increment: borrowing Self) throws -> Self
+    @inlinable consuming func plus (_ increment: borrowing Self) -> ArithmeticResult<Self>
+        
+    @inlinable consuming func minus(_ decrement: borrowing Self) -> ArithmeticResult<Self>
     
-    @inlinable consuming func negated() throws -> Self
+    @inlinable consuming func negated() -> ArithmeticResult<Self>
+        
+    @inlinable consuming func times(_ multiplier: borrowing Self) -> ArithmeticResult<Self>
     
-    @inlinable consuming func minus(_ decrement: borrowing Self) throws -> Self
+    @inlinable consuming func squared() -> ArithmeticResult<Self>
     
-    @inlinable consuming func squared() throws -> Self
+    /// ### Examples
+    ///
+    /// ```
+    /// ┌──────────┬──────── → ─────────┬───────────┬──────────┐
+    /// │ dividend │ divisor │ quotient | remainder │ overflow │
+    /// ├──────────┼──────── → ─────────┤───────────┤──────────┤
+    /// │ I8( 7)   │ I8( 3)  │ I8( 2)   │ I8( 0)    │ false    │
+    /// │ I8( 7)   │ I8(-3)  │ I8(-2)   │ I8(-1)    │ false    │
+    /// │ I8(-7)   │ I8( 3)  │ I8(-2)   │ I8(-1)    │ false    │
+    /// │ I8(-7)   │ I8(-3)  │ I8( 2)   │ I8( 0)    │ false    │
+    /// │──────────┤──────── → ─────────┤───────────┤──────────┤
+    /// │ I8( 7)   │ I8( 0)  │ I8( 0)   │ I8( 7)    │ true     │
+    /// │ I8.min   │ I8(-1)  │ I8.min   │ I8( 0)    │ true     │
+    /// └──────────┴──────── → ─────────┴───────────┴──────────┘
+    /// ```
+    ///
+    @inlinable consuming func quotient ( divisor: borrowing Self) -> ArithmeticResult<Self>
     
-    @inlinable consuming func times(_ multiplier: borrowing Self) throws -> Self
+    /// ### Examples
+    ///
+    /// ```
+    /// ┌──────────┬──────── → ─────────┬───────────┬──────────┐
+    /// │ dividend │ divisor │ quotient | remainder │ overflow │
+    /// ├──────────┼──────── → ─────────┤───────────┤──────────┤
+    /// │ I8( 7)   │ I8( 3)  │ I8( 2)   │ I8( 0)    │ false    │
+    /// │ I8( 7)   │ I8(-3)  │ I8(-2)   │ I8(-1)    │ false    │
+    /// │ I8(-7)   │ I8( 3)  │ I8(-2)   │ I8(-1)    │ false    │
+    /// │ I8(-7)   │ I8(-3)  │ I8( 2)   │ I8( 0)    │ false    │
+    /// │──────────┤──────── → ─────────┤───────────┤──────────┤
+    /// │ I8( 7)   │ I8( 0)  │ I8( 0)   │ I8( 7)    │ true     │
+    /// │ I8.min   │ I8(-1)  │ I8.min   │ I8( 0)    │ true     │
+    /// └──────────┴──────── → ─────────┴───────────┴──────────┘
+    /// ```
+    ///
+    @inlinable consuming func remainder( divisor: borrowing Self) -> ArithmeticResult<Self>
     
-    @inlinable consuming func quotient ( divisor: borrowing Self) throws -> Self
-    
-    @inlinable consuming func remainder( divisor: borrowing Self) throws -> Self
-    
-    @inlinable consuming func divided(by divisor: borrowing Self) throws -> Division<Self, Self>
+    /// ### Examples
+    ///
+    /// ```
+    /// ┌──────────┬──────── → ─────────┬───────────┬──────────┐
+    /// │ dividend │ divisor │ quotient | remainder │ overflow │
+    /// ├──────────┼──────── → ─────────┤───────────┤──────────┤
+    /// │ I8( 7)   │ I8( 3)  │ I8( 2)   │ I8( 0)    │ false    │
+    /// │ I8( 7)   │ I8(-3)  │ I8(-2)   │ I8(-1)    │ false    │
+    /// │ I8(-7)   │ I8( 3)  │ I8(-2)   │ I8(-1)    │ false    │
+    /// │ I8(-7)   │ I8(-3)  │ I8( 2)   │ I8( 0)    │ false    │
+    /// │──────────┤──────── → ─────────┤───────────┤──────────┤
+    /// │ I8( 7)   │ I8( 0)  │ I8( 0)   │ I8( 7)    │ true     │
+    /// │ I8.min   │ I8(-1)  │ I8.min   │ I8( 0)    │ true     │
+    /// └──────────┴──────── → ─────────┴───────────┴──────────┘
+    /// ```
+    ///
+    @inlinable consuming func divided(by divisor: borrowing Self) -> ArithmeticResult<Division<Self, Self>>
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

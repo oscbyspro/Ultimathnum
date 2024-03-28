@@ -19,11 +19,11 @@ extension MinimiInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func negated() throws -> Self {
-        try Overflow.resolve(self, overflow: Bool(bitPattern: self))
+    @inlinable public func negated() -> ArithmeticResult<Self> {
+        ArithmeticResult(self, error: Bool(bitPattern: self))
     }
     
-    @inlinable public func minus( _ decrement: Self) throws -> Self {
-        try Overflow.resolve(self ^ decrement, overflow: Bool(bitPattern: self.base < decrement.base))
+    @inlinable public func minus( _ decrement: Self) -> ArithmeticResult<Self> {
+        ArithmeticResult(self ^ decrement, error: Bool(bitPattern: self.base < decrement.base))
     }
 }

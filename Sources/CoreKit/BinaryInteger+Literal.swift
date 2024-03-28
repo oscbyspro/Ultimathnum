@@ -17,11 +17,11 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(literally source: BigIntLiteral) throws {
-        try self.init(elements: ExchangeInt(source).reinterpreted(), isSigned: true)
-    }
-
     @inlinable public init(integerLiteral: BigIntLiteral.IntegerLiteralType) {
-        try! self.init(literally: BigIntLiteral(integerLiteral: integerLiteral))
+        self = Self.exactly(literal: BigIntLiteral(integerLiteral: integerLiteral)).unwrap()        
+    }
+    
+    @inlinable public static func exactly(literal source: consuming BigIntLiteral) -> ArithmeticResult<Self> {
+        Self.exactly(elements: ExchangeInt(source).reinterpreted(), isSigned: true)
     }
 }

@@ -43,7 +43,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
         
         for element in lhs {
             var wide = Base.Element.multiplying(element, by: first)
-            carry = Base.Element(Bit(bitPattern: Overflow.capture(&wide.low, map:{ try $0.plus(carry) }))) &+ wide.high
+            carry = Base.Element(Bit(bitPattern: wide.low.capture({ $0.plus(carry) }))) &+ wide.high
             pointer.initialize(to: wide.low) // done, uninitialized or discarded pointee
             pointer = pointer.successor()
         }

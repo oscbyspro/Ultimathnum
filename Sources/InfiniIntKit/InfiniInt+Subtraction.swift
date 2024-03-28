@@ -19,11 +19,11 @@ extension InfiniInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func negated() throws -> Self {
+    @inlinable public consuming func negated() -> ArithmeticResult<Self> {
         fatalError("TODO")
     }
     
-    @inlinable public consuming func minus(_ increment: borrowing Self) throws -> Self {
+    @inlinable public consuming func minus(_ increment: borrowing Self) -> ArithmeticResult<Self> {
         fatalError("TODO")
     }
 }

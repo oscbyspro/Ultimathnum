@@ -45,12 +45,12 @@ extension Test {
     }
     
     public static func multiplicationAsSomeBinaryInteger<T: BinaryInteger>(
-    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool, file: StaticString, line: UInt) {
+    _ lhs: T, _ rhs: T, _ value: T, _ error: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
         brr: do {
             XCTAssertEqual(lhs &* rhs, value, file: file, line: line)
             XCTAssertEqual(rhs &* lhs, value, file: file, line: line)
-        };  if !overflow {
+        };  if !error {
             XCTAssertEqual(lhs  * rhs, value, file: file, line: line)
             XCTAssertEqual(rhs  * lhs, value, file: file, line: line)
         }
@@ -58,21 +58,21 @@ extension Test {
         brr: do {
             XCTAssertEqual({ var x = lhs; x &*= rhs; return x }(), value, file: file, line: line)
             XCTAssertEqual({ var x = rhs; x &*= lhs; return x }(), value, file: file, line: line)
-        };  if !overflow {
+        };  if !error {
             XCTAssertEqual({ var x = lhs; x  *= rhs; return x }(), value, file: file, line: line)
             XCTAssertEqual({ var x = rhs; x  *= lhs; return x }(), value, file: file, line: line)
         }
         //=--------------------------------------=
-        XCTAssertEqual(Overflow.capture({ try lhs.times(rhs) }).value,    value,    file: file, line: line)
-        XCTAssertEqual(Overflow.capture({ try lhs.times(rhs) }).overflow, overflow, file: file, line: line)
-        XCTAssertEqual(Overflow.capture({ try rhs.times(lhs) }).value,    value,    file: file, line: line)
-        XCTAssertEqual(Overflow.capture({ try rhs.times(lhs) }).overflow, overflow, file: file, line: line)
+        XCTAssertEqual(lhs.times(rhs).value, value, file: file, line: line)
+        XCTAssertEqual(lhs.times(rhs).error, error, file: file, line: line)
+        XCTAssertEqual(rhs.times(lhs).value, value, file: file, line: line)
+        XCTAssertEqual(rhs.times(lhs).error, error, file: file, line: line)
         //=--------------------------------------=
         if  lhs == rhs {
-            XCTAssertEqual(Overflow.capture({ try lhs.squared() }).value,    value,    file: file, line: line)
-            XCTAssertEqual(Overflow.capture({ try lhs.squared() }).overflow, overflow, file: file, line: line)
-            XCTAssertEqual(Overflow.capture({ try rhs.squared() }).value,    value,    file: file, line: line)
-            XCTAssertEqual(Overflow.capture({ try rhs.squared() }).overflow, overflow, file: file, line: line)
+            XCTAssertEqual(lhs.squared().value, value, file: file, line: line)
+            XCTAssertEqual(lhs.squared().error, error, file: file, line: line)
+            XCTAssertEqual(rhs.squared().value, value, file: file, line: line)
+            XCTAssertEqual(rhs.squared().error, error, file: file, line: line)
         }
     }
 }

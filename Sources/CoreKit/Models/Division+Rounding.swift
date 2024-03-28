@@ -7,27 +7,27 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Minimi Int x Multiplication
+// MARK: * Division x Rounding
 //*============================================================================*
 
-extension MinimiInt {
+extension Division where Quotient: BinaryInteger, Remainder: BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func squared() -> ArithmeticResult<Self> {
-        ArithmeticResult(self, error: Self.isSigned && Bool(bitPattern: self))
+    /// Increments the `quotient` if the `remainder` is positive.
+    @inlinable public consuming func ceil() -> ArithmeticResult<Quotient> {
+        let instance: Self = consume self
+        let increment: Quotient = instance.remainder > 0 ?  1 : 0
+        return (consume instance).quotient.plus(increment)
     }
     
-    @inlinable public func times(_ multiplier: Self) -> ArithmeticResult<Self> {
-        ArithmeticResult(self & multiplier, error: Self.isSigned && Bool(bitPattern: self & multiplier))
-    }
-    
-    @inlinable public static func multiplying(_ multiplicand: Self, by multiplier: Self) -> DoubleIntLayout<Self> {
-        DoubleIntLayout(low: Magnitude(bitPattern: multiplicand & multiplier), high: 0 as  Self)
+    /// Decrements the `quotient` if the `remainder` is negative.
+    @inlinable public consuming func floor() -> ArithmeticResult<Quotient> {
+        let instance: Self = consume self
+        let increment: Quotient = instance.remainder < 0 ? -1 : 0
+        return (consume instance).quotient.plus(increment)
     }
 }

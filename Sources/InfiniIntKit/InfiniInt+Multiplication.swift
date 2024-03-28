@@ -19,11 +19,11 @@ extension InfiniInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func squared() throws -> Self {
+    @inlinable public consuming func squared() -> ArithmeticResult<Self> {
         fatalError("TODO")
     }
     
-    @inlinable public consuming func times(_ multiplier: borrowing Self) throws -> Self {
+    @inlinable public consuming func times(_ multiplier: borrowing Self) -> ArithmeticResult<Self> {
         fatalError("TODO")
     }
 }

@@ -33,8 +33,8 @@ extension Namespace.TupleBinaryInteger where Base == Base.Magnitude {
         let a = Base.multiplying(lhs.low,  by: rhs)
         var b = Base.multiplying(lhs.high, by: rhs)
         
-        let x =      Overflow.capture(&b.low,  map:{ try $0.plus(a.high) })
-        let _ = x && Overflow.capture(&b.high, map:{ try $0.plus(000001) })
+        let x =      b.low .capture({ $0.plus(a.high) })
+        let _ = x && b.high.capture({ $0.plus(000001) })
         
         return TripleIntLayout(high: b.high, mid: b.low, low: a.low)
     }

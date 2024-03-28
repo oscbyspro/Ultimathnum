@@ -19,37 +19,37 @@ extension MinimiInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func quotient(divisor: Self) throws -> Self {
-        if  divisor == 0 || Self.isSigned && Bool(bitPattern: self & divisor) {
-            throw Overflow()
-        }
+    @inlinable public func quotient(divisor: Self) -> ArithmeticResult<Self> {
+        let error = Self(bitPattern: Self.isSigned) & self | ~divisor
+        let value = self &  divisor
+        return ArithmeticResult(value, error: Bool(bitPattern: error))
+    }
         
-        return consume self
+    @inlinable public func remainder(divisor: Self) -> ArithmeticResult<Self> {
+        let error = Self(bitPattern: Self.isSigned) & self | ~divisor
+        let value = self & ~divisor
+        return ArithmeticResult(value, error: Bool(bitPattern: error))
     }
     
-    @inlinable public func remainder(divisor: Self) throws -> Self {
-        if  divisor == 0 || Self.isSigned && Bool(bitPattern: self & divisor) {
-            throw Overflow()
-        }
-        
-        return Self(bitPattern: self.base > divisor.base)
-    }
-    
-    @inlinable public func divided(by divisor: Self) throws -> Division<Self, Self> {
-        Division(quotient: self, remainder: try self.remainder(divisor: divisor))
+    @inlinable public func divided(by divisor: Self) -> ArithmeticResult<Division<Self, Self>> {
+        let error = Self(bitPattern: Self.isSigned) & self | ~divisor
+        let value = Division(
+            quotient:  self &  divisor,
+            remainder: self & ~divisor
+        )
+        return ArithmeticResult(value, error: Bool(bitPattern: error))
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func dividing(_ dividend: DoubleIntLayout<Self>, by divisor: Self) throws -> Division<Self, Self> {
-        if  divisor == 0 || Bool(bitPattern: dividend.high) && !(Self.isSigned && Bool(bitPattern: dividend.low)) {
-            throw  Overflow()
-        }   else {
-            let quotient  = Self(bitPattern: dividend.low)
-            let remainder = Self(bitPattern: dividend.low) & ~divisor
-            return Division(quotient: quotient, remainder: remainder)
-        }
+    @inlinable public static func dividing(_ dividend: DoubleIntLayout<Self>, by divisor: Self) -> ArithmeticResult<Division<Self, Self>> {
+        let error = dividend.high | ~divisor
+        let value = Division(
+            quotient:  Self(bitPattern: dividend.low) &  divisor,
+            remainder: Self(bitPattern: dividend.low) & ~divisor
+        )
+        return ArithmeticResult(value, error: Bool(bitPattern: error))
     }
 }

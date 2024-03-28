@@ -18,22 +18,22 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func /(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        try! lhs.quotient (divisor: rhs)
+        lhs.quotient (divisor: rhs).unwrap()
     }
     
     @inlinable public static func %(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        try! lhs.remainder(divisor: rhs)
+        lhs.remainder(divisor: rhs).unwrap()
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Inout
     //=------------------------------------------------------------------------=
 
-    @inlinable public static func /=(lhs: inout Self, rhs: Self) {
+    @inlinable public static func /=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs / rhs
     }
 
-    @inlinable public static func %=(lhs: inout Self, rhs: Self) {
+    @inlinable public static func %=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs % rhs
     }
 }

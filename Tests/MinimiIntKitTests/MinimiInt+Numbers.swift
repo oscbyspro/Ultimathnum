@@ -20,15 +20,16 @@ extension MinimiIntTests {
     // MARK: Tests x Magnitude
     //=------------------------------------------------------------------------=
     
+    #warning("perform nonoptional comparisons")
     func testInitMagnitude() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            XCTAssertEqual(try? T(magnitude: 0), 000 as T?)
-            XCTAssertEqual(try? T(magnitude: 1), nil as T?)
+            XCTAssertEqual(T.exactly(magnitude: 0).optional(), 000 as T?)
+            XCTAssertEqual(T.exactly(magnitude: 1).optional(), nil as T?)
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            XCTAssertEqual(try? T(magnitude: 0), 000 as T?)
-            XCTAssertEqual(try? T(magnitude: 1), 001 as T?)
+            XCTAssertEqual(T.exactly(magnitude: 0).optional(), 000 as T?)
+            XCTAssertEqual(T.exactly(magnitude: 1).optional(), 001 as T?)
         }
         
         for type in Self.types {

@@ -19,27 +19,24 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func negated() throws -> Self {
-        let overflow = Self.isSigned == Overflow.capture(&self) {
-            try (~$0).plus(1)
-        }
-        
-        return try Overflow.resolve(self, overflow: overflow)
+    @inlinable public consuming func negated() -> ArithmeticResult<Self> {
+        let overflow: Bool = self.capture({ (~$0).plus(1) })
+        return ArithmeticResult(self, error: Self.isSigned == overflow)
     }
     
-    @inlinable public consuming func minus(_ decrement: Self) throws -> Self {
-        var overflow = Overflow.capture(&self.low) {
-            try $0.minus(decrement.low)
-        }
-    
-        overflow = overflow && Overflow.capture(&self.high) {
-            try $0.decremented()
+    @inlinable public consuming func minus(_ decrement: Self) -> ArithmeticResult<Self> {
+        var overflow = self.low.capture {
+            $0.minus(decrement.low)
         }
         
-        overflow = overflow != Overflow.capture(&self.high) {
-            try $0.minus(decrement.high)
+        overflow = overflow && self.high.capture {
+            $0.decremented()
         }
         
-        return try Overflow.resolve(self, overflow: overflow)
+        overflow = overflow != self.high.capture {
+            $0.minus(decrement.high)
+        }
+        
+        return ArithmeticResult(self, error: overflow)
     }
 }

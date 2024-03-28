@@ -55,7 +55,8 @@ extension Test {
         let elements = ExchangeInt(elements, isSigned: isSigned, as: Integer.Element.Magnitude.self)
         //=--------------------------------------=
         brr: do {
-            XCTAssertEqual(try? Integer(elements: elements, isSigned: isSigned), expectation, file: file, line: line)
+            #warning("perform nonoptional comparisons")
+            XCTAssertEqual(Integer.exactly(elements: elements, isSigned: isSigned).optional(), expectation, file: file, line: line)
         }
     }
 }

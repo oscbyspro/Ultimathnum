@@ -105,7 +105,7 @@ extension Namespace.IntegerDescriptionFormat {
             let components = Namespace.IntegerDescriptionFormat.makeSignBody(from: description)
             let numerals = UnsafeBufferPointer(rebasing: components.body)
             let magnitude: T.Magnitude = try self.magnitude(numerals: numerals)
-            return try T(sign: components.sign, magnitude: magnitude)
+            return try T.exactly(sign: components.sign, magnitude: magnitude).get()
         }
     }
 }
@@ -127,8 +127,8 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
         }
         //=--------------------------------------=
         var digits: UnsafeBufferPointer<UInt8>.SubSequence = numerals.drop(while:{ $0 == UInt8(ascii: "0") })
-        let division = try! IX(digits.count).divided(by: self.radix.exponent)
-        return try Namespace.withUnsafeTemporaryAllocation(of: UX.self, count: try! division.ceil().base) {
+        let division = IX(digits.count).divided(by: self.radix.exponent).unwrap()
+        return try Namespace.withUnsafeTemporaryAllocation(of: UX.self, count: division.ceil().unwrap().base) {
             var words = consume $0
             var index = words.startIndex
             //=----------------------------------=
@@ -164,7 +164,7 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
             
             Swift.assert(digits.isEmpty)
             Swift.assert(index == words.endIndex)
-            return try Magnitude(elements: ExchangeInt(words, repeating: Bit.zero), isSigned: false)
+            return try Magnitude.exactly(elements: ExchangeInt(words, repeating: Bit.zero), isSigned: false).get()
         }
     }
 }

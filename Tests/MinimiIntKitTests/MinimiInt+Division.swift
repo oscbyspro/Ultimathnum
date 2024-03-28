@@ -22,17 +22,17 @@ extension MinimiIntTests {
     
     func testDivision() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.division( 0 as T,  0 as T, nil)
-            Test.division( 0 as T, -1 as T, Division(quotient: 0 as T, remainder: 0 as T))
-            Test.division(-1 as T,  0 as T, nil)
-            Test.division(-1 as T, -1 as T, nil)
+            Test.division( 0 as T,  0 as T, Division(quotient:  0 as T, remainder:  0 as T), true)
+            Test.division(-1 as T,  0 as T, Division(quotient:  0 as T, remainder: -1 as T), true)
+            Test.division( 0 as T, -1 as T, Division(quotient:  0 as T, remainder:  0 as T))
+            Test.division(-1 as T, -1 as T, Division(quotient: -1 as T, remainder:  0 as T), true)
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.division( 0 as T,  0 as T, nil)
-            Test.division( 0 as T,  1 as T, Division(quotient: 0 as T, remainder: 0 as T))
-            Test.division( 1 as T,  0 as T, nil)
-            Test.division( 1 as T,  1 as T, Division(quotient: 1 as T, remainder: 0 as T))
+            Test.division( 0 as T,  0 as T, Division(quotient:  0 as T, remainder:  0 as T), true)
+            Test.division( 0 as T,  1 as T, Division(quotient:  0 as T, remainder:  0 as T))
+            Test.division( 1 as T,  0 as T, Division(quotient:  0 as T, remainder:  1 as T), true)
+            Test.division( 1 as T,  1 as T, Division(quotient:  1 as T, remainder:  0 as T))
         }
         
         for type in Self.types {
@@ -42,25 +42,25 @@ extension MinimiIntTests {
     
     func testDivision2111() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.division2111(DoubleIntLayout(low: 0, high:  0),  0 as T,  nil) //  0 vs  0
-            Test.division2111(DoubleIntLayout(low: 1, high:  0),  0 as T,  nil) //  1 vs  0
-            Test.division2111(DoubleIntLayout(low: 0, high: -1),  0 as T,  nil) // -2 vs  0
-            Test.division2111(DoubleIntLayout(low: 1, high: -1),  0 as T,  nil) // -1 vs  0
-            Test.division2111(DoubleIntLayout(low: 0, high:  0), -1 as T,  Division(quotient:  0 as T, remainder: 0 as T)) //  0 vs -1
-            Test.division2111(DoubleIntLayout(low: 1, high:  0), -1 as T,  Division(quotient: -1 as T, remainder: 0 as T)) //  1 vs -1
-            Test.division2111(DoubleIntLayout(low: 0, high: -1), -1 as T,  nil) // -2 vs -1
-            Test.division2111(DoubleIntLayout(low: 1, high: -1), -1 as T,  Division(quotient: -1 as T, remainder: 0 as T)) // -1 vs -1
+            Test.division2111(DoubleIntLayout(low: 0, high:  0),  0 as T,  Division(quotient:  0 as T, remainder:  0 as T), true) //  0 vs  0
+            Test.division2111(DoubleIntLayout(low: 1, high:  0),  0 as T,  Division(quotient:  0 as T, remainder: -1 as T), true) //  1 vs  0
+            Test.division2111(DoubleIntLayout(low: 0, high: -1),  0 as T,  Division(quotient:  0 as T, remainder:  0 as T), true) // -2 vs  0
+            Test.division2111(DoubleIntLayout(low: 1, high: -1),  0 as T,  Division(quotient:  0 as T, remainder: -1 as T), true) // -1 vs  0
+            Test.division2111(DoubleIntLayout(low: 0, high:  0), -1 as T,  Division(quotient:  0 as T, remainder:  0 as T))       //  0 vs -1
+            Test.division2111(DoubleIntLayout(low: 1, high:  0), -1 as T,  Division(quotient: -1 as T, remainder:  0 as T))       //  1 vs -1
+            Test.division2111(DoubleIntLayout(low: 0, high: -1), -1 as T,  Division(quotient:  0 as T, remainder:  0 as T), true) // -2 vs -1
+            Test.division2111(DoubleIntLayout(low: 1, high: -1), -1 as T,  Division(quotient: -1 as T, remainder:  0 as T), true) // -1 vs -1
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.division2111(DoubleIntLayout(low: 0, high:  0),  0 as T,  nil) //  0 vs  0
-            Test.division2111(DoubleIntLayout(low: 1, high:  0),  0 as T,  nil) //  1 vs  0
-            Test.division2111(DoubleIntLayout(low: 0, high:  1),  0 as T,  nil) //  2 vs  0
-            Test.division2111(DoubleIntLayout(low: 1, high:  1),  0 as T,  nil) //  3 vs  0
-            Test.division2111(DoubleIntLayout(low: 0, high:  0),  1 as T,  Division(quotient:  0 as T, remainder: 0 as T)) //  0 vs  1
-            Test.division2111(DoubleIntLayout(low: 1, high:  0),  1 as T,  Division(quotient:  1 as T, remainder: 0 as T)) //  1 vs  1
-            Test.division2111(DoubleIntLayout(low: 0, high:  1),  1 as T,  nil) //  2 vs  1
-            Test.division2111(DoubleIntLayout(low: 1, high:  1),  1 as T,  nil) //  3 vs  1
+            Test.division2111(DoubleIntLayout(low: 0, high:  0),  0 as T,  Division(quotient:  0 as T, remainder:  0 as T), true) //  0 vs  0
+            Test.division2111(DoubleIntLayout(low: 1, high:  0),  0 as T,  Division(quotient:  0 as T, remainder:  1 as T), true) //  1 vs  0
+            Test.division2111(DoubleIntLayout(low: 0, high:  1),  0 as T,  Division(quotient:  0 as T, remainder:  0 as T), true) //  2 vs  0
+            Test.division2111(DoubleIntLayout(low: 1, high:  1),  0 as T,  Division(quotient:  0 as T, remainder:  1 as T), true) //  3 vs  0
+            Test.division2111(DoubleIntLayout(low: 0, high:  0),  1 as T,  Division(quotient:  0 as T, remainder:  0 as T))       //  0 vs  1
+            Test.division2111(DoubleIntLayout(low: 1, high:  0),  1 as T,  Division(quotient:  1 as T, remainder:  0 as T))       //  1 vs  1
+            Test.division2111(DoubleIntLayout(low: 0, high:  1),  1 as T,  Division(quotient:  0 as T, remainder:  0 as T), true) //  2 vs  1
+            Test.division2111(DoubleIntLayout(low: 1, high:  1),  1 as T,  Division(quotient:  1 as T, remainder:  0 as T), true) //  3 vs  1
         }
         
         for type in Self.types {

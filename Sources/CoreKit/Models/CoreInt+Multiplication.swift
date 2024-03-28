@@ -17,13 +17,13 @@ extension CoreInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func squared() throws -> Self {
-        try self.times(copy self)
+    @inlinable public consuming func squared() -> ArithmeticResult<Self> {
+        self.times(copy self)
     }
     
-    @inlinable public consuming func times(_ multiplier: borrowing Self) throws -> Self {
+    @inlinable public consuming func times(_ multiplier: borrowing Self) -> ArithmeticResult<Self> {
         let result = self.base.multipliedReportingOverflow(by: multiplier.base)
-        return try Overflow.resolve(Self(result.partialValue), overflow: result.overflow)
+        return ArithmeticResult(Self(result.partialValue), error: result.overflow)
     }
     
     @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> DoubleIntLayout<Self> {

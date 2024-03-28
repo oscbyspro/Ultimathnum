@@ -32,11 +32,11 @@ extension Namespace.TupleBinaryInteger where Base == Base.Magnitude {
     /// ```
     ///
     @inlinable package static func decrement32B(_ lhs: inout TripleIntLayout<Base>, by rhs: DoubleIntLayout<Base>) -> Bool {
-        let a = Overflow.capture(&lhs.low, map:{ try $0.minus(rhs.low ) })
-        let b = Overflow.capture(&lhs.mid, map:{ try $0.minus(rhs.high) })
+        let a = lhs.low.capture({ $0.minus(rhs.low ) })
+        let b = lhs.mid.capture({ $0.minus(rhs.high) })
         
-        let x = (a     ) && Overflow.capture(&lhs.mid,  map:{ try $0.minus(1) })
-        let y = (b || x) && Overflow.capture(&lhs.high, map:{ try $0.minus(1) })
+        let x = (a     ) && lhs.mid .capture({ $0.minus(1) })
+        let y = (b || x) && lhs.high.capture({ $0.minus(1) })
         return  (     y) as Bool
     }
     
@@ -55,12 +55,12 @@ extension Namespace.TupleBinaryInteger where Base == Base.Magnitude {
     /// ```
     ///
     @inlinable package static func decrement33B(_ lhs: inout TripleIntLayout<Base>, by rhs: TripleIntLayout<Base>) -> Bool {
-        let a = Overflow.capture(&lhs.low,  map:{ try $0.minus(rhs.low ) })
-        let b = Overflow.capture(&lhs.mid,  map:{ try $0.minus(rhs.mid ) })
-        let c = Overflow.capture(&lhs.high, map:{ try $0.minus(rhs.high) })
+        let a = lhs.low .capture({ $0.minus(rhs.low ) })
+        let b = lhs.mid .capture({ $0.minus(rhs.mid ) })
+        let c = lhs.high.capture({ $0.minus(rhs.high) })
         
-        let x = (a     ) && Overflow.capture(&lhs.mid,  map:{ try $0.minus(1) })
-        let y = (b || x) && Overflow.capture(&lhs.high, map:{ try $0.minus(1) })
+        let x = (a     ) && lhs.mid .capture({ $0.minus(1) })
+        let y = (b || x) && lhs.high.capture({ $0.minus(1) })
         return  (c || y) as Bool
     }
 }
