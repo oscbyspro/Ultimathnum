@@ -37,3 +37,18 @@ extension BinaryInteger {
         lhs = lhs &* rhs
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Result
+//=----------------------------------------------------------------------------=
+
+extension BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func times(_ result: borrowing ArithmeticResult<Self>) -> ArithmeticResult<Self> {
+        self.times(result.value).combine(result.error)
+    }
+}

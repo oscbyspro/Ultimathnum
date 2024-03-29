@@ -37,3 +37,26 @@ extension BinaryInteger {
         lhs = lhs % rhs
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Result
+//=----------------------------------------------------------------------------=
+
+extension BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func quotient ( divisor: borrowing ArithmeticResult<Self>) -> ArithmeticResult<Self> {
+        self.quotient (divisor: divisor.value).combine(divisor.error)
+    }
+    
+    @inlinable public consuming func remainder( divisor: borrowing ArithmeticResult<Self>) -> ArithmeticResult<Self> {
+        self.remainder(divisor: divisor.value).combine(divisor.error)
+    }
+    
+    @inlinable public consuming func divided(by divisor: borrowing ArithmeticResult<Self>) -> ArithmeticResult<Division<Self, Self>> {
+        self.divided(by: divisor.value).combine(divisor.error)
+    }
+}

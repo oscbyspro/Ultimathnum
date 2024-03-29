@@ -47,6 +47,21 @@ extension BinaryInteger {
 }
 
 //=----------------------------------------------------------------------------=
+// MARK: + Result
+//=----------------------------------------------------------------------------=
+
+extension BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func minus(_ result: borrowing ArithmeticResult<Self>) -> ArithmeticResult<Self> {
+        self.minus(result.value).combine(result.error)
+    }
+}
+
+//=----------------------------------------------------------------------------=
 // MARK: + Stride by 1
 //=----------------------------------------------------------------------------=
 
@@ -61,14 +76,12 @@ extension BinaryInteger {
     /// - Note: It works with **0-bit** and **1-bit** integers.
     ///
     @inlinable public consuming func decremented() -> ArithmeticResult<Self> {
-        if  let positive = Self.exactly( 1).optional() {
+        if  let positive = Self.exactly(1).optional() {
             return self.minus(positive)
-        }
-        
-        if  let negative = Self.exactly(-1).optional() {
+        }   else if let negative = Self.exactly(-1).optional() {
             return self.plus (negative)
+        }   else {
+            return ArithmeticResult.failure(self)
         }
-        
-        return ArithmeticResult.failure(self)
     }
 }
