@@ -21,20 +21,12 @@ extension Test {
     //=------------------------------------------------------------------------=
     
     public static func division<T: BinaryInteger>(
-    _ dividend: T, _ divisor: T, _ quotient: T, _ remainder: T,
+    _ dividend: T, _ divisor: T, _ quotient: T, _ remainder: T, _ error: Bool = false,
     file: StaticString = #file, line: UInt = #line) {
         let expectation = Division(quotient: quotient, remainder: remainder)
-        self.divisionAsSomeInteger(dividend, divisor, expectation, file: file, line: line)
+        self.divisionAsSomeInteger(dividend, divisor, expectation, error, file: file, line: line)
     }
     
-    #warning("remove")
-    public static func division<T: BinaryInteger>(
-    _ dividend: T, _ divisor: T, _ expectation: Division<T, T>?,
-    file: StaticString = #file, line: UInt = #line) {
-        self.divisionAsSomeInteger(dividend, divisor, expectation, file: file, line: line)
-    }    
-    
-    #warning("remove")
     public static func division<T: BinaryInteger>(
     _ dividend: T, _ divisor: T, _ expectation: Division<T, T>, _ error: Bool = false,
     file: StaticString = #file, line: UInt = #line) {
@@ -45,65 +37,38 @@ extension Test {
     // MARK: Utiliites
     //=------------------------------------------------------------------------=
     
-    #warning("remove")
     public static func divisionAsSomeInteger<T: BinaryInteger>(
-    _ dividend: T, _ divisor: T, _ expectation: Division<T, T>?, file: StaticString, line: UInt) {
+    _ dividend: T, _ divisor: T, _ value: Division<T, T>, _ error: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
-        if  let expectation {
-            XCTAssertEqual(dividend, divisor * expectation.quotient + expectation.remainder, "dividend != divisor * quotient + remainder", file: file, line: line)
+        let result = ArithmeticResult(value, error: error)
+        //=--------------------------------------=
+        checkSameSizeInverseInvariant: do {
+            let lhs = value.remainder.plus(value.quotient.times(divisor)).combine(error)
+            let rhs = ArithmeticResult(dividend, error: error)
+            XCTAssertEqual(lhs, rhs, "dividend != divisor &* quotient &+ remainder", file: file, line: line)
         }
         
-        if  let expectation {
-            XCTAssertEqual(dividend / divisor, expectation.quotient,  file: file, line: line)
-            XCTAssertEqual(dividend % divisor, expectation.remainder, file: file, line: line)
+        if !error {
+            XCTAssertEqual(dividend / divisor, value.quotient,  file: file, line: line)
+            XCTAssertEqual(dividend % divisor, value.remainder, file: file, line: line)
         }
         
-        if  let expectation {
-            XCTAssertEqual({ var x = dividend; x /= divisor; return x }(), expectation.quotient,  file: file, line: line)
-            XCTAssertEqual({ var x = dividend; x %= divisor; return x }(), expectation.remainder, file: file, line: line)
+        if !error {
+            XCTAssertEqual({ var x = dividend; x /= divisor; return x }(), value.quotient,  file: file, line: line)
+            XCTAssertEqual({ var x = dividend; x %= divisor; return x }(), value.remainder, file: file, line: line)
         }
         
-        if  let expectation {
-            XCTAssertEqual({ var x = dividend; x /= divisor; return x }(), expectation.quotient,  file: file, line: line)
-            XCTAssertEqual({ var x = dividend; x %= divisor; return x }(), expectation.remainder, file: file, line: line)
+        if !error {
+            XCTAssertEqual({ var x = dividend; x /= divisor; return x }(), value.quotient,  file: file, line: line)
+            XCTAssertEqual({ var x = dividend; x %= divisor; return x }(), value.remainder, file: file, line: line)
         }
         
         brr: do {
-            #warning("perform nonoptional comparisons")
-            XCTAssertEqual(dividend.quotient (divisor).optional(), expectation?.quotient,  file: file, line: line)
-            XCTAssertEqual(dividend.remainder(divisor).optional(), expectation?.remainder, file: file, line: line)
-            XCTAssertEqual(dividend.division (divisor).optional(), expectation,            file: file, line: line)
-        }
-    }
-    
-    public static func divisionAsSomeInteger<T: BinaryInteger>(
-    _ dividend: T, _ divisor: T, _ expectation: Division<T, T>, _ error: Bool, file: StaticString, line: UInt) {
-        //=--------------------------------------=
-        if !error {
-            XCTAssertEqual(dividend, divisor * expectation.quotient + expectation.remainder, "dividend != divisor * quotient + remainder", file: file, line: line)
-        }
-        
-        if !error {
-            XCTAssertEqual(dividend / divisor, expectation.quotient,  file: file, line: line)
-            XCTAssertEqual(dividend % divisor, expectation.remainder, file: file, line: line)
-        }
-        
-        if !error {
-            XCTAssertEqual({ var x = dividend; x /= divisor; return x }(), expectation.quotient,  file: file, line: line)
-            XCTAssertEqual({ var x = dividend; x %= divisor; return x }(), expectation.remainder, file: file, line: line)
-        }
-        
-        if !error {
-            XCTAssertEqual({ var x = dividend; x /= divisor; return x }(), expectation.quotient,  file: file, line: line)
-            XCTAssertEqual({ var x = dividend; x %= divisor; return x }(), expectation.remainder, file: file, line: line)
-        }
-        
-        brr: do {
-            XCTAssertEqual(dividend.quotient (divisor).value, expectation.quotient,  file: file, line: line)
+            XCTAssertEqual(dividend.quotient (divisor).value, value.quotient,  file: file, line: line)
             XCTAssertEqual(dividend.quotient (divisor).error, error,                 file: file, line: line)
-            XCTAssertEqual(dividend.remainder(divisor).value, expectation.remainder, file: file, line: line)
+            XCTAssertEqual(dividend.remainder(divisor).value, value.remainder, file: file, line: line)
             XCTAssertEqual(dividend.remainder(divisor).error, error,                 file: file, line: line)
-            XCTAssertEqual(dividend.division (divisor).value, expectation,           file: file, line: line)
+            XCTAssertEqual(dividend.division (divisor).value, value,           file: file, line: line)
             XCTAssertEqual(dividend.division (divisor).error, error,                 file: file, line: line)
         }
     }
@@ -120,21 +85,18 @@ extension Test {
     //=------------------------------------------------------------------------=
     
     public static func division2111<T: SystemsInteger>(
-    _ dividend: DoubleIntLayout<T>, _ divisor: T, _ expectation: Division<T, T>?, _ overflow: Bool = false,
-    file: StaticString = #file, line: UInt = #line) {
-        //=--------------------------------------=
-        #warning("perform nonoptional comparisons")
-        #warning("perform nonoptional comparisons")
-        #warning("perform nonoptional comparisons")
-        #warning("perform nonoptional comparisons")
-        XCTAssertEqual(T.dividing(dividend, by: divisor).optional(), expectation, file: file, line: line)
-    }
-    
-    public static func division2111<T: SystemsInteger>(
     _ dividend: DoubleIntLayout<T>, _ divisor: T, _ value: Division<T, T>, _ error: Bool = false,
     file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
+        typealias M = T.Magnitude
+        //=--------------------------------------=
         let result = T.dividing(dividend, by: divisor)
+        //=--------------------------------------=
+        // TODO: DoubleIntLayout plus(_:) minus(_:)
+        //=--------------------------------------=
+        if !error {
+            // TODO: reverse engineer the dividend
+        }
         //=--------------------------------------=
         XCTAssertEqual(result.value, value, file: file, line: line)
         XCTAssertEqual(result.error, error, file: file, line: line)

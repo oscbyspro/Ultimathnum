@@ -18,7 +18,14 @@ extension CoreInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func quotient (_ divisor: borrowing Self) -> ArithmeticResult<Self> {
-        let result = self.base.dividedReportingOverflow(by: divisor.base)
+        var result = self.base.dividedReportingOverflow(by: divisor.base)
+        //=--------------------------------------=
+        // Ultimathnum: custom division semantics
+        //=--------------------------------------=
+        if  divisor == 0 {
+            result.partialValue = 0
+        }
+        //=--------------------------------------=
         return ArithmeticResult(Self(result.partialValue), error: result.overflow)
     }
     

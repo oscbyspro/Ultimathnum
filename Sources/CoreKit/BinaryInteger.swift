@@ -103,7 +103,7 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     ///
     /// ```
     /// ┌──────────┬──────── → ─────────┬───────────┬──────────┐
-    /// │ dividend │ divisor │ quotient | remainder │ overflow │
+    /// │ dividend │ divisor │ quotient | remainder │ error    │
     /// ├──────────┼──────── → ─────────┤───────────┤──────────┤
     /// │ I8( 7)   │ I8( 3)  │ I8( 2)   │ I8( 0)    │ false    │
     /// │ I8( 7)   │ I8(-3)  │ I8(-2)   │ I8(-1)    │ false    │
@@ -121,7 +121,7 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     ///
     /// ```
     /// ┌──────────┬──────── → ─────────┬───────────┬──────────┐
-    /// │ dividend │ divisor │ quotient | remainder │ overflow │
+    /// │ dividend │ divisor │ quotient | remainder │ error    │
     /// ├──────────┼──────── → ─────────┤───────────┤──────────┤
     /// │ I8( 7)   │ I8( 3)  │ I8( 2)   │ I8( 0)    │ false    │
     /// │ I8( 7)   │ I8(-3)  │ I8(-2)   │ I8(-1)    │ false    │
@@ -139,7 +139,7 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     ///
     /// ```
     /// ┌──────────┬──────── → ─────────┬───────────┬──────────┐
-    /// │ dividend │ divisor │ quotient | remainder │ overflow │
+    /// │ dividend │ divisor │ quotient | remainder │ error    │
     /// ├──────────┼──────── → ─────────┤───────────┤──────────┤
     /// │ I8( 7)   │ I8( 3)  │ I8( 2)   │ I8( 0)    │ false    │
     /// │ I8( 7)   │ I8(-3)  │ I8(-2)   │ I8(-1)    │ false    │
@@ -174,23 +174,6 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     /// If this value is `signed`, then the `appendix` is `1` for `negative`
     /// values and `0` otherwise. If this value is `unsigned`, then the `appendix`
     /// is `1` for `infinite` values and `0` otherwise.
-    ///
-    /// ### Development
-    ///
-    /// This requirement is an alternative to a static `isInfinite` value. One
-    /// can derive the other, so it is a design choice. See:
-    ///
-    /// ```swift
-    /// @inlinable public static var isInfinite: Bool {
-    ///     Self.bitWidth.appendix == 1
-    /// }
-    /// ```
-    ///
-    /// ```swift
-    /// @inlnable public var appendix: Bit {
-    ///     Bit(bitPattern: (Self.isSigned || Self.isInfinite) && self.count(0, option: .descending) == 0)
-    /// }
-    /// ```
     ///
     @inlinable var appendix: Bit { get }
     

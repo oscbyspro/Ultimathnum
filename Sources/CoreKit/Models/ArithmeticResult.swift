@@ -24,7 +24,7 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
 
-    @inlinable public init(_ value: consuming Value, error: consuming Bool) {
+    @inlinable public init(_ value: consuming Value, error: consuming Bool = false) {
         self.value = value
         self.error = error
     }
@@ -113,3 +113,9 @@
         return self.value
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Equatable
+//=----------------------------------------------------------------------------=
+
+extension ArithmeticResult: Equatable where Value: Equatable { }
