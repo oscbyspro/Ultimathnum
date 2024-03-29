@@ -63,13 +63,25 @@ extension Test {
             XCTAssertEqual({ var x = dividend; x %= divisor; return x }(), value.remainder, file: file, line: line)
         }
         
-        brr: do {
-            XCTAssertEqual(dividend.quotient (divisor).value, value.quotient,  file: file, line: line)
-            XCTAssertEqual(dividend.quotient (divisor).error, error,                 file: file, line: line)
-            XCTAssertEqual(dividend.remainder(divisor).value, value.remainder, file: file, line: line)
-            XCTAssertEqual(dividend.remainder(divisor).error, error,                 file: file, line: line)
-            XCTAssertEqual(dividend.division (divisor).value, value,           file: file, line: line)
-            XCTAssertEqual(dividend.division (divisor).error, error,                 file: file, line: line)
+        quotient: do {
+            XCTAssertEqual(result.map(\.quotient), dividend.quotient(divisor), file: file, line: line)
+            XCTAssertEqual(result.map(\.quotient), dividend.quotient(ArithmeticResult(divisor)), file: file, line: line)
+            XCTAssertEqual(result.map(\.quotient), ArithmeticResult(dividend).quotient(divisor), file: file, line: line)
+            XCTAssertEqual(result.map(\.quotient), ArithmeticResult(dividend).quotient(ArithmeticResult(divisor)), file: file, line: line)
+        }
+        
+        remainder: do {
+            XCTAssertEqual(result.map(\.remainder), dividend.remainder(divisor), file: file, line: line)
+            XCTAssertEqual(result.map(\.remainder), dividend.remainder(ArithmeticResult(divisor)), file: file, line: line)
+            XCTAssertEqual(result.map(\.remainder), ArithmeticResult(dividend).remainder(divisor), file: file, line: line)
+            XCTAssertEqual(result.map(\.remainder), ArithmeticResult(dividend).remainder(ArithmeticResult(divisor)), file: file, line: line)
+        }
+        
+        division: do {
+            XCTAssertEqual(result, dividend.division(divisor), file: file, line: line)
+            XCTAssertEqual(result, dividend.division(ArithmeticResult(divisor)), file: file, line: line)
+            XCTAssertEqual(result, ArithmeticResult(dividend).division(divisor), file: file, line: line)
+            XCTAssertEqual(result, ArithmeticResult(dividend).division(ArithmeticResult(divisor)), file: file, line: line)
         }
     }
 }

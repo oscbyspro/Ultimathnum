@@ -17,6 +17,10 @@ extension ArithmeticResult where Value: BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    @inlinable public consuming func squared() -> Self {
+        self.value.squared().combine(self.error)
+    }
+    
     @inlinable public consuming func times(_ other: borrowing Value) -> Self {
         self.value.times(other).combine(self.error)
     }

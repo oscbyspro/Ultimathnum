@@ -33,6 +33,8 @@ extension Test {
     public static func subtractionAsSomeBinaryInteger<T: BinaryInteger>(
     _ lhs: T, _ rhs: T, _ value: T, _ error: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
+        let result = ArithmeticResult(value, error: error)
+        //=--------------------------------------=
         brr: do {
             XCTAssertEqual(lhs &- rhs, value, file: file, line: line)
         };  if !error {
@@ -59,25 +61,37 @@ extension Test {
             Test.decrementation(lhs, value, error, file: file, line: line)
         }
         //=--------------------------------------=
-        XCTAssertEqual(lhs.minus(rhs).value, value, file: file, line: line)
-        XCTAssertEqual(lhs.minus(rhs).error, error, file: file, line: line)
+        brr: do {
+            XCTAssertEqual(result, lhs.minus(rhs), file: file, line: line)
+            XCTAssertEqual(result, lhs.minus(ArithmeticResult(rhs)), file: file, line: line)
+            XCTAssertEqual(result, ArithmeticResult(lhs).minus(rhs), file: file, line: line)
+            XCTAssertEqual(result, ArithmeticResult(lhs).minus(ArithmeticResult(rhs)), file: file, line: line)
+        }
+        
+        if  !error {
+            let negated = result.negated()
+            XCTAssertEqual(negated, rhs.minus(lhs), file: file, line: line)
+            XCTAssertEqual(negated, rhs.minus(ArithmeticResult(lhs)), file: file, line: line)
+            XCTAssertEqual(negated, ArithmeticResult(rhs).minus(lhs), file: file, line: line)
+            XCTAssertEqual(negated, ArithmeticResult(rhs).minus(ArithmeticResult(lhs)), file: file, line: line)
+        }
         //=--------------------------------------=
         // same as rhs negation when lhs is zero
         //=--------------------------------------=
         if  lhs == 0 {
-            XCTAssertEqual(rhs.negated().value, value, file: file, line: line)
-            XCTAssertEqual(rhs.negated().error, error, file: file, line: line)
+            XCTAssertEqual(result, rhs.negated(), file: file, line: line)
+            XCTAssertEqual(result, ArithmeticResult(rhs).negated(), file: file, line: line)
         }
         
-        if  lhs == 0, !error {
+        if  lhs == 0 && !error {
             XCTAssertEqual(-rhs, value, file: file, line: line)
             XCTAssertEqual(-value, rhs, file: file, line: line)
         }
         
         
-        if  lhs == 0, !error {
-            XCTAssertEqual(value.negated().value, rhs,   file: file, line: line)
-            XCTAssertEqual(value.negated().error, error, file: file, line: line)
+        if  lhs == 0 && !error {
+            XCTAssertEqual(ArithmeticResult(rhs), value.negated(), file: file, line: line)
+            XCTAssertEqual(ArithmeticResult(rhs), ArithmeticResult(value).negated(), file: file, line: line)
         }
     }
 }
@@ -93,8 +107,10 @@ extension Test {
     //=------------------------------------------------------------------------=
     
     public static func decrementation<T: BinaryInteger>(_ instance: T, _ value: T, _ error: Bool = false, file: StaticString = #file, line: UInt = #line) {
-        let result = instance.decremented()
-        XCTAssertEqual(result.value, value, file: file, line: line)
-        XCTAssertEqual(result.error, error, file: file, line: line)
+        //=--------------------------------------=
+        let result = ArithmeticResult(value, error: error)
+        //=--------------------------------------=
+        XCTAssertEqual(result, instance.decremented(), file: file, line: line)
+        XCTAssertEqual(result, ArithmeticResult(instance).decremented(), file: file, line: line)
     }
 }

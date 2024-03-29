@@ -25,3 +25,22 @@ extension ArithmeticResult where Value: BinaryInteger {
         self.value.plus(other).combine(self.error)
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Stride by 1
+//=----------------------------------------------------------------------------=
+
+extension ArithmeticResult where Value: BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// The next value in arithmetic progression.
+    ///
+    /// - Note: It works with **0-bit** and **1-bit** integers.
+    ///
+    @inlinable public consuming func incremented() -> Self {
+        self.value.incremented().combine(self.error)
+    }
+}
