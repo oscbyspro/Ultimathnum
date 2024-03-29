@@ -57,6 +57,6 @@ extension BinaryInteger {
     }
     
     @inlinable public consuming func division (_ divisor: borrowing ArithmeticResult<Self>) -> ArithmeticResult<Division<Self, Self>> {
-        self.division( divisor.value).combine(divisor.error)
+        self.division (divisor.value).combine(divisor.error)
     }
 }

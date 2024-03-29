@@ -99,7 +99,6 @@ extension Test {
         }
         
         brr: do {
-            #warning("perform nonoptional comparisons")
             XCTAssertEqual(dividend.quotient (divisor).value, expectation.quotient,  file: file, line: line)
             XCTAssertEqual(dividend.quotient (divisor).error, error,                 file: file, line: line)
             XCTAssertEqual(dividend.remainder(divisor).value, expectation.remainder, file: file, line: line)
@@ -132,13 +131,12 @@ extension Test {
     }
     
     public static func division2111<T: SystemsInteger>(
-    _ dividend: DoubleIntLayout<T>, _ divisor: T, _ expectation: Division<T, T>, _ error: Bool = false,
+    _ dividend: DoubleIntLayout<T>, _ divisor: T, _ value: Division<T, T>, _ error: Bool = false,
     file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
         let result = T.dividing(dividend, by: divisor)
         //=--------------------------------------=
-        XCTAssertEqual(result.value.quotient,  expectation.quotient,  file: file, line: line)
-        XCTAssertEqual(result.value.remainder, expectation.remainder, file: file, line: line)
-        XCTAssertEqual(result.error,           error,                 file: file, line: line)
+        XCTAssertEqual(result.value, value, file: file, line: line)
+        XCTAssertEqual(result.error, error, file: file, line: line)
     }
 }
