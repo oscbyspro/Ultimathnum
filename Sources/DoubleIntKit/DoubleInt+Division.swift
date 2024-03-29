@@ -22,18 +22,18 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func quotient(divisor: Self) -> ArithmeticResult<Self> {
-        self.divided(by: divisor).map({ $0.quotient })
+    @inlinable public consuming func quotient (_ divisor: Self) -> ArithmeticResult<Self> {
+        self.division(divisor).map({ $0.quotient  })
     }
     
-    @inlinable public consuming func remainder(divisor: Self) -> ArithmeticResult<Self> {
-        self.divided(by: divisor).map({ $0.remainder })
+    @inlinable public consuming func remainder(_ divisor: Self) -> ArithmeticResult<Self> {
+        self.division(divisor).map({ $0.remainder })
     }
     
-    @inlinable public func divided(by divisor: Self) -> ArithmeticResult<Division<Self, Self>> {
+    @inlinable public consuming func division (_ divisor: Self) -> ArithmeticResult<Division<Self, Self>> {
         typealias T = ArithmeticResult<Division<Self, Self>>
         //=--------------------------------------=
-        let lhsIsLessThanZero: Bool = (self ).isLessThanZero
+        let lhsIsLessThanZero: Bool = self   .isLessThanZero
         let rhsIsLessThanZero: Bool = divisor.isLessThanZero
         let minus = (lhsIsLessThanZero) != rhsIsLessThanZero
         //=--------------------------------------=
@@ -119,7 +119,7 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         if  lhs.high == 0 {
             Swift.assert(rhs.high == 0, "divisors greater than or equal should go fast path")
-            let result = lhs.low.divided(by: rhs.low).unwrap()
+            let result = lhs.low.division(rhs.low).unwrap()
             return Division(quotient: Self(low: result.quotient), remainder: Self(low: result.remainder))
         }
         //=--------------------------------------=
@@ -210,15 +210,15 @@ extension DoubleInt where Base == Base.Magnitude {
     //=------------------------------------------------------------------------=
     
     @inlinable static func _divide2121(_ lhs: consuming Self, by rhs: borrowing Base) -> Division<Self, Base> {
-        let x1 = lhs.high.divided(by: rhs).unwrap()
-        let x0 = x1.remainder == 0 ? lhs.low.divided(by: rhs).unwrap() : Base.dividing(DoubleIntLayout(low: lhs.low, high: x1.remainder), by: rhs).unwrap()
+        let x1 = lhs.high.division(rhs).unwrap()
+        let x0 = x1.remainder == 0 ? lhs.low.division(rhs).unwrap() : Base.dividing(DoubleIntLayout(low: lhs.low, high: x1.remainder), by: rhs).unwrap()
         return Division(quotient: Self(low: x0.quotient, high: x1.quotient), remainder: x0.remainder)
     }
     
     @inlinable static func _divide3121(_ lhs: consuming TripleIntLayout<Base>, by rhs: Base) -> Division<Self, Base> {
         Swift.assert(rhs > lhs.high, "quotient must fit in two halves")
         let x1 = Base.dividing(DoubleIntLayout(low: lhs.mid, high: lhs.high), by: rhs).unwrap()
-        let x0 = x1.remainder == 0 ? lhs.low.divided(by: rhs).unwrap() : Base.dividing(DoubleIntLayout(low: lhs.low, high: x1.remainder), by: rhs).unwrap()
+        let x0 = x1.remainder == 0 ? lhs.low.division(rhs).unwrap() : Base.dividing(DoubleIntLayout(low: lhs.low, high: x1.remainder), by: rhs).unwrap()
         return Division(quotient: Self(low: x0.quotient, high: x1.quotient), remainder: x0.remainder)
     }
     

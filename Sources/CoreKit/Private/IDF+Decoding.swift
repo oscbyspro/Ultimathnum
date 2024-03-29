@@ -127,7 +127,7 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
         }
         //=--------------------------------------=
         var digits: UnsafeBufferPointer<UInt8>.SubSequence = numerals.drop(while:{ $0 == UInt8(ascii: "0") })
-        let division = IX(digits.count).divided(by: self.radix.exponent).unwrap()
+        let division = IX(digits.count).division(self.radix.exponent).unwrap()
         return try Namespace.withUnsafeTemporaryAllocation(of: UX.self, count: division.ceil().unwrap().base) {
             var words = consume $0
             var index = words.startIndex

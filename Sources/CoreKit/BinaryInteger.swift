@@ -115,7 +115,7 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     /// └──────────┴──────── → ─────────┴───────────┴──────────┘
     /// ```
     ///
-    @inlinable consuming func quotient ( divisor: borrowing Self) -> ArithmeticResult<Self>
+    @inlinable consuming func quotient (_ divisor: borrowing Self) -> ArithmeticResult<Self>
     
     /// ### Examples
     ///
@@ -133,7 +133,7 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     /// └──────────┴──────── → ─────────┴───────────┴──────────┘
     /// ```
     ///
-    @inlinable consuming func remainder( divisor: borrowing Self) -> ArithmeticResult<Self>
+    @inlinable consuming func remainder(_ divisor: borrowing Self) -> ArithmeticResult<Self>
     
     /// ### Examples
     ///
@@ -151,7 +151,7 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     /// └──────────┴──────── → ─────────┴───────────┴──────────┘
     /// ```
     ///
-    @inlinable consuming func divided(by divisor: borrowing Self) -> ArithmeticResult<Division<Self, Self>>
+    @inlinable consuming func division (_ divisor: borrowing Self) -> ArithmeticResult<Division<Self, Self>>
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

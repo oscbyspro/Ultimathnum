@@ -17,19 +17,19 @@ extension CoreInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func quotient(divisor: borrowing Self) -> ArithmeticResult<Self> {
+    @inlinable public consuming func quotient (_ divisor: borrowing Self) -> ArithmeticResult<Self> {
         let result = self.base.dividedReportingOverflow(by: divisor.base)
         return ArithmeticResult(Self(result.partialValue), error: result.overflow)
     }
     
-    @inlinable public consuming func remainder(divisor: Self) -> ArithmeticResult<Self> {
+    @inlinable public consuming func remainder(_ divisor: borrowing Self) -> ArithmeticResult<Self> {
         let result = self.base.remainderReportingOverflow(dividingBy: divisor.base)
         return ArithmeticResult(Self(result.partialValue), error: result.overflow)
     }
     
-    @inlinable public consuming func divided(by divisor: Self) -> ArithmeticResult<Division<Self, Self>> {
-        let quotient  = (copy    self).quotient (divisor: divisor)
-        let remainder = (consume self).remainder(divisor: divisor)
+    @inlinable public consuming func division (_ divisor: borrowing Self) -> ArithmeticResult<Division<Self, Self>> {
+        let quotient  = (copy    self).quotient (divisor)
+        let remainder = (consume self).remainder(divisor)
         return ArithmeticResult(Division(quotient: quotient.value, remainder: remainder.value), error: quotient.error || remainder.error)
     }
     
@@ -80,7 +80,7 @@ extension CoreInt where Self == Magnitude {
         //=--------------------------------------=
         if  divisor <= dividend.high {
             overflow = true
-            dividend.high = dividend.high.remainder(divisor: divisor).assert()
+            dividend.high = dividend.high.remainder(divisor).assert()
         }
         //=--------------------------------------=
         let result = divisor.base.dividingFullWidth((high: dividend.high.base, low: dividend.low.base))

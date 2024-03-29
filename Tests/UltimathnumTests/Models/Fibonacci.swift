@@ -43,9 +43,9 @@ final class FibonacciTests: XCTestCase {
             for divisor: T in [2, 3, 5, 7].compactMap({ T.exactly($0).optional() }) {
                 brrrrrr: do {
                     let a = sequence
-                    let b = try F(index.quotient(divisor: divisor).get())
-                    let c = try F(a.index.minus(b.index).get())
-                    let d = try a.next.divided(by:  b.next).get()
+                    let b = try F(index.quotient(divisor).get())
+                    let c = try F(a.index.minus (b.index).get())
+                    let d = try a.next.division (b.next ).get()
                     let e = try b.element .times(c.element).get()
                     let f = try d.quotient.minus(c.next).times(b.next).plus(d.remainder).get()
                     XCTAssertEqual(e, f, "arithmetic invariant error", file: file, line: line)

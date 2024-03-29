@@ -82,7 +82,9 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
                 // pointee: initialization
                 //=------------------------------=
                 backwards: repeat {
-                    let remainder: UX; (firstChunk, remainder) = firstChunk.divided(by: radix.base).value.components
+                    
+                    let remainder: UX
+                    (firstChunk, remainder) = firstChunk.division(radix.base).assert().components
                     precondition(firstIndex >  first.startIndex)
                     firstIndex = first.index(before: firstIndex)
                     first.initializeElement(at: firstIndex, to: UInt8(ascii: "0") &+ U8(load: remainder).base)
@@ -106,7 +108,8 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
                     //=--------------------------=
                     for var chunk in remainders {
                         for _  in 0 as Int ..< radix.exponent.base {
-                            let remainder: UX; (chunk, remainder) = chunk.divided(by: radix.base).value.components
+                            let remainder: UX
+                            (chunk, remainder) = chunk.division(radix.base).assert().components
                             precondition(asciiIndex > ascii.startIndex)
                             ascii.formIndex(before: &asciiIndex)
                             ascii.initializeElement(at: asciiIndex, to: UInt8(ascii: "0") &+ U8(load: remainder).base)

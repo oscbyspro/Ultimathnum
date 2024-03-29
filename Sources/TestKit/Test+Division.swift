@@ -70,9 +70,9 @@ extension Test {
         
         brr: do {
             #warning("perform nonoptional comparisons")
-            XCTAssertEqual(dividend.quotient (divisor: divisor).optional(), expectation?.quotient,  file: file, line: line)
-            XCTAssertEqual(dividend.remainder(divisor: divisor).optional(), expectation?.remainder, file: file, line: line)
-            XCTAssertEqual(dividend.divided  (by:      divisor).optional(), expectation,            file: file, line: line)
+            XCTAssertEqual(dividend.quotient (divisor).optional(), expectation?.quotient,  file: file, line: line)
+            XCTAssertEqual(dividend.remainder(divisor).optional(), expectation?.remainder, file: file, line: line)
+            XCTAssertEqual(dividend.division (divisor).optional(), expectation,            file: file, line: line)
         }
     }
     
@@ -100,12 +100,12 @@ extension Test {
         
         brr: do {
             #warning("perform nonoptional comparisons")
-            XCTAssertEqual(dividend.quotient (divisor: divisor).value, expectation.quotient,  file: file, line: line)
-            XCTAssertEqual(dividend.quotient (divisor: divisor).error, error,                 file: file, line: line)
-            XCTAssertEqual(dividend.remainder(divisor: divisor).value, expectation.remainder, file: file, line: line)
-            XCTAssertEqual(dividend.remainder(divisor: divisor).error, error,                 file: file, line: line)
-            XCTAssertEqual(dividend.divided  (by:      divisor).value, expectation,           file: file, line: line)
-            XCTAssertEqual(dividend.divided  (by:      divisor).error, error,                 file: file, line: line)
+            XCTAssertEqual(dividend.quotient (divisor).value, expectation.quotient,  file: file, line: line)
+            XCTAssertEqual(dividend.quotient (divisor).error, error,                 file: file, line: line)
+            XCTAssertEqual(dividend.remainder(divisor).value, expectation.remainder, file: file, line: line)
+            XCTAssertEqual(dividend.remainder(divisor).error, error,                 file: file, line: line)
+            XCTAssertEqual(dividend.division (divisor).value, expectation,           file: file, line: line)
+            XCTAssertEqual(dividend.division (divisor).error, error,                 file: file, line: line)
         }
     }
 }

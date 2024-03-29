@@ -19,19 +19,19 @@ extension MinimiInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func quotient(divisor: Self) -> ArithmeticResult<Self> {
+    @inlinable public func quotient (_ divisor: Self) -> ArithmeticResult<Self> {
         let error = Self(bitPattern: Self.isSigned) & self | ~divisor
         let value = self &  divisor
         return ArithmeticResult(value, error: Bool(bitPattern: error))
     }
         
-    @inlinable public func remainder(divisor: Self) -> ArithmeticResult<Self> {
+    @inlinable public func remainder(_ divisor: Self) -> ArithmeticResult<Self> {
         let error = Self(bitPattern: Self.isSigned) & self | ~divisor
         let value = self & ~divisor
         return ArithmeticResult(value, error: Bool(bitPattern: error))
     }
     
-    @inlinable public func divided(by divisor: Self) -> ArithmeticResult<Division<Self, Self>> {
+    @inlinable public func division(_ divisor: Self) -> ArithmeticResult<Division<Self, Self>> {
         let error = Self(bitPattern: Self.isSigned) & self | ~divisor
         let value = Division(
             quotient:  self &  divisor,

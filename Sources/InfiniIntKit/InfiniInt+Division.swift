@@ -19,15 +19,15 @@ extension InfiniInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming public func quotient(divisor: borrowing Self) -> ArithmeticResult<Self> {
+    @inlinable consuming public func quotient (_ divisor: borrowing Self) -> ArithmeticResult<Self> {
         fatalError("TODO")
     }
     
-    @inlinable consuming public func remainder(divisor: borrowing Self) -> ArithmeticResult<Self> {
+    @inlinable consuming public func remainder(_ divisor: borrowing Self) -> ArithmeticResult<Self> {
         fatalError("TODO")
     }
     
-    @inlinable consuming public func divided(by divisor: borrowing Self) -> ArithmeticResult<Division<Self, Self>> {
+    @inlinable consuming public func division (_ divisor: borrowing Self) -> ArithmeticResult<Division<Self, Self>> {
         fatalError("TODO")
     }
 }
