@@ -32,7 +32,6 @@ final class FibonacciTests: XCTestCase {
         }
     }
     
-    #warning("reduce the get() count with conveniences")
     func check<T: BinaryInteger>(index: T, element: T?, invariants: Bool = true, file: StaticString = #file, line: UInt = #line) {
         typealias F = Fibonacci<T>
         //=--------------------------------------=
@@ -41,14 +40,14 @@ final class FibonacciTests: XCTestCase {
         XCTAssertEqual(sequence?.element, element, file: file, line: line)
         //=--------------------------------------=
         if  invariants, let sequence {
-            for divisor: T in [2, 3, 5, 7].compactMap({ try? T.exactly($0).get() }) {
+            for divisor: T in [2, 3, 5, 7].compactMap({ T.exactly($0).optional() }) {
                 brrrrrr: do {
                     let a = sequence
                     let b = try F(index.quotient(divisor: divisor).get())
                     let c = try F(a.index.minus(b.index).get())
                     let d = try a.next.divided(by:  b.next).get()
                     let e = try b.element .times(c.element).get()
-                    let f = try d.quotient.minus(c.next).get().times(b.next).get().plus(d.remainder).get()
+                    let f = try d.quotient.minus(c.next).times(b.next).plus(d.remainder).get()
                     XCTAssertEqual(e, f, "arithmetic invariant error", file: file, line: line)
                 }   catch let error {
                     XCTFail("unexpected arithmetic failure: \(error)", file: file, line: line)
@@ -68,7 +67,7 @@ final class FibonacciTests: XCTestCase {
             XCTAssertThrowsError(try F(-1))
         }
                 
-        if  let one = try? T.exactly(1).get(), var sequence = Test.some(try? F()) {
+        if  let one = T.exactly(1).optional(), var sequence = Test.some(try? F()) {
             XCTAssertNoThrow/**/(try F( ))
             XCTAssertNoThrow/**/(try F(0))
             

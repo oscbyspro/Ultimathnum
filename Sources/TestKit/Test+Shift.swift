@@ -88,7 +88,7 @@ extension Test {
                 check(instance, shift, result)
             }
             
-            if  let shift = try? shift.plus(increment).get().plus(increment).get() {
+            if  let shift = try? shift.plus(increment).plus(increment).get() {
                 check(instance, shift, result)
             }
             
@@ -96,7 +96,7 @@ extension Test {
                 check(instance, shift, result)
             }
             
-            if  let shift = try? shift.minus(increment).get().minus(increment).get() {
+            if  let shift = try? shift.minus(increment).minus(increment).get() {
                 check(instance, shift, result)
             }
         }
@@ -117,7 +117,7 @@ extension Test {
                 check(instance, shift, result)
             }
             
-            if  let shift = try? shift.plus(increment).get().plus(increment).get() {
+            if  let shift = try? shift.plus(increment).plus(increment).get() {
                 check(instance, shift, result)
             }
             
@@ -125,7 +125,7 @@ extension Test {
                 check(instance, shift, result)
             }
             
-            if  let shift = try? shift.minus(increment).get().minus(increment).get() {
+            if  let shift = try? shift.minus(increment).minus(increment).get() {
                 check(instance, shift, result)
             }
         }

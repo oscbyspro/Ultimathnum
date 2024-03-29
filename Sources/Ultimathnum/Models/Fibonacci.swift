@@ -112,15 +112,12 @@
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
-    //=------------------------------------------------------------------------=
-    // TODO: Reduce the get() count with Arithmetic.Result conveniences...
-    //=------------------------------------------------------------------------=
     
     /// Forms the sequence pair at `index + 1`.
     @inlinable public mutating func increment() throws {
         brr: do {
             let n : Value
-            try n = i.plus(Value.exactly(1).get()).get()
+            try n = i.plus(Value.exactly(1)).get()
             
             let x : Value
             try x = a.plus(b).get()
@@ -141,7 +138,7 @@
         
         brr: do {
             let n : Value
-            try n = i.minus(Value.exactly(1).get()).get()
+            try n = i.minus(Value.exactly(1)).get()
             
             let y : Value
             try y = b.minus(a).get()
@@ -162,15 +159,15 @@
         
         brr: do {
             let n : Value
-            try n = i.times(Value.exactly(2).get()).get()
+            try n = i.times(Value.exactly(2)).get()
             
             var x : Value
-            try x = b.times(Value.exactly(2).get()).get()
+            try x = b.times(Value.exactly(2)).get()
             try x = x.minus(a).get()
             try x = x.times(a).get()
             
             var y : Value
-            try y = b.squared().get().plus(a.squared().get()).get()
+            try y = b.squared().plus(a.squared()).get()
             
             self.i = consume n
             self.a = consume x

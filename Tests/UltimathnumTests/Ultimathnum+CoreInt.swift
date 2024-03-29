@@ -20,26 +20,25 @@ extension UltimathnumTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    #warning("reduce the get count")
     func testCoreIntToFromExactly() {
         func whereIs<T, U>(_ type: T.Type, _ other: U.Type) where T: SystemsInteger, U: BinaryInteger {
-            if  let i = try? U.exactly(T.min).get().plus(U.exactly(T.min).get()).get().minus(U.exactly(magnitude: 1).get()).get() {
+            if  let i = try? U.exactly(T.min).plus(U.exactly(T.min)).minus(U.exactly(magnitude: 1)).get() {
                 XCTAssertEqual(try? T.exactly(i).get(), nil as T?)
             }
             
-            if  let i = try? U.exactly(T.min).get().plus(U.exactly(T.min).get()).get() {
+            if  let i = try? U.exactly(T.min).plus(U.exactly(T.min)).get() {
                 XCTAssertEqual(try? T.exactly(i).get(), T.isSigned ? nil as T? : 0 as T?)
             }
             
-            if  let i = try? U.exactly(T.min).get().plus(U.exactly(T.min).get()).get().plus(U.exactly(magnitude: 1).get()).get() {
+            if  let i = try? U.exactly(T.min).plus(U.exactly(T.min)).plus(U.exactly(magnitude: 1)).get() {
                 XCTAssertEqual(try? T.exactly(i).get(), T.isSigned ? nil as T? : 1 as T?)
             }
             
-            if  let i = try? U.exactly(T.min).get().minus(U.exactly(magnitude: 1).get()).get() {
+            if  let i = try? U.exactly(T.min).minus(U.exactly(magnitude: 1)).get() {
                 XCTAssertEqual(try? T.exactly(i).get(), nil as T?)
             }
             
-            if  let i = try? U.exactly(T.min).get().minus(U.exactly(magnitude: 1).get()).get() {
+            if  let i = try? U.exactly(T.min).minus(U.exactly(magnitude: 1)).get() {
                 XCTAssertEqual(try? T.exactly(i).get(), nil as T?)
             }
             
@@ -47,11 +46,11 @@ extension UltimathnumTests {
                 XCTAssertEqual(try? T.exactly(i).get(), T.min)
             }
             
-            if  let i = try? U.exactly(T.min).get().plus(U.exactly(magnitude: 1).get()).get() {
+            if  let i = try? U.exactly(T.min).plus(U.exactly(magnitude: 1)).get() {
                 XCTAssertEqual(try? T.exactly(i).get(), T.min + 1)
             }
             
-            if  let i = try? U.exactly(T.max).get().minus(U.exactly(magnitude: 1).get()).get() {
+            if  let i = try? U.exactly(T.max).minus(U.exactly(magnitude: 1)).get() {
                 XCTAssertEqual(try? T.exactly(i).get(), T.max - 1)
             }
             
@@ -59,19 +58,19 @@ extension UltimathnumTests {
                 XCTAssertEqual(try? T.exactly(i).get(), T.max)
             }
             
-            if  let i = try? U.exactly(T.max).get().plus(U.exactly(magnitude: 1).get()).get() {
+            if  let i = try? U.exactly(T.max).plus(U.exactly(magnitude: 1)).get() {
                 XCTAssertEqual(try? T.exactly(i).get(), nil as T?)
             }
             
-            if  let i = try? U.exactly(T.max).get().plus(U.exactly(T.max).get()).get().minus(U.exactly(magnitude: 1).get()).get() {
+            if  let i = try? U.exactly(T.max).plus(U.exactly(T.max)).minus(U.exactly(magnitude: 1)).get() {
                 XCTAssertEqual(try? T.exactly(i).get(), nil as T?)
             }
             
-            if  let i = try? U.exactly(T.max).get().plus(U.exactly(T.max).get()).get(){
+            if  let i = try? U.exactly(T.max).plus(U.exactly(T.max)).get(){
                 XCTAssertEqual(try? T.exactly(i).get(), nil as T?)
             }
             
-            if  let i = try? U.exactly(T.max).get().plus(U.exactly(T.max).get()).get().plus(U.exactly(magnitude: 1).get()).get() {
+            if  let i = try? U.exactly(T.max).plus(U.exactly(T.max)).plus(U.exactly(magnitude: 1)).get() {
                 XCTAssertEqual(try? T.exactly(i).get(), nil as T?)
             }
         }
