@@ -50,13 +50,14 @@ extension Test {
     }
     
     public static func elements<Integer: BinaryInteger, Element: SystemsInteger & UnsignedInteger>(
-    _ elements: [Element], _ isSigned: Bool, _ expectation: Integer?, file: StaticString = #file, line: UInt = #line) {
+    _ elements: [Element], _ isSigned: Bool, _ value: Integer, _ error: Bool = false, file: StaticString = #file, line: UInt = #line) {
+        //=--------------------------------------=
+        let result = ArithmeticResult(value, error: error)
         //=--------------------------------------=
         let elements = ExchangeInt(elements, isSigned: isSigned, as: Integer.Element.Magnitude.self)
         //=--------------------------------------=
         brr: do {
-            #warning("perform nonoptional comparisons")
-            XCTAssertEqual(Integer.exactly(elements: elements, isSigned: isSigned).optional(), expectation, file: file, line: line)
+            XCTAssertEqual(Integer.exactly(elements: elements, isSigned: isSigned), result, file: file, line: line)
         }
     }
 }

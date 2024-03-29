@@ -50,7 +50,7 @@
         }   else if integerLiteral == 1 {
             self.bitPattern = true
         }   else {
-            fatalError(.overflow())
+            fatalError(String.overflow())
         }
     }
     

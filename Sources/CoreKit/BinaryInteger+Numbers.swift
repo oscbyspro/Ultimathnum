@@ -21,6 +21,10 @@ extension BinaryInteger {
         self = 0
     }
     
+    @inlinable public init(_ source: consuming Self) {
+        self = source
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=

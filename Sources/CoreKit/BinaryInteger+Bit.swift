@@ -16,12 +16,14 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
+    // NOTE: The compiler wants to convert integer literals to Bit in init(_:).
+    //=------------------------------------------------------------------------=
     
     /// ### Development
     ///
     /// - Note: This method is **important** for performance.
     ///
-    @inlinable public init(_ bit: Bit) {
+    @_disfavoredOverload @inlinable public init(_ bit: Bit) {
         self = Bool(bitPattern: bit) ?  1 : 0
     }
     

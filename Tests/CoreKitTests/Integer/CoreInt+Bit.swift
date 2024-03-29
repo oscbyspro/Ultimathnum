@@ -76,34 +76,36 @@ extension CoreIntTests {
     func testInitElements() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
+            
             for isSigned in [true, false] {
-                Test.elements(Array(ExchangeInt( T.min).bitPattern.source()), isSigned,  isSigned ? T.min : nil)
+                Test.elements(Array(ExchangeInt( T.min).bitPattern.source()), isSigned,  T.min, !isSigned)
                 Test.elements(Array(ExchangeInt( T.max).bitPattern.source()), isSigned,  T.max)
                 
-                Test.elements(Array(ExchangeInt( M.min).bitPattern.source()), isSigned,  00000 as T)
-                Test.elements(Array(ExchangeInt( M.max).bitPattern.source()), isSigned,  isSigned ? -1 as T : nil as T?)
-                Test.elements(Array(ExchangeInt( M.msb).bitPattern.source()), isSigned,  isSigned ?  T .min : nil as T?)
+                Test.elements(Array(ExchangeInt( M.min).bitPattern.source()), isSigned,  T( 0))
+                Test.elements(Array(ExchangeInt( M.max).bitPattern.source()), isSigned,  T(-1), !isSigned)
+                Test.elements(Array(ExchangeInt( M.msb).bitPattern.source()), isSigned,  T.min, !isSigned)
                 Test.elements(Array(ExchangeInt(~M.msb).bitPattern.source()), isSigned, ~T.msb)
                 
-                Test.elements(Array(repeating:  0 as T.Element.Magnitude, count: 2), isSigned, 000 as T?)
-                Test.elements(Array(repeating:  1 as T.Element.Magnitude, count: 2), isSigned, nil as T?)
-                Test.elements(Array(repeating: ~1 as T.Element.Magnitude, count: 2), isSigned, nil as T?)
-                Test.elements(Array(repeating: ~0 as T.Element.Magnitude, count: 2), isSigned, isSigned ? -1 as T : nil as T?)
+                Test.elements(Array(repeating:  0 as T.Element.Magnitude, count: 2), isSigned,  0 as T)
+                Test.elements(Array(repeating:  1 as T.Element.Magnitude, count: 2), isSigned,  1 as T, true)
+                Test.elements(Array(repeating: ~1 as T.Element.Magnitude, count: 2), isSigned, ~1 as T, true)
+                Test.elements(Array(repeating: ~0 as T.Element.Magnitude, count: 2), isSigned, -1 as T, !isSigned)
             }
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
+            
             for isSigned in [true, false] {
-                Test.elements(Array(ExchangeInt( M.min).bitPattern.source()), isSigned,  00000 as T?)
-                Test.elements(Array(ExchangeInt( M.max).bitPattern.source()), isSigned,  isSigned ? nil : T.max as T?)
-                Test.elements(Array(ExchangeInt( M.msb).bitPattern.source()), isSigned,  isSigned ? nil : T.msb as T?)
-                Test.elements(Array(ExchangeInt(~M.msb).bitPattern.source()), isSigned, ~T.msb as T?)
+                Test.elements(Array(ExchangeInt( M.min).bitPattern.source()), isSigned,  T( 0))
+                Test.elements(Array(ExchangeInt( M.max).bitPattern.source()), isSigned,  T.max, isSigned)
+                Test.elements(Array(ExchangeInt( M.msb).bitPattern.source()), isSigned,  T.msb, isSigned)
+                Test.elements(Array(ExchangeInt(~M.msb).bitPattern.source()), isSigned, ~T.msb)
                 
-                Test.elements(Array(repeating:  0 as T.Element.Magnitude, count: 2), isSigned, 000 as T?)
-                Test.elements(Array(repeating:  1 as T.Element.Magnitude, count: 2), isSigned, nil as T?)
-                Test.elements(Array(repeating: ~1 as T.Element.Magnitude, count: 2), isSigned, nil as T?)
-                Test.elements(Array(repeating: ~0 as T.Element.Magnitude, count: 2), isSigned, nil as T?)
+                Test.elements(Array(repeating:  0 as T.Element.Magnitude, count: 2), isSigned,  0 as T)
+                Test.elements(Array(repeating:  1 as T.Element.Magnitude, count: 2), isSigned,  1 as T, true)
+                Test.elements(Array(repeating: ~1 as T.Element.Magnitude, count: 2), isSigned, ~1 as T, true)
+                Test.elements(Array(repeating: ~0 as T.Element.Magnitude, count: 2), isSigned, ~0 as T, true)
             }
         }
         

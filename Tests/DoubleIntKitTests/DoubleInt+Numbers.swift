@@ -21,23 +21,24 @@ extension DoubleIntTests {
     // MARK: Tests x Magnitude
     //=------------------------------------------------------------------------=
     
-    #warning("perform nonoptional comparisons")
     func testInitMagnitude() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias M = T.Magnitude
+            typealias M  = T.Magnitude
+            typealias AR = ArithmeticResult<T>
             
-            XCTAssertEqual(try? T.exactly(magnitude:      0).get(),   000 as T?)
-            XCTAssertEqual(try? T.exactly(magnitude:      1).get(),   001 as T?)
-            XCTAssertEqual(try? T.exactly(magnitude: ~M.msb).get(), T.max as T?)
-            XCTAssertEqual(try? T.exactly(magnitude:  M.msb).get(),   nil as T?)
-            XCTAssertEqual(try? T.exactly(magnitude:  M.max).get(),   nil as T?)
+            XCTAssertEqual(T.exactly(magnitude:  M( 0)), AR(T( 0)))
+            XCTAssertEqual(T.exactly(magnitude:  M( 1)), AR(T( 1)))
+            XCTAssertEqual(T.exactly(magnitude: ~M.msb), AR(T.max))
+            XCTAssertEqual(T.exactly(magnitude:  M.msb), AR(T.msb, error: true))
+            XCTAssertEqual(T.exactly(magnitude:  M.max), AR(T(-1), error: true))
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias M = T.Magnitude
+            typealias M  = T.Magnitude
+            typealias AR = ArithmeticResult<T>
             
-            XCTAssertEqual(try? T.exactly(magnitude:  M.min).get(), T.min as T?)
-            XCTAssertEqual(try? T.exactly(magnitude:  M.max).get(), T.max as T?)
+            XCTAssertEqual(T.exactly(magnitude:  M.min), AR(T.min))
+            XCTAssertEqual(T.exactly(magnitude:  M.max), AR(T.max))
         }
         
         for type in Self.types {
@@ -47,7 +48,8 @@ extension DoubleIntTests {
     
     func testMakeMagnitude() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias M = T.Magnitude
+            typealias M  = T.Magnitude
+            typealias AR = ArithmeticResult<T>
             
             XCTAssertEqual((-1 as T).magnitude,  1 as M)
             XCTAssertEqual(( 0 as T).magnitude,  0 as M)
@@ -56,7 +58,8 @@ extension DoubleIntTests {
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias M = T.Magnitude
+            typealias M  = T.Magnitude
+            typealias AR = ArithmeticResult<T>
             
             XCTAssertEqual(( 0 as T).magnitude, 0 as M)
             XCTAssertEqual(( 1 as T).magnitude, 1 as M)
