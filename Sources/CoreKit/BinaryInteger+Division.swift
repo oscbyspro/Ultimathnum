@@ -48,15 +48,15 @@ extension BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func quotient (_ divisor: borrowing ArithmeticResult<Self>) -> ArithmeticResult<Self> {
+    @inlinable public consuming func quotient (_ divisor: borrowing Fallible<Self>) -> Fallible<Self> {
         self.quotient (divisor.value).combine(divisor.error)
     }
     
-    @inlinable public consuming func remainder(_ divisor: borrowing ArithmeticResult<Self>) -> ArithmeticResult<Self> {
+    @inlinable public consuming func remainder(_ divisor: borrowing Fallible<Self>) -> Fallible<Self> {
         self.remainder(divisor.value).combine(divisor.error)
     }
     
-    @inlinable public consuming func division (_ divisor: borrowing ArithmeticResult<Self>) -> ArithmeticResult<Division<Self, Self>> {
+    @inlinable public consuming func division (_ divisor: borrowing Fallible<Self>) -> Fallible<Division<Self, Self>> {
         self.division (divisor.value).combine(divisor.error)
     }
 }

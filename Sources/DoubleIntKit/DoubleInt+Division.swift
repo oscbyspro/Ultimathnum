@@ -22,16 +22,16 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func quotient (_ divisor: Self) -> ArithmeticResult<Self> {
+    @inlinable public consuming func quotient (_ divisor: Self) -> Fallible<Self> {
         self.division(divisor).map({ $0.quotient  })
     }
     
-    @inlinable public consuming func remainder(_ divisor: Self) -> ArithmeticResult<Self> {
+    @inlinable public consuming func remainder(_ divisor: Self) -> Fallible<Self> {
         self.division(divisor).map({ $0.remainder })
     }
     
-    @inlinable public consuming func division (_ divisor: Self) -> ArithmeticResult<Division<Self, Self>> {
-        typealias T = ArithmeticResult<Division<Self, Self>>
+    @inlinable public consuming func division (_ divisor: Self) -> Fallible<Division<Self, Self>> {
+        typealias T = Fallible<Division<Self, Self>>
         //=--------------------------------------=
         let lhsIsLessThanZero: Bool = self   .isLessThanZero
         let rhsIsLessThanZero: Bool = divisor.isLessThanZero
@@ -56,8 +56,8 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func dividing(_ dividend: consuming DoubleIntLayout<Self>, by divisor: Self) -> ArithmeticResult<Division<Self, Self>> {
-        typealias T = ArithmeticResult<Division<Self, Self>>
+    @inlinable public static func dividing(_ dividend: consuming DoubleIntLayout<Self>, by divisor: Self) -> Fallible<Division<Self, Self>> {
+        typealias T = Fallible<Division<Self, Self>>
         //=--------------------------------------=
         let lhsIsLessThanZero: Bool = dividend.high.isLessThanZero
         let rhsIsLessThanZero: Bool = (((divisor))).isLessThanZero
@@ -90,16 +90,16 @@ extension DoubleInt where Base == Base.Magnitude {
     //=------------------------------------------------------------------------=
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
-    @inlinable static func _divide2222(_ lhs: consuming Self, by rhs: borrowing Self) -> ArithmeticResult<Division<Self, Self>> {
+    @inlinable static func _divide2222(_ lhs: consuming Self, by rhs: borrowing Self) -> Fallible<Division<Self, Self>> {
         let shift = rhs.count(0, option: .descending)
         //=--------------------------------------=
         // divisor is zero
         //=--------------------------------------=
         if  shift.load(as: UX.self) == UX(bitWidth: Self.self) {
-            return ArithmeticResult.failure(Division(quotient: 0, remainder: lhs))
+            return Fallible.failure(Division(quotient: 0, remainder: lhs))
         }
         //=--------------------------------------=
-        return ArithmeticResult.success(Self._divide2222(lhs, by: rhs, shift: shift))
+        return Fallible.success(Self._divide2222(lhs, by: rhs, shift: shift))
     }
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
@@ -146,13 +146,13 @@ extension DoubleInt where Base == Base.Magnitude {
     //=------------------------------------------------------------------------=
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
-    @inlinable static func _divide4222(_ lhs: consuming DoubleIntLayout<Self>, by rhs: borrowing Self) -> ArithmeticResult<Division<Self, Self>> {
+    @inlinable static func _divide4222(_ lhs: consuming DoubleIntLayout<Self>, by rhs: borrowing Self) -> Fallible<Division<Self, Self>> {
         let shift = rhs.count(0, option: .descending)
         //=--------------------------------------=
         // divisor is zero
         //=--------------------------------------=
         if  shift.load(as: UX.self) == UX(bitWidth: Self.self) {
-            return ArithmeticResult.failure(Division(quotient: 0, remainder: lhs.low))
+            return Fallible.failure(Division(quotient: 0, remainder: lhs.low))
         }
         //=--------------------------------------=
         var overflow = false
@@ -164,7 +164,7 @@ extension DoubleInt where Base == Base.Magnitude {
             lhs.high = Self._divide2222(lhs.high, by: rhs, shift: shift).remainder
         }
         //=--------------------------------------=
-        return ArithmeticResult(Self._divide4222(lhs, by: rhs, shift: shift), error: overflow)
+        return Fallible(Self._divide4222(lhs, by: rhs, shift: shift), error: overflow)
     }
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.

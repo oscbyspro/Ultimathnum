@@ -19,7 +19,7 @@ extension MinimiInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func plus(_ increment: Self) -> ArithmeticResult<Self> {
-        ArithmeticResult(self ^ increment, error: Bool(bitPattern: self & increment))
+    @inlinable public func plus(_ increment: Self) -> Fallible<Self> {
+        Fallible(self ^ increment, error: Bool(bitPattern: self & increment))
     }
 }

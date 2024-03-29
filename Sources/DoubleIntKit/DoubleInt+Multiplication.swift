@@ -19,16 +19,16 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func squared() -> ArithmeticResult<Self> {
+    @inlinable public consuming func squared() -> Fallible<Self> {
         self.times(copy self)
     }
     
-    @inlinable public func times(_ other: Self) -> ArithmeticResult<Self> {
+    @inlinable public func times(_ other: Self) -> Fallible<Self> {
         let lhsIsLessThanZero: Bool = self .isLessThanZero
         let rhsIsLessThanZero: Bool = other.isLessThanZero
         let minus = lhsIsLessThanZero != rhsIsLessThanZero
         //=--------------------------------------=
-        var result = ArithmeticResult<Self>(bitPattern: self.magnitude._times(other.magnitude))
+        var result = Fallible<Self>(bitPattern: self.magnitude._times(other.magnitude))
         //=--------------------------------------=
         var suboverflow = (result.value.isLessThanZero)
         if  minus {
@@ -68,7 +68,7 @@ extension DoubleInt where Base == Base.Magnitude {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inline(__always) @inlinable internal consuming func _times(_ other: Self) -> ArithmeticResult<Self> {
+    @inline(__always) @inlinable internal consuming func _times(_ other: Self) -> Fallible<Self> {
         var ax = Base.multiplying(self.low, by: other.low)
         let ay = self.low .times(other.high)
         let bx = self.high.times(other.low )
@@ -77,7 +77,7 @@ extension DoubleInt where Base == Base.Magnitude {
         let o0 = ax.high.capture({ $0.plus(ay.value) })
         let o1 = ax.high.capture({ $0.plus(bx.value) })
         //=--------------------------------------=
-        return ArithmeticResult(Self(ax), error: by || ay.error || bx.error || o0 || o1)
+        return Fallible(Self(ax), error: by || ay.error || bx.error || o0 || o1)
     }
     
     //=------------------------------------------------------------------------=

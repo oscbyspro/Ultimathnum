@@ -33,7 +33,7 @@ extension Test {
     public static func additionAsSomeBinaryInteger<T: BinaryInteger>(
     _ lhs: T, _ rhs: T, _ value: T, _ error: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
-        let result = ArithmeticResult(value, error: error)
+        let result = Fallible(value, error: error)
         //=--------------------------------------=
         brr: do {
             XCTAssertEqual(lhs &+ rhs, value, file: file, line: line)
@@ -57,16 +57,16 @@ extension Test {
         //=--------------------------------------=
         brr: do {
             XCTAssertEqual(result, lhs.plus(rhs), file: file, line: line)
-            XCTAssertEqual(result, lhs.plus(ArithmeticResult(rhs)), file: file, line: line)
-            XCTAssertEqual(result, ArithmeticResult(lhs).plus(rhs), file: file, line: line)
-            XCTAssertEqual(result, ArithmeticResult(lhs).plus(ArithmeticResult(rhs)), file: file, line: line)
+            XCTAssertEqual(result, lhs.plus(Fallible(rhs)), file: file, line: line)
+            XCTAssertEqual(result, Fallible(lhs).plus(rhs), file: file, line: line)
+            XCTAssertEqual(result, Fallible(lhs).plus(Fallible(rhs)), file: file, line: line)
         }
         
         brr: do {
             XCTAssertEqual(result, rhs.plus(lhs), file: file, line: line)
-            XCTAssertEqual(result, rhs.plus(ArithmeticResult(lhs)), file: file, line: line)
-            XCTAssertEqual(result, ArithmeticResult(rhs).plus(lhs), file: file, line: line)
-            XCTAssertEqual(result, ArithmeticResult(rhs).plus(ArithmeticResult(lhs)), file: file, line: line)
+            XCTAssertEqual(result, rhs.plus(Fallible(lhs)), file: file, line: line)
+            XCTAssertEqual(result, Fallible(rhs).plus(lhs), file: file, line: line)
+            XCTAssertEqual(result, Fallible(rhs).plus(Fallible(lhs)), file: file, line: line)
         }
     }
 }
@@ -83,9 +83,9 @@ extension Test {
     
     public static func incrementation<T: BinaryInteger>(_ instance: T, _ value: T, _ error: Bool = false, file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
-        let result = ArithmeticResult(value, error: error)
+        let result = Fallible(value, error: error)
         //=--------------------------------------=
         XCTAssertEqual(result, instance.incremented(), file: file, line: line)
-        XCTAssertEqual(result, ArithmeticResult(instance).incremented(), file: file, line: line)
+        XCTAssertEqual(result, Fallible(instance).incremented(), file: file, line: line)
     }
 }

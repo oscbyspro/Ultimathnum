@@ -21,7 +21,7 @@ extension BinaryInteger {
         self = try map(self)
     }
     
-    @inlinable public mutating func capture(_ map: (Self) throws -> ArithmeticResult<Self>) rethrows -> Bool {
+    @inlinable public mutating func capture(_ map: (Self) throws -> Fallible<Self>) rethrows -> Bool {
         let overflow: Bool
         (self, overflow) = try map(self).components
         return overflow

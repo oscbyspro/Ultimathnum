@@ -47,7 +47,7 @@ extension Test {
     public static func multiplicationAsSomeBinaryInteger<T: BinaryInteger>(
     _ lhs: T, _ rhs: T, _ value: T, _ error: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
-        let result = ArithmeticResult(value, error: error)
+        let result = Fallible(value, error: error)
         //=--------------------------------------=
         brr: do {
             XCTAssertEqual(lhs &* rhs, value, file: file, line: line)
@@ -67,26 +67,26 @@ extension Test {
         //=--------------------------------------=
         brr: do {
             XCTAssertEqual(result, lhs.times(rhs), file: file, line: line)
-            XCTAssertEqual(result, lhs.times(ArithmeticResult(rhs)), file: file, line: line)
-            XCTAssertEqual(result, ArithmeticResult(lhs).times(rhs), file: file, line: line)
-            XCTAssertEqual(result, ArithmeticResult(lhs).times(ArithmeticResult(rhs)), file: file, line: line)
+            XCTAssertEqual(result, lhs.times(Fallible(rhs)), file: file, line: line)
+            XCTAssertEqual(result, Fallible(lhs).times(rhs), file: file, line: line)
+            XCTAssertEqual(result, Fallible(lhs).times(Fallible(rhs)), file: file, line: line)
         }
         
         brr: do {
             XCTAssertEqual(result, rhs.times(lhs), file: file, line: line)
-            XCTAssertEqual(result, rhs.times(ArithmeticResult(lhs)), file: file, line: line)
-            XCTAssertEqual(result, ArithmeticResult(rhs).times(lhs), file: file, line: line)
-            XCTAssertEqual(result, ArithmeticResult(rhs).times(ArithmeticResult(lhs)), file: file, line: line)
+            XCTAssertEqual(result, rhs.times(Fallible(lhs)), file: file, line: line)
+            XCTAssertEqual(result, Fallible(rhs).times(lhs), file: file, line: line)
+            XCTAssertEqual(result, Fallible(rhs).times(Fallible(lhs)), file: file, line: line)
         }
         //=--------------------------------------=
         if  lhs == rhs {
             XCTAssertEqual(result, rhs.squared(), file: file, line: line)
-            XCTAssertEqual(result, ArithmeticResult(lhs).squared(), file: file, line: line)
+            XCTAssertEqual(result, Fallible(lhs).squared(), file: file, line: line)
         }
         
         if  lhs == rhs {
             XCTAssertEqual(result, rhs.squared(), file: file, line: line)
-            XCTAssertEqual(result, ArithmeticResult(rhs).squared(), file: file, line: line)
+            XCTAssertEqual(result, Fallible(rhs).squared(), file: file, line: line)
         }
     }
 }

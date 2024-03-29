@@ -19,7 +19,7 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
 
-    @inlinable public consuming func plus(_ increment: Self) -> ArithmeticResult<Self> {
+    @inlinable public consuming func plus(_ increment: Self) -> Fallible<Self> {
         var overflow = self.low.capture {
             $0.plus(increment.low)
         }
@@ -32,6 +32,6 @@ extension DoubleInt {
             $0.plus(increment.high)
         }
         
-        return ArithmeticResult(self, error: overflow)
+        return Fallible(self, error: overflow)
     }
 }

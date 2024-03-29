@@ -32,7 +32,7 @@ extension BinaryInteger {
     @inlinable public static func exactly(
         sign: consuming Sign = .plus,
         magnitude: consuming Magnitude
-    )   -> ArithmeticResult<Self> {
+    )   -> Fallible<Self> {
         //=--------------------------------------=
         var isLessThanZero = Bool(bitPattern: sign)
         if  isLessThanZero {
@@ -41,7 +41,7 @@ extension BinaryInteger {
         //=--------------------------------------=
         let value = Self(bitPattern: consume magnitude)
         //=--------------------------------------=
-        return ArithmeticResult(value, error: value.isLessThanZero != isLessThanZero)
+        return Fallible(value, error: value.isLessThanZero != isLessThanZero)
     }
     
     //=------------------------------------------------------------------------=
@@ -59,14 +59,14 @@ extension BinaryInteger {
     
     @inlinable public static func exactly<T>(
         _ source: consuming T
-    )   -> ArithmeticResult<Self> where T: BinaryInteger {
+    )   -> Fallible<Self> where T: BinaryInteger {
         Self.exactly(elements: ExchangeInt(source), isSigned: T.isSigned)
     }
     
     @inlinable public static func exactly<T>(
         elements: consuming ExchangeInt<T, Element>.BitPattern,
         isSigned: consuming Bool
-    )   -> ArithmeticResult<Self> {
+    )   -> Fallible<Self> {
         let appendix = elements.appendix.bit
         var (stream) = elements.stream()
         
@@ -75,6 +75,6 @@ extension BinaryInteger {
         && (Self.isSigned == isSigned || appendix == Bit.zero)
         && stream.succinct().count == Int.zero
         
-        return ArithmeticResult(value, error: !success)
+        return Fallible(value, error: !success)
     }
 }

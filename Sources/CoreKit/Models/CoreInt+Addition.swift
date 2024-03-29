@@ -17,8 +17,8 @@ extension CoreInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func plus(_ increment: borrowing Self) -> ArithmeticResult<Self> {
+    @inlinable public consuming func plus(_ increment: borrowing Self) -> Fallible<Self> {
         let result = self.base.addingReportingOverflow(increment.base)
-        return ArithmeticResult(Self(result.partialValue), error: result.overflow)
+        return Fallible(Self(result.partialValue), error: result.overflow)
     }
 }

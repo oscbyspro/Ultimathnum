@@ -18,14 +18,14 @@ extension Division where Quotient: BinaryInteger, Remainder: BinaryInteger {
     //=------------------------------------------------------------------------=
     
     /// Increments the `quotient` if the `remainder` is positive.
-    @inlinable public consuming func ceil() -> ArithmeticResult<Quotient> {
+    @inlinable public consuming func ceil() -> Fallible<Quotient> {
         let instance: Self = consume self
         let increment: Quotient = instance.remainder > 0 ?  1 : 0
         return (consume instance).quotient.plus(increment)
     }
     
     /// Decrements the `quotient` if the `remainder` is negative.
-    @inlinable public consuming func floor() -> ArithmeticResult<Quotient> {
+    @inlinable public consuming func floor() -> Fallible<Quotient> {
         let instance: Self = consume self
         let increment: Quotient = instance.remainder < 0 ? -1 : 0
         return (consume instance).quotient.plus(increment)

@@ -8,21 +8,25 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Arithmetic Result x Addition
+// MARK: * Fallible x Subtraction
 //*============================================================================*
 
-extension ArithmeticResult where Value: BinaryInteger {
+extension Fallible where Value: BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func plus(_ other: borrowing Value) -> Self {
-        self.value.plus(other).combine(self.error)
+    @inlinable public consuming func negated() -> Self {
+        self.value.negated().combine(self.error)
     }
     
-    @inlinable public consuming func plus(_ other: borrowing Self ) -> Self {
-        self.value.plus(other).combine(self.error)
+    @inlinable public consuming func minus(_ other: borrowing Value) -> Self {
+        self.value.minus(other).combine(self.error)
+    }
+    
+    @inlinable public consuming func minus(_ other: borrowing Self ) -> Self {
+        self.value.minus(other).combine(self.error)
     }
 }
 
@@ -30,17 +34,17 @@ extension ArithmeticResult where Value: BinaryInteger {
 // MARK: + Stride by 1
 //=----------------------------------------------------------------------------=
 
-extension ArithmeticResult where Value: BinaryInteger {
+extension Fallible where Value: BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// The next value in arithmetic progression.
+    /// The previous value in arithmetic progression.
     ///
     /// - Note: It works with **0-bit** and **1-bit** integers.
     ///
-    @inlinable public consuming func incremented() -> Self {
-        self.value.incremented().combine(self.error)
+    @inlinable public consuming func decremented() -> Self {
+        self.value.decremented().combine(self.error)
     }
 }

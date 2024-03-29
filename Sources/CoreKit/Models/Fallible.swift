@@ -8,11 +8,12 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Arithmetic Result
+// MARK: * Fallible
 //*============================================================================*
 
-@frozen public struct ArithmeticResult<Value> {
-        
+/// A wrapped `value` and an `error` indicator.
+@frozen public struct Fallible<Value> {
+    
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
@@ -51,21 +52,18 @@
         }
     }
     
-    /// ### Development
-    ///
-    /// - TODO: `Bool.or(_:_;)`
-    ///
+    /// Merges the current error and the new error in a branchless way.
     @inlinable public consuming func combine(_ error: Bool) -> Self {
         let a  = Swift.unsafeBitCast(self.error, to: UInt8.self)
         let b  = Swift.unsafeBitCast(/*-*/error, to: UInt8.self)
         return Self(self.value, error: Swift.unsafeBitCast(a | b, to: Bool.self))
     }
     
-    @inlinable public consuming func map<T>(_ map: (Value) -> T) -> ArithmeticResult<T> {
-        ArithmeticResult<T>(map(self.value), error: self.error)
+    @inlinable public consuming func map<T>(_ map: (Value) -> T) -> Fallible<T> {
+        Fallible<T>(map(self.value), error: self.error)
     }
     
-    @inlinable public consuming func map<T>(_ map: (Value) -> ArithmeticResult<T>) -> ArithmeticResult<T> {
+    @inlinable public consuming func map<T>(_ map: (Value) -> Fallible<T>) -> Fallible<T> {
         map(self.value).combine(self.error)
     }
     
@@ -75,15 +73,15 @@
     
     @inlinable public consuming func get() throws -> Value {
         if  self.error {
-            throw  ArithmeticError()
+            throw  Overflow()
         }   else {
             return self.value
         }
     }
     
-    @inlinable public consuming func result() -> Result<Value, ArithmeticError> {
+    @inlinable public consuming func result() -> Result<Value, Overflow> {
         if  self.error {
-            return Result.failure(ArithmeticError())
+            return Result.failure(Overflow())
         }   else {
             return Result.success(self.value)
         }
@@ -97,12 +95,16 @@
         }
     }
     
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
     @inlinable public consuming func unwrap(file: StaticString = #file, line: UInt = #line) -> Value {
         if  self.error {
             Swift.preconditionFailure(file: file, line: line)
-        }   else {
-            return self.value
         }
+        
+        return self.value
     }
     
     @inlinable public consuming func assert(file: StaticString = #file, line: UInt = #line) -> Value {
@@ -118,4 +120,4 @@
 // MARK: + Equatable
 //=----------------------------------------------------------------------------=
 
-extension ArithmeticResult: Equatable where Value: Equatable { }
+extension Fallible: Equatable where Value: Equatable { }

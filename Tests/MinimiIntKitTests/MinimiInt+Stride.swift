@@ -22,43 +22,43 @@ extension MinimiIntTests {
     
     func testStrideAdvancedBy() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias AR = ArithmeticResult
+            typealias F = Fallible<T>
             
-            XCTAssertEqual(T.advanced(-1 as T, by:  IX .min), AR(-1 as T, error: true))
-            XCTAssertEqual(T.advanced(-1 as T, by: -2 as IX), AR(-1 as T, error: true))
-            XCTAssertEqual(T.advanced(-1 as T, by: -1 as IX), AR( 0 as T, error: true))
-            XCTAssertEqual(T.advanced(-1 as T, by:  0 as IX), AR(-1 as T))
-            XCTAssertEqual(T.advanced(-1 as T, by:  1 as IX), AR( 0 as T))
-            XCTAssertEqual(T.advanced(-1 as T, by:  2 as IX), AR(-1 as T, error: true))
-            XCTAssertEqual(T.advanced(-1 as T, by:  IX .max), AR( 0 as T, error: true))
+            XCTAssertEqual(T.advanced(-1 as T, by:  IX .min), F(-1 as T, error: true))
+            XCTAssertEqual(T.advanced(-1 as T, by: -2 as IX), F(-1 as T, error: true))
+            XCTAssertEqual(T.advanced(-1 as T, by: -1 as IX), F( 0 as T, error: true))
+            XCTAssertEqual(T.advanced(-1 as T, by:  0 as IX), F(-1 as T))
+            XCTAssertEqual(T.advanced(-1 as T, by:  1 as IX), F( 0 as T))
+            XCTAssertEqual(T.advanced(-1 as T, by:  2 as IX), F(-1 as T, error: true))
+            XCTAssertEqual(T.advanced(-1 as T, by:  IX .max), F( 0 as T, error: true))
             
-            XCTAssertEqual(T.advanced( 0 as T, by:  IX .min), AR( 0 as T, error: true))
-            XCTAssertEqual(T.advanced( 0 as T, by: -2 as IX), AR( 0 as T, error: true))
-            XCTAssertEqual(T.advanced( 0 as T, by: -1 as IX), AR(-1 as T))
-            XCTAssertEqual(T.advanced( 0 as T, by:  0 as IX), AR( 0 as T))
-            XCTAssertEqual(T.advanced( 0 as T, by:  1 as IX), AR(-1 as T, error: true))
-            XCTAssertEqual(T.advanced( 0 as T, by:  2 as IX), AR( 0 as T, error: true))
-            XCTAssertEqual(T.advanced( 0 as T, by:  IX .max), AR(-1 as T, error: true))
+            XCTAssertEqual(T.advanced( 0 as T, by:  IX .min), F( 0 as T, error: true))
+            XCTAssertEqual(T.advanced( 0 as T, by: -2 as IX), F( 0 as T, error: true))
+            XCTAssertEqual(T.advanced( 0 as T, by: -1 as IX), F(-1 as T))
+            XCTAssertEqual(T.advanced( 0 as T, by:  0 as IX), F( 0 as T))
+            XCTAssertEqual(T.advanced( 0 as T, by:  1 as IX), F(-1 as T, error: true))
+            XCTAssertEqual(T.advanced( 0 as T, by:  2 as IX), F( 0 as T, error: true))
+            XCTAssertEqual(T.advanced( 0 as T, by:  IX .max), F(-1 as T, error: true))
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias AR = ArithmeticResult
+            typealias F = Fallible<T>
             
-            XCTAssertEqual(T.advanced( 0 as T, by:  IX .min), AR( 0 as T, error: true))
-            XCTAssertEqual(T.advanced( 0 as T, by: -2 as IX), AR( 0 as T, error: true))
-            XCTAssertEqual(T.advanced( 0 as T, by: -1 as IX), AR( 1 as T, error: true))
-            XCTAssertEqual(T.advanced( 0 as T, by:  0 as IX), AR( 0 as T))
-            XCTAssertEqual(T.advanced( 0 as T, by:  1 as IX), AR( 1 as T))
-            XCTAssertEqual(T.advanced( 0 as T, by:  2 as IX), AR( 0 as T, error: true))
-            XCTAssertEqual(T.advanced( 0 as T, by:  IX .max), AR( 1 as T, error: true))
+            XCTAssertEqual(T.advanced( 0 as T, by:  IX .min), F( 0 as T, error: true))
+            XCTAssertEqual(T.advanced( 0 as T, by: -2 as IX), F( 0 as T, error: true))
+            XCTAssertEqual(T.advanced( 0 as T, by: -1 as IX), F( 1 as T, error: true))
+            XCTAssertEqual(T.advanced( 0 as T, by:  0 as IX), F( 0 as T))
+            XCTAssertEqual(T.advanced( 0 as T, by:  1 as IX), F( 1 as T))
+            XCTAssertEqual(T.advanced( 0 as T, by:  2 as IX), F( 0 as T, error: true))
+            XCTAssertEqual(T.advanced( 0 as T, by:  IX .max), F( 1 as T, error: true))
             
-            XCTAssertEqual(T.advanced( 1 as T, by:  IX .min), AR( 1 as T, error: true))
-            XCTAssertEqual(T.advanced( 1 as T, by: -2 as IX), AR( 1 as T, error: true))
-            XCTAssertEqual(T.advanced( 1 as T, by: -1 as IX), AR( 0 as T))
-            XCTAssertEqual(T.advanced( 1 as T, by:  0 as IX), AR( 1 as T))
-            XCTAssertEqual(T.advanced( 1 as T, by:  1 as IX), AR( 0 as T, error: true))
-            XCTAssertEqual(T.advanced( 1 as T, by:  2 as IX), AR( 1 as T, error: true))
-            XCTAssertEqual(T.advanced( 1 as T, by:  IX .max), AR( 0 as T, error: true))
+            XCTAssertEqual(T.advanced( 1 as T, by:  IX .min), F( 1 as T, error: true))
+            XCTAssertEqual(T.advanced( 1 as T, by: -2 as IX), F( 1 as T, error: true))
+            XCTAssertEqual(T.advanced( 1 as T, by: -1 as IX), F( 0 as T))
+            XCTAssertEqual(T.advanced( 1 as T, by:  0 as IX), F( 1 as T))
+            XCTAssertEqual(T.advanced( 1 as T, by:  1 as IX), F( 0 as T, error: true))
+            XCTAssertEqual(T.advanced( 1 as T, by:  2 as IX), F( 1 as T, error: true))
+            XCTAssertEqual(T.advanced( 1 as T, by:  IX .max), F( 0 as T, error: true))
         }
         
         for type in Self.types {
@@ -68,21 +68,21 @@ extension MinimiIntTests {
     
     func testStrideDistanceTo() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias AR = ArithmeticResult
+            typealias F = Fallible
             
-            XCTAssertEqual(T.distance(-1 as T, to: -1 as T, as: IX.self), AR( 0 as IX))
-            XCTAssertEqual(T.distance(-1 as T, to:  0 as T, as: IX.self), AR( 1 as IX))
-            XCTAssertEqual(T.distance( 0 as T, to: -1 as T, as: IX.self), AR(-1 as IX))
-            XCTAssertEqual(T.distance( 0 as T, to:  0 as T, as: IX.self), AR( 0 as IX))
+            XCTAssertEqual(T.distance(-1 as T, to: -1 as T, as: IX.self), F( 0 as IX))
+            XCTAssertEqual(T.distance(-1 as T, to:  0 as T, as: IX.self), F( 1 as IX))
+            XCTAssertEqual(T.distance( 0 as T, to: -1 as T, as: IX.self), F(-1 as IX))
+            XCTAssertEqual(T.distance( 0 as T, to:  0 as T, as: IX.self), F( 0 as IX))
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias AR = ArithmeticResult
+            typealias F = Fallible
             
-            XCTAssertEqual(T.distance( 0 as T, to:  0 as T, as: IX.self), AR( 0 as IX))
-            XCTAssertEqual(T.distance( 0 as T, to:  1 as T, as: IX.self), AR( 1 as IX))
-            XCTAssertEqual(T.distance( 1 as T, to:  0 as T, as: IX.self), AR(-1 as IX))
-            XCTAssertEqual(T.distance( 1 as T, to:  1 as T, as: IX.self), AR( 0 as IX))
+            XCTAssertEqual(T.distance( 0 as T, to:  0 as T, as: IX.self), F( 0 as IX))
+            XCTAssertEqual(T.distance( 0 as T, to:  1 as T, as: IX.self), F( 1 as IX))
+            XCTAssertEqual(T.distance( 1 as T, to:  0 as T, as: IX.self), F(-1 as IX))
+            XCTAssertEqual(T.distance( 1 as T, to:  1 as T, as: IX.self), F( 0 as IX))
         }
         
         for type in Self.types {

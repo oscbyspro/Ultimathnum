@@ -8,14 +8,22 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Arithmetic Error
+// MARK: * Fallible x Bit
 //*============================================================================*
 
-@frozen public struct ArithmeticError: Swift.Error {
+extension Fallible: BitCastable where Value: BitCastable {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init() { }
+    @inlinable public init(bitPattern: consuming Fallible<Value.BitPattern>) {
+        self.init(Value(bitPattern: bitPattern.value), error: bitPattern.error)
+    }
+    
+    @inlinable public var bitPattern: Fallible<Value.BitPattern> {
+        consuming get {
+            Fallible<Value.BitPattern>(Value.BitPattern(bitPattern: self.value), error: self.error)
+        }
+    }
 }

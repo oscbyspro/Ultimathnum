@@ -17,13 +17,13 @@ extension CoreInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func negated() -> ArithmeticResult<Self> {
-        let result = (~self).plus(1) as ArithmeticResult<Self>
-        return ArithmeticResult(result.value, error: result.error == Self.isSigned)
+    @inlinable public consuming func negated() -> Fallible<Self> {
+        let result = (~self).plus(1) as Fallible<Self>
+        return Fallible(result.value, error: result.error == Self.isSigned)
     }
     
-    @inlinable public consuming func minus(_ decrement: borrowing Self) -> ArithmeticResult<Self> {
+    @inlinable public consuming func minus(_ decrement: borrowing Self) -> Fallible<Self> {
         let result = self.base.subtractingReportingOverflow(decrement.base)
-        return ArithmeticResult(Self(result.partialValue), error: result.overflow)
+        return Fallible(Self(result.partialValue), error: result.overflow)
     }
 }

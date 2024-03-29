@@ -19,37 +19,37 @@ extension MinimiInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func quotient (_ divisor: Self) -> ArithmeticResult<Self> {
+    @inlinable public func quotient (_ divisor: Self) -> Fallible<Self> {
         let error = Self(bitPattern: Self.isSigned) & self | ~divisor
         let value = self &  divisor
-        return ArithmeticResult(value, error: Bool(bitPattern: error))
+        return Fallible(value, error: Bool(bitPattern: error))
     }
         
-    @inlinable public func remainder(_ divisor: Self) -> ArithmeticResult<Self> {
+    @inlinable public func remainder(_ divisor: Self) -> Fallible<Self> {
         let error = Self(bitPattern: Self.isSigned) & self | ~divisor
         let value = self & ~divisor
-        return ArithmeticResult(value, error: Bool(bitPattern: error))
+        return Fallible(value, error: Bool(bitPattern: error))
     }
     
-    @inlinable public func division(_ divisor: Self) -> ArithmeticResult<Division<Self, Self>> {
+    @inlinable public func division(_ divisor: Self) -> Fallible<Division<Self, Self>> {
         let error = Self(bitPattern: Self.isSigned) & self | ~divisor
         let value = Division(
             quotient:  self &  divisor,
             remainder: self & ~divisor
         )
-        return ArithmeticResult(value, error: Bool(bitPattern: error))
+        return Fallible(value, error: Bool(bitPattern: error))
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func dividing(_ dividend: DoubleIntLayout<Self>, by divisor: Self) -> ArithmeticResult<Division<Self, Self>> {
+    @inlinable public static func dividing(_ dividend: DoubleIntLayout<Self>, by divisor: Self) -> Fallible<Division<Self, Self>> {
         let error = dividend.high | ~divisor
         let value = Division(
             quotient:  Self(bitPattern: dividend.low) &  divisor,
             remainder: Self(bitPattern: dividend.low) & ~divisor
         )
-        return ArithmeticResult(value, error: Bool(bitPattern: error))
+        return Fallible(value, error: Bool(bitPattern: error))
     }
 }

@@ -22,17 +22,17 @@ extension MinimiIntTests {
     
     func testInitMagnitude() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias AR = ArithmeticResult<T>
+            typealias F = Fallible<T>
             
-            XCTAssertEqual(T.exactly(magnitude: 0), AR( 0))
-            XCTAssertEqual(T.exactly(magnitude: 1), AR(-1, error: true))
+            XCTAssertEqual(T.exactly(magnitude: 0), F( 0))
+            XCTAssertEqual(T.exactly(magnitude: 1), F(-1, error: true))
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias AR = ArithmeticResult<T>
+            typealias F = Fallible<T>
 
-            XCTAssertEqual(T.exactly(magnitude: 0), AR( 0))
-            XCTAssertEqual(T.exactly(magnitude: 1), AR( 1))
+            XCTAssertEqual(T.exactly(magnitude: 0), F( 0))
+            XCTAssertEqual(T.exactly(magnitude: 1), F( 1))
         }
         
         for type in Self.types {
@@ -41,16 +41,12 @@ extension MinimiIntTests {
     }
     
     func testMakeMagnitude() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias AR = ArithmeticResult<T>
-            
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {            
             XCTAssertEqual(( 0 as T).magnitude, 0 as T.Magnitude)
             XCTAssertEqual((-1 as T).magnitude, 1 as T.Magnitude)
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias AR = ArithmeticResult<T>
-            
             XCTAssertEqual(( 0 as T).magnitude, 0 as T.Magnitude)
             XCTAssertEqual(( 1 as T).magnitude, 1 as T.Magnitude)
         }

@@ -17,7 +17,7 @@ extension CoreInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func quotient (_ divisor: borrowing Self) -> ArithmeticResult<Self> {
+    @inlinable public consuming func quotient (_ divisor: borrowing Self) -> Fallible<Self> {
         var result = self.base.dividedReportingOverflow(by: divisor.base)
         //=--------------------------------------=
         // Ultimathnum: custom division semantics
@@ -26,26 +26,26 @@ extension CoreInt {
             result.partialValue = 0
         }
         //=--------------------------------------=
-        return ArithmeticResult(Self(result.partialValue), error: result.overflow)
+        return Fallible(Self(result.partialValue), error: result.overflow)
     }
     
-    @inlinable public consuming func remainder(_ divisor: borrowing Self) -> ArithmeticResult<Self> {
+    @inlinable public consuming func remainder(_ divisor: borrowing Self) -> Fallible<Self> {
         let result = self.base.remainderReportingOverflow(dividingBy: divisor.base)
-        return ArithmeticResult(Self(result.partialValue), error: result.overflow)
+        return Fallible(Self(result.partialValue), error: result.overflow)
     }
     
-    @inlinable public consuming func division (_ divisor: borrowing Self) -> ArithmeticResult<Division<Self, Self>> {
+    @inlinable public consuming func division (_ divisor: borrowing Self) -> Fallible<Division<Self, Self>> {
         let quotient  = (copy    self).quotient (divisor)
         let remainder = (consume self).remainder(divisor)
-        return ArithmeticResult(Division(quotient: quotient.value, remainder: remainder.value), error: quotient.error || remainder.error)
+        return Fallible(Division(quotient: quotient.value, remainder: remainder.value), error: quotient.error || remainder.error)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x 2 vs 1
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func dividing(_ dividend: consuming DoubleIntLayout<Self>, by divisor: Self) -> ArithmeticResult<Division<Self, Self>> {
-        typealias T = ArithmeticResult<Division<Self, Self>>
+    @inlinable public static func dividing(_ dividend: consuming DoubleIntLayout<Self>, by divisor: Self) -> Fallible<Division<Self, Self>> {
+        typealias T = Fallible<Division<Self, Self>>
         //=--------------------------------------=
         let lhsIsLessThanZero = dividend.high/**/.isLessThanZero
         let rhsIsLessThanZero = divisor/*------*/.isLessThanZero
@@ -77,10 +77,10 @@ extension CoreInt where Self == Magnitude {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inline(__always) @inlinable static func _dividing(_ dividend: consuming DoubleIntLayout<Self>, by divisor: borrowing Self) -> ArithmeticResult<Division<Self, Self>> {
+    @inline(__always) @inlinable static func _dividing(_ dividend: consuming DoubleIntLayout<Self>, by divisor: borrowing Self) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
         if  divisor == 0 {
-            return ArithmeticResult.failure(Division(quotient: 0, remainder: dividend.low))
+            return Fallible.failure(Division(quotient: 0, remainder: dividend.low))
         }
         //=--------------------------------------=
         var overflow = false
@@ -91,6 +91,6 @@ extension CoreInt where Self == Magnitude {
         }
         //=--------------------------------------=
         let result = divisor.base.dividingFullWidth((high: dividend.high.base, low: dividend.low.base))
-        return ArithmeticResult(Division(quotient: Self(result.quotient), remainder: Self(result.remainder)), error: overflow)
+        return Fallible(Division(quotient: Self(result.quotient), remainder: Self(result.remainder)), error: overflow)
     }
 }

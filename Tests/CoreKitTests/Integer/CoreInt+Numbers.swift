@@ -22,22 +22,22 @@ extension CoreIntTests {
     
     func testInitMagnitude() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias M  = T.Magnitude
-            typealias AR = ArithmeticResult<T>
+            typealias M = T.Magnitude
+            typealias F = Fallible<T>
                         
-            XCTAssertEqual(T.exactly(magnitude:  M( 0)), AR(T( 0)))
-            XCTAssertEqual(T.exactly(magnitude:  M( 1)), AR(T( 1)))
-            XCTAssertEqual(T.exactly(magnitude: ~M.msb), AR(T.max))
-            XCTAssertEqual(T.exactly(magnitude:  M.msb), AR(T.msb, error: true))
-            XCTAssertEqual(T.exactly(magnitude:  M.max), AR(T(-1), error: true))
+            XCTAssertEqual(T.exactly(magnitude:  M( 0)), F(T( 0)))
+            XCTAssertEqual(T.exactly(magnitude:  M( 1)), F(T( 1)))
+            XCTAssertEqual(T.exactly(magnitude: ~M.msb), F(T.max))
+            XCTAssertEqual(T.exactly(magnitude:  M.msb), F(T.msb, error: true))
+            XCTAssertEqual(T.exactly(magnitude:  M.max), F(T(-1), error: true))
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
-            typealias AR = ArithmeticResult<T>
+            typealias F = Fallible<T>
             
-            XCTAssertEqual(T.exactly(magnitude:  M.min), AR(T.min))
-            XCTAssertEqual(T.exactly(magnitude:  M.max), AR(T.max))
+            XCTAssertEqual(T.exactly(magnitude:  M.min), F(T.min))
+            XCTAssertEqual(T.exactly(magnitude:  M.max), F(T.max))
         }
         
         for type in Self.types {

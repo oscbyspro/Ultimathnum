@@ -23,19 +23,19 @@ extension DoubleIntTests {
     
     func testStrideAdvancedBy() {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T  = DoubleInt<Base>
-            typealias AR = ArithmeticResult
+            typealias T = DoubleInt<Base>
+            typealias F = Fallible
             
-            XCTAssertEqual(T.advanced(T.min, by: -1 as IX), AR(T.max, error: true))
-            XCTAssertEqual(T.advanced(T.min, by:  0 as IX), AR(T.min))
-            XCTAssertEqual(T.advanced(T.min, by:  1 as IX), AR(T.min + 1))
-            XCTAssertEqual(T.advanced(T.max, by: -1 as IX), AR(T.max - 1))
-            XCTAssertEqual(T.advanced(T.max, by:  0 as IX), AR(T.max))
-            XCTAssertEqual(T.advanced(T.max, by:  1 as IX), AR(T.min, error: true))
+            XCTAssertEqual(T.advanced(T.min, by: -1 as IX), F(T.max, error: true))
+            XCTAssertEqual(T.advanced(T.min, by:  0 as IX), F(T.min))
+            XCTAssertEqual(T.advanced(T.min, by:  1 as IX), F(T.min + 1))
+            XCTAssertEqual(T.advanced(T.max, by: -1 as IX), F(T.max - 1))
+            XCTAssertEqual(T.advanced(T.max, by:  0 as IX), F(T.max))
+            XCTAssertEqual(T.advanced(T.max, by:  1 as IX), F(T.min, error: true))
             
             if  UX(bitWidth: T.self) < IX.bitWidth {
-                XCTAssertEqual(T.advanced(0 as T, by: IX.min), AR( 0 as T, error: true))
-                XCTAssertEqual(T.advanced(0 as T, by: IX.max), AR(~0 as T, error: true))
+                XCTAssertEqual(T.advanced(0 as T, by: IX.min), F( 0 as T, error: true))
+                XCTAssertEqual(T.advanced(0 as T, by: IX.max), F(~0 as T, error: true))
             }
         }
         
@@ -46,15 +46,15 @@ extension DoubleIntTests {
     
     func testStrideDistanceTo() {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T  = DoubleInt<Base>
-            typealias AR = ArithmeticResult
+            typealias T = DoubleInt<Base>
+            typealias F = Fallible
             
-            XCTAssertEqual(T.distance(T.max, to: T.max.advanced(by: -129), as: I8.self), AR(I8.max, error: true))
-            XCTAssertEqual(T.distance(T.max, to: T.max.advanced(by: -128), as: I8.self), AR(I8.min))
-            XCTAssertEqual(T.distance(T.max, to: T.max.advanced(by: -127), as: I8.self), AR(I8.min + 1))
-            XCTAssertEqual(T.distance(T.min, to: T.min.advanced(by:  126), as: I8.self), AR(I8.max - 1))
-            XCTAssertEqual(T.distance(T.min, to: T.min.advanced(by:  127), as: I8.self), AR(I8.max))
-            XCTAssertEqual(T.distance(T.min, to: T.min.advanced(by:  128), as: I8.self), AR(I8.min, error: true))
+            XCTAssertEqual(T.distance(T.max, to: T.max.advanced(by: -129), as: I8.self), F(I8.max, error: true))
+            XCTAssertEqual(T.distance(T.max, to: T.max.advanced(by: -128), as: I8.self), F(I8.min))
+            XCTAssertEqual(T.distance(T.max, to: T.max.advanced(by: -127), as: I8.self), F(I8.min + 1))
+            XCTAssertEqual(T.distance(T.min, to: T.min.advanced(by:  126), as: I8.self), F(I8.max - 1))
+            XCTAssertEqual(T.distance(T.min, to: T.min.advanced(by:  127), as: I8.self), F(I8.max))
+            XCTAssertEqual(T.distance(T.min, to: T.min.advanced(by:  128), as: I8.self), F(I8.min, error: true))
         }
         
         for base in Self.bases {

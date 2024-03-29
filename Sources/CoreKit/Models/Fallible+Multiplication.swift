@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Arithmetic Result x Multiplication
+// MARK: * Fallible x Multiplication
 //*============================================================================*
 
-extension ArithmeticResult where Value: BinaryInteger {
+extension Fallible where Value: BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

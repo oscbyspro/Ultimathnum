@@ -52,7 +52,7 @@ extension Test {
     public static func elements<Integer: BinaryInteger, Element: SystemsInteger & UnsignedInteger>(
     _ elements: [Element], _ isSigned: Bool, _ value: Integer, _ error: Bool = false, file: StaticString = #file, line: UInt = #line) {
         //=--------------------------------------=
-        let result = ArithmeticResult(value, error: error)
+        let result = Fallible(value, error: error)
         //=--------------------------------------=
         let elements = ExchangeInt(elements, isSigned: isSigned, as: Integer.Element.Magnitude.self)
         //=--------------------------------------=

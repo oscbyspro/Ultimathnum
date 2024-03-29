@@ -19,12 +19,12 @@ extension MinimiInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func squared() -> ArithmeticResult<Self> {
-        ArithmeticResult(self, error: Self.isSigned && Bool(bitPattern: self))
+    @inlinable public func squared() -> Fallible<Self> {
+        Fallible(self, error: Self.isSigned && Bool(bitPattern: self))
     }
     
-    @inlinable public func times(_ multiplier: Self) -> ArithmeticResult<Self> {
-        ArithmeticResult(self & multiplier, error: Self.isSigned && Bool(bitPattern: self & multiplier))
+    @inlinable public func times(_ multiplier: Self) -> Fallible<Self> {
+        Fallible(self & multiplier, error: Self.isSigned && Bool(bitPattern: self & multiplier))
     }
     
     @inlinable public static func multiplying(_ multiplicand: Self, by multiplier: Self) -> DoubleIntLayout<Self> {

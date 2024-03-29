@@ -8,22 +8,15 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Arithmetic Result x Bit
+// MARK: * Overflow
 //*============================================================================*
 
-extension ArithmeticResult: BitCastable where Value: BitCastable {
+/// An overflow error.
+@frozen public struct Overflow: Error {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: consuming ArithmeticResult<Value.BitPattern>) {
-        self.init(Value(bitPattern: bitPattern.value), error: bitPattern.error)
-    }
-    
-    @inlinable public var bitPattern: ArithmeticResult<Value.BitPattern> {
-        consuming get {
-            ArithmeticResult<Value.BitPattern>(Value.BitPattern(bitPattern: self.value), error: self.error)
-        }
-    }
+    @inlinable public init() { }
 }

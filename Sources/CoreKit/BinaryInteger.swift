@@ -89,33 +89,15 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming func plus (_ increment: borrowing Self) -> ArithmeticResult<Self>
+    @inlinable consuming func plus (_ increment: borrowing Self) -> Fallible<Self>
         
-    @inlinable consuming func minus(_ decrement: borrowing Self) -> ArithmeticResult<Self>
+    @inlinable consuming func minus(_ decrement: borrowing Self) -> Fallible<Self>
     
-    @inlinable consuming func negated() -> ArithmeticResult<Self>
+    @inlinable consuming func negated() -> Fallible<Self>
         
-    @inlinable consuming func times(_ multiplier: borrowing Self) -> ArithmeticResult<Self>
+    @inlinable consuming func times(_ multiplier: borrowing Self) -> Fallible<Self>
     
-    @inlinable consuming func squared() -> ArithmeticResult<Self>
-    
-    /// ### Examples
-    ///
-    /// ```
-    /// ┌──────────┬──────── → ─────────┬───────────┬──────────┐
-    /// │ dividend │ divisor │ quotient | remainder │ error    │
-    /// ├──────────┼──────── → ─────────┤───────────┤──────────┤
-    /// │ I8( 7)   │ I8( 3)  │ I8( 2)   │ I8( 0)    │ false    │
-    /// │ I8( 7)   │ I8(-3)  │ I8(-2)   │ I8(-1)    │ false    │
-    /// │ I8(-7)   │ I8( 3)  │ I8(-2)   │ I8(-1)    │ false    │
-    /// │ I8(-7)   │ I8(-3)  │ I8( 2)   │ I8( 0)    │ false    │
-    /// │──────────┤──────── → ─────────┤───────────┤──────────┤
-    /// │ I8( 7)   │ I8( 0)  │ I8( 0)   │ I8( 7)    │ true     │
-    /// │ I8.min   │ I8(-1)  │ I8.min   │ I8( 0)    │ true     │
-    /// └──────────┴──────── → ─────────┴───────────┴──────────┘
-    /// ```
-    ///
-    @inlinable consuming func quotient (_ divisor: borrowing Self) -> ArithmeticResult<Self>
+    @inlinable consuming func squared() -> Fallible<Self>
     
     /// ### Examples
     ///
@@ -133,7 +115,7 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     /// └──────────┴──────── → ─────────┴───────────┴──────────┘
     /// ```
     ///
-    @inlinable consuming func remainder(_ divisor: borrowing Self) -> ArithmeticResult<Self>
+    @inlinable consuming func quotient (_ divisor: borrowing Self) -> Fallible<Self>
     
     /// ### Examples
     ///
@@ -151,7 +133,25 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     /// └──────────┴──────── → ─────────┴───────────┴──────────┘
     /// ```
     ///
-    @inlinable consuming func division (_ divisor: borrowing Self) -> ArithmeticResult<Division<Self, Self>>
+    @inlinable consuming func remainder(_ divisor: borrowing Self) -> Fallible<Self>
+    
+    /// ### Examples
+    ///
+    /// ```
+    /// ┌──────────┬──────── → ─────────┬───────────┬──────────┐
+    /// │ dividend │ divisor │ quotient | remainder │ error    │
+    /// ├──────────┼──────── → ─────────┤───────────┤──────────┤
+    /// │ I8( 7)   │ I8( 3)  │ I8( 2)   │ I8( 0)    │ false    │
+    /// │ I8( 7)   │ I8(-3)  │ I8(-2)   │ I8(-1)    │ false    │
+    /// │ I8(-7)   │ I8( 3)  │ I8(-2)   │ I8(-1)    │ false    │
+    /// │ I8(-7)   │ I8(-3)  │ I8( 2)   │ I8( 0)    │ false    │
+    /// │──────────┤──────── → ─────────┤───────────┤──────────┤
+    /// │ I8( 7)   │ I8( 0)  │ I8( 0)   │ I8( 7)    │ true     │
+    /// │ I8.min   │ I8(-1)  │ I8.min   │ I8( 0)    │ true     │
+    /// └──────────┴──────── → ─────────┴───────────┴──────────┘
+    /// ```
+    ///
+    @inlinable consuming func division (_ divisor: borrowing Self) -> Fallible<Division<Self, Self>>
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

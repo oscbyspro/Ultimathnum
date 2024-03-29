@@ -40,7 +40,7 @@ extension BinaryInteger {
     ///
     /// - TODO: Rework.
     ///
-    @inlinable package static func advanced<T>(_ instance: consuming Self, by distance: T) -> ArithmeticResult<Self> where T: SignedInteger {
+    @inlinable package static func advanced<T>(_ instance: consuming Self, by distance: T) -> Fallible<Self> where T: SignedInteger {
         if  Self.isSigned {
             
             if  ExchangeInt(Self.bitWidth) >= ExchangeInt(T.bitWidth) {
@@ -72,7 +72,7 @@ extension BinaryInteger {
     ///
     /// - TODO: Rework.
     ///
-    @inlinable package static func distance<T>(_ instance: Self, to other: Self, as stride: T.Type) -> ArithmeticResult<T> where T: SignedInteger {
+    @inlinable package static func distance<T>(_ instance: Self, to other: Self, as stride: T.Type) -> Fallible<T> where T: SignedInteger {
         if  Self.isSigned {
             
             if  ExchangeInt(Self.bitWidth) <= ExchangeInt(T.bitWidth) {

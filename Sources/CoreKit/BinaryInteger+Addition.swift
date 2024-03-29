@@ -48,7 +48,7 @@ extension BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func plus(_ result: borrowing ArithmeticResult<Self>) -> ArithmeticResult<Self> {
+    @inlinable public consuming func plus(_ result: borrowing Fallible<Self>) -> Fallible<Self> {
         self.plus(result.value).combine(result.error)
     }
 }
@@ -67,13 +67,13 @@ extension BinaryInteger {
     ///
     /// - Note: It works with **0-bit** and **1-bit** integers.
     ///
-    @inlinable public consuming func incremented() -> ArithmeticResult<Self> {
+    @inlinable public consuming func incremented() -> Fallible<Self> {
         if  let positive = Self.exactly(1).optional() {
             return self.plus (positive)
         }   else if let negative = Self.exactly(-1).optional() {
             return self.minus(negative)
         }   else {
-            return ArithmeticResult.failure(self)
+            return Fallible.failure(self)
         }
     }
 }

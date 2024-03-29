@@ -40,11 +40,11 @@ extension Test {
     public static func divisionAsSomeInteger<T: BinaryInteger>(
     _ dividend: T, _ divisor: T, _ value: Division<T, T>, _ error: Bool, file: StaticString, line: UInt) {
         //=--------------------------------------=
-        let result = ArithmeticResult(value, error: error)
+        let result = Fallible(value, error: error)
         //=--------------------------------------=
         checkSameSizeInverseInvariant: do {
             let lhs = value.remainder.plus(value.quotient.times(divisor)).combine(error)
-            let rhs = ArithmeticResult(dividend, error: error)
+            let rhs = Fallible(dividend, error: error)
             XCTAssertEqual(lhs, rhs, "dividend != divisor &* quotient &+ remainder", file: file, line: line)
         }
         
@@ -65,23 +65,23 @@ extension Test {
         
         quotient: do {
             XCTAssertEqual(result.map(\.quotient), dividend.quotient(divisor), file: file, line: line)
-            XCTAssertEqual(result.map(\.quotient), dividend.quotient(ArithmeticResult(divisor)), file: file, line: line)
-            XCTAssertEqual(result.map(\.quotient), ArithmeticResult(dividend).quotient(divisor), file: file, line: line)
-            XCTAssertEqual(result.map(\.quotient), ArithmeticResult(dividend).quotient(ArithmeticResult(divisor)), file: file, line: line)
+            XCTAssertEqual(result.map(\.quotient), dividend.quotient(Fallible(divisor)), file: file, line: line)
+            XCTAssertEqual(result.map(\.quotient), Fallible(dividend).quotient(divisor), file: file, line: line)
+            XCTAssertEqual(result.map(\.quotient), Fallible(dividend).quotient(Fallible(divisor)), file: file, line: line)
         }
         
         remainder: do {
             XCTAssertEqual(result.map(\.remainder), dividend.remainder(divisor), file: file, line: line)
-            XCTAssertEqual(result.map(\.remainder), dividend.remainder(ArithmeticResult(divisor)), file: file, line: line)
-            XCTAssertEqual(result.map(\.remainder), ArithmeticResult(dividend).remainder(divisor), file: file, line: line)
-            XCTAssertEqual(result.map(\.remainder), ArithmeticResult(dividend).remainder(ArithmeticResult(divisor)), file: file, line: line)
+            XCTAssertEqual(result.map(\.remainder), dividend.remainder(Fallible(divisor)), file: file, line: line)
+            XCTAssertEqual(result.map(\.remainder), Fallible(dividend).remainder(divisor), file: file, line: line)
+            XCTAssertEqual(result.map(\.remainder), Fallible(dividend).remainder(Fallible(divisor)), file: file, line: line)
         }
         
         division: do {
             XCTAssertEqual(result, dividend.division(divisor), file: file, line: line)
-            XCTAssertEqual(result, dividend.division(ArithmeticResult(divisor)), file: file, line: line)
-            XCTAssertEqual(result, ArithmeticResult(dividend).division(divisor), file: file, line: line)
-            XCTAssertEqual(result, ArithmeticResult(dividend).division(ArithmeticResult(divisor)), file: file, line: line)
+            XCTAssertEqual(result, dividend.division(Fallible(divisor)), file: file, line: line)
+            XCTAssertEqual(result, Fallible(dividend).division(divisor), file: file, line: line)
+            XCTAssertEqual(result, Fallible(dividend).division(Fallible(divisor)), file: file, line: line)
         }
     }
 }

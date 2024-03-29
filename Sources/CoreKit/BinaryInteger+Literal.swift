@@ -21,7 +21,7 @@ extension BinaryInteger {
         self = Self.exactly(BigIntLiteral(integerLiteral: integerLiteral)).unwrap()        
     }
     
-    @inlinable public static func exactly(_ source: consuming BigIntLiteral) -> ArithmeticResult<Self> {
+    @inlinable public static func exactly(_ source: consuming BigIntLiteral) -> Fallible<Self> {
         Self.exactly(elements: ExchangeInt(source).reinterpreted(), isSigned: true)
     }
 }

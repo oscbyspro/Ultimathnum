@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Arithmetic Result x Division
+// MARK: * Fallible x Division
 //*============================================================================*
 
-extension ArithmeticResult where Value: BinaryInteger {
+extension Fallible where Value: BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -33,11 +33,11 @@ extension ArithmeticResult where Value: BinaryInteger {
         self.value.remainder(divisor).combine(self.error)
     }
     
-    @inlinable public consuming func division (_ divisor: borrowing Value) -> ArithmeticResult<Division<Value, Value>> {
+    @inlinable public consuming func division (_ divisor: borrowing Value) -> Fallible<Division<Value, Value>> {
         self.value.division (divisor).combine(self.error)
     }
     
-    @inlinable public consuming func division (_ divisor: borrowing Self ) -> ArithmeticResult<Division<Value, Value>> {
+    @inlinable public consuming func division (_ divisor: borrowing Self ) -> Fallible<Division<Value, Value>> {
         self.value.division (divisor).combine(self.error)
     }
 }
