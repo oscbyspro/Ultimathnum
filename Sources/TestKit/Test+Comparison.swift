@@ -20,6 +20,82 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    public func same<T>(
+        _ lhs: T,
+        _ rhs: T,
+        _ message: @autoclosure () -> String = ""
+    )   where T: Equatable {
+        XCTAssertEqual(lhs, rhs, message(), file: file, line: line)
+    }
+    
+    public func nonequal<T>(
+        _ lhs: T,
+        _ rhs: T,
+        _ message: @autoclosure () -> String = ""
+    )   where T: Equatable {
+        XCTAssertNotEqual(lhs, rhs, message(), file: file, line: line)
+    }
+    
+    public func less<T>(
+        _ lhs: T,
+        _ rhs: T,
+        _ message: @autoclosure () -> String = ""
+    )   where T: Comparable {
+        XCTAssertLessThan(lhs, rhs, message(), file: file, line: line)
+    }
+    
+    public func nonless<T>(
+        _ lhs: T,
+        _ rhs: T,
+        _ message: @autoclosure () -> String = ""
+    )   where T: Comparable {
+        XCTAssertGreaterThanOrEqual(lhs, rhs, message(), file: file, line: line)
+    }
+    
+    public func more<T>(
+        _ lhs: T,
+        _ rhs: T,
+        _ message: @autoclosure () -> String = ""
+    )   where T: Comparable {
+        XCTAssertGreaterThan(lhs, rhs, message(), file: file, line: line)
+    }
+    
+    public func nonmore<T>(
+        _ lhs: T,
+        _ rhs: T,
+        _ message: @autoclosure () -> String = ""
+    )   where T: Comparable {
+        XCTAssertLessThanOrEqual(lhs, rhs, message(), file: file, line: line)
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Memory Layout
+//=----------------------------------------------------------------------------=
+
+extension Test {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    public func equal<T, U>(_ lhs: MemoryLayout<T>.Type, _ rhs: MemoryLayout<U>.Type) {
+        same(lhs.size,      rhs.size,      "\(T.self) != \(U.self) - MemoryLayout.size")
+        same(lhs.stride,    rhs.stride,    "\(T.self) != \(U.self) - MemoryLayout.stride")
+        same(lhs.alignment, rhs.alignment, "\(T.self) != \(U.self) - MemoryLayout.alignment")
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Integer
+//=----------------------------------------------------------------------------=
+
+extension Test {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
     public func comparison<T, U>(
         _ lhs: T,
         _ rhs: U, 
@@ -38,49 +114,49 @@ extension Test {
             signum: if rhs.signum() == Signum.same {
                 let result:  Signum = lhs.signum()
                 let success: Bool = result == expectation
-                check(success, "\(lhs).signum() -> \(result)")
+                raw(success, "\(lhs).signum() -> \(result)")
             }
             
             comparison: do {
                 let result:  Signum = lhs.compared(to: rhs)
                 let success: Bool = result == expectation
-                check(success, "\(lhs).compared(to: \(rhs)) -> \(result)")
+                raw(success, "\(lhs).compared(to: \(rhs)) -> \(result)")
             }
             
             less: do {
                 let result:  Bool = lhs < rhs
                 let success: Bool = result == (expectation == .less)
-                check(success, "\(lhs) <  \(rhs) -> \(result)")
+                raw(success, "\(lhs) <  \(rhs) -> \(result)")
             }
             
             same: do {
                 let result:  Bool = lhs == rhs
                 let success: Bool = result == (expectation == .same)
-                check(success, "\(lhs) == \(rhs) -> \(result)")
+                raw(success, "\(lhs) == \(rhs) -> \(result)")
             }
             
             more: do {
                 let result:  Bool = lhs >  rhs
                 let success: Bool = result == (expectation == .more)
-                check(success, "\(lhs) >  \(rhs) -> \(result)")
+                raw(success, "\(lhs) >  \(rhs) -> \(result)")
             }
             
             nonless: do {
                 let result:  Bool = lhs >= rhs
                 let success: Bool = result == (expectation != .less)
-                check(success, "\(lhs) >= \(rhs) -> \(result)")
+                raw(success, "\(lhs) >= \(rhs) -> \(result)")
             }
             
             nonsame: do {
                 let result:  Bool = lhs != rhs
                 let success: Bool = result == (expectation != .same)
-                check(success, "\(lhs) != \(rhs) -> \(result)")
+                raw(success, "\(lhs) != \(rhs) -> \(result)")
             }
             
             nonmore: do {
                 let result:  Bool = lhs <= rhs
                 let success: Bool = result == (expectation != .more)
-                check(success, "\(lhs) <= \(rhs) -> \(result)")
+                raw(success, "\(lhs) <= \(rhs) -> \(result)")
             }
         }
     }
@@ -90,70 +166,53 @@ extension Test {
             signum: if rhs.signum() == Signum.same {
                 let result:  Signum = lhs.signum()
                 let success: Bool = result == expectation
-                check(success, "\(lhs).signum() -> \(result)")
+                raw(success, "\(lhs).signum() -> \(result)")
             }
             
             comparison: do {
                 let result:  Signum = lhs.compared(to: rhs)
                 let success: Bool = result == expectation
-                check(success, "\(lhs).compared(to: \(rhs)) -> \(result)")
+                raw(success, "\(lhs).compared(to: \(rhs)) -> \(result)")
             }
             
             less: do {
                 let result:  Bool = lhs < rhs
                 let success: Bool = result == (expectation == .less)
-                check(success, "\(lhs) <  \(rhs) -> \(result)")
+                raw(success, "\(lhs) <  \(rhs) -> \(result)")
             }
             
             same: do {
                 let result:  Bool = lhs == rhs
                 let success: Bool = result == (expectation == .same)
-                check(success, "\(lhs) == \(rhs) -> \(result)")
+                raw(success, "\(lhs) == \(rhs) -> \(result)")
             }
             
             more: do {
                 let result:  Bool = lhs >  rhs
                 let success: Bool = result == (expectation == .more)
-                check(success, "\(lhs) >  \(rhs) -> \(result)")
+                raw(success, "\(lhs) >  \(rhs) -> \(result)")
             }
             
             nonless: do {
                 let result:  Bool = lhs >= rhs
                 let success: Bool = result == (expectation != .less)
-                check(success, "\(lhs) >= \(rhs) -> \(result)")
+                raw(success, "\(lhs) >= \(rhs) -> \(result)")
             }
             
             nonsame: do {
                 let result:  Bool = lhs != rhs
                 let success: Bool = result == (expectation != .same)
-                check(success, "\(lhs) != \(rhs) -> \(result)")
+                raw(success, "\(lhs) != \(rhs) -> \(result)")
             }
             
             nonmore: do {
                 let result:  Bool = lhs <= rhs
                 let success: Bool = result == (expectation != .more)
-                check(success, "\(lhs) <= \(rhs) -> \(result)")
+                raw(success, "\(lhs) <= \(rhs) -> \(result)")
             }
         }
         
         unidirectional(lhs, rhs, expectation)
         unidirectional(rhs, lhs, expectation.negated())
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Memory Layout
-//=----------------------------------------------------------------------------=
-
-extension Test {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    public func equal<T, U>(_ lhs: MemoryLayout<T>.Type, _ rhs: MemoryLayout<U>.Type) {
-        same(lhs.size,      rhs.size,      "MemoryLayout: \(T.self) != \(U.self) [size]")
-        same(lhs.stride,    rhs.stride,    "MemoryLayout: \(T.self) != \(U.self) [stride]")
-        same(lhs.alignment, rhs.alignment, "MemoryLayout: \(T.self) != \(U.self) [alignment]")
     }
 }

@@ -46,7 +46,7 @@ extension Test {
         //=--------------------------------------=
         let elements = ExchangeInt(integer, as: Element.self).source()
         //=--------------------------------------=
-        check(elements.elementsEqual(expectation), "\(integer).elements -> \(Array(elements))")
+        raw(elements.elementsEqual(expectation), "\(integer).elements -> \(Array(elements))")
         self.elements(Array(elements), Integer.isSigned, Fallible(integer))
     }
     

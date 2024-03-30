@@ -8,32 +8,24 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Test
+// MARK: * Test x Bool
 //*============================================================================*
 
-public struct Test {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: State
-    //=------------------------------------------------------------------------=
-    
-    public let file: StaticString
-    public let line: UInt
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    public init(file: StaticString = #file, line: UInt = #line) {
-        self.file = file
-        self.line = line
-    }
+extension Test {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func fail(_ message: String) {
-        XCTFail(message, file: file, line: line)
+    public func raw(_ instance: Bool, _ message: @autoclosure () -> String = "") {
+        XCTAssert(instance, message(), file: file, line: line)
+    }
+    
+    public func yay(_ instance: Bool, _ message: @autoclosure () -> String = "") {
+        XCTAssertTrue (instance, message(), file: file, line: line)
+    }
+    
+    public func nay(_ instance: Bool, _ message: @autoclosure () -> String = "") {
+        XCTAssertFalse(instance, message(), file: file, line: line)
     }
 }
