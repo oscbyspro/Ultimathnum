@@ -24,8 +24,8 @@ extension MinimiIntTests {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             
-            Test.not(T.min, T.max)
-            Test.not(T.max, T.min)
+            Test().not(T.min, T.max)
+            Test().not(T.max, T.min)
         }
         
         for type in Self.types {
@@ -37,10 +37,10 @@ extension MinimiIntTests {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
                         
-            Test.and(T(bitPattern: 0 as M), T(bitPattern: 0 as M), T(bitPattern: 0 as M))
-            Test.and(T(bitPattern: 1 as M), T(bitPattern: 0 as M), T(bitPattern: 0 as M))
-            Test.and(T(bitPattern: 0 as M), T(bitPattern: 1 as M), T(bitPattern: 0 as M))
-            Test.and(T(bitPattern: 1 as M), T(bitPattern: 1 as M), T(bitPattern: 1 as M))
+            Test().and(T(bitPattern: 0 as M), T(bitPattern: 0 as M), T(bitPattern: 0 as M))
+            Test().and(T(bitPattern: 1 as M), T(bitPattern: 0 as M), T(bitPattern: 0 as M))
+            Test().and(T(bitPattern: 0 as M), T(bitPattern: 1 as M), T(bitPattern: 0 as M))
+            Test().and(T(bitPattern: 1 as M), T(bitPattern: 1 as M), T(bitPattern: 1 as M))
         }
         
         for type in Self.types {
@@ -52,10 +52,10 @@ extension MinimiIntTests {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             
-            Test.or (T(bitPattern: 0 as M), T(bitPattern: 0 as M), T(bitPattern: 0 as M))
-            Test.or (T(bitPattern: 1 as M), T(bitPattern: 0 as M), T(bitPattern: 1 as M))
-            Test.or (T(bitPattern: 0 as M), T(bitPattern: 1 as M), T(bitPattern: 1 as M))
-            Test.or (T(bitPattern: 1 as M), T(bitPattern: 1 as M), T(bitPattern: 1 as M))
+            Test().or (T(bitPattern: 0 as M), T(bitPattern: 0 as M), T(bitPattern: 0 as M))
+            Test().or (T(bitPattern: 1 as M), T(bitPattern: 0 as M), T(bitPattern: 1 as M))
+            Test().or (T(bitPattern: 0 as M), T(bitPattern: 1 as M), T(bitPattern: 1 as M))
+            Test().or (T(bitPattern: 1 as M), T(bitPattern: 1 as M), T(bitPattern: 1 as M))
         }
         
         for type in Self.types {
@@ -67,10 +67,10 @@ extension MinimiIntTests {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             
-            Test.xor(T(bitPattern: 0 as M), T(bitPattern: 0 as M), T(bitPattern: 0 as M))
-            Test.xor(T(bitPattern: 1 as M), T(bitPattern: 0 as M), T(bitPattern: 1 as M))
-            Test.xor(T(bitPattern: 0 as M), T(bitPattern: 1 as M), T(bitPattern: 1 as M))
-            Test.xor(T(bitPattern: 1 as M), T(bitPattern: 1 as M), T(bitPattern: 0 as M))
+            Test().xor(T(bitPattern: 0 as M), T(bitPattern: 0 as M), T(bitPattern: 0 as M))
+            Test().xor(T(bitPattern: 1 as M), T(bitPattern: 0 as M), T(bitPattern: 1 as M))
+            Test().xor(T(bitPattern: 0 as M), T(bitPattern: 1 as M), T(bitPattern: 1 as M))
+            Test().xor(T(bitPattern: 1 as M), T(bitPattern: 1 as M), T(bitPattern: 0 as M))
         }
         
         for type in Self.types {

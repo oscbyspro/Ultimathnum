@@ -20,59 +20,51 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func not<T>(
-        _ instance: T, 
-        _ expectation: T,
-        file: StaticString = #file,
-        line: UInt = #line
+    public func not<T>(
+        _ instance: T,
+        _ expectation: T
     )   where T: BitOperable & Equatable {
         
-        XCTAssertEqual(~instance, expectation, file: file, line: line)
-        XCTAssertEqual(~expectation, instance, file: file, line: line)
+        same(~instance, expectation)
+        same(~expectation, instance)
     }
     
-    public static func and<T>(
+    public func and<T>(
         _ lhs: T, 
         _ rhs: T,
-        _ expectation: T,
-        file: StaticString = #file,
-        line: UInt = #line
+        _ expectation: T
     )   where T: BitOperable & Equatable {
         
-        XCTAssertEqual(lhs & rhs, expectation, file: file, line: line)
-        XCTAssertEqual(rhs & lhs, expectation, file: file, line: line)
+        same(lhs & rhs, expectation)
+        same(rhs & lhs, expectation)
         
-        XCTAssertEqual({ var x = lhs; x &= rhs; return x }(), expectation, file: file, line: line)
-        XCTAssertEqual({ var x = rhs; x &= lhs; return x }(), expectation, file: file, line: line)
+        same({ var x = lhs; x &= rhs; return x }(), expectation)
+        same({ var x = rhs; x &= lhs; return x }(), expectation)
     }
     
-    public static func or<T>(
+    public func or<T>(
         _ lhs: T,
         _ rhs: T,
-        _ expectation: T,
-        file: StaticString = #file,
-        line: UInt = #line
+        _ expectation: T
     )   where T: BitOperable & Equatable {
         
-        XCTAssertEqual(lhs | rhs, expectation, file: file, line: line)
-        XCTAssertEqual(rhs | lhs, expectation, file: file, line: line)
+        same(lhs | rhs, expectation)
+        same(rhs | lhs, expectation)
         
-        XCTAssertEqual({ var x = lhs; x |= rhs; return x }(), expectation, file: file, line: line)
-        XCTAssertEqual({ var x = rhs; x |= lhs; return x }(), expectation, file: file, line: line)
+        same({ var x = lhs; x |= rhs; return x }(), expectation)
+        same({ var x = rhs; x |= lhs; return x }(), expectation)
     }
     
-    public static func xor<T>(
+    public func xor<T>(
         _ lhs: T,
         _ rhs: T,
-        _ expectation: T,
-        file: StaticString = #file,
-        line: UInt = #line
+        _ expectation: T
     )   where T: BitOperable & Equatable {
         
-        XCTAssertEqual(lhs ^ rhs, expectation, file: file, line: line)
-        XCTAssertEqual(rhs ^ lhs, expectation, file: file, line: line)
+        same(lhs ^ rhs, expectation)
+        same(rhs ^ lhs, expectation)
         
-        XCTAssertEqual({ var x = lhs; x ^= rhs; return x }(), expectation, file: file, line: line)
-        XCTAssertEqual({ var x = rhs; x ^= lhs; return x }(), expectation, file: file, line: line)
+        same({ var x = lhs; x ^= rhs; return x }(), expectation)
+        same({ var x = rhs; x ^= lhs; return x }(), expectation)
     }
 }

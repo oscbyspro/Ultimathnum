@@ -50,31 +50,31 @@ final class SignTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testLogicalNot() {
-        Test.not(T.plus,  T.minus)
-        Test.not(T.minus, T.plus )
+        Test().not(T.plus,  T.minus)
+        Test().not(T.minus, T.plus )
         
         Test().same({ var x = T.plus;  x.toggle(); return x }(), T.minus)
         Test().same({ var x = T.minus; x.toggle(); return x }(), T.plus )
     }
     
     func testLogicalAnd() {
-        Test.and(T.plus , T.plus , T.plus )
-        Test.and(T.plus , T.minus, T.plus )
-        Test.and(T.minus, T.plus , T.plus )
-        Test.and(T.minus, T.minus, T.minus)
+        Test().and(T.plus , T.plus , T.plus )
+        Test().and(T.plus , T.minus, T.plus )
+        Test().and(T.minus, T.plus , T.plus )
+        Test().and(T.minus, T.minus, T.minus)
     }
     
     func testLogicalOr() {
-        Test.or (T.plus , T.plus , T.plus )
-        Test.or (T.plus , T.minus, T.minus)
-        Test.or (T.minus, T.plus , T.minus)
-        Test.or (T.minus, T.minus, T.minus)
+        Test().or (T.plus , T.plus , T.plus )
+        Test().or (T.plus , T.minus, T.minus)
+        Test().or (T.minus, T.plus , T.minus)
+        Test().or (T.minus, T.minus, T.minus)
     }
     
     func testLogcialXor() {
-        Test.xor(T.plus , T.plus , T.plus )
-        Test.xor(T.plus , T.minus, T.minus)
-        Test.xor(T.minus, T.plus , T.minus)
-        Test.xor(T.minus, T.minus, T.plus )
+        Test().xor(T.plus , T.plus , T.plus )
+        Test().xor(T.plus , T.minus, T.minus)
+        Test().xor(T.minus, T.plus , T.minus)
+        Test().xor(T.minus, T.minus, T.plus )
     }
 }

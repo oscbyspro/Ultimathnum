@@ -50,29 +50,29 @@ final class BitTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testLogicalNot() {
-        Test.not(0 as T, 1 as T)
-        Test.not(1 as T, 0 as T)
+        Test().not(0 as T, 1 as T)
+        Test().not(1 as T, 0 as T)
     }
     
     func testLogicalAnd() {
-        Test.and(0 as T, 0 as T, 0 as T)
-        Test.and(0 as T, 1 as T, 0 as T)
-        Test.and(1 as T, 0 as T, 0 as T)
-        Test.and(1 as T, 1 as T, 1 as T)
+        Test().and(0 as T, 0 as T, 0 as T)
+        Test().and(0 as T, 1 as T, 0 as T)
+        Test().and(1 as T, 0 as T, 0 as T)
+        Test().and(1 as T, 1 as T, 1 as T)
     }
     
     func testLogicalOr() {
-        Test.or (0 as T, 0 as T, 0 as T)
-        Test.or (0 as T, 1 as T, 1 as T)
-        Test.or (1 as T, 0 as T, 1 as T)
-        Test.or (1 as T, 1 as T, 1 as T)
+        Test().or (0 as T, 0 as T, 0 as T)
+        Test().or (0 as T, 1 as T, 1 as T)
+        Test().or (1 as T, 0 as T, 1 as T)
+        Test().or (1 as T, 1 as T, 1 as T)
     }
     
     func testLogcialXor() {
-        Test.xor(0 as T, 0 as T, 0 as T)
-        Test.xor(0 as T, 1 as T, 1 as T)
-        Test.xor(1 as T, 0 as T, 1 as T)
-        Test.xor(1 as T, 1 as T, 0 as T)
+        Test().xor(0 as T, 0 as T, 0 as T)
+        Test().xor(0 as T, 1 as T, 1 as T)
+        Test().xor(1 as T, 0 as T, 1 as T)
+        Test().xor(1 as T, 1 as T, 0 as T)
     }
     
     //=------------------------------------------------------------------------=

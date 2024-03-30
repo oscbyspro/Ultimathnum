@@ -25,10 +25,10 @@ extension DoubleIntTests {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
             
-            Test.not(T(low:  1, high:  2), T(low: ~1, high: ~2))
-            Test.not(T(low:  1, high: ~2), T(low: ~1, high:  2))
-            Test.not(T(low: ~1, high:  2), T(low:  1, high: ~2))
-            Test.not(T(low: ~1, high: ~2), T(low:  1, high:  2))
+            Test().not(T(low:  1, high:  2), T(low: ~1, high: ~2))
+            Test().not(T(low:  1, high: ~2), T(low: ~1, high:  2))
+            Test().not(T(low: ~1, high:  2), T(low:  1, high: ~2))
+            Test().not(T(low: ~1, high: ~2), T(low:  1, high:  2))
         }
         
         for base in Self.bases {
@@ -40,10 +40,10 @@ extension DoubleIntTests {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
             
-            Test.and(T(low:  1, high:  2), T(low:  3, high:  4), T(low:  1, high:  0))
-            Test.and(T(low:  1, high:  2), T(low: ~3, high: ~4), T(low:  0, high:  2))
-            Test.and(T(low: ~1, high: ~2), T(low:  3, high:  4), T(low:  2, high:  4))
-            Test.and(T(low: ~1, high: ~2), T(low: ~3, high: ~4), T(low: ~3, high: ~6))
+            Test().and(T(low:  1, high:  2), T(low:  3, high:  4), T(low:  1, high:  0))
+            Test().and(T(low:  1, high:  2), T(low: ~3, high: ~4), T(low:  0, high:  2))
+            Test().and(T(low: ~1, high: ~2), T(low:  3, high:  4), T(low:  2, high:  4))
+            Test().and(T(low: ~1, high: ~2), T(low: ~3, high: ~4), T(low: ~3, high: ~6))
         }
         
         for base in Self.bases {
@@ -55,10 +55,10 @@ extension DoubleIntTests {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
             
-            Test.or (T(low:  1, high:  2), T(low:  3, high:  4), T(low:  3, high:  6))
-            Test.or (T(low:  1, high:  2), T(low: ~3, high: ~4), T(low: ~2, high: ~4))
-            Test.or (T(low: ~1, high: ~2), T(low:  3, high:  4), T(low: ~0, high: ~2))
-            Test.or (T(low: ~1, high: ~2), T(low: ~3, high: ~4), T(low: ~1, high: ~0))
+            Test().or (T(low:  1, high:  2), T(low:  3, high:  4), T(low:  3, high:  6))
+            Test().or (T(low:  1, high:  2), T(low: ~3, high: ~4), T(low: ~2, high: ~4))
+            Test().or (T(low: ~1, high: ~2), T(low:  3, high:  4), T(low: ~0, high: ~2))
+            Test().or (T(low: ~1, high: ~2), T(low: ~3, high: ~4), T(low: ~1, high: ~0))
         }
         
         for base in Self.bases {
@@ -70,10 +70,10 @@ extension DoubleIntTests {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
             
-            Test.xor(T(low:  1, high:  2), T(low:  3, high:  4), T(low:  2, high:  6))
-            Test.xor(T(low:  1, high:  2), T(low: ~3, high: ~4), T(low: ~2, high: ~6))
-            Test.xor(T(low: ~1, high: ~2), T(low:  3, high:  4), T(low: ~2, high: ~6))
-            Test.xor(T(low: ~1, high: ~2), T(low: ~3, high: ~4), T(low:  2, high:  6))
+            Test().xor(T(low:  1, high:  2), T(low:  3, high:  4), T(low:  2, high:  6))
+            Test().xor(T(low:  1, high:  2), T(low: ~3, high: ~4), T(low: ~2, high: ~6))
+            Test().xor(T(low: ~1, high: ~2), T(low:  3, high:  4), T(low: ~2, high: ~6))
+            Test().xor(T(low: ~1, high: ~2), T(low: ~3, high: ~4), T(low:  2, high:  6))
         }
         
         for base in Self.bases {
