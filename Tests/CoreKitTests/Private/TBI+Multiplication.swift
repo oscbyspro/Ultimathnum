@@ -25,15 +25,15 @@ extension TupleBinaryIntegerTests {
             typealias X2 = DoubleIntLayout<Base>
             typealias X3 = TripleIntLayout<Base>
             
-            Test.multiplication213(X2(low:  0, high:  0),  0 as Base, X3(low:  0, mid:  0, high:  0))
-            Test.multiplication213(X2(low:  0, high:  0), ~0 as Base, X3(low:  0, mid:  0, high:  0))
-            Test.multiplication213(X2(low: ~0, high: ~0),  0 as Base, X3(low:  0, mid:  0, high:  0))
-            Test.multiplication213(X2(low: ~0, high: ~0), ~0 as Base, X3(low:  1, mid: ~0, high: ~1))
+            Test().multiplication213(X2(low:  0, high:  0),  0 as Base, X3(low:  0, mid:  0, high:  0))
+            Test().multiplication213(X2(low:  0, high:  0), ~0 as Base, X3(low:  0, mid:  0, high:  0))
+            Test().multiplication213(X2(low: ~0, high: ~0),  0 as Base, X3(low:  0, mid:  0, high:  0))
+            Test().multiplication213(X2(low: ~0, high: ~0), ~0 as Base, X3(low:  1, mid: ~0, high: ~1))
 
-            Test.multiplication213(X2(low:  1, high:  2),  3 as Base, X3(low:  3, mid:  6, high:  0))
-            Test.multiplication213(X2(low:  1, high:  2), ~3 as Base, X3(low: ~3, mid: ~7, high:  1))
-            Test.multiplication213(X2(low: ~1, high: ~2),  3 as Base, X3(low: ~5, mid: ~6, high:  2))
-            Test.multiplication213(X2(low: ~1, high: ~2), ~3 as Base, X3(low:  8, mid:  6, high: ~5))
+            Test().multiplication213(X2(low:  1, high:  2),  3 as Base, X3(low:  3, mid:  6, high:  0))
+            Test().multiplication213(X2(low:  1, high:  2), ~3 as Base, X3(low: ~3, mid: ~7, high:  1))
+            Test().multiplication213(X2(low: ~1, high: ~2),  3 as Base, X3(low: ~5, mid: ~6, high:  2))
+            Test().multiplication213(X2(low: ~1, high: ~2), ~3 as Base, X3(low:  8, mid:  6, high: ~5))
         }
         
         for base in Self.basesWhereIsUnsigned {
@@ -52,12 +52,11 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    static func multiplication213<Base>(
+    func multiplication213<Base>(
         _ lhs: DoubleIntLayout<Base>, 
         _ rhs: Base,
-        _ expectation: TripleIntLayout<Base>,
-        _ test: Test = .init()
+        _ expectation: TripleIntLayout<Base>
     )   where Base: SystemsInteger & UnsignedInteger {
-        test.same(TBI.multiplying213(lhs, by: rhs), expectation)
+        same(TBI.multiplying213(lhs, by: rhs), expectation)
     }
 }

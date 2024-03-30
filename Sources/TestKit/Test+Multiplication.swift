@@ -20,73 +20,68 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func multiplication<T>(
+    public func multiplication<T>(
         _ lhs: T, 
         _ rhs: T,
         _ expectation: Fallible<DoubleIntLayout<T>>,
-        file: StaticString = #file,
-        line: UInt = #line,
-        identifier: SystemsIntegerID = .init()
+        _ id: SystemsIntegerID = .init()
     )   where T: SystemsInteger {
         //=--------------------------------------=
-        XCTAssertEqual(T.multiplying(lhs, by: rhs), expectation.value, file: file, line: line)
+        same(T.multiplying(lhs, by: rhs), expectation.value)
         //=--------------------------------------=
-        Test.multiplication(
+        multiplication(
             lhs,
             rhs,
             expectation.map(\.low).map(T.init(bitPattern:)),
-            file: file,
-            line: line,
-            identifier: BinaryIntegerID()
+            BinaryIntegerID()
         )
     }
     
-    public static func multiplication<T>(
+    public func multiplication<T>(
         _ lhs: T, 
         _ rhs: T, 
         _ expectation: Fallible<T>,
-        file: StaticString = #file,
-        line: UInt = #line,
-        identifier: BinaryIntegerID = .init()
+        _ id: BinaryIntegerID = .init()
     )   where T: BinaryInteger {
+        
         brr: do {
-            XCTAssertEqual(lhs &* rhs, expectation.value, file: file, line: line)
-            XCTAssertEqual(rhs &* lhs, expectation.value, file: file, line: line)
+            same(lhs &* rhs, expectation.value)
+            same(rhs &* lhs, expectation.value)
         };  if !expectation.error {
-            XCTAssertEqual(lhs  * rhs, expectation.value, file: file, line: line)
-            XCTAssertEqual(rhs  * lhs, expectation.value, file: file, line: line)
+            same(lhs  * rhs, expectation.value)
+            same(rhs  * lhs, expectation.value)
         }
         
         brr: do {
-            XCTAssertEqual({ var x = lhs; x &*= rhs; return x }(), expectation.value, file: file, line: line)
-            XCTAssertEqual({ var x = rhs; x &*= lhs; return x }(), expectation.value, file: file, line: line)
+            same({ var x = lhs; x &*= rhs; return x }(), expectation.value)
+            same({ var x = rhs; x &*= lhs; return x }(), expectation.value)
         };  if !expectation.error {
-            XCTAssertEqual({ var x = lhs; x  *= rhs; return x }(), expectation.value, file: file, line: line)
-            XCTAssertEqual({ var x = rhs; x  *= lhs; return x }(), expectation.value, file: file, line: line)
+            same({ var x = lhs; x  *= rhs; return x }(), expectation.value)
+            same({ var x = rhs; x  *= lhs; return x }(), expectation.value)
         }
         
         brr: do {
-            XCTAssertEqual(lhs.times(rhs),                     expectation, file: file, line: line)
-            XCTAssertEqual(lhs.times(Fallible(rhs)),           expectation, file: file, line: line)
-            XCTAssertEqual(Fallible(lhs).times(rhs),           expectation, file: file, line: line)
-            XCTAssertEqual(Fallible(lhs).times(Fallible(rhs)), expectation, file: file, line: line)
+            same(lhs.times(rhs),                     expectation)
+            same(lhs.times(Fallible(rhs)),           expectation)
+            same(Fallible(lhs).times(rhs),           expectation)
+            same(Fallible(lhs).times(Fallible(rhs)), expectation)
         }
         
         brr: do {
-            XCTAssertEqual(rhs.times(lhs),                     expectation, file: file, line: line)
-            XCTAssertEqual(rhs.times(Fallible(lhs)),           expectation, file: file, line: line)
-            XCTAssertEqual(Fallible(rhs).times(lhs),           expectation, file: file, line: line)
-            XCTAssertEqual(Fallible(rhs).times(Fallible(lhs)), expectation, file: file, line: line)
+            same(rhs.times(lhs),                     expectation)
+            same(rhs.times(Fallible(lhs)),           expectation)
+            same(Fallible(rhs).times(lhs),           expectation)
+            same(Fallible(rhs).times(Fallible(lhs)), expectation)
         }
         
         if  lhs == rhs {
-            XCTAssertEqual(rhs.squared(),           expectation, file: file, line: line)
-            XCTAssertEqual(Fallible(lhs).squared(), expectation, file: file, line: line)
+            same(rhs.squared(),           expectation)
+            same(Fallible(lhs).squared(), expectation)
         }
         
         if  lhs == rhs {
-            XCTAssertEqual(rhs.squared(),           expectation, file: file, line: line)
-            XCTAssertEqual(Fallible(rhs).squared(), expectation, file: file, line: line)
+            same(rhs.squared(),           expectation)
+            same(Fallible(rhs).squared(), expectation)
         }
     }
 }
