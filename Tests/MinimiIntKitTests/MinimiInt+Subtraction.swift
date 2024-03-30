@@ -22,13 +22,17 @@ extension MinimiIntTests {
     
     func testNegation() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.subtraction( 0,  0,  0 as T)
-            Test.subtraction( 0, -1, -1 as T, true)
+            typealias F = Fallible<T>
+            
+            Test.subtraction( 0 as T,  0 as T, F( 0 as T))
+            Test.subtraction( 0 as T, -1 as T, F(-1 as T, error: true))
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.subtraction( 0,  0,  0 as T)
-            Test.subtraction( 0,  1,  1 as T, true)
+            typealias F = Fallible<T>
+            
+            Test.subtraction( 0 as T,  0 as T, F( 0 as T))
+            Test.subtraction( 0 as T,  1 as T, F( 1 as T, error: true))
         }
         
         for type in Self.types {
@@ -38,17 +42,21 @@ extension MinimiIntTests {
     
     func testSubtraction() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.subtraction( 0,  0,  0 as T)
-            Test.subtraction(-1,  0, -1 as T)
-            Test.subtraction( 0, -1, -1 as T, true)
-            Test.subtraction(-1, -1,  0 as T)
+            typealias F = Fallible<T>
+            
+            Test.subtraction( 0 as T,  0 as T, F( 0 as T))
+            Test.subtraction(-1 as T,  0 as T, F(-1 as T))
+            Test.subtraction( 0 as T, -1 as T, F(-1 as T, error: true))
+            Test.subtraction(-1 as T, -1 as T, F( 0 as T))
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.subtraction( 0,  0,  0 as T)
-            Test.subtraction( 1,  0,  1 as T)
-            Test.subtraction( 0,  1,  1 as T, true)
-            Test.subtraction( 1,  1,  0 as T)
+            typealias F = Fallible<T>
+            
+            Test.subtraction( 0 as T,  0 as T, F( 0 as T))
+            Test.subtraction( 1 as T,  0 as T, F( 1 as T))
+            Test.subtraction( 0 as T,  1 as T, F( 1 as T, error: true))
+            Test.subtraction( 1 as T,  1 as T, F( 0 as T))
         }
         
         for type in Self.types {
@@ -58,13 +66,17 @@ extension MinimiIntTests {
     
     func testDecrementation() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.decrementation(-1 as T,  0 as T, true)
-            Test.decrementation( 0 as T, -1 as T)
+            typealias F = Fallible<T>
+            
+            Test.decrementation(-1 as T, F( 0 as T, error: true))
+            Test.decrementation( 0 as T, F(-1 as T))
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.decrementation( 0 as T,  1 as T, true)
-            Test.decrementation( 1 as T,  0 as T)
+            typealias F = Fallible<T>
+            
+            Test.decrementation( 0 as T, F( 1 as T, error: true))
+            Test.decrementation( 1 as T, F( 0 as T))
         }
         
         for type in Self.types {
