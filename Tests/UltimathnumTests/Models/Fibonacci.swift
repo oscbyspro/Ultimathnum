@@ -27,7 +27,7 @@ final class FibonacciTests: XCTestCase {
         test.same(sequence?.element, expectation?.element)
         test.same(sequence?.next,    expectation?.next)
         
-        if  invariants, let  expectation, let sequence =  Test.some(sequence) {
+        if  invariants, let  expectation, let sequence =  Test().some(sequence) {
             test.success(check(index: sequence.index, element: expectation.element, invariants: invariants))
         }
     }
@@ -67,7 +67,7 @@ final class FibonacciTests: XCTestCase {
             XCTAssertThrowsError(try F(-1))
         }
                 
-        if  let one = T.exactly(1).optional(), var sequence = Test.some(try? F()) {
+        if  let one = T.exactly(1).optional(), var sequence = Test().some(try? F()) {
             XCTAssertNoThrow/**/(try F( ))
             XCTAssertNoThrow/**/(try F(0))
             

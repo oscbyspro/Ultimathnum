@@ -121,32 +121,6 @@ extension Test {
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Optional
-//=----------------------------------------------------------------------------=
-
-extension Test {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @discardableResult public func some<T>(
-        _ instance: Optional<T>,
-        _ message: @autoclosure () -> String = ""
-    )   -> Optional<T> where T: Equatable {
-        XCTAssertNotNil(instance, message(), file: file, line: line)
-        return instance as Optional<T>
-    }
-    
-    public func none<T>(
-        _ instance: Optional<T>,
-        _ message: @autoclosure () -> String = ""
-    )   where T: Equatable {
-        XCTAssertNil(instance, message(), file: file, line: line)
-    }
-}
-
-//=----------------------------------------------------------------------------=
 // MARK: + Result
 //=----------------------------------------------------------------------------=
 
