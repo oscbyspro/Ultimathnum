@@ -20,8 +20,12 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func some<T>(_ value: T?, file: StaticString = #file, line: UInt = #line) -> T? {
-        XCTAssertNotNil(value, file:  file, line: line)
-        return value as Optional<T>
+    public static func some<T>(
+        _ instance: Optional<T>,
+        file: StaticString = #file,
+        line: UInt = #line
+    )   -> Optional<T> {
+        XCTAssertNotNil(instance, file: file, line: line)
+        return instance as Optional<T>
     }
 }
