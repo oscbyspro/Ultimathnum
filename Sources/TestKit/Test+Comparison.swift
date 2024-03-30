@@ -20,23 +20,21 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func comparison<T: BinaryInteger, U: BinaryInteger>(
-    _ lhs: T, _ rhs: U, _ expectation: Signum,
-    file: StaticString = #file, line: UInt = #line) {
-        self.comparisonAsSomeBinaryInteger(lhs, rhs, expectation, file: file, line: line)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    public static func comparisonAsSomeBinaryInteger<T: BinaryInteger, U: BinaryInteger>(
-    _   lhs: T, _ rhs: U, _ expectation: Signum, file: StaticString, line: UInt) {
+    public static func comparison<T, U>(
+        _ lhs: T,
+        _ rhs: U, 
+        _ expectation: Signum,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) where T: BinaryInteger, U: BinaryInteger {
         //=--------------------------------------=
-        Test.comparisonAsSomeExchangeInt(
-        ExchangeInt(lhs, as: T.Element.self),
-        ExchangeInt(rhs, as: U.Element.self),
-        expectation, file: file, line: line)
+        Test.comparison(
+            ExchangeInt(lhs, as: T.Element.self),
+            ExchangeInt(rhs, as: U.Element.self),
+            expectation, 
+            file: file,
+            line: line
+        )
         //=--------------------------------------=
         guard let rhs = rhs as? T else { return }
         //=--------------------------------------=
@@ -91,10 +89,18 @@ extension Test {
         }
     }
     
-    public static func comparisonAsSomeExchangeInt<A, B, C, D>(
-    _   lhs: ExchangeInt<A, B>, _ rhs: ExchangeInt<C, D>, _ expectation: Signum, file: StaticString, line: UInt) {
-        func unidirectional<E, F, G, H>(_ lhs: ExchangeInt<E, F>, _ rhs: ExchangeInt<G, H>, _ expectation: Signum) {
-            //=----------------------------------=
+    public static func comparison<A, B, C, D>(
+        _ lhs: ExchangeInt<A, B>,
+        _ rhs: ExchangeInt<C, D>,
+        _ expectation: Signum,
+        file: StaticString, 
+        line: UInt
+    ) {
+        func unidirectional<E, F, G, H>(
+            _ lhs: ExchangeInt<E, F>,
+            _ rhs: ExchangeInt<G, H>,
+            _ expectation: Signum
+        ) {
             signum: if rhs.signum() == Signum.same {
                 let result:  Signum = lhs.signum()
                 let success: Bool = result == expectation
