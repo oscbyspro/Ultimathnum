@@ -24,110 +24,102 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func shift<T: SystemsInteger>(
-    _ instance: T, _ shift: T, _ result: T, _ direction: ShiftDirection, _ semantics: ShiftSemantics,
-    file: StaticString = #file, line: UInt = #line) {
+    public static func shift<T>(
+        _ instance: T, 
+        _ shift: T,
+        _ expectation: T,
+        _ direction: ShiftDirection,
+        _ semantics: ShiftSemantics,
+        file: StaticString = #file, 
+        line: UInt = #line
+    )   where T: BinaryInteger {
         switch (direction, semantics) {
-        case (.left,  .smart ): Test .smartShiftLeft (instance, shift, result, file: file, line: line)
-        case (.right, .smart ): Test .smartShiftRight(instance, shift, result, file: file, line: line)
-        case (.left,  .masked): Test.maskedShiftLeft (instance, shift, result, file: file, line: line)
-        case (.right, .masked): Test.maskedShiftRight(instance, shift, result, file: file, line: line)
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-        
-    public static func smartShiftLeft<T: SystemsInteger>(
-    _ instance: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
-        brr: do {
-            XCTAssertEqual({         instance    <<  shift           }(), result, file: file, line: line)
-            XCTAssertEqual({ var x = instance; x <<= shift; return x }(), result, file: file, line: line)
-        }
-        
-        if  let shift = shift.negated().optional() {
-            XCTAssertEqual({         instance    >>  shift           }(), result, file: file, line: line)
-            XCTAssertEqual({ var x = instance; x >>= shift; return x }(), result, file: file, line: line)
-        }
-        
-        if !shift.isLessThanZero, shift.magnitude < T.bitWidth {
-            Test.maskedShiftLeft(instance, shift, result, file: file, line: line)
-        }
-    }
-    
-    public static func smartShiftRight<T: SystemsInteger>(
-    _ instance: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
-        brr: do {
-            XCTAssertEqual({         instance    >>  shift           }(), result, file: file, line: line)
-            XCTAssertEqual({ var x = instance; x >>= shift; return x }(), result, file: file, line: line)
-        }
-        
-        if  let shift = shift.negated().optional() {
-            XCTAssertEqual({         instance    <<  shift           }(), result, file: file, line: line)
-            XCTAssertEqual({ var x = instance; x <<= shift; return x }(), result, file: file, line: line)
-        }
-        
-        if !shift.isLessThanZero, shift.magnitude < T.bitWidth {
-            Test.maskedShiftRight(instance, shift, result, file: file, line: line)
-        }
-    }
-    
-    public static func maskedShiftLeft<T: SystemsInteger>(
-    _ instance: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
-        //=--------------------------------------=
-        func check(_ instance: T, _ shift: T, _ result: T) {
-            XCTAssertEqual({         instance    &<<  shift           }(), result, file: file, line: line)
-            XCTAssertEqual({ var x = instance; x &<<= shift; return x }(), result, file: file, line: line)
-        }
-        //=--------------------------------------=
-        check(instance, shift, result)
-        //=--------------------------------------=
-        if  let increment = T.exactly(magnitude: T.bitWidth).optional() {
-            if  let shift = try? shift.plus(increment).get() {
-                check(instance, shift, result)
+        case (.left, .smart):
+            
+            brr: do {
+                XCTAssertEqual({         instance    <<  shift           }(), expectation, file: file, line: line)
+                XCTAssertEqual({ var x = instance; x <<= shift; return x }(), expectation, file: file, line: line)
             }
             
-            if  let shift = try? shift.plus(increment).plus(increment).get() {
-                check(instance, shift, result)
+            if  let shift = shift.negated().optional() {
+                XCTAssertEqual({         instance    >>  shift           }(), expectation, file: file, line: line)
+                XCTAssertEqual({ var x = instance; x >>= shift; return x }(), expectation, file: file, line: line)
             }
             
-            if  let shift = try? shift.minus(increment).get() {
-                check(instance, shift, result)
+            if !shift.isLessThanZero, shift.magnitude < T.bitWidth {
+                Test.shift(instance, shift, expectation, .left, .masked, file: file, line: line)
             }
             
-            if  let shift = try? shift.minus(increment).minus(increment).get() {
-                check(instance, shift, result)
-            }
-        }
-    }
-    
-    public static func maskedShiftRight<T: SystemsInteger>(
-    _ instance: T, _ shift: T, _ result: T, file: StaticString, line: UInt) {
-        //=--------------------------------------=
-        func check(_ instance: T, _ shift: T, _ result: T) {
-            XCTAssertEqual({         instance    &>>  shift           }(), result, file: file, line: line)
-            XCTAssertEqual({ var x = instance; x &>>= shift; return x }(), result, file: file, line: line)
-        }
-        //=--------------------------------------=
-        check(instance, shift, result)
-        //=--------------------------------------=
-        if  let increment = T.exactly(magnitude: T.bitWidth).optional() {
-            if  let shift = try? shift.plus(increment).get() {
-                check(instance, shift, result)
+        case (.right, .smart):
+            
+            brr: do {
+                XCTAssertEqual({         instance    >>  shift           }(), expectation, file: file, line: line)
+                XCTAssertEqual({ var x = instance; x >>= shift; return x }(), expectation, file: file, line: line)
             }
             
-            if  let shift = try? shift.plus(increment).plus(increment).get() {
-                check(instance, shift, result)
+            if  let shift = shift.negated().optional() {
+                XCTAssertEqual({         instance    <<  shift           }(), expectation, file: file, line: line)
+                XCTAssertEqual({ var x = instance; x <<= shift; return x }(), expectation, file: file, line: line)
             }
             
-            if  let shift = try? shift.minus(increment).get() {
-                check(instance, shift, result)
+            if !shift.isLessThanZero, shift.magnitude < T.bitWidth {
+                Test.shift(instance, shift, expectation, .right, .masked, file: file, line: line)
             }
             
-            if  let shift = try? shift.minus(increment).minus(increment).get() {
-                check(instance, shift, result)
+        case (.left, .masked):
+            
+            func check(_ shift: T) {
+                XCTAssertEqual({         instance    &<<  shift           }(), expectation, file: file, line: line)
+                XCTAssertEqual({ var x = instance; x &<<= shift; return x }(), expectation, file: file, line: line)
             }
+            
+            check(shift)
+            
+            if  let increment = try? T.exactly(magnitude: T.bitWidth).get() {
+                if  let shift = try? shift.plus(increment).get() {
+                    check(shift)
+                }
+                
+                if  let shift = try? shift.plus(increment).plus(increment).get() {
+                    check(shift)
+                }
+                
+                if  let shift = try? shift.minus(increment).get() {
+                    check(shift)
+                }
+                
+                if  let shift = try? shift.minus(increment).minus(increment).get() {
+                    check(shift)
+                }
+            }
+            
+        case (.right, .masked):
+            
+            func check(_ shift: T) {
+                XCTAssertEqual({         instance    &>>  shift           }(), expectation, file: file, line: line)
+                XCTAssertEqual({ var x = instance; x &>>= shift; return x }(), expectation, file: file, line: line)
+            }
+
+            check(shift)
+            
+            if  let increment = try? T.exactly(magnitude: T.bitWidth).get() {
+                if  let shift = try? shift.plus(increment).get() {
+                    check(shift)
+                }
+                
+                if  let shift = try? shift.plus(increment).plus(increment).get() {
+                    check(shift)
+                }
+                
+                if  let shift = try? shift.minus(increment).get() {
+                    check(shift)
+                }
+                
+                if  let shift = try? shift.minus(increment).minus(increment).get() {
+                    check(shift)
+                }
+            }
+            
         }
     }
 }
