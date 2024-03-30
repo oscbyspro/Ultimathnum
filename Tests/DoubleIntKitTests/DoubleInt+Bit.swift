@@ -187,35 +187,37 @@ extension DoubleIntTests {
     
     func testInitElements() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias M  = T.Magnitude
+            typealias M = T.Magnitude
+            typealias F = Fallible<T>
             
             let count = MemoryLayout<T>.size / MemoryLayout<T.Element>.stride
             for isSigned in [true, false] {
-                Test.elements(Array(ExchangeInt( T.min).bitPattern.source()), isSigned,  T.min, !isSigned)
-                Test.elements(Array(ExchangeInt( T.max).bitPattern.source()), isSigned,  T.max)
+                Test.elements(Array(ExchangeInt( T.min).bitPattern.source()), isSigned, F( T.min, error: !isSigned))
+                Test.elements(Array(ExchangeInt( T.max).bitPattern.source()), isSigned, F( T.max))
                 
-                Test.elements(Array(ExchangeInt( M.min).bitPattern.source()), isSigned,  T( 0))
-                Test.elements(Array(ExchangeInt( M.max).bitPattern.source()), isSigned,  T(-1), !isSigned)
-                Test.elements(Array(ExchangeInt( M.msb).bitPattern.source()), isSigned,  T.min, !isSigned)
-                Test.elements(Array(ExchangeInt(~M.msb).bitPattern.source()), isSigned, ~T.msb)
+                Test.elements(Array(ExchangeInt( M.min).bitPattern.source()), isSigned, F( T( 0)))
+                Test.elements(Array(ExchangeInt( M.max).bitPattern.source()), isSigned, F( T(-1), error: !isSigned))
+                Test.elements(Array(ExchangeInt( M.msb).bitPattern.source()), isSigned, F( T.min, error: !isSigned))
+                Test.elements(Array(ExchangeInt(~M.msb).bitPattern.source()), isSigned, F(~T.msb))
                 
-                Test.elements(Array(repeating:  0 as T.Element.Magnitude, count: 1 + count), isSigned,  0 as T)
-                Test.elements(Array(repeating: ~0 as T.Element.Magnitude, count: 1 + count), isSigned, ~0 as T, !isSigned)
+                Test.elements(Array(repeating:  0 as T.Element.Magnitude, count: 1 + count), isSigned, F( 0 as T))
+                Test.elements(Array(repeating: ~0 as T.Element.Magnitude, count: 1 + count), isSigned, F(~0 as T, error: !isSigned))
             }
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
+            typealias F = Fallible<T>
             
             let count = MemoryLayout<T>.size / MemoryLayout<T.Element>.stride
             for isSigned in [true, false] {
-                Test.elements(Array(ExchangeInt( M.min).bitPattern.source()), isSigned,  T( 0))
-                Test.elements(Array(ExchangeInt( M.max).bitPattern.source()), isSigned,  T.max, isSigned)
-                Test.elements(Array(ExchangeInt( M.msb).bitPattern.source()), isSigned,  T.msb, isSigned)
-                Test.elements(Array(ExchangeInt(~M.msb).bitPattern.source()), isSigned, ~T.msb)
+                Test.elements(Array(ExchangeInt( M.min).bitPattern.source()), isSigned, F( T( 0)))
+                Test.elements(Array(ExchangeInt( M.max).bitPattern.source()), isSigned, F( T.max, error: isSigned))
+                Test.elements(Array(ExchangeInt( M.msb).bitPattern.source()), isSigned, F( T.msb, error: isSigned))
+                Test.elements(Array(ExchangeInt(~M.msb).bitPattern.source()), isSigned, F(~T.msb))
                 
-                Test.elements(Array(repeating:  0 as T.Element.Magnitude, count: 1 + count), isSigned,  0 as T)
-                Test.elements(Array(repeating: ~0 as T.Element.Magnitude, count: 1 + count), isSigned, ~0 as T, true)
+                Test.elements(Array(repeating:  0 as T.Element.Magnitude, count: 1 + count), isSigned, F( 0 as T))
+                Test.elements(Array(repeating: ~0 as T.Element.Magnitude, count: 1 + count), isSigned, F(~0 as T, error: true))
             }
         }
         
