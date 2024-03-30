@@ -22,21 +22,23 @@ extension MinimiIntTests {
     
     func testMultiplication() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias X2 = DoubleIntLayout<T>
+            typealias X = DoubleIntLayout<T>
+            typealias F = Fallible<DoubleIntLayout<T>>
             
-            Test.multiplication( 0 as T,  0 as T, X2(low: 0, high:  0), false)
-            Test.multiplication(-1 as T,  0 as T, X2(low: 0, high:  0), false)
-            Test.multiplication( 0 as T, -1 as T, X2(low: 0, high:  0), false)
-            Test.multiplication(-1 as T, -1 as T, X2(low: 1, high:  0), true )
+            Test.multiplication( 0 as T,  0 as T, F(X(low: 0, high:  0)))
+            Test.multiplication(-1 as T,  0 as T, F(X(low: 0, high:  0)))
+            Test.multiplication( 0 as T, -1 as T, F(X(low: 0, high:  0)))
+            Test.multiplication(-1 as T, -1 as T, F(X(low: 1, high:  0), error: true))
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias X2 = DoubleIntLayout<T>
+            typealias X = DoubleIntLayout<T>
+            typealias F = Fallible<DoubleIntLayout<T>>
             
-            Test.multiplication( 0 as T,  0 as T, X2(low: 0, high:  0), false)
-            Test.multiplication( 1 as T,  0 as T, X2(low: 0, high:  0), false)
-            Test.multiplication( 0 as T,  1 as T, X2(low: 0, high:  0), false)
-            Test.multiplication( 1 as T,  1 as T, X2(low: 1, high:  0), false)
+            Test.multiplication( 0 as T,  0 as T, F(X(low: 0, high:  0)))
+            Test.multiplication( 1 as T,  0 as T, F(X(low: 0, high:  0)))
+            Test.multiplication( 0 as T,  1 as T, F(X(low: 0, high:  0)))
+            Test.multiplication( 1 as T,  1 as T, F(X(low: 1, high:  0)))
         }
         
         for type in Self.types {

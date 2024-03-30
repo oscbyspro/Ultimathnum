@@ -20,73 +20,94 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func multiplication<T: SystemsInteger>(
-    _ lhs: T, _ rhs: T, _ product: DoubleIntLayout<T>,_ overflow: Bool = false,
-    file: StaticString = #file, line: UInt = #line) {
-        self.multiplicationAsSomeSystemsInteger(lhs, rhs, product, overflow, file: file, line: line)
+    public static func multiplication<T>(
+        _ lhs: T, 
+        _ rhs: T,
+        _ expectation: Fallible<DoubleIntLayout<T>>,
+        file: StaticString = #file,
+        line: UInt = #line
+    )   where T: SystemsInteger {
+        self.multiplicationAsSomeSystemsInteger(lhs, rhs, expectation, file: file, line: line)
     }
     
-    public static func multiplication<T: BinaryInteger>(
-    _ lhs: T, _ rhs: T, _ value: T,_ overflow: Bool = false,
-    file: StaticString = #file, line: UInt = #line) {
-        self.multiplicationAsSomeBinaryInteger(lhs, rhs, value, overflow, file: file, line: line)
+    public static func multiplication<T>(
+        _ lhs: T, 
+        _ rhs: T,
+        _ expectation: Fallible<T>,
+        file: StaticString = #file,
+        line: UInt = #line
+    )   where T: BinaryInteger {
+        self.multiplicationAsSomeBinaryInteger(lhs, rhs, expectation, file: file, line: line)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func multiplicationAsSomeSystemsInteger<T: SystemsInteger>(
-    _ lhs: T, _ rhs: T, _ product: DoubleIntLayout<T>, _ overflow: Bool, file: StaticString, line: UInt) {
+    public static func multiplicationAsSomeSystemsInteger<T>(
+        _ lhs: T,
+        _ rhs: T,
+        _ expectation: Fallible<DoubleIntLayout<T>>,
+        file: StaticString,
+        line: UInt
+    )   where T: SystemsInteger {
         //=--------------------------------------=
-        XCTAssertEqual(T.multiplying(lhs, by: rhs), (product), file: file, line: line)
+        XCTAssertEqual(T.multiplying(lhs, by: rhs), expectation.value, file: file, line: line)
         //=--------------------------------------=
-        Test.multiplicationAsSomeBinaryInteger(lhs, rhs, T(bitPattern: product.low), overflow, file: file, line: line)
+        Test.multiplicationAsSomeBinaryInteger(
+            lhs,
+            rhs,
+            expectation.map(\.low).map(T.init(bitPattern:)),
+            file: file,
+            line: line
+        )
     }
     
-    public static func multiplicationAsSomeBinaryInteger<T: BinaryInteger>(
-    _ lhs: T, _ rhs: T, _ value: T, _ error: Bool, file: StaticString, line: UInt) {
-        //=--------------------------------------=
-        let result = Fallible(value, error: error)
-        //=--------------------------------------=
+    public static func multiplicationAsSomeBinaryInteger<T>(
+        _ lhs: T, 
+        _ rhs: T, 
+        _ expectation: Fallible<T>,
+        file: StaticString,
+        line: UInt
+    )   where T: BinaryInteger {
         brr: do {
-            XCTAssertEqual(lhs &* rhs, value, file: file, line: line)
-            XCTAssertEqual(rhs &* lhs, value, file: file, line: line)
-        };  if !error {
-            XCTAssertEqual(lhs  * rhs, value, file: file, line: line)
-            XCTAssertEqual(rhs  * lhs, value, file: file, line: line)
+            XCTAssertEqual(lhs &* rhs, expectation.value, file: file, line: line)
+            XCTAssertEqual(rhs &* lhs, expectation.value, file: file, line: line)
+        };  if !expectation.error {
+            XCTAssertEqual(lhs  * rhs, expectation.value, file: file, line: line)
+            XCTAssertEqual(rhs  * lhs, expectation.value, file: file, line: line)
         }
         
         brr: do {
-            XCTAssertEqual({ var x = lhs; x &*= rhs; return x }(), value, file: file, line: line)
-            XCTAssertEqual({ var x = rhs; x &*= lhs; return x }(), value, file: file, line: line)
-        };  if !error {
-            XCTAssertEqual({ var x = lhs; x  *= rhs; return x }(), value, file: file, line: line)
-            XCTAssertEqual({ var x = rhs; x  *= lhs; return x }(), value, file: file, line: line)
-        }
-        //=--------------------------------------=
-        brr: do {
-            XCTAssertEqual(result, lhs.times(rhs), file: file, line: line)
-            XCTAssertEqual(result, lhs.times(Fallible(rhs)), file: file, line: line)
-            XCTAssertEqual(result, Fallible(lhs).times(rhs), file: file, line: line)
-            XCTAssertEqual(result, Fallible(lhs).times(Fallible(rhs)), file: file, line: line)
+            XCTAssertEqual({ var x = lhs; x &*= rhs; return x }(), expectation.value, file: file, line: line)
+            XCTAssertEqual({ var x = rhs; x &*= lhs; return x }(), expectation.value, file: file, line: line)
+        };  if !expectation.error {
+            XCTAssertEqual({ var x = lhs; x  *= rhs; return x }(), expectation.value, file: file, line: line)
+            XCTAssertEqual({ var x = rhs; x  *= lhs; return x }(), expectation.value, file: file, line: line)
         }
         
         brr: do {
-            XCTAssertEqual(result, rhs.times(lhs), file: file, line: line)
-            XCTAssertEqual(result, rhs.times(Fallible(lhs)), file: file, line: line)
-            XCTAssertEqual(result, Fallible(rhs).times(lhs), file: file, line: line)
-            XCTAssertEqual(result, Fallible(rhs).times(Fallible(lhs)), file: file, line: line)
+            XCTAssertEqual(lhs.times(rhs),                     expectation, file: file, line: line)
+            XCTAssertEqual(lhs.times(Fallible(rhs)),           expectation, file: file, line: line)
+            XCTAssertEqual(Fallible(lhs).times(rhs),           expectation, file: file, line: line)
+            XCTAssertEqual(Fallible(lhs).times(Fallible(rhs)), expectation, file: file, line: line)
         }
-        //=--------------------------------------=
-        if  lhs == rhs {
-            XCTAssertEqual(result, rhs.squared(), file: file, line: line)
-            XCTAssertEqual(result, Fallible(lhs).squared(), file: file, line: line)
+        
+        brr: do {
+            XCTAssertEqual(rhs.times(lhs),                     expectation, file: file, line: line)
+            XCTAssertEqual(rhs.times(Fallible(lhs)),           expectation, file: file, line: line)
+            XCTAssertEqual(Fallible(rhs).times(lhs),           expectation, file: file, line: line)
+            XCTAssertEqual(Fallible(rhs).times(Fallible(lhs)), expectation, file: file, line: line)
         }
         
         if  lhs == rhs {
-            XCTAssertEqual(result, rhs.squared(), file: file, line: line)
-            XCTAssertEqual(result, Fallible(rhs).squared(), file: file, line: line)
+            XCTAssertEqual(rhs.squared(),           expectation, file: file, line: line)
+            XCTAssertEqual(Fallible(lhs).squared(), expectation, file: file, line: line)
+        }
+        
+        if  lhs == rhs {
+            XCTAssertEqual(rhs.squared(),           expectation, file: file, line: line)
+            XCTAssertEqual(Fallible(rhs).squared(), expectation, file: file, line: line)
         }
     }
 }
