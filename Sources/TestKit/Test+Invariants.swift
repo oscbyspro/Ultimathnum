@@ -32,7 +32,7 @@ extension Test {
             "\(T.self) must be at least as wide as \(T.Element.self)"
         )
         //=--------------------------------------=
-        equal(MemoryLayout<T>.self, MemoryLayout<T.Content>.self)
+        same(MemoryLayout<T>.self, MemoryLayout<T.Content>.self)
         //=--------------------------------------=
         invariants(type, BinaryIntegerID())
     }
@@ -52,6 +52,6 @@ extension Test {
     }
     
     public func invariants<T>(_ type: T.Type, _ id: BitCastableID) where T: BitCastable {
-        equal(MemoryLayout<T>.self, MemoryLayout<T.BitPattern>.self)
+        same(MemoryLayout<T>.self, MemoryLayout<T.BitPattern>.self)
     }
 }

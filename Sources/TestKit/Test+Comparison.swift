@@ -79,10 +79,14 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func equal<T, U>(_ lhs: MemoryLayout<T>.Type, _ rhs: MemoryLayout<U>.Type) {
-        same(lhs.size,      rhs.size,      "\(T.self) != \(U.self) - MemoryLayout.size")
-        same(lhs.stride,    rhs.stride,    "\(T.self) != \(U.self) - MemoryLayout.stride")
-        same(lhs.alignment, rhs.alignment, "\(T.self) != \(U.self) - MemoryLayout.alignment")
+    public func same<T, U>(_ lhs: MemoryLayout<T>.Type, _ rhs: MemoryLayout<U>.Type) {
+        func message(_ component: String) -> String {
+            "MemoryLayout<\(T.self)>.\(component) != MemoryLayout<\(U.self)>.\(component)"
+        }
+        
+        same(lhs.size,      rhs.size,      message("size"     ))
+        same(lhs.stride,    rhs.stride,    message("stride"   ))
+        same(lhs.alignment, rhs.alignment, message("alignment"))
     }
 }
 
@@ -124,7 +128,7 @@ extension Test {
             }
             
             less: do {
-                let result:  Bool = lhs < rhs
+                let result:  Bool = lhs <  rhs
                 let success: Bool = result == (expectation == .less)
                 raw(success, "\(lhs) <  \(rhs) -> \(result)")
             }
@@ -161,7 +165,7 @@ extension Test {
         }
     }
     
-    public func comparison <A, B, C, D>(_ lhs: ExchangeInt<A, B>, _ rhs: ExchangeInt<C, D>, _ expectation: Signum) {
+    public func  comparison<A, B, C, D>(_ lhs: ExchangeInt<A, B>, _ rhs: ExchangeInt<C, D>, _ expectation: Signum) {
         func unidirectional<E, F, G, H>(_ lhs: ExchangeInt<E, F>, _ rhs: ExchangeInt<G, H>, _ expectation: Signum) {
             signum: if rhs.signum() == Signum.same {
                 let result:  Signum = lhs.signum()
