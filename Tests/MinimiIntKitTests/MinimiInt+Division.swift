@@ -22,17 +22,23 @@ extension MinimiIntTests {
     
     func testDivision() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.division( 0 as T,  0 as T, Division(quotient:  0 as T, remainder:  0 as T), true)
-            Test.division(-1 as T,  0 as T, Division(quotient:  0 as T, remainder: -1 as T), true)
-            Test.division( 0 as T, -1 as T, Division(quotient:  0 as T, remainder:  0 as T))
-            Test.division(-1 as T, -1 as T, Division(quotient: -1 as T, remainder:  0 as T), true)
+            typealias D = Division<T, T>
+            typealias F = Fallible<Division<T, T>>
+            
+            Test.division( 0 as T,  0 as T, F(D(quotient:  0, remainder:  0), error: true))
+            Test.division(-1 as T,  0 as T, F(D(quotient:  0, remainder: -1), error: true))
+            Test.division( 0 as T, -1 as T, F(D(quotient:  0, remainder:  0)))
+            Test.division(-1 as T, -1 as T, F(D(quotient: -1, remainder:  0), error: true))
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.division( 0 as T,  0 as T, Division(quotient:  0 as T, remainder:  0 as T), true)
-            Test.division( 0 as T,  1 as T, Division(quotient:  0 as T, remainder:  0 as T))
-            Test.division( 1 as T,  0 as T, Division(quotient:  0 as T, remainder:  1 as T), true)
-            Test.division( 1 as T,  1 as T, Division(quotient:  1 as T, remainder:  0 as T))
+            typealias D = Division<T, T>
+            typealias F = Fallible<Division<T, T>>
+            
+            Test.division( 0 as T,  0 as T, F(D(quotient:  0, remainder:  0), error: true))
+            Test.division( 0 as T,  1 as T, F(D(quotient:  0, remainder:  0)))
+            Test.division( 1 as T,  0 as T, F(D(quotient:  0, remainder:  1), error: true))
+            Test.division( 1 as T,  1 as T, F(D(quotient:  1, remainder:  0)))
         }
         
         for type in Self.types {
@@ -42,29 +48,33 @@ extension MinimiIntTests {
     
     func testDivision2111() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias X2 = DoubleIntLayout<T>
+            typealias X = DoubleIntLayout<T>
+            typealias D = Division<T, T>
+            typealias F = Fallible<Division<T, T>>
             
-            Test.division2111(X2(low: 0, high:  0),  0 as T,  Division(quotient:  0 as T, remainder:  0 as T), true) //  0 vs  0
-            Test.division2111(X2(low: 1, high:  0),  0 as T,  Division(quotient:  0 as T, remainder: -1 as T), true) //  1 vs  0
-            Test.division2111(X2(low: 0, high: -1),  0 as T,  Division(quotient:  0 as T, remainder:  0 as T), true) // -2 vs  0
-            Test.division2111(X2(low: 1, high: -1),  0 as T,  Division(quotient:  0 as T, remainder: -1 as T), true) // -1 vs  0
-            Test.division2111(X2(low: 0, high:  0), -1 as T,  Division(quotient:  0 as T, remainder:  0 as T))       //  0 vs -1
-            Test.division2111(X2(low: 1, high:  0), -1 as T,  Division(quotient: -1 as T, remainder:  0 as T))       //  1 vs -1
-            Test.division2111(X2(low: 0, high: -1), -1 as T,  Division(quotient:  0 as T, remainder:  0 as T), true) // -2 vs -1
-            Test.division2111(X2(low: 1, high: -1), -1 as T,  Division(quotient: -1 as T, remainder:  0 as T), true) // -1 vs -1
+            Test.division2111(X(low: 0, high:  0),  0 as T,  F(D(quotient:  0, remainder:  0), error: true)) //  0 vs  0
+            Test.division2111(X(low: 1, high:  0),  0 as T,  F(D(quotient:  0, remainder: -1), error: true)) //  1 vs  0
+            Test.division2111(X(low: 0, high: -1),  0 as T,  F(D(quotient:  0, remainder:  0), error: true)) // -2 vs  0
+            Test.division2111(X(low: 1, high: -1),  0 as T,  F(D(quotient:  0, remainder: -1), error: true)) // -1 vs  0
+            Test.division2111(X(low: 0, high:  0), -1 as T,  F(D(quotient:  0, remainder:  0)))              //  0 vs -1
+            Test.division2111(X(low: 1, high:  0), -1 as T,  F(D(quotient: -1, remainder:  0)))              //  1 vs -1
+            Test.division2111(X(low: 0, high: -1), -1 as T,  F(D(quotient:  0, remainder:  0), error: true)) // -2 vs -1
+            Test.division2111(X(low: 1, high: -1), -1 as T,  F(D(quotient: -1, remainder:  0), error: true)) // -1 vs -1
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias X2 = DoubleIntLayout<T>
+            typealias X = DoubleIntLayout<T>
+            typealias D = Division<T, T>
+            typealias F = Fallible<Division<T, T>>
             
-            Test.division2111(X2(low: 0, high:  0),  0 as T,  Division(quotient:  0 as T, remainder:  0 as T), true) //  0 vs  0
-            Test.division2111(X2(low: 1, high:  0),  0 as T,  Division(quotient:  0 as T, remainder:  1 as T), true) //  1 vs  0
-            Test.division2111(X2(low: 0, high:  1),  0 as T,  Division(quotient:  0 as T, remainder:  0 as T), true) //  2 vs  0
-            Test.division2111(X2(low: 1, high:  1),  0 as T,  Division(quotient:  0 as T, remainder:  1 as T), true) //  3 vs  0
-            Test.division2111(X2(low: 0, high:  0),  1 as T,  Division(quotient:  0 as T, remainder:  0 as T))       //  0 vs  1
-            Test.division2111(X2(low: 1, high:  0),  1 as T,  Division(quotient:  1 as T, remainder:  0 as T))       //  1 vs  1
-            Test.division2111(X2(low: 0, high:  1),  1 as T,  Division(quotient:  0 as T, remainder:  0 as T), true) //  2 vs  1
-            Test.division2111(X2(low: 1, high:  1),  1 as T,  Division(quotient:  1 as T, remainder:  0 as T), true) //  3 vs  1
+            Test.division2111(X(low: 0, high:  0),  0 as T,  F(D(quotient:  0, remainder:  0), error: true)) //  0 vs  0
+            Test.division2111(X(low: 1, high:  0),  0 as T,  F(D(quotient:  0, remainder:  1), error: true)) //  1 vs  0
+            Test.division2111(X(low: 0, high:  1),  0 as T,  F(D(quotient:  0, remainder:  0), error: true)) //  2 vs  0
+            Test.division2111(X(low: 1, high:  1),  0 as T,  F(D(quotient:  0, remainder:  1), error: true)) //  3 vs  0
+            Test.division2111(X(low: 0, high:  0),  1 as T,  F(D(quotient:  0, remainder:  0)))              //  0 vs  1
+            Test.division2111(X(low: 1, high:  0),  1 as T,  F(D(quotient:  1, remainder:  0)))              //  1 vs  1
+            Test.division2111(X(low: 0, high:  1),  1 as T,  F(D(quotient:  0, remainder:  0), error: true)) //  2 vs  1
+            Test.division2111(X(low: 1, high:  1),  1 as T,  F(D(quotient:  1, remainder:  0), error: true)) //  3 vs  1
         }
         
         for type in Self.types {
