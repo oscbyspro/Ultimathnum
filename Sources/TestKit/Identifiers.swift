@@ -17,6 +17,12 @@ public struct BinaryIntegerID {
     
 }
 
+public struct BitCastableID {
+    
+    public init() { }
+    
+}
+
 public struct SystemsIntegerID {
     
     public init() { }

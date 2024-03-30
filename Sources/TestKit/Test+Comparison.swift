@@ -154,3 +154,25 @@ extension Test {
         unidirectional(rhs, lhs, expectation.negated())
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Memory Layout
+//=----------------------------------------------------------------------------=
+
+extension Test {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    public static func equal<T, U>(
+        _ lhs: MemoryLayout<T>.Type,
+        _ rhs: MemoryLayout<U>.Type,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) {
+        XCTAssertEqual(lhs.size,      rhs.size,      "MemoryLayout: \(T.self) != \(U.self) [size]",      file: file, line: line)
+        XCTAssertEqual(lhs.stride,    rhs.stride,    "MemoryLayout: \(T.self) != \(U.self) [stride]",    file: file, line: line)
+        XCTAssertEqual(lhs.alignment, rhs.alignment, "MemoryLayout: \(T.self) != \(U.self) [alignment]", file: file, line: line)
+    }
+}

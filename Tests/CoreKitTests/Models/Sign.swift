@@ -23,7 +23,7 @@ final class SignTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testInvariants() {
-        Test.invariantsAsSomeBitCastable(T.self, file: #file, line: #line)
+        Test.invariants(T.self, identifier: BitCastableID())
     }
     
     //=------------------------------------------------------------------------=
