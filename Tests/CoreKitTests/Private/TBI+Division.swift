@@ -22,18 +22,18 @@ extension TupleBinaryIntegerTests {
     
     func testDivision3212MSB() {
         func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger & UnsignedInteger {
-            typealias X2 = DoubleIntLayout<Base>
-            typealias X3 = TripleIntLayout<Base>
+            typealias X = DoubleIntLayout<Base>
+            typealias Y = TripleIntLayout<Base>
             
-            Test.division3212MSB(X3(low:  0, mid:  0, high: ~0), X2(low:  1, high: ~0), ~0 as Base, X2(low:  1, high: ~1))
-            Test.division3212MSB(X3(low:  0, mid:  0, high: ~0), X2(low: ~1, high: ~0), ~0 as Base, X2(low: ~1, high:  1))
-            Test.division3212MSB(X3(low: ~0, mid: ~0, high: ~1), X2(low:  0, high: ~0), ~0 as Base, X2(low: ~0, high: ~1))
-            Test.division3212MSB(X3(low: ~0, mid: ~0, high: ~1), X2(low: ~0, high: ~0), ~0 as Base, X2(low: ~1, high:  0))
+            Test().division3212MSB(Y(low:  0, mid:  0, high: ~0), X(low:  1, high: ~0), ~0 as Base, X(low:  1, high: ~1))
+            Test().division3212MSB(Y(low:  0, mid:  0, high: ~0), X(low: ~1, high: ~0), ~0 as Base, X(low: ~1, high:  1))
+            Test().division3212MSB(Y(low: ~0, mid: ~0, high: ~1), X(low:  0, high: ~0), ~0 as Base, X(low: ~0, high: ~1))
+            Test().division3212MSB(Y(low: ~0, mid: ~0, high: ~1), X(low: ~0, high: ~0), ~0 as Base, X(low: ~1, high:  0))
             
-            Test.division3212MSB(X3(low:  0, mid:  0, high: Base.msb - 1), X2(low: ~0, high: Base.msb), ~3 as Base, X2(low: ~3, high: 4)) // 2
-            Test.division3212MSB(X3(low: ~0, mid:  0, high: Base.msb - 1), X2(low: ~0, high: Base.msb), ~3 as Base, X2(low: ~4, high: 5)) // 2
-            Test.division3212MSB(X3(low:  0, mid: ~0, high: Base.msb - 1), X2(low: ~0, high: Base.msb), ~1 as Base, X2(low: ~1, high: 1)) // 1
-            Test.division3212MSB(X3(low: ~0, mid: ~0, high: Base.msb - 1), X2(low: ~0, high: Base.msb), ~1 as Base, X2(low: ~2, high: 2)) // 1
+            Test().division3212MSB(Y(low:  0, mid:  0, high: Base.msb - 1), X(low: ~0, high: Base.msb), ~3 as Base, X(low: ~3, high: 4)) // 2
+            Test().division3212MSB(Y(low: ~0, mid:  0, high: Base.msb - 1), X(low: ~0, high: Base.msb), ~3 as Base, X(low: ~4, high: 5)) // 2
+            Test().division3212MSB(Y(low:  0, mid: ~0, high: Base.msb - 1), X(low: ~0, high: Base.msb), ~1 as Base, X(low: ~1, high: 1)) // 1
+            Test().division3212MSB(Y(low: ~0, mid: ~0, high: Base.msb - 1), X(low: ~0, high: Base.msb), ~1 as Base, X(low: ~2, high: 2)) // 1
         }
         
         for base in Self.basesWhereIsUnsigned {
@@ -52,23 +52,22 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    static func division3212MSB<Base>(
+    func division3212MSB<Base>(
         _ dividend: TripleIntLayout<Base>, 
         _ divisor: DoubleIntLayout<Base>,
         _ quotient: Base,
-        _ remainder: DoubleIntLayout<Base>,
-        _ test: Test = .init()
+        _ remainder: DoubleIntLayout<Base>
     )   where Base: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
         let result = TBI.division3212MSB(dividing: dividend, by: divisor)
         //=------------------------------------------=
-        test.same(result.quotient,  quotient )
-        test.same(result.remainder, remainder)
+        same(result.quotient,  quotient )
+        same(result.remainder, remainder)
         //=------------------------------------------=
         reversed: do {
             var inverse  = TBI.multiplying213(divisor, by: result.quotient)
             let overflow = TBI.increment32B(&inverse, by: result.remainder)
-            test.same(Fallible(dividend), Fallible(inverse, error: overflow), "dividend != divisor * quotient + remainder")
+            same(Fallible(dividend), Fallible(inverse, error: overflow), "dividend != divisor * quotient + remainder")
         }
     }
 }
