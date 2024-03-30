@@ -20,53 +20,59 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func addition<T: BinaryInteger>(
-    _ lhs: T, _ rhs: T, _ value: T, _ overflow: Bool = false,
-    file: StaticString = #file, line: UInt = #line) {
-        self.additionAsSomeBinaryInteger(lhs, rhs, value, overflow, file: file, line: line)
+    public static func addition<T>(
+        _ lhs: T,
+        _ rhs: T,
+        _ expectation: Fallible<T>,
+        file: StaticString = #file,
+        line: UInt = #line
+    )   where T: BinaryInteger {
+        self.additionAsSomeBinaryInteger(lhs, rhs, expectation, file: file, line: line)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func additionAsSomeBinaryInteger<T: BinaryInteger>(
-    _ lhs: T, _ rhs: T, _ value: T, _ error: Bool, file: StaticString, line: UInt) {
-        //=--------------------------------------=
-        let result = Fallible(value, error: error)
-        //=--------------------------------------=
+    public static func additionAsSomeBinaryInteger<T>(
+        _ lhs: T,
+        _ rhs: T,
+        _ expectation: Fallible<T>,
+        file: StaticString,
+        line: UInt
+    )   where T: BinaryInteger {
         brr: do {
-            XCTAssertEqual(lhs &+ rhs, value, file: file, line: line)
-            XCTAssertEqual(rhs &+ lhs, value, file: file, line: line)
-        };  if !error {
-            XCTAssertEqual(lhs  + rhs, value, file: file, line: line)
-            XCTAssertEqual(rhs  + lhs, value, file: file, line: line)
+            XCTAssertEqual(lhs &+ rhs, expectation.value, file: file, line: line)
+            XCTAssertEqual(rhs &+ lhs, expectation.value, file: file, line: line)
+        };  if !expectation.error {
+            XCTAssertEqual(lhs  + rhs, expectation.value, file: file, line: line)
+            XCTAssertEqual(rhs  + lhs, expectation.value, file: file, line: line)
         }
         
         brr: do {
-            XCTAssertEqual({ var x = lhs; x &+= rhs; return x }(), value, file: file, line: line)
-            XCTAssertEqual({ var x = rhs; x &+= lhs; return x }(), value, file: file, line: line)
-        };  if !error {
-            XCTAssertEqual({ var x = lhs; x  += rhs; return x }(), value, file: file, line: line)
-            XCTAssertEqual({ var x = rhs; x  += lhs; return x }(), value, file: file, line: line)
+            XCTAssertEqual({ var x = lhs; x &+= rhs; return x }(), expectation.value, file: file, line: line)
+            XCTAssertEqual({ var x = rhs; x &+= lhs; return x }(), expectation.value, file: file, line: line)
+        };  if !expectation.error {
+            XCTAssertEqual({ var x = lhs; x  += rhs; return x }(), expectation.value, file: file, line: line)
+            XCTAssertEqual({ var x = rhs; x  += lhs; return x }(), expectation.value, file: file, line: line)
         }
-        //=--------------------------------------=
-        if  let one = T.exactly(1).optional(), rhs == one {
-            Test.incrementation(lhs, value, error, file: file, line: line)
-        }
-        //=--------------------------------------=
-        brr: do {
-            XCTAssertEqual(result, lhs.plus(rhs), file: file, line: line)
-            XCTAssertEqual(result, lhs.plus(Fallible(rhs)), file: file, line: line)
-            XCTAssertEqual(result, Fallible(lhs).plus(rhs), file: file, line: line)
-            XCTAssertEqual(result, Fallible(lhs).plus(Fallible(rhs)), file: file, line: line)
+        
+        if  rhs == T.exactly(1).optional() {
+            Test.incrementation(lhs, expectation, file: file, line: line)
         }
         
         brr: do {
-            XCTAssertEqual(result, rhs.plus(lhs), file: file, line: line)
-            XCTAssertEqual(result, rhs.plus(Fallible(lhs)), file: file, line: line)
-            XCTAssertEqual(result, Fallible(rhs).plus(lhs), file: file, line: line)
-            XCTAssertEqual(result, Fallible(rhs).plus(Fallible(lhs)), file: file, line: line)
+            XCTAssertEqual(lhs.plus(rhs),                     expectation, file: file, line: line)
+            XCTAssertEqual(lhs.plus(Fallible(rhs)),           expectation, file: file, line: line)
+            XCTAssertEqual(Fallible(lhs).plus(rhs),           expectation, file: file, line: line)
+            XCTAssertEqual(Fallible(lhs).plus(Fallible(rhs)), expectation, file: file, line: line)
+        }
+        
+        brr: do {
+            XCTAssertEqual(rhs.plus(lhs),                     expectation, file: file, line: line)
+            XCTAssertEqual(rhs.plus(Fallible(lhs)),           expectation, file: file, line: line)
+            XCTAssertEqual(Fallible(rhs).plus(lhs),           expectation, file: file, line: line)
+            XCTAssertEqual(Fallible(rhs).plus(Fallible(lhs)), expectation, file: file, line: line)
         }
     }
 }
@@ -81,11 +87,13 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func incrementation<T: BinaryInteger>(_ instance: T, _ value: T, _ error: Bool = false, file: StaticString = #file, line: UInt = #line) {
-        //=--------------------------------------=
-        let result = Fallible(value, error: error)
-        //=--------------------------------------=
-        XCTAssertEqual(result, instance.incremented(), file: file, line: line)
-        XCTAssertEqual(result, Fallible(instance).incremented(), file: file, line: line)
+    public static func incrementation<T>(
+        _ instance: T, 
+        _ expectation: Fallible<T>,
+        file: StaticString = #file,
+        line: UInt = #line
+    )   where T: BinaryInteger {
+        XCTAssertEqual(instance.incremented(),           expectation, file: file, line: line)
+        XCTAssertEqual(Fallible(instance).incremented(), expectation, file: file, line: line)
     }
 }
