@@ -23,51 +23,51 @@ extension UltimathnumTests {
     func testMinimiIntToFromExactly() {
         func whereIs<T, U>(_ type: T.Type, _ other: U.Type) where T: SystemsInteger, U: BinaryInteger {
             if  let i = try? U.exactly(T.min).plus(U.exactly(T.min)).minus(U.exactly(magnitude: 1)).get() {
-                XCTAssertEqual(try? T.exactly(i).get(), nil as T?)
+                Test().same(try? T.exactly(i).get(), nil as T?)
             }
             
             if  let i = try? U.exactly(T.min).plus(U.exactly(T.min)).get() {
-                XCTAssertEqual(try? T.exactly(i).get(), T.isSigned ? nil as T? : 0 as T?)
+                Test().same(try? T.exactly(i).get(), T.isSigned ? nil as T? : 0 as T?)
             }
             
             if  let i = try? U.exactly(T.min).plus(U.exactly(T.min)).plus(U.exactly(magnitude: 1)).get() {
-                XCTAssertEqual(try? T.exactly(i).get(), T.isSigned ?  -1 as T? : 1 as T?)
+                Test().same(try? T.exactly(i).get(), T.isSigned ?  -1 as T? : 1 as T?)
             }
             
             if  let i = try? U.exactly(T.min).minus(U.exactly(magnitude: 1)).get() {
-                XCTAssertEqual(try? T.exactly(i).get(), nil as T?)
+                Test().same(try? T.exactly(i).get(), nil as T?)
             }
             
             if  let i = try? U.exactly(T.min).get() {
-                XCTAssertEqual(try? T.exactly(i).get(), T.min)
+                Test().same(try? T.exactly(i).get(), T.min)
             }
             
             if  let i = try? U.exactly(T.min).plus(U.exactly(magnitude: 1)).get() {
-                XCTAssertEqual(try? T.exactly(i).get(), T.isSigned ?   0 as T? : 1 as T?)
+                Test().same(try? T.exactly(i).get(), T.isSigned ?   0 as T? : 1 as T?)
             }
             
             if  let i = try? U.exactly(T.max).minus(U.exactly(magnitude: 1)).get() {
-                XCTAssertEqual(try? T.exactly(i).get(), T.isSigned ?  -1 as T? : 0 as T?)
+                Test().same(try? T.exactly(i).get(), T.isSigned ?  -1 as T? : 0 as T?)
             }
             
             if  let i = try? U.exactly(T.max).get() {
-                XCTAssertEqual(try? T.exactly(i).get(), T.max)
+                Test().same(try? T.exactly(i).get(), T.max)
             }
             
             if  let i = try? U.exactly(T.max).plus(U.exactly(magnitude: 1)).get() {
-                XCTAssertEqual(try? T.exactly(i).get(), nil as T?)
+                Test().same(try? T.exactly(i).get(), nil as T?)
             }
             
             if  let i = try? U.exactly(T.max).plus(U.exactly(T.max)).minus(U.exactly(magnitude: 1)).get() {
-                XCTAssertEqual(try? T.exactly(i).get(), T.isSigned ?  -1 as T? :   1 as T?)
+                Test().same(try? T.exactly(i).get(), T.isSigned ?  -1 as T? :   1 as T?)
             }
             
             if  let i = try? U.exactly(T.max).plus(U.exactly(T.max)).get() {
-                XCTAssertEqual(try? T.exactly(i).get(), T.isSigned ?   0 as T? : nil as T?)
+                Test().same(try? T.exactly(i).get(), T.isSigned ?   0 as T? : nil as T?)
             }
             
             if  let i = try? U.exactly(T.max).plus(U.exactly(T.max)).plus(U.exactly(magnitude: 1)).get() {
-                XCTAssertEqual(try? T.exactly(i).get(), nil as T?)
+                Test().same(try? T.exactly(i).get(), nil as T?)
             }
         }
         

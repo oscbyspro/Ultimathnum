@@ -31,11 +31,11 @@ final class BitTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testBitPattern() {
-        XCTAssertEqual(T(bitPattern: false as Bool), 0)
-        XCTAssertEqual(T(bitPattern: true  as Bool), 1)
+        Test().same(T(bitPattern: false as Bool), 0)
+        Test().same(T(bitPattern: true  as Bool), 1)
         
-        XCTAssertEqual(Bool(bitPattern: 0 as T), false)
-        XCTAssertEqual(Bool(bitPattern: 1 as T), true )
+        Test().same(Bool(bitPattern: 0 as T), false)
+        Test().same(Bool(bitPattern: 1 as T), true )
     }
     
     func testComparison() {
@@ -78,16 +78,18 @@ final class BitTests: XCTestCase {
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
+    // TODO: Write a custom Comparable protocol with a compared(to:) method.
+    //=------------------------------------------------------------------------=
     
-    func checkComparison(_ lhs: T, _ rhs: T, _ expectation: Signum, file: StaticString = #file, line: UInt = #line) {
+    func checkComparison(_ lhs: T, _ rhs: T, _ expectation: Signum, _ check: Test = .init()) {
         for (x, y, z) in [(lhs, rhs, expectation), (rhs, lhs, expectation.negated())] {
-            XCTAssertEqual(x.compared(to: y), ((z)), file: file, line: line)
-            XCTAssertEqual(x <  y, z == Signum.less, file: file, line: line)
-            XCTAssertEqual(x >= y, z != Signum.less, file: file, line: line)
-            XCTAssertEqual(x >  y, z == Signum.more, file: file, line: line)
-            XCTAssertEqual(x <= y, z != Signum.more, file: file, line: line)
-            XCTAssertEqual(x == y, z == Signum.same, file: file, line: line)
-            XCTAssertEqual(x != y, z != Signum.same, file: file, line: line)
+            check.same(x.compared(to: y), ((z)))
+            check.same(x <  y, z == Signum.less)
+            check.same(x >= y, z != Signum.less)
+            check.same(x >  y, z == Signum.more)
+            check.same(x <= y, z != Signum.more)
+            check.same(x == y, z == Signum.same)
+            check.same(x != y, z != Signum.same)
         }
     }
 }

@@ -25,60 +25,66 @@ final class StrictUnsignedIntegerSubSequenceTestsOnDivision: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testDivisionSomeBySome() {
-        checkDivisionManyBySome([ ] as X, 1 as UX, [ ] as X, 0 as UX)
-        checkDivisionManyBySome([ ] as X, 2 as UX, [ ] as X, 0 as UX)
-        checkDivisionManyBySome([0] as X, 1 as UX, [0] as X, 0 as UX)
-        checkDivisionManyBySome([0] as X, 2 as UX, [0] as X, 0 as UX)
-        checkDivisionManyBySome([7] as X, 1 as UX, [7] as X, 0 as UX)
-        checkDivisionManyBySome([7] as X, 2 as UX, [3] as X, 1 as UX)
+        typealias D = Division<X, UX>
+        typealias F = Fallible<D>
         
-        checkDivisionManyBySome([ ] as X, 0 as UX, [ ] as X, 0 as UX, true)
-        checkDivisionManyBySome([0] as X, 0 as UX, [0] as X, 0 as UX, true)
-        checkDivisionManyBySome([1] as X, 0 as UX, [1] as X, 1 as UX, true)
-        checkDivisionManyBySome([2] as X, 0 as UX, [2] as X, 2 as UX, true)
+        checkDivisionManyBySome([ ] as X, 1 as UX, F(D(quotient: [ ] as X, remainder: 0 as UX)))
+        checkDivisionManyBySome([ ] as X, 2 as UX, F(D(quotient: [ ] as X, remainder: 0 as UX)))
+        checkDivisionManyBySome([0] as X, 1 as UX, F(D(quotient: [0] as X, remainder: 0 as UX)))
+        checkDivisionManyBySome([0] as X, 2 as UX, F(D(quotient: [0] as X, remainder: 0 as UX)))
+        checkDivisionManyBySome([7] as X, 1 as UX, F(D(quotient: [7] as X, remainder: 0 as UX)))
+        checkDivisionManyBySome([7] as X, 2 as UX, F(D(quotient: [3] as X, remainder: 1 as UX)))
+        
+        checkDivisionManyBySome([ ] as X, 0 as UX, F(D(quotient: [ ] as X, remainder: 0 as UX), error: true))
+        checkDivisionManyBySome([0] as X, 0 as UX, F(D(quotient: [0] as X, remainder: 0 as UX), error: true))
+        checkDivisionManyBySome([1] as X, 0 as UX, F(D(quotient: [1] as X, remainder: 1 as UX), error: true))
+        checkDivisionManyBySome([2] as X, 0 as UX, F(D(quotient: [2] as X, remainder: 2 as UX), error: true))
     }
     
     func testDivisionManyBySome() {
-        checkDivisionManyBySome([~2,  ~4,  ~6,   9] as X, 2 as UX, [~1, ~2, ~3,  4] as X, 1 as UX)
-        checkDivisionManyBySome([~3,  ~6,  ~9,  14] as X, 3 as UX, [~1, ~2, ~3,  4] as X, 2 as UX)
-        checkDivisionManyBySome([~4,  ~8, ~12,  19] as X, 4 as UX, [~1, ~2, ~3,  4] as X, 3 as UX)
-        checkDivisionManyBySome([~5, ~10, ~15,  24] as X, 5 as UX, [~1, ~2, ~3,  4] as X, 4 as UX)
+        typealias D = Division<X, UX>
+        typealias F = Fallible<D>
         
-        checkDivisionManyBySome([ 1,   2,   3,   4] as X, 0 as UX, [ 1,  2,  3,  4] as X, 1 as UX, true)
-        checkDivisionManyBySome([ 4,   3,   2,   1] as X, 0 as UX, [ 4,  3,  2,  1] as X, 4 as UX, true)
+        checkDivisionManyBySome([~2,  ~4,  ~6,   9] as X, 2 as UX, F(D(quotient: [~1, ~2, ~3,  4] as X, remainder: 1 as UX)))
+        checkDivisionManyBySome([~3,  ~6,  ~9,  14] as X, 3 as UX, F(D(quotient: [~1, ~2, ~3,  4] as X, remainder: 2 as UX)))
+        checkDivisionManyBySome([~4,  ~8, ~12,  19] as X, 4 as UX, F(D(quotient: [~1, ~2, ~3,  4] as X, remainder: 3 as UX)))
+        checkDivisionManyBySome([~5, ~10, ~15,  24] as X, 5 as UX, F(D(quotient: [~1, ~2, ~3,  4] as X, remainder: 4 as UX)))
+        
+        checkDivisionManyBySome([ 1,   2,   3,   4] as X, 0 as UX, F(D(quotient: [ 1,  2,  3,  4] as X, remainder: 1 as UX), error: true))
+        checkDivisionManyBySome([ 4,   3,   2,   1] as X, 0 as UX, F(D(quotient: [ 4,  3,  2,  1] as X, remainder: 4 as UX), error: true))
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    private func checkDivisionManyBySome<Element: SystemsInteger & UnsignedInteger>(
-    _ dividend: [Element], _ divisor: Element, _ quotient: [Element], _ remainder: Element, _ overflow: Bool = false,
-    file: StaticString = #file, line: UInt = #line) {
-        if  divisor   != 0 {
-            let rem = SUISS.remainder(dividing: dividend, by: divisor)
-            XCTAssertEqual(rem, remainder, file: file, line: line)
+    private func checkDivisionManyBySome<Element>(
+        _ dividend: [Element], 
+        _ divisor: Element,
+        _ expectation: Fallible<Division<[Element], Element>>,
+        _ test: Test = .init()
+    )   where Element: SystemsInteger & UnsignedInteger {
+        
+        if  divisor != 0 {
+            let o = SUISS.remainder(dividing: dividend, by: divisor)
+            test.same(o, expectation.value.remainder)
         }
         
-        if  divisor   != 0 {
-            var lhs = dividend
-            let rem = SUISS.formQuotientWithRemainder(dividing:  &lhs, by: divisor)
-            XCTAssertEqual(lhs, quotient,  file: file, line: line)
-            XCTAssertEqual(rem, remainder, file: file, line: line)
-        }
-        
-        brr: do {
-            let pvo = SUISS.remainderReportingOverflow(dividing:  dividend,  by: divisor)
-            XCTAssertEqual(pvo.partialValue, remainder, file: file, line: line)
-            XCTAssertEqual(pvo.overflow,     overflow,  file: file, line: line)
+        if  divisor != 0 {
+            var i = dividend
+            let o = SUISS.formQuotientWithRemainder(dividing: &i, by: divisor)
+            test.same(Division(quotient: i, remainder: o), expectation.value)
         }
         
         brr: do {
-            var lhs = dividend
-            let pvo = SUISS.formQuotientWithRemainderReportingOverflow(dividing: &lhs, by: divisor)
-            XCTAssertEqual(lhs,              quotient,  file: file, line: line)
-            XCTAssertEqual(pvo.partialValue, remainder, file: file, line: line)
-            XCTAssertEqual(pvo.overflow,     overflow,  file: file, line: line)
+            let o = SUISS.remainderReportingOverflow(dividing: dividend, by: divisor)
+            test.same(Fallible(o.partialValue, error: o.overflow), expectation.map(\.remainder))
+        }
+        
+        brr: do {
+            var i = dividend
+            let o = SUISS.formQuotientWithRemainderReportingOverflow(dividing: &i, by: divisor)
+            test.same(Fallible(Division(quotient: i, remainder: o.partialValue), error: o.overflow), expectation)
         }
     }
 }

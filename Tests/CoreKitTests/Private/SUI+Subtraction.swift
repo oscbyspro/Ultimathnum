@@ -19,61 +19,62 @@ final class StrictUnsignedIntegerSubSequenceTestsOnSubtraction: XCTestCase {
     typealias X   = [UX]
     typealias X64 = [U64]
     typealias X32 = [U32]
+    typealias F   = Fallible
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     func testLargeByLarge() {
-        checkElementsBit([ 0,  0,  0,  0] as X, [ 0,  0,  0,  0] as X, false, [ 0,  0,  0,  0] as X)
-        checkElementsBit([ 0,  0,  0,  0] as X, [ 0,  0,  0,  0] as X, true,  [~0, ~0, ~0, ~0] as X, true)
-        checkElementsBit([ 0,  0,  0,  0] as X, [ 1,  0,  0,  0] as X, false, [~0, ~0, ~0, ~0] as X, true)
-        checkElementsBit([ 0,  0,  0,  0] as X, [ 1,  0,  0,  0] as X, true,  [~1, ~0, ~0, ~0] as X, true)
+        checkElementsBit([ 0,  0,  0,  0] as X, [ 0,  0,  0,  0] as X, false, F([ 0,  0,  0,  0] as X))
+        checkElementsBit([ 0,  0,  0,  0] as X, [ 0,  0,  0,  0] as X, true,  F([~0, ~0, ~0, ~0] as X, error: true))
+        checkElementsBit([ 0,  0,  0,  0] as X, [ 1,  0,  0,  0] as X, false, F([~0, ~0, ~0, ~0] as X, error: true))
+        checkElementsBit([ 0,  0,  0,  0] as X, [ 1,  0,  0,  0] as X, true,  F([~1, ~0, ~0, ~0] as X, error: true))
         
-        checkElementsBit([~0, ~0, ~0, ~0] as X, [ 0,  0,  0,  0] as X, false, [~0, ~0, ~0, ~0] as X)
-        checkElementsBit([~0, ~0, ~0, ~0] as X, [ 0,  0,  0,  0] as X, true,  [~1, ~0, ~0, ~0] as X)
-        checkElementsBit([~0, ~0, ~0, ~0] as X, [ 1,  0,  0,  0] as X, false, [~1, ~0, ~0, ~0] as X)
-        checkElementsBit([~0, ~0, ~0, ~0] as X, [ 1,  0,  0,  0] as X, true,  [~2, ~0, ~0, ~0] as X)
+        checkElementsBit([~0, ~0, ~0, ~0] as X, [ 0,  0,  0,  0] as X, false, F([~0, ~0, ~0, ~0] as X))
+        checkElementsBit([~0, ~0, ~0, ~0] as X, [ 0,  0,  0,  0] as X, true,  F([~1, ~0, ~0, ~0] as X))
+        checkElementsBit([~0, ~0, ~0, ~0] as X, [ 1,  0,  0,  0] as X, false, F([~1, ~0, ~0, ~0] as X))
+        checkElementsBit([~0, ~0, ~0, ~0] as X, [ 1,  0,  0,  0] as X, true,  F([~2, ~0, ~0, ~0] as X))
         
-        checkElementsBit([ 0,  1,  2,  3] as X, [ 4,  0,  0,  0] as X, false, [~3,  0,  2,  3] as X)
-        checkElementsBit([ 0,  1,  2,  3] as X, [ 0,  4,  0,  0] as X, false, [ 0, ~2,  1,  3] as X)
-        checkElementsBit([ 0,  1,  2,  3] as X, [ 0,  0,  4,  0] as X, false, [ 0,  1, ~1,  2] as X)
-        checkElementsBit([ 0,  1,  2,  3] as X, [ 0,  0,  0,  4] as X, false, [ 0,  1,  2, ~0] as X, true)
+        checkElementsBit([ 0,  1,  2,  3] as X, [ 4,  0,  0,  0] as X, false, F([~3,  0,  2,  3] as X))
+        checkElementsBit([ 0,  1,  2,  3] as X, [ 0,  4,  0,  0] as X, false, F([ 0, ~2,  1,  3] as X))
+        checkElementsBit([ 0,  1,  2,  3] as X, [ 0,  0,  4,  0] as X, false, F([ 0,  1, ~1,  2] as X))
+        checkElementsBit([ 0,  1,  2,  3] as X, [ 0,  0,  0,  4] as X, false, F([ 0,  1,  2, ~0] as X, error: true))
         
-        checkElementsBit([ 0,  1,  2,  3] as X, [ 4,  0,  0,  0] as X, true,  [~4,  0,  2,  3] as X)
-        checkElementsBit([ 0,  1,  2,  3] as X, [ 0,  4,  0,  0] as X, true,  [~0, ~3,  1,  3] as X)
-        checkElementsBit([ 0,  1,  2,  3] as X, [ 0,  0,  4,  0] as X, true,  [~0,  0, ~1,  2] as X)
-        checkElementsBit([ 0,  1,  2,  3] as X, [ 0,  0,  0,  4] as X, true,  [~0,  0,  2, ~0] as X, true)
+        checkElementsBit([ 0,  1,  2,  3] as X, [ 4,  0,  0,  0] as X, true,  F([~4,  0,  2,  3] as X))
+        checkElementsBit([ 0,  1,  2,  3] as X, [ 0,  4,  0,  0] as X, true,  F([~0, ~3,  1,  3] as X))
+        checkElementsBit([ 0,  1,  2,  3] as X, [ 0,  0,  4,  0] as X, true,  F([~0,  0, ~1,  2] as X))
+        checkElementsBit([ 0,  1,  2,  3] as X, [ 0,  0,  0,  4] as X, true,  F([~0,  0,  2, ~0] as X, error: true))
         
-        checkElementsBit([ 0,  1,  2,  3] as X, [~4, ~0, ~0, ~0] as X, false, [ 5,  1,  2,  3] as X, true)
-        checkElementsBit([ 0,  1,  2,  3] as X, [~0, ~4, ~0, ~0] as X, false, [ 1,  5,  2,  3] as X, true)
-        checkElementsBit([ 0,  1,  2,  3] as X, [~0, ~0, ~4, ~0] as X, false, [ 1,  1,  6,  3] as X, true)
-        checkElementsBit([ 0,  1,  2,  3] as X, [~0, ~0, ~0, ~4] as X, false, [ 1,  1,  2,  7] as X, true)
+        checkElementsBit([ 0,  1,  2,  3] as X, [~4, ~0, ~0, ~0] as X, false, F([ 5,  1,  2,  3] as X, error: true))
+        checkElementsBit([ 0,  1,  2,  3] as X, [~0, ~4, ~0, ~0] as X, false, F([ 1,  5,  2,  3] as X, error: true))
+        checkElementsBit([ 0,  1,  2,  3] as X, [~0, ~0, ~4, ~0] as X, false, F([ 1,  1,  6,  3] as X, error: true))
+        checkElementsBit([ 0,  1,  2,  3] as X, [~0, ~0, ~0, ~4] as X, false, F([ 1,  1,  2,  7] as X, error: true))
         
-        checkElementsBit([ 0,  1,  2,  3] as X, [~4, ~0, ~0, ~0] as X, true,  [ 4,  1,  2,  3] as X, true)
-        checkElementsBit([ 0,  1,  2,  3] as X, [~0, ~4, ~0, ~0] as X, true,  [ 0,  5,  2,  3] as X, true)
-        checkElementsBit([ 0,  1,  2,  3] as X, [~0, ~0, ~4, ~0] as X, true,  [ 0,  1,  6,  3] as X, true)
-        checkElementsBit([ 0,  1,  2,  3] as X, [~0, ~0, ~0, ~4] as X, true,  [ 0,  1,  2,  7] as X, true)
+        checkElementsBit([ 0,  1,  2,  3] as X, [~4, ~0, ~0, ~0] as X, true,  F([ 4,  1,  2,  3] as X, error: true))
+        checkElementsBit([ 0,  1,  2,  3] as X, [~0, ~4, ~0, ~0] as X, true,  F([ 0,  5,  2,  3] as X, error: true))
+        checkElementsBit([ 0,  1,  2,  3] as X, [~0, ~0, ~4, ~0] as X, true,  F([ 0,  1,  6,  3] as X, error: true))
+        checkElementsBit([ 0,  1,  2,  3] as X, [~0, ~0, ~0, ~4] as X, true,  F([ 0,  1,  2,  7] as X, error: true))
         
-        checkElementsBit([~0, ~1, ~2, ~3] as X, [ 4,  0,  0,  0] as X, false, [~4, ~1, ~2, ~3] as X)
-        checkElementsBit([~0, ~1, ~2, ~3] as X, [ 0,  4,  0,  0] as X, false, [~0, ~5, ~2, ~3] as X)
-        checkElementsBit([~0, ~1, ~2, ~3] as X, [ 0,  0,  4,  0] as X, false, [~0, ~1, ~6, ~3] as X)
-        checkElementsBit([~0, ~1, ~2, ~3] as X, [ 0,  0,  0,  4] as X, false, [~0, ~1, ~2, ~7] as X)
+        checkElementsBit([~0, ~1, ~2, ~3] as X, [ 4,  0,  0,  0] as X, false, F([~4, ~1, ~2, ~3] as X))
+        checkElementsBit([~0, ~1, ~2, ~3] as X, [ 0,  4,  0,  0] as X, false, F([~0, ~5, ~2, ~3] as X))
+        checkElementsBit([~0, ~1, ~2, ~3] as X, [ 0,  0,  4,  0] as X, false, F([~0, ~1, ~6, ~3] as X))
+        checkElementsBit([~0, ~1, ~2, ~3] as X, [ 0,  0,  0,  4] as X, false, F([~0, ~1, ~2, ~7] as X))
         
-        checkElementsBit([~0, ~1, ~2, ~3] as X, [ 4,  0,  0,  0] as X, true,  [~5, ~1, ~2, ~3] as X)
-        checkElementsBit([~0, ~1, ~2, ~3] as X, [ 0,  4,  0,  0] as X, true,  [~1, ~5, ~2, ~3] as X)
-        checkElementsBit([~0, ~1, ~2, ~3] as X, [ 0,  0,  4,  0] as X, true,  [~1, ~1, ~6, ~3] as X)
-        checkElementsBit([~0, ~1, ~2, ~3] as X, [ 0,  0,  0,  4] as X, true,  [~1, ~1, ~2, ~7] as X)
+        checkElementsBit([~0, ~1, ~2, ~3] as X, [ 4,  0,  0,  0] as X, true,  F([~5, ~1, ~2, ~3] as X))
+        checkElementsBit([~0, ~1, ~2, ~3] as X, [ 0,  4,  0,  0] as X, true,  F([~1, ~5, ~2, ~3] as X))
+        checkElementsBit([~0, ~1, ~2, ~3] as X, [ 0,  0,  4,  0] as X, true,  F([~1, ~1, ~6, ~3] as X))
+        checkElementsBit([~0, ~1, ~2, ~3] as X, [ 0,  0,  0,  4] as X, true,  F([~1, ~1, ~2, ~7] as X))
         
-        checkElementsBit([~0, ~1, ~2, ~3] as X, [~4, ~0, ~0, ~0] as X, false, [ 4, ~0, ~2, ~3] as X, true)
-        checkElementsBit([~0, ~1, ~2, ~3] as X, [~0, ~4, ~0, ~0] as X, false, [ 0,  3, ~1, ~3] as X, true)
-        checkElementsBit([~0, ~1, ~2, ~3] as X, [~0, ~0, ~4, ~0] as X, false, [ 0, ~0,  1, ~2] as X, true)
-        checkElementsBit([~0, ~1, ~2, ~3] as X, [~0, ~0, ~0, ~4] as X, false, [ 0, ~0, ~2,  0] as X)
+        checkElementsBit([~0, ~1, ~2, ~3] as X, [~4, ~0, ~0, ~0] as X, false, F([ 4, ~0, ~2, ~3] as X, error: true))
+        checkElementsBit([~0, ~1, ~2, ~3] as X, [~0, ~4, ~0, ~0] as X, false, F([ 0,  3, ~1, ~3] as X, error: true))
+        checkElementsBit([~0, ~1, ~2, ~3] as X, [~0, ~0, ~4, ~0] as X, false, F([ 0, ~0,  1, ~2] as X, error: true))
+        checkElementsBit([~0, ~1, ~2, ~3] as X, [~0, ~0, ~0, ~4] as X, false, F([ 0, ~0, ~2,  0] as X))
         
-        checkElementsBit([~0, ~1, ~2, ~3] as X, [~4, ~0, ~0, ~0] as X, true,  [ 3, ~0, ~2, ~3] as X, true)
-        checkElementsBit([~0, ~1, ~2, ~3] as X, [~0, ~4, ~0, ~0] as X, true,  [~0,  2, ~1, ~3] as X, true)
-        checkElementsBit([~0, ~1, ~2, ~3] as X, [~0, ~0, ~4, ~0] as X, true,  [~0, ~1,  1, ~2] as X, true)
-        checkElementsBit([~0, ~1, ~2, ~3] as X, [~0, ~0, ~0, ~4] as X, true,  [~0, ~1, ~2,  0] as X)
+        checkElementsBit([~0, ~1, ~2, ~3] as X, [~4, ~0, ~0, ~0] as X, true,  F([ 3, ~0, ~2, ~3] as X, error: true))
+        checkElementsBit([~0, ~1, ~2, ~3] as X, [~0, ~4, ~0, ~0] as X, true,  F([~0,  2, ~1, ~3] as X, error: true))
+        checkElementsBit([~0, ~1, ~2, ~3] as X, [~0, ~0, ~4, ~0] as X, true,  F([~0, ~1,  1, ~2] as X, error: true))
+        checkElementsBit([~0, ~1, ~2, ~3] as X, [~0, ~0, ~0, ~4] as X, true,  F([~0, ~1, ~2,  0] as X))
     }
     
     //=------------------------------------------------------------------------=
@@ -81,29 +82,29 @@ final class StrictUnsignedIntegerSubSequenceTestsOnSubtraction: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testLargeBySmall() {
-        checkIncrementBit([~0, ~0, ~0, ~0] as X, UX.min, false, [~0, ~0, ~0, ~0] as X)
-        checkIncrementBit([ 0, ~0, ~0, ~0] as X, UX.min, false, [ 0, ~0, ~0, ~0] as X)
-        checkIncrementBit([ 0,  0, ~0, ~0] as X, UX.min, false, [ 0,  0, ~0, ~0] as X)
-        checkIncrementBit([ 0,  0,  0, ~0] as X, UX.min, false, [ 0,  0,  0, ~0] as X)
-        checkIncrementBit([ 0,  0,  0,  0] as X, UX.min, false, [ 0,  0,  0,  0] as X)
+        checkIncrementBit([~0, ~0, ~0, ~0] as X, UX.min, false, F([~0, ~0, ~0, ~0] as X))
+        checkIncrementBit([ 0, ~0, ~0, ~0] as X, UX.min, false, F([ 0, ~0, ~0, ~0] as X))
+        checkIncrementBit([ 0,  0, ~0, ~0] as X, UX.min, false, F([ 0,  0, ~0, ~0] as X))
+        checkIncrementBit([ 0,  0,  0, ~0] as X, UX.min, false, F([ 0,  0,  0, ~0] as X))
+        checkIncrementBit([ 0,  0,  0,  0] as X, UX.min, false, F([ 0,  0,  0,  0] as X))
         
-        checkIncrementBit([~0, ~0, ~0, ~0] as X, UX.min, true,  [~1, ~0, ~0, ~0] as X)
-        checkIncrementBit([ 0, ~0, ~0, ~0] as X, UX.min, true,  [~0, ~1, ~0, ~0] as X)
-        checkIncrementBit([ 0,  0, ~0, ~0] as X, UX.min, true,  [~0, ~0, ~1, ~0] as X)
-        checkIncrementBit([ 0,  0,  0, ~0] as X, UX.min, true,  [~0, ~0, ~0, ~1] as X)
-        checkIncrementBit([ 0,  0,  0,  0] as X, UX.min, true,  [~0, ~0, ~0, ~0] as X, true)
+        checkIncrementBit([~0, ~0, ~0, ~0] as X, UX.min, true,  F([~1, ~0, ~0, ~0] as X))
+        checkIncrementBit([ 0, ~0, ~0, ~0] as X, UX.min, true,  F([~0, ~1, ~0, ~0] as X))
+        checkIncrementBit([ 0,  0, ~0, ~0] as X, UX.min, true,  F([~0, ~0, ~1, ~0] as X))
+        checkIncrementBit([ 0,  0,  0, ~0] as X, UX.min, true,  F([~0, ~0, ~0, ~1] as X))
+        checkIncrementBit([ 0,  0,  0,  0] as X, UX.min, true,  F([~0, ~0, ~0, ~0] as X, error: true))
         
-        checkIncrementBit([~0, ~0, ~0, ~0] as X, UX.max, false, [ 0, ~0, ~0, ~0] as X)
-        checkIncrementBit([ 0, ~0, ~0, ~0] as X, UX.max, false, [ 1, ~1, ~0, ~0] as X)
-        checkIncrementBit([ 0,  0, ~0, ~0] as X, UX.max, false, [ 1, ~0, ~1, ~0] as X)
-        checkIncrementBit([ 0,  0,  0, ~0] as X, UX.max, false, [ 1, ~0, ~0, ~1] as X)
-        checkIncrementBit([ 0,  0,  0,  0] as X, UX.max, false, [ 1, ~0, ~0, ~0] as X, true)
+        checkIncrementBit([~0, ~0, ~0, ~0] as X, UX.max, false, F([ 0, ~0, ~0, ~0] as X))
+        checkIncrementBit([ 0, ~0, ~0, ~0] as X, UX.max, false, F([ 1, ~1, ~0, ~0] as X))
+        checkIncrementBit([ 0,  0, ~0, ~0] as X, UX.max, false, F([ 1, ~0, ~1, ~0] as X))
+        checkIncrementBit([ 0,  0,  0, ~0] as X, UX.max, false, F([ 1, ~0, ~0, ~1] as X))
+        checkIncrementBit([ 0,  0,  0,  0] as X, UX.max, false, F([ 1, ~0, ~0, ~0] as X, error: true))
         
-        checkIncrementBit([~0, ~0, ~0, ~0] as X, UX.max, true,  [~0, ~1, ~0, ~0] as X)
-        checkIncrementBit([ 0, ~0, ~0, ~0] as X, UX.max, true,  [ 0, ~1, ~0, ~0] as X)
-        checkIncrementBit([ 0,  0, ~0, ~0] as X, UX.max, true,  [ 0, ~0, ~1, ~0] as X)
-        checkIncrementBit([ 0,  0,  0, ~0] as X, UX.max, true,  [ 0, ~0, ~0, ~1] as X)
-        checkIncrementBit([ 0,  0,  0,  0] as X, UX.max, true,  [ 0, ~0, ~0, ~0] as X, true)
+        checkIncrementBit([~0, ~0, ~0, ~0] as X, UX.max, true,  F([~0, ~1, ~0, ~0] as X))
+        checkIncrementBit([ 0, ~0, ~0, ~0] as X, UX.max, true,  F([ 0, ~1, ~0, ~0] as X))
+        checkIncrementBit([ 0,  0, ~0, ~0] as X, UX.max, true,  F([ 0, ~0, ~1, ~0] as X))
+        checkIncrementBit([ 0,  0,  0, ~0] as X, UX.max, true,  F([ 0, ~0, ~0, ~1] as X))
+        checkIncrementBit([ 0,  0,  0,  0] as X, UX.max, true,  F([ 0, ~0, ~0, ~0] as X, error: true))
     }
     
     //=------------------------------------------------------------------------=
@@ -111,30 +112,30 @@ final class StrictUnsignedIntegerSubSequenceTestsOnSubtraction: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testLargeByProduct() {
-        checkProductIncrement([ 0    ] as X, ([ ] as X, UX( )), UX(0), [ 0    ] as X)
-        checkProductIncrement([ 0    ] as X, ([ ] as X, UX( )), UX(1), [~0    ] as X, true)
-        checkProductIncrement([~0    ] as X, ([ ] as X, UX( )), UX(0), [~0    ] as X)
-        checkProductIncrement([~0    ] as X, ([ ] as X, UX( )), UX(1), [~1    ] as X)
+        checkProductIncrement([ 0    ] as X, ([ ] as X, UX( )), UX(0), F([ 0    ] as X))
+        checkProductIncrement([ 0    ] as X, ([ ] as X, UX( )), UX(1), F([~0    ] as X, error: true))
+        checkProductIncrement([~0    ] as X, ([ ] as X, UX( )), UX(0), F([~0    ] as X))
+        checkProductIncrement([~0    ] as X, ([ ] as X, UX( )), UX(1), F([~1    ] as X))
         
-        checkProductIncrement([ 0,  0] as X, ([0] as X, UX( )), UX(0), [ 0,  0] as X)
-        checkProductIncrement([ 0,  0] as X, ([0] as X, UX( )), UX(1), [~0, ~0] as X, true)
-        checkProductIncrement([~0, ~0] as X, ([0] as X, UX( )), UX(0), [~0, ~0] as X)
-        checkProductIncrement([~0, ~0] as X, ([0] as X, UX( )), UX(1), [~1, ~0] as X)
+        checkProductIncrement([ 0,  0] as X, ([0] as X, UX( )), UX(0), F([ 0,  0] as X))
+        checkProductIncrement([ 0,  0] as X, ([0] as X, UX( )), UX(1), F([~0, ~0] as X, error: true))
+        checkProductIncrement([~0, ~0] as X, ([0] as X, UX( )), UX(0), F([~0, ~0] as X))
+        checkProductIncrement([~0, ~0] as X, ([0] as X, UX( )), UX(1), F([~1, ~0] as X))
         
-        checkProductIncrement([ 0,  0] as X, ([2] as X, UX(0)), UX(0), [ 0,  0] as X)
-        checkProductIncrement([ 0,  0] as X, ([2] as X, UX(0)), UX(1), [~0, ~0] as X, true)
-        checkProductIncrement([~0, ~0] as X, ([2] as X, UX(0)), UX(0), [~0, ~0] as X)
-        checkProductIncrement([~0, ~0] as X, ([2] as X, UX(0)), UX(1), [~1, ~0] as X)
+        checkProductIncrement([ 0,  0] as X, ([2] as X, UX(0)), UX(0), F([ 0,  0] as X))
+        checkProductIncrement([ 0,  0] as X, ([2] as X, UX(0)), UX(1), F([~0, ~0] as X, error: true))
+        checkProductIncrement([~0, ~0] as X, ([2] as X, UX(0)), UX(0), F([~0, ~0] as X))
+        checkProductIncrement([~0, ~0] as X, ([2] as X, UX(0)), UX(1), F([~1, ~0] as X))
         
-        checkProductIncrement([ 0,  0] as X, ([0] as X, UX(3)), UX(0), [ 0,  0] as X)
-        checkProductIncrement([ 0,  0] as X, ([0] as X, UX(3)), UX(1), [~0, ~0] as X, true)
-        checkProductIncrement([~0, ~0] as X, ([0] as X, UX(3)), UX(0), [~0, ~0] as X)
-        checkProductIncrement([~0, ~0] as X, ([0] as X, UX(3)), UX(1), [~1, ~0] as X)
+        checkProductIncrement([ 0,  0] as X, ([0] as X, UX(3)), UX(0), F([ 0,  0] as X))
+        checkProductIncrement([ 0,  0] as X, ([0] as X, UX(3)), UX(1), F([~0, ~0] as X, error: true))
+        checkProductIncrement([~0, ~0] as X, ([0] as X, UX(3)), UX(0), F([~0, ~0] as X))
+        checkProductIncrement([~0, ~0] as X, ([0] as X, UX(3)), UX(1), F([~1, ~0] as X))
         
-        checkProductIncrement([ 0,  0] as X, ([2] as X, UX(3)), UX(0), [~5, ~0] as X, true)
-        checkProductIncrement([ 0,  0] as X, ([2] as X, UX(3)), UX(1), [~6, ~0] as X, true)
-        checkProductIncrement([~0, ~0] as X, ([2] as X, UX(3)), UX(0), [~6, ~0] as X)
-        checkProductIncrement([~0, ~0] as X, ([2] as X, UX(3)), UX(1), [~7, ~0] as X)
+        checkProductIncrement([ 0,  0] as X, ([2] as X, UX(3)), UX(0), F([~5, ~0] as X, error: true))
+        checkProductIncrement([ 0,  0] as X, ([2] as X, UX(3)), UX(1), F([~6, ~0] as X, error: true))
+        checkProductIncrement([~0, ~0] as X, ([2] as X, UX(3)), UX(0), F([~6, ~0] as X))
+        checkProductIncrement([~0, ~0] as X, ([2] as X, UX(3)), UX(1), F([~7, ~0] as X))
     }
     
     func testLargeByProductReportingOverflow() {
@@ -142,20 +143,20 @@ final class StrictUnsignedIntegerSubSequenceTestsOnSubtraction: XCTestCase {
         var product: (X, UX); product.1 = 2 as UX
         //=--------------------------------------=
         base = [ 0,  0,  0,  0,  0,  0,  0,  0] as X; product.0 = [ 1,  2,  3,  4] as  X
-        checkProductIncrement(base, product, UX(  ),  [~1, ~4, ~6, ~8, ~0, ~0, ~0, ~0] as X, true)
-        checkProductIncrement(base, product, UX.max,  [~0, ~5, ~6, ~8, ~0, ~0, ~0, ~0] as X, true)
+        checkProductIncrement(base, product, UX(  ),  F([~1, ~4, ~6, ~8, ~0, ~0, ~0, ~0] as X, error: true))
+        checkProductIncrement(base, product, UX.max,  F([~0, ~5, ~6, ~8, ~0, ~0, ~0, ~0] as X, error: true))
         //=--------------------------------------=
         base = [ 0,  0,  0,  0,  0,  0,  0,  0] as X; product.0 = [~1, ~2, ~3, ~4] as  X
-        checkProductIncrement(base, product, UX(  ),  [ 4,  4,  6,  8, ~1, ~0, ~0, ~0] as X, true)
-        checkProductIncrement(base, product, UX.max,  [ 5,  3,  6,  8, ~1, ~0, ~0, ~0] as X, true)
+        checkProductIncrement(base, product, UX(  ),  F([ 4,  4,  6,  8, ~1, ~0, ~0, ~0] as X, error: true))
+        checkProductIncrement(base, product, UX.max,  F([ 5,  3,  6,  8, ~1, ~0, ~0, ~0] as X, error: true))
         //=--------------------------------------=
         base = [~0, ~0, ~0, ~0, ~0, ~0, ~0, ~0] as X; product.0 = [ 1,  2,  3,  4] as  X
-        checkProductIncrement(base, product, UX( ),   [~2, ~4, ~6, ~8, ~0, ~0, ~0, ~0] as X)
-        checkProductIncrement(base, product, UX.max,  [~1, ~5, ~6, ~8, ~0, ~0, ~0, ~0] as X)
+        checkProductIncrement(base, product, UX( ),   F([~2, ~4, ~6, ~8, ~0, ~0, ~0, ~0] as X))
+        checkProductIncrement(base, product, UX.max,  F([~1, ~5, ~6, ~8, ~0, ~0, ~0, ~0] as X))
         //=--------------------------------------=
         base = [~0, ~0, ~0, ~0, ~0, ~0, ~0, ~0] as X; product.0 = [~1, ~2, ~3, ~4] as  X
-        checkProductIncrement(base, product, UX(  ),  [ 3,  4,  6,  8, ~1, ~0, ~0, ~0] as X)
-        checkProductIncrement(base, product, UX.max,  [ 4,  3,  6,  8, ~1, ~0, ~0, ~0] as X)
+        checkProductIncrement(base, product, UX(  ),  F([ 3,  4,  6,  8, ~1, ~0, ~0, ~0] as X))
+        checkProductIncrement(base, product, UX.max,  F([ 4,  3,  6,  8, ~1, ~0, ~0, ~0] as X))
     }
     
     //=------------------------------------------------------------------------=
@@ -163,24 +164,26 @@ final class StrictUnsignedIntegerSubSequenceTestsOnSubtraction: XCTestCase {
     //=------------------------------------------------------------------------=
     
     private func checkElementsBit(
-    _ base: [UX], _ elements: [UX], _ bit: Bool, _ result: [UX], _ overflow: Bool = false,
-    file: StaticString = #file, line: UInt = #line) {
+        _ base: [UX], 
+        _ elements: [UX],
+        _ bit: Bool,
+        _ expectation: Fallible<[UX]>,
+        _ test: Test = .init()
+    ) {
         //=--------------------------------------=
         // decrement: many + bit
         //=--------------------------------------=
         brr: do {
             var lhs = base
             let max = SUISS.decrement(&lhs, by: elements, plus: bit)
-            XCTAssertEqual(lhs,          result,    file: file, line: line)
-            XCTAssertEqual(max.overflow, overflow,  file: file, line: line)
+            test.same(Fallible(lhs, error: max.overflow), expectation)
         }
         
         brr: do {
             var lhs = base
             let min = SUISS.decrementInIntersection(&lhs, by: elements,  plus: bit)
             let max = SUISS.decrement(&lhs[min.index...], by: min.overflow)
-            XCTAssertEqual(lhs,          result,    file: file, line: line)
-            XCTAssertEqual(max.overflow, overflow,  file: file, line: line)
+            test.same(Fallible(lhs, error: max.overflow), expectation)
         }
         
         brr: do {
@@ -188,32 +191,33 @@ final class StrictUnsignedIntegerSubSequenceTestsOnSubtraction: XCTestCase {
             let min = SUISS.decrementInIntersection(&lhs, by: elements, plus: bit)
             let sfx = Array(repeating: 0 as UX, count: lhs[min.index... ].count)
             let max = SUISS.decrement(&lhs[min.index...], by: sfx,  plus: min.overflow)
-            XCTAssertEqual(lhs,          result,    file: file, line: line)
-            XCTAssertEqual(max.overflow, overflow,  file: file, line: line)
+            test.same(Fallible(lhs, error: max.overflow), expectation)
         }
     }
 
     private func checkIncrementBit(
-    _ base: [UX], _ increment: UX, _ bit: Bool, _ result: [UX], _ overflow: Bool = false,
-    file: StaticString = #file, line: UInt = #line) {
+        _ base: [UX], 
+        _ increment: UX,
+        _ bit: Bool,
+        _ expectation: Fallible<[UX]>,
+        _ test: Test = .init()
+    ) {
         //=--------------------------------------=
-        checkElementsBit(base, [increment], bit, result, overflow, file: file, line: line)
+        checkElementsBit(base, [increment], bit, expectation, test)
         //=--------------------------------------=
         // decrement: some
         //=--------------------------------------=
         if !bit {
             var lhs = base
             let max = SUISS.decrement(&lhs, by: increment)
-            XCTAssertEqual(lhs,          result,   file: file, line: line)
-            XCTAssertEqual(max.overflow, overflow, file: file, line: line)
+            test.same(Fallible(lhs, error: max.overflow), expectation)
         }
         
         if !bit {
             var lhs = base
             let min = SUISS.decrementInIntersection(&lhs, by: increment)
             let max = SUISS.decrement(&lhs[min.index...], by: min.overflow)
-            XCTAssertEqual(lhs,          result,    file: file, line: line)
-            XCTAssertEqual(max.overflow, overflow,  file: file, line: line)
+            test.same(Fallible(lhs, error: max.overflow), expectation)
         }
         //=--------------------------------------=
         // decrement: some + bit
@@ -221,16 +225,14 @@ final class StrictUnsignedIntegerSubSequenceTestsOnSubtraction: XCTestCase {
         brr: do {
             var lhs = base
             let max = SUISS.decrement(&lhs, by: increment, plus: bit)
-            XCTAssertEqual(lhs,          result,    file: file, line: line)
-            XCTAssertEqual(max.overflow, overflow,  file: file, line: line)
+            test.same(Fallible(lhs, error: max.overflow), expectation)
         }
         
         brr: do {
             var lhs = base
             let min = SUISS.decrementInIntersection(&lhs, by: increment,  plus: bit)
             let max = SUISS.decrement(&lhs[min.index...], by: min.overflow)
-            XCTAssertEqual(lhs,          result,    file: file, line: line)
-            XCTAssertEqual(max.overflow, overflow,  file: file, line: line)
+            test.same(Fallible(lhs, error: max.overflow), expectation)
         }
         
         brr: do {
@@ -238,30 +240,31 @@ final class StrictUnsignedIntegerSubSequenceTestsOnSubtraction: XCTestCase {
             let min = SUISS.decrementInIntersection(&lhs, by: increment, plus: bit)
             let sfx = Array(repeating: 0 as UX, count: lhs[min.index... ].count)
             let max = SUISS.decrement(&lhs[min.index...], by: sfx, plus: min.overflow)
-            XCTAssertEqual(lhs,          result,    file: file, line: line)
-            XCTAssertEqual(max.overflow, overflow,  file: file, line: line)
+            test.same(Fallible(lhs, error: max.overflow), expectation)
         }
     }
 
     func checkProductIncrement(
-    _ base: [UX], _ product: ([UX], UX), _ increment: UX, _ result: [UX], _ overflow: Bool = false,
-    file: StaticString = #file, line: UInt = #line) {
+        _ base: [UX], 
+        _ product: ([UX], UX),
+        _ increment: UX,
+        _ expectation: Fallible<[UX]>,
+        _ test: Test = .init()
+    ) {
         //=--------------------------------------=
         // decrement: many × some + some
         //=--------------------------------------=
         brr: do {
             var lhs = base
             let max = SUISS.decrement(&lhs, by: product.0, times: product.1, plus: increment)
-            XCTAssertEqual(lhs,          result,   file: file, line: line)
-            XCTAssertEqual(max.overflow, overflow, file: file, line: line)
+            test.same(Fallible(lhs, error: max.overflow), expectation)
         }
         
         brr: do {
             var lhs = base
             let min = SUISS.decrementInIntersection(&lhs, by: product.0, times: product.1, plus: increment)
             let max = SUISS.decrement(&lhs[min.index...], by: min.overflow)
-            XCTAssertEqual(lhs,          result,   file: file, line: line)
-            XCTAssertEqual(max.overflow, overflow, file: file, line: line)
+            test.same(Fallible(lhs, error: max.overflow), expectation)
         }
     }
 }

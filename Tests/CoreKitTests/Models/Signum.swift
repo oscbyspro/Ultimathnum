@@ -8,7 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import XCTest
+import TestKit
 
 //*============================================================================*
 // MARK: * Signum
@@ -23,32 +23,32 @@ final class SignumTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testInitIntegerLiteral() {
-        XCTAssertEqual(-1 as T, T.less)
-        XCTAssertEqual( 0 as T, T.same)
-        XCTAssertEqual( 1 as T, T.more)
+        Test().same(-1 as T, T.less)
+        Test().same( 0 as T, T.same)
+        Test().same( 1 as T, T.more)
     }
     
     func testComparison() {
-        XCTAssertEqual(      T.less, T.less)
-        XCTAssertLessThan(   T.less, T.same)
-        XCTAssertLessThan(   T.less, T.more)
+        Test().same(T.less, T.less)
+        Test().less(T.less, T.same)
+        Test().less(T.less, T.more)
         
-        XCTAssertGreaterThan(T.same, T.less)
-        XCTAssertEqual(      T.same, T.same)
-        XCTAssertLessThan(   T.same, T.more)
+        Test().more(T.same, T.less)
+        Test().same(T.same, T.same)
+        Test().less(T.same, T.more)
         
-        XCTAssertGreaterThan(T.more, T.less)
-        XCTAssertGreaterThan(T.more, T.same)
-        XCTAssertEqual(      T.more, T.more)
+        Test().more(T.more, T.less)
+        Test().more(T.more, T.same)
+        Test().same(T.more, T.more)
     }
     
     func testNegation() {
-        XCTAssertEqual(-T.less, T.more)
-        XCTAssertEqual(-T.same, T.same)
-        XCTAssertEqual(-T.more, T.less)
+        Test().same(-T.less, T.more)
+        Test().same(-T.same, T.same)
+        Test().same(-T.more, T.less)
         
-        XCTAssertEqual( T.less.negated(), T.more)
-        XCTAssertEqual( T.same.negated(), T.same)
-        XCTAssertEqual( T.more.negated(), T.less)
+        Test().same( T.less.negated(), T.more)
+        Test().same( T.same.negated(), T.same)
+        Test().same( T.more.negated(), T.less)
     }
 }

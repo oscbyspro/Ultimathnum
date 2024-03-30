@@ -124,41 +124,49 @@ final class StrictBinaryIntegerTestsOnShifts: XCTestCase {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    private func checkShiftLeft<T: SystemsInteger & UnsignedInteger>(
-    _ base: [T], _ environment: T, _ distance: Int, _ result: [T],
-    file: StaticString = #file, line: UInt  = #line) {
+    private func checkShiftLeft<T>(
+        _ base: [T], 
+        _ environment: T,
+        _ distance: Int,
+        _ expectation: [T],
+        _ test: Test = .init()
+    )   where T: SystemsInteger & UnsignedInteger {
         //=------------------------------------------=
         let (major, minor) = distance.quotientAndRemainder(dividingBy: IX(bitWidth: T.self).base)
         //=------------------------------------------=
         if  major >= 1, minor == 0 {
             var base = base
             SBI.bitShiftLeft(&base, environment: environment, majorAtLeastOne: major)
-            XCTAssertEqual(base, result, file: file, line: line)
+            test.same(base, expectation)
         }
         
         if  major >= 0, minor >= 1 {
             var base = base
             SBI.bitShiftLeft(&base, environment: environment, major: major, minorAtLeastOne: minor)
-            XCTAssertEqual(base, result, file: file, line: line)
+            test.same(base, expectation)
         }
     }
 
-    private func checkShiftRight<T: SystemsInteger & UnsignedInteger>(
-    _ base: [T], _ environment: T, _ distance: Int, _ result: [T],
-    file: StaticString = #file, line: UInt  = #line) {
+    private func checkShiftRight<T>(
+        _ base: [T], 
+        _ environment: T,
+        _ distance: Int, 
+        _ expectation: [T],
+        _ test: Test = .init()
+    )   where T: SystemsInteger & UnsignedInteger {
         //=------------------------------------------=
         let (major, minor) = distance.quotientAndRemainder(dividingBy: IX(bitWidth: T.self).base)
         //=------------------------------------------=
         if  major >= 1, minor == 0 {
             var base = base
             SBI.bitShiftRight(&base, environment: environment, majorAtLeastOne: major)
-            XCTAssertEqual(base, result, file: file, line: line)
+            test.same(base, expectation)
         }
         
         if  major >= 0, minor >= 1 {
             var base = base
             SBI.bitShiftRight(&base, environment: environment, major: major, minorAtLeastOne: minor)
-            XCTAssertEqual(base, result, file: file, line: line)
+            test.same(base, expectation)
         }
     }
 }

@@ -22,22 +22,22 @@ final class FibonacciTests: XCTestCase {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    func check<T>(_ sequence: Fibonacci<T>?, _ expectation: Components<T>?, invariants: Bool = true, file: StaticString = #file, line: UInt = #line) {
-        XCTAssertEqual(sequence?.index,   expectation?.index,   file: file, line: line)
-        XCTAssertEqual(sequence?.element, expectation?.element, file: file, line: line)
-        XCTAssertEqual(sequence?.next,    expectation?.next,    file: file, line: line)
+    func check<T>(_ sequence: Fibonacci<T>?, _ expectation: Components<T>?, invariants: Bool = true, test: Test = .init()) {
+        test.same(sequence?.index,   expectation?.index)
+        test.same(sequence?.element, expectation?.element)
+        test.same(sequence?.next,    expectation?.next)
         
         if  invariants, let  expectation, let sequence =  Test.some(sequence) {
-            XCTAssertNoThrow(check(index: sequence.index, element: expectation.element, invariants: invariants, file: file, line: line))
+            test.success(check(index: sequence.index, element: expectation.element, invariants: invariants))
         }
     }
     
-    func check<T: BinaryInteger>(index: T, element: T?, invariants: Bool = true, file: StaticString = #file, line: UInt = #line) {
+    func check<T: BinaryInteger>(index: T, element: T?, invariants: Bool = true, test: Test = .init()) {
         typealias F = Fibonacci<T>
         //=--------------------------------------=
         let sequence = try? F(index)
         //=--------------------------------------=
-        XCTAssertEqual(sequence?.element, element, file: file, line: line)
+        test.same(sequence?.element, element)
         //=--------------------------------------=
         if  invariants, let sequence {
             for divisor: T in [2, 3, 5, 7].compactMap({ T.exactly($0).optional() }) {
@@ -48,9 +48,9 @@ final class FibonacciTests: XCTestCase {
                     let d = try a.next.division (b.next ).get()
                     let e = try b.element .times(c.element).get()
                     let f = try d.quotient.minus(c.next).times(b.next).plus(d.remainder).get()
-                    XCTAssertEqual(e, f, "arithmetic invariant error", file: file, line: line)
+                    test.same(e, f, "arithmetic invariant error")
                 }   catch let error {
-                    XCTFail("unexpected arithmetic failure: \(error)", file: file, line: line)
+                    test.fail("unexpected arithmetic failure: \(error)")
                 }
             }
         }
@@ -60,7 +60,7 @@ final class FibonacciTests: XCTestCase {
     // MARK: Utilities x Min, Max
     //=------------------------------------------------------------------------=
     
-    func checkInvariantsAtZero<T>(_ sequence: Fibonacci<T>.Type, invariants: Bool = true, file: StaticString = #file, line: UInt = #line) {
+    func checkInvariantsAtZero<T>(_ sequence: Fibonacci<T>.Type, invariants: Bool = true, test: Test = .init()) {
         typealias F = Fibonacci<T>
         
         if  T.isSigned {
@@ -72,23 +72,23 @@ final class FibonacciTests: XCTestCase {
             XCTAssertNoThrow/**/(try F(0))
             
             let components = Components(0, 0, one)
-            check(sequence, components, invariants: invariants,  file: file, line: line)
+            check(sequence, components, invariants: invariants,  test: test)
             XCTAssertThrowsError(try sequence.decrement())
-            check(sequence, components, invariants: (((false))), file: file, line: line)
+            check(sequence, components, invariants: (((false))), test: test)
             XCTAssertNoThrow/**/(try sequence.double())
-            check(sequence, components, invariants: (((false))), file: file, line: line)
+            check(sequence, components, invariants: (((false))), test: test)
         }   else {
             XCTAssertThrowsError(try F( ))
             XCTAssertThrowsError(try F(0))
         }
     }
     
-    func checkInvariantsAtLastElement<T>(_ sequence: Fibonacci<T>, invariants: Bool = true, _ expectation: Components<T>, file: StaticString = #file, line: UInt = #line) {
+    func checkInvariantsAtLastElement<T>(_ sequence: Fibonacci<T>, invariants: Bool = true, _ expectation: Components<T>, test: Test = .init()) {
         var ((sequence)) = sequence
-        check(sequence, expectation, invariants: invariants,  file: file, line: line)
+        check(sequence, expectation, invariants: invariants,  test: test)
         XCTAssertThrowsError(try sequence.increment())
-        check(sequence, expectation, invariants: (((false))), file: file, line: line)
+        check(sequence, expectation, invariants: (((false))), test: test)
         XCTAssertThrowsError(try sequence.double())
-        check(sequence, expectation, invariants: (((false))), file: file, line: line)
+        check(sequence, expectation, invariants: (((false))), test: test)
     }
 }

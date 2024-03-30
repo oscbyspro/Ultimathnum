@@ -33,25 +33,25 @@ final class BitExtensionTests: XCTestCase {
     
     func testInitOtherInstance() {
         for bit: Bit in [0, 1] {
-            XCTAssertEqual(T<I64>(repeating: T<U64>(repeating: bit)), T(repeating: bit))
-            XCTAssertEqual(T<I64>(repeating: T<I64>(repeating: bit)), T(repeating: bit))
-            XCTAssertEqual(T<U64>(repeating: T<U64>(repeating: bit)), T(repeating: bit))
-            XCTAssertEqual(T<U64>(repeating: T<I64>(repeating: bit)), T(repeating: bit))
+            Test().same(T<I64>(repeating: T<U64>(repeating: bit)), T(repeating: bit))
+            Test().same(T<I64>(repeating: T<I64>(repeating: bit)), T(repeating: bit))
+            Test().same(T<U64>(repeating: T<U64>(repeating: bit)), T(repeating: bit))
+            Test().same(T<U64>(repeating: T<I64>(repeating: bit)), T(repeating: bit))
             
-            XCTAssertEqual(T<I64>(repeating: T<U32>(repeating: bit)), T(repeating: bit))
-            XCTAssertEqual(T<I64>(repeating: T<I32>(repeating: bit)), T(repeating: bit))
-            XCTAssertEqual(T<U64>(repeating: T<U32>(repeating: bit)), T(repeating: bit))
-            XCTAssertEqual(T<U64>(repeating: T<I32>(repeating: bit)), T(repeating: bit))
+            Test().same(T<I64>(repeating: T<U32>(repeating: bit)), T(repeating: bit))
+            Test().same(T<I64>(repeating: T<I32>(repeating: bit)), T(repeating: bit))
+            Test().same(T<U64>(repeating: T<U32>(repeating: bit)), T(repeating: bit))
+            Test().same(T<U64>(repeating: T<I32>(repeating: bit)), T(repeating: bit))
             
-            XCTAssertEqual(T<I32>(repeating: T<U64>(repeating: bit)), T(repeating: bit))
-            XCTAssertEqual(T<I32>(repeating: T<I64>(repeating: bit)), T(repeating: bit))
-            XCTAssertEqual(T<U32>(repeating: T<U64>(repeating: bit)), T(repeating: bit))
-            XCTAssertEqual(T<U32>(repeating: T<I64>(repeating: bit)), T(repeating: bit))
+            Test().same(T<I32>(repeating: T<U64>(repeating: bit)), T(repeating: bit))
+            Test().same(T<I32>(repeating: T<I64>(repeating: bit)), T(repeating: bit))
+            Test().same(T<U32>(repeating: T<U64>(repeating: bit)), T(repeating: bit))
+            Test().same(T<U32>(repeating: T<I64>(repeating: bit)), T(repeating: bit))
             
-            XCTAssertEqual(T<I32>(repeating: T<U32>(repeating: bit)), T(repeating: bit))
-            XCTAssertEqual(T<I32>(repeating: T<I32>(repeating: bit)), T(repeating: bit))
-            XCTAssertEqual(T<U32>(repeating: T<U32>(repeating: bit)), T(repeating: bit))
-            XCTAssertEqual(T<U32>(repeating: T<I32>(repeating: bit)), T(repeating: bit))
+            Test().same(T<I32>(repeating: T<U32>(repeating: bit)), T(repeating: bit))
+            Test().same(T<I32>(repeating: T<I32>(repeating: bit)), T(repeating: bit))
+            Test().same(T<U32>(repeating: T<U32>(repeating: bit)), T(repeating: bit))
+            Test().same(T<U32>(repeating: T<I32>(repeating: bit)), T(repeating: bit))
         }
     }
 }

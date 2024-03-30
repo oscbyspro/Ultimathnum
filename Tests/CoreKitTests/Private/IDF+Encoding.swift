@@ -102,16 +102,16 @@ final class IntegerDescriptionFormatTestsOnEncoding: XCTestCase {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    func check(_ integer: some BinaryInteger, _ expectation: String, file: StaticString = #file, line: UInt = #line) {
+    func check(_ integer: some BinaryInteger, _ expectation: String, _ test: Test = .init()) {
         let sign = Sign(bitPattern: integer < 0)
         let magnitude = [UX](ExchangeInt(integer.magnitude.content, isSigned: false).source())
         
-        XCTAssertEqual(encoder.encode(integer), expectation, file: file, line: line)
-        XCTAssertEqual(encoder.encode(sign: sign, magnitude: magnitude), expectation, file: file, line: line)
+        test.same(encoder.encode(integer), expectation)
+        test.same(encoder.encode(sign: sign, magnitude: magnitude), expectation)
     }
     
-    func check(_ sign: Sign, _ magnitude: [U64], _ expectation: String, file: StaticString = #file, line: UInt = #line) {
+    func check(_ sign: Sign, _ magnitude: [U64], _ expectation: String, _ test: Test = .init()) {
         let magnitude = [UX](ExchangeInt(magnitude, isSigned: false).source())
-        XCTAssertEqual(encoder.encode(sign: sign, magnitude: magnitude), expectation, file: file, line: line)
+        test.same(encoder.encode(sign: sign, magnitude: magnitude), expectation)
     }
 }

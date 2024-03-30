@@ -25,10 +25,10 @@ final class StrictUnsignedIntegerSubSequenceTestsOnMultiplication: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testSomeSome() {
-        checkSomeSome([~0, ~0, ~0, ~0] as X,  0,  0, [ 0,  0,  0,  0] as X,  0)
-        checkSomeSome([~0, ~0, ~0, ~0] as X,  0, ~0, [~0,  0,  0,  0] as X,  0)
-        checkSomeSome([~0, ~0, ~0, ~0] as X, ~0,  0, [ 1, ~0, ~0, ~0] as X, ~1)
-        checkSomeSome([~0, ~0, ~0, ~0] as X, ~0, ~0, [ 0,  0,  0,  0] as X, ~0)
+        checkSomeSome([~0, ~0, ~0, ~0] as X,  0 as UX,  0 as UX, [ 0,  0,  0,  0] as X,  0 as UX)
+        checkSomeSome([~0, ~0, ~0, ~0] as X,  0 as UX, ~0 as UX, [~0,  0,  0,  0] as X,  0 as UX)
+        checkSomeSome([~0, ~0, ~0, ~0] as X, ~0 as UX,  0 as UX, [ 1, ~0, ~0, ~0] as X, ~1 as UX)
+        checkSomeSome([~0, ~0, ~0, ~0] as X, ~0 as UX, ~0 as UX, [ 0,  0,  0,  0] as X, ~0 as UX)
     }
     
     //=------------------------------------------------------------------------=
@@ -36,16 +36,21 @@ final class StrictUnsignedIntegerSubSequenceTestsOnMultiplication: XCTestCase {
     //=------------------------------------------------------------------------=
     
     private func checkSomeSome(
-    _ base: [UX], _ multiplier: UX, _ increment: UX, _ product: [UX], _ high: UX,
-    file: StaticString = #file, line: UInt = #line) {
+        _ base: [UX], 
+        _ multiplier: UX,
+        _ increment: UX, 
+        _ product: [UX],
+        _ high: UX,
+        _ test: Test = .init()
+    ) {
         //=------------------------------------------=
         // multiplication: some + some
         //=------------------------------------------=
         brr: do {
-            var lhs = base
-            let top = SUISS.multiply(&lhs, by: multiplier, add: increment)
-            XCTAssertEqual(lhs, product, file: file, line: line)
-            XCTAssertEqual(top, high,    file: file, line: line)
+            var i = base
+            let o = SUISS.multiply(&i, by: multiplier, add: increment)
+            test.same(i, product)
+            test.same(o, high)
         }
     }
 }

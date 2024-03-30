@@ -22,13 +22,14 @@ extension TupleBinaryIntegerTests {
     
     func testAddition32B() {
         func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger & UnsignedInteger {
-            typealias X2 = DoubleIntLayout<Base>
-            typealias X3 = TripleIntLayout<Base>
+            typealias X = DoubleIntLayout<Base>
+            typealias Y = TripleIntLayout<Base>
+            typealias F = Fallible<TripleIntLayout<Base>>
             
-            Test.addition32B(X3(low:  0, mid:  0, high:  0), X2(low: ~4, high: ~5), X3(low: ~4, mid: ~5, high:  0))
-            Test.addition32B(X3(low:  1, mid:  2, high:  3), X2(low: ~4, high: ~5), X3(low: ~3, mid: ~3, high:  3))
-            Test.addition32B(X3(low: ~1, mid: ~2, high: ~3), X2(low:  4, high:  5), X3(low:  2, mid:  3, high: ~2))
-            Test.addition32B(X3(low: ~0, mid: ~0, high: ~0), X2(low:  4, high:  5), X3(low:  3, mid:  5, high:  0), true)
+            Test.addition32B(Y(low:  0, mid:  0, high:  0), X(low: ~4, high: ~5), F(Y(low: ~4, mid: ~5, high:  0)))
+            Test.addition32B(Y(low:  1, mid:  2, high:  3), X(low: ~4, high: ~5), F(Y(low: ~3, mid: ~3, high:  3)))
+            Test.addition32B(Y(low: ~1, mid: ~2, high: ~3), X(low:  4, high:  5), F(Y(low:  2, mid:  3, high: ~2)))
+            Test.addition32B(Y(low: ~0, mid: ~0, high: ~0), X(low:  4, high:  5), F(Y(low:  3, mid:  5, high:  0), error: true))
         }
         
         for base in Self.basesWhereIsUnsigned {
@@ -38,13 +39,14 @@ extension TupleBinaryIntegerTests {
     
     func testAddition33B() {
         func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger & UnsignedInteger {
-            typealias X2 = DoubleIntLayout<Base>
-            typealias X3 = TripleIntLayout<Base>
+            typealias X = DoubleIntLayout<Base>
+            typealias Y = TripleIntLayout<Base>
+            typealias F = Fallible<TripleIntLayout<Base>>
             
-            Test.addition33B(X3(low:  0, mid:  0, high:  0), X3(low: ~4, mid: ~5, high: ~6), X3(low: ~4, mid: ~5, high: ~6))
-            Test.addition33B(X3(low:  1, mid:  2, high:  3), X3(low: ~4, mid: ~5, high: ~6), X3(low: ~3, mid: ~3, high: ~3))
-            Test.addition33B(X3(low: ~1, mid: ~2, high: ~3), X3(low:  4, mid:  5, high:  6), X3(low:  2, mid:  3, high:  3), true)
-            Test.addition33B(X3(low: ~0, mid: ~0, high: ~0), X3(low:  4, mid:  5, high:  6), X3(low:  3, mid:  5, high:  6), true)
+            Test.addition33B(Y(low:  0, mid:  0, high:  0), Y(low: ~4, mid: ~5, high: ~6), F(Y(low: ~4, mid: ~5, high: ~6)))
+            Test.addition33B(Y(low:  1, mid:  2, high:  3), Y(low: ~4, mid: ~5, high: ~6), F(Y(low: ~3, mid: ~3, high: ~3)))
+            Test.addition33B(Y(low: ~1, mid: ~2, high: ~3), Y(low:  4, mid:  5, high:  6), F(Y(low:  2, mid:  3, high:  3), error: true))
+            Test.addition33B(Y(low: ~0, mid: ~0, high: ~0), Y(low:  4, mid:  5, high:  6), F(Y(low:  3, mid:  5, high:  6), error: true))
         }
         
         for base in Self.basesWhereIsUnsigned {
@@ -63,25 +65,29 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    static func addition32B<Base: SystemsInteger & UnsignedInteger>(
-    _ lhs: TripleIntLayout<Base>, _ rhs: DoubleIntLayout<Base>, _ expectation: TripleIntLayout<Base>, _ overflow: Bool = false,
-    file: StaticString = #file, line: UInt = #line) {
+    static func addition32B<Base>(
+        _ lhs: TripleIntLayout<Base>, 
+        _ rhs: DoubleIntLayout<Base>,
+        _ expectation: Fallible<TripleIntLayout<Base>>,
+        _ test: Test = .init()
+    )   where Base: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
         var x = lhs
         let o = TBI.increment32B(&x, by: rhs)
         //=--------------------------------------=
-        XCTAssertEqual(x, expectation, file: file, line: line)
-        XCTAssertEqual(o, overflow,    file: file, line: line)
+        test.same(Fallible(x, error: o), expectation)
     }
 
-    static func addition33B<Base: SystemsInteger & UnsignedInteger>(
-    _ lhs: TripleIntLayout<Base>, _ rhs: TripleIntLayout<Base>, _ expectation: TripleIntLayout<Base>, _ overflow: Bool = false,
-    file: StaticString = #file, line: UInt = #line) {
+    static func addition33B<Base>(
+        _ lhs: TripleIntLayout<Base>, 
+        _ rhs: TripleIntLayout<Base>,
+        _ expectation: Fallible<TripleIntLayout<Base>>,
+        _ test: Test = .init()
+    )   where Base: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
         var x = lhs
         let o = TBI.increment33B(&x, by: rhs)
         //=--------------------------------------=
-        XCTAssertEqual(x, expectation, file: file, line: line)
-        XCTAssertEqual(o, overflow,    file: file, line: line)
+        test.same(Fallible(x, error: o), expectation)
     }
 }

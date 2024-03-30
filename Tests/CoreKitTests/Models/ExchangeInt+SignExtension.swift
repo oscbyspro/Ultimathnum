@@ -21,25 +21,25 @@ extension ExchangeIntTests {
     //=------------------------------------------------------------------------=
     
     func testSubscriptSignExtension() {
-        XCTAssertEqual(T([ 0] as [U32], isSigned: false, as: U32.self)[144],  0)
-        XCTAssertEqual(T([ 0] as [U32], isSigned: true,  as: U32.self)[144],  0)
-        XCTAssertEqual(T([~0] as [U32], isSigned: false, as: U32.self)[144],  0)
-        XCTAssertEqual(T([~0] as [U32], isSigned: true,  as: U32.self)[144], ~0)
+        Test().same(T([ 0] as [U32], isSigned: false, as: U32.self)[144],  0)
+        Test().same(T([ 0] as [U32], isSigned: true,  as: U32.self)[144],  0)
+        Test().same(T([~0] as [U32], isSigned: false, as: U32.self)[144],  0)
+        Test().same(T([~0] as [U32], isSigned: true,  as: U32.self)[144], ~0)
         
-        XCTAssertEqual(T([ 0] as [U32], isSigned: false, as: U64.self)[144],  0)
-        XCTAssertEqual(T([ 0] as [U32], isSigned: true,  as: U64.self)[144],  0)
-        XCTAssertEqual(T([~0] as [U32], isSigned: false, as: U64.self)[144],  0)
-        XCTAssertEqual(T([~0] as [U32], isSigned: true,  as: U64.self)[144], ~0)
+        Test().same(T([ 0] as [U32], isSigned: false, as: U64.self)[144],  0)
+        Test().same(T([ 0] as [U32], isSigned: true,  as: U64.self)[144],  0)
+        Test().same(T([~0] as [U32], isSigned: false, as: U64.self)[144],  0)
+        Test().same(T([~0] as [U32], isSigned: true,  as: U64.self)[144], ~0)
         
-        XCTAssertEqual(T([ 0] as [U64], isSigned: false, as: U32.self)[144],  0)
-        XCTAssertEqual(T([ 0] as [U64], isSigned: true,  as: U32.self)[144],  0)
-        XCTAssertEqual(T([~0] as [U64], isSigned: false, as: U32.self)[144],  0)
-        XCTAssertEqual(T([~0] as [U64], isSigned: true,  as: U32.self)[144], ~0)
+        Test().same(T([ 0] as [U64], isSigned: false, as: U32.self)[144],  0)
+        Test().same(T([ 0] as [U64], isSigned: true,  as: U32.self)[144],  0)
+        Test().same(T([~0] as [U64], isSigned: false, as: U32.self)[144],  0)
+        Test().same(T([~0] as [U64], isSigned: true,  as: U32.self)[144], ~0)
         
-        XCTAssertEqual(T([ 0] as [U64], isSigned: false, as: U64.self)[144],  0)
-        XCTAssertEqual(T([ 0] as [U64], isSigned: true,  as: U64.self)[144],  0)
-        XCTAssertEqual(T([~0] as [U64], isSigned: false, as: U64.self)[144],  0)
-        XCTAssertEqual(T([~0] as [U64], isSigned: true,  as: U64.self)[144], ~0)
+        Test().same(T([ 0] as [U64], isSigned: false, as: U64.self)[144],  0)
+        Test().same(T([ 0] as [U64], isSigned: true,  as: U64.self)[144],  0)
+        Test().same(T([~0] as [U64], isSigned: false, as: U64.self)[144],  0)
+        Test().same(T([~0] as [U64], isSigned: true,  as: U64.self)[144], ~0)
     }
     
     func testMajorSequenceFromIncompleteMinorSequence() {

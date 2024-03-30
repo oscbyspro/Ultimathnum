@@ -31,18 +31,18 @@ final class SignTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testInitBit() {
-        XCTAssertEqual(T(bitPattern: 0 as Bit), T.plus )
-        XCTAssertEqual(T(bitPattern: 1 as Bit), T.minus)
+        Test().same(T(bitPattern: 0 as Bit), T.plus )
+        Test().same(T(bitPattern: 1 as Bit), T.minus)
     }
     
     func testInitFloatingPointSign() {
-        XCTAssertEqual(T(FloatingPointSign.plus ), T.plus )
-        XCTAssertEqual(T(FloatingPointSign.minus), T.minus)
+        Test().same(T(FloatingPointSign.plus ), T.plus )
+        Test().same(T(FloatingPointSign.minus), T.minus)
     }
     
     func testMakeFloatingPointSign() {
-        XCTAssertEqual(FloatingPointSign(T.plus ), FloatingPointSign.plus )
-        XCTAssertEqual(FloatingPointSign(T.minus), FloatingPointSign.minus)
+        Test().same(FloatingPointSign(T.plus ), FloatingPointSign.plus )
+        Test().same(FloatingPointSign(T.minus), FloatingPointSign.minus)
     }
     
     //=------------------------------------------------------------------------=
@@ -53,8 +53,8 @@ final class SignTests: XCTestCase {
         Test.not(T.plus,  T.minus)
         Test.not(T.minus, T.plus )
         
-        XCTAssertEqual({ var x = T.plus;  x.toggle(); return x }(), T.minus)
-        XCTAssertEqual({ var x = T.minus; x.toggle(); return x }(), T.plus )
+        Test().same({ var x = T.plus;  x.toggle(); return x }(), T.minus)
+        Test().same({ var x = T.minus; x.toggle(); return x }(), T.plus )
     }
     
     func testLogicalAnd() {

@@ -49,8 +49,8 @@ final class MinimiIntTests: XCTestCase {
     
     func testMinMax() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            XCTAssertEqual(T.min, T.isSigned ? -1 : 0)
-            XCTAssertEqual(T.max, T.isSigned ?  0 : 1)
+            Test().same(T.min, T.isSigned ? -1 : 0)
+            Test().same(T.max, T.isSigned ?  0 : 1)
         }
         
         for type in Self.types {
@@ -60,8 +60,8 @@ final class MinimiIntTests: XCTestCase {
     
     func testLsbMsb() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            XCTAssertEqual(T.lsb, T.isSigned ? -1 : 1)
-            XCTAssertEqual(T.msb, T.isSigned ? -1 : 1)
+            Test().same(T.lsb, T.isSigned ? -1 : 1)
+            Test().same(T.msb, T.isSigned ? -1 : 1)
         }
         
         for type in Self.types {

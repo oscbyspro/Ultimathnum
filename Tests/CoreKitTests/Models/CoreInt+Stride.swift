@@ -29,17 +29,17 @@ extension CoreIntTests {
             let upperBound: T = T.isSigned ?  127 : 255
             
             for value in lowerBound ... upperBound {
-                XCTAssertEqual(lowerBound.distance(to: value),  lhsLength)
-                XCTAssertEqual(upperBound.distance(to: value), -rhsLength)
+                Test().same(lowerBound.distance(to: value),  lhsLength)
+                Test().same(upperBound.distance(to: value), -rhsLength)
 
-                XCTAssertEqual(value.distance(to: lowerBound), -lhsLength)
-                XCTAssertEqual(value.distance(to: upperBound),  rhsLength)
+                Test().same(value.distance(to: lowerBound), -lhsLength)
+                Test().same(value.distance(to: upperBound),  rhsLength)
                 
-                XCTAssertEqual(lowerBound.advanced(by:  lhsLength), value)
-                XCTAssertEqual(upperBound.advanced(by: -rhsLength), value)
+                Test().same(lowerBound.advanced(by:  lhsLength), value)
+                Test().same(upperBound.advanced(by: -rhsLength), value)
                 
-                XCTAssertEqual(value.advanced(by: -lhsLength), lowerBound)
-                XCTAssertEqual(value.advanced(by:  rhsLength), upperBound)
+                Test().same(value.advanced(by: -lhsLength), lowerBound)
+                Test().same(value.advanced(by:  rhsLength), upperBound)
                 
                 lhsLength += 1
                 rhsLength -= 1
@@ -55,16 +55,16 @@ extension CoreIntTests {
         typealias F = Fallible
         
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            XCTAssertEqual(T.advanced(T.min, by: -1 as IX), F(T.max, error: true))
-            XCTAssertEqual(T.advanced(T.min, by:  0 as IX), F(T.min))
-            XCTAssertEqual(T.advanced(T.min, by:  1 as IX), F(T.min + 1))
-            XCTAssertEqual(T.advanced(T.max, by: -1 as IX), F(T.max - 1))
-            XCTAssertEqual(T.advanced(T.max, by:  0 as IX), F(T.max))
-            XCTAssertEqual(T.advanced(T.max, by:  1 as IX), F(T.min, error: true))
+            Test().same(T.advanced(T.min, by: -1 as IX), F(T.max, error: true))
+            Test().same(T.advanced(T.min, by:  0 as IX), F(T.min))
+            Test().same(T.advanced(T.min, by:  1 as IX), F(T.min + 1))
+            Test().same(T.advanced(T.max, by: -1 as IX), F(T.max - 1))
+            Test().same(T.advanced(T.max, by:  0 as IX), F(T.max))
+            Test().same(T.advanced(T.max, by:  1 as IX), F(T.min, error: true))
             
             if  UX(bitWidth: T.self) < IX.bitWidth {
-                XCTAssertEqual(T.advanced(0 as T, by: IX.min), F( 0 as T, error: true))
-                XCTAssertEqual(T.advanced(0 as T, by: IX.max), F(~0 as T, error: true))
+                Test().same(T.advanced(0 as T, by: IX.min), F( 0 as T, error: true))
+                Test().same(T.advanced(0 as T, by: IX.max), F(~0 as T, error: true))
             }
         }
         
@@ -77,12 +77,12 @@ extension CoreIntTests {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             typealias F = Fallible
             
-            XCTAssertEqual(T.distance(T.max, to: T.max.advanced(by: -129), as: I8.self), F(I8.max, error: true))
-            XCTAssertEqual(T.distance(T.max, to: T.max.advanced(by: -128), as: I8.self), F(I8.min))
-            XCTAssertEqual(T.distance(T.max, to: T.max.advanced(by: -127), as: I8.self), F(I8.min + 1))
-            XCTAssertEqual(T.distance(T.min, to: T.min.advanced(by:  126), as: I8.self), F(I8.max - 1))
-            XCTAssertEqual(T.distance(T.min, to: T.min.advanced(by:  127), as: I8.self), F(I8.max))
-            XCTAssertEqual(T.distance(T.min, to: T.min.advanced(by:  128), as: I8.self), F(I8.min, error: true))
+            Test().same(T.distance(T.max, to: T.max.advanced(by: -129), as: I8.self), F(I8.max, error: true))
+            Test().same(T.distance(T.max, to: T.max.advanced(by: -128), as: I8.self), F(I8.min))
+            Test().same(T.distance(T.max, to: T.max.advanced(by: -127), as: I8.self), F(I8.min + 1))
+            Test().same(T.distance(T.min, to: T.min.advanced(by:  126), as: I8.self), F(I8.max - 1))
+            Test().same(T.distance(T.min, to: T.min.advanced(by:  127), as: I8.self), F(I8.max))
+            Test().same(T.distance(T.min, to: T.min.advanced(by:  128), as: I8.self), F(I8.min, error: true))
         }
         
         for type in Self.types {
@@ -106,8 +106,8 @@ final class CoreIntTestsOnStrideOpenSourceIssues: XCTestCase {
     /// - Note: Checks two unnecessary traps in Swift 5.9.
     ///
     func testGitHubAppleSwiftPull71369() {
-        XCTAssertEqual(I8.min.advanced(by: Swift.Int(Int8.max)) + 1, 0 as I8)
-        XCTAssertEqual(UX.max.advanced(by: Swift.Int.min), UX.max /  2 as UX)
+        Test().same(I8.min.advanced(by: Swift.Int(Int8.max)) + 1, 0 as I8)
+        Test().same(UX.max.advanced(by: Swift.Int.min), UX.max /  2 as UX)
     }
     
     /// https://github.com/apple/swift/pull/71387
@@ -115,7 +115,7 @@ final class CoreIntTestsOnStrideOpenSourceIssues: XCTestCase {
     /// - Note: Checks two unnecessary traps in Swift 5.9.
     ///
     func testGitHubAppleSwiftPull71387() {
-        XCTAssertEqual(UX.max.distance(to: UX.max/2), Int.min)
-        XCTAssertEqual(IX.max.distance(to: -1 as IX), Int.min)
+        Test().same(UX.max.distance(to: UX.max/2), Int.min)
+        Test().same(IX.max.distance(to: -1 as IX), Int.min)
     }
 }

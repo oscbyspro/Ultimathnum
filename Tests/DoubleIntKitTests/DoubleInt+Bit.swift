@@ -25,8 +25,8 @@ extension DoubleIntTests {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
             
-            XCTAssertEqual(T(repeating: 0 as Bit),  0 as T)
-            XCTAssertEqual(T(repeating: 1 as Bit), ~0 as T)
+            Test().same(T(repeating: 0 as Bit),  0 as T)
+            Test().same(T(repeating: 1 as Bit), ~0 as T)
         }
         
         for base in Self.bases {
@@ -41,28 +41,28 @@ extension DoubleIntTests {
             
             for bit: Bit in [0, 1] {
                 for selection: BitSelection in [.all, .ascending, .descending] {
-                    XCTAssertEqual(T(low:  0, high:  0).count(bit, option: selection), bit == 0 ? T.bitWidth : 0)
-                    XCTAssertEqual(T(low: ~0, high: ~0).count(bit, option: selection), bit == 1 ? T.bitWidth : 0)
+                    Test().same(T(low:  0, high:  0).count(bit, option: selection), bit == 0 ? T.bitWidth : 0)
+                    Test().same(T(low: ~0, high: ~0).count(bit, option: selection), bit == 1 ? T.bitWidth : 0)
                 }
                 
                 for selection: BitSelection in [.all] {
-                    XCTAssertEqual(T(low:  .lsb, high:  .msb).count(bit, option: selection), bit == 0 ? T.bitWidth - 2 : 2)
-                    XCTAssertEqual(T(low:  .lsb, high: ~.msb).count(bit, option: selection), M(low: Base.bitWidth))
-                    XCTAssertEqual(T(low: ~.lsb, high:  .msb).count(bit, option: selection), M(low: Base.bitWidth))
-                    XCTAssertEqual(T(low: ~.lsb, high: ~.msb).count(bit, option: selection), bit == 1 ? T.bitWidth - 2 : 2)
+                    Test().same(T(low:  .lsb, high:  .msb).count(bit, option: selection), bit == 0 ? T.bitWidth - 2 : 2)
+                    Test().same(T(low:  .lsb, high: ~.msb).count(bit, option: selection), M(low: Base.bitWidth))
+                    Test().same(T(low: ~.lsb, high:  .msb).count(bit, option: selection), M(low: Base.bitWidth))
+                    Test().same(T(low: ~.lsb, high: ~.msb).count(bit, option: selection), bit == 1 ? T.bitWidth - 2 : 2)
                 }
                 
                 for selection: BitSelection in [.ascending, .descending] {
-                    XCTAssertEqual(T(low:  .lsb, high:  .msb).count(bit, option: selection), (bit == 0) ? 0 : 1)
-                    XCTAssertEqual(T(low:  .lsb, high: ~.msb).count(bit, option: selection), (bit == 0) == (selection == .ascending) ? 0 : 1)
-                    XCTAssertEqual(T(low: ~.lsb, high:  .msb).count(bit, option: selection), (bit == 1) == (selection == .ascending) ? 0 : 1)
-                    XCTAssertEqual(T(low: ~.lsb, high: ~.msb).count(bit, option: selection), (bit == 1) ? 0 : 1)
+                    Test().same(T(low:  .lsb, high:  .msb).count(bit, option: selection), (bit == 0) ? 0 : 1)
+                    Test().same(T(low:  .lsb, high: ~.msb).count(bit, option: selection), (bit == 0) == (selection == .ascending) ? 0 : 1)
+                    Test().same(T(low: ~.lsb, high:  .msb).count(bit, option: selection), (bit == 1) == (selection == .ascending) ? 0 : 1)
+                    Test().same(T(low: ~.lsb, high: ~.msb).count(bit, option: selection), (bit == 1) ? 0 : 1)
                 }
                 
                 for element: (value: T, bit: Bit) in [(11, 0), (~11, 1)] {
-                    XCTAssertEqual(element.value.count(bit, option:        .all), bit == element.bit ? T.bitWidth - 3 : 3)
-                    XCTAssertEqual(element.value.count(bit, option:  .ascending), bit == element.bit ?              0 : 2)
-                    XCTAssertEqual(element.value.count(bit, option: .descending), bit == element.bit ? T.bitWidth - 4 : 0)
+                    Test().same(element.value.count(bit, option:        .all), bit == element.bit ? T.bitWidth - 3 : 3)
+                    Test().same(element.value.count(bit, option:  .ascending), bit == element.bit ?              0 : 2)
+                    Test().same(element.value.count(bit, option: .descending), bit == element.bit ? T.bitWidth - 4 : 0)
                 }
             }
         }
@@ -77,19 +77,19 @@ extension DoubleIntTests {
             typealias T = DoubleInt<Base>
             typealias M = DoubleInt<Base>.Magnitude
             
-            XCTAssertEqual(( T .min).leastSignificantBit, 0 as Bit)
-            XCTAssertEqual(( T .max).leastSignificantBit, 1 as Bit)
-            XCTAssertEqual((~1 as T).leastSignificantBit, 0 as Bit)
-            XCTAssertEqual((~0 as T).leastSignificantBit, 1 as Bit)
-            XCTAssertEqual(( 0 as T).leastSignificantBit, 0 as Bit)
-            XCTAssertEqual(( 1 as T).leastSignificantBit, 1 as Bit)
-            XCTAssertEqual(( 2 as T).leastSignificantBit, 0 as Bit)
-            XCTAssertEqual(( 3 as T).leastSignificantBit, 1 as Bit)
+            Test().same(( T .min).leastSignificantBit, 0 as Bit)
+            Test().same(( T .max).leastSignificantBit, 1 as Bit)
+            Test().same((~1 as T).leastSignificantBit, 0 as Bit)
+            Test().same((~0 as T).leastSignificantBit, 1 as Bit)
+            Test().same(( 0 as T).leastSignificantBit, 0 as Bit)
+            Test().same(( 1 as T).leastSignificantBit, 1 as Bit)
+            Test().same(( 2 as T).leastSignificantBit, 0 as Bit)
+            Test().same(( 3 as T).leastSignificantBit, 1 as Bit)
             
-            XCTAssertEqual(T(low:  0, high:  0).leastSignificantBit, 0 as Bit)
-            XCTAssertEqual(T(low:  0, high: ~0).leastSignificantBit, 0 as Bit)
-            XCTAssertEqual(T(low: ~0, high:  0).leastSignificantBit, 1 as Bit)
-            XCTAssertEqual(T(low: ~0, high: ~0).leastSignificantBit, 1 as Bit)
+            Test().same(T(low:  0, high:  0).leastSignificantBit, 0 as Bit)
+            Test().same(T(low:  0, high: ~0).leastSignificantBit, 0 as Bit)
+            Test().same(T(low: ~0, high:  0).leastSignificantBit, 1 as Bit)
+            Test().same(T(low: ~0, high: ~0).leastSignificantBit, 1 as Bit)
         }
         
         for base in Self.bases {
@@ -106,15 +106,15 @@ extension DoubleIntTests {
             typealias T = DoubleInt<Base>
             typealias M = DoubleInt<Base>.Magnitude
                         
-            XCTAssertEqual(T(load:  0 as IX), T(truncating:  0 as IX))
-            XCTAssertEqual(T(load: -1 as IX), T(truncating: ~0 as IX))
-            XCTAssertEqual(M(load:  0 as IX), M(truncating:  0 as IX))
-            XCTAssertEqual(M(load: -1 as IX), M(truncating: ~0 as IX))
+            Test().same(T(load:  0 as IX), T(truncating:  0 as IX))
+            Test().same(T(load: -1 as IX), T(truncating: ~0 as IX))
+            Test().same(M(load:  0 as IX), M(truncating:  0 as IX))
+            Test().same(M(load: -1 as IX), M(truncating: ~0 as IX))
             
-            XCTAssertEqual(T(load:  0 as UX), T(truncating:  0 as UX))
-            XCTAssertEqual(T(load: ~0 as UX), T(truncating: ~0 as UX))
-            XCTAssertEqual(M(load:  0 as UX), M(truncating:  0 as UX))
-            XCTAssertEqual(M(load: ~0 as UX), M(truncating: ~0 as UX))
+            Test().same(T(load:  0 as UX), T(truncating:  0 as UX))
+            Test().same(T(load: ~0 as UX), T(truncating: ~0 as UX))
+            Test().same(M(load:  0 as UX), M(truncating:  0 as UX))
+            Test().same(M(load: ~0 as UX), M(truncating: ~0 as UX))
         }
         
         for base in Self.bases where base.isSigned {
@@ -127,15 +127,15 @@ extension DoubleIntTests {
             typealias T = DoubleInt<Base>
             typealias M = DoubleInt<Base>.Magnitude
             
-            XCTAssertEqual(( 0 as T).load(as: IX.self), IX(truncating:  0 as T))
-            XCTAssertEqual((~0 as T).load(as: IX.self), IX(truncating: ~0 as T))
-            XCTAssertEqual(( 0 as M).load(as: IX.self), IX(truncating:  0 as M))
-            XCTAssertEqual((~0 as M).load(as: IX.self), IX(truncating: ~0 as M))
+            Test().same(( 0 as T).load(as: IX.self), IX(truncating:  0 as T))
+            Test().same((~0 as T).load(as: IX.self), IX(truncating: ~0 as T))
+            Test().same(( 0 as M).load(as: IX.self), IX(truncating:  0 as M))
+            Test().same((~0 as M).load(as: IX.self), IX(truncating: ~0 as M))
             
-            XCTAssertEqual(( 0 as T).load(as: UX.self), UX(truncating:  0 as T))
-            XCTAssertEqual((~0 as T).load(as: UX.self), UX(truncating: ~0 as T))
-            XCTAssertEqual(( 0 as M).load(as: UX.self), UX(truncating:  0 as M))
-            XCTAssertEqual((~0 as M).load(as: UX.self), UX(truncating: ~0 as M))
+            Test().same(( 0 as T).load(as: UX.self), UX(truncating:  0 as T))
+            Test().same((~0 as T).load(as: UX.self), UX(truncating: ~0 as T))
+            Test().same(( 0 as M).load(as: UX.self), UX(truncating:  0 as M))
+            Test().same((~0 as M).load(as: UX.self), UX(truncating: ~0 as M))
         }
         
         for base in Self.bases where base.isSigned {

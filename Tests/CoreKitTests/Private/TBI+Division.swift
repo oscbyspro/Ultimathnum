@@ -52,20 +52,23 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    static func division3212MSB<Base: SystemsInteger & UnsignedInteger>(
-    _ dividend: TripleIntLayout<Base>, _ divisor: DoubleIntLayout<Base>, _ quotient: Base, _ remainder: DoubleIntLayout<Base>,
-    file: StaticString = #file, line: UInt = #line) {
+    static func division3212MSB<Base>(
+        _ dividend: TripleIntLayout<Base>, 
+        _ divisor: DoubleIntLayout<Base>,
+        _ quotient: Base,
+        _ remainder: DoubleIntLayout<Base>,
+        _ test: Test = .init()
+    )   where Base: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
         let result = TBI.division3212MSB(dividing: dividend, by: divisor)
         //=------------------------------------------=
-        XCTAssertEqual(result.quotient,  quotient,  file: file, line: line)
-        XCTAssertEqual(result.remainder, remainder, file: file, line: line)
+        test.same(result.quotient,  quotient )
+        test.same(result.remainder, remainder)
         //=------------------------------------------=
         reversed: do {
-            var backtracked = TBI.multiplying213(divisor, by: result.quotient)
-            let overflow = TBI.increment32B(&backtracked, by: result.remainder)
-            XCTAssert(dividend == backtracked, "dividend != divisor * quotient + remainder", file: file, line: line)
-            XCTAssertFalse(overflow, file: file, line: line)
+            var inverse  = TBI.multiplying213(divisor, by: result.quotient)
+            let overflow = TBI.increment32B(&inverse, by: result.remainder)
+            test.same(Fallible(dividend), Fallible(inverse, error: overflow), "dividend != divisor * quotient + remainder")
         }
     }
 }

@@ -24,41 +24,41 @@ extension MinimiIntTests {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias F = Fallible<T>
             
-            XCTAssertEqual(T.advanced(-1 as T, by:  IX .min), F(-1 as T, error: true))
-            XCTAssertEqual(T.advanced(-1 as T, by: -2 as IX), F(-1 as T, error: true))
-            XCTAssertEqual(T.advanced(-1 as T, by: -1 as IX), F( 0 as T, error: true))
-            XCTAssertEqual(T.advanced(-1 as T, by:  0 as IX), F(-1 as T))
-            XCTAssertEqual(T.advanced(-1 as T, by:  1 as IX), F( 0 as T))
-            XCTAssertEqual(T.advanced(-1 as T, by:  2 as IX), F(-1 as T, error: true))
-            XCTAssertEqual(T.advanced(-1 as T, by:  IX .max), F( 0 as T, error: true))
+            Test().same(T.advanced(-1 as T, by:  IX .min), F(-1 as T, error: true))
+            Test().same(T.advanced(-1 as T, by: -2 as IX), F(-1 as T, error: true))
+            Test().same(T.advanced(-1 as T, by: -1 as IX), F( 0 as T, error: true))
+            Test().same(T.advanced(-1 as T, by:  0 as IX), F(-1 as T))
+            Test().same(T.advanced(-1 as T, by:  1 as IX), F( 0 as T))
+            Test().same(T.advanced(-1 as T, by:  2 as IX), F(-1 as T, error: true))
+            Test().same(T.advanced(-1 as T, by:  IX .max), F( 0 as T, error: true))
             
-            XCTAssertEqual(T.advanced( 0 as T, by:  IX .min), F( 0 as T, error: true))
-            XCTAssertEqual(T.advanced( 0 as T, by: -2 as IX), F( 0 as T, error: true))
-            XCTAssertEqual(T.advanced( 0 as T, by: -1 as IX), F(-1 as T))
-            XCTAssertEqual(T.advanced( 0 as T, by:  0 as IX), F( 0 as T))
-            XCTAssertEqual(T.advanced( 0 as T, by:  1 as IX), F(-1 as T, error: true))
-            XCTAssertEqual(T.advanced( 0 as T, by:  2 as IX), F( 0 as T, error: true))
-            XCTAssertEqual(T.advanced( 0 as T, by:  IX .max), F(-1 as T, error: true))
+            Test().same(T.advanced( 0 as T, by:  IX .min), F( 0 as T, error: true))
+            Test().same(T.advanced( 0 as T, by: -2 as IX), F( 0 as T, error: true))
+            Test().same(T.advanced( 0 as T, by: -1 as IX), F(-1 as T))
+            Test().same(T.advanced( 0 as T, by:  0 as IX), F( 0 as T))
+            Test().same(T.advanced( 0 as T, by:  1 as IX), F(-1 as T, error: true))
+            Test().same(T.advanced( 0 as T, by:  2 as IX), F( 0 as T, error: true))
+            Test().same(T.advanced( 0 as T, by:  IX .max), F(-1 as T, error: true))
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias F = Fallible<T>
             
-            XCTAssertEqual(T.advanced( 0 as T, by:  IX .min), F( 0 as T, error: true))
-            XCTAssertEqual(T.advanced( 0 as T, by: -2 as IX), F( 0 as T, error: true))
-            XCTAssertEqual(T.advanced( 0 as T, by: -1 as IX), F( 1 as T, error: true))
-            XCTAssertEqual(T.advanced( 0 as T, by:  0 as IX), F( 0 as T))
-            XCTAssertEqual(T.advanced( 0 as T, by:  1 as IX), F( 1 as T))
-            XCTAssertEqual(T.advanced( 0 as T, by:  2 as IX), F( 0 as T, error: true))
-            XCTAssertEqual(T.advanced( 0 as T, by:  IX .max), F( 1 as T, error: true))
+            Test().same(T.advanced( 0 as T, by:  IX .min), F( 0 as T, error: true))
+            Test().same(T.advanced( 0 as T, by: -2 as IX), F( 0 as T, error: true))
+            Test().same(T.advanced( 0 as T, by: -1 as IX), F( 1 as T, error: true))
+            Test().same(T.advanced( 0 as T, by:  0 as IX), F( 0 as T))
+            Test().same(T.advanced( 0 as T, by:  1 as IX), F( 1 as T))
+            Test().same(T.advanced( 0 as T, by:  2 as IX), F( 0 as T, error: true))
+            Test().same(T.advanced( 0 as T, by:  IX .max), F( 1 as T, error: true))
             
-            XCTAssertEqual(T.advanced( 1 as T, by:  IX .min), F( 1 as T, error: true))
-            XCTAssertEqual(T.advanced( 1 as T, by: -2 as IX), F( 1 as T, error: true))
-            XCTAssertEqual(T.advanced( 1 as T, by: -1 as IX), F( 0 as T))
-            XCTAssertEqual(T.advanced( 1 as T, by:  0 as IX), F( 1 as T))
-            XCTAssertEqual(T.advanced( 1 as T, by:  1 as IX), F( 0 as T, error: true))
-            XCTAssertEqual(T.advanced( 1 as T, by:  2 as IX), F( 1 as T, error: true))
-            XCTAssertEqual(T.advanced( 1 as T, by:  IX .max), F( 0 as T, error: true))
+            Test().same(T.advanced( 1 as T, by:  IX .min), F( 1 as T, error: true))
+            Test().same(T.advanced( 1 as T, by: -2 as IX), F( 1 as T, error: true))
+            Test().same(T.advanced( 1 as T, by: -1 as IX), F( 0 as T))
+            Test().same(T.advanced( 1 as T, by:  0 as IX), F( 1 as T))
+            Test().same(T.advanced( 1 as T, by:  1 as IX), F( 0 as T, error: true))
+            Test().same(T.advanced( 1 as T, by:  2 as IX), F( 1 as T, error: true))
+            Test().same(T.advanced( 1 as T, by:  IX .max), F( 0 as T, error: true))
         }
         
         for type in Self.types {
@@ -70,19 +70,19 @@ extension MinimiIntTests {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias F = Fallible
             
-            XCTAssertEqual(T.distance(-1 as T, to: -1 as T, as: IX.self), F( 0 as IX))
-            XCTAssertEqual(T.distance(-1 as T, to:  0 as T, as: IX.self), F( 1 as IX))
-            XCTAssertEqual(T.distance( 0 as T, to: -1 as T, as: IX.self), F(-1 as IX))
-            XCTAssertEqual(T.distance( 0 as T, to:  0 as T, as: IX.self), F( 0 as IX))
+            Test().same(T.distance(-1 as T, to: -1 as T, as: IX.self), F( 0 as IX))
+            Test().same(T.distance(-1 as T, to:  0 as T, as: IX.self), F( 1 as IX))
+            Test().same(T.distance( 0 as T, to: -1 as T, as: IX.self), F(-1 as IX))
+            Test().same(T.distance( 0 as T, to:  0 as T, as: IX.self), F( 0 as IX))
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias F = Fallible
             
-            XCTAssertEqual(T.distance( 0 as T, to:  0 as T, as: IX.self), F( 0 as IX))
-            XCTAssertEqual(T.distance( 0 as T, to:  1 as T, as: IX.self), F( 1 as IX))
-            XCTAssertEqual(T.distance( 1 as T, to:  0 as T, as: IX.self), F(-1 as IX))
-            XCTAssertEqual(T.distance( 1 as T, to:  1 as T, as: IX.self), F( 0 as IX))
+            Test().same(T.distance( 0 as T, to:  0 as T, as: IX.self), F( 0 as IX))
+            Test().same(T.distance( 0 as T, to:  1 as T, as: IX.self), F( 1 as IX))
+            Test().same(T.distance( 1 as T, to:  0 as T, as: IX.self), F(-1 as IX))
+            Test().same(T.distance( 1 as T, to:  1 as T, as: IX.self), F( 0 as IX))
         }
         
         for type in Self.types {

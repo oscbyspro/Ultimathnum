@@ -52,10 +52,12 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    static func multiplication213<Base: SystemsInteger & UnsignedInteger>(
-    _ lhs: DoubleIntLayout<Base>, _ rhs:  Base, _ expectation: TripleIntLayout<Base>,
-    file: StaticString = #file, line: UInt = #line) {
-        //=--------------------------------------=
-        XCTAssertEqual(TBI.multiplying213(lhs, by: rhs), expectation, file: file, line: line)
+    static func multiplication213<Base>(
+        _ lhs: DoubleIntLayout<Base>, 
+        _ rhs: Base,
+        _ expectation: TripleIntLayout<Base>,
+        _ test: Test = .init()
+    )   where Base: SystemsInteger & UnsignedInteger {
+        test.same(TBI.multiplying213(lhs, by: rhs), expectation)
     }
 }

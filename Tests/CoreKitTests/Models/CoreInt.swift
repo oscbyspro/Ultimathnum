@@ -48,8 +48,8 @@ final class CoreIntTests: XCTestCase {
     
     func testMinMax() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            XCTAssertEqual(T.min, T.isSigned ?  T.msb :  0)
-            XCTAssertEqual(T.max, T.isSigned ? ~T.msb : ~0)
+            Test().same(T.min, T.isSigned ?  T.msb :  0)
+            Test().same(T.max, T.isSigned ? ~T.msb : ~0)
         }
         
         for type in Self.types {
@@ -59,10 +59,10 @@ final class CoreIntTests: XCTestCase {
     
     func testLsbMsb() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            XCTAssertEqual(T.lsb.count(1, option: .ascending ), 1)
-            XCTAssertEqual(T.lsb.count(0, option: .descending), T.bitWidth - 1)
-            XCTAssertEqual(T.msb.count(0, option: .ascending ), T.bitWidth - 1)
-            XCTAssertEqual(T.msb.count(1, option: .descending), 1)
+            Test().same(T.lsb.count(1, option: .ascending ), 1)
+            Test().same(T.lsb.count(0, option: .descending), T.bitWidth - 1)
+            Test().same(T.msb.count(0, option: .ascending ), T.bitWidth - 1)
+            Test().same(T.msb.count(1, option: .descending), 1)
         }
         
         for type in Self.types {

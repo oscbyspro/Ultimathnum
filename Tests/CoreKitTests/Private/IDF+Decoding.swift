@@ -86,8 +86,11 @@ final class IntegerDescriptionFormatTestsOnDecoding: XCTestCase {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    func check<T: BinaryInteger>(_ description: String, _ expectation: T?, file: StaticString = #file, line: UInt = #line) {
-        let result: T? = try?  decoder.decode(description)
-        XCTAssertEqual(result, expectation, file: file, line: line)
+    func check<T>(
+        _ description: String,
+        _ expectation: T?,
+        _ test: Test = .init()
+    )   where T: BinaryInteger {
+        test.same(try? decoder.decode(description), expectation)
     }
 }

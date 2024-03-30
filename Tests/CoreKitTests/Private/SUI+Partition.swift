@@ -64,17 +64,21 @@ final class StrictUnsignedIntegerSubSequenceTestsOnPartition: XCTestCase {
     //=------------------------------------------------------------------------=
 
     private func checkPartitionNoRedundantZeros(
-    _ base: [UX], _ index: Int, _ low: [UX], _ high: [UX],
-    file: StaticString = #file, line: UInt = #line) {
+        _ base: [UX], 
+        _ index: Int,
+        _ low:  [UX],
+        _ high: [UX],
+        _ test: Test = .init()
+    ) {
         //=------------------------------------------=
         base.withUnsafeBufferPointer { base in
             let partition = SUISS.partitionNoRedundantZeros(base, at: index)
             
-            XCTAssertEqual([UX](partition.low ),  low,  file: file, line: line)
-            XCTAssertEqual([UX](partition.high),  high, file: file, line: line)
+            test.same([UX](partition.low ), low )
+            test.same([UX](partition.high), high)
             
-            XCTAssertNotEqual(partition.low .last, 000, file: file, line: line)
-            XCTAssertNotEqual(partition.high.last, 000, file: file, line: line)
+            test.nonequal(partition.low .last, 0)
+            test.nonequal(partition.high.last, 0)
         }
     }
 }

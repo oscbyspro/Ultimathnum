@@ -22,8 +22,8 @@ extension CoreIntTests {
     
     func testInitBit() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            XCTAssertEqual(T(repeating: 0 as Bit),  0 as T)
-            XCTAssertEqual(T(repeating: 1 as Bit), ~0 as T)
+            Test().same(T(repeating: 0 as Bit),  0 as T)
+            Test().same(T(repeating: 1 as Bit), ~0 as T)
         }
         
         for type in Self.types {
@@ -35,14 +35,14 @@ extension CoreIntTests {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             for bit: Bit in [0, 1] {
                 for selection: BitSelection in [.all, .ascending, .descending] {
-                    XCTAssertEqual(( 0 as T).count(bit, option: selection), bit == 0 ? T.bitWidth : 0)
-                    XCTAssertEqual((~0 as T).count(bit, option: selection), bit == 1 ? T.bitWidth : 0)
+                    Test().same(( 0 as T).count(bit, option: selection), bit == 0 ? T.bitWidth : 0)
+                    Test().same((~0 as T).count(bit, option: selection), bit == 1 ? T.bitWidth : 0)
                 }
                 
                 for element: (value: T, bit: Bit) in [(11, 0), (~11, 1)] {
-                    XCTAssertEqual(element.value.count(bit, option:        .all), bit == element.bit ? T.bitWidth - 3 : 3)
-                    XCTAssertEqual(element.value.count(bit, option:  .ascending), bit == element.bit ?              0 : 2)
-                    XCTAssertEqual(element.value.count(bit, option: .descending), bit == element.bit ? T.bitWidth - 4 : 0)
+                    Test().same(element.value.count(bit, option:        .all), bit == element.bit ? T.bitWidth - 3 : 3)
+                    Test().same(element.value.count(bit, option:  .ascending), bit == element.bit ?              0 : 2)
+                    Test().same(element.value.count(bit, option: .descending), bit == element.bit ? T.bitWidth - 4 : 0)
                 }
             }
         }
@@ -54,14 +54,14 @@ extension CoreIntTests {
     
     func testLeastSignificantBit() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            XCTAssertEqual(( T .min).leastSignificantBit, 0 as Bit)
-            XCTAssertEqual(( T .max).leastSignificantBit, 1 as Bit)
-            XCTAssertEqual((~1 as T).leastSignificantBit, 0 as Bit)
-            XCTAssertEqual((~0 as T).leastSignificantBit, 1 as Bit)
-            XCTAssertEqual(( 0 as T).leastSignificantBit, 0 as Bit)
-            XCTAssertEqual(( 1 as T).leastSignificantBit, 1 as Bit)
-            XCTAssertEqual(( 2 as T).leastSignificantBit, 0 as Bit)
-            XCTAssertEqual(( 3 as T).leastSignificantBit, 1 as Bit)
+            Test().same(( T .min).leastSignificantBit, 0 as Bit)
+            Test().same(( T .max).leastSignificantBit, 1 as Bit)
+            Test().same((~1 as T).leastSignificantBit, 0 as Bit)
+            Test().same((~0 as T).leastSignificantBit, 1 as Bit)
+            Test().same(( 0 as T).leastSignificantBit, 0 as Bit)
+            Test().same(( 1 as T).leastSignificantBit, 1 as Bit)
+            Test().same(( 2 as T).leastSignificantBit, 0 as Bit)
+            Test().same(( 3 as T).leastSignificantBit, 1 as Bit)
         }
         
         for type in Self.types {
