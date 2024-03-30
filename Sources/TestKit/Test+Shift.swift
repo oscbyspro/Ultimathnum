@@ -24,99 +24,97 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func shift<T>(
+    public func shift<T>(
         _ instance: T, 
-        _ shift: T,
+        _ distance: T,
         _ expectation: T,
         _ direction: ShiftDirection,
-        _ semantics: ShiftSemantics,
-        file: StaticString = #file, 
-        line: UInt = #line
+        _ semantics: ShiftSemantics
     )   where T: BinaryInteger {
         switch (direction, semantics) {
         case (.left, .smart):
             
             brr: do {
-                XCTAssertEqual({         instance    <<  shift           }(), expectation, file: file, line: line)
-                XCTAssertEqual({ var x = instance; x <<= shift; return x }(), expectation, file: file, line: line)
+                same({         instance    <<  distance           }(), expectation)
+                same({ var x = instance; x <<= distance; return x }(), expectation)
             }
             
-            if  let shift = shift.negated().optional() {
-                XCTAssertEqual({         instance    >>  shift           }(), expectation, file: file, line: line)
-                XCTAssertEqual({ var x = instance; x >>= shift; return x }(), expectation, file: file, line: line)
+            if  let distance = distance.negated().optional() {
+                same({         instance    >>  distance           }(), expectation)
+                same({ var x = instance; x >>= distance; return x }(), expectation)
             }
             
-            if !shift.isLessThanZero, shift.magnitude < T.bitWidth {
-                Test.shift(instance, shift, expectation, .left, .masked, file: file, line: line)
+            if !distance.isLessThanZero, distance.magnitude < T.bitWidth {
+                shift(instance, distance, expectation, .left,  .masked)
             }
             
         case (.right, .smart):
             
             brr: do {
-                XCTAssertEqual({         instance    >>  shift           }(), expectation, file: file, line: line)
-                XCTAssertEqual({ var x = instance; x >>= shift; return x }(), expectation, file: file, line: line)
+                same({         instance    >>  distance           }(), expectation)
+                same({ var x = instance; x >>= distance; return x }(), expectation)
             }
             
-            if  let shift = shift.negated().optional() {
-                XCTAssertEqual({         instance    <<  shift           }(), expectation, file: file, line: line)
-                XCTAssertEqual({ var x = instance; x <<= shift; return x }(), expectation, file: file, line: line)
+            if  let distance = distance.negated().optional() {
+                same({         instance    <<  distance           }(), expectation)
+                same({ var x = instance; x <<= distance; return x }(), expectation)
             }
             
-            if !shift.isLessThanZero, shift.magnitude < T.bitWidth {
-                Test.shift(instance, shift, expectation, .right, .masked, file: file, line: line)
+            if !distance.isLessThanZero, distance.magnitude < T.bitWidth {
+                shift(instance, distance, expectation, .right, .masked)
             }
             
         case (.left, .masked):
             
-            func check(_ shift: T) {
-                XCTAssertEqual({         instance    &<<  shift           }(), expectation, file: file, line: line)
-                XCTAssertEqual({ var x = instance; x &<<= shift; return x }(), expectation, file: file, line: line)
+            func with(_ distance: T) {
+                same({         instance    &<<  distance           }(), expectation)
+                same({ var x = instance; x &<<= distance; return x }(), expectation)
             }
             
-            check(shift)
+            with(distance)
             
             if  let increment = try? T.exactly(magnitude: T.bitWidth).get() {
-                if  let shift = try? shift.plus(increment).get() {
-                    check(shift)
+                if  let distance = try? distance.plus(increment).get() {
+                    with(distance)
                 }
                 
-                if  let shift = try? shift.plus(increment).plus(increment).get() {
-                    check(shift)
+                if  let distance = try? distance.plus(increment).plus(increment).get() {
+                    with(distance)
                 }
                 
-                if  let shift = try? shift.minus(increment).get() {
-                    check(shift)
+                if  let distance = try? distance.minus(increment).get() {
+                    with(distance)
                 }
                 
-                if  let shift = try? shift.minus(increment).minus(increment).get() {
-                    check(shift)
+                if  let distance = try? distance.minus(increment).minus(increment).get() {
+                    with(distance)
                 }
             }
             
         case (.right, .masked):
             
-            func check(_ shift: T) {
-                XCTAssertEqual({         instance    &>>  shift           }(), expectation, file: file, line: line)
-                XCTAssertEqual({ var x = instance; x &>>= shift; return x }(), expectation, file: file, line: line)
+            func with(_ distance: T) {
+                same({         instance    &>>  distance           }(), expectation)
+                same({ var x = instance; x &>>= distance; return x }(), expectation)
             }
 
-            check(shift)
+            with(distance)
             
             if  let increment = try? T.exactly(magnitude: T.bitWidth).get() {
-                if  let shift = try? shift.plus(increment).get() {
-                    check(shift)
+                if  let distance = try? distance.plus(increment).get() {
+                    with(distance)
                 }
                 
-                if  let shift = try? shift.plus(increment).plus(increment).get() {
-                    check(shift)
+                if  let distance = try? distance.plus(increment).plus(increment).get() {
+                    with(distance)
                 }
                 
-                if  let shift = try? shift.minus(increment).get() {
-                    check(shift)
+                if  let distance = try? distance.minus(increment).get() {
+                    with(distance)
                 }
                 
-                if  let shift = try? shift.minus(increment).minus(increment).get() {
-                    check(shift)
+                if  let distance = try? distance.minus(increment).minus(increment).get() {
+                    with(distance)
                 }
             }
             
