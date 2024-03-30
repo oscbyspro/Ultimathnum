@@ -22,22 +22,30 @@ final class ExchangeIntTests: XCTestCase {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    func check<A: SystemsInteger & UnsignedInteger, B: SystemsInteger & UnsignedInteger>(
-    _ lhs: [A], _ rhs: [B], isSigned: Bool? = nil, file: StaticString = #file, line: UInt = #line) {
+    func check<A, B>(
+        _ lhs: [A], 
+        _ rhs: [B],
+        isSigned: Bool? = nil,
+        test: Test = .init()
+    )   where A: SystemsInteger & UnsignedInteger, B: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
-        checkOneWayOnly(lhs, rhs, isSigned: isSigned, file: file, line: line)
-        checkOneWayOnly(rhs, lhs, isSigned: isSigned, file: file, line: line)
+        checkOneWayOnly(lhs, rhs, isSigned: isSigned, test: test)
+        checkOneWayOnly(rhs, lhs, isSigned: isSigned, test: test)
     }
     
-    func checkOneWayOnly<A: SystemsInteger & UnsignedInteger, B: SystemsInteger & UnsignedInteger>(
-    _ lhs: [A], _ rhs: [B], isSigned: Bool? = nil, file: StaticString = #file, line: UInt = #line) {
+    func checkOneWayOnly<A, B>(
+        _ lhs: [A], 
+        _ rhs: [B],
+        isSigned: Bool? = nil, 
+        test: Test = .init()
+    )   where A: SystemsInteger & UnsignedInteger, B: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
         if  isSigned != false {
-            Test.collection(T(lhs as [A], isSigned: true,  as: B.self).source(), rhs, file: file, line: line)
+            test.collection(T(lhs as [A], isSigned: true,  as: B.self).source(), rhs)
         }
         
         if  isSigned != true {
-            Test.collection(T(lhs as [A], isSigned: false, as: B.self).source(), rhs, file: file, line: line)
+            test.collection(T(lhs as [A], isSigned: false, as: B.self).source(), rhs)
         }
     }
 }

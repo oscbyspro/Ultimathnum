@@ -34,7 +34,7 @@ final class CoreIntTests: XCTestCase {
     
     func testInvariants() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            Test.invariants(type, identifier: SystemsIntegerID())
+            Test().invariants(type, SystemsIntegerID())
         }
         
         for type in Self.types {

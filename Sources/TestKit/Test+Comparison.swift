@@ -20,20 +20,16 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func comparison<T, U>(
+    public func comparison<T, U>(
         _ lhs: T,
         _ rhs: U, 
-        _ expectation: Signum,
-        file: StaticString = #file,
-        line: UInt = #line
-    ) where T: BinaryInteger, U: BinaryInteger {
+        _ expectation: Signum
+    )   where T: BinaryInteger, U: BinaryInteger {
         //=--------------------------------------=
-        Test.comparison(
+        comparison(
             ExchangeInt(lhs, as: T.Element.self),
             ExchangeInt(rhs, as: U.Element.self),
-            expectation, 
-            file: file,
-            line: line
+            expectation
         )
         //=--------------------------------------=
         guard let rhs = rhs as? T else { return }
@@ -42,111 +38,101 @@ extension Test {
             signum: if rhs.signum() == Signum.same {
                 let result:  Signum = lhs.signum()
                 let success: Bool = result == expectation
-                XCTAssert(success, "\(lhs).signum() -> \(result)", file: file, line: line)
+                check(success, "\(lhs).signum() -> \(result)")
             }
             
             comparison: do {
                 let result:  Signum = lhs.compared(to: rhs)
                 let success: Bool = result == expectation
-                XCTAssert(success, "\(lhs).compared(to: \(rhs)) -> \(result)", file: file, line: line)
+                check(success, "\(lhs).compared(to: \(rhs)) -> \(result)")
             }
             
             less: do {
                 let result:  Bool = lhs < rhs
                 let success: Bool = result == (expectation == .less)
-                XCTAssert(success, "\(lhs) <  \(rhs) -> \(result)", file: file, line: line)
+                check(success, "\(lhs) <  \(rhs) -> \(result)")
             }
             
             same: do {
                 let result:  Bool = lhs == rhs
                 let success: Bool = result == (expectation == .same)
-                XCTAssert(success, "\(lhs) == \(rhs) -> \(result)", file: file, line: line)
+                check(success, "\(lhs) == \(rhs) -> \(result)")
             }
             
             more: do {
                 let result:  Bool = lhs >  rhs
                 let success: Bool = result == (expectation == .more)
-                XCTAssert(success, "\(lhs) >  \(rhs) -> \(result)", file: file, line: line)
+                check(success, "\(lhs) >  \(rhs) -> \(result)")
             }
             
             nonless: do {
                 let result:  Bool = lhs >= rhs
                 let success: Bool = result == (expectation != .less)
-                XCTAssert(success, "\(lhs) >= \(rhs) -> \(result)", file: file, line: line)
+                check(success, "\(lhs) >= \(rhs) -> \(result)")
             }
             
             nonsame: do {
                 let result:  Bool = lhs != rhs
                 let success: Bool = result == (expectation != .same)
-                XCTAssert(success, "\(lhs) != \(rhs) -> \(result)", file: file, line: line)
+                check(success, "\(lhs) != \(rhs) -> \(result)")
             }
             
             nonmore: do {
                 let result:  Bool = lhs <= rhs
                 let success: Bool = result == (expectation != .more)
-                XCTAssert(success, "\(lhs) <= \(rhs) -> \(result)", file: file, line: line)
+                check(success, "\(lhs) <= \(rhs) -> \(result)")
             }
         }
     }
     
-    public static func comparison<A, B, C, D>(
-        _ lhs: ExchangeInt<A, B>,
-        _ rhs: ExchangeInt<C, D>,
-        _ expectation: Signum,
-        file: StaticString, 
-        line: UInt
-    ) {
-        func unidirectional<E, F, G, H>(
-            _ lhs: ExchangeInt<E, F>,
-            _ rhs: ExchangeInt<G, H>,
-            _ expectation: Signum
-        ) {
+    public func comparison <A, B, C, D>(_ lhs: ExchangeInt<A, B>, _ rhs: ExchangeInt<C, D>, _ expectation: Signum) {
+        func unidirectional<E, F, G, H>(_ lhs: ExchangeInt<E, F>, _ rhs: ExchangeInt<G, H>, _ expectation: Signum) {
             signum: if rhs.signum() == Signum.same {
                 let result:  Signum = lhs.signum()
                 let success: Bool = result == expectation
-                XCTAssert(success, "\(lhs).signum() -> \(result)", file: file, line: line)
+                check(success, "\(lhs).signum() -> \(result)")
             }
             
             comparison: do {
                 let result:  Signum = lhs.compared(to: rhs)
                 let success: Bool = result == expectation
-                XCTAssert(success, "\(lhs).compared(to: \(rhs)) -> \(result)", file: file, line: line)
+                check(success, "\(lhs).compared(to: \(rhs)) -> \(result)")
             }
             
             less: do {
                 let result:  Bool = lhs < rhs
                 let success: Bool = result == (expectation == .less)
-                XCTAssert(success, "\(lhs) <  \(rhs) -> \(result)", file: file, line: line)
+                check(success, "\(lhs) <  \(rhs) -> \(result)")
             }
             
             same: do {
                 let result:  Bool = lhs == rhs
                 let success: Bool = result == (expectation == .same)
-                XCTAssert(success, "\(lhs) == \(rhs) -> \(result)", file: file, line: line)
+                check(success, "\(lhs) == \(rhs) -> \(result)")
             }
             
             more: do {
                 let result:  Bool = lhs >  rhs
                 let success: Bool = result == (expectation == .more)
-                XCTAssert(success, "\(lhs) >  \(rhs) -> \(result)", file: file, line: line)
+                check(success, "\(lhs) >  \(rhs) -> \(result)")
             }
             
             nonless: do {
                 let result:  Bool = lhs >= rhs
                 let success: Bool = result == (expectation != .less)
-                XCTAssert(success, "\(lhs) >= \(rhs) -> \(result)", file: file, line: line)
+                check(success, "\(lhs) >= \(rhs) -> \(result)")
             }
             
             nonsame: do {
                 let result:  Bool = lhs != rhs
                 let success: Bool = result == (expectation != .same)
-                XCTAssert(success, "\(lhs) != \(rhs) -> \(result)", file: file, line: line)
+                check(success, "\(lhs) != \(rhs) -> \(result)")
             }
             
             nonmore: do {
                 let result:  Bool = lhs <= rhs
                 let success: Bool = result == (expectation != .more)
-                XCTAssert(success, "\(lhs) <= \(rhs) -> \(result)", file: file, line: line)
+                check(success, "\(lhs) <= \(rhs) -> \(result)")
             }
         }
         
@@ -165,14 +151,9 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func equal<T, U>(
-        _ lhs: MemoryLayout<T>.Type,
-        _ rhs: MemoryLayout<U>.Type,
-        file: StaticString = #file,
-        line: UInt = #line
-    ) {
-        XCTAssertEqual(lhs.size,      rhs.size,      "MemoryLayout: \(T.self) != \(U.self) [size]",      file: file, line: line)
-        XCTAssertEqual(lhs.stride,    rhs.stride,    "MemoryLayout: \(T.self) != \(U.self) [stride]",    file: file, line: line)
-        XCTAssertEqual(lhs.alignment, rhs.alignment, "MemoryLayout: \(T.self) != \(U.self) [alignment]", file: file, line: line)
+    public func equal<T, U>(_ lhs: MemoryLayout<T>.Type, _ rhs: MemoryLayout<U>.Type) {
+        same(lhs.size,      rhs.size,      "MemoryLayout: \(T.self) != \(U.self) [size]")
+        same(lhs.stride,    rhs.stride,    "MemoryLayout: \(T.self) != \(U.self) [stride]")
+        same(lhs.alignment, rhs.alignment, "MemoryLayout: \(T.self) != \(U.self) [alignment]")
     }
 }

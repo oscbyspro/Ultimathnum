@@ -19,60 +19,39 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func invariants<T>(
-        _ type: T.Type, 
-        file: StaticString = #file,
-        line: UInt = #line,
-        identifier: SystemsIntegerID = .init()
-    )   where T: SystemsInteger {
+    public func invariants<T>(_ type: T.Type, _ id: SystemsIntegerID = .init()) where T: SystemsInteger {
         //=--------------------------------------=
-        XCTAssertEqual(
-            T.bitWidth.count(1, option: .all), 
+        same(
+            T.bitWidth.count(1, option: .all),
             T.Magnitude(1),
-            "\(T.self).bitWidth must be a power of 2",
-            file: file,
-            line: line
+            "\(T.self).bitWidth must be a power of 2"
         )
-        XCTAssertGreaterThanOrEqual(
-            UX(bitWidth: T.self), 
+        nonless(
+            UX(bitWidth: T.self),
             UX(bitWidth: T.Element.self),
-            "\(T.self) must be at least as wide as \(T.Element.self)",
-            file: file, 
-            line: line
+            "\(T.self) must be at least as wide as \(T.Element.self)"
         )
         //=--------------------------------------=
-        Test.equal(MemoryLayout<T>.self, MemoryLayout<T.Content>.self, file: file, line: line)
+        equal(MemoryLayout<T>.self, MemoryLayout<T.Content>.self)
         //=--------------------------------------=
-        Test.invariants(type, file: file, line: line, identifier: BinaryIntegerID())
+        invariants(type, BinaryIntegerID())
     }
     
-    public static func invariants<T>(
-        _ type: T.Type,
-        file: StaticString = #file,
-        line: UInt = #line,
-        identifier: BinaryIntegerID = .init()
-    )   where T: BinaryInteger {
+    public func invariants<T>(_ type: T.Type, _ id: BinaryIntegerID = .init()) where T: BinaryInteger {
         //=--------------------------------------=
-        XCTAssertEqual(
+        same(
             T.Element.bitWidth.count(1, option: .all),
             T.Element.Magnitude(1),
-            "\(T.Element.self).bitWidth must be a power of 2",
-            file: file,
-            line: line
+            "\(T.Element.self).bitWidth must be a power of 2"
         )
         //=--------------------------------------=
-        XCTAssertEqual( T.isSigned, T.self is any   SignedInteger.Type, file: file, line: line)
-        XCTAssertEqual(!T.isSigned, T.self is any UnsignedInteger.Type, file: file, line: line)
+        same( T.isSigned, T.self is any   SignedInteger.Type)
+        same(!T.isSigned, T.self is any UnsignedInteger.Type)
         //=--------------------------------------=
-        Test.invariants(type, file: file, line: line, identifier: BitCastableID())
+        invariants(type, BitCastableID())
     }
     
-    public static func invariants<T>(
-        _ type: T.Type,
-        file: StaticString = #file,
-        line: UInt = #line,
-        identifier: BitCastableID // = .init()
-    )   where T: BitCastable {
-        Test.equal(MemoryLayout<T>.self, MemoryLayout<T.BitPattern>.self, file: file, line: line)
+    public func invariants<T>(_ type: T.Type, _ id: BitCastableID) where T: BitCastable {
+        equal(MemoryLayout<T>.self, MemoryLayout<T.BitPattern>.self)
     }
 }

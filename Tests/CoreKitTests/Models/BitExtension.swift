@@ -23,8 +23,8 @@ final class BitExtensionTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testInvariants() {
-        Test.invariants(T<IX>.self, identifier: BitCastableID())
-        Test.invariants(T<UX>.self, identifier: BitCastableID())
+        Test().invariants(T<IX>.self, BitCastableID())
+        Test().invariants(T<UX>.self, BitCastableID())
     }
     
     //=------------------------------------------------------------------------=
