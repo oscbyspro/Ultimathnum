@@ -27,11 +27,12 @@ extension Test {
         _ remainder: T,
         _ error: Bool = false,
         file: StaticString = #file,
-        line: UInt = #line
+        line: UInt = #line,
+        identifier: BinaryIntegerID = .init()
     )   where T: BinaryInteger {
         let division = Division(quotient: quotient, remainder: remainder)
         let expectation = Fallible(division, error: error)
-        self.divisionAsSomeInteger(dividend, divisor, expectation, file: file, line: line)
+        self.division(dividend, divisor, expectation, file: file, line: line)
     }
     
     public static func division<T>(
@@ -39,21 +40,8 @@ extension Test {
         _ divisor:  T,
         _ expectation: Fallible<Division<T, T>>,
         file: StaticString = #file,
-        line: UInt = #line
-    )   where T: BinaryInteger {
-        self.divisionAsSomeInteger(dividend, divisor, expectation, file: file, line: line)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utiliites
-    //=------------------------------------------------------------------------=
-    
-    public static func divisionAsSomeInteger<T: BinaryInteger>(
-        _ dividend: T, 
-        _ divisor:  T,
-        _ expectation: Fallible<Division<T, T>>,
-        file: StaticString,
-        line: UInt
+        line: UInt = #line,
+        identifier: BinaryIntegerID = .init()
     )   where T: BinaryInteger {
         checkSameSizeInverseInvariant: do {
             let lhs = expectation.map({ $0.remainder.plus($0.quotient.times(divisor)) })
@@ -111,12 +99,13 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func division2111<T>(
+    public static func division<T>(
         _ dividend: DoubleIntLayout<T>, 
         _ divisor: T,
         _ expectation: Fallible<Division<T, T>>,
         file: StaticString = #file,
-        line: UInt = #line
+        line: UInt = #line,
+        identifier: BinaryIntegerID = .init()
     )   where T: SystemsInteger {
         //=--------------------------------------=
         let result = T.dividing(dividend, by: divisor)

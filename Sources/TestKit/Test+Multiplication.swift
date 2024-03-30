@@ -25,50 +25,29 @@ extension Test {
         _ rhs: T,
         _ expectation: Fallible<DoubleIntLayout<T>>,
         file: StaticString = #file,
-        line: UInt = #line
-    )   where T: SystemsInteger {
-        self.multiplicationAsSomeSystemsInteger(lhs, rhs, expectation, file: file, line: line)
-    }
-    
-    public static func multiplication<T>(
-        _ lhs: T, 
-        _ rhs: T,
-        _ expectation: Fallible<T>,
-        file: StaticString = #file,
-        line: UInt = #line
-    )   where T: BinaryInteger {
-        self.multiplicationAsSomeBinaryInteger(lhs, rhs, expectation, file: file, line: line)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    public static func multiplicationAsSomeSystemsInteger<T>(
-        _ lhs: T,
-        _ rhs: T,
-        _ expectation: Fallible<DoubleIntLayout<T>>,
-        file: StaticString,
-        line: UInt
+        line: UInt = #line,
+        identifier: SystemsIntegerID = .init()
     )   where T: SystemsInteger {
         //=--------------------------------------=
         XCTAssertEqual(T.multiplying(lhs, by: rhs), expectation.value, file: file, line: line)
         //=--------------------------------------=
-        Test.multiplicationAsSomeBinaryInteger(
+        Test.multiplication(
             lhs,
             rhs,
             expectation.map(\.low).map(T.init(bitPattern:)),
             file: file,
-            line: line
+            line: line,
+            identifier: BinaryIntegerID()
         )
     }
     
-    public static func multiplicationAsSomeBinaryInteger<T>(
+    public static func multiplication<T>(
         _ lhs: T, 
         _ rhs: T, 
         _ expectation: Fallible<T>,
-        file: StaticString,
-        line: UInt
+        file: StaticString = #file,
+        line: UInt = #line,
+        identifier: BinaryIntegerID = .init()
     )   where T: BinaryInteger {
         brr: do {
             XCTAssertEqual(lhs &* rhs, expectation.value, file: file, line: line)

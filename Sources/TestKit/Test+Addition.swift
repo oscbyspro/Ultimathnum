@@ -25,21 +25,8 @@ extension Test {
         _ rhs: T,
         _ expectation: Fallible<T>,
         file: StaticString = #file,
-        line: UInt = #line
-    )   where T: BinaryInteger {
-        self.additionAsSomeBinaryInteger(lhs, rhs, expectation, file: file, line: line)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    public static func additionAsSomeBinaryInteger<T>(
-        _ lhs: T,
-        _ rhs: T,
-        _ expectation: Fallible<T>,
-        file: StaticString,
-        line: UInt
+        line: UInt = #line,
+        identifier: BinaryIntegerID = .init()
     )   where T: BinaryInteger {
         brr: do {
             XCTAssertEqual(lhs &+ rhs, expectation.value, file: file, line: line)
@@ -91,7 +78,8 @@ extension Test {
         _ instance: T, 
         _ expectation: Fallible<T>,
         file: StaticString = #file,
-        line: UInt = #line
+        line: UInt = #line,
+        identifier: BinaryIntegerID = .init()
     )   where T: BinaryInteger {
         XCTAssertEqual(instance.incremented(),           expectation, file: file, line: line)
         XCTAssertEqual(Fallible(instance).incremented(), expectation, file: file, line: line)

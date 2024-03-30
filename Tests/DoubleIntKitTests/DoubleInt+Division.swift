@@ -160,17 +160,17 @@ extension DoubleIntTests {
             typealias X = DoubleIntLayout<T>
             typealias F = Fallible<Division<T, T>>
             
-            Test.division2111(X(low:  7 as M, high:  0 as T),  0 as T, F(D(quotient:      0, remainder:  7), error: true))
-            Test.division2111(X(low:  7 as M, high: ~0 as T),  0 as T, F(D(quotient:      0, remainder:  7), error: true))
-            Test.division2111(X(low: ~0 as M, high: -1 as T),  2 as T, F(D(quotient:      0, remainder: -1)))
-            Test.division2111(X(low:  1 as M, high:  0 as T), -2 as T, F(D(quotient:      0, remainder:  1)))
-            Test.division2111(X(low: ~M .msb, high:  0 as T), -1 as T, F(D(quotient: -T.max, remainder:  0)))
-            Test.division2111(X(low:  M .msb, high: -1 as T), -1 as T, F(D(quotient:  T.min, remainder:  0), error: true))
+            Test.division(X(low:  7 as M, high:  0 as T),  0 as T, F(D(quotient:      0, remainder:  7), error: true))
+            Test.division(X(low:  7 as M, high: ~0 as T),  0 as T, F(D(quotient:      0, remainder:  7), error: true))
+            Test.division(X(low: ~0 as M, high: -1 as T),  2 as T, F(D(quotient:      0, remainder: -1)))
+            Test.division(X(low:  1 as M, high:  0 as T), -2 as T, F(D(quotient:      0, remainder:  1)))
+            Test.division(X(low: ~M .msb, high:  0 as T), -1 as T, F(D(quotient: -T.max, remainder:  0)))
+            Test.division(X(low:  M .msb, high: -1 as T), -1 as T, F(D(quotient:  T.min, remainder:  0), error: true))
             
-            Test.division2111(X(low:  M .max >> 1,     high:  T.max >> 1    ), T.max, F(D(quotient: T.max, remainder: T.max - 1)))
-            Test.division2111(X(low:  M .max >> 1 + 1, high:  T.max >> 1    ), T.max, F(D(quotient: T.min, remainder:         0), error: true))
-            Test.division2111(X(low:  M .max >> 1,     high:  T.max >> 1 + 1), T.min, F(D(quotient: T.min, remainder: T.max - 0)))
-            Test.division2111(X(low:  M .max >> 1 + 1, high:  T.max >> 1 + 1), T.min, F(D(quotient: T.max, remainder:         0), error: true))
+            Test.division(X(low:  M .max >> 1,     high:  T.max >> 1    ), T.max, F(D(quotient: T.max, remainder: T.max - 1)))
+            Test.division(X(low:  M .max >> 1 + 1, high:  T.max >> 1    ), T.max, F(D(quotient: T.min, remainder:         0), error: true))
+            Test.division(X(low:  M .max >> 1,     high:  T.max >> 1 + 1), T.min, F(D(quotient: T.min, remainder: T.max - 0)))
+            Test.division(X(low:  M .max >> 1 + 1, high:  T.max >> 1 + 1), T.min, F(D(quotient: T.max, remainder:         0), error: true))
         }
         
         func whereTheBaseTypeIsUnsigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
@@ -180,10 +180,10 @@ extension DoubleIntTests {
             typealias X = DoubleIntLayout<T>
             typealias F = Fallible<Division<T, T>>
             
-            Test.division2111(X(low:  7 as M, high:  0 as T),  0 as T, F(D(quotient:  0, remainder:  7), error: true))
-            Test.division2111(X(low:  7 as M, high: ~0 as T),  0 as T, F(D(quotient:  0, remainder:  7), error: true))
-            Test.division2111(X(low: ~0 as M, high: ~1 as T), ~0 as T, F(D(quotient: ~0, remainder: ~1)))
-            Test.division2111(X(low:  0 as M, high: ~0 as T), ~0 as T, F(D(quotient:  0, remainder:  0), error: true))
+            Test.division(X(low:  7 as M, high:  0 as T),  0 as T, F(D(quotient:  0, remainder:  7), error: true))
+            Test.division(X(low:  7 as M, high: ~0 as T),  0 as T, F(D(quotient:  0, remainder:  7), error: true))
+            Test.division(X(low: ~0 as M, high: ~1 as T), ~0 as T, F(D(quotient: ~0, remainder: ~1)))
+            Test.division(X(low:  0 as M, high: ~0 as T), ~0 as T, F(D(quotient:  0, remainder:  0), error: true))
         }
         
         for base in Self.bases {
