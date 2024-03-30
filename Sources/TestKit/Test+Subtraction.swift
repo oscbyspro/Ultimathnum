@@ -20,70 +20,68 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func subtraction<T>(
+    public func subtraction<T>(
         _ lhs: T, 
         _ rhs: T,
         _ expectation: Fallible<T>,
-        file: StaticString = #file,
-        line: UInt = #line,
-        identifier: BinaryIntegerID = .init()
+        _ id: BinaryIntegerID = .init()
     )   where T: BinaryInteger {
         brr: do {
-            XCTAssertEqual(lhs &- rhs, expectation.value, file: file, line: line)
+            same(lhs &- rhs, expectation.value)
         };  if !expectation.error {
-            XCTAssertEqual(lhs  - rhs, expectation.value, file: file, line: line)
+            same(lhs  - rhs, expectation.value)
         }
         
         brr: do {
-            XCTAssertEqual({ var x = lhs; x &-= rhs; return x }(), expectation.value, file: file, line: line)
+            same({ var x = lhs; x &-= rhs; return x }(), expectation.value)
         };  if !expectation.error {
-            XCTAssertEqual({ var x = lhs; x  -= rhs; return x }(), expectation.value, file: file, line: line)
+            same({ var x = lhs; x  -= rhs; return x }(), expectation.value)
         }
         
         if !expectation.error {
             let abc: T = rhs.minus(lhs).value.negated().value
             let xyz: T = lhs.minus(rhs).value
-            XCTAssertEqual(abc, xyz, "binary integer subtraction must be reversible", file: file, line: line)
+            same(abc, xyz, "binary integer subtraction must be reversible")
         }   else {
             let abc: T = rhs.minus(lhs).value
             let xyz: T = lhs.minus(rhs).value.negated().value
-            XCTAssertEqual(abc, xyz, "binary integer subtraction must be reversible", file: file, line: line)
+            same(abc, xyz, "binary integer subtraction must be reversible")
         }
         
         if  let one = T.exactly(1).optional(), rhs == one {
-            Test.decrementation(lhs, expectation, file: file, line: line)
+            decrementation(lhs, expectation)
         }
         
         brr: do {
-            XCTAssertEqual(lhs.minus(rhs),                     expectation, file: file, line: line)
-            XCTAssertEqual(lhs.minus(Fallible(rhs)),           expectation, file: file, line: line)
-            XCTAssertEqual(Fallible(lhs).minus(rhs),           expectation, file: file, line: line)
-            XCTAssertEqual(Fallible(lhs).minus(Fallible(rhs)), expectation, file: file, line: line)
+            same(lhs.minus(rhs),                     expectation)
+            same(lhs.minus(Fallible(rhs)),           expectation)
+            same(Fallible(lhs).minus(rhs),           expectation)
+            same(Fallible(lhs).minus(Fallible(rhs)), expectation)
         }
         
         if  !expectation.error {
             let expectation = expectation.negated()
-            XCTAssertEqual(rhs.minus(lhs),                     expectation, file: file, line: line)
-            XCTAssertEqual(rhs.minus(Fallible(lhs)),           expectation, file: file, line: line)
-            XCTAssertEqual(Fallible(rhs).minus(lhs),           expectation, file: file, line: line)
-            XCTAssertEqual(Fallible(rhs).minus(Fallible(lhs)), expectation, file: file, line: line)
+            same(rhs.minus(lhs),                     expectation)
+            same(rhs.minus(Fallible(lhs)),           expectation)
+            same(Fallible(rhs).minus(lhs),           expectation)
+            same(Fallible(rhs).minus(Fallible(lhs)), expectation)
         }
         //=--------------------------------------=
         // same as rhs negation when lhs is zero
         //=--------------------------------------=
         if  lhs == 0 {
-            XCTAssertEqual(expectation, rhs.negated(),           file: file, line: line)
-            XCTAssertEqual(expectation, Fallible(rhs).negated(), file: file, line: line)
+            same(expectation, rhs.negated())
+            same(expectation, Fallible(rhs).negated())
         }
         
         if  lhs == 0 && !expectation.error {
-            XCTAssertEqual(-rhs, expectation.value, file: file, line: line)
-            XCTAssertEqual(-expectation.value, rhs, file: file, line: line)
+            same(-rhs, expectation.value)
+            same(-expectation.value, rhs)
         }
         
         if  lhs == 0 && !expectation.error {
-            XCTAssertEqual(Fallible(rhs), expectation.value.negated(),           file: file, line: line)
-            XCTAssertEqual(Fallible(rhs), Fallible(expectation.value).negated(), file: file, line: line)
+            same(Fallible(rhs), expectation.value.negated())
+            same(Fallible(rhs), Fallible(expectation.value).negated())
         }
     }
 }
@@ -98,14 +96,12 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public static func decrementation<T>(
+    public func decrementation<T>(
         _ instance: T,
         _ expectation: Fallible<T>,
-        file: StaticString = #file,
-        line: UInt = #line,
-        identifier: BinaryIntegerID = .init()
+        _ id: BinaryIntegerID = .init()
     )   where T: BinaryInteger {
-        XCTAssertEqual(instance.decremented(),           expectation, file: file, line: line)
-        XCTAssertEqual(Fallible(instance).decremented(), expectation, file: file, line: line)
+        same(instance.decremented(),           expectation)
+        same(Fallible(instance).decremented(), expectation)
     }
 }

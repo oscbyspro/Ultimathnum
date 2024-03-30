@@ -26,10 +26,10 @@ extension TupleBinaryIntegerTests {
             typealias Y = TripleIntLayout<Base>
             typealias F = Fallible<TripleIntLayout<Base>>
             
-            Test.subtraction32B(Y(low:  0, mid:  0, high:  0), X(low: ~4, high: ~5), F(Y(low:  5, mid:  5, high: ~0), error: true))
-            Test.subtraction32B(Y(low:  1, mid:  2, high:  3), X(low: ~4, high: ~5), F(Y(low:  6, mid:  7, high:  2)))
-            Test.subtraction32B(Y(low: ~1, mid: ~2, high: ~3), X(low:  4, high:  5), F(Y(low: ~5, mid: ~7, high: ~3)))
-            Test.subtraction32B(Y(low: ~0, mid: ~0, high: ~0), X(low:  4, high:  5), F(Y(low: ~4, mid: ~5, high: ~0)))
+            Test().subtraction32B(Y(low:  0, mid:  0, high:  0), X(low: ~4, high: ~5), F(Y(low:  5, mid:  5, high: ~0), error: true))
+            Test().subtraction32B(Y(low:  1, mid:  2, high:  3), X(low: ~4, high: ~5), F(Y(low:  6, mid:  7, high:  2)))
+            Test().subtraction32B(Y(low: ~1, mid: ~2, high: ~3), X(low:  4, high:  5), F(Y(low: ~5, mid: ~7, high: ~3)))
+            Test().subtraction32B(Y(low: ~0, mid: ~0, high: ~0), X(low:  4, high:  5), F(Y(low: ~4, mid: ~5, high: ~0)))
         }
         
         for base in Self.basesWhereIsUnsigned {
@@ -43,10 +43,10 @@ extension TupleBinaryIntegerTests {
             typealias Y = TripleIntLayout<Base>
             typealias F = Fallible<TripleIntLayout<Base>>
             
-            Test.subtraction33B(Y(low:  0, mid:  0, high:  0), Y(low: ~4, mid: ~5, high: ~6), F(Y(low:  5, mid:  5, high:  6), error: true))
-            Test.subtraction33B(Y(low:  1, mid:  2, high:  3), Y(low: ~4, mid: ~5, high: ~6), F(Y(low:  6, mid:  7, high:  9), error: true))
-            Test.subtraction33B(Y(low: ~1, mid: ~2, high: ~3), Y(low:  4, mid:  5, high:  6), F(Y(low: ~5, mid: ~7, high: ~9)))
-            Test.subtraction33B(Y(low: ~0, mid: ~0, high: ~0), Y(low:  4, mid:  5, high:  6), F(Y(low: ~4, mid: ~5, high: ~6)))
+            Test().subtraction33B(Y(low:  0, mid:  0, high:  0), Y(low: ~4, mid: ~5, high: ~6), F(Y(low:  5, mid:  5, high:  6), error: true))
+            Test().subtraction33B(Y(low:  1, mid:  2, high:  3), Y(low: ~4, mid: ~5, high: ~6), F(Y(low:  6, mid:  7, high:  9), error: true))
+            Test().subtraction33B(Y(low: ~1, mid: ~2, high: ~3), Y(low:  4, mid:  5, high:  6), F(Y(low: ~5, mid: ~7, high: ~9)))
+            Test().subtraction33B(Y(low: ~0, mid: ~0, high: ~0), Y(low:  4, mid:  5, high:  6), F(Y(low: ~4, mid: ~5, high: ~6)))
         }
         
         for base in Self.basesWhereIsUnsigned {
@@ -65,29 +65,27 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    static func subtraction32B<Base>(
+    func subtraction32B<Base>(
         _ lhs: TripleIntLayout<Base>, 
         _ rhs: DoubleIntLayout<Base>,
-        _ expectation: Fallible<TripleIntLayout<Base>>,
-        _ test: Test = .init()
+        _ expectation: Fallible<TripleIntLayout<Base>>
     )   where Base: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
         var x = lhs
         let o = TBI.decrement32B(&x, by: rhs)
         //=--------------------------------------=
-        test.same(Fallible(x, error: o), expectation)
+        same(Fallible(x, error: o), expectation)
     }
 
-    static func subtraction33B<Base>(
+    func subtraction33B<Base>(
         _ lhs: TripleIntLayout<Base>, 
         _ rhs: TripleIntLayout<Base>,
-        _ expectation: Fallible<TripleIntLayout<Base>>,
-        _ test: Test = .init()
+        _ expectation: Fallible<TripleIntLayout<Base>>
     )   where Base: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
         var x = lhs
         let o = TBI.decrement33B(&x, by: rhs)
         //=--------------------------------------=
-        test.same(Fallible(x, error: o), expectation)
+        same(Fallible(x, error: o), expectation)
     }
 }
