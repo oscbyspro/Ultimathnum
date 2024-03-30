@@ -11,10 +11,6 @@
 // MARK: * Test
 //*============================================================================*
 
-/// A namespace for `Ultimathnum` development.
-///
-/// - Warning: Do not use this namespace outside of `Ultimathnum`.
-///
 public struct Test {
     
     //=------------------------------------------------------------------------=
@@ -52,7 +48,7 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func assert(_ instance: Bool, _ message: @autoclosure () -> String = "") {
+    public func check(_ instance: Bool, _ message: @autoclosure () -> String = "") {
         XCTAssert(instance, message(), file: file, line: line)
     }
     
