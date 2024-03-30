@@ -47,7 +47,7 @@
             (value: self.value, error: self.error)
         }
         
-        consuming set {
+        mutating set {
             (value: self.value, error: self.error) = newValue
         }
     }

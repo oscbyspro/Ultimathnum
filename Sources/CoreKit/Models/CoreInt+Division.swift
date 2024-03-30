@@ -22,8 +22,8 @@ extension CoreInt {
         //=--------------------------------------=
         // Ultimathnum: custom division semantics
         //=--------------------------------------=
-        if  divisor == 0 {
-            result.partialValue = 0
+        if  result.overflow {
+            result.partialValue &*= divisor.base
         }
         //=--------------------------------------=
         return Fallible(Self(result.partialValue), error: result.overflow)
