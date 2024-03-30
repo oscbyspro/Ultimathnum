@@ -60,8 +60,8 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     /// ┌──────┬───────────────────┐
     /// │ type │ bitWidth          │
     /// ├──────┼───────────────────┤
-    /// │ I64  │ U64(repeating: 1) │ // 64
-    /// │ IXL  │ UXL(repeating: 1) │ // infinite
+    /// │ I64  │ 64                │
+    /// │ IXL  │ UXL(repeating: 1) │
     /// └──────┴───────────────────┘
     /// ```
     ///

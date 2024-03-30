@@ -16,11 +16,7 @@ extension UnsignedInteger {
     //=------------------------------------------------------------------------=
     // MARK: Initializeres
     //=------------------------------------------------------------------------=
-    
-    @inlinable public init(magnitude: consuming Magnitude) {
-        self = consume magnitude
-    }
-    
+        
     @inlinable public var magnitude: Magnitude {
         consuming get { consume self }
     }
