@@ -119,38 +119,3 @@ extension Test {
         XCTAssertLessThanOrEqual(lhs, rhs, message(), file: file, line: line)
     }
 }
-
-//=----------------------------------------------------------------------------=
-// MARK: + Result
-//=----------------------------------------------------------------------------=
-
-extension Test {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @discardableResult public func success<T>(
-        _ expression: @autoclosure () throws -> T,
-        _ message: @autoclosure () -> String = ""
-    )   -> T? {
-        switch Result(catching: expression) {
-        case let .success(success):
-            
-            return success
-            
-        case let .failure(failure):
-            
-            XCTFail("error: \(failure) - \(message())", file: file, line: line)
-            return nil
-            
-        }
-    }
-    
-    public func failure<T>(
-        _ expression: @autoclosure () throws -> T,
-        _ message: @autoclosure () -> String = ""
-    )   where T: Equatable {
-        XCTAssertThrowsError(try expression(), message(), file: file, line: line)
-    }
-}
