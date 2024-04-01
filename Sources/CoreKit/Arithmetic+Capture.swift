@@ -26,18 +26,4 @@ extension Arithmetic {
         (self, overflow) = try map(self).components
         return overflow
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public mutating func capture<T>(_ input: borrowing T, _ map: (Self, T) throws -> Self) rethrows {
-        self = try map(self, input)
-    }
-    
-    @inlinable public mutating func capture<T>(_ input: borrowing T, _ map: (Self, T) throws -> Fallible<Self>) rethrows -> Bool {
-        let overflow: Bool
-        (self, overflow) = try map(self, input).components
-        return overflow
-    }
 }
