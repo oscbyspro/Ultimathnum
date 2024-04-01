@@ -24,6 +24,22 @@ extension TripleIntLayout {
         return Fallible(Self(low: low.value, mid: mid.value, high: high.value), error: high.error == Self.isSigned)
     }
     
+    @inlinable public consuming func minus(_ increment: Base) -> Fallible<Self> {
+        let appendix = High(repeating: increment.appendix)
+        let low  = self.low .minus(Low(bitPattern: increment))
+        let mid  = self.mid .minus(Mid(bitPattern: appendix), carrying: low.error)
+        let high = self.high.minus((((appendix))), carrying: mid.error)
+        return Fallible(Self(low: low.value, mid: mid.value, high: high.value), error: high.error)
+    }
+    
+    @inlinable public consuming func minus(_ increment: borrowing DoubleIntLayout<Base>) -> Fallible<Self> {
+        let appendix = High(repeating: increment.high.appendix)
+        let low  = self.low .minus(increment.low)
+        let mid  = self.mid .minus(Mid(bitPattern: increment.high), carrying: low.error)
+        let high = self.high.minus((((appendix))), carrying: mid.error)
+        return Fallible(Self(low: low.value, mid: mid.value, high: high.value), error: high.error)
+    }
+    
     @inlinable public consuming func minus(_ increment: borrowing Self) -> Fallible<Self> {
         let low  = self.low .minus(increment.low)
         let mid  = self.mid .minus(increment.mid,  carrying: low.error)

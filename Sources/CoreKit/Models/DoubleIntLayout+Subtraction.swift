@@ -20,7 +20,14 @@ extension DoubleIntLayout {
     @inlinable public consuming func negated() -> Fallible<Self> {
         let low  = (~self.low ).plus(1)
         let high = (~self.high).plus(High(Bit(bitPattern: low.error)))
-        return Fallible(Self(low: low.value, high: high.value), error: high.error == Self.isSigned)
+        return Fallible(Self(low: low.value, high: high.value),  error: high.error == Self.isSigned)
+    }
+    
+    @inlinable public consuming func minus(_ increment: Base) -> Fallible<Self> {
+        let appendix = High(repeating: increment.appendix)
+        let low  = self.low .minus(Low(bitPattern: increment))
+        let high = self.high.minus((((appendix))), carrying: low.error)
+        return Fallible(Self(low: low.value, high: high.value),  error: high.error)
     }
     
     @inlinable public consuming func minus(_ increment: borrowing Self) -> Fallible<Self> {

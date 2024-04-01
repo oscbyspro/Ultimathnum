@@ -46,9 +46,9 @@ extension Namespace.TupleBinaryInteger where Base == Base.Magnitude {
         var product = self.multiplying213(divisor, by: quotient)
         
         while remainder < product {
-            _ = quotient &-= 1
-            _ = self.decrement32B(&(product), by: divisor)
-        };  _ = self.decrement33B(&remainder, by: product)
+            quotient  = quotient .minus(0000001).assert()
+            product   = product  .minus(divisor).assert()
+        };  remainder = remainder.minus(product).assert()
         
         Swift.assert(remainder < TripleIntLayout(high: 0, mid: divisor.high, low: divisor.low))
         return Division(quotient: quotient, remainder: DoubleIntLayout(low: remainder.low, high: remainder.mid))

@@ -17,6 +17,13 @@ extension DoubleIntLayout {
     // MARK: Transfornations
     //=------------------------------------------------------------------------=
     
+    @inlinable public consuming func plus(_ increment: Base) -> Fallible<Self> {
+        let appendix = High(repeating: increment.appendix)
+        let low  = self.low .plus(Low(bitPattern: increment))
+        let high = self.high.plus((((appendix))), carrying: low.error)
+        return Fallible(Self(low: low.value, high: high.value), error: high.error)
+    }
+    
     @inlinable public consuming func plus(_ increment: borrowing Self) -> Fallible<Self> {
         let low  = self.low .plus(increment.low)
         let high = self.high.plus(increment.high,  carrying: low.error)

@@ -60,14 +60,13 @@ extension Test {
     )   where Base: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
         let result = TBI.division3212MSB(dividing: dividend, by: divisor)
-        //=------------------------------------------=
+        //=--------------------------------------=
         same(result.quotient,  quotient )
         same(result.remainder, remainder)
-        //=------------------------------------------=
-        reversed: do {
-            var inverse  = TBI.multiplying213(divisor, by: result.quotient)
-            let overflow = TBI.increment32B(&inverse, by: result.remainder)
-            same(Fallible(dividend), Fallible(inverse, error: overflow), "dividend != divisor * quotient + remainder")
+        //=--------------------------------------=
+        inverse: do {
+            let inverse = TBI.multiplying213(divisor, by: result.quotient).plus(result.remainder)
+            same(Fallible(dividend), inverse, "dividend != divisor * quotient + remainder")
         }
     }
 }
