@@ -21,7 +21,7 @@ extension BitExtension {
         self.init(unchecked: Element(repeating: bit))
     }
     
-    @inlinable public init<T>(repeating other: BitExtension<T>) {
+    @inlinable public init<T>(repeating other: consuming BitExtension<T>) {
         let bitCastOrLoad = T.isSigned || UX(bitWidth: Element.self) <= UX(bitWidth: T.self)
         self.init(unchecked: bitCastOrLoad ? Element.tokenized(bitCastOrLoad: other.element) : Element(repeating: other.bit))
     }

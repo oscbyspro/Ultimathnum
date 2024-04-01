@@ -32,7 +32,7 @@
         self.init(unchecked: Element(bitPattern: bitPattern.element))
     }
     
-    @inlinable internal init(unchecked element: Element) {
+    @inlinable internal init(unchecked element: consuming Element) {
         Swift.assert(element.count(1, option: .all) % Element.bitWidth == 0)
         Swift.assert(element.count(0, option: .all) % Element.bitWidth == 0)
         self.element = element

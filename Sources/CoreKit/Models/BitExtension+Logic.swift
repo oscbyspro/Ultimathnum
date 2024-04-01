@@ -21,15 +21,15 @@ extension BitExtension {
         Self(unchecked: ~instance.element)
     }
     
-    @inlinable public static func &(lhs: Self, rhs: Self) -> Self {
+    @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
         Self(unchecked: lhs.element & rhs.element)
     }
     
-    @inlinable public static func |(lhs: Self, rhs: Self) -> Self {
+    @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
         Self(unchecked: lhs.element | rhs.element)
     }
     
-    @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
+    @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
         Self(unchecked: lhs.element | rhs.element)
     }
 }
