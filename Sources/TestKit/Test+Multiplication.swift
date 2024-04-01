@@ -27,7 +27,7 @@ extension Test {
         _ id: SystemsIntegerID = .init()
     )   where T: SystemsInteger {
         //=--------------------------------------=
-        same(T.multiplication(lhs, by: rhs), expectation.value)
+        same(lhs.multiplication(rhs), expectation.value)
         //=--------------------------------------=
         multiplication(
             lhs,

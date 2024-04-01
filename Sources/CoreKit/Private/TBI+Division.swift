@@ -43,7 +43,7 @@ extension Namespace.TupleBinaryInteger where Base == Base.Magnitude {
         //=--------------------------------------=
         // decrement when overestimated (max 2)
         //=--------------------------------------=
-        var product = self.multiplying213(divisor, by: quotient)
+        var product = divisor.multiplication(quotient)
         
         while remainder < product {
             quotient  = quotient .minus(0000001).assert()

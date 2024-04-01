@@ -362,7 +362,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
         //=--------------------------------------=
         for element in elements {
             //  maximum == (high: ~1, low: 1)
-            var wide = Base.Element.multiplication(element, by: multiplier)
+            var wide = element.multiplication(multiplier)
             //  maximum == (high: ~0, low: 0)
             last = wide.high &+ Base.Element(Bit(bitPattern: wide.low.capture({ $0.plus(last) })))
             //  this cannot overflow because low == 0 when high == ~0

@@ -65,7 +65,7 @@ extension Test {
         same(result.remainder, remainder)
         //=--------------------------------------=
         inverse: do {
-            let inverse = TBI.multiplying213(divisor, by: result.quotient).plus(result.remainder)
+            let inverse = divisor.multiplication(result.quotient).plus(result.remainder)
             same(Fallible(dividend), inverse, "dividend != divisor * quotient + remainder")
         }
     }
