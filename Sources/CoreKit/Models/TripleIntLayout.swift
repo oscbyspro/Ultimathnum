@@ -60,6 +60,38 @@
         self.low  = low
     }
     
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(low: Base.Magnitude, high: DoubleIntLayout<Base>) {
+        self.low  = low
+        self.mid  = high.low
+        self.high = high.high
+    }
+    
+    @inlinable public init(high: DoubleIntLayout<Base>, low: Base.Magnitude) {
+        self.high = high.high
+        self.mid  = high.low
+        self.low  = low
+    }
+    
+    @inlinable public init(high: Base, low: DoubleIntLayout<Base.Magnitude>) {
+        self.high = high
+        self.mid  = low.high
+        self.low  = low.low
+    }
+    
+    @inlinable public init(low: DoubleIntLayout<Base.Magnitude>, high: Base) {
+        self.low  = low.low
+        self.mid  = low.high
+        self.high = high
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
     @inlinable public init(ascending  components: (low: Base.Magnitude, mid: Base.Magnitude, high: Base)) {
         self.init(low: components.low, mid: components.mid, high: components.high)
     }

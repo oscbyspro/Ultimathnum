@@ -25,11 +25,8 @@ extension DoubleIntLayout {
         let product: TripleIntLayout<Base> = { ab, x in
             
             let ax = ab.low .multiplication(x)
-            var bx = ab.high.multiplication(x)
-            
-            bx = bx.plus(ax.high).assert() // TODO: add convenience
-            
-            return TripleIntLayout(high: Base(bitPattern: bx.high), mid: bx.low, low: ax.low)
+            let bx = ab.high.multiplication(x)
+            return TripleIntLayout(low: ax.low, high: DoubleIntLayout(bitPattern: bx.plus(ax.high).assert()))
             
         }(self.magnitude, multiplier.magnitude)
         //=--------------------------------------=
