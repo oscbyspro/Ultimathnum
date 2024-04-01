@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Double Int Layout x Addition
+// MARK: * Triple Int Layout x Addition
 //*============================================================================*
 
-extension DoubleIntLayout {
+extension TripleIntLayout {
     
     //=------------------------------------------------------------------------=
     // MARK: Transfornations
@@ -19,8 +19,9 @@ extension DoubleIntLayout {
     
     @inlinable public consuming func plus(_ increment: borrowing Self) -> Fallible<Self> {
         let low  = self.low .plus(increment.low)
-        let high = self.high.plus(increment.high,  carrying: low.error)
-        return Fallible(Self(low: low.value, high: high.value),  error: high.error)
+        let mid  = self.low .plus(increment.mid,  carrying:  low.error)
+        let high = self.high.plus(increment.high, carrying:  mid.error)
+        return Fallible(Self(low: low.value, mid: mid.value, high: high.value), error: high.error)
     }
     
     //=------------------------------------------------------------------------=
@@ -28,8 +29,9 @@ extension DoubleIntLayout {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func plus(_ increment: borrowing Self, carrying error: consuming Bool) -> Fallible<Self> {
-        let low  = self.low .plus(increment.low,   carrying:     error)
-        let high = self.high.plus(increment.high,  carrying: low.error)
-        return Fallible(Self(low: low.value, high: high.value),  error: high.error)
+        let low  = self.low .plus(increment.low,  carrying:      error)
+        let mid  = self.low .plus(increment.mid,  carrying:  low.error)
+        let high = self.high.plus(increment.high, carrying:  mid.error)
+        return Fallible(Self(low: low.value, mid: mid.value, high: high.value), error: high.error)
     }
 }
