@@ -7,27 +7,26 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Double Int x Comparison
+// MARK: * Double Int Layout x Comparison
 //*============================================================================*
 
-extension DoubleInt {
+extension DoubleIntLayout {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
-        lhs.storage == rhs.storage
+    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        lhs.compared(to: rhs) == Signum.same
     }
     
-    @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
-        lhs.storage <  rhs.storage
+    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        lhs.compared(to: rhs) == Signum.less
     }
     
-    @inlinable public func compared(to other: Self) -> Signum {
-        self.storage.compared(to: other.storage)
+    @inlinable public borrowing func compared(to other: borrowing Self) -> Signum {
+        let a = self.high.compared(to: other.high); if a != Signum.same { return a }
+        return  self.low .compared(to: other.low );
     }
 }

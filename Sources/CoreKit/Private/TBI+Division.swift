@@ -34,7 +34,7 @@ extension Namespace.TupleBinaryInteger where Base == Base.Magnitude {
         Swift.assert(divisor.high.count(0, option: .descending) == 0,
         "the divisor must be normalized")
         
-        Swift.assert(self.compare22S(DoubleIntLayout(high: remainder.high, low: remainder.mid), to: divisor) == Signum.less,
+        Swift.assert(DoubleIntLayout(high: remainder.high, low: remainder.mid) < divisor,
         "the quotient must fit in one element")
         //=--------------------------------------=
         var quotient: Base = divisor.high == remainder.high
@@ -45,12 +45,12 @@ extension Namespace.TupleBinaryInteger where Base == Base.Magnitude {
         //=--------------------------------------=
         var product = self.multiplying213(divisor, by: quotient)
         
-        while self.compare33S(remainder, to: product) == Signum.less {
+        while remainder < product {
             _ = quotient &-= 1
             _ = self.decrement32B(&(product), by: divisor)
         };  _ = self.decrement33B(&remainder, by: product)
         
-        Swift.assert(self.compare33S(remainder, to: TripleIntLayout(high: 0, mid: divisor.high, low: divisor.low)) == Signum.less)
+        Swift.assert(remainder < TripleIntLayout(high: 0, mid: divisor.high, low: divisor.low))
         return Division(quotient: quotient, remainder: DoubleIntLayout(low: remainder.low, high: remainder.mid))
     }
 }
