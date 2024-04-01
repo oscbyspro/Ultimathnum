@@ -47,11 +47,11 @@ extension CoreInt {
     @inlinable public static func division(_ dividend: consuming DoubleIntLayout<Self>, by divisor: Self) -> Fallible<Division<Self, Self>> {
         typealias T = Fallible<Division<Self, Self>>
         //=--------------------------------------=
-        let lhsIsLessThanZero = dividend.high/**/.isLessThanZero
-        let rhsIsLessThanZero = divisor/*------*/.isLessThanZero
-        let minus: Bool = lhsIsLessThanZero != rhsIsLessThanZero
+        let lhsIsLessThanZero: Bool = dividend.high.isLessThanZero
+        let rhsIsLessThanZero: Bool = divisor/*--*/.isLessThanZero
+        let minus: Bool = (lhsIsLessThanZero) != rhsIsLessThanZero
         //=--------------------------------------=
-        var result = T(bitPattern: Magnitude._division(TBI.magnitude(of: dividend), by: divisor.magnitude))
+        var result = T(bitPattern: Magnitude._division(dividend.magnitude, by: divisor.magnitude))
         //=--------------------------------------=
         if  minus {
             result.value.quotient .capture({ $0.negated().value })

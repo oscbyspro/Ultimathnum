@@ -8,22 +8,23 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Tuple Binary Integer x Numbers
+// MARK: * Triple Int Layout x Numbers
 //*============================================================================*
 
-extension Namespace.TupleBinaryInteger {
+extension TripleIntLayout {
     
     //=------------------------------------------------------------------------=
-    // MARK: Details x Magnitude
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable package static func magnitude(of value: consuming X2) -> X2.Magnitude {        
-        if  value.high.isLessThanZero {
-            var carry: Bool
-            carry = value.low .capture({ (~$0).plus(0000000000001) })
-            carry = value.high.capture({ (~$0).plus(carry ? 1 : 0) })
+    @inlinable public var magnitude: Magnitude {
+        consuming get {
+            
+            if  self.high.isLessThanZero {
+                self = self.negated().value
+            }
+            
+            return Magnitude(bitPattern: self)
         }
-        
-        return X2.Magnitude(low: value.low, high: Base.Magnitude(bitPattern: value.high))
     }
 }

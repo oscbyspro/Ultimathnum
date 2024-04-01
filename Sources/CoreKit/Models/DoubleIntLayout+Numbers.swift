@@ -7,13 +7,11 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Double Int x Numbers
+// MARK: * Double Int Layout x Numbers
 //*============================================================================*
 
-extension DoubleInt {
+extension DoubleIntLayout {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -21,7 +19,12 @@ extension DoubleInt {
     
     @inlinable public var magnitude: Magnitude {
         consuming get {
-            Magnitude(bitPattern: self.storage.magnitude)
+            
+            if  self.high.isLessThanZero {
+                self = self.negated().value
+            }
+            
+            return Magnitude(bitPattern: self)
         }
     }
 }

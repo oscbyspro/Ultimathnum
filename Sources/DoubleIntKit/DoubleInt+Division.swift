@@ -63,7 +63,7 @@ extension DoubleInt {
         let rhsIsLessThanZero: Bool = divisor/*--*/.isLessThanZero
         let minus: Bool = (lhsIsLessThanZero) != rhsIsLessThanZero
         //=--------------------------------------=
-        var result = T(bitPattern: Magnitude._divide4222(TBI.magnitude(of: dividend), by: (copy divisor).magnitude))
+        var result = T(bitPattern: Magnitude._divide4222(dividend.magnitude, by: divisor.magnitude))
         //=--------------------------------------=
         if  minus {
             result.value.quotient .capture({ $0.negated().value })

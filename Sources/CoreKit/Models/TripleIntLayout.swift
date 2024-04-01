@@ -20,7 +20,7 @@
     
     public typealias Low  = Base.Magnitude
     
-    public typealias Magnitude = DoubleIntLayout<Base.Magnitude>
+    public typealias Magnitude = TripleIntLayout<Base.Magnitude>
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
