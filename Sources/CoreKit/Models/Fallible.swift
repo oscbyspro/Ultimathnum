@@ -59,14 +59,6 @@
         return Self(self.value, error: Swift.unsafeBitCast(a | b, to: Bool.self))
     }
     
-    @inlinable public consuming func map<T>(_ map: (Value) -> T) -> Fallible<T> {
-        Fallible<T>(map(self.value), error: self.error)
-    }
-    
-    @inlinable public consuming func map<T>(_ map: (Value) -> Fallible<T>) -> Fallible<T> {
-        map(self.value).combine(self.error)
-    }
-    
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
