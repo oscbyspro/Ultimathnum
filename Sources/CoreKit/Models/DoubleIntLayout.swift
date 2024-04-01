@@ -14,7 +14,19 @@
 /// An integer split into 2 parts.
 @frozen public struct DoubleIntLayout<Base>: Arithmetic, Comparable, Hashable where Base: SystemsInteger {
     
+    public typealias High = Base
+    
+    public typealias Low  = Base.Magnitude
+    
     public typealias Magnitude = DoubleIntLayout<Base.Magnitude>
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static var isSigned: Bool {
+        Base.isSigned
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: State

@@ -14,7 +14,21 @@
 /// An integer split into 3 parts.
 @frozen public struct TripleIntLayout<Base>: Arithmetic, Comparable, Hashable where Base: SystemsInteger {
     
+    public typealias High = Base
+    
+    public typealias Mid  = Base.Magnitude
+    
+    public typealias Low  = Base.Magnitude
+    
     public typealias Magnitude = DoubleIntLayout<Base.Magnitude>
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static var isSigned: Bool {
+        Base.isSigned
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: State

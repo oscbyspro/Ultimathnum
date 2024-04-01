@@ -7,24 +7,28 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Double Int x Subtraction
+// MARK: * Triple Int Layout x Subtraction
 //*============================================================================*
 
-extension DoubleInt {
+extension TripleIntLayout {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Transfornations
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func negated() -> Fallible<Self> {
-        Fallible(bitPattern: self.storage.negated())
+        let low  = (~self.low ).plus(1)
+        let mid  = (~self.mid ).plus(Mid (Bit(bitPattern: low.error)))
+        let high = (~self.high).plus(High(Bit(bitPattern: mid.error)))
+        return Fallible(Self(low: low.value, mid: mid.value, high: high.value), error: high.error == Self.isSigned)
     }
     
     @inlinable public consuming func minus(_ increment: borrowing Self) -> Fallible<Self> {
-        Fallible(bitPattern: self.storage.minus(increment.storage))
+        let low  = self.low .minus(increment.low)
+        let mid  = self.mid .minus(increment.mid,  carrying: low.error)
+        let high = self.high.minus(increment.high, carrying: mid.error)
+        return Fallible(Self(low: low.value, mid: mid.value, high: high.value), error: high.error)
     }
     
     //=------------------------------------------------------------------------=
@@ -32,6 +36,9 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func minus(_ increment: borrowing Self, carrying error: consuming Bool) -> Fallible<Self> {
-        Fallible(bitPattern: self.storage.minus(increment.storage, carrying: error))
+        let low  = self.low .minus(increment.low,  carrying:     error)
+        let mid  = self.mid .minus(increment.mid,  carrying: low.error)
+        let high = self.high.minus(increment.high, carrying: mid.error)
+        return Fallible(Self(low: low.value, mid: mid.value, high: high.value), error: high.error)
     }
 }
