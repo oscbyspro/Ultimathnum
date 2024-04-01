@@ -23,7 +23,19 @@ extension MinimiInt {
         Fallible(self, error: Bool(bitPattern: self))
     }
     
-    @inlinable public func minus( _ decrement: Self) -> Fallible<Self> {
-        Fallible(self ^ decrement, error: Bool(bitPattern: self.base < decrement.base))
+    @inlinable public func minus(_ decrement: borrowing Self) -> Fallible<Self> {
+        Fallible(self ^ decrement, error: Bool(bitPattern: ~self & decrement))
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Composition
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public func minus(_ decrement: borrowing Self, carrying error: consuming Bool) -> Fallible<Self> {
+        if  Self.isSigned {
+            self.minus(decrement).plus (Self(bitPattern: error))
+        }   else {
+            self.minus(decrement).minus(Self(bitPattern: error))
+        }
     }
 }

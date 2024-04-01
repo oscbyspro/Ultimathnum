@@ -42,7 +42,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
         let first: Base.Element = rhs.first ?? Base.Element()
         
         for element in lhs {
-            var wide = Base.Element.multiplying(element, by: first)
+            var wide = Base.Element.multiplication(element, by: first)
             carry = Base.Element(Bit(bitPattern: wide.low.capture({ $0.plus(carry) }))) &+ wide.high
             pointer.initialize(to: wide.low) // done, uninitialized or discarded pointee
             pointer = pointer.successor()

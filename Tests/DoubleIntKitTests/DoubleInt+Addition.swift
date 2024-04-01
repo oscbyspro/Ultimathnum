@@ -25,7 +25,7 @@ extension DoubleIntTests {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
             typealias F = Fallible<T>
-            
+                        
             Test().addition(T(low:  0, high:   0), T(low:  0, high:  0), F(T(low:  0, high:  0)))
             Test().addition(T(low:  0, high:   0), T(low: ~0, high: ~0), F(T(low: ~0, high: ~0)))
             Test().addition(T(low: ~0, high:  ~0), T(low:  0, high:  0), F(T(low: ~0, high: ~0)))

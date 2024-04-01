@@ -26,7 +26,11 @@ extension CoreInt {
         return Fallible(Self(result.partialValue), error: result.overflow)
     }
     
-    @inlinable public static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> DoubleIntLayout<Self> {
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Composition
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func multiplication(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> DoubleIntLayout<Self> {
         let result = multiplicand.base.multipliedFullWidth(by: multiplier.base)
         return DoubleIntLayout(high: Self(result.high), low: Magnitude(result.low))
     }

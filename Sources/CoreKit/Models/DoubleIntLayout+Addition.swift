@@ -7,32 +7,29 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Double Int x Subtraction
+// MARK: * Double Int Layout x Addition
 //*============================================================================*
 
-extension DoubleInt {
+extension DoubleIntLayout {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Transfornations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func negated() -> Fallible<Self> {
-        let overflow: Bool = self.capture({ (~$0).plus(1) })
-        return Fallible(self, error: Self.isSigned == overflow)
-    }
-    
-    @inlinable public consuming func minus(_ increment: borrowing Self) -> Fallible<Self> {
-        Fallible(bitPattern: self.storage.minus(increment.storage))
+    @inlinable public consuming func plus(_ increment: borrowing Self) -> Fallible<Self> {
+        let a = self.low .plus(increment.low)
+        let b = self.high.plus(increment.high, carrying: a.error)
+        return Fallible(Self(low: a.value, high: b.value), error: b.error)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func minus(_ increment: borrowing Self, carrying error: consuming Bool) -> Fallible<Self> {
-        Fallible(bitPattern: self.storage.minus(increment.storage, carrying: error))
+    @inlinable public consuming func plus(_ increment: borrowing Self, carrying error: consuming Bool) -> Fallible<Self> {
+        let a = self.low .plus(increment.low,  carrying:   error)
+        let b = self.high.plus(increment.high, carrying: a.error)
+        return Fallible(Self(low: a.value, high: b.value), error: b.error)
     }
 }

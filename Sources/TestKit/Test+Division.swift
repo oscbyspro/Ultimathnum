@@ -103,7 +103,7 @@ extension Test {
         _ id: BinaryIntegerID = .init()
     )   where T: SystemsInteger {
         //=--------------------------------------=
-        let result = T.dividing(dividend, by: divisor)
+        let result = T.division(dividend, by: divisor)
         //=--------------------------------------=
         // TODO: DoubleIntLayout plus(_:) minus(_:)
         //=--------------------------------------=

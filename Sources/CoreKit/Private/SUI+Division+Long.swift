@@ -125,7 +125,7 @@ extension Namespace.StrictUnsignedInteger where Base: MutableCollection {
         //=--------------------------------------=
         var quotient: Base.Element = denominator == numerator.high
         ? Base.Element.max // the quotient must fit in one element
-        : Base.Element.dividing(numerator, by: denominator).assert().quotient
+        : Base.Element.division(numerator, by: denominator).assert().quotient
         //=--------------------------------------=
         if  quotient == 0 { return quotient }
         //=--------------------------------------=

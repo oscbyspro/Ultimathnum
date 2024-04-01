@@ -7,25 +7,20 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Double Int x Subtraction
+// MARK: * Double Int Layout x Subtraction
 //*============================================================================*
 
-extension DoubleInt {
+extension DoubleIntLayout {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Transfornations
     //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func negated() -> Fallible<Self> {
-        let overflow: Bool = self.capture({ (~$0).plus(1) })
-        return Fallible(self, error: Self.isSigned == overflow)
-    }
     
     @inlinable public consuming func minus(_ increment: borrowing Self) -> Fallible<Self> {
-        Fallible(bitPattern: self.storage.minus(increment.storage))
+        let a = self.low .minus(increment.low)
+        let b = self.high.minus(increment.high, carrying: a.error)
+        return Fallible(Self(low: a.value, high: b.value),  error: b.error)
     }
     
     //=------------------------------------------------------------------------=
@@ -33,6 +28,8 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func minus(_ increment: borrowing Self, carrying error: consuming Bool) -> Fallible<Self> {
-        Fallible(bitPattern: self.storage.minus(increment.storage, carrying: error))
+        let a = self.low .minus(increment.low,  carrying:   error)
+        let b = self.high.minus(increment.high, carrying: a.error)
+        return Fallible(Self(low: a.value, high: b.value),  error: b.error)
     }
 }

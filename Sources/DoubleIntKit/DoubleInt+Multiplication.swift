@@ -42,7 +42,7 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func multiplying(_ lhs: Self, by rhs: Self) -> DoubleIntLayout<Self> {
+    @inlinable public static func multiplication(_ lhs: Self, by rhs: Self) -> DoubleIntLayout<Self> {
         let lhsIsLessThanZero: Bool = (lhs).isLessThanZero
         let rhsIsLessThanZero: Bool = (rhs).isLessThanZero
         var minus = lhsIsLessThanZero != rhsIsLessThanZero
@@ -69,7 +69,7 @@ extension DoubleInt where Base == Base.Magnitude {
     //=------------------------------------------------------------------------=
     
     @inline(__always) @inlinable internal consuming func _times(_ other: Self) -> Fallible<Self> {
-        var ax = Base.multiplying(self.low, by: other.low)
+        var ax = Base.multiplication(self.low, by: other.low)
         let ay = self.low .times(other.high)
         let bx = self.high.times(other.low )
         let by = !(self.high == 0 as Base || other.high == 0 as Base)
@@ -85,10 +85,10 @@ extension DoubleInt where Base == Base.Magnitude {
     //=------------------------------------------------------------------------=
     
     @inline(__always) @inlinable internal static func _multiplying(_ lhs: consuming Self, by rhs: Self) -> DoubleIntLayout<Self> {
-        var ax = Base.multiplying(lhs.low,  by: rhs.low ) as Storage
-        let ay = Base.multiplying(lhs.low,  by: rhs.high) as Storage
-        let bx = Base.multiplying(lhs.high, by: rhs.low ) as Storage
-        var by = Base.multiplying(lhs.high, by: rhs.high) as Storage
+        var ax = Base.multiplication(lhs.low,  by: rhs.low ) as Storage
+        let ay = Base.multiplication(lhs.low,  by: rhs.high) as Storage
+        let bx = Base.multiplication(lhs.high, by: rhs.low ) as Storage
+        var by = Base.multiplication(lhs.high, by: rhs.high) as Storage
         //=--------------------------------------=
         let a0 = ax.high.capture({ $0.plus(ay.low ) })
         let a1 = ax.high.capture({ $0.plus(bx.low ) })

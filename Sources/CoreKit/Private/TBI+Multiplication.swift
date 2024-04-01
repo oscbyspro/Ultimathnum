@@ -30,8 +30,8 @@ extension Namespace.TupleBinaryInteger where Base == Base.Magnitude {
     /// ```
     ///
     @inlinable package static func multiplying213(_ lhs: DoubleIntLayout<Base>, by rhs: Base) -> TripleIntLayout<Base> {
-        let a = Base.multiplying(lhs.low,  by: rhs)
-        var b = Base.multiplying(lhs.high, by: rhs)
+        let a = Base.multiplication(lhs.low,  by: rhs)
+        var b = Base.multiplication(lhs.high, by: rhs)
         
         let x =      b.low .capture({ $0.plus(a.high) })
         let _ = x && b.high.capture({ $0.plus(000001) })

@@ -27,7 +27,7 @@ extension MinimiInt {
         Fallible(self & multiplier, error: Self.isSigned && Bool(bitPattern: self & multiplier))
     }
     
-    @inlinable public static func multiplying(_ multiplicand: Self, by multiplier: Self) -> DoubleIntLayout<Self> {
+    @inlinable public static func multiplication(_ multiplicand: Self, by multiplier: Self) -> DoubleIntLayout<Self> {
         DoubleIntLayout(low: Magnitude(bitPattern: multiplicand & multiplier), high: 0 as  Self)
     }
 }

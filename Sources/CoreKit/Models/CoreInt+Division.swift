@@ -41,17 +41,17 @@ extension CoreInt {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x 2 vs 1
+    // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func dividing(_ dividend: consuming DoubleIntLayout<Self>, by divisor: Self) -> Fallible<Division<Self, Self>> {
+    @inlinable public static func division(_ dividend: consuming DoubleIntLayout<Self>, by divisor: Self) -> Fallible<Division<Self, Self>> {
         typealias T = Fallible<Division<Self, Self>>
         //=--------------------------------------=
         let lhsIsLessThanZero = dividend.high/**/.isLessThanZero
         let rhsIsLessThanZero = divisor/*------*/.isLessThanZero
         let minus: Bool = lhsIsLessThanZero != rhsIsLessThanZero
         //=--------------------------------------=
-        var result = T(bitPattern: Magnitude._dividing(TBI.magnitude(of: dividend), by: divisor.magnitude))
+        var result = T(bitPattern: Magnitude._division(TBI.magnitude(of: dividend), by: divisor.magnitude))
         //=--------------------------------------=
         if  minus {
             result.value.quotient .capture({ $0.negated().value })
@@ -74,10 +74,10 @@ extension CoreInt {
 extension CoreInt where Self == Magnitude {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inline(__always) @inlinable static func _dividing(_ dividend: consuming DoubleIntLayout<Self>, by divisor: borrowing Self) -> Fallible<Division<Self, Self>> {
+    @inline(__always) @inlinable static func _division(_ dividend: consuming DoubleIntLayout<Self>, by divisor: borrowing Self) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
         if  divisor == 0 {
             return Fallible.failure(Division(quotient: 0, remainder: dividend.low))

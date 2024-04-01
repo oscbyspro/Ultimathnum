@@ -44,7 +44,7 @@ extension MinimiInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func dividing(_ dividend: DoubleIntLayout<Self>, by divisor: Self) -> Fallible<Division<Self, Self>> {
+    @inlinable public static func division(_ dividend: DoubleIntLayout<Self>, by divisor: Self) -> Fallible<Division<Self, Self>> {
         let error = dividend.high | ~divisor
         let value = Division(
             quotient:  Self(bitPattern: dividend.low) &  divisor,

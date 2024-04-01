@@ -56,14 +56,14 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func dividing(_ dividend: consuming DoubleIntLayout<Self>, by divisor: Self) -> Fallible<Division<Self, Self>> {
+    @inlinable public static func division(_ dividend: consuming DoubleIntLayout<Self>, by divisor: Self) -> Fallible<Division<Self, Self>> {
         typealias T = Fallible<Division<Self, Self>>
         //=--------------------------------------=
         let lhsIsLessThanZero: Bool = dividend.high.isLessThanZero
-        let rhsIsLessThanZero: Bool = (((divisor))).isLessThanZero
+        let rhsIsLessThanZero: Bool = divisor/*--*/.isLessThanZero
         let minus: Bool = (lhsIsLessThanZero) != rhsIsLessThanZero
         //=--------------------------------------=
-        var result = T(bitPattern: Magnitude._divide4222(TBI.magnitude(of: dividend), by: divisor.magnitude))
+        var result = T(bitPattern: Magnitude._divide4222(TBI.magnitude(of: dividend), by: (copy divisor).magnitude))
         //=--------------------------------------=
         if  minus {
             result.value.quotient .capture({ $0.negated().value })
@@ -211,14 +211,14 @@ extension DoubleInt where Base == Base.Magnitude {
     
     @inlinable static func _divide2121(_ lhs: consuming Self, by rhs: borrowing Base) -> Division<Self, Base> {
         let x1 = lhs.high.division(rhs).unwrap()
-        let x0 = x1.remainder == 0 ? lhs.low.division(rhs).unwrap() : Base.dividing(DoubleIntLayout(low: lhs.low, high: x1.remainder), by: rhs).unwrap()
+        let x0 = x1.remainder == 0 ? lhs.low.division(rhs).unwrap() : Base.division(DoubleIntLayout(low: lhs.low, high: x1.remainder), by: rhs).unwrap()
         return Division(quotient: Self(low: x0.quotient, high: x1.quotient), remainder: x0.remainder)
     }
     
     @inlinable static func _divide3121(_ lhs: consuming TripleIntLayout<Base>, by rhs: Base) -> Division<Self, Base> {
         Swift.assert(rhs > lhs.high, "quotient must fit in two halves")
-        let x1 = Base.dividing(DoubleIntLayout(low: lhs.mid, high: lhs.high), by: rhs).unwrap()
-        let x0 = x1.remainder == 0 ? lhs.low.division(rhs).unwrap() : Base.dividing(DoubleIntLayout(low: lhs.low, high: x1.remainder), by: rhs).unwrap()
+        let x1 = Base.division(DoubleIntLayout(low: lhs.mid, high: lhs.high), by: rhs).unwrap()
+        let x0 = x1.remainder == 0 ? lhs.low.division(rhs).unwrap() : Base.division(DoubleIntLayout(low: lhs.low, high: x1.remainder), by: rhs).unwrap()
         return Division(quotient: Self(low: x0.quotient, high: x1.quotient), remainder: x0.remainder)
     }
     

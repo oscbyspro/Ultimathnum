@@ -19,19 +19,15 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
 
-    @inlinable public consuming func plus(_ increment: Self) -> Fallible<Self> {
-        var overflow = self.low.capture {
-            $0.plus(increment.low)
-        }
-        
-        overflow = overflow && self.high.capture {
-            $0.incremented()
-        }
-        
-        overflow = overflow != self.high.capture {
-            $0.plus(increment.high)
-        }
-        
-        return Fallible(self, error: overflow)
+    @inlinable public consuming func plus(_ increment: borrowing Self) -> Fallible<Self> {
+        Fallible(bitPattern: self.storage.plus(increment.storage))
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Composition
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func plus(_ increment: borrowing Self, carrying error: consuming Bool) -> Fallible<Self> {
+        Fallible(bitPattern: self.storage.plus(increment.storage, carrying: error))
     }
 }

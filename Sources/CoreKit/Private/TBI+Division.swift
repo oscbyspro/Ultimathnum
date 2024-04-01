@@ -39,7 +39,7 @@ extension Namespace.TupleBinaryInteger where Base == Base.Magnitude {
         //=--------------------------------------=
         var quotient: Base = divisor.high == remainder.high
         ? Base.max // the quotient must fit in one element
-        : Base.dividing(DoubleIntLayout(high: remainder.high, low: remainder.mid), by: divisor.high).assert().quotient
+        : Base.division(DoubleIntLayout(high: remainder.high, low: remainder.mid), by: divisor.high).assert().quotient
         //=--------------------------------------=
         // decrement when overestimated (max 2)
         //=--------------------------------------=

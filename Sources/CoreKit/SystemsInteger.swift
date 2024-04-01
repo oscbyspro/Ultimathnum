@@ -66,10 +66,14 @@ public protocol SystemsInteger<BitPattern>: BinaryInteger where Magnitude: Syste
     @inlinable func load<T>(as type: T.Type) -> T where T: SystemsInteger<UX.BitPattern>
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable static func multiplying(_ multiplicand: consuming Self, by multiplier: borrowing Self) -> DoubleIntLayout<Self>
+    @inlinable consuming func plus (_ decrement: borrowing Self, carrying error: consuming Bool) -> Fallible<Self>
     
-    @inlinable static func dividing(_ dividend: consuming DoubleIntLayout<Self>, by multiplier: borrowing Self) -> Fallible<Division<Self, Self>>
+    @inlinable consuming func minus(_ increment: borrowing Self, carrying error: consuming Bool) -> Fallible<Self>
+    
+    @inlinable static func multiplication(_ lhs: borrowing Self, by rhs: borrowing Self) -> DoubleIntLayout<Self>
+    
+    @inlinable static func division(_ lhs: consuming DoubleIntLayout<Self>, by rhs: borrowing Self) -> Fallible<Division<Self, Self>>
 }
