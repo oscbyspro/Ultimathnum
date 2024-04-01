@@ -54,9 +54,9 @@
     
     /// Merges the current error and the new error in a branchless way.
     @inlinable public consuming func combine(_ error: Bool) -> Self {
-        let a  = Swift.unsafeBitCast(self.error, to: UInt8.self)
-        let b  = Swift.unsafeBitCast(/*-*/error, to: UInt8.self)
-        return Self(self.value, error: Swift.unsafeBitCast(a | b, to: Bool.self))
+        let a  = Bit(bitPattern: self.error)
+        let b  = Bit(bitPattern: /*-*/error)
+        return Self(self.value, error: Bool(bitPattern: a | b))
     }
     
     //=------------------------------------------------------------------------=
