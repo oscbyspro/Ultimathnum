@@ -19,15 +19,17 @@ extension Division: BitCastable where Quotient: BitCastable, Remainder: BitCasta
     
     @inlinable public init(bitPattern: consuming Division<Quotient.BitPattern, Remainder.BitPattern>) {
         self.init(
-        quotient:  Quotient (bitPattern: bitPattern.quotient ),
-        remainder: Remainder(bitPattern: bitPattern.remainder))
+            quotient:  Quotient (bitPattern: bitPattern.quotient ),
+            remainder: Remainder(bitPattern: bitPattern.remainder)
+        )
     }
     
     @inlinable public var bitPattern: Division<Quotient.BitPattern, Remainder.BitPattern> {
         consuming get {
-            Division<  Quotient .BitPattern, Remainder.BitPattern>(
-            quotient:  Quotient .BitPattern(bitPattern: self.quotient ),
-            remainder: Remainder.BitPattern(bitPattern: self.remainder))
+            Division<Quotient.BitPattern, Remainder.BitPattern>(
+                quotient:  Quotient .BitPattern(bitPattern: self.quotient ),
+                remainder: Remainder.BitPattern(bitPattern: self.remainder)
+            )
         }
     }
 }
