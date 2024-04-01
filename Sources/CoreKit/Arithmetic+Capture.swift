@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Binary Integer x Capture
+// MARK: * Arithmetic x Capture
 //*============================================================================*
 
-extension BinaryInteger {
+extension Arithmetic {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -24,6 +24,20 @@ extension BinaryInteger {
     @inlinable public mutating func capture(_ map: (Self) throws -> Fallible<Self>) rethrows -> Bool {
         let overflow: Bool
         (self, overflow) = try map(self).components
+        return overflow
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public mutating func capture<T>(_ input: borrowing T, _ map: (Self, T) throws -> Self) rethrows {
+        self = try map(self, input)
+    }
+    
+    @inlinable public mutating func capture<T>(_ input: borrowing T, _ map: (Self, T) throws -> Fallible<Self>) rethrows -> Bool {
+        let overflow: Bool
+        (self, overflow) = try map(self, input).components
         return overflow
     }
 }

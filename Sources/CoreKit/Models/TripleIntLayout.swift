@@ -12,7 +12,7 @@
 //*============================================================================*
 
 /// An integer split into 3 parts.
-@frozen public struct TripleIntLayout<Base>: Comparable, Hashable where Base: SystemsInteger {
+@frozen public struct TripleIntLayout<Base>: Arithmetic, Comparable, Hashable where Base: SystemsInteger {
     
     public typealias Magnitude = DoubleIntLayout<Base.Magnitude>
     
