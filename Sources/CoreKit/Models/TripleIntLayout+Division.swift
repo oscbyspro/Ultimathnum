@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Tuple Binary Integer x Division x Unsigned
+// MARK: * Triple Int Layout x Division x Unsigned x Private
 //*============================================================================*
 
-extension Namespace.TupleBinaryInteger where Base == Base.Magnitude {
+extension TripleIntLayout where Base == Base.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformation
@@ -28,29 +28,33 @@ extension Namespace.TupleBinaryInteger where Base == Base.Magnitude {
     ///
     /// The approximation needs at most two corrections, but looping is faster.
     ///
-    @inlinable package static func division3212MSB(
-    dividing remainder: consuming TripleIntLayout<Base>, by divisor: DoubleIntLayout<Base>) -> Division<Base, DoubleIntLayout<Base>> {
+    @inlinable package consuming func division3212MSB(_ divisor: DoubleIntLayout<Base>) -> Division<Base, DoubleIntLayout<Base>> {
         //=--------------------------------------=
-        Swift.assert(divisor.high.count(0, option: .descending) == 0,
-        "the divisor must be normalized")
-        
-        Swift.assert(DoubleIntLayout(high: remainder.high, low: remainder.mid) < divisor,
-        "the quotient must fit in one element")
+        Swift.assert(
+            divisor.high & Base.msb != 0,
+            "the divisor must be normalized"
+        )
+        Swift.assert(
+            DoubleIntLayout(low: self.mid, high: self.high) < divisor,
+            "the quotient must fit in one element"
+        )
         //=--------------------------------------=
-        var quotient: Base = divisor.high == remainder.high
-        ? Base.max // the quotient must fit in one element
-        : Base.division(DoubleIntLayout(high: remainder.high, low: remainder.mid), by: divisor.high).assert().quotient
+        var quotient: Base = if  divisor.high == self.high {
+            Base.max // the quotient must fit in one element
+        }   else {
+            DoubleIntLayout(low: self.mid, high: self.high).quotient(divisor.high).assert()
+        }
         //=--------------------------------------=
         // decrement when overestimated (max 2)
         //=--------------------------------------=
         var product = divisor.multiplication(quotient)
+
+        while self < product {
+            quotient = quotient.minus(0000001).assert()
+            product  = product .minus(divisor).assert()
+        };  ((self)) = ((self)).minus(product).assert()
         
-        while remainder < product {
-            quotient  = quotient .minus(0000001).assert()
-            product   = product  .minus(divisor).assert()
-        };  remainder = remainder.minus(product).assert()
-        
-        Swift.assert(remainder < TripleIntLayout(high: 0, mid: divisor.high, low: divisor.low))
-        return Division(quotient: quotient, remainder: DoubleIntLayout(low: remainder.low, high: remainder.mid))
+        Swift.assert(self < TripleIntLayout(high: 0, low: divisor))
+        return Division(quotient: quotient, remainder: DoubleIntLayout(low: self.low, high: self.mid))
     }
 }

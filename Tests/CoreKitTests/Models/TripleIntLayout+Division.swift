@@ -11,29 +11,29 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Tuple Binary Integer x Division
+// MARK: * Triple Int Layout x Division
 //*============================================================================*
 
-extension TupleBinaryIntegerTests {
+extension TripleIntLayoutTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     func testDivision3212MSB() {
-        func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger & UnsignedInteger {
-            typealias X = DoubleIntLayout<Base>
-            typealias Y = TripleIntLayout<Base>
+        func whereTheBaseIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
+            typealias X = DoubleIntLayout<T>
+            typealias Y = TripleIntLayout<T>
             
-            Test().division3212MSB(Y(low:  0, mid:  0, high: ~0), X(low:  1, high: ~0), ~0 as Base, X(low:  1, high: ~1))
-            Test().division3212MSB(Y(low:  0, mid:  0, high: ~0), X(low: ~1, high: ~0), ~0 as Base, X(low: ~1, high:  1))
-            Test().division3212MSB(Y(low: ~0, mid: ~0, high: ~1), X(low:  0, high: ~0), ~0 as Base, X(low: ~0, high: ~1))
-            Test().division3212MSB(Y(low: ~0, mid: ~0, high: ~1), X(low: ~0, high: ~0), ~0 as Base, X(low: ~1, high:  0))
+            Test().division3212MSB(Y(low:  0, mid:  0, high: ~0), X(low:  1, high: ~0), ~0 as T, X(low:  1, high: ~1))
+            Test().division3212MSB(Y(low:  0, mid:  0, high: ~0), X(low: ~1, high: ~0), ~0 as T, X(low: ~1, high:  1))
+            Test().division3212MSB(Y(low: ~0, mid: ~0, high: ~1), X(low:  0, high: ~0), ~0 as T, X(low: ~0, high: ~1))
+            Test().division3212MSB(Y(low: ~0, mid: ~0, high: ~1), X(low: ~0, high: ~0), ~0 as T, X(low: ~1, high:  0))
             
-            Test().division3212MSB(Y(low:  0, mid:  0, high: Base.msb - 1), X(low: ~0, high: Base.msb), ~3 as Base, X(low: ~3, high: 4)) // 2
-            Test().division3212MSB(Y(low: ~0, mid:  0, high: Base.msb - 1), X(low: ~0, high: Base.msb), ~3 as Base, X(low: ~4, high: 5)) // 2
-            Test().division3212MSB(Y(low:  0, mid: ~0, high: Base.msb - 1), X(low: ~0, high: Base.msb), ~1 as Base, X(low: ~1, high: 1)) // 1
-            Test().division3212MSB(Y(low: ~0, mid: ~0, high: Base.msb - 1), X(low: ~0, high: Base.msb), ~1 as Base, X(low: ~2, high: 2)) // 1
+            Test().division3212MSB(Y(low:  0, mid:  0, high: T.msb - 1), X(low: ~0, high: T.msb), ~3 as T, X(low: ~3, high: 4)) // 2
+            Test().division3212MSB(Y(low: ~0, mid:  0, high: T.msb - 1), X(low: ~0, high: T.msb), ~3 as T, X(low: ~4, high: 5)) // 2
+            Test().division3212MSB(Y(low:  0, mid: ~0, high: T.msb - 1), X(low: ~0, high: T.msb), ~1 as T, X(low: ~1, high: 1)) // 1
+            Test().division3212MSB(Y(low: ~0, mid: ~0, high: T.msb - 1), X(low: ~0, high: T.msb), ~1 as T, X(low: ~2, high: 2)) // 1
         }
         
         for base in Self.basesWhereIsUnsigned {
@@ -53,16 +53,16 @@ extension Test {
     //=------------------------------------------------------------------------=
     
     func division3212MSB<Base>(
-        _ dividend: TripleIntLayout<Base>, 
-        _ divisor: DoubleIntLayout<Base>,
-        _ quotient: Base,
+        _ dividend:  TripleIntLayout<Base>,
+        _ divisor:   DoubleIntLayout<Base>,
+        _ quotient:  Base,
         _ remainder: DoubleIntLayout<Base>
-    )   where Base: SystemsInteger & UnsignedInteger {
+    )   where Base:  SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
-        let result = TBI.division3212MSB(dividing: dividend, by: divisor)
+        let result = dividend.division3212MSB(divisor)
+        let expectation = Division(quotient: quotient, remainder: remainder)
         //=--------------------------------------=
-        same(result.quotient,  quotient )
-        same(result.remainder, remainder)
+        same(result, expectation)
         //=--------------------------------------=
         inverse: do {
             let inverse = divisor.multiplication(result.quotient).plus(result.remainder)
