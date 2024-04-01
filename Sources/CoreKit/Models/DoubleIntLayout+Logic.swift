@@ -7,31 +7,29 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Double Int x Logic
+// MARK: * Double Int Layout x Logic
 //*============================================================================*
 
-extension DoubleInt {
+extension DoubleIntLayout {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     @inlinable public static prefix func ~(instance: consuming Self) -> Self {
-        Self(bitPattern: ~instance.storage)
+        Self(low: ~instance.low, high: ~instance.high)
     }
     
     @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(bitPattern: lhs.storage & rhs.storage)
+        Self(low: lhs.low & rhs.low, high: lhs.high & rhs.high)
     }
     
     @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(bitPattern: lhs.storage | rhs.storage)
+        Self(low: lhs.low | rhs.low, high: lhs.high | rhs.high)
     }
     
     @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(bitPattern: lhs.storage ^ rhs.storage)
+        Self(low: lhs.low ^ rhs.low, high: lhs.high ^ rhs.high)
     }
 }
