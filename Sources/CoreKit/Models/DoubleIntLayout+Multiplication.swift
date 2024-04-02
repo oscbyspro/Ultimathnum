@@ -22,14 +22,27 @@ extension DoubleIntLayout {
         let rhsIsLessThanZero: Bool = (multiplier.isLessThanZero)
         let minus: Bool = lhsIsLessThanZero != rhsIsLessThanZero
         //=--------------------------------------=
-        let product: TripleIntLayout<Base> = { ab, x in
-            
-            let ax = ab.low .multiplication(x)
-            let bx = ab.high.multiplication(x)
-            return TripleIntLayout(low: ax.low, high: DoubleIntLayout(bitPattern: bx.plus(ax.high).assert()))
-            
-        }(self.magnitude, multiplier.magnitude)
-        //=--------------------------------------=
-        return minus ? product.negated().value : product
+        let result = TripleIntLayout<Base>(bitPattern: self.magnitude._multiplication(multiplier.magnitude))
+        return minus ? result.negated().value : result
+    }
+}
+
+//*============================================================================*
+// MARK: * Double Int Layout x Multiplication x Unsigned
+//*============================================================================*
+
+extension DoubleIntLayout where Base == Base.Magnitude {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public func _multiplication(_ multiplier: Base) -> TripleIntLayout<Base> {
+        let ax = self.low .multiplication(multiplier)
+        var bx = self.high.multiplication(multiplier)
+        
+        bx = bx.plus(ax.high).assert()
+        
+        return TripleIntLayout(low: ax.low, high: bx)
     }
 }
