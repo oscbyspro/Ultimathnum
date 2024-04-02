@@ -131,12 +131,13 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         // normalization
         //=--------------------------------------=
-        let lhs = TUI.bitShiftL23(lhs.storage, by: shift.low)
-        let rhs = TUI.bitShiftL22(rhs.storage, by: shift.low)
+        let top = shift.low == 0 ? 0 : lhs.high &>> (0 &- shift.low)
+        let lhs = lhs &<< shift
+        let rhs = rhs &<< shift
         //=--------------------------------------=
         // division: 3212 (normalized)
         //=--------------------------------------=
-        let result = Self._divide3212MSB(lhs, by: Self(rhs))
+        let result = Self._divide3212MSB(Triplet(low: lhs.storage, high: top), by: Self(rhs))
         return Division(quotient: Self(low: result.quotient), remainder: result.remainder &>> shift)
     }
     
@@ -187,8 +188,8 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         // normalization
         //=--------------------------------------=
-        let lhs = TUI.bitShiftL22(lhs, by: shift)
-        let rhs = TUI.bitShiftL11(rhs, by: shift)
+        let lhs = lhs &<< shift
+        let rhs = rhs &<< shift
         //=--------------------------------------=
         // division: 3212 (normalized)
         //=--------------------------------------=

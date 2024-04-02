@@ -21,7 +21,7 @@ extension DoubleInt {
     
     @inlinable public static func <<(instance: consuming Self, shift: Self) -> Self {
         if  shift.isLessThanZero {
-            return instance >> -shift // TODO: no not trap on min
+            return instance >> -shift // TODO: do not trap on min
         }   else if Magnitude(bitPattern: shift) >= Self.bitWidth {
             return Self(repeating: Bit(bitPattern: false))
         }   else {
@@ -31,7 +31,7 @@ extension DoubleInt {
     
     @inlinable public static func >>(instance: consuming Self, shift: Self) -> Self {
         if  shift.isLessThanZero {
-            return instance << -shift // TODO: no not trap on min
+            return instance << -shift // TODO: do not trap on min
         }   else if Magnitude(bitPattern: shift) >= Self.bitWidth {
             return Self(repeating: Bit(bitPattern: instance.isLessThanZero))
         }   else {
@@ -44,10 +44,10 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func &<<(instance: consuming Self, shift: Self) -> Self {
-        Self(TBI.bitShiftL22(instance.storage, by: Base(bitPattern: shift.low & (Self.bitWidth &- 1).low)))
+        Self(instance.storage &<< Base(bitPattern: shift.low))
     }
     
     @inlinable public static func &>>(instance: consuming Self, shift: Self) -> Self {
-        Self(TBI.bitShiftR22(instance.storage, by: Base(bitPattern: shift.low & (Self.bitWidth &- 1).low)))
+        Self(instance.storage &>> Base(bitPattern: shift.low))
     }
 }
