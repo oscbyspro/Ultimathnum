@@ -59,7 +59,7 @@ extension InfiniInt {
         self.storage.appendix.bit
     }
     
-    @inlinable public var content: ContiguousArray<Element.Magnitude> {
+    @inlinable public var body: ContiguousArray<Element.Magnitude> {
         self.storage.base
     }
     

@@ -23,18 +23,15 @@ extension DoubleInt {
         self.times(copy self)
     }
     
-    @inlinable public func times(_ multiplier: Self) -> Fallible<Self> {
-        let lhsIsLessThanZero: Bool = (self/*--*/.isLessThanZero)
-        let rhsIsLessThanZero: Bool = (multiplier.isLessThanZero)
-        let minus: Bool = lhsIsLessThanZero != rhsIsLessThanZero
-        //=--------------------------------------=
+    @inlinable public consuming func times(_ multiplier: Self) -> Fallible<Self> {
+        let minus  = self.isLessThanZero != multiplier.isLessThanZero
         var result = Fallible<Self>(bitPattern: self.magnitude._times(multiplier.magnitude))
-        //=--------------------------------------=
+        
         var suboverflow = (result.value.isLessThanZero)
         if  minus {
             suboverflow = !result.value.capture({ $0.negated() }) && suboverflow
         }
-        //=--------------------------------------=
+        
         return result.combine(suboverflow)
     }
     
@@ -43,10 +40,7 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public func multiplication(_ multiplier: Self) -> Doublet<Self> {
-        let lhsIsLessThanZero: Bool = (self/*--*/.isLessThanZero)
-        let rhsIsLessThanZero: Bool = (multiplier.isLessThanZero)
-        let minus: Bool = lhsIsLessThanZero != rhsIsLessThanZero
-        //=--------------------------------------=
+        let minus  = self.isLessThanZero != multiplier.isLessThanZero
         let result: Doublet<Magnitude> = self.magnitude._multiplication(multiplier.magnitude)
         return Doublet(bitPattern: minus ? result.negated().value : result)
     }

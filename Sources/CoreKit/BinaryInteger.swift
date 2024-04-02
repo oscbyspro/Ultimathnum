@@ -31,7 +31,7 @@ public protocol BinaryInteger: BitCastable, BitOperable, Comparable,
 ExpressibleByIntegerLiteral, Hashable, Sendable, Strideable, _MaybeLosslessStringConvertible where
 Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stride == Swift.Int {
     
-    associatedtype Content: RandomAccessCollection<Element.Magnitude>
+    associatedtype Body: RandomAccessCollection<Element.Magnitude>
     
     associatedtype Element: SystemsInteger where Element.Element == Element
         
@@ -145,7 +145,7 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     /// │ I8( 7)   │ I8(-3)  │ I8(-2)   │ I8(-1)    │ false    │
     /// │ I8(-7)   │ I8( 3)  │ I8(-2)   │ I8(-1)    │ false    │
     /// │ I8(-7)   │ I8(-3)  │ I8( 2)   │ I8( 0)    │ false    │
-    /// │──────────┤──────── → ─────────┤───────────┤──────────┤
+    /// ├──────────┤──────── → ─────────┤───────────┤──────────┤
     /// │ I8( 7)   │ I8( 0)  │ I8( 0)   │ I8( 7)    │ true     │
     /// │ I8.min   │ I8(-1)  │ I8.min   │ I8( 0)    │ true     │
     /// └──────────┴──────── → ─────────┴───────────┴──────────┘
@@ -169,15 +169,21 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// The bit that may extend the bit pattern of this instance.
+    /// The bit that extends the bit pattern of the integer's ``body``.
     ///
-    /// If this value is `signed`, then the `appendix` is `1` for `negative`
-    /// values and `0` otherwise. If this value is `unsigned`, then the `appendix`
-    /// is `1` for `infinite` values and `0` otherwise.
+    /// ```
+    ///            ┌───────────┬───────────┐
+    ///            │ 0x00      │ 0x01      |
+    /// ┌──────────┼───────────┤───────────┤
+    /// │ SIGNED   │ self >= 0 │ self <  0 │
+    /// ├──────────┼───────────┤───────────┤
+    /// │ UNSIGNED │ self >= ∞ │ self <  ∞ │ // let ∞ be 0s then 1
+    /// └──────────┴───────────┴───────────┘
+    /// ```
     ///
     @inlinable var appendix: Bit { get }
     
-    @inlinable var content: Content { get }
+    @inlinable var body: Body { get }
     
     @inlinable var magnitude: Magnitude { consuming get }
     

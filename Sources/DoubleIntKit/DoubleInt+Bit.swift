@@ -74,11 +74,11 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public var appendix: Bit {
-        self.storage.appendix
+        self.storage.high.appendix
     }
     
-    @inlinable public var content: Magnitude._Content {
-        Magnitude._Content(low: self.low.content, high: Base.Magnitude(bitPattern: self.high).content)
+    @inlinable public var body: Magnitude._Body {
+        Magnitude._Body(low: self.low.body, high: Base.Magnitude(bitPattern: self.high).body)
     }
     
     @inlinable public func count(_ bit: Bit, option: BitSelection) -> Magnitude {
@@ -93,28 +93,28 @@ extension DoubleInt {
 extension DoubleInt where Base == Base.Magnitude {
     
     //*========================================================================*
-    // MARK: * Content
+    // MARK: * Body
     //*========================================================================*
     
-    @frozen public struct _Content: RandomAccessCollection {
+    @frozen public struct _Body: RandomAccessCollection {
         
         //=------------------------------------------------------------------------=
         // MARK: State
         //=------------------------------------------------------------------------=
         
         #if _endian(big)
-        @usableFromInline var high: Base.Content
-        @usableFromInline var low:  Base.Content
+        @usableFromInline var high: Base.Body
+        @usableFromInline var low:  Base.Body
         #else
-        @usableFromInline var low:  Base.Content
-        @usableFromInline var high: Base.Content
+        @usableFromInline var low:  Base.Body
+        @usableFromInline var high: Base.Body
         #endif
         
         //=------------------------------------------------------------------------=
         // MARK: Initializers
         //=------------------------------------------------------------------------=
         
-        @inlinable public init(low: consuming Base.Content, high: consuming Base.Content) {
+        @inlinable public init(low: consuming Base.Body, high: consuming Base.Body) {
             self.low  = low
             self.high = high
         }
@@ -155,7 +155,7 @@ extension DoubleInt where Base == Base.Magnitude {
             index + distance
         }
         
-        @inlinable public subscript(index: Int) -> Base.Content.Element {
+        @inlinable public subscript(index: Int) -> Base.Body.Element {
             if  index  < self.low.count {
                 return self.low [self.low .index(self.low .startIndex, offsetBy: index)]
             }   else {

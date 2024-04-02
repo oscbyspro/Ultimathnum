@@ -65,7 +65,7 @@ extension MinimiInt {
         Bit(bitPattern: self.isLessThanZero)
     }
     
-    @inlinable public var content: some RandomAccessCollection<Magnitude> {
+    @inlinable public var body: some RandomAccessCollection<Magnitude> {
         CollectionOfOne(Magnitude(bitPattern: self))
     }
     

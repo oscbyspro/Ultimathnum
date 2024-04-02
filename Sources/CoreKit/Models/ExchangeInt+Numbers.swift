@@ -25,11 +25,11 @@ extension ExchangeInt {
         self.init(source, repeating: source.appendix)
     }
     
-    @inlinable public init<T>(_ source: T) where T: BinaryInteger, Base == T.Content, Element == T.Element {
+    @inlinable public init<T>(_ source: T) where T: BinaryInteger, Base == T.Body, Element == T.Element {
         self.init(source, as: Element.self)
     }
     
-    @inlinable public init<T>(_ source: T, as element: Element.Type = Element.self) where T: BinaryInteger, Base == T.Content {
-        self.init(source.content, repeating: source.appendix)
+    @inlinable public init<T>(_ source: T, as element: Element.Type = Element.self) where T: BinaryInteger, Base == T.Body {
+        self.init(source.body, repeating: source.appendix)
     }
 }

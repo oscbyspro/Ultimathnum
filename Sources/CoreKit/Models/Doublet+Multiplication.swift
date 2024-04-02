@@ -8,7 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Doublet x Multiplication x Unsigned
+// MARK: * Doublet x Multiplication
 //*============================================================================*
 
 extension Doublet {
@@ -18,10 +18,7 @@ extension Doublet {
     //=------------------------------------------------------------------------=
     
     @inlinable public func multiplication(_ multiplier: Base) -> Triplet<Base> {
-        let lhsIsLessThanZero: Bool = (self.high .isLessThanZero)
-        let rhsIsLessThanZero: Bool = (multiplier.isLessThanZero)
-        let minus: Bool = lhsIsLessThanZero != rhsIsLessThanZero
-        //=--------------------------------------=
+        let minus  = self.high.isLessThanZero != multiplier.isLessThanZero
         let result = Triplet<Base>(bitPattern: self.magnitude._multiplication(multiplier.magnitude))
         return minus ? result.negated().value : result
     }
@@ -39,10 +36,7 @@ extension Doublet where Base == Base.Magnitude {
     
     @inlinable public func _multiplication(_ multiplier: Base) -> Triplet<Base> {
         let ax = self.low .multiplication(multiplier)
-        var bx = self.high.multiplication(multiplier)
-        
-        bx = bx.plus(ax.high).assert()
-        
-        return Triplet(low: ax.low, high: bx)
+        let bx = self.high.multiplication(multiplier)
+        return Triplet(low: ax.low, high: bx.plus(ax.high).assert())
     }
 }

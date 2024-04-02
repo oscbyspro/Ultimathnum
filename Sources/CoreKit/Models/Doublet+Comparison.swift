@@ -17,10 +17,6 @@ extension Doublet {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public var isLessThanZero: Bool {
-        self.high.isLessThanZero
-    }
-    
     @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         lhs.compared(to: rhs) == Signum.same
     }

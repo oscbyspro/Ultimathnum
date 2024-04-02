@@ -38,10 +38,6 @@ extension Triplet: BitCastable {
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
-    
-    @inlinable public var appendix: Bit {
-        self.high.appendix
-    }
         
     @inlinable public func count(_ bit: Bit, option: BitSelection, as type: UX.Type) -> UX {
         var count: UX

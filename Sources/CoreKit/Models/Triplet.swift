@@ -12,7 +12,7 @@
 //*============================================================================*
 
 /// An integer split into 3 parts.
-@frozen public struct Triplet<Base>: Comparable, Hashable where Base: SystemsInteger {
+@frozen public struct Triplet<Base>: Comparable where Base: SystemsInteger {
     
     public typealias High = Base
     
@@ -28,6 +28,10 @@
     
     @inlinable public static var isSigned: Bool {
         Base.isSigned
+    }
+    
+    @inlinable public static func bitWidth<T>(as type: T.Type) -> T where T: SystemsInteger<UX.BitPattern> {
+        T(bitPattern: IX(bitWidth: Base.self) * 3) // at most IX.max
     }
     
     //=------------------------------------------------------------------------=

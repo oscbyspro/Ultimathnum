@@ -218,7 +218,7 @@ extension DoubleInt where Base == Base.Magnitude {
     @inlinable static func _divide3121(_ lhs: consuming Triplet<Base>, by rhs: Base) -> Division<Self, Base> {
         // TODO: check whether remainder == 0 branches are worth it...
         Swift.assert(rhs > lhs.high, "quotient must fit in two halves")
-        let x1 = Doublet(low: lhs.mid, high: lhs.high).division(rhs).unwrap()
+        let x1 = Doublet(low: lhs.mid, high: ((lhs)).high).division(rhs).unwrap()
         let x0 = Doublet(low: lhs.low, high: x1.remainder).division(rhs).unwrap()
         return Division(quotient: Self(low: x0.quotient, high: x1.quotient), remainder: x0.remainder)
     }

@@ -30,4 +30,13 @@ extension DoubleInt {
     @inlinable public func compared(to other: Self) -> Signum {
         self.storage.compared(to: other.storage)
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.low )
+        hasher.combine(self.high)
+    }
 }
