@@ -44,12 +44,12 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(low: Base.Magnitude, high: Base) {
+    @inlinable public init(low: Base.Magnitude, high: Base = 0) {
         self.low  = low
         self.high = high
     }
     
-    @inlinable public init(high: Base, low: Base.Magnitude) {
+    @inlinable public init(high: Base, low: Base.Magnitude = 0) {
         self.high = high
         self.low  = low
     }

@@ -74,7 +74,7 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public var appendix: Bit {
-        self.high.appendix
+        self.storage.appendix
     }
     
     @inlinable public var content: Magnitude._Content {
@@ -82,35 +82,7 @@ extension DoubleInt {
     }
     
     @inlinable public func count(_ bit: Bit, option: BitSelection) -> Magnitude {
-        var count: Magnitude
-        
-        switch option {
-        case .all:
-            
-            brr: do {
-                count  = Magnitude(low: self.low .count(bit, option: option))
-                count += Magnitude(low: self.high.count(bit, option: option))
-            }
-        
-        case .ascending:
-                        
-            brr: do {
-                count  = Magnitude(low: self.low .count(bit, option: option))
-            };  if count.low == Low.bitWidth {
-                count += Magnitude(low: self.high.count(bit, option: option))
-            }
-            
-        case .descending:
-            
-            brr: do {
-                count  = Magnitude(low: self.high.count(bit, option: option))
-            };  if count.low == High.bitWidth {
-                count += Magnitude(low: self.low .count(bit, option: option))
-            }
-            
-        }
-        
-        return count as Magnitude
+        Magnitude(load: self.storage.count(bit, option: option, as: UX.self))
     }
 }
 

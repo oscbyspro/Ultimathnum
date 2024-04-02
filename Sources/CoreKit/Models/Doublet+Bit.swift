@@ -32,4 +32,38 @@ extension Doublet: BitCastable {
             )
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+            
+    @inlinable public var appendix: Bit {
+        self.high.appendix
+    }
+        
+    @inlinable public func count(_ bit: Bit, option: BitSelection, as type: UX.Type) -> UX {
+        var count: UX
+
+        switch option {
+        case .all:
+            
+            count  = self.low .count(bit, option: option).load(as: UX.self)
+            count += self.high.count(bit, option: option).load(as: UX.self)
+        
+        case .ascending:
+            
+            count  = self.low .count(bit, option: option).load(as: UX.self)
+            guard count == Base.bitWidth.load(as: UX.self) * 1 else { break }
+            count += self.high.count(bit, option: option).load(as: UX.self)
+            
+        case .descending:
+            
+            count  = self.high.count(bit, option: option).load(as: UX.self)
+            guard count == Base.bitWidth.load(as: UX.self) * 1 else { break }
+            count += self.low .count(bit, option: option).load(as: UX.self)
+            
+        }
+        
+        return count as UX
+    }
 }
