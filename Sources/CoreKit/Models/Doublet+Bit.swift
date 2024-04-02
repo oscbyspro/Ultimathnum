@@ -18,12 +18,18 @@ extension Doublet: BitCastable {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(bitPattern: consuming Doublet<Base.Magnitude>) {
-        self.init(low: bitPattern.low, high: Base(bitPattern: bitPattern.high))
+        self.init(
+            low:  bitPattern.low,
+            high: Base(bitPattern: bitPattern.high)
+        )
     }
     
     @inlinable public var bitPattern: Doublet<Base.Magnitude> {
         consuming get {
-            .init(low: self.low, high: Base.Magnitude(bitPattern: self.high))
+            Doublet<Base.Magnitude>(
+                low:  self.low,
+                high: Base.Magnitude(bitPattern: self.high)
+            )
         }
     }
 }
