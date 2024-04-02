@@ -55,11 +55,14 @@ extension Namespace.StrictUnsignedInteger where Base: MutableCollection {
     _ base: inout Base, dividing dividend: inout Base, by divisor: UnsafeBufferPointer<T>) where
     Base == UnsafeMutableBufferPointer<T> {
         //=--------------------------------------=
-        Swift.assert(base.count >= 1 && base.count == dividend.count - divisor.count,
-        "the dividend must be wider than the divisor")
-        
-        Swift.assert(SUISS.compare(dividend.dropFirst(base.count), to: divisor) == Signum.less,
-        "the quotient must fit in dividend.count - divisor.count elements")
+        Swift.assert(
+            base.count >= 1 && base.count == dividend.count - divisor.count,
+            "the dividend must be wider than the divisor"
+        )
+        Swift.assert(
+            SUISS.compare(dividend.dropFirst(base.count), to: divisor) == Signum.less,
+            "the quotient must fit in dividend.count - divisor.count elements"
+        )
         //=--------------------------------------=
         for index in base.indices.reversed() {
             let digit = SUI.formRemainderWithQuotientByOneLongIteration2111MSB(
@@ -111,17 +114,21 @@ extension Namespace.StrictUnsignedInteger where Base: MutableCollection {
     @inlinable package static func formRemainderWithQuotientByOneLongIteration2111MSB(
     dividing dividend: inout Base, by divisor: some RandomAccessCollection<Base.Element>) -> Base.Element {
         //=--------------------------------------=
-        Swift.assert(divisor.last! & Base.Element.msb != 0,
-        "the divisor must be normalized")
-        
-        Swift.assert(dividend.count == divisor.count + 1,
-        "the dividend must be exactly one element wider than the divisor")
-        
-        Swift.assert(SUISS.compare(dividend.dropFirst(), to: divisor) == Signum.less,
-        "the quotient of each iteration must fit in one element")
+        Swift.assert(
+            divisor.last! >= Base.Element.msb,
+            "the divisor must be normalized"
+        )
+        Swift.assert(
+            dividend.count == divisor.count + 1,
+            "the dividend must be exactly one element wider than the divisor"
+        )
+        Swift.assert(
+            SUISS.compare(dividend.dropFirst(), to: divisor) == Signum.less,
+            "the quotient of each iteration must fit in one element"
+        )
         //=--------------------------------------=
-        let numerator   = TBI<Base.Element>.suffix2(dividend)
-        let denominator = TBI<Base.Element>.suffix1(divisor )
+        let numerator   = SBI.suffix2(dividend) as Doublet<Base.Element>
+        let denominator = SBI.suffix1(divisor ) as Base.Element
         //=--------------------------------------=
         var quotient: Base.Element = denominator == numerator.high
         ? Base.Element.max // the quotient must fit in one element

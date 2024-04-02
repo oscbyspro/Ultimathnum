@@ -68,24 +68,3 @@ where Base: RandomAccessCollection, Base.Element: SystemsInteger & UnsignedInteg
 ///
 @usableFromInline package typealias SUISS<Base> = Namespace.StrictUnsignedInteger<Base>.SubSequence
 where Base: RandomAccessCollection, Base.Element: SystemsInteger & UnsignedInteger
-
-/// A namespace for `Ultimathnum` development.
-///
-/// - Warning: Do not use this namespace outside of `Ultimathnum` development.
-///
-@usableFromInline package typealias TBI<High> = Namespace.TupleBinaryInteger<High>
-where High: SystemsInteger
-
-/// A namespace for `Ultimathnum` development.
-///
-/// - Warning: Do not use this namespace outside of `Ultimathnum` development.
-///
-@usableFromInline package typealias TSI<High> = Namespace.TupleBinaryInteger<High>
-where High: SystemsInteger & SignedInteger
-
-/// A namespace for `Ultimathnum` development.
-///
-/// - Warning: Do not use this namespace outside of `Ultimathnum` development.
-///
-@usableFromInline package typealias TUI<High> = Namespace.TupleBinaryInteger<High>
-where High: SystemsInteger & UnsignedInteger
