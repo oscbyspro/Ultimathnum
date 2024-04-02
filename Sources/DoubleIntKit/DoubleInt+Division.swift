@@ -118,7 +118,6 @@ extension DoubleInt where Base == Base.Magnitude {
         // division: 1111
         //=--------------------------------------=
         if  lhs.high == 0 {
-            Swift.assert(rhs.high == 0, "divisors greater than or equal should go fast path")
             let result = lhs.low.division(rhs.low).unwrap()
             return Division(quotient: Self(low: result.quotient), remainder: Self(low: result.remainder))
         }
@@ -170,8 +169,8 @@ extension DoubleInt where Base == Base.Magnitude {
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
     @inlinable static func _divide4222SHL(_ lhs: consuming Doublet<Self>, by rhs: Self, shift: consuming Self) -> Division<Self, Self> {
         Swift.assert(rhs != 0, "must not divide by zero")
-        Swift.assert(rhs.count(0, option: .descending) == shift, "save shift distance")
         Swift.assert(rhs > lhs.high, "quotient must fit in two halves")
+        Swift.assert(rhs.count(0, option: .descending) == shift, "save shift distance")
         //=--------------------------------------=
         // division: 2222
         //=--------------------------------------=
@@ -182,9 +181,7 @@ extension DoubleInt where Base == Base.Magnitude {
         // division: 3121
         //=--------------------------------------=
         if  shift.load(as: UX.self) >= UX(bitWidth: Base.self) {
-            Swift.assert(rhs.high == 0, "rhs.high == 0 && rhs > lhs.high -> lhs.high.high == 0")
-            Swift.assert(lhs.high.high == 0, "quotient must fit in two halves")
-            let result = Self._divide3121(Triplet(low: lhs.low.low, mid: lhs.low.high, high: lhs.high.low), by: rhs.low)
+            let result = Self._divide3121(Triplet(low: lhs.low.storage, high: lhs.high.low), by: rhs.low)
             return Division(quotient: result.quotient, remainder: Self(low: result.remainder))
         }
         //=--------------------------------------=
@@ -196,7 +193,7 @@ extension DoubleInt where Base == Base.Magnitude {
         // division: 3212 (normalized)
         //=--------------------------------------=
         if  lhs.high.high == 0, rhs > Self(low: lhs.low.high, high: lhs.high.low) {
-            let result = Self._divide3212MSB(Triplet(low: lhs.low.low, mid: lhs.low.high, high: lhs.high.low), by: rhs)
+            let result = Self._divide3212MSB(Triplet(low: lhs.low.storage, high: lhs.high.low), by: rhs)
             return Division(quotient: Self(low: result.quotient), remainder: result.remainder &>> shift)
         }
         //=--------------------------------------=
