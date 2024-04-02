@@ -31,7 +31,7 @@ extension Triplet where Base == Base.Magnitude {
     @inlinable package consuming func division3212MSB(_ divisor: Doublet<Base>) -> Division<Base, Doublet<Base>> {
         //=--------------------------------------=
         Swift.assert(
-            divisor.high & Base.msb != 0,
+            divisor.high >= Base.msb,
             "the divisor must be normalized"
         )
         Swift.assert(
@@ -39,15 +39,15 @@ extension Triplet where Base == Base.Magnitude {
             "the quotient must fit in one element"
         )
         //=--------------------------------------=
-        var quotient: Base = if  divisor.high == self.high {
-            Base.max // the quotient must fit in one element
+        var quotient: Base = if divisor.high == self.high {
+            Base.max // the quotient must fit in one part
         }   else {
             Doublet(low: self.mid, high: self.high).quotient(divisor.high).assert()
         }
         //=--------------------------------------=
         // decrement when overestimated (max 2)
         //=--------------------------------------=
-        var product = divisor.multiplication(quotient)
+        var product: Triplet<Base> = divisor.multiplication(quotient)
 
         while self < product {
             quotient = quotient.minus(0000001).assert()

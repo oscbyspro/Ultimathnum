@@ -24,15 +24,7 @@ extension DoubleInt {
     }
     
     @inlinable public consuming func times(_ multiplier: Self) -> Fallible<Self> {
-        let minus  = self.isLessThanZero != multiplier.isLessThanZero
-        var result = Fallible<Self>(bitPattern: self.magnitude._times(multiplier.magnitude))
-        
-        var suboverflow = (result.value.isLessThanZero)
-        if  minus {
-            suboverflow = !result.value.capture({ $0.negated() }) && suboverflow
-        }
-        
-        return result.combine(suboverflow)
+        Fallible(bitPattern: self.storage.times(multiplier.storage))
     }
     
     //=------------------------------------------------------------------------=
@@ -53,27 +45,10 @@ extension DoubleInt {
 extension DoubleInt where Base == Base.Magnitude {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public func _times(_ multiplier: Self) -> Fallible<Self> {
-        var ax = self.low .multiplication(multiplier.low)
-        let ay = self.low .times(multiplier.high)
-        let bx = self.high.times(multiplier.low )
-        let by = !(self.high == 0 || multiplier.high == 0)
-        
-        let o0 = ax.high.capture({ $0.plus(ay.value) })
-        let o1 = ax.high.capture({ $0.plus(bx.value) })
-        
-        let overflow = by || ay.error || bx.error || o0 || o1
-        return Fallible(Self(bitPattern: ax), error: overflow)
-    }
-    
-    //=------------------------------------------------------------------------=
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable public func _multiplication(_ multiplier: Self) -> Doublet<Self> {
+    @inlinable func _multiplication(_ multiplier: Self) -> Doublet<Self> {
         var ax = self.low .multiplication(multiplier.low )
         let ay = self.low .multiplication(multiplier.high)
         let bx = self.high.multiplication(multiplier.low )

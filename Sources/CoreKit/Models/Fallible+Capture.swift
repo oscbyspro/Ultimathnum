@@ -8,20 +8,18 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Binary Integer x Capture
+// MARK: * Fallible x Capture
 //*============================================================================*
 
-extension BinaryInteger {
+extension Fallible {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public mutating func capture(_ map: (Self) throws -> Self) rethrows {
-        self = try map(self)
-    }
-    
-    @inlinable public mutating func capture(_ map: (Self) throws -> Fallible<Self>) rethrows -> Bool {
-        try Fallible.capture(&self, map: map)
+    @inlinable public static func capture(_ value: inout Value, map: (Value) throws -> Fallible<Value>) rethrows -> Bool {
+        let overflow: Bool
+        (value,overflow) = try map(value).components
+        return overflow
     }
 }

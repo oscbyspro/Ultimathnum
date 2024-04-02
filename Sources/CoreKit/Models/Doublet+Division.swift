@@ -14,7 +14,7 @@
 extension Doublet {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func quotient (_ divisor: borrowing Base) -> Fallible<Base> {
