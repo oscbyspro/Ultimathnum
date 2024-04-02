@@ -127,8 +127,8 @@ extension Namespace.StrictUnsignedInteger where Base: MutableCollection {
             "the quotient of each iteration must fit in one element"
         )
         //=--------------------------------------=
-        let numerator   = SBI.suffix2(dividend) as Doublet<Base.Element>
-        let denominator = SBI.suffix1(divisor ) as Base.Element
+        let numerator   = Base.Element.suffix2(dividend)
+        let denominator = Base.Element.suffix1(divisor )
         //=--------------------------------------=
         var quotient: Base.Element = denominator == numerator.high
         ? Base.Element.max // the quotient must fit in one element
