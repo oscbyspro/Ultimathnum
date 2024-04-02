@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Triple Int Layout x Addition
+// MARK: * Doublet x Addition
 //*============================================================================*
 
-extension TripleIntLayout {
+extension Doublet {
     
     //=------------------------------------------------------------------------=
     // MARK: Transfornations
@@ -20,24 +20,14 @@ extension TripleIntLayout {
     @inlinable public consuming func plus(_ increment: Base) -> Fallible<Self> {
         let appendix = High(repeating: increment.appendix)
         let low  = self.low .plus(Low(bitPattern: increment))
-        let mid  = self.mid .plus(Mid(bitPattern: appendix), carrying: low.error)
-        let high = self.high.plus((((appendix))), carrying:  mid.error)
-        return Fallible(Self(low: low.value, mid: mid.value, high: high.value), error: high.error)
-    }
-    
-    @inlinable public consuming func plus(_ increment: borrowing DoubleIntLayout<Base>) -> Fallible<Self> {
-        let appendix = High(repeating: increment.high.appendix)
-        let low  = self.low .plus(increment.low)
-        let mid  = self.mid .plus(Mid(bitPattern: increment.high), carrying: low.error)
-        let high = self.high.plus((((appendix))), carrying:  mid.error)
-        return Fallible(Self(low: low.value, mid: mid.value, high: high.value), error: high.error)
+        let high = self.high.plus((((appendix))), carrying: low.error)
+        return Fallible(Self(low: low.value, high: high.value), error: high.error)
     }
     
     @inlinable public consuming func plus(_ increment: borrowing Self) -> Fallible<Self> {
         let low  = self.low .plus(increment.low)
-        let mid  = self.mid .plus(increment.mid,  carrying:  low.error)
-        let high = self.high.plus(increment.high, carrying:  mid.error)
-        return Fallible(Self(low: low.value, mid: mid.value, high: high.value), error: high.error)
+        let high = self.high.plus(increment.high,  carrying: low.error)
+        return Fallible(Self(low: low.value, high: high.value),  error: high.error)
     }
     
     //=------------------------------------------------------------------------=
@@ -45,9 +35,8 @@ extension TripleIntLayout {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func plus(_ increment: borrowing Self, carrying error: consuming Bool) -> Fallible<Self> {
-        let low  = self.low .plus(increment.low,  carrying:      error)
-        let mid  = self.mid .plus(increment.mid,  carrying:  low.error)
-        let high = self.high.plus(increment.high, carrying:  mid.error)
-        return Fallible(Self(low: low.value, mid: mid.value, high: high.value), error: high.error)
+        let low  = self.low .plus(increment.low,   carrying:     error)
+        let high = self.high.plus(increment.high,  carrying: low.error)
+        return Fallible(Self(low: low.value, high: high.value),  error: high.error)
     }
 }

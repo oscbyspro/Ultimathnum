@@ -8,11 +8,11 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Triple Int Layout
+// MARK: * Triplet
 //*============================================================================*
 
 /// An integer split into 3 parts.
-@frozen public struct TripleIntLayout<Base>: Comparable, Hashable where Base: SystemsInteger {
+@frozen public struct Triplet<Base>: Comparable, Hashable where Base: SystemsInteger {
     
     public typealias High = Base
     
@@ -20,7 +20,7 @@
     
     public typealias Low  = Base.Magnitude
     
-    public typealias Magnitude = TripleIntLayout<Base.Magnitude>
+    public typealias Magnitude = Triplet<Base.Magnitude>
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -64,25 +64,25 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(low: Base.Magnitude, high: DoubleIntLayout<Base>) {
+    @inlinable public init(low: Base.Magnitude, high: Doublet<Base>) {
         self.low  = low
         self.mid  = high.low
         self.high = high.high
     }
     
-    @inlinable public init(high: DoubleIntLayout<Base>, low: Base.Magnitude) {
+    @inlinable public init(high: Doublet<Base>, low: Base.Magnitude) {
         self.high = high.high
         self.mid  = high.low
         self.low  = low
     }
     
-    @inlinable public init(high: Base, low: DoubleIntLayout<Base.Magnitude>) {
+    @inlinable public init(high: Base, low: Doublet<Base.Magnitude>) {
         self.high = high
         self.mid  = low.high
         self.low  = low.low
     }
     
-    @inlinable public init(low: DoubleIntLayout<Base.Magnitude>, high: Base) {
+    @inlinable public init(low: Doublet<Base.Magnitude>, high: Base) {
         self.low  = low.low
         self.mid  = low.high
         self.high = high

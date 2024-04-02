@@ -71,7 +71,7 @@ extension CoreIntTests {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             typealias D = Division<T, T>
-            typealias X = DoubleIntLayout<T>
+            typealias X = Doublet<T>
             typealias F = Fallible<Division<T, T>>
             //=----------------------------------=
             Test().division(X(low:  1 as M, high:  T .max >> 1    ), T.max, F(D(quotient: T.max, remainder:         0)))
@@ -98,7 +98,7 @@ extension CoreIntTests {
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             typealias D = Division<T, T>
-            typealias X = DoubleIntLayout<T>
+            typealias X = Doublet<T>
             typealias F = Fallible<Division<T, T>>
             //=----------------------------------=
             Test().division(X(low:  1 as M, high: ~1 as T), ~0 as T, F(D(quotient: ~0, remainder:  0)))

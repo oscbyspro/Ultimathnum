@@ -42,13 +42,13 @@ extension DoubleInt {
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable public func multiplication(_ multiplier: Self) -> DoubleIntLayout<Self> {
+    @inlinable public func multiplication(_ multiplier: Self) -> Doublet<Self> {
         let lhsIsLessThanZero: Bool = (self/*--*/.isLessThanZero)
         let rhsIsLessThanZero: Bool = (multiplier.isLessThanZero)
         let minus: Bool = lhsIsLessThanZero != rhsIsLessThanZero
         //=--------------------------------------=
-        let result: DoubleIntLayout<Magnitude> = self.magnitude._multiplication(multiplier.magnitude)
-        return DoubleIntLayout(bitPattern: minus ? result.negated().value : result)
+        let result: Doublet<Magnitude> = self.magnitude._multiplication(multiplier.magnitude)
+        return Doublet(bitPattern: minus ? result.negated().value : result)
     }
 }
 
@@ -79,7 +79,7 @@ extension DoubleInt where Base == Base.Magnitude {
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable public func _multiplication(_ multiplier: Self) -> DoubleIntLayout<Self> {
+    @inlinable public func _multiplication(_ multiplier: Self) -> Doublet<Self> {
         var ax = self.low .multiplication(multiplier.low )
         let ay = self.low .multiplication(multiplier.high)
         let bx = self.high.multiplication(multiplier.low )
@@ -95,6 +95,6 @@ extension DoubleInt where Base == Base.Magnitude {
         
         let o0 = by.low .capture({ $0.plus(a2) })
         let _  = by.high.capture({ $0.plus(b2  &+  Low(Bit(bitPattern: o0))) })
-        return DoubleIntLayout(low: Magnitude(ax), high: Magnitude(by))
+        return Doublet(low: Magnitude(ax), high: Magnitude(by))
     }
 }

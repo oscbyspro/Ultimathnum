@@ -11,10 +11,10 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Triple Int Layout
+// MARK: * Triplet
 //*============================================================================*
 
-final class TripleIntLayoutTests: XCTestCase {
+final class TripletTests: XCTestCase {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data

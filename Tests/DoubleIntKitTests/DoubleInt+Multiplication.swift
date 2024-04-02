@@ -29,8 +29,8 @@ extension DoubleIntTests {
         func whereTheBaseTypeIsSigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
             typealias M = DoubleInt<Base>.Magnitude
-            typealias X = DoubleIntLayout<T>
-            typealias F = Fallible<DoubleIntLayout<T>>
+            typealias X = Doublet<T>
+            typealias F = Fallible<Doublet<T>>
             
             Test().multiplication(T(low:  1, high:  2), T(low:  3, high:  4), F(X(low: M(low:  3, high:  10), high: T(low:  8, high:  0)), error: true))
             Test().multiplication(T(low:  1, high:  2), T(low: ~3, high: ~4), F(X(low: M(low: ~3, high: ~12), high: T(low: ~8, high: ~0)), error: true))
@@ -41,8 +41,8 @@ extension DoubleIntTests {
         func whereTheBaseTypeIsUnsigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
             typealias M = DoubleInt<Base>.Magnitude
-            typealias X = DoubleIntLayout<T>
-            typealias F = Fallible<DoubleIntLayout<T>>
+            typealias X = Doublet<T>
+            typealias F = Fallible<Doublet<T>>
 
             Test().multiplication(T(low:  1, high:  2), T(low:  3, high:  4), F(X(low: M(low:  3, high:  10), high: T(low:  8, high:  0)), error: true))
             Test().multiplication(T(low:  1, high:  2), T(low: ~3, high: ~4), F(X(low: M(low: ~3, high: ~12), high: T(low: ~7, high:  1)), error: true))
@@ -59,8 +59,8 @@ extension DoubleIntTests {
         func whereTheBaseTypeIsSigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
             typealias M = DoubleInt<Base>.Magnitude
-            typealias X = DoubleIntLayout<T>
-            typealias F = Fallible<DoubleIntLayout<T>>
+            typealias X = Doublet<T>
+            typealias F = Fallible<Doublet<T>>
             
             Test().multiplication(T.min,  T .min, F(X(low: 0 as M, high: T(bitPattern:  M.msb >> 1)), error: true))
             Test().multiplication(T.min,  T .max, F(X(low: M .msb, high: T(bitPattern:  T.msb >> 1)), error: true))
@@ -83,8 +83,8 @@ extension DoubleIntTests {
         func whereTheBaseTypeIsUnsigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
             typealias M = DoubleInt<Base>.Magnitude
-            typealias X = DoubleIntLayout<T>
-            typealias F = Fallible<DoubleIntLayout<T>>
+            typealias X = Doublet<T>
+            typealias F = Fallible<Doublet<T>>
 
             Test().multiplication(T.min,  T .min, F(X(low:  0 as M, high:  0 as T)))
             Test().multiplication(T.min,  T .max, F(X(low:  0 as M, high:  0 as T)))

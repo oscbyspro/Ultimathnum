@@ -8,30 +8,26 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Triple Int Layout x Bit
+// MARK: * Triplet x Comparison
 //*============================================================================*
 
-extension TripleIntLayout: BitCastable {
+extension Triplet {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: consuming TripleIntLayout<Base.Magnitude>) {
-        self.init(
-            low:  bitPattern.low,
-            mid:  bitPattern.mid,
-            high: Base(bitPattern: bitPattern.high)
-        )
+    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        lhs.compared(to: rhs) == Signum.same
     }
     
-    @inlinable public var bitPattern: TripleIntLayout<Base.Magnitude> {
-        consuming get {
-            TripleIntLayout<Base.Magnitude>(
-                low:  self.low,
-                mid:  self.mid,
-                high: Base.Magnitude(bitPattern: self.high)
-            )
-        }
+    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        lhs.compared(to: rhs) == Signum.less
+    }
+    
+    @inlinable public borrowing func compared(to other: borrowing Self) -> Signum {
+        let a = self.high.compared(to: other.high); if a != Signum.same { return a }
+        let b = self.mid .compared(to: other.mid ); if b != Signum.same { return b }
+        return  self.low .compared(to: other.low );
     }
 }

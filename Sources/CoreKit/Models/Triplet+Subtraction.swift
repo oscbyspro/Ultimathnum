@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Triple Int Layout x Subtraction
+// MARK: * Triplet x Subtraction
 //*============================================================================*
 
-extension TripleIntLayout {
+extension Triplet {
     
     //=------------------------------------------------------------------------=
     // MARK: Transfornations
@@ -32,7 +32,7 @@ extension TripleIntLayout {
         return Fallible(Self(low: low.value, mid: mid.value, high: high.value), error: high.error)
     }
     
-    @inlinable public consuming func minus(_ increment: borrowing DoubleIntLayout<Base>) -> Fallible<Self> {
+    @inlinable public consuming func minus(_ increment: borrowing Doublet<Base>) -> Fallible<Self> {
         let appendix = High(repeating: increment.high.appendix)
         let low  = self.low .minus(increment.low)
         let mid  = self.mid .minus(Mid(bitPattern: increment.high), carrying: low.error)

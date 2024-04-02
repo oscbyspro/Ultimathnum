@@ -8,22 +8,23 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Double Int Layout x Bit
+// MARK: * Doublet x Numbers
 //*============================================================================*
 
-extension DoubleIntLayout: BitCastable {
+extension Doublet {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: consuming DoubleIntLayout<Base.Magnitude>) {
-        self.init(low: bitPattern.low, high: Base(bitPattern: bitPattern.high))
-    }
-    
-    @inlinable public var bitPattern: DoubleIntLayout<Base.Magnitude> {
+    @inlinable public var magnitude: Magnitude {
         consuming get {
-            .init(low: self.low, high: Base.Magnitude(bitPattern: self.high))
+            
+            if  self.high.isLessThanZero {
+                self = self.negated().value
+            }
+            
+            return Magnitude(bitPattern: self)
         }
     }
 }

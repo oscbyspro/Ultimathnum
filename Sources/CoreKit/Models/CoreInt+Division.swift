@@ -44,7 +44,7 @@ extension CoreInt {
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func division(_ dividend: consuming DoubleIntLayout<Self>, by divisor: Self) -> Fallible<Division<Self, Self>> {
+    @inlinable public static func division(_ dividend: consuming Doublet<Self>, by divisor: Self) -> Fallible<Division<Self, Self>> {
         typealias T = Fallible<Division<Self, Self>>
         //=--------------------------------------=
         let lhsIsLessThanZero: Bool = dividend.high.isLessThanZero
@@ -77,7 +77,7 @@ extension CoreInt where Self == Magnitude {
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inline(__always) @inlinable static func _division(_ dividend: consuming DoubleIntLayout<Self>, by divisor: borrowing Self) -> Fallible<Division<Self, Self>> {
+    @inline(__always) @inlinable static func _division(_ dividend: consuming Doublet<Self>, by divisor: borrowing Self) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
         if  divisor == 0 {
             return Fallible.failure(Division(quotient: 0, remainder: dividend.low))

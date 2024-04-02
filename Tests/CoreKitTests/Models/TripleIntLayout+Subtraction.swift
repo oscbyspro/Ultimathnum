@@ -11,10 +11,10 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Triple Int Layout x Subtraction
+// MARK: * Triplet x Subtraction
 //*============================================================================*
 
-extension TripleIntLayoutTests {
+extension TripletTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -22,9 +22,9 @@ extension TripleIntLayoutTests {
     
     func testSubtraction31B() {
         func whereTheBaseIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias X = DoubleIntLayout<T>
-            typealias Y = TripleIntLayout<T>
-            typealias F = Fallible<TripleIntLayout<T>>
+            typealias X = Doublet<T>
+            typealias Y = Triplet<T>
+            typealias F = Fallible<Triplet<T>>
                         
             Test().same(Y(low:  0, mid:  0, high:  0).minus(T(~4)), F(Y(low:  5, mid:  0, high:  0)))
             Test().same(Y(low:  1, mid:  2, high:  3).minus(T(~4)), F(Y(low:  6, mid:  2, high:  3)))
@@ -38,9 +38,9 @@ extension TripleIntLayoutTests {
         }
         
         func whereTheBaseIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias X = DoubleIntLayout<T>
-            typealias Y = TripleIntLayout<T>
-            typealias F = Fallible<TripleIntLayout<T>>
+            typealias X = Doublet<T>
+            typealias Y = Triplet<T>
+            typealias F = Fallible<Triplet<T>>
             
             Test().same(Y(low:  0, mid:  0, high:  0).minus(T(~4)), F(Y(low:  5, mid: ~0, high: ~0), error: true))
             Test().same(Y(low:  1, mid:  2, high:  3).minus(T(~4)), F(Y(low:  6, mid:  1, high:  3)))
@@ -60,9 +60,9 @@ extension TripleIntLayoutTests {
     
     func testSubtraction32B() {
         func whereTheBaseIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias X = DoubleIntLayout<T>
-            typealias Y = TripleIntLayout<T>
-            typealias F = Fallible<TripleIntLayout<T>>
+            typealias X = Doublet<T>
+            typealias Y = Triplet<T>
+            typealias F = Fallible<Triplet<T>>
                         
             Test().same(Y(low:  0, mid:  0, high:  0).minus(X(low: ~4, high: ~5)), F(Y(low:  5, mid:  5, high:  0)))
             Test().same(Y(low:  1, mid:  2, high:  3).minus(X(low: ~4, high: ~5)), F(Y(low:  6, mid:  7, high:  3)))
@@ -76,9 +76,9 @@ extension TripleIntLayoutTests {
         }
         
         func whereTheBaseIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias X = DoubleIntLayout<T>
-            typealias Y = TripleIntLayout<T>
-            typealias F = Fallible<TripleIntLayout<T>>
+            typealias X = Doublet<T>
+            typealias Y = Triplet<T>
+            typealias F = Fallible<Triplet<T>>
             
             Test().same(Y(low:  0, mid:  0, high:  0).minus(X(low: ~4, high: ~5)), F(Y(low:  5, mid:  5, high: ~0), error: true))
             Test().same(Y(low:  1, mid:  2, high:  3).minus(X(low: ~4, high: ~5)), F(Y(low:  6, mid:  7, high:  2)))
@@ -98,9 +98,9 @@ extension TripleIntLayoutTests {
     
     func testSubtraction33B() {
         func whereTheBaseIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias X = DoubleIntLayout<T>
-            typealias Y = TripleIntLayout<T>
-            typealias F = Fallible<TripleIntLayout<T>>
+            typealias X = Doublet<T>
+            typealias Y = Triplet<T>
+            typealias F = Fallible<Triplet<T>>
                         
             Test().same(Y(low:  0, mid:  0, high:  0).minus(Y(low: ~4, mid: ~5, high: ~6)), F(Y(low:  5, mid:  5, high:  6)))
             Test().same(Y(low:  1, mid:  2, high:  3).minus(Y(low: ~4, mid: ~5, high: ~6)), F(Y(low:  6, mid:  7, high:  9)))
@@ -114,9 +114,9 @@ extension TripleIntLayoutTests {
         }
         
         func whereTheBaseIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias X = DoubleIntLayout<T>
-            typealias Y = TripleIntLayout<T>
-            typealias F = Fallible<TripleIntLayout<T>>
+            typealias X = Doublet<T>
+            typealias Y = Triplet<T>
+            typealias F = Fallible<Triplet<T>>
             
             Test().same(Y(low:  0, mid:  0, high:  0).minus(Y(low: ~4, mid: ~5, high: ~6)), F(Y(low:  5, mid:  5, high:  6), error: true))
             Test().same(Y(low:  1, mid:  2, high:  3).minus(Y(low: ~4, mid: ~5, high: ~6)), F(Y(low:  6, mid:  7, high:  9), error: true))

@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Triple Int Layout x Division x Unsigned x Private
+// MARK: * Triplet x Division x Unsigned x Private
 //*============================================================================*
 
-extension TripleIntLayout where Base == Base.Magnitude {
+extension Triplet where Base == Base.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformation
@@ -28,21 +28,21 @@ extension TripleIntLayout where Base == Base.Magnitude {
     ///
     /// The approximation needs at most two corrections, but looping is faster.
     ///
-    @inlinable package consuming func division3212MSB(_ divisor: DoubleIntLayout<Base>) -> Division<Base, DoubleIntLayout<Base>> {
+    @inlinable package consuming func division3212MSB(_ divisor: Doublet<Base>) -> Division<Base, Doublet<Base>> {
         //=--------------------------------------=
         Swift.assert(
             divisor.high & Base.msb != 0,
             "the divisor must be normalized"
         )
         Swift.assert(
-            DoubleIntLayout(low: self.mid, high: self.high) < divisor,
+            Doublet(low: self.mid, high: self.high) < divisor,
             "the quotient must fit in one element"
         )
         //=--------------------------------------=
         var quotient: Base = if  divisor.high == self.high {
             Base.max // the quotient must fit in one element
         }   else {
-            DoubleIntLayout(low: self.mid, high: self.high).quotient(divisor.high).assert()
+            Doublet(low: self.mid, high: self.high).quotient(divisor.high).assert()
         }
         //=--------------------------------------=
         // decrement when overestimated (max 2)
@@ -54,7 +54,7 @@ extension TripleIntLayout where Base == Base.Magnitude {
             product  = product .minus(divisor).assert()
         };  ((self)) = ((self)).minus(product).assert()
         
-        Swift.assert(self < TripleIntLayout(high: 0, low: divisor))
-        return Division(quotient: quotient, remainder: DoubleIntLayout(low: self.low, high: self.mid))
+        Swift.assert(self < Triplet(high: 0, low: divisor))
+        return Division(quotient: quotient, remainder: Doublet(low: self.low, high: self.mid))
     }
 }

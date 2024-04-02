@@ -7,27 +7,26 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Minimi Int x Multiplication
+// MARK: * Doublet x Comparison
 //*============================================================================*
 
-extension MinimiInt {
+extension Doublet {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func squared() -> Fallible<Self> {
-        Fallible(self, error: Self.isSigned && Bool(bitPattern: self))
+    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        lhs.compared(to: rhs) == Signum.same
     }
     
-    @inlinable public func times(_ multiplier: Self) -> Fallible<Self> {
-        Fallible(self & multiplier, error: Self.isSigned && Bool(bitPattern: self & multiplier))
+    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        lhs.compared(to: rhs) == Signum.less
     }
     
-    @inlinable public func multiplication(_ multiplier: Self) -> Doublet<Self> {
-        Doublet(low: Magnitude(bitPattern: self & multiplier), high: 0 as  Self)
+    @inlinable public borrowing func compared(to other: borrowing Self) -> Signum {
+        let a = self.high.compared(to: other.high); if a != Signum.same { return a }
+        return  self.low .compared(to: other.low );
     }
 }

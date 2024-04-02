@@ -25,9 +25,9 @@ import CoreKit
     
     public typealias Magnitude = DoubleInt<Base.Magnitude>
     
-    public typealias BitPattern = DoubleIntLayout<Base>.BitPattern
+    public typealias BitPattern = Doublet<Base>.BitPattern
     
-    @usableFromInline typealias Storage = DoubleIntLayout<Base>
+    @usableFromInline typealias Storage = Doublet<Base>
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -52,7 +52,7 @@ import CoreKit
     //=------------------------------------------------------------------------=
     
     /// Creates a new instance from two halves.
-    @inlinable public init(_ storage: consuming DoubleIntLayout<Base>) {
+    @inlinable public init(_ storage: consuming Doublet<Base>) {
         self.storage = storage
     }
 }

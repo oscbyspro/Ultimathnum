@@ -97,7 +97,7 @@ extension Test {
     //=------------------------------------------------------------------------=
     
     public func division<T>(
-        _ dividend: DoubleIntLayout<T>, 
+        _ dividend: Doublet<T>, 
         _ divisor: T,
         _ expectation: Fallible<Division<T, T>>,
         _ id: BinaryIntegerID = .init()
@@ -105,7 +105,7 @@ extension Test {
         //=--------------------------------------=
         let result = T.division(dividend, by: divisor)
         //=--------------------------------------=
-        // TODO: DoubleIntLayout plus(_:) minus(_:)
+        // TODO: Doublet plus(_:) minus(_:)
         //=--------------------------------------=
         if !expectation.error {
             // TODO: reverse engineer the dividend

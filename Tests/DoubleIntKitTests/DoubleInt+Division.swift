@@ -157,7 +157,7 @@ extension DoubleIntTests {
             typealias T = DoubleInt<Base>
             typealias M = DoubleInt<Base>.Magnitude
             typealias D = Division<T, T>
-            typealias X = DoubleIntLayout<T>
+            typealias X = Doublet<T>
             typealias F = Fallible<Division<T, T>>
             
             Test().division(X(low:  7 as M, high:  0 as T),  0 as T, F(D(quotient:      0, remainder:  7), error: true))
@@ -177,7 +177,7 @@ extension DoubleIntTests {
             typealias T = DoubleInt<Base>
             typealias M = DoubleInt<Base>.Magnitude
             typealias D = Division<T, T>
-            typealias X = DoubleIntLayout<T>
+            typealias X = Doublet<T>
             typealias F = Fallible<Division<T, T>>
             
             Test().division(X(low:  7 as M, high:  0 as T),  0 as T, F(D(quotient:  0, remainder:  7), error: true))

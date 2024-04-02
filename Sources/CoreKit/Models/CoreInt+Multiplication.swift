@@ -30,8 +30,8 @@ extension CoreInt {
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func multiplication(_  multiplier: borrowing Self) -> DoubleIntLayout<Self> {
+    @inlinable public borrowing func multiplication(_  multiplier: borrowing Self) -> Doublet<Self> {
         let result = self.base.multipliedFullWidth(by: multiplier.base)
-        return DoubleIntLayout(high: Self(result.high), low: Magnitude(result.low))
+        return Doublet(high: Self(result.high), low: Magnitude(result.low))
     }
 }

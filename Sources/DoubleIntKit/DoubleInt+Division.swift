@@ -56,7 +56,7 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func division(_ dividend: consuming DoubleIntLayout<Self>, by divisor: Self) -> Fallible<Division<Self, Self>> {
+    @inlinable public static func division(_ dividend: consuming Doublet<Self>, by divisor: Self) -> Fallible<Division<Self, Self>> {
         typealias T = Fallible<Division<Self, Self>>
         //=--------------------------------------=
         let lhsIsLessThanZero: Bool = dividend.high.isLessThanZero
@@ -146,7 +146,7 @@ extension DoubleInt where Base == Base.Magnitude {
     //=------------------------------------------------------------------------=
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
-    @inlinable static func _divide4222(_ lhs: consuming DoubleIntLayout<Self>, by rhs: borrowing Self) -> Fallible<Division<Self, Self>> {
+    @inlinable static func _divide4222(_ lhs: consuming Doublet<Self>, by rhs: borrowing Self) -> Fallible<Division<Self, Self>> {
         let shift = rhs.count(0, option: .descending)
         //=--------------------------------------=
         // divisor is zero
@@ -168,7 +168,7 @@ extension DoubleInt where Base == Base.Magnitude {
     }
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
-    @inlinable static func _divide4222SHL(_ lhs: consuming DoubleIntLayout<Self>, by rhs: Self, shift: consuming Self) -> Division<Self, Self> {
+    @inlinable static func _divide4222SHL(_ lhs: consuming Doublet<Self>, by rhs: Self, shift: consuming Self) -> Division<Self, Self> {
         Swift.assert(rhs != 0, "must not divide by zero")
         Swift.assert(rhs.count(0, option: .descending) == shift, "save shift distance")
         Swift.assert(rhs > lhs.high, "quotient must fit in two halves")
@@ -184,7 +184,7 @@ extension DoubleInt where Base == Base.Magnitude {
         if  shift.load(as: UX.self) >= UX(bitWidth: Base.self) {
             Swift.assert(rhs.high == 0, "rhs.high == 0 && rhs > lhs.high -> lhs.high.high == 0")
             Swift.assert(lhs.high.high == 0, "quotient must fit in two halves")
-            let result = Self._divide3121(TripleIntLayout(low: lhs.low.low, mid: lhs.low.high, high: lhs.high.low), by: rhs.low)
+            let result = Self._divide3121(Triplet(low: lhs.low.low, mid: lhs.low.high, high: lhs.high.low), by: rhs.low)
             return Division(quotient: result.quotient, remainder: Self(low: result.remainder))
         }
         //=--------------------------------------=
@@ -196,7 +196,7 @@ extension DoubleInt where Base == Base.Magnitude {
         // division: 3212 (normalized)
         //=--------------------------------------=
         if  lhs.high.high == 0, rhs > Self(low: lhs.low.high, high: lhs.high.low) {
-            let result = Self._divide3212MSB(TripleIntLayout(low: lhs.low.low, mid: lhs.low.high, high: lhs.high.low), by: rhs)
+            let result = Self._divide3212MSB(Triplet(low: lhs.low.low, mid: lhs.low.high, high: lhs.high.low), by: rhs)
             return Division(quotient: Self(low: result.quotient), remainder: result.remainder &>> shift)
         }
         //=--------------------------------------=
@@ -213,15 +213,15 @@ extension DoubleInt where Base == Base.Magnitude {
     @inlinable static func _divide2121(_ lhs: consuming Self, by rhs: borrowing Base) -> Division<Self, Base> {
         // TODO: check whether remainder == 0 branches are worth it...
         let x1 = lhs.high.division(rhs).unwrap()
-        let x0 = DoubleIntLayout(low: lhs.low, high: x1.remainder).division(rhs).unwrap()
+        let x0 = Doublet(low: lhs.low, high: x1.remainder).division(rhs).unwrap()
         return Division(quotient: Self(low: x0.quotient, high: x1.quotient), remainder: x0.remainder)
     }
     
-    @inlinable static func _divide3121(_ lhs: consuming TripleIntLayout<Base>, by rhs: Base) -> Division<Self, Base> {
+    @inlinable static func _divide3121(_ lhs: consuming Triplet<Base>, by rhs: Base) -> Division<Self, Base> {
         // TODO: check whether remainder == 0 branches are worth it...
         Swift.assert(rhs > lhs.high, "quotient must fit in two halves")
-        let x1 = DoubleIntLayout(low: lhs.mid, high: lhs.high).division(rhs).unwrap()
-        let x0 = DoubleIntLayout(low: lhs.low, high: x1.remainder).division(rhs).unwrap()
+        let x1 = Doublet(low: lhs.mid, high: lhs.high).division(rhs).unwrap()
+        let x0 = Doublet(low: lhs.low, high: x1.remainder).division(rhs).unwrap()
         return Division(quotient: Self(low: x0.quotient, high: x1.quotient), remainder: x0.remainder)
     }
     
@@ -230,14 +230,14 @@ extension DoubleInt where Base == Base.Magnitude {
     //=------------------------------------------------------------------------=
     
     /// Divides 3 halves by 2 normalized halves, assuming the quotient fits in 1 half.
-    @inlinable static func _divide3212MSB(_ lhs: consuming TripleIntLayout<Base>, by rhs: borrowing Self) -> Division<Base, Self> {
+    @inlinable static func _divide3212MSB(_ lhs: consuming Triplet<Base>, by rhs: borrowing Self) -> Division<Base, Self> {
         Division(bitPattern: lhs.division3212MSB(rhs.storage))
     }
     
     /// Divides 4 halves by 2 normalized halves, assuming the quotient fits in 2 halves.
-    @inlinable static func _divide4222MSB(_ lhs: consuming DoubleIntLayout<Self>, by rhs: borrowing Self) -> Division<Self, Self> {
-        let x1 = Self._divide3212MSB(TripleIntLayout(low: lhs.low.high, high: ((lhs)).high.storage), by: rhs)
-        let x0 = Self._divide3212MSB(TripleIntLayout(low: lhs.low.low,  high: x1.remainder.storage), by: rhs)
+    @inlinable static func _divide4222MSB(_ lhs: consuming Doublet<Self>, by rhs: borrowing Self) -> Division<Self, Self> {
+        let x1 = Self._divide3212MSB(Triplet(low: lhs.low.high, high: ((lhs)).high.storage), by: rhs)
+        let x0 = Self._divide3212MSB(Triplet(low: lhs.low.low,  high: x1.remainder.storage), by: rhs)
         return Division(quotient: Self(low: x0.quotient, high: x1.quotient), remainder: x0.remainder)
     }
 }

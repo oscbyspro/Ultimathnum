@@ -29,23 +29,23 @@ extension Namespace.TupleBinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable package static func bitShiftL12(_ instance: consuming Base, by shift: Base) -> DoubleIntLayout<Base> {
+    @inlinable package static func bitShiftL12(_ instance: consuming Base, by shift: Base) -> Doublet<Base> {
         let overshift = shift == Base() ? Base() : self.bitShiftR11(copy instance, by: ~shift &+ 1)
         instance = self.bitShiftL11(instance, by: shift)
-        return DoubleIntLayout(low: Base.Magnitude(bitPattern: instance), high: overshift)
+        return Doublet(low: Base.Magnitude(bitPattern: instance), high: overshift)
     }
     
-    @inlinable package static func bitShiftL23(_ instance: consuming DoubleIntLayout<Base>, by shift: Base) -> TripleIntLayout<Base> {
+    @inlinable package static func bitShiftL23(_ instance: consuming Doublet<Base>, by shift: Base) -> Triplet<Base> {
         let overshift = shift == Base() ? Base() : self.bitShiftR11(instance.high, by: ~shift &+ 1)
         instance = self.bitShiftL22(instance, by: shift)
-        return TripleIntLayout(low: instance.low, mid: Base.Magnitude(bitPattern: instance.high), high: overshift)
+        return Triplet(low: instance.low, mid: Base.Magnitude(bitPattern: instance.high), high: overshift)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable package static func bitShiftL22(_ instance: consuming DoubleIntLayout<Base>, by shift: Base) -> DoubleIntLayout<Base> {
+    @inlinable package static func bitShiftL22(_ instance: consuming Doublet<Base>, by shift: Base) -> Doublet<Base> {
         //=--------------------------------------=
         let shift = Base.Magnitude(bitPattern: shift) & (Base.bitWidth &<< 1 &- 1)
         //=--------------------------------------=
@@ -58,10 +58,10 @@ extension Namespace.TupleBinaryInteger {
             instance.low  &<<= shift
         }
         //=--------------------------------------=
-        return instance as DoubleIntLayout<Base> as DoubleIntLayout<Base>
+        return instance as Doublet<Base> as Doublet<Base>
     }
     
-    @inlinable package static func bitShiftR22(_ instance: consuming DoubleIntLayout<Base>, by shift: Base) -> DoubleIntLayout<Base> {
+    @inlinable package static func bitShiftR22(_ instance: consuming Doublet<Base>, by shift: Base) -> Doublet<Base> {
         //=--------------------------------------=
         let shift = Base.Magnitude(bitPattern: shift) & (Base.bitWidth &<< 1 &- 1)
         //=--------------------------------------=
@@ -74,6 +74,6 @@ extension Namespace.TupleBinaryInteger {
             instance.high &>>= Base(bitPattern: shift)
         }
         //=--------------------------------------=
-        return instance as DoubleIntLayout<Base> as DoubleIntLayout<Base>
+        return instance as Doublet<Base> as Doublet<Base>
     }
 }

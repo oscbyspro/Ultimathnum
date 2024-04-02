@@ -8,24 +8,23 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Double Int Layout x Division
+// MARK: * Triplet x Numbers
 //*============================================================================*
 
-extension DoubleIntLayout {
+extension Triplet {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func quotient (_ divisor: borrowing Base) -> Fallible<Base> {
-        self.division(divisor).map({ $0.quotient  })
-    }
-    
-    @inlinable public consuming func remainder(_ divisor: borrowing Base) -> Fallible<Base> {
-        self.division(divisor).map({ $0.remainder })
-    }
-    
-    @inlinable public consuming func division (_ divisor: borrowing Base) -> Fallible<Division<Base, Base>> {
-        Base.division(self, by: divisor)
+    @inlinable public var magnitude: Magnitude {
+        consuming get {
+            
+            if  self.high.isLessThanZero {
+                self = self.negated().value
+            }
+            
+            return Magnitude(bitPattern: self)
+        }
     }
 }

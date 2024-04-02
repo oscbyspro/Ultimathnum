@@ -48,7 +48,7 @@ extension MinimiIntTests {
     
     func testDivision2111() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias X = DoubleIntLayout<T>
+            typealias X = Doublet<T>
             typealias D = Division<T, T>
             typealias F = Fallible<Division<T, T>>
             
@@ -63,7 +63,7 @@ extension MinimiIntTests {
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias X = DoubleIntLayout<T>
+            typealias X = Doublet<T>
             typealias D = Division<T, T>
             typealias F = Fallible<Division<T, T>>
             

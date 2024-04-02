@@ -8,28 +8,28 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Double Int Layout x Logic
+// MARK: * Triplet x Logic
 //*============================================================================*
 
-extension DoubleIntLayout {
+extension Triplet {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     @inlinable public static prefix func ~(instance: consuming Self) -> Self {
-        Self(low: ~instance.low, high: ~instance.high)
+        Self(low: ~instance.low, mid: ~instance.mid, high: ~instance.high)
     }
     
     @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(low: lhs.low & rhs.low, high: lhs.high & rhs.high)
+        Self(low: lhs.low & rhs.low, mid: lhs.mid & rhs.mid, high: lhs.high & rhs.high)
     }
     
     @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(low: lhs.low | rhs.low, high: lhs.high | rhs.high)
+        Self(low: lhs.low | rhs.low, mid: lhs.mid | rhs.mid, high: lhs.high | rhs.high)
     }
     
     @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(low: lhs.low ^ rhs.low, high: lhs.high ^ rhs.high)
+        Self(low: lhs.low ^ rhs.low, mid: lhs.mid ^ rhs.mid, high: lhs.high ^ rhs.high)
     }
 }

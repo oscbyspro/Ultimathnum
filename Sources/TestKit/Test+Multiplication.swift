@@ -23,7 +23,7 @@ extension Test {
     public func multiplication<T>(
         _ lhs: T, 
         _ rhs: T,
-        _ expectation: Fallible<DoubleIntLayout<T>>,
+        _ expectation: Fallible<Doublet<T>>,
         _ id: SystemsIntegerID = .init()
     )   where T: SystemsInteger {
         //=--------------------------------------=

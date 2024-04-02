@@ -8,17 +8,17 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Double Int Layout
+// MARK: * Doublet
 //*============================================================================*
 
 /// An integer split into 2 parts.
-@frozen public struct DoubleIntLayout<Base>: Comparable, Hashable where Base: SystemsInteger {
+@frozen public struct Doublet<Base>: Comparable, Hashable where Base: SystemsInteger {
     
     public typealias High = Base
     
     public typealias Low  = Base.Magnitude
     
-    public typealias Magnitude = DoubleIntLayout<Base.Magnitude>
+    public typealias Magnitude = Doublet<Base.Magnitude>
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data

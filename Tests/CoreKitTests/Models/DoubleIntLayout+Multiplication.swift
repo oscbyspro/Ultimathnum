@@ -11,10 +11,10 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Double Int Layout x Multiplication
+// MARK: * Doublet x Multiplication
 //*============================================================================*
 
-extension DoubleIntLayoutTests {
+extension DoubletTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -22,8 +22,8 @@ extension DoubleIntLayoutTests {
     
     func testMultiplication213() {
         func whereTheBaseIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias X = DoubleIntLayout<T>
-            typealias Y = TripleIntLayout<T>
+            typealias X = Doublet<T>
+            typealias Y = Triplet<T>
             
             Test().same(X(low:  0, high:  0).multiplication( 0 as T), Y(low:  0, mid:  0, high:  0))
             Test().same(X(low:  0, high:  0).multiplication(~0 as T), Y(low:  0, mid:  0, high:  0))

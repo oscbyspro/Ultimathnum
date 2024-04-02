@@ -11,10 +11,10 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Double Int Layout x Addition
+// MARK: * Doublet x Addition
 //*============================================================================*
 
-extension DoubleIntLayoutTests {
+extension DoubletTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -22,8 +22,8 @@ extension DoubleIntLayoutTests {
     
     func testAddition21B() {
         func whereTheBaseIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias X = DoubleIntLayout<T>
-            typealias F = Fallible<DoubleIntLayout<T>>
+            typealias X = Doublet<T>
+            typealias F = Fallible<Doublet<T>>
                         
             Test().same(X(low:  0, high:  0).plus(T(~3)), F(X(low: ~3, high: ~0)))
             Test().same(X(low:  1, high:  2).plus(T(~3)), F(X(low: ~2, high:  1)))
@@ -37,8 +37,8 @@ extension DoubleIntLayoutTests {
         }
         
         func whereTheBaseIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias X = DoubleIntLayout<T>
-            typealias F = Fallible<DoubleIntLayout<T>>
+            typealias X = Doublet<T>
+            typealias F = Fallible<Doublet<T>>
             
             Test().same(X(low:  0, high:  0).plus(T(~3)), F(X(low: ~3, high:  0)))
             Test().same(X(low:  1, high:  2).plus(T(~3)), F(X(low: ~2, high:  2)))
@@ -58,8 +58,8 @@ extension DoubleIntLayoutTests {
     
     func testAddition22B() {
         func whereTheBaseIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias X = DoubleIntLayout<T>
-            typealias F = Fallible<DoubleIntLayout<T>>
+            typealias X = Doublet<T>
+            typealias F = Fallible<Doublet<T>>
                         
             Test().same(X(low:  0, high:  0).plus(X(low: ~3, high: ~4)), F(X(low: ~3, high: ~4)))
             Test().same(X(low:  1, high:  2).plus(X(low: ~3, high: ~4)), F(X(low: ~2, high: ~2)))
@@ -73,8 +73,8 @@ extension DoubleIntLayoutTests {
         }
         
         func whereTheBaseIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias X = DoubleIntLayout<T>
-            typealias F = Fallible<DoubleIntLayout<T>>
+            typealias X = Doublet<T>
+            typealias F = Fallible<Doublet<T>>
             
             Test().same(X(low:  0, high:  0).plus(X(low: ~3, high: ~4)), F(X(low: ~3, high: ~4)))
             Test().same(X(low:  1, high:  2).plus(X(low: ~3, high: ~4)), F(X(low: ~2, high: ~2)))

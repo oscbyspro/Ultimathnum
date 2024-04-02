@@ -8,23 +8,28 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Triple Int Layout x Numbers
+// MARK: * Doublet x Logic
 //*============================================================================*
 
-extension TripleIntLayout {
+extension Doublet {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public var magnitude: Magnitude {
-        consuming get {
-            
-            if  self.high.isLessThanZero {
-                self = self.negated().value
-            }
-            
-            return Magnitude(bitPattern: self)
-        }
+    @inlinable public static prefix func ~(instance: consuming Self) -> Self {
+        Self(low: ~instance.low, high: ~instance.high)
+    }
+    
+    @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        Self(low: lhs.low & rhs.low, high: lhs.high & rhs.high)
+    }
+    
+    @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        Self(low: lhs.low | rhs.low, high: lhs.high | rhs.high)
+    }
+    
+    @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        Self(low: lhs.low ^ rhs.low, high: lhs.high ^ rhs.high)
     }
 }

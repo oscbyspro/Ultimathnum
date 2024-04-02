@@ -11,10 +11,10 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Triple Int Layout x Addition
+// MARK: * Triplet x Addition
 //*============================================================================*
 
-extension TripleIntLayoutTests {
+extension TripletTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -22,8 +22,8 @@ extension TripleIntLayoutTests {
     
     func testAddition31B() {
         func whereTheBaseIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias Y = TripleIntLayout<T>
-            typealias F = Fallible<TripleIntLayout<T>>
+            typealias Y = Triplet<T>
+            typealias F = Fallible<Triplet<T>>
                         
             Test().same(Y(low:  0, mid:  0, high:  0).plus(T(~4)), F(Y(low: ~4, mid: ~0, high: ~0)))
             Test().same(Y(low:  1, mid:  2, high:  3).plus(T(~4)), F(Y(low: ~3, mid:  1, high:  3)))
@@ -37,8 +37,8 @@ extension TripleIntLayoutTests {
         }
         
         func whereTheBaseIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias Y = TripleIntLayout<T>
-            typealias F = Fallible<TripleIntLayout<T>>
+            typealias Y = Triplet<T>
+            typealias F = Fallible<Triplet<T>>
             
             Test().same(Y(low:  0, mid:  0, high:  0).plus(T(~4)), F(Y(low: ~4, mid:  0, high:  0)))
             Test().same(Y(low:  1, mid:  2, high:  3).plus(T(~4)), F(Y(low: ~3, mid:  2, high:  3)))
@@ -58,9 +58,9 @@ extension TripleIntLayoutTests {
     
     func testAddition32B() {
         func whereTheBaseIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias X = DoubleIntLayout<T>
-            typealias Y = TripleIntLayout<T>
-            typealias F = Fallible<TripleIntLayout<T>>
+            typealias X = Doublet<T>
+            typealias Y = Triplet<T>
+            typealias F = Fallible<Triplet<T>>
                         
             Test().same(Y(low:  0, mid:  0, high:  0).plus(X(low: ~4, high: ~5)), F(Y(low: ~4, mid: ~5, high: ~0)))
             Test().same(Y(low:  1, mid:  2, high:  3).plus(X(low: ~4, high: ~5)), F(Y(low: ~3, mid: ~3, high:  2)))
@@ -74,9 +74,9 @@ extension TripleIntLayoutTests {
         }
         
         func whereTheBaseIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias X = DoubleIntLayout<T>
-            typealias Y = TripleIntLayout<T>
-            typealias F = Fallible<TripleIntLayout<T>>
+            typealias X = Doublet<T>
+            typealias Y = Triplet<T>
+            typealias F = Fallible<Triplet<T>>
             
             Test().same(Y(low:  0, mid:  0, high:  0).plus(X(low: ~4, high: ~5)), F(Y(low: ~4, mid: ~5, high:  0)))
             Test().same(Y(low:  1, mid:  2, high:  3).plus(X(low: ~4, high: ~5)), F(Y(low: ~3, mid: ~3, high:  3)))
@@ -96,9 +96,9 @@ extension TripleIntLayoutTests {
     
     func testAddition33B() {
         func whereTheBaseIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias X = DoubleIntLayout<T>
-            typealias Y = TripleIntLayout<T>
-            typealias F = Fallible<TripleIntLayout<T>>
+            typealias X = Doublet<T>
+            typealias Y = Triplet<T>
+            typealias F = Fallible<Triplet<T>>
                         
             Test().same(Y(low:  0, mid:  0, high:  0).plus(Y(low: ~4, mid: ~5, high: ~6)), F(Y(low: ~4, mid: ~5, high: ~6)))
             Test().same(Y(low:  1, mid:  2, high:  3).plus(Y(low: ~4, mid: ~5, high: ~6)), F(Y(low: ~3, mid: ~3, high: ~3)))
@@ -112,9 +112,9 @@ extension TripleIntLayoutTests {
         }
         
         func whereTheBaseIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias X = DoubleIntLayout<T>
-            typealias Y = TripleIntLayout<T>
-            typealias F = Fallible<TripleIntLayout<T>>
+            typealias X = Doublet<T>
+            typealias Y = Triplet<T>
+            typealias F = Fallible<Triplet<T>>
             
             Test().same(Y(low:  0, mid:  0, high:  0).plus(Y(low: ~4, mid: ~5, high: ~6)), F(Y(low: ~4, mid: ~5, high: ~6)))
             Test().same(Y(low:  1, mid:  2, high:  3).plus(Y(low: ~4, mid: ~5, high: ~6)), F(Y(low: ~3, mid: ~3, high: ~3)))

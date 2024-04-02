@@ -8,25 +8,22 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Double Int Layout x Comparison
+// MARK: * Doublet x Bit
 //*============================================================================*
 
-extension DoubleIntLayout {
+extension Doublet: BitCastable {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.same
+    @inlinable public init(bitPattern: consuming Doublet<Base.Magnitude>) {
+        self.init(low: bitPattern.low, high: Base(bitPattern: bitPattern.high))
     }
     
-    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.less
-    }
-    
-    @inlinable public borrowing func compared(to other: borrowing Self) -> Signum {
-        let a = self.high.compared(to: other.high); if a != Signum.same { return a }
-        return  self.low .compared(to: other.low );
+    @inlinable public var bitPattern: Doublet<Base.Magnitude> {
+        consuming get {
+            .init(low: self.low, high: Base.Magnitude(bitPattern: self.high))
+        }
     }
 }

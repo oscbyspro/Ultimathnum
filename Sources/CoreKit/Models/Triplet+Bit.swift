@@ -8,23 +8,30 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Double Int Layout x Numbers
+// MARK: * Triplet x Bit
 //*============================================================================*
 
-extension DoubleIntLayout {
+extension Triplet: BitCastable {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public var magnitude: Magnitude {
+    @inlinable public init(bitPattern: consuming Triplet<Base.Magnitude>) {
+        self.init(
+            low:  bitPattern.low,
+            mid:  bitPattern.mid,
+            high: Base(bitPattern: bitPattern.high)
+        )
+    }
+    
+    @inlinable public var bitPattern: Triplet<Base.Magnitude> {
         consuming get {
-            
-            if  self.high.isLessThanZero {
-                self = self.negated().value
-            }
-            
-            return Magnitude(bitPattern: self)
+            Triplet<Base.Magnitude>(
+                low:  self.low,
+                mid:  self.mid,
+                high: Base.Magnitude(bitPattern: self.high)
+            )
         }
     }
 }

@@ -11,10 +11,10 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Triple Int Layout x Division
+// MARK: * Triplet x Division
 //*============================================================================*
 
-extension TripleIntLayoutTests {
+extension TripletTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -22,8 +22,8 @@ extension TripleIntLayoutTests {
     
     func testDivision3212MSB() {
         func whereTheBaseIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias X = DoubleIntLayout<T>
-            typealias Y = TripleIntLayout<T>
+            typealias X = Doublet<T>
+            typealias Y = Triplet<T>
             
             Test().division3212MSB(Y(low:  0, mid:  0, high: ~0), X(low:  1, high: ~0), ~0 as T, X(low:  1, high: ~1))
             Test().division3212MSB(Y(low:  0, mid:  0, high: ~0), X(low: ~1, high: ~0), ~0 as T, X(low: ~1, high:  1))
@@ -53,10 +53,10 @@ extension Test {
     //=------------------------------------------------------------------------=
     
     func division3212MSB<Base>(
-        _ dividend:  TripleIntLayout<Base>,
-        _ divisor:   DoubleIntLayout<Base>,
+        _ dividend:  Triplet<Base>,
+        _ divisor:   Doublet<Base>,
         _ quotient:  Base,
-        _ remainder: DoubleIntLayout<Base>
+        _ remainder: Doublet<Base>
     )   where Base:  SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
         let result = dividend.division3212MSB(divisor)

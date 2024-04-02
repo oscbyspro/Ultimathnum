@@ -23,8 +23,8 @@ extension CoreIntTests {
     func testMultiplication() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
-            typealias X = DoubleIntLayout<T>
-            typealias F = Fallible<DoubleIntLayout<T>>
+            typealias X = Doublet<T>
+            typealias F = Fallible<Doublet<T>>
             //=----------------------------------=
             Test().multiplication( 0 as T,  0 as T, F(X(low:  0 as M, high:  0 as T)))
             Test().multiplication( 0 as T, -1 as T, F(X(low:  0 as M, high:  0 as T)))
@@ -69,8 +69,8 @@ extension CoreIntTests {
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
-            typealias X = DoubleIntLayout<T>
-            typealias F = Fallible<DoubleIntLayout<T>>
+            typealias X = Doublet<T>
+            typealias F = Fallible<Doublet<T>>
             //=----------------------------------=
             Test().multiplication( 0 as T,  0 as T, F(X(low:  0 as M, high:  0 as T)))
             Test().multiplication( 0 as T,  1 as T, F(X(low:  0 as M, high:  0 as T)))

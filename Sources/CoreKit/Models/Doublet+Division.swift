@@ -8,26 +8,24 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Triple Int Layout x Comparison
+// MARK: * Doublet x Division
 //*============================================================================*
 
-extension TripleIntLayout {
+extension Doublet {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.same
+    @inlinable public consuming func quotient (_ divisor: borrowing Base) -> Fallible<Base> {
+        self.division(divisor).map({ $0.quotient  })
     }
     
-    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.less
+    @inlinable public consuming func remainder(_ divisor: borrowing Base) -> Fallible<Base> {
+        self.division(divisor).map({ $0.remainder })
     }
     
-    @inlinable public borrowing func compared(to other: borrowing Self) -> Signum {
-        let a = self.high.compared(to: other.high); if a != Signum.same { return a }
-        let b = self.mid .compared(to: other.mid ); if b != Signum.same { return b }
-        return  self.low .compared(to: other.low );
+    @inlinable public consuming func division (_ divisor: borrowing Base) -> Fallible<Division<Base, Base>> {
+        Base.division(self, by: divisor)
     }
 }
