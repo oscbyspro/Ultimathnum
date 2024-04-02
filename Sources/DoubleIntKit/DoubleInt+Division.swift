@@ -99,11 +99,11 @@ extension DoubleInt where Base == Base.Magnitude {
             return Fallible.failure(Division(quotient: 0, remainder: lhs))
         }
         //=--------------------------------------=
-        return Fallible.success(Self._divide2222(lhs, by: rhs, shift: shift))
+        return Fallible.success(Self._divide2222SHL(lhs, by: rhs, shift: shift))
     }
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
-    @inlinable static func _divide2222(_ lhs: consuming Self, by rhs: Self, shift: consuming Self) -> Division<Self, Self> {
+    @inlinable static func _divide2222SHL(_ lhs: consuming Self, by rhs: Self, shift: consuming Self) -> Division<Self, Self> {
         Swift.assert(rhs != 0, "must not divide by zero")
         Swift.assert(rhs.count(0, option: .descending) == shift, "save shift distance")
         //=--------------------------------------=
@@ -161,14 +161,14 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         if  rhs <= lhs.high {
             overflow = true
-            lhs.high = Self._divide2222(lhs.high, by: rhs, shift: shift).remainder
+            lhs.high = Self._divide2222SHL(lhs.high, by: rhs, shift: shift).remainder
         }
         //=--------------------------------------=
-        return Fallible(Self._divide4222(lhs, by: rhs, shift: shift), error: overflow)
+        return Fallible(Self._divide4222SHL(lhs, by: rhs, shift: shift), error: overflow)
     }
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
-    @inlinable static func _divide4222(_ lhs: consuming DoubleIntLayout<Self>, by rhs: Self, shift: consuming Self) -> Division<Self, Self> {
+    @inlinable static func _divide4222SHL(_ lhs: consuming DoubleIntLayout<Self>, by rhs: Self, shift: consuming Self) -> Division<Self, Self> {
         Swift.assert(rhs != 0, "must not divide by zero")
         Swift.assert(rhs.count(0, option: .descending) == shift, "save shift distance")
         Swift.assert(rhs > lhs.high, "quotient must fit in two halves")
@@ -176,13 +176,14 @@ extension DoubleInt where Base == Base.Magnitude {
         // division: 2222
         //=--------------------------------------=
         if  lhs.high == 0 {
-            return Self._divide2222(lhs.low, by: rhs, shift: shift)
+            return Self._divide2222SHL(lhs.low, by: rhs, shift: shift)
         }
         //=--------------------------------------=
         // division: 3121
         //=--------------------------------------=
         if  shift.load(as: UX.self) >= UX(bitWidth: Base.self) {
-            Swift.assert(lhs.high.high == 0, "quotient must fit in two halves") // lhs.high < rhs && rhs.high == 0
+            Swift.assert(rhs.high == 0, "rhs.high == 0 && rhs > lhs.high -> lhs.high.high == 0")
+            Swift.assert(lhs.high.high == 0, "quotient must fit in two halves")
             let result = Self._divide3121(TripleIntLayout(low: lhs.low.low, mid: lhs.low.high, high: lhs.high.low), by: rhs.low)
             return Division(quotient: result.quotient, remainder: Self(low: result.remainder))
         }
@@ -210,15 +211,17 @@ extension DoubleInt where Base == Base.Magnitude {
     //=------------------------------------------------------------------------=
     
     @inlinable static func _divide2121(_ lhs: consuming Self, by rhs: borrowing Base) -> Division<Self, Base> {
+        // TODO: check whether remainder == 0 branches are worth it...
         let x1 = lhs.high.division(rhs).unwrap()
-        let x0 = x1.remainder == 0 ? lhs.low.division(rhs).unwrap() : Base.division(DoubleIntLayout(low: lhs.low, high: x1.remainder), by: rhs).unwrap()
+        let x0 = DoubleIntLayout(low: lhs.low, high: x1.remainder).division(rhs).unwrap()
         return Division(quotient: Self(low: x0.quotient, high: x1.quotient), remainder: x0.remainder)
     }
     
     @inlinable static func _divide3121(_ lhs: consuming TripleIntLayout<Base>, by rhs: Base) -> Division<Self, Base> {
+        // TODO: check whether remainder == 0 branches are worth it...
         Swift.assert(rhs > lhs.high, "quotient must fit in two halves")
-        let x1 = Base.division(DoubleIntLayout(low: lhs.mid, high: lhs.high), by: rhs).unwrap()
-        let x0 = x1.remainder == 0 ? lhs.low.division(rhs).unwrap() : Base.division(DoubleIntLayout(low: lhs.low, high: x1.remainder), by: rhs).unwrap()
+        let x1 = DoubleIntLayout(low: lhs.mid, high: lhs.high).division(rhs).unwrap()
+        let x0 = DoubleIntLayout(low: lhs.low, high: x1.remainder).division(rhs).unwrap()
         return Division(quotient: Self(low: x0.quotient, high: x1.quotient), remainder: x0.remainder)
     }
     
@@ -233,8 +236,8 @@ extension DoubleInt where Base == Base.Magnitude {
     
     /// Divides 4 halves by 2 normalized halves, assuming the quotient fits in 2 halves.
     @inlinable static func _divide4222MSB(_ lhs: consuming DoubleIntLayout<Self>, by rhs: borrowing Self) -> Division<Self, Self> {
-        let x1 = Self._divide3212MSB(TripleIntLayout(low: lhs.low.high, mid: /**/lhs.high.low, high: /**/lhs.high.high), by: rhs)
-        let x0 = Self._divide3212MSB(TripleIntLayout(low: lhs.low.low,  mid: x1.remainder.low, high: x1.remainder.high), by: rhs)
+        let x1 = Self._divide3212MSB(TripleIntLayout(low: lhs.low.high, high: ((lhs)).high.storage), by: rhs)
+        let x0 = Self._divide3212MSB(TripleIntLayout(low: lhs.low.low,  high: x1.remainder.storage), by: rhs)
         return Division(quotient: Self(low: x0.quotient, high: x1.quotient), remainder: x0.remainder)
     }
 }
