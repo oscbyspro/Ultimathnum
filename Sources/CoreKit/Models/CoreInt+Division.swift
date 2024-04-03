@@ -51,14 +51,14 @@ extension CoreInt {
         let rhsIsLessThanZero: Bool = divisor/*--*/.isLessThanZero
         let minus: Bool = (lhsIsLessThanZero) != rhsIsLessThanZero
         //=--------------------------------------=
-        var result = T(bitPattern: Magnitude._division(dividend.magnitude, by: divisor.magnitude))
+        var result = T(bitPattern: Magnitude.division(dividend.magnitude, by: divisor.magnitude))
         //=--------------------------------------=
         if  minus {
-            result.value.quotient .capture({ $0.complement })
+            Fallible.capture(&result.value.quotient,  map:{ $0.complement })
         }
         
         if  lhsIsLessThanZero {
-            result.value.remainder.capture({ $0.complement })
+            Fallible.capture(&result.value.remainder, map:{ $0.complement })
         }
         
         let overflow = minus != result.value.quotient.isLessThanZero && !(minus && result.value.quotient == 0)
@@ -77,7 +77,7 @@ extension CoreInt where Self == Magnitude {
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inline(__always) @inlinable static func _division(_ dividend: consuming Doublet<Self>, by divisor: borrowing Self) -> Fallible<Division<Self, Self>> {
+    @inlinable static func division(_ dividend: consuming Doublet<Self>, by divisor: borrowing Self) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
         if  divisor == 0 {
             return Fallible.failure(Division(quotient: 0, remainder: dividend.low))

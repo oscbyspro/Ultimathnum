@@ -37,11 +37,11 @@ extension Doublet {
         var result = T(bitPattern: self.magnitude.division2222(divisor.magnitude))
         //=--------------------------------------=
         if  minus {
-            Fallible.capture(&result.value.quotient,  map: \.complement)
+            Fallible.capture(&result.value.quotient,  map:{ $0.complement })
         }
         
         if  lhsIsLessThanZero {
-            Fallible.capture(&result.value.remainder, map: \.complement)
+            Fallible.capture(&result.value.remainder, map:{ $0.complement })
         }
         
         let overflow = lhsIsLessThanZero && rhsIsLessThanZero && result.value.quotient.high.isLessThanZero

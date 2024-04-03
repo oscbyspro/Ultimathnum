@@ -36,7 +36,7 @@ extension BinaryInteger {
         //=--------------------------------------=
         var isLessThanZero = Bool(bitPattern: sign)
         if  isLessThanZero {
-            isLessThanZero = magnitude.capture({ $0.negated() })
+            isLessThanZero = Fallible.capture(&magnitude, map:{ $0.negated() })
         }
         //=--------------------------------------=
         let value = Self(bitPattern: consume magnitude)

@@ -21,7 +21,7 @@ extension Triplet {
         consuming get {
             var overflow = true
             (self.low,  overflow) = (~self.low ).plus(Low (Bit(bitPattern: overflow))).components
-            (self.mid,  overflow) = (~self.mid ).plus(Low (Bit(bitPattern: overflow))).components
+            (self.mid,  overflow) = (~self.mid ).plus(Mid (Bit(bitPattern: overflow))).components
             (self.high, overflow) = (~self.high).plus(High(Bit(bitPattern: overflow))).components
             return self
         }

@@ -68,8 +68,8 @@ extension Doublet where Base == Base.Magnitude {
         let bx = self.high.times(multiplier.low )
         let by = !(self.high == 0 || multiplier.high == 0)
         
-        let o0 = ax.high.capture({ $0.plus(ay.value) })
-        let o1 = ax.high.capture({ $0.plus(bx.value) })
+        let o0 = Fallible.capture(&ax.high, map:{ $0.plus(ay.value) })
+        let o1 = Fallible.capture(&ax.high, map:{ $0.plus(bx.value) })
         
         let overflow = by || ay.error || bx.error || o0 || o1
         return Fallible(Self(bitPattern: ax), error: overflow)
