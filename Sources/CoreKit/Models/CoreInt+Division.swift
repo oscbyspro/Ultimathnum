@@ -54,11 +54,11 @@ extension CoreInt {
         var result = T(bitPattern: Magnitude._division(dividend.magnitude, by: divisor.magnitude))
         //=--------------------------------------=
         if  minus {
-            result.value.quotient .capture({ $0.negated().value })
+            result.value.quotient .capture({ $0.complement })
         }
         
         if  lhsIsLessThanZero {
-            result.value.remainder.capture({ $0.negated().value })
+            result.value.remainder.capture({ $0.complement })
         }
         
         let overflow = minus != result.value.quotient.isLessThanZero && !(minus && result.value.quotient == 0)

@@ -169,7 +169,7 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// The bit that extends the bit pattern of the integer's ``body``.
+    /// The bit that extends the integer's ``body``.
     ///
     /// ```
     ///            ┌───────────┬───────────┐
