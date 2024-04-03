@@ -17,6 +17,10 @@ extension CoreInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// ### Development
+    ///
+    /// - TODO: Move this somewhere else.
+    ///
     @inlinable public init(integerLiteral: consuming Base.IntegerLiteralType) {
         self.init(Base(integerLiteral: integerLiteral))
     }
@@ -24,6 +28,12 @@ extension CoreInt {
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
+    
+    @inlinable public var complement: Self {
+        consuming get {
+            self.negated().value
+        }
+    }
     
     @inlinable public var magnitude: CoreInt<Base.Magnitude> {
         consuming get {

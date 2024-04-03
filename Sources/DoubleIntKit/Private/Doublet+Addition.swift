@@ -7,6 +7,8 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
 // MARK: * Doublet x Addition
 //*============================================================================*
@@ -14,29 +16,23 @@
 extension Doublet {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transfornations
+    // MARK: Transformations x 2 by 1
     //=------------------------------------------------------------------------=
-    
+        
     @inlinable public consuming func plus(_ increment: Base) -> Fallible<Self> {
-        let appendix = High(repeating: increment.appendix)
+        let appendix = High.init(repeating: increment.appendix)
         let low  = self.low .plus(Low(bitPattern: increment))
-        let high = self.high.plus((((appendix))), carrying: low.error)
+        let high = self.high.plus(appendix, carrying: low.error)
         return Fallible(Self(low: low.value, high: high.value), error: high.error)
     }
     
-    @inlinable public consuming func plus(_ increment: borrowing Self) -> Fallible<Self> {
+    //=------------------------------------------------------------------------=
+    // MARK: Transfornations x 2 by 2
+    //=------------------------------------------------------------------------=
+    
+    @inlinable package consuming func plus(_ increment: borrowing Self) -> Fallible<Self> {
         let low  = self.low .plus(increment.low)
-        let high = self.high.plus(increment.high,  carrying: low.error)
-        return Fallible(Self(low: low.value, high: high.value),  error: high.error)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Composition
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func plus(_ increment: borrowing Self, carrying error: consuming Bool) -> Fallible<Self> {
-        let low  = self.low .plus(increment.low,   carrying:     error)
-        let high = self.high.plus(increment.high,  carrying: low.error)
-        return Fallible(Self(low: low.value, high: high.value),  error: high.error)
+        let high = self.high.plus(increment.high, carrying: low.error)
+        return Fallible(Self(low: low.value, high: high.value), error: high.error)
     }
 }

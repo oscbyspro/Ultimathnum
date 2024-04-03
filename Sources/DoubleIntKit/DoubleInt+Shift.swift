@@ -43,11 +43,11 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func &<<(instance: consuming Self, shift: Self) -> Self {
-        Self(instance.storage &<< Base(bitPattern: shift.low))
+    @inlinable public static func &<<(instance: consuming Self, distance: Self) -> Self {
+        Self(instance.storage &<< distance.storage)
     }
     
-    @inlinable public static func &>>(instance: consuming Self, shift: Self) -> Self {
-        Self(instance.storage &>> Base(bitPattern: shift.low))
+    @inlinable public static func &>>(instance: consuming Self, distance: Self) -> Self {
+        Self(instance.storage &>> distance.storage)
     }
 }

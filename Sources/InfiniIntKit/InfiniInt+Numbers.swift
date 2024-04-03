@@ -19,9 +19,15 @@ extension InfiniInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    @inlinable public var complement: Self {
+        consuming get {
+            self.negated().value
+        }
+    }
+    
     @inlinable public var magnitude: Magnitude {
         consuming get {
-            Magnitude(bitPattern: self.isLessThanZero ? self.negated().value : self)
+            Magnitude(bitPattern: self.isLessThanZero ? self.complement : self)
         }
     }
 }

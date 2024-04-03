@@ -7,6 +7,8 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
 // MARK: * Doublet x Subtraction
 //*============================================================================*
@@ -14,35 +16,33 @@
 extension Doublet {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transfornations
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func negated() -> Fallible<Self> {
         let low  = (~self.low ).plus(1)
         let high = (~self.high).plus(High(Bit(bitPattern: low.error)))
-        return Fallible(Self(low: low.value, high: high.value),  error: high.error == Self.isSigned)
-    }
-    
-    @inlinable public consuming func minus(_ increment: Base) -> Fallible<Self> {
-        let appendix = High(repeating: increment.appendix)
-        let low  = self.low .minus(Low(bitPattern: increment))
-        let high = self.high.minus((((appendix))), carrying: low.error)
-        return Fallible(Self(low: low.value, high: high.value),  error: high.error)
-    }
-    
-    @inlinable public consuming func minus(_ increment: borrowing Self) -> Fallible<Self> {
-        let low  = self.low .minus(increment.low)
-        let high = self.high.minus(increment.high, carrying: low.error)
-        return Fallible(Self(low: low.value, high: high.value),  error: high.error)
+        return Fallible(Self(low: low.value, high: high.value), error: high.error == Self.isSigned)
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Composition
+    // MARK: Transformations x 2 by 1
+    //=------------------------------------------------------------------------=
+        
+    @inlinable public consuming func minus(_ decrement: Base) -> Fallible<Self> {
+        let appendix = High.init(repeating: decrement.appendix)
+        let low  = self.low .minus(Low(bitPattern: decrement))
+        let high = self.high.minus(appendix, carrying: low.error)
+        return Fallible(Self(low: low.value, high: high.value), error: high.error)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transfornations x 2 by 2
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func minus(_ increment: borrowing Self, carrying error: consuming Bool) -> Fallible<Self> {
-        let low  = self.low .minus(increment.low,  carrying:     error)
-        let high = self.high.minus(increment.high, carrying: low.error)
+    @inlinable package consuming func minus(_ decrement: borrowing Self) -> Fallible<Self> {
+        let low  = self.low .minus(decrement.low)
+        let high = self.high.minus(decrement.high, carrying: low.error)
         return Fallible(Self(low: low.value, high: high.value),  error: high.error)
     }
 }

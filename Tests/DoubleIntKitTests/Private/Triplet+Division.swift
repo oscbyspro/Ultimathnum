@@ -8,6 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import DoubleIntKit
 import TestKit
 
 //*============================================================================*
@@ -59,7 +60,7 @@ extension Test {
         _ remainder: Doublet<Base>
     )   where Base:  SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
-        let result = dividend.division3212MSB(divisor)
+        let result: Division<Base, Doublet<Base>> = dividend.division3212(normalized: divisor)
         let expectation = Division(quotient: quotient, remainder: remainder)
         //=--------------------------------------=
         same(result, expectation)

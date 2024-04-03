@@ -7,28 +7,31 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Triplet x Division x Unsigned x Private
+// MARK: * Triplet x Division x Unsigned
 //*============================================================================*
 
 extension Triplet where Base == Base.Magnitude {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformation
+    // MARK: Transformations x 3 by 1
     //=------------------------------------------------------------------------=
     
-    /// Returns the `quotient` and `remainder` of dividing the `dividend` by the `divisor`,
-    /// The `divisor` must be normalized and the `quotient` must fit in one element.
-    ///
-    /// ### Development 1
-    ///
-    /// Comparing is faster than overflow checking, according to time profiler.
-    ///
-    /// ### Development 2
-    ///
-    /// The approximation needs at most two corrections, but looping is faster.
-    ///
-    @inlinable package consuming func division3212MSB(_ divisor: Doublet<Base>) -> Division<Base, Doublet<Base>> {
+    @inlinable package consuming func division3121(unchecked divisor: Base) -> Division<Doublet<Base>, Base> {
+        Swift.assert(divisor != 0, "must not divide by zero")
+        Swift.assert(divisor >  self.high, "quotient must fit in two halves")
+        let high = Doublet(low: self.mid, high: self.high     ).division2111(divisor).assert()
+        let low  = Doublet(low: self.low, high: high.remainder).division2111(divisor).assert()
+        return Division(quotient: Doublet(low: low.quotient, high: high.quotient), remainder: low.remainder)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformation x 3 by 2
+    //=------------------------------------------------------------------------=
+    
+    @inlinable package consuming func division3212(normalized divisor: Doublet<Base>) -> Division<Base, Doublet<Base>> {
         //=--------------------------------------=
         Swift.assert(
             divisor.high >= Base.msb,
@@ -42,12 +45,12 @@ extension Triplet where Base == Base.Magnitude {
         var quotient: Base = if divisor.high == self.high {
             Base.max // the quotient must fit in one part
         }   else {
-            Doublet(low: self.mid, high: self.high).quotient(divisor.high).assert()
+            Doublet(low: self.mid, high: self.high).division2111(divisor.high).assert().quotient
         }
         //=--------------------------------------=
         // decrement when overestimated (max 2)
         //=--------------------------------------=
-        var product: Triplet<Base> = divisor.multiplication(quotient)
+        var product: Self = divisor.multiplication(quotient)
 
         while self < product {
             quotient = quotient.minus(0000001).assert()

@@ -32,9 +32,9 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public func multiplication(_ multiplier: Self) -> Doublet<Self> {
-        let minus  = self.isLessThanZero != multiplier.isLessThanZero
-        let result: Doublet<Magnitude> = self.magnitude._multiplication(multiplier.magnitude)
-        return Doublet(bitPattern: minus ? result.negated().value : result)
+        let minus  = self.high.isLessThanZero != multiplier.high.isLessThanZero
+        let result: Doublet<Magnitude> = self.magnitude.multiplication(multiplier.magnitude)
+        return Doublet(bitPattern: minus ? result.complement : result)
     }
 }
 
@@ -48,7 +48,7 @@ extension DoubleInt where Base == Base.Magnitude {
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable func _multiplication(_ multiplier: Self) -> Doublet<Self> {
+    @inlinable func multiplication(_ multiplier: Self) -> Doublet<Self> {
         var ax = self.low .multiplication(multiplier.low )
         let ay = self.low .multiplication(multiplier.high)
         let bx = self.high.multiplication(multiplier.low )

@@ -16,9 +16,9 @@ import CoreKit
 extension DoubleInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Transfornations
     //=------------------------------------------------------------------------=
-
+    
     @inlinable public consuming func plus(_ increment: borrowing Self) -> Fallible<Self> {
         Fallible(bitPattern: self.storage.plus(increment.storage))
     }
@@ -28,6 +28,8 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func plus(_ increment: borrowing Self, carrying error: consuming Bool) -> Fallible<Self> {
-        Fallible(bitPattern: self.storage.plus(increment.storage, carrying: error))
+        let low  = self.low .plus(increment.storage.low,  carrying:     error)
+        let high = self.high.plus(increment.storage.high, carrying: low.error)
+        return Fallible(Self(low: low.value, high: high.value), error: high.error)
     }
 }

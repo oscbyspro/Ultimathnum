@@ -16,22 +16,24 @@ import CoreKit
 extension DoubleInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Transfornations
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func negated() -> Fallible<Self> {
         Fallible(bitPattern: self.storage.negated())
     }
     
-    @inlinable public consuming func minus(_ increment: borrowing Self) -> Fallible<Self> {
-        Fallible(bitPattern: self.storage.minus(increment.storage))
+    @inlinable public consuming func minus(_ decrement: borrowing Self) -> Fallible<Self> {
+        Fallible(bitPattern: self.storage.minus(decrement.storage))
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func minus(_ increment: borrowing Self, carrying error: consuming Bool) -> Fallible<Self> {
-        Fallible(bitPattern: self.storage.minus(increment.storage, carrying: error))
+    @inlinable public consuming func minus(_ decrement: borrowing Self, carrying error: consuming Bool) -> Fallible<Self> {
+        let low  = self.storage.low .minus(decrement.storage.low,  carrying:     error)
+        let high = self.storage.high.minus(decrement.storage.high, carrying: low.error)
+        return Fallible(Self(low: low.value, high: high.value), error: high.error)
     }
 }

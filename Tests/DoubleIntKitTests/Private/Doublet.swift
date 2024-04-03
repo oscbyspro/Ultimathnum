@@ -7,30 +7,30 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+import DoubleIntKit
+import TestKit
+
 //*============================================================================*
-// MARK: * Doublet x Comparison
+// MARK: * Doublet
 //*============================================================================*
 
-extension Doublet {
+final class DoubletTests: XCTestCase {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    @inlinable public var isLessThanZero: Bool {
-        self.high.isLessThanZero
-    }
+    static let bases: [any SystemsInteger.Type] = {
+        basesWhereIsSigned +
+        basesWhereIsUnsigned
+    }()
     
-    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.same
-    }
+    static let basesWhereIsSigned: [any (SystemsInteger & SignedInteger).Type] = [
+        IX.self, I8.self, I16.self, I32.self, I64.self,
+    ]
     
-    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.less
-    }
-    
-    @inlinable public borrowing func compared(to other: borrowing Self) -> Signum {
-        let a = self.high.compared(to: other.high); if a != Signum.same { return a }
-        return  self.low .compared(to: other.low );
-    }
+    static let basesWhereIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = [
+        UX.self, U8.self, U16.self, U32.self, U64.self,
+    ]
 }

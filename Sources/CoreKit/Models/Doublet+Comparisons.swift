@@ -8,28 +8,32 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Triplet x Logic
+// MARK: * Doublet x Comparison
 //*============================================================================*
 
-extension Triplet {
+extension Doublet {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static prefix func ~(instance: consuming Self) -> Self {
-        Self(low: ~instance.low, mid: ~instance.mid, high: ~instance.high)
+    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        lhs.compared(to: rhs) == Signum.same
     }
     
-    @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(low: lhs.low & rhs.low, mid: lhs.mid & rhs.mid, high: lhs.high & rhs.high)
+    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        lhs.compared(to: rhs) == Signum.less
     }
     
-    @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(low: lhs.low | rhs.low, mid: lhs.mid | rhs.mid, high: lhs.high | rhs.high)
-    }
+    @inlinable public borrowing func compared(to other: borrowing Self) -> Signum {
+        var signum: Signum
     
-    @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(low: lhs.low ^ rhs.low, mid: lhs.mid ^ rhs.mid, high: lhs.high ^ rhs.high)
+        loop: do {
+            signum = self.high.compared(to: other.high)
+            if signum != Signum.same { break loop }
+            signum = self.low .compared(to: other.low )
+        }
+        
+        return signum as Signum
     }
 }

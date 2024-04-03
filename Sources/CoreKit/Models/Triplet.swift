@@ -12,7 +12,7 @@
 //*============================================================================*
 
 /// An integer split into 3 parts.
-@frozen public struct Triplet<Base>: Comparable where Base: SystemsInteger {
+@frozen public struct Triplet<Base>: BitCastable, Comparable where Base: SystemsInteger {
     
     public typealias High = Base
     
@@ -28,10 +28,6 @@
     
     @inlinable public static var isSigned: Bool {
         Base.isSigned
-    }
-    
-    @inlinable public static func bitWidth<T>(as type: T.Type) -> T where T: SystemsInteger<UX.BitPattern> {
-        T(bitPattern: IX(bitWidth: Base.self) * 3) // at most IX.max
     }
     
     //=------------------------------------------------------------------------=
@@ -52,13 +48,13 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(low: Base.Magnitude, mid: Base.Magnitude, high: Base) {
+    @inlinable public init(low: consuming Base.Magnitude, mid: consuming Base.Magnitude, high: consuming Base) {
         self.low  = low
         self.mid  = mid
         self.high = high
     }
     
-    @inlinable public init(high: Base, mid: Base.Magnitude, low: Base.Magnitude) {
+    @inlinable public init(high: consuming Base, mid: consuming Base.Magnitude, low: consuming Base.Magnitude) {
         self.high = high
         self.mid  = mid
         self.low  = low
@@ -68,25 +64,25 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(low: Base.Magnitude, high: Doublet<Base>) {
+    @inlinable public init(low: consuming Base.Magnitude, high: consuming Doublet<Base>) {
         self.low  = low
         self.mid  = high.low
         self.high = high.high
     }
     
-    @inlinable public init(high: Doublet<Base>, low: Base.Magnitude) {
+    @inlinable public init(high: consuming Doublet<Base>, low: consuming Base.Magnitude) {
         self.high = high.high
         self.mid  = high.low
         self.low  = low
     }
     
-    @inlinable public init(high: Base, low: Doublet<Base.Magnitude>) {
+    @inlinable public init(high: consuming Base, low: consuming Doublet<Base.Magnitude>) {
         self.high = high
         self.mid  = low.high
         self.low  = low.low
     }
     
-    @inlinable public init(low: Doublet<Base.Magnitude>, high: Base) {
+    @inlinable public init(low: consuming Doublet<Base.Magnitude>, high: consuming Base) {
         self.low  = low.low
         self.mid  = low.high
         self.high = high

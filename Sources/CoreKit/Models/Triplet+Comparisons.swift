@@ -17,10 +17,6 @@ extension Triplet {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public var isLessThanZero: Bool {
-        self.high.isLessThanZero
-    }
-    
     @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         lhs.compared(to: rhs) == Signum.same
     }
@@ -30,8 +26,16 @@ extension Triplet {
     }
     
     @inlinable public borrowing func compared(to other: borrowing Self) -> Signum {
-        let a = self.high.compared(to: other.high); if a != Signum.same { return a }
-        let b = self.mid .compared(to: other.mid ); if b != Signum.same { return b }
-        return  self.low .compared(to: other.low );
+        var signum: Signum
+    
+        loop: do {
+            signum = self.high.compared(to: other.high)
+            if signum != Signum.same { break loop }
+            signum = self.mid .compared(to: other.mid )
+            if signum != Signum.same { break loop }
+            signum = self.low .compared(to: other.low )
+        }
+        
+        return signum as Signum
     }
 }

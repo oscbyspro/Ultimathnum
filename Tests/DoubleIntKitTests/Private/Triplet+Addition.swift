@@ -8,6 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import DoubleIntKit
 import TestKit
 
 //*============================================================================*
@@ -19,42 +20,6 @@ extension TripletTests {
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
-    
-    func testAddition31B() {
-        func whereTheBaseIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias Y = Triplet<T>
-            typealias F = Fallible<Triplet<T>>
-                        
-            Test().same(Y(low:  0, mid:  0, high:  0).plus(T(~4)), F(Y(low: ~4, mid: ~0, high: ~0)))
-            Test().same(Y(low:  1, mid:  2, high:  3).plus(T(~4)), F(Y(low: ~3, mid:  1, high:  3)))
-            Test().same(Y(low: ~1, mid: ~2, high: ~3).plus(T( 4)), F(Y(low:  2, mid: ~1, high: ~3)))
-            Test().same(Y(low: ~0, mid: ~0, high: ~0).plus(T( 4)), F(Y(low:  3, mid:  0, high:  0)))
-            
-            Test().same(Y(low:  5, mid:  0, high:  T.msb).plus(T(~4)), F(Y(low:  0, mid:  0, high:  T.msb)))
-            Test().same(Y(low:  4, mid:  0, high:  T.msb).plus(T(~4)), F(Y(low: ~0, mid: ~0, high: ~T.msb), error: true))
-            Test().same(Y(low: ~4, mid: ~0, high: ~T.msb).plus(T( 4)), F(Y(low: ~0, mid: ~0, high: ~T.msb)))
-            Test().same(Y(low: ~3, mid: ~0, high: ~T.msb).plus(T( 4)), F(Y(low:  0, mid:  0, high:  T.msb), error: true))
-        }
-        
-        func whereTheBaseIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias Y = Triplet<T>
-            typealias F = Fallible<Triplet<T>>
-            
-            Test().same(Y(low:  0, mid:  0, high:  0).plus(T(~4)), F(Y(low: ~4, mid:  0, high:  0)))
-            Test().same(Y(low:  1, mid:  2, high:  3).plus(T(~4)), F(Y(low: ~3, mid:  2, high:  3)))
-            Test().same(Y(low: ~1, mid: ~2, high: ~3).plus(T( 4)), F(Y(low:  2, mid: ~1, high: ~3)))
-            Test().same(Y(low: ~0, mid: ~0, high: ~0).plus(T( 4)), F(Y(low:  3, mid:  0, high:  0), error: true))
-            
-            Test().same(Y(low:  4, mid: ~0, high: ~0).plus(T(~4)), F(Y(low: ~0, mid: ~0, high: ~0)))
-            Test().same(Y(low:  5, mid: ~0, high: ~0).plus(T(~4)), F(Y(low:  0, mid:  0, high:  0), error: true))
-            Test().same(Y(low: ~4, mid: ~0, high: ~0).plus(T( 4)), F(Y(low: ~0, mid: ~0, high: ~0)))
-            Test().same(Y(low: ~3, mid: ~0, high: ~0).plus(T( 4)), F(Y(low:  0, mid:  0, high:  0), error: true))
-        }
-        
-        for base in Self.bases {
-            base.isSigned ? whereTheBaseIsSigned(base) : whereTheBaseIsUnsigned(base)
-        }
-    }
     
     func testAddition32B() {
         func whereTheBaseIsSigned<T>(_ type: T.Type) where T: SystemsInteger {

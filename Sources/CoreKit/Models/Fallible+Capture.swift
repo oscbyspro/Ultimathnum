@@ -17,9 +17,13 @@ extension Fallible {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    @inlinable public static func capture(_ value: inout Value, map: (Value) throws -> Value) rethrows {
+        value = try map(value)
+    }
+    
     @inlinable public static func capture(_ value: inout Value, map: (Value) throws -> Fallible<Value>) rethrows -> Bool {
-        let overflow: Bool
-        (value,overflow) = try map(value).components
-        return overflow
+        let error: Bool
+        (value,error) = try map(value).components
+        return error
     }
 }

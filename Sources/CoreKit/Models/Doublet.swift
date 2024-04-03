@@ -12,7 +12,7 @@
 //*============================================================================*
 
 /// An integer split into 2 parts.
-@frozen public struct Doublet<Base>: Comparable where Base: SystemsInteger {
+@frozen public struct Doublet<Base>: BitCastable, Comparable where Base: SystemsInteger {
     
     public typealias High = Base
     
@@ -26,10 +26,6 @@
     
     @inlinable public static var isSigned: Bool {
         Base.isSigned
-    }
-    
-    @inlinable public static func bitWidth<T>(as type: T.Type) -> T where T: SystemsInteger<UX.BitPattern> {
-        T(bitPattern: IX(bitWidth: Base.self) * 2) // at most IX.max
     }
     
     //=------------------------------------------------------------------------=
@@ -48,12 +44,12 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(low: Base.Magnitude, high: Base = 0) {
+    @inlinable public init(low: consuming Base.Magnitude, high: consuming Base) {
         self.low  = low
         self.high = high
     }
     
-    @inlinable public init(high: Base, low: Base.Magnitude = 0) {
+    @inlinable public init(high: consuming Base, low: consuming Base.Magnitude) {
         self.high = high
         self.low  = low
     }

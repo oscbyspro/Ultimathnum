@@ -19,15 +19,15 @@ extension DoubleInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
+    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         lhs.storage == rhs.storage
     }
     
-    @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
+    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         lhs.storage <  rhs.storage
     }
     
-    @inlinable public func compared(to other: Self) -> Signum {
+    @inlinable public borrowing func compared(to other: borrowing Self) -> Signum {
         self.storage.compared(to: other.storage)
     }
     

@@ -7,20 +7,21 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Doublet x Shift
+// MARK: * Double x Shift
 //*============================================================================*
 
 extension Doublet {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Transformations x 2 by 1
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func &<<(instance: consuming Self, distance: Base) -> Doublet<Base> {
-        //=--------------------------------------=
+    @inlinable package static func &<<(instance: consuming Self, distance: Base) -> Self {
         let distance = Base.Magnitude(bitPattern: distance) & (Base.bitWidth &<< 1 &- 1)
-        //=--------------------------------------=
+        
         if  distance.load(as: UX.self) >= UX(bitWidth: Base.self) {
             instance.high     = Base(bitPattern: instance.low &<< (distance &- Base.bitWidth))
             instance.low      = Base.Magnitude(repeating: Bit(bitPattern: false))
@@ -29,14 +30,13 @@ extension Doublet {
             instance.high    |= Base(bitPattern: instance.low &>> (Base.bitWidth &- distance))
             instance.low   &<<= distance
         }
-        //=--------------------------------------=
-        return instance as Doublet<Base> as Doublet<Base>
+        
+        return instance as Self as Self as Self
     }
     
-    @inlinable public static func &>>(instance: consuming Self, distance: Base) -> Doublet<Base> {
-        //=--------------------------------------=
+    @inlinable package static func &>>(instance: consuming Self, distance: Base) -> Self {
         let distance = Base.Magnitude(bitPattern: distance) & (Base.bitWidth &<< 1 &- 1)
-        //=--------------------------------------=
+        
         if  distance.load(as: UX.self) >= UX(bitWidth: Base.self) {
             instance.low      = Base.Magnitude(bitPattern: instance.high &>> Base(bitPattern: distance &- Base.bitWidth))
             instance.high     = Base(repeating: Bit(bitPattern: instance.high.isLessThanZero))
@@ -45,7 +45,19 @@ extension Doublet {
             instance.low     |= Base.Magnitude(bitPattern: instance.high &<< Base(bitPattern: Base.bitWidth &- distance))
             instance.high  &>>= Base(bitPattern: distance)
         }
-        //=--------------------------------------=
-        return instance as Doublet<Base> as Doublet<Base>
+        
+        return instance as Self as Self as Self
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x 2 by 2
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func &<<(instance: consuming Self, distance: Self) -> Self {
+        instance &<< Base(bitPattern: distance.low)
+    }
+    
+    @inlinable public static func &>>(instance: consuming Self, distance: Self) -> Self {
+        instance &>> Base(bitPattern: distance.low)
     }
 }

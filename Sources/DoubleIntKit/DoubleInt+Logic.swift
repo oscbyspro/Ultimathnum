@@ -20,18 +20,18 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public static prefix func ~(instance: consuming Self) -> Self {
-        Self(bitPattern: ~instance.storage)
+        Self(low: ~instance.storage.low, high: ~instance.storage.high)
     }
     
     @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(bitPattern: lhs.storage & rhs.storage)
+        Self(low: lhs.storage.low & rhs.storage.low, high: lhs.storage.high & rhs.storage.high)
     }
     
     @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(bitPattern: lhs.storage | rhs.storage)
+        Self(low: lhs.storage.low | rhs.storage.low, high: lhs.storage.high | rhs.storage.high)
     }
     
     @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(bitPattern: lhs.storage ^ rhs.storage)
+        Self(low: lhs.storage.low ^ rhs.storage.low, high: lhs.storage.high ^ rhs.storage.high)
     }
 }

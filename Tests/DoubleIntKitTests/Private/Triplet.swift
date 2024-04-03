@@ -7,29 +7,30 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+import DoubleIntKit
+import TestKit
+
 //*============================================================================*
-// MARK: * Doublet x Logic
+// MARK: * Triplet
 //*============================================================================*
 
-extension Doublet {
+final class TripletTests: XCTestCase {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    @inlinable public static prefix func ~(instance: consuming Self) -> Self {
-        Self(low: ~instance.low, high: ~instance.high)
-    }
+    static let bases: [any SystemsInteger.Type] = {
+        basesWhereIsSigned +
+        basesWhereIsUnsigned
+    }()
     
-    @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(low: lhs.low & rhs.low, high: lhs.high & rhs.high)
-    }
+    static let basesWhereIsSigned: [any (SystemsInteger & SignedInteger).Type] = [
+        IX.self, I8.self, I16.self, I32.self, I64.self,
+    ]
     
-    @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(low: lhs.low | rhs.low, high: lhs.high | rhs.high)
-    }
-    
-    @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(low: lhs.low ^ rhs.low, high: lhs.high ^ rhs.high)
-    }
+    static let basesWhereIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = [
+        UX.self, U8.self, U16.self, U32.self, U64.self,
+    ]
 }

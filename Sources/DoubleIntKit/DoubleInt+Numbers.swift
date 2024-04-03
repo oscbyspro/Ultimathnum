@@ -19,9 +19,15 @@ extension DoubleInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    @inlinable public var complement: Self {
+        consuming get {
+            Self(self.storage.complement)
+        }
+    }
+    
     @inlinable public var magnitude: Magnitude {
         consuming get {
-            Magnitude(bitPattern: self.storage.magnitude)
+            Magnitude(self.storage.magnitude)
         }
     }
 }

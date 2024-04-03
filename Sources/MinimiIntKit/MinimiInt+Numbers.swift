@@ -33,6 +33,10 @@ extension MinimiInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    @inlinable public var complement: Self {
+        self
+    }
+    
     @inlinable public var magnitude: Magnitude {
         Magnitude(bitPattern: self.bitPattern)
     }

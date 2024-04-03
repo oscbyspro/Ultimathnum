@@ -19,13 +19,13 @@ extension DoubleInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: consuming Doublet<Base>.BitPattern) {        
-        self.init(low: bitPattern.low, high: Base(bitPattern: bitPattern.high))
+    @inlinable public init(bitPattern: consuming Storage.BitPattern) {
+        self.init(Storage(bitPattern: bitPattern))
     }
     
     @inlinable public var bitPattern: BitPattern {
         consuming get {
-            BitPattern(low: self.low, high: Base.Magnitude(bitPattern: self.high))
+            self.storage.bitPattern
         }
     }
     
@@ -54,19 +54,11 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public init<T>(load source: T) where T: SystemsInteger<UX.BitPattern> {
-        //=--------------------------------------=
-        let low  = Low (load: source)
-        let high = High(load: source >> Low.bitWidth.load(as: T.self))
-        //=--------------------------------------=
-        self.init(low: low, high: high)
+        self.init(Storage(load: source))
     }
     
     @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<UX.BitPattern> {
-        //=--------------------------------------=
-        let low  = self.low .load(as: T.self)
-        let high = self.high.load(as: T.self) << Low.bitWidth.load(as: T.self)
-        //=--------------------------------------=
-        return T.init(bitPattern: low | high)
+        self.storage.load(as: type)
     }
     
     //=------------------------------------------------------------------------=
@@ -82,7 +74,7 @@ extension DoubleInt {
     }
     
     @inlinable public func count(_ bit: Bit, option: BitSelection) -> Magnitude {
-        Magnitude(load: self.storage.count(bit, option: option, as: UX.self))
+        Magnitude(self.storage.count(bit, option: option))
     }
 }
 
