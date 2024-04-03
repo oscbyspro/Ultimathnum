@@ -16,7 +16,7 @@ import CoreKit
 extension Triplet {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transfornations x 3 by 2
+    // MARK: Transformations x 3 by 2
     //=------------------------------------------------------------------------=
     
     @inlinable package consuming func minus(_ increment: borrowing Doublet<Base>) -> Fallible<Self> {
@@ -28,7 +28,7 @@ extension Triplet {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Transfornations x 3 by 3
+    // MARK: Transformations x 3 by 3
     //=------------------------------------------------------------------------=
     
     @inlinable package consuming func minus(_ increment: borrowing Self) -> Fallible<Self> {

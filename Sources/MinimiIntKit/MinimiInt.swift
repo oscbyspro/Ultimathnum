@@ -37,6 +37,20 @@ import CoreKit
     //=------------------------------------------------------------------------=
     
     @usableFromInline let base: Bit
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(integerLiteral: Signedness.IntegerLiteralType) {
+        if  Signedness(integerLiteral: integerLiteral) == 0 {
+            self.base = 0
+        }   else if Signedness(integerLiteral: integerLiteral) == (Self.isSigned ? -1 : 1) {
+            self.base = 1
+        }   else {
+            preconditionFailure(String.overflow())
+        }
+    }
 }
 
 //=----------------------------------------------------------------------------=

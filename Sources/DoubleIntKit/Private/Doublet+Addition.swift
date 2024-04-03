@@ -27,7 +27,7 @@ extension Doublet {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Transfornations x 2 by 2
+    // MARK: Transformations x 2 by 2
     //=------------------------------------------------------------------------=
     
     @inlinable package consuming func plus(_ increment: borrowing Self) -> Fallible<Self> {

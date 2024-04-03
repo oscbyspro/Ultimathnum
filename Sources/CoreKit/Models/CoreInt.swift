@@ -42,6 +42,10 @@
     @inlinable public init(_ base: consuming Base) {
         self.base = base
     }
+    
+    @inlinable public init(integerLiteral: consuming Base.IntegerLiteralType) {
+        self.init(Base(integerLiteral: integerLiteral))
+    }
 }
 
 //=----------------------------------------------------------------------------=

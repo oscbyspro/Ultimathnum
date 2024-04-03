@@ -90,7 +90,7 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     //=------------------------------------------------------------------------=
     
     @inlinable consuming func plus (_ increment: borrowing Self) -> Fallible<Self>
-        
+    
     @inlinable consuming func minus(_ decrement: borrowing Self) -> Fallible<Self>
     
     @inlinable consuming func negated() -> Fallible<Self>
@@ -184,18 +184,6 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     @inlinable var appendix: Bit { get }
     
     @inlinable var body: Body { get }
-    
-    /// ### Development
-    ///
-    /// - This can be derived from `negated()`.
-    ///
-    @inlinable var complement: Self { consuming get }
-    
-    /// ### Development
-    ///
-    /// - This can be derived from `negated()` and `init(bitPattern:)`.
-    ///
-    @inlinable var magnitude: Magnitude { consuming get }
     
     @inlinable borrowing func compared(to other: borrowing Self) -> Signum
     

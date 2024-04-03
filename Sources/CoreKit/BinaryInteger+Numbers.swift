@@ -77,4 +77,20 @@ extension BinaryInteger {
         
         return Fallible(value, error: !success)
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var complement: Self {
+        consuming get {
+            self.negated().value
+        }
+    }
+    
+    @inlinable public var magnitude: Magnitude {
+        consuming get {
+            Magnitude(bitPattern: self.isLessThanZero ? self.complement : self)
+        }
+    }
 }

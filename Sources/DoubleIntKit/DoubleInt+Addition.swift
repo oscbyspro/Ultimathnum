@@ -16,7 +16,7 @@ import CoreKit
 extension DoubleInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transfornations
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func plus(_ increment: borrowing Self) -> Fallible<Self> {
