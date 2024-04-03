@@ -37,7 +37,7 @@ extension DoubletTests {
             Test().same(X(low: ~1, high: ~2).multiplication(~3 as T), Y(low:  8, mid:  6, high: ~5))
         }
         
-        for base in Self.basesWhereIsUnsigned {
+        for base in Self.basesIsUnsigned {
             whereTheBaseIs(base)
         }
     }

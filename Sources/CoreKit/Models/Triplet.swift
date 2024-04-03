@@ -30,6 +30,10 @@
         Base.isSigned
     }
     
+    @inlinable public static var bitWidth: Magnitude {
+        Magnitude(low: Base.bitWidth.multiplication(3), high: Magnitude.High())
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=

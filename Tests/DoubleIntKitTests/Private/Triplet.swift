@@ -22,15 +22,15 @@ final class TripletTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     static let bases: [any SystemsInteger.Type] = {
-        basesWhereIsSigned +
-        basesWhereIsUnsigned
+        basesIsSigned +
+        basesIsUnsigned
     }()
     
-    static let basesWhereIsSigned: [any (SystemsInteger & SignedInteger).Type] = [
+    static let basesIsSigned: [any (SystemsInteger & SignedInteger).Type] = [
         IX.self, I8.self, I16.self, I32.self, I64.self,
     ]
     
-    static let basesWhereIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = [
+    static let basesIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = [
         UX.self, U8.self, U16.self, U32.self, U64.self,
     ]
 }
