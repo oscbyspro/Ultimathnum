@@ -21,10 +21,6 @@ extension DoubleIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func test() {
-        
-    }
-    
     func testMultiplication() {
         func whereTheBaseTypeIsSigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
