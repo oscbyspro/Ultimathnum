@@ -11,7 +11,7 @@
 // MARK: * Division
 //*============================================================================*
 
-@frozen public struct Division<Quotient, Remainder> {
+@frozen public struct Division<Quotient, Remainder>: Arithmetic {
     
     public typealias Quotient = Quotient
     

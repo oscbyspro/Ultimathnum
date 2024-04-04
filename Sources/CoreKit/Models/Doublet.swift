@@ -12,7 +12,7 @@
 //*============================================================================*
 
 /// An integer split into 2 parts.
-@frozen public struct Doublet<Base>: BitCastable, Comparable where Base: SystemsInteger {
+@frozen public struct Doublet<Base>: Arithmetic, BitCastable, Comparable where Base: SystemsInteger {
     
     public typealias High = Base
     

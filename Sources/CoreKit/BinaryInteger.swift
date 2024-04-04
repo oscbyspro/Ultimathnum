@@ -27,7 +27,7 @@
 ///
 /// Its stride is Swift.Int which is used to step through Swift's ranges.
 ///
-public protocol BinaryInteger: BitCastable, BitOperable, Comparable, 
+public protocol BinaryInteger: Arithmetic, BitCastable, BitOperable, Comparable, 
 ExpressibleByIntegerLiteral, Hashable, Sendable, Strideable, _MaybeLosslessStringConvertible where
 Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stride == Swift.Int {
     
