@@ -27,13 +27,10 @@ extension DoubleInt {
         Fallible(bitPattern: self.storage.minus(decrement.storage))
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Composition
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func minus(_ decrement: borrowing Self, carrying error: consuming Bool) -> Fallible<Self> {
-        let low  = self.storage.low .minus(decrement.storage.low,  carrying:     error)
-        let high = self.storage.high.minus(decrement.storage.high, carrying: low.error)
+    @inlinable public consuming func minus(_ decrement: consuming Element) -> Fallible<Self> {
+        let appendix = High(repeating: decrement.appendix)
+        let low  = self.low .minus(Low(load: decrement))
+        let high = self.high.minus(appendix, carrying: low.error)
         return Fallible(Self(low: low.value, high: high.value), error: high.error)
     }
 }

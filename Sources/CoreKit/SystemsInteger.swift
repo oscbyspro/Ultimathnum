@@ -69,10 +69,6 @@ public protocol SystemsInteger<BitPattern>: BinaryInteger where Magnitude: Syste
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming func plus (_ increment: borrowing Self, carrying error: consuming Bool) -> Fallible<Self>
-    
-    @inlinable consuming func minus(_ decrement: borrowing Self, carrying error: consuming Bool) -> Fallible<Self>
-    
     @inlinable borrowing func multiplication(_ multiplier: borrowing Self) -> Doublet<Self>
     
     @inlinable static func division(_ dividend: consuming Doublet<Self>, by divisor: borrowing Self) -> Fallible<Division<Self, Self>>

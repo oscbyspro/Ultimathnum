@@ -26,4 +26,8 @@ extension InfiniInt {
     @inlinable public consuming func minus(_ increment: borrowing Self) -> Fallible<Self> {
         fatalError("TODO")
     }
+    
+    @inlinable public consuming func minus(_ increment: consuming Element) -> Fallible<Self> {
+        fatalError("TODO")
+    }
 }

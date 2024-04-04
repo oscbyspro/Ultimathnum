@@ -7,23 +7,21 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Minimi Int x Subtraction
+// MARK: * Systems Integer x Addition
 //*============================================================================*
 
-extension MinimiInt {
+extension SystemsInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable public func negated() -> Fallible<Self> {
-        Fallible(self, error: Bool(bitPattern: self))
-    }
-    
-    @inlinable public func minus(_ decrement: borrowing Self) -> Fallible<Self> {
-        Fallible(self ^ decrement, error: Bool(bitPattern: ~self & decrement))
+    #warning("consider incrementation(_:_:)")
+    @inlinable public consuming func plus(_ increment: borrowing Self, carrying extra: consuming Bool) -> Fallible<Self> {
+        let error: Bool
+        (self, error) = self.plus(increment).components
+        (self, extra) = self.plus(Element(Bit(bitPattern: extra))).components
+        return Fallible(self, error: error != extra)
     }
 }

@@ -157,6 +157,16 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    @_disfavoredOverload
+    @inlinable consuming func plus (_ increment: consuming Element) -> Fallible<Self>
+    
+    @_disfavoredOverload
+    @inlinable consuming func minus(_ decrement: consuming Element) -> Fallible<Self>
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
     @inlinable static func  <<(instance: consuming Self, shift: borrowing Self) -> Self
     
     @inlinable static func &<<(instance: consuming Self, shift: borrowing Self) -> Self

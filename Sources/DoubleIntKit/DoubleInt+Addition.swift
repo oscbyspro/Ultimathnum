@@ -23,13 +23,10 @@ extension DoubleInt {
         Fallible(bitPattern: self.storage.plus(increment.storage))
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Composition
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func plus(_ increment: borrowing Self, carrying error: consuming Bool) -> Fallible<Self> {
-        let low  = self.low .plus(increment.storage.low,  carrying:     error)
-        let high = self.high.plus(increment.storage.high, carrying: low.error)
+    @inlinable public consuming func plus(_ increment: consuming Element) -> Fallible<Self> {
+        let appendix = High(repeating: increment.appendix)
+        let low  = self.low .plus(Low(load: increment))
+        let high = self.high.plus(appendix, carrying: low.error)
         return Fallible(Self(low: low.value, high: high.value), error: high.error)
     }
 }

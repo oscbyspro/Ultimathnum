@@ -19,6 +19,8 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    #warning("try plus(rhs - 1, carrying: true )")
+    #warning("try plus(rhs - 0, carrying: false)")
     public func addition<T>(
         _ lhs: T,
         _ rhs: T,

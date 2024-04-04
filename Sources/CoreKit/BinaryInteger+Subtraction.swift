@@ -47,7 +47,7 @@ extension BinaryInteger {
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Result
+// MARK: + Fallible
 //=----------------------------------------------------------------------------=
 
 extension BinaryInteger {
@@ -56,8 +56,17 @@ extension BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func minus(_ result: borrowing Fallible<Self>) -> Fallible<Self> {
-        self.minus(result.value).combine(result.error)
+    @inlinable public consuming func minus(_ decrement: borrowing Fallible<Self>) -> Fallible<Self> {
+        self.minus(decrement.value).combine(decrement.error)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @_disfavoredOverload
+    @inlinable public consuming func minus(_ decrement: consuming Fallible<Element>) -> Fallible<Self> {
+        self.minus(decrement.value).combine(decrement.error)
     }
 }
 
@@ -67,6 +76,7 @@ extension BinaryInteger {
 
 extension BinaryInteger {
     
+    #warning("conisder decremented(Bool)")
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
@@ -76,9 +86,9 @@ extension BinaryInteger {
     /// - Note: It works with **0-bit** and **1-bit** integers.
     ///
     @inlinable public consuming func decremented() -> Fallible<Self> {
-        if  let positive = Self.exactly(1).optional() {
+        if  let positive = Element.exactly(1).optional() {
             return self.minus(positive)
-        }   else if let negative = Self.exactly(-1).optional() {
+        }   else if let negative = Element.exactly(-1).optional() {
             return self.plus (negative)
         }   else {
             return Fallible.failure(self)

@@ -21,14 +21,4 @@ extension CoreInt {
         let result = self.base.addingReportingOverflow(increment.base)
         return Fallible(Self(result.partialValue), error: result.overflow)
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Composition
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func plus(_ increment: borrowing Self, carrying error: consuming Bool) -> Fallible<Self> {
-        let a = self.base.addingReportingOverflow(increment.base)
-        let b = a.partialValue.addingReportingOverflow(Self(Bit(bitPattern: error)).base)
-        return Fallible(Self(b.partialValue), error: a.overflow != b.overflow)
-    }
 }

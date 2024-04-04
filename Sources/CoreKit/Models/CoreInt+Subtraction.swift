@@ -26,14 +26,4 @@ extension CoreInt {
         let result = self.base.subtractingReportingOverflow(decrement.base)
         return Fallible(Self(result.partialValue), error: result.overflow)
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Composition
-    //=------------------------------------------------------------------------=
-        
-    @inlinable public consuming func minus(_ increment: borrowing Self, carrying error: consuming Bool) -> Fallible<Self> {
-        let a = self.base.subtractingReportingOverflow(increment.base)
-        let b = a.partialValue.subtractingReportingOverflow(Self(Bit(bitPattern: error)).base)
-        return Fallible(Self(b.partialValue), error: a.overflow != b.overflow)
-    }
 }
