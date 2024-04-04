@@ -74,7 +74,7 @@ extension SystemsInteger {
             
             var bitIndex: Self = 0000000000000000000000000000000
             let bitWidth: Self = Self(bitPattern: Self.bitWidth)
-            var instance: Self = Self(repeating: Bit(bitPattern: minus))
+            var instance: Self = Self(repeating:  Bit(minus))
             
             if  UX(bitWidth: T.self) >  UX.bitWidth {
                 chunking: while bitIndex < bitWidth {

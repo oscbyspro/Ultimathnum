@@ -36,7 +36,7 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public var appendix: Bit {
-        Bit(bitPattern: self.signum() < 0)
+        Bit(self.signum() < 0)
     }
     
     @inlinable public var bitWidth: Int {

@@ -43,7 +43,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
         
         for element in lhs {
             var wide = element.multiplication(first)
-            carry = Base.Element(Bit(bitPattern: Fallible.capture(&wide.low, map:{ $0.plus(carry) }))) &+ wide.high
+            carry = Base.Element(Bit(Fallible.capture(&wide.low, map:{ $0.plus(carry) }))) &+ wide.high
             pointer.initialize(to: wide.low) // done, uninitialized or discarded pointee
             pointer = pointer.successor()
         }
@@ -104,7 +104,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
             
             index = productIndex // add this iteration's diagonal product
             
-            carry = carry &+ Base.Element(Bit(bitPattern: SUISS.incrementInIntersection(
+            carry = carry &+ Base.Element(Bit(SUISS.incrementInIntersection(
             &base, by: CollectionOfOne(multiplier),
             times: multiplier, plus: Base.Element(), at: &index)))
         }

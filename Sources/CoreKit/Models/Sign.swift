@@ -24,12 +24,23 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: Bool) {
-        self = bitPattern ? .minus : .plus
+    @inlinable public init(_  source: Bit) {
+        self.init(bitPattern: source)
     }
     
-    @inlinable public init(_ other: FloatingPointSign) {
-        self = switch other { case .plus: .plus; case .minus: .minus }
+    @inlinable public init(_  source: Bool) {
+        self.init(bitPattern: source)
+    }
+    
+    @inlinable public init(_  source: FloatingPointSign) {
+        self = switch source {
+        case .plus:  .plus
+        case .minus: .minus
+        }
+    }
+    
+    @inlinable public init(bitPattern: Bool) {
+        self = bitPattern ? Self.minus : Self.plus
     }
     
     //=------------------------------------------------------------------------=
@@ -62,23 +73,5 @@
     
     @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
         lhs == rhs ? plus : minus
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Conversions
-//=----------------------------------------------------------------------------=
-
-extension FloatingPointSign {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(_ other: Sign) {
-        self = switch other {
-        case .plus:  .plus
-        case .minus: .minus
-        }
     }
 }

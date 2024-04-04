@@ -20,7 +20,7 @@ extension SystemsInteger {
     @inlinable public consuming func minus(_ decrement: borrowing Self, carrying extra: consuming Bool) -> Fallible<Self> {
         let error: Bool
         (self, error) = self.minus(decrement).components
-        (self, extra) = self.minus(Element(Bit(bitPattern: extra))).components
+        (self, extra) = self.minus(Element(Bit(extra))).components
         return self.combine(error != extra)
     }
 }

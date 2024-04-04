@@ -88,8 +88,8 @@ extension BinaryInteger {
     /// The previous value in arithmetic progression.
     @inlinable public consuming func decremented(_ condition: consuming Bool = true) -> Fallible<Self> {
         switch Self.isSigned {
-        case true : self.plus (Element(repeating: Bit(bitPattern: condition)))
-        case false: self.minus(Element(/*------*/ Bit(bitPattern: condition)))
+        case true : self.plus (Element(repeating: Bit(condition)))
+        case false: self.minus(Element(/*------*/ Bit(condition)))
         }
     }
 }

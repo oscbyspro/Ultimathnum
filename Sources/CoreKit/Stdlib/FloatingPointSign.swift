@@ -7,19 +7,20 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Minimi Int x Addition
+// MARK: * Floating Point Sign
 //*============================================================================*
 
-extension MinimiInt {
+extension FloatingPointSign {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public func plus(_ increment: borrowing Self) -> Fallible<Self> {
-        Fallible(self ^ increment, error: Bool((self & increment).base))
+    @inlinable public init(_ source: Sign) {
+        self = switch source {
+        case .plus:  .plus
+        case .minus: .minus
+        }
     }
 }

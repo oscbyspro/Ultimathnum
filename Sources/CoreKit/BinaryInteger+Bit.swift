@@ -24,11 +24,11 @@ extension BinaryInteger {
     /// - Note: This method is **important** for performance.
     ///
     @_disfavoredOverload @inlinable public init(_ bit: Bit) {
-        self = Bool(bitPattern: bit) ?  1 : 0
+        self = Bool(bit) ?  1 : 0
     }
     
     @inlinable public init(repeating bit: Bit) {
-        self = Bool(bitPattern: bit) ? ~0 : 0
+        self = Bool(bit) ? ~0 : 0
     }
     
     //=------------------------------------------------------------------------=
@@ -42,6 +42,6 @@ extension BinaryInteger {
     /// - Note: This accessor tests only the least significant element.
     ///
     @inlinable public var leastSignificantBit: Bit {
-        Bit(bitPattern: self.load(as: Element.self) & Element.lsb != 0)
+        Bit(self.load(as: Element.self) & Element.lsb != 0)
     }
 }

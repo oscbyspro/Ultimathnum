@@ -20,7 +20,7 @@ extension MinimiInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(bitPattern: Bit.BitPattern) {
-        self.base = Bit(bitPattern: bitPattern)
+        self.base = Bit(bitPattern)
     }
     
     @inlinable public var bitPattern: Bit.BitPattern {
@@ -54,7 +54,7 @@ extension MinimiInt {
     }
     
     @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<UX.BitPattern> {
-        T(bitPattern: Bool(bitPattern: self) ? Self.isSigned ? ~0 as UX : 1 as UX : 0 as UX)
+        T(bitPattern: Bool(self.base) ? Self.isSigned ? ~0 as UX : 1 as UX : 0 as UX)
     }
     
     //=------------------------------------------------------------------------=
@@ -62,7 +62,7 @@ extension MinimiInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public var appendix: Bit {
-        Bit(bitPattern: self.isLessThanZero)
+        Bit(self.isLessThanZero)
     }
     
     @inlinable public var body: some RandomAccessCollection<Magnitude> {

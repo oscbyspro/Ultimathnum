@@ -110,7 +110,7 @@ Element: SystemsInteger, Base: RandomAccessCollection, Base.Element: SystemsInte
     ///   - element: The type of element produced by this sequence.
     ///
     @inlinable public init(_ base: Base, isSigned: Bool, as element: Element.Type = Element.self) {
-        self.init(base, repeating: Bit(bitPattern: SBISS.isLessThanZero(base, isSigned: isSigned)))
+        self.init(base, repeating: Bit(SBISS.isLessThanZero(base, isSigned: isSigned)))
     }
     
     /// Creates a sequence of the given type from a bit pattern source.

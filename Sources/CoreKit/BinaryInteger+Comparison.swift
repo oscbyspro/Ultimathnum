@@ -18,7 +18,7 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static var isInfinite: Bool {
-        Bool(bitPattern: Self.bitWidth.appendix)
+        Bool(Self.bitWidth.appendix)
     }
     
     //=------------------------------------------------------------------------=

@@ -70,18 +70,19 @@ extension ExchangeInt where Element == Element.Magnitude {
         //=--------------------------------------=
         // comparison: succinct count
         //=--------------------------------------=
-        return Signum(Bit(bitPattern: !instance.base.allSatisfy({ $0 == 0 })))
+        return Signum(Bit(!instance.base.allSatisfy({ $0 == 0 })))
     }
     
     @inline(never) @inlinable internal static func compare<T>(
-    _  lhs: Self, isSigned lhsIsSigned: Bool,
-    to rhs: ExchangeInt<T, Element>, isSigned rhsIsSigned: Bool) -> Signum {
+        _  lhs: Self, isSigned lhsIsSigned: Bool,
+        to rhs: ExchangeInt<T, Element>, isSigned rhsIsSigned: Bool
+    )   -> Signum {
         //=--------------------------------------=
         typealias LHS = ExchangeInt<Base, Element>
         typealias RHS = ExchangeInt<T,    Element>
         //=--------------------------------------=
-        let lhsAppendix = Bool(bitPattern: lhs.appendix.bit)
-        let rhsAppendix = Bool(bitPattern: rhs.appendix.bit)
+        let lhsAppendix = Bool(lhs.appendix.bit)
+        let rhsAppendix = Bool(rhs.appendix.bit)
         //=--------------------------------------=
         // comparison: appendix
         //=--------------------------------------=
@@ -91,8 +92,8 @@ extension ExchangeInt where Element == Element.Magnitude {
         //=--------------------------------------=
         // comparison: succinct count
         //=--------------------------------------=
-        let lhsSuccinctCount  = LHS.count(trimming: lhs.base, repeating: Bit(bitPattern: lhsAppendix))
-        let rhsSuccinctCount  = RHS.count(trimming: rhs.base, repeating: Bit(bitPattern: rhsAppendix))
+        let lhsSuccinctCount  = LHS.count(trimming: lhs.base, repeating: Bit(lhsAppendix))
+        let rhsSuccinctCount  = RHS.count(trimming: rhs.base, repeating: Bit(rhsAppendix))
         //=--------------------------------------=
         if  lhsSuccinctCount != rhsSuccinctCount {
             return Signum.one(Sign(bitPattern: lhsAppendix == (lhsSuccinctCount > rhsSuccinctCount)))

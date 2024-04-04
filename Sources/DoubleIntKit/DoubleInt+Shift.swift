@@ -23,7 +23,7 @@ extension DoubleInt {
         if  shift.isLessThanZero {
             return instance >> -shift // TODO: do not trap on min
         }   else if Magnitude(bitPattern: shift) >= Self.bitWidth {
-            return Self(repeating: Bit(bitPattern: false))
+            return Self(repeating: Bit(false))
         }   else {
             return instance &<< shift
         }
@@ -33,7 +33,7 @@ extension DoubleInt {
         if  shift.isLessThanZero {
             return instance << -shift // TODO: do not trap on min
         }   else if Magnitude(bitPattern: shift) >= Self.bitWidth {
-            return Self(repeating: Bit(bitPattern: instance.isLessThanZero))
+            return Self(repeating: Bit(instance.isLessThanZero))
         }   else {
             return instance &>> shift
         }

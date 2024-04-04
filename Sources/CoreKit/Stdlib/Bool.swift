@@ -8,16 +8,22 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Base Integer x Models
+// MARK: * Bool
 //*============================================================================*
 
-extension Int:    BaseInteger { }
-extension Int8:   BaseInteger { }
-extension Int16:  BaseInteger { }
-extension Int32:  BaseInteger { }
-extension Int64:  BaseInteger { }
-extension UInt:   BaseInteger { }
-extension UInt8:  BaseInteger { }
-extension UInt16: BaseInteger { }
-extension UInt32: BaseInteger { }
-extension UInt64: BaseInteger { }
+extension Bool: BitCastable {
+    
+    public typealias BitPattern = Self
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(_ source: consuming Bit) {
+        self = source.bitPattern
+    }
+    
+    @inlinable public init(_ source: consuming Sign) {
+        self = source.bitPattern
+    }
+}

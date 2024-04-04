@@ -53,7 +53,7 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
     }
     
     @inline(never) @inlinable func encode(sign: Sign, magnitude: inout UnsafeMutableBufferPointer<UX>) -> String {
-        let maxChunkCount = self.radix.divisibilityByPowerUpperBound(magnitude: magnitude).base
+        let maxChunkCount = Int(self.radix.divisibilityByPowerUpperBound(magnitude: magnitude))
         return Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: maxChunkCount) { chunks in
             var magnitude = magnitude[...]
             var chunksIndex = chunks.startIndex
@@ -87,7 +87,7 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
                     (firstChunk, remainder) = firstChunk.division(radix.base).assert().components
                     precondition(firstIndex >  first.startIndex)
                     firstIndex = first.index(before: firstIndex)
-                    first.initializeElement(at: firstIndex, to: UInt8(ascii: "0") &+ U8(load: remainder).base)
+                    first.initializeElement(at: firstIndex, to: UInt8(ascii: "0") &+ UInt8(U8(load: remainder)))
                     
                 }   while firstChunk != 0
                 //=------------------------------=
@@ -112,7 +112,7 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
                             (chunk, remainder) = chunk.division(radix.base).assert().components
                             precondition(asciiIndex > ascii.startIndex)
                             ascii.formIndex(before: &asciiIndex)
-                            ascii.initializeElement(at: asciiIndex, to: UInt8(ascii: "0") &+ U8(load: remainder).base)
+                            ascii.initializeElement(at: asciiIndex, to: UInt8(ascii: "0") &+ UInt8(U8(load: remainder)))
                         }
                     }
                     

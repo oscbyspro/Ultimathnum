@@ -20,11 +20,11 @@ extension MinimiInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public func squared() -> Fallible<Self> {
-        Fallible(self, error: Self.isSigned && Bool(bitPattern: self))
+        Fallible(self, error: Self.isSigned && Bool(self.base))
     }
     
     @inlinable public func times(_ multiplier: Self) -> Fallible<Self> {
-        Fallible(self & multiplier, error: Self.isSigned && Bool(bitPattern: self & multiplier))
+        Fallible(self & multiplier, error: Self.isSigned && Bool((self & multiplier).base))
     }
     
     @inlinable public func multiplication(_ multiplier: Self) -> Doublet<Self> {

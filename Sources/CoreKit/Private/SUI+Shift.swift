@@ -26,7 +26,7 @@ extension Namespace.StrictUnsignedInteger where Base: MutableCollection {
     ///   - distance: `0 <= distance < base.bitWidth`
     ///
     @inlinable package static func bitShiftLeft(_ base: inout Base, by distance: Int) {
-        let divisor = IX(bitWidth: Base.Element.self).base
+        let divisor = Int(IX(bitWidth: Base.Element.self))
         let (major, minor) = distance.quotientAndRemainder(dividingBy: divisor)
         return self.bitShiftLeft(&base, major: major, minor: minor)
     }
@@ -98,7 +98,7 @@ extension Namespace.StrictUnsignedInteger where Base: MutableCollection {
     ///   - distance: `0 <= distance < base.bitWidth`
     ///
     @inlinable package static func bitShiftRight(_ base: inout Base, by distance: Int) {
-        let divisor = IX(bitWidth: Base.Element.self).base
+        let divisor = Int(IX(bitWidth: Base.Element.self))
         let (major, minor) = distance.quotientAndRemainder(dividingBy: divisor)
         return self.bitShiftRight(&base, major: major, minor: minor)
     }

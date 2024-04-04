@@ -24,7 +24,7 @@ extension Doublet {
         
         if  distance.load(as: UX.self) >= UX(bitWidth: Base.self) {
             instance.high     = Base(bitPattern: instance.low &<< (distance &- Base.bitWidth))
-            instance.low      = Base.Magnitude(repeating: Bit(bitPattern: false))
+            instance.low      = Base.Magnitude(repeating: Bit(false))
         }   else if distance != Base.Magnitude() {
             instance.high  &<<= Base(bitPattern: distance)
             instance.high    |= Base(bitPattern: instance.low &>> (Base.bitWidth &- distance))
@@ -39,7 +39,7 @@ extension Doublet {
         
         if  distance.load(as: UX.self) >= UX(bitWidth: Base.self) {
             instance.low      = Base.Magnitude(bitPattern: instance.high &>> Base(bitPattern: distance &- Base.bitWidth))
-            instance.high     = Base(repeating: Bit(bitPattern: instance.high.isLessThanZero))
+            instance.high     = Base(repeating: Bit(instance.high.isLessThanZero))
         }   else if distance != Base.Magnitude() {
             instance.low   &>>= distance
             instance.low     |= Base.Magnitude(bitPattern: instance.high &<< Base(bitPattern: Base.bitWidth &- distance))

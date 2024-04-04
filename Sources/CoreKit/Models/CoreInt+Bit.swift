@@ -60,7 +60,7 @@ extension CoreInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public var appendix: Bit {
-        Bit(bitPattern: self.isLessThanZero)
+        Bit(self.isLessThanZero)
     }
     
     @inlinable public var body: some RandomAccessCollection<Magnitude> {
@@ -68,7 +68,7 @@ extension CoreInt {
     }
     
     @inlinable public func count(_ bit: Bit, option: BitSelection) -> Magnitude {
-        switch (Bool(bitPattern: bit), option) {
+        switch (Bool(bit), option) {
         case (true,         .all): Magnitude(Base.Magnitude(truncatingIfNeeded: ( self).base     .nonzeroBitCount))
         case (false,        .all): Magnitude(Base.Magnitude(truncatingIfNeeded: (~self).base     .nonzeroBitCount))
         case (true,   .ascending): Magnitude(Base.Magnitude(truncatingIfNeeded: (~self).base.trailingZeroBitCount))

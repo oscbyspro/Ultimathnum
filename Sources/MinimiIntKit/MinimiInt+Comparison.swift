@@ -28,6 +28,6 @@ extension MinimiInt {
     }
     
     @inlinable public func compared(to other: Self) -> Signum {
-        self == other ? Signum.same : Signum.one(Sign(bitPattern: Self.isSigned == Bool(bitPattern: self)))
+        self == other ? Signum.same : Signum.one(Sign(Self.isSigned == Bool(self.base)))
     }
 }

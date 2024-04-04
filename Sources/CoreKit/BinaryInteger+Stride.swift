@@ -51,7 +51,7 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func distance(to other: Self) -> Swift.Int {
-        self.distance(to: other, as: IX.self).unwrap().base
+        Int(self.distance(to: other, as: IX.self).unwrap())
     }
     
     @inlinable package consuming func distance<T>(to other: Self, as type: T.Type = T.self) -> Fallible<T> where T: SignedInteger {
@@ -67,7 +67,7 @@ extension BinaryInteger {
         }   else {
             
             let distance = other.minus(self)
-            let elements = ExchangeInt(distance.value.body, repeating: Bit(bitPattern: distance.error), as: T.Body.Element.self)
+            let elements = ExchangeInt(distance.value.body, repeating: Bit(distance.error), as: T.Body.Element.self)
             return T.exactly(elements: elements, isSigned:  true)
             
         }

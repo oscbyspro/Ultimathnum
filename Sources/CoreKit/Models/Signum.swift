@@ -26,10 +26,17 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ bit: Bit) {
-        switch Bool(bitPattern: bit) {
+    @inlinable public init(_ source: Bit) {
+        switch Bool(source) {
         case true:  self = Self.more
         case false: self = Self.same
+        }
+    }
+    
+    @inlinable public static func one(_ sign: Sign) -> Self {
+        switch sign {
+        case Sign.plus:  return Self.more
+        case Sign.minus: return Self.less
         }
     }
     
@@ -39,13 +46,6 @@
         case  0: .same
         case  1: .more
         default: fatalError(.overflow())
-        }
-    }
-    
-    @inlinable public static func one(_ sign: Sign) -> Self {
-        switch sign {
-        case Sign.plus:  return Self.more
-        case Sign.minus: return Self.less
         }
     }
     

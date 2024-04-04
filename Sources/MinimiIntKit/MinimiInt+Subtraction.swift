@@ -20,6 +20,6 @@ extension MinimiInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public func minus(_ decrement: borrowing Self) -> Fallible<Self> {
-        Fallible(self ^ decrement, error: Bool(bitPattern: ~self & decrement))
+        Fallible(self ^ decrement, error: Bool((~self & decrement).base))
     }
 }

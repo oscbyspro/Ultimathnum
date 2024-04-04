@@ -20,7 +20,7 @@ extension SystemsInteger {
     @inlinable public consuming func plus(_ increment: borrowing Self, carrying extra: consuming Bool) -> Fallible<Self> {
         let error: Bool
         (self, error) = self.plus(increment).components
-        (self, extra) = self.plus(Element(Bit(bitPattern: extra))).components
+        (self, extra) = self.plus(Element(Bit(extra))).components
         return self.combine(error != extra)
     }
 }

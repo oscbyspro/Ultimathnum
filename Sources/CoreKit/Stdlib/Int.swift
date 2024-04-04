@@ -8,49 +8,45 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Bit Castable x Models
+// MARK: * Int
 //*============================================================================*
 
-extension Bool: BitCastable {
-    public typealias BitPattern = Self
-}
-
-extension Int: BitCastable {
+extension Int: BaseInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension Int8: BitCastable {
+extension Int8: BaseInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension Int16: BitCastable {
+extension Int16: BaseInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension Int32: BitCastable {
+extension Int32: BaseInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension Int64: BitCastable {
+extension Int64: BaseInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension UInt: BitCastable {
+extension UInt: BaseInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension UInt8: BitCastable {
+extension UInt8: BaseInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension UInt16: BitCastable {
+extension UInt16: BaseInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension UInt32: BitCastable {
+extension UInt32: BaseInteger {
     public typealias BitPattern = Magnitude
 }
 
-extension UInt64: BitCastable {
+extension UInt64: BaseInteger {
     public typealias BitPattern = Magnitude
 }

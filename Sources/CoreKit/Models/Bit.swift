@@ -40,15 +40,23 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: Bool) {
-        self.bitPattern = bitPattern
+    @inlinable public init(_  source: Sign) {
+        self.init(bitPattern: source)
     }
-
+    
+    @inlinable public init(_  source: Bool) {
+        self.init(bitPattern: source)
+    }
+    
+    @inlinable public init(bitPattern: Bool) {
+        self.bitPattern = (bitPattern)
+    }
+    
     @inlinable public init(integerLiteral: Swift.Int.IntegerLiteralType) {
         if  integerLiteral == 0 {
-            self.bitPattern = false
+            self.init(false)
         }   else if integerLiteral == 1 {
-            self.bitPattern = true
+            self.init(true )
         }   else {
             fatalError(String.overflow())
         }

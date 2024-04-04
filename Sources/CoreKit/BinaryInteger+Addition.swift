@@ -75,8 +75,8 @@ extension BinaryInteger {
     /// The next value in arithmetic progression.
     @inlinable public consuming func incremented(_ condition: consuming Bool = true) -> Fallible<Self> {
         switch Self.isSigned {
-        case true : self.minus(Element(repeating: Bit(bitPattern: condition)))
-        case false: self.plus (Element(/*------*/ Bit(bitPattern: condition)))
+        case true : self.minus(Element(repeating: Bit(condition)))
+        case false: self.plus (Element(/*------*/ Bit(condition)))
         }
     }
 }

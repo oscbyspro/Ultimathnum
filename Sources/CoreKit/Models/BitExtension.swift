@@ -43,7 +43,7 @@
     //=------------------------------------------------------------------------=
 
     @inlinable public var bit: Bit {
-        Bit(bitPattern: self.element != 0)
+        Bit(self.element != 0)
     }
     
     @inlinable public var bitPattern: BitPattern {

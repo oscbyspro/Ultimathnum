@@ -30,12 +30,32 @@ final class BitTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testBitPattern() {
-        Test().same(T(bitPattern: false as Bool), 0)
-        Test().same(T(bitPattern: true  as Bool), 1)
+    func testBool() {
+        Test().same(T(false), 0 as T)
+        Test().same(T(true ), 1 as T)
+        
+        Test().same(T(bitPattern: false), 0 as T)
+        Test().same(T(bitPattern: true ), 1 as T)
+        
+        Test().same(Bool(0 as T), false)
+        Test().same(Bool(1 as T), true )
         
         Test().same(Bool(bitPattern: 0 as T), false)
         Test().same(Bool(bitPattern: 1 as T), true )
+    }
+        
+    func testSign() {
+        Test().same(T(Sign.plus ), 0 as T)
+        Test().same(T(Sign.minus), 1 as T)
+        
+        Test().same(T(bitPattern: Sign.plus ), 0 as T)
+        Test().same(T(bitPattern: Sign.minus), 1 as T)
+        
+        Test().same(Sign(0 as T), .plus)
+        Test().same(Sign(1 as T), .minus )
+        
+        Test().same(Sign(bitPattern: 0 as T), .plus)
+        Test().same(Sign(bitPattern: 1 as T), .minus )
     }
     
     func testComparison() {
