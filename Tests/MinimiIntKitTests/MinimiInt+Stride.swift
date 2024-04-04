@@ -8,6 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import MinimiIntKit
 import TestKit
 
 //*============================================================================*
@@ -20,45 +21,71 @@ extension MinimiIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testStrideAdvancedBy() {
+    func testStrideAdvancedByI1() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias F = Fallible<T>
+                        
+            Test().same(T(-1).advanced(by: -1 as I1), F( 0 as T, error: true))
+            Test().same(T(-1).advanced(by:  0 as I1), F(-1 as T))
             
-            Test().same(T.advanced(-1 as T, by:  IX .min), F(-1 as T, error: true))
-            Test().same(T.advanced(-1 as T, by: -2 as IX), F(-1 as T, error: true))
-            Test().same(T.advanced(-1 as T, by: -1 as IX), F( 0 as T, error: true))
-            Test().same(T.advanced(-1 as T, by:  0 as IX), F(-1 as T))
-            Test().same(T.advanced(-1 as T, by:  1 as IX), F( 0 as T))
-            Test().same(T.advanced(-1 as T, by:  2 as IX), F(-1 as T, error: true))
-            Test().same(T.advanced(-1 as T, by:  IX .max), F( 0 as T, error: true))
-            
-            Test().same(T.advanced( 0 as T, by:  IX .min), F( 0 as T, error: true))
-            Test().same(T.advanced( 0 as T, by: -2 as IX), F( 0 as T, error: true))
-            Test().same(T.advanced( 0 as T, by: -1 as IX), F(-1 as T))
-            Test().same(T.advanced( 0 as T, by:  0 as IX), F( 0 as T))
-            Test().same(T.advanced( 0 as T, by:  1 as IX), F(-1 as T, error: true))
-            Test().same(T.advanced( 0 as T, by:  2 as IX), F( 0 as T, error: true))
-            Test().same(T.advanced( 0 as T, by:  IX .max), F(-1 as T, error: true))
+            Test().same(T( 0).advanced(by: -1 as I1), F(-1 as T))
+            Test().same(T( 0).advanced(by:  0 as I1), F( 0 as T))
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias F = Fallible<T>
             
-            Test().same(T.advanced( 0 as T, by:  IX .min), F( 0 as T, error: true))
-            Test().same(T.advanced( 0 as T, by: -2 as IX), F( 0 as T, error: true))
-            Test().same(T.advanced( 0 as T, by: -1 as IX), F( 1 as T, error: true))
-            Test().same(T.advanced( 0 as T, by:  0 as IX), F( 0 as T))
-            Test().same(T.advanced( 0 as T, by:  1 as IX), F( 1 as T))
-            Test().same(T.advanced( 0 as T, by:  2 as IX), F( 0 as T, error: true))
-            Test().same(T.advanced( 0 as T, by:  IX .max), F( 1 as T, error: true))
+            Test().same(T( 0).advanced(by: -1 as IX), F( 1 as T, error: true))
+            Test().same(T( 0).advanced(by:  0 as IX), F( 0 as T))
             
-            Test().same(T.advanced( 1 as T, by:  IX .min), F( 1 as T, error: true))
-            Test().same(T.advanced( 1 as T, by: -2 as IX), F( 1 as T, error: true))
-            Test().same(T.advanced( 1 as T, by: -1 as IX), F( 0 as T))
-            Test().same(T.advanced( 1 as T, by:  0 as IX), F( 1 as T))
-            Test().same(T.advanced( 1 as T, by:  1 as IX), F( 0 as T, error: true))
-            Test().same(T.advanced( 1 as T, by:  2 as IX), F( 1 as T, error: true))
-            Test().same(T.advanced( 1 as T, by:  IX .max), F( 0 as T, error: true))
+            Test().same(T( 1).advanced(by: -1 as IX), F( 0 as T))
+            Test().same(T( 1).advanced(by:  0 as IX), F( 1 as T))
+        }
+        
+        for type in Self.types {
+            type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
+        }
+    }
+    
+    func testStrideAdvancedByIX() {
+        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
+            typealias F = Fallible<T>
+            
+            Test().same(T(-1).advanced(by:  IX .min), F(-1 as T, error: true))
+            Test().same(T(-1).advanced(by: -2 as IX), F(-1 as T, error: true))
+            Test().same(T(-1).advanced(by: -1 as IX), F( 0 as T, error: true))
+            Test().same(T(-1).advanced(by:  0 as IX), F(-1 as T))
+            Test().same(T(-1).advanced(by:  1 as IX), F( 0 as T))
+            Test().same(T(-1).advanced(by:  2 as IX), F(-1 as T, error: true))
+            Test().same(T(-1).advanced(by:  IX .max), F( 0 as T, error: true))
+            
+            Test().same(T( 0).advanced(by:  IX .min), F( 0 as T, error: true))
+            Test().same(T( 0).advanced(by: -2 as IX), F( 0 as T, error: true))
+            Test().same(T( 0).advanced(by: -1 as IX), F(-1 as T))
+            Test().same(T( 0).advanced(by:  0 as IX), F( 0 as T))
+            Test().same(T( 0).advanced(by:  1 as IX), F(-1 as T, error: true))
+            Test().same(T( 0).advanced(by:  2 as IX), F( 0 as T, error: true))
+            Test().same(T( 0).advanced(by:  IX .max), F(-1 as T, error: true))
+        }
+        
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
+            typealias F = Fallible<T>
+            
+            Test().same(T( 0).advanced(by:  IX .min), F( 0 as T, error: true))
+            Test().same(T( 0).advanced(by: -2 as IX), F( 0 as T, error: true))
+            Test().same(T( 0).advanced(by: -1 as IX), F( 1 as T, error: true))
+            Test().same(T( 0).advanced(by:  0 as IX), F( 0 as T))
+            Test().same(T( 0).advanced(by:  1 as IX), F( 1 as T))
+            Test().same(T( 0).advanced(by:  2 as IX), F( 0 as T, error: true))
+            Test().same(T( 0).advanced(by:  IX .max), F( 1 as T, error: true))
+            
+            Test().same(T( 1).advanced(by:  IX .min), F( 1 as T, error: true))
+            Test().same(T( 1).advanced(by: -2 as IX), F( 1 as T, error: true))
+            Test().same(T( 1).advanced(by: -1 as IX), F( 0 as T))
+            Test().same(T( 1).advanced(by:  0 as IX), F( 1 as T))
+            Test().same(T( 1).advanced(by:  1 as IX), F( 0 as T, error: true))
+            Test().same(T( 1).advanced(by:  2 as IX), F( 1 as T, error: true))
+            Test().same(T( 1).advanced(by:  IX .max), F( 0 as T, error: true))
         }
         
         for type in Self.types {

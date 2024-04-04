@@ -52,24 +52,31 @@ extension CoreIntTests {
     }
     
     func testStrideAdvancedBy() {
-        typealias F = Fallible
-        
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            Test().same(T.advanced(T.min, by: -1 as IX), F(T.max, error: true))
-            Test().same(T.advanced(T.min, by:  0 as IX), F(T.min))
-            Test().same(T.advanced(T.min, by:  1 as IX), F(T.min + 1))
-            Test().same(T.advanced(T.max, by: -1 as IX), F(T.max - 1))
-            Test().same(T.advanced(T.max, by:  0 as IX), F(T.max))
-            Test().same(T.advanced(T.max, by:  1 as IX), F(T.min, error: true))
+        func whereIs<T, U>(_ type: T.Type, _ distance: U.Type) where T: SystemsInteger, U: SystemsInteger & SignedInteger {
+            typealias F = Fallible<T>
             
-            if  UX(bitWidth: T.self) < IX.bitWidth {
-                Test().same(T.advanced(0 as T, by: IX.min), F( 0 as T, error: true))
-                Test().same(T.advanced(0 as T, by: IX.max), F(~0 as T, error: true))
+            Test().same(T.min.advanced(by: -1 as U), F(T.max, error: true))
+            Test().same(T.min.advanced(by:  0 as U), F(T.min))
+            Test().same(T.min.advanced(by:  1 as U), F(T.min + 1))
+            Test().same(T.max.advanced(by: -1 as U), F(T.max - 1))
+            Test().same(T.max.advanced(by:  0 as U), F(T.max))
+            Test().same(T.max.advanced(by:  1 as U), F(T.min, error: true))
+            
+            if  UX(bitWidth: T.self) < UX(bitWidth: U.self) {
+                Test().same(T(~0).advanced(by: U.min), F(~0 as T, error: true))
+                Test().same(T( 0).advanced(by: U.min), F( 0 as T, error: true))
+                Test().same(T( 1).advanced(by: U.min), F( 1 as T, error: true))
+
+                Test().same(T(~0).advanced(by: U.max), F(~1 as T, error: true))
+                Test().same(T( 0).advanced(by: U.max), F(~0 as T, error: true))
+                Test().same(T( 1).advanced(by: U.max), F( 0 as T, error: true))
             }
         }
         
         for type in Self.types {
-            whereIs(type)
+            for distance in Self.typesIsSigned {
+                whereIs(type, distance)
+            }
         }
     }
     

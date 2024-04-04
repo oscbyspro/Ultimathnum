@@ -16,15 +16,20 @@ import TestKit
 
 final class CoreIntTests: XCTestCase {
     
-    typealias I = any (SystemsInteger &   SignedInteger).Type
-    typealias U = any (SystemsInteger & UnsignedInteger).Type
-    
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    static let types: [any SystemsInteger.Type] = [
+    static let types: [any SystemsInteger.Type] = {
+        typesIsSigned +
+        typesIsUnsigned
+    }()
+    
+    static let typesIsSigned: [any (SystemsInteger & SignedInteger).Type] = [
         IX.self, I8.self, I16.self, I32.self, I64.self,
+    ]
+    
+    static let typesIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = [
         UX.self, U8.self, U16.self, U32.self, U64.self,
     ]
     
