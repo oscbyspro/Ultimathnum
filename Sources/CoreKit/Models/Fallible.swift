@@ -52,13 +52,6 @@
         }
     }
     
-    /// Merges the current error and the new error in a branchless way.
-    @inlinable public consuming func combine(_ error: Bool) -> Self {
-        let a  = Bit(bitPattern: self.error)
-        let b  = Bit(bitPattern: /*-*/error)
-        return Self(self.value, error: Bool(bitPattern: a | b))
-    }
-    
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=

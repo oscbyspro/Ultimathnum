@@ -39,9 +39,9 @@ extension BinaryInteger {
             isLessThanZero = Fallible.capture(&magnitude, map:{ $0.negated() })
         }
         //=--------------------------------------=
-        let value = Self(bitPattern: consume magnitude)
+        let value = Self(bitPattern: magnitude)
         //=--------------------------------------=
-        return Fallible(value, error: value.isLessThanZero != isLessThanZero)
+        return value.combine(value.isLessThanZero != isLessThanZero)
     }
     
     //=------------------------------------------------------------------------=
@@ -75,7 +75,7 @@ extension BinaryInteger {
         && (Self.isSigned == isSigned || appendix == Bit.zero)
         && stream.succinct().count == Int.zero
         
-        return Fallible(value, error: !success)
+        return value.combine(!success)        
     }
     
     //=------------------------------------------------------------------------=

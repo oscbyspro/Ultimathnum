@@ -24,7 +24,7 @@ extension Triplet {
         let low  = self.low .minus(increment.low)
         let mid  = self.mid .minus(Mid(bitPattern: increment.high), carrying: low.error)
         let high = self.high.minus(appendix, carrying:  mid.error)
-        return Fallible(Self(low: low.value, mid: mid.value, high: high.value), error: high.error)
+        return Self(low: low.value, mid: mid.value, high: high.value).combine(high.error)
     }
     
     //=------------------------------------------------------------------------=
@@ -35,6 +35,6 @@ extension Triplet {
         let low  = self.low .minus(increment.low)
         let mid  = self.mid .minus(increment.mid,  carrying: low.error)
         let high = self.high.minus(increment.high, carrying: mid.error)
-        return Fallible(Self(low: low.value, mid: mid.value, high: high.value), error: high.error)
+        return Self(low: low.value, mid: mid.value, high: high.value).combine(high.error)
     }
 }

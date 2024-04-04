@@ -21,6 +21,6 @@ extension SystemsInteger {
         let error: Bool
         (self, error) = self.plus(increment).components
         (self, extra) = self.plus(Element(Bit(bitPattern: extra))).components
-        return Fallible(self, error: error != extra)
+        return self.combine(error != extra)
     }
 }

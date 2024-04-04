@@ -58,7 +58,7 @@ extension BinaryInteger {
     
     @inlinable public consuming func negated() -> Fallible<Self> {
         let result: Fallible<Self> =  self.complement(true)
-        return Fallible(result.value, error: result.error == Self.isSigned)
+        return result.value.combine(result.error == Self.isSigned)
     }
     
     @inlinable public consuming func minus(_ decrement: borrowing Fallible<Self>) -> Fallible<Self> {

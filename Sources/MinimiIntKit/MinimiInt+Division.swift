@@ -22,13 +22,13 @@ extension MinimiInt {
     @inlinable public func quotient (_ divisor: Self) -> Fallible<Self> {
         let error = Self(bitPattern: Self.isSigned) & self | ~divisor
         let value = self &  divisor
-        return Fallible(value, error: Bool(bitPattern: error))
+        return value.combine(Bool(bitPattern: error))
     }
         
     @inlinable public func remainder(_ divisor: Self) -> Fallible<Self> {
         let error = Self(bitPattern: Self.isSigned) & self | ~divisor
         let value = self & ~divisor
-        return Fallible(value, error: Bool(bitPattern: error))
+        return value.combine(Bool(bitPattern: error))
     }
     
     @inlinable public func division(_ divisor: Self) -> Fallible<Division<Self, Self>> {
@@ -37,7 +37,7 @@ extension MinimiInt {
             quotient:  self &  divisor,
             remainder: self & ~divisor
         )
-        return Fallible(value, error: Bool(bitPattern: error))
+        return value.combine(Bool(bitPattern: error))
     }
     
     //=------------------------------------------------------------------------=
@@ -50,6 +50,6 @@ extension MinimiInt {
             quotient:  Self(bitPattern: dividend.low) &  divisor,
             remainder: Self(bitPattern: dividend.low) & ~divisor
         )
-        return Fallible(value, error: Bool(bitPattern: error))
+        return value.combine(Bool(bitPattern: error))
     }
 }

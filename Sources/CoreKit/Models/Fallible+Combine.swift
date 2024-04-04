@@ -8,17 +8,19 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Doublet x Subtraction
+// MARK: * Fallible x Combine
 //*============================================================================*
 
-extension Doublet {
+extension Fallible {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func negated() -> Fallible<Self> {
-        let result: Fallible<Self> = self.complement(true)
-        return result.value.combine(result.error == Self.isSigned)
+    /// Merges the current error and the new error in a branchless way.
+    @inlinable public consuming func combine(_ error: Bool) -> Self {
+        let a  = Bit(bitPattern: self.error)
+        let b  = Bit(bitPattern: /*-*/error)
+        return Self(self.value, error: Bool(bitPattern: a | b))
     }
 }

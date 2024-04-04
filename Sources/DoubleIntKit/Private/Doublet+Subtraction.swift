@@ -23,7 +23,7 @@ extension Doublet {
         let appendix = High.init(repeating: decrement.appendix)
         let low  = self.low .minus(Low(bitPattern: decrement))
         let high = self.high.minus(appendix, carrying: low.error)
-        return Fallible(Self(low: low.value, high: high.value), error: high.error)
+        return Self(low: low.value, high: high.value).combine(high.error)
     }
     
     //=------------------------------------------------------------------------=
@@ -33,6 +33,6 @@ extension Doublet {
     @inlinable package consuming func minus(_ decrement: borrowing Self) -> Fallible<Self> {
         let low  = self.low .minus(decrement.low)
         let high = self.high.minus(decrement.high, carrying: low.error)
-        return Fallible(Self(low: low.value, high: high.value), error: high.error)
+        return Self(low: low.value, high: high.value).combine(high.error)
     }
 }

@@ -26,18 +26,18 @@ extension CoreInt {
             result.partialValue &*= divisor.base
         }
         //=--------------------------------------=
-        return Fallible(Self(result.partialValue), error: result.overflow)
+        return Self(result.partialValue).combine(result.overflow)
     }
     
     @inlinable public consuming func remainder(_ divisor: borrowing Self) -> Fallible<Self> {
         let result = self.base.remainderReportingOverflow(dividingBy: divisor.base)
-        return Fallible(Self(result.partialValue), error: result.overflow)
+        return Self(result.partialValue).combine(result.overflow)
     }
     
     @inlinable public consuming func division (_ divisor: borrowing Self) -> Fallible<Division<Self, Self>> {
         let quotient  = (copy    self).quotient (divisor)
         let remainder = (consume self).remainder(divisor)
-        return Fallible(Division(quotient: quotient.value, remainder: remainder.value), error: quotient.error || remainder.error)
+        return Division(quotient: quotient.value, remainder: remainder.value).combine(quotient.error || remainder.error)
     }
     
     //=------------------------------------------------------------------------=
@@ -91,6 +91,6 @@ extension CoreInt where Self == Magnitude {
         }
         //=--------------------------------------=
         let result = divisor.base.dividingFullWidth((high: dividend.high.base, low: dividend.low.base))
-        return Fallible(Division(quotient: Self(result.quotient), remainder: Self(result.remainder)), error: overflow)
+        return Division(quotient: Self(result.quotient), remainder: Self(result.remainder)).combine(overflow)
     }
 }

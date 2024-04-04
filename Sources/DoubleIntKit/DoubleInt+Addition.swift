@@ -27,6 +27,6 @@ extension DoubleInt {
         let appendix = High(repeating: increment.appendix)
         let low  = self.low .plus(Low(load: increment))
         let high = self.high.plus(appendix, carrying: low.error)
-        return Fallible(Self(low: low.value, high: high.value), error: high.error)
+        return Self(low: low.value, high: high.value).combine(high.error)
     }
 }

@@ -90,7 +90,7 @@ extension DoubleInt where Base == Base.Magnitude {
             lhs.high = Self(lhs.high.storage.division2222(rhs.storage, normalization: normalization.storage).remainder)
         }
         //=--------------------------------------=
-        return Fallible(Self.division4222(lhs, by: rhs, normalization: normalization), error: overflow)
+        return Self.division4222(lhs, by: rhs, normalization: normalization).combine(overflow)
     }
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.

@@ -8,17 +8,16 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Doublet x Subtraction
+// MARK: * Division x Combine
 //*============================================================================*
 
-extension Doublet {
+extension Division {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Transformation
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func negated() -> Fallible<Self> {
-        let result: Fallible<Self> = self.complement(true)
-        return result.value.combine(result.error == Self.isSigned)
+    @inlinable public consuming func combine(_ error: consuming Bool) -> Fallible<Self> {
+        Fallible(self, error: error)
     }
 }
