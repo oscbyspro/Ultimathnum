@@ -69,7 +69,11 @@ extension MinimiInt {
         CollectionOfOne(Magnitude(bitPattern: self))
     }
     
-    @inlinable public func count(_ bit: Bit, option: BitSelection) -> Magnitude {
+    @inlinable public borrowing func count(_ bit: Bit, option: BitSelection) -> Magnitude {
         Magnitude(bitPattern: ~(self.base ^ bit))
+    }
+    
+    @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
+        (~self).incremented(increment)
     }
 }

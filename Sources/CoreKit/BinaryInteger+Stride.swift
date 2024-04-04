@@ -57,11 +57,11 @@ extension BinaryInteger {
             
             if  distance.isLessThanZero {
                 
-                return Self.exactly(distance.magnitude).map({ instance.minus($0) })
+                return Self.exactly(distance.magnitude()).map({ instance.minus($0) })
                 
             }   else {
                 
-                return Self.exactly(distance.magnitude).map({ instance.plus ($0) })
+                return Self.exactly(distance.magnitude()).map({ instance.plus ($0) })
                                 
             }
             

@@ -33,8 +33,8 @@ extension DoubleInt {
     
     @inlinable public func multiplication(_ multiplier: Self) -> Doublet<Self> {
         let minus  = self.high.isLessThanZero != multiplier.high.isLessThanZero
-        let result: Doublet<Magnitude> = self.magnitude.multiplication(multiplier.magnitude)
-        return Doublet(bitPattern: minus ? result.complement : result)
+        let result: Doublet<Magnitude> = self.magnitude().multiplication(multiplier.magnitude())
+        return Doublet(bitPattern: minus ? result.complement() : result)
     }
 }
 

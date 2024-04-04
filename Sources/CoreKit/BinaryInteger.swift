@@ -89,12 +89,10 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming func plus (_ increment: borrowing Self) -> Fallible<Self>
+    @inlinable consuming func plus (_ increment:  borrowing Self) -> Fallible<Self>
     
-    @inlinable consuming func minus(_ decrement: borrowing Self) -> Fallible<Self>
-    
-    @inlinable consuming func negated() -> Fallible<Self>
-        
+    @inlinable consuming func minus(_ decrement:  borrowing Self) -> Fallible<Self>
+            
     @inlinable consuming func times(_ multiplier: borrowing Self) -> Fallible<Self>
     
     @inlinable consuming func squared() -> Fallible<Self>
@@ -198,4 +196,6 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     @inlinable borrowing func compared(to other: borrowing Self) -> Signum
     
     @inlinable borrowing func count(_ bit: Bit, option: BitSelection) -> Magnitude
+    
+    @inlinable consuming func complement(_ increment: consuming Bool) -> Fallible<Self>
 }

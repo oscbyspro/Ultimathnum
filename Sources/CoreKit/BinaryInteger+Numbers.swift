@@ -82,15 +82,11 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public var complement: Self {
-        consuming get {
-            self.negated().value
-        }
+    @inlinable public consuming func complement() -> Self {
+        self.complement(true).value
     }
     
-    @inlinable public var magnitude: Magnitude {
-        consuming get {
-            Magnitude(bitPattern: self.isLessThanZero ? self.complement : self)
-        }
+    @inlinable public consuming func magnitude() -> Magnitude {
+        Magnitude(bitPattern: self.isLessThanZero ? self.complement() : self)
     }
 }

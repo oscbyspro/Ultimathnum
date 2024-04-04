@@ -21,8 +21,8 @@ extension Doublet {
     
     @inlinable package func multiplication(_ multiplier: Base) -> Triplet<Base> {
         let minus  = self.high.isLessThanZero != multiplier.isLessThanZero
-        let result = Triplet<Base>(bitPattern: self.magnitude.multiplication(multiplier.magnitude))
-        return minus ? result.complement : result
+        let result = Triplet<Base>(bitPattern: self.magnitude().multiplication(multiplier.magnitude()))
+        return minus ? result.complement() : result
     }
     
     //=------------------------------------------------------------------------=
@@ -31,7 +31,7 @@ extension Doublet {
     
     @inlinable package consuming func times(_ multiplier: Self) -> Fallible<Self> {
         let minus  = self.high.isLessThanZero != multiplier.high.isLessThanZero
-        var result = Fallible<Self>(bitPattern: self.magnitude.times(multiplier.magnitude))
+        var result = Fallible<Self>(bitPattern: self.magnitude().times(multiplier.magnitude()))
         
         var suboverflow = (result.value.high.isLessThanZero)
         if  minus {

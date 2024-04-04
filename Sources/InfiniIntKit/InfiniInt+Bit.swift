@@ -63,7 +63,11 @@ extension InfiniInt {
         self.storage.base
     }
     
-    @inlinable public func count(_ bit: Bit, option: BitSelection) -> Magnitude {
+    @inlinable public borrowing func count(_ bit: Bit, option: BitSelection) -> Magnitude {
+        fatalError("TODO")
+    }
+    
+    @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
         fatalError("TODO")
     }
 }

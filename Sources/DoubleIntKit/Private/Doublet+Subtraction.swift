@@ -16,17 +16,6 @@ import CoreKit
 extension Doublet {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func negated() -> Fallible<Self> {
-        var error = true
-        (self.low,  error) = (~self.low ).incremented(error).components
-        (self.high, error) = (~self.high).incremented(error).components
-        return Fallible(self, error: error == Self.isSigned)
-    }
-    
-    //=------------------------------------------------------------------------=
     // MARK: Transformations x 2 by 1
     //=------------------------------------------------------------------------=
         

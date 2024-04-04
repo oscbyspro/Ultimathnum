@@ -7,19 +7,18 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Minimi Int x Subtraction
+// MARK: * Doublet x Subtraction
 //*============================================================================*
 
-extension MinimiInt {
+extension Doublet {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func minus(_ decrement: borrowing Self) -> Fallible<Self> {
-        Fallible(self ^ decrement, error: Bool(bitPattern: ~self & decrement))
+    @inlinable public consuming func negated() -> Fallible<Self> {
+        let result: Fallible<Self> = self.complement(true)
+        return Fallible(result.value, error: result.error == Self.isSigned)
     }
 }

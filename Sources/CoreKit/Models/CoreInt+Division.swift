@@ -51,14 +51,14 @@ extension CoreInt {
         let rhsIsLessThanZero: Bool = divisor/*--*/.isLessThanZero
         let minus: Bool = (lhsIsLessThanZero) != rhsIsLessThanZero
         //=--------------------------------------=
-        var result = T(bitPattern: Magnitude.division(dividend.magnitude, by: divisor.magnitude))
+        var result = T(bitPattern: Magnitude.division(dividend.magnitude(), by: divisor.magnitude()))
         //=--------------------------------------=
         if  minus {
-            Fallible.capture(&result.value.quotient,  map:{ $0.complement })
+            Fallible.capture(&result.value.quotient,  map:{ $0.complement() })
         }
         
         if  lhsIsLessThanZero {
-            Fallible.capture(&result.value.remainder, map:{ $0.complement })
+            Fallible.capture(&result.value.remainder, map:{ $0.complement() })
         }
         
         let overflow = minus != result.value.quotient.isLessThanZero && !(minus && result.value.quotient == 0)

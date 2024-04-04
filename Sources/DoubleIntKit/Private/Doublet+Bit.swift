@@ -35,7 +35,7 @@ extension Doublet {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
 
-    @inlinable package func count(_ bit: Bit, option: BitSelection) -> Magnitude {
+    @inlinable package borrowing func count(_ bit: Bit, option: BitSelection) -> Magnitude {
         var count: UX
 
         switch option {

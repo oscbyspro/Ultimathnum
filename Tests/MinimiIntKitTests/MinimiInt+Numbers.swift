@@ -42,13 +42,13 @@ extension MinimiIntTests {
     
     func testMakeMagnitude() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {            
-            Test().same(( 0 as T).magnitude, 0 as T.Magnitude)
-            Test().same((-1 as T).magnitude, 1 as T.Magnitude)
+            Test().same(( 0 as T).magnitude(), 0 as T.Magnitude)
+            Test().same((-1 as T).magnitude(), 1 as T.Magnitude)
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test().same(( 0 as T).magnitude, 0 as T.Magnitude)
-            Test().same(( 1 as T).magnitude, 1 as T.Magnitude)
+            Test().same(( 0 as T).magnitude(), 0 as T.Magnitude)
+            Test().same(( 1 as T).magnitude(), 1 as T.Magnitude)
         }
         
         for type in Self.types {

@@ -104,7 +104,7 @@ final class IntegerDescriptionFormatTestsOnEncoding: XCTestCase {
     
     func check(_ integer: some BinaryInteger, _ expectation: String, _ test: Test = .init()) {
         let sign = Sign(bitPattern: integer < 0)
-        let magnitude = [UX](ExchangeInt(integer.magnitude.body, isSigned: false).source())
+        let magnitude = [UX](ExchangeInt(integer.magnitude().body, isSigned: false).source())
         
         test.same(encoder.encode(integer), expectation)
         test.same(encoder.encode(sign: sign, magnitude: magnitude), expectation)

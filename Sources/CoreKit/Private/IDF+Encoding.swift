@@ -41,7 +41,7 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
     
     @inlinable public func encode(_ integer: some BinaryInteger) -> String {
         let sign = Sign(bitPattern: integer.isLessThanZero)
-        let magnitude = ExchangeInt(integer.magnitude, as: UX.self).source()
+        let magnitude = ExchangeInt(integer.magnitude(), as: UX.self).source()
         return self.encode(sign: sign, magnitude: magnitude)
     }
     

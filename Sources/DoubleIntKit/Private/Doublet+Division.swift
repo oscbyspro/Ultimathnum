@@ -34,14 +34,14 @@ extension Doublet {
         let rhsIsLessThanZero: Bool = divisor.high.isLessThanZero
         let minus: Bool = (lhsIsLessThanZero != rhsIsLessThanZero)
         //=--------------------------------------=
-        var result = T(bitPattern: self.magnitude.division2222(divisor.magnitude))
+        var result = T(bitPattern: self.magnitude().division2222(divisor.magnitude()))
         //=--------------------------------------=
         if  minus {
-            Fallible.capture(&result.value.quotient,  map:{ $0.complement })
+            Fallible.capture(&result.value.quotient,  map:{ $0.complement() })
         }
         
         if  lhsIsLessThanZero {
-            Fallible.capture(&result.value.remainder, map:{ $0.complement })
+            Fallible.capture(&result.value.remainder, map:{ $0.complement() })
         }
         
         let overflow = lhsIsLessThanZero && rhsIsLessThanZero && result.value.quotient.high.isLessThanZero
@@ -113,7 +113,7 @@ extension Doublet where Base == Base.Magnitude {
         //=--------------------------------------=
         // normalization
         //=--------------------------------------=
-        let top = normalization.low == 0 ? 0 : self.high &>> normalization.low.complement
+        let top = normalization.low == 0 ? 0 : self.high &>> normalization.low.complement()
         let lhs = self    &<< normalization
         let rhs = divisor &<< normalization
         //=--------------------------------------=

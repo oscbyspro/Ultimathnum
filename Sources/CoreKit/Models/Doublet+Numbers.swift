@@ -17,23 +17,7 @@ extension Doublet {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public var complement: Self {
-        consuming get {
-            var error = true
-            (self.low,  error) = (~self.low ).incremented(error).components
-            (self.high, error) = (~self.high).incremented(error).components
-            return self
-        }
-    }
-    
-    @inlinable public var magnitude: Magnitude {
-        consuming get {
-            
-            if  self.high.isLessThanZero {
-                self = self.complement
-            }
-            
-            return Magnitude(bitPattern: self)
-        }
+    @inlinable public consuming func magnitude() -> Magnitude {
+        Magnitude(bitPattern: self.high.isLessThanZero ? self.complement() : self)
     }
 }

@@ -49,17 +49,17 @@ extension CoreIntTests {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             
-            Test().same((-1 as T).magnitude,  1 as M)
-            Test().same(( 0 as T).magnitude,  0 as M)
-            Test().same(( T .max).magnitude, ~M .msb)
-            Test().same(( T .min).magnitude,  M .msb)
+            Test().same((-1 as T).magnitude(),  1 as M)
+            Test().same(( 0 as T).magnitude(),  0 as M)
+            Test().same(( T .max).magnitude(), ~M .msb)
+            Test().same(( T .min).magnitude(),  M .msb)
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             
-            Test().same(( 0 as T).magnitude, 0 as M)
-            Test().same(( 1 as T).magnitude, 1 as M)
+            Test().same(( 0 as T).magnitude(), 0 as M)
+            Test().same(( 1 as T).magnitude(), 1 as M)
         }
         
         for type in Self.types {

@@ -73,8 +73,12 @@ extension DoubleInt {
         Magnitude._Body(low: self.low.body, high: Base.Magnitude(bitPattern: self.high).body)
     }
     
-    @inlinable public func count(_ bit: Bit, option: BitSelection) -> Magnitude {
+    @inlinable public borrowing func count(_ bit: Bit, option: BitSelection) -> Magnitude {
         Magnitude(self.storage.count(bit, option: option))
+    }
+    
+    @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
+        Fallible(bitPattern: self.storage.complement(increment))
     }
 }
 

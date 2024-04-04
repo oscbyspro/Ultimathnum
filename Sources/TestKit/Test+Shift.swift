@@ -44,7 +44,7 @@ extension Test {
                 same({ var x = instance; x >>= distance; return x }(), expectation)
             }
             
-            if !distance.isLessThanZero, distance.magnitude < T.bitWidth {
+            if !distance.isLessThanZero, distance.magnitude() < T.bitWidth {
                 shift(instance, distance, expectation, .left,  .masked)
             }
             
@@ -60,7 +60,7 @@ extension Test {
                 same({ var x = instance; x <<= distance; return x }(), expectation)
             }
             
-            if !distance.isLessThanZero, distance.magnitude < T.bitWidth {
+            if !distance.isLessThanZero, distance.magnitude() < T.bitWidth {
                 shift(instance, distance, expectation, .right, .masked)
             }
             

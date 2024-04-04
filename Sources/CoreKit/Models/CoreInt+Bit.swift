@@ -77,4 +77,8 @@ extension CoreInt {
         case (false, .descending): Magnitude(Base.Magnitude(truncatingIfNeeded: ( self).base .leadingZeroBitCount))
         }
     }
+    
+    @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
+        (~self).incremented(increment)
+    }
 }

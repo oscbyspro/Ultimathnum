@@ -34,4 +34,19 @@ extension Triplet {
             )
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func complement() -> Self {
+        self.complement(true).value
+    }
+    
+    @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
+        (self.low,  increment) = self.low .complement(increment).components
+        (self.mid,  increment) = self.mid .complement(increment).components
+        (self.high, increment) = self.high.complement(increment).components
+        return Fallible(self, error: increment)
+    }
 }

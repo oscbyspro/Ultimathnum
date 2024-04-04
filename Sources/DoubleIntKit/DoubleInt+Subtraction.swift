@@ -19,10 +19,6 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func negated() -> Fallible<Self> {
-        Fallible(bitPattern: self.storage.negated())
-    }
-    
     @inlinable public consuming func minus(_ decrement: borrowing Self) -> Fallible<Self> {
         Fallible(bitPattern: self.storage.minus(decrement.storage))
     }

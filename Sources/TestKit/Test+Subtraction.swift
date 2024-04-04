@@ -20,8 +20,6 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    #warning("try minus(rhs - 1, carrying: true )")
-    #warning("try minus(rhs - 0, carrying: false)")
     public func subtraction<T>(
         _ lhs: T, 
         _ rhs: T,
