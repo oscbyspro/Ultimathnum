@@ -26,7 +26,7 @@ extension CoreIntTests {
             Test().same(T(repeating: 1 as Bit), ~0 as T)
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             whereIs(type)
         }
     }
@@ -47,7 +47,7 @@ extension CoreIntTests {
             }
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             whereIs(type)
         }
     }
@@ -64,7 +64,7 @@ extension CoreIntTests {
             Test().same(( 3 as T).leastSignificantBit, 1 as Bit)
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             whereIs(type)
         }
     }
@@ -111,7 +111,7 @@ extension CoreIntTests {
             }
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }
@@ -134,7 +134,7 @@ extension CoreIntTests {
             Test().elements( 1 as T, [UX(truncating:  1 as T)] + Array(repeating:  0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<UX>.size))
         }
 
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             whereIs(type)
         }
     }

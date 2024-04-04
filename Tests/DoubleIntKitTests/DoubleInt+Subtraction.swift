@@ -42,7 +42,7 @@ extension DoubleIntTests {
             }
         }
         
-        for base in Self.bases {
+        for base in bases {
             whereTheBaseTypeIs(base)
         }
     }
@@ -65,7 +65,7 @@ extension DoubleIntTests {
             Test().subtraction(T.max,  1 as T, F( T .max - 1))
         }
         
-        for base in Self.bases {
+        for base in bases {
             whereTheBaseTypeIs(base)
         }
     }
@@ -87,7 +87,7 @@ extension DoubleIntTests {
             }
         }
         
-        for base in Self.bases {
+        for base in bases {
             whereTheBaseTypeIs(base)
         }
     }

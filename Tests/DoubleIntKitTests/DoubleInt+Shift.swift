@@ -58,7 +58,7 @@ extension DoubleIntTests {
             }
         }
         
-        for base in Self.bases {
+        for base in bases {
             whereTheBaseTypeIs(base)
         }
     }

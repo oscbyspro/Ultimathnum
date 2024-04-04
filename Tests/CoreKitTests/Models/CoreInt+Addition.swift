@@ -61,7 +61,7 @@ extension CoreIntTests {
             Test().addition( T .max,  1 as T, F( T .min, error: true))
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }

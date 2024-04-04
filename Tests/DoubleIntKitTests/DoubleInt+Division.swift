@@ -40,7 +40,7 @@ extension DoubleIntTests {
             Test().division(-7 as T, -3 as T, F(D(quotient:  2, remainder: -1)))
         }
         
-        for base in Self.bases {
+        for base in bases {
             whereTheBaseTypeIs(base)
         }
     } 
@@ -68,7 +68,7 @@ extension DoubleIntTests {
             Test().division( T(low: ~5, high: 14),  5 as T, F(D(quotient:  T(low: ~1, high:  2), remainder:  4)))
         }
         
-        for base in Self.bases {
+        for base in bases {
             base.isSigned ? whereTheBaseTypeIsSigned(base) : whereTheBaseTypeIsUnsigned(base)
         }
     }
@@ -96,7 +96,7 @@ extension DoubleIntTests {
             Test().division( T(low: ~5, high: 14),  T(low: ~1, high:  2), F(D(quotient:  5, remainder:  4)))
         }
         
-        for base in Self.bases {
+        for base in bases {
             base.isSigned ? whereTheBaseTypeIsSigned(base) : whereTheBaseTypeIsUnsigned(base)
         }
     }
@@ -124,7 +124,7 @@ extension DoubleIntTests {
             Test().division( T(low:  1, high:  2 &+ Base.msb),  T(low: ~1, high: Base.msb &- 2), F(D(quotient:  1, remainder:  T(low: 3, high: 3))))
         }
         
-        for base in Self.bases {
+        for base in bases {
             base.isSigned ? whereTheBaseTypeIsSigned(base) : whereTheBaseTypeIsUnsigned(base)
         }
     }
@@ -147,7 +147,7 @@ extension DoubleIntTests {
             Test().division( T .max, -1 as T, F(D(quotient: -T.max, remainder:  0)))
         }
         
-        for base in Self.bases {
+        for base in bases {
             whereTheBaseTypeIs(base)
         }
     }
@@ -186,7 +186,7 @@ extension DoubleIntTests {
             Test().division(X(low:  0 as M, high: ~0 as T), ~0 as T, F(D(quotient:  0, remainder:  0), error: true))
         }
         
-        for base in Self.bases {
+        for base in bases {
             base.isSigned ? whereTheBaseTypeIsSigned(base) : whereTheBaseTypeIsUnsigned(base)
         }
     }

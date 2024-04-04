@@ -56,4 +56,16 @@ final class DoubleIntTests: XCTestCase {
         IXx4.High.self,
         UXx4.High.self,
     ]
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    var types: [any SystemsInteger.Type] {
+        Self.types
+    }
+    
+    var bases: [any SystemsInteger.Type] {
+        Self.bases
+    }
 }

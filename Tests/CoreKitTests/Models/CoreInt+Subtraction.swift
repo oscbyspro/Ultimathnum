@@ -43,7 +43,7 @@ extension CoreIntTests {
             Test().subtraction( 0 as T,  T .max, F( T .min + 1, error: true))
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }
@@ -91,7 +91,7 @@ extension CoreIntTests {
             Test().subtraction( T .max,  0 as T, F( T .max - 0))
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }

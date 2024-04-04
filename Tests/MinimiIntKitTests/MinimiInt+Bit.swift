@@ -26,7 +26,7 @@ extension MinimiIntTests {
             Test().same(T(repeating: 1 as Bit), ~0)
         }
         
-        for type in Self.types {
+        for type in types {
             whereIs(type)
         }
     }
@@ -41,7 +41,7 @@ extension MinimiIntTests {
             }
         }
         
-        for type in Self.types {
+        for type in types {
             whereIs(type)
         }
     }
@@ -57,7 +57,7 @@ extension MinimiIntTests {
             Test().same(( 1 as T).leastSignificantBit, 1 as Bit)
         }
         
-        for type in Self.types {
+        for type in types {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }
@@ -81,7 +81,7 @@ extension MinimiIntTests {
             Test().same(( 1 as T).load(as: UX.self),  1 as UX)
         }
         
-        for type in Self.types {
+        for type in types {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }

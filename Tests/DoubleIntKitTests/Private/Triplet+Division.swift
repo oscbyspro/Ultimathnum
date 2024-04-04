@@ -37,7 +37,7 @@ extension TripletTests {
             Test().division3212MSB(Y(low: ~0, mid: ~0, high: T.msb - 1), X(low: ~0, high: T.msb), ~1 as T, X(low: ~2, high: 2)) // 1
         }
         
-        for base in Self.basesIsUnsigned {
+        for base in coreSystemsIntegersWhereIsUnsigned {
             whereTheBaseIs(base)
         }
     }

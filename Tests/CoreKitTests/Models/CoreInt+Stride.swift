@@ -46,7 +46,7 @@ extension CoreIntTests {
             }
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             whereIs(type)
         }
     }
@@ -73,8 +73,8 @@ extension CoreIntTests {
             }
         }
         
-        for type in Self.types {
-            for distance in Self.typesIsSigned {
+        for type in coreSystemsIntegers {
+            for distance in coreSystemsIntegersWhereIsSigned {
                 whereIs(type, distance)
             }
         }
@@ -92,7 +92,7 @@ extension CoreIntTests {
             Test().same(T.distance(T.min, to: T.min.advanced(by:  128), as: I8.self), F(I8.min, error: true))
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             whereIs(type)
         }
     }

@@ -17,23 +17,6 @@ import TestKit
 final class DoubletTests: XCTestCase {
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
-    //=------------------------------------------------------------------------=
-    
-    static let bases: [any SystemsInteger.Type] = {
-        basesIsSigned +
-        basesIsUnsigned
-    }()
-    
-    static let basesIsSigned: [any (SystemsInteger & SignedInteger).Type] = [
-        IX.self, I8.self, I16.self, I32.self, I64.self,
-    ]
-    
-    static let basesIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = [
-        UX.self, U8.self, U16.self, U32.self, U64.self,
-    ]
-    
-    //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
@@ -44,7 +27,7 @@ final class DoubletTests: XCTestCase {
             Test().same(T.isSigned, Base.isSigned)
         }
         
-        for base in Self.bases {
+        for base in coreSystemsIntegers {
             whereTheBaseIs(base)
         }
     }
@@ -56,7 +39,7 @@ final class DoubletTests: XCTestCase {
             Test().same(T.bitWidth, Base.bitWidth.multiplication(2))
         }
         
-        for base in Self.bases {
+        for base in coreSystemsIntegers {
             whereTheBaseIs(base)
         }
     }
@@ -71,7 +54,7 @@ final class DoubletTests: XCTestCase {
             Test().same(MemoryLayout<T>.size, 2 * MemoryLayout<Base>.alignment)
         }
         
-        for base in Self.bases {
+        for base in coreSystemsIntegers {
             whereTheBaseIs(base)
         }
     }

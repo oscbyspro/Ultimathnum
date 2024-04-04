@@ -43,7 +43,7 @@ extension DoubleIntTests {
             }
         }
         
-        for type in Self.types {
+        for type in types {
             for distance: any (SystemsInteger & SignedInteger).Type in [I8.self, I16.self, I32.self, I64.self, IX.self] {
                 whereIs(type, distance)
             }
@@ -63,7 +63,7 @@ extension DoubleIntTests {
             Test().same(T.distance(T.min, to: T.min.advanced(by:  128), as: I8.self), F(I8.min, error: true))
         }
         
-        for base in Self.bases {
+        for base in bases {
             whereTheBaseTypeIs(base)
         }
     }

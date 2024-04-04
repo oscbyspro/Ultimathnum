@@ -29,7 +29,7 @@ extension SystemsIntegerTests {
             Test().same(T.prefix1([~0, ~1] as [T.Magnitude]), ~0 as T)
         }
         
-        for base in Self.types {
+        for base in coreSystemsIntegers {
             whereIs(base)
         }
     }
@@ -43,7 +43,7 @@ extension SystemsIntegerTests {
             Test().same(T.prefix2([~0, ~1, ~2] as [T.Magnitude]), X2(low: ~0, high: ~1))
         }
         
-        for base in Self.types {
+        for base in coreSystemsIntegers {
             whereIs(base)
         }
     }
@@ -57,7 +57,7 @@ extension SystemsIntegerTests {
             Test().same(T.prefix3([~0, ~1, ~2, ~3] as [T.Magnitude]), X3(low: ~0, mid: ~1, high: ~2))
         }
         
-        for base in Self.types {
+        for base in coreSystemsIntegers {
             whereIs(base)
         }
     }
@@ -75,7 +75,7 @@ extension SystemsIntegerTests {
             Test().same(T.suffix1([~0, ~1] as [T.Magnitude]), ~1 as T)
         }
         
-        for base in Self.types {
+        for base in coreSystemsIntegers {
             whereIs(base)
         }
     }
@@ -89,7 +89,7 @@ extension SystemsIntegerTests {
             Test().same(T.suffix2([~0, ~1, ~2] as [T.Magnitude]), X2(low: ~1, high: ~2))
         }
         
-        for base in Self.types {
+        for base in coreSystemsIntegers {
             whereIs(base)
         }
     }
@@ -103,7 +103,7 @@ extension SystemsIntegerTests {
             Test().same(T.suffix3([~0, ~1, ~2, ~3] as [T.Magnitude]), X3(low: ~1, mid: ~2, high: ~3))
         }
         
-        for base in Self.types {
+        for base in coreSystemsIntegers {
             whereIs(base)
         }
     }

@@ -35,7 +35,7 @@ extension MinimiIntTests {
             Test().shift( 1 as T,  1 as T,  0 as T, .left,  .smart)
         }
         
-        for type in Self.types {
+        for type in types {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }
@@ -55,7 +55,7 @@ extension MinimiIntTests {
             Test().shift( 1 as T,  1 as T,  0 as T, .right, .smart)
         }
         
-        for type in Self.types {
+        for type in types {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }
@@ -75,7 +75,7 @@ extension MinimiIntTests {
             Test().shift( 1 as T,  1 as T,  1 as T, .left,  .masked)
         }
         
-        for type in Self.types {
+        for type in types {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }
@@ -95,7 +95,7 @@ extension MinimiIntTests {
             Test().shift( 1 as T,  1 as T,  1 as T, .right, .masked)
         }
         
-        for type in Self.types {
+        for type in types {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }

@@ -41,7 +41,7 @@ extension MinimiIntTests {
             Test().division( 1 as T,  1 as T, F(D(quotient:  1, remainder:  0)))
         }
         
-        for type in Self.types {
+        for type in types {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }
@@ -77,7 +77,7 @@ extension MinimiIntTests {
             Test().division(X(low: 1, high:  1),  1 as T,  F(D(quotient:  1, remainder:  0), error: true)) //  3 vs  1
         }
         
-        for type in Self.types {
+        for type in types {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }

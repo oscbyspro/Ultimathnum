@@ -42,7 +42,7 @@ extension MinimiIntTests {
             Test().same(T( 1).advanced(by:  0 as IX), F( 1 as T))
         }
         
-        for type in Self.types {
+        for type in types {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }
@@ -88,7 +88,7 @@ extension MinimiIntTests {
             Test().same(T( 1).advanced(by:  IX .max), F( 0 as T, error: true))
         }
         
-        for type in Self.types {
+        for type in types {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }
@@ -112,7 +112,7 @@ extension MinimiIntTests {
             Test().same(T.distance( 1 as T, to:  1 as T, as: IX.self), F( 0 as IX))
         }
         
-        for type in Self.types {
+        for type in types {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }

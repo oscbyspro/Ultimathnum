@@ -52,7 +52,7 @@ extension DoubletTests {
             Test().same(X(low:  2, high:  0).minus(T( 3)), F(X(low: ~0, high: ~0), error: true))
         }
         
-        for base in Self.bases {
+        for base in coreSystemsIntegers {
             base.isSigned ? whereTheBaseIsSigned(base) : whereTheBaseIsUnsigned(base)
         }
     }
@@ -88,7 +88,7 @@ extension DoubletTests {
             Test().same(X(low:  2, high:  4).minus(X(low:  3, high:  4)), F(X(low: ~0, high: ~0), error: true))
         }
         
-        for base in Self.bases {
+        for base in coreSystemsIntegers {
             base.isSigned ? whereTheBaseIsSigned(base) : whereTheBaseIsUnsigned(base)
         }
     }

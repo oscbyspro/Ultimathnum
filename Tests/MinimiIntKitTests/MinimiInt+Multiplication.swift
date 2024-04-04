@@ -41,7 +41,7 @@ extension MinimiIntTests {
             Test().multiplication( 1 as T,  1 as T, F(X(low: 1, high:  0)))
         }
         
-        for type in Self.types {
+        for type in types {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }

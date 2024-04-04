@@ -40,7 +40,7 @@ extension CoreIntTests {
             Test().same(T.exactly(magnitude:  M.max), F(T.max))
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }
@@ -62,7 +62,7 @@ extension CoreIntTests {
             Test().same(( 1 as T).magnitude(), 1 as M)
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }

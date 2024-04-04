@@ -21,13 +21,21 @@ final class MinimiIntTests: XCTestCase {
     typealias U = any (SystemsInteger & UnsignedInteger).Type
     
     //=------------------------------------------------------------------------=
-    // MARK: State
+    // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
     static let types: [any SystemsInteger.Type] = [
         I1.self,
         U1.self,
     ]
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    var types: [any SystemsInteger.Type] {
+        Self.types
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -38,7 +46,7 @@ final class MinimiIntTests: XCTestCase {
             Test().invariants(type, SystemsIntegerID())
         }
         
-        for type in Self.types {
+        for type in types {
             whereIs(type)
         }
     }
@@ -53,7 +61,7 @@ final class MinimiIntTests: XCTestCase {
             Test().same(T.max, T.isSigned ?  0 : 1)
         }
         
-        for type in Self.types {
+        for type in types {
             whereIs(type)
         }
     }
@@ -64,7 +72,7 @@ final class MinimiIntTests: XCTestCase {
             Test().same(T.msb, T.isSigned ? -1 : 1)
         }
         
-        for type in Self.types {
+        for type in types {
             whereIs(type)
         }
     }

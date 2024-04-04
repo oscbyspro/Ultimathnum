@@ -17,23 +17,6 @@ import TestKit
 final class CoreIntTests: XCTestCase {
     
     //=------------------------------------------------------------------------=
-    // MARK: State
-    //=------------------------------------------------------------------------=
-    
-    static let types: [any SystemsInteger.Type] = {
-        typesIsSigned +
-        typesIsUnsigned
-    }()
-    
-    static let typesIsSigned: [any (SystemsInteger & SignedInteger).Type] = [
-        IX.self, I8.self, I16.self, I32.self, I64.self,
-    ]
-    
-    static let typesIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = [
-        UX.self, U8.self, U16.self, U32.self, U64.self,
-    ]
-    
-    //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
@@ -42,7 +25,7 @@ final class CoreIntTests: XCTestCase {
             Test().invariants(type, SystemsIntegerID())
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             whereIs(type)
         }
     }
@@ -57,7 +40,7 @@ final class CoreIntTests: XCTestCase {
             Test().same(T.max, T.isSigned ? ~T.msb : ~0)
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             whereIs(type)
         }
     }
@@ -70,7 +53,7 @@ final class CoreIntTests: XCTestCase {
             Test().same(T.msb.count(1, option: .descending), 1)
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             whereIs(type)
         }
     }

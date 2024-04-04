@@ -28,7 +28,7 @@ extension MinimiIntTests {
             Test().not(T.max, T.min)
         }
         
-        for type in Self.types {
+        for type in types {
             whereIs(type)
         }
     }
@@ -43,7 +43,7 @@ extension MinimiIntTests {
             Test().and(T(bitPattern: 1 as M), T(bitPattern: 1 as M), T(bitPattern: 1 as M))
         }
         
-        for type in Self.types {
+        for type in types {
             whereIs(type)
         }
     }
@@ -58,7 +58,7 @@ extension MinimiIntTests {
             Test().or (T(bitPattern: 1 as M), T(bitPattern: 1 as M), T(bitPattern: 1 as M))
         }
         
-        for type in Self.types {
+        for type in types {
             whereIs(type)
         }
     }
@@ -73,7 +73,7 @@ extension MinimiIntTests {
             Test().xor(T(bitPattern: 1 as M), T(bitPattern: 1 as M), T(bitPattern: 0 as M))
         }
         
-        for type in Self.types {
+        for type in types {
             whereIs(type)
         }
     }

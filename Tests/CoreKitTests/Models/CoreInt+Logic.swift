@@ -26,7 +26,7 @@ extension CoreIntTests {
             Test().not(T.max, T.min)
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             whereIs(type)
         }
     }
@@ -54,7 +54,7 @@ extension CoreIntTests {
             Test().and( 1 as T,  1 as T,  1 as T)
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             whereIs(type)
         }
     }
@@ -82,7 +82,7 @@ extension CoreIntTests {
             Test().or ( 1 as T,  1 as T,  1 as T)
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             whereIs(type)
         }
     }
@@ -110,7 +110,7 @@ extension CoreIntTests {
             Test().xor( 1 as T,  1 as T,  0 as T)
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             whereIs(type)
         }
     }

@@ -46,7 +46,7 @@ extension DoubleIntTests {
             Test().multiplication(T(low: ~1, high: ~2), T(low: ~3, high: ~4), F(X(low: M(low:  8, high:  16), high: T(low:  2, high: ~5)), error: true))
         }
         
-        for base in Self.bases {
+        for base in bases {
             base.isSigned ? whereTheBaseTypeIsSigned(base) : whereTheBaseTypeIsUnsigned(base)
         }
     }
@@ -100,7 +100,7 @@ extension DoubleIntTests {
             Test().multiplication(T.max,  2 as T, F(X(low: ~1 as M, high:  1 as T), error: true))
         }
         
-        for base in Self.bases {
+        for base in bases {
             base.isSigned ? whereTheBaseTypeIsSigned(base) : whereTheBaseTypeIsUnsigned(base)
         }
     }

@@ -62,7 +62,7 @@ extension CoreIntTests {
             Test().division( 3 as T,  0 as T, F(D(quotient:  0, remainder:  3), error: true))
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }
@@ -116,7 +116,7 @@ extension CoreIntTests {
             Test().division(X(low:  0 as M, high: ~0 as T),  8 as T, F(D(quotient: ~0 << T(bitPattern: T.bitWidth - 3), remainder:  0), error: true))
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }

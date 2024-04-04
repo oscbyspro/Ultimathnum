@@ -35,7 +35,7 @@ extension MinimiIntTests {
             Test().comparison( 1 as T,  1 as T,  0 as Signum)
         }
         
-        for type in Self.types {
+        for type in types {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }

@@ -60,7 +60,7 @@ extension CoreIntTests {
             Test().comparison( 3 as T,  2 as T,  1 as Signum)
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }

@@ -54,7 +54,7 @@ extension CoreIntTests {
             }
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             whereIs(type)
         }
     }

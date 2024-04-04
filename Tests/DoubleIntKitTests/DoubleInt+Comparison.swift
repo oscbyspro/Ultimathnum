@@ -66,7 +66,7 @@ extension DoubleIntTests {
             Test().comparison(T(low: ~2, high: ~2), T(low: ~1, high: ~1), -1 as Signum)
         }
         
-        for base in Self.bases {
+        for base in bases {
             whereTheBaseTypeIs(base)
         }
     }

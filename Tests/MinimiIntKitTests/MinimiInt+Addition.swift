@@ -39,7 +39,7 @@ extension MinimiIntTests {
             Test().addition( 1 as T,  1 as T, F( 0 as T, error: true))
         }
         
-        for type in Self.types {
+        for type in types {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }
@@ -59,7 +59,7 @@ extension MinimiIntTests {
             Test().incrementation( 1 as T, F( 0 as T, error: true))
         }
         
-        for type in Self.types {
+        for type in types {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }

@@ -93,7 +93,7 @@ extension CoreIntTests {
             Test().multiplication( T .max,  T .max, F(X(low:  1 as M, high: ~1 as T), error: true))
         }
         
-        for type in Self.types {
+        for type in coreSystemsIntegers {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }

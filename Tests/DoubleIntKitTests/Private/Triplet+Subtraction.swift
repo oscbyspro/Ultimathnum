@@ -54,7 +54,7 @@ extension TripletTests {
             Test().same(Y(low:  3, mid:  5, high:  0).minus(X(low:  4, high:  5)), F(Y(low: ~0, mid: ~0, high: ~0), error: true))
         }
         
-        for base in Self.bases {
+        for base in coreSystemsIntegers {
             base.isSigned ? whereTheBaseIsSigned(base) : whereTheBaseIsUnsigned(base)
         }
     }
@@ -92,7 +92,7 @@ extension TripletTests {
             Test().same(Y(low:  3, mid:  5, high:  6).minus(Y(low:  4, mid:  5, high:  6)), F(Y(low: ~0, mid: ~0, high: ~0), error: true))
         }
         
-        for base in Self.bases {
+        for base in coreSystemsIntegers {
             base.isSigned ? whereTheBaseIsSigned(base) : whereTheBaseIsUnsigned(base)
         }
     }

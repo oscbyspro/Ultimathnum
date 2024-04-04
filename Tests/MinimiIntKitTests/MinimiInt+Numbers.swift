@@ -35,7 +35,7 @@ extension MinimiIntTests {
             Test().same(T.exactly(magnitude: 1), F( 1))
         }
         
-        for type in Self.types {
+        for type in types {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }
@@ -51,7 +51,7 @@ extension MinimiIntTests {
             Test().same(( 1 as T).magnitude(), 1 as T.Magnitude)
         }
         
-        for type in Self.types {
+        for type in types {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }
