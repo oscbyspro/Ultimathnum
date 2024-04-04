@@ -54,20 +54,33 @@ extension CoreIntTests {
     func testStrideAdvancedBy() {
         func whereIs<T, U>(_ type: T.Type, _ distance: U.Type) where T: SystemsInteger, U: SystemsInteger & SignedInteger {
             typealias F = Fallible<T>
+                        
+            Test().same(T.min.advanced(by: -4 as U), F(T.min &- 4, error: true))
+            Test().same(T.min.advanced(by: -3 as U), F(T.min &- 3, error: true))
+            Test().same(T.min.advanced(by: -2 as U), F(T.min &- 2, error: true))
+            Test().same(T.min.advanced(by: -1 as U), F(T.min &- 1, error: true))
+            Test().same(T.min.advanced(by:  0 as U), F(T.min &+ 0))
+            Test().same(T.min.advanced(by:  1 as U), F(T.min &+ 1))
+            Test().same(T.min.advanced(by:  2 as U), F(T.min &+ 2))
+            Test().same(T.min.advanced(by:  3 as U), F(T.min &+ 3))
             
-            Test().same(T.min.advanced(by: -1 as U), F(T.max, error: true))
-            Test().same(T.min.advanced(by:  0 as U), F(T.min))
-            Test().same(T.min.advanced(by:  1 as U), F(T.min + 1))
-            Test().same(T.max.advanced(by: -1 as U), F(T.max - 1))
-            Test().same(T.max.advanced(by:  0 as U), F(T.max))
-            Test().same(T.max.advanced(by:  1 as U), F(T.min, error: true))
+            Test().same(T.max.advanced(by: -4 as U), F(T.max &- 4))
+            Test().same(T.max.advanced(by: -3 as U), F(T.max &- 3))
+            Test().same(T.max.advanced(by: -2 as U), F(T.max &- 2))
+            Test().same(T.max.advanced(by: -1 as U), F(T.max &- 1))
+            Test().same(T.max.advanced(by:  0 as U), F(T.max &+ 0))
+            Test().same(T.max.advanced(by:  1 as U), F(T.max &+ 1, error: true))
+            Test().same(T.max.advanced(by:  2 as U), F(T.max &+ 2, error: true))
+            Test().same(T.max.advanced(by:  3 as U), F(T.max &+ 3, error: true))
             
             if  UX(bitWidth: T.self) < UX(bitWidth: U.self) {
                 Test().same(T(~0).advanced(by: U.min), F(~0 as T, error: true))
+                Test().same(T(~1).advanced(by: U.min), F(~1 as T, error: true))
                 Test().same(T( 0).advanced(by: U.min), F( 0 as T, error: true))
                 Test().same(T( 1).advanced(by: U.min), F( 1 as T, error: true))
 
                 Test().same(T(~0).advanced(by: U.max), F(~1 as T, error: true))
+                Test().same(T(~1).advanced(by: U.max), F(~2 as T, error: true))
                 Test().same(T( 0).advanced(by: U.max), F(~0 as T, error: true))
                 Test().same(T( 1).advanced(by: U.max), F( 0 as T, error: true))
             }
