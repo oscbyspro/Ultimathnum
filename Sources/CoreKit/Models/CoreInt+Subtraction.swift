@@ -18,7 +18,7 @@ extension CoreInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func negated() -> Fallible<Self> {
-        let result = (~self).plus(1) as Fallible<Self>
+        let result: Fallible<Self> = (~self).incremented()
         return Fallible(result.value, error: result.error == Self.isSigned)
     }
     

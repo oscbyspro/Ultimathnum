@@ -17,7 +17,6 @@ extension SystemsInteger {
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    #warning("consider incrementation(_:_:)")
     @inlinable public consuming func plus(_ increment: borrowing Self, carrying extra: consuming Bool) -> Fallible<Self> {
         let error: Bool
         (self, error) = self.plus(increment).components

@@ -17,7 +17,6 @@ extension SystemsInteger {
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    #warning("consider decrementation(_:_:)")
     @inlinable public consuming func minus(_ decrement: borrowing Self, carrying extra: consuming Bool) -> Fallible<Self> {
         let error: Bool
         (self, error) = self.minus(decrement).components

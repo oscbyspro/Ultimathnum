@@ -20,9 +20,10 @@ extension Doublet {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func negated() -> Fallible<Self> {
-        let low  = (~self.low ).plus(1)
-        let high = (~self.high).plus(High(Bit(bitPattern: low.error)))
-        return Fallible(Self(low: low.value, high: high.value), error: high.error == Self.isSigned)
+        var error = true
+        (self.low,  error) = (~self.low ).incremented(error).components
+        (self.high, error) = (~self.high).incremented(error).components
+        return Fallible(self, error: error == Self.isSigned)
     }
     
     //=------------------------------------------------------------------------=

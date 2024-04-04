@@ -55,10 +55,7 @@ extension Fallible where Value: BinaryInteger {
     //=------------------------------------------------------------------------=
     
     /// The previous value in arithmetic progression.
-    ///
-    /// - Note: It works with **0-bit** and **1-bit** integers.
-    ///
-    @inlinable public consuming func decremented() -> Self {
-        self.value.decremented().combine(self.error)
+    @inlinable public consuming func decremented(_ condition: consuming Bool = true) -> Self {
+        self.value.decremented(condition).combine(self.error)
     }
 }

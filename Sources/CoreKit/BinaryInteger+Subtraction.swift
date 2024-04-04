@@ -76,22 +76,15 @@ extension BinaryInteger {
 
 extension BinaryInteger {
     
-    #warning("conisder decremented(Bool)")
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     /// The previous value in arithmetic progression.
-    ///
-    /// - Note: It works with **0-bit** and **1-bit** integers.
-    ///
-    @inlinable public consuming func decremented() -> Fallible<Self> {
-        if  let positive = Element.exactly(1).optional() {
-            return self.minus(positive)
-        }   else if let negative = Element.exactly(-1).optional() {
-            return self.plus (negative)
-        }   else {
-            return Fallible.failure(self)
+    @inlinable public consuming func decremented(_ condition: consuming Bool = true) -> Fallible<Self> {
+        switch Self.isSigned {
+        case true : self.plus (Element(repeating: Bit(bitPattern: condition)))
+        case false: self.minus(Element(/*------*/ Bit(bitPattern: condition)))
         }
     }
 }

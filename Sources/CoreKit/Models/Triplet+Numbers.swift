@@ -19,10 +19,10 @@ extension Triplet {
     
     @inlinable public var complement: Self {
         consuming get {
-            var overflow = true
-            (self.low,  overflow) = (~self.low ).plus(Low (Bit(bitPattern: overflow))).components
-            (self.mid,  overflow) = (~self.mid ).plus(Mid (Bit(bitPattern: overflow))).components
-            (self.high, overflow) = (~self.high).plus(High(Bit(bitPattern: overflow))).components
+            var error = true
+            (self.low,  error) = (~self.low ).incremented(error).components
+            (self.mid,  error) = (~self.mid ).incremented(error).components
+            (self.high, error) = (~self.high).incremented(error).components
             return self
         }
     }

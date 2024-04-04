@@ -68,22 +68,15 @@ extension BinaryInteger {
 
 extension BinaryInteger {
     
-    #warning("conisder incremented(Bool)")
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     /// The next value in arithmetic progression.
-    ///
-    /// - Note: It works with **0-bit** and **1-bit** integers.
-    ///
-    @inlinable public consuming func incremented() -> Fallible<Self> {
-        if  let positive = Element.exactly(1).optional() {
-            return self.plus (positive)
-        }   else if let negative = Element.exactly(-1).optional() {
-            return self.minus(negative)
-        }   else {
-            return Fallible.failure(self)
+    @inlinable public consuming func incremented(_ condition: consuming Bool = true) -> Fallible<Self> {
+        switch Self.isSigned {
+        case true : self.minus(Element(repeating: Bit(bitPattern: condition)))
+        case false: self.plus (Element(/*------*/ Bit(bitPattern: condition)))
         }
     }
 }
