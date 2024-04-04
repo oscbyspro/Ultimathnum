@@ -21,18 +21,27 @@ extension BinaryInteger {
         self.advanced(by: IX(other)).unwrap()
     }
     
-    @inlinable package consuming func advanced<T>(by distance: T) -> Fallible<Self> where T: SignedInteger {
+    @inlinable public consuming func advanced<T>(by distance: T) -> Fallible<Self> where T: SignedInteger {
         if  Self.isSigned {
             if  ExchangeInt(Self.bitWidth) < ExchangeInt(T.bitWidth) {
-                T(truncating: self).plus(distance).map(Self.exactly)
+                
+                return T(truncating: self).plus(distance).map(Self.exactly)
+                
             }   else {
-                self.plus(Self(truncating: distance))
+                
+                return self.plus(Self(truncating: distance))
+                
             }
         }   else {
+            
             if  distance.isLessThanZero {
-                self.minus(Self.exactly(T.Magnitude(bitPattern: distance.complement())))
+                
+                return self.minus(Self.exactly(T.Magnitude(bitPattern: distance.complement())))
+                
             }   else {
-                self.plus (Self.exactly(T.Magnitude(bitPattern: distance)))
+                
+                return self.plus (Self.exactly(T.Magnitude(bitPattern: distance)))
+                
             }
         }
     }
@@ -42,48 +51,25 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func distance(to other: Self) -> Swift.Int {
-        Self.distance(self, to: other, as: IX.self).unwrap().base
+        self.distance(to: other, as: IX.self).unwrap().base
     }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Algorithms
-//=----------------------------------------------------------------------------=
-
-extension BinaryInteger {
     
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    /// ### Development
-    ///
-    /// - TODO: Rework.
-    ///
-    @inlinable package static func distance<T>(_ instance: Self, to other: Self, as stride: T.Type) -> Fallible<T> where T: SignedInteger {
-        if  Self.isSigned {
+    @inlinable package consuming func distance<T>(to other: Self, as type: T.Type = T.self) -> Fallible<T> where T: SignedInteger {
+        if  ExchangeInt(Self.bitWidth) < ExchangeInt(T.bitWidth) {
             
-            if  ExchangeInt(Self.bitWidth) <= ExchangeInt(T.bitWidth) {
-                
-                return T(truncating: other).minus(T(truncating: instance))
-                
-            }   else {
-                
-                return other.minus(instance).map(T.exactly)
-                
-            }
+            return T(truncating: other).minus(T(truncating: self))
+        
+            
+        }   else if Self.isSigned {
+            
+            return other.minus(self).map(T.exactly)
             
         }   else {
             
-            if  instance < other {
-                
-                return T.exactly(other - instance)
-                                    
-            }   else {
-                
-                return T.Magnitude.exactly(instance - other).map({ T.exactly(sign: Sign.minus, magnitude: $0) })
-                
-            }
+            let distance = other.minus(self)
+            let elements = ExchangeInt(distance.value.body, repeating: Bit(bitPattern: distance.error), as: T.Body.Element.self)
+            return T.exactly(elements: elements, isSigned:  true)
+            
         }
     }
 }

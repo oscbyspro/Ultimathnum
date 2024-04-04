@@ -68,12 +68,23 @@ extension DoubleIntTests {
             typealias T = DoubleInt<Base>
             typealias F = Fallible
             
-            Test().same(T.distance(T.max, to: T.max.advanced(by: -129), as: I8.self), F(I8.max, error: true))
-            Test().same(T.distance(T.max, to: T.max.advanced(by: -128), as: I8.self), F(I8.min))
-            Test().same(T.distance(T.max, to: T.max.advanced(by: -127), as: I8.self), F(I8.min + 1))
-            Test().same(T.distance(T.min, to: T.min.advanced(by:  126), as: I8.self), F(I8.max - 1))
-            Test().same(T.distance(T.min, to: T.min.advanced(by:  127), as: I8.self), F(I8.max))
-            Test().same(T.distance(T.min, to: T.min.advanced(by:  128), as: I8.self), F(I8.min, error: true))
+            brr: do {
+                Test().same(T.min.distance(to: T.min.advanced(by:    126)), F(I8 .max - 1))
+                Test().same(T.min.distance(to: T.min.advanced(by:    127)), F(I8 .max))
+                Test().same(T.min.distance(to: T.min.advanced(by:    128)), F(I8 .min, error: true))
+                
+                Test().same(T.max.distance(to: T.max.advanced(by:   -129)), F(I8 .max, error: true))
+                Test().same(T.max.distance(to: T.max.advanced(by:   -128)), F(I8 .min))
+                Test().same(T.max.distance(to: T.max.advanced(by:   -127)), F(I8 .min + 1))
+            };  if T.bitWidth >= 16 {
+                Test().same(T.min.distance(to: T.min.advanced(by:  32766)), F(I16.max - 1))
+                Test().same(T.min.distance(to: T.min.advanced(by:  32767)), F(I16.max))
+                Test().same(T.min.distance(to: T.min.advanced(by:  32768)), F(I16.min, error: true))
+                
+                Test().same(T.max.distance(to: T.max.advanced(by: -32769)), F(I16.max, error: true))
+                Test().same(T.max.distance(to: T.max.advanced(by: -32768)), F(I16.min))
+                Test().same(T.max.distance(to: T.max.advanced(by: -32767)), F(I16.min + 1))
+            }
         }
         
         for base in bases {

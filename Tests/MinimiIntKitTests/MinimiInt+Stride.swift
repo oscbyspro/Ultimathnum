@@ -72,26 +72,21 @@ extension MinimiIntTests {
     }
     
     func testStrideDistanceTo() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias F = Fallible
-            
-            Test().same(T.distance(-1 as T, to: -1 as T, as: IX.self), F( 0 as IX))
-            Test().same(T.distance(-1 as T, to:  0 as T, as: IX.self), F( 1 as IX))
-            Test().same(T.distance( 0 as T, to: -1 as T, as: IX.self), F(-1 as IX))
-            Test().same(T.distance( 0 as T, to:  0 as T, as: IX.self), F( 0 as IX))
-        }
-        
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias F = Fallible
-            
-            Test().same(T.distance( 0 as T, to:  0 as T, as: IX.self), F( 0 as IX))
-            Test().same(T.distance( 0 as T, to:  1 as T, as: IX.self), F( 1 as IX))
-            Test().same(T.distance( 1 as T, to:  0 as T, as: IX.self), F(-1 as IX))
-            Test().same(T.distance( 1 as T, to:  1 as T, as: IX.self), F( 0 as IX))
+        func whereIs<T, U>(_ type: T.Type, _ distance: U.Type) where T: SystemsInteger, U: SystemsInteger & SignedInteger {
+            Test().same(T.min.distance(to: T.min), U.exactly( 0))
+            Test().same(T.min.distance(to: T.max), U.exactly( 1))
+            Test().same(T.max.distance(to: T.min), U.exactly(-1))
+            Test().same(T.max.distance(to: T.max), U.exactly( 0))
         }
         
         for type in types {
-            type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
+            whereIs(type, I1.self)
+        }
+        
+        for type in types {
+            for distance in coreSystemsIntegersWhereIsSigned {
+                whereIs(type, distance)
+            }
         }
     }
 }
