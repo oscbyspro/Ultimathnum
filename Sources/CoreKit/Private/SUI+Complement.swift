@@ -21,7 +21,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
         var increment = increment
         
         for index in base.indices {
-            increment = Fallible.capture(&base[index], map:{ (~$0).plus(Base.Element(Bit(increment))) })
+            increment = base[index].capture({ (~$0).plus(Base.Element(Bit(increment))) })
         }
         
         return increment as Bool

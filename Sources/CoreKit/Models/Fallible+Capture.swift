@@ -14,16 +14,14 @@
 extension Fallible {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func capture(_ value: inout Value, map: (Value) throws -> Value) rethrows {
-        value = try map(value)
+    @inlinable public mutating func capture(_ map: (Value) throws -> Value) rethrows {
+        self = try self.map(map)
     }
     
-    @inlinable public static func capture(_ value: inout Value, map: (Value) throws -> Fallible<Value>) rethrows -> Bool {
-        let error: Bool
-        (value,error) = try map(value).components
-        return error
+    @inlinable public mutating func capture(_ map: (Value) throws -> Fallible<Value>) rethrows {
+        self = try self.map(map)
     }
 }

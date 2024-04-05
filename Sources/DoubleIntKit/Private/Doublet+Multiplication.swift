@@ -35,7 +35,7 @@ extension Doublet {
         
         var suboverflow = (result.value.high.isLessThanZero)
         if  minus {
-            suboverflow = !Fallible.capture(&result.value) { $0.negated() } && suboverflow
+            suboverflow = !result.value.capture({ $0.negated() }) && suboverflow
         }
         
         return result.combine(suboverflow)
@@ -66,12 +66,12 @@ extension Doublet where Base == Base.Magnitude {
         var ax = self.low .multiplication(multiplier.low)
         let ay = self.low .times(multiplier.high)
         let bx = self.high.times(multiplier.low )
-        let by = !(self.high == 0 || multiplier.high == 0)
+        let by = !Bool(Bit(self.high == 0) | Bit(multiplier.high == 0))
         
-        let o0 = Fallible.capture(&ax.high, map:{ $0.plus(ay.value) })
-        let o1 = Fallible.capture(&ax.high, map:{ $0.plus(bx.value) })
+        let o0 = ax.high.capture({ $0.plus(ay.value) })
+        let o1 = ax.high.capture({ $0.plus(bx.value) })
         
-        let overflow = by || ay.error || bx.error || o0 || o1
-        return Fallible(Self(bitPattern: ax), error: overflow)
+        let error = Bit(by) | Bit(ay.error) | Bit(bx.error) | Bit(o0) | Bit(o1)
+        return Fallible(Self(bitPattern: ax), error: Bool(error))
     }
 }

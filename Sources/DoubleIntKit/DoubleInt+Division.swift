@@ -48,11 +48,11 @@ extension DoubleInt {
         var result = T(bitPattern: Magnitude.division4222(dividend.magnitude(), by: divisor.magnitude()))
         //=--------------------------------------=
         if  minus {
-            Fallible.capture(&result.value.quotient,  map:{ $0.complement() })
+            result.value.quotient .capture({ $0.complement() })
         }
         
         if  lhsIsLessThanZero {
-            Fallible.capture(&result.value.remainder, map:{ $0.complement() })
+            result.value.remainder.capture({ $0.complement() })
         }
         
         let overflow = minus != result.value.quotient.high.isLessThanZero && !(minus && result.value.quotient == 0)

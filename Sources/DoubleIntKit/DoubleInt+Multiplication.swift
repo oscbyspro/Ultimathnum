@@ -53,17 +53,17 @@ extension DoubleInt where Base == Base.Magnitude {
         let ay = self.low .multiplication(multiplier.high)
         let bx = self.high.multiplication(multiplier.low )
         var by = self.high.multiplication(multiplier.high)
-        
-        let a0 = Fallible.capture(&ax.high, map:{ $0.plus(ay.low ) })
-        let a1 = Fallible.capture(&ax.high, map:{ $0.plus(bx.low ) })
+        //=--------------------------------------=
+        let a0 = ax.high.capture({ $0.plus(ay.low ) })
+        let a1 = ax.high.capture({ $0.plus(bx.low ) })
         let a2 = Low(Bit(a0)) &+ Low(Bit(a1))
-        
-        let b0 = Fallible.capture(&by.low,  map:{ $0.plus(ay.high) })
-        let b1 = Fallible.capture(&by.low,  map:{ $0.plus(bx.high) })
+        //=--------------------------------------=
+        let b0 = by.low .capture({ $0.plus(ay.high) })
+        let b1 = by.low .capture({ $0.plus(bx.high) })
         let b2 = Low(Bit(b0)) &+ Low(Bit(b1))
-        
-        let o0 = Fallible.capture(&by.low,  map:{ $0.plus(a2) })
-        let _  = Fallible.capture(&by.high, map:{ $0.plus(b2  &+ Low(Bit(o0))) })
-        return Doublet(low: Magnitude(ax),  high: Magnitude(by))
+        //=--------------------------------------=
+        by = by.plus(Storage(low: a2, high: b2)).assert()
+        //=--------------------------------------=
+        return Doublet(low: Magnitude(ax), high: Magnitude(by))
     }
 }

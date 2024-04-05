@@ -8,20 +8,22 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Fallible x Map
+// MARK: * Arithmetic x Capture
 //*============================================================================*
 
-extension Fallible {
+extension Arithmetic {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func map<T>(_ map: (Value) throws -> T) rethrows -> Fallible<T> {
-        Fallible<T>(try map(self.value), error: self.error)
+    @inlinable public mutating func capture(_ map: (Self) throws -> Self) rethrows {
+        self = try map(self)
     }
     
-    @inlinable public consuming func map<T>(_ map: (Value) throws -> Fallible<T>) rethrows -> Fallible<T> {
-        try map(self.value).combine(self.error)
+    @inlinable public mutating func capture(_ map: (Self) throws -> Fallible<Self>) rethrows -> Bool {
+        let result = try map(self)
+        self = result.value
+        return result.error
     }
 }

@@ -34,6 +34,8 @@ extension BinaryInteger {
     /// It checks `isSigned` first which is preferred in inlinable generic code.
     ///
     @inlinable public var isLessThanZero: Bool {
-        borrowing get { if Self.isSigned { self < 0 } else { false } }
+        borrowing get {
+            Self.isSigned ? self < 0 : false
+        }
     }
 }
