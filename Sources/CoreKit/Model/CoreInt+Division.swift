@@ -86,7 +86,7 @@ extension CoreInt where Self == Magnitude {
         //=--------------------------------------=
         if  divisor <= dividend.high {
             overflow = true
-            dividend.high = dividend.high.remainder(divisor).assert()
+            dividend.high.capture(divisor, map:{ $0.remainder($1).assert() })
         }
         //=--------------------------------------=
         let result = divisor.base.dividingFullWidth((high: dividend.high.base, low: dividend.low.base))

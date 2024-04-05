@@ -26,4 +26,14 @@ extension Arithmetic {
         self = result.value
         return result.error
     }
+    
+    @inlinable public mutating func capture<Input>(_ input: borrowing Input, map: (Self, Input) throws -> Self) rethrows {
+        self = try map(self, input)
+    }
+    
+    @inlinable public mutating func capture<Input>(_ input: borrowing Input, map: (Self, Input) throws -> Fallible<Self>) rethrows -> Bool {
+        let result = try map(self, input)
+        self = result.value
+        return result.error
+    }
 }

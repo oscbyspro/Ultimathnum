@@ -24,4 +24,12 @@ extension Fallible {
     @inlinable public mutating func capture(_ map: (Value) throws -> Fallible<Value>) rethrows {
         self = try self.map(map)
     }
+    
+    @inlinable public mutating func capture<Input>(_ input: borrowing Input, map: (Value, Input) throws -> Value) rethrows {
+        self = try self.map(input, map: map)
+    }
+    
+    @inlinable public mutating func capture<Input>(_ input: borrowing Input, map: (Value, Input) throws -> Fallible<Value>) rethrows {
+        self = try self.map(input, map: map)
+    }
 }

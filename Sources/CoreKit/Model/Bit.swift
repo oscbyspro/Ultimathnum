@@ -70,7 +70,7 @@
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static prefix func ~(instance: consuming Self) -> Self {
+    @inlinable public static prefix func ~(instance: Self) -> Self {
         Self(bitPattern: !instance.bitPattern)
     }
     
