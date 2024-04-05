@@ -47,23 +47,21 @@ extension CoreInt {
     @inlinable public static func division(_ dividend: consuming Doublet<Self>, by divisor: Self) -> Fallible<Division<Self, Self>> {
         typealias T = Fallible<Division<Self, Self>>
         //=--------------------------------------=
-        let lhsIsLessThanZero: Bool = dividend.high.isLessThanZero
-        let rhsIsLessThanZero: Bool = divisor/*--*/.isLessThanZero
-        let minus: Bool = (lhsIsLessThanZero) != rhsIsLessThanZero
+        let lhsIsLessThanZero = dividend.high.isLessThanZero
+        let rhsIsLessThanZero = divisor/*--*/.isLessThanZero
         //=--------------------------------------=
         var result = T(bitPattern: Magnitude.division(dividend.magnitude(), by: divisor.magnitude()))
         //=--------------------------------------=
-        if  minus {
-            result.value.quotient .capture({ $0.complement() })
+        var suboverflow  = result.value.quotient.appendix
+        if  lhsIsLessThanZero != rhsIsLessThanZero {
+            suboverflow &= Bit(!result.value.quotient.capture({ $0.complement(true) }))
         }
         
         if  lhsIsLessThanZero {
             result.value.remainder.capture({ $0.complement() })
         }
-        
-        let overflow = minus != result.value.quotient.isLessThanZero && !(minus && result.value.quotient == 0)
         //=--------------------------------------=
-        return result.combine(overflow)
+        return result.combine(Bool(suboverflow))
     }
 }
 

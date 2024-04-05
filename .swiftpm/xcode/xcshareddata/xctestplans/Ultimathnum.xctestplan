@@ -41,6 +41,10 @@
   },
   "testTargets" : [
     {
+      "skippedTests" : [
+        "CoreIntTests\/testDivision21I8()",
+        "CoreIntTests\/testDivision21U8()"
+      ],
       "target" : {
         "containerPath" : "container:",
         "identifier" : "CoreKitTests",

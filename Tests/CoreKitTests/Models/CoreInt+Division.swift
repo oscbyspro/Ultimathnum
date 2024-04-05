@@ -121,3 +121,58 @@ extension CoreIntTests {
         }
     }
 }
+
+//*============================================================================*
+// MARK: * Core Int x Division x I8
+//*============================================================================*
+
+extension CoreIntTests {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testDivision21U8() {
+        var success = 0
+        var failure = 0
+        
+        for divisor     in UInt8.min...UInt8.max {
+            for high    in UInt8.min...UInt8.max {
+                for low in UInt8.min...UInt8.max {
+                    let dividend = Doublet(high: U8(bitPattern: high),low: U8(low))
+                    let result = U8.division(dividend, by: U8(bitPattern: divisor))
+                    if !result.error {
+                        success += 1
+                    }   else {
+                        failure += 1
+                    }
+                }
+            }
+        }
+        
+        XCTAssertEqual(success, 08355840)
+        XCTAssertEqual(failure, 08421376)
+    }
+    
+    func testDivision21I8() {
+        var success = 0
+        var failure = 0
+        
+        for divisor     in UInt8.min...UInt8.max {
+            for high    in UInt8.min...UInt8.max {
+                for low in UInt8.min...UInt8.max {
+                    let dividend = Doublet(high: I8(bitPattern: high),low: U8(low))
+                    let result = I8.division(dividend, by: I8(bitPattern: divisor))
+                    if !result.error {
+                        success += 1
+                    }   else {
+                        failure += 1
+                    }
+                }
+            }
+        }
+        
+        XCTAssertEqual(success, 04210433)
+        XCTAssertEqual(failure, 12566783)
+    }
+}

@@ -32,21 +32,19 @@ extension Doublet {
         //=--------------------------------------=
         let lhsIsLessThanZero: Bool = self   .high.isLessThanZero
         let rhsIsLessThanZero: Bool = divisor.high.isLessThanZero
-        let minus: Bool = (lhsIsLessThanZero != rhsIsLessThanZero)
         //=--------------------------------------=
         var result = T(bitPattern: self.magnitude().division2222(divisor.magnitude()))
         //=--------------------------------------=
-        if  minus {
-            result.value.quotient .capture({ $0.complement() })
+        var suboverflow  = result.value.quotient.high.appendix
+        if  lhsIsLessThanZero != rhsIsLessThanZero {
+            suboverflow &= Bit(!result.value.quotient.capture({ $0.complement(true) }))
         }
         
         if  lhsIsLessThanZero {
             result.value.remainder.capture({ $0.complement() })
         }
-        
-        let overflow = lhsIsLessThanZero && rhsIsLessThanZero && result.value.quotient.high.isLessThanZero
         //=--------------------------------------=
-        return result.combine(overflow)
+        return result.combine(Bool(suboverflow))
     }
 }
 
