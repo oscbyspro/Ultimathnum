@@ -67,15 +67,6 @@ import CoreKit
         self.init(Doublet(high: high, low: low))
     }
     
-    @inlinable public init(ascending: consuming (low: Low, high: High)) {
-        self.init(Doublet(ascending: ascending))
-    }
-    
-    
-    @inlinable public init(descending: consuming (high: High, low: Low)) {
-        self.init(Doublet(descending: descending))
-    }
-    
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
@@ -95,24 +86,6 @@ import CoreKit
         }
         mutating set {
             self.storage.high = newValue
-        }
-    }
-    
-    @inlinable public var ascending: (low: Low, high: High) {
-        consuming get {
-            self.storage.ascending
-        }
-        mutating set {
-            self.storage.ascending = newValue
-        }
-    }
-    
-    @inlinable public var descending: (high: High, low: Low) {
-        consuming get {
-            self.storage.descending
-        }
-        mutating set {
-            self.storage.descending = newValue
         }
     }
 }

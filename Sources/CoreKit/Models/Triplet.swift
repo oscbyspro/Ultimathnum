@@ -91,40 +91,4 @@
         self.mid  = low.high
         self.high = high
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(ascending  components: (low: Base.Magnitude, mid: Base.Magnitude, high: Base)) {
-        self.init(low: components.low, mid: components.mid, high: components.high)
-    }
-    
-    @inlinable public init(descending components: (high: Base, mid: Base.Magnitude, low: Base.Magnitude)) {
-        self.init(high: components.high, mid: components.mid, low: components.low)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public var ascending:  (low: Base.Magnitude, mid: Base.Magnitude, high: Base) {
-        consuming get {
-            (low: self.low, mid: self.mid, high: self.high)
-        }
-        
-        consuming set {
-            (low: self.low, mid: self.mid, high: self.high) = newValue
-        }
-    }
-    
-    @inlinable public var descending: (high: Base, mid: Base.Magnitude, low: Base.Magnitude) {
-        consuming get {
-            (high: self.high, mid: self.mid, low: self.low)
-        }
-        
-        consuming set {
-            (high: self.high, mid: self.mid, low: self.low) = newValue
-        }
-    }
 }

@@ -57,36 +57,4 @@
         self.high = high
         self.low  = low
     }
-    
-    @inlinable public init(ascending  components: (low: Base.Magnitude, high: Base)) {
-        self.init(low: components.low, high: components.high)
-    }
-    
-    @inlinable public init(descending components: (high: Base, low: Base.Magnitude)) {
-        self.init(high: components.high, low: components.low)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public var ascending:  (low: Base.Magnitude, high: Base) {
-        consuming get {
-            (low: self.low, high: self.high)
-        }
-        
-        consuming set {
-            (low: self.low, high: self.high) = newValue
-        }
-    }
-    
-    @inlinable public var descending: (high: Base, low: Base.Magnitude) {
-        consuming get {
-            (high: self.high, low: self.low)
-        }
-        
-        consuming set {
-            (high: self.high, low: self.low) = newValue
-        }
-    }
 }
