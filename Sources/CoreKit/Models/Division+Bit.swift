@@ -12,24 +12,26 @@
 //*============================================================================*
 
 extension Division: BitCastable where Quotient: BitCastable, Remainder: BitCastable {
-        
+    
+    public typealias BitPattern = BitCastItem<(quotient: Quotient.BitPattern, remainder: Remainder.BitPattern)>
+    
     //=------------------------------------------------------------------------=
     // MARK: Details x Bit Pattern
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: consuming Division<Quotient.BitPattern, Remainder.BitPattern>) {
+    @inlinable public init(bitPattern: consuming BitPattern) {
         self.init(
-            quotient:  Quotient (bitPattern: bitPattern.quotient ),
-            remainder: Remainder(bitPattern: bitPattern.remainder)
+            quotient:  Quotient (bitPattern: bitPattern.storage.quotient ),
+            remainder: Remainder(bitPattern: bitPattern.storage.remainder)
         )
     }
     
-    @inlinable public var bitPattern: Division<Quotient.BitPattern, Remainder.BitPattern> {
+    @inlinable public var bitPattern: BitPattern {
         consuming get {
-            Division<Quotient.BitPattern, Remainder.BitPattern>(
+            BitPattern((
                 quotient:  Quotient .BitPattern(bitPattern: self.quotient ),
                 remainder: Remainder.BitPattern(bitPattern: self.remainder)
-            )
+            ))
         }
     }
 }
