@@ -16,7 +16,7 @@
     public typealias Quotient  = Quotient
     
     public typealias Remainder = Remainder
-        
+    
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
@@ -42,7 +42,7 @@
             (quotient: self.quotient, remainder: self.remainder)
         }
         
-        consuming set {
+        mutating set {
             (quotient: self.quotient, remainder: self.remainder) = newValue
         }
     }
