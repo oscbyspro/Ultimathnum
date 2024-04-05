@@ -120,50 +120,19 @@ extension CoreIntTests {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }
-}
-
-//*============================================================================*
-// MARK: * Core Int x Division x I8
-//*============================================================================*
-
-extension CoreIntTests {
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests
+    // MARK: Tests x RELEASE
     //=------------------------------------------------------------------------=
     
-    func testDivision21U8() {
+    func testDivision2111I8() {
         var success = 0
         var failure = 0
         
-        for divisor     in UInt8.min...UInt8.max {
-            for high    in UInt8.min...UInt8.max {
-                for low in UInt8.min...UInt8.max {
-                    let dividend = Doublet(high: U8(bitPattern: high),low: U8(low))
-                    let result = U8.division(dividend, by: U8(bitPattern: divisor))
-                    if !result.error {
-                        success += 1
-                    }   else {
-                        failure += 1
-                    }
-                }
-            }
-        }
-        
-        XCTAssertEqual(success, 08355840)
-        XCTAssertEqual(failure, 08421376)
-    }
-    
-    func testDivision21I8() {
-        var success = 0
-        var failure = 0
-        
-        for divisor     in UInt8.min...UInt8.max {
-            for high    in UInt8.min...UInt8.max {
-                for low in UInt8.min...UInt8.max {
-                    let dividend = Doublet(high: I8(bitPattern: high),low: U8(low))
-                    let result = I8.division(dividend, by: I8(bitPattern: divisor))
-                    if !result.error {
+        for divisor     in I8.min...I8.max {
+            for high    in I8.min...I8.max {
+                for low in U8.min...U8.max {
+                    if !I8.division(Doublet(high: high, low: low), by: divisor).error {
                         success += 1
                     }   else {
                         failure += 1
@@ -174,5 +143,25 @@ extension CoreIntTests {
         
         XCTAssertEqual(success, 04210433)
         XCTAssertEqual(failure, 12566783)
+    }
+    
+    func testDivision2111U8() {
+        var success = 0
+        var failure = 0
+        
+        for divisor     in U8.min...U8.max {
+            for high    in U8.min...U8.max {
+                for low in U8.min...U8.max {
+                    if !U8.division(Doublet(high: high, low: low), by: divisor).error {
+                        success += 1
+                    }   else {
+                        failure += 1
+                    }
+                }
+            }
+        }
+        
+        XCTAssertEqual(success, 08355840)
+        XCTAssertEqual(failure, 08421376)
     }
 }

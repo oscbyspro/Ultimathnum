@@ -9,7 +9,35 @@
     }
   ],
   "defaultOptions" : {
-    "codeCoverage" : false
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:",
+          "identifier" : "CoreKit",
+          "name" : "CoreKit"
+        },
+        {
+          "containerPath" : "container:",
+          "identifier" : "DoubleIntKit",
+          "name" : "DoubleIntKit"
+        },
+        {
+          "containerPath" : "container:",
+          "identifier" : "Ultimathnum",
+          "name" : "Ultimathnum"
+        },
+        {
+          "containerPath" : "container:",
+          "identifier" : "InfiniIntKit",
+          "name" : "InfiniIntKit"
+        },
+        {
+          "containerPath" : "container:",
+          "identifier" : "MinimiIntKit",
+          "name" : "MinimiIntKit"
+        }
+      ]
+    }
   },
   "testTargets" : [
     {
