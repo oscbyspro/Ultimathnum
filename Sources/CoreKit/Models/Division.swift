@@ -13,7 +13,7 @@
 
 @frozen public struct Division<Quotient, Remainder>: Arithmetic {
     
-    public typealias Quotient = Quotient
+    public typealias Quotient  = Quotient
     
     public typealias Remainder = Remainder
     
