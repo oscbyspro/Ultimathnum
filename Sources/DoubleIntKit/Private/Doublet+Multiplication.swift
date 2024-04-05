@@ -35,7 +35,7 @@ extension Doublet {
         
         var suboverflow = (result.value.high.isLessThanZero)
         if  minus {
-            suboverflow = !result.value.capture({ $0.negated() }) && suboverflow
+            suboverflow = !result.value.capture({ $0.complement(true) }) && suboverflow
         }
         
         return result.combine(suboverflow)
