@@ -39,22 +39,23 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func division(_ dividend: consuming Doublet<Self>, by divisor: Self) -> Fallible<Division<Self, Self>> {
-        typealias T = Fallible<Division<Self, Self>>
         //=--------------------------------------=
         let lhsIsLessThanZero = dividend.high.isLessThanZero
         let rhsIsLessThanZero = divisor/*--*/.isLessThanZero
         //=--------------------------------------=
-        var result = T(bitPattern: Magnitude.division4222(dividend.magnitude(), by: divisor.magnitude()))
-        //=--------------------------------------=
-        var suboverflow  = result.value.quotient.appendix
+        var result = Fallible<Division<Self, Self>>(
+            bitPattern: Magnitude.division4222(dividend.magnitude(), by: divisor.magnitude())
+        )
+        
+        var suboverflow  = Bit( result.value.quotient.high.isLessThanZero)
         if  lhsIsLessThanZero != rhsIsLessThanZero {
             suboverflow &= Bit(!result.value.quotient.capture({ $0.complement(true) }))
         }
         
         if  lhsIsLessThanZero {
-            result.value.remainder.capture({ $0.complement() })
+            result.value.remainder = result.value.remainder.complement()
         }
-        //=--------------------------------------=
+        
         return result.combine(Bool(suboverflow))
     }
 }

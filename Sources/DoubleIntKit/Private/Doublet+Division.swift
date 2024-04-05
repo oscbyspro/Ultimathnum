@@ -28,22 +28,23 @@ extension Doublet {
     //=------------------------------------------------------------------------=
     
     @inlinable package consuming func division2222(_ divisor: Self) -> Fallible<Division<Self, Self>> {
-        typealias T = Fallible<Division<Self, Self>>
         //=--------------------------------------=
-        let lhsIsLessThanZero: Bool = self   .high.isLessThanZero
-        let rhsIsLessThanZero: Bool = divisor.high.isLessThanZero
+        let lhsIsLessThanZero = self   .high.isLessThanZero
+        let rhsIsLessThanZero = divisor.high.isLessThanZero
         //=--------------------------------------=
-        var result = T(bitPattern: self.magnitude().division2222(divisor.magnitude()))
-        //=--------------------------------------=
-        var suboverflow  = result.value.quotient.high.appendix
+        var result = Fallible<Division<Self, Self>>(
+            bitPattern: self.magnitude().division2222(divisor.magnitude())
+        )
+        
+        var suboverflow  = Bit( result.value.quotient.high.isLessThanZero)
         if  lhsIsLessThanZero != rhsIsLessThanZero {
             suboverflow &= Bit(!result.value.quotient.capture({ $0.complement(true) }))
         }
         
         if  lhsIsLessThanZero {
-            result.value.remainder.capture({ $0.complement() })
+            result.value.remainder = result.value.remainder.complement()
         }
-        //=--------------------------------------=
+        
         return result.combine(Bool(suboverflow))
     }
 }
