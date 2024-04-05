@@ -37,6 +37,6 @@ extension BitCastable where BitPattern == Self {
     }
     
     @inlinable public var bitPattern: BitPattern {
-        consuming get { consume self }
+        consuming get { self }
     }
 }

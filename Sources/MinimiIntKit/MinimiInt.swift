@@ -14,18 +14,18 @@ import CoreKit
 //*============================================================================*
 
 /// An un/signed `1-bit` integer.
-@frozen public struct MinimiInt<Signedness>: SystemsInteger where Signedness: SystemsInteger<UX.BitPattern> {
+@frozen public struct MinimiInt<Token>: SystemsInteger where Token: SystemsInteger<UX.BitPattern> {
     
     public typealias Element = Self
     
-    public typealias Magnitude = MinimiInt<Signedness.Magnitude>
+    public typealias Magnitude = MinimiInt<Token.Magnitude>
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
     @inlinable public static var isSigned: Bool {
-        Signedness.isSigned
+        Token.isSigned
     }
     
     @inlinable public static var bitWidth: Magnitude {
@@ -42,10 +42,10 @@ import CoreKit
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(integerLiteral: Signedness.IntegerLiteralType) {
-        if  Signedness(integerLiteral: integerLiteral) == 0 {
+    @inlinable public init(integerLiteral: Token.IntegerLiteralType) {
+        if  Token(integerLiteral: integerLiteral) == 0 {
             self.base = 0
-        }   else if Signedness(integerLiteral: integerLiteral) == (Self.isSigned ? -1 : 1) {
+        }   else if Token(integerLiteral: integerLiteral) == (Self.isSigned ? -1 : 1) {
             self.base = 1
         }   else {
             preconditionFailure(String.overflow())
@@ -57,8 +57,8 @@ import CoreKit
 // MARK: + Un/signed
 //=----------------------------------------------------------------------------=
 
-extension MinimiInt:   SignedInteger where Signedness:   SignedInteger { }
-extension MinimiInt: UnsignedInteger where Signedness: UnsignedInteger { }
+extension MinimiInt:   SignedInteger where Token:   SignedInteger { }
+extension MinimiInt: UnsignedInteger where Token: UnsignedInteger { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Aliases

@@ -11,16 +11,21 @@
 // MARK: * Floating Point Sign
 //*============================================================================*
 
-extension FloatingPointSign {
+extension FloatingPointSign: BitCastable {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ source: Sign) {
-        self = switch source {
-        case .plus:  .plus
-        case .minus: .minus
-        }
+    @inlinable public init(_  sign: Sign) {
+        self.init(bitPattern: sign)
+    }
+    
+    @inlinable public init(bitPattern: Bool) {
+        self = bitPattern ? Self.minus : Self.plus
+    }
+    
+    @inlinable public var  bitPattern: Bool  {
+        self == Self.minus
     }
 }

@@ -12,41 +12,31 @@
 //*============================================================================*
 
 extension Int: BaseInteger {
-    public typealias BitPattern = Magnitude
+    @inlinable public var bitPattern: Magnitude {
+        Magnitude(bitPattern: self)
+    }
 }
 
 extension Int8: BaseInteger {
-    public typealias BitPattern = Magnitude
+    @inlinable public var bitPattern: Magnitude {
+        Magnitude(bitPattern: self)
+    }
 }
 
 extension Int16: BaseInteger {
-    public typealias BitPattern = Magnitude
+    @inlinable public var bitPattern: Magnitude {
+        Magnitude(bitPattern: self)
+    }
 }
 
 extension Int32: BaseInteger {
-    public typealias BitPattern = Magnitude
+    @inlinable public var bitPattern: Magnitude {
+        Magnitude(bitPattern: self)
+    }
 }
 
 extension Int64: BaseInteger {
-    public typealias BitPattern = Magnitude
-}
-
-extension UInt: BaseInteger {
-    public typealias BitPattern = Magnitude
-}
-
-extension UInt8: BaseInteger {
-    public typealias BitPattern = Magnitude
-}
-
-extension UInt16: BaseInteger {
-    public typealias BitPattern = Magnitude
-}
-
-extension UInt32: BaseInteger {
-    public typealias BitPattern = Magnitude
-}
-
-extension UInt64: BaseInteger {
-    public typealias BitPattern = Magnitude
+    @inlinable public var bitPattern: Magnitude {
+        Magnitude(bitPattern: self)
+    }
 }

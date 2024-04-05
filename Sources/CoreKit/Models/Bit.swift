@@ -44,6 +44,10 @@
         self.init(bitPattern: source)
     }
     
+    @inlinable public init(_  source: FloatingPointSign) {
+        self.init(bitPattern: source)
+    }
+    
     @inlinable public init(_  source: Bool) {
         self.init(bitPattern: source)
     }
@@ -58,7 +62,7 @@
         }   else if integerLiteral == 1 {
             self.init(true )
         }   else {
-            fatalError(String.overflow())
+            preconditionFailure(String.overflow())
         }
     }
     

@@ -22,6 +22,6 @@ extension BinaryInteger {
     }
     
     @inlinable public static func exactly(_ source: consuming BigIntLiteral) -> Fallible<Self> {
-        Self.exactly(elements: ExchangeInt(source).reinterpreted(), isSigned: true)
+        Self.exactly(elements: ExchangeInt(source), isSigned: true)
     }
 }

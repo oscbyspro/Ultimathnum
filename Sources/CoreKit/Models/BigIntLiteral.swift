@@ -36,7 +36,7 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public var appendix: Bit {
-        Bit(self.signum() < 0)
+        Bit(self.base.signum() < 0)
     }
     
     @inlinable public var bitWidth: Int {
@@ -50,7 +50,7 @@
     
     /// The word at the given index, from least significant to most.
     @inlinable public subscript(index: Int) -> UX {
-        UX(bitPattern: self.base[index])
+        UX(self.base[index])
     }
 }
 
@@ -68,7 +68,7 @@ extension BigIntLiteral {
         let width = self.bitWidth as Int
         let major = width &>> UInt.bitWidth.trailingZeroBitCount
         let minor = width &  (UInt.bitWidth &- 1)
-        return major &+ (minor > 0 ? 1 : 0)
+        return major &+ (minor == 0 ? 0 : 1)
     }
     
     @inlinable public var startIndex: Int {

@@ -33,10 +33,7 @@
     }
     
     @inlinable public init(_  source: FloatingPointSign) {
-        self = switch source {
-        case .plus:  .plus
-        case .minus: .minus
-        }
+        self.init(bitPattern: source)
     }
     
     @inlinable public init(bitPattern: Bool) {

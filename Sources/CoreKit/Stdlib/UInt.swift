@@ -8,22 +8,25 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Base Integer x Bit
+// MARK: * UInt
 //*============================================================================*
 
-extension BaseInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(bitPattern: consuming BitPattern) {
-        self = Swift.unsafeBitCast(bitPattern, to: Self.self)
-    }
-    
-    @inlinable public var bitPattern: BitPattern {
-        consuming get {
-            Swift.unsafeBitCast(self, to: BitPattern.self)
-        }
-    }
+extension UInt: BaseInteger {
+    public typealias BitPattern = Magnitude
+}
+
+extension UInt8: BaseInteger {
+    public typealias BitPattern = Magnitude
+}
+
+extension UInt16: BaseInteger {
+    public typealias BitPattern = Magnitude
+}
+
+extension UInt32: BaseInteger {
+    public typealias BitPattern = Magnitude
+}
+
+extension UInt64: BaseInteger {
+    public typealias BitPattern = Magnitude
 }
