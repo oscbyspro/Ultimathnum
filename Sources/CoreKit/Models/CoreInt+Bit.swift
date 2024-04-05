@@ -60,7 +60,7 @@ extension CoreInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public var appendix: Bit {
-        Bit(self.isLessThanZero)
+        Bit(Self.isSigned && self < 0)
     }
     
     @inlinable public var body: some RandomAccessCollection<Magnitude> {

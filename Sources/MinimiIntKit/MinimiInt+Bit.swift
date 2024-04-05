@@ -62,7 +62,7 @@ extension MinimiInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public var appendix: Bit {
-        Bit(self.isLessThanZero)
+        Bit(Self.isSigned && Bool(self.base))
     }
     
     @inlinable public var body: some RandomAccessCollection<Magnitude> {
@@ -70,7 +70,7 @@ extension MinimiInt {
     }
     
     @inlinable public borrowing func count(_ bit: Bit, option: BitSelection) -> Magnitude {
-        Magnitude(bitPattern: ~(self.base ^ bit))
+        Magnitude(~(self.base ^ bit))
     }
     
     @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
