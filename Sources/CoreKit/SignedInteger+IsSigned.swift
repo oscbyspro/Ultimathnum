@@ -8,18 +8,16 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Signedness
+// MARK: * Signed Integer x Is Signed
 //*============================================================================*
 
-/// ### Development
-///
-/// Consider using a binary integer type like IX or UX instead.
-///
-public protocol Signedness {
+extension SignedInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    @inlinable static var isSigned: Bool { get }
+    @inlinable public static var isSigned: Bool {
+        true
+    }
 }

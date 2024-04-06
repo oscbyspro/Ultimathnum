@@ -18,9 +18,7 @@
     public typealias Element = Self
     
     public typealias Magnitude = CoreInt<Base.Magnitude>
-    
-    public typealias Mode = Base.Mode
-    
+        
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
@@ -56,8 +54,8 @@
 // MARK: + Un/signed
 //=----------------------------------------------------------------------------=
 
-extension CoreInt:   SignedInteger where Base: Swift  .SignedInteger, Base.Mode == Signed { }
-extension CoreInt: UnsignedInteger where Base: Swift.UnsignedInteger, Base.Magnitude == Base, Base.Mode == Unsigned { }
+extension CoreInt:   SignedInteger where Base: Swift  .SignedInteger { }
+extension CoreInt: UnsignedInteger where Base: Swift.UnsignedInteger, Base.Magnitude == Base { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Aliases

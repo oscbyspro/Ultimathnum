@@ -14,13 +14,11 @@ import CoreKit
 //*============================================================================*
 
 /// An un/signed `1-bit` integer.
-@frozen public struct MinimiInt<Mode>: SystemsInteger where Mode: Signedness {
+@frozen public struct MinimiInt<Mode>: SystemsInteger where Mode: SystemsInteger<UX.BitPattern> {
     
     public typealias Element = Self
     
-    public typealias Magnitude = MinimiInt<Unsigned>
-    
-    public typealias Mode = Mode
+    public typealias Magnitude = MinimiInt<Mode.Magnitude>
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -59,12 +57,12 @@ import CoreKit
 // MARK: + Un/signed
 //=----------------------------------------------------------------------------=
 
-extension MinimiInt:   SignedInteger where Mode == Signed   { }
-extension MinimiInt: UnsignedInteger where Mode == Unsigned { }
+extension MinimiInt:   SignedInteger where Mode: SignedInteger   { }
+extension MinimiInt: UnsignedInteger where Mode: UnsignedInteger { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Aliases
 //=----------------------------------------------------------------------------=
 
-public typealias I1 = MinimiInt<Signed>
-public typealias U1 = MinimiInt<Unsigned>
+public typealias I1 = MinimiInt<IX>
+public typealias U1 = MinimiInt<UX>

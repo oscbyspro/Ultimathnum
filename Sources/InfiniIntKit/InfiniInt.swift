@@ -24,9 +24,7 @@ import CoreKit
     public typealias IntegerLiteralType = StaticBigInt
     
     public typealias Magnitude = InfiniInt<Source.Magnitude>
-    
-    public typealias Mode = Source.Mode
-    
+        
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=

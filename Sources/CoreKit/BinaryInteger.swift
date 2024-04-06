@@ -37,13 +37,22 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
         
     associatedtype Magnitude: UnsignedInteger where Magnitude.Magnitude == Magnitude
     
-    associatedtype Mode: Signedness where Element.Mode == Mode
-    
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
-    // Note that isSigned comes from the Mode: Signedness meta type.
-    //=------------------------------------------------------------------------=
+    
+    /// Indicates whether this type can represent negative values.
+    ///
+    /// ```
+    /// ┌──────┬──────────┬──────┬──────┐
+    /// │ type │ isSigned │  min │  max │
+    /// ├──────┼──────────┼──────┼──────┤
+    /// │ I8   │ true     │ -128 │  127 │
+    /// │ U8   │ false    │    0 │  255 │
+    /// └──────┴──────────┴──────┴──────┘
+    /// ```
+    ///
+    @inlinable static var isSigned: Bool { get }
     
     /// The bit width of this type.
     ///
