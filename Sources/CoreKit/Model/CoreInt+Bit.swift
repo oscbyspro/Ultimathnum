@@ -63,7 +63,7 @@ extension CoreInt {
         Bit(Self.isSigned && self < 0)
     }
     
-    @inlinable public var body: some RandomAccessCollection<Magnitude> {
+    @inlinable public var body: CollectionOfOne<Magnitude> {
         CollectionOfOne(Magnitude(bitPattern: self))
     }
     

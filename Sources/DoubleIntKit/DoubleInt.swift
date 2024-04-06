@@ -20,15 +20,17 @@ import CoreKit
     public typealias High = Base
     
     public typealias Low  = Base.Magnitude
+            
+    public typealias BitPattern = Storage.BitPattern
     
     public typealias Element = Base.Element
     
+    public typealias Magnitude = DoubleInt<Base.Magnitude>
+    
+    public typealias Mode = Base.Mode
+    
     public typealias IntegerLiteralType = StaticBigInt
     
-    public typealias Magnitude = DoubleInt<Base.Magnitude>
-        
-    public typealias BitPattern = Storage.BitPattern
-            
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=

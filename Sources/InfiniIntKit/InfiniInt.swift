@@ -25,6 +25,8 @@ import CoreKit
     
     public typealias Magnitude = InfiniInt<Source.Magnitude>
     
+    public typealias Mode = Source.Mode
+    
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=

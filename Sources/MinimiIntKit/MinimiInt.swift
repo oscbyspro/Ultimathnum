@@ -14,18 +14,20 @@ import CoreKit
 //*============================================================================*
 
 /// An un/signed `1-bit` integer.
-@frozen public struct MinimiInt<Token>: SystemsInteger where Token: SystemsInteger<UX.BitPattern> {
+@frozen public struct MinimiInt<Mode>: SystemsInteger where Mode: Signedness {
     
     public typealias Element = Self
     
-    public typealias Magnitude = MinimiInt<Token.Magnitude>
+    public typealias Magnitude = MinimiInt<IsUnsigned>
+    
+    public typealias Mode = Mode
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
     @inlinable public static var isSigned: Bool {
-        Token.isSigned
+        Mode.isSigned
     }
     
     @inlinable public static var bitWidth: Magnitude {
@@ -42,10 +44,10 @@ import CoreKit
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(integerLiteral: Token.IntegerLiteralType) {
-        if  Token(integerLiteral: integerLiteral) == 0 {
+    @inlinable public init(integerLiteral: Int) {
+        if  integerLiteral == 0 {
             self.base = 0
-        }   else if Token(integerLiteral: integerLiteral) == (Self.isSigned ? -1 : 1) {
+        }   else if integerLiteral == (Self.isSigned ? -1 : 1) {
             self.base = 1
         }   else {
             preconditionFailure(String.overflow())
@@ -57,12 +59,12 @@ import CoreKit
 // MARK: + Un/signed
 //=----------------------------------------------------------------------------=
 
-extension MinimiInt:   SignedInteger where Token:   SignedInteger { }
-extension MinimiInt: UnsignedInteger where Token: UnsignedInteger { }
+extension MinimiInt:   SignedInteger where Mode == IsSigned   { }
+extension MinimiInt: UnsignedInteger where Mode == IsUnsigned { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Aliases
 //=----------------------------------------------------------------------------=
 
-public typealias I1 = MinimiInt<IX>
-public typealias U1 = MinimiInt<UX>
+public typealias I1 = MinimiInt<IsSigned>
+public typealias U1 = MinimiInt<IsUnsigned>

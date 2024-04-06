@@ -12,21 +12,36 @@
 //*============================================================================*
 
 extension UInt: BaseInteger {
+        
     public typealias BitPattern = Magnitude
+    
+    public typealias Mode = IsUnsigned
 }
 
 extension UInt8: BaseInteger {
+    
     public typealias BitPattern = Magnitude
+    
+    public typealias Mode = IsUnsigned
 }
 
 extension UInt16: BaseInteger {
+    
     public typealias BitPattern = Magnitude
+    
+    public typealias Mode = IsUnsigned
 }
 
 extension UInt32: BaseInteger {
+    
     public typealias BitPattern = Magnitude
+    
+    public typealias Mode = IsUnsigned
 }
 
 extension UInt64: BaseInteger {
+    
     public typealias BitPattern = Magnitude
+    
+    public typealias Mode = IsUnsigned
 }

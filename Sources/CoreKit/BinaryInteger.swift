@@ -30,12 +30,14 @@
 public protocol BinaryInteger: Arithmetic, BitCastable, BitOperable, Comparable, 
 ExpressibleByIntegerLiteral, Hashable, Sendable, Strideable, _MaybeLosslessStringConvertible where
 Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stride == Swift.Int {
-    
+        
     associatedtype Body: RandomAccessCollection<Element.Magnitude>
     
     associatedtype Element: SystemsInteger where Element.Element == Element
         
     associatedtype Magnitude: UnsignedInteger where Magnitude.Magnitude == Magnitude
+    
+    associatedtype Mode: Signedness where Element.Mode == Mode, Magnitude.Mode == IsUnsigned
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
