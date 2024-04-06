@@ -49,7 +49,7 @@ extension ExchangeInt.Equal where Element == Element.Magnitude {
         precondition(ExchangeInt.comparison == Signum.same, String.unreachable())
         //=--------------------------------------=
         let sign = Base.Element(repeating: bit)
-        return self.count(chunking: base.reversed().trimmingPrefix(while:{ $0 == sign }))
+        return self.count(chunking: base.dropLast(while:{ $0 == sign }))
     }
 }
 
@@ -90,6 +90,6 @@ extension ExchangeInt.Major where Element == Element.Magnitude {
         precondition(ExchangeInt.comparison == Signum.more, String.unreachable())
         //=--------------------------------------=
         let sign = Base.Element(repeating: bit)
-        return self.count(chunking: base.reversed().trimmingPrefix(while:{ $0 == sign }))
+        return self.count(chunking: base.dropLast(while:{ $0 == sign }))
     }
 }

@@ -67,7 +67,7 @@ extension ExchangeInt where Element == Element.Magnitude {
         //=--------------------------------------=
         // comparison: appendix
         //=--------------------------------------=
-        if  instance.appendix.bit == Bit.one {
+        if  Bool(instance.appendix.bit) {
             return Signum.one(Sign(bitPattern: isSigned))
         }
         //=--------------------------------------=
@@ -76,7 +76,7 @@ extension ExchangeInt where Element == Element.Magnitude {
         return Signum(Bit(!instance.base.allSatisfy({ $0 == 0 })))
     }
     
-    @inline(never) @inlinable internal static func compare<T>(
+    @inlinable internal static func compare<T>(
         _  lhs: Self, isSigned lhsIsSigned: Bool,
         to rhs: ExchangeInt<T, Element>, isSigned rhsIsSigned: Bool
     )   -> Signum {
