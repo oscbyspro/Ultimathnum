@@ -27,10 +27,10 @@
 ///
 /// Its stride is Swift.Int which is used to step through Swift's ranges.
 ///
-public protocol BinaryInteger: Arithmetic, BitCastable, BitOperable, Comparable, 
+public protocol BinaryInteger<BitPattern>: Arithmetic, BitCastable, BitOperable, Comparable,
 ExpressibleByIntegerLiteral, Hashable, Sendable, Strideable, _MaybeLosslessStringConvertible where
 Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stride == Swift.Int {
-        
+    
     associatedtype Body: RandomAccessCollection<Element.Magnitude>
     
     associatedtype Element: SystemsInteger where Element.Element == Element
