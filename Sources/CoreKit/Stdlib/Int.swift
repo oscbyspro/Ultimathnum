@@ -13,7 +13,7 @@
 
 extension Int: BaseInteger {
     
-    public typealias Mode = IsSigned
+    public typealias Mode = Signed
     
     @inlinable public var bitPattern: Magnitude {
         Magnitude(bitPattern: self)
@@ -22,7 +22,7 @@ extension Int: BaseInteger {
 
 extension Int8: BaseInteger {
     
-    public typealias Mode = IsSigned
+    public typealias Mode = Signed
     
     @inlinable public var bitPattern: Magnitude {
         Magnitude(bitPattern: self)
@@ -31,7 +31,7 @@ extension Int8: BaseInteger {
 
 extension Int16: BaseInteger {
     
-    public typealias Mode = IsSigned
+    public typealias Mode = Signed
     
     @inlinable public var bitPattern: Magnitude {
         Magnitude(bitPattern: self)
@@ -40,7 +40,7 @@ extension Int16: BaseInteger {
 
 extension Int32: BaseInteger {
     
-    public typealias Mode = IsSigned
+    public typealias Mode = Signed
     
     @inlinable public var bitPattern: Magnitude {
         Magnitude(bitPattern: self)
@@ -49,7 +49,7 @@ extension Int32: BaseInteger {
 
 extension Int64: BaseInteger {
     
-    public typealias Mode = IsSigned
+    public typealias Mode = Signed
     
     @inlinable public var bitPattern: Magnitude {
         Magnitude(bitPattern: self)

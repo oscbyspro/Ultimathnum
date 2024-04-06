@@ -8,18 +8,27 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Signedness
+// MARK: * Binary Integer x Is Signed
 //*============================================================================*
 
-/// ### Development
-///
-/// Consider using a binary integer type like IX or UX instead.
-///
-public protocol Signedness {
+extension BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    @inlinable static var isSigned: Bool { get }
+    /// Indicates whether this type can represent negative values.
+    ///
+    /// ```
+    /// ┌──────┬──────────┬──────┬──────┐
+    /// │ type │ isSigned │  min │  max │
+    /// ├──────┼──────────┼──────┼──────┤
+    /// │ I8   │ true     │ -128 │  127 │
+    /// │ U8   │ false    │    0 │  255 │
+    /// └──────┴──────────┴──────┴──────┘
+    /// ```
+    ///
+    @inlinable public static var isSigned: Bool {
+        Mode.isSigned
+    }
 }

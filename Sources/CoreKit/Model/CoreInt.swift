@@ -56,8 +56,8 @@
 // MARK: + Un/signed
 //=----------------------------------------------------------------------------=
 
-extension CoreInt:   SignedInteger where Base: Swift  .SignedInteger, Base.Mode == IsSigned { }
-extension CoreInt: UnsignedInteger where Base: Swift.UnsignedInteger, Base.Magnitude == Base, Base.Mode == IsUnsigned { }
+extension CoreInt:   SignedInteger where Base: Swift  .SignedInteger, Base.Mode == Signed { }
+extension CoreInt: UnsignedInteger where Base: Swift.UnsignedInteger, Base.Magnitude == Base, Base.Mode == Unsigned { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Aliases

@@ -25,7 +25,7 @@ extension FloatingPointSign: BitCastable {
         self = bitPattern ? Self.minus : Self.plus
     }
     
-    @inlinable public var  bitPattern: Bool  {
+    @inlinable public var bitPattern: Bool {
         self == Self.minus
     }
 }

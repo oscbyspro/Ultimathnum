@@ -37,5 +37,5 @@
 public protocol BaseInteger<BitPattern>: BitCastable, Swift.FixedWidthInteger, Swift.Sendable
 where BitPattern == Magnitude.BitPattern, Magnitude: BaseInteger {
     
-    associatedtype Mode: Signedness where Magnitude.Mode == IsUnsigned
+    associatedtype Mode: Signedness where Magnitude.Mode == Unsigned
 }

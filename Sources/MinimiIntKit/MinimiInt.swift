@@ -18,7 +18,7 @@ import CoreKit
     
     public typealias Element = Self
     
-    public typealias Magnitude = MinimiInt<IsUnsigned>
+    public typealias Magnitude = MinimiInt<Unsigned>
     
     public typealias Mode = Mode
     
@@ -59,12 +59,12 @@ import CoreKit
 // MARK: + Un/signed
 //=----------------------------------------------------------------------------=
 
-extension MinimiInt:   SignedInteger where Mode == IsSigned   { }
-extension MinimiInt: UnsignedInteger where Mode == IsUnsigned { }
+extension MinimiInt:   SignedInteger where Mode == Signed   { }
+extension MinimiInt: UnsignedInteger where Mode == Unsigned { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Aliases
 //=----------------------------------------------------------------------------=
 
-public typealias I1 = MinimiInt<IsSigned>
-public typealias U1 = MinimiInt<IsUnsigned>
+public typealias I1 = MinimiInt<Signed>
+public typealias U1 = MinimiInt<Unsigned>
