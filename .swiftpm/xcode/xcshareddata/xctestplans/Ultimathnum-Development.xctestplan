@@ -42,8 +42,8 @@
   "testTargets" : [
     {
       "skippedTests" : [
-        "CoreIntTests\/testDivision21I8()",
-        "CoreIntTests\/testDivision21U8()"
+        "CoreIntTests\/testDivision2111I8()",
+        "CoreIntTests\/testDivision2111U8()"
       ],
       "target" : {
         "containerPath" : "container:",

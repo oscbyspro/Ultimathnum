@@ -33,14 +33,13 @@ extension BinaryInteger {
         sign: consuming Sign = .plus,
         magnitude: consuming Magnitude
     )   -> Fallible<Self> {
-        //=--------------------------------------=
+        
         var isLessThanZero = Bool(sign)
         if  isLessThanZero {
             isLessThanZero = magnitude.capture({ $0.negated() })
         }
-        //=--------------------------------------=
+        
         let value = Self(bitPattern: magnitude)
-        //=--------------------------------------=
         return value.combine(value.isLessThanZero != isLessThanZero)
     }
     
@@ -67,15 +66,16 @@ extension BinaryInteger {
         elements: consuming ExchangeInt<T, Element>.BitPattern,
         isSigned: consuming Bool
     )   -> Fallible<Self> {
+        
         let appendix = elements.appendix.bit
         var (stream) = elements.stream()
+        let instance = Self(load: &stream)
         
-        let value = Self.init(load: &stream)
-        let success = (value.appendix == appendix)
+        let success = (instance.appendix == appendix)
         && (Self.isSigned == isSigned || appendix == Bit.zero)
         && stream.succinct().count == Int.zero
         
-        return value.combine(!success)        
+        return instance.combine(!success)        
     }
     
     //=------------------------------------------------------------------------=

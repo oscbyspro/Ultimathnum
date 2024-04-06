@@ -126,13 +126,16 @@ extension CoreIntTests {
     //=------------------------------------------------------------------------=
     
     func testDivision2111I8() {
+        typealias T = I8
+        
         var success = 0
         var failure = 0
         
-        for divisor     in I8.min...I8.max {
-            for high    in I8.min...I8.max {
-                for low in U8.min...U8.max {
-                    if !I8.division(Doublet(high: high, low: low), by: divisor).error {
+        for divisor     in T.min...T.max {
+            for high    in T.min...T.max {
+                for low in T.min...T.max {
+                    let dividend = Doublet(high: T(bitPattern: high), low: T.Magnitude(bitPattern: low))
+                    if !T.division(dividend, by: T(bitPattern: divisor)).error {
                         success += 1
                     }   else {
                         failure += 1
@@ -146,13 +149,16 @@ extension CoreIntTests {
     }
     
     func testDivision2111U8() {
+        typealias T = U8
+        
         var success = 0
         var failure = 0
         
-        for divisor     in U8.min...U8.max {
-            for high    in U8.min...U8.max {
-                for low in U8.min...U8.max {
-                    if !U8.division(Doublet(high: high, low: low), by: divisor).error {
+        for divisor     in T.Magnitude.min...T.Magnitude.max {
+            for high    in T.Magnitude.min...T.Magnitude.max {
+                for low in T.Magnitude.min...T.Magnitude.max {
+                    let dividend = Doublet(high: T(bitPattern: high), low: low)
+                    if !T.division(dividend, by: T(bitPattern: divisor)).error {
                         success += 1
                     }   else {
                         failure += 1

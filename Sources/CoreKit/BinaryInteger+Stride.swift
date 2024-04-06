@@ -23,6 +23,7 @@ extension BinaryInteger {
     
     @inlinable public consuming func advanced<T>(by distance: T) -> Fallible<Self> where T: SignedInteger {
         if  Self.isSigned {
+            
             if  ExchangeInt(Self.bitWidth) < ExchangeInt(T.bitWidth) {
                 
                 return T(truncating: self).plus(distance).map(Self.exactly)
@@ -32,6 +33,7 @@ extension BinaryInteger {
                 return self.plus(Self(truncating: distance))
                 
             }
+            
         }   else {
             
             if  distance.isLessThanZero {
