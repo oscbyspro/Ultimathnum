@@ -37,26 +37,6 @@
 ///
 /// - Requires: Its magnitude must be unsigned and the same size as this type.
 ///
-/// ### Words
-///
-/// - Requires: Its words collection view must have an identical memory layout.
-///
-/// ### Development
-///
-/// Consider primitive static base methods that match stdlib operations:
-///
-/// ```swift
-/// static func addition(_:_:) -> OverflowStatus<Self>
-/// static func multiplication112(_:_:) -> Doublet<Self>
-/// static func division2111(_:_:) -> Optional<Division<Self, Self>>
-/// ```
-///
-/// - Note: It is an alternative in case typed throws don't perform well.
-///
-/// ### Development
-///
-/// - TODO: Consider `static func squaring(_:) -> Doublet<Self>`
-///
 public protocol SystemsInteger<BitPattern>: BinaryInteger where Magnitude: SystemsInteger {
     
     //=------------------------------------------------------------------------=
