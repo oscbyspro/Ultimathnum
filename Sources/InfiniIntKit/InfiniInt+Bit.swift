@@ -82,6 +82,16 @@ extension InfiniInt {
         self.storage.appendix.bit
     }
     
+    #warning("new")
+    /// ### Development
+    ///
+    /// The current type is a placeholder for some future buffer view.
+    ///
+    @inlinable public var data: [UInt8] {
+        self.storage.base.withUnsafeBytes([UInt8].init)
+    }
+    
+    #warning("old")
     @inlinable public var body: ContiguousArray<Element.Magnitude> {
         self.storage.base
     }

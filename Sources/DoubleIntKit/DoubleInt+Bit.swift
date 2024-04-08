@@ -83,6 +83,16 @@ extension DoubleInt {
         self.storage.high.appendix
     }
     
+    #warning("new")
+    /// ### Development
+    ///
+    /// The current type is a placeholder for some future buffer view.
+    ///
+    @inlinable public var data: [UInt8] {
+        Swift.withUnsafeBytes(of: self, [UInt8].init)
+    }
+
+    #warning("old")
     @inlinable public var body: Magnitude._Body {
         Magnitude._Body(low: self.low.body, high: Base.Magnitude(bitPattern: self.high).body)
     }

@@ -203,6 +203,14 @@ Stride == Swift.Int {
     ///
     @inlinable var appendix: Bit { get }
     
+    #warning("new")
+    /// ### Development
+    ///
+    /// The current type is a placeholder for some future buffer view.
+    ///
+    @inlinable var data: [UInt8] { get }
+
+    #warning("old")
     @inlinable var body: Body { get }
     
     @inlinable borrowing func compared(to other: borrowing Self) -> Signum

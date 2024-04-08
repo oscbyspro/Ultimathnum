@@ -75,6 +75,16 @@ extension CoreInt {
         Bit(Self.isSigned && self < 0)
     }
     
+    #warning("new")
+    /// ### Development
+    ///
+    /// The current type is a placeholder for some future buffer view.
+    ///
+    @inlinable public var data: [UInt8] {
+        Swift.withUnsafeBytes(of: self, [UInt8].init)
+    }
+
+    #warning("old")
     @inlinable public var body: CollectionOfOne<Magnitude> {
         CollectionOfOne(Magnitude(bitPattern: self))
     }
