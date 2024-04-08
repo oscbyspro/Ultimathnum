@@ -219,7 +219,7 @@ Stride == Swift.Int {
     
     @inlinable borrowing func compared(to other: borrowing Self) -> Signum
     
-    @inlinable borrowing func count(_ bit: Bit, option: BitSelection) -> Magnitude
+    @inlinable borrowing func count(_ bit: Bit, where selection: BitSelection) -> Magnitude
     
     @inlinable consuming func complement(_ increment: consuming Bool) -> Fallible<Self>
 }

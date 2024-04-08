@@ -69,7 +69,7 @@ extension ExchangeInt.Minor where Element == Element.Magnitude {
         //=--------------------------------------=
         let sign = Base.Element(repeating: bit)
         let majorSuffix = base.reversed().prefix(while:{ $0 == sign })
-        let minorSuffix = base.dropLast(majorSuffix.count).last?.count(bit, option: .descending) ?? (0)
+        let minorSuffix = base.dropLast(majorSuffix.count).last?.count(.descending(bit)) ?? 0
         let totalSuffix = IX(majorSuffix.count) * IX(bitWidth: Base.Element.self) + minorSuffix.load(as: IX.self)
         return Int(IX(self.count(chunking:  base)) - totalSuffix / IX(bitWidth: Element.self))
     }

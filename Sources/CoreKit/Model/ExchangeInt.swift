@@ -136,8 +136,8 @@ Element: SystemsInteger, Base: RandomAccessCollection, Base.Element: SystemsInte
         self.base = base
         self.appendix = appendix
         //=--------------------------------------=
-        Swift.assert(Self.Element.bitWidth.count(1, option: .all) == 1)
-        Swift.assert(Base.Element.bitWidth.count(1, option: .all) == 1)
+        Swift.assert(Self.Element.bitWidth.count(.each(1)) == 1)
+        Swift.assert(Base.Element.bitWidth.count(.each(1)) == 1)
     }
     
     //=------------------------------------------------------------------------=

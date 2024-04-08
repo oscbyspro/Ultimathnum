@@ -67,6 +67,18 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    @inlinable public func withUnsafeBinaryIntegerData<T>(_ action: (MemoryInt) throws -> T) rethrows -> T {
+        let appendix = self.appendix
+        return try self.data.withUnsafeBytes { body in
+            let body = MemoryInt.Body(body.baseAddress!, count: IX(body.count))
+            return try action(MemoryInt(body, repeating: appendix))
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
     /// The least significant bit in its bit pattern.
     ///
     /// It returns `0` when this value is even, and `1` when it is odd.
@@ -75,5 +87,19 @@ extension BinaryInteger {
     ///
     @inlinable public var leastSignificantBit: Bit {
         Bit(self.load(as: Element.self) & Element.lsb != 0)
+    }
+    
+    @inlinable public func count(_ selection: BitSelection.Composition) -> Magnitude {
+        typealias T = BitSelection
+        typealias E = BitSelection.Composition
+        return switch selection {
+        case .each         (let bit): self.count(bit, where: T.anywhere)
+        case .ascending    (let bit): self.count(bit, where: T.ascending)
+        case .nonascending (let bit): Self.bitWidth.minus(self.count(bit, where: T.ascending )).assert()
+        case .descending   (let bit): self.count(bit, where: T.descending)
+        case .nondescending(let bit): Self.bitWidth.minus(self.count(bit, where: T.descending)).assert()
+        case .appendix:    self.count(self.appendix,  where: T.descending)
+        case .nonappendix: Self.bitWidth.minus(self.count(self.appendix,  where: T.descending)).assert()
+        }
     }
 }

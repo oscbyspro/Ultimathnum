@@ -33,8 +33,8 @@
     }
     
     @inlinable internal init(unchecked element: consuming Element) {
-        Swift.assert(element.count(1, option: .all) % Element.bitWidth == 0)
-        Swift.assert(element.count(0, option: .all) % Element.bitWidth == 0)
+        Swift.assert(element.count(.each(1)) % Element.bitWidth == 0)
+        Swift.assert(element.count(.each(0)) % Element.bitWidth == 0)
         self.element = element
     }
     

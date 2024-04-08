@@ -22,7 +22,7 @@ extension Test {
     public func invariants<T>(_ type: T.Type, _ id: SystemsIntegerID = .init()) where T: SystemsInteger {
         //=--------------------------------------=
         same(
-            T.bitWidth.count(1, option: .all),
+            T.bitWidth.count(.each(1)),
             T.Magnitude(1),
             "\(T.self).bitWidth must be a power of 2"
         )
@@ -40,7 +40,7 @@ extension Test {
     public func invariants<T>(_ type: T.Type, _ id: BinaryIntegerID = .init()) where T: BinaryInteger {
         //=--------------------------------------=
         same(
-            T.Element.bitWidth.count(1, option: .all),
+            T.Element.bitWidth.count(.each(1)),
             T.Element.Magnitude(1),
             "\(T.Element.self).bitWidth must be a power of 2"
         )

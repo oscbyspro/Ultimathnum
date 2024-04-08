@@ -34,15 +34,15 @@ extension CoreIntTests {
     func testBitCountSelection() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             for bit: Bit in [0, 1] {
-                for selection: BitSelection in [.all, .ascending, .descending] {
-                    Test().same(( 0 as T).count(bit, option: selection), bit == 0 ? T.bitWidth : 0)
-                    Test().same((~0 as T).count(bit, option: selection), bit == 1 ? T.bitWidth : 0)
+                for selection: BitSelection in [.anywhere, .ascending, .descending] {
+                    Test().same(( 0 as T).count(bit, where: selection), bit == 0 ? T.bitWidth : 0)
+                    Test().same((~0 as T).count(bit, where: selection), bit == 1 ? T.bitWidth : 0)
                 }
                 
                 for element: (value: T, bit: Bit) in [(11, 0), (~11, 1)] {
-                    Test().same(element.value.count(bit, option:        .all), bit == element.bit ? T.bitWidth - 3 : 3)
-                    Test().same(element.value.count(bit, option:  .ascending), bit == element.bit ?              0 : 2)
-                    Test().same(element.value.count(bit, option: .descending), bit == element.bit ? T.bitWidth - 4 : 0)
+                    Test().same(element.value.count(bit, where:   .anywhere), bit == element.bit ? T.bitWidth - 3 : 3)
+                    Test().same(element.value.count(bit, where:  .ascending), bit == element.bit ?              0 : 2)
+                    Test().same(element.value.count(bit, where: .descending), bit == element.bit ? T.bitWidth - 4 : 0)
                 }
             }
         }

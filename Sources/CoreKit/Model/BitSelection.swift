@@ -14,12 +14,36 @@
 /// Some selection options for the bits in a binary integer.
 ///
 /// ```swift
-/// I64.min.count(0, option:  .ascending) // 63
-/// I64.min.count(1, option: .descending) // 01
+/// I64.min.count(0, where:  .ascending) // 63
+/// I64.min.count(1, where: .descending) // 01
 /// ```
 ///
 @frozen public enum BitSelection {
-    case all
+    
+    case anywhere
+    
     case ascending
+    
     case descending
+    
+    //*========================================================================*
+    // MARK: * Composition
+    //*========================================================================*
+    
+    @frozen public enum Composition {
+        
+        case each(Bit)
+        
+        case ascending(Bit)
+        
+        case nonascending(Bit)
+        
+        case descending(Bit)
+        
+        case nondescending(Bit)
+        
+        case appendix
+        
+        case nonappendix
+    }
 }

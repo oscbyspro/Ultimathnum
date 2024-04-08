@@ -35,26 +35,26 @@ extension Doublet {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
 
-    @inlinable package borrowing func count(_ bit: Bit, option: BitSelection) -> Magnitude {
+    @inlinable package borrowing func count(_ bit: Bit, where selection: BitSelection) -> Magnitude {
         var count: UX
 
-        switch option {
-        case .all:
+        switch selection {
+        case .anywhere:
             
-            count  = self.low .count(bit, option: option).load(as: UX.self)
-            count += self.high.count(bit, option: option).load(as: UX.self)
+            count  = self.low .count(bit, where: selection).load(as: UX.self)
+            count += self.high.count(bit, where: selection).load(as: UX.self)
         
         case .ascending:
             
-            count  = self.low .count(bit, option: option).load(as: UX.self)
+            count  = self.low .count(bit, where: selection).load(as: UX.self)
             guard count == Base.bitWidth.load(as: UX.self) * 1 else { break }
-            count += self.high.count(bit, option: option).load(as: UX.self)
+            count += self.high.count(bit, where: selection).load(as: UX.self)
             
         case .descending:
             
-            count  = self.high.count(bit, option: option).load(as: UX.self)
+            count  = self.high.count(bit, where: selection).load(as: UX.self)
             guard count == Base.bitWidth.load(as: UX.self) * 1 else { break }
-            count += self.low .count(bit, option: option).load(as: UX.self)
+            count += self.low .count(bit, where: selection).load(as: UX.self)
             
         }
         

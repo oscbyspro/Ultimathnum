@@ -72,7 +72,7 @@ extension DoubleInt where Base == Base.Magnitude {
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
     @inlinable static func division4222(_ lhs: consuming Doublet<Self>, by rhs: borrowing Self) -> Fallible<Division<Self, Self>> {
-        let normalization = rhs.count(0, option: .descending)
+        let normalization = rhs.count(0, where: .descending)
         //=--------------------------------------=
         // divisor is zero
         //=--------------------------------------=
@@ -95,7 +95,7 @@ extension DoubleInt where Base == Base.Magnitude {
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
     @inlinable static func division4222(_ lhs: consuming Doublet<Self>, by rhs: Self, normalization: consuming Self) -> Division<Self, Self> {
         Swift.assert(rhs > lhs.high, "must not divide by zero and quotient must fit in two halves")
-        Swift.assert(rhs.count(0, option: .descending) == normalization, "save shift distance")
+        Swift.assert(rhs.count(0, where: .descending) == normalization, "save shift distance")
         //=--------------------------------------=
         // division: 2222
         //=--------------------------------------=

@@ -22,17 +22,17 @@ final class FibonacciTests: XCTestCase {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    func check<T>(_ sequence: Fibonacci<T>?, _ expectation: Components<T>?, invariants: Bool = true, test: Test = .init()) {
+    func check<T>(_ sequence: Fibonacci<T>?, _ expectation: Components<T>?, invariants: Bool = true, test: Test) {
         test.same(sequence?.index,   expectation?.index)
         test.same(sequence?.element, expectation?.element)
         test.same(sequence?.next,    expectation?.next)
         
         if  invariants, let  expectation, let sequence =  Test().some(sequence) {
-            test.success(check(index: sequence.index, element: expectation.element, invariants: invariants))
+            test.success(check(index: sequence.index, element: expectation.element, invariants: invariants, test: test))
         }
     }
     
-    func check<T: BinaryInteger>(index: T, element: T?, invariants: Bool = true, test: Test = .init()) {
+    func check<T: BinaryInteger>(index: T, element: T?, invariants: Bool = true, test: Test) {
         typealias F = Fibonacci<T>
         //=--------------------------------------=
         let sequence = try? F(index)
@@ -60,35 +60,35 @@ final class FibonacciTests: XCTestCase {
     // MARK: Utilities x Min, Max
     //=------------------------------------------------------------------------=
     
-    func checkInvariantsAtZero<T>(_ sequence: Fibonacci<T>.Type, invariants: Bool = true, test: Test = .init()) {
+    func checkInvariantsAtZero<T>(_ sequence: Fibonacci<T>.Type, invariants: Bool = true, test: Test) {
         typealias F = Fibonacci<T>
         
         if  T.isSigned {
-            XCTAssertThrowsError(try F(-1))
+            test.failure(try F(-1))
         }
                 
-        if  let one = T.exactly(1).optional(), var sequence = Test().some(try? F()) {
-            XCTAssertNoThrow/**/(try F( ))
-            XCTAssertNoThrow/**/(try F(0))
+        if  let one = T.exactly(1).optional(), var sequence = test.some(try? F()) {
+            test.success(try F( ))
+            test.success(try F(0))
             
             let components = Components(0, 0, one)
             check(sequence, components, invariants: invariants,  test: test)
-            XCTAssertThrowsError(try sequence.decrement())
+            test.failure(try sequence.decrement())
             check(sequence, components, invariants: (((false))), test: test)
-            XCTAssertNoThrow/**/(try sequence.double())
+            test.success(try sequence.double())
             check(sequence, components, invariants: (((false))), test: test)
         }   else {
-            XCTAssertThrowsError(try F( ))
-            XCTAssertThrowsError(try F(0))
+            test.failure(try F( ))
+            test.failure(try F(0))
         }
     }
     
     func checkInvariantsAtLastElement<T>(_ sequence: Fibonacci<T>, invariants: Bool = true, _ expectation: Components<T>, test: Test = .init()) {
         var ((sequence)) = sequence
         check(sequence, expectation, invariants: invariants,  test: test)
-        XCTAssertThrowsError(try sequence.increment())
+        test.failure(try sequence.increment())
         check(sequence, expectation, invariants: (((false))), test: test)
-        XCTAssertThrowsError(try sequence.double())
+        test.failure(try sequence.double())
         check(sequence, expectation, invariants: (((false))), test: test)
     }
 }

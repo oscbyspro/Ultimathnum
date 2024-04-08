@@ -17,8 +17,8 @@ extension BinaryInteger {
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    @inlinable public static var isInfinite: Bool {
-        Bool(Self.bitWidth.appendix)
+    @inlinable public var isInfinite: Bool {
+        !Self.isSigned && Bool(self.appendix)
     }
     
     //=------------------------------------------------------------------------=
