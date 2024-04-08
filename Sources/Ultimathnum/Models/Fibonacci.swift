@@ -76,18 +76,19 @@
     @inlinable public init(_ index: Value) throws {
         try self.init()
         
-        let elements = ExchangeInt(index, as: U1.self)
-        if  elements.appendix.bit == 1 {
-            throw Error.overflow // is negative or infinite
-        }
-        
-        for bit: U1 in elements.succinct().reversed() {
-            try self.double()
-            
-            if  bit == 1 {
-                try self.increment()
-            }
-        }
+        throw Overflow()
+        //let elements = ExchangeInt(index, as: U1.self)
+        //if  elements.appendix.bit == 1 {
+        //    throw Error.overflow // is negative or infinite
+        //}
+        //
+        //for bit: U1 in elements.succinct().reversed() {
+        //    try self.double()
+        //
+        //    if  bit == 1 {
+        //        try self.increment()
+        //    }
+        //}
     }
     
     //=------------------------------------------------------------------------=
