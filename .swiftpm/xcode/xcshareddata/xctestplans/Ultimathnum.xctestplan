@@ -39,13 +39,6 @@
         "identifier" : "InfiniIntKitTests",
         "name" : "InfiniIntKitTests"
       }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "MinimiIntKitTests",
-        "name" : "MinimiIntKitTests"
-      }
     }
   ],
   "version" : 1

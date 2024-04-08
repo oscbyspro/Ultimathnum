@@ -5,7 +5,6 @@
 * [CoreKit](#corekit)
 * [DoubleIntKit](#doubleintkit)
 * [InfiniIntKit](#infiniintkit)
-* [MinimiIntKit](#minimiintkit)
 * [Installation](#installation)
 
 <a name="corekit"/>
@@ -25,13 +24,6 @@
 <a name="infiniintkit"/>
 
 ## InfiniIntKit
-
-> [!IMPORTANT]
-> Work in progress...
-
-<a name="minimiintkit"/>
-
-## MinimiIntKit
 
 > [!IMPORTANT]
 > Work in progress...
