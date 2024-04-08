@@ -62,7 +62,28 @@ extension CoreInt {
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
-    
+        
+    #warning("new")
+    @inlinable public init(load source: inout MemoryInt.Iterator) {
+        let stride = IX(MemoryLayout<Self>.stride)
+        if  source.body.count >= stride {
+            
+            self = source.body.start.loadUnaligned(as: Self.self)
+            
+        }   else {
+            //=----------------------------------=
+            // TODO: better performance
+            //=----------------------------------=
+            self.init(repeating: source.appendix)
+            
+            while let byte = source.body.next() {
+                let  chunk = Self(Base(truncatingIfNeeded: UInt8(byte)))
+                self ^= Bool(source.appendix) ? ~chunk : chunk
+            }
+        }
+    }
+
+    #warning("old")
     @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
         self.init(load: source.next())
     }

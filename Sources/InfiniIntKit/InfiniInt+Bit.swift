@@ -65,6 +65,12 @@ extension InfiniInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    #warning("new")
+    @inlinable public init(load source: inout MemoryInt.Iterator) {
+        fatalError("TODO")
+    }
+
+    #warning("old")
     @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
         let appendix = source.appendix
         let base = InfiniInt.Storage.Base(source.succinct())

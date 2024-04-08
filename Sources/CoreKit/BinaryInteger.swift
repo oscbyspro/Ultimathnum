@@ -76,7 +76,7 @@ Stride == Swift.Int {
     //=------------------------------------------------------------------------=
     
     @inlinable init(load source: consuming  UX.Signitude)
-        
+    
     @inlinable init(load source: consuming  UX.Magnitude)
     
     @inlinable borrowing func load(as type: UX.BitPattern.Type) -> UX.BitPattern
@@ -95,6 +95,10 @@ Stride == Swift.Int {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    #warning("new")
+    @inlinable init(load source: inout MemoryInt.Iterator)
+    
+    #warning("old")
     @inlinable init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream)
     
     //=------------------------------------------------------------------------=

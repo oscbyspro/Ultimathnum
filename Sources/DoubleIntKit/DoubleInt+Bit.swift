@@ -67,6 +67,12 @@ extension DoubleInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    #warning("new")
+    @inlinable public init(load source: inout MemoryInt.Iterator) {
+        fatalError("TODO")
+    }
+
+    #warning("old")
     @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
         //=--------------------------------------=
         let low  = Low (load: &source)
