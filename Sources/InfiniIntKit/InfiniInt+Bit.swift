@@ -50,6 +50,22 @@ extension InfiniInt {
     @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern> {
         T(bitPattern: self.storage.base.first ?? self.storage.appendix.element)
     }
+        
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(load source: IX) {
+        fatalError("TODO")
+    }
+        
+    @inlinable public init(load source: UX) {
+        fatalError("TODO")
+    }
+    
+    @inlinable public func load(as type: UX.Type) -> UX {
+        fatalError("TODO")
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

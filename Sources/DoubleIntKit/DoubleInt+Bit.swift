@@ -53,12 +53,16 @@ extension DoubleInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<T>(load source: T) where T: SystemsInteger<UX.BitPattern> {
+    @inlinable public init(load source: IX) {
         self.init(Storage(load: source))
     }
     
-    @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<UX.BitPattern> {
-        self.storage.load(as: type)
+    @inlinable public init(load source: UX) {
+        self.init(Storage(load: source))
+    }
+    
+    @inlinable public borrowing func load(as type: UX.Type) -> UX {
+        self.storage.load(as: UX.self)
     }
     
     //=------------------------------------------------------------------------=

@@ -86,6 +86,16 @@ Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stri
     @inlinable func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern>
     
     //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable init(load source: consuming  IX)
+        
+    @inlinable init(load source: consuming  UX)
+    
+    @inlinable borrowing func load(as type: UX.Type) -> UX
+    
+    //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     

@@ -32,6 +32,23 @@ extension BinaryInteger {
     }
     
     //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init<T>(load source: consuming T) where T: SystemsInteger<UX.BitPattern> {
+        if  T.isSigned {
+            self.init(load: IX(bitPattern: source))
+        }   else {
+            self.init(load: UX(bitPattern: source))
+        }
+    }
+    
+    @inlinable public borrowing func load<T>(as type: T.Type) -> T where T: SystemsInteger<UX.BitPattern> {
+        T(bitPattern: self.load(as: UX.self))
+    }
+    
+    
+    //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     

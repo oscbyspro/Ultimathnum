@@ -47,12 +47,16 @@ extension CoreInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<T>(load source: T) where T: BitCastable<UX.BitPattern> {
-        self.init(Base(truncatingIfNeeded: UInt(bitPattern: source)))
+    @inlinable public init(load source: IX) {
+        self.init(Base(truncatingIfNeeded:  Int(source)))
+    }
+    
+    @inlinable public init(load source: UX) {
+        self.init(Base(truncatingIfNeeded: UInt(source)))
     }
         
-    @inlinable public func load<T>(as type: T.Type) -> T where T: BitCastable<UX.BitPattern> {
-        T(bitPattern: UInt(truncatingIfNeeded: self.base))
+    @inlinable public func load(as type: UX.Type) -> UX {
+        UX(UInt(truncatingIfNeeded: self.base))
     }
     
     //=------------------------------------------------------------------------=
