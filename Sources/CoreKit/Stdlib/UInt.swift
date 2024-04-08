@@ -12,21 +12,36 @@
 //*============================================================================*
 
 extension UInt: BaseInteger {
+    
     public typealias BitPattern = Magnitude
+    
+    public typealias Signitude  = Int
 }
 
 extension UInt8: BaseInteger {
+    
     public typealias BitPattern = Magnitude
+    
+    public typealias Signitude  = Int8
 }
 
 extension UInt16: BaseInteger {
+    
     public typealias BitPattern = Magnitude
+    
+    public typealias Signitude  = Int16
 }
 
 extension UInt32: BaseInteger {
+    
     public typealias BitPattern = Magnitude
+    
+    public typealias Signitude  = Int32
 }
 
 extension UInt64: BaseInteger {
+    
     public typealias BitPattern = Magnitude
+    
+    public typealias Signitude  = Int64
 }

@@ -18,6 +18,8 @@
     public typealias Element = Self
     
     public typealias Magnitude = CoreInt<Base.Magnitude>
+    
+    public typealias Signitude = CoreInt<Base.Signitude>
         
     //=------------------------------------------------------------------------=
     // MARK: Meta Data

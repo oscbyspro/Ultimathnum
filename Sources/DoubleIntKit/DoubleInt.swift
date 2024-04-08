@@ -27,6 +27,8 @@ import CoreKit
     
     public typealias Magnitude = DoubleInt<Base.Magnitude>
     
+    public typealias Signitude = DoubleInt<Base.Signitude>
+    
     public typealias IntegerLiteralType = StaticBigInt
     
     //=------------------------------------------------------------------------=

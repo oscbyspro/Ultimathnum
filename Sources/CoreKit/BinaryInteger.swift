@@ -29,13 +29,17 @@
 ///
 public protocol BinaryInteger<BitPattern>: Arithmetic, BitCastable, BitOperable, Comparable,
 ExpressibleByIntegerLiteral, Hashable, Sendable, Strideable, _MaybeLosslessStringConvertible where
-Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Stride == Swift.Int {
+Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Magnitude.Signitude == Signitude,
+Signitude.BitPattern == BitPattern, Signitude.Element == Element.Signitude, Signitude.Magnitude == Magnitude,
+Stride == Swift.Int {
     
     associatedtype Body: RandomAccessCollection<Element.Magnitude>
     
     associatedtype Element: SystemsInteger where Element.Element == Element
         
     associatedtype Magnitude: UnsignedInteger where Magnitude.Magnitude == Magnitude
+        
+    associatedtype Signitude:   SignedInteger where Signitude.Signitude == Signitude
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data

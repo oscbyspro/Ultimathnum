@@ -34,5 +34,11 @@
 /// - `UInt32`
 /// - `UInt64`
 ///
-public protocol BaseInteger<BitPattern>: BitCastable, Swift.FixedWidthInteger, Swift.Sendable
-where BitPattern == Magnitude.BitPattern, Magnitude: BaseInteger { }
+public protocol BaseInteger<BitPattern>: BitCastable, Swift.FixedWidthInteger, Swift.Sendable where
+Magnitude: BaseInteger<BitPattern>, Magnitude: Swift.UnsignedInteger, Magnitude.Magnitude == Magnitude, Magnitude.Signitude == Signitude,
+Signitude: BaseInteger<BitPattern>, Signitude: Swift  .SignedInteger, Signitude.Magnitude == Magnitude, Signitude.Signitude == Signitude {
+    
+    associatedtype Magnitude
+
+    associatedtype Signitude
+}
