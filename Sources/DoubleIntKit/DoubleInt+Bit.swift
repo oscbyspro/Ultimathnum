@@ -69,7 +69,11 @@ extension DoubleInt {
     
     #warning("new")
     @inlinable public init(load source: inout MemoryInt.Iterator) {
-        fatalError("TODO")
+        //=--------------------------------------=
+        let low  = Low (load: &source)
+        let high = High(load: &source)
+        //=--------------------------------------=
+        self.init(low: consume low, high: consume high)
     }
 
     #warning("old")
