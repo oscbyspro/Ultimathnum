@@ -75,29 +75,27 @@ Stride == Swift.Int {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream)
+    @inlinable init(load source: consuming  UX.Signitude)
+        
+    @inlinable init(load source: consuming  UX.Magnitude)
     
-    /// ### Development
-    ///
-    /// - TODO: Consider whether it is needed.
-    ///
-    @inlinable init<T>(load source: T) where T: SystemsInteger<Element.BitPattern>
-    
-    /// ### Development
-    ///
-    /// - TODO: Consider whether it is needed.
-    ///
-    @inlinable func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern>
+    @inlinable borrowing func load(as type: UX.BitPattern.Type) -> UX.BitPattern
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable init(load source: consuming  IX)
+    @inlinable init(load source: consuming  Element.Signitude)
         
-    @inlinable init(load source: consuming  UX)
+    @inlinable init(load source: consuming  Element.Magnitude)
     
-    @inlinable borrowing func load(as type: UX.Type) -> UX
+    @inlinable borrowing func load(as type: Element.BitPattern.Type) -> Element.BitPattern
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream)
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

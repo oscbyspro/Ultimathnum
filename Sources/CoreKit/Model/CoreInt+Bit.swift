@@ -31,32 +31,40 @@ extension CoreInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
-        self.init(load: source.next())
+    @inlinable public init(load source: consuming  UX.Signitude) {
+        self.init(Base(truncatingIfNeeded: UInt.Signitude(source)))
     }
     
-    @inlinable public init<T>(load source: T) where T: SystemsInteger<Element.BitPattern> {
-        self.init(bitPattern: source)
+    @inlinable public init(load source: consuming  UX.Magnitude) {
+        self.init(Base(truncatingIfNeeded: UInt.Magnitude(source)))
+    }
+        
+    @inlinable public borrowing func load(as type: UX.BitPattern.Type) -> UX.BitPattern {
+        UInt(truncatingIfNeeded: self.base)
+    }
+        
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(load source: consuming  Element.Signitude) {
+        self.init(Base(truncatingIfNeeded: source.base))
     }
     
-    @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern> {
-        T(bitPattern: self)
+    @inlinable public init(load source: consuming  Element.Magnitude) {
+        self.init(Base(truncatingIfNeeded: source.base))
+    }
+        
+    @inlinable public borrowing func load(as type: Element.BitPattern.Type) -> Element.BitPattern {
+        (copy  self).bitPattern
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(load source: IX) {
-        self.init(Base(truncatingIfNeeded:  Int(source)))
-    }
-    
-    @inlinable public init(load source: UX) {
-        self.init(Base(truncatingIfNeeded: UInt(source)))
-    }
-        
-    @inlinable public func load(as type: UX.Type) -> UX {
-        UX(UInt(truncatingIfNeeded: self.base))
+    @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
+        self.init(load: source.next())
     }
     
     //=------------------------------------------------------------------------=

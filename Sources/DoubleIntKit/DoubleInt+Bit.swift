@@ -32,10 +32,40 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
-
-    @inlinable public init<T>(load source: T) where T: SystemsInteger<Element.BitPattern> {
-        self.init(low: Low(load: source), high: High(repeating: source.appendix))
+    
+    @inlinable public init(load source: consuming  UX.Signitude) {
+        self.init(Storage(load: source))
     }
+    
+    @inlinable public init(load source: consuming  UX.Magnitude) {
+        self.init(Storage(load: source))
+    }
+    
+    @inlinable public borrowing func load(as type: UX.BitPattern.Type) -> UX.BitPattern {
+        self.storage.load(as: UX.self).bitPattern
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(load source: consuming  Element.Signitude) {
+        let appendix = source.appendix
+        self.init(low: Low(load: source), high: High(repeating: appendix))
+    }
+    
+    @inlinable public init(load source: consuming  Element.Magnitude) {
+        let appendix = source.appendix
+        self.init(low: Low(load: source), high: High(repeating: appendix))
+    }
+    
+    @inlinable public borrowing func load(as type: Element.BitPattern.Type) -> Element.BitPattern {
+        self.storage.low.load(as: Element.BitPattern.self)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
     
     @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
         //=--------------------------------------=
@@ -43,26 +73,6 @@ extension DoubleInt {
         let high = High(load: &source)
         //=--------------------------------------=
         self.init(low: consume low, high: consume high)
-    }
-    
-    @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern> {
-        self.low.load(as: T.self)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(load source: IX) {
-        self.init(Storage(load: source))
-    }
-    
-    @inlinable public init(load source: UX) {
-        self.init(Storage(load: source))
-    }
-    
-    @inlinable public borrowing func load(as type: UX.Type) -> UX {
-        self.storage.load(as: UX.self)
     }
     
     //=------------------------------------------------------------------------=
