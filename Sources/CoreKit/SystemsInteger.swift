@@ -21,11 +21,13 @@
 ///
 /// ### Bit Width
 ///
-/// Non-power-of-two-bit-width integers are banned. Keep it simple.
+/// Keep it simple.
 ///
-/// - Requires: Its bit width must be a power of two.
+/// - Requires: Its bit width must be at least 8.
 ///
-/// - Requires: Its bit width must fit in a signed word (e.g. Swift.Int).
+/// - Requires: Its bit width must be a power of 2.
+///
+/// - Requires: Its bit width must fit in `IX`.
 ///
 /// ### Magnitude
 ///
