@@ -17,6 +17,22 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// ### Development
+    ///
+    /// - TODO: Maybe add a fast path when T.bitWidth >= Self   .bitWidth.
+    /// - TODO: Maybe add a fast path when T.bitWidth >= Element.bitWidth.
+    ///
+    @inlinable public init<T>(load source: consuming MemoryInt<T>) {
+        self = source.withMemoryRebound(to: U8.self) {
+            var stream = $0.stream()
+            return Self.init(load: &stream)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
     @inlinable public init<T>(load source: consuming T) where T: SystemsInteger<UX.BitPattern> {
         if  T.isSigned {
             self.init(load: UX.Signitude(bitPattern: source))
@@ -49,11 +65,22 @@ extension BinaryInteger {
     // MARK: Initializeres
     //=------------------------------------------------------------------------=
     
-    #warning("add appropriate fast paths")
-    @inlinable public init<T>(load source: consuming T) where T: BinaryInteger {
-        self = source.withUnsafeBinaryIntegerMemory {
-            var stream = $0.stream()
-            return Self(load: &stream)
+    @inlinable public init<Other>(load source: consuming Other) where Other: BinaryInteger {
+        let lhsIsSmall = !Self .bitWidth.isInfinite && UX(load: Self .bitWidth) <= UX.bitWidth
+        let rhsIsSmall = !Other.bitWidth.isInfinite && UX(load: Other.bitWidth) <= UX.bitWidth
+        
+        if  lhsIsSmall || rhsIsSmall {
+            
+            if  Self.isSigned {
+                self.init(load: IX(load: source))
+            }   else {
+                self.init(load: UX(load: source))
+            }
+                        
+        }   else {
+            
+            self = source.withUnsafeBinaryIntegerMemory(Self.init(load:))
+            
         }
     }
     
