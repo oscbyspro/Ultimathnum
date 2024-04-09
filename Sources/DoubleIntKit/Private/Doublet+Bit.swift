@@ -41,20 +41,20 @@ extension Doublet {
         switch selection {
         case .anywhere:
             
-            count  = self.low .count(bit, where: selection).load(as: UX.self)
-            count += self.high.count(bit, where: selection).load(as: UX.self)
+            count  = UX(load: self.low .count(bit, where: selection))
+            count += UX(load: self.high.count(bit, where: selection))
         
         case .ascending:
             
-            count  = self.low .count(bit, where: selection).load(as: UX.self)
-            guard count == Base.bitWidth.load(as: UX.self) * 1 else { break }
-            count += self.high.count(bit, where: selection).load(as: UX.self)
+            count  = UX(load: self.low .count(bit, where: selection))
+            guard count == UX(bitWidth: Base.self) else { break }
+            count += UX(load: self.high.count(bit, where: selection))
             
         case .descending:
             
-            count  = self.high.count(bit, where: selection).load(as: UX.self)
-            guard count == Base.bitWidth.load(as: UX.self) * 1 else { break }
-            count += self.low .count(bit, where: selection).load(as: UX.self)
+            count  = UX(load: self.high.count(bit, where: selection))
+            guard count == UX(bitWidth: Base.self) else { break }
+            count += UX(load: self.low .count(bit, where: selection))
             
         }
         

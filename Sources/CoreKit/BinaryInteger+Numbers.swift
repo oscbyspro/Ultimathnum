@@ -84,7 +84,7 @@ extension BinaryInteger {
             return instance.combine(!success)
         }
     }
-        
+    
     @inlinable public static func exactly<T>(body: consuming Array<T>, isSigned: Bool) -> Fallible<Self> where T: SystemsInteger & UnsignedInteger {
         body.withUnsafeBufferPointer {
             let body = MemoryIntBody($0.baseAddress!, count: IX($0.count))

@@ -57,9 +57,8 @@ extension BinaryInteger {
     }
     
     @inlinable package consuming func distance<T>(to other: Self, as type: T.Type = T.self) -> Fallible<T> where T: SignedInteger {
-        //=--------------------------------------=
-        // TODO: better comparison
-        //=--------------------------------------=
+        #warning("better comparison")
+        
         if  compare(Self.bitWidth, to: T.bitWidth) == Signum.less {
             
             return T(load: other).minus(T(load: self))
@@ -74,6 +73,7 @@ extension BinaryInteger {
             let distance = Fallible<Signitude>(bitPattern: other.minus(self))
             let superoverflow = distance.value.isLessThanZero != distance.error
             return T.exactly(distance.value).combine(superoverflow)
+            
         }
     }
 }

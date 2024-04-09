@@ -8,20 +8,20 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Exchange Int x Numbers
+// MARK: * Systems Integer x Memory
 //*============================================================================*
 
-extension ExchangeInt {
+extension SystemsInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ source: Base) where Base == BigIntLiteral, Element == IX {
-        self.init(source, as: Element.self)
+    @inlinable public init<T>(load source: borrowing T) where T: BinaryInteger, BitPattern == UX.BitPattern {
+        self = source.load(as: Self.self)
     }
     
-    @inlinable public init(_ source: Base, as element: Element.Type = Element.self) where Base == BigIntLiteral {
-        self.init(source, repeating: source.appendix)
+    @inlinable public init<T>(load source: borrowing T) where T: BinaryInteger, BitPattern == T.Element.BitPattern {
+        self = source.load(as: Self.self)
     }
 }

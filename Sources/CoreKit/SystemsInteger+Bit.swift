@@ -67,8 +67,11 @@ extension SystemsInteger {
     /// - Note: This method can be used when `init(truncating:)` cannot.
     @inlinable package static func tokenized<T: SystemsInteger>(load source: T) -> Self where T: SystemsInteger {
         if  UX(bitWidth: Self.self) <= UX.bitWidth {
-            return Self.init(load: source.load(as: UX.self))
+            return Self.init(load: UX(load: source))
         }   else {
+            
+            #warning("FIXME...")
+            
             var source = source as T
             let minus  = source.isLessThanZero
             
@@ -78,7 +81,7 @@ extension SystemsInteger {
             
             if  UX(bitWidth: T.self) >  UX.bitWidth {
                 chunking: while bitIndex < bitWidth {
-                    let element = (source).load(as: UX.self)
+                    let element = UX(load: source)
                     (source) = (source) &>> T(load: UX.bitWidth)
                     instance = instance ^   Self(load: minus ? ~element : element) &<< bitIndex
                     bitIndex = bitIndex +   Self(load: UX.bitWidth)

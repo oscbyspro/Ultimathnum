@@ -144,7 +144,7 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
                 var element = 0 as UX
                 
                 for (ascii) in UnsafeBufferPointer(rebasing: digits.removePrefix(count: division.remainder.base)) {
-                    element = try element &* 10 &+ U8(IDF.decode(ascii: ascii)).load(as: UX.self)
+                    element = try element &* 10 &+ UX(load: U8(IDF.decode(ascii: ascii)))
                 }
                 
                 words.initializeElement(at: index, to: element)
@@ -155,7 +155,7 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
                 var element = 0 as UX
                 
                 for (ascii) in UnsafeBufferPointer(rebasing: digits.removePrefix(count: self.radix.exponent.base)) {
-                    element = try element &* 10 &+ U8(IDF.decode(ascii: ascii)).load(as: UX.self)
+                    element = try element &* 10 &+ UX(load: U8(IDF.decode(ascii: ascii)))
                 }
                 
                 words.initializeElement(at: index, to: SUISS.multiply(&words[..<index], by: radix.power, add: element))

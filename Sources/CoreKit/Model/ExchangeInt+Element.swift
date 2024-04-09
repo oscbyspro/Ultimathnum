@@ -80,7 +80,7 @@ extension ExchangeInt.Minor where Element == Element.Magnitude {
         }
         //=--------------------------------------=
         let major = base[base.index(base.startIndex, offsetBy: quotient)]
-        let shift = Base.Element(load: UX(bitPattern: remainder)) &<< Base.Element(load: Element.bitWidth.count(.ascending(0)).load(as: UX.self))
+        let shift = Base.Element(load: UX(bitPattern: remainder)) &<< Base.Element(load: UX(load: Element.bitWidth.count(.ascending(0))))
         return Element.tokenized(load: major &>> shift)
     }
 }

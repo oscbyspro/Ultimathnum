@@ -102,7 +102,6 @@ final class IntegerDescriptionFormatTestsOnEncoding: XCTestCase {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    #warning("fixme")
     func check(_ test: Test, _ integer: some BinaryInteger, _ expectation: String) {
         let sign = Sign(bitPattern: integer < 0)
         let magnitude = [UX](ExchangeInt(integer.magnitude().body(), isSigned: false).source())

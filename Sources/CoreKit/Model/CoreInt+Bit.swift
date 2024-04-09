@@ -64,8 +64,7 @@ extension CoreInt {
     //=------------------------------------------------------------------------=
         
     @inlinable public init(load source: inout MemoryInt<I8.Magnitude>.Iterator) {
-        let stride = IX(MemoryLayout<Self>.stride)
-        if  source.body.count >= stride {
+        if  source.body.count >= IX(MemoryLayout<Self>.stride) {
             
             self = source.body.load(unchecked: Self.self)
             
