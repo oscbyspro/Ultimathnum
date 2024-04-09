@@ -12,8 +12,8 @@
 //*============================================================================*
 
 @inlinable public func compare<LHS, RHS>(_ lhs: LHS, to rhs: RHS) -> Signum where LHS: BinaryInteger, RHS: BinaryInteger {
-    lhs.withUnsafeBinaryIntegerData { lhs in
-        rhs.withUnsafeBinaryIntegerData { rhs in
+    lhs.withUnsafeBinaryIntegerMemory { lhs in
+        rhs.withUnsafeBinaryIntegerMemory { rhs in
             MemoryInt.compare(
                 lhs: lhs, lhsIsSigned: LHS.isSigned,
                 rhs: rhs, rhsIsSigned: RHS.isSigned

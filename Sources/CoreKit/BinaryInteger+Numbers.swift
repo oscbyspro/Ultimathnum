@@ -59,16 +59,8 @@ extension BinaryInteger {
         self = Self.exactly(source).unwrap()
     }
     
-    #warning("add appropriate fast paths")
-    @inlinable public init<T>(truncating source: consuming T) where T: BinaryInteger {
-        self = source.withUnsafeBinaryIntegerData {
-            var stream = $0.stream()
-            return Self(load: &stream)
-        }
-    }
-    
     @inlinable public static func exactly<T>(_ source: consuming T) -> Fallible<Self> where T: BinaryInteger {
-        source.withUnsafeBinaryIntegerData {
+        source.withUnsafeBinaryIntegerMemory {
             Self.exactly(elements: $0, isSigned: T.isSigned)
         }
     }
@@ -104,10 +96,6 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func complement() -> Self {
-        self.complement(true).value
-    }
     
     @inlinable public consuming func magnitude() -> Magnitude {
         Magnitude(bitPattern: self.isLessThanZero ? self.complement() : self)

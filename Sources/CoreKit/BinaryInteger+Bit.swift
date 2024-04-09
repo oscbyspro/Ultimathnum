@@ -32,48 +32,11 @@ extension BinaryInteger {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<T>(load source: consuming T) where T: SystemsInteger<UX.BitPattern> {
-        if  T.isSigned {
-            self.init(load: UX.Signitude(bitPattern: source))
-        }   else {
-            self.init(load: UX.Magnitude(bitPattern: source))
-        }
-    }
-    
-    @inlinable public borrowing func load<T>(as type: T.Type) -> T where T: SystemsInteger<UX.BitPattern> {
-        T(bitPattern: self.load(as: UX.BitPattern.self))
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init<T>(load source: consuming T) where T: SystemsInteger<Element.BitPattern> {
-        if  T.isSigned {
-            self.init(load: Element.Signitude(bitPattern: source))
-        }   else {
-            self.init(load: Element.Magnitude(bitPattern: source))
-        }
-    }
-    
-    @inlinable public borrowing func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern> {
-        T(bitPattern: self.load(as: Element.BitPattern.self))
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public func withUnsafeBinaryIntegerData<T>(_ action: (MemoryInt<U8>) throws -> T) rethrows -> T {
-        let appendix: Bit = self.appendix
-        return try self.withUnsafeBinaryIntegerBody {
-            try $0.withMemoryRebound(to: U8.self) {
-                try action(MemoryInt($0, repeating: appendix))
-            }
-        }
+    @inlinable public consuming func complement() -> Self {
+        self.complement(true).value
     }
     
     //=------------------------------------------------------------------------=
