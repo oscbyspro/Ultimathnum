@@ -47,13 +47,15 @@ extension MemoryIntBody {
         }
         
         @inlinable public mutating func load<T>(unchecked type: T.Type) -> T where T: SystemsInteger {
+            let ratio = IX(MemoryLayout<T>.stride / MemoryLayout<Element>.stride)
             //=--------------------------------------=
-            Swift.assert(self.count >= IX(MemoryLayout<T>.size), String.indexOutOfBounds())
+            Swift.assert(ratio <= self.count, String.indexOutOfBounds())
+            Swift.assert(ratio >= 1, "must not load integers smaller than this type's element")
             //=--------------------------------------=
-            let address  = UnsafeRawPointer(self.start)
-            self._start +=   (MemoryLayout<T>.size)
-            self._count -= IX(MemoryLayout<T>.size)
-            return address.loadUnaligned(as: T.self)
+            let instance = UnsafeRawPointer(self.start).loadUnaligned(as: T.self)
+            self._start += ratio.base
+            self._count -= ratio
+            return instance as T
         }
         
         //=------------------------------------------------------------------------=

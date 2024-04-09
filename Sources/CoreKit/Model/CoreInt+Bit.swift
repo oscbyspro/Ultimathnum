@@ -63,7 +63,6 @@ extension CoreInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
         
-    #warning("new")
     @inlinable public init(load source: inout MemoryInt<I8.Magnitude>.Iterator) {
         let stride = IX(MemoryLayout<Self>.stride)
         if  source.body.count >= stride {
