@@ -69,6 +69,10 @@ extension BinaryInteger {
     // MARK: Initializeres
     //=------------------------------------------------------------------------=
     
+    /// ### Development
+    ///
+    /// - TODO: Consider BinaryInteger.Largest asseociated type fast path.
+    ///
     @inlinable public init<Other>(load source: consuming Other) where Other: BinaryInteger {
         let lhsIsSmall = !Self .bitWidth.isInfinite && UX(load: Self .bitWidth) <= UX.bitWidth
         let rhsIsSmall = !Other.bitWidth.isInfinite && UX(load: Other.bitWidth) <= UX.bitWidth
@@ -83,7 +87,7 @@ extension BinaryInteger {
                         
         }   else {
             
-            self = source.withUnsafeBinaryIntegerMemory(Self.init(load:))
+            self = source.withUnsafeBinaryIntegerMemory(perform: Self.init(load:))
             
         }
     }
@@ -92,12 +96,29 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func withUnsafeBinaryIntegerMemory<T>(_ action: (MemoryInt<U8>) throws -> T) rethrows -> T {
+    @inlinable public func withUnsafeBinaryIntegerMemory<Value>(
+        perform action: (MemoryInt<Element.Magnitude>) throws -> Value
+    )   rethrows -> Value {
+        //=--------------------------------------=
         let appendix: Bit = self.appendix
+        //=--------------------------------------=
         return try self.withUnsafeBinaryIntegerBody {
-            try $0.withMemoryRebound(to: U8.self) {
-                try action(MemoryInt($0, repeating: appendix))
-            }
+            try action(MemoryInt($0, repeating: appendix))
         }
+    }
+    
+    @inlinable public func withUnsafeBinaryIntegerMemoryAs<OtherElement, Value>(
+        unchecked type: OtherElement.Type,
+        perform action: (MemoryInt<OtherElement>
+        ) throws -> Value) rethrows -> Value {
+        try self.withUnsafeBinaryIntegerMemory {
+            try $0.withMemoryRebound(to: OtherElement.self, perform: action)
+        }
+    }
+    
+    @inlinable public func withUnsafeBinaryIntegerMemoryAsByte<T>(
+        perform action: (MemoryInt<U8>) throws -> T
+    )   rethrows -> T {
+        try self.withUnsafeBinaryIntegerMemoryAs(unchecked: U8.self, perform: action)
     }
 }
