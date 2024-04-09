@@ -106,12 +106,14 @@ extension Test {
         _ expectation: Signum
     )   where T: BinaryInteger, U: BinaryInteger {
         //=--------------------------------------=
-        #warning("WIP")
-        //comparison(
-        //    ExchangeInt(lhs, as: T.Element.self),
-        //    ExchangeInt(rhs, as: U.Element.self),
-        //    expectation
-        //)
+        lhs.withUnsafeBinaryIntegerMemory { lhs in
+        rhs.withUnsafeBinaryIntegerMemory { rhs in
+            comparison(
+                ExchangeInt(lhs.body.buffer(), isSigned: T.isSigned, as: T.Element.self),
+                ExchangeInt(rhs.body.buffer(), isSigned: U.isSigned, as: U.Element.self),
+                expectation
+            )
+        }}
         //=--------------------------------------=
         guard let rhs = rhs as? T else { return }
         //=--------------------------------------=
