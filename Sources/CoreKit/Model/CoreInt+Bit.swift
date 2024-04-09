@@ -64,11 +64,13 @@ extension CoreInt {
     //=------------------------------------------------------------------------=
         
     #warning("new")
-    @inlinable public init(load source: inout MemoryInt.Iterator) {
+    @inlinable public init(load source: inout MemoryInt<I8.Magnitude>.Iterator) {
         let stride = IX(MemoryLayout<Self>.stride)
         if  source.body.count >= stride {
             
-            self = source.body.start.loadUnaligned(as: Self.self)
+            #warning("move to source")
+            self = UnsafeRawPointer(source.body.start).loadUnaligned(as: Self.self)
+            source.body._count -= stride
             
         }   else {
             //=----------------------------------=
@@ -95,16 +97,19 @@ extension CoreInt {
     @inlinable public var appendix: Bit {
         Bit(Self.isSigned && self < 0)
     }
-    
-    #warning("new")
-    /// ### Development
-    ///
-    /// The current type is a placeholder for some future buffer view.
-    ///
-    @inlinable public var data: [UInt8] {
-        Swift.withUnsafeBytes(of: self, [UInt8].init)
-    }
 
+    #warning("new")
+    @inlinable public borrowing func withUnsafeBinaryIntegerBody<T>(
+        _ action: (MemoryIntBody<Element.Magnitude>) throws -> T
+    )   rethrows -> T {
+        
+        try Swift.withUnsafePointer(to: self) {
+            try $0.withMemoryRebound(to: Element.Magnitude.self, capacity: 1) {
+                try action(MemoryIntBody($0, count: 1))
+            }
+        }
+    }
+    
     #warning("old")
     @inlinable public var body: CollectionOfOne<Magnitude> {
         CollectionOfOne(Magnitude(bitPattern: self))

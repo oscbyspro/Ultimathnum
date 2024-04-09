@@ -86,7 +86,7 @@ Stride == Swift.Int {
     //=------------------------------------------------------------------------=
     
     @inlinable init(load source: consuming  Element.Signitude)
-        
+    
     @inlinable init(load source: consuming  Element.Magnitude)
     
     @inlinable borrowing func load(as type: Element.BitPattern.Type) -> Element.BitPattern
@@ -96,7 +96,7 @@ Stride == Swift.Int {
     //=------------------------------------------------------------------------=
     
     #warning("new")
-    @inlinable init(load source: inout MemoryInt.Iterator)
+    @inlinable init(load source: inout MemoryInt<I8.Magnitude>.Iterator)
     
     #warning("old")
     @inlinable init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream)
@@ -208,11 +208,7 @@ Stride == Swift.Int {
     @inlinable var appendix: Bit { get }
     
     #warning("new")
-    /// ### Development
-    ///
-    /// The current type is a placeholder for some future buffer view.
-    ///
-    @inlinable var data: [UInt8] { get }
+    @inlinable borrowing func withUnsafeBinaryIntegerBody<T>(_ action: (MemoryIntBody<Element.Magnitude>) throws -> T) rethrows -> T
 
     #warning("old")
     @inlinable var body: Body { get }

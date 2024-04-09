@@ -11,7 +11,11 @@
 // MARK: * Memory Int
 //*============================================================================*
 
-@frozen public struct MemoryInt {
+@frozen public struct MemoryInt<Element> where Element: SystemsInteger {
+    
+    public typealias Body = MemoryIntBody<Element>
+    
+    public typealias Element = Element
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -27,31 +31,5 @@
     @inlinable public init(_ body: Body, repeating appendix: Bit) {
         self.body = body
         self.appendix = appendix
-    }
-}
-
-//*============================================================================*
-// MARK: * Memory Int x Body
-//*============================================================================*
-
-extension MemoryInt {
-    
-    @frozen public struct Body {
-        
-        //=--------------------------------------------------------------------=
-        // MARK: State
-        //=--------------------------------------------------------------------=
-        
-        public let start: UnsafeRawPointer
-        public let count: IX
-        
-        //=--------------------------------------------------------------------=
-        // MARK: Initializers
-        //=--------------------------------------------------------------------=
-        
-        @inlinable public init(_ start: UnsafeRawPointer, count: IX) {
-            self.start = start
-            self.count = count
-        }
     }
 }

@@ -68,7 +68,7 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     #warning("new")
-    @inlinable public init(load source: inout MemoryInt.Iterator) {
+    @inlinable public init(load source: inout MemoryInt<I8.Magnitude>.Iterator) {
         //=--------------------------------------=
         let low  = Low (load: &source)
         let high = High(load: &source)
@@ -94,12 +94,15 @@ extension DoubleInt {
     }
     
     #warning("new")
-    /// ### Development
-    ///
-    /// The current type is a placeholder for some future buffer view.
-    ///
-    @inlinable public var data: [UInt8] {
-        Swift.withUnsafeBytes(of: self, [UInt8].init)
+    @inlinable public borrowing func withUnsafeBinaryIntegerBody<T>(
+        _ action: (MemoryIntBody<Element.Magnitude>) throws -> T
+    )   rethrows -> T {
+        try Swift .withUnsafePointer(to: self) {
+            try $0.withMemoryRebound(to: Element.Magnitude.self, capacity: 1) {
+                let count = MemoryLayout<Self>.stride / MemoryLayout<Element.Magnitude>.stride
+                return try action(MemoryIntBody($0, count: IX(count)))
+            }
+        }
     }
 
     #warning("old")

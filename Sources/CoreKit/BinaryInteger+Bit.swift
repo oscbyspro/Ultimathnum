@@ -67,11 +67,12 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func withUnsafeBinaryIntegerData<T>(_ action: (MemoryInt) throws -> T) rethrows -> T {
-        let appendix = self.appendix
-        return try self.data.withUnsafeBytes { body in
-            let body = MemoryInt.Body(body.baseAddress!, count: IX(body.count))
-            return try action(MemoryInt(body, repeating: appendix))
+    @inlinable public func withUnsafeBinaryIntegerData<T>(_ action: (MemoryInt<U8>) throws -> T) rethrows -> T {
+        let appendix: Bit = self.appendix
+        return try self.withUnsafeBinaryIntegerBody {
+            try $0.withMemoryRebound(to: U8.self) {
+                try action(MemoryInt($0, repeating: appendix))
+            }
         }
     }
     

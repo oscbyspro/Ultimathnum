@@ -66,7 +66,7 @@ extension InfiniInt {
     //=------------------------------------------------------------------------=
     
     #warning("new")
-    @inlinable public init(load source: inout MemoryInt.Iterator) {
+    @inlinable public init(load source: inout MemoryInt<I8.Magnitude>.Iterator) {
         fatalError("TODO")
     }
 
@@ -89,12 +89,13 @@ extension InfiniInt {
     }
     
     #warning("new")
-    /// ### Development
-    ///
-    /// The current type is a placeholder for some future buffer view.
-    ///
-    @inlinable public var data: [UInt8] {
-        self.storage.base.withUnsafeBytes([UInt8].init)
+    @inlinable public borrowing func withUnsafeBinaryIntegerBody<T>(
+        _ action: (MemoryIntBody<Element.Magnitude>) throws -> T
+    )   rethrows -> T {
+        
+        try self.storage.base.withUnsafeBufferPointer {
+            try action(MemoryIntBody($0.baseAddress!, count: IX($0.count)))
+        }
     }
     
     #warning("old")
