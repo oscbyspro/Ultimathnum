@@ -26,11 +26,11 @@ extension BinaryInteger {
             
             if  compare(Self.bitWidth, to: T.bitWidth) == Signum.less {
                 
-                return T(truncating: self).plus(distance).map(Self.exactly)
+                return T(load: self).plus(distance).map(Self.exactly)
                 
             }   else {
                 
-                return self.plus(Self(truncating: distance))
+                return self.plus(Self(load: distance))
                 
             }
             
@@ -62,7 +62,7 @@ extension BinaryInteger {
         //=--------------------------------------=
         if  compare(Self.bitWidth, to: T.bitWidth) == Signum.less {
             
-            return T(truncating: other).minus(T(truncating: self))
+            return T(load: other).minus(T(load: self))
         
             
         }   else if Self.isSigned {

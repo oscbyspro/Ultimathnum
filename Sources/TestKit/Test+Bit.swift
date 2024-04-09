@@ -25,7 +25,7 @@ extension Test {
     )   where Integer: BinaryInteger, Element: SystemsInteger<Integer.Element.BitPattern> {
         //=--------------------------------------=
         same(Integer(load:       element), integer)
-        same(Integer(truncating: element), integer)
+        same(Integer(load: element), integer)
         same(Integer(load:       element).load(as: Element.self), element)
     }
     
@@ -35,7 +35,7 @@ extension Test {
     )   where Integer: BinaryInteger, Element: SystemsInteger<Integer.Element.BitPattern> {
         //=--------------------------------------=
         same(integer.load(as: Element.self), element)
-        same(integer.load(as: Element.self), Element(truncating: integer))
+        same(integer.load(as: Element.self), Element(load: integer))
         same(Integer(load: element).load(as: Element.self), element)
     }
     

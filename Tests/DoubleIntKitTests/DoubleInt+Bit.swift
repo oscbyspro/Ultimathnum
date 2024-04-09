@@ -106,15 +106,15 @@ extension DoubleIntTests {
             typealias T = DoubleInt<Base>
             typealias M = DoubleInt<Base>.Magnitude
                         
-            Test().same(T(load:  0 as IX), T(truncating:  0 as IX))
-            Test().same(T(load: -1 as IX), T(truncating: ~0 as IX))
-            Test().same(M(load:  0 as IX), M(truncating:  0 as IX))
-            Test().same(M(load: -1 as IX), M(truncating: ~0 as IX))
+            Test().same(T(load:  0 as IX), T(load:  0 as IX))
+            Test().same(T(load: -1 as IX), T(load: ~0 as IX))
+            Test().same(M(load:  0 as IX), M(load:  0 as IX))
+            Test().same(M(load: -1 as IX), M(load: ~0 as IX))
             
-            Test().same(T(load:  0 as UX), T(truncating:  0 as UX))
-            Test().same(T(load: ~0 as UX), T(truncating: ~0 as UX))
-            Test().same(M(load:  0 as UX), M(truncating:  0 as UX))
-            Test().same(M(load: ~0 as UX), M(truncating: ~0 as UX))
+            Test().same(T(load:  0 as UX), T(load:  0 as UX))
+            Test().same(T(load: ~0 as UX), T(load: ~0 as UX))
+            Test().same(M(load:  0 as UX), M(load:  0 as UX))
+            Test().same(M(load: ~0 as UX), M(load: ~0 as UX))
         }
         
         for base in bases where base.isSigned {
@@ -127,15 +127,15 @@ extension DoubleIntTests {
             typealias T = DoubleInt<Base>
             typealias M = DoubleInt<Base>.Magnitude
             
-            Test().same(( 0 as T).load(as: IX.self), IX(truncating:  0 as T))
-            Test().same((~0 as T).load(as: IX.self), IX(truncating: ~0 as T))
-            Test().same(( 0 as M).load(as: IX.self), IX(truncating:  0 as M))
-            Test().same((~0 as M).load(as: IX.self), IX(truncating: ~0 as M))
+            Test().same(( 0 as T).load(as: IX.self), IX(load:  0 as T))
+            Test().same((~0 as T).load(as: IX.self), IX(load: ~0 as T))
+            Test().same(( 0 as M).load(as: IX.self), IX(load:  0 as M))
+            Test().same((~0 as M).load(as: IX.self), IX(load: ~0 as M))
             
-            Test().same(( 0 as T).load(as: UX.self), UX(truncating:  0 as T))
-            Test().same((~0 as T).load(as: UX.self), UX(truncating: ~0 as T))
-            Test().same(( 0 as M).load(as: UX.self), UX(truncating:  0 as M))
-            Test().same((~0 as M).load(as: UX.self), UX(truncating: ~0 as M))
+            Test().same(( 0 as T).load(as: UX.self), UX(load:  0 as T))
+            Test().same((~0 as T).load(as: UX.self), UX(load: ~0 as T))
+            Test().same(( 0 as M).load(as: UX.self), UX(load:  0 as M))
+            Test().same((~0 as M).load(as: UX.self), UX(load: ~0 as M))
         }
         
         for base in bases where base.isSigned {
@@ -230,20 +230,20 @@ extension DoubleIntTests {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             typealias EX = T.Element.Magnitude
             
-            Test().elements(~1 as T, [EX(truncating: ~1 as T)] + Array(repeating: ~0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<EX>.size))
-            Test().elements(~0 as T, [EX(truncating: ~0 as T)] + Array(repeating: ~0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<EX>.size))
-            Test().elements( 0 as T, [EX(truncating:  0 as T)] + Array(repeating:  0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<EX>.size))
-            Test().elements( 1 as T, [EX(truncating:  1 as T)] + Array(repeating:  0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<EX>.size))
+            Test().elements(~1 as T, [EX(load: ~1 as T)] + Array(repeating: ~0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<EX>.size))
+            Test().elements(~0 as T, [EX(load: ~0 as T)] + Array(repeating: ~0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<EX>.size))
+            Test().elements( 0 as T, [EX(load:  0 as T)] + Array(repeating:  0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<EX>.size))
+            Test().elements( 1 as T, [EX(load:  1 as T)] + Array(repeating:  0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<EX>.size))
             
-            Test().elements(~1 as T, [U8(truncating: ~1 as T)] + Array(repeating: ~0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<U8>.size))
-            Test().elements(~0 as T, [U8(truncating: ~0 as T)] + Array(repeating: ~0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<U8>.size))
-            Test().elements( 0 as T, [U8(truncating:  0 as T)] + Array(repeating:  0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<U8>.size))
-            Test().elements( 1 as T, [U8(truncating:  1 as T)] + Array(repeating:  0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<U8>.size))
+            Test().elements(~1 as T, [U8(load: ~1 as T)] + Array(repeating: ~0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<U8>.size))
+            Test().elements(~0 as T, [U8(load: ~0 as T)] + Array(repeating: ~0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<U8>.size))
+            Test().elements( 0 as T, [U8(load:  0 as T)] + Array(repeating:  0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<U8>.size))
+            Test().elements( 1 as T, [U8(load:  1 as T)] + Array(repeating:  0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<U8>.size))
             
-            Test().elements(~1 as T, [UX(truncating: ~1 as T)] + Array(repeating: ~0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<UX>.size))
-            Test().elements(~0 as T, [UX(truncating: ~0 as T)] + Array(repeating: ~0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<UX>.size))
-            Test().elements( 0 as T, [UX(truncating:  0 as T)] + Array(repeating:  0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<UX>.size))
-            Test().elements( 1 as T, [UX(truncating:  1 as T)] + Array(repeating:  0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<UX>.size))
+            Test().elements(~1 as T, [UX(load: ~1 as T)] + Array(repeating: ~0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<UX>.size))
+            Test().elements(~0 as T, [UX(load: ~0 as T)] + Array(repeating: ~0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<UX>.size))
+            Test().elements( 0 as T, [UX(load:  0 as T)] + Array(repeating:  0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<UX>.size))
+            Test().elements( 1 as T, [UX(load:  1 as T)] + Array(repeating:  0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<UX>.size))
         }
 
         for type in types {

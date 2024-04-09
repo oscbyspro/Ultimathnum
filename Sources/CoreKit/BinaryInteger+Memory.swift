@@ -49,9 +49,8 @@ extension BinaryInteger {
     // MARK: Initializeres
     //=------------------------------------------------------------------------=
     
-    #warning("consider init(load:) name")
     #warning("add appropriate fast paths")
-    @inlinable public init<T>(truncating source: consuming T) where T: BinaryInteger {
+    @inlinable public init<T>(load source: consuming T) where T: BinaryInteger {
         self = source.withUnsafeBinaryIntegerMemory {
             var stream = $0.stream()
             return Self(load: &stream)
