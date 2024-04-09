@@ -23,6 +23,6 @@ extension BitExtension {
     
     @inlinable public init<T>(repeating other: consuming BitExtension<T>) {
         let bitCastOrLoad = T.isSigned || UX(bitWidth: Element.self) <= UX(bitWidth: T.self)
-        self.init(unchecked: bitCastOrLoad ? Element.tokenized(bitCastOrLoad: other.element) : Element(repeating: other.bit))
+        self.init(unchecked: bitCastOrLoad ? Element(load: other.element) : Element(repeating: other.bit))
     }
 }

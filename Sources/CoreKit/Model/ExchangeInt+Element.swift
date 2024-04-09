@@ -53,7 +53,7 @@ extension ExchangeInt.Equal where Element == Element.Magnitude {
             return appendix.element
         }
         //=--------------------------------------=
-        return Element.tokenized(bitCastOrLoad: base[base.index(base.startIndex, offsetBy: index)])
+        return Element(load: base[base.index(base.startIndex, offsetBy: index)])
     }
 }
 
@@ -81,7 +81,7 @@ extension ExchangeInt.Minor where Element == Element.Magnitude {
         //=--------------------------------------=
         let major = base[base.index(base.startIndex, offsetBy: quotient)]
         let shift = Base.Element(load: UX(bitPattern: remainder)) &<< Base.Element(load: UX(load: Element.bitWidth.count(.ascending(0))))
-        return Element.tokenized(load: major &>> shift)
+        return Element(load: major &>> shift)
     }
 }
 
@@ -106,7 +106,7 @@ extension ExchangeInt.Major where Element == Element.Magnitude {
         if  minor < base.count {
             var   baseIndex = base.index(base.startIndex, offsetBy: minor)
             while baseIndex < base.endIndex, shift < Element.bitWidth {
-                major = major | Element.tokenized(load: Base.Element.Magnitude(bitPattern: base[baseIndex])) &<< Element(bitPattern: shift)
+                major = major | Element(load: Base.Element.Magnitude(bitPattern: base[baseIndex])) &<< Element(bitPattern: shift)
                 shift = shift + Element.Magnitude(load: UX(bitWidth: Base.Element.self))
                 base.formIndex(after: &baseIndex)
             }
