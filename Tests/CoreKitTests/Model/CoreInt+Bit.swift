@@ -116,7 +116,6 @@ extension CoreIntTests {
         }
     }
     
-    #warning("WIP")
     func testMakeBody() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             Test().elements(~1 as T, [~1 as T.Element.Magnitude])

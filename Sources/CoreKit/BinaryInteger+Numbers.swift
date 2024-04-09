@@ -59,6 +59,7 @@ extension BinaryInteger {
         self = Self.exactly(source).unwrap()
     }
     
+    #warning("TODO")
     @inlinable public static func exactly<T>(_ source: consuming T) -> Fallible<Self> where T: BinaryInteger {
         source.withUnsafeBinaryIntegerMemory {
             Self.exactly(elements: $0, isSigned: T.isSigned)
@@ -72,16 +73,37 @@ extension BinaryInteger {
     /// - TODO: Make the isSigned parameter generic.
     ///
     @inlinable public static func exactly<T>(elements: consuming MemoryInt<T>, isSigned: Bool) -> Fallible<Self> {
-        elements.withMemoryRebound(to: U8.self) {
-            let appendix = $0.appendix
-            var (stream) = $0.stream()
-            let instance = Self(load: &stream)
+        //=--------------------------------------=
+        func validate<U>(
+            _ instance: consuming Self,
+            _ stream: inout MemoryInt<U>.Iterator
+        )   -> Fallible<Self> {
             
-            let success = (instance.appendix == appendix)
-            && (Self.isSigned == isSigned || appendix == Bit.zero)
-            && stream.normalized().body.count == IX.zero
+            let appendix: Bit = stream.appendix
             
-            return instance.combine(!success)
+            let success = Bit(instance.appendix == appendix)
+            & Bit(Self.isSigned == isSigned || appendix == Bit.zero)
+            & Bit(stream.normalized().body.count == IX.zero)
+            
+            return instance.combine(!Bool(success))
+        }
+        //=--------------------------------------=
+        if  T.memoryCanBeRebound(to: Self.Element.Magnitude.self) {
+            
+            return  elements.withMemoryRebound(to: Self.Element.Magnitude.self) {
+                var (stream) = $0.stream()
+                let instance = Self(load: &stream)
+                return validate(instance, &stream)
+            }
+            
+        }   else {
+            
+            return  elements.withMemoryRebound(to: U8.self) {
+                var (stream) = $0.stream()
+                let instance = Self(load: &stream)
+                return validate(instance, &stream)
+            }
+            
         }
     }
     
