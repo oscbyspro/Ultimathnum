@@ -24,7 +24,7 @@ extension BinaryInteger {
     @inlinable public consuming func advanced<T>(by distance: T) -> Fallible<Self> where T: SignedInteger {
         if  Self.isSigned {
             
-            if  ExchangeInt(Self.bitWidth) < ExchangeInt(T.bitWidth) {
+            if  compare(Self.bitWidth, to: T.bitWidth) == Signum.less {
                 
                 return T(truncating: self).plus(distance).map(Self.exactly)
                 
@@ -57,7 +57,10 @@ extension BinaryInteger {
     }
     
     @inlinable package consuming func distance<T>(to other: Self, as type: T.Type = T.self) -> Fallible<T> where T: SignedInteger {
-        if  ExchangeInt(Self.bitWidth) < ExchangeInt(T.bitWidth) {
+        //=--------------------------------------=
+        // TODO: better comparison
+        //=--------------------------------------=
+        if  compare(Self.bitWidth, to: T.bitWidth) == Signum.less {
             
             return T(truncating: other).minus(T(truncating: self))
         
@@ -68,10 +71,9 @@ extension BinaryInteger {
             
         }   else {
             
-            let distance = other.minus(self)
-            let elements = ExchangeInt(distance.value.body, repeating: Bit(distance.error), as: T.Body.Element.self)
-            return T.exactly(elements: elements, isSigned:  true)
-            
+            let distance = Fallible<Signitude>(bitPattern: other.minus(self))
+            let superoverflow = distance.value.isLessThanZero != distance.error
+            return T.exactly(distance.value).combine(superoverflow)
         }
     }
 }

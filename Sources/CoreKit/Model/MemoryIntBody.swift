@@ -11,7 +11,7 @@
 // MARK: * Memory Int Body
 //*========================================================================*
 
-@frozen public struct MemoryIntBody<Element> where Element: SystemsInteger {
+@frozen public struct MemoryIntBody<Element> where Element: SystemsInteger & UnsignedInteger {
     
     public typealias Element = Element
     
@@ -19,20 +19,43 @@
     // MARK: State
     //=--------------------------------------------------------------------=
     
-    public let start: UnsafePointer<Element>
-    public let count: IX
+    public var _start: UnsafePointer<Element>
+    public var _count: IX
     
     //=--------------------------------------------------------------------=
     // MARK: Initializers
     //=--------------------------------------------------------------------=
     
     @inlinable public init(_ start: UnsafePointer<Element>, count: IX) {
-        self.start = start
-        self.count = count
+        self._start = start
+        self._count = count
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var start: UnsafePointer<Element> {
+        self._start
+    }
+    
+    @inlinable public var count: IX {
+        self._count
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public subscript(unchecked index: IX) -> Element {
+        //=--------------------------------------=
+        Swift.assert(index < self.count, String.indexOutOfBounds())
+        //=--------------------------------------=
+        return self.start[Int(index)]
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
     @inlinable public borrowing func withMemoryRebound<OtherElement, Value>(
@@ -48,10 +71,6 @@
             try action(MemoryIntBody<OtherElement>($0, count: count))
         }
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
     
     /// ### Development
     ///

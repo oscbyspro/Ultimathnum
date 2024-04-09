@@ -28,6 +28,6 @@ extension InfiniInt {
     }
     
     @inlinable public func compared(to other: Self) -> Signum {
-        ExchangeInt(self).compared(to: ExchangeInt(other))
+        fatalError("TODO")        
     }
 }

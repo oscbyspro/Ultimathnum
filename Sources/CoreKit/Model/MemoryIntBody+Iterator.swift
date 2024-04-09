@@ -35,22 +35,37 @@ extension MemoryIntBody {
         // MARK: Transformations
         //=--------------------------------------------------------------------=
         
+        @inlinable public mutating func next() -> Element? {
+            if  self._count > 0 {
+                let pointee = self._start.pointee
+                self._count = self._count - 1
+                self._start = self._start.successor()
+                return pointee
+            }   else {
+                return nil
+            }
+        }
+        
+        @inlinable public mutating func load<T>(unchecked type: T.Type) -> T where T: SystemsInteger {
+            //=--------------------------------------=
+            Swift.assert(self.count >= IX(MemoryLayout<T>.size), String.indexOutOfBounds())
+            //=--------------------------------------=
+            let address  = UnsafeRawPointer(self.start)
+            self._start +=   (MemoryLayout<T>.size)
+            self._count -= IX(MemoryLayout<T>.size)
+            return address.loadUnaligned(as: T.self)
+        }
+        
+        //=------------------------------------------------------------------------=
+        // MARK: Utilities
+        //=------------------------------------------------------------------------=
+        
         @inlinable public var start: UnsafePointer<Element> {
             self._start
         }
         
         @inlinable public var count: IX {
             self._count
-        }
-        
-        @inlinable public mutating func next() -> Element? {
-            if  self._count > 0 {
-                self._count = self._count - 1
-                self._start = self._start.successor()
-                return self._start.pointee
-            }   else {
-                return nil
-            }
         }
     }
 }

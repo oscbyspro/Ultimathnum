@@ -185,20 +185,20 @@ extension DoubleIntTests {
         }
     }
     
-    func testInitElements() {
+    func testInitBody() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             typealias F = Fallible<T>
             
             let count = MemoryLayout<T>.size / MemoryLayout<T.Element>.stride
             for isSigned in [true, false] {
-                Test().elements(Array(ExchangeInt( T.min).bitPattern.source()), isSigned, F( T.min, error: !isSigned))
-                Test().elements(Array(ExchangeInt( T.max).bitPattern.source()), isSigned, F( T.max))
+                Test().elements(( T.min).body(), isSigned, F( T.min, error: !isSigned))
+                Test().elements(( T.max).body(), isSigned, F( T.max))
                 
-                Test().elements(Array(ExchangeInt( M.min).bitPattern.source()), isSigned, F( T( 0)))
-                Test().elements(Array(ExchangeInt( M.max).bitPattern.source()), isSigned, F( T(-1), error: !isSigned))
-                Test().elements(Array(ExchangeInt( M.msb).bitPattern.source()), isSigned, F( T.min, error: !isSigned))
-                Test().elements(Array(ExchangeInt(~M.msb).bitPattern.source()), isSigned, F(~T.msb))
+                Test().elements(( M.min).body(), isSigned, F( T( 0)))
+                Test().elements(( M.max).body(), isSigned, F( T(-1), error: !isSigned))
+                Test().elements(( M.msb).body(), isSigned, F( T.min, error: !isSigned))
+                Test().elements((~M.msb).body(), isSigned, F(~T.msb))
                 
                 Test().elements(Array(repeating:  0 as T.Element.Magnitude, count: 1 + count), isSigned, F( 0 as T))
                 Test().elements(Array(repeating: ~0 as T.Element.Magnitude, count: 1 + count), isSigned, F(~0 as T, error: !isSigned))
@@ -211,10 +211,10 @@ extension DoubleIntTests {
             
             let count = MemoryLayout<T>.size / MemoryLayout<T.Element>.stride
             for isSigned in [true, false] {
-                Test().elements(Array(ExchangeInt( M.min).bitPattern.source()), isSigned, F( T( 0)))
-                Test().elements(Array(ExchangeInt( M.max).bitPattern.source()), isSigned, F( T.max, error: isSigned))
-                Test().elements(Array(ExchangeInt( M.msb).bitPattern.source()), isSigned, F( T.msb, error: isSigned))
-                Test().elements(Array(ExchangeInt(~M.msb).bitPattern.source()), isSigned, F(~T.msb))
+                Test().elements(( M.min).body(), isSigned, F( T( 0)))
+                Test().elements(( M.max).body(), isSigned, F( T.max, error: isSigned))
+                Test().elements(( M.msb).body(), isSigned, F( T.msb, error: isSigned))
+                Test().elements((~M.msb).body(), isSigned, F(~T.msb))
                 
                 Test().elements(Array(repeating:  0 as T.Element.Magnitude, count: 1 + count), isSigned, F( 0 as T))
                 Test().elements(Array(repeating: ~0 as T.Element.Magnitude, count: 1 + count), isSigned, F(~0 as T, error: true))
@@ -226,7 +226,7 @@ extension DoubleIntTests {
         }
     }
     
-    func testMakeElements() {
+    func testMakeBody() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             typealias EX = T.Element.Magnitude
             

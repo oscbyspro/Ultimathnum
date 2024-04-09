@@ -12,9 +12,7 @@
 //*============================================================================*
 
 @frozen public struct CoreInt<Base: BaseInteger>: SystemsInteger {
-    
-    public typealias Body = CollectionOfOne<Magnitude>
-    
+        
     public typealias Element = Self
     
     public typealias Magnitude = CoreInt<Base.Magnitude>

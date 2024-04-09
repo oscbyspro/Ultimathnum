@@ -13,7 +13,6 @@
 
 extension BinaryInteger {
     
-    #warning("what about these?")
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
@@ -23,6 +22,8 @@ extension BinaryInteger {
     }
     
     @inlinable public static func exactly(_ source: consuming BigIntLiteral) -> Fallible<Self> {
-        Self.exactly(elements: ExchangeInt(source), isSigned: true)
+        source.withUnsafeBinaryIntegerElements {
+            Self.exactly(elements: $0, isSigned: true)
+        }
     }
 }

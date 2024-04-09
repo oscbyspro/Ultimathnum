@@ -40,24 +40,24 @@ extension Test {
     }
     
     public func elements<Integer, Element>(
-        _ integer: Integer, 
+        _ integer: Integer,
         _ expectation: [Element]
     )   where Integer: BinaryInteger, Element: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
-        let elements = ExchangeInt(integer, as: Element.self).source()
-        //=--------------------------------------=
-        raw(elements.elementsEqual(expectation), "\(integer).elements -> \(Array(elements))")
-        self.elements(Array(elements), Integer.isSigned, Fallible(integer))
+        integer.withUnsafeBinaryIntegerBody {
+            let body = UnsafeBufferPointer(start: $0.start, count: Int($0.count))
+            let chunks = Array(ExchangeInt(body, isSigned: Integer.isSigned, as: Element.self).source())
+            self.pure(chunks.elementsEqual(expectation), "\(Array(body)).body -> \(chunks)")
+            self.elements(chunks, Integer.isSigned, Fallible(integer))
+        }
     }
     
-    public func elements<Integer: BinaryInteger, Element: SystemsInteger & UnsignedInteger>(
-        _ elements: [Element], 
-        _ isSigned: Bool, 
+    public func elements<Integer, Element>(
+        _ body: [Element],
+        _ isSigned: Bool,
         _ expectation: Fallible<Integer>
     )   where Integer: BinaryInteger, Element: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
-        let elements = ExchangeInt(elements, isSigned: isSigned, as: Integer.Element.Magnitude.self)
-        //=--------------------------------------=
-        same(Integer.exactly(elements: elements, isSigned: isSigned), expectation)
+        same(Integer.exactly(body: body, isSigned: isSigned), expectation, "Integer.exactly(body:isSigned:)")
     }
 }

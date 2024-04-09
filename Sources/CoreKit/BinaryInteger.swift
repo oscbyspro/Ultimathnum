@@ -32,9 +32,7 @@ ExpressibleByIntegerLiteral, Hashable, Sendable, Strideable, _MaybeLosslessStrin
 Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Magnitude.Signitude == Signitude,
 Signitude.BitPattern == BitPattern, Signitude.Element == Element.Signitude, Signitude.Magnitude == Magnitude,
 Stride == Swift.Int {
-    
-    associatedtype Body: RandomAccessCollection<Element.Magnitude>
-    
+        
     associatedtype Element: SystemsInteger where Element.Element == Element
         
     associatedtype Magnitude: UnsignedInteger where Magnitude.Magnitude == Magnitude
@@ -95,11 +93,7 @@ Stride == Swift.Int {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    #warning("new")
     @inlinable init(load source: inout MemoryInt<I8.Magnitude>.Iterator)
-    
-    #warning("old")
-    @inlinable init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream)
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -207,11 +201,7 @@ Stride == Swift.Int {
     ///
     @inlinable var appendix: Bit { get }
     
-    #warning("new")
     @inlinable borrowing func withUnsafeBinaryIntegerBody<T>(_ action: (MemoryIntBody<Element.Magnitude>) throws -> T) rethrows -> T
-
-    #warning("old")
-    @inlinable var body: Body { get }
     
     @inlinable borrowing func compared(to other: borrowing Self) -> Signum
     

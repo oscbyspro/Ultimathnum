@@ -32,8 +32,6 @@ extension Test {
             "\(T.self) must be at least as wide as \(T.Element.self)"
         )
         //=--------------------------------------=
-        same(MemoryLayout<T>.self, MemoryLayout<T.Body>.self)
-        //=--------------------------------------=
         invariants(type, BinaryIntegerID())
     }
     

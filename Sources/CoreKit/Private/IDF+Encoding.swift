@@ -39,10 +39,13 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func encode(_ integer: some BinaryInteger) -> String {
+    @inlinable public func encode<T: BinaryInteger>(_ integer: T) -> String {
         let sign = Sign(bitPattern: integer.isLessThanZero)
-        let magnitude = ExchangeInt(integer.magnitude(), as: UX.self).source()
-        return self.encode(sign: sign, magnitude: magnitude)
+        return integer.magnitude().withUnsafeBinaryIntegerBody {
+            let body = UnsafeBufferPointer(start: $0.start, count: Int($0.count))
+            let magnitude = ExchangeInt(body, repeating: Bit.zero, as: UX.self).source()
+            return self.encode(sign: sign, magnitude: magnitude)
+        }
     }
     
     @inlinable public func encode(sign: Sign, magnitude: some Collection<UX>) -> String {

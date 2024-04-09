@@ -8,20 +8,16 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Exchange Int x Numbers
+// MARK: * Comparison
 //*============================================================================*
 
-extension ExchangeInt {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(_ source: Base) where Base == BigIntLiteral, Element == IX {
-        self.init(source, as: Element.self)
-    }
-    
-    @inlinable public init(_ source: Base, as element: Element.Type = Element.self) where Base == BigIntLiteral {
-        self.init(source, repeating: source.appendix)
+@inlinable public func compare<LHS, RHS>(_ lhs: LHS, to rhs: RHS) -> Signum where LHS: BinaryInteger, RHS: BinaryInteger {
+    lhs.withUnsafeBinaryIntegerData { lhs in
+        rhs.withUnsafeBinaryIntegerData { rhs in
+            MemoryInt.compare(
+                lhs: lhs, lhsIsSigned: LHS.isSigned,
+                rhs: rhs, rhsIsSigned: RHS.isSigned
+            )
+        }
     }
 }

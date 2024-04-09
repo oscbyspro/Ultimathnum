@@ -7,25 +7,21 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Test x Bool
+// MARK: * Body
 //*============================================================================*
 
-extension Test {
+extension BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func pure(_ instance: Bool, _ message: @autoclosure () -> String = "") {
-        XCTAssert(instance, message(), file: file, line: line)
-    }
-    
-    public func yay(_ instance: Bool, _ message: @autoclosure () -> String = "") {
-        XCTAssertTrue (instance, message(), file: file, line: line)
-    }
-    
-    public func nay(_ instance: Bool, _ message: @autoclosure () -> String = "") {
-        XCTAssertFalse(instance, message(), file: file, line: line)
+    public func body() -> Array<Element.Magnitude> {
+        self.withUnsafeBinaryIntegerBody {
+            Array(UnsafeBufferPointer(start: $0.start, count: Int($0.count)))
+        }
     }
 }

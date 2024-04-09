@@ -52,6 +52,25 @@
     @inlinable public subscript(index: Int) -> UX {
         UX(self.base[index])
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public func withUnsafeBinaryIntegerBody<T>(_ action: (MemoryIntBody<UX>) throws -> T) rethrows -> T {
+        try Array(self).withUnsafeBufferPointer {
+            try action(MemoryIntBody($0.baseAddress!, count: IX($0.count)))
+        }
+    }
+    
+    @inlinable public func withUnsafeBinaryIntegerElements<T>(_ action: (MemoryInt<UX>) throws -> T) rethrows -> T {
+        //=--------------------------------------=
+        let appendix = self.appendix
+        //=--------------------------------------=
+        return try self.withUnsafeBinaryIntegerBody {
+            try action(MemoryInt($0, repeating: appendix))
+        }
+    }
 }
 
 //=----------------------------------------------------------------------------=

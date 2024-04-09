@@ -68,26 +68,24 @@ extension CoreInt {
         let stride = IX(MemoryLayout<Self>.stride)
         if  source.body.count >= stride {
             
-            #warning("move to source")
-            self = UnsafeRawPointer(source.body.start).loadUnaligned(as: Self.self)
-            source.body._count -= stride
+            self = source.body.load(unchecked: Self.self)
             
         }   else {
             //=----------------------------------=
             // TODO: better performance
             //=----------------------------------=
             self.init(repeating: source.appendix)
-            
-            while let byte = source.body.next() {
-                let  chunk = Self(Base(truncatingIfNeeded: UInt8(byte)))
-                self ^= Bool(source.appendix) ? ~chunk : chunk
+                        
+            Swift.withUnsafeMutablePointer(to: &self) {
+                $0.withMemoryRebound(to: U8.self, capacity: MemoryLayout<Self>.size) {
+                    var address = consume $0
+                    while let byte = source.body.next() {
+                        address.pointee = byte
+                        address = address.successor()
+                    }
+                }
             }
         }
-    }
-
-    #warning("old")
-    @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
-        self.init(load: source.next())
     }
     
     //=------------------------------------------------------------------------=
@@ -98,7 +96,6 @@ extension CoreInt {
         Bit(Self.isSigned && self < 0)
     }
 
-    #warning("new")
     @inlinable public borrowing func withUnsafeBinaryIntegerBody<T>(
         _ action: (MemoryIntBody<Element.Magnitude>) throws -> T
     )   rethrows -> T {
@@ -108,11 +105,6 @@ extension CoreInt {
                 try action(MemoryIntBody($0, count: 1))
             }
         }
-    }
-    
-    #warning("old")
-    @inlinable public var body: CollectionOfOne<Magnitude> {
-        CollectionOfOne(Magnitude(bitPattern: self))
     }
     
     @inlinable public func count(_ bit: Bit, where selection: BitSelection) -> Magnitude {

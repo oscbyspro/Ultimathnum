@@ -65,19 +65,8 @@ extension InfiniInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    #warning("new")
     @inlinable public init(load source: inout MemoryInt<I8.Magnitude>.Iterator) {
         fatalError("TODO")
-    }
-
-    #warning("old")
-    @inlinable public init<T>(load source: inout ExchangeInt<T, Element>.BitPattern.Stream) {
-        let appendix = source.appendix
-        let base = InfiniInt.Storage.Base(source.succinct())
-        //=--------------------------------------=
-        source.consume()
-        //=--------------------------------------=
-        self.init(unchecked: InfiniInt.Storage(base, repeating: appendix))
     }
     
     //=------------------------------------------------------------------------=
@@ -88,7 +77,6 @@ extension InfiniInt {
         self.storage.appendix.bit
     }
     
-    #warning("new")
     @inlinable public borrowing func withUnsafeBinaryIntegerBody<T>(
         _ action: (MemoryIntBody<Element.Magnitude>) throws -> T
     )   rethrows -> T {
@@ -96,11 +84,6 @@ extension InfiniInt {
         try self.storage.base.withUnsafeBufferPointer {
             try action(MemoryIntBody($0.baseAddress!, count: IX($0.count)))
         }
-    }
-    
-    #warning("old")
-    @inlinable public var body: ContiguousArray<Element.Magnitude> {
-        self.storage.base
     }
     
     @inlinable public borrowing func count(_ bit: Bit, where selection: BitSelection) -> Magnitude {

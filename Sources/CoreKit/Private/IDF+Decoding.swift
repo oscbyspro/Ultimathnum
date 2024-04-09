@@ -164,7 +164,9 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
             
             Swift.assert(digits.isEmpty)
             Swift.assert(index == words.endIndex)
-            return try Magnitude.exactly(elements: ExchangeInt(words, repeating: Bit.zero), isSigned: false).get()
+                        
+            let elements = MemoryInt(MemoryIntBody(words.baseAddress!, count: IX(words.count)), repeating: Bit.zero)
+            return try Magnitude.exactly(elements: elements, isSigned: false).get()
         }
     }
 }
