@@ -37,3 +37,110 @@ extension BinaryInteger {
         Self.isSigned && Bool(self.appendix)
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Generic
+//=----------------------------------------------------------------------------=
+
+extension BinaryInteger {
+    
+    #warning("TEST")
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func ==<Other>(lhs: Self, rhs: Other) -> Bool where Other: BinaryInteger {
+        lhs.compared(to: rhs) == Signum.same
+    }
+    
+    @inlinable public static func !=<Other>(lhs: Self, rhs: Other) -> Bool where Other: BinaryInteger  {
+        lhs.compared(to: rhs) != Signum.same
+    }
+    
+    @inlinable public static func < <Other>(lhs: Self, rhs: Other) -> Bool where Other: BinaryInteger {
+        lhs.compared(to: rhs) == Signum.less
+    }
+    
+    @inlinable public static func >=<Other>(lhs: Self, rhs: Other) -> Bool where Other: BinaryInteger  {
+        lhs.compared(to: rhs) != Signum.less
+    }
+    
+    @inlinable public static func > <Other>(lhs: Self, rhs: Other) -> Bool where Other: BinaryInteger  {
+        lhs.compared(to: rhs) == Signum.more
+    }
+    
+    @inlinable public static func <=<Other>(lhs: Self, rhs: Other) -> Bool where Other: BinaryInteger  {
+        lhs.compared(to: rhs) != Signum.more
+    }
+    
+    #warning("TEST")
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public func compared<Other>(to other: Other) -> Signum where Other: BinaryInteger {
+        if !Self.bitWidth.isInfinite, !Other.bitWidth.isInfinite {
+            
+            switch UX(load: Self.bitWidth).compared(to: UX(load: Other.bitWidth)) {
+            case Signum.same:
+                
+                if  Self.isSigned == Other.isSigned {
+                    
+                    return self.compared(to: Self(load: other))
+                    
+                }   else if self.isLessThanZero {
+                    
+                    return Signum.less
+                    
+                }   else if other.isLessThanZero {
+                    
+                    return Signum.more
+                    
+                }   else {
+                    
+                    return self.compared(to: Self(load: other))
+                    
+                }
+                
+            case Signum.less:
+                
+                return Other(load: self).compared(to: other)
+                
+            case Signum.more:
+                
+                return self.compared(to: Self(load: other))
+                
+            }
+            
+        }   else {
+            
+            if  Other.Element.Magnitude.memoryCanBeRebound(to: Self.Element.Magnitude.self) {
+                
+                return self.withUnsafeBinaryIntegerMemory { lhs in
+                    other.withUnsafeBinaryIntegerMemoryAs(unchecked: Self.Element.Magnitude.self) { rhs in
+                        MemoryInt.compare(
+                            lhs: lhs, lhsIsSigned: Self.isSigned,
+                            rhs: rhs, rhsIsSigned: Other.isSigned
+                        )
+                    }
+                }
+                
+            }   else if Self.Element.Magnitude.memoryCanBeRebound(to:  Other.Element.Magnitude.self) {
+                
+                return self.withUnsafeBinaryIntegerMemoryAs(unchecked: Other.Element.Magnitude.self) { lhs in
+                    other.withUnsafeBinaryIntegerMemory { rhs in
+                        MemoryInt.compare(
+                            lhs: lhs, lhsIsSigned: Self.isSigned,
+                            rhs: rhs, rhsIsSigned: Other.isSigned
+                        )
+                    }
+                }
+                
+            }   else {
+                
+                Swift.fatalError(String.unreachable())
+                
+            }
+        }
+    }
+}

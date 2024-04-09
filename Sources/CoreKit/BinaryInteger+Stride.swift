@@ -21,12 +21,15 @@ extension BinaryInteger {
         self.advanced(by: IX(other)).unwrap()
     }
     
-    @inlinable public consuming func advanced<T>(by distance: T) -> Fallible<Self> where T: SignedInteger {
+    @inlinable public consuming func advanced<Other>(
+        by distance: Other
+    )   -> Fallible<Self> where Other: SignedInteger {
+        
         if  Self.isSigned {
             
-            if  compare(Self.bitWidth, to: T.bitWidth) == Signum.less {
+            if  Self.bitWidth < Other.bitWidth {
                 
-                return T(load: self).plus(distance).map(Self.exactly)
+                return Other(load: self).plus(distance).map(Self.exactly)
                 
             }   else {
                 
@@ -38,11 +41,11 @@ extension BinaryInteger {
             
             if  distance.isLessThanZero {
                 
-                return self.minus(Self.exactly(T.Magnitude(bitPattern: distance.complement())))
+                return self.minus(Self.exactly(Other.Magnitude(bitPattern: distance.complement())))
                 
             }   else {
                 
-                return self.plus (Self.exactly(T.Magnitude(bitPattern: distance)))
+                return self.plus (Self.exactly(Other.Magnitude(bitPattern: distance)))
                 
             }
         }
@@ -56,23 +59,25 @@ extension BinaryInteger {
         Int(self.distance(to: other, as: IX.self).unwrap())
     }
     
-    @inlinable package consuming func distance<T>(to other: Self, as type: T.Type = T.self) -> Fallible<T> where T: SignedInteger {
-        #warning("better comparison")
+    @inlinable package consuming func distance<Other>(
+        to other: Self,
+        as type: Other.Type = Other.self
+    )   -> Fallible<Other> where Other: SignedInteger {
         
-        if  compare(Self.bitWidth, to: T.bitWidth) == Signum.less {
+        if  Self.bitWidth < Other.bitWidth {
             
-            return T(load: other).minus(T(load: self))
+            return Other(load: other).minus(Other(load: self))
         
             
         }   else if Self.isSigned {
             
-            return other.minus(self).map(T.exactly)
+            return other.minus(self).map(Other.exactly)
             
         }   else {
             
             let distance = Fallible<Signitude>(bitPattern: other.minus(self))
             let superoverflow = distance.value.isLessThanZero != distance.error
-            return T.exactly(distance.value).combine(superoverflow)
+            return Other.exactly(distance.value).combine(superoverflow)
             
         }
     }
