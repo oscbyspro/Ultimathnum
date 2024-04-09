@@ -47,6 +47,14 @@ extension MemoryInt {
         // MARK: Transformations
         //=--------------------------------------------------------------------=
         
+        @inlinable public mutating func next() -> Element {
+            if  let element = self.body.next() {
+                return element
+            }   else {
+                return Element(repeating: self.appendix)
+            }
+        }
+        
         @inlinable public consuming func normalized() -> Self {
             let appendix = Element(repeating: self.appendix)
             

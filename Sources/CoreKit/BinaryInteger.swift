@@ -95,6 +95,8 @@ Stride == Swift.Int {
     
     @inlinable init(load source: inout MemoryInt<I8.Magnitude>.Iterator)
     
+    @inlinable init(load source: inout MemoryInt<Element.Magnitude>.Iterator)
+    
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=

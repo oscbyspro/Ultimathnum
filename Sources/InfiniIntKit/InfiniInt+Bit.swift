@@ -16,56 +16,10 @@ import CoreKit
 extension InfiniInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: consuming Magnitude) {
-        self.init(unchecked: bitPattern.storage)
-    }
-    
-    @inlinable public var bitPattern: Magnitude {
-        consuming get {
-            Magnitude(unchecked: self.storage)
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(load source: consuming  UX.Signitude) {
-        fatalError("TODO")
-    }
-        
-    @inlinable public init(load source: consuming  UX.Magnitude) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public borrowing func load(as type: UX.BitPattern.Type) -> UX.BitPattern {
-        fatalError("TODO")
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(load source: consuming  Element.Signitude) {
-        fatalError("TODO")
-    }
-        
-    @inlinable public init(load source: consuming  Element.Magnitude) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public borrowing func load(as type: Element.BitPattern.Type) -> Element.BitPattern {
-        fatalError("TODO")
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(load source: inout MemoryInt<I8.Magnitude>.Iterator) {
+    @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
         fatalError("TODO")
     }
     
@@ -73,24 +27,7 @@ extension InfiniInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public var appendix: Bit {
-        self.storage.appendix.bit
-    }
-    
-    @inlinable public borrowing func withUnsafeBinaryIntegerBody<T>(
-        _ action: (MemoryIntBody<Element.Magnitude>) throws -> T
-    )   rethrows -> T {
-        
-        try self.storage.base.withUnsafeBufferPointer {
-            try action(MemoryIntBody($0.baseAddress!, count: IX($0.count)))
-        }
-    }
-    
     @inlinable public borrowing func count(_ bit: Bit, where selection: BitSelection) -> Magnitude {
-        fatalError("TODO")
-    }
-    
-    @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
         fatalError("TODO")
     }
 }

@@ -17,15 +17,19 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// ### Development
-    ///
-    /// - TODO: Maybe add a fast path when T.bitWidth >= Self   .bitWidth.
-    /// - TODO: Maybe add a fast path when T.bitWidth >= Element.bitWidth.
-    ///
-    @inlinable public init<T>(load source: consuming MemoryInt<T>) {
-        self = source.withMemoryRebound(to: U8.self) {
-            var stream = $0.stream()
-            return Self.init(load: &stream)
+    @inlinable public init<OtherElement>(load source: consuming MemoryInt<OtherElement>) {
+        if  MemoryIntBody<OtherElement>.memoryCanBeRebound(to: Self.Element.Magnitude.self) {
+            
+            self = source.withMemoryRebound(to: Self.Element.Magnitude.self) {
+                var stream = $0.stream(); return Self.init(load: &stream)
+            }
+            
+        }   else {
+            
+            self = source.withMemoryRebound(to: I8.Magnitude.self) {
+                var stream = $0.stream(); return Self.init(load: &stream)
+            }
+            
         }
     }
     
