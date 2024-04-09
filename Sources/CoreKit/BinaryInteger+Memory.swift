@@ -18,7 +18,7 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public init<OtherElement>(load source: consuming MemoryInt<OtherElement>) {
-        if  MemoryIntBody<OtherElement>.memoryCanBeRebound(to: Self.Element.Magnitude.self) {
+        if  OtherElement.memoryCanBeRebound(to: Self.Element.Magnitude.self) {
             
             self = source.withMemoryRebound(to: Self.Element.Magnitude.self) {
                 var stream = $0.stream(); return Self.init(load: &stream)

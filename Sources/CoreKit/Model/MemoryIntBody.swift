@@ -67,23 +67,12 @@
         perform action: (MemoryIntBody<OtherElement>) throws -> Value
     )   rethrows -> Value {
         //=--------------------------------------=
-        precondition(Self.memoryCanBeRebound(to: OtherElement.self))
+        precondition(Self.Element.memoryCanBeRebound(to: OtherElement.self))
         //=--------------------------------------=
         let ratio = IX(MemoryLayout<Self.Element>.stride / MemoryLayout<OtherElement>.stride)
         let count = self.count * ratio
         return try  self.start.withMemoryRebound(to: OtherElement.self, capacity: Int(count)) {
             try action(MemoryIntBody<OtherElement>($0, count: count))
         }
-    }
-    
-    /// ### Development
-    ///
-    /// - TODO: Move this to SystemsInteger, maybe.
-    ///
-    @inlinable package static func memoryCanBeRebound<OtherElement>(to type: OtherElement.Type) -> Bool where OtherElement: SystemsInteger {
-        let size      = MemoryLayout<Self.Element>.size      % MemoryLayout<OtherElement>.size      == 0
-        let stride    = MemoryLayout<Self.Element>.stride    % MemoryLayout<OtherElement>.stride    == 0
-        let alignment = MemoryLayout<Self.Element>.alignment % MemoryLayout<OtherElement>.alignment == 0
-        return Bool(Bit(size) & Bit(stride) & Bit(alignment))
     }
 }

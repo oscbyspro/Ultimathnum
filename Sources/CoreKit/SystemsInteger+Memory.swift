@@ -24,4 +24,17 @@ extension SystemsInteger {
     @inlinable public init<T>(load source: borrowing T) where T: BinaryInteger, BitPattern == T.Element.BitPattern {
         self = source.load(as: Self.self)
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public  static func memoryCanBeRebound<Other>(to type: Other.Type) -> Bool where Other: SystemsInteger {
+        //=--------------------------------------=
+        let size      = MemoryLayout<Self>.size      % MemoryLayout<Other>.size      == 0
+        let stride    = MemoryLayout<Self>.stride    % MemoryLayout<Other>.stride    == 0
+        let alignment = MemoryLayout<Self>.alignment % MemoryLayout<Other>.alignment == 0
+        //=--------------------------------------=
+        return Bool(Bit(size) & Bit(stride) & Bit(alignment))
+    }
 }
