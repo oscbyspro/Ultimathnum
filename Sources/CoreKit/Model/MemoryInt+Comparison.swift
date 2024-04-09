@@ -27,8 +27,7 @@ extension MemoryInt {
         //=--------------------------------------=
         // comparison: succinct count
         //=--------------------------------------=
-        let body = UnsafeBufferPointer(start: instance.body.start, count: Int(instance.body.count))
-        return Signum(Bit(!body.allSatisfy({ $0 == 0 })))
+        return Signum(Bit(!instance.body.buffer().allSatisfy({ $0 == 0 })))
     }
     
     @inlinable package static func compare(

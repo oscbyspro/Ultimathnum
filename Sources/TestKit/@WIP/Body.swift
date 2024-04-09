@@ -21,7 +21,7 @@ extension BinaryInteger {
     
     public func body() -> Array<Element.Magnitude> {
         self.withUnsafeBinaryIntegerBody {
-            Array(UnsafeBufferPointer(start: $0.start, count: Int($0.count)))
+            Array($0.buffer())
         }
     }
 }

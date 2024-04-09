@@ -45,7 +45,7 @@ extension Test {
     )   where Integer: BinaryInteger, Element: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
         integer.withUnsafeBinaryIntegerBody {
-            let body = UnsafeBufferPointer(start: $0.start, count: Int($0.count))
+            let body = $0.buffer()
             let chunks = Array(ExchangeInt(body, isSigned: Integer.isSigned, as: Element.self).source())
             self.pure(chunks.elementsEqual(expectation), "\(Array(body)).body -> \(chunks)")
             self.elements(chunks, Integer.isSigned, Fallible(integer))

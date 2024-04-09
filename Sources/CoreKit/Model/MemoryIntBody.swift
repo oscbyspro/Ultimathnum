@@ -58,6 +58,10 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    @inlinable public consuming func buffer() -> UnsafeBufferPointer<Element> {
+        UnsafeBufferPointer(start: self.start, count: Int(self.count))
+    }
+    
     @inlinable public borrowing func withMemoryRebound<OtherElement, Value>(
         to type: OtherElement.Type,
         perform action: (MemoryIntBody<OtherElement>) throws -> Value
