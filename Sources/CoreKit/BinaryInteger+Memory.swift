@@ -92,7 +92,6 @@ extension BinaryInteger {
         }
     }
     
-    #warning("TODO")
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
@@ -108,42 +107,49 @@ extension BinaryInteger {
         }
     }
     
-    @inlinable public func withUnsafeBinaryIntegerMemoryAsBytes<T>(
-        perform action: (MemoryInt<U8>) throws -> T
-    )   rethrows -> T {
+    @inlinable public func withUnsafeBinaryIntegerMemoryAsBytes<Value>(
+        perform action: (MemoryInt<U8>) throws -> Value
+    )   rethrows -> Value {
         
         try self.withUnsafeBinaryIntegerMemory(as: U8.self, perform: action)!
     }
     
-    @inlinable public func withUnsafeBinaryIntegerMemory<OtherElement, Value>(
-        as type: OtherElement.Type,
-        perform action: (MemoryInt<OtherElement>) throws -> Value
+    @inlinable public func withUnsafeBinaryIntegerMemory<Destination, Value>(
+        as type: Destination.Type,
+        perform action: (MemoryInt<Destination>) throws -> Value
     )   rethrows -> Optional<Value> {
         
-        if  Self.Element.Magnitude.memoryCanBeRebound(to: OtherElement.self) {
+        if  Self.memoryCanBeRebound(to: Destination.self) {
             
             return try self.withUnsafeBinaryIntegerMemory {
-                try $0.withMemoryRebound(to: OtherElement.self, perform: action)
+                try $0.withMemoryRebound(to: Destination.self, perform: action)
             }
         
-        }   else if !Self.bitWidth.isInfinite, UX(load: Self.bitWidth) <= UX(bitWidth: OtherElement.self) {
+        }   else if !Self.bitWidth.isInfinite, UX(load: Self.bitWidth) <= UX(bitWidth: Destination.self) {
             
             if  Self.isSigned {
-                return try OtherElement(load: self).withUnsafeBinaryIntegerMemory(perform: action)
+                return try Destination(load: self).withUnsafeBinaryIntegerMemory(perform: action)
             }   else {
-                return try OtherElement(load: self).withUnsafeBinaryIntegerMemory(perform: action)
+                return try Destination(load: self).withUnsafeBinaryIntegerMemory(perform: action)
             }
             
         }   else {
             
-            #warning("TODO")
-            
-            // return MemoryInt<UX>.Disjoint
-            
-            // return try UXL(load: self).withUnsafeBinaryIntegerMemory(perform: action)
-            
-            return nil // cannot rebind larger integers with smaller element types
+            return nil
             
         }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func memoryCanBeRebound<Destination>(to type: Destination.Type) -> Bool where Destination: SystemsInteger {
+        //=--------------------------------------=
+        let size      = Int.zero == MemoryLayout<Section>.size      % MemoryLayout<Destination>.size
+        let stride    = Int.zero == MemoryLayout<Section>.stride    % MemoryLayout<Destination>.stride
+        let alignment = Int.zero == MemoryLayout<Section>.alignment % MemoryLayout<Destination>.alignment
+        //=--------------------------------------=
+        return Bool(Bit(size) & Bit(stride) & Bit(alignment))
     }
 }

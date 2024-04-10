@@ -104,12 +104,10 @@ extension BinaryInteger {
             }
             
         }   else {
-            
-            #warning("TODO: check from SystemsInteger to BinaryInteger")
-            
-            if  Other.Section.Magnitude.memoryCanBeRebound(to: Self.Section.Magnitude.self) {
+                        
+            if  Other.memoryCanBeRebound(to: Self.Section.Magnitude.self) {
                 return self.withUnsafeBinaryIntegerMemory{ lhs in
-                    (other).withUnsafeBinaryIntegerMemory(as:  Self.Section.Magnitude.self) { rhs in
+                    (other).withUnsafeBinaryIntegerMemory(as: Self.Section.Magnitude.self) { rhs in
                         MemoryInt.compare(
                             lhs: lhs, lhsIsSigned: Self .isSigned,
                             rhs: rhs, rhsIsSigned: Other.isSigned
@@ -117,7 +115,7 @@ extension BinaryInteger {
                     }!
                 }
                 
-            }   else if Self.Section.Magnitude.memoryCanBeRebound(to: Other.Section.Magnitude.self) {
+            }   else if Self.memoryCanBeRebound(to: Other.Section.Magnitude.self) {
                 return self.withUnsafeBinaryIntegerMemory(as: Other.Section.Magnitude.self) { lhs in
                     (other).withUnsafeBinaryIntegerMemory { rhs in
                         MemoryInt.compare(
@@ -127,7 +125,7 @@ extension BinaryInteger {
                     }
                 }!
                 
-            }   else if Other.Section.Magnitude.memoryCanBeRebound(to: Self.Element.Magnitude.self) {
+            }   else if Other.memoryCanBeRebound(to: Self.Element.Magnitude.self) {
                 return self.withUnsafeBinaryIntegerMemory(as: Self.Element.Magnitude.self) { lhs in
                     (other).withUnsafeBinaryIntegerMemory(as: Self.Element.Magnitude.self) { rhs in
                         MemoryInt.compare(
@@ -137,7 +135,7 @@ extension BinaryInteger {
                     }!
                 }!
                 
-            }   else if Self.Section.Magnitude.memoryCanBeRebound(to: Other.Element.Magnitude.self) {
+            }   else if Self.memoryCanBeRebound(to: Other.Element.Magnitude.self) {
                 return self.withUnsafeBinaryIntegerMemory(as: Other.Element.Magnitude.self) { lhs in
                     (other).withUnsafeBinaryIntegerMemory(as: Other.Element.Magnitude.self) { rhs in
                         MemoryInt.compare(
