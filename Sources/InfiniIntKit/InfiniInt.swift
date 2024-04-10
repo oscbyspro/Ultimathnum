@@ -13,17 +13,15 @@ import CoreKit
 // MARK: * Infini Int
 //*============================================================================*
 
-@frozen public struct InfiniInt<Section>: BinaryInteger where Section: SystemsInteger {
-
-    public typealias Section = Section
+@frozen public struct InfiniInt<Source>: BinaryInteger where Source: SystemsInteger {
     
-    public typealias Element = Section.Element
+    public typealias Element = Source.Element
     
     public typealias IntegerLiteralType = StaticBigInt
     
-    public typealias Magnitude = InfiniInt<Section.Magnitude>
+    public typealias Magnitude = InfiniInt<Source.Magnitude>
     
-    public typealias Signitude = InfiniInt<Section.Signitude>
+    public typealias Signitude = InfiniInt<Source.Signitude>
         
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -62,8 +60,8 @@ import CoreKit
 // MARK: + Un/signed
 //=----------------------------------------------------------------------------=
 
-extension InfiniInt:   SignedInteger where Section:   SignedInteger { }
-extension InfiniInt: UnsignedInteger where Section: UnsignedInteger { }
+extension InfiniInt:   SignedInteger where Source:   SignedInteger { }
+extension InfiniInt: UnsignedInteger where Source: UnsignedInteger { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Aliases

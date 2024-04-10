@@ -98,29 +98,9 @@ extension BinaryInteger {
             }
             
         }   else {
-                        
-            if  Other.memoryCanBeRebound(to: Self.Section.Magnitude.self) {
-                return self.withUnsafeBinaryIntegerMemory{ lhs in
-                    (other).withUnsafeBinaryIntegerMemory(as: Self.Section.Magnitude.self) { rhs in
-                        MemoryInt.compare(
-                            lhs: lhs, lhsIsSigned: Self .isSigned,
-                            rhs: rhs, rhsIsSigned: Other.isSigned
-                        )
-                    }!
-                }
-                
-            }   else if Self.memoryCanBeRebound(to: Other.Section.Magnitude.self) {
-                return self.withUnsafeBinaryIntegerMemory(as: Other.Section.Magnitude.self) { lhs in
-                    (other).withUnsafeBinaryIntegerMemory { rhs in
-                        MemoryInt.compare(
-                            lhs: lhs, lhsIsSigned: Self .isSigned,
-                            rhs: rhs, rhsIsSigned: Other.isSigned
-                        )
-                    }
-                }!
-                
-            }   else if Other.memoryCanBeRebound(to: Self.Element.Magnitude.self) {
-                return self.withUnsafeBinaryIntegerMemoryAsElements { lhs in
+            
+            if Other.memoryCanBeRebound(to: Self.Element.Magnitude.self) {
+                return self.withUnsafeBinaryIntegerMemory { lhs in
                     (other).withUnsafeBinaryIntegerMemory(as: Self.Element.Magnitude.self) { rhs in
                         MemoryInt.compare(
                             lhs: lhs, lhsIsSigned: Self .isSigned,
@@ -131,7 +111,7 @@ extension BinaryInteger {
                 
             }   else if Self.memoryCanBeRebound(to: Other.Element.Magnitude.self) {
                 return self.withUnsafeBinaryIntegerMemory(as: Other.Element.Magnitude.self) { lhs in
-                    (other).withUnsafeBinaryIntegerMemoryAsElements { rhs in
+                    (other).withUnsafeBinaryIntegerMemory { rhs in
                         MemoryInt.compare(
                             lhs: lhs, lhsIsSigned: Self .isSigned,
                             rhs: rhs, rhsIsSigned: Other.isSigned
@@ -140,8 +120,7 @@ extension BinaryInteger {
                 }!
                 
             }   else {
-                
-                Swift.fatalError("invalid binary integer type found in BinaryInteger/compared(to:)")
+                Swift.fatalError("invalid binary integer invoked BinaryInteger/compared(to:)")
                 
             }
         }

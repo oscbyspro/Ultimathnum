@@ -18,13 +18,7 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public init<Source>(load source: consuming MemoryInt<Source>) {
-        if  Source.memoryCanBeRebound(to: Self.Section.Magnitude.self) {
-            self = (source).withMemoryRebound(to: Self.Section.Magnitude.self) {
-                var stream = $0.stream()
-                return Self.init(load: &stream)
-            }
-            
-        }   else if Source.memoryCanBeRebound(to: Self.Element.Magnitude.self) {
+        if Source.memoryCanBeRebound(to: Self.Element.Magnitude.self) {
             self = (source).withMemoryRebound(to: Self.Element.Magnitude.self) {
                 var stream = $0.stream()
                 return Self.init(load: &stream)
@@ -99,7 +93,7 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public func withUnsafeBinaryIntegerMemory<Value>(
-        perform action: (MemoryInt<Section.Magnitude>) throws -> Value
+        perform action: (MemoryInt<Element.Magnitude>) throws -> Value
     )   rethrows -> Value {
         //=--------------------------------------=
         let appendix: Bit = self.appendix
@@ -116,34 +110,18 @@ extension BinaryInteger {
         try self.withUnsafeBinaryIntegerMemory(as: U8.self, perform: action)!
     }
     
-    @inlinable public func withUnsafeBinaryIntegerMemoryAsElements<Value>(
-        perform action: (MemoryInt<Element.Magnitude>) throws -> Value
-    )   rethrows -> Value {
-        
-        try self.withUnsafeBinaryIntegerMemory(as: Element.Magnitude.self, perform: action)!
-    }
-    
-    @inlinable public func withUnsafeBinaryIntegerMemory<Destination, Value>(
-        as type: Destination.Type,
-        perform action: (MemoryInt<Destination>) throws -> Value
+    @inlinable public func withUnsafeBinaryIntegerMemory<OtherElement, Value>(
+        as type: OtherElement.Type,
+        perform action: (MemoryInt<OtherElement>) throws -> Value
     )   rethrows -> Optional<Value> {
         
-        if  Self.memoryCanBeRebound(to: Destination.self) {
+        if  Self.memoryCanBeRebound(to: OtherElement.self) {
             return try self.withUnsafeBinaryIntegerMemory {
-                try $0.withMemoryRebound(to: Destination.self, perform: action)
-            }
-        
-        }   else if !Self.bitWidth.isInfinite, UX(load: Self.bitWidth) <= UX(bitWidth: Destination.self) {
-            if  Self.isSigned {
-                return try Destination(load: self).withUnsafeBinaryIntegerMemory(perform: action)
-            }   else {
-                return try Destination(load: self).withUnsafeBinaryIntegerMemory(perform: action)
+                try $0.withMemoryRebound(to: OtherElement.self, perform: action)
             }
             
         }   else {
-            
             return nil
-            
         }
     }
     
@@ -151,11 +129,11 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func memoryCanBeRebound<Destination>(to type: Destination.Type) -> Bool where Destination: SystemsInteger {
+    @inlinable public static func memoryCanBeRebound<OtherElement>(to type: OtherElement.Type) -> Bool where OtherElement: SystemsInteger {
         //=--------------------------------------=
-        let size      = Int.zero == MemoryLayout<Section>.size      % MemoryLayout<Destination>.size
-        let stride    = Int.zero == MemoryLayout<Section>.stride    % MemoryLayout<Destination>.stride
-        let alignment = Int.zero == MemoryLayout<Section>.alignment % MemoryLayout<Destination>.alignment
+        let size      = Int.zero == MemoryLayout<Self.Element>.size      % MemoryLayout<OtherElement>.size
+        let stride    = Int.zero == MemoryLayout<Self.Element>.stride    % MemoryLayout<OtherElement>.stride
+        let alignment = Int.zero == MemoryLayout<Self.Element>.alignment % MemoryLayout<OtherElement>.alignment
         //=--------------------------------------=
         return Bool(Bit(size) & Bit(stride) & Bit(alignment))
     }

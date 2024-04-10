@@ -65,31 +65,11 @@ extension InfiniInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(load source: consuming  Section.Signitude) {
-        fatalError("TODO")
-    }
-        
-    @inlinable public init(load source: consuming  Section.Magnitude) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public borrowing func load(as type: Section.BitPattern.Type) -> Section.BitPattern {
-        fatalError("TODO")
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
     @inlinable public init(load source: inout MemoryInt<I8.Magnitude>.Iterator) {
         fatalError("TODO")
     }
     
     @inlinable public init(load source: inout MemoryInt<Element.Magnitude>.Iterator) {
-        fatalError("TODO")
-    }
-    
-    @inlinable public init(load source: inout MemoryInt<Section.Magnitude>.Iterator) {
         fatalError("TODO")
     }
     
@@ -102,7 +82,7 @@ extension InfiniInt {
     }
     
     @inlinable public borrowing func withUnsafeBinaryIntegerBody<T>(
-        _ action: (MemoryIntBody<Section.Magnitude>) throws -> T
+        _ action: (MemoryIntBody<Element.Magnitude>) throws -> T
     )   rethrows -> T {
         
         try self.storage.base.withUnsafeBufferPointer {

@@ -39,7 +39,6 @@ public protocol BinaryInteger<BitPattern>:
     _MaybeLosslessStringConvertible
 where
     Stride == Swift.Int,
-    Section.Element == Element,
     Magnitude.BitPattern == BitPattern,
     Magnitude.Element    == Element.Magnitude,
     Magnitude.Signitude  == Signitude,
@@ -47,9 +46,7 @@ where
     Signitude.Element    == Element.Signitude,
     Signitude.Magnitude  == Magnitude
 {
-    
-    associatedtype Section: SystemsInteger where Element.Element == Element
-    
+        
     associatedtype Element: SystemsInteger where Element.Element == Element
     
     associatedtype Signitude:   SignedInteger where Signitude.Signitude == Signitude
@@ -110,22 +107,10 @@ where
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable init(load source: consuming  Section.Signitude)
-    
-    @inlinable init(load source: consuming  Section.Magnitude)
-    
-    @inlinable borrowing func load(as type: Section.BitPattern.Type) -> Section.BitPattern
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
     @inlinable init(load source: inout MemoryInt<U8.Magnitude>.Iterator)
     
     @inlinable init(load source: inout MemoryInt<Element.Magnitude>.Iterator)
-    
-    @inlinable init(load source: inout MemoryInt<Section.Magnitude>.Iterator)
-    
+        
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
@@ -246,5 +231,5 @@ where
     ///
     @inlinable var appendix: Bit { get }
     
-    @inlinable borrowing func withUnsafeBinaryIntegerBody<T>(_ action: (MemoryIntBody<Section.Magnitude>) throws -> T) rethrows -> T
+    @inlinable borrowing func withUnsafeBinaryIntegerBody<T>(_ action: (MemoryIntBody<Element.Magnitude>) throws -> T) rethrows -> T
 }

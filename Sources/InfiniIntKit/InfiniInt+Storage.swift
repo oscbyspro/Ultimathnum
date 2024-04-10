@@ -31,7 +31,7 @@ extension InfiniInt where Element == Element.Magnitude {
     ///
     @frozen @usableFromInline struct _Storage: Hashable {
         
-        @usableFromInline typealias Base = ContiguousArray<Section>
+        @usableFromInline typealias Base = ContiguousArray<Element.Magnitude>
         
         //=------------------------------------------------------------------------=
         // MARK: State
@@ -41,13 +41,13 @@ extension InfiniInt where Element == Element.Magnitude {
         public var base: Base
         
         /// The bit extension of the un/signed source.
-        public var appendix: BitExtension<Section>
+        public var appendix: BitExtension<Element.Magnitude>
         
         //=------------------------------------------------------------------------=
         // MARK: Initializers
         //=------------------------------------------------------------------------=
         
-        @inlinable init(_ base: Base, repeating appendix: BitExtension<Section>) {
+        @inlinable init(_ base: Base, repeating appendix: BitExtension<Element.Magnitude>) {
             self.base = base
             self.appendix = appendix
         }

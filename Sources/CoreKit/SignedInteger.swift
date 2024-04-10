@@ -15,4 +15,4 @@
 ///
 /// - Note: Its static `isSigned` value is `true`.
 ///
-public protocol SignedInteger: BinaryInteger where Section: SignedInteger, Element: SignedInteger { }
+public protocol SignedInteger: BinaryInteger where Element: SignedInteger { }

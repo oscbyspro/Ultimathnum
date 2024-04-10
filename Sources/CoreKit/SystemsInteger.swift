@@ -37,7 +37,7 @@
 ///
 /// - Requires: Its magnitude must be unsigned and the same size as this type.
 ///
-public protocol SystemsInteger<BitPattern>: BinaryInteger where Section == Self, Magnitude: SystemsInteger, Signitude: SystemsInteger {
+public protocol SystemsInteger<BitPattern>: BinaryInteger where Magnitude: SystemsInteger, Signitude: SystemsInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Composition

@@ -19,7 +19,7 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func body() -> Array<Section.Magnitude> {
+    public func body() -> Array<Element.Magnitude> {
         self.withUnsafeBinaryIntegerBody {
             Array($0.buffer())
         }
