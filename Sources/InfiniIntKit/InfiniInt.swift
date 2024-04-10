@@ -13,19 +13,17 @@ import CoreKit
 // MARK: * Infini Int
 //*============================================================================*
 
-/// ### Development
-///
-/// - TODO: It should be generic over its `Element` type (please send help).
-///
-@frozen public struct InfiniInt<Source>: BinaryInteger where Source: SystemsInteger {
+@frozen public struct InfiniInt<Section>: BinaryInteger where Section: SystemsInteger {
 
-    public typealias Element = Source.Element
+    public typealias Section = Section
+    
+    public typealias Element = Section.Element
     
     public typealias IntegerLiteralType = StaticBigInt
     
-    public typealias Magnitude = InfiniInt<Source.Magnitude>
+    public typealias Magnitude = InfiniInt<Section.Magnitude>
     
-    public typealias Signitude = InfiniInt<Source.Signitude>
+    public typealias Signitude = InfiniInt<Section.Signitude>
         
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -64,8 +62,8 @@ import CoreKit
 // MARK: + Un/signed
 //=----------------------------------------------------------------------------=
 
-extension InfiniInt:   SignedInteger where Source:   SignedInteger { }
-extension InfiniInt: UnsignedInteger where Source: UnsignedInteger { }
+extension InfiniInt:   SignedInteger where Section:   SignedInteger { }
+extension InfiniInt: UnsignedInteger where Section: UnsignedInteger { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Aliases

@@ -81,60 +81,71 @@ extension BinaryInteger {
     @inlinable public func compared<Other>(to other: Other) -> Signum where Other: BinaryInteger {
         if !Self.bitWidth.isInfinite, !Other.bitWidth.isInfinite {
             
-            switch UX(load: Self.bitWidth).compared(to: UX(load: Other.bitWidth)) {
-            case Signum.same:
-                
-                if  Self.isSigned == Other.isSigned {
-                    
-                    return self.compared(to: Self(load: other))
-                    
-                }   else if self.isLessThanZero {
-                    
-                    return Signum.less
-                    
-                }   else if other.isLessThanZero {
-                    
-                    return Signum.more
-                    
-                }   else {
-                    
-                    return self.compared(to: Self(load: other))
-                    
-                }
-                
-            case Signum.less:
+            if  UX(load: Self.bitWidth) < UX(load: Other.bitWidth) {
                 
                 return Other(load: self).compared(to: other)
                 
-            case Signum.more:
+            }   else if UX(load: Self.bitWidth) > UX(load: Other.bitWidth) {
                 
-                return self.compared(to: Self(load: other))
+                return self .compared(to: Self(load: other))
+                
+            }   else if Self.isSigned, !Other.isSigned {
+                
+                return self .isLessThanZero ? Signum.less : Other(load: self).compared(to: other)
+                
+            }   else if !Self.isSigned, Other.isSigned {
+                
+                return other.isLessThanZero ? Signum.more : self.compared(to: Self(load:  other))
+                
+            }   else {
+                
+                return self .compared(to: Self(load: other))
                 
             }
             
         }   else {
             
-            if  Other.Element.Magnitude.memoryCanBeRebound(to: Self.Element.Magnitude.self) {
-                
-                return self.withUnsafeBinaryIntegerMemory { lhs in
-                    other.withUnsafeBinaryIntegerMemoryAs(unchecked: Self.Element.Magnitude.self) { rhs in
+            #warning("TODO: check from SystemsInteger to BinaryInteger")
+            
+            if  Other.Section.Magnitude.memoryCanBeRebound(to: Self.Section.Magnitude.self) {
+                return self.withUnsafeBinaryIntegerMemory{ lhs in
+                    (other).withUnsafeBinaryIntegerMemory(as:  Self.Section.Magnitude.self) { rhs in
                         MemoryInt.compare(
-                            lhs: lhs, lhsIsSigned: Self.isSigned,
+                            lhs: lhs, lhsIsSigned: Self .isSigned,
+                            rhs: rhs, rhsIsSigned: Other.isSigned
+                        )
+                    }!
+                }
+                
+            }   else if Self.Section.Magnitude.memoryCanBeRebound(to: Other.Section.Magnitude.self) {
+                return self.withUnsafeBinaryIntegerMemory(as: Other.Section.Magnitude.self) { lhs in
+                    (other).withUnsafeBinaryIntegerMemory { rhs in
+                        MemoryInt.compare(
+                            lhs: lhs, lhsIsSigned: Self .isSigned,
                             rhs: rhs, rhsIsSigned: Other.isSigned
                         )
                     }
-                }
+                }!
                 
-            }   else if Self.Element.Magnitude.memoryCanBeRebound(to:  Other.Element.Magnitude.self) {
-                
-                return self.withUnsafeBinaryIntegerMemoryAs(unchecked: Other.Element.Magnitude.self) { lhs in
-                    other.withUnsafeBinaryIntegerMemory { rhs in
+            }   else if Other.Section.Magnitude.memoryCanBeRebound(to: Self.Element.Magnitude.self) {
+                return self.withUnsafeBinaryIntegerMemory(as: Self.Element.Magnitude.self) { lhs in
+                    (other).withUnsafeBinaryIntegerMemory(as: Self.Element.Magnitude.self) { rhs in
                         MemoryInt.compare(
-                            lhs: lhs, lhsIsSigned: Self.isSigned,
+                            lhs: lhs, lhsIsSigned: Self .isSigned,
                             rhs: rhs, rhsIsSigned: Other.isSigned
                         )
-                    }
-                }
+                    }!
+                }!
+                
+            }   else if Self.Section.Magnitude.memoryCanBeRebound(to: Other.Element.Magnitude.self) {
+                return self.withUnsafeBinaryIntegerMemory(as: Other.Element.Magnitude.self) { lhs in
+                    (other).withUnsafeBinaryIntegerMemory(as: Other.Element.Magnitude.self) { rhs in
+                        MemoryInt.compare(
+                            lhs: lhs, lhsIsSigned: Self .isSigned,
+                            rhs: rhs, rhsIsSigned: Other.isSigned
+                        )
+                    }!
+                }!
                 
             }   else {
                 

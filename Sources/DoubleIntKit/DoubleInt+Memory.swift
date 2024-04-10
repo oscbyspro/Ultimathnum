@@ -92,12 +92,11 @@ extension DoubleInt {
     }
     
     @inlinable public borrowing func withUnsafeBinaryIntegerBody<T>(
-        _ action: (MemoryIntBody<Element.Magnitude>) throws -> T
+        _ action: (MemoryIntBody<Magnitude>) throws -> T
     )   rethrows -> T {
         try Swift .withUnsafePointer(to: self) {
-            try $0.withMemoryRebound(to: Element.Magnitude.self, capacity: 1) {
-                let count = MemoryLayout<Self>.stride / MemoryLayout<Element.Magnitude>.stride
-                return try action(MemoryIntBody($0, count: IX(count)))
+            try $0.withMemoryRebound(to: Magnitude.self, capacity: 1) {
+                try action(MemoryIntBody($0, count: 1))
             }
         }
     }

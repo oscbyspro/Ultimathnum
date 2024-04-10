@@ -82,7 +82,7 @@ extension InfiniInt {
     }
     
     @inlinable public borrowing func withUnsafeBinaryIntegerBody<T>(
-        _ action: (MemoryIntBody<Element.Magnitude>) throws -> T
+        _ action: (MemoryIntBody<Section.Magnitude>) throws -> T
     )   rethrows -> T {
         
         try self.storage.base.withUnsafeBufferPointer {

@@ -39,6 +39,7 @@ public protocol BinaryInteger<BitPattern>:
     _MaybeLosslessStringConvertible
 where
     Stride == Swift.Int,
+    Section.Element == Element,
     Magnitude.BitPattern == BitPattern,
     Magnitude.Element    == Element.Magnitude,
     Magnitude.Signitude  == Signitude,
@@ -46,7 +47,9 @@ where
     Signitude.Element    == Element.Signitude,
     Signitude.Magnitude  == Magnitude
 {
-        
+    
+    associatedtype Section: SystemsInteger where Element.Element == Element
+    
     associatedtype Element: SystemsInteger where Element.Element == Element
     
     associatedtype Signitude:   SignedInteger where Signitude.Signitude == Signitude
@@ -217,7 +220,7 @@ where
     ///
     @inlinable var appendix: Bit { get }
     
-    @inlinable borrowing func withUnsafeBinaryIntegerBody<T>(_ action: (MemoryIntBody<Element.Magnitude>) throws -> T) rethrows -> T
+    @inlinable borrowing func withUnsafeBinaryIntegerBody<T>(_ action: (MemoryIntBody<Section.Magnitude>) throws -> T) rethrows -> T
     
     @inlinable borrowing func compared(to other: borrowing Self) -> Signum
     

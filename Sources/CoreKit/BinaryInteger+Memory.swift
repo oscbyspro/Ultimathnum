@@ -92,12 +92,13 @@ extension BinaryInteger {
         }
     }
     
+    #warning("TODO")
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
     @inlinable public func withUnsafeBinaryIntegerMemory<Value>(
-        perform action: (MemoryInt<Element.Magnitude>) throws -> Value
+        perform action: (MemoryInt<Section.Magnitude>) throws -> Value
     )   rethrows -> Value {
         //=--------------------------------------=
         let appendix: Bit = self.appendix
@@ -107,37 +108,31 @@ extension BinaryInteger {
         }
     }
     
-    @inlinable public func withUnsafeBinaryIntegerMemoryAs<OtherElement, Value>(
-        unchecked type: OtherElement.Type,
-        perform action: (MemoryInt<OtherElement>
-        ) throws -> Value) rethrows -> Value {
-        try self.withUnsafeBinaryIntegerMemory {
-            try $0.withMemoryRebound(to: OtherElement.self, perform: action)
-        }
-    }
-    
-    @inlinable public func withUnsafeBinaryIntegerMemoryAsU8<T>(
+    @inlinable public func withUnsafeBinaryIntegerMemoryAsBytes<T>(
         perform action: (MemoryInt<U8>) throws -> T
     )   rethrows -> T {
-        try self.withUnsafeBinaryIntegerMemoryAs(unchecked: U8.self, perform: action)
+        
+        try self.withUnsafeBinaryIntegerMemory(as: U8.self, perform: action)!
     }
     
-    @inlinable public func withUnsafeBinaryIntegerMemoryAsUX<T>(
-        perform action: (MemoryInt<UX>) throws -> T
-    )   rethrows -> Optional<T> {
+    @inlinable public func withUnsafeBinaryIntegerMemory<OtherElement, Value>(
+        as type: OtherElement.Type,
+        perform action: (MemoryInt<OtherElement>) throws -> Value
+    )   rethrows -> Optional<Value> {
         
-        if  Self.Element.Magnitude.memoryCanBeRebound(to: UX.self) {
+        if  Self.Element.Magnitude.memoryCanBeRebound(to: OtherElement.self) {
             
-            return try self.withUnsafeBinaryIntegerMemoryAs(unchecked: UX.self, perform: action)
-            
-        }   else if !Self.bitWidth.isInfinite, UX(load: Self.bitWidth) <= UX.bitWidth {
+            return try self.withUnsafeBinaryIntegerMemory {
+                try $0.withMemoryRebound(to: OtherElement.self, perform: action)
+            }
+        
+        }   else if !Self.bitWidth.isInfinite, UX(load: Self.bitWidth) <= UX(bitWidth: OtherElement.self) {
             
             if  Self.isSigned {
-                return try IX(load: self).withUnsafeBinaryIntegerMemory(perform: action)
+                return try OtherElement(load: self).withUnsafeBinaryIntegerMemory(perform: action)
             }   else {
-                return try UX(load: self).withUnsafeBinaryIntegerMemory(perform: action)
+                return try OtherElement(load: self).withUnsafeBinaryIntegerMemory(perform: action)
             }
-            
             
         }   else {
             
