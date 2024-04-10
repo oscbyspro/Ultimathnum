@@ -215,10 +215,24 @@ where
     @inlinable static func &>>(instance: consuming Self, shift: borrowing Self) -> Self
     
     //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable consuming func complement(_ increment: consuming Bool) -> Fallible<Self>
+    
+    //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// The bit that extends the integer's ``body``.
+    @inlinable borrowing func compared(to other: borrowing Self) -> Signum
+        
+    @inlinable borrowing func count(_ bit: Bit, where selection: BitSelection) -> Magnitude
+        
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    /// The bit that extends the integer's `body`.
     ///
     /// ```
     ///            ┌───────────┬───────────┐
@@ -233,10 +247,4 @@ where
     @inlinable var appendix: Bit { get }
     
     @inlinable borrowing func withUnsafeBinaryIntegerBody<T>(_ action: (MemoryIntBody<Section.Magnitude>) throws -> T) rethrows -> T
-    
-    @inlinable borrowing func compared(to other: borrowing Self) -> Signum
-    
-    @inlinable borrowing func count(_ bit: Bit, where selection: BitSelection) -> Magnitude
-    
-    @inlinable consuming func complement(_ increment: consuming Bool) -> Fallible<Self>
 }

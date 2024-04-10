@@ -82,25 +82,19 @@ extension BinaryInteger {
         if !Self.bitWidth.isInfinite, !Other.bitWidth.isInfinite {
             
             if  UX(load: Self.bitWidth) < UX(load: Other.bitWidth) {
-                
                 return Other(load: self).compared(to: other)
                 
             }   else if UX(load: Self.bitWidth) > UX(load: Other.bitWidth) {
-                
-                return self .compared(to: Self(load: other))
+                return self.compared(to: Self(load: other))
                 
             }   else if Self.isSigned, !Other.isSigned {
-                
                 return self .isLessThanZero ? Signum.less : Other(load: self).compared(to: other)
                 
             }   else if !Self.isSigned, Other.isSigned {
-                
                 return other.isLessThanZero ? Signum.more : self.compared(to: Self(load:  other))
                 
             }   else {
-                
-                return self .compared(to: Self(load: other))
-                
+                return self.compared(to: Self(load: other))
             }
             
         }   else {
@@ -126,28 +120,28 @@ extension BinaryInteger {
                 }!
                 
             }   else if Other.memoryCanBeRebound(to: Self.Element.Magnitude.self) {
-                return self.withUnsafeBinaryIntegerMemory(as: Self.Element.Magnitude.self) { lhs in
+                return self.withUnsafeBinaryIntegerMemoryAsElements { lhs in
                     (other).withUnsafeBinaryIntegerMemory(as: Self.Element.Magnitude.self) { rhs in
                         MemoryInt.compare(
                             lhs: lhs, lhsIsSigned: Self .isSigned,
                             rhs: rhs, rhsIsSigned: Other.isSigned
                         )
                     }!
-                }!
+                }
                 
             }   else if Self.memoryCanBeRebound(to: Other.Element.Magnitude.self) {
                 return self.withUnsafeBinaryIntegerMemory(as: Other.Element.Magnitude.self) { lhs in
-                    (other).withUnsafeBinaryIntegerMemory(as: Other.Element.Magnitude.self) { rhs in
+                    (other).withUnsafeBinaryIntegerMemoryAsElements { rhs in
                         MemoryInt.compare(
                             lhs: lhs, lhsIsSigned: Self .isSigned,
                             rhs: rhs, rhsIsSigned: Other.isSigned
                         )
-                    }!
+                    }
                 }!
                 
             }   else {
                 
-                Swift.fatalError(String.unreachable())
+                Swift.fatalError("invalid binary integer type found in BinaryInteger/compared(to:)")
                 
             }
         }

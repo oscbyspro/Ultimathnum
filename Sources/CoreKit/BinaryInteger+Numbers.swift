@@ -68,40 +68,31 @@ extension BinaryInteger {
     
     /// ### Development
     ///
-    /// - TODO: Add appropriate fast paths based on element size.
-    ///
     /// - TODO: Make the isSigned parameter generic.
     ///
     @inlinable public static func exactly<T>(elements: consuming MemoryInt<T>, isSigned: Bool) -> Fallible<Self> {
-        //=--------------------------------------=
-        func validate<U>(
-            _ instance: consuming Self,
-            _ stream: inout MemoryInt<U>.Iterator
-        )   -> Fallible<Self> {
-            
-            let appendix: Bit = stream.appendix
-            
-            let success = Bit(instance.appendix == appendix)
-            & Bit(Self.isSigned == isSigned || appendix == Bit.zero)
-            & Bit(stream.normalized().body.count == IX.zero)
-            
-            return instance.combine(!Bool(success))
-        }
-        //=--------------------------------------=
-        if  T.memoryCanBeRebound(to: Self.Element.Magnitude.self) {
+        if T.memoryCanBeRebound(to: Self.Element.Magnitude.self) {
             
             return  elements.withMemoryRebound(to: Self.Element.Magnitude.self) {
                 var (stream) = $0.stream()
                 let instance = Self(load: &stream)
-                return validate(instance, &stream)
+                let appendix: Bit = stream.appendix
+                let success = Bit(instance.appendix == appendix)
+                & Bit(Self.isSigned == isSigned || appendix == Bit.zero)
+                & Bit(stream.normalized().body.count == IX.zero)
+                return instance.combine(!Bool(success))
             }
             
         }   else {
             
-            return  elements.withMemoryRebound(to: U8.self) {
+            return  elements.withMemoryRebound(to: U8.Magnitude.self) {
                 var (stream) = $0.stream()
                 let instance = Self(load: &stream)
-                return validate(instance, &stream)
+                let appendix: Bit = stream.appendix
+                let success = Bit(instance.appendix == appendix)
+                & Bit(Self.isSigned == isSigned || appendix == Bit.zero)
+                & Bit(stream.normalized().body.count == IX.zero)
+                return instance.combine(!Bool(success))
             }
             
         }

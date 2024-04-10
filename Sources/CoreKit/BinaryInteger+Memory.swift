@@ -31,7 +31,7 @@ extension BinaryInteger {
             }
             
         }   else {
-            self = (source).withMemoryAsBytes {
+            self = (source).withMemoryRebound(to: U8.self) {
                 var stream = $0.stream()
                 return Self.init(load: &stream)
             }
@@ -83,17 +83,14 @@ extension BinaryInteger {
         let rhsIsSmall = !Other.bitWidth.isInfinite && UX(load: Other.bitWidth) <= UX.bitWidth
         
         if  lhsIsSmall || rhsIsSmall {
-            
             if  Self.isSigned {
                 self.init(load: IX(load: source))
             }   else {
                 self.init(load: UX(load: source))
             }
-                        
+
         }   else {
-            
             self = source.withUnsafeBinaryIntegerMemory(perform: Self.init(load:))
-            
         }
     }
     
@@ -113,10 +110,17 @@ extension BinaryInteger {
     }
     
     @inlinable public func withUnsafeBinaryIntegerMemoryAsBytes<Value>(
-        perform action: (MemoryInt<U8>) throws -> Value
+        perform action: (MemoryInt<U8.Magnitude>) throws -> Value
     )   rethrows -> Value {
         
         try self.withUnsafeBinaryIntegerMemory(as: U8.self, perform: action)!
+    }
+    
+    @inlinable public func withUnsafeBinaryIntegerMemoryAsElements<Value>(
+        perform action: (MemoryInt<Element.Magnitude>) throws -> Value
+    )   rethrows -> Value {
+        
+        try self.withUnsafeBinaryIntegerMemory(as: Element.Magnitude.self, perform: action)!
     }
     
     @inlinable public func withUnsafeBinaryIntegerMemory<Destination, Value>(
@@ -125,13 +129,11 @@ extension BinaryInteger {
     )   rethrows -> Optional<Value> {
         
         if  Self.memoryCanBeRebound(to: Destination.self) {
-            
             return try self.withUnsafeBinaryIntegerMemory {
                 try $0.withMemoryRebound(to: Destination.self, perform: action)
             }
         
         }   else if !Self.bitWidth.isInfinite, UX(load: Self.bitWidth) <= UX(bitWidth: Destination.self) {
-            
             if  Self.isSigned {
                 return try Destination(load: self).withUnsafeBinaryIntegerMemory(perform: action)
             }   else {
