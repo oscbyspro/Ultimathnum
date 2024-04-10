@@ -27,17 +27,31 @@
 ///
 /// Its stride is Swift.Int which is used to step through Swift's ranges.
 ///
-public protocol BinaryInteger<BitPattern>: Arithmetic, BitCastable, BitOperable, Comparable,
-ExpressibleByIntegerLiteral, Hashable, Sendable, Strideable, _MaybeLosslessStringConvertible where
-Magnitude.BitPattern == BitPattern, Magnitude.Element == Element.Magnitude, Magnitude.Signitude == Signitude,
-Signitude.BitPattern == BitPattern, Signitude.Element == Element.Signitude, Signitude.Magnitude == Magnitude,
-Stride == Swift.Int {
+public protocol BinaryInteger<BitPattern>:
+    Arithmetic,
+    BitCastable,
+    BitOperable,
+    Comparable,
+    ExpressibleByIntegerLiteral,
+    Hashable,
+    Sendable,
+    Strideable,
+    _MaybeLosslessStringConvertible
+where
+    Stride == Swift.Int,
+    Magnitude.BitPattern == BitPattern,
+    Magnitude.Element    == Element.Magnitude,
+    Magnitude.Signitude  == Signitude,
+    Signitude.BitPattern == BitPattern,
+    Signitude.Element    == Element.Signitude,
+    Signitude.Magnitude  == Magnitude
+{
         
     associatedtype Element: SystemsInteger where Element.Element == Element
-        
-    associatedtype Magnitude: UnsignedInteger where Magnitude.Magnitude == Magnitude
-        
+    
     associatedtype Signitude:   SignedInteger where Signitude.Signitude == Signitude
+    
+    associatedtype Magnitude: UnsignedInteger where Magnitude.Magnitude == Magnitude
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -93,7 +107,7 @@ Stride == Swift.Int {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable init(load source: inout MemoryInt<I8.Magnitude>.Iterator)
+    @inlinable init(load source: inout MemoryInt<U8.Magnitude>.Iterator)
     
     @inlinable init(load source: inout MemoryInt<Element.Magnitude>.Iterator)
     

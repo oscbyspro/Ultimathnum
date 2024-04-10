@@ -25,9 +25,39 @@ extension Namespace.StrictUnsignedInteger.SubSequence {
     /// - Note: This operation interprets empty collections as zero.
     ///
     @inlinable public static func compare(_ lhs: Base, to rhs: some RandomAccessCollection<Base.Element>) -> Signum {
-        let lhs = ExchangeInt(lhs[...], isSigned: false, as: Base.Element.self)
-        let rhs = ExchangeInt(rhs[...], isSigned: false, as: Base.Element.self)
-        return lhs.compared(to: rhs)
+        //=--------------------------------------=
+        // normalization
+        //=--------------------------------------=
+        var lhsIndex = lhs.dropLast(while:{ $0 == 0 }).endIndex
+        var rhsIndex = rhs.dropLast(while:{ $0 == 0 }).endIndex
+        //=--------------------------------------=
+        // comparison: count
+        //=--------------------------------------=
+        let lhsCount = lhs.distance(from: lhs.startIndex, to: lhsIndex)
+        let rhsCount = rhs.distance(from: rhs.startIndex, to: rhsIndex)
+        
+        if  lhsCount != rhsCount {
+            return Signum.one(Sign(bitPattern: lhsCount < rhsCount))
+        }
+        //=--------------------------------------=
+        // comparison: body
+        //=--------------------------------------=
+        while lhsIndex > lhs.startIndex {
+            
+            lhs.formIndex(before: &lhsIndex)
+            rhs.formIndex(before: &rhsIndex)
+            
+            let lhsElement: Base.Element = lhs[lhsIndex]
+            let rhsElement: Base.Element = rhs[rhsIndex]
+            
+            if  lhsElement != rhsElement {
+                return Signum.one(Sign(bitPattern: lhsElement < rhsElement))
+            }
+        }
+        //=--------------------------------------=
+        // comparison: same
+        //=--------------------------------------=
+        return Signum.same as Signum as Signum as Signum
     }
     
     /// A three-way comparison of `lhs` against `rhs` at `index`.

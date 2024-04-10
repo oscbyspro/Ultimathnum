@@ -116,9 +116,39 @@ extension BinaryInteger {
         }
     }
     
-    @inlinable public func withUnsafeBinaryIntegerMemoryAsByte<T>(
+    @inlinable public func withUnsafeBinaryIntegerMemoryAsU8<T>(
         perform action: (MemoryInt<U8>) throws -> T
     )   rethrows -> T {
         try self.withUnsafeBinaryIntegerMemoryAs(unchecked: U8.self, perform: action)
+    }
+    
+    @inlinable public func withUnsafeBinaryIntegerMemoryAsUX<T>(
+        perform action: (MemoryInt<UX>) throws -> T
+    )   rethrows -> Optional<T> {
+        
+        if  Self.Element.Magnitude.memoryCanBeRebound(to: UX.self) {
+            
+            return try self.withUnsafeBinaryIntegerMemoryAs(unchecked: UX.self, perform: action)
+            
+        }   else if !Self.bitWidth.isInfinite, UX(load: Self.bitWidth) <= UX.bitWidth {
+            
+            if  Self.isSigned {
+                return try IX(load: self).withUnsafeBinaryIntegerMemory(perform: action)
+            }   else {
+                return try UX(load: self).withUnsafeBinaryIntegerMemory(perform: action)
+            }
+            
+            
+        }   else {
+            
+            #warning("TODO")
+            
+            // return MemoryInt<UX>.Disjoint
+            
+            // return try UXL(load: self).withUnsafeBinaryIntegerMemory(perform: action)
+            
+            return nil // cannot rebind larger integers with smaller element types
+            
+        }
     }
 }
