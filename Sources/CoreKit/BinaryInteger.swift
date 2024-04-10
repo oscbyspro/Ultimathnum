@@ -110,9 +110,21 @@ where
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    @inlinable init(load source: consuming  Section.Signitude)
+    
+    @inlinable init(load source: consuming  Section.Magnitude)
+    
+    @inlinable borrowing func load(as type: Section.BitPattern.Type) -> Section.BitPattern
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
     @inlinable init(load source: inout MemoryInt<U8.Magnitude>.Iterator)
     
     @inlinable init(load source: inout MemoryInt<Element.Magnitude>.Iterator)
+    
+    @inlinable init(load source: inout MemoryInt<Section.Magnitude>.Iterator)
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

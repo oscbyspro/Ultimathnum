@@ -67,7 +67,23 @@ extension DoubleInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(load source: inout MemoryInt<I8.Magnitude>.Iterator) {
+    @inlinable public init(load source: consuming  Section.Signitude) {
+        self.init(bitPattern: source)
+    }
+    
+    @inlinable public init(load source: consuming  Section.Magnitude) {
+        self.init(bitPattern: source)
+    }
+    
+    @inlinable public borrowing func load(as type: Section.BitPattern.Type) -> Section.BitPattern {
+        (copy self).bitPattern
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(load source: inout MemoryInt<U8.Magnitude>.Iterator) {
         //=--------------------------------------=
         let low  = Low (load: &source)
         let high = High(load: &source)
@@ -81,6 +97,10 @@ extension DoubleInt {
         let high = High(load: &source)
         //=--------------------------------------=
         self.init(low: consume low, high: consume high)
+    }
+        
+    @inlinable public init(load source: inout MemoryInt<Section.Magnitude>.Iterator) {
+        self.init(bitPattern: source.next())
     }
     
     //=------------------------------------------------------------------------=

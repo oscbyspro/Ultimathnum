@@ -67,12 +67,24 @@
         self._appendix
     }
     
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public borrowing func withMemoryAsBytes<Value>(
+        perform action: (MemoryInt<U8>) throws -> Value
+    )   rethrows -> Value {
+
+        try self.withMemoryRebound(to: U8.self, perform: action)
+    }
+    
     @inlinable public borrowing func withMemoryRebound<OtherElement, Value>(
         to type: OtherElement.Type,
         perform action: (MemoryInt<OtherElement>) throws -> Value
     )   rethrows -> Value {
-        
+        //=--------------------------------------=
         let appendix = self.appendix
+        //=--------------------------------------=
         return try self.body.withMemoryRebound(to: OtherElement.self) {
             try action(MemoryInt<OtherElement>($0, repeating: appendix))
         }

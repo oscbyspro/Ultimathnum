@@ -17,19 +17,24 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<OtherElement>(load source: consuming MemoryInt<OtherElement>) {
-        if  OtherElement.memoryCanBeRebound(to: Self.Element.Magnitude.self) {
+    @inlinable public init<Source>(load source: consuming MemoryInt<Source>) {
+        if  Source.memoryCanBeRebound(to: Self.Section.Magnitude.self) {
+            self = (source).withMemoryRebound(to: Self.Section.Magnitude.self) {
+                var stream = $0.stream()
+                return Self.init(load: &stream)
+            }
             
-            self = source.withMemoryRebound(to: Self.Element.Magnitude.self) {
-                var stream = $0.stream(); return Self.init(load: &stream)
+        }   else if Source.memoryCanBeRebound(to: Self.Element.Magnitude.self) {
+            self = (source).withMemoryRebound(to: Self.Element.Magnitude.self) {
+                var stream = $0.stream()
+                return Self.init(load: &stream)
             }
             
         }   else {
-            
-            self = source.withMemoryRebound(to: I8.Magnitude.self) {
-                var stream = $0.stream(); return Self.init(load: &stream)
+            self = (source).withMemoryAsBytes {
+                var stream = $0.stream()
+                return Self.init(load: &stream)
             }
-            
         }
     }
     
