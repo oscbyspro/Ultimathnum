@@ -83,7 +83,7 @@ extension BinaryInteger {
         let rhsIsSmall = !Other.bitWidth.isInfinite && UX(load: Other.bitWidth) <= UX.bitWidth
         
         if  lhsIsSmall || rhsIsSmall {
-            if  Self.isSigned {
+            if  Other.isSigned  {
                 self.init(load: IX(load: source))
             }   else {
                 self.init(load: UX(load: source))

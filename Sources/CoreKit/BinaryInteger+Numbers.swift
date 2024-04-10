@@ -55,14 +55,33 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<T>(_ source: consuming T) where T: BinaryInteger {
+    @inlinable public init<Other>(_ source: consuming Other) where Other: BinaryInteger {
         self = Self.exactly(source).unwrap()
     }
     
-    #warning("TODO")
-    @inlinable public static func exactly<T>(_ source: consuming T) -> Fallible<Self> where T: BinaryInteger {
-        source.withUnsafeBinaryIntegerMemory {
-            Self.exactly(elements: $0, isSigned: T.isSigned)
+    @inlinable public static func exactly<Other>(_ source: consuming Other) -> Fallible<Self> where Other: BinaryInteger {
+        if !Self.bitWidth.isInfinite, !Other.bitWidth.isInfinite {
+            let measurement = UX(load: Self.bitWidth).compared(to: UX(load: Other.bitWidth))
+            if (measurement > 0) == (Self.isSigned == Other.isSigned) || (measurement == 0 && Self.isSigned) {
+                return Fallible.success(Self(load: source))
+                
+            }   else if measurement >= 0 {
+                let rhsIsLessThanZero = source.isLessThanZero
+                let result = Self(load: source)
+                let lhsIsLessThanZero = result.isLessThanZero
+                return result.combine(lhsIsLessThanZero != rhsIsLessThanZero)
+                
+            }   else {
+                let bit   = Bit(Self.isSigned) & Bit(source.isLessThanZero)
+                let count = UX(load: Other.bitWidth).minus(UX(load: source.count(.descending(((bit)))))).assert()
+                let limit = UX(load: Self .bitWidth).minus(UX(Bit(Self.isSigned) & Bit(Other.isSigned))).assert()
+                return Self(load: source).combine(limit < count)
+            }
+            
+        }   else {
+            return source.withUnsafeBinaryIntegerMemory {
+                Self.exactly(elements: $0, isSigned: Other.isSigned)
+            }
         }
     }
     
