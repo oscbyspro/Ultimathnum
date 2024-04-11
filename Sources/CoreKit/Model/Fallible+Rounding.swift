@@ -8,22 +8,22 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Exchange Int x Body
+// MARK: * Fallible x Rounding
 //*============================================================================*
 
-extension ExchangeInt {
+extension Fallible {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func body() -> Prefix {
-        let ratio = UX(bitPattern: MemoryLayout<Element>.stride)
-        var major = UX(bitPattern: self.base.body.count)
-        major  &>>= UX(bitPattern: ratio.count(0, where: Bit.Selection.ascending))
-        var minor = UX(bitPattern: self.base.body.count)
-        minor    &= UX(bitPattern: ratio.minus(1).assert())
-        let count = major.plus(UX(Bit(minor != 0))).assert()
-        return Prefix(self, count: Int(bitPattern: count))
+    @inlinable public consuming func ceil<Quotient, Remainder>() -> Fallible<Quotient> where
+    Value == Division<Quotient, Remainder>, Quotient: BinaryInteger, Remainder: BinaryInteger {
+        self.value.ceil().combine(self.error)
     }
+    
+    @inlinable public consuming func floor<Quotient, Remainder>() -> Fallible<Quotient> where
+    Value == Division<Quotient, Remainder>, Quotient: BinaryInteger, Remainder: BinaryInteger {
+        self.value.floor().combine(self.error)
+    }    
 }
