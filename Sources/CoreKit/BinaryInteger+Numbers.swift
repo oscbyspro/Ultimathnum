@@ -80,18 +80,21 @@ extension BinaryInteger {
             
         }   else {
             return source.withUnsafeBinaryIntegerElements {
-                Self.exactly(elements: $0, isSigned: Other.isSigned)
+                Self.exactly($0, isSigned: Other.isSigned)
             }
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
     
     /// ### Development
     ///
     /// - TODO: Make the isSigned parameter generic.
     ///
-    @inlinable public static func exactly<T>(elements: consuming MemoryInt<T>, isSigned: Bool) -> Fallible<Self> {
+    @inlinable public static func exactly<T>(_ elements: consuming MemoryInt<T>, isSigned: Bool) -> Fallible<Self> {
         if T.elementsCanBeRebound(to: Self.Element.Magnitude.self) {
-            
             return  elements.withMemoryRebound(to: Self.Element.Magnitude.self) {
                 var (stream) = $0.stream()
                 let instance = Self(load: &stream)
@@ -103,7 +106,6 @@ extension BinaryInteger {
             }
             
         }   else {
-            
             return  elements.withMemoryRebound(to: U8.Magnitude.self) {
                 var (stream) = $0.stream()
                 let instance = Self(load: &stream)
@@ -113,23 +115,6 @@ extension BinaryInteger {
                 & Bit(stream.normalized().body.count == IX.zero)
                 return instance.combine(!Bool(success))
             }
-            
         }
-    }
-    
-    @inlinable public static func exactly<T>(body: consuming Array<T>, isSigned: Bool) -> Fallible<Self> where T: SystemsInteger & UnsignedInteger {
-        body.withUnsafeBufferPointer {
-            let body = MemoryIntBody($0.baseAddress!, count: IX($0.count))
-            let elements = MemoryInt(body, isSigned: isSigned)
-            return Self.exactly(elements: elements , isSigned: isSigned)
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func magnitude() -> Magnitude {
-        Magnitude(bitPattern: self.isLessThanZero ? self.complement() : self)
     }
 }

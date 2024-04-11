@@ -23,7 +23,7 @@ extension BinaryInteger {
     
     @inlinable public static func exactly(_ source: consuming BigIntLiteral) -> Fallible<Self> {
         source.withUnsafeBinaryIntegerElements {
-            Self.exactly(elements: $0, isSigned: true)
+            Self.exactly($0, isSigned: true)
         }
     }
 }

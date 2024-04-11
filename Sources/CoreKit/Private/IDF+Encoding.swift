@@ -49,8 +49,7 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
     @inlinable public func encode<T>(sign: Sign, magnitude: [T]) -> String where T: SystemsInteger & UnsignedInteger {
         magnitude.withUnsafeBufferPointer {
             $0.withMemoryRebound(to: U8.self) {
-                let body = MemoryIntBody($0.baseAddress!, count: IX($0.count))
-                return self.encode(sign: sign, magnitude: MemoryInt<U8>(body, repeating: Bit.zero))
+                self.encode(sign: sign, magnitude: MemoryInt<U8>($0, repeating: Bit.zero)!)
             }
         }
     }

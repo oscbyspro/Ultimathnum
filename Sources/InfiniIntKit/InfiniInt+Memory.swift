@@ -86,7 +86,7 @@ extension InfiniInt {
     )   rethrows -> T {
         
         try self.storage.base.withUnsafeBufferPointer {
-            try action(MemoryIntBody($0.baseAddress!, count: IX($0.count)))
+            try action(MemoryIntBody($0)!)
         }
     }
 }

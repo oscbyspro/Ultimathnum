@@ -39,6 +39,10 @@ extension BinaryInteger {
         self.complement(true).value
     }
     
+    @inlinable public consuming func magnitude() -> Magnitude {
+        Magnitude(bitPattern: self.isLessThanZero ? self.complement() : self)
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=

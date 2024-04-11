@@ -46,4 +46,8 @@ extension Doublet {
         increment = self.high.capture({ $0.complement(increment) })
         return self.combine(increment)
     }
+    
+    @inlinable public consuming func magnitude() -> Magnitude {
+        Magnitude(bitPattern: self.high.isLessThanZero ? self.complement() : self)
+    }
 }

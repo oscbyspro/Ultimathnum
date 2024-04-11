@@ -26,17 +26,14 @@
     // MARK: Initializers
     //=--------------------------------------------------------------------=
     
+    @inlinable public init?(_ buffer: UnsafeBufferPointer<Element>) {
+        guard let start = buffer.baseAddress else { return nil }
+        self.init(start, count: IX(buffer.count))
+    }
+    
     @inlinable public init(_ start: UnsafePointer<Element>, count: IX) {
         self._start = start
         self._count = count
-    }
-    
-    @inlinable public init?(_ buffer: UnsafeBufferPointer<Element>) {
-        if  let start = buffer.baseAddress {
-            self.init(start, count: IX(buffer.count))
-        }   else {
-            return nil
-        }
     }
     
     //=------------------------------------------------------------------------=

@@ -24,8 +24,12 @@ extension ExchangeInt {
         repeating bit: Bit,
         as type: Element.Type = Element.self
     )   -> [Element] where T: SystemsInteger & UnsignedInteger {
-        base.withExchangeInt(as: Element.self, repeating: bit) {
-            Array($0.body())
+        
+        base.withUnsafeBufferPointer {
+            $0.withMemoryRebound(to: U8.self) {
+                let elements = ExchangeInt(MemoryInt($0, repeating: bit)!)
+                return Array(elements.body())
+            }
         }
     }
     
@@ -34,8 +38,12 @@ extension ExchangeInt {
         repeating bit: Bit,
         as type: Element.Type = Element.self
     )   -> [Element] where T: SystemsInteger & UnsignedInteger {
-        base.withExchangeInt(as: Element.self, repeating: bit) {
-            Array($0.normalized())
+        
+        base.withUnsafeBufferPointer {
+            $0.withMemoryRebound(to: U8.self) {
+                let elements = ExchangeInt(MemoryInt($0, repeating: bit)!)
+                return Array(elements.normalized())
+            }
         }
     }
     
@@ -45,8 +53,12 @@ extension ExchangeInt {
         count: Int,
         as type: Element.Type = Element.self
     )   -> [Element] where T: SystemsInteger & UnsignedInteger {
-        base.withExchangeInt(as: Element.self, repeating: bit) {
-            Array($0.prefix(count))
+
+        base.withUnsafeBufferPointer {
+            $0.withMemoryRebound(to: U8.self) {
+                let elements = ExchangeInt(MemoryInt($0, repeating: bit)!)
+                return Array(elements.prefix(count))
+            }
         }
     }
 }

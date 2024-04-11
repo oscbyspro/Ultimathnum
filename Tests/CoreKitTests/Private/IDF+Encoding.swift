@@ -113,9 +113,7 @@ final class IntegerDescriptionFormatTestsOnEncoding: XCTestCase {
     func check(_ test: Test,_ sign: Sign, _ magnitude: [U64], _ expectation: String) {
         magnitude.withUnsafeBufferPointer {
             $0.withMemoryRebound(to: U8.self) {
-                let body = MemoryIntBody($0.baseAddress!, count: IX($0.count))
-                let magnitude = MemoryInt(body, repeating: Bit.zero)
-                test.same(encoder.encode(sign: sign, magnitude: magnitude), expectation)
+                test.same(encoder.encode(sign: sign, magnitude: MemoryInt($0)!), expectation)
             }
         }
     }

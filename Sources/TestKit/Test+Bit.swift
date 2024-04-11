@@ -61,6 +61,10 @@ extension Test {
         _ expectation: Fallible<Integer>
     )   where Integer: BinaryInteger, Element: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
-        same(Integer.exactly(body: body, isSigned: isSigned), expectation, "Integer.exactly(body:isSigned:)")
+        body.withUnsafeBufferPointer {
+            let appendix = Bit(isSigned && ($0.last ?? 0) >= Element.msb)
+            let elements = MemoryInt($0,  repeating: appendix)!
+            same(Integer.exactly(elements, isSigned: isSigned), expectation, "Integer.exactly(body:isSigned:)")
+        }
     }
 }

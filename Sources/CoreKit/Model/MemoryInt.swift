@@ -28,16 +28,18 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    #warning("remove")
-    @inlinable public init(_ body: Body, isSigned: Bool) {
-        let extensible = Bool(Bit(isSigned) & Bit(body.count > IX.zero))
-        let appendix = extensible ? Element.Signitude(bitPattern: body[unchecked: body.count - 1]).appendix : Bit.zero
-        self.init(body, repeating: appendix)
-    }
-    
-    @inlinable public init(_ body: Body, repeating appendix: Bit) {
+    @inlinable public init(_ body: Body, repeating appendix: Bit = .zero) {
         self._body = body
         self._appendix = appendix
+    }
+    
+    @inlinable public init?(_ body: UnsafeBufferPointer<Element>, repeating bit: Bit = .zero) {
+        guard let body = Body(body) else { return nil }
+        self.init(body, repeating: bit)
+    }
+    
+    @inlinable public init(_ start: UnsafePointer<Element>, count: IX, repeating bit: Bit = .zero) {
+        self.init(Body(start, count: count), repeating: bit)
     }
     
     //=------------------------------------------------------------------------=

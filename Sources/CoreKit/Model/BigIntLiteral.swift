@@ -39,8 +39,8 @@
         Bit(self.base.signum() < 0)
     }
     
-    @inlinable public var bitWidth: Int {
-        self.base.bitWidth
+    @inlinable public var bitWidth: IX {
+        IX(self.base.bitWidth)
     }
     
     /// A three-way comparison against zero.
@@ -49,34 +49,29 @@
     }
     
     /// The word at the given index, from least significant to most.
-    @inlinable public subscript(index: Int) -> UX {
-        UX(self.base[index])
+    @inlinable public subscript(index: IX) -> UX {
+        UX(self.base[Int(index)])
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func withUnsafeBinaryIntegerBody<T>(_ action: (MemoryIntBody<UX>) throws -> T) rethrows -> T {
+    @inlinable public func withUnsafeBinaryIntegerElements<T>(
+        _ action: (MemoryInt<UX>) throws -> T
+    )   rethrows -> T {
+        
         let count = IX(self.bitWidth).division(IX(bitWidth: UX.self)).ceil().assert()
-        var body  = Array<UX>()
-        body.reserveCapacity(Int(bitPattern: count))
-        
-        for index in 0 ..< count {
-            body.append(self[Int(index)])
-        }
-        
-        return try body.withUnsafeBufferPointer {
-            try action(MemoryIntBody($0.baseAddress!, count: IX($0.count)))
-        }
-    }
-    
-    @inlinable public func withUnsafeBinaryIntegerElements<T>(_ action: (MemoryInt<UX>) throws -> T) rethrows -> T {
-        //=--------------------------------------=
-        let appendix = self.appendix
-        //=--------------------------------------=
-        return try self.withUnsafeBinaryIntegerBody {
-            try action(MemoryInt($0, repeating: appendix))
+        return try Namespace.withUnsafeTemporaryAllocation(of: UX.self, count: Int(count)) { body in
+            defer {
+                body.deinitialize()
+            }
+            
+            for index in 0 ..< count {
+                body.initializeElement(at: Int(index), to: self[index])
+            }
+            
+            return try action(MemoryInt(UnsafeBufferPointer(body), repeating: self.appendix)!)
         }
     }
 }
