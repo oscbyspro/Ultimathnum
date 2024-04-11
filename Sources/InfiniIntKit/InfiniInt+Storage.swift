@@ -41,15 +41,15 @@ extension InfiniInt where Element == Element.Magnitude {
         public var base: Base
         
         /// The bit extension of the un/signed source.
-        public var appendix: BitExtension<Element.Magnitude>
+        public var appendix: Element.Magnitude
         
         //=------------------------------------------------------------------------=
         // MARK: Initializers
         //=------------------------------------------------------------------------=
         
-        @inlinable init(_ base: Base, repeating appendix: BitExtension<Element.Magnitude>) {
+        @inlinable init(_ base: Base, repeating appendix: Bit) {
             self.base = base
-            self.appendix = appendix
+            self.appendix = Element(repeating: appendix)
         }
         
         //=------------------------------------------------------------------------=
@@ -57,11 +57,11 @@ extension InfiniInt where Element == Element.Magnitude {
         //=------------------------------------------------------------------------=
         
         @inlinable var isNormal: Bool {
-            self.base.last != self.appendix.element
+            self.base.last != self.appendix
         }
         
         @inlinable mutating func normalize() {
-            while self.base.last == self.appendix.element {
+            while self.base.last == self.appendix {
                 ((self.base)).removeLast()
             }
         }

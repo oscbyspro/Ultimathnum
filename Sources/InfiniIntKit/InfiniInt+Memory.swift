@@ -78,7 +78,7 @@ extension InfiniInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public var appendix: Bit {
-        self.storage.appendix.bit
+        Bit(self.storage.appendix != 0)
     }
     
     @inlinable public borrowing func withUnsafeBinaryIntegerBody<T>(
