@@ -11,7 +11,7 @@
 // MARK: * Exchange Int x Normalization
 //*============================================================================*
 
-extension ExchangeInt where Element == Element.Magnitude {
+extension ExchangeInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

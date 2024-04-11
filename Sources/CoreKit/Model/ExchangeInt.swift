@@ -14,15 +14,6 @@
 @frozen public struct ExchangeInt<Element> where Element: SystemsInteger & UnsignedInteger {
     
     public typealias Element = Element
-    
-    /// A namespace for Element.bitWidth \> Base.Element.bitWidth.
-    @frozen @usableFromInline enum Major { }
-    
-    /// A namespace for Element.bitWidth < Base.Element.bitWidth.
-    @frozen @usableFromInline enum Minor { }
-    
-    /// A namespace for Element.bitWidth == Base.Element.bitWidth.
-    @frozen @usableFromInline enum Equal { }
         
     //=------------------------------------------------------------------------=
     // MARK: State

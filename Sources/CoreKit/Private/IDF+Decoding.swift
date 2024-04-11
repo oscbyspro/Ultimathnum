@@ -143,7 +143,7 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
             forwards: if division.remainder > 0 {
                 var element = 0 as UX
                 
-                for (ascii) in UnsafeBufferPointer(rebasing: digits.removePrefix(count: division.remainder.base)) {
+                for ascii  in UnsafeBufferPointer(rebasing: digits.removePrefix(count: division.remainder.base)) {
                     element = try element &* 10 &+ UX(load: U8(IDF.decode(ascii: ascii)))
                 }
                 
@@ -154,17 +154,17 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
             forwards: while index < words.endIndex {
                 var element = 0 as UX
                 
-                for (ascii) in UnsafeBufferPointer(rebasing: digits.removePrefix(count: self.radix.exponent.base)) {
+                for ascii  in UnsafeBufferPointer(rebasing: digits.removePrefix(count: self.radix.exponent.base)) {
                     element = try element &* 10 &+ UX(load: U8(IDF.decode(ascii: ascii)))
                 }
                 
                 words.initializeElement(at: index, to: SUISS.multiply(&words[..<index], by: radix.power, add: element))
                 index = words .index(after: index)
             }
-            
+            //=----------------------------------=
             Swift.assert(digits.isEmpty)
             Swift.assert(index == words.endIndex)
-                        
+            //=----------------------------------=
             return try Magnitude.exactly(MemoryInt(UnsafeBufferPointer(words))!, isSigned: false).get()
         }
     }
