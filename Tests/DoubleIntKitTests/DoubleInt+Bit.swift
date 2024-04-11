@@ -40,19 +40,19 @@ extension DoubleIntTests {
             typealias M = DoubleInt<Base>.Magnitude
             
             for bit: Bit in [0, 1] {
-                for selection: BitSelection in [.anywhere, .ascending, .descending] {
+                for selection: Bit.Selection in [.anywhere, .ascending, .descending] {
                     Test().same(T(low:  0, high:  0).count(bit, where: selection), bit == 0 ? T.bitWidth : 0)
                     Test().same(T(low: ~0, high: ~0).count(bit, where: selection), bit == 1 ? T.bitWidth : 0)
                 }
                 
-                for selection: BitSelection in [.anywhere] {
+                for selection: Bit.Selection in [.anywhere] {
                     Test().same(T(low:  .lsb, high:  .msb).count(bit, where: selection), bit == 0 ? T.bitWidth - 2 : 2)
                     Test().same(T(low:  .lsb, high: ~.msb).count(bit, where: selection), M(low: Base.bitWidth))
                     Test().same(T(low: ~.lsb, high:  .msb).count(bit, where: selection), M(low: Base.bitWidth))
                     Test().same(T(low: ~.lsb, high: ~.msb).count(bit, where: selection), bit == 1 ? T.bitWidth - 2 : 2)
                 }
                 
-                for selection: BitSelection in [.ascending, .descending] {
+                for selection: Bit.Selection in [.ascending, .descending] {
                     Test().same(T(low:  .lsb, high:  .msb).count(bit, where: selection), (bit == 0) ? 0 : 1)
                     Test().same(T(low:  .lsb, high: ~.msb).count(bit, where: selection), (bit == 0) == (selection == .ascending) ? 0 : 1)
                     Test().same(T(low: ~.lsb, high:  .msb).count(bit, where: selection), (bit == 1) == (selection == .ascending) ? 0 : 1)

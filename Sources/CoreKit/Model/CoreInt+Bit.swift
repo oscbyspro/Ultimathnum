@@ -25,7 +25,7 @@ extension CoreInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func count(_ bit: Bit, where selection: BitSelection) -> Magnitude {
+    @inlinable public func count(_ bit: Bit, where selection: Bit.Selection) -> Magnitude {
         switch (Bool(bit), selection) {
         case (true,    .anywhere): Magnitude(Base.Magnitude(truncatingIfNeeded: ( self).base     .nonzeroBitCount))
         case (false,   .anywhere): Magnitude(Base.Magnitude(truncatingIfNeeded: (~self).base     .nonzeroBitCount))
