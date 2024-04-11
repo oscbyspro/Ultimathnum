@@ -99,9 +99,9 @@ extension BinaryInteger {
             
         }   else {
             
-            if Other.memoryCanBeRebound(to: Self.Element.Magnitude.self) {
-                return self.withUnsafeBinaryIntegerMemory { lhs in
-                    (other).withUnsafeBinaryIntegerMemory(as: Self.Element.Magnitude.self) { rhs in
+            if Other.elementsCanBeRebound(to: Self.Element.Magnitude.self) {
+                return self.withUnsafeBinaryIntegerElements { lhs in
+                    (other).withUnsafeBinaryIntegerElements(as: Self.Element.Magnitude.self) { rhs in
                         MemoryInt.compare(
                             lhs: lhs, lhsIsSigned: Self .isSigned,
                             rhs: rhs, rhsIsSigned: Other.isSigned
@@ -109,9 +109,9 @@ extension BinaryInteger {
                     }!
                 }
                 
-            }   else if Self.memoryCanBeRebound(to: Other.Element.Magnitude.self) {
-                return self.withUnsafeBinaryIntegerMemory(as: Other.Element.Magnitude.self) { lhs in
-                    (other).withUnsafeBinaryIntegerMemory { rhs in
+            }   else if Self.elementsCanBeRebound(to: Other.Element.Magnitude.self) {
+                return self.withUnsafeBinaryIntegerElements(as: Other.Element.Magnitude.self) { lhs in
+                    (other).withUnsafeBinaryIntegerElements { rhs in
                         MemoryInt.compare(
                             lhs: lhs, lhsIsSigned: Self .isSigned,
                             rhs: rhs, rhsIsSigned: Other.isSigned

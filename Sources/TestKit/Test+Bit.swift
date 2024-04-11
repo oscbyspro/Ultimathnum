@@ -44,7 +44,7 @@ extension Test {
         _ expectation: [Element]
     )   where Integer: BinaryInteger, Element: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
-        integer.withUnsafeBinaryIntegerMemory {
+        integer.withUnsafeBinaryIntegerElements {
             let body = Array($0.body.buffer())
             let elements = $0.withMemoryRebound(to: U8.self) {
                 [Element](ExchangeInt($0).body())

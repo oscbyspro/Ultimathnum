@@ -41,7 +41,7 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
     
     @inlinable public func encode<T: BinaryInteger>(_ integer: T) -> String {
         let sign = Sign(bitPattern: integer.isLessThanZero)
-        return integer.magnitude().withUnsafeBinaryIntegerMemoryAsBytes {
+        return integer.magnitude().withUnsafeBinaryIntegerElementsAsBytes {
             self.encode(sign: sign, magnitude: $0)
         }
     }

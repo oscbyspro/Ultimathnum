@@ -18,7 +18,7 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public init<Source>(load source: consuming MemoryInt<Source>) {
-        if Source.memoryCanBeRebound(to: Self.Element.Magnitude.self) {
+        if Source.elementsCanBeRebound(to: Self.Element.Magnitude.self) {
             self = (source).withMemoryRebound(to: Self.Element.Magnitude.self) {
                 var stream = $0.stream()
                 return Self.init(load: &stream)
@@ -84,7 +84,7 @@ extension BinaryInteger {
             }
 
         }   else {
-            self = source.withUnsafeBinaryIntegerMemory(perform: Self.init(load:))
+            self = source.withUnsafeBinaryIntegerElements(perform: Self.init(load:))
         }
     }
     
@@ -92,7 +92,7 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func withUnsafeBinaryIntegerMemory<Value>(
+    @inlinable public func withUnsafeBinaryIntegerElements<Value>(
         perform action: (MemoryInt<Element.Magnitude>) throws -> Value
     )   rethrows -> Value {
         //=--------------------------------------=
@@ -103,20 +103,20 @@ extension BinaryInteger {
         }
     }
     
-    @inlinable public func withUnsafeBinaryIntegerMemoryAsBytes<Value>(
+    @inlinable public func withUnsafeBinaryIntegerElementsAsBytes<Value>(
         perform action: (MemoryInt<U8.Magnitude>) throws -> Value
     )   rethrows -> Value {
         
-        try self.withUnsafeBinaryIntegerMemory(as: U8.self, perform: action)!
+        try self.withUnsafeBinaryIntegerElements(as: U8.self, perform: action)!
     }
     
-    @inlinable public func withUnsafeBinaryIntegerMemory<OtherElement, Value>(
+    @inlinable public func withUnsafeBinaryIntegerElements<OtherElement, Value>(
         as type: OtherElement.Type,
         perform action: (MemoryInt<OtherElement>) throws -> Value
     )   rethrows -> Optional<Value> {
         
-        if  Self.memoryCanBeRebound(to: OtherElement.self) {
-            return try self.withUnsafeBinaryIntegerMemory {
+        if  Self.elementsCanBeRebound(to: OtherElement.self) {
+            return try self.withUnsafeBinaryIntegerElements {
                 try $0.withMemoryRebound(to: OtherElement.self, perform: action)
             }
             
@@ -129,7 +129,7 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func memoryCanBeRebound<OtherElement>(to type: OtherElement.Type) -> Bool where OtherElement: SystemsInteger {
+    @inlinable public static func elementsCanBeRebound<OtherElement>(to type: OtherElement.Type) -> Bool where OtherElement: SystemsInteger {
         //=--------------------------------------=
         let size      = Int.zero == MemoryLayout<Self.Element>.size      % MemoryLayout<OtherElement>.size
         let stride    = Int.zero == MemoryLayout<Self.Element>.stride    % MemoryLayout<OtherElement>.stride

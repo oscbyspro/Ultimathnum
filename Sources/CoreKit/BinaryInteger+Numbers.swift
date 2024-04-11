@@ -79,7 +79,7 @@ extension BinaryInteger {
             }
             
         }   else {
-            return source.withUnsafeBinaryIntegerMemory {
+            return source.withUnsafeBinaryIntegerElements {
                 Self.exactly(elements: $0, isSigned: Other.isSigned)
             }
         }
@@ -90,7 +90,7 @@ extension BinaryInteger {
     /// - TODO: Make the isSigned parameter generic.
     ///
     @inlinable public static func exactly<T>(elements: consuming MemoryInt<T>, isSigned: Bool) -> Fallible<Self> {
-        if T.memoryCanBeRebound(to: Self.Element.Magnitude.self) {
+        if T.elementsCanBeRebound(to: Self.Element.Magnitude.self) {
             
             return  elements.withMemoryRebound(to: Self.Element.Magnitude.self) {
                 var (stream) = $0.stream()

@@ -75,7 +75,7 @@
         perform action: (MemoryIntBody<OtherElement>) throws -> Value
     )   rethrows -> Value {
         //=--------------------------------------=
-        precondition(Self.Element.memoryCanBeRebound(to: OtherElement.self))
+        precondition(Self.Element.elementsCanBeRebound(to: OtherElement.self))
         //=--------------------------------------=
         let ratio = IX(MemoryLayout<Self.Element>.stride / MemoryLayout<OtherElement>.stride)
         let count = self.count * ratio

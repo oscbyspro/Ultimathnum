@@ -26,7 +26,7 @@ extension BinaryInteger {
     }
     
     public func words() -> Array<UX> {
-        self.withUnsafeBinaryIntegerMemoryAsBytes {
+        self.withUnsafeBinaryIntegerElementsAsBytes {
             Array(ExchangeInt($0).body())
         }
     }
