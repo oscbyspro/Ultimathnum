@@ -53,6 +53,10 @@ extension BinaryInteger {
         Bit(self.load(as: Element.self) & Element.lsb != 0)
     }
     
+    @inlinable public func count(_ bit: Bit) -> Magnitude {
+        self.count(bit, where: BitSelection.anywhere)
+    }
+    
     @inlinable public func count(_ selection: BitSelection.Composition) -> Magnitude {
         typealias T = BitSelection
         typealias E = BitSelection.Composition

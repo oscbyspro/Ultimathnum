@@ -44,11 +44,14 @@ extension Test {
         _ expectation: [Element]
     )   where Integer: BinaryInteger, Element: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
-        integer.withUnsafeBinaryIntegerBody {
-            let body = $0.buffer()
-            let chunks = Array(ExchangeInt(body, isSigned: Integer.isSigned, as: Element.self).source())
-            self.pure(chunks.elementsEqual(expectation), "\(Array(body)).body -> \(chunks)")
-            self.elements(chunks, Integer.isSigned, Fallible(integer))
+        integer.withUnsafeBinaryIntegerMemory {
+            let body = Array($0.body.buffer())
+            let elements = $0.withMemoryRebound(to: U8.self) {
+                [Element](ExchangeInt($0).body())
+            }
+            
+            self.pure(elements.elementsEqual(expectation), "\(Array(body)).body -> \(elements)")
+            self.elements(elements, Integer.isSigned, Fallible(integer))
         }
     }
     

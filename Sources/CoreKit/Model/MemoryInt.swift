@@ -28,15 +28,16 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ body: Body, repeating appendix: Bit) {
-        self._body = body
-        self._appendix = appendix
-    }
-    
+    #warning("remove")
     @inlinable public init(_ body: Body, isSigned: Bool) {
         let extensible = Bool(Bit(isSigned) & Bit(body.count > IX.zero))
         let appendix = extensible ? Element.Signitude(bitPattern: body[unchecked: body.count - 1]).appendix : Bit.zero
         self.init(body, repeating: appendix)
+    }
+    
+    @inlinable public init(_ body: Body, repeating appendix: Bit) {
+        self._body = body
+        self._appendix = appendix
     }
     
     //=------------------------------------------------------------------------=
@@ -65,6 +66,14 @@
     
     @inlinable public var appendix: Bit {
         self._appendix
+    }
+    
+    @inlinable public subscript(index: UX) -> Element {
+        if  index < UX(bitPattern: self.body.count) {
+            return self.body[unchecked: IX(bitPattern: index)]
+        }   else {
+            return Element(repeating: self.appendix)
+        }
     }
     
     //=------------------------------------------------------------------------=

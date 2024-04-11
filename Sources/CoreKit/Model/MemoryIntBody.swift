@@ -31,6 +31,14 @@
         self._count = count
     }
     
+    @inlinable public init?(_ buffer: UnsafeBufferPointer<Element>) {
+        if  let start = buffer.baseAddress {
+            self.init(start, count: IX(buffer.count))
+        }   else {
+            return nil
+        }
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=

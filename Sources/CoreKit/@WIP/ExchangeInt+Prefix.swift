@@ -8,17 +8,17 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Exchange Int x Prefix x Bit Pattern
+// MARK: * Exchange Int x Prefix
 //*============================================================================*
 
-extension ExchangeInt where Element == Element.Magnitude {
+extension ExchangeInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
-    
+        
     @inlinable public func prefix(_ count: Int) -> Prefix {
-        Prefix(self.bitPattern, count: count)
+        Prefix(self, count: count)
     }
     
     //*========================================================================*
@@ -39,16 +39,11 @@ extension ExchangeInt where Element == Element.Magnitude {
         //=------------------------------------------------------------------------=
         
         @inlinable init(_ base: ExchangeInt, count: Int) {
+            //=----------------------------------=
+            precondition(count >= Int.zero, String.indexOutOfBounds())
+            //=----------------------------------=
             self.base  = base
             self.count = count
-        }
-        
-        //=------------------------------------------------------------------------=
-        // MARK: Utilities
-        //=------------------------------------------------------------------------=
-        
-        @inlinable public var appendix: BitExtension<Element> {
-            self.base.appendix
         }
         
         //=------------------------------------------------------------------------=
@@ -83,55 +78,11 @@ extension ExchangeInt where Element == Element.Magnitude {
             index + distance
         }
         
-        @inlinable public consuming func makeIterator() -> Iterator {
-            Iterator(self, from: Int.zero)
-        }
-        
         @inlinable public subscript(index: Int) -> Element {
+            //=----------------------------------=
             precondition(index < self.count, String.indexOutOfBounds())
-            return self.base[index]
-        }
-        
-        //*====================================================================*
-        // MARK: * Iterator
-        //*====================================================================*
-        
-        @frozen public struct Iterator: Sequence, IteratorProtocol {
-            
-            //=----------------------------------------------------------------=
-            // MARK: State
-            //=----------------------------------------------------------------=
-
-            @usableFromInline var base:  ExchangeInt.Prefix
-            @usableFromInline var index: ExchangeInt.Prefix.Index
-            
-            //=----------------------------------------------------------------=
-            // MARK: Initializers
-            //=----------------------------------------------------------------=
-
-            @inlinable internal init(_ base: ExchangeInt.Prefix, from index: ExchangeInt.Prefix.Index) {
-                self.base = base; self.index = index
-            }
-            
-            //=----------------------------------------------------------------=
-            // MARK: Utilities
-            //=----------------------------------------------------------------=
-            
-            @inlinable public var appendix: BitExtension<Element> {
-                self.base.appendix
-            }
-            
-            @inlinable public var count: Int {
-                self.base.distance(from: self.index, to: self.base.endIndex)
-            }
-            
-            @inlinable mutating public func next() -> Element? {
-                guard self.index < self.base.endIndex else {
-                    return nil
-                };  defer {
-                    self.base.formIndex(after: &self.index)
-                };  return self.base[self.index] as Element
-            }
+            //=----------------------------------=
+            return self.base[UX(bitPattern: index)]
         }
     }
 }

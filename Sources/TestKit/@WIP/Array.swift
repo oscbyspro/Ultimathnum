@@ -7,21 +7,23 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Exchange Int x Bit
+// MARK: * Array
 //*============================================================================*
 
-extension ExchangeInt {
+extension Array where Element: SystemsInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: ExchangeInt<Base, Element.Magnitude>) {
-        self.init(bitPattern.base, repeating: BitExtension(bitPattern: bitPattern.appendix))
-    }
-    
-    @inlinable public var bitPattern: ExchangeInt<Base, Element.Magnitude> {
-        BitPattern(self.base, repeating: BitExtension(bitPattern: self.appendix))
+    public func withExchangeInt<T, U>(as type: T.Type, repeating bit: Bit, perform action: (ExchangeInt<T>) -> U) -> U {
+        self.withUnsafeBufferPointer {
+            $0.withMemoryRebound(to: U8.self) {
+                action(ExchangeInt(MemoryInt(MemoryIntBody($0)!, repeating: bit)))
+            }
+        }
     }
 }

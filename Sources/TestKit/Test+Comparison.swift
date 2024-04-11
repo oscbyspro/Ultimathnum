@@ -106,18 +106,7 @@ extension Test {
         _ expectation: Signum
     )   where T: BinaryInteger, U: BinaryInteger {
         //=--------------------------------------=
-        lhs.withUnsafeBinaryIntegerMemory { lhs in
-        rhs.withUnsafeBinaryIntegerMemory { rhs in
-            comparison(
-                ExchangeInt(lhs.body.buffer(), isSigned: T.isSigned, as: T.Element.self),
-                ExchangeInt(rhs.body.buffer(), isSigned: U.isSigned, as: U.Element.self),
-                expectation
-            )
-        }}
-        //=--------------------------------------=
-        guard let rhs = rhs as? T else { return }
-        //=--------------------------------------=
-        for (lhs, rhs, expectation) in [(lhs, rhs, expectation), (rhs, lhs, expectation.negated())] {
+        func unidirectional<A, B>(_ lhs: A, _ rhs: B, _ expectation: Signum) where A: BinaryInteger, B: BinaryInteger {
             signum: if rhs.signum() == Signum.same {
                 let result:  Signum = lhs.signum()
                 let success: Bool = result == expectation
@@ -132,58 +121,6 @@ extension Test {
             
             less: do {
                 let result:  Bool = lhs <  rhs
-                let success: Bool = result == (expectation == .less)
-                pure(success, "\(lhs) <  \(rhs) -> \(result)")
-            }
-            
-            same: do {
-                let result:  Bool = lhs == rhs
-                let success: Bool = result == (expectation == .same)
-                pure(success, "\(lhs) == \(rhs) -> \(result)")
-            }
-            
-            more: do {
-                let result:  Bool = lhs >  rhs
-                let success: Bool = result == (expectation == .more)
-                pure(success, "\(lhs) >  \(rhs) -> \(result)")
-            }
-            
-            nonless: do {
-                let result:  Bool = lhs >= rhs
-                let success: Bool = result == (expectation != .less)
-                pure(success, "\(lhs) >= \(rhs) -> \(result)")
-            }
-            
-            nonsame: do {
-                let result:  Bool = lhs != rhs
-                let success: Bool = result == (expectation != .same)
-                pure(success, "\(lhs) != \(rhs) -> \(result)")
-            }
-            
-            nonmore: do {
-                let result:  Bool = lhs <= rhs
-                let success: Bool = result == (expectation != .more)
-                pure(success, "\(lhs) <= \(rhs) -> \(result)")
-            }
-        }
-    }
-    
-    public func  comparison<A, B, C, D>(_ lhs: ExchangeInt<A, B>, _ rhs: ExchangeInt<C, D>, _ expectation: Signum) {
-        func unidirectional<E, F, G, H>(_ lhs: ExchangeInt<E, F>, _ rhs: ExchangeInt<G, H>, _ expectation: Signum) {
-            signum: if rhs.signum() == Signum.same {
-                let result:  Signum = lhs.signum()
-                let success: Bool = result == expectation
-                pure(success, "\(lhs).signum() -> \(result)")
-            }
-            
-            comparison: do {
-                let result:  Signum = lhs.compared(to: rhs)
-                let success: Bool = result == expectation
-                pure(success, "\(lhs).compared(to: \(rhs)) -> \(result)")
-            }
-            
-            less: do {
-                let result:  Bool = lhs < rhs
                 let success: Bool = result == (expectation == .less)
                 pure(success, "\(lhs) <  \(rhs) -> \(result)")
             }

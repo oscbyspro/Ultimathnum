@@ -7,27 +7,20 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Body
+// MARK: * Exchange Int x Body
 //*============================================================================*
 
-extension BinaryInteger {
+extension ExchangeInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    public func body() -> Array<Element.Magnitude> {
-        self.withUnsafeBinaryIntegerBody {
-            Array($0.buffer())
-        }
-    }
-    
-    public func words() -> Array<UX> {
-        self.withUnsafeBinaryIntegerMemoryAsBytes {
-            Array(ExchangeInt($0).body())
-        }
+    @inlinable public func body() -> Prefix {
+        let ratio = UX(bitPattern: MemoryLayout<Element>.stride)
+        let major = self.base.body.count &>> IX(bitPattern: ratio.count(0, where: .ascending))
+        let minor = self.base.body.count &   IX(bitPattern: ratio.minus(1).assert())
+        return Prefix(self, count: Int(bitPattern: major.plus(IX(Bit(minor != 0))).assert()))
     }
 }

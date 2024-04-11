@@ -23,29 +23,29 @@ final class ExchangeIntTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func check<A, B>(
-        _ lhs: [A], 
-        _ rhs: [B],
-        isSigned: Bool? = nil,
-        test: Test = .init()
+        _ test: Test,
+        _ lhs:  [A],
+        _ rhs:  [B],
+        repeating bit: Bit? = nil
     )   where A: SystemsInteger & UnsignedInteger, B: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
-        checkOneWayOnly(lhs, rhs, isSigned: isSigned, test: test)
-        checkOneWayOnly(rhs, lhs, isSigned: isSigned, test: test)
+        checkOneWayOnly(test, lhs, rhs, repeating: bit)
+        checkOneWayOnly(test, rhs, lhs, repeating: bit)
     }
     
     func checkOneWayOnly<A, B>(
-        _ lhs: [A], 
-        _ rhs: [B],
-        isSigned: Bool? = nil, 
-        test: Test = .init()
+        _ test: Test,
+        _ lhs:  [A],
+        _ rhs:  [B],
+        repeating bit: Bit? = nil
     )   where A: SystemsInteger & UnsignedInteger, B: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
-        if  isSigned != false {
-            test.collection(T(lhs as [A], isSigned: true,  as: B.self).source(), rhs)
+        if  bit !=  0 {
+            test.collection(T.body(lhs, repeating: 1, as: B.self), rhs)
         }
         
-        if  isSigned != true {
-            test.collection(T(lhs as [A], isSigned: false, as: B.self).source(), rhs)
+        if  bit !=  1 {
+            test.collection(T.body(lhs, repeating: 0, as: B.self), rhs)
         }
     }
 }

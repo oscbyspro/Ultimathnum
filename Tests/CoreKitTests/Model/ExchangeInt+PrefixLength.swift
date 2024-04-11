@@ -20,75 +20,75 @@ extension ExchangeIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testPrefixLength() {
-        Test().same([          ], Array(T([0, 0] as [U8], repeating: 0, as: U8.self).prefix(0)))
-        Test().same([0         ], Array(T([0, 0] as [U8], repeating: 0, as: U8.self).prefix(1)))
-        Test().same([0, 0      ], Array(T([0, 0] as [U8], repeating: 0, as: U8.self).prefix(2)))
-        Test().same([0, 0, 0   ], Array(T([0, 0] as [U8], repeating: 0, as: U8.self).prefix(3)))
-        Test().same([0, 0, 0, 0], Array(T([0, 0] as [U8], repeating: 0, as: U8.self).prefix(4)))
+    func testPrefixLength() {        
+        Test().same([          ], Array(T.prefix([0, 0] as [U8], repeating: 0, count: 0, as: U8.self)))
+        Test().same([0         ], Array(T.prefix([0, 0] as [U8], repeating: 0, count: 1, as: U8.self)))
+        Test().same([0, 0      ], Array(T.prefix([0, 0] as [U8], repeating: 0, count: 2, as: U8.self)))
+        Test().same([0, 0, 0   ], Array(T.prefix([0, 0] as [U8], repeating: 0, count: 3, as: U8.self)))
+        Test().same([0, 0, 0, 0], Array(T.prefix([0, 0] as [U8], repeating: 0, count: 4, as: U8.self)))
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests x Succinct
+    // MARK: Tests x Normalization
     //=------------------------------------------------------------------------=
     
-    func testSuccinctEqualSequence() {
-        Test().same([       ],        Array(T([0, 0, 0]        as [U8], isSigned: true,  as: U8.self).succinct()))
-        Test().same([1      ],        Array(T([1, 0, 0]        as [U8], isSigned: true,  as: U8.self).succinct()))
-        Test().same([1, 2   ],        Array(T([1, 2, 0]        as [U8], isSigned: true,  as: U8.self).succinct()))
-        Test().same([1, 2, 3],        Array(T([1, 2, 3]        as [U8], isSigned: true,  as: U8.self).succinct()))
-        
-        Test().same([       ].map(~), Array(T([0, 0, 0].map(~) as [U8], isSigned: true,  as: U8.self).succinct()))
-        Test().same([1      ].map(~), Array(T([1, 0, 0].map(~) as [U8], isSigned: true,  as: U8.self).succinct()))
-        Test().same([1, 2   ].map(~), Array(T([1, 2, 0].map(~) as [U8], isSigned: true,  as: U8.self).succinct()))
-        Test().same([1, 2, 3].map(~), Array(T([1, 2, 3].map(~) as [U8], isSigned: true,  as: U8.self).succinct()))
-        
-        Test().same([       ],        Array(T([0, 0, 0]        as [U8], isSigned: false, as: U8.self).succinct()))
-        Test().same([1      ],        Array(T([1, 0, 0]        as [U8], isSigned: false, as: U8.self).succinct()))
-        Test().same([1, 2   ],        Array(T([1, 2, 0]        as [U8], isSigned: false, as: U8.self).succinct()))
-        Test().same([1, 2, 3],        Array(T([1, 2, 3]        as [U8], isSigned: false, as: U8.self).succinct()))
-        
-        Test().same([0, 0, 0].map(~), Array(T([0, 0, 0].map(~) as [U8], isSigned: false, as: U8.self).succinct()))
-        Test().same([1, 0, 0].map(~), Array(T([1, 0, 0].map(~) as [U8], isSigned: false, as: U8.self).succinct()))
-        Test().same([1, 2, 0].map(~), Array(T([1, 2, 0].map(~) as [U8], isSigned: false, as: U8.self).succinct()))
-        Test().same([1, 2, 3].map(~), Array(T([1, 2, 3].map(~) as [U8], isSigned: false, as: U8.self).succinct()))
-    }
-    
-    func testSuccinctMajorSequence() {
-        Test().same([              ],        Array(T([0, 0, 0, 0]        as [U8], isSigned: true,  as: U16.self).succinct()))
-        Test().same([              ],        Array(T([0, 0, 0, 0]        as [U8], isSigned: false, as: U16.self).succinct()))
-        Test().same([              ].map(~), Array(T([0, 0, 0, 0].map(~) as [U8], isSigned: true,  as: U16.self).succinct()))
-        Test().same([0x0000, 0x0000].map(~), Array(T([0, 0, 0, 0].map(~) as [U8], isSigned: false, as: U16.self).succinct()))
-                
-        Test().same([0x8000                ].map(~), Array(T([0, 0x80, 0, 0, 0, 0].map(~) as [U8], isSigned: true, as: U16.self).succinct()))
-        Test().same([0x0000, 0x0001        ].map(~), Array(T([0, 0, 0x01, 0, 0, 0].map(~) as [U8], isSigned: true, as: U16.self).succinct()))
-        Test().same([0x0000, 0x8000        ].map(~), Array(T([0, 0, 0, 0x80, 0, 0].map(~) as [U8], isSigned: true, as: U16.self).succinct()))
-        Test().same([0x0000, 000000, 0x0001].map(~), Array(T([0, 0, 0, 0, 0x01, 0].map(~) as [U8], isSigned: true, as: U16.self).succinct()))
-        
-        for isSigned in [true, false] {
-            Test().same([0x8000                ], Array(T([0, 0x80, 0, 0, 0, 0] as [U8], isSigned: isSigned, as: U16.self).succinct()))
-            Test().same([0x0000, 0x0001        ], Array(T([0, 0, 0x01, 0, 0, 0] as [U8], isSigned: isSigned, as: U16.self).succinct()))
-            Test().same([0x0000, 0x8000        ], Array(T([0, 0, 0, 0x80, 0, 0] as [U8], isSigned: isSigned, as: U16.self).succinct()))
-            Test().same([0x0000, 000000, 0x0001], Array(T([0, 0, 0, 0, 0x01, 0] as [U8], isSigned: isSigned, as: U16.self).succinct()))
+    func testNormalEqualSequence() {
+        for bit: Bit in [0, 1] {
+            let x = U8(repeating:  bit)
+            let y = U8(repeating: ~bit)
+            
+            Test().same([       ],        T.normalized([x, x, x]        as [U8], repeating: bit, as: U8.self))
+            Test().same([1      ],        T.normalized([1, x, x]        as [U8], repeating: bit, as: U8.self))
+            Test().same([1, 2   ],        T.normalized([1, 2, x]        as [U8], repeating: bit, as: U8.self))
+            Test().same([1, 2, 3],        T.normalized([1, 2, 3]        as [U8], repeating: bit, as: U8.self))
+            
+            Test().same([       ].map(~), T.normalized([y, y, y].map(~) as [U8], repeating: bit, as: U8.self))
+            Test().same([1      ].map(~), T.normalized([1, y, y].map(~) as [U8], repeating: bit, as: U8.self))
+            Test().same([1, 2   ].map(~), T.normalized([1, 2, y].map(~) as [U8], repeating: bit, as: U8.self))
+            Test().same([1, 2, 3].map(~), T.normalized([1, 2, 3].map(~) as [U8], repeating: bit, as: U8.self))
         }
     }
     
-    func testSuccintMinorSequence() {
-        Test().same([          ],        Array(T([0, 0]        as [U16], isSigned: true,  as: U8.self).succinct()))
-        Test().same([          ],        Array(T([0, 0]        as [U16], isSigned: false, as: U8.self).succinct()))
-        Test().same([          ].map(~), Array(T([0, 0].map(~) as [U16], isSigned: true,  as: U8.self).succinct()))
-        Test().same([0, 0, 0, 0].map(~), Array(T([0, 0].map(~) as [U16], isSigned: false, as: U8.self).succinct()))
+    func testNormalMajorSequence() {
+        Test().same([              ],        T.normalized([0, 0, 0, 0]        as [U8], repeating: 0, as:  U16.self))
+        Test().same([0x0000, 0x0000],        T.normalized([0, 0, 0, 0]        as [U8], repeating: 1, as:  U16.self))
+        Test().same([0x0000, 0x0000].map(~), T.normalized([0, 0, 0, 0].map(~) as [U8], repeating: 0, as:  U16.self))
+        Test().same([              ],        T.normalized([0, 0, 0, 0].map(~) as [U8], repeating: 1, as:  U16.self))
         
-        Test().same([0, 0x80         ],  Array(T([0x8000, 0x0000, 0x0000] as [U16], isSigned: true, as: U8.self).succinct()))
-        Test().same([0, 0, 0x01      ],  Array(T([0x0000, 0x0001, 0x0000] as [U16], isSigned: true, as: U8.self).succinct()))
-        Test().same([0, 0, 0, 0x80   ],  Array(T([0x0000, 0x8000, 0x0000] as [U16], isSigned: true, as: U8.self).succinct()))
-        Test().same([0, 0, 0, 0, 0x01],  Array(T([0x0000, 0x0000, 0x0001] as [U16], isSigned: true, as: U8.self).succinct()))
+        Test().same([0x8000                ].map(~), T.normalized([0, 0x80, 0, 0, 0, 0].map(~) as [U8], repeating: 1, as:  U16.self))
+        Test().same([0x0000, 0x0001        ].map(~), T.normalized([0, 0, 0x01, 0, 0, 0].map(~) as [U8], repeating: 1, as:  U16.self))
+        Test().same([0x0000, 0x8000        ].map(~), T.normalized([0, 0, 0, 0x80, 0, 0].map(~) as [U8], repeating: 1, as:  U16.self))
+        Test().same([0x0000, 000000, 0x0001].map(~), T.normalized([0, 0, 0, 0, 0x01, 0].map(~) as [U8], repeating: 1, as:  U16.self))
         
-        for isSigned in [true, false] {
-            Test().same([0, 0x80         ], Array(T([0x8000, 0x0000, 0x0000] as [U16], isSigned: isSigned, as: U8.self).succinct()))
-            Test().same([0, 0, 0x01      ], Array(T([0x0000, 0x0001, 0x0000] as [U16], isSigned: isSigned, as: U8.self).succinct()))
-            Test().same([0, 0, 0, 0x80   ], Array(T([0x0000, 0x8000, 0x0000] as [U16], isSigned: isSigned, as: U8.self).succinct()))
-            Test().same([0, 0, 0, 0, 0x01], Array(T([0x0000, 0x0000, 0x0001] as [U16], isSigned: isSigned, as: U8.self).succinct()))
+        for bit: Bit in [0, 1] {
+            let x = U8(repeating: bit)
+            
+            Test().same([0x8000                ], T.normalized([0, 0x80, x, x, x, x] as [U8], repeating: bit, as:  U16.self))
+            Test().same([0x0000, 0x0001        ], T.normalized([0, 0, 0x01, 0, x, x] as [U8], repeating: bit, as:  U16.self))
+            Test().same([0x0000, 0x8000        ], T.normalized([0, 0, 0, 0x80, x, x] as [U8], repeating: bit, as:  U16.self))
+            Test().same([0x0000, 000000, 0x0001], T.normalized([0, 0, 0, 0, 0x01, 0] as [U8], repeating: bit, as:  U16.self))
+        }
+    }
+    
+    func testNormalMinorSequence() {
+        Test().same([          ],        T.normalized([0, 0]        as [U16], repeating: 0, as:  U8.self))
+        Test().same([0, 0, 0, 0],        T.normalized([0, 0]        as [U16], repeating: 1, as:  U8.self))
+        Test().same([0, 0, 0, 0].map(~), T.normalized([0, 0].map(~) as [U16], repeating: 0, as:  U8.self))
+        Test().same([          ].map(~), T.normalized([0, 0].map(~) as [U16], repeating: 1, as:  U8.self))
+        
+        Test().same([0, 0x80         ], T.normalized([0x8000, 0x0000, 0x0000] as [U16], repeating: 0, as:  U8.self))
+        Test().same([0, 0, 0x01      ], T.normalized([0x0000, 0x0001, 0x0000] as [U16], repeating: 0, as:  U8.self))
+        Test().same([0, 0, 0, 0x80   ], T.normalized([0x0000, 0x8000, 0x0000] as [U16], repeating: 0, as:  U8.self))
+        Test().same([0, 0, 0, 0, 0x01], T.normalized([0x0000, 0x0000, 0x0001] as [U16], repeating: 0, as:  U8.self))
+        
+        for bit: Bit in [0, 1] {
+            let x = U16(repeating: bit) &<< 8
+            let xxxxxx = U16(repeating: bit)
+            
+            Test().same([0, 0x80         ], T.normalized([0x8000, xxxxxx, xxxxxx] as [U16], repeating: bit, as:  U8.self))
+            Test().same([0, 0, 0x01      ], T.normalized([0x0000, x|0x01, xxxxxx] as [U16], repeating: bit, as:  U8.self))
+            Test().same([0, 0, 0, 0x80   ], T.normalized([0x0000, 0x8000, xxxxxx] as [U16], repeating: bit, as:  U8.self))
+            Test().same([0, 0, 0, 0, 0x01], T.normalized([0x0000, 0x0000, x|0x01] as [U16], repeating: bit, as:  U8.self))
         }
     }
 }

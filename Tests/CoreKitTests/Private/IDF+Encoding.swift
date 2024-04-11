@@ -104,14 +104,19 @@ final class IntegerDescriptionFormatTestsOnEncoding: XCTestCase {
     
     func check(_ test: Test, _ integer: some BinaryInteger, _ expectation: String) {
         let sign = Sign(bitPattern: integer < 0)
-        let magnitude = [UX](ExchangeInt(integer.magnitude().body(), isSigned: false).source())
+        let magnitude: [UX] = integer.magnitude().words()
         
         test.same(encoder.encode(integer), expectation)
         test.same(encoder.encode(sign: sign, magnitude: magnitude), expectation)
     }
     
     func check(_ test: Test,_ sign: Sign, _ magnitude: [U64], _ expectation: String) {
-        let magnitude = [UX](ExchangeInt(magnitude, isSigned: false).source())
-        test.same(encoder.encode(sign: sign, magnitude: magnitude), expectation)
+        magnitude.withUnsafeBufferPointer {
+            $0.withMemoryRebound(to: U8.self) {
+                let body = MemoryIntBody($0.baseAddress!, count: IX($0.count))
+                let magnitude = MemoryInt(body, repeating: Bit.zero)
+                test.same(encoder.encode(sign: sign, magnitude: magnitude), expectation)
+            }
+        }
     }
 }

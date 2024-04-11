@@ -7,27 +7,17 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Body
+// MARK: * Exchange Int x Normalization
 //*============================================================================*
 
-extension BinaryInteger {
+extension ExchangeInt where Element == Element.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func body() -> Array<Element.Magnitude> {
-        self.withUnsafeBinaryIntegerBody {
-            Array($0.buffer())
-        }
-    }
-    
-    public func words() -> Array<UX> {
-        self.withUnsafeBinaryIntegerMemoryAsBytes {
-            Array(ExchangeInt($0).body())
-        }
+    @inlinable public consuming func normalized() -> Prefix {
+        Self(self.base.normalized()).body()
     }
 }

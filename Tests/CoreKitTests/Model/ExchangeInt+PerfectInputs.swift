@@ -20,59 +20,87 @@ extension ExchangeIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func test32As32() {
-        check([              ] as [U32], [              ] as [U32])
-        check([ 1            ] as [U32], [ 1            ] as [U32])
-        check([ 1,  2        ] as [U32], [ 1,  2        ] as [U32])
-        check([ 1,  2,  3    ] as [U32], [ 1,  2,  3    ] as [U32])
-        check([ 1,  2,  3,  4] as [U32], [ 1,  2,  3,  4] as [U32])
+    func testSizeIsSame() {
+        typealias X = SystemsInteger & UnsignedInteger
         
-        check([              ] as [U32], [              ] as [U32])
-        check([~1            ] as [U32], [~1            ] as [U32])
-        check([~1, ~2        ] as [U32], [~1, ~2        ] as [U32])
-        check([~1, ~2, ~3    ] as [U32], [~1, ~2, ~3    ] as [U32])
-        check([~1, ~2, ~3, ~4] as [U32], [~1, ~2, ~3, ~4] as [U32])
+        func whereIs<A: X, B: X>(_ source: A.Type, _ destination: B.Type) {
+            guard UX(bitWidth: source) == UX(bitWidth: destination) else { return }
+            
+            for bit in [Bit.zero, Bit.one] {
+                check(Test(), [              ] as [A], [              ] as [B], repeating: bit)
+                check(Test(), [ 1            ] as [A], [ 1            ] as [B], repeating: bit)
+                check(Test(), [ 1,  2        ] as [A], [ 1,  2        ] as [B], repeating: bit)
+                check(Test(), [ 1,  2,  3    ] as [A], [ 1,  2,  3    ] as [B], repeating: bit)
+                check(Test(), [ 1,  2,  3,  4] as [A], [ 1,  2,  3,  4] as [B], repeating: bit)
+                
+                check(Test(), [              ] as [A], [              ] as [B], repeating: bit)
+                check(Test(), [~1            ] as [A], [~1            ] as [B], repeating: bit)
+                check(Test(), [~1, ~2        ] as [A], [~1, ~2        ] as [B], repeating: bit)
+                check(Test(), [~1, ~2, ~3    ] as [A], [~1, ~2, ~3    ] as [B], repeating: bit)
+                check(Test(), [~1, ~2, ~3, ~4] as [A], [~1, ~2, ~3, ~4] as [B], repeating: bit)
+            }
+        }
+        
+        for source in coreSystemsIntegersWhereIsUnsigned {
+            for destination in coreSystemsIntegersWhereIsUnsigned {
+                whereIs(source, destination)
+            }
+        }
     }
     
-    func test32As64() {
-        check([                              ] as [U32], [              ] as [U64])
-        check([ 1,  0                        ] as [U32], [ 1            ] as [U64])
-        check([ 1,  0,  2,  0                ] as [U32], [ 1,  2        ] as [U64])
-        check([ 1,  0,  2,  0,  3,  0        ] as [U32], [ 1,  2,  3    ] as [U64])
-        check([ 1,  0,  2,  0,  3,  0,  4,  0] as [U32], [ 1,  2,  3,  4] as [U64])
+    func testSizeIsLess() {
+        typealias X = SystemsInteger & UnsignedInteger
         
-        check([                              ] as [U32], [              ] as [U64])
-        check([~1, ~0                        ] as [U32], [~1            ] as [U64])
-        check([~1, ~0, ~2, ~0                ] as [U32], [~1, ~2        ] as [U64])
-        check([~1, ~0, ~2, ~0, ~3, ~0        ] as [U32], [~1, ~2, ~3    ] as [U64])
-        check([~1, ~0, ~2, ~0, ~3, ~0, ~4, ~0] as [U32], [~1, ~2, ~3, ~4] as [U64])
+        func whereIs<A: X, B: X>(_ source: A.Type, _ destination: B.Type) {
+            guard UX(bitWidth: source) == 2 * UX(bitWidth: destination) else { return }
+            
+            for bit in [Bit.zero, Bit.one] {
+                check(Test(), [              ] as [A], [                              ] as [B], repeating: bit)
+                check(Test(), [ 1            ] as [A], [ 1,  0                        ] as [B], repeating: bit)
+                check(Test(), [ 1,  2        ] as [A], [ 1,  0,  2,  0                ] as [B], repeating: bit)
+                check(Test(), [ 1,  2,  3    ] as [A], [ 1,  0,  2,  0,  3,  0        ] as [B], repeating: bit)
+                check(Test(), [ 1,  2,  3,  4] as [A], [ 1,  0,  2,  0,  3,  0,  4,  0] as [B], repeating: bit)
+                
+                check(Test(), [              ] as [A], [                              ] as [B], repeating: bit)
+                check(Test(), [~1            ] as [A], [~1, ~0                        ] as [B], repeating: bit)
+                check(Test(), [~1, ~2        ] as [A], [~1, ~0, ~2, ~0                ] as [B], repeating: bit)
+                check(Test(), [~1, ~2, ~3    ] as [A], [~1, ~0, ~2, ~0, ~3, ~0        ] as [B], repeating: bit)
+                check(Test(), [~1, ~2, ~3, ~4] as [A], [~1, ~0, ~2, ~0, ~3, ~0, ~4, ~0] as [B], repeating: bit)
+            }
+        }
+        
+        for source in coreSystemsIntegersWhereIsUnsigned {
+            for destination in coreSystemsIntegersWhereIsUnsigned {
+                whereIs(source, destination)
+            }
+        }
     }
     
-    func test64As64() {
-        check([              ] as [U64], [              ] as [U64])
-        check([ 1            ] as [U64], [ 1            ] as [U64])
-        check([ 1,  2        ] as [U64], [ 1,  2        ] as [U64])
-        check([ 1,  2,  3    ] as [U64], [ 1,  2,  3    ] as [U64])
-        check([ 1,  2,  3,  4] as [U64], [ 1,  2,  3,  4] as [U64])
+    func testSizeIsMore() {
+        typealias X = SystemsInteger & UnsignedInteger
         
-        check([              ] as [U64], [              ] as [U64])
-        check([~1            ] as [U64], [~1            ] as [U64])
-        check([~1, ~2        ] as [U64], [~1, ~2        ] as [U64])
-        check([~1, ~2, ~3    ] as [U64], [~1, ~2, ~3    ] as [U64])
-        check([~1, ~2, ~3, ~4] as [U64], [~1, ~2, ~3, ~4] as [U64])
-    }
-    
-    func test64As32() {
-        check([              ] as [U64], [                              ] as [U32])
-        check([ 1            ] as [U64], [ 1,  0                        ] as [U32])
-        check([ 1,  2        ] as [U64], [ 1,  0,  2,  0                ] as [U32])
-        check([ 1,  2,  3    ] as [U64], [ 1,  0,  2,  0,  3,  0        ] as [U32])
-        check([ 1,  2,  3,  4] as [U64], [ 1,  0,  2,  0,  3,  0,  4,  0] as [U32])
+        func whereIs<A: X, B: X>(_ source: A.Type, _ destination: B.Type) {
+            guard 2 * UX(bitWidth: source) == UX(bitWidth: destination) else { return }
+            
+            for bit in [Bit.zero, Bit.one] {
+                check(Test(), [                              ] as [A], [              ] as [B], repeating: bit)
+                check(Test(), [ 1,  0                        ] as [A], [ 1            ] as [B], repeating: bit)
+                check(Test(), [ 1,  0,  2,  0                ] as [A], [ 1,  2        ] as [B], repeating: bit)
+                check(Test(), [ 1,  0,  2,  0,  3,  0        ] as [A], [ 1,  2,  3    ] as [B], repeating: bit)
+                check(Test(), [ 1,  0,  2,  0,  3,  0,  4,  0] as [A], [ 1,  2,  3,  4] as [B], repeating: bit)
+                
+                check(Test(), [                              ] as [A], [              ] as [B], repeating: bit)
+                check(Test(), [~1, ~0                        ] as [A], [~1            ] as [B], repeating: bit)
+                check(Test(), [~1, ~0, ~2, ~0                ] as [A], [~1, ~2        ] as [B], repeating: bit)
+                check(Test(), [~1, ~0, ~2, ~0, ~3, ~0        ] as [A], [~1, ~2, ~3    ] as [B], repeating: bit)
+                check(Test(), [~1, ~0, ~2, ~0, ~3, ~0, ~4, ~0] as [A], [~1, ~2, ~3, ~4] as [B], repeating: bit)
+            }
+        }
         
-        check([              ] as [U64], [                              ] as [U32])
-        check([~1            ] as [U64], [~1, ~0                        ] as [U32])
-        check([~1, ~2        ] as [U64], [~1, ~0, ~2, ~0                ] as [U32])
-        check([~1, ~2, ~3    ] as [U64], [~1, ~0, ~2, ~0, ~3, ~0        ] as [U32])
-        check([~1, ~2, ~3, ~4] as [U64], [~1, ~0, ~2, ~0, ~3, ~0, ~4, ~0] as [U32])
+        for source in coreSystemsIntegersWhereIsUnsigned {
+            for destination in coreSystemsIntegersWhereIsUnsigned {
+                whereIs(source, destination)
+            }
+        }
     }
 }
