@@ -131,11 +131,11 @@ extension CoreIntTests {
         var success = 0
         var failure = 0
         
-        for divisor     in T.Magnitude.min...T.Magnitude.max {
-            for high    in T.Magnitude.min...T.Magnitude.max {
+        for divisor     in T.min...T.max {
+            for high    in T.min...T.max {
                 for low in T.Magnitude.min...T.Magnitude.max {
-                    let dividend = Doublet(high: T(bitPattern: high), low: low)
-                    if !T.division(dividend, by: T(bitPattern: divisor)).error {
+                    let dividend = Doublet(high: high, low: low)
+                    if !T.division(dividend, by: divisor).error {
                         success += 1
                     }   else {
                         failure += 1
@@ -154,11 +154,11 @@ extension CoreIntTests {
         var success = 0
         var failure = 0
         
-        for divisor     in T.Magnitude.min...T.Magnitude.max {
-            for high    in T.Magnitude.min...T.Magnitude.max {
+        for divisor     in T.min...T.max {
+            for high    in T.min...T.max {
                 for low in T.Magnitude.min...T.Magnitude.max {
-                    let dividend = Doublet(high: T(bitPattern: high), low: low)
-                    if !T.division(dividend, by: T(bitPattern: divisor)).error {
+                    let dividend = Doublet(high: high, low: low)
+                    if !T.division(dividend, by: divisor).error {
                         success += 1
                     }   else {
                         failure += 1
