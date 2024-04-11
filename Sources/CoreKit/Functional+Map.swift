@@ -8,16 +8,28 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Arithmetic x Combine
+// MARK: * Functional x Map
 //*============================================================================*
 
-extension Arithmetic {
+extension Functional {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func combine(_ error: consuming Bool) -> Fallible<Self> {
-        Fallible(self, error: error)
+    @inlinable public consuming func map<T>(_ map: (Self) throws -> T) rethrows -> T {
+        try map(self)
+    }
+    
+    @inlinable public consuming func map<T>(_ map: (Self) throws -> Fallible<T>) rethrows -> Fallible<T> {
+        try map(self)
+    }
+    
+    @inlinable public consuming func map<T, U>(_ input: borrowing U, map: (Self, U) throws -> T) rethrows -> T {
+        try map(self, input)
+    }
+    
+    @inlinable public consuming func map<T, U>(_ input: borrowing U, map: (Self, U) throws -> Fallible<T>) rethrows -> Fallible<T> {
+        try map(self, input)
     }
 }

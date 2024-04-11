@@ -8,28 +8,32 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Arithmetic x Map
+// MARK: * Functional x Capture
 //*============================================================================*
 
-extension Arithmetic {
+extension Functional {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func map<T>(_ map: (Self) throws -> T) rethrows -> T {
-        try map(self)
+    @inlinable public mutating func capture(_ map: (Self) throws -> Self) rethrows {
+        self = try map(self)
     }
     
-    @inlinable public consuming func map<T>(_ map: (Self) throws -> Fallible<T>) rethrows -> Fallible<T> {
-        try map(self)
+    @inlinable public mutating func capture(_ map: (Self) throws -> Fallible<Self>) rethrows -> Bool {
+        let result = try map(self)
+        self = result.value
+        return result.error
     }
     
-    @inlinable public consuming func map<T, U>(_ input: borrowing U, map: (Self, U) throws -> T) rethrows -> T {
-        try map(self, input)
+    @inlinable public mutating func capture<Input>(_ input: borrowing Input, map: (Self, Input) throws -> Self) rethrows {
+        self = try map(self, input)
     }
     
-    @inlinable public consuming func map<T, U>(_ input: borrowing U, map: (Self, U) throws -> Fallible<T>) rethrows -> Fallible<T> {
-        try map(self, input)
+    @inlinable public mutating func capture<Input>(_ input: borrowing Input, map: (Self, Input) throws -> Fallible<Self>) rethrows -> Bool {
+        let result = try map(self, input)
+        self = result.value
+        return result.error
     }
 }

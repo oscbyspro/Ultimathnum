@@ -28,7 +28,7 @@
 /// Its stride is Swift.Int which is used to step through Swift's ranges.
 ///
 public protocol BinaryInteger<BitPattern>:
-    Arithmetic,
+    Functional,
     BitCastable,
     BitOperable,
     Comparable,
