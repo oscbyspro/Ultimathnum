@@ -11,7 +11,7 @@
 // MARK: * Big Int Literal
 //*============================================================================*
 
-@frozen public struct BigIntLiteral: ExpressibleByIntegerLiteral, RandomAccessCollection, Sendable {
+@frozen public struct BigIntLiteral: ExpressibleByIntegerLiteral, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -58,7 +58,15 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public func withUnsafeBinaryIntegerBody<T>(_ action: (MemoryIntBody<UX>) throws -> T) rethrows -> T {
-        try Array(self).withUnsafeBufferPointer {
+        let count = IX(self.bitWidth).division(IX(bitWidth: UX.self)).ceil().assert()
+        var body  = Array<UX>()
+        body.reserveCapacity(Int(bitPattern: count))
+        
+        for index in 0 ..< count {
+            body.append(self[Int(index)])
+        }
+        
+        return try body.withUnsafeBufferPointer {
             try action(MemoryIntBody($0.baseAddress!, count: IX($0.count)))
         }
     }
@@ -70,55 +78,5 @@
         return try self.withUnsafeBinaryIntegerBody {
             try action(MemoryInt($0, repeating: appendix))
         }
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Collection
-//=----------------------------------------------------------------------------=
-
-extension BigIntLiteral {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Accessors
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public var count: Int {
-        let width = self.bitWidth as Int
-        let major = width &>> UInt.bitWidth.trailingZeroBitCount
-        let minor = width &  (UInt.bitWidth &- 1)
-        return major &+ (minor == 0 ? 0 : 1)
-    }
-    
-    @inlinable public var startIndex: Int {
-        0 as Int
-    }
-    
-    @inlinable public var endIndex: Int {
-        self.count
-    }
-    
-    @inlinable public var indices: Range<Int> {
-        0 as Int ..< self.count
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public func distance(from start: Int, to end: Int) -> Int {
-        end - start
-    }
-    
-    @inlinable public func index(after index: Int) -> Int {
-        index + 1 as Int
-    }
-    
-    @inlinable public func index(before index: Int) -> Int {
-        index - 1 as Int
-    }
-    
-    @inlinable public func index(_ index: Int, offsetBy distance: Int) -> Int {
-        index + distance
     }
 }
