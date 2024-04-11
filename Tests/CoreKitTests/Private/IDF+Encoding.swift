@@ -104,13 +104,12 @@ final class IntegerDescriptionFormatTestsOnEncoding: XCTestCase {
     
     func check(_ test: Test, _ integer: some BinaryInteger, _ expectation: String) {
         let sign = Sign(bitPattern: integer < 0)
-        let magnitude: [UX] = integer.magnitude().words()
-        
+        let magnitude: [UX] = integer.magnitude().body()
         test.same(encoder.encode(integer), expectation)
-        test.same(encoder.encode(sign: sign, magnitude: magnitude), expectation)
+        self.check(test,  sign, magnitude, expectation)
     }
     
-    func check(_ test: Test,_ sign: Sign, _ magnitude: [U64], _ expectation: String) {
+    func check<T>(_ test: Test,_ sign: Sign, _ magnitude: [T], _ expectation: String) where T: SystemsInteger & UnsignedInteger {
         magnitude.withUnsafeBufferPointer {
             $0.withMemoryRebound(to: U8.self) {
                 test.same(encoder.encode(sign: sign, magnitude: MemoryInt($0)!), expectation)

@@ -46,14 +46,6 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
         }
     }
     
-    @inlinable public func encode<T>(sign: Sign, magnitude: [T]) -> String where T: SystemsInteger & UnsignedInteger {
-        magnitude.withUnsafeBufferPointer {
-            $0.withMemoryRebound(to: U8.self) {
-                self.encode(sign: sign, magnitude: MemoryInt<U8>($0, repeating: Bit.zero)!)
-            }
-        }
-    }
-    
     @inlinable public func encode(sign: Sign, magnitude: MemoryInt<U8>) -> String {
         Namespace.withUnsafeTemporaryAllocation(copying: ExchangeInt<UX>(magnitude).body()) {
             var magnitude: UnsafeMutableBufferPointer<UX> = $0

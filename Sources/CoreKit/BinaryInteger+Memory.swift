@@ -129,6 +129,41 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// ### Development
+    ///
+    /// This is an Unsafe Pyramid of Doom convenience method.
+    ///
+    /// ``` swift
+    /// IX(123).elements.body()       // when view types exist
+    /// IX(123).elements.prefix(1234) // when view types exist
+    /// IX(123).elements.normalized() // when view types exist
+    /// ```
+    ///
+    @inlinable public func body() -> [Element.Magnitude] {
+        self.body(as: [Element.Magnitude].self)
+    }
+    
+    /// ### Development
+    ///
+    /// This is an Unsafe Pyramid of Doom convenience method.
+    ///
+    /// ``` swift
+    /// IX(123).elements.body()       // when view types exist
+    /// IX(123).elements.prefix(1234) // when view types exist
+    /// IX(123).elements.normalized() // when view types exist
+    /// ```
+    ///
+    @inlinable public func body<T>(as type: T.Type = T.self) -> T where
+    T: RangeReplaceableCollection, T.Element: SystemsInteger & UnsignedInteger {
+        self.withUnsafeBinaryIntegerElementsAsBytes {
+            T(ExchangeInt($0).body())
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
     @inlinable public static func elementsCanBeRebound<OtherElement>(to type: OtherElement.Type) -> Bool where OtherElement: SystemsInteger {
         //=--------------------------------------=
         let size      = Int.zero == MemoryLayout<Self.Element>.size      % MemoryLayout<OtherElement>.size
