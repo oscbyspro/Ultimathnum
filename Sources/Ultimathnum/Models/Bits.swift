@@ -19,19 +19,19 @@ import CoreKit
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    @usableFromInline let base: MemoryInt<U8>
+    @usableFromInline let base: DataInt<U8>
     @usableFromInline let count: UX
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ base: MemoryInt<U8>, count: UX) {
+    @inlinable public init(_ base: DataInt<U8>, count: UX) {
         self.base  = base
         self.count = count
     }
     
-    @inlinable public init(normalizing base: MemoryInt<U8>) {
+    @inlinable public init(normalizing base: DataInt<U8>) {
         self.base  = base.normalized()
         let  index = UX(bitPattern: self.base.body.count)
         let  major = index * 8

@@ -112,7 +112,7 @@ final class IntegerDescriptionFormatTestsOnEncoding: XCTestCase {
     func check<T>(_ test: Test,_ sign: Sign, _ magnitude: [T], _ expectation: String) where T: SystemsInteger & UnsignedInteger {
         magnitude.withUnsafeBufferPointer {
             $0.withMemoryRebound(to: U8.self) {
-                test.same(encoder.encode(sign: sign, magnitude: MemoryInt($0)!), expectation)
+                test.same(encoder.encode(sign: sign, magnitude: DataInt($0)!), expectation)
             }
         }
     }

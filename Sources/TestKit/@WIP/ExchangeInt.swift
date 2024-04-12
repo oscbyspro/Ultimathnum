@@ -27,7 +27,7 @@ extension ExchangeInt {
         
         base.withUnsafeBufferPointer {
             $0.withMemoryRebound(to: U8.self) {
-                let elements = ExchangeInt(MemoryInt($0, repeating: bit)!)
+                let elements = ExchangeInt(DataInt($0, repeating: bit)!)
                 return Array(elements.body())
             }
         }
@@ -41,7 +41,7 @@ extension ExchangeInt {
         
         base.withUnsafeBufferPointer {
             $0.withMemoryRebound(to: U8.self) {
-                let elements = ExchangeInt(MemoryInt($0, repeating: bit)!)
+                let elements = ExchangeInt(DataInt($0, repeating: bit)!)
                 return Array(elements.normalized())
             }
         }
@@ -56,7 +56,7 @@ extension ExchangeInt {
 
         base.withUnsafeBufferPointer {
             $0.withMemoryRebound(to: U8.self) {
-                let elements = ExchangeInt(MemoryInt($0, repeating: bit)!)
+                let elements = ExchangeInt(DataInt($0, repeating: bit)!)
                 return Array(elements.prefix(count))
             }
         }

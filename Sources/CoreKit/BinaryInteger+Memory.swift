@@ -18,7 +18,7 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func exactly(
-        _ source: MemoryInt<Element.Magnitude>, mode: some Signedness
+        _ source: DataInt<Element.Magnitude>, mode: some Signedness
     )   -> Fallible<Self> {
         //=--------------------------------------=
         let instance = Self(load: source)
@@ -37,7 +37,7 @@ extension BinaryInteger {
     }
     
     @inlinable public static func exactly(
-        _ source: MemoryInt<U8.Magnitude>, mode: some Signedness
+        _ source: DataInt<U8.Magnitude>, mode: some Signedness
     )   -> Fallible<Self> {
         //=--------------------------------------=
         let instance = Self(load: source)
@@ -56,7 +56,7 @@ extension BinaryInteger {
     }
     
     @inlinable public static func exactly<OtherElement>(
-        _ source: MemoryInt<OtherElement>, mode: some Signedness
+        _ source: DataInt<OtherElement>, mode: some Signedness
     )   -> Fallible<Self> {
                 
         if  OtherElement.elementsCanBeRebound(to: Self.Element.Magnitude.self) {
@@ -71,7 +71,7 @@ extension BinaryInteger {
         }
     }
     
-    @inlinable public init<OtherElement>(load source: MemoryInt<OtherElement>) {
+    @inlinable public init<OtherElement>(load source: DataInt<OtherElement>) {
         if  OtherElement.elementsCanBeRebound(to: Self.Element.Magnitude.self) {
             self = (source).withMemoryRebound(to: Self.Element.Magnitude.self, perform: Self.init(load:))
         }   else {
@@ -140,18 +140,18 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public func withUnsafeBinaryIntegerElements<Value>(
-        perform action: (MemoryInt<Element.Magnitude>) throws -> Value
+        perform action: (DataInt<Element.Magnitude>) throws -> Value
     )   rethrows -> Value {
         //=--------------------------------------=
         let appendix: Bit = self.appendix
         //=--------------------------------------=
         return try self.withUnsafeBinaryIntegerBody {
-            try action(MemoryInt($0, repeating: appendix))
+            try action(DataInt($0, repeating: appendix))
         }
     }
     
     @inlinable public func withUnsafeBinaryIntegerElementsAsBytes<Value>(
-        perform action: (MemoryInt<U8.Magnitude>) throws -> Value
+        perform action: (DataInt<U8.Magnitude>) throws -> Value
     )   rethrows -> Value {
         
         try self.withUnsafeBinaryIntegerElements(as: U8.self, perform: action)!
@@ -159,7 +159,7 @@ extension BinaryInteger {
     
     @inlinable public func withUnsafeBinaryIntegerElements<OtherElement, Value>(
         as type: OtherElement.Type,
-        perform action: (MemoryInt<OtherElement>) throws -> Value
+        perform action: (DataInt<OtherElement>) throws -> Value
     )   rethrows -> Optional<Value> {
         
         if  Self.elementsCanBeRebound(to: OtherElement.self) {

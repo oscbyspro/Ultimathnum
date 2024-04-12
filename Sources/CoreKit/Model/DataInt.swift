@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Memory Int
+// MARK: * Data Int
 //*============================================================================*
 
-@frozen public struct MemoryInt<Element> where Element: SystemsInteger & UnsignedInteger {
+@frozen public struct DataInt<Element> where Element: SystemsInteger & UnsignedInteger {
         
     public typealias Element = Element
     

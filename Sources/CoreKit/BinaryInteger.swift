@@ -113,9 +113,9 @@ where
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable init(load source: MemoryInt<U8.Magnitude>)
+    @inlinable init(load source: DataInt<U8.Magnitude>)
     
-    @inlinable init(load source: MemoryInt<Element.Magnitude>)
+    @inlinable init(load source: DataInt<Element.Magnitude>)
         
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -237,5 +237,5 @@ where
     ///
     @inlinable var appendix: Bit { get }
     
-    @inlinable borrowing func withUnsafeBinaryIntegerBody<T>(_ action: (MemoryInt<Element.Magnitude>.Body) throws -> T) rethrows -> T
+    @inlinable borrowing func withUnsafeBinaryIntegerBody<T>(_ action: (DataInt<Element.Magnitude>.Body) throws -> T) rethrows -> T
 }

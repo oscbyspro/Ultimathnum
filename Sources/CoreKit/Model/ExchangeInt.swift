@@ -19,27 +19,27 @@
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    @usableFromInline let base: MemoryInt<U8>
+    @usableFromInline let base: DataInt<U8>
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ base: MemoryInt<U8>, as element: Element.Type = Element.self) {
+    @inlinable public init(_ base: DataInt<U8>, as element: Element.Type = Element.self) {
         self.base = base
     }
     
-    @inlinable public init(_ body: MemoryInt<U8>.Body, repeating appendix: Bit = .zero, as element: Element.Type = Element.self) {
-        self.init(MemoryInt(body, repeating: appendix))
+    @inlinable public init(_ body: DataInt<U8>.Body, repeating appendix: Bit = .zero, as element: Element.Type = Element.self) {
+        self.init(DataInt(body, repeating: appendix))
     }
     
     @inlinable public init?(_ body: UnsafeBufferPointer<U8>, repeating appendix: Bit = .zero, as element: Element.Type = Element.self) {
-        guard let base = MemoryInt(body, repeating: appendix) else { return nil }
+        guard let base = DataInt(body, repeating: appendix) else { return nil }
         self.init(base)
     }
     
     @inlinable public init(_ start: UnsafePointer<U8>, count: IX, repeating appendix: Bit = .zero, as element: Element.Type = Element.self) {
-        self.init(MemoryInt(start, count: count, repeating: appendix))
+        self.init(DataInt(start, count: count, repeating: appendix))
     }
     
     //=------------------------------------------------------------------------=

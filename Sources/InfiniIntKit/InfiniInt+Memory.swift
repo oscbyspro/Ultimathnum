@@ -65,11 +65,11 @@ extension InfiniInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(load source: MemoryInt<I8.Magnitude>) {
+    @inlinable public init(load source: DataInt<I8.Magnitude>) {
         fatalError("TODO")
     }
     
-    @inlinable public init(load source: MemoryInt<Element.Magnitude>) {
+    @inlinable public init(load source: DataInt<Element.Magnitude>) {
         fatalError("TODO")
     }
     
@@ -82,11 +82,11 @@ extension InfiniInt {
     }
     
     @inlinable public borrowing func withUnsafeBinaryIntegerBody<T>(
-        _ action: (MemoryInt<Element.Magnitude>.Body) throws -> T
+        _ action: (DataInt<Element.Magnitude>.Body) throws -> T
     )   rethrows -> T {
         
         try self.storage.base.withUnsafeBufferPointer {
-            try action(MemoryInt.Body($0)!)
+            try action(DataInt.Body($0)!)
         }
     }
 }

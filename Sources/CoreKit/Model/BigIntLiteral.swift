@@ -65,10 +65,7 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func withUnsafeBinaryIntegerElements<T>(
-        _ action: (MemoryInt<UX>) throws -> T
-    )   rethrows -> T {
-        
+    @inlinable public func withUnsafeBinaryIntegerElements<T>(_ action: (DataInt<UX>) throws -> T) rethrows -> T {
         let count = IX(self.bitWidth).division(IX(size: UX.self)).ceil().assert()
         return try Namespace.withUnsafeTemporaryAllocation(of: UX.self, count: Int(count)) { body in
             defer {
@@ -79,7 +76,7 @@
                 body.initializeElement(at: Int(index), to: self[index])
             }
             
-            return try action(MemoryInt(UnsafeBufferPointer(body), repeating: self.appendix)!)
+            return try action(DataInt(UnsafeBufferPointer(body), repeating: self.appendix)!)
         }
     }
 }

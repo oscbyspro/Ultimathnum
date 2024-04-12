@@ -61,7 +61,7 @@ extension CoreInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
         
-    @inlinable public init(load source: MemoryInt<I8.Magnitude>) {
+    @inlinable public init(load source: DataInt<I8.Magnitude>) {
         if  source.body.count >= IX(MemoryLayout<Self>.stride) {
             
             self = UnsafeRawPointer(source.body.start).loadUnaligned(as: Self.self)
@@ -77,7 +77,7 @@ extension CoreInt {
         }
     }
     
-    @inlinable public init(load source: MemoryInt<Element.Magnitude>) {
+    @inlinable public init(load source: DataInt<Element.Magnitude>) {
         self.init(bitPattern: source[UX.zero])
     }
     
@@ -90,12 +90,12 @@ extension CoreInt {
     }
     
     @inlinable public borrowing func withUnsafeBinaryIntegerBody<T>(
-        _ action: (MemoryInt<Element.Magnitude>.Body) throws -> T
+        _ action: (DataInt<Element.Magnitude>.Body) throws -> T
     )   rethrows -> T {
         
         try Swift.withUnsafePointer(to: self) {
             try $0.withMemoryRebound(to: Element.Magnitude.self, capacity: 1) {
-                try action(MemoryInt.Body($0, count: 1))
+                try action(DataInt.Body($0, count: 1))
             }
         }
     }

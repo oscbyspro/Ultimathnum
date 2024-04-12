@@ -46,7 +46,7 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
         }
     }
     
-    @inlinable public func encode(sign: Sign, magnitude: MemoryInt<U8>) -> String {
+    @inlinable public func encode(sign: Sign, magnitude: DataInt<U8>) -> String {
         Namespace.withUnsafeTemporaryAllocation(copying: ExchangeInt<UX>(magnitude).body()) {
             var magnitude: UnsafeMutableBufferPointer<UX> = $0
             return self.encode(sign: sign, magnitude: &magnitude)
@@ -55,7 +55,7 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
     
     /// ### Development
     ///
-    /// - TODO: Consider `MutableMemoryInt<UX>` instead of `UnsafeMutableBufferPointer<UX>`.
+    /// - TODO: Consider `MutableDataInt<UX>` instead of `UnsafeMutableBufferPointer<UX>`.
     ///
     @usableFromInline func encode(sign: Sign, magnitude: inout UnsafeMutableBufferPointer<UX>) -> String {
         let maxChunkCount = Int(self.radix.divisibilityByPowerUpperBound(magnitude: magnitude))

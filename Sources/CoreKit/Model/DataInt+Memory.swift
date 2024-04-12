@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Memory Int x Memory
+// MARK: * Data Int x Memory
 //*============================================================================*
 
-extension MemoryInt {
+extension DataInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -19,22 +19,22 @@ extension MemoryInt {
     
     @inlinable public borrowing func withMemoryRebound<Destination, Value>(
         to type: Destination.Type,
-        perform action: (MemoryInt<Destination>) throws -> Value
+        perform action: (DataInt<Destination>) throws -> Value
     )   rethrows -> Value {
         //=--------------------------------------=
         let appendix = self.appendix
         //=--------------------------------------=
         return try self.body.withMemoryRebound(to: Destination.self) {
-            try action(MemoryInt<Destination>($0, repeating: appendix))
+            try action(DataInt<Destination>($0, repeating: appendix))
         }
     }
 }
 
 //*============================================================================*
-// MARK: * Memory Int x Memory x Body
+// MARK: * Data Int x Memory x Body
 //*============================================================================*
 
-extension MemoryInt.Body {
+extension DataInt.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -42,7 +42,7 @@ extension MemoryInt.Body {
     
     @inlinable public borrowing func withMemoryRebound<Destination, Value>(
         to type: Destination.Type,
-        perform action: (MemoryInt<Destination>.Body) throws -> Value
+        perform action: (DataInt<Destination>.Body) throws -> Value
     )   rethrows -> Value {
         //=--------------------------------------=
         precondition(Element.elementsCanBeRebound(to: Destination.self))
@@ -50,7 +50,7 @@ extension MemoryInt.Body {
         let ratio = IX(size: Element.self) / IX(size: Destination.self)
         let count = self.count * ratio
         return try  self.start.withMemoryRebound(to:  Destination.self, capacity: Int(count)) {
-            try action(MemoryInt<Destination>.Body($0, count: count))
+            try action(DataInt<Destination>.Body($0, count: count))
         }
     }
 }

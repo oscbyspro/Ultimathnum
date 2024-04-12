@@ -166,7 +166,7 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
             Swift.assert(digits.isEmpty)
             Swift.assert(index == words.endIndex)
             //=----------------------------------=
-            return try Magnitude.exactly(MemoryInt(UnsafeBufferPointer(words))!, mode: .unsigned).get()
+            return try Magnitude.exactly(DataInt(UnsafeBufferPointer(words))!, mode: .unsigned).get()
         }
     }
 }
