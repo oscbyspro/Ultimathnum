@@ -69,7 +69,7 @@
         _ action: (MemoryInt<UX>) throws -> T
     )   rethrows -> T {
         
-        let count = IX(self.bitWidth).division(IX(bitWidth: UX.self)).ceil().assert()
+        let count = IX(self.bitWidth).division(IX(size: UX.self)).ceil().assert()
         return try Namespace.withUnsafeTemporaryAllocation(of: UX.self, count: Int(count)) { body in
             defer {
                 body.deinitialize()

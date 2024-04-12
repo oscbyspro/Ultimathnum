@@ -31,11 +31,7 @@ import CoreKit
         Source.mode
     }
     
-    @inlinable public static var isSigned: Bool {
-        Element.isSigned
-    }
-    
-    @inlinable public static var bitWidth: Magnitude {
+    @inlinable public static var size: Magnitude {
         Magnitude(repeating: 1)
     }
     

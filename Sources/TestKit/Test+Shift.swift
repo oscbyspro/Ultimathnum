@@ -44,7 +44,7 @@ extension Test {
                 same({ var x = instance; x >>= distance; return x }(), expectation)
             }
             
-            if !distance.isLessThanZero, distance.magnitude() < T.bitWidth {
+            if !distance.isLessThanZero, distance.magnitude() < T.size {
                 shift(instance, distance, expectation, .left,  .masked)
             }
             
@@ -60,7 +60,7 @@ extension Test {
                 same({ var x = instance; x <<= distance; return x }(), expectation)
             }
             
-            if !distance.isLessThanZero, distance.magnitude() < T.bitWidth {
+            if !distance.isLessThanZero, distance.magnitude() < T.size {
                 shift(instance, distance, expectation, .right, .masked)
             }
             
@@ -73,7 +73,7 @@ extension Test {
             
             with(distance)
             
-            if  let increment = try? T.exactly(magnitude: T.bitWidth).get() {
+            if  let increment = try? T.exactly(magnitude: T.size).get() {
                 if  let distance = try? distance.plus(increment).get() {
                     with(distance)
                 }
@@ -100,7 +100,7 @@ extension Test {
 
             with(distance)
             
-            if  let increment = try? T.exactly(magnitude: T.bitWidth).get() {
+            if  let increment = try? T.exactly(magnitude: T.size).get() {
                 if  let distance = try? distance.plus(increment).get() {
                     with(distance)
                 }

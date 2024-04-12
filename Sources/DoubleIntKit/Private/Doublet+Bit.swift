@@ -21,13 +21,13 @@ extension Doublet {
     
     @inlinable public init<T>(load source: T) where T: SystemsInteger<UX.BitPattern> {
         let low  = Low (load: source)
-        let high = High(load: source >> T(bitWidth: Low.self))
+        let high = High(load: source >> T(size: Low.self))
         self.init(low: low, high: high)
     }
     
     @inlinable public func load<T>(as type: T.Type) -> T where T: SystemsInteger<UX.BitPattern> {
         let low  = self.low .load(as: T.self)
-        let high = self.high.load(as: T.self) << T(bitWidth: Low.self)
+        let high = self.high.load(as: T.self) << T(size: Low.self)
         return T.init(bitPattern: low | high)
     }
     
@@ -47,13 +47,13 @@ extension Doublet {
         case .ascending:
             
             count  = UX(load: self.low .count(bit, where: selection))
-            guard count == UX(bitWidth: Base.self) else { break }
+            guard count == UX(size: Base.self) else { break }
             count += UX(load: self.high.count(bit, where: selection))
             
         case .descending:
             
             count  = UX(load: self.high.count(bit, where: selection))
-            guard count == UX(bitWidth: Base.self) else { break }
+            guard count == UX(size: Base.self) else { break }
             count += UX(load: self.low .count(bit, where: selection))
             
         }

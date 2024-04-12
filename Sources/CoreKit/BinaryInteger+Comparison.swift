@@ -93,12 +93,12 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public func compared<Other>(to other: Other) -> Signum where Other: BinaryInteger {
-        if !Self.bitWidth.isInfinite, !Other.bitWidth.isInfinite {
+        if !Self.size.isInfinite, !Other.size.isInfinite {
             
-            if  UX(load: Self.bitWidth) < UX(load: Other.bitWidth) {
+            if  UX(load: Self.size) < UX(load: Other.size) {
                 return Other(load: self).compared(to: other)
                 
-            }   else if UX(load: Self.bitWidth) > UX(load: Other.bitWidth) {
+            }   else if UX(load: Self.size) > UX(load: Other.size) {
                 return self.compared(to: Self(load: other))
                 
             }   else if Self.isSigned, !Other.isSigned {

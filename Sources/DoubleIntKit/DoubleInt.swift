@@ -39,8 +39,8 @@ import CoreKit
         Base.mode
     }
     
-    @inlinable public static var bitWidth: Magnitude {
-        Magnitude(Storage.bitWidth)
+    @inlinable public static var size: Magnitude {
+        Magnitude(Storage.size)
     }
     
     //=------------------------------------------------------------------------=

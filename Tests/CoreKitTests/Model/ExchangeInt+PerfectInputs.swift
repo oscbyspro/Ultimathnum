@@ -24,7 +24,7 @@ extension ExchangeIntTests {
         typealias X = SystemsInteger & UnsignedInteger
         
         func whereIs<A: X, B: X>(_ source: A.Type, _ destination: B.Type) {
-            guard UX(bitWidth: source) == UX(bitWidth: destination) else { return }
+            guard UX(size: source) == UX(size: destination) else { return }
             
             for bit in [Bit.zero, Bit.one] {
                 check(Test(), [              ] as [A], [              ] as [B], repeating: bit)
@@ -52,7 +52,7 @@ extension ExchangeIntTests {
         typealias X = SystemsInteger & UnsignedInteger
         
         func whereIs<A: X, B: X>(_ source: A.Type, _ destination: B.Type) {
-            guard UX(bitWidth: source) == 2 * UX(bitWidth: destination) else { return }
+            guard UX(size: source) == 2 * UX(size: destination) else { return }
             
             for bit in [Bit.zero, Bit.one] {
                 check(Test(), [              ] as [A], [                              ] as [B], repeating: bit)
@@ -80,7 +80,7 @@ extension ExchangeIntTests {
         typealias X = SystemsInteger & UnsignedInteger
         
         func whereIs<A: X, B: X>(_ source: A.Type, _ destination: B.Type) {
-            guard 2 * UX(bitWidth: source) == UX(bitWidth: destination) else { return }
+            guard 2 * UX(size: source) == UX(size: destination) else { return }
             
             for bit in [Bit.zero, Bit.one] {
                 check(Test(), [                              ] as [A], [              ] as [B], repeating: bit)

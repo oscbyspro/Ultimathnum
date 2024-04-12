@@ -60,7 +60,7 @@ where
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    /// Indicates whether this type can represent negative values.
+    /// Indicates whether this integer type can represent negative values.
     ///
     /// ```
     /// ┌──────┬──────────┬──────┬──────┐
@@ -73,18 +73,18 @@ where
     ///
     @inlinable static var mode: Mode { get }
     
-    /// The bit width of this type.
+    /// The number of bits you can store in the body of this integer type.
     ///
     /// ```
     /// ┌──────┬───────────────────┐
-    /// │ type │ bitWidth          │
+    /// │ type │ size              │
     /// ├──────┼───────────────────┤
     /// │ I64  │ 64                │
     /// │ IXL  │ UXL(repeating: 1) │
     /// └──────┴───────────────────┘
     /// ```
     ///
-    @inlinable static var bitWidth: Magnitude { get }
+    @inlinable static var size: Magnitude { get }
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers

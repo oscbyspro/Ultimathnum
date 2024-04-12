@@ -22,13 +22,13 @@ extension Test {
     public func invariants<T>(_ type: T.Type, _ id: SystemsIntegerID = .init()) where T: SystemsInteger {
         //=--------------------------------------=
         same(
-            T.bitWidth.count(.each(1)),
+            T.size.count(.each(1)),
             T.Magnitude(1),
             "\(T.self).bitWidth must be a power of 2"
         )
         nonless(
-            UX(bitWidth: T.self),
-            UX(bitWidth: T.Element.self),
+            UX(size: T.self),
+            UX(size: T.Element.self),
             "\(T.self) must be at least as wide as \(T.Element.self)"
         )
         //=--------------------------------------=
@@ -38,7 +38,7 @@ extension Test {
     public func invariants<T>(_ type: T.Type, _ id: BinaryIntegerID = .init()) where T: BinaryInteger {
         //=--------------------------------------=
         same(
-            T.Element.bitWidth.count(.each(1)),
+            T.Element.size.count(.each(1)),
             T.Element.Magnitude(1),
             "\(T.Element.self).bitWidth must be a power of 2"
         )

@@ -27,7 +27,7 @@ extension BinaryInteger {
         
         if  Self.isSigned {
             
-            if  Self.bitWidth < Other.bitWidth {
+            if  Self.size < Other.size {
                 
                 return Other(load: self).plus(distance).map(Self.exactly)
                 
@@ -64,7 +64,7 @@ extension BinaryInteger {
         as type: Other.Type = Other.self
     )   -> Fallible<Other> where Other: SignedInteger {
         
-        if  Self.bitWidth < Other.bitWidth {
+        if  Self.size < Other.size {
             
             return Other(load: other).minus(Other(load: self))
         

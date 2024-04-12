@@ -20,14 +20,14 @@ extension Doublet {
     //=------------------------------------------------------------------------=
     
     @inlinable package static func &<<(instance: consuming Self, distance: Base) -> Self {
-        let distance = Base.Magnitude(bitPattern: distance) & (Base.bitWidth &<< 1 &- 1)
+        let distance = Base.Magnitude(bitPattern: distance) & (Base.size &<< 1 &- 1)
         
-        if  distance.load(as: UX.self) >= UX(bitWidth: Base.self) {
-            instance.high     = Base(bitPattern: instance.low &<< (distance &- Base.bitWidth))
+        if  distance.load(as: UX.self) >= UX(size: Base.self) {
+            instance.high     = Base(bitPattern: instance.low &<< (distance &- Base.size))
             instance.low      = Base.Magnitude(repeating: Bit(false))
         }   else if distance != Base.Magnitude() {
             instance.high  &<<= Base(bitPattern: distance)
-            instance.high    |= Base(bitPattern: instance.low &>> (Base.bitWidth &- distance))
+            instance.high    |= Base(bitPattern: instance.low &>> (Base.size &- distance))
             instance.low   &<<= distance
         }
         
@@ -35,14 +35,14 @@ extension Doublet {
     }
     
     @inlinable package static func &>>(instance: consuming Self, distance: Base) -> Self {
-        let distance = Base.Magnitude(bitPattern: distance) & (Base.bitWidth &<< 1 &- 1)
+        let distance = Base.Magnitude(bitPattern: distance) & (Base.size &<< 1 &- 1)
         
-        if  distance.load(as: UX.self) >= UX(bitWidth: Base.self) {
-            instance.low      = Base.Magnitude(bitPattern: instance.high &>> Base(bitPattern: distance &- Base.bitWidth))
+        if  distance.load(as: UX.self) >= UX(size: Base.self) {
+            instance.low      = Base.Magnitude(bitPattern: instance.high &>> Base(bitPattern: distance &- Base.size))
             instance.high     = Base(repeating: Bit(instance.high.isLessThanZero))
         }   else if distance != Base.Magnitude() {
             instance.low   &>>= distance
-            instance.low     |= Base.Magnitude(bitPattern: instance.high &<< Base(bitPattern: Base.bitWidth &- distance))
+            instance.low     |= Base.Magnitude(bitPattern: instance.high &<< Base(bitPattern: Base.size &- distance))
             instance.high  &>>= Base(bitPattern: distance)
         }
         

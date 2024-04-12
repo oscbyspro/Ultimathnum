@@ -48,8 +48,8 @@ final class CoreIntTests: XCTestCase {
     func testLsbMsb() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             Test().same(T.lsb.count(.ascending (1)), 1)
-            Test().same(T.lsb.count(.descending(0)), T.bitWidth - 1)
-            Test().same(T.msb.count(.ascending (0)), T.bitWidth - 1)
+            Test().same(T.lsb.count(.descending(0)), T.size - 1)
+            Test().same(T.msb.count(.ascending (0)), T.size - 1)
             Test().same(T.msb.count(.descending(1)), 1)
         }
         

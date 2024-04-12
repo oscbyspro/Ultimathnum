@@ -17,15 +17,15 @@ extension SystemsInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func bitWidth<Other>(
+    @inlinable public static func size<Other>(
         relativeTo other: Other.Type
     )   -> (comparison: Signum, ratio: UX) where Other: SystemsInteger {
         //=--------------------------------------=
-        Swift.assert(Self .bitWidth.count(1) == 1)
-        Swift.assert(Other.bitWidth.count(1) == 1)
+        Swift.assert(Self .size.count(1) == 1)
+        Swift.assert(Other.size.count(1) == 1)
         //=--------------------------------------=
-        let lhs = UX(bitWidth: Self .self)
-        let rhs = UX(bitWidth: Other.self)
+        let lhs = UX(size: Self .self)
+        let rhs = UX(size: Other.self)
         let comparison: Signum = lhs.compared(to: rhs)
         return switch comparison {
         case Signum.less: (comparison: comparison, ratio: rhs &>> lhs.count(.ascending(0)))

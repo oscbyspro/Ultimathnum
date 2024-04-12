@@ -76,7 +76,7 @@ extension Doublet where Base == Base.Magnitude {
         //=--------------------------------------=
         // divisor is zero
         //=--------------------------------------=
-        if  normalization.load(as: UX.self) == Self.bitWidth.load(as: UX.self) {
+        if  normalization.load(as: UX.self) == Self.size.load(as: UX.self) {
             return Fallible.failure(Division(quotient: Self(low: 0, high: 0), remainder: self))
         }
         //=--------------------------------------=
@@ -105,7 +105,7 @@ extension Doublet where Base == Base.Magnitude {
         //=--------------------------------------=
         // division: 2121
         //=--------------------------------------=
-        if  normalization.load(as: UX.self) >= UX(bitWidth: Base.self) {
+        if  normalization.load(as: UX.self) >= UX(size: Base.self) {
             let result: Division<Self, Base> = self.division2121(unchecked: divisor.low)
             return Division(quotient: result.quotient, remainder: Self(low: result.remainder, high: 0))
         }

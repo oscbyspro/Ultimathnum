@@ -47,10 +47,10 @@ extension CoreIntTests {
                 Test().shift( 8 as T,  2 as T,  2 as T, .right, semantics)
                 Test().shift( 8 as T,  3 as T,  1 as T, .right, semantics)
                 //=------------------------------=
-                Test().shift(~0 as T,  0 as T, ~(~0 << T(bitPattern: T.bitWidth - (T.isSigned ? 0 : 0))), .right, semantics)
-                Test().shift(~0 as T,  1 as T, ~(~0 << T(bitPattern: T.bitWidth - (T.isSigned ? 0 : 1))), .right, semantics)
-                Test().shift(~0 as T,  2 as T, ~(~0 << T(bitPattern: T.bitWidth - (T.isSigned ? 0 : 2))), .right, semantics)
-                Test().shift(~0 as T,  3 as T, ~(~0 << T(bitPattern: T.bitWidth - (T.isSigned ? 0 : 3))), .right, semantics)
+                Test().shift(~0 as T,  0 as T, ~(~0 << T(bitPattern: T.size - (T.isSigned ? 0 : 0))), .right, semantics)
+                Test().shift(~0 as T,  1 as T, ~(~0 << T(bitPattern: T.size - (T.isSigned ? 0 : 1))), .right, semantics)
+                Test().shift(~0 as T,  2 as T, ~(~0 << T(bitPattern: T.size - (T.isSigned ? 0 : 2))), .right, semantics)
+                Test().shift(~0 as T,  3 as T, ~(~0 << T(bitPattern: T.size - (T.isSigned ? 0 : 3))), .right, semantics)
             }
         }
         

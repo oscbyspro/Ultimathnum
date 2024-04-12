@@ -71,7 +71,7 @@ extension DoubleInt {
         typealias T = U8.Magnitude
         //=--------------------------------------=
         let low  = Low (load: source)
-        let high = High(load: source.drop(Low.bitWidth(relativeTo: T.self).ratio))
+        let high = High(load: source.drop(Low.size(relativeTo: T.self).ratio))
         //=--------------------------------------=
         self.init(low: consume low, high: consume high)
     }
@@ -80,7 +80,7 @@ extension DoubleInt {
         typealias T = Element.Magnitude
         //=--------------------------------------=
         let low  = Low (load: source)
-        let high = High(load: source.drop(Low.bitWidth(relativeTo: T.self).ratio))
+        let high = High(load: source.drop(Low.size(relativeTo: T.self).ratio))
         //=--------------------------------------=
         self.init(low: consume low, high: consume high)
     }

@@ -24,7 +24,7 @@ final class DoubletTests: XCTestCase {
         func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = Doublet<Base>
             
-            Test().same(T.isSigned, Base.isSigned)
+            Test().same(T.mode.isSigned, Base.isSigned)
         }
         
         for base in coreSystemsIntegers {
@@ -36,7 +36,7 @@ final class DoubletTests: XCTestCase {
         func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = Doublet<Base>
             
-            Test().same(T.bitWidth, Base.bitWidth.multiplication(2))
+            Test().same(T.size, Base.size.multiplication(2))
         }
         
         for base in coreSystemsIntegers {

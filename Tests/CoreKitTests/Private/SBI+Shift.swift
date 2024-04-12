@@ -132,7 +132,7 @@ final class StrictBinaryIntegerTestsOnShifts: XCTestCase {
         _ test: Test = .init()
     )   where T: SystemsInteger & UnsignedInteger {
         //=------------------------------------------=
-        let (major, minor) = distance.quotientAndRemainder(dividingBy: Int(IX(bitWidth: T.self)))
+        let (major, minor) = distance.quotientAndRemainder(dividingBy: Int(IX(size: T.self)))
         //=------------------------------------------=
         if  major >= 1, minor == 0 {
             var base = base
@@ -155,7 +155,7 @@ final class StrictBinaryIntegerTestsOnShifts: XCTestCase {
         _ test: Test = .init()
     )   where T: SystemsInteger & UnsignedInteger {
         //=------------------------------------------=
-        let (major, minor) = distance.quotientAndRemainder(dividingBy: Int(IX(bitWidth: T.self)))
+        let (major, minor) = distance.quotientAndRemainder(dividingBy: Int(IX(size: T.self)))
         //=------------------------------------------=
         if  major >= 1, minor == 0 {
             var base = base

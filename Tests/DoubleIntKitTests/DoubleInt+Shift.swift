@@ -25,8 +25,8 @@ extension DoubleIntTests {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
             let low = T(low: 0000000000000)
-            let mid = T(low: Base.bitWidth)
-            let top = T(bitPattern: T.bitWidth)
+            let mid = T(low: Base.size)
+            let top = T(bitPattern: T.size)
             
             for semantics: Test.ShiftSemantics in [.smart, .masked] {
                 Test().shift(T(low: 1, high:  2), low + 0 as T, T(low:  1, high:  2), .left,  semantics)

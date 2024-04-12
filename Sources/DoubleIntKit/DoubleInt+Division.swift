@@ -76,7 +76,7 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         // divisor is zero
         //=--------------------------------------=
-        if  normalization.load(as: UX.self) == UX(bitWidth: Self.self) {
+        if  normalization.load(as: UX.self) == UX(size: Self.self) {
             return Fallible.failure(Division(quotient: 0, remainder: lhs.low))
         }
         //=--------------------------------------=
@@ -105,7 +105,7 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         // division: 3121
         //=--------------------------------------=
-        if  normalization.load(as: UX.self) >= UX(bitWidth: Base.self) {
+        if  normalization.load(as: UX.self) >= UX(size: Base.self) {
             Swift.assert(lhs.high.high == 0, "quotient must fit in two halves")
             let result = Triplet(low: lhs.low.storage, high: lhs.high.low).division3121(unchecked: rhs.low)
             return Division(quotient: Self(result.quotient), remainder: Self(low: result.remainder))

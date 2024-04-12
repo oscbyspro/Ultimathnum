@@ -43,7 +43,7 @@ extension DoubleIntTests {
             Test().same(T.max.advanced(by:  2 as U), F(T.max &+ 2, error: true))
             Test().same(T.max.advanced(by:  3 as U), F(T.max &+ 3, error: true))
             
-            if  UX(bitWidth: T.self) < UX(bitWidth: U.self) {
+            if  UX(size: T.self) < UX(size: U.self) {
                 Test().same(T(~0).advanced(by: U.min), F(~0 as T, error: true))
                 Test().same(T(~1).advanced(by: U.min), F(~1 as T, error: true))
                 Test().same(T( 0).advanced(by: U.min), F( 0 as T, error: true))
@@ -76,7 +76,7 @@ extension DoubleIntTests {
                 Test().same(T.max.distance(to: T.max.advanced(by:   -129)), F(I8 .max, error: true))
                 Test().same(T.max.distance(to: T.max.advanced(by:   -128)), F(I8 .min))
                 Test().same(T.max.distance(to: T.max.advanced(by:   -127)), F(I8 .min + 1))
-            };  if T.bitWidth >= 16 {
+            };  if T.size >= 16 {
                 Test().same(T.min.distance(to: T.min.advanced(by:  32766)), F(I16.max - 1))
                 Test().same(T.min.distance(to: T.min.advanced(by:  32767)), F(I16.max))
                 Test().same(T.min.distance(to: T.min.advanced(by:  32768)), F(I16.min, error: true))

@@ -90,9 +90,9 @@ extension CoreIntTests {
             //=----------------------------------=
             Test().division(X(low:  0 as M, high: ~0 as T),  0 as T, F(D(quotient:  0,                                  remainder: 0), error: true))
             Test().division(X(low:  0 as M, high: ~0 as T),  1 as T, F(D(quotient:  0,                                  remainder: 0), error: true))
-            Test().division(X(low:  0 as M, high: ~0 as T),  2 as T, F(D(quotient: ~0 << T(bitPattern: T.bitWidth - 1), remainder: 0)))
-            Test().division(X(low:  0 as M, high: ~0 as T),  4 as T, F(D(quotient: ~0 << T(bitPattern: T.bitWidth - 2), remainder: 0)))
-            Test().division(X(low:  0 as M, high: ~0 as T),  8 as T, F(D(quotient: ~0 << T(bitPattern: T.bitWidth - 3), remainder: 0)))
+            Test().division(X(low:  0 as M, high: ~0 as T),  2 as T, F(D(quotient: ~0 << T(bitPattern: T.size - 1), remainder: 0)))
+            Test().division(X(low:  0 as M, high: ~0 as T),  4 as T, F(D(quotient: ~0 << T(bitPattern: T.size - 2), remainder: 0)))
+            Test().division(X(low:  0 as M, high: ~0 as T),  8 as T, F(D(quotient: ~0 << T(bitPattern: T.size - 3), remainder: 0)))
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
@@ -111,9 +111,9 @@ extension CoreIntTests {
             //=----------------------------------=
             Test().division(X(low:  0 as M, high: ~0 as T),  0 as T, F(D(quotient:  0,                                  remainder:  0), error: true))
             Test().division(X(low:  0 as M, high: ~0 as T),  1 as T, F(D(quotient:  0,                                  remainder:  0), error: true))
-            Test().division(X(low:  0 as M, high: ~0 as T),  2 as T, F(D(quotient: ~0 << T(bitPattern: T.bitWidth - 1), remainder:  0), error: true))
-            Test().division(X(low:  0 as M, high: ~0 as T),  4 as T, F(D(quotient: ~0 << T(bitPattern: T.bitWidth - 2), remainder:  0), error: true))
-            Test().division(X(low:  0 as M, high: ~0 as T),  8 as T, F(D(quotient: ~0 << T(bitPattern: T.bitWidth - 3), remainder:  0), error: true))
+            Test().division(X(low:  0 as M, high: ~0 as T),  2 as T, F(D(quotient: ~0 << T(bitPattern: T.size - 1), remainder:  0), error: true))
+            Test().division(X(low:  0 as M, high: ~0 as T),  4 as T, F(D(quotient: ~0 << T(bitPattern: T.size - 2), remainder:  0), error: true))
+            Test().division(X(low:  0 as M, high: ~0 as T),  8 as T, F(D(quotient: ~0 << T(bitPattern: T.size - 3), remainder:  0), error: true))
         }
         
         for type in coreSystemsIntegers {

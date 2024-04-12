@@ -67,11 +67,11 @@ extension BinaryInteger {
         return switch selection {
         case .each         (let bit): self.count(bit, where: T.anywhere)
         case .ascending    (let bit): self.count(bit, where: T.ascending)
-        case .nonascending (let bit): Self.bitWidth.minus(self.count(bit, where: T.ascending )).assert()
+        case .nonascending (let bit): Self.size.minus(self.count(bit, where: T.ascending )).assert()
         case .descending   (let bit): self.count(bit, where: T.descending)
-        case .nondescending(let bit): Self.bitWidth.minus(self.count(bit, where: T.descending)).assert()
+        case .nondescending(let bit): Self.size.minus(self.count(bit, where: T.descending)).assert()
         case .appendix:    self.count(self.appendix,  where: T.descending)
-        case .nonappendix: Self.bitWidth.minus(self.count(self.appendix,  where: T.descending)).assert()
+        case .nonappendix: Self.size.minus(self.count(self.appendix,  where: T.descending)).assert()
         }
     }
 }

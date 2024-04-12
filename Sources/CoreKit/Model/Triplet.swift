@@ -26,12 +26,12 @@
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    @inlinable public static var isSigned: Bool {
-        Base.isSigned
+    @inlinable public static var mode: Base.Mode {
+        Base.mode
     }
     
-    @inlinable public static var bitWidth: Magnitude {
-        Magnitude(low: Base.bitWidth.multiplication(3), high: Magnitude.High())
+    @inlinable public static var size: Magnitude {
+        Magnitude(low: Base.size.multiplication(3), high: Magnitude.High())
     }
     
     //=------------------------------------------------------------------------=

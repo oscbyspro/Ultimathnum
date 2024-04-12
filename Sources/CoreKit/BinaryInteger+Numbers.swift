@@ -60,8 +60,8 @@ extension BinaryInteger {
     }
     
     @inlinable public static func exactly<Other>(_ source: consuming Other) -> Fallible<Self> where Other: BinaryInteger {
-        if !Self.bitWidth.isInfinite, !Other.bitWidth.isInfinite {
-            let measurement = UX(load: Self.bitWidth).compared(to: UX(load: Other.bitWidth))
+        if !Self.size.isInfinite, !Other.size.isInfinite {
+            let measurement = UX(load: Self.size).compared(to: UX(load: Other.size))
             if (measurement > 0) == (Self.isSigned == Other.isSigned) || (measurement == 0 && Self.isSigned) {
                 return Fallible.success(Self(load: source))
                 
@@ -73,8 +73,8 @@ extension BinaryInteger {
                 
             }   else {
                 let bit   = Bit(Self.isSigned) & Bit(source.isLessThanZero)
-                let count = UX(load: Other.bitWidth).minus(UX(load: source.count(.descending(((bit)))))).assert()
-                let limit = UX(load: Self .bitWidth).minus(UX(Bit(Self.isSigned) & Bit(Other.isSigned))).assert()
+                let count = UX(load: Other.size).minus(UX(load: source.count(.descending(((bit)))))).assert()
+                let limit = UX(load: Self .size).minus(UX(Bit(Self.isSigned) & Bit(Other.isSigned))).assert()
                 return Self(load: source).combine(limit < count)
             }
             

@@ -29,7 +29,7 @@
         Base.mode
     }
     
-    @inlinable public static var bitWidth: Magnitude {
+    @inlinable public static var size: Magnitude {
         Magnitude(Base.Magnitude(Base.Magnitude.bitWidth))
     }
     
