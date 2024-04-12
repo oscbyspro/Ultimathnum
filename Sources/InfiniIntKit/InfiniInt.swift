@@ -27,6 +27,10 @@ import CoreKit
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
+    @inlinable public static var mode: Source.Mode {
+        Source.mode
+    }
+    
     @inlinable public static var isSigned: Bool {
         Element.isSigned
     }

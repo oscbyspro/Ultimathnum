@@ -34,11 +34,28 @@
 /// - `UInt32`
 /// - `UInt64`
 ///
-public protocol BaseInteger<BitPattern>: BitCastable, Swift.FixedWidthInteger, Swift.Sendable where
-Magnitude: BaseInteger<BitPattern>, Magnitude: Swift.UnsignedInteger, Magnitude.Magnitude == Magnitude, Magnitude.Signitude == Signitude,
-Signitude: BaseInteger<BitPattern>, Signitude: Swift  .SignedInteger, Signitude.Magnitude == Magnitude, Signitude.Signitude == Signitude {
+public protocol BaseInteger<BitPattern>: 
+    BitCastable,
+    Swift.FixedWidthInteger,
+    Swift.Sendable
+where
+    Signitude.Mode == Signed,
+    Signitude: BaseInteger<BitPattern>,
+    Signitude: Swift.SignedInteger, 
+    Signitude.Magnitude == Magnitude,
+    Signitude.Signitude == Signitude,
+    Magnitude.Mode == Unsigned,
+    Magnitude: BaseInteger<BitPattern>,
+    Magnitude: Swift.UnsignedInteger,
+    Magnitude.Magnitude == Magnitude,
+    Magnitude.Signitude == Signitude
+{
     
     associatedtype Magnitude
 
     associatedtype Signitude
+    
+    associatedtype Mode: Signedness
+    
+    @inlinable static var mode: Mode { get }
 }

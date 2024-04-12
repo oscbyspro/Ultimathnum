@@ -79,18 +79,18 @@ extension CoreIntTests {
             typealias F = Fallible<T>
             
             for isSigned in [true, false] {
-                Test().elements(( T.min).body(), isSigned, F( T.min, error: !isSigned))
-                Test().elements(( T.max).body(), isSigned, F( T.max))
+                Test().elements(( T.min).body(), .isSigned(isSigned), F( T.min, error: !isSigned))
+                Test().elements(( T.max).body(), .isSigned(isSigned), F( T.max))
                 
-                Test().elements(( M.min).body(), isSigned, F( T( 0)))
-                Test().elements(( M.max).body(), isSigned, F( T(-1), error: !isSigned))
-                Test().elements(( M.msb).body(), isSigned, F( T.min, error: !isSigned))
-                Test().elements((~M.msb).body(), isSigned, F(~T.msb))
+                Test().elements(( M.min).body(), .isSigned(isSigned), F( T( 0)))
+                Test().elements(( M.max).body(), .isSigned(isSigned), F( T(-1), error: !isSigned))
+                Test().elements(( M.msb).body(), .isSigned(isSigned), F( T.min, error: !isSigned))
+                Test().elements((~M.msb).body(), .isSigned(isSigned), F(~T.msb))
                 
-                Test().elements(Array(repeating:  0 as T.Element.Magnitude, count: 2), isSigned, F( 0 as T))
-                Test().elements(Array(repeating:  1 as T.Element.Magnitude, count: 2), isSigned, F( 1 as T, error: true))
-                Test().elements(Array(repeating: ~1 as T.Element.Magnitude, count: 2), isSigned, F(~1 as T, error: true))
-                Test().elements(Array(repeating: ~0 as T.Element.Magnitude, count: 2), isSigned, F(-1 as T, error: !isSigned))
+                Test().elements(Array(repeating:  0 as T.Element.Magnitude, count: 2), .isSigned(isSigned), F( 0 as T))
+                Test().elements(Array(repeating:  1 as T.Element.Magnitude, count: 2), .isSigned(isSigned), F( 1 as T, error: true))
+                Test().elements(Array(repeating: ~1 as T.Element.Magnitude, count: 2), .isSigned(isSigned), F(~1 as T, error: true))
+                Test().elements(Array(repeating: ~0 as T.Element.Magnitude, count: 2), .isSigned(isSigned), F(-1 as T, error: !isSigned))
             }
         }
         
@@ -99,15 +99,15 @@ extension CoreIntTests {
             typealias F = Fallible<T>
             
             for isSigned in [true, false] {
-                Test().elements(( M.min).body(), isSigned, F( T( 0)))
-                Test().elements(( M.max).body(), isSigned, F( T.max, error: isSigned))
-                Test().elements(( M.msb).body(), isSigned, F( T.msb, error: isSigned))
-                Test().elements((~M.msb).body(), isSigned, F(~T.msb))
+                Test().elements(( M.min).body(), .isSigned(isSigned), F( T( 0)))
+                Test().elements(( M.max).body(), .isSigned(isSigned), F( T.max, error: isSigned))
+                Test().elements(( M.msb).body(), .isSigned(isSigned), F( T.msb, error: isSigned))
+                Test().elements((~M.msb).body(), .isSigned(isSigned), F(~T.msb))
                 
-                Test().elements(Array(repeating:  0 as T.Element.Magnitude, count: 2), isSigned, F( 0 as T))
-                Test().elements(Array(repeating:  1 as T.Element.Magnitude, count: 2), isSigned, F( 1 as T, error: true))
-                Test().elements(Array(repeating: ~1 as T.Element.Magnitude, count: 2), isSigned, F(~1 as T, error: true))
-                Test().elements(Array(repeating: ~0 as T.Element.Magnitude, count: 2), isSigned, F(~0 as T, error: true))
+                Test().elements(Array(repeating:  0 as T.Element.Magnitude, count: 2), .isSigned(isSigned), F( 0 as T))
+                Test().elements(Array(repeating:  1 as T.Element.Magnitude, count: 2), .isSigned(isSigned), F( 1 as T, error: true))
+                Test().elements(Array(repeating: ~1 as T.Element.Magnitude, count: 2), .isSigned(isSigned), F(~1 as T, error: true))
+                Test().elements(Array(repeating: ~0 as T.Element.Magnitude, count: 2), .isSigned(isSigned), F(~0 as T, error: true))
             }
         }
         

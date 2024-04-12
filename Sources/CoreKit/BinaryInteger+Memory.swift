@@ -18,13 +18,13 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func exactly(
-        _ source: MemoryInt<Element.Magnitude>, isSigned: Bool
+        _ source: MemoryInt<Element.Magnitude>, mode: some Signedness
     )   -> Fallible<Self> {
         //=--------------------------------------=
         let instance = Self(load: source)
         var success  = Bit(instance.appendix == source.appendix)
         //=--------------------------------------=
-        if  Self.isSigned != isSigned {
+        if  Self.isSigned != mode.isSigned {
             success &= Bit(source.appendix == 0)
         }
         
@@ -37,13 +37,13 @@ extension BinaryInteger {
     }
     
     @inlinable public static func exactly(
-        _ source: MemoryInt<U8.Magnitude>, isSigned: Bool
+        _ source: MemoryInt<U8.Magnitude>, mode: some Signedness
     )   -> Fallible<Self> {
         //=--------------------------------------=
         let instance = Self(load: source)
         var success  = Bit(instance.appendix == source.appendix)
         //=--------------------------------------=
-        if  Self.isSigned != isSigned {
+        if  Self.isSigned != mode.isSigned {
             success &= Bit(source.appendix == 0)
         }
         
@@ -56,17 +56,17 @@ extension BinaryInteger {
     }
     
     @inlinable public static func exactly<OtherElement>(
-        _ source: MemoryInt<OtherElement>, isSigned: Bool
+        _ source: MemoryInt<OtherElement>, mode: some Signedness
     )   -> Fallible<Self> {
                 
         if  OtherElement.elementsCanBeRebound(to: Self.Element.Magnitude.self) {
             return (source).withMemoryRebound(to: Self.Element.Magnitude.self) {
-                return Self.exactly($0, isSigned: isSigned)
+                return Self.exactly($0, mode: mode)
             }
             
         }   else {
             return (source).withMemoryRebound(to: U8.Magnitude.self) {
-                return Self.exactly($0, isSigned: isSigned)
+                return Self.exactly($0, mode: mode)
             }
         }
     }

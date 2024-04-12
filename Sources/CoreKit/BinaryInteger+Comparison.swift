@@ -17,8 +17,24 @@ extension BinaryInteger {
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
+    /// Indicates whether this type can represent all bit patterns.
     @inlinable public var isInfinite: Bool {
         !Self.isSigned && Bool(self.appendix)
+    }
+    
+    /// Indicates whether this type can represent negative values.
+    ///
+    /// ```
+    /// ┌──────┬──────────┬──────┬──────┐
+    /// │ type │ isSigned │  min │  max │
+    /// ├──────┼──────────┼──────┼──────┤
+    /// │ I8   │ true     │ -128 │  127 │
+    /// │ U8   │ false    │    0 │  255 │
+    /// └──────┴──────────┴──────┴──────┘
+    /// ```
+    ///
+    @inlinable public static var isSigned: Bool {
+        Self.mode.isSigned
     }
     
     //=------------------------------------------------------------------------=

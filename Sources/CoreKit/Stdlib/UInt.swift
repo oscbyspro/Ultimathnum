@@ -16,27 +16,43 @@ extension UInt: BaseInteger {
     public typealias BitPattern = Magnitude
     
     public typealias Signitude  = Int
+    
+    @inlinable public static var mode: Unsigned {
+        Unsigned()
+    }
 }
 
 extension UInt8: BaseInteger {
     
     public typealias BitPattern = Magnitude
-    
+        
     public typealias Signitude  = Int8
+    
+    @inlinable public static var mode: Unsigned {
+        Unsigned()
+    }
 }
 
 extension UInt16: BaseInteger {
     
     public typealias BitPattern = Magnitude
-    
+        
     public typealias Signitude  = Int16
+    
+    @inlinable public static var mode: Unsigned {
+        Unsigned()
+    }
 }
 
 extension UInt32: BaseInteger {
     
     public typealias BitPattern = Magnitude
-    
+        
     public typealias Signitude  = Int32
+    
+    @inlinable public static var mode: Unsigned {
+        Unsigned()
+    }
 }
 
 extension UInt64: BaseInteger {
@@ -44,4 +60,8 @@ extension UInt64: BaseInteger {
     public typealias BitPattern = Magnitude
     
     public typealias Signitude  = Int64
+    
+    @inlinable public static var mode: Unsigned {
+        Unsigned()
+    }
 }

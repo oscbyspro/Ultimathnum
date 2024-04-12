@@ -80,7 +80,7 @@ extension BinaryInteger {
             
         }   else {
             return source.withUnsafeBinaryIntegerElements {
-                Self.exactly($0, isSigned: Other.isSigned)
+                Self.exactly($0, mode: Other.mode)
             }
         }
     }

@@ -51,20 +51,20 @@ extension Test {
             }
             
             self.pure(elements.elementsEqual(expectation), "\(Array(body)).body -> \(elements)")
-            self.elements(elements, Integer.isSigned, Fallible(integer))
+            self.elements(elements, Integer.mode, Fallible(integer))
         }
     }
     
     public func elements<Integer, Element>(
         _ body: [Element],
-        _ isSigned: Bool,
+        _ mode: some Signedness,
         _ expectation: Fallible<Integer>
     )   where Integer: BinaryInteger, Element: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
         body.withUnsafeBufferPointer {
-            let appendix = Bit(isSigned && ($0.last ?? 0) >= Element.msb)
+            let appendix = Bit(mode.isSigned && ($0.last ?? 0) >= Element.msb)
             let elements = MemoryInt($0,  repeating: appendix)!
-            same(Integer.exactly(elements, isSigned: isSigned), expectation, "Integer.exactly(body:isSigned:)")
+            same(Integer.exactly(elements, mode: mode), expectation, "Integer.exactly(body:isSigned:)")
         }
     }
 }

@@ -8,22 +8,22 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Binary Integer x Literal
+// MARK: * Ambisigned
 //*============================================================================*
 
-extension BinaryInteger {
+@frozen public struct Ambisigned: Signedness {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: State
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(integerLiteral: BigIntLiteral.IntegerLiteralType) {
-        self = Self.exactly(BigIntLiteral(integerLiteral: integerLiteral)).unwrap()        
-    }
+    public var isSigned: Bool
     
-    @inlinable public static func exactly(_ source: consuming BigIntLiteral) -> Fallible<Self> {
-        source.withUnsafeBinaryIntegerElements {
-            Self.exactly($0, mode: .signed)
-        }
+    //=------------------------------------------------------------------------=
+    // MARK: Initializes
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(isSigned: Bool) {
+        self.isSigned = isSigned
     }
 }

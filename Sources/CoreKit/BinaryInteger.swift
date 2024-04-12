@@ -39,6 +39,7 @@ public protocol BinaryInteger<BitPattern>:
     _MaybeLosslessStringConvertible
 where
     Stride == Swift.Int,
+    Element.Mode == Mode,
     Magnitude.BitPattern == BitPattern,
     Magnitude.Element    == Element.Magnitude,
     Magnitude.Signitude  == Signitude,
@@ -46,7 +47,9 @@ where
     Signitude.Element    == Element.Signitude,
     Signitude.Magnitude  == Magnitude
 {
-        
+    
+    associatedtype Mode: Signedness
+    
     associatedtype Element: SystemsInteger where Element.Element == Element
     
     associatedtype Signitude:   SignedInteger where Signitude.Signitude == Signitude
@@ -68,7 +71,7 @@ where
     /// └──────┴──────────┴──────┴──────┘
     /// ```
     ///
-    @inlinable static var isSigned: Bool { get }
+    @inlinable static var mode: Mode { get }
     
     /// The bit width of this type.
     ///

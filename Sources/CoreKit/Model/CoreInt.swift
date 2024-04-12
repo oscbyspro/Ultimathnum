@@ -12,7 +12,9 @@
 //*============================================================================*
 
 @frozen public struct CoreInt<Base: BaseInteger>: SystemsInteger {
-        
+    
+    public typealias Mode = Base.Mode
+    
     public typealias Element = Self
     
     public typealias Magnitude = CoreInt<Base.Magnitude>
@@ -23,8 +25,8 @@
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    @inlinable public static var isSigned: Bool {
-        Base.isSigned
+    @inlinable public static var mode: Base.Mode {
+        Base.mode
     }
     
     @inlinable public static var bitWidth: Magnitude {
@@ -54,8 +56,8 @@
 // MARK: + Un/signed
 //=----------------------------------------------------------------------------=
 
-extension CoreInt:   SignedInteger where Base: Swift  .SignedInteger { }
-extension CoreInt: UnsignedInteger where Base: Swift.UnsignedInteger, Base.Magnitude == Base { }
+extension CoreInt:   SignedInteger where Base: Swift  .SignedInteger, Base.Mode == Signed { }
+extension CoreInt: UnsignedInteger where Base: Swift.UnsignedInteger, Base.Magnitude == Base, Base.Mode == Unsigned { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Aliases

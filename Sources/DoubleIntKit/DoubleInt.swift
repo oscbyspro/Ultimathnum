@@ -35,8 +35,8 @@ import CoreKit
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    @inlinable public static var isSigned: Bool {
-        Base.isSigned
+    @inlinable public static var mode: Base.Mode {
+        Base.mode
     }
     
     @inlinable public static var bitWidth: Magnitude {

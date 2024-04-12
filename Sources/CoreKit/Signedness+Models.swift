@@ -8,16 +8,23 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Unsigned Integer x Is Signed
+// MARK: * Signedness x Models
 //*============================================================================*
 
-extension UnsignedInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Meta Data
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static var isSigned: Bool {
-        false
+extension Signedness where Self == Signed {
+    @inlinable public static var signed: Self {
+        Self()
+    }
+}
+
+extension Signedness where Self == Unsigned {
+    @inlinable public static var unsigned: Self {
+        Self()
+    }
+}
+
+extension Signedness where Self == Ambisigned {
+    @inlinable public static func isSigned(_ isSigned: Bool) -> Self {
+        Self(isSigned: isSigned)
     }
 }
