@@ -74,28 +74,20 @@
     
     /// Creates the sequence pair at the given `index`.
     @inlinable public init(_ index: Value) throws {
-        typealias S = Value.Signitude
-        //=--------------------------------------=
-        // testing: do not convert to magnitude
-        //=--------------------------------------=
-        if  index.isLessThanZero {
+        if  index.appendix == 1 {
             throw Overflow()
         }
-        //=--------------------------------------=
-        try self.init()
-        //=--------------------------------------=
-        // TODO: use a proper bit sequence model
-        //=--------------------------------------=
-        var mask = try Value(bitPattern: 1 << (S.exactly(index.count(.nonappendix)).get() - 1))
         
-        while mask != 0 {
-            try self.double()
-            
-            if  index & mask != 0 {
-                try self.increment()
+        try self.init()
+        
+        try index.withUnsafeBinaryIntegerElementsAsBytes {
+            for bit: Bit in Bits(normalizing: $0).reversed() {
+                try self.double()
+                
+                if  bit == 1 {
+                    try self.increment()
+                }
             }
-            
-            mask &>>= 1
         }
     }
     
