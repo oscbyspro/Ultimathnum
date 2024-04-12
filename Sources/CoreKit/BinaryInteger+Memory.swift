@@ -17,18 +17,65 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<Source>(load source: consuming MemoryInt<Source>) {
-        if Source.elementsCanBeRebound(to: Self.Element.Magnitude.self) {
-            self = (source).withMemoryRebound(to: Self.Element.Magnitude.self) {
-                var stream = $0.stream()
-                return Self.init(load: &stream)
+    @inlinable public static func exactly(
+        _ source: MemoryInt<Element.Magnitude>, isSigned: Bool
+    )   -> Fallible<Self> {
+        //=--------------------------------------=
+        let instance = Self(load: source)
+        var success  = Bit(instance.appendix == source.appendix)
+        //=--------------------------------------=
+        if  Self.isSigned != isSigned {
+            success &= Bit(source.appendix == 0)
+        }
+        
+        if !Self.bitWidth.isInfinite {
+            let ratio  = UX(load: Self.bitWidth) / UX(bitWidth: Element.Magnitude.self)
+            success &= Bit(source.drop(ratio).normalized().body.count == 0)
+        }
+        //=--------------------------------------=
+        return instance.combine(!Bool(success))
+    }
+    
+    @inlinable public static func exactly(
+        _ source: MemoryInt<U8.Magnitude>, isSigned: Bool
+    )   -> Fallible<Self> {
+        //=--------------------------------------=
+        let instance = Self(load: source)
+        var success  = Bit(instance.appendix == source.appendix)
+        //=--------------------------------------=
+        if  Self.isSigned != isSigned {
+            success &= Bit(source.appendix == 0)
+        }
+        
+        if !Self.bitWidth.isInfinite {
+            let ratio  = UX(load: Self.bitWidth) / UX(bitWidth: U8.Magnitude.self)
+            success &= Bit(source.drop(ratio).normalized().body.count == 0)
+        }
+        //=--------------------------------------=
+        return instance.combine(!Bool(success))
+    }
+    
+    @inlinable public static func exactly<OtherElement>(
+        _ source: MemoryInt<OtherElement>, isSigned: Bool
+    )   -> Fallible<Self> {
+                
+        if  OtherElement.elementsCanBeRebound(to: Self.Element.Magnitude.self) {
+            return (source).withMemoryRebound(to: Self.Element.Magnitude.self) {
+                return Self.exactly($0, isSigned: isSigned)
             }
             
         }   else {
-            self = (source).withMemoryRebound(to: U8.self) {
-                var stream = $0.stream()
-                return Self.init(load: &stream)
+            return (source).withMemoryRebound(to: U8.Magnitude.self) {
+                return Self.exactly($0, isSigned: isSigned)
             }
+        }
+    }
+    
+    @inlinable public init<OtherElement>(load source: MemoryInt<OtherElement>) {
+        if  OtherElement.elementsCanBeRebound(to: Self.Element.Magnitude.self) {
+            self = (source).withMemoryRebound(to: Self.Element.Magnitude.self, perform: Self.init(load:))
+        }   else {
+            self = (source).withMemoryRebound(to: U8.self, perform: Self.init(load:))
         }
     }
     

@@ -61,31 +61,24 @@ extension CoreInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
         
-    @inlinable public init(load source: inout MemoryInt<I8.Magnitude>.Iterator) {
+    @inlinable public init(load source: MemoryInt<I8.Magnitude>) {
         if  source.body.count >= IX(MemoryLayout<Self>.stride) {
             
-            self = source.body.load(unchecked: Self.self)
-            
+            self = UnsafeRawPointer(source.body.start).loadUnaligned(as: Self.self)
+                        
         }   else {
-            //=----------------------------------=
-            // TODO: better performance
-            //=----------------------------------=
             self.init(repeating: source.appendix)
                         
             Swift.withUnsafeMutablePointer(to: &self) {
                 $0.withMemoryRebound(to: U8.self, capacity: MemoryLayout<Self>.size) {
-                    var address = consume $0
-                    while let byte = source.body.next() {
-                        address.pointee = byte
-                        address = address.successor()
-                    }
+                    $0.initialize(from: source.body.start, count: Int(source.body.count))
                 }
             }
         }
     }
     
-    @inlinable public init(load source: inout MemoryInt<Element.Magnitude>.Iterator) {
-        self.init(bitPattern: source.next())
+    @inlinable public init(load source: MemoryInt<Element.Magnitude>) {
+        self.init(bitPattern: source[UX.zero])
     }
     
     //=------------------------------------------------------------------------=

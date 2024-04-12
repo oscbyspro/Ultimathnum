@@ -37,30 +37,18 @@
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public var start: UnsafePointer<Element> {
-        self._start
+    @inlinable public consuming func drop(_ distance: UX) -> Self {
+        let steps = Swift.min(UX(bitPattern: self.count), distance)
+        self._start += Int(bitPattern: steps)
+        self._count -= IX (bitPattern: steps)
+        return self
     }
-    
-    @inlinable public var count: IX {
-        self._count
-    }
-    
+        
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public subscript(unchecked index: IX) -> Element {
-        //=--------------------------------------=
-        Swift.assert(index < self.count, String.indexOutOfBounds())
-        //=--------------------------------------=
-        return self.start[Int(index)]
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func buffer() -> UnsafeBufferPointer<Element> {
@@ -79,5 +67,24 @@
         return try  self.start.withMemoryRebound(to: OtherElement.self, capacity: Int(count)) {
             try action(MemoryIntBody<OtherElement>($0, count: count))
         }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var start: UnsafePointer<Element> {
+        self._start
+    }
+    
+    @inlinable public var count: IX {
+        self._count
+    }
+    
+    @inlinable public subscript(unchecked index: IX) -> Element {
+        //=--------------------------------------=
+        Swift.assert(index < self.count, String.indexOutOfBounds())
+        //=--------------------------------------=
+        return self.start[Int(index)]
     }
 }

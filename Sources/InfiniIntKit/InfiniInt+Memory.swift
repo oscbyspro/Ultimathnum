@@ -65,11 +65,11 @@ extension InfiniInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(load source: inout MemoryInt<I8.Magnitude>.Iterator) {
+    @inlinable public init(load source: MemoryInt<I8.Magnitude>) {
         fatalError("TODO")
     }
     
-    @inlinable public init(load source: inout MemoryInt<Element.Magnitude>.Iterator) {
+    @inlinable public init(load source: MemoryInt<Element.Magnitude>) {
         fatalError("TODO")
     }
     

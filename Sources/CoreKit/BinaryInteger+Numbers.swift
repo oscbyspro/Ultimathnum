@@ -84,37 +84,4 @@ extension BinaryInteger {
             }
         }
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    /// ### Development
-    ///
-    /// - TODO: Make the isSigned parameter generic.
-    ///
-    @inlinable public static func exactly<T>(_ elements: consuming MemoryInt<T>, isSigned: Bool) -> Fallible<Self> {
-        if T.elementsCanBeRebound(to: Self.Element.Magnitude.self) {
-            return  elements.withMemoryRebound(to: Self.Element.Magnitude.self) {
-                var (stream) = $0.stream()
-                let instance = Self(load: &stream)
-                let appendix: Bit = stream.appendix
-                let success = Bit(instance.appendix == appendix)
-                & Bit(Self.isSigned == isSigned || appendix == Bit.zero)
-                & Bit(stream.normalized().body.count == IX.zero)
-                return instance.combine(!Bool(success))
-            }
-            
-        }   else {
-            return  elements.withMemoryRebound(to: U8.Magnitude.self) {
-                var (stream) = $0.stream()
-                let instance = Self(load: &stream)
-                let appendix: Bit = stream.appendix
-                let success = Bit(instance.appendix == appendix)
-                & Bit(Self.isSigned == isSigned || appendix == Bit.zero)
-                & Bit(stream.normalized().body.count == IX.zero)
-                return instance.combine(!Bool(success))
-            }
-        }
-    }
 }

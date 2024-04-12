@@ -55,7 +55,24 @@
             self._body._count = lastIndex
         }
         
-        return self as Self as Self as Self as Self
+        return self
+    }
+
+    @inlinable public consuming func drop(_ distance: UX) -> Self {
+        self._body = self._body.drop(distance)
+        return self
+    }
+    
+    @inlinable public borrowing func withMemoryRebound<OtherElement, Value>(
+        to type: OtherElement.Type,
+        perform action: (MemoryInt<OtherElement>) throws -> Value
+    )   rethrows -> Value {
+        //=--------------------------------------=
+        let appendix = self.appendix
+        //=--------------------------------------=
+        return try self.body.withMemoryRebound(to: OtherElement.self) {
+            try action(MemoryInt<OtherElement>($0, repeating: appendix))
+        }
     }
     
     //=------------------------------------------------------------------------=
@@ -75,22 +92,6 @@
             return self.body[unchecked: IX(bitPattern: index)]
         }   else {
             return Element(repeating: self.appendix)
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public borrowing func withMemoryRebound<OtherElement, Value>(
-        to type: OtherElement.Type,
-        perform action: (MemoryInt<OtherElement>) throws -> Value
-    )   rethrows -> Value {
-        //=--------------------------------------=
-        let appendix = self.appendix
-        //=--------------------------------------=
-        return try self.body.withMemoryRebound(to: OtherElement.self) {
-            try action(MemoryInt<OtherElement>($0, repeating: appendix))
         }
     }
 }

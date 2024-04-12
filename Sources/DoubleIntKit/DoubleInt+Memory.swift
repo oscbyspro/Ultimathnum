@@ -67,18 +67,20 @@ extension DoubleInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(load source: inout MemoryInt<U8.Magnitude>.Iterator) {
+    @inlinable public init(load source: MemoryInt<U8.Magnitude>) {
+        typealias T = U8.Magnitude
         //=--------------------------------------=
-        let low  = Low (load: &source)
-        let high = High(load: &source)
+        let low  = Low (load: source)
+        let high = High(load: source.drop(Low.bitWidth(relativeTo: T.self).ratio))
         //=--------------------------------------=
         self.init(low: consume low, high: consume high)
     }
     
-    @inlinable public init(load source: inout MemoryInt<Element.Magnitude>.Iterator) {
+    @inlinable public init(load source: MemoryInt<Element.Magnitude>) {
+        typealias T = Element.Magnitude
         //=--------------------------------------=
-        let low  = Low (load: &source)
-        let high = High(load: &source)
+        let low  = Low (load: source)
+        let high = High(load: source.drop(Low.bitWidth(relativeTo: T.self).ratio))
         //=--------------------------------------=
         self.init(low: consume low, high: consume high)
     }

@@ -66,7 +66,8 @@ extension Namespace.IntegerDescriptionFormat {
         switch description.first {
         case UInt8(ascii: "+"): description.removeFirst(); return Sign.plus
         case UInt8(ascii: "-"): description.removeFirst(); return Sign.minus
-        default: return nil  }
+        default: return nil 
+        }
     }
     
     //*========================================================================*

@@ -107,9 +107,9 @@ where
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable init(load source: inout MemoryInt<U8.Magnitude>.Iterator)
+    @inlinable init(load source: MemoryInt<U8.Magnitude>)
     
-    @inlinable init(load source: inout MemoryInt<Element.Magnitude>.Iterator)
+    @inlinable init(load source: MemoryInt<Element.Magnitude>)
         
     //=------------------------------------------------------------------------=
     // MARK: Transformations
