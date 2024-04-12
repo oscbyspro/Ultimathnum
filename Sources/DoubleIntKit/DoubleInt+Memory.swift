@@ -68,19 +68,17 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(load source: MemoryInt<U8.Magnitude>) {
-        typealias T = U8.Magnitude
         //=--------------------------------------=
         let low  = Low (load: source)
-        let high = High(load: source[Low.size(relativeTo: T.self).ratio...])
+        let high = High(load: source[Low.size(relativeTo: U8.Magnitude.self).ratio...])
         //=--------------------------------------=
         self.init(low: consume low, high: consume high)
     }
     
     @inlinable public init(load source: MemoryInt<Element.Magnitude>) {
-        typealias T = Element.Magnitude
         //=--------------------------------------=
         let low  = Low (load: source)
-        let high = High(load: source[Low.size(relativeTo: T.self).ratio...])
+        let high = High(load: source[Low.size(relativeTo: Element.Magnitude.self).ratio...])
         //=--------------------------------------=
         self.init(low: consume low, high: consume high)
     }

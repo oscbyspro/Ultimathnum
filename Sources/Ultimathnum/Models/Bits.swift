@@ -44,7 +44,7 @@ import CoreKit
     //=------------------------------------------------------------------------=
     
     @inlinable public var startIndex: UX {
-        UX.zero
+        UX()
     }
     
     @inlinable public var endIndex: UX {

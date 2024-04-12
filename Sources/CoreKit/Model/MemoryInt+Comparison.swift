@@ -57,8 +57,8 @@ extension MemoryInt {
         var index = lhs.body.count; while index > IX.zero {
             index = index - 1
             
-            let lhsElement: Element = lhs.body.start[Int(index)]
-            let rhsElement: Element = rhs.body.start[Int(index)]
+            let lhsElement: Element = lhs.body[unchecked: index]
+            let rhsElement: Element = rhs.body[unchecked: index]
             
             if  lhsElement != rhsElement {
                 return Signum.one(Sign(bitPattern: lhsElement < rhsElement))

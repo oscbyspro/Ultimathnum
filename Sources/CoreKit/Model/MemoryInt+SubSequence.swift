@@ -20,7 +20,7 @@ extension MemoryInt {
     @inlinable public subscript(range: PartialRangeFrom<UX>) -> Self {
         consuming get {
             let start = Swift.min(range.lowerBound, UX(bitPattern: self.body.count))
-            return Self(self.body[unchecked: start...], repeating: self.appendix)
+            return Self(self.body[unchecked: IX(bitPattern: start)...], repeating: self.appendix)
         }
     }
 }
@@ -35,9 +35,10 @@ extension MemoryInt.Body {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public subscript(unchecked range: PartialRangeFrom<UX>) -> Self {
+    @inlinable public subscript(unchecked range: PartialRangeFrom<IX>) -> Self {
         consuming get {
             //=----------------------------------=
+            Swift.assert(range.lowerBound >= 0000000000, String.indexOutOfBounds())
             Swift.assert(range.lowerBound <= self.count, String.indexOutOfBounds())
             //=----------------------------------=
             let start = self.start.advanced(by: Int(bitPattern:  range.lowerBound))

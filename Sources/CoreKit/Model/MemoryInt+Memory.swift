@@ -17,15 +17,15 @@ extension MemoryInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func withMemoryRebound<OtherElement, Value>(
-        to type: OtherElement.Type,
-        perform action: (MemoryInt<OtherElement>) throws -> Value
+    @inlinable public borrowing func withMemoryRebound<Destination, Value>(
+        to type: Destination.Type,
+        perform action: (MemoryInt<Destination>) throws -> Value
     )   rethrows -> Value {
         //=--------------------------------------=
         let appendix = self.appendix
         //=--------------------------------------=
-        return try self.body.withMemoryRebound(to: OtherElement.self) {
-            try action(MemoryInt<OtherElement>($0, repeating: appendix))
+        return try self.body.withMemoryRebound(to: Destination.self) {
+            try action(MemoryInt<Destination>($0, repeating: appendix))
         }
     }
 }
@@ -40,17 +40,17 @@ extension MemoryInt.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func withMemoryRebound<OtherElement, Value>(
-        to type: OtherElement.Type,
-        perform action: (MemoryInt<OtherElement>.Body) throws -> Value
+    @inlinable public borrowing func withMemoryRebound<Destination, Value>(
+        to type: Destination.Type,
+        perform action: (MemoryInt<Destination>.Body) throws -> Value
     )   rethrows -> Value {
         //=--------------------------------------=
-        precondition(Element.elementsCanBeRebound(to: OtherElement.self))
+        precondition(Element.elementsCanBeRebound(to: Destination.self))
         //=--------------------------------------=
-        let ratio = IX(MemoryLayout<Element>.stride / MemoryLayout<OtherElement>.stride)
+        let ratio = IX(size: Element.self) / IX(size: Destination.self)
         let count = self.count * ratio
-        return try  self.start.withMemoryRebound(to: OtherElement.self, capacity: Int(count)) {
-            try action(MemoryInt<OtherElement>.Body($0, count: count))
+        return try  self.start.withMemoryRebound(to:  Destination.self, capacity: Int(count)) {
+            try action(MemoryInt<Destination>.Body($0, count: count))
         }
     }
 }

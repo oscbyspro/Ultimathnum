@@ -53,7 +53,11 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
         }
     }
     
-    @inline(never) @inlinable func encode(sign: Sign, magnitude: inout UnsafeMutableBufferPointer<UX>) -> String {
+    /// ### Development
+    ///
+    /// - TODO: Consider `MutableMemoryInt<UX>` instead of `UnsafeMutableBufferPointer<UX>`.
+    ///
+    @usableFromInline func encode(sign: Sign, magnitude: inout UnsafeMutableBufferPointer<UX>) -> String {
         let maxChunkCount = Int(self.radix.divisibilityByPowerUpperBound(magnitude: magnitude))
         return Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: maxChunkCount) { chunks in
             var magnitude = magnitude[...]

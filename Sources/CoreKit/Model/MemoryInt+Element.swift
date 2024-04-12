@@ -38,7 +38,8 @@ extension MemoryInt.Body {
     
     @inlinable public subscript(unchecked index: IX) -> Element {
         //=--------------------------------------=
-        Swift.assert(index < self.count, String.indexOutOfBounds())
+        Swift.assert(index >= 0000000000, String.indexOutOfBounds())
+        Swift.assert(index <  self.count, String.indexOutOfBounds())
         //=--------------------------------------=
         return self.start[Int(index)]
     }
