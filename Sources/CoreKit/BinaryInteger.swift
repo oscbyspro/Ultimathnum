@@ -27,6 +27,11 @@
 ///
 /// Its stride is Swift.Int which is used to step through Swift's ranges.
 ///
+/// ### Development
+///
+/// - TODO: Check whether `incrementAtEndIndex(_:)` composes well.
+/// - TODO: Check whether `decrementAtEndIndex(_:)` composes well.
+///
 public protocol BinaryInteger<BitPattern>:
     Functional,
     BitCastable,
@@ -187,9 +192,17 @@ where
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// ### Development
+    ///
+    /// - TODO: Check whether `withUnsafeMutableBinaryIntegerElements(_:)` can replace it.
+    ///
     @_disfavoredOverload
     @inlinable consuming func plus (_ increment: consuming Element) -> Fallible<Self>
     
+    /// ### Development
+    ///
+    /// - TODO: Check whether `withUnsafeMutableBinaryIntegerElements(_:)` can replace it.
+    ///
     @_disfavoredOverload
     @inlinable consuming func minus(_ decrement: consuming Element) -> Fallible<Self>
     
