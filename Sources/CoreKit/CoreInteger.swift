@@ -8,15 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Base Integer
+// MARK: * Core Integer
 //*============================================================================*
-//=----------------------------------------------------------------------------=
-// TODO: * Rename this protocol because it looks too much like BinaryInteger.
-//=----------------------------------------------------------------------------=
 
 /// The stuff integers are made of.
-///
-/// - Note: Swift's integers are close enough to built-in.
 ///
 /// ### Models
 ///
@@ -34,18 +29,18 @@
 /// - `UInt32`
 /// - `UInt64`
 ///
-public protocol BaseInteger<BitPattern>: 
+public protocol CoreInteger<BitPattern>: 
     BitCastable,
     Swift.FixedWidthInteger,
     Swift.Sendable
 where
     Signitude.Mode == Signed,
-    Signitude: BaseInteger<BitPattern>,
+    Signitude: CoreInteger<BitPattern>,
     Signitude: Swift.SignedInteger, 
     Signitude.Magnitude == Magnitude,
     Signitude.Signitude == Signitude,
     Magnitude.Mode == Unsigned,
-    Magnitude: BaseInteger<BitPattern>,
+    Magnitude: CoreInteger<BitPattern>,
     Magnitude: Swift.UnsignedInteger,
     Magnitude.Magnitude == Magnitude,
     Magnitude.Signitude == Signitude

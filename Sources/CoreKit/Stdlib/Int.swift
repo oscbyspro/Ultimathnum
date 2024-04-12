@@ -11,7 +11,7 @@
 // MARK: * Int
 //*============================================================================*
 
-extension Int: BaseInteger {
+extension Int: CoreInteger {
     
     public typealias Signitude = Self
     
@@ -24,7 +24,7 @@ extension Int: BaseInteger {
     }
 }
 
-extension Int8: BaseInteger {
+extension Int8: CoreInteger {
     
     public typealias Signitude = Self
     
@@ -37,7 +37,7 @@ extension Int8: BaseInteger {
     }
 }
 
-extension Int16: BaseInteger {
+extension Int16: CoreInteger {
         
     public typealias Signitude = Self
     
@@ -50,7 +50,7 @@ extension Int16: BaseInteger {
     }
 }
 
-extension Int32: BaseInteger {
+extension Int32: CoreInteger {
         
     public typealias Signitude = Self
     
@@ -63,7 +63,7 @@ extension Int32: BaseInteger {
     }
 }
 
-extension Int64: BaseInteger {
+extension Int64: CoreInteger {
         
     public typealias Signitude = Self
     

@@ -71,7 +71,7 @@ extension DoubleInt {
         typealias T = U8.Magnitude
         //=--------------------------------------=
         let low  = Low (load: source)
-        let high = High(load: source.drop(Low.size(relativeTo: T.self).ratio))
+        let high = High(load: source[Low.size(relativeTo: T.self).ratio...])
         //=--------------------------------------=
         self.init(low: consume low, high: consume high)
     }
@@ -80,7 +80,7 @@ extension DoubleInt {
         typealias T = Element.Magnitude
         //=--------------------------------------=
         let low  = Low (load: source)
-        let high = High(load: source.drop(Low.size(relativeTo: T.self).ratio))
+        let high = High(load: source[Low.size(relativeTo: T.self).ratio...])
         //=--------------------------------------=
         self.init(low: consume low, high: consume high)
     }
@@ -94,13 +94,13 @@ extension DoubleInt {
     }
     
     @inlinable public borrowing func withUnsafeBinaryIntegerBody<T>(
-        _ action: (MemoryIntBody<Element.Magnitude>) throws -> T
+        _ action: (MemoryInt<Element.Magnitude>.Body) throws -> T
     )   rethrows -> T {
         
         try Swift.withUnsafePointer(to: self) {
             let count = MemoryLayout<Self>.stride / MemoryLayout<Element.Magnitude>.stride
             return try $0.withMemoryRebound(to: Element.Magnitude.self, capacity: count) {
-                try action(MemoryIntBody($0, count: IX(count)))
+                try action(MemoryInt.Body($0, count: IX(count)))
             }
         }
     }

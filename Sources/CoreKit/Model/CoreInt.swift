@@ -11,7 +11,7 @@
 // MARK: * Core Int
 //*============================================================================*
 
-@frozen public struct CoreInt<Base: BaseInteger>: SystemsInteger {
+@frozen public struct CoreInt<Base: CoreInteger>: SystemsInteger {
     
     public typealias Mode = Base.Mode
     

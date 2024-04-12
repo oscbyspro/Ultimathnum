@@ -65,7 +65,7 @@ extension BinaryInteger {
             if (measurement > 0) == (Self.isSigned == Other.isSigned) || (measurement == 0 && Self.isSigned) {
                 return Fallible.success(Self(load: source))
                 
-            }   else if measurement >= 0 {
+            }   else if measurement  >= 0 {
                 let rhsIsLessThanZero = source.isLessThanZero
                 let result = Self(load: source)
                 let lhsIsLessThanZero = result.isLessThanZero

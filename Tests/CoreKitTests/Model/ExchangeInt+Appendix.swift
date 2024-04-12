@@ -24,14 +24,12 @@ extension ExchangeIntTests {
         typealias X = SystemsInteger & UnsignedInteger
         
         func whereIs<A: X, B: X>(_ source: A.Type, _ destination: B.Type) {
-            let source = [0 as A]
-            source.withUnsafeBufferPointer {
+            Array([0 as A]).withUnsafeBufferPointer {
                 $0.withMemoryRebound(to: U8.self) {
-                    let body = MemoryIntBody($0)!
-                    Test().same(T(MemoryInt(body, repeating: 0), as: B.self)[123456],  0 as B)
-                    Test().same(T(MemoryInt(body, repeating: 1), as: B.self)[123456], ~0 as B)
-                    Test().same(T(MemoryInt(body, repeating: 0), as: B.self)[UX.max],  0 as B)
-                    Test().same(T(MemoryInt(body, repeating: 1), as: B.self)[UX.max], ~0 as B)
+                    Test().same(T($0, repeating: 0, as: B.self)![123456],  0 as B)
+                    Test().same(T($0, repeating: 1, as: B.self)![123456], ~0 as B)
+                    Test().same(T($0, repeating: 0, as: B.self)![UX.max],  0 as B)
+                    Test().same(T($0, repeating: 1, as: B.self)![UX.max], ~0 as B)
                 }
             }
         }

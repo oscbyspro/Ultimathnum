@@ -11,7 +11,7 @@
 // MARK: * UInt
 //*============================================================================*
 
-extension UInt: BaseInteger {
+extension UInt: CoreInteger {
     
     public typealias BitPattern = Magnitude
     
@@ -22,7 +22,7 @@ extension UInt: BaseInteger {
     }
 }
 
-extension UInt8: BaseInteger {
+extension UInt8: CoreInteger {
     
     public typealias BitPattern = Magnitude
         
@@ -33,7 +33,7 @@ extension UInt8: BaseInteger {
     }
 }
 
-extension UInt16: BaseInteger {
+extension UInt16: CoreInteger {
     
     public typealias BitPattern = Magnitude
         
@@ -44,7 +44,7 @@ extension UInt16: BaseInteger {
     }
 }
 
-extension UInt32: BaseInteger {
+extension UInt32: CoreInteger {
     
     public typealias BitPattern = Magnitude
         
@@ -55,7 +55,7 @@ extension UInt32: BaseInteger {
     }
 }
 
-extension UInt64: BaseInteger {
+extension UInt64: CoreInteger {
     
     public typealias BitPattern = Magnitude
     

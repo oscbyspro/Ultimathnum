@@ -12,7 +12,7 @@
 //*============================================================================*
 
 #if $Embedded
-public typealias _MaybeLosslessStringConvertible = Any
+public typealias MaybeLosslessStringConvertible = Any
 #else
-public typealias _MaybeLosslessStringConvertible = LosslessStringConvertible
+public typealias MaybeLosslessStringConvertible = LosslessStringConvertible
 #endif

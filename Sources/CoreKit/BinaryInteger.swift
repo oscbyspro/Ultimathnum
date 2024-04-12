@@ -36,7 +36,7 @@ public protocol BinaryInteger<BitPattern>:
     Hashable,
     Sendable,
     Strideable,
-    _MaybeLosslessStringConvertible
+    MaybeLosslessStringConvertible
 where
     Stride == Swift.Int,
     Element.Mode == Mode,
@@ -49,13 +49,16 @@ where
 {
     
     associatedtype Mode: Signedness
+        
+    associatedtype Element: SystemsInteger 
+    where Element.Element == Element
     
-    associatedtype Element: SystemsInteger where Element.Element == Element
+    associatedtype Signitude: SignedInteger
+    where Signitude.Signitude == Signitude
     
-    associatedtype Signitude:   SignedInteger where Signitude.Signitude == Signitude
-    
-    associatedtype Magnitude: UnsignedInteger where Magnitude.Magnitude == Magnitude
-    
+    associatedtype Magnitude: UnsignedInteger 
+    where Magnitude.Magnitude == Magnitude
+        
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
@@ -234,5 +237,5 @@ where
     ///
     @inlinable var appendix: Bit { get }
     
-    @inlinable borrowing func withUnsafeBinaryIntegerBody<T>(_ action: (MemoryIntBody<Element.Magnitude>) throws -> T) rethrows -> T
+    @inlinable borrowing func withUnsafeBinaryIntegerBody<T>(_ action: (MemoryInt<Element.Magnitude>.Body) throws -> T) rethrows -> T
 }

@@ -12,7 +12,7 @@
 //*============================================================================*
 
 #if $Embedded
-public typealias _MaybeCustomStringConvertible = Any
+public typealias MaybeCustomStringConvertible = Any
 #else
-public typealias _MaybeCustomStringConvertible = CustomStringConvertible
+public typealias MaybeCustomStringConvertible = CustomStringConvertible
 #endif

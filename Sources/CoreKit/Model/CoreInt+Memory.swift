@@ -90,12 +90,12 @@ extension CoreInt {
     }
     
     @inlinable public borrowing func withUnsafeBinaryIntegerBody<T>(
-        _ action: (MemoryIntBody<Element.Magnitude>) throws -> T
+        _ action: (MemoryInt<Element.Magnitude>.Body) throws -> T
     )   rethrows -> T {
         
         try Swift.withUnsafePointer(to: self) {
             try $0.withMemoryRebound(to: Element.Magnitude.self, capacity: 1) {
-                try action(MemoryIntBody($0, count: 1))
+                try action(MemoryInt.Body($0, count: 1))
             }
         }
     }

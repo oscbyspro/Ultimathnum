@@ -25,12 +25,12 @@ extension BinaryInteger {
         var success  = Bit(instance.appendix == source.appendix)
         //=--------------------------------------=
         if  Self.isSigned != mode.isSigned {
-            success &= Bit(source.appendix == 0)
+            success &= (((~source.appendix)))
         }
         
         if !Self.size.isInfinite {
             let ratio  = UX(load: Self.size) / UX(size: Element.Magnitude.self)
-            success &= Bit(source.drop(ratio).normalized().body.count == 0)
+            success &= Bit(source[ratio...].normalized().body.count == .zero)
         }
         //=--------------------------------------=
         return instance.combine(!Bool(success))
@@ -44,12 +44,12 @@ extension BinaryInteger {
         var success  = Bit(instance.appendix == source.appendix)
         //=--------------------------------------=
         if  Self.isSigned != mode.isSigned {
-            success &= Bit(source.appendix == 0)
+            success &= (((~source.appendix)))
         }
         
         if !Self.size.isInfinite {
             let ratio  = UX(load: Self.size) / UX(size: U8.Magnitude.self)
-            success &= Bit(source.drop(ratio).normalized().body.count == 0)
+            success &= Bit(source[ratio...].normalized().body.count == .zero)
         }
         //=--------------------------------------=
         return instance.combine(!Bool(success))
