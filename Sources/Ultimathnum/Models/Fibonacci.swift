@@ -81,7 +81,7 @@
         try self.init()
         
         try index.withUnsafeBinaryIntegerElementsAsBytes {
-            for bit: Bit in try Bits(normalizing: $0).reversed() {
+            for bit in try BitSequence($0).normalized().reversed() {
                 try self.double()
                 
                 if  bit == 1 {
