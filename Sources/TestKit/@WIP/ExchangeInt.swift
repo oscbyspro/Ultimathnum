@@ -50,7 +50,7 @@ extension ExchangeInt {
     public static func prefix<T>(
         _ base: [T],
         repeating bit: Bit,
-        count: Int,
+        count: IX,
         as type: Element.Type = Element.self
     )   -> [Element] where T: SystemsInteger & UnsignedInteger {
 

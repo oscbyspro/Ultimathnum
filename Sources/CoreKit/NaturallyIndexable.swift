@@ -8,16 +8,21 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Exchange Int x Normalization
+// MARK: * Naturally Indexable
 //*============================================================================*
 
-extension ExchangeInt {
+/// A collection with contiguous indices from `0` through `Index.max`.
+///
+/// ```swift
+/// BigIntLiteral(1337)[000000] // 1337
+/// BigIntLiteral(1337)[IX.max] // 0000
+/// ```
+///
+public protocol NaturallyIndexable<Element> {
     
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
+    associatedtype Index: SystemsInteger
     
-    @inlinable public consuming func normalized() -> Prefix<Self> {
-        Self(self.base.normalized()).body()
-    }
+    associatedtype Element
+    
+    @inlinable subscript(index: Index) -> Element { get }
 }

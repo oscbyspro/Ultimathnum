@@ -33,9 +33,9 @@ extension InfiniInt where Element == Element.Magnitude {
         
         @usableFromInline typealias Base = ContiguousArray<Element.Magnitude>
         
-        //=------------------------------------------------------------------------=
+        //=--------------------------------------------------------------------=
         // MARK: State
-        //=------------------------------------------------------------------------=
+        //=--------------------------------------------------------------------=
         
         /// The un/signed source.
         public var base: Base
@@ -43,18 +43,18 @@ extension InfiniInt where Element == Element.Magnitude {
         /// The bit extension of the un/signed source.
         public var appendix: Element.Magnitude
         
-        //=------------------------------------------------------------------------=
+        //=--------------------------------------------------------------------=
         // MARK: Initializers
-        //=------------------------------------------------------------------------=
+        //=--------------------------------------------------------------------=
         
         @inlinable init(_ base: Base, repeating appendix: Bit) {
             self.base = base
             self.appendix = Element(repeating: appendix)
         }
         
-        //=------------------------------------------------------------------------=
+        //=--------------------------------------------------------------------=
         // MARK: Utilities
-        //=------------------------------------------------------------------------=
+        //=--------------------------------------------------------------------=
         
         @inlinable var isNormal: Bool {
             self.base.last != self.appendix

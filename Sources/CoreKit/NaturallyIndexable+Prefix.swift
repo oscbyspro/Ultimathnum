@@ -8,22 +8,16 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Exchange Int x Body
+// MARK: * Integer Indexable x Prefix
 //*============================================================================*
 
-extension ExchangeInt {
+extension NaturallyIndexable where Index.BitPattern == UX.BitPattern {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func body() -> Prefix<Self> {
-        let ratio = UX(bitPattern: MemoryLayout<Element>.stride)
-        var major = UX(bitPattern: self.base.body.count)
-        major  &>>= UX(bitPattern: ratio.count(0, where: Bit.Selection.ascending))
-        var minor = UX(bitPattern: self.base.body.count)
-        minor    &= UX(bitPattern: ratio.minus(1).assert())
-        let count = major.plus(UX(Bit(minor != 0))).assert()
-        return self.prefix(IX(bitPattern: count))
+    @inlinable public func prefix(_ count: IX) -> Prefix<Self> {
+        Prefix(self, count: Int(count))
     }
 }

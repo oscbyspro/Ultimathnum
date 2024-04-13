@@ -31,12 +31,21 @@ import CoreKit
         self.count = count
     }
     
-    @inlinable public init(normalizing base: DataInt<U8>) {
-        self.base  = base.normalized()
-        let  index = UX(bitPattern: self.base.body.count)
-        let  major = index * 8
-        let  minor = index > 0 ? UX(load: self.base[index - 1].count(.appendix)) : 0
-        self.count = major.minus(minor).assert()
+    /// ### Development
+    ///
+    /// - TODO: Mark it as `throws(Overflow)`.
+    ///
+    @inlinable public init(normalizing base: DataInt<U8>) throws {
+        self.base = base.normalized()
+        let index = UX(bitPattern: self.base.body.count)
+        
+        if  let i: UX  = index.minus(1).optional() {
+            let major  = try i.times(8).get()
+            let minor  = UX(load: self.base[i].count(.nonappendix))
+            self.count = try major.plus(minor).get()
+        }   else {
+            self.count = index
+        }
     }
     
     //=------------------------------------------------------------------------=

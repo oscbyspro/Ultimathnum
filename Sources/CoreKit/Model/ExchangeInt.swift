@@ -11,7 +11,7 @@
 // MARK: * Exchange Int
 //*============================================================================*
 
-@frozen public struct ExchangeInt<Element> where Element: SystemsInteger & UnsignedInteger {
+@frozen public struct ExchangeInt<Element>: NaturallyIndexable where Element: SystemsInteger & UnsignedInteger {
     
     public typealias Element = Element
         

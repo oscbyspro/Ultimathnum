@@ -11,7 +11,7 @@
 // MARK: * Big Int Literal
 //*============================================================================*
 
-@frozen public struct BigIntLiteral: ExpressibleByIntegerLiteral, Sendable {
+@frozen public struct BigIntLiteral: ExpressibleByIntegerLiteral, NaturallyIndexable, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -67,13 +67,12 @@
     
     @inlinable public func withUnsafeBinaryIntegerElements<T>(_ action: (DataInt<UX>) throws -> T) rethrows -> T {
         let count = IX(self.bitWidth).division(IX(size: UX.self)).ceil().assert()
-        return try Namespace.withUnsafeTemporaryAllocation(of: UX.self, count: Int(count)) { body in
-            defer {
-                body.deinitialize()
-            }
+        return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(count)) { body in
+            let initializedEndIndex = body.initialize(fromContentsOf: self.prefix(count))
+            let initialized = UnsafeMutableBufferPointer(rebasing: body[..<initializedEndIndex])
             
-            for index in 0 ..< count {
-                body.initializeElement(at: Int(index), to: self[index])
+            defer {
+                initialized.deinitialize()
             }
             
             return try action(DataInt(UnsafeBufferPointer(body), repeating: self.appendix)!)
