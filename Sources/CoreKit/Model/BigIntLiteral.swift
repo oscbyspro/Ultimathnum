@@ -57,8 +57,12 @@
     }
     
     /// The word at the given index, from least significant to most.
-    @inlinable public subscript(index: IX) -> UX {
-        UX(self.base[Int(index)])
+    @inlinable public subscript(index: UX) -> UX {
+        if  let index = IX.exactly(index).optional() {
+            return UX(bitPattern: self.base[Int(index)])
+        }   else {
+            return UX.init(repeating: self.appendix)
+        }
     }
     
     //=------------------------------------------------------------------------=
