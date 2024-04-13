@@ -32,21 +32,28 @@ let package = Package(
             targets: ["Ultimathnum"]
         ),
         //=--------------------------------------=
-        // Core Kit
+        // CoreKit
         //=--------------------------------------=
         .library(
             name: "CoreKit",
             targets: ["CoreKit"]
         ),
         //=--------------------------------------=
-        // Double Int Kit
+        // DoubleIntKit
         //=--------------------------------------=
         .library(
             name: "DoubleIntKit",
             targets: ["DoubleIntKit"]
         ),
         //=--------------------------------------=
-        // Infini Int Kit
+        // FibonacciKit
+        //=--------------------------------------=
+        .library(
+            name: "FibonacciKit",
+            targets: ["FibonacciKit"]
+        ),
+        //=--------------------------------------=
+        // InfiniIntKit
         //=--------------------------------------=
         .library(
             name: "InfiniIntKit",
@@ -62,6 +69,7 @@ let package = Package(
             dependencies: [
                 "CoreKit",
                 "DoubleIntKit",
+                "FibonacciKit",
                 "InfiniIntKit",
             ]
         ),
@@ -71,7 +79,7 @@ let package = Package(
             dependencies: ["Ultimathnum", "TestKit"]
         ),
         //=--------------------------------------=
-        // Core Kit
+        // CoreKit
         //=--------------------------------------=
         .target(
             name: "CoreKit",
@@ -88,7 +96,7 @@ let package = Package(
             ]
         ),
         //=--------------------------------------=
-        // Double Int Kit
+        // DoubleIntKit
         //=--------------------------------------=
         .target(
             name: "DoubleIntKit",
@@ -100,7 +108,23 @@ let package = Package(
             dependencies: ["DoubleIntKit", "TestKit"]
         ),
         //=--------------------------------------=
-        // Infini Int Kit
+        // FibonacciKit
+        //=--------------------------------------=
+        .target(
+            name: "FibonacciKit",
+            dependencies: ["CoreKit"]
+        ),
+        
+        .testTarget(
+            name: "FibonacciKitTests",
+            dependencies: [
+                "DoubleIntKit",
+                "FibonacciKit",
+                "TestKit"
+            ]
+        ),
+        //=--------------------------------------=
+        // InfiniIntKit
         //=--------------------------------------=
         .target(
             name: "InfiniIntKit",
@@ -112,7 +136,7 @@ let package = Package(
             dependencies: ["InfiniIntKit", "TestKit"]
         ),
         //=--------------------------------------=
-        // Test Kit
+        // TestKit
         //=--------------------------------------=
         .target(
             name: "TestKit",

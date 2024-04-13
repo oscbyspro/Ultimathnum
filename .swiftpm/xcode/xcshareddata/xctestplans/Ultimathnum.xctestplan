@@ -39,6 +39,13 @@
         "identifier" : "InfiniIntKitTests",
         "name" : "InfiniIntKitTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "FibonacciKitTests",
+        "name" : "FibonacciKitTests"
+      }
     }
   ],
   "version" : 1

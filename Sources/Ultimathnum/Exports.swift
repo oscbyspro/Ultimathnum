@@ -19,3 +19,9 @@
 
 @_exported import DoubleIntKit
 @_exported import InfiniIntKit
+
+//=----------------------------------------------------------------------------=
+// MARK: + Miscellaneous
+//=----------------------------------------------------------------------------=
+
+@_exported import FibonacciKit
