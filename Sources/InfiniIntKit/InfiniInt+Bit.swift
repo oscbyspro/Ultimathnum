@@ -27,7 +27,7 @@ extension InfiniInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func count(_ bit: Bit, where selection: Bit.Selection) -> Magnitude {
+    @inlinable public borrowing func count(_ bit: Bit, where selection: BitSelection) -> Magnitude {
         fatalError("TODO")
     }
 }

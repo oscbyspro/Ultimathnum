@@ -27,7 +27,7 @@ extension DoubleInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func count(_ bit: Bit, where selection: Bit.Selection) -> Magnitude {
+    @inlinable public borrowing func count(_ bit: Bit, where selection: BitSelection) -> Magnitude {
         Magnitude(self.storage.count(bit, where: selection))
     }
 }

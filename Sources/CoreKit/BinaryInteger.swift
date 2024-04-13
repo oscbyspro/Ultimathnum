@@ -230,7 +230,7 @@ where
     
     @inlinable borrowing func compared(to other: borrowing Self) -> Signum
         
-    @inlinable borrowing func count(_ bit: Bit, where selection: Bit.Selection) -> Magnitude
+    @inlinable borrowing func count(_ bit: Bit, where selection: BitSelection) -> Magnitude
         
     //=------------------------------------------------------------------------=
     // MARK: Utilities

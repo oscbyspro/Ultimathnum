@@ -58,12 +58,12 @@ extension BinaryInteger {
     }
     
     @inlinable public func count(_ bit: Bit) -> Magnitude {
-        self.count(bit, where: Bit.Selection.anywhere)
+        self.count(bit, where: BitSelection.anywhere)
     }
     
-    @inlinable public func count(_ selection: Bit.Selection.Instruction) -> Magnitude {
-        typealias T = Bit.Selection
-        typealias E = Bit.Selection.Instruction
+    @inlinable public func count(_ selection: BitSelection.Instruction) -> Magnitude {
+        typealias T = BitSelection
+        typealias E = BitSelection.Instruction
         return switch selection {
         case .each         (let bit): self.count(bit, where: T.anywhere)
         case .ascending    (let bit): self.count(bit, where: T.ascending)

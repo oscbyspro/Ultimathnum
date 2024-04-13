@@ -20,7 +20,7 @@ extension ExchangeInt {
     @inlinable public func body() -> Prefix<Self> {
         let ratio = UX(bitPattern: MemoryLayout<Element>.stride)
         var major = UX(bitPattern: self.base.body.count)
-        major  &>>= UX(bitPattern: ratio.count(0, where: Bit.Selection.ascending))
+        major  &>>= UX(bitPattern: ratio.count(0, where: BitSelection.ascending))
         var minor = UX(bitPattern: self.base.body.count)
         minor    &= UX(bitPattern: ratio.minus(1).assert())
         let count = major.plus(UX(Bit(minor != 0))).assert()
