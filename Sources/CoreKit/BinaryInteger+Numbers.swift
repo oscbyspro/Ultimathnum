@@ -62,10 +62,11 @@ extension BinaryInteger {
     @inlinable public static func exactly<Other>(_ source: consuming Other) -> Fallible<Self> where Other: BinaryInteger {
         if !Self.size.isInfinite, !Other.size.isInfinite {
             let measurement = UX(load: Self.size).compared(to: UX(load: Other.size))
-            if (measurement > 0) == (Self.isSigned == Other.isSigned) || (measurement == 0 && Self.isSigned) {
+            if (measurement > 0 && Self.isSigned) || (measurement >= 0 && (Self.isSigned == Other.isSigned)) {
                 return Fallible.success(Self(load: source))
                 
-            }   else if measurement  >= 0 {
+            }   else if measurement >= 0 {
+                Swift.assert(Self.isSigned != Other.isSigned)
                 let rhsIsLessThanZero = source.isLessThanZero
                 let result = Self(load: source)
                 let lhsIsLessThanZero = result.isLessThanZero

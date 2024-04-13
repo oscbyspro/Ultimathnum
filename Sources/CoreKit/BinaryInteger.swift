@@ -81,7 +81,7 @@ where
     ///
     @inlinable static var mode: Mode { get }
     
-    /// The number of bits you can store in the body of this integer type.
+    /// The maximum number of bits that fit in the body of this integer type.
     ///
     /// ```
     /// ┌──────┬───────────────────┐
