@@ -47,8 +47,8 @@
         Bit(self.base.signum() < 0)
     }
     
-    @inlinable public var bitWidth: IX {
-        IX(self.base.bitWidth)
+    @inlinable public var size: UX {
+        UX(IX(self.base.bitWidth))
     }
     
     /// A three-way comparison against zero.
@@ -70,16 +70,9 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public func withUnsafeBinaryIntegerElements<T>(_ action: (DataInt<UX>) throws -> T) rethrows -> T {
-        let count = IX(self.bitWidth).division(IX(size: UX.self)).ceil().assert()
-        return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(count)) { body in
-            let initializedEndIndex = body.initialize(fromContentsOf: self.prefix(count))
-            let initialized = UnsafeMutableBufferPointer(rebasing: body[..<initializedEndIndex])
-            
-            defer {
-                initialized.deinitialize()
-            }
-            
-            return try action(DataInt(UnsafeBufferPointer(body), repeating: self.appendix)!)
+        let count: IX = IX(self.size.division(UX.size).ceil().assert())
+        return try Namespace.withUnsafeTemporaryAllocation(copying: self.prefix(count)) {
+            return try action(DataInt(UnsafeBufferPointer($0), repeating: self.appendix)!)
         }
     }
 }
