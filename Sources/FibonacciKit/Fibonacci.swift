@@ -64,14 +64,10 @@ import CoreKit
     //=------------------------------------------------------------------------=
     
     /// Creates the first sequence pair.
-    @inlinable public init() throws {
-        do  {
-            self.i = try Value.exactly(0).get()
-            self.a = try Value.exactly(0).get()
-            self.b = try Value.exactly(1).get()
-        }   catch {
-            throw Error.overflow
-        }
+    @inlinable public init() {
+        self.i = 0
+        self.a = 0
+        self.b = 1
     }
     
     /// Creates the sequence pair at the given `index`.
@@ -80,7 +76,7 @@ import CoreKit
             throw Overflow()
         }
         
-        try self.init()
+        self.init()
         
         try index.withUnsafeBinaryIntegerElementsAsBytes {
             for bit in try BitSequence($0).normalized().reversed() {
@@ -120,7 +116,7 @@ import CoreKit
     @inlinable public mutating func increment() throws {
         brr: do {
             let n : Value
-            try n = i.plus(Value.exactly(1)).get()
+            try n = i.plus(1 as Value.Element).get()
             
             let x : Value
             try x = a.plus(b).get()
@@ -135,13 +131,13 @@ import CoreKit
     
     /// Forms the sequence pair at `index - 1`.
     @inlinable public mutating func decrement() throws {
-        if  try i == Value.exactly(0).get() {
+        if  i == 0 {
             throw Error.overflow
         }
         
         brr: do {
             let n : Value
-            try n = i.minus(Value.exactly(1)).get()
+            try n = i.minus(1 as Value.Element).get()
             
             let y : Value
             try y = b.minus(a).get()
@@ -156,16 +152,12 @@ import CoreKit
     
     /// Forms the sequence pair at `index * 2`.
     @inlinable public mutating func double() throws {
-        if  try i == Value.exactly(0).get() {
-            return
-        }
-        
         brr: do {
             let n : Value
-            try n = i.times(Value.exactly(2)).get()
+            try n = i.times(2).get()
             
             var x : Value
-            try x = b.times(Value.exactly(2)).get()
+            try x = b.times(2).get()
             try x = x.minus(a).get()
             try x = x.times(a).get()
             

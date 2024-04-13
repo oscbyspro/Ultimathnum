@@ -44,7 +44,9 @@ extension DoubleInt {
         let rhsIsLessThanZero = divisor/*--*/.isLessThanZero
         //=--------------------------------------=
         var result = Fallible<Division<Self, Self>>(
-            bitPattern: Magnitude.division4222(dividend.magnitude(), by: divisor.magnitude())
+            bitPattern: Magnitude.division4222(
+                dividend.magnitude(), by: divisor.magnitude()
+            )
         )
         
         var suboverflow  = Bit( result.value.quotient.high.isLessThanZero)
@@ -56,7 +58,7 @@ extension DoubleInt {
             result.value.remainder = result.value.remainder.complement()
         }
         
-        return result.combine(Bool(suboverflow))
+        return result.combine(Bool(suboverflow)) as Fallible<Division<Self, Self>>
     }
 }
 

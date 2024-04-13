@@ -93,11 +93,11 @@ extension FibonacciTests.Case {
         test.same(item.index, Value.zero)
         
         var copy = self
-        copy.test.failure({ try copy.item.decrement() })
+        copy.test.success({ try copy.item.double() })
         copy.check(index: item.index, element: item.element, next: item.next)
         
         copy = self
-        copy.test.success({ try copy.item.double() })
+        copy.test.failure({ try copy.item.decrement() })
         copy.check(index: item.index, element: item.element, next: item.next)
     }
     
@@ -121,14 +121,14 @@ extension FibonacciTests.Case {
         }
         
         zero: do {
-            Self(try Item( )).checkIsAtZeroIndex()
+            Self(    Item( )).checkIsAtZeroIndex()
             Self(try Item(0)).checkIsAtZeroIndex()
         }   catch {
             test.fail(error.localizedDescription)
         }
         
         index: do {
-            Self(try Item( )).check(index: 0, element: 0, next: 1)
+            Self(    Item( )).check(index: 0, element: 0, next: 1)
             Self(try Item(0)).check(index: 0, element: 0, next: 1)
             Self(try Item(1)).check(index: 1, element: 1, next: 1)
             Self(try Item(2)).check(index: 2, element: 1, next: 2)
