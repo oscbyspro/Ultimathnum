@@ -81,6 +81,10 @@
         // MARK: Utilities
         //=--------------------------------------------------------------------=
         
+        @inlinable public var indices: Range<IX> {
+            Range(uncheckedBounds:(0, self.count))
+        }
+        
         @inlinable public consuming func buffer() -> UnsafeBufferPointer<Element> {
             UnsafeBufferPointer(start: self.start, count: Int(self.count))
         }
@@ -91,6 +95,9 @@
     //*========================================================================*
     
     /// It is like `DataInt<Element>.Body` but with write access.
+    ///
+    /// - Note: Its operations are unsigned unless they state otherwise.
+    ///
     @frozen public struct Canvas {
         
         //=--------------------------------------------------------------------=
@@ -117,6 +124,10 @@
         //=--------------------------------------------------------------------=
         // MARK: Utilities
         //=--------------------------------------------------------------------=
+        
+        @inlinable public var indices: Range<IX> {
+            Range(uncheckedBounds:(0, self.count))
+        }
         
         @inlinable public consuming func buffer() -> UnsafeMutableBufferPointer<Element> {
             UnsafeMutableBufferPointer(start: self.start, count: Int(self.count))

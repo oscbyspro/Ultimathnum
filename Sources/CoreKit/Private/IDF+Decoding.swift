@@ -159,8 +159,7 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
                     element = try element &* 10 &+ UX(load: U8(IDF.decode(ascii: ascii)))
                 }
                 
-                #warning("partial range up to")
-                words[unchecked: index] = words.multiply(by: radix.power, add: element, from: IX.zero, to: index)
+                words[unchecked: index] = words[unchecked: ..<index].multiply(by: radix.power, add: element)
                 index = index.plus(1).assert()
             }
             //=----------------------------------=

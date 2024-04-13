@@ -46,6 +46,16 @@ extension DataInt.Body {
             return Self(start, count: count)
         }
     }
+    
+    @inlinable public subscript(unchecked range: PartialRangeUpTo<IX>) -> Self {
+        consuming get {
+            //=----------------------------------=
+            Swift.assert(range.upperBound >= 0000000000, String.indexOutOfBounds())
+            Swift.assert(range.upperBound <= self.count, String.indexOutOfBounds())
+            //=----------------------------------=
+            return Self(self.start, count: IX(bitPattern: range.upperBound))
+        }
+    }
 }
 
 //*============================================================================*
@@ -67,6 +77,16 @@ extension DataInt.Canvas {
             let start = self.start.advanced(by: Int(bitPattern:  range.lowerBound))
             let count = self.count.minus(IX(bitPattern: range.lowerBound)).assert()
             return Self(start, count: count)
+        }
+    }    
+    
+    @inlinable public subscript(unchecked range: PartialRangeUpTo<IX>) -> Self {
+        consuming get {
+            //=----------------------------------=
+            Swift.assert(range.upperBound >= 0000000000, String.indexOutOfBounds())
+            Swift.assert(range.upperBound <= self.count, String.indexOutOfBounds())
+            //=----------------------------------=
+            return Self(self.start, count: IX(bitPattern: range.upperBound))
         }
     }
 }
