@@ -32,13 +32,17 @@
         self.appendix = appendix
     }
     
-    @inlinable public init?(_ body: UnsafeBufferPointer<Element>, repeating bit: Bit = .zero) {
-        guard let body = Body(body) else { return nil }
-        self.init(body, repeating: bit)
+    @inlinable public init(_ canvas: Canvas, repeating appendix: Bit = .zero) {
+        self.init(Body(canvas), repeating: appendix)
     }
     
-    @inlinable public init(_ start: UnsafePointer<Element>, count: IX, repeating bit: Bit = .zero) {
-        self.init(Body(start, count: count), repeating: bit)
+    @inlinable public init?(_ body: UnsafeBufferPointer<Element>, repeating appendix: Bit = .zero) {
+        guard let body = Body(body) else { return nil }
+        self.init(body, repeating: appendix)
+    }
+    
+    @inlinable public init(_ start: UnsafePointer<Element>, count: IX, repeating appendix: Bit = .zero) {
+        self.init(Body(start, count: count), repeating: appendix)
     }
     
     //*========================================================================*
@@ -57,6 +61,11 @@
         //=--------------------------------------------------------------------=
         // MARK: Initializers
         //=--------------------------------------------------------------------=
+        
+        @inlinable public init(_ canvas: Canvas) {
+            self.start = UnsafePointer(canvas.start)
+            self.count = canvas.count
+        }
         
         @inlinable public init?(_ buffer: UnsafeBufferPointer<Element>) {
             guard let start = buffer.baseAddress else { return nil }

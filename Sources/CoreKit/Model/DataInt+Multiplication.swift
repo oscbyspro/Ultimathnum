@@ -17,11 +17,11 @@ extension DataInt.Canvas {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable package func multiply(
+    @inlinable borrowing public func multiply(
         by multiplier: borrowing Element,
         add increment: consuming Element
     )   -> Element {
-        
+                
         self.multiply(by: multiplier, add: increment, from: IX.zero, to: self.count)
     }
     
@@ -29,7 +29,7 @@ extension DataInt.Canvas {
     // MARK: Transformations x Inout
     //=------------------------------------------------------------------------=
     
-    @inlinable package func multiply(
+    @inlinable public func multiply(
         by multiplier: borrowing Element,
         add increment: consuming Element,
         from index:    consuming IX,
@@ -40,6 +40,10 @@ extension DataInt.Canvas {
         Swift.assert(index <= limit)
         Swift.assert(limit <= self.count)
         //=--------------------------------------=
+        // TODO: await consuming element fixes
+        //=--------------------------------------=
+        var increment = increment
+        
         forwards: while index < limit {
             var  wide = self[unchecked: copy index].multiplication(multiplier)
             wide.high &+= Element(Bit(wide.low.capture(increment){ $0.plus($1) }))
@@ -48,6 +52,6 @@ extension DataInt.Canvas {
             index = index.plus(1).assert()
         }
         
-        return increment
+        return increment as Element
     }
 }

@@ -66,7 +66,7 @@ extension Namespace.IntegerDescriptionFormat {
         switch description.first {
         case UInt8(ascii: "+"): description.removeFirst(); return Sign.plus
         case UInt8(ascii: "-"): description.removeFirst(); return Sign.minus
-        default: return nil 
+        default: return nil
         }
     }
     
@@ -130,13 +130,13 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
         var digits: UnsafeBufferPointer<UInt8>.SubSequence = numerals.drop(while:{ $0 == UInt8(ascii: "0") })
         let division = IX(digits.count).division(self.radix.exponent).unwrap()
         return try Namespace.withUnsafeTemporaryAllocation(of: UX.self, count: Int(division.ceil().unwrap())) {
-            var words = consume $0
-            var index = words.startIndex
+            let words = DataInt<UX>.Canvas(consume $0)!
+            var index = IX.zero
             //=----------------------------------=
             // pointee: deferred deinitialization
             //=----------------------------------=
             defer {
-                words[..<index].deinitialize()
+                words.start.deinitialize(count: Int(index))
             }
             //=----------------------------------=
             // pointee: initialization
@@ -148,25 +148,26 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
                     element = try element &* 10 &+ UX(load: U8(IDF.decode(ascii: ascii)))
                 }
                 
-                words.initializeElement(at: index, to: element)
-                index = words .index(after: index)
+                words[unchecked: index] = element
+                index = index.plus(1).assert()
             }
             
-            forwards: while index < words.endIndex {
+            forwards: while index < words.count {
                 var element = 0 as UX
                 
                 for ascii  in UnsafeBufferPointer(rebasing: digits.removePrefix(count: self.radix.exponent.base)) {
                     element = try element &* 10 &+ UX(load: U8(IDF.decode(ascii: ascii)))
                 }
                 
-                words.initializeElement(at: index, to: SUISS.multiply(&words[..<index], by: radix.power, add: element))
-                index = words .index(after: index)
+                #warning("partial range up to")
+                words[unchecked: index] = words.multiply(by: radix.power, add: element, from: IX.zero, to: index)
+                index = index.plus(1).assert()
             }
             //=----------------------------------=
             Swift.assert(digits.isEmpty)
-            Swift.assert(index == words.endIndex)
+            Swift.assert(index == words.count)
             //=----------------------------------=
-            return try Magnitude.exactly(DataInt(UnsafeBufferPointer(words))!, mode: .unsigned).get()
+            return try Magnitude.exactly(DataInt(words), mode: .unsigned).get()
         }
     }
 }
