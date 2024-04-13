@@ -47,3 +47,26 @@ extension DataInt.Body {
         }
     }
 }
+
+//*============================================================================*
+// MARK: * Data Int x Sub Sequence x Canvas
+//*============================================================================*
+
+extension DataInt.Canvas {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public subscript(unchecked range: PartialRangeFrom<IX>) -> Self {
+        consuming get {
+            //=----------------------------------=
+            Swift.assert(range.lowerBound >= 0000000000, String.indexOutOfBounds())
+            Swift.assert(range.lowerBound <= self.count, String.indexOutOfBounds())
+            //=----------------------------------=
+            let start = self.start.advanced(by: Int(bitPattern:  range.lowerBound))
+            let count = self.count.minus(IX(bitPattern: range.lowerBound)).assert()
+            return Self(start, count: count)
+        }
+    }
+}

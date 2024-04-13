@@ -76,4 +76,41 @@
             UnsafeBufferPointer(start: self.start, count: Int(self.count))
         }
     }
+    
+    //*========================================================================*
+    // MARK: * Canvas
+    //*========================================================================*
+    
+    /// It is like `DataInt<Element>.Body` but with write access.
+    @frozen public struct Canvas {
+        
+        //=--------------------------------------------------------------------=
+        // MARK: State
+        //=--------------------------------------------------------------------=
+        
+        public let start: UnsafeMutablePointer<Element>
+        public let count: IX
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Initializers
+        //=--------------------------------------------------------------------=
+        
+        @inlinable public init?(_ buffer: UnsafeMutableBufferPointer<Element>) {
+            guard let start = buffer.baseAddress else { return nil }
+            self.init(start, count: IX(buffer.count))
+        }
+        
+        @inlinable public init(_ start: UnsafeMutablePointer<Element>, count: IX) {
+            self.start = start
+            self.count = count
+        }
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Utilities
+        //=--------------------------------------------------------------------=
+        
+        @inlinable public consuming func buffer() -> UnsafeMutableBufferPointer<Element> {
+            UnsafeMutableBufferPointer(start: self.start, count: Int(self.count))
+        }
+    }
 }

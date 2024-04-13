@@ -54,3 +54,28 @@ extension DataInt.Body {
         }
     }
 }
+
+//*============================================================================*
+// MARK: * Data Int x Memory x Canvas
+//*============================================================================*
+
+extension DataInt.Canvas {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public borrowing func withMemoryRebound<Destination, Value>(
+        to type: Destination.Type,
+        perform action: (DataInt<Destination>.Body) throws -> Value
+    )   rethrows -> Value {
+        //=--------------------------------------=
+        precondition(Element.elementsCanBeRebound(to: Destination.self))
+        //=--------------------------------------=
+        let ratio = IX(size: Element.self) / IX(size: Destination.self)
+        let count = self.count * ratio
+        return try  self.start.withMemoryRebound(to:  Destination.self, capacity: Int(count)) {
+            try action(DataInt<Destination>.Body($0, count: count))
+        }
+    }
+}
