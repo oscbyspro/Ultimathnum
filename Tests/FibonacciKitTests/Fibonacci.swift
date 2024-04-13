@@ -17,42 +17,70 @@ import TestKit
 
 final class FibonacciTests: XCTestCase {
     
-    typealias Components<T> = (index: T, element: T, next: T)
+    //*========================================================================*
+    // MARK: * Case
+    //*========================================================================*
+    
+    struct Case<Value: BinaryInteger> {
+        
+        typealias Item = Fibonacci<Value>
+        
+        //=--------------------------------------------------------------------=
+        // MARK: State
+        //=--------------------------------------------------------------------=
+
+        var test: Test
+        var item: Item
+        var invariants: Bool
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Initializers
+        //=--------------------------------------------------------------------=
+
+        init(_ item: Item, invariants: Bool = true, test: Test) {
+            self.test = test
+            self.item = item
+            self.invariants = invariants
+        }
+        
+        init(_ item: Item, invariants: Bool = true, file: StaticString = #file, line: UInt = #line) {
+            self.init(item, invariants: invariants, test: Test(file: file, line: line))
+        }
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Assertions
+//=----------------------------------------------------------------------------=
+
+extension FibonacciTests.Case {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    func check<T>(_ sequence: Fibonacci<T>?, _ expectation: Components<T>?, invariants: Bool = true, test: Test) {
-        test.same(sequence?.index,   expectation?.index)
-        test.same(sequence?.element, expectation?.element)
-        test.same(sequence?.next,    expectation?.next)
+    func check(index: Value, element: Value, next: Value) {
+        test.same(item.index,   index)
+        test.same(item.element, element)
+        test.same(item.next,    next)
         
-        if  invariants, let  expectation, let sequence =  Test().some(sequence) {
-            test.success(check(index: sequence.index, element: expectation.element, invariants: invariants, test: test))
+        if  invariants {
+            self.checkDivisionInvariants()
         }
     }
     
-    func check<T: BinaryInteger>(index: T, element: T?, invariants: Bool = true, test: Test) {
-        typealias F = Fibonacci<T>
-        //=--------------------------------------=
-        let sequence = try? F(index)
-        //=--------------------------------------=
-        test.same(sequence?.element, element)
-        //=--------------------------------------=
-        if  invariants, let sequence {
-            for divisor: T in [2, 3, 5, 7].compactMap({ T.exactly($0).optional() }) {
-                brrrrrr: do {
-                    let a = sequence
-                    let b = try F(index.quotient(divisor).get())
-                    let c = try F(a.index.minus (b.index).get())
-                    let d = try a.next.division (b.next ).get()
-                    let e = try b.element .times(c.element).get()
-                    let f = try d.quotient.minus(c.next).times(b.next).plus(d.remainder).get()
-                    test.same(e, f, "arithmetic invariant error")
-                }   catch let error {
-                    test.fail("unexpected arithmetic failure: \(error)")
-                }
+    func checkDivisionInvariants() {
+        for divisor: Value in [2, 3, 5, 7].compactMap({ Value.exactly($0).optional() }) {
+            brrrrrr: do {
+                let a = self.item
+                let b = try Item(self.item.index.quotient(divisor).get())
+                let c = try Item(a.index.minus(b.index).get())
+                let d = try a.next.division(b.next).get()
+                let e = try b.element.times(c.element).get()
+                let f = try d.quotient.minus(c.next).times(b.next).plus(d.remainder).get()
+                self.test.same(e, f, "arithmetic invariant error")
+            }   catch let error {
+                self.test.fail("unexpected arithmetic failure: \(error)")
             }
         }
     }
@@ -61,35 +89,96 @@ final class FibonacciTests: XCTestCase {
     // MARK: Utilities x Min, Max
     //=------------------------------------------------------------------------=
     
-    func checkInvariantsAtZero<T>(_ sequence: Fibonacci<T>.Type, invariants: Bool = true, test: Test) {
-        typealias F = Fibonacci<T>
+    func checkIsAtZeroIndex() {
+        test.same(item.index, Value.zero)
         
-        if  T.isSigned {
-            test.failure(try F(-1))
-        }
-                
-        if  let one = T.exactly(1).optional(), var sequence = test.some(try? F()) {
-            test.success(try F( ))
-            test.success(try F(0))
-            
-            let components = Components(0, 0, one)
-            check(sequence, components, invariants: invariants,  test: test)
-            test.failure(try sequence.decrement())
-            check(sequence, components, invariants: (((false))), test: test)
-            test.success(try sequence.double())
-            check(sequence, components, invariants: (((false))), test: test)
-        }   else {
-            test.failure(try F( ))
-            test.failure(try F(0))
-        }
+        var copy = self
+        copy.test.failure({ try copy.item.decrement() })
+        copy.check(index: item.index, element: item.element, next: item.next)
+        
+        copy = self
+        copy.test.success({ try copy.item.double() })
+        copy.check(index: item.index, element: item.element, next: item.next)
     }
     
-    func checkInvariantsAtLastElement<T>(_ sequence: Fibonacci<T>, invariants: Bool = true, _ expectation: Components<T>, test: Test = .init()) {
-        var ((sequence)) = sequence
-        check(sequence, expectation, invariants: invariants,  test: test)
-        test.failure(try sequence.increment())
-        check(sequence, expectation, invariants: (((false))), test: test)
-        test.failure(try sequence.double())
-        check(sequence, expectation, invariants: (((false))), test: test)
+    func checkIsAtLastIndex() {
+        var copy = copy self
+        copy.test.failure({ try copy.item.double() })
+        copy.check(index: item.index, element: item.element, next: item.next)
+        
+        copy = self
+        copy.test.failure({ try copy.item.increment() })
+        copy.check(index: item.index, element: item.element, next: item.next)
+    }
+    
+    static func checkInstancesNearZeroIndex(_ test: Test) {
+        if  Value.isSigned {
+            test.failure({ try Item(-1) })
+            test.failure({ try Item(-2) })
+            test.failure({ try Item(-3) })
+            test.failure({ try Item(-4) })
+            test.failure({ try Item(-5) })
+        }
+        
+        zero: do {
+            Self(try Item( )).checkIsAtZeroIndex()
+            Self(try Item(0)).checkIsAtZeroIndex()
+        }   catch {
+            test.fail(error.localizedDescription)
+        }
+        
+        index: do {
+            Self(try Item( )).check(index: 0, element: 0, next: 1)
+            Self(try Item(0)).check(index: 0, element: 0, next: 1)
+            Self(try Item(1)).check(index: 1, element: 1, next: 1)
+            Self(try Item(2)).check(index: 2, element: 1, next: 2)
+            Self(try Item(3)).check(index: 3, element: 2, next: 3)
+            Self(try Item(4)).check(index: 4, element: 3, next: 5)
+            Self(try Item(5)).check(index: 5, element: 5, next: 8)
+        }   catch {
+            test.fail(error.localizedDescription)
+        }
+        
+        increment: if let item = test.some(try? Item(0)) {
+            var instance = Self(item, test: test)
+            
+            instance.check(index: 0, element: 0, next: 1)
+            instance.test.success({ try instance.item.increment() })
+            instance.check(index: 1, element: 1, next: 1)
+            instance.test.success({ try instance.item.increment() })
+            instance.check(index: 2, element: 1, next: 2)
+            instance.test.success({ try instance.item.increment() })
+            instance.check(index: 3, element: 2, next: 3)
+            instance.test.success({ try instance.item.increment() })
+            instance.check(index: 4, element: 3, next: 5)
+            instance.test.success({ try instance.item.increment() })
+            instance.check(index: 5, element: 5, next: 8)
+        }
+        
+        decrement: if let item = test.some(try? Item(5)) {
+            var instance = Self(item, test: test)
+            
+            instance.check(index: 5, element: 5, next: 8)
+            instance.test.success({ try instance.item.decrement() })
+            instance.check(index: 4, element: 3, next: 5)
+            instance.test.success({ try instance.item.decrement() })
+            instance.check(index: 3, element: 2, next: 3)
+            instance.test.success({ try instance.item.decrement() })
+            instance.check(index: 2, element: 1, next: 2)
+            instance.test.success({ try instance.item.decrement() })
+            instance.check(index: 1, element: 1, next: 1)
+            instance.test.success({ try instance.item.decrement() })
+            instance.check(index: 0, element: 0, next: 1)
+        }
+        
+        double: if let item = test.some(try? Item(1)) {
+            var instance = Self(item, test: test)
+            
+            instance.check(index: 1, element: 1, next: 1)
+            instance.test.success({ try instance.item.double() })
+            instance.check(index: 2, element: 1, next: 2)
+            instance.test.success({ try instance.item.double() })
+            instance.check(index: 4, element: 3, next: 5)
+        }
     }
 }

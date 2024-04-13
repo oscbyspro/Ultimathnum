@@ -18,8 +18,8 @@ extension Test {
     //=------------------------------------------------------------------------=
     
     @discardableResult public func success<T>(
-        _ instance: @autoclosure () throws -> T,
-        _ message:  @autoclosure () -> String = ""
+        _ instance: () throws -> T,
+        _ message:  @autoclosure () -> String = String()
     )   -> Optional<T> {
         
         switch Result(catching: instance) {
@@ -35,7 +35,10 @@ extension Test {
         }
     }
     
-    public func failure<T>(_ instance: @autoclosure () throws -> T, _ message: @autoclosure () -> String = "") {
+    public func failure<T>(
+        _ instance: () throws -> T, 
+        _ message:  @autoclosure () -> String = String()
+    ) {
         XCTAssertThrowsError(try instance(), message(), file: file, line: line)
     }
 }
