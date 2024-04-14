@@ -20,7 +20,9 @@ extension InfiniInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public static prefix func ~(instance: consuming Self) -> Self {
-        fatalError("TOOD")
+        instance.storage.withUnsafeMutableBinaryIntegerBody({ $0.toggle() })
+        instance.storage.appendix.toggle()
+        return instance
     }
     
     @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {

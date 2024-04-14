@@ -20,14 +20,73 @@ extension InfiniInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
-        fatalError("TODO")
+        self.withUnsafeMutableBinaryIntegerBody {
+            $0.toggle(carrying: &increment)
+        }
+        
+        // TODO: await ownership fixes
+        if  copy increment {
+            if  Bool(self.appendix) {
+                self.storage.appendix = ~self.appendix
+                self.storage.body.append(1)
+            }   else {
+                self.storage.normalize()
+            }
+        }
+        
+        return self.combine(!Self.isSigned && increment)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func count(_ bit: Bit, where selection: BitSelection) -> Magnitude {
-        fatalError("TODO")
+    @inlinable public borrowing func count(_ bit: consuming Bit, where selection: BitSelection) -> Magnitude {
+        var count = Magnitude()
+        
+        switch selection {
+        case BitSelection.anywhere:
+            let contrast = self.appendix.toggled()
+            self.storage.withUnsafeBinaryIntegerBody {
+                for index in $0.indices {
+                    let subcount = $0[unchecked: index].count(contrast, where: selection)
+                    count = count.plus(subcount).assert()
+                }
+                
+                if  contrast != bit {
+                    count.toggle()
+                }
+            }
+            
+        case BitSelection.ascending:
+            self.storage.withUnsafeBinaryIntegerBody {
+                var index = IX.zero
+                
+                while index < $0.count {
+                    let subcount = $0[unchecked: index].count(bit, where: selection)
+                    count = count.plus(subcount).assert()
+                    guard subcount == Element.size else { break }
+                    index = index.incremented( ).assert()
+                }
+                
+                if  self.appendix == bit, index != 0 {
+                    count.storage.appendix = Bit.one
+                    count.storage.normalize()
+                }
+            }
+            
+        case BitSelection.descending:
+            if  self.appendix == bit {
+                self.storage.withUnsafeBinaryIntegerBody {
+                    for index in $0.indices.reversed() {
+                        let subcount = $0[unchecked: index].count(bit, where: selection)
+                        count = count.plus(subcount).assert()
+                        guard subcount == Element.size else { break }
+                    }
+                }
+            }
+        }
+        
+        return count as Magnitude
     }
 }

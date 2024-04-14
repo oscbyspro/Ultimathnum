@@ -10,31 +10,24 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Infini Int x Comparison
+// MARK: * Infini Int Storage x Normalization
 //*============================================================================*
 
-extension InfiniInt {
+extension InfiniIntStorage {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.same
+    @inlinable var isNormal: Bool {
+        let element = Element.Magnitude(repeating: self.appendix)
+        return self.body.last != element
     }
     
-    @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.less
-    }
-    
-    @inlinable public func compared(to other: Self) -> Signum {
-        self.withUnsafeBinaryIntegerElements { lhs in
-            other.withUnsafeBinaryIntegerElements { rhs in
-                DataInt.compare(
-                    lhs: lhs, lhsIsSigned: Self.isSigned,
-                    rhs: rhs, rhsIsSigned: Self.isSigned
-                )
-            }
+    @inlinable mutating func normalize() {
+        let element = Element.Magnitude(repeating: self.appendix)
+        while self.body.last == element {
+            ((self.body)).removeLast()
         }
     }
 }

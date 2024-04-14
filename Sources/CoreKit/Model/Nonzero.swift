@@ -17,20 +17,20 @@
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    public let nonzero: Value
+    public let value: Value
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init?(_ nonzero: consuming Value) {
-        guard Self.predicate(nonzero) else { return nil }
-        self.nonzero = nonzero
+    @inlinable public init?(_ value: consuming Value) {
+        guard Self.predicate(value) else { return nil }
+        self.value = value
     }
     
-    @inlinable public init(unchecked nonzero: consuming Value) {
-        Swift.assert(Self.predicate(nonzero), String.brokenInvariant())
-        self.nonzero = nonzero
+    @inlinable public init(unchecked value: consuming Value) {
+        Swift.assert(Self.predicate(value), String.brokenInvariant())
+        self.value = value
     }
     
     //=------------------------------------------------------------------------=

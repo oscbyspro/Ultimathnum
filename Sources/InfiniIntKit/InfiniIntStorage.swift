@@ -10,31 +10,28 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Infini Int x Comparison
+// MARK: * Infini Int Storage
 //*============================================================================*
 
-extension InfiniInt {
+@frozen @usableFromInline struct InfiniIntStorage<Element>: Hashable 
+where Element: SystemsInteger & UnsignedInteger {
+    
+    @usableFromInline typealias Body = ContiguousArray<Element.Magnitude>
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: State
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.same
-    }
+    @usableFromInline var body: Body
     
-    @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.less
-    }
+    @usableFromInline var appendix: Bit
     
-    @inlinable public func compared(to other: Self) -> Signum {
-        self.withUnsafeBinaryIntegerElements { lhs in
-            other.withUnsafeBinaryIntegerElements { rhs in
-                DataInt.compare(
-                    lhs: lhs, lhsIsSigned: Self.isSigned,
-                    rhs: rhs, rhsIsSigned: Self.isSigned
-                )
-            }
-        }
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable init(_ body: Body, repeating appendix: Bit) {
+        self.body = body
+        self.appendix = appendix
     }
 }

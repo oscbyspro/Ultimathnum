@@ -10,31 +10,32 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Infini Int x Comparison
+// MARK: * Infini Int Storage x Memory
 //*============================================================================*
 
-extension InfiniInt {
+extension InfiniIntStorage {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.same
-    }
-    
-    @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.less
-    }
-    
-    @inlinable public func compared(to other: Self) -> Signum {
-        self.withUnsafeBinaryIntegerElements { lhs in
-            other.withUnsafeBinaryIntegerElements { rhs in
-                DataInt.compare(
-                    lhs: lhs, lhsIsSigned: Self.isSigned,
-                    rhs: rhs, rhsIsSigned: Self.isSigned
-                )
-            }
+    @inlinable public borrowing func withUnsafeBinaryIntegerBody<T>(
+        _ action: (DataInt<Element>.Body) throws -> T
+    )   rethrows -> T {
+        
+        try self.body.withUnsafeBufferPointer {
+            try action(DataInt.Body($0)!)
         }
+    }
+    
+    @inlinable public mutating func withUnsafeMutableBinaryIntegerBody<T>(
+        _ action: (DataInt<Element>.Canvas) throws -> T
+    )   rethrows -> T {
+        
+        let result = try self.body.withUnsafeMutableBufferPointer {
+            try action(DataInt.Canvas($0)!)
+        }
+        
+        return result as T
     }
 }

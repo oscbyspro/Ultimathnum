@@ -32,7 +32,7 @@ extension DataInt.Body {
         
         for index in self.indices.reversed() {
             let dividend = Doublet(low: self[unchecked: index], high: remainder)
-            remainder = Element.division(dividend, by: divisor.nonzero).assert().remainder
+            remainder = Element.division(dividend, by: divisor.value).assert().remainder
         }
         
         return remainder as Element
@@ -77,7 +77,7 @@ extension DataInt.Canvas {
         
         for index in self.indices.reversed() {
             let dividend = Doublet(low: self[unchecked: index], high: remainder)
-            let division = Element.division(dividend, by: divisor.nonzero).assert()
+            let division = Element.division(dividend, by: divisor.value).assert()
             (self[unchecked: index], remainder) = division.components
         }
         

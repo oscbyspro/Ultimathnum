@@ -10,30 +10,25 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Infini Int x Comparison
+// MARK: * Data Int x Bit x Canvas
 //*============================================================================*
 
-extension InfiniInt {
+extension DataInt.Canvas {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
-    
-    @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.same
+
+    @inlinable public borrowing func toggle() {
+        for index in self.indices {
+            self[unchecked: index].capture(~)
+        }
     }
     
-    @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.less
-    }
-    
-    @inlinable public func compared(to other: Self) -> Signum {
-        self.withUnsafeBinaryIntegerElements { lhs in
-            other.withUnsafeBinaryIntegerElements { rhs in
-                DataInt.compare(
-                    lhs: lhs, lhsIsSigned: Self.isSigned,
-                    rhs: rhs, rhsIsSigned: Self.isSigned
-                )
+    @inlinable public borrowing func toggle(carrying increment: inout Bool) {
+        for index in self.indices {
+            increment = self[unchecked: index].capture {
+                $0.complement(increment)
             }
         }
     }

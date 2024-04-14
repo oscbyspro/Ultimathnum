@@ -22,6 +22,8 @@ import CoreKit
     public typealias Magnitude = InfiniInt<Source.Magnitude>
     
     public typealias Signitude = InfiniInt<Source.Signitude>
+    
+    @usableFromInline typealias Storage = InfiniIntStorage<Element.Magnitude>
         
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -46,13 +48,13 @@ import CoreKit
     //=------------------------------------------------------------------------=
     
     @inlinable init(unchecked storage: consuming Storage) {
+        Swift.assert(storage.isNormal, String.brokenInvariant())
         self.storage = storage
-        Swift.assert(self.storage.isNormal)
     }
     
     @inlinable init(normalizing storage: consuming Storage) {
-        self.storage = storage
-        self.storage.normalize()
+        storage.normalize()
+        self.init(unchecked: storage)
     }
 }
 
