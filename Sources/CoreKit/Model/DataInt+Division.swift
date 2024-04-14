@@ -72,7 +72,7 @@ extension DataInt.Canvas {
     ///
     /// - Important: This is `unsigned` and `finite`.
     ///
-    @inlinable public func remainderByFormingQuotient(_ divisor: borrowing Nonzero<Element>) -> Element {
+    @inlinable public func divisionSetQuotientGetRemainder(_ divisor: borrowing Nonzero<Element>) -> Element {
         var remainder = Element()
         
         for index in self.indices.reversed() {

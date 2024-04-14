@@ -84,7 +84,7 @@ extension DataIntTests.Canvas {
             
             result.quotient  = self.body
             result.remainder = result.quotient.withUnsafeMutableBufferPointer {
-                DataInt.Canvas($0)!.remainderByFormingQuotient(divisor)
+                DataInt.Canvas($0)!.divisionSetQuotientGetRemainder(divisor)
             }
             
             test.same(result.quotient,  quotient)

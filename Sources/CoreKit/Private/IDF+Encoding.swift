@@ -65,7 +65,7 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
             // pointee: initialization
             //=----------------------------------=
             rebasing: while magnitude.count > 0 {
-                let chunk = magnitude.remainderByFormingQuotient(Nonzero(unchecked: radix.power))
+                let chunk = magnitude.divisionSetQuotientGetRemainder(Nonzero(unchecked: radix.power))
                 magnitude = magnitude.normalized()
                 chunks.initializeElement(at: chunksIndex, to: chunk)
                 chunksIndex = chunks.index(after: chunksIndex)
