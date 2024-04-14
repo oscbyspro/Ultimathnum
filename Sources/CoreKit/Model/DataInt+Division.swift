@@ -27,17 +27,12 @@ extension DataInt.Body {
     ///
     /// - Important: This is `unsigned` and `finite`.
     ///
-    @inlinable public func remainder(nonzero divisor: borrowing Element) -> Element {
-        //=--------------------------------------=
-        if  divisor == 0 {
-            Swift.assertionFailure(String.overflow())
-        }
-        //=--------------------------------------=
+    @inlinable public func remainder(_ divisor: borrowing Nonzero<Element>) -> Element {
         var remainder = Element()
         
         for index in self.indices.reversed() {
             let dividend = Doublet(low: self[unchecked: index], high: remainder)
-            remainder = Element.division(dividend, by: divisor).assert().remainder
+            remainder = Element.division(dividend, by: divisor.nonzero).assert().remainder
         }
         
         return remainder as Element
@@ -64,8 +59,8 @@ extension DataInt.Canvas {
     ///
     /// - Important: This is `unsigned` and `finite`.
     ///
-    @inlinable public func remainder(nonzero divisor: borrowing Element) -> Element {
-        Body(self).remainder(nonzero: divisor)
+    @inlinable public func remainder(_ divisor: borrowing Nonzero<Element>) -> Element {
+        Body(self).remainder(divisor)
     }
     
     /// Returns the `quotient` and `remainder` of dividing `self` by the `divisor`.
@@ -77,17 +72,12 @@ extension DataInt.Canvas {
     ///
     /// - Important: This is `unsigned` and `finite`.
     ///
-    @inlinable public func remainderByFormingQuotient(nonzero divisor: borrowing Element) -> Element {
-        //=--------------------------------------=
-        if  divisor == 0 {
-            Swift.assertionFailure(String.overflow())
-        }
-        //=--------------------------------------=
+    @inlinable public func remainderByFormingQuotient(_ divisor: borrowing Nonzero<Element>) -> Element {
         var remainder = Element()
         
         for index in self.indices.reversed() {
             let dividend = Doublet(low: self[unchecked: index], high: remainder)
-            let division = Element.division(dividend, by: divisor).assert()
+            let division = Element.division(dividend, by: divisor.nonzero).assert()
             (self[unchecked: index], remainder) = division.components
         }
         
