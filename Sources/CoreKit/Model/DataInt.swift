@@ -129,6 +129,10 @@
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
+        @inlinable public init(mutating body: Body) {
+            self.init(UnsafeMutablePointer(mutating: body.start), count: body.count)
+        }
+        
         @inlinable public init?(_ buffer: UnsafeMutableBufferPointer<Element>) {
             guard let start = buffer.baseAddress else { return nil }
             self.init(start, count: IX(buffer.count))

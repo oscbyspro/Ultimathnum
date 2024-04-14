@@ -48,8 +48,7 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
     
     @inlinable public func encode(sign: Sign, magnitude: DataInt<U8>) -> String {
         Namespace.withUnsafeTemporaryAllocation(copying: ExchangeInt<UX>(magnitude).body()) {
-            var magnitude: UnsafeMutableBufferPointer<UX> = $0
-            return self.encode(sign: sign, magnitude: &magnitude)
+            self.encode(sign: sign, magnitude: DataInt.Canvas($0)!)
         }
     }
     
@@ -57,17 +56,17 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
     ///
     /// - TODO: Consider `MutableDataInt<UX>` instead of `UnsafeMutableBufferPointer<UX>`.
     ///
-    @usableFromInline func encode(sign: Sign, magnitude: inout UnsafeMutableBufferPointer<UX>) -> String {
-        let maxChunkCount = Int(self.radix.divisibilityByPowerUpperBound(magnitude: magnitude))
-        return Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: maxChunkCount) { chunks in
-            var magnitude = magnitude[...]
+    @usableFromInline func encode(sign: Sign, magnitude: DataInt<UX>.Canvas) -> String {
+        let maxChunkCount = self.radix.divisibilityByPowerUpperBound(magnitude: DataInt.Body(magnitude))
+        return Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(maxChunkCount)) { chunks in
+            var magnitude = magnitude as DataInt<UX>.Canvas
             var chunksIndex = chunks.startIndex
             //=----------------------------------=
             // pointee: initialization
             //=----------------------------------=
-            rebasing: while !magnitude.isEmpty {
-                let chunk = SUISS.formQuotientWithRemainder(dividing: &magnitude, by: radix.power)
-                magnitude = magnitude.dropLast(while:{ $0 == 0 })
+            rebasing: while magnitude.count > 0 {
+                let chunk = magnitude.remainderByFormingQuotient(nonzero: radix.power)
+                magnitude = magnitude.normalized()
                 chunks.initializeElement(at: chunksIndex, to: chunk)
                 chunksIndex = chunks.index(after: chunksIndex)
             }
