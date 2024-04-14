@@ -15,6 +15,8 @@
         
     public typealias Element = Element
     
+    public typealias Index = IX
+    
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
@@ -49,7 +51,17 @@
     // MARK: * Body
     //*========================================================================*
     
+    /// A binary integer `body` view that provides `read` access.
+    ///
+    /// - Note: Its operations are `unsigned` and `finite` by default.
+    ///
     @frozen public struct Body {
+        
+        public typealias Canvas = DataInt.Canvas
+        
+        public typealias Element = DataInt.Element
+        
+        public typealias Index = DataInt.Index
         
         //=--------------------------------------------------------------------=
         // MARK: State
@@ -94,11 +106,17 @@
     // MARK: * Canvas
     //*========================================================================*
     
-    /// It is like `DataInt<Element>.Body` but with write access.
+    /// A binary integer `body` view that provides `read` and `write` access.
     ///
-    /// - Note: Its operations are unsigned unless they state otherwise.
+    /// - Note: Its operations are `unsigned` and `finite` by default.
     ///
     @frozen public struct Canvas {
+        
+        public typealias Body = DataInt.Body
+        
+        public typealias Element = DataInt.Element
+        
+        public typealias Index = DataInt.Index
         
         //=--------------------------------------------------------------------=
         // MARK: State

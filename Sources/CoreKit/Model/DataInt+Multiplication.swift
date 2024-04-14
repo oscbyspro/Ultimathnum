@@ -17,6 +17,14 @@ extension DataInt.Canvas {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Forms `low` part and returns `high` part of multiplying `self`
+    /// by `multiplier` then adding `increment`.
+    ///
+    /// - Returns: The `low` part is stored in `self` and the `high` part is returned.
+    ///   Note that the largest result is `(low: 0, high: ~0)`.
+    ///
+    /// - Important: This is `unsigned` and `finite`.
+    ///
     @inlinable public func multiply(
         by multiplier: borrowing Element,
         add increment: consuming Element
