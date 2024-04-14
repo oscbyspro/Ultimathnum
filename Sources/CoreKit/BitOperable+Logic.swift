@@ -12,11 +12,23 @@
 //*============================================================================*
 
 extension BitOperable {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public mutating  func toggle() {
+        self = ~self
+    }
+    
+    @inlinable public consuming func toggled() -> Self {
+        ~self
+    }
         
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Inout
     //=------------------------------------------------------------------------=
-
+    
     @inlinable public static func &=(lhs: inout Self, rhs: Self) {
         lhs = lhs & rhs
     }

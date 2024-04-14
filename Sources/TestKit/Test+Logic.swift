@@ -27,10 +27,16 @@ extension Test {
         
         same(~instance, expectation)
         same(~expectation, instance)
+        
+        same(instance   .toggled(), expectation)
+        same(expectation.toggled(),    instance)
+        
+        same({ var x =    instance; x.toggle(); return x }(), expectation)
+        same({ var x = expectation; x.toggle(); return x }(),    instance)
     }
     
     public func and<T>(
-        _ lhs: T, 
+        _ lhs: T,
         _ rhs: T,
         _ expectation: T
     )   where T: BitOperable & Equatable {
