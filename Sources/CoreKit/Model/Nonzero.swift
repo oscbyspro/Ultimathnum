@@ -23,13 +23,13 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ nonzero: consuming Value) {
-        precondition(Self.predicate((nonzero)))
+    @inlinable public init?(_ nonzero: consuming Value) {
+        guard Self.predicate(nonzero) else { return nil }
         self.nonzero = nonzero
     }
     
     @inlinable public init(unchecked nonzero: consuming Value) {
-        Swift.assert(Self.predicate((nonzero)))
+        Swift.assert(Self.predicate(nonzero), String.brokenInvariant())
         self.nonzero = nonzero
     }
     
