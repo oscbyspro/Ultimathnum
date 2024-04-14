@@ -250,5 +250,11 @@ where
     ///
     @inlinable var appendix: Bit { get }
     
-    @inlinable borrowing func withUnsafeBinaryIntegerBody<T>(_ action: (DataInt<Element.Magnitude>.Body) throws -> T) rethrows -> T
+    @inlinable borrowing func withUnsafeBinaryIntegerBody<T>(
+        _ action: (DataInt<Element.Magnitude>.Body) throws -> T
+    )   rethrows -> T
+    
+    @inlinable mutating func withUnsafeMutableBinaryIntegerBody<T>(
+        _ action: (DataInt<Element.Magnitude>.Canvas) throws -> T
+    )   rethrows -> T
 }

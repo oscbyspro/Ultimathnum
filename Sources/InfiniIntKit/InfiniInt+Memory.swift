@@ -89,4 +89,13 @@ extension InfiniInt {
             try action(DataInt.Body($0)!)
         }
     }
+    
+    @inlinable public mutating func withUnsafeMutableBinaryIntegerBody<T>(
+        _ action: (DataInt<Element.Magnitude>.Canvas) throws -> T
+    )   rethrows -> T {
+        
+        try self.storage.base.withUnsafeMutableBufferPointer {
+            try action(DataInt.Canvas($0)!)
+        }
+    }
 }

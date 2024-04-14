@@ -99,4 +99,15 @@ extension CoreInt {
             }
         }
     }
+    
+    @inlinable public mutating func withUnsafeMutableBinaryIntegerBody<T>(
+        _ action: (DataInt<Element.Magnitude>.Canvas) throws -> T
+    )   rethrows -> T {
+        
+        try Swift.withUnsafeMutablePointer(to: &self) {
+            try $0.withMemoryRebound(to: Element.Magnitude.self, capacity: 1) {
+                try action(DataInt.Canvas($0, count: 1))
+            }
+        }
+    }
 }
