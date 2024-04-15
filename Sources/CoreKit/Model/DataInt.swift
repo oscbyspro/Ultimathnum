@@ -110,7 +110,7 @@
     ///
     /// - Note: Its operations are `unsigned` and `finite` by default.
     ///
-    @frozen public struct Canvas {
+    @frozen public struct Canvas: Functional {
         
         public typealias Body = DataInt.Body
         

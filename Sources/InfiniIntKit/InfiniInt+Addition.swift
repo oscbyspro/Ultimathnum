@@ -25,34 +25,22 @@ extension InfiniInt {
         self.storage.resize(minCount: other.storage.count)
         self.storage.withUnsafeMutableBinaryIntegerBody { lhs in
             other.withUnsafeBinaryIntegerElements { rhs in
-                for index in rhs.body.indices {
-                    overflow = lhs[unchecked: index].capture {
-                        $0.plus(rhs.body[unchecked: index], and: overflow)
-                    }
+                var lhs = consume lhs
+                
+                overflow = lhs.capture(rhs.body) {
+                    $0.plusSubSequence($1, and: overflow)
                 }
                 
-                if  overflow != Bool(rhs.appendix) {
-                    let predicate = overflow
-                    let increment = overflow ? 1 : ~0 as Element.Magnitude
-                    
-                    var index = rhs.body.count
-                    while index < lhs.count, overflow == predicate {
-                        overflow = lhs[unchecked: index].capture {
-                            $0.plus(increment)
-                        }
-                        
-                        index = index.incremented().assert()
-                    }
-                }
+                overflow = lhs.plus(overflow, repeating: Bool(rhs.appendix))
             }
         }
                 
         var last = Element(repeating: self.appendix)
         (last, overflow) = last.plus(Element(repeating: other.appendix), and: overflow).components
-
+        //=--------------------------------------=
         self.storage.appendix = Element.Signitude(bitPattern: last).appendix
         self.storage.normalize(appending: Element.Magnitude(bitPattern: last))
-
+        //=--------------------------------------=
         return self.combine(overflow)
     }
     

@@ -55,23 +55,36 @@ extension DataInt.Canvas {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public subscript(unchecked index: IX) -> Element {
+    @inlinable public var pointee: Element {
         nonmutating get {
-            //=--------------------------------------=
-            Swift.assert(index >= 0000000000, String.indexOutOfBounds())
-            Swift.assert(index <  self.count, String.indexOutOfBounds())
-            //=--------------------------------------=
-            return self.start[Int(index)]
+            self.start.pointee
         }
         
         nonmutating set {
-            //=--------------------------------------=
+            //=----------------------------------=
+            // note that the pointee is trivial
+            //=----------------------------------=
+            self.start.initialize(to: newValue)
+        }
+    }
+    
+    @inlinable public subscript(unchecked index: IX) -> Element {
+        nonmutating get {
+            //=----------------------------------=
             Swift.assert(index >= 0000000000, String.indexOutOfBounds())
             Swift.assert(index <  self.count, String.indexOutOfBounds())
-            //=--------------------------------------=
-            // note that the pointee must be trivial
-            //=--------------------------------------=
-            self.start.advanced(by: Int(index)).initialize(to: newValue)
+            //=----------------------------------=
+            return self.start.advanced(by: Int(index)).pointee
+        }
+        
+        nonmutating set {
+            //=----------------------------------=
+            Swift.assert(index >= 0000000000, String.indexOutOfBounds())
+            Swift.assert(index <  self.count, String.indexOutOfBounds())
+            //=----------------------------------=
+            // note that the pointee is trivial
+            //=----------------------------------=
+            return self.start.advanced(by: Int(index)).pointee = newValue
         }
     }
 }

@@ -49,14 +49,17 @@ extension InfiniInt {
                 
         var last = Element(repeating: self.appendix)
         (last, overflow) = last.minus(Element(repeating: other.appendix), and: overflow).components
-
+        //=--------------------------------------=
         self.storage.appendix = Element.Signitude(bitPattern: last).appendix
         self.storage.normalize(appending: Element.Magnitude(bitPattern: last))
-
+        //=--------------------------------------=
         return self.combine(overflow)
     }
     
     @inlinable public consuming func minus(_ other: consuming Element) -> Fallible<Self> {
-        fatalError("TODO")
+        //=--------------------------------------=
+        // TODO: improve it
+        //=--------------------------------------=
+        return self.minus(Self(load: other))
     }
 }
