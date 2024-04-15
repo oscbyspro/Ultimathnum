@@ -19,11 +19,33 @@ extension InfiniInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func plus(_ increment: borrowing Self) -> Fallible<Self> {
-        fatalError("TODO")
+    @inlinable public consuming func plus(_ other: borrowing Self) -> Fallible<Self> {
+        var overflow = false
+        
+        self.storage.resize(minCount: other.storage.count)
+        self.storage.withUnsafeMutableBinaryIntegerBody { lhs in
+            other.withUnsafeBinaryIntegerElements { rhs in
+                for index in lhs.indices {
+                    overflow = lhs[unchecked: index].capture {
+                        $0.plus(rhs[UX(bitPattern: index)], carrying: overflow)
+                    }
+                }
+            }
+        }
+                
+        var last = Element(repeating: self.appendix)
+        (last, overflow) = last.plus(Element(repeating: other.appendix), carrying: overflow).components
+
+        self.storage.appendix = Element.Signitude(bitPattern: last).appendix
+        self.storage.normalize(appending: Element.Magnitude(bitPattern: last))
+
+        return self.combine(overflow)
     }
     
-    @inlinable public consuming func plus(_ increment: consuming Element) -> Fallible<Self> {
-        fatalError("TODO")
+    @inlinable public consuming func plus(_ other: consuming Element) -> Fallible<Self> {
+        //=--------------------------------------=
+        // TODO: improve it
+        //=--------------------------------------=
+        return self.plus(Self(load: other))
     }
 }

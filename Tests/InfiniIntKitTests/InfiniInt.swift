@@ -21,8 +21,73 @@ final class InfiniIntTests: XCTestCase {
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
         
-    static let types: [any BinaryInteger.Type] = [
-        InfiniInt<IX>.self, InfiniInt<I8>.self,
-        InfiniInt<UX>.self, InfiniInt<U8>.self,
+    static let types: [any BinaryInteger.Type] = {
+        typesWhereIsSigned +
+        typesWhereIsUnsigned
+    }()
+            
+    static let typesWhereIsSigned: [any SignedInteger.Type] = [
+        InfiniInt<IX >.self,
+        InfiniInt<I8 >.self,
+        InfiniInt<I16>.self,
+        InfiniInt<I32>.self,
+        InfiniInt<I64>.self,
     ]
+            
+    static let typesWhereIsUnsigned: [any UnsignedInteger.Type] = [
+        InfiniInt<UX >.self,
+        InfiniInt<U8 >.self,
+        InfiniInt<U16>.self,
+        InfiniInt<U32>.self,
+        InfiniInt<U64>.self,
+    ]
+    
+    static let elements: [any (BinaryInteger & SystemsInteger).Type] = {
+        elementsWhereIsSigned +
+        elementsWhereIsUnsigned
+    }()
+            
+    static let elementsWhereIsSigned: [any (SignedInteger & SystemsInteger).Type] = [
+        IX .self,
+        I8 .self,
+        I16.self,
+        I32.self,
+        I64.self,
+    ]
+            
+    static let elementsWhereIsUnsigned: [any (UnsignedInteger & SystemsInteger).Type] = [
+        UX .self,
+        U8 .self,
+        U16.self,
+        U32.self,
+        U64.self,
+    ]
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    var types: [any BinaryInteger.Type] {
+        Self.types
+    }
+    
+    var typesWhereIsSigned: [any SignedInteger.Type] {
+        Self.typesWhereIsSigned
+    }
+    
+    var typesWhereIsUnsigned: [any UnsignedInteger.Type] {
+        Self.typesWhereIsUnsigned
+    }
+    
+    var elements: [any (BinaryInteger & SystemsInteger).Type] {
+        Self.elements
+    }
+    
+    var elementsWhereIsSigned: [any (SignedInteger & SystemsInteger).Type] {
+        Self.elementsWhereIsSigned
+    }
+    
+    var elementsWhereIsUnsigned: [any (UnsignedInteger & SystemsInteger).Type] {
+        Self.elementsWhereIsUnsigned
+    }
 }

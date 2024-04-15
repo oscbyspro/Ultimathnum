@@ -48,8 +48,9 @@ extension Test {
             same(abc, xyz, "binary integer subtraction must be reversible")
         }
         
-        if  let one = T.exactly(1).optional(), rhs == one {
-            decrementation(lhs, expectation)
+        if  rhs == 1 {
+            same(lhs.decremented(),           expectation)
+            same(Fallible(lhs).decremented(), expectation)
         }
         
         brr: do {
@@ -83,25 +84,5 @@ extension Test {
             same(Fallible(rhs), expectation.value.negated())
             same(Fallible(rhs), Fallible(expectation.value).negated())
         }
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Stride
-//=----------------------------------------------------------------------------=
-
-extension Test {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    public func decrementation<T>(
-        _ instance: T,
-        _ expectation: Fallible<T>,
-        _ id: BinaryIntegerID = .init()
-    )   where T: BinaryInteger {
-        same(instance.decremented(),           expectation)
-        same(Fallible(instance).decremented(), expectation)
     }
 }

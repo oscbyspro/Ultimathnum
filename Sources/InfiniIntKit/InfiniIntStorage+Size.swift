@@ -10,7 +10,7 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Infini Int Storage x Normalization
+// MARK: * Infini Int Storage x Size
 //*============================================================================*
 
 extension InfiniIntStorage {
@@ -19,27 +19,14 @@ extension InfiniIntStorage {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable mutating func normalize() {
-        let element = Element.Magnitude(repeating: self.appendix)
-        while self.body.last == element {
-            ((self.body)).removeLast()
-        }
-    }
-    
-    @inlinable mutating func normalize(appending element: Element) {
-        if  element != Element(repeating: self.appendix) {
+    @inlinable public mutating func resize(minCount: IX) {
+        guard minCount > self.count else { return }
+        
+        self.body.reserveCapacity(Int(minCount))
+        
+        let element = Element(repeating: self.appendix)
+        while minCount > self.count {
             self.body.append(element)
-        }   else {
-            self.normalize()
         }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable var isNormal: Bool {
-        let element = Element.Magnitude(repeating: self.appendix)
-        return self.body.last != element
     }
 }

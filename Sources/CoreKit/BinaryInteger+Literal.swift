@@ -17,10 +17,6 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(integerLiteral: BigIntLiteral.IntegerLiteralType) {
-        self = Self.exactly(BigIntLiteral(integerLiteral: integerLiteral)).unwrap()        
-    }
-    
     @inlinable public static func exactly(_ source: consuming BigIntLiteral) -> Fallible<Self> {
         source.withUnsafeBinaryIntegerElements {
             Self.exactly($0, mode: .signed)

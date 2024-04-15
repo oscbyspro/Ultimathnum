@@ -34,4 +34,12 @@ where Element: SystemsInteger & UnsignedInteger {
         self.body = body
         self.appendix = appendix
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var count: IX {
+        IX(self.body.count)
+    }
 }

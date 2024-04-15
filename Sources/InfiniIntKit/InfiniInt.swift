@@ -34,7 +34,7 @@ import CoreKit
     }
     
     @inlinable public static var size: Magnitude {
-        Magnitude(repeating: 1)
+        Magnitude(unchecked: Storage([], repeating: 1))
     }
     
     //=------------------------------------------------------------------------=
@@ -55,6 +55,18 @@ import CoreKit
     @inlinable init(normalizing storage: consuming Storage) {
         storage.normalize()
         self.init(unchecked: storage)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(integerLiteral: BigIntLiteral.IntegerLiteralType) {
+        self = Self.exactly(BigIntLiteral(integerLiteral: integerLiteral)).unwrap()
+    }
+    
+    @inlinable public init(_ body: some Sequence<Element.Magnitude>, repeating appendix: Bit = .zero) {
+        self.init(normalizing: Storage(Storage.Body(body), repeating: appendix))
     }
 }
 

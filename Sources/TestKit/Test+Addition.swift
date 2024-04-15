@@ -41,8 +41,9 @@ extension Test {
             same({ var x = rhs; x  += lhs; return x }(), expectation.value)
         }
         
-        if  rhs == T.exactly(1).optional() {
-            incrementation(lhs, expectation)
+        if  rhs == 1 {
+            same(lhs.incremented(),           expectation)
+            same(Fallible(lhs).incremented(), expectation)
         }
         
         brr: do {
@@ -58,25 +59,5 @@ extension Test {
             same(Fallible(rhs).plus(lhs),           expectation)
             same(Fallible(rhs).plus(Fallible(lhs)), expectation)
         }
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Stride
-//=----------------------------------------------------------------------------=
-
-extension Test {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    public func incrementation<T>(
-        _ instance: T, 
-        _ expectation: Fallible<T>,
-        identifier: BinaryIntegerID = .init()
-    )   where T: BinaryInteger {
-        same(instance.incremented(),           expectation)
-        same(Fallible(instance).incremented(), expectation)
     }
 }

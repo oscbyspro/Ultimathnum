@@ -19,11 +19,11 @@ extension InfiniInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func minus(_ increment: borrowing Self) -> Fallible<Self> {
+    @inlinable public consuming func minus(_ other: borrowing Self) -> Fallible<Self> {
         fatalError("TODO")
     }
     
-    @inlinable public consuming func minus(_ increment: consuming Element) -> Fallible<Self> {
+    @inlinable public consuming func minus(_ other: consuming Element) -> Fallible<Self> {
         fatalError("TODO")
     }
 }
