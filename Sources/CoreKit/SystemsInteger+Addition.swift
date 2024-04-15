@@ -17,7 +17,10 @@ extension SystemsInteger {
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func plus(_ increment: borrowing Self, carrying extra: consuming Bool) -> Fallible<Self> {
+    @inlinable public consuming func plus(_ increment: borrowing Self, and extra: consuming Bool) -> Fallible<Self> {
+        //=--------------------------------------=
+        // performance: consume instance then bit
+        //=--------------------------------------=
         let error: Bool
         (self, error) = self.plus(increment).components
         (self, extra) = self.plus(Element(Bit(extra))).components

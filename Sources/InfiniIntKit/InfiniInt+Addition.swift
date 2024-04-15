@@ -27,7 +27,7 @@ extension InfiniInt {
             other.withUnsafeBinaryIntegerElements { rhs in
                 for index in rhs.body.indices {
                     overflow = lhs[unchecked: index].capture {
-                        $0.plus(rhs.body[unchecked: index], carrying: overflow)
+                        $0.plus(rhs.body[unchecked: index], and: overflow)
                     }
                 }
                 
@@ -37,7 +37,10 @@ extension InfiniInt {
                     
                     var index = rhs.body.count
                     while index < lhs.count, overflow == predicate {
-                        overflow = lhs[unchecked: index].capture({ $0.plus(increment) })
+                        overflow = lhs[unchecked: index].capture {
+                            $0.plus(increment)
+                        }
+                        
                         index = index.incremented().assert()
                     }
                 }
@@ -45,7 +48,7 @@ extension InfiniInt {
         }
                 
         var last = Element(repeating: self.appendix)
-        (last, overflow) = last.plus(Element(repeating: other.appendix), carrying: overflow).components
+        (last, overflow) = last.plus(Element(repeating: other.appendix), and: overflow).components
 
         self.storage.appendix = Element.Signitude(bitPattern: last).appendix
         self.storage.normalize(appending: Element.Magnitude(bitPattern: last))
