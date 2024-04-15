@@ -21,13 +21,24 @@ extension InfiniInt {
     
     @inlinable public consuming func plus(_ other: borrowing Self) -> Fallible<Self> {
         var overflow = false
-        
+                
         self.storage.resize(minCount: other.storage.count)
         self.storage.withUnsafeMutableBinaryIntegerBody { lhs in
             other.withUnsafeBinaryIntegerElements { rhs in
-                for index in lhs.indices {
+                for index in rhs.body.indices {
                     overflow = lhs[unchecked: index].capture {
-                        $0.plus(rhs[UX(bitPattern: index)], carrying: overflow)
+                        $0.plus(rhs.body[unchecked: index], carrying: overflow)
+                    }
+                }
+                
+                if  overflow != Bool(rhs.appendix) {
+                    let predicate = overflow
+                    let increment = overflow ? 1 : ~0 as Element.Magnitude
+                    
+                    var index = rhs.body.count
+                    while index < lhs.count, overflow == predicate {
+                        overflow = lhs[unchecked: index].capture({ $0.plus(increment) })
+                        index = index.incremented().assert()
                     }
                 }
             }
