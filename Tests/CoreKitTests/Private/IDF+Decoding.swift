@@ -26,6 +26,38 @@ final class IntegerDescriptionFormatTestsOnDecoding: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
+    func testSmall() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            check(Test(),   "0", 000 as T?)
+            check(Test(),  "#0", 000 as T?)
+            check(Test(),  "&0", nil as T?)
+            check(Test(),  "+0", 000 as T?)
+            check(Test(), "+#0", 000 as T?)
+            check(Test(), "+&0", nil as T?)
+            check(Test(),  "-0", 000 as T?)
+            check(Test(), "-#0", 000 as T?)
+            check(Test(), "-&0", nil as T?)
+            check(Test(),   "1", 001 as T?)
+            check(Test(),  "#1", 001 as T?)
+            check(Test(),  "&1", nil as T?)
+            check(Test(),  "+1", 001 as T?)
+            check(Test(), "+#1", 001 as T?)
+            check(Test(), "+&1", nil as T?)
+            check(Test(),  "-1", T.isSigned ? -1 as T : nil)
+            check(Test(), "-#1", T.isSigned ? -1 as T : nil)
+            check(Test(), "-&1", nil as T?)
+            
+            check(Test(), "#+0", nil as T?)
+            check(Test(), "#-0", nil as T?)
+            check(Test(), "&+0", nil as T?)
+            check(Test(), "&-0", nil as T?)
+        }
+        
+        for type in coreSystemsIntegers {
+            whereIs(type)
+        }
+    }
+    
     func testI32() {
         check(Test(),  "0000000000", I32(load: 0x00000000 as U32))
         check(Test(),  "0050462976", I32(load: 0x03020100 as U32))

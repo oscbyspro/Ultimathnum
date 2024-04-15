@@ -39,32 +39,55 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    #warning("Handle the case where T.size.isInfinite...")
-    @inlinable public func encode<T: BinaryInteger>(_ integer: T) -> String {
-        if  T.size.isInfinite {
-            fatalError("TODO")
+    @inlinable public func encode<T: BinaryInteger>(_ integer: consuming T) -> String {
+        let integerAppendixIsSet = Bool(integer.appendix)
+        let integerIsInfinite = !T.isSigned && integerAppendixIsSet
+        let integerIsNegative =  T.isSigned && integerAppendixIsSet
+        
+        if  integerAppendixIsSet {
+            integer = integer.complement(T.isSigned).value
         }
         
-        let sign = Sign(bitPattern: integer.isLessThanZero)
-        return integer.magnitude().withUnsafeBinaryIntegerElementsAsBytes {
-            self.encode(sign: sign, magnitude: $0)
+        return integer.withUnsafeBinaryIntegerElementsAsBytes {
+            self.encode(
+                sign: integerIsNegative ? .minus : nil,
+                mask: integerIsInfinite ? .one   : nil,
+                body: $0.body
+            )
         }
     }
     
-    @inlinable public func encode(sign: Sign, magnitude: DataInt<U8>) -> String {
-        Namespace.withUnsafeTemporaryAllocation(copying: ExchangeInt<UX>(magnitude).body()) {
-            self.encode(sign: sign, magnitude: DataInt.Canvas($0)!)
+    @inlinable public func encode<T: UnsignedInteger>(sign: Sign, magnitude: consuming T) -> String {
+        let integerIsInfinite = Bool(magnitude.appendix)
+        let integerIsNegative = Bool(sign) && (magnitude != 0)
+        
+        if  integerIsInfinite {
+            magnitude.toggle()
+        }
+                
+        return magnitude.withUnsafeBinaryIntegerElementsAsBytes {
+            self.encode(
+                sign: integerIsNegative ? .minus : nil,
+                mask: integerIsInfinite ? .one   : nil,
+                body: $0.body
+            )
         }
     }
     
-    /// ### Development
-    ///
-    /// - TODO: Consider `MutableDataInt<UX>` instead of `UnsafeMutableBufferPointer<UX>`.
-    ///
-    @usableFromInline func encode(sign: Sign, magnitude: DataInt<UX>.Canvas) -> String {
-        let maxChunkCount = self.radix.divisibilityByPowerUpperBound(magnitude: DataInt.Body(magnitude))
+    @inlinable public func encode(sign: Sign?, mask: Bit?, body: DataInt<U8>.Body) -> String {
+        Namespace.withUnsafeTemporaryAllocation(copying: ExchangeInt<UX>(body).body()) {
+            self.encode(
+                sign: sign,
+                mask: mask,
+                body: DataInt.Canvas($0)!
+            )
+        }
+    }
+    
+    @usableFromInline func encode(sign: Sign?, mask: Bit?, body: DataInt<UX>.Canvas) -> String {
+        let maxChunkCount = self.radix.divisibilityByPowerUpperBound(magnitude: DataInt.Body(body))
         return Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(maxChunkCount)) { chunks in
-            var magnitude = magnitude as DataInt<UX>.Canvas
+            var magnitude = body as DataInt<UX>.Canvas
             var chunksIndex = chunks.startIndex
             //=----------------------------------=
             // pointee: initialization
@@ -84,9 +107,8 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
             //=----------------------------------=
             return Namespace.withUnsafeTemporaryAllocation(of: UInt8.self, count: radix.exponent.base) { first in
                 var remainders = chunks[..<chunksIndex]
-                var firstChunk = remainders.removeLast()
+                var firstChunk = remainders.popLast() ?? UX.zero
                 var firstIndex = first.endIndex
-                let minus = sign == Sign.minus && firstChunk != 0 as UX
                 //=------------------------------=
                 // pointee: initialization
                 //=------------------------------=
@@ -106,7 +128,12 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
                     first[firstIndex...].deinitialize()
                 }
                 //=------------------------------=
-                let count: Int = (minus ? 1 : 0) + first[firstIndex...].count + radix.exponent.base * remainders.count
+                let count: Int
+                
+                = (sign == nil ? 0 : 1)
+                + (mask == nil ? 0 : 1)
+                + first[firstIndex...].count + radix.exponent.base * remainders.count
+                
                 return String(unsafeUninitializedCapacity: count) { ascii in
                     //=--------------------------=
                     // allocation: count <= $0.count
@@ -131,10 +158,18 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
                         ascii.initializeElement(at: asciiIndex, to: element)
                     }
                     
-                    if  minus {
+                    if  let mask {
                         precondition(asciiIndex > ascii.startIndex)
                         ascii.formIndex(before: &asciiIndex)
-                        ascii.initializeElement(at: asciiIndex, to: UInt8(ascii: "-"))
+                        let element =  UInt8(ascii: mask == .zero ? "#" : "&")
+                        ascii.initializeElement(at: asciiIndex, to: element)
+                    }
+                    
+                    if  let sign {
+                        precondition(asciiIndex > ascii.startIndex)
+                        ascii.formIndex(before: &asciiIndex)
+                        let element =  UInt8(ascii: sign == .plus ? "+" : "-")
+                        ascii.initializeElement(at: asciiIndex, to: element)
                     }
                     
                     Swift.assert(asciiIndex == ascii.startIndex)

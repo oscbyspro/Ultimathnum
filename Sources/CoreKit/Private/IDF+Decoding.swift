@@ -27,45 +27,28 @@ extension Namespace.IntegerDescriptionFormat {
         }
     }
     
-    /// Returns an `UTF-8` encoded integer's `sign` and `body`.
-    ///
-    /// ```
-    /// ┌──────────── → ──────┬────────┐
-    /// │ description │ sign  │   body │
-    /// ├──────────── → ──────┼────────┤
-    /// │      "+123" │ plus  │  "123" │
-    /// │      "-123" │ minus │  "123" │
-    /// ├──────────── → ──────┼────────┤
-    /// │      "~123" │ plus  │ "~123" │
-    /// └──────────── → ──────┴────────┘
-    /// ```
-    ///
-    /// - Note: Integers without sign are interpreted as positive.
-    ///
-    @inlinable package static func makeSignBody<UTF8>(from description: UTF8)
-    -> (sign: Sign, body: UTF8.SubSequence) where UTF8: Collection<UInt8> {
+    @inlinable package static func makeSignMaskBody<UTF8>(from description: UTF8)
+    -> (sign: Sign, mask: Bit?, body: UTF8.SubSequence) where UTF8: Collection<UInt8> {
         var body = description[...] as UTF8.SubSequence
-        let sign = self.removeLeadingSign(from: &body) ?? Sign.plus
-        return (sign: sign, body: body)
+        let sign = self.removeLeadingSign(from: &body) ?? .plus
+        let mask = self.removeLeadingMask(from: &body) ?? .zero
+        return (sign: sign, mask: mask, body: body)
     }
     
-    /// Removes and returns an `UTF-8` encoded `sign` prefix, if it exists.
-    ///
-    /// ```
-    /// ┌──────────── → ──────┬────────┐
-    /// │ description │ sign  │   body │
-    /// ├──────────── → ──────┼────────┤
-    /// │      "+123" │ plus  │  "123" │
-    /// │      "-123" │ minus │  "123" │
-    /// │      "~123" │ nil   │ "~123" │
-    /// └──────────── → ──────┴────────┘
-    /// ```
-    ///
     @inlinable package static func removeLeadingSign<UTF8>(from description: inout UTF8)
     ->  Sign? where UTF8: Collection<UInt8>, UTF8 == UTF8.SubSequence {
         switch description.first {
         case UInt8(ascii: "+"): description.removeFirst(); return Sign.plus
         case UInt8(ascii: "-"): description.removeFirst(); return Sign.minus
+        default: return nil
+        }
+    }
+    
+    @inlinable package static func removeLeadingMask<UTF8>(from description: inout UTF8)
+    ->  Bit? where UTF8: Collection<UInt8>, UTF8 == UTF8.SubSequence {
+        switch description.first {
+        case UInt8(ascii: "#"): description.removeFirst(); return Bit.zero
+        case UInt8(ascii: "&"): description.removeFirst(); return Bit.one
         default: return nil
         }
     }
@@ -76,7 +59,10 @@ extension Namespace.IntegerDescriptionFormat {
     
     @frozen public struct Decoder {
         
-        @frozen public enum Error: Swift.Error { case unknown }
+        @frozen public enum Error: Swift.Error { 
+            case unknown
+            case magnitudeIsInfinite
+        }
         
         //=--------------------------------------------------------------------=
         // MARK: State
@@ -103,10 +89,19 @@ extension Namespace.IntegerDescriptionFormat {
         }
         
         @inlinable public func decode<T: BinaryInteger>(_ description: UnsafeBufferPointer<UInt8>) throws -> T {
-            let components = Namespace.IntegerDescriptionFormat.makeSignBody(from: description)
+            let components = Namespace.IntegerDescriptionFormat.makeSignMaskBody(from: description)
             let numerals = UnsafeBufferPointer(rebasing: components.body)
-            let magnitude: T.Magnitude = try self.magnitude(numerals: numerals)
-            return try T.exactly(sign: components.sign, magnitude: magnitude).get()
+            var body: T.Magnitude = try self.magnitude(numerals: numerals)
+            
+            if  components.mask == Bit.one {
+                if  T.size.isInfinite {
+                    body.toggle()
+                }   else {
+                    throw Error.magnitudeIsInfinite
+                }
+            }
+            
+            return try T.exactly(sign: components.sign, magnitude: body).get()
         }
     }
 }

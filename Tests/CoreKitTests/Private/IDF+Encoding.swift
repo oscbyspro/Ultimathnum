@@ -21,20 +21,26 @@ final class IntegerDescriptionFormatTestsOnEncoding: XCTestCase {
     //=------------------------------------------------------------------------=
     
     let encoder = Namespace.IntegerDescriptionFormat.Encoder()
+    let signs: [(in: Sign?, out: String)] = [(nil, ""), (Sign.plus, "+"), (Sign.minus, "-")]
+    let masks: [(in: Bit?,  out: String)] = [(nil, ""), (Bit .zero, "#"), (Bit .one,   "&")]
+    
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     func testEncoding() {
-        for count in 0 ..< 4 {
+        for count in (0 ..< 4) {
             let x0 = [0] + Array(repeating: 0 as U64, count: count)
             let x1 = [1] + Array(repeating: 0 as U64, count: count)
             
-            check(Test(), Sign.plus,  x0,  "0")
-            check(Test(), Sign.minus, x0,  "0")
-            check(Test(), Sign.plus,  x1,  "1")
-            check(Test(), Sign.minus, x1, "-1")
+            for sign in signs {
+            for mask in masks {
+                
+                check(Test(), sign.in, mask.in, x0, "\(sign.out)\(mask.out)0")
+                check(Test(), sign.in, mask.in, x1, "\(sign.out)\(mask.out)1")
+                
+            }}
         }
     }
     
@@ -81,38 +87,75 @@ final class IntegerDescriptionFormatTestsOnEncoding: XCTestCase {
     // MARK: Tests + Big Integer
     
     func testInt128() {
-        check(Test(), Sign.plus,  [0x0000000000000000, 0x0000000000000000] as [U64],                                        "0")
-        check(Test(), Sign.plus,  [0x0706050403020100, 0x0f0e0d0c0b0a0908] as [U64],   "20011376718272490338853433276725592320")
-        check(Test(), Sign.plus,  [0xffffffffffffffff, 0x7fffffffffffffff] as [U64],  "170141183460469231731687303715884105727") // I128.max
-        check(Test(), Sign.minus, [0x0000000000000000, 0x8000000000000000] as [U64], "-170141183460469231731687303715884105728") // I128.min
-        check(Test(), Sign.minus, [0x08090a0b0c0d0e10, 0x0001020304050607] as [U64],      "-5233100606242806050955395731361296")
-        check(Test(), Sign.minus, [0x0000000000000001, 0x0000000000000000] as [U64],                                       "-1")
+        for sign in signs {
+        for mask in masks {
+            
+            let x = "\(sign.out)\(mask.out)"
+            check(Test(), sign.in, mask.in, [0x0000000000000000, 0x0000000000000000] as [U64],                                       "\(x)0")
+            check(Test(), sign.in, mask.in, [0x0706050403020100, 0x0f0e0d0c0b0a0908] as [U64],  "\(x)20011376718272490338853433276725592320")
+            check(Test(), sign.in, mask.in, [0xffffffffffffffff, 0x7fffffffffffffff] as [U64], "\(x)170141183460469231731687303715884105727")
+            check(Test(), sign.in, mask.in, [0x0000000000000000, 0x8000000000000000] as [U64], "\(x)170141183460469231731687303715884105728")
+            check(Test(), sign.in, mask.in, [0x08090a0b0c0d0e10, 0x0001020304050607] as [U64],      "\(x)5233100606242806050955395731361296")
+            check(Test(), sign.in, mask.in, [0x0000000000000001, 0x0000000000000000] as [U64],                                       "\(x)1")
+            
+        }}
     }
     
     func testU128() {
-        check(Test(), Sign.plus,  [0x0000000000000000, 0x0000000000000000] as [U64],                                        "0") // U128.min
-        check(Test(), Sign.plus,  [0x0706050403020100, 0x0f0e0d0c0b0a0908] as [U64],   "20011376718272490338853433276725592320")
-        check(Test(), Sign.plus,  [0x0000000000000000, 0x8000000000000000] as [U64],  "170141183460469231731687303715884105728")
-        check(Test(), Sign.plus,  [0xf7f6f5f4f3f2f1f0, 0xfffefdfcfbfaf9f8] as [U64],  "340277133820332220657323652036036850160")
-        check(Test(), Sign.plus,  [0xffffffffffffffff, 0x7fffffffffffffff] as [U64],  "170141183460469231731687303715884105727")
-        check(Test(), Sign.plus,  [0xffffffffffffffff, 0xffffffffffffffff] as [U64],  "340282366920938463463374607431768211455") // U128.max
+        for sign in signs {
+        for mask in masks {
+            
+            let x = "\(sign.out)\(mask.out)"
+            check(Test(), sign.in, mask.in, [0x0000000000000000, 0x0000000000000000] as [U64],                                       "\(x)0")
+            check(Test(), sign.in, mask.in, [0x0706050403020100, 0x0f0e0d0c0b0a0908] as [U64],  "\(x)20011376718272490338853433276725592320")
+            check(Test(), sign.in, mask.in, [0x0000000000000000, 0x8000000000000000] as [U64], "\(x)170141183460469231731687303715884105728")
+            check(Test(), sign.in, mask.in, [0xf7f6f5f4f3f2f1f0, 0xfffefdfcfbfaf9f8] as [U64], "\(x)340277133820332220657323652036036850160")
+            check(Test(), sign.in, mask.in, [0xffffffffffffffff, 0x7fffffffffffffff] as [U64], "\(x)170141183460469231731687303715884105727")
+            check(Test(), sign.in, mask.in, [0xffffffffffffffff, 0xffffffffffffffff] as [U64], "\(x)340282366920938463463374607431768211455")
+            
+        }}
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    func check(_ test: Test, _ integer: some BinaryInteger, _ expectation: String) {
-        let sign = Sign(bitPattern: integer < 0)
-        let magnitude: [UX] = integer.magnitude().body()
-        test.same(encoder.encode(integer), expectation)
-        self.check(test,  sign, magnitude, expectation)
+    func check<T>(_ test: Test, _ integer: T, _ expectation: String) where T: BinaryInteger {
+        standard: do {
+            let result = self.encoder.encode(integer)
+            test.same(result, expectation, "integer")
+        }
+        
+        standard: do {
+            let sign = Sign(integer.isLessThanZero)
+            let magnitude = integer.magnitude()
+            let result = self.encoder.encode(sign: sign, magnitude: magnitude)
+            test.same(result, expectation, "sign-magnitude")
+        }
+
+        standard: do {
+            var body = integer            
+            let sign: Sign? =  T.isSigned && Bool(body.appendix) ? .minus : nil
+            let mask: Bit?  = !T.isSigned && Bool(body.appendix) ? .one   : nil
+            
+            if  Bool(body.appendix) {
+                body = body.complement(T.isSigned).value
+            }
+            
+            self.check(test, sign, mask, body.body(), expectation)
+        }
     }
     
-    func check<T>(_ test: Test,_ sign: Sign, _ magnitude: [T], _ expectation: String) where T: SystemsInteger & UnsignedInteger {
-        magnitude.withUnsafeBufferPointer {
+    func check<T>(_ test: Test,_ sign: Sign?, _ mask: Bit?, _ body: [T], _ expectation: String) where T: SystemsInteger & UnsignedInteger {
+        body.withUnsafeBufferPointer {
             $0.withMemoryRebound(to: U8.self) {
-                test.same(encoder.encode(sign: sign, magnitude: DataInt($0)!), expectation)
+                let result = self.encoder.encode(
+                    sign: sign,
+                    mask: mask, 
+                    body: DataInt.Body($0)!
+                )
+                
+                test.same(result, expectation, "sign-mask-body")
             }
         }
     }
