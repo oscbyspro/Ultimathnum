@@ -39,7 +39,12 @@ extension Namespace.IntegerDescriptionFormat.Encoder {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    #warning("Handle the case where T.size.isInfinite...")
     @inlinable public func encode<T: BinaryInteger>(_ integer: T) -> String {
+        if  T.size.isInfinite {
+            fatalError("TODO")
+        }
+        
         let sign = Sign(bitPattern: integer.isLessThanZero)
         return integer.magnitude().withUnsafeBinaryIntegerElementsAsBytes {
             self.encode(sign: sign, magnitude: $0)

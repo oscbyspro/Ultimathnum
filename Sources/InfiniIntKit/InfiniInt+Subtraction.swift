@@ -20,7 +20,26 @@ extension InfiniInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func minus(_ other: borrowing Self) -> Fallible<Self> {
-        fatalError("TODO")
+        var overflow = false
+        
+        self.storage.resize(minCount: other.storage.count)
+        self.storage.withUnsafeMutableBinaryIntegerBody { lhs in
+            other.withUnsafeBinaryIntegerElements { rhs in
+                for index in lhs.indices {
+                    overflow = lhs[unchecked: index].capture {
+                        $0.minus(rhs[UX(bitPattern: index)], carrying: overflow)
+                    }
+                }
+            }
+        }
+                
+        var last = Element(repeating: self.appendix)
+        (last, overflow) = last.minus(Element(repeating: other.appendix), carrying: overflow).components
+
+        self.storage.appendix = Element.Signitude(bitPattern: last).appendix
+        self.storage.normalize(appending: Element.Magnitude(bitPattern: last))
+
+        return self.combine(overflow)
     }
     
     @inlinable public consuming func minus(_ other: consuming Element) -> Fallible<Self> {
