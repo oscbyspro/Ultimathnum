@@ -7,8 +7,6 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
 // MARK: * Data Int x Bit x Canvas
 //*============================================================================*
@@ -19,12 +17,14 @@ extension DataInt.Canvas {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
 
+    /// Toggles each bit in its binary representation.
     @inlinable public borrowing func toggle() {
         for index in self.indices {
             self[unchecked: index].capture(~)
         }
     }
     
+    /// Toggles each bit in its binary representation then adds `increment`.
     @inlinable public borrowing func toggle(carrying increment: inout Bool) {
         for index in self.indices {
             increment = self[unchecked: index].capture {
