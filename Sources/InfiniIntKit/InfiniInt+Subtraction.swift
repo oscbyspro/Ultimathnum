@@ -20,35 +20,24 @@ extension InfiniInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func minus(_ other: borrowing Self) -> Fallible<Self> {
-        var carry = false
+        var overflow = false
         
         self.storage.resize(minCount: other.storage.count)
         self.storage.withUnsafeMutableBinaryIntegerBody { lhs in
             other.withUnsafeBinaryIntegerElements { rhs in
-                for index in rhs.body.indices {
-                    carry = lhs[unchecked: index][{ $0.minus(rhs.body[unchecked: index], plus: carry) }]
-                }
-                
-                if  carry != Bool(rhs.appendix) {
-                    let predicate = carry
-                    let increment = carry ? 1 : ~0 as Element.Magnitude
-                    
-                    var index = rhs.body.count
-                    while index < lhs.count, carry == predicate {
-                        carry = lhs[unchecked: index][{ $0.minus(increment) }]
-                        index = index.incremented().assert()
-                    }
-                }
+                var lhs  = consume lhs
+                overflow = lhs[{ $0.decrementSubSequence(by: rhs.body,plus: overflow) }]
+                overflow = lhs.decrement(by: overflow, repeating: Bool(rhs.appendix))
             }
         }
                 
         var last = Element(repeating: self.appendix)
-        (last, carry) = last.minus(Element(repeating: other.appendix), plus: carry).components
-        //=--------------------------------------=
+        (last, overflow) = last.minus(Element(repeating: other.appendix), plus: overflow).components
+        
         self.storage.appendix = Element.Signitude(bitPattern: last).appendix
         self.storage.normalize(appending: Element.Magnitude(bitPattern: last))
-        //=--------------------------------------=
-        return self.combine(carry)
+        
+        return self.combine(overflow)
     }
     
     @inlinable public consuming func minus(_ other: consuming Element) -> Fallible<Self> {
