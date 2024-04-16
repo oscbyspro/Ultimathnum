@@ -37,6 +37,7 @@ extension InfiniInt {
         self.storage.appendix = Element.Signitude(bitPattern: last).appendix
         self.storage.normalize(appending: Element.Magnitude(bitPattern: last))
         
+        Swift.assert(self.storage.isNormal, String.brokenInvariant())
         return self.combine(overflow)
     }
     

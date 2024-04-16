@@ -24,19 +24,16 @@ extension InfiniInt {
             $0.toggle(carrying: &increment)
         }
         
-        self.storage.appendix.toggle()
-        
-        // TODO: await ownership fixes
-        if  copy increment {
-            if  Bool(self.appendix) {
-                self.storage.appendix.toggle()
-                self.storage.normalize()
-            }   else {
-                self.storage.body.append(1)
-                increment.toggle()
-            }
+        if !(copy increment) {
+            self.storage.appendix.toggle()
+            self.storage.normalize()
+        }   else if Bool(self.appendix) {
+            increment.toggle()
+            self.storage.body.append(1)
+            self.storage.appendix.toggle()
         }
         
+        Swift.assert(self.storage.isNormal, String.brokenInvariant())
         return self.combine(!Self.isSigned && increment)
     }
     
