@@ -203,7 +203,7 @@ extension DataIntTests.Canvas {
             var value = self.body
             let error = value.withUnsafeMutableBufferPointer {
                 let value = DataInt.Canvas($0)!
-                return value.plus(bit).error
+                return value.increment(by: bit).error
             }
             
             test.same(Fallible(value, error: error), expectation)
@@ -215,7 +215,7 @@ extension DataIntTests.Canvas {
             var value = self.body
             let error = value.withUnsafeMutableBufferPointer {
                 let value = DataInt.Canvas($0)!
-                return value.plus(normal.first!).error
+                return value.increment(by: normal.first!).error
             }
             
             test.same(Fallible(value, error: error), expectation)
@@ -227,7 +227,7 @@ extension DataIntTests.Canvas {
             var value = self.body
             let error = value.withUnsafeMutableBufferPointer {
                 let value = DataInt.Canvas($0)!
-                return value.plus(normal.first!, and: bit).error
+                return value.increment(by: normal.first!, plus: bit).error
             }
             
             test.same(Fallible(value, error: error), expectation)
@@ -241,7 +241,7 @@ extension DataIntTests.Canvas {
                 let value = DataInt.Canvas($0)!
                 return (many).withUnsafeBufferPointer {
                     let many = DataInt.Body($0)!
-                    return value.plus(many, and: bit).error
+                    return value.increment(by: many, plus: bit).error
                 }
             }
             
@@ -273,7 +273,7 @@ extension DataIntTests.Canvas {
                 let value = DataInt.Canvas($0)!
                 return (many).withUnsafeBufferPointer {
                     let many = DataInt.Body($0)!
-                    return value.plus(many, times: multiplier, and: increment).error
+                    return value.increment(by: many, times: multiplier, plus: increment).error
                 }
             }
             

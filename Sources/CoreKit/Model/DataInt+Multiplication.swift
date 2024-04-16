@@ -17,25 +17,25 @@ extension DataInt.Canvas {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Forms `low` part and returns `high` part of multiplying `self`
+    /// Forms the `low` part and returns the `high` part of multiplying `self`
     /// by `multiplier` then adding `increment`.
     ///
     /// - Returns: The `low` part is stored in `self` and the `high` part is returned.
-    ///   Note that the largest result is `(low: 0, high: ~0)`.
+    ///   Note that the largest result is `(low: [0] * count, high: ~0)`.
     ///
     /// - Important: This is `unsigned` and `finite`.
     ///
-    @inlinable public func multiply(
+    @inlinable public consuming func multiply(
         by multiplier: borrowing Element,
         add increment: consuming Element
     )   -> Element {
-        var increment = increment // TODO: await ownership fixes
         
-        for index in self.indices {
-            var  wide = self[unchecked: copy index].multiplication(multiplier)
-            wide.high &+= Element(Bit(wide.low.capture(increment){ $0.plus($1) }))
+        while UX(bitPattern: self.count) > 0 {
+            var  wide = self[unchecked: Void()].multiplication(multiplier)
+            wide.high &+= Element(Bit(wide.low.capture({ $0.plus(increment) })))
             increment = wide.high
-            self[unchecked: copy index] = wide.low
+            self[unchecked: Void()] = wide.low
+            self = (consume self)[unchecked: 1...] // consume: this is a compiler bug...
         }
         
         return increment as Element

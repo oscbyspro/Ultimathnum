@@ -20,7 +20,9 @@ extension DataInt.Canvas {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func plus(_ increment: consuming Bool) -> Fallible<Self> {
+    @inlinable public consuming func increment(
+        by increment: consuming Bool
+    )   -> Fallible<Self> {
         //=--------------------------------------=
         // performance: compare index then bit
         //=--------------------------------------=
@@ -46,19 +48,19 @@ extension DataInt.Canvas {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @discardableResult @inlinable public consuming func plus(
-        _ element: consuming Element
+    @discardableResult @inlinable public consuming func increment(
+        by element: consuming Element
     )   -> Fallible<Self> {
         
         let bit = self.capture {
-            $0.plusSubSequence(element)
+            $0.incrementSubSequence(by: element)
         }
         
-        return self.plus(bit)
+        return self.increment(by: bit)
     }
     
-    @discardableResult @inlinable public func plusSubSequence(
-        _ element: consuming Element
+    @discardableResult @inlinable public func incrementSubSequence(
+        by element: consuming Element
     )   -> Fallible<Self> {
         
         let bit = self[unchecked: Void()].capture {
@@ -79,19 +81,21 @@ extension DataInt.Canvas {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func plus(
-        _ increment: consuming Element, and bit: consuming Bool
+    @inlinable public consuming func increment(
+        by increment: consuming Element,
+        plus bit: consuming Bool
     )   -> Fallible<Self> {
         
         bit = self.capture {
-            $0.plusSubSequence(increment, and: bit)
+            $0.incrementSubSequence(by: increment, plus: bit)
         }
         
-        return self.plus(bit)
+        return self.increment(by: bit)
     }
     
-    @inlinable public func plusSubSequence(
-        _ increment: consuming Element, and bit: consuming Bool
+    @inlinable public func incrementSubSequence(
+        by increment: consuming Element, 
+        plus bit: consuming Bool
     )   -> Fallible<Self> {
         
         if  (copy bit) {
@@ -120,24 +124,26 @@ extension DataInt.Canvas {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
 
-    @inlinable public consuming func plus(
-        _ elements: borrowing Body, and bit: consuming Bool
+    @inlinable public consuming func increment(
+        by elements: borrowing Body, 
+        plus bit: consuming Bool
     )   -> Fallible<Self> {
         
         let bit = self.capture(elements) {
-            $0.plusSubSequence($1, and: bit)
+            $0.incrementSubSequence(by: $1, plus: bit)
         }
         
-        return self.plus(bit)
+        return self.increment(by: bit)
     }
     
-    @inlinable public consuming func plusSubSequence(
-        _ elements: borrowing Body, and bit: consuming Bool
+    @inlinable public consuming func incrementSubSequence(
+        by elements: borrowing Body, 
+        plus bit: consuming Bool
     )   -> Fallible<Self> {
         
         for index in elements.indices {
             bit = self.capture(elements[unchecked: index]) {
-                $0.plusSubSequence($1, and: bit)
+                $0.incrementSubSequence(by: $1, plus: bit)
             }
         }
         
@@ -155,30 +161,36 @@ extension DataInt.Canvas {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @discardableResult @inlinable public consuming func plus(
-        _ elements: borrowing Body, times multiplier: consuming Element, and increment: consuming Element
+    @discardableResult @inlinable public consuming func increment(
+        by elements: borrowing Body, 
+        times multiplier: consuming Element,
+        plus increment: consuming Element
     )   -> Fallible<Self> {
         
         let bit = self.capture(elements) {
-            $0.plusSubSequence($1, times: multiplier, and: increment)
+            $0.incrementSubSequence(by: $1, times: multiplier, plus: increment)
         }
         
-        return self.plus(bit)
+        return self.increment(by: bit)
     }
     
-    @discardableResult @inlinable public consuming func plusSubSequence(
-        _ elements: borrowing Body, times multiplier: consuming Element, and increment: consuming Element
+    @discardableResult @inlinable public consuming func incrementSubSequence(
+        by elements: borrowing Body,
+        times multiplier: consuming Element,
+        plus increment: consuming Element
     )   -> Fallible<Self> {
         
         for index in elements.indices {
-            //  maximum == (high: ~1, low: 1)
-            var subproduct = elements[unchecked: index].multiplication(multiplier)
-            //  maximum == (high: ~0, low: 0)
-            increment = subproduct.high &+ Element(Bit(subproduct.low.capture({ $0.plus(increment) })))
-            //  this cannot overflow because low == 0 when high == ~0
-            increment = increment &+ Element(Bit(self.capture({ $0.plusSubSequence(subproduct.low) })))
+            //  maximum == (low:  1, high: ~1)
+            var product = elements[unchecked: index].multiplication(multiplier)
+            //  maximum == (low:  2, high: ~1)
+            increment   = Element(Bit(product.low.capture({ $0.plus(increment) })))
+            //  maximum == (low:  1, high: ~0)
+            increment &+= Element(Bit(self.capture({ $0.incrementSubSequence(by: product.low) })))
+            //  maximum == (low: ~0, high: ~0) because low == 0 when high == ~0
+            increment &+= product.high
         }
         
-        return self.plusSubSequence(increment)
+        return self.incrementSubSequence(by: increment)
     }
 }

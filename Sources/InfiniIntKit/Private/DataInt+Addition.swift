@@ -19,14 +19,17 @@ extension DataInt.Canvas {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func plusShortCircuit(_ bit: consuming Bool, repeating pattern: Bool) -> Bool {
+    @inlinable public consuming func increment(
+        by bit: consuming Bool, 
+        repeating pattern: consuming Bool
+    ) -> Bool {
         if  bit != pattern {
             let predicate = copy bit
             let increment = copy bit ? 1 : ~0 as Element
             
             while self.count > 0, copy bit == predicate {
                 bit = self.capture {
-                    $0.plusSubSequence(increment)
+                    $0.incrementSubSequence(by: increment)
                 }
             }
         }

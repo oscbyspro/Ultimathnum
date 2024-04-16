@@ -28,10 +28,10 @@ extension InfiniInt {
                 var lhs = consume lhs
                 
                 overflow = lhs.capture(rhs.body) {
-                    $0.plusSubSequence($1, and: overflow)
+                    $0.incrementSubSequence(by: $1, plus: overflow)
                 }
                 
-                overflow = lhs.plusShortCircuit(overflow, repeating: Bool(rhs.appendix))
+                overflow = lhs.increment(by: overflow, repeating: Bool(rhs.appendix))
             }
         }
         
