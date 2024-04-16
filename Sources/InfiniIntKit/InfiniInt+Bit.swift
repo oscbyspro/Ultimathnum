@@ -24,13 +24,16 @@ extension InfiniInt {
             $0.toggle(carrying: &increment)
         }
         
+        self.storage.appendix.toggle()
+        
         // TODO: await ownership fixes
         if  copy increment {
             if  Bool(self.appendix) {
-                self.storage.appendix = ~self.appendix
-                self.storage.body.append(1)
-            }   else {
+                self.storage.appendix.toggle()
                 self.storage.normalize()
+            }   else {
+                self.storage.body.append(1)
+                increment.toggle()
             }
         }
         

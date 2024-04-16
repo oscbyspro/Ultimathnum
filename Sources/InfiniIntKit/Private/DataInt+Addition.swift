@@ -19,12 +19,7 @@ extension DataInt.Canvas {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// ### Development
-    ///
-    /// Note that it does not return an instance of itself because it may not
-    /// actually be computed.
-    ///
-    @inlinable public consuming func plus(_ bit: consuming Bool, repeating pattern: Bool) -> Bool {
+    @inlinable public consuming func plusShortCircuit(_ bit: consuming Bool, repeating pattern: Bool) -> Bool {
         if  bit != pattern {
             let predicate = copy bit
             let increment = copy bit ? 1 : ~0 as Element

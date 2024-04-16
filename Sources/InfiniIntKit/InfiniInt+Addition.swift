@@ -31,10 +31,10 @@ extension InfiniInt {
                     $0.plusSubSequence($1, and: overflow)
                 }
                 
-                overflow = lhs.plus(overflow, repeating: Bool(rhs.appendix))
+                overflow = lhs.plusShortCircuit(overflow, repeating: Bool(rhs.appendix))
             }
         }
-                
+        
         var last = Element(repeating: self.appendix)
         (last, overflow) = last.plus(Element(repeating: other.appendix), and: overflow).components
         //=--------------------------------------=

@@ -17,6 +17,7 @@ import TestKit
 
 extension InfiniIntTests {
     
+    #warning("test decrement")
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
@@ -32,25 +33,25 @@ extension InfiniIntTests {
             let b: [L] = [~0, ~0, ~0, ~0]
             let c: [L] = [~1, ~0, ~0, ~0] // +1
             
-            Test().same(T(a, repeating: 0).plus(T(a, repeating: 0)), F(T(a, repeating: 0)))
-            Test().same(T(a, repeating: 0).plus(T(a, repeating: 1)), F(T(a, repeating: 1)))
-            Test().same(T(a, repeating: 1).plus(T(a, repeating: 0)), F(T(a, repeating: 1)))
-            Test().same(T(a, repeating: 1).plus(T(a, repeating: 1)), F(T(a  + [~1] as [L], repeating: 1), error: !T.isSigned))
+            Test().addition(T(a, repeating: 0), T(a, repeating: 0), F(T(a, repeating: 0)))
+            Test().addition(T(a, repeating: 0), T(a, repeating: 1), F(T(a, repeating: 1)))
+            Test().addition(T(a, repeating: 1), T(a, repeating: 0), F(T(a, repeating: 1)))
+            Test().addition(T(a, repeating: 1), T(a, repeating: 1), F(T(a  + [~1] as [L], repeating: 1), error: !T.isSigned))
             
-            Test().same(T(a, repeating: 0).plus(T(b, repeating: 0)), F(T(b, repeating: 0)))
-            Test().same(T(a, repeating: 0).plus(T(b, repeating: 1)), F(T(b, repeating: 1)))
-            Test().same(T(a, repeating: 1).plus(T(b, repeating: 0)), F(T(b, repeating: 1)))
-            Test().same(T(a, repeating: 1).plus(T(b, repeating: 1)), F(T(b  + [~1] as [L], repeating: 1), error: !T.isSigned))
+            Test().addition(T(a, repeating: 0), T(b, repeating: 0), F(T(b, repeating: 0)))
+            Test().addition(T(a, repeating: 0), T(b, repeating: 1), F(T(b, repeating: 1)))
+            Test().addition(T(a, repeating: 1), T(b, repeating: 0), F(T(b, repeating: 1)))
+            Test().addition(T(a, repeating: 1), T(b, repeating: 1), F(T(b  + [~1] as [L], repeating: 1), error: !T.isSigned))
 
-            Test().same(T(b, repeating: 0).plus(T(a, repeating: 0)), F(T(b, repeating: 0)))
-            Test().same(T(b, repeating: 0).plus(T(a, repeating: 1)), F(T(b, repeating: 1)))
-            Test().same(T(b, repeating: 1).plus(T(a, repeating: 0)), F(T(b, repeating: 1)))
-            Test().same(T(b, repeating: 1).plus(T(a, repeating: 1)), F(T(b  + [~1] as [L], repeating: 1), error: !T.isSigned))
+            Test().addition(T(b, repeating: 0), T(a, repeating: 0), F(T(b, repeating: 0)))
+            Test().addition(T(b, repeating: 0), T(a, repeating: 1), F(T(b, repeating: 1)))
+            Test().addition(T(b, repeating: 1), T(a, repeating: 0), F(T(b, repeating: 1)))
+            Test().addition(T(b, repeating: 1), T(a, repeating: 1), F(T(b  + [~1] as [L], repeating: 1), error: !T.isSigned))
             
-            Test().same(T(b, repeating: 0).plus(T(b, repeating: 0)), F(T(c  + [ 1] as [L], repeating: 0)))
-            Test().same(T(b, repeating: 0).plus(T(b, repeating: 1)), F(T(c, repeating: 0), error: !T.isSigned))
-            Test().same(T(b, repeating: 1).plus(T(b, repeating: 0)), F(T(c, repeating: 0), error: !T.isSigned))
-            Test().same(T(b, repeating: 1).plus(T(b, repeating: 1)), F(T(c, repeating: 1), error: !T.isSigned))
+            Test().addition(T(b, repeating: 0), T(b, repeating: 0), F(T(c  + [ 1] as [L], repeating: 0)))
+            Test().addition(T(b, repeating: 0), T(b, repeating: 1), F(T(c, repeating: 0), error: !T.isSigned))
+            Test().addition(T(b, repeating: 1), T(b, repeating: 0), F(T(c, repeating: 0), error: !T.isSigned))
+            Test().addition(T(b, repeating: 1), T(b, repeating: 1), F(T(c, repeating: 1), error: !T.isSigned))
         }
         
         for element in elements {

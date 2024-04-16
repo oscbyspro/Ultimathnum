@@ -25,7 +25,7 @@ extension DataInt.Canvas {
         // performance: compare index then bit
         //=--------------------------------------=
         while UX(bitPattern: self.count) > 0, copy increment {
-            increment = self.pointee.capture {
+            increment = self[unchecked: Void()].capture {
                 $0.incremented()
             }
             
@@ -61,7 +61,7 @@ extension DataInt.Canvas {
         _ element: consuming Element
     )   -> Fallible<Self> {
         
-        let bit = self.pointee.capture {
+        let bit = self[unchecked: Void()].capture {
             $0.plus(element)
         }
         
@@ -80,8 +80,7 @@ extension DataInt.Canvas {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func plus(
-        _ increment: consuming Element,
-        and bit: consuming Bool
+        _ increment: consuming Element, and bit: consuming Bool
     )   -> Fallible<Self> {
         
         bit = self.capture {
@@ -92,8 +91,7 @@ extension DataInt.Canvas {
     }
     
     @inlinable public func plusSubSequence(
-        _ increment: consuming Element,
-        and bit: consuming Bool
+        _ increment: consuming Element, and bit: consuming Bool
     )   -> Fallible<Self> {
         
         if  (copy bit) {
@@ -103,7 +101,7 @@ extension DataInt.Canvas {
         }
         
         if !(copy bit) {
-            bit = self.pointee.capture {
+            bit = self[unchecked: Void()].capture {
                 $0.plus(increment)
             }
         }
@@ -123,8 +121,7 @@ extension DataInt.Canvas {
     //=------------------------------------------------------------------------=
 
     @inlinable public consuming func plus(
-        _ elements: borrowing Body,
-        and bit: consuming Bool
+        _ elements: borrowing Body, and bit: consuming Bool
     )   -> Fallible<Self> {
         
         let bit = self.capture(elements) {
@@ -135,8 +132,7 @@ extension DataInt.Canvas {
     }
     
     @inlinable public consuming func plusSubSequence(
-        _ elements: borrowing Body,
-        and bit: consuming Bool
+        _ elements: borrowing Body, and bit: consuming Bool
     )   -> Fallible<Self> {
         
         for index in elements.indices {
@@ -160,9 +156,7 @@ extension DataInt.Canvas {
     //=------------------------------------------------------------------------=
     
     @discardableResult @inlinable public consuming func plus(
-        _ elements: borrowing Body,
-        times multiplier: consuming Element,
-        and increment: consuming Element
+        _ elements: borrowing Body, times multiplier: consuming Element, and increment: consuming Element
     )   -> Fallible<Self> {
         
         let bit = self.capture(elements) {
@@ -173,9 +167,7 @@ extension DataInt.Canvas {
     }
     
     @discardableResult @inlinable public consuming func plusSubSequence(
-        _ elements: borrowing Body,
-        times multiplier: consuming Element,
-        and increment: consuming Element
+        _ elements: borrowing Body, times multiplier: consuming Element, and increment: consuming Element
     )   -> Fallible<Self> {
         
         for index in elements.indices {

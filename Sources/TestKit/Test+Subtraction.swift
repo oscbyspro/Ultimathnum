@@ -71,8 +71,8 @@ extension Test {
         // same as rhs negation when lhs is zero
         //=--------------------------------------=
         if  lhs == 0 {
-            same(expectation, rhs.negated())
-            same(expectation, Fallible(rhs).negated())
+            same(rhs.negated(), expectation)
+            same(Fallible(rhs).negated(), expectation)
         }
         
         if  lhs == 0 && !expectation.error {

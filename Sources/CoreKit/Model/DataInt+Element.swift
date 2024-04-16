@@ -41,7 +41,7 @@ extension DataInt.Body {
         Swift.assert(index >= 0000000000, String.indexOutOfBounds())
         Swift.assert(index <  self.count, String.indexOutOfBounds())
         //=--------------------------------------=
-        return self.start[Int(index)]
+        return self.start.advanced(by: Int(index)).pointee
     }
 }
 
@@ -55,16 +55,21 @@ extension DataInt.Canvas {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public var pointee: Element {
+    @inlinable public subscript(unchecked index: Void) -> Element {
         nonmutating get {
-            self.start.pointee
+            //=----------------------------------=
+            Swift.assert(00000 <  self.count, String.indexOutOfBounds())
+            //=----------------------------------=
+            return self.start.pointee
         }
         
         nonmutating set {
             //=----------------------------------=
+            Swift.assert(00000 <  self.count, String.indexOutOfBounds())
+            //=----------------------------------=
             // note that the pointee is trivial
             //=----------------------------------=
-            self.start.initialize(to: newValue)
+            return self.start.initialize(to: newValue)
         }
     }
     
@@ -84,7 +89,7 @@ extension DataInt.Canvas {
             //=----------------------------------=
             // note that the pointee is trivial
             //=----------------------------------=
-            return self.start.advanced(by: Int(index)).pointee = newValue
+            return self.start.advanced(by: Int(index)).initialize(to: newValue)
         }
     }
 }
