@@ -21,8 +21,9 @@ extension DataInt.Canvas {
     
     @inlinable public consuming func increment(
         by bit: consuming Bool, 
-        repeating pattern: consuming Bool
+        plusOnRepeat pattern: consuming Bool
     ) -> Bool {
+        
         if  bit != pattern {
             let predicate = copy bit
             let increment = copy bit ? 1 : ~0 as Element

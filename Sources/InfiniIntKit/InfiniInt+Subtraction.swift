@@ -27,17 +27,15 @@ extension InfiniInt {
             other.withUnsafeBinaryIntegerElements { rhs in
                 var lhs  = consume lhs
                 overflow = lhs[{ $0.decrementSubSequence(by: rhs.body,plus: overflow) }]
-                overflow = lhs.decrement(by: overflow, repeating: Bool(rhs.appendix))
+                overflow = lhs.decrement(by: overflow, plusOnRepeat: Bool(rhs.appendix))
             }
         }
                 
         var last = Element(repeating: self.appendix)
-        (last, overflow) = last.minus(Element(repeating: other.appendix), plus: overflow).components
-        
+        overflow = last[{ $0.minus(Element(repeating: other.appendix),plus: overflow) }]
         self.storage.appendix = Element.Signitude(bitPattern: last).appendix
         self.storage.normalize(appending: Element.Magnitude(bitPattern: last))
         
-        Swift.assert(self.storage.isNormal, String.brokenInvariant())
         return self.combine(overflow)
     }
     

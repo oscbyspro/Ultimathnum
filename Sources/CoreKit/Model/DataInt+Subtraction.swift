@@ -133,12 +133,13 @@ extension DataInt.Canvas {
     }
     
     @inlinable public consuming func decrementSubSequence(
-        by elements: Body,
+        by elements: borrowing Body,
         plus bit: consuming Bool
     )   -> Fallible<Self> {
         
         for index in elements.indices {
             let element = elements[unchecked: index]
+            
             bit = self[{
                 $0.decrementSubSequence(by: element, plus: bit)
             }]
@@ -178,14 +179,14 @@ extension DataInt.Canvas {
     )   -> Fallible<Self> {
         
         for index in elements.indices {
-            //  maximum == (low:  1, high: ~1)
+            // maximum: (low:  1, high: ~1) == max * max
             var product = elements[unchecked: index].multiplication(multiplier)
-            //  maximum == (low:  2, high: ~1)
-            decrement   = Element(Bit(product.low[{ $0.plus(decrement) }]))
-            //  maximum == (low:  1, high: ~0)
-            decrement &+= Element(Bit(self[{ $0.decrementSubSequence(by: product.low) }]))
-            //  maximum == (low: ~0, high: ~0) because low == 0 when high == ~0
-            decrement &+= product.high
+            // maximum: (low:  0, high: ~0) == max * max + max
+            product.high &+= Element(Bit(product.low[{ $0.plus(decrement) }]))
+            // maximum: (low:  0, high: ~0) == max * max + max - min
+            product.high &+= Element(Bit(self[{ $0.decrementSubSequence(by: product.low) }]))
+            // store the high part in the next iteration's decrement
+            decrement = product.high
         }
         
         return self.decrementSubSequence(by: decrement)

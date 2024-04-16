@@ -26,27 +26,18 @@ extension BinaryInteger {
     )   -> Fallible<Self> where Other: SignedInteger {
         
         if  Self.isSigned {
-            
             if  Self.size < Other.size {
-                
                 return Other(load: self).plus(distance).map(Self.exactly)
                 
             }   else {
-                
                 return self.plus(Self(load: distance))
-                
             }
-            
         }   else {
-            
             if  distance.isLessThanZero {
-                
                 return self.minus(Self.exactly(Other.Magnitude(bitPattern: distance.complement())))
                 
             }   else {
-                
                 return self.plus (Self.exactly(Other.Magnitude(bitPattern: distance)))
-                
             }
         }
     }
@@ -65,20 +56,15 @@ extension BinaryInteger {
     )   -> Fallible<Other> where Other: SignedInteger {
         
         if  Self.size < Other.size {
-            
             return Other(load: other).minus(Other(load: self))
         
-            
         }   else if Self.isSigned {
-            
             return other.minus(self).map(Other.exactly)
             
         }   else {
-            
             let distance = Fallible<Signitude>(bitPattern: other.minus(self))
             let superoverflow = distance.value.isLessThanZero != distance.error
             return Other.exactly(distance.value).combine(superoverflow)
-            
         }
     }
 }
