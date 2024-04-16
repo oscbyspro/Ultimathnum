@@ -55,7 +55,7 @@ extension CoreInt {
         
         var suboverflow  = Bit( result.value.quotient.isLessThanZero)
         if  lhsIsLessThanZero != rhsIsLessThanZero {
-            suboverflow &= Bit(!result.value.quotient.capture({ $0.complement(true) }))
+            suboverflow &= Bit(!result.value.quotient[{ $0.complement(true) }])
         }
         
         if  lhsIsLessThanZero {
@@ -76,7 +76,7 @@ extension CoreInt where Self == Magnitude {
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable static func division(_ dividend: consuming Doublet<Self>, by divisor: borrowing Self) -> Fallible<Division<Self, Self>> {
+    @inlinable static func division(_ dividend: consuming Doublet<Self>, by divisor: Self) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
         if  divisor == 0 {
             return Fallible.failure(Division(quotient: 0, remainder: dividend.low))
@@ -86,7 +86,7 @@ extension CoreInt where Self == Magnitude {
         //=--------------------------------------=
         if  divisor <= dividend.high {
             overflow = true
-            dividend.high.capture(divisor, map:{ $0.remainder($1).assert() })
+            dividend.high[{ $0.remainder(divisor).assert() }]
         }
         //=--------------------------------------=
         let result = divisor.base.dividingFullWidth((high: dividend.high.base, low: dividend.low.base))

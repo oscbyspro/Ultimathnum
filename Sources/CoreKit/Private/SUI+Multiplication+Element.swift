@@ -52,7 +52,7 @@ extension Namespace.StrictUnsignedInteger.SubSequence where Base: MutableCollect
         //=--------------------------------------=
         forwards: while index < limit {
             var  wide = base[index].multiplication(multiplier)
-            wide.high = wide.high &+ Base.Element(Bit(wide.low.capture({ $0.plus(increment) })))
+            wide.high = wide.high &+ Base.Element(Bit(wide.low[{ $0.plus(increment) }]))
             increment = wide.high
             base[index] = wide.low
             base.formIndex(after: &index)

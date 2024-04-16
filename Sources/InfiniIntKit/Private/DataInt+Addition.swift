@@ -28,9 +28,7 @@ extension DataInt.Canvas {
             let increment = copy bit ? 1 : ~0 as Element
             
             while self.count > 0, copy bit == predicate {
-                bit = self.capture {
-                    $0.incrementSubSequence(by: increment)
-                }
+                bit = self[{ $0.incrementSubSequence(by: increment) }]
             }
         }
         

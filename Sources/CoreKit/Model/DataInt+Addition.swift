@@ -21,20 +21,17 @@ extension DataInt.Canvas {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func increment(
-        by increment: consuming Bool
+        by bit: consuming Bool
     )   -> Fallible<Self> {
         //=--------------------------------------=
         // performance: compare index then bit
         //=--------------------------------------=
-        while UX(bitPattern: self.count) > 0, copy increment {
-            increment = self[unchecked: Void()].capture {
-                $0.incremented()
-            }
-            
+        while UX(bitPattern: self.count) > 0, copy bit {
+            bit  = self[unchecked: Void()][{ $0.incremented() }]
             self = (consume self)[unchecked: 1...]
         }
         //=--------------------------------------=
-        return Fallible(consume self, error: increment)
+        return Fallible(consume self, error: bit)
     }
 }
 
@@ -52,10 +49,7 @@ extension DataInt.Canvas {
         by element: consuming Element
     )   -> Fallible<Self> {
         
-        let bit = self.capture {
-            $0.incrementSubSequence(by: element)
-        }
-        
+        let bit = self[{ $0.incrementSubSequence(by: element) }]
         return self.increment(by: bit)
     }
     
@@ -63,10 +57,7 @@ extension DataInt.Canvas {
         by element: consuming Element
     )   -> Fallible<Self> {
         
-        let bit = self[unchecked: Void()].capture {
-            $0.plus(element)
-        }
-        
+        let bit = self[unchecked: Void()][{ $0.plus(element) }]
         return Fallible(self[unchecked: 1...], error: bit)
     }
 }
@@ -86,10 +77,7 @@ extension DataInt.Canvas {
         plus bit: consuming Bool
     )   -> Fallible<Self> {
         
-        bit = self.capture {
-            $0.incrementSubSequence(by: increment, plus: bit)
-        }
-        
+        bit = self[{ $0.incrementSubSequence(by: increment, plus: bit) }]
         return self.increment(by: bit)
     }
     
@@ -99,15 +87,11 @@ extension DataInt.Canvas {
     )   -> Fallible<Self> {
         
         if  (copy bit) {
-            bit = increment.capture {
-                $0.incremented()
-            }
+            bit = increment[{ $0.incremented() }]
         }
         
         if !(copy bit) {
-            bit = self[unchecked: Void()].capture {
-                $0.plus(increment)
-            }
+            bit = self[unchecked: Void()][{ $0.plus(increment) }]
         }
         
         return Fallible(self[unchecked: 1...], error: bit)
@@ -125,26 +109,25 @@ extension DataInt.Canvas {
     //=------------------------------------------------------------------------=
 
     @inlinable public consuming func increment(
-        by elements: borrowing Body, 
+        by elements: Body, 
         plus bit: consuming Bool
     )   -> Fallible<Self> {
         
-        let bit = self.capture(elements) {
-            $0.incrementSubSequence(by: $1, plus: bit)
-        }
+        let bit = self[{
+            $0.incrementSubSequence(by: elements, plus: bit)
+        }]
         
         return self.increment(by: bit)
     }
     
     @inlinable public consuming func incrementSubSequence(
-        by elements: borrowing Body, 
+        by elements: Body,
         plus bit: consuming Bool
     )   -> Fallible<Self> {
         
         for index in elements.indices {
-            bit = self.capture(elements[unchecked: index]) {
-                $0.incrementSubSequence(by: $1, plus: bit)
-            }
+            let element = elements[unchecked: index]
+            bit = self[{ $0.incrementSubSequence(by: element, plus: bit) }]
         }
         
         return Fallible(self, error: bit)
@@ -162,14 +145,14 @@ extension DataInt.Canvas {
     //=------------------------------------------------------------------------=
     
     @discardableResult @inlinable public consuming func increment(
-        by elements: borrowing Body, 
+        by elements: Body,
         times multiplier: consuming Element,
         plus increment: consuming Element
     )   -> Fallible<Self> {
         
-        let bit = self.capture(elements) {
-            $0.incrementSubSequence(by: $1, times: multiplier, plus: increment)
-        }
+        let bit = self[{
+            $0.incrementSubSequence(by: elements, times: multiplier, plus: increment)
+        }]
         
         return self.increment(by: bit)
     }
@@ -184,9 +167,9 @@ extension DataInt.Canvas {
             //  maximum == (low:  1, high: ~1)
             var product = elements[unchecked: index].multiplication(multiplier)
             //  maximum == (low:  2, high: ~1)
-            increment   = Element(Bit(product.low.capture({ $0.plus(increment) })))
+            increment   = Element(Bit(product.low[{ $0.plus(increment) }]))
             //  maximum == (low:  1, high: ~0)
-            increment &+= Element(Bit(self.capture({ $0.incrementSubSequence(by: product.low) })))
+            increment &+= Element(Bit(self[{ $0.incrementSubSequence(by: product.low) }]))
             //  maximum == (low: ~0, high: ~0) because low == 0 when high == ~0
             increment &+= product.high
         }

@@ -20,27 +20,22 @@ extension InfiniInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func minus(_ other: borrowing Self) -> Fallible<Self> {
-        var overflow = false
+        var carry = false
         
         self.storage.resize(minCount: other.storage.count)
         self.storage.withUnsafeMutableBinaryIntegerBody { lhs in
             other.withUnsafeBinaryIntegerElements { rhs in
                 for index in rhs.body.indices {
-                    overflow = lhs[unchecked: index].capture {
-                        $0.minus(rhs.body[unchecked: index], and: overflow)
-                    }
+                    carry = lhs[unchecked: index][{ $0.minus(rhs.body[unchecked: index], plus: carry) }]
                 }
                 
-                if  overflow != Bool(rhs.appendix) {
-                    let predicate = overflow
-                    let increment = overflow ? 1 : ~0 as Element.Magnitude
+                if  carry != Bool(rhs.appendix) {
+                    let predicate = carry
+                    let increment = carry ? 1 : ~0 as Element.Magnitude
                     
                     var index = rhs.body.count
-                    while index < lhs.count, overflow == predicate {
-                        overflow = lhs[unchecked: index].capture {
-                            $0.minus(increment)
-                        }
-                        
+                    while index < lhs.count, carry == predicate {
+                        carry = lhs[unchecked: index][{ $0.minus(increment) }]
                         index = index.incremented().assert()
                     }
                 }
@@ -48,12 +43,12 @@ extension InfiniInt {
         }
                 
         var last = Element(repeating: self.appendix)
-        (last, overflow) = last.minus(Element(repeating: other.appendix), and: overflow).components
+        (last, carry) = last.minus(Element(repeating: other.appendix), plus: carry).components
         //=--------------------------------------=
         self.storage.appendix = Element.Signitude(bitPattern: last).appendix
         self.storage.normalize(appending: Element.Magnitude(bitPattern: last))
         //=--------------------------------------=
-        return self.combine(overflow)
+        return self.combine(carry)
     }
     
     @inlinable public consuming func minus(_ other: consuming Element) -> Fallible<Self> {

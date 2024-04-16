@@ -31,11 +31,11 @@ extension DataInt.Canvas {
     )   -> Element {
         
         while UX(bitPattern: self.count) > 0 {
-            var  wide = self[unchecked: Void()].multiplication(multiplier)
-            wide.high &+= Element(Bit(wide.low.capture({ $0.plus(increment) })))
-            increment = wide.high
-            self[unchecked: Void()] = wide.low
-            self = (consume self)[unchecked: 1...] // consume: this is a compiler bug...
+            var product = self[unchecked: Void()].multiplication(multiplier)
+            product.high &+= Element(Bit(product.low[{ $0.plus(increment) }]))
+            increment = product.high
+            self[unchecked: Void()] = product.low
+            self = (consume self)[unchecked: 1...] // consume: compiler bug...
         }
         
         return increment as Element

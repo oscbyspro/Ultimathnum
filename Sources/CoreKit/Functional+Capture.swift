@@ -17,23 +17,17 @@ extension Functional {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public mutating func capture(_ map: (Self) throws -> Self) rethrows {
-        self = try map(self)
+    @inlinable public subscript(map: (Self) -> Self) -> Void {
+        mutating get {
+            self = map(consume self)
+        }
     }
     
-    @inlinable public mutating func capture(_ map: (Self) throws -> Fallible<Self>) rethrows -> Bool {
-        let result = try map(self)
-        self = result.value
-        return result.error
-    }
-    
-    @inlinable public mutating func capture<Input>(_ input: borrowing Input, map: (Self, Input) throws -> Self) rethrows {
-        self = try map(self, input)
-    }
-    
-    @inlinable public mutating func capture<Input>(_ input: borrowing Input, map: (Self, Input) throws -> Fallible<Self>) rethrows -> Bool {
-        let result = try map(self, input)
-        self = result.value
-        return result.error
+    @inlinable public subscript(map: (Self) -> Fallible<Self>) -> Bool {
+        mutating get {
+            let result = map(consume self)
+            self = result.value
+            return result.error
+        }
     }
 }

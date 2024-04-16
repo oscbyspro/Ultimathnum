@@ -38,7 +38,7 @@ extension Doublet {
         
         var suboverflow  = Bit( result.value.quotient.high.isLessThanZero)
         if  lhsIsLessThanZero != rhsIsLessThanZero {
-            suboverflow &= Bit(!result.value.quotient.capture({ $0.complement(true) }))
+            suboverflow &= Bit(!result.value.quotient[{ $0.complement(true) }])
         }
         
         if  lhsIsLessThanZero {

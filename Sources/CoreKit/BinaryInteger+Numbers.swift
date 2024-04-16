@@ -44,7 +44,7 @@ extension BinaryInteger {
         
         var isLessThanZero = Bool(sign)
         if  isLessThanZero {
-            isLessThanZero = magnitude.capture({ $0.negated() })
+            isLessThanZero = magnitude[{ $0.negated() }]
         }
         
         let value = Self(bitPattern: magnitude)

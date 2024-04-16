@@ -20,16 +20,14 @@ extension DataInt.Canvas {
     /// Toggles each bit in its binary representation.
     @inlinable public borrowing func toggle() {
         for index in self.indices {
-            self[unchecked: index].capture(~)
+            self[unchecked: index][{ $0.toggled() }]
         }
     }
     
     /// Toggles each bit in its binary representation then adds `increment`.
     @inlinable public borrowing func toggle(carrying increment: inout Bool) {
         for index in self.indices {
-            increment = self[unchecked: index].capture {
-                $0.complement(increment)
-            }
+            increment = self[unchecked: index][{ $0.complement(increment) }]
         }
     }
 }

@@ -27,16 +27,13 @@ extension InfiniInt {
             other.withUnsafeBinaryIntegerElements { rhs in
                 var lhs = consume lhs
                 
-                overflow = lhs.capture(rhs.body) {
-                    $0.incrementSubSequence(by: $1, plus: overflow)
-                }
-                
+                overflow = lhs[{ $0.incrementSubSequence(by: rhs.body, plus: overflow) }]
                 overflow = lhs.increment(by: overflow, repeating: Bool(rhs.appendix))
             }
         }
         
         var last = Element(repeating: self.appendix)
-        (last, overflow) = last.plus(Element(repeating: other.appendix), and: overflow).components
+        (last, overflow) = last.plus(Element(repeating: other.appendix), plus: overflow).components
         //=--------------------------------------=
         self.storage.appendix = Element.Signitude(bitPattern: last).appendix
         self.storage.normalize(appending: Element.Magnitude(bitPattern: last))
