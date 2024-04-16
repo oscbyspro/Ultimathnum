@@ -36,6 +36,13 @@ extension DataInt.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    @inlinable public subscript(unchecked index: Void) -> Element {
+        //=----------------------------------=
+        Swift.assert(00000 <  self.count, String.indexOutOfBounds())
+        //=----------------------------------=
+        return self.start.pointee
+    }
+    
     @inlinable public subscript(unchecked index: IX) -> Element {
         //=--------------------------------------=
         Swift.assert(index >= 0000000000, String.indexOutOfBounds())

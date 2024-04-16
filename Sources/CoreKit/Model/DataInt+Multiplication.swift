@@ -8,7 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Data Int x Multiplication x Canvas x Element
+// MARK: * Data Int x Multiplication x Element x Canvas
 //*============================================================================*
 
 extension DataInt.Canvas {
@@ -39,5 +39,103 @@ extension DataInt.Canvas {
         }
         
         return increment as Element
+    }
+}
+
+//*============================================================================*
+// MARK: * Data Int x Multiplication x Long x Canvas
+//*============================================================================*
+
+extension DataInt.Canvas {
+    
+    /// Initializes `self` to the [long][algorithm] product of `lhs` and `rhs` plus `increment`.
+    ///
+    /// - Requires: The `body` must be of size `lhs.count` + `rhs.count`.
+    ///
+    /// [algorithm]: https://en.wikipedia.org/wiki/multiplication_algorithm
+    ///
+    @inline(never) @inlinable public consuming func initializeByLongAlgorithm(
+        to lhs: Body, times rhs: Body, plus increment: Element = .zero
+    ) {
+        //=--------------------------------------=
+        Swift.assert(self.count == lhs.count + rhs.count, String.indexOutOfBounds())
+        //=--------------------------------------=
+        var pointer = self.start
+        //=--------------------------------------=
+        // pointee: initialization 1
+        //=--------------------------------------=
+        var carry: Element = increment
+        let first: Element = rhs.count > 0 ? rhs[unchecked: Void()] : Element()
+        
+        for index in lhs.indices {
+            // maximum: (low:  1, high: ~1) == max * max
+            var product = lhs[unchecked: index].multiplication(first)
+            // maximum: (low:  0, high: ~0) == max * max + max
+            carry = product.high.plus(Element(Bit(product.low[{ $0.plus(carry) }]))).assert()
+            pointer.initialize(to: product.low)
+            pointer = pointer.successor()
+        }
+        
+        if  rhs.count != 0 {
+            pointer.initialize(to: carry)
+            pointer = pointer.successor()
+        }
+        //=--------------------------------------=
+        // pointee: initialization 2
+        //=--------------------------------------=
+        for index in rhs.indices.dropFirst() {
+            pointer.initialize(to: 00000)
+            pointer = pointer.successor()
+            (copy self)[unchecked: index...].incrementSubSequence(by: lhs, times: rhs[unchecked: index], plus: 0)
+        }
+        
+        Swift.assert(IX(self.start.distance(to: pointer)) == self.count)
+    }
+    
+    /// Initializes `base` to the square [long][algorithm] product of `elements` plus `increment`.
+    ///
+    /// - Parameter base: A buffer of size `2 * elements`.
+    ///
+    /// - Important: The `base` must be uninitialized, or its elements must be trivial.
+    ///
+    /// [algorithm]: https://en.wikipedia.org/wiki/multiplication_algorithm
+    ///
+    @inline(never) @inlinable public consuming func initializeByLongAlgorithm(
+         toSquareProductOf elements: Body, plus increment: Element = .zero
+    ) {
+        //=--------------------------------------=
+        Swift.assert(self.count == 2 * elements.count, String.indexOutOfBounds())
+        //=--------------------------------------=
+        // pointee: initialization
+        //=--------------------------------------=
+        self.start.initialize(repeating: 0, count: Int(self.count))
+        //=--------------------------------------=
+        var index = 000 as IX
+        var carry = increment
+        //=--------------------------------------=
+        while UX(bitPattern: self.count) > 0 {
+            let multiplier = Body(elements.start + Int(index), count: 1)
+            index = index.incremented().assert()
+            //=----------------------------------=
+            // add non-diagonal products
+            //=----------------------------------=
+            (copy self)[unchecked: 1...].incrementSubSequence(
+                by:    elements[unchecked: index...],
+                times: multiplier[unchecked: Void()],
+                plus:  Element.zero
+            )
+            //=----------------------------------=
+            // partially double non-diagonal
+            //=----------------------------------=
+            carry = (copy self)[unchecked: ..<2].multiply(by: 2, add: carry)
+            //=----------------------------------=
+            // add this iteration's diagonal
+            //=----------------------------------=
+            carry &+=  Element(Bit(self[{$0.incrementSubSequence(
+                by:    multiplier,
+                times: multiplier[unchecked: Void()],
+                plus:  Element.zero
+            )}])) //   note that this advances self by two steps
+        }
     }
 }
