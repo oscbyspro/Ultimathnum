@@ -61,16 +61,10 @@ extension DataIntTests.Canvas {
     
     func times(_ multiplier: Element, plus increment: Element, low: [Element], high: Element) {
         //=--------------------------------------=
-        // multiplication: 0000 + some
-        //=--------------------------------------=
-        if  multiplier == 0 {
-            // TODO: test subtraction
-        }
-        //=--------------------------------------=
         // multiplication: 0001 + some
         //=--------------------------------------=
         if  multiplier == 1 {
-            self.plus([increment], and: false, is: Fallible(low, error: high != 0))
+            self.plus([increment], plus: false, is: Fallible(low, error: high != 0))
         }
         //=--------------------------------------=
         // multiplication: some + some

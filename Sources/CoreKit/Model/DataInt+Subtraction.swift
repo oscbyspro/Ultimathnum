@@ -8,7 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Data Int x Addition x Canvas
+// MARK: * Data Int x Subtraction x Canvas
 //*============================================================================*
 //=----------------------------------------------------------------------------=
 // MARK: + Bit
@@ -20,15 +20,15 @@ extension DataInt.Canvas {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func increment(
+    @inlinable public consuming func decrement(
         by bit: consuming Bool
     )   -> Fallible<Self> {
         //=--------------------------------------=
         // performance: compare index then bit
         //=--------------------------------------=
         while UX(bitPattern: self.count) > 0, copy bit {
-            bit  = self[unchecked: Void()][{ 
-                $0.incremented()
+            bit  = self[unchecked: Void()][{
+                $0.decremented()
             }]
             
             self = (consume self)[unchecked: 1...]
@@ -48,23 +48,23 @@ extension DataInt.Canvas {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @discardableResult @inlinable public consuming func increment(
+    @discardableResult @inlinable public consuming func decrement(
         by element: consuming Element
     )   -> Fallible<Self> {
         
         let bit = self[{
-            $0.incrementSubSequence(by: element)
+            $0.decrementSubSequence(by: element)
         }]
         
-        return self.increment(by: bit)
+        return self.decrement(by: bit)
     }
     
-    @discardableResult @inlinable public func incrementSubSequence(
+    @discardableResult @inlinable public func decrementSubSequence(
         by element: consuming Element
     )   -> Fallible<Self> {
         
         let bit = self[unchecked: Void()][{
-            $0.plus(element)
+            $0.minus(element)
         }]
         
         return Fallible(self[unchecked: 1...], error: bit)
@@ -81,29 +81,29 @@ extension DataInt.Canvas {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func increment(
-        by increment: consuming Element,
+    @inlinable public consuming func decrement(
+        by decrement: consuming Element,
         plus bit: consuming Bool
     )   -> Fallible<Self> {
         
-        bit = self[{ 
-            $0.incrementSubSequence(by: increment, plus: bit)
+        bit = self[{
+            $0.decrementSubSequence(by: decrement, plus: bit)
         }]
         
-        return self.increment(by: bit)
+        return self.decrement(by: bit)
     }
     
-    @inlinable public func incrementSubSequence(
-        by increment: consuming Element, 
+    @inlinable public func decrementSubSequence(
+        by decrement: consuming Element,
         plus bit: consuming Bool
     )   -> Fallible<Self> {
         
         if  (copy bit) {
-            bit = increment[{ $0.incremented() }]
+            bit = decrement[{ $0.incremented() }]
         }
         
         if !(copy bit) {
-            bit = self[unchecked: Void()][{ $0.plus(increment) }]
+            bit = self[unchecked: Void()][{ $0.minus(decrement) }]
         }
         
         return Fallible(self[unchecked: 1...], error: bit)
@@ -120,19 +120,19 @@ extension DataInt.Canvas {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
 
-    @inlinable public consuming func increment(
-        by elements: Body, 
+    @inlinable public consuming func decrement(
+        by elements: Body,
         plus bit: consuming Bool
     )   -> Fallible<Self> {
         
         let bit = self[{
-            $0.incrementSubSequence(by: elements, plus: bit)
+            $0.decrementSubSequence(by: elements, plus: bit)
         }]
         
-        return self.increment(by: bit)
+        return self.decrement(by: bit)
     }
     
-    @inlinable public consuming func incrementSubSequence(
+    @inlinable public consuming func decrementSubSequence(
         by elements: Body,
         plus bit: consuming Bool
     )   -> Fallible<Self> {
@@ -140,7 +140,7 @@ extension DataInt.Canvas {
         for index in elements.indices {
             let element = elements[unchecked: index]
             bit = self[{
-                $0.incrementSubSequence(by: element, plus: bit)
+                $0.decrementSubSequence(by: element, plus: bit)
             }]
         }
         
@@ -158,36 +158,36 @@ extension DataInt.Canvas {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @discardableResult @inlinable public consuming func increment(
+    @discardableResult @inlinable public consuming func decrement(
         by elements: Body,
         times multiplier: consuming Element,
-        plus increment: consuming Element
+        plus decrement: consuming Element
     )   -> Fallible<Self> {
         
         let bit = self[{
-            $0.incrementSubSequence(by: elements, times: multiplier, plus: increment)
+            $0.decrementSubSequence(by: elements, times: multiplier, plus: decrement)
         }]
         
-        return self.increment(by: bit)
+        return self.decrement(by: bit)
     }
     
-    @discardableResult @inlinable public consuming func incrementSubSequence(
+    @discardableResult @inlinable public consuming func decrementSubSequence(
         by elements: borrowing Body,
         times multiplier: consuming Element,
-        plus increment: consuming Element
+        plus decrement: consuming Element
     )   -> Fallible<Self> {
         
         for index in elements.indices {
             //  maximum == (low:  1, high: ~1)
             var product = elements[unchecked: index].multiplication(multiplier)
             //  maximum == (low:  2, high: ~1)
-            increment   = Element(Bit(product.low[{ $0.plus(increment) }]))
+            decrement   = Element(Bit(product.low[{ $0.plus(decrement) }]))
             //  maximum == (low:  1, high: ~0)
-            increment &+= Element(Bit(self[{ $0.incrementSubSequence(by: product.low) }]))
+            decrement &+= Element(Bit(self[{ $0.decrementSubSequence(by: product.low) }]))
             //  maximum == (low: ~0, high: ~0) because low == 0 when high == ~0
-            increment &+= product.high
+            decrement &+= product.high
         }
         
-        return self.incrementSubSequence(by: increment)
+        return self.decrementSubSequence(by: decrement)
     }
 }
