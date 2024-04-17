@@ -175,8 +175,10 @@ extension DataInt.Canvas {
     @discardableResult @inlinable public consuming func incrementSubSequence(
         by elements: borrowing Body,
         times multiplier: consuming Element,
-        plus increment: consuming Element
+        plus increment: Element
     )   -> Fallible<Self> {
+        
+        var increment = increment // consume: compiler bug...
         
         for index in elements.indices {
             // maximum: (low:  1, high: ~1) == max * max

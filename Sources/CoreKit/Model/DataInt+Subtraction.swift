@@ -175,8 +175,10 @@ extension DataInt.Canvas {
     @discardableResult @inlinable public consuming func decrementSubSequence(
         by elements: borrowing Body,
         times multiplier: consuming Element,
-        plus decrement: consuming Element
+        plus decrement: Element
     )   -> Fallible<Self> {
+        
+        var decrement = decrement // consume: compiler bug...
         
         for index in elements.indices {
             // maximum: (low:  1, high: ~1) == max * max

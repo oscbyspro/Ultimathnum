@@ -27,8 +27,10 @@ extension DataInt.Canvas {
     ///
     @inlinable public consuming func multiply(
         by multiplier: borrowing Element,
-        add increment: consuming Element
+        add increment: Element
     )   -> Element {
+        
+        var increment = increment // consume: compiler bug...
         
         while UX(bitPattern: self.count) > 0 {
             var product = self[unchecked: Void()].multiplication(multiplier)
