@@ -127,8 +127,11 @@ extension Namespace.StrictUnsignedInteger where Base: MutableCollection {
             "the quotient of each iteration must fit in one element"
         )
         //=--------------------------------------=
-        let numerator   = Base.Element.suffix2(dividend)
-        let denominator = Base.Element.suffix1(divisor )
+        let numerator = Doublet(
+            low:  dividend[dividend.index(dividend.endIndex, offsetBy: -2)],
+            high: dividend[dividend.index(dividend.endIndex, offsetBy: -1)]
+        )
+        let denominator = divisor.last!
         //=--------------------------------------=
         var quotient: Base.Element = denominator == numerator.high
         ? Base.Element.max // the quotient must fit in one element
