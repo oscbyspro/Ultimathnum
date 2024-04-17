@@ -50,6 +50,32 @@ extension DataInt.Canvas {
 
 extension DataInt.Canvas {
     
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// Initializes `self` to the product of `lhs` and `rhs` plus `increment`.
+    ///
+    /// - Requires: The `body` must be of size `lhs.count` + `rhs.count`.
+    ///
+    /// [algorithm]: https://en.wikipedia.org/wiki/multiplication_algorithm
+    ///
+    @inlinable public consuming func initialize(to lhs: Body, times rhs: Body) {
+        self.initializeByLongAlgorithm(to: lhs, times: rhs, plus: Element.zero)
+    }
+    
+    /// Initializes `base` to the square product of `elements` plus `increment`.
+    ///
+    /// - Parameter base: A buffer of size `2 * elements`.
+    ///
+    @inlinable public consuming func initialize(toSquareProductOf elements: Body) {
+        self.initializeByLongAlgorithm(toSquareProductOf: elements, plus: Element.zero)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
     /// Initializes `self` to the [long][algorithm] product of `lhs` and `rhs` plus `increment`.
     ///
     /// - Requires: The `body` must be of size `lhs.count` + `rhs.count`.
@@ -97,8 +123,6 @@ extension DataInt.Canvas {
     /// Initializes `base` to the square [long][algorithm] product of `elements` plus `increment`.
     ///
     /// - Parameter base: A buffer of size `2 * elements`.
-    ///
-    /// - Important: The `base` must be uninitialized, or its elements must be trivial.
     ///
     /// [algorithm]: https://en.wikipedia.org/wiki/multiplication_algorithm
     ///

@@ -44,8 +44,7 @@ extension InfiniInt {
                     //=---------------------------=
                     // LHS x RHS
                     //=---------------------------=
-                    #warning("TODO: dynamic algorithm selection")
-                    body.initializeByLongAlgorithm(to: lhs.body, times: rhs.body)
+                    body.initialize(to: lhs.body, times: rhs.body)
                     //=---------------------------=
                     // LHS x RHS.appendix
                     //=---------------------------=
