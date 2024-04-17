@@ -122,7 +122,7 @@ extension DataInt.Canvas {
 
     @inlinable public consuming func increment(
         by elements: Body, 
-        plus bit: consuming Bool
+        plus bit: consuming Bool = false
     )   -> Fallible<Self> {
         
         let bit = self[{
@@ -134,7 +134,7 @@ extension DataInt.Canvas {
     
     @inlinable public consuming func incrementSubSequence(
         by elements: borrowing Body,
-        plus bit: consuming Bool
+        plus bit: consuming Bool = false
     )   -> Fallible<Self> {
         
         for index in elements.indices {
@@ -162,7 +162,7 @@ extension DataInt.Canvas {
     @discardableResult @inlinable public consuming func increment(
         by elements: Body,
         times multiplier: consuming Element,
-        plus increment: consuming Element
+        plus increment: consuming Element = .zero
     )   -> Fallible<Self> {
         
         let bit = self[{
@@ -175,7 +175,7 @@ extension DataInt.Canvas {
     @discardableResult @inlinable public consuming func incrementSubSequence(
         by elements: borrowing Body,
         times multiplier: consuming Element,
-        plus increment: Element
+        plus increment: Element = .zero
     )   -> Fallible<Self> {
         
         var increment = increment // consume: compiler bug...

@@ -41,8 +41,8 @@ extension DataInt.Body {
             Swift.assert(range.lowerBound >= 0000000000, String.indexOutOfBounds())
             Swift.assert(range.lowerBound <= self.count, String.indexOutOfBounds())
             //=----------------------------------=
-            let start = self.start.advanced(by: Int(bitPattern:  range.lowerBound))
-            let count = self.count.minus(IX(bitPattern: range.lowerBound)).assert()
+            let start = self.start + Int(range.lowerBound)
+            let count = self.count.minus(range.lowerBound).assert()
             return Self(start, count: count)
         }
     }
@@ -53,7 +53,17 @@ extension DataInt.Body {
             Swift.assert(range.upperBound >= 0000000000, String.indexOutOfBounds())
             Swift.assert(range.upperBound <= self.count, String.indexOutOfBounds())
             //=----------------------------------=
-            return Self(self.start, count: IX(bitPattern: range.upperBound))
+            return Self(self.start, count: range.upperBound)
+        }
+    }
+    
+    @inlinable public subscript(unchecked range: Range<IX>) -> Self {
+        consuming get {
+            //=----------------------------------=
+            Swift.assert(range.lowerBound >= 0000000000, String.indexOutOfBounds())
+            Swift.assert(range.upperBound <= self.count, String.indexOutOfBounds())
+            //=----------------------------------=
+            return Self(self.start + Int(range.lowerBound), count: IX(range.count))
         }
     }
 }
@@ -74,8 +84,8 @@ extension DataInt.Canvas {
             Swift.assert(range.lowerBound >= 0000000000, String.indexOutOfBounds())
             Swift.assert(range.lowerBound <= self.count, String.indexOutOfBounds())
             //=----------------------------------=
-            let start = self.start.advanced(by: Int(bitPattern:  range.lowerBound))
-            let count = self.count.minus(IX(bitPattern: range.lowerBound)).assert()
+            let start = self.start + Int(range.lowerBound)
+            let count = self.count.minus(range.lowerBound).assert()
             return Self(start, count: count)
         }
     }    
@@ -86,7 +96,17 @@ extension DataInt.Canvas {
             Swift.assert(range.upperBound >= 0000000000, String.indexOutOfBounds())
             Swift.assert(range.upperBound <= self.count, String.indexOutOfBounds())
             //=----------------------------------=
-            return Self(self.start, count: IX(bitPattern: range.upperBound))
+            return Self(self.start, count: range.upperBound)
+        }
+    }
+    
+    @inlinable public subscript(unchecked range: Range<IX>) -> Self {
+        consuming get {
+            //=----------------------------------=
+            Swift.assert(range.lowerBound >= 0000000000, String.indexOutOfBounds())
+            Swift.assert(range.upperBound <= self.count, String.indexOutOfBounds())
+            //=----------------------------------=
+            return Self(self.start + Int(range.lowerBound), count: IX(range.count))
         }
     }
 }

@@ -70,3 +70,23 @@ extension DataInt {
         return Signum.same as Signum as Signum as Signum
     }
 }
+
+//*============================================================================*
+// MARK: * Data Int x Comparison x Body
+//*============================================================================*
+
+extension DataInt.Body {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public borrowing func compared(to other: Self) -> Signum {
+        DataInt.compare(
+            lhs: DataInt(self),
+            lhsIsSigned: false,
+            rhs: DataInt(other),
+            rhsIsSigned: false
+        )
+    }
+}
