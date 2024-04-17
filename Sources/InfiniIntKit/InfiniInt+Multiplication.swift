@@ -21,9 +21,27 @@ extension InfiniInt {
     
     @inlinable public consuming func squared() -> Fallible<Self> {
         //=--------------------------------------=
-        // TODO: improve it
+        if  let small = self.storage.small {
+            return self.times(small)
+        }
         //=--------------------------------------=
-        return self.times(copy self)
+        var overflow = Bool(self.appendix)
+        if  overflow {
+            overflow = !Self.isSigned
+            self[{ $0.complement() }]
+        }
+        
+        let count = self.storage.count * 2
+        let body  = Storage.Body(unsafeUninitializedCapacity: Int(count)) {
+            let body = DataInt.Canvas($0.baseAddress!, count: IX(count))
+            self.withUnsafeBinaryIntegerElements {
+                body.initialize(toSquareProductOf: $0.body)
+            }
+            
+            $1 = Int(count) // set the initialized count
+        }
+        
+        return Fallible(Self(normalizing: Storage(consume body, repeating: Bit.zero)), error: overflow)
     }
     
     @inlinable public consuming func times(_ other: borrowing Self) -> Fallible<Self> {
@@ -33,52 +51,27 @@ extension InfiniInt {
             
         }   else if let small = self.storage.small {
             // TODO: self.update(other)
-            // TODO: return self.times(small)
             return (copy other).times(small)
         }
+        //=--------------------------------------=
         let count: IX = self.storage.count + other.storage.count
         let body = Storage.Body(unsafeUninitializedCapacity: Int(count)) {
             let body = DataInt.Canvas($0.baseAddress!, count: IX(count))
             self.withUnsafeBinaryIntegerElements { lhs in
                 other.withUnsafeBinaryIntegerElements { rhs in
-                    //=---------------------------=
-                    // LHS x RHS
-                    //=---------------------------=
-                    body.initialize(to: lhs.body, times: rhs.body)
-                    //=---------------------------=
-                    // LHS x RHS.appendix
-                    //=---------------------------=
-                    if  Bool(rhs.appendix) {
-                        var carry = true
-                        var index = rhs.body.count
-                        
-                        for elementIndex in lhs.body.indices {
-                            let element = lhs.body[unchecked: elementIndex].toggled()
-                            carry = body[unchecked: index][{ $0.plus(element, plus: carry) }]
-                            index = index.incremented().assert()
-                        }
-                    }
-                    //=---------------------------=
-                    // LHS.appendix x RHS
-                    //=---------------------------=
-                    if  Bool(lhs.appendix) {
-                        var carry = true
-                        var index = lhs.body.count
-                        
-                        for elementIndex in rhs.body.indices {
-                            let element = rhs.body[unchecked: elementIndex].toggled()
-                            carry = body[unchecked: index][{ $0.plus(element, plus: carry) }]
-                            index = index.incremented().assert()
-                        }
-                    }
+                    body.initialize(to: lhs.body,times: rhs.body)
+                    body[unchecked: rhs.body.count...].incrementSubSequence(by: lhs.body, timesOnRepeat: Bool(rhs.appendix))
+                    body[unchecked: lhs.body.count...].incrementSubSequence(by: rhs.body, timesOnRepeat: Bool(lhs.appendix))
                 }
             }
             
             $1 = Int(count) // set the initialized count
         }
         //=--------------------------------------=
-        let appendix: Bit  = (self.appendix ^  other.appendix)
-        let overflow: Bool = !Self.isSigned && Bool(self.appendix |  other.appendix)
+        // overflow: 0s and 1s take the fast path
+        //=--------------------------------------=
+        let appendix = (self.appendix ^   other.appendix)
+        let overflow = !Self.isSigned &&  Bool(self.appendix |  other.appendix)
         return Fallible(Self(normalizing: Storage(consume body, repeating: appendix)), error: overflow)
     }
 }
@@ -94,10 +87,11 @@ extension InfiniInt {
     //=------------------------------------------------------------------------=
     
     @inlinable consuming func times(_ other: consuming Storage.Small) -> Fallible<Self> {
+        //=--------------------------------------=
         let lhsAppendix = Bool(self .appendix)
         let rhsAppendix = Bool(other.appendix)
         let homogeneous = lhsAppendix == rhsAppendix
-        
+        //=--------------------------------------=
         let overflow = if Self.isSigned {
             false
         }   else if homogeneous {
@@ -117,7 +111,7 @@ extension InfiniInt {
         }
         
         self.storage.withUnsafeMutableBinaryIntegerBody {
-            other.body = $0.multiply(by: other.body, add: Element.Magnitude.zero)
+            other.body = $0.multiply(by: other.body)
         }
         
         self.storage.normalize(appending: Element.Magnitude(bitPattern: other.body))

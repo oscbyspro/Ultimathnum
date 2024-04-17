@@ -27,7 +27,7 @@ extension DataInt.Canvas {
     ///
     @inlinable public consuming func multiply(
         by multiplier: borrowing Element,
-        add increment: Element
+        add increment: Element = .zero
     )   -> Element {
         
         var increment = increment // consume: compiler bug...
@@ -86,7 +86,8 @@ extension DataInt.Canvas {
         to lhs: Body, times rhs: Body, plus increment: Element = .zero
     ) {
         //=--------------------------------------=
-        Swift.assert(self.count == lhs.count + rhs.count, String.indexOutOfBounds())
+        Swift.assert(self.count >= 1 || increment == 0, String.indexOutOfBounds())
+        Swift.assert(self.count == lhs.count+rhs.count, String.indexOutOfBounds())
         //=--------------------------------------=
         var pointer = self.start
         //=--------------------------------------=
@@ -130,7 +131,8 @@ extension DataInt.Canvas {
          toSquareProductOf elements: Body, plus increment: Element = .zero
     ) {
         //=--------------------------------------=
-        Swift.assert(self.count == 2 * elements.count, String.indexOutOfBounds())
+        Swift.assert(self.count >= 1 || increment == 0, String.indexOutOfBounds())
+        Swift.assert(self.count == 2 *  elements.count, String.indexOutOfBounds())
         //=--------------------------------------=
         // pointee: initialization
         //=--------------------------------------=

@@ -35,4 +35,22 @@ extension DataInt.Canvas {
         
         return bit as Bool as Bool as Bool as Bool
     }
+    
+
+    //=------------------------------------------------------------------------=
+    // MARK: Transformation
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func incrementSubSequence(
+        by elements: Body,
+        timesOnRepeat bit: consuming Bool
+    ) {
+        
+        guard copy bit else { return }
+        
+        for index in elements.indices {
+            let element: Element  = elements[unchecked: index].toggled()
+            bit = self[unchecked: index][{ $0.plus(element, plus: bit) }]
+        }
+    }
 }

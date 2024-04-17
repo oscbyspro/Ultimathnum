@@ -233,6 +233,21 @@ extension DataIntTests.Canvas {
             test.same(Fallible(value, error: error), expectation)
         }
         //=--------------------------------------=
+        // decrement: many
+        //=--------------------------------------=
+        for many in [normal, elements[...]] where bit == false {
+            var value = self.body
+            let error = value.withUnsafeMutableBufferPointer {
+                let value = DataInt.Canvas($0)!
+                return (many).withUnsafeBufferPointer {
+                    let many = DataInt.Body($0)!
+                    return value.decrement(by: many).error
+                }
+            }
+            
+            test.same(Fallible(value, error: error), expectation)
+        }
+        //=--------------------------------------=
         // decrement: many + bit
         //=--------------------------------------=
         for many in [normal, elements[...]] {
@@ -263,6 +278,21 @@ extension DataIntTests.Canvas {
         //=--------------------------------------=
         if  multiplier == 1, decrement <= 1 {
             self.minus(elements, plus: decrement != 1, is: expectation)
+        }
+        //=--------------------------------------=
+        // decrement: many × some
+        //=--------------------------------------=
+        for many in [normal, elements[...]] where decrement == 0 {
+            var value = self.body
+            let error = value.withUnsafeMutableBufferPointer {
+                let value = DataInt.Canvas($0)!
+                return (many).withUnsafeBufferPointer {
+                    let many = DataInt.Body($0)!
+                    return value.decrement(by: many, times: multiplier).error
+                }
+            }
+            
+            test.same(Fallible(value, error: error), expectation)
         }
         //=--------------------------------------=
         // decrement: many × some + some

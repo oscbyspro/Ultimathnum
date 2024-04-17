@@ -122,6 +122,26 @@ extension DataIntTests.Canvas {
             test.same(value, expectation)
         }
         //=--------------------------------------=
+        // multiplication: many × many
+        //=--------------------------------------=
+        normal: if increment == 0 {
+            let count = self.body.count + multiplier.count
+            var value = [Element](repeating: 144, count: count)
+
+            value.withUnsafeMutableBufferPointer {
+                let value = DataInt.Canvas($0)!
+                self.body.withUnsafeBufferPointer {
+                    let body = DataInt.Body($0)!
+                    multiplier.withUnsafeBufferPointer {
+                        let multiplier = DataInt.Body($0)!
+                        value.initializeByLongAlgorithm(to: body, times: multiplier)
+                    }
+                }
+            }
+            
+            test.same(value, expectation)
+        }
+        //=--------------------------------------=
         // multiplication: many × many + some
         //=--------------------------------------=
         normal: do {
@@ -134,12 +154,25 @@ extension DataIntTests.Canvas {
                     let body = DataInt.Body($0)!
                     multiplier.withUnsafeBufferPointer {
                         let multiplier = DataInt.Body($0)!
-                        value.initializeByLongAlgorithm(
-                            to:    body,
-                            times: multiplier,
-                            plus:  increment
-                        )
+                        value.initializeByLongAlgorithm(to: body, times: multiplier, plus: increment)
                     }
+                }
+            }
+            
+            test.same(value, expectation)
+        }
+        //=--------------------------------------=
+        // multiplication: many × many (s)
+        //=--------------------------------------=
+        square: if self.body == multiplier, increment == 0 {
+            let count = self.body.count + multiplier.count
+            var value = [Element](repeating: 144, count: count)
+            
+            value.withUnsafeMutableBufferPointer {
+                let value = DataInt.Canvas($0)!
+                self.body.withUnsafeBufferPointer {
+                    let body = DataInt.Body($0)!
+                    value.initializeByLongAlgorithm(toSquareProductOf: body)
                 }
             }
             
@@ -156,10 +189,7 @@ extension DataIntTests.Canvas {
                 let value = DataInt.Canvas($0)!
                 self.body.withUnsafeBufferPointer {
                     let body = DataInt.Body($0)!
-                    value.initializeByLongAlgorithm(
-                        toSquareProductOf: body,
-                        plus: increment
-                    )
+                    value.initializeByLongAlgorithm(toSquareProductOf: body, plus: increment)
                 }
             }
             
