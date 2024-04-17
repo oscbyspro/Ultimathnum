@@ -30,7 +30,7 @@ where Element: SystemsInteger & UnsignedInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable init(_ body: Body, repeating appendix: Bit) {
+    @inlinable init(_ body: consuming Body, repeating appendix: Bit) {
         self.body = body
         self.appendix = appendix
     }
@@ -41,5 +41,41 @@ where Element: SystemsInteger & UnsignedInteger {
     
     @inlinable public var count: IX {
         IX(self.body.count)
+    }
+    
+    @inlinable public var small: Small? {
+        if  self.body.count >= 2 {
+            return nil
+        }   else if self.body.count == 0 {
+            let element = Element(repeating: self.appendix)
+            return Small(element, repeating: self.appendix)
+        }   else {
+            let element = self.body[.zero]
+            return Small(element, repeating: self.appendix)
+        }
+    }
+    
+    //*========================================================================*
+    // MARK: * Small
+    //*========================================================================*
+    
+    @frozen public struct Small {
+        
+        //=--------------------------------------------------------------------=
+        // MARK: State
+        //=--------------------------------------------------------------------=
+        
+        @usableFromInline var body: Element
+        
+        @usableFromInline var appendix: Bit
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Initializers
+        //=--------------------------------------------------------------------=
+        
+        @inlinable public init(_ body: Element, repeating appendix: Bit) {
+            self.body = body
+            self.appendix = appendix
+        }
     }
 }

@@ -20,8 +20,8 @@ extension InfiniInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
-        self.withUnsafeMutableBinaryIntegerBody {
-            $0.toggle(carrying: &increment)
+        self.storage.withUnsafeMutableBinaryIntegerBody {
+            increment = $0.toggle(carrying: increment)
         }
         
         if !(copy increment) {
