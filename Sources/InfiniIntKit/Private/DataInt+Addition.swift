@@ -22,7 +22,7 @@ extension DataInt.Canvas {
     @inlinable public consuming func increment(
         by bit: consuming Bool, 
         plusOnRepeat pattern: consuming Bool
-    ) -> Bool {
+    )   -> Bool {
         
         if  bit != pattern {
             let predicate = copy bit
@@ -41,12 +41,8 @@ extension DataInt.Canvas {
     // MARK: Transformation
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func incrementSubSequence(
-        by elements: Body,
-        timesOnRepeat bit: consuming Bool
-    ) {
-        
-        guard copy bit else { return }
+    @inlinable public consuming func incrementSubSequence(byComplementOf elements: Body) {
+        var bit: Bool = true
         
         for index in elements.indices {
             let element: Element  = elements[unchecked: index].toggled()

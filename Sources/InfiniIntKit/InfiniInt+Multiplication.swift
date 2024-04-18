@@ -21,7 +21,7 @@ extension InfiniInt {
     
     @inlinable public consuming func squared() -> Fallible<Self> {
         //=--------------------------------------=
-        if  let small = self.storage.small {
+        if  let small = self.storage.small {            
             return self.times(small)
         }
         //=--------------------------------------=
@@ -31,9 +31,9 @@ extension InfiniInt {
             self[{ $0.complement() }]
         }
         
-        let count = self.storage.count * 2
-        let body  = Storage.Body(unsafeUninitializedCapacity: Int(count)) {
-            let body = DataInt.Canvas($0.baseAddress!, count: IX(count))
+        let count: IX = self.storage.count * 2
+        let body = Storage.Body(unsafeUninitializedCapacity: Int(count)) {
+            let body = DataInt.Canvas($0.baseAddress!,count:  IX(count))
             self.withUnsafeBinaryIntegerElements {
                 body.initialize(toSquareProductOf: $0.body)
             }
@@ -50,18 +50,23 @@ extension InfiniInt {
             return self.times(small)
             
         }   else if let small = self.storage.small {
-            // TODO: self.update(other)
             return (copy other).times(small)
         }
         //=--------------------------------------=
         let count: IX = self.storage.count + other.storage.count
         let body = Storage.Body(unsafeUninitializedCapacity: Int(count)) {
-            let body = DataInt.Canvas($0.baseAddress!, count: IX(count))
+            let body = DataInt.Canvas($0.baseAddress!,count:  IX(count))
             self.withUnsafeBinaryIntegerElements { lhs in
                 other.withUnsafeBinaryIntegerElements { rhs in
                     body.initialize(to: lhs.body,times: rhs.body)
-                    body[unchecked: rhs.body.count...].incrementSubSequence(by: lhs.body, timesOnRepeat: Bool(rhs.appendix))
-                    body[unchecked: lhs.body.count...].incrementSubSequence(by: rhs.body, timesOnRepeat: Bool(lhs.appendix))
+                    
+                    if  Bool(rhs.appendix) {
+                        body[unchecked: rhs.body.count...].incrementSubSequence(byComplementOf: lhs.body)
+                    }
+                    
+                    if  Bool(lhs.appendix) {
+                        body[unchecked: lhs.body.count...].incrementSubSequence(byComplementOf: rhs.body)
+                    }
                 }
             }
             
