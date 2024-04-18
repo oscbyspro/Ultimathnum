@@ -36,11 +36,6 @@ extension DataInt.Canvas {
         return bit as Bool as Bool as Bool as Bool
     }
     
-
-    //=------------------------------------------------------------------------=
-    // MARK: Transformation
-    //=------------------------------------------------------------------------=
-    
     @inlinable public consuming func incrementSubSequence(byComplementOf elements: Body) {
         var bit: Bool = true
         
