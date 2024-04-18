@@ -68,7 +68,7 @@ extension InfiniInt {
             $1 = Int(count) // set the initialized count
         }
         //=--------------------------------------=
-        // overflow: 0s and 1s take the fast path
+        // note that 0s and 1s take the fast path
         //=--------------------------------------=
         let appendix = (self.appendix ^   other.appendix)
         let overflow = !Self.isSigned &&  Bool(self.appendix |  other.appendix)

@@ -59,6 +59,10 @@ where Element: SystemsInteger & UnsignedInteger {
     // MARK: * Small
     //*========================================================================*
     
+    /// ### Development
+    ///
+    /// Consider an un/signed element only.
+    ///
     @frozen public struct Small {
         
         //=--------------------------------------------------------------------=

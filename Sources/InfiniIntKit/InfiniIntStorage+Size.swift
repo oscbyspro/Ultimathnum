@@ -19,14 +19,26 @@ extension InfiniIntStorage {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    @inlinable public mutating func resize(_ count: IX) {
+        self.resize(minCount: count)
+        self.resize(maxCount: count)
+    }
+    
     @inlinable public mutating func resize(minCount: IX) {
-        guard minCount > self.count else { return }
+        if minCount <= self.count { return }
         
         self.body.reserveCapacity(Int(minCount))
         
         let element = Element(repeating: self.appendix)
+        
         while minCount > self.count {
             self.body.append(element)
         }
+    }
+    
+    @inlinable public mutating func resize(maxCount: IX) {
+        if maxCount >= self.count { return }
+        
+        self.body.removeSubrange(Int(maxCount)...)
     }
 }
