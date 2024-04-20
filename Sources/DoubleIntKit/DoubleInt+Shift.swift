@@ -19,14 +19,11 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    #warning("TODO: no trap on min")
     @inlinable public static func <<(instance: consuming Self, distance: Self) -> Self {
         if  distance.isLessThanZero {
-            return instance >> -distance // TODO: no trap on min
-        }   else if Magnitude(bitPattern: distance) >= Self.size {
-            return Self(repeating: Bit(false))
+            return instance >> distance.magnitude()
         }   else {
-            return instance &<< distance
+            return instance << Magnitude(bitPattern: distance)
         }
     }
     
@@ -38,14 +35,11 @@ extension DoubleInt {
         Self.init(instance.storage.upshift(unchecked: distance.value.storage))
     }
     
-    #warning("TODO: no trap on min")
     @inlinable public static func >>(instance: consuming Self, distance: Self) -> Self {
         if  distance.isLessThanZero {
-            return instance << -distance // TODO: no trap on min
-        }   else if Magnitude(bitPattern: distance) >= Self.size {
-            return Self(repeating: Bit(instance.isLessThanZero))
+            return instance << distance.magnitude()
         }   else {
-            return instance &>> distance
+            return instance >> Magnitude(bitPattern: distance)
         }
     }
     
@@ -55,5 +49,32 @@ extension DoubleInt {
     
     @inlinable public static func &>>(instance: consuming Self, distance: Shift<Self>) -> Self {
         Self.init(instance.storage.downshift(unchecked: distance.value.storage))
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Algorithms
+//=----------------------------------------------------------------------------=
+
+extension DoubleInt {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable internal static func <<(instance: consuming Self, distance: Magnitude) -> Self {
+        if  distance >= Self.size {
+            return Self(repeating: Bit.zero)
+        }   else {
+            return instance &<< Self(bitPattern: distance)
+        }
+    }
+    
+    @inlinable internal static func >>(instance: consuming Self, distance: Magnitude) -> Self {
+        if  distance >= Self.size {
+            return Self(repeating: instance.appendix)
+        }   else {
+            return instance &>> Self(bitPattern: distance)
+        }
     }
 }

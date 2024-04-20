@@ -28,8 +28,8 @@ extension Test {
         _ instance: T,
         _ distance: T,
         _ expectation: T,
-        _ direction:  ShiftDirection,
-        _ semantics:  ShiftSemantics
+        _ direction: ShiftDirection,
+        _ semantics: ShiftSemantics
     )   where T: SystemsInteger {
         
         //=--------------------------------------=
@@ -72,9 +72,9 @@ extension Test {
         _ instance: T, 
         _ distance: T,
         _ expectation: T,
-        _ direction:  ShiftDirection,
-        _ semantics:  ShiftSemantics,
-        _ identifier: BinaryIntegerID = .init()
+        _ direction: ShiftDirection,
+        _ semantics: ShiftSemantics,
+        _ id: BinaryIntegerID = .init()
     )   where T: BinaryInteger {
         switch (direction, semantics) {
         case (.left, .smart):

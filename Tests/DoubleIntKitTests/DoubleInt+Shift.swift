@@ -24,7 +24,7 @@ extension DoubleIntTests {
     func testShift() {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
-            let low = T(low: 0000000000000)
+            let low = T.zero
             let mid = T(low: Base.size)
             let top = T(bitPattern: T.size)
             
@@ -59,6 +59,22 @@ extension DoubleIntTests {
         }
         
         for base in bases {
+            whereTheBaseTypeIs(base)
+        }
+    }
+    
+    func testSmartShiftByMinSigned() {
+        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
+            typealias T = DoubleInt<Base>
+            //=----------------------------------=
+            precondition(T.isSigned)
+            //=----------------------------------=
+            for value in [T.zero, ~T.zero, T.min, ~T.min, T.max, ~T.max] {
+                Test().shift(value, T.min, T(repeating: value.appendix), .left, .smart)
+            }
+        }
+        
+        for base in bases where base.isSigned {
             whereTheBaseTypeIs(base)
         }
     }
