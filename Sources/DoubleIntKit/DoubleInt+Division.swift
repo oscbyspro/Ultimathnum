@@ -40,8 +40,8 @@ extension DoubleInt {
     
     @inlinable public static func division(_ dividend: consuming Doublet<Self>, by divisor: Self) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
-        let lhsIsLessThanZero = dividend.high.isLessThanZero
-        let rhsIsLessThanZero = divisor/*--*/.isLessThanZero
+        let lhsIsLessThanZero = dividend.high.isNegative
+        let rhsIsLessThanZero = divisor/*--*/.isNegative
         //=--------------------------------------=
         var result = Fallible<Division<Self, Self>>(
             bitPattern: Magnitude.division4222(
@@ -49,7 +49,7 @@ extension DoubleInt {
             )
         )
         
-        var suboverflow  = Bit( result.value.quotient.high.isLessThanZero)
+        var suboverflow  = Bit( result.value.quotient.high.isNegative)
         if  lhsIsLessThanZero != rhsIsLessThanZero {
             suboverflow &= Bit(!result.value.quotient[{ $0.complement(true) }])
         }

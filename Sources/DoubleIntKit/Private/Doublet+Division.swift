@@ -29,14 +29,14 @@ extension Doublet {
     
     @inlinable package consuming func division2222(_ divisor: Self) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
-        let lhsIsLessThanZero = self   .high.isLessThanZero
-        let rhsIsLessThanZero = divisor.high.isLessThanZero
+        let lhsIsLessThanZero = self   .high.isNegative
+        let rhsIsLessThanZero = divisor.high.isNegative
         //=--------------------------------------=
         var result = Fallible<Division<Self, Self>>(
             bitPattern: self.magnitude().division2222(divisor.magnitude())
         )
         
-        var suboverflow  = Bit( result.value.quotient.high.isLessThanZero)
+        var suboverflow  = Bit( result.value.quotient.high.isNegative)
         if  lhsIsLessThanZero != rhsIsLessThanZero {
             suboverflow &= Bit(!result.value.quotient[{ $0.complement(true) }])
         }

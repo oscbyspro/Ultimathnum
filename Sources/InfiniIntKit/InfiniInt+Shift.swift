@@ -20,7 +20,7 @@ extension InfiniInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func << (instance: consuming Self, distance: Self) -> Self {
-        if  distance.isLessThanZero {
+        if  distance.isNegative {
             return instance >> distance.magnitude()
         }   else {
             return instance << Magnitude(bitPattern: distance)
@@ -30,7 +30,7 @@ extension InfiniInt {
     @inlinable public static func &<<(instance: consuming Self, distance: Shift<Self>) -> Self {
         //=--------------------------------------=
         Swift.assert(!distance.value.isInfinite)
-        Swift.assert(!distance.value.isLessThanZero)
+        Swift.assert(!distance.value.isNegative)
         //=--------------------------------------=
         // path: trivial (0)
         //=--------------------------------------=
@@ -51,7 +51,7 @@ extension InfiniInt {
     }
     
     @inlinable public static func >> (instance: consuming Self, distance: Self) -> Self {
-        if  distance.isLessThanZero {
+        if  distance.isNegative {
             return instance << distance.magnitude()
         }   else {
             return instance >> Magnitude(bitPattern: distance)
@@ -61,7 +61,7 @@ extension InfiniInt {
     @inlinable public static func &>>(instance: consuming Self, distance: Shift<Self>) -> Self {
         //=--------------------------------------=
         Swift.assert(!distance.value.isInfinite)
-        Swift.assert(!distance.value.isLessThanZero)
+        Swift.assert(!distance.value.isNegative)
         //=--------------------------------------=
         // path: trivial (-1, 0, ∞)
         //=--------------------------------------=

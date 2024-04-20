@@ -60,6 +60,6 @@ extension Triplet {
     }
     
     @inlinable public consuming func magnitude() -> Magnitude {
-        Magnitude(bitPattern: self.high.isLessThanZero ? self.complement() : self)
+        Magnitude(bitPattern: self.high.isNegative ? self.complement() : self)
     }
 }

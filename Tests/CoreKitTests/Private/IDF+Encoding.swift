@@ -127,7 +127,7 @@ final class IntegerDescriptionFormatTestsOnEncoding: XCTestCase {
         }
         
         standard: do {
-            let sign = Sign(integer.isLessThanZero)
+            let sign = Sign(integer.isNegative)
             let magnitude = integer.magnitude()
             let result = self.encoder.encode(sign: sign, magnitude: magnitude)
             test.same(result, expectation, "sign-magnitude")

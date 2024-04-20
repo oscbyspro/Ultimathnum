@@ -41,7 +41,7 @@ extension Doublet {
         //=--------------------------------------=
         if  distance.load(as: UX.self) >= UX(size: Base.self) {
             self.low      = Base.Magnitude(bitPattern: self.high &>> Shift(unchecked: Base(bitPattern: distance &- Base.size)))
-            self.high     = Base(repeating: Bit(self.high.isLessThanZero))
+            self.high     = Base(repeating: Bit(self.high.isNegative))
         }   else if distance != Base.Magnitude() {
             self.low   &>>= Shift(unchecked: distance)
             self.low     |= Base.Magnitude(bitPattern: self.high &<< Shift(unchecked: Base(bitPattern: Base.size &- distance)))

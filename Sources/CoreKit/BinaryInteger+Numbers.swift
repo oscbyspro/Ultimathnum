@@ -48,7 +48,7 @@ extension BinaryInteger {
         }
         
         let value = Self(bitPattern: magnitude)
-        return value.combine(value.isLessThanZero != isLessThanZero)
+        return value.combine(value.isNegative != isLessThanZero)
     }
     
     //=------------------------------------------------------------------------=
@@ -67,13 +67,13 @@ extension BinaryInteger {
                 
             }   else if lhsSize >= rhsSize {
                 Swift.assert(Self.mode.isSigned != Other.mode.isSigned)
-                let rhsIsLessThanZero = source.isLessThanZero
+                let rhsIsLessThanZero = source.isNegative
                 let result = Self(load: source)
-                let lhsIsLessThanZero = result.isLessThanZero
+                let lhsIsLessThanZero = result.isNegative
                 return result.combine(lhsIsLessThanZero != rhsIsLessThanZero)
                 
             }   else {
-                let bit   = Bit(Self.isSigned) & Bit(source.isLessThanZero)
+                let bit   = Bit(Self.isSigned) & Bit(source.isNegative)
                 let count = rhsSize.minus(UX(load: source.count(.descending(((bit)))))).assert()
                 let limit = lhsSize.minus(UX(Bit(Self.isSigned) & Bit(Other.isSigned))).assert()
                 return Self(load: source).combine(limit < count)

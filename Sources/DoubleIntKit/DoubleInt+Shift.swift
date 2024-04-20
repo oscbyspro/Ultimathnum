@@ -20,7 +20,7 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func <<(instance: consuming Self, distance: Self) -> Self {
-        if  distance.isLessThanZero {
+        if  distance.isNegative {
             return instance >> distance.magnitude()
         }   else {
             return instance << Magnitude(bitPattern: distance)
@@ -36,7 +36,7 @@ extension DoubleInt {
     }
     
     @inlinable public static func >>(instance: consuming Self, distance: Self) -> Self {
-        if  distance.isLessThanZero {
+        if  distance.isNegative {
             return instance << distance.magnitude()
         }   else {
             return instance >> Magnitude(bitPattern: distance)

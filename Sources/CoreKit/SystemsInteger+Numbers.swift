@@ -33,7 +33,7 @@ extension SystemsInteger {
         if  let instance = Self.exactly(source).optional() {
             self = instance
         }   else {
-            self = source.isLessThanZero ? Self.min : Self.max
+            self = source.isNegative ? Self.min : Self.max
         }
     }
 }

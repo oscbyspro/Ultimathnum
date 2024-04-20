@@ -49,7 +49,7 @@ extension BinaryInteger {
     ///
     /// It checks `isSigned` first which is preferred in inlinable generic code.
     ///
-    @inlinable public var isLessThanZero: Bool {
+    @inlinable public var isNegative: Bool {
         Self.isSigned && Bool(self.appendix)
     }
 }
@@ -101,17 +101,16 @@ extension BinaryInteger {
                 return self.compared(to: Self(load: other))
                 
             }   else if Self.isSigned, !Other.isSigned {
-                return self .isLessThanZero ? Signum.less : Other(load: self).compared(to: other)
+                return self .isNegative ? Signum.less : Other(load: self).compared(to: other)
                 
             }   else if !Self.isSigned, Other.isSigned {
-                return other.isLessThanZero ? Signum.more : self.compared(to: Self(load:  other))
+                return other.isNegative ? Signum.more : self.compared(to: Self(load:  other))
                 
             }   else {
                 return self.compared(to: Self(load: other))
             }
             
         }   else {
-            
             if Other.elementsCanBeRebound(to: Self.Element.Magnitude.self) {
                 return self.withUnsafeBinaryIntegerElements { lhs in
                     (other).withUnsafeBinaryIntegerElements(as: Self.Element.Magnitude.self) { rhs in
@@ -134,7 +133,6 @@ extension BinaryInteger {
                 
             }   else {
                 Swift.fatalError("invalid binary integer invoked BinaryInteger/compared(to:)")
-                
             }
         }
     }
