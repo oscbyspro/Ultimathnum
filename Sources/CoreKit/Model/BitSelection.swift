@@ -47,10 +47,12 @@
     }
     
     //*========================================================================*
-    // MARK: * Instruction
+    // MARK: * Integer
     //*========================================================================*
     
-    @frozen public enum Instruction {
+    @frozen public enum Integer {
+        
+        case bit
         
         case each(Bit)
         

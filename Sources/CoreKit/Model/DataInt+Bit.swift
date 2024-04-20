@@ -19,7 +19,7 @@ extension DataInt.Body {
     
     @inlinable public borrowing func count(_ bit: Bit.Type) -> IX {
         let count = self.count.times(IX(size: Element.self))
-        return count.unwrap("binary integer body may store at most IX.max bits per protocol")
+        return count.unwrap("BinaryInteger/body/0...IX.max")
     }
     
     @inlinable public borrowing func count(_ bit: Bit) -> IX {
@@ -28,47 +28,47 @@ extension DataInt.Body {
     
     @inlinable public borrowing func count(_ selection: BitSelection.Body) -> IX {
         typealias T = BitSelection
-        typealias E = BitSelection.Instruction
         return switch selection {
             
         case .bit:
             self.count(Bit.self)
             
-        case let .each(bit):
-            self.count(bit, where: T.anywhere)
+        case let .each(x):
+            self.count(x, where: T.anywhere)
             
-        case let .ascending(bit):
-            self.count(bit, where: T.ascending)
+        case let .ascending(x):
+            self.count(x, where: T.ascending)
             
-        case let .nonascending(bit):
-            self.count(Bit.self).minus(self.count(bit, where: T.ascending )).assert()
+        case let .nonascending(x):
+            self.count(Bit.self).minus(self.count(x, where: T.ascending)).assert()
             
-        case let .descending(bit):
-            self.count(bit, where: T.descending)
+        case let .descending(x):
+            self.count(x, where: T.descending)
             
-        case let .nondescending(bit):
-            self.count(Bit.self).minus(self.count(bit, where: T.descending)).assert()
+        case let .nondescending(x):
+            self.count(Bit.self).minus(self.count(x, where: T.descending)).assert()
         }
     }
     
     @inlinable public borrowing func count(_ bit: Bit, where selection: BitSelection) -> IX {
+        typealias T = BitSelection
         var count = Fallible(IX.zero, error: false)
         switch selection {
             
-        case BitSelection.anywhere:
+        case T.anywhere:
             for index in self.indices {
                 let subcount = self[unchecked: index].count(bit, where: selection)
                 count = count.plus(IX(load: subcount))
             }
             
-        case BitSelection.ascending:
+        case T.ascending:
             for index in self.indices {
                 let subcount = self[unchecked: index].count(bit, where: selection)
                 count = count.plus(IX(load: subcount))
                 guard subcount == Element.size else { break }
             }
             
-        case BitSelection.descending:
+        case T.descending:
             for index in self.indices.reversed() {
                 let subcount = self[unchecked: index].count(bit, where: selection)
                 count = count.plus(IX(load: subcount))
@@ -76,7 +76,7 @@ extension DataInt.Body {
             }
         }
         
-        return count.unwrap("binary integer body may store at most IX.max bits per protocol")
+        return count.unwrap("BinaryInteger/body/0...IX.max")
     }
 }
 

@@ -61,17 +61,33 @@ extension BinaryInteger {
         self.count(bit, where: BitSelection.anywhere)
     }
     
-    @inlinable public func count(_ selection: BitSelection.Instruction) -> Magnitude {
+    @inlinable public func count(_ selection: BitSelection.Integer) -> Magnitude {
         typealias T = BitSelection
-        typealias E = BitSelection.Instruction
         return switch selection {
-        case .each         (let bit): self.count(bit, where: T.anywhere)
-        case .ascending    (let bit): self.count(bit, where: T.ascending)
-        case .nonascending (let bit): Self.size.minus(self.count(bit, where: T.ascending )).assert()
-        case .descending   (let bit): self.count(bit, where: T.descending)
-        case .nondescending(let bit): Self.size.minus(self.count(bit, where: T.descending)).assert()
-        case .appendix:    self.count(self.appendix,  where: T.descending)
-        case .nonappendix: Self.size.minus(self.count(self.appendix,  where: T.descending)).assert()
+            
+        case .bit:
+            Self.size
+            
+        case let .each(x):
+            self.count(x, where: T.anywhere)
+            
+        case let .ascending(x):
+            self.count(x, where: T.ascending)
+            
+        case let .nonascending(x):
+            Self.size.minus(self.count(x, where: T.ascending)).assert()
+            
+        case let .descending(x):
+            self.count(x, where: T.descending)
+            
+        case let .nondescending(x):
+            Self.size.minus(self.count(x, where: T.descending)).assert()
+            
+        case .appendix:
+            self.count(self.appendix, where: T.descending)
+            
+        case .nonappendix:
+            Self.size.minus(self.count(self.appendix, where: T.descending)).assert()
         }
     }
 }
