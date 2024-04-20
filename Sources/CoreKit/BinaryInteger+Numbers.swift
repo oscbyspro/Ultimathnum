@@ -60,13 +60,13 @@ extension BinaryInteger {
     }
     
     @inlinable public static func exactly<Other>(_ source: consuming Other) -> Fallible<Self> where Other: BinaryInteger {
-        if !Self.size.isInfinite, !Other.size.isInfinite {
-            let measurement = UX(load: Self.size).compared(to: UX(load: Other.size))
-            if (measurement > 0 && Self.isSigned) || (measurement >= 0 && (Self.isSigned == Other.isSigned)) {
+        if  let lhsSize = UX(size: Self.self), let rhsSize = UX(size: Other.self) {
+            if (lhsSize >  rhsSize && (Self.isSigned))
+            || (lhsSize >= rhsSize && (Self.isSigned == Other.isSigned)) {
                 return Fallible.success(Self(load: source))
                 
-            }   else if measurement >= 0 {
-                Swift.assert(Self.isSigned != Other.isSigned)
+            }   else if lhsSize >= rhsSize {
+                Swift.assert(Self.mode.isSigned != Other.mode.isSigned)
                 let rhsIsLessThanZero = source.isLessThanZero
                 let result = Self(load: source)
                 let lhsIsLessThanZero = result.isLessThanZero
@@ -74,8 +74,8 @@ extension BinaryInteger {
                 
             }   else {
                 let bit   = Bit(Self.isSigned) & Bit(source.isLessThanZero)
-                let count = UX(load: Other.size).minus(UX(load: source.count(.descending(((bit)))))).assert()
-                let limit = UX(load: Self .size).minus(UX(Bit(Self.isSigned) & Bit(Other.isSigned))).assert()
+                let count = rhsSize.minus(UX(load: source.count(.descending(((bit)))))).assert()
+                let limit = lhsSize.minus(UX(Bit(Self.isSigned) & Bit(Other.isSigned))).assert()
                 return Self(load: source).combine(limit < count)
             }
             

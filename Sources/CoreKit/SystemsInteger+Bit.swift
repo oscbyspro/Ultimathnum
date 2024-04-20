@@ -38,11 +38,25 @@ extension SystemsInteger where BitPattern == UX.BitPattern {
     
     /// Returns the size of the given type as a machine word.
     ///
-    /// - Note: Any finite integer size must fit in this type per protocol.
+    /// - Note: A finite integer size must fit in this type per protocol.
     ///
     /// - Important: A binary integer's size is measured in bits.
     ///
     @inlinable public init<T>(size type: T.Type) where T: SystemsInteger {
         self = T.size.load(as: Self.self)
+    }
+    
+    /// Returns the size of the given type as a machine word, if possible.
+    ///
+    /// - Note: A finite integer size must fit in this type per protocol.
+    ///
+    /// - Important: A binary integer's size is measured in bits.
+    ///
+    @inlinable public init?<T>(size type: T.Type) where T: BinaryInteger {
+        if  T.size.isInfinite {
+            return nil
+        }   else {
+            self = T.size.load(as: Self.self)
+        }
     }
 }

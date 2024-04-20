@@ -28,9 +28,9 @@ extension BinaryInteger {
             success &= (((~source.appendix)))
         }
         
-        if !Self.size.isInfinite {
-            let ratio  = UX(load: Self.size) / UX(size: Element.Magnitude.self)
-            success &= Bit(source[ratio...].normalized().body.count == .zero)
+        if  let size  = UX(size: Self.self) {
+            let ratio = size / UX(size: Element.Magnitude.self)
+            success  &= Bit(source[ratio...].normalized().body.count == .zero)
         }
         //=--------------------------------------=
         return instance.combine(!Bool(success))
@@ -47,9 +47,9 @@ extension BinaryInteger {
             success &= (((~source.appendix)))
         }
         
-        if !Self.size.isInfinite {
-            let ratio  = UX(load: Self.size) / UX(size: U8.Magnitude.self)
-            success &= Bit(source[ratio...].normalized().body.count == .zero)
+        if  let size  = UX(size: Self.self) {
+            let ratio = size / UX(size: U8.Magnitude.self)
+            success  &= Bit(source[ratio...].normalized().body.count == .zero)
         }
         //=--------------------------------------=
         return instance.combine(!Bool(success))
@@ -120,8 +120,8 @@ extension BinaryInteger {
     /// - TODO: Consider BinaryInteger.Largest asseociated type fast path.
     ///
     @inlinable public init<Other>(load source: consuming Other) where Other: BinaryInteger {
-        let lhsIsSmall = !Self .size.isInfinite && UX(load: Self .size) <= UX.size
-        let rhsIsSmall = !Other.size.isInfinite && UX(load: Other.size) <= UX.size
+        let lhsIsSmall = UX(size: Self .self).map({ $0 <= UX.size }) == true
+        let rhsIsSmall = UX(size: Other.self).map({ $0 <= UX.size }) == true
         
         if  lhsIsSmall || rhsIsSmall {
             if  Other.isSigned  {
