@@ -44,6 +44,6 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public static func predicate(_ value: Value) -> Bool {
-        !value.isInfinite && Value.Magnitude(bitPattern: value) < Value.size
+        !Bool(value.appendix) && Value.Magnitude(bitPattern: value) < Value.size
     }
 }

@@ -20,18 +20,95 @@ extension InfiniInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func << (instance: consuming Self, distance: Self) -> Self {
-        fatalError("TODO")
+        if  distance.isLessThanZero {
+            return instance >> distance.magnitude()
+        }   else {
+            return instance << Magnitude(bitPattern: distance)
+        }
     }
     
     @inlinable public static func &<<(instance: consuming Self, distance: Shift<Self>) -> Self {
-        fatalError("TODO")
+        //=--------------------------------------=
+        Swift.assert(!distance.value.isInfinite)
+        Swift.assert(!distance.value.isLessThanZero)
+        //=--------------------------------------=
+        // path: trivial (0)
+        //=--------------------------------------=
+        if  instance.storage.isZero {
+            return instance
+        }
+        //=--------------------------------------=
+        // path: distance is >= body per protocol
+        //=--------------------------------------=
+        let shift = IX.exactly(Magnitude(bitPattern: distance.value)).unwrap("BinaryInteger/body")
+        //=--------------------------------------=
+        // path: success or allocation is too big
+        //=--------------------------------------=
+        let split = shift.division(IX(size: Element.self)).assert()
+        instance.storage.resizeByLenientUpshift(major: split.quotient, minor: split.remainder)
+        Swift.assert(instance.storage.isNormal)
+        return instance as Self as Self as Self
     }
     
     @inlinable public static func >> (instance: consuming Self, distance: Self) -> Self {
-        fatalError("TODO")
+        if  distance.isLessThanZero {
+            return instance << distance.magnitude()
+        }   else {
+            return instance >> Magnitude(bitPattern: distance)
+        }
     }
     
     @inlinable public static func &>>(instance: consuming Self, distance: Shift<Self>) -> Self {
-        fatalError("TODO")
+        //=--------------------------------------=
+        Swift.assert(!distance.value.isInfinite)
+        Swift.assert(!distance.value.isLessThanZero)
+        //=--------------------------------------=
+        // path: trivial (-1, 0, ∞)
+        //=--------------------------------------=
+        if  instance.storage.count == .zero {
+            return instance
+        }
+        //=--------------------------------------=
+        let shift = IX.exactly(Magnitude(bitPattern: distance.value))
+        //=--------------------------------------=
+        // path: distance is >= body per protocol
+        //=--------------------------------------=
+        if  shift.error {
+            return Self(repeating: instance.appendix)
+        }
+        //=--------------------------------------=
+        // path: success
+        //=--------------------------------------=
+        let split = shift.value.division(IX(size: Element.self)).assert()
+        instance.storage.resizeByLenientDownshift(major: split.quotient, minor: split.remainder)
+        Swift.assert(instance.storage.isNormal)
+        return instance as Self as Self as Self
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Algorithms
+//=----------------------------------------------------------------------------=
+
+extension InfiniInt {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable internal static func <<(instance: consuming Self, distance: Magnitude) -> Self {
+        if  distance.isInfinite {
+            return Self(repeating: Bit.zero)
+        }   else {
+            return instance &<< Shift(unchecked: Self(bitPattern: distance))
+        }
+    }
+    
+    @inlinable internal static func >>(instance: consuming Self, distance: Magnitude) -> Self {
+        if  distance.isInfinite {
+            return Self(repeating: instance.appendix)
+        }   else {
+            return instance &>> Shift(unchecked: Self(bitPattern: distance))
+        }
     }
 }
