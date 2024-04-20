@@ -17,19 +17,19 @@ extension BinaryInteger {
     // MARK: Transformations x Inout
     //=------------------------------------------------------------------------=
 
-    @inlinable public static func  <<=(instance: inout Self, shift: Self) {
-        instance = instance  << shift
+    @inlinable public static func  <<=(instance: inout Self, distance: Self) {
+        instance = instance  << distance
     }
     
-    @inlinable public static func &<<=(instance: inout Self, shift: Self) {
-        instance = instance &<< shift
+    @inlinable public static func &<<=(instance: inout Self, distance: Shift<Self>) {
+        instance = instance &<< distance
     }
     
-    @inlinable public static func  >>=(instance: inout Self, shift: Self) {
-        instance = instance  >> shift
+    @inlinable public static func  >>=(instance: inout Self, distance: Self) {
+        instance = instance  >> distance
     }
 
-    @inlinable public static func &>>=(instance: inout Self, shift: Self) {
-        instance = instance &>> shift
+    @inlinable public static func &>>=(instance: inout Self, distance: Shift<Self>) {
+        instance = instance &>> distance
     }
 }

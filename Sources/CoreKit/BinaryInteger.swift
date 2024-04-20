@@ -237,13 +237,13 @@ where
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable static func  <<(instance: consuming Self, shift: borrowing Self) -> Self
+    @inlinable static func  <<(instance: consuming Self, distance: borrowing Self) -> Self
     
-    @inlinable static func &<<(instance: consuming Self, shift: borrowing Self) -> Self
+    @inlinable static func &<<(instance: consuming Self, distance: borrowing Shift<Self>) -> Self
     
-    @inlinable static func  >>(instance: consuming Self, shift: borrowing Self) -> Self
+    @inlinable static func  >>(instance: consuming Self, distance: borrowing Self) -> Self
     
-    @inlinable static func &>>(instance: consuming Self, shift: borrowing Self) -> Self
+    @inlinable static func &>>(instance: consuming Self, distance: borrowing Shift<Self>) -> Self
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

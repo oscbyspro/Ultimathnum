@@ -25,11 +25,56 @@ extension Test {
     //=------------------------------------------------------------------------=
     
     public func shift<T>(
+        _ instance: T,
+        _ distance: T,
+        _ expectation: T,
+        _ direction:  ShiftDirection,
+        _ semantics:  ShiftSemantics
+    )   where T: SystemsInteger {
+        
+        //=--------------------------------------=
+        self.shift(instance, distance, expectation, direction, semantics, BinaryIntegerID())
+        //=--------------------------------------=
+        switch (direction, semantics) {
+        case (.left,  .smart):
+            break
+            
+        case (.right, .smart):
+            break
+            
+        case (.left,  .masked):
+            func with(_ distance: T) {
+                same({         instance    &<<  distance           }(), expectation)
+                same({ var x = instance; x &<<= distance; return x }(), expectation)
+            }
+
+            with(distance)
+            with(distance &+ T(T.size))
+            with(distance &+ T(T.size) &+ T(T.size))
+            with(distance &- T(T.size))
+            with(distance &- T(T.size) &- T(T.size))
+            
+        case (.right, .masked):
+            func with(_ distance: T) {
+                same({         instance    &>>  distance           }(), expectation)
+                same({ var x = instance; x &>>= distance; return x }(), expectation)
+            }
+
+            with(distance)
+            with(distance &+ T(T.size))
+            with(distance &+ T(T.size) &+ T(T.size))
+            with(distance &- T(T.size))
+            with(distance &- T(T.size) &- T(T.size))
+        }
+    }
+    
+    public func shift<T>(
         _ instance: T, 
         _ distance: T,
         _ expectation: T,
-        _ direction: ShiftDirection,
-        _ semantics: ShiftSemantics
+        _ direction:  ShiftDirection,
+        _ semantics:  ShiftSemantics,
+        _ identifier: BinaryIntegerID = .init()
     )   where T: BinaryInteger {
         switch (direction, semantics) {
         case (.left, .smart):
@@ -44,8 +89,8 @@ extension Test {
                 same({ var x = instance; x >>= distance; return x }(), expectation)
             }
             
-            if !distance.isLessThanZero, distance.magnitude() < T.size {
-                shift(instance, distance, expectation, .left,  .masked)
+            if  Shift.predicate(distance) {
+                shift(instance, distance, expectation, .left, .masked)
             }
             
         case (.right, .smart):
@@ -60,64 +105,19 @@ extension Test {
                 same({ var x = instance; x <<= distance; return x }(), expectation)
             }
             
-            if !distance.isLessThanZero, distance.magnitude() < T.size {
+            if  Shift.predicate(distance) {
                 shift(instance, distance, expectation, .right, .masked)
             }
             
         case (.left, .masked):
-            
-            func with(_ distance: T) {
-                same({         instance    &<<  distance           }(), expectation)
-                same({ var x = instance; x &<<= distance; return x }(), expectation)
-            }
-            
-            with(distance)
-            
-            if  let increment = try? T.exactly(magnitude:T.size).get() {
-                if  let distance = try? distance.plus(increment).get() {
-                    with(distance)
-                }
-                
-                if  let distance = try? distance.plus(increment).plus(increment).get() {
-                    with(distance)
-                }
-                
-                if  let distance = try? distance.minus(increment).get() {
-                    with(distance)
-                }
-                
-                if  let distance = try? distance.minus(increment).minus(increment).get() {
-                    with(distance)
-                }
-            }
+            guard let distance = some(Shift(distance)) else { return }
+            same({         instance    &<<  distance           }(), expectation)
+            same({ var x = instance; x &<<= distance; return x }(), expectation)
             
         case (.right, .masked):
-            
-            func with(_ distance: T) {
-                same({         instance    &>>  distance           }(), expectation)
-                same({ var x = instance; x &>>= distance; return x }(), expectation)
-            }
-
-            with(distance)
-                        
-            if  let increment = try? T.exactly(magnitude:T.size).get() {
-                if  let distance = try? distance.plus(increment).get() {
-                    with(distance)
-                }
-                
-                if  let distance = try? distance.plus(increment).plus(increment).get() {
-                    with(distance)
-                }
-                
-                if  let distance = try? distance.minus(increment).get() {
-                    with(distance)
-                }
-                
-                if  let distance = try? distance.minus(increment).minus(increment).get() {
-                    with(distance)
-                }
-            }
-            
+            guard let distance = some(Shift(distance)) else { return }
+            same({         instance    &>>  distance           }(), expectation)
+            same({ var x = instance; x &>>= distance; return x }(), expectation)
         }
     }
 }

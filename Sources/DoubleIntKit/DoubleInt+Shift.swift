@@ -19,6 +19,7 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    #warning("TODO: no trap on min")
     @inlinable public static func <<(instance: consuming Self, distance: Self) -> Self {
         if  distance.isLessThanZero {
             return instance >> -distance // TODO: no trap on min
@@ -29,6 +30,15 @@ extension DoubleInt {
         }
     }
     
+    @inlinable public static func &<<(instance: consuming Self, distance: Self) -> Self {
+        instance &<< Shift(unchecked: Self(low: Base.Magnitude(bitPattern: distance.low) & (Base.size &<< 1 &- 1)))
+    }
+    
+    @inlinable public static func &<<(instance: consuming Self, distance: Shift<Self>) -> Self {
+        Self.init(instance.storage.upshift(unchecked: distance.value.storage))
+    }
+    
+    #warning("TODO: no trap on min")
     @inlinable public static func >>(instance: consuming Self, distance: Self) -> Self {
         if  distance.isLessThanZero {
             return instance << -distance // TODO: no trap on min
@@ -39,15 +49,11 @@ extension DoubleInt {
         }
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static func &<<(instance: consuming Self, distance: Self) -> Self {
-        Self(instance.storage &<< distance.storage)
+    @inlinable public static func &>>(instance: consuming Self, distance: Self) -> Self {
+        instance &>> Shift(unchecked: Self(low: Base.Magnitude(bitPattern: distance.low) & (Base.size &<< 1 &- 1)))
     }
     
-    @inlinable public static func &>>(instance: consuming Self, distance: Self) -> Self {
-        Self(instance.storage &>> distance.storage)
+    @inlinable public static func &>>(instance: consuming Self, distance: Shift<Self>) -> Self {
+        Self.init(instance.storage.downshift(unchecked: distance.value.storage))
     }
 }

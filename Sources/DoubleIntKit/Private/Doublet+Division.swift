@@ -113,12 +113,12 @@ extension Doublet where Base == Base.Magnitude {
         // normalization
         //=--------------------------------------=
         let top = normalization.low == 0 ? 0 : self.high &>> normalization.low.complement()
-        let lhs = self    &<< normalization
-        let rhs = divisor &<< normalization
+        let lhs = self   .upshift(unchecked: normalization)
+        let rhs = divisor.upshift(unchecked: normalization)
         //=--------------------------------------=
         // division: 3212 (normalized)
         //=--------------------------------------=
         let result: Division<Base, Self> = Triplet(low: lhs, high: top).division3212(normalized: rhs)
-        return Division(quotient: Self(low: result.quotient, high: 0), remainder: result.remainder &>> normalization)
+        return Division(quotient: Self(low: result.quotient, high: 0), remainder: result.remainder.downshift(unchecked: normalization))
     }
 }

@@ -19,45 +19,53 @@ extension Doublet {
     // MARK: Transformations x 2 by 1
     //=------------------------------------------------------------------------=
     
-    @inlinable package static func &<<(instance: consuming Self, distance: Base) -> Self {
-        let distance = Base.Magnitude(bitPattern: distance) & (Base.size &<< 1 &- 1)
-        
+    @inlinable package consuming func upshift(unchecked distance: Base.Magnitude) -> Self {
+        //=--------------------------------------=
+        Swift.assert(distance < Base.size &<< 2 &- 1, String.brokenInvariant())
+        //=--------------------------------------=
         if  distance.load(as: UX.self) >= UX(size: Base.self) {
-            instance.high     = Base(bitPattern: instance.low &<< (distance &- Base.size))
-            instance.low      = Base.Magnitude(repeating: Bit(false))
+            self.high     = Base(bitPattern: self.low &<< Shift(unchecked: distance &- Base.size))
+            self.low      = Base.Magnitude(repeating: Bit(false))
         }   else if distance != Base.Magnitude() {
-            instance.high  &<<= Base(bitPattern: distance)
-            instance.high    |= Base(bitPattern: instance.low &>> (Base.size &- distance))
-            instance.low   &<<= distance
+            self.high  &<<= Shift(unchecked: Base(bitPattern: distance))
+            self.high    |= Base(bitPattern: self.low &>> Shift(unchecked: Base.size &- distance))
+            self.low   &<<= Shift(unchecked: distance)
         }
         
-        return instance as Self as Self as Self
+        return self as Self as Self as Self
     }
     
-    @inlinable package static func &>>(instance: consuming Self, distance: Base) -> Self {
-        let distance = Base.Magnitude(bitPattern: distance) & (Base.size &<< 1 &- 1)
-        
+    @inlinable package consuming func downshift(unchecked distance: Base.Magnitude) -> Self {
+        //=--------------------------------------=
+        Swift.assert(distance < Base.size &<< 2 &- 1, String.brokenInvariant())
+        //=--------------------------------------=
         if  distance.load(as: UX.self) >= UX(size: Base.self) {
-            instance.low      = Base.Magnitude(bitPattern: instance.high &>> Base(bitPattern: distance &- Base.size))
-            instance.high     = Base(repeating: Bit(instance.high.isLessThanZero))
+            self.low      = Base.Magnitude(bitPattern: self.high &>> Shift(unchecked: Base(bitPattern: distance &- Base.size)))
+            self.high     = Base(repeating: Bit(self.high.isLessThanZero))
         }   else if distance != Base.Magnitude() {
-            instance.low   &>>= distance
-            instance.low     |= Base.Magnitude(bitPattern: instance.high &<< Base(bitPattern: Base.size &- distance))
-            instance.high  &>>= Base(bitPattern: distance)
+            self.low   &>>= Shift(unchecked: distance)
+            self.low     |= Base.Magnitude(bitPattern: self.high &<< Shift(unchecked: Base(bitPattern: Base.size &- distance)))
+            self.high  &>>= Shift(unchecked: Base(bitPattern: distance))
         }
         
-        return instance as Self as Self as Self
+        return self as Self as Self as Self
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x 2 by 2
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func &<<(instance: consuming Self, distance: Self) -> Self {
-        instance &<< Base(bitPattern: distance.low)
+    @inlinable package consuming func upshift(unchecked distance: Self) -> Self {
+        //=--------------------------------------=
+        Swift.assert(distance.high == 0, String.brokenInvariant())
+        //=--------------------------------------=
+        return self.upshift(unchecked: distance.low)
     }
     
-    @inlinable public static func &>>(instance: consuming Self, distance: Self) -> Self {
-        instance &>> Base(bitPattern: distance.low)
+    @inlinable package consuming func downshift(unchecked distance: Self) -> Self {
+        //=--------------------------------------=
+        Swift.assert(distance.high == 0, String.brokenInvariant())
+        //=--------------------------------------=
+        return self.downshift(unchecked: distance.low)
     }
 }

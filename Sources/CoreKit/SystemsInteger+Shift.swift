@@ -7,31 +7,21 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Infini Int x Shift
+// MARK: * Systems Integer x Shift
 //*============================================================================*
 
-extension InfiniInt {
+extension SystemsInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Transformations x Inout
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func << (instance: consuming Self, distance: Self) -> Self {
-        fatalError("TODO")
+    @inlinable public static func &<<=(instance: inout Self, shift: borrowing Self) {
+        instance = instance &<< shift
     }
     
-    @inlinable public static func &<<(instance: consuming Self, distance: Shift<Self>) -> Self {
-        fatalError("TODO")
-    }
-    
-    @inlinable public static func >> (instance: consuming Self, distance: Self) -> Self {
-        fatalError("TODO")
-    }
-    
-    @inlinable public static func &>>(instance: consuming Self, distance: Shift<Self>) -> Self {
-        fatalError("TODO")
+    @inlinable public static func &>>=(instance: inout Self, shift: borrowing Self) {
+        instance = instance &>> shift
     }
 }

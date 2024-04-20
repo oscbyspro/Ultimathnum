@@ -17,19 +17,27 @@ extension CoreInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func  <<(instance: consuming Self, shift: borrowing Self) -> Self {
-        Self(instance.base  << shift.base)
+    @inlinable public static func  <<(instance: consuming Self, distance: borrowing Self) -> Self {
+        Self(instance.base  << distance.base)
     }
     
-    @inlinable public static func &<<(instance: consuming Self, shift: borrowing Self) -> Self {
-        Self(instance.base &<< shift.base)
+    @inlinable public static func &<<(instance: consuming Self, distance: borrowing Self) -> Self {
+        Self(instance.base &<< distance.base)
     }
     
-    @inlinable public static func  >>(instance: consuming Self, shift: borrowing Self) -> Self {
-        Self(instance.base  >> shift.base)
+    @inlinable public static func &<<(instance: consuming Self, distance: borrowing Shift<Self>) -> Self {
+        Self(instance.base &<< distance.value.base) // there are no unchecked shifts in Swift
     }
     
-    @inlinable public static func &>>(instance: consuming Self, shift: borrowing Self) -> Self {
-        Self(instance.base &>> shift.base)
+    @inlinable public static func  >>(instance: consuming Self, distance: borrowing Self) -> Self {
+        Self(instance.base  >> distance.base)
+    }
+    
+    @inlinable public static func &>>(instance: consuming Self, distance: borrowing Self) -> Self {
+        Self(instance.base &>> distance.base)
+    }
+    
+    @inlinable public static func &>>(instance: consuming Self, distance: borrowing Shift<Self>) -> Self {
+        Self(instance.base &>> distance.value.base) // there are no unchecked shifts in Swift
     }
 }

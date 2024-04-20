@@ -40,6 +40,24 @@
 public protocol SystemsInteger<BitPattern>: BinaryInteger where Magnitude: SystemsInteger, Signitude: SystemsInteger {
     
     //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// ### Development
+    ///
+    /// This cannot be an extension because Swift does not expose unchecked shifts,
+    /// which means that you cannot premask a `Shift<Self>` instance without cost.
+    ///
+    @inlinable static func &<<(instance: consuming Self, distance: borrowing Self) -> Self
+    
+    /// ### Development
+    ///
+    /// This cannot be an extension because Swift does not expose unchecked shifts,
+    /// which means that you cannot premask a `Shift<Self>` instance without cost.
+    ///
+    @inlinable static func &>>(instance: consuming Self, distance: borrowing Self) -> Self
+        
+    //=------------------------------------------------------------------------=
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
