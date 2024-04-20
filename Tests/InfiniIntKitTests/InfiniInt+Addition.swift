@@ -50,7 +50,7 @@ extension InfiniIntTests {
             Test().addition(T(b, repeating: 0), T(b, repeating: 0), F(T(c + [ 1] as [L], repeating: 0)))
             Test().addition(T(b, repeating: 0), T(b, repeating: 1), F(T(c + [ 0] as [L], repeating: 0), error: !T.isSigned))
             Test().addition(T(b, repeating: 1), T(b, repeating: 0), F(T(c + [ 0] as [L], repeating: 0), error: !T.isSigned))
-            Test().addition(T(b, repeating: 1), T(b, repeating: 1), F(T(c, repeating: 1), error: !T.isSigned))
+            Test().addition(T(b, repeating: 1), T(b, repeating: 1), F(T(c + [~0] as [L], repeating: 1), error: !T.isSigned))
         }
         
         for element in elements {

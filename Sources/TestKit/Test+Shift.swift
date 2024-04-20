@@ -73,7 +73,7 @@ extension Test {
             
             with(distance)
             
-            if  let increment = try? T.exactly(magnitude: T.size).get() {
+            if  let increment = try? T.exactly(magnitude:T.size).get() {
                 if  let distance = try? distance.plus(increment).get() {
                     with(distance)
                 }
@@ -99,8 +99,8 @@ extension Test {
             }
 
             with(distance)
-            
-            if  let increment = try? T.exactly(magnitude: T.size).get() {
+                        
+            if  let increment = try? T.exactly(magnitude:T.size).get() {
                 if  let distance = try? distance.plus(increment).get() {
                     with(distance)
                 }

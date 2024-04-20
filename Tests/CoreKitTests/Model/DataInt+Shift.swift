@@ -20,7 +20,7 @@ extension DataIntTests {
     // MARK: Tests x Ascending
     //=------------------------------------------------------------------------=
     
-    func testUpshiftMinor() {
+    func testUpshiftByMinor() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
             typealias C = DataIntTests.Canvas<T>
             typealias F = Fallible<[T]>
@@ -40,7 +40,7 @@ extension DataIntTests {
         }
     }
 
-    func testUpshiftMajor() {
+    func testUpshiftByMajor() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
             typealias C = DataIntTests.Canvas<T>
             typealias F = Fallible<[T]>
@@ -61,7 +61,7 @@ extension DataIntTests {
         }
     }
 
-    func testUpshiftMajorMinor() {
+    func testUpshiftByMajorMinor() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
             typealias C = DataIntTests.Canvas<T>
             typealias F = Fallible<[T]>
@@ -106,7 +106,7 @@ extension DataIntTests {
     // MARK: Tests x Descending
     //=------------------------------------------------------------------------=
     
-    func testDownshiftMinor() {
+    func testDownshiftByMinor() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
             typealias C = DataIntTests.Canvas<T>
             typealias F = Fallible<[T]>
@@ -126,7 +126,7 @@ extension DataIntTests {
         }
     }
 
-    func testDownshiftMajor() {
+    func testDownshiftByMajor() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
             typealias C = DataIntTests.Canvas<T>
             typealias F = Fallible<[T]>
@@ -147,7 +147,7 @@ extension DataIntTests {
         }
     }
 
-    func testDownshiftMajorMinor() {
+    func testDownshiftByMajorMinor() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
             typealias C = DataIntTests.Canvas<T>
             typealias F = Fallible<[T]>
@@ -203,12 +203,23 @@ extension DataIntTests.Canvas {
         //=------------------------------------------=
         let (major, minor) = distance.division(IX(size: Element.self)).unwrap().components
         //=------------------------------------------=
+        brr: do {
+            var value = self.body
+            
+            value.withUnsafeMutableBufferPointer {
+                let value = DataInt.Canvas($0)!
+                value.upshift(environment: environment, major: major, minor: minor)
+            }
+            
+            test.same(value, expectation)
+        }
+        
         if  major >= 1, minor == 0 {
             var value = self.body
             
             value.withUnsafeMutableBufferPointer {
                 let value = DataInt.Canvas($0)!
-                value.upshift(environment: environment, majorAtLeastOne: major)
+                value.upshift(environment: environment, majorAtLeastOne: major, minor: Void())
             }
             
             test.same(value, expectation)
@@ -230,12 +241,23 @@ extension DataIntTests.Canvas {
         //=------------------------------------------=
         let (major, minor) = distance.division(IX(size: Element.self)).unwrap().components
         //=------------------------------------------=
+        brr: do {
+            var value = self.body
+            
+            value.withUnsafeMutableBufferPointer {
+                let value = DataInt.Canvas($0)!
+                value.downshift(environment: environment, major: major, minor: minor)
+            }
+            
+            test.same(value, expectation)
+        }
+        
         if  major >= 1, minor == 0 {
             var value = self.body
             
             value.withUnsafeMutableBufferPointer {
                 let value = DataInt.Canvas($0)!
-                value.downshift(environment: environment, majorAtLeastOne: major)
+                value.downshift(environment: environment, majorAtLeastOne: major, minor: Void())
             }
             
             test.same(value, expectation)

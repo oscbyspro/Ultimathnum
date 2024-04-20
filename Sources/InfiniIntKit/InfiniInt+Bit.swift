@@ -41,48 +41,34 @@ extension InfiniInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func count(_ bit: consuming Bit, where selection: BitSelection) -> Magnitude {
+    @inlinable public borrowing func count(_ bit: Bit, where selection: BitSelection) -> Magnitude {
         var count = Magnitude()
         
         switch selection {
         case BitSelection.anywhere:
             let contrast = self.appendix.toggled()
             self.storage.withUnsafeBinaryIntegerBody {
-                for index in $0.indices {
-                    let subcount = $0[unchecked: index].count(contrast, where: selection)
-                    count = count.plus(subcount).assert()
-                }
-                
+                count = Magnitude(load: $0.count(contrast, where: selection))
                 if  contrast != bit {
                     count.toggle()
                 }
             }
             
         case BitSelection.ascending:
+            let appendix = Bool(self.appendix & bit)
             self.storage.withUnsafeBinaryIntegerBody {
-                var index = IX.zero
-                
-                while index < $0.count {
-                    let subcount = $0[unchecked: index].count(bit, where: selection)
-                    count = count.plus(subcount).assert()
-                    guard subcount == Element.size else { break }
-                    index = index.incremented( ).assert()
-                }
-                
-                if  self.appendix == bit, index != 0 {
-                    count.storage.appendix = Bit.one
-                    count.storage.normalize()
+                let ascending = $0.count(bit, where: selection)
+                if  ascending == $0.size(), appendix {
+                    count = Magnitude.size
+                }   else {
+                    count = Magnitude(load: ascending)
                 }
             }
             
         case BitSelection.descending:
             if  self.appendix == bit {
-                self.storage.withUnsafeBinaryIntegerBody {
-                    for index in $0.indices.reversed() {
-                        let subcount = $0[unchecked: index].count(bit, where: selection)
-                        count = count.plus(subcount).assert()
-                        guard subcount == Element.size else { break }
-                    }
+                self.withUnsafeBinaryIntegerBody {
+                    count = Self.size - Magnitude(load: $0.size() + $0.count(bit, where: selection))
                 }
             }
         }

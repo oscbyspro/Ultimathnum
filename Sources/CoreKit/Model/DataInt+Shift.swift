@@ -21,9 +21,24 @@ extension DataInt.Canvas {
     ///
     /// - Parameters:
     ///   - environment: The element that fills the void.
+    ///   - major: `0 <= major < self.count`
+    ///   - minor: `0 <= minor < IX(size: Element.self)`
+    ///
+    @inlinable public func upshift(environment: Element, major: Index, minor: Index) {
+        if  minor != .zero {
+            self.upshift(environment: environment, major: major, minorAtLeastOne: minor)
+        }   else if major != .zero {
+            self.upshift(environment: environment, majorAtLeastOne: major, minor: Void())
+        }
+    }
+    
+    /// Performs an ascending shift.
+    ///
+    /// - Parameters:
+    ///   - environment: The element that fills the void.
     ///   - major: `1 <= major < self.count`
     ///
-    @inlinable public func upshift(environment: Element, majorAtLeastOne major: Index) {
+    @inlinable public func upshift(environment: Element, majorAtLeastOne major: Index, minor: Void) {
         //=--------------------------------------=
         var destination: Index = self.count
         var source = destination.plus(major.complement()).assert()
@@ -90,13 +105,28 @@ extension DataInt.Canvas {
     // MARK: Transformations x Descending
     //=------------------------------------------------------------------------=
     
+    /// Performs an descending shift.
+    ///
+    /// - Parameters:
+    ///   - environment: The element that fills the void.
+    ///   - major: `0 <= major < self.count`
+    ///   - minor: `0 <= minor < IX(size: Element.self)`
+    ///
+    @inlinable public func downshift(environment: Element, major: Index, minor: Index) {
+        if  minor != .zero {
+            self.downshift(environment: environment, major: major, minorAtLeastOne: minor)
+        }   else if major != .zero {
+            self.downshift(environment: environment, majorAtLeastOne: major, minor: Void())
+        }
+    }
+    
     /// Performs a descending shift.
     ///
     /// - Parameters:
     ///   - environment: The element that fills the void.
     ///   - major: `1 <= major < self.count`
     ///
-    @inlinable public func downshift(environment: Element, majorAtLeastOne major: Index) {
+    @inlinable public func downshift(environment: Element, majorAtLeastOne major: Index, minor: Void) {
         //=--------------------------------------=
         var destination = Index.zero
         var source = destination.plus(major).assert()

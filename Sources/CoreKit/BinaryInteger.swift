@@ -15,9 +15,11 @@
 ///
 /// ### Binary
 ///
-/// Its signedness is with respect to un/signed two's complement.
+/// - Requires: Its body may store at most `IX.max` number of bits.
 ///
-/// - Requires: Negative values must use binary two's complement form.
+/// - Requires: `Infinite` values must use binary two's complement form.
+///
+/// - Requires: `Negative` values must use binary two's complement form.
 ///
 /// ### Magnitude
 ///
@@ -26,6 +28,29 @@
 /// ### Stride
 ///
 /// Its stride is Swift.Int which is used to step through Swift's ranges.
+///
+/// ### Infinity
+///
+/// The binary integer domain now includes infinite values! This lets you
+/// bit cast all kinds of binary integers and recover from bitwise negation.
+///
+/// ```swift
+/// IXL(repeating: 0).toggled() == IXL(repeating: 1)
+/// UXL(repeating: 0).toggled() == UXL(repeating: 1)
+/// ```
+///
+/// Keep in mind that infinite values take on the order of their host type.
+/// You may intuit that the size of an infinite integer is smaller than its
+/// upper bound. If you are interested in infinite values then you need to
+/// track where they came from.
+///
+/// ```swift
+/// UXL(repeating: 0).count(0) // log2(x) -> UXL(repeating: 1)
+/// ```
+///
+/// In most cases, however, you should view infinite values as bit patterns.
+///
+/// - Important: Infinite values take on the order of their host type.
 ///
 /// ### Development
 ///
@@ -91,6 +116,8 @@ where
     /// │ IXL  │ UXL(repeating: 1) │
     /// └──────┴───────────────────┘
     /// ```
+    ///
+    /// - Invariant: `Self.size == self.count(0) + self.count(1)`.
     ///
     @inlinable static var size: Magnitude { get }
     

@@ -19,19 +19,19 @@ extension InfiniInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func << (lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func << (instance: consuming Self, distance: Self) -> Self {
         fatalError("TODO")
     }
     
-    @inlinable public static func &<<(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func &<<(instance: consuming Self, distance: Self) -> Self {
         fatalError("TODO")
     }
     
-    @inlinable public static func >> (lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func >> (instance: consuming Self, distance: Self) -> Self {
         fatalError("TODO")
     }
     
-    @inlinable public static func &>>(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func &>>(instance: consuming Self, distance: Self) -> Self {
         fatalError("TODO")
     }
 }

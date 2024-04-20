@@ -84,17 +84,23 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func unwrap(file: StaticString = #file, line: UInt = #line) -> Value {
+    @inlinable public consuming func unwrap(
+        _ message: @autoclosure () -> String = String(),
+        file: StaticString = #file, line: UInt = #line
+    )   -> Value {
         if  self.error {
-            Swift.preconditionFailure(file: file, line: line)
+            Swift.preconditionFailure(message(), file: file, line: line)
         }
         
         return self.value
     }
     
-    @inlinable public consuming func assert(file: StaticString = #file, line: UInt = #line) -> Value {
+    @inlinable public consuming func assert(
+        _ message: @autoclosure () -> String = String(),
+        file: StaticString = #file, line: UInt = #line
+    ) -> Value {
         if  self.error {
-            Swift.assertionFailure(file: file, line: line)
+            Swift.assertionFailure(message(), file: file, line: line)
         }
          
         return self.value
