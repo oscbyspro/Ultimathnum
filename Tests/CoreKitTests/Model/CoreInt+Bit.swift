@@ -22,6 +22,8 @@ extension CoreIntTests {
     
     func testInitBit() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            Test().same(T(0 as Bit),             0 as T)
+            Test().same(T(1 as Bit),             1 as T)
             Test().same(T(repeating: 0 as Bit),  0 as T)
             Test().same(T(repeating: 1 as Bit), ~0 as T)
         }

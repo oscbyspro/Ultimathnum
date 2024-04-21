@@ -55,10 +55,10 @@ extension InfiniInt {
             }
             
         case BitSelection.ascending:
-            let appendix = Bool(self.appendix & bit)
+            let bitIsAppendix = self.appendix == bit
             self.storage.withUnsafeBinaryIntegerBody {
-                let ascending =  $0.count(bit,where: selection)
-                if  ascending == $0.count(Bit.self), appendix {
+                let ascending =  $0.count(bit,where: selection)                
+                if  ascending == $0.count(Bit.self), bitIsAppendix {
                     count = Magnitude.size
                 }   else {
                     count = Magnitude(load: ascending)

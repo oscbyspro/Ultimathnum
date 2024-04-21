@@ -38,33 +38,64 @@ extension DoubleIntTests {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
             typealias M = DoubleInt<Base>.Magnitude
+            //=----------------------------------=
+            let full = M.size
+            let half = M(low: Base.size)
+            let none = M.zero
+            //=----------------------------------=
+            Test().count(T(low:  00, high: 00), 0 as Bit, .anywhere,   full)
+            Test().count(T(low: ~00, high: 00), 0 as Bit, .anywhere,   half)
+            Test().count(T(low:  00, high: 11), 0 as Bit, .anywhere,   full - 3 as M)
+            Test().count(T(low: ~00, high: 11), 0 as Bit, .anywhere,   half - 3 as M)
+            Test().count(T(low:  11, high: 00), 0 as Bit, .anywhere,   full - 3 as M)
+            Test().count(T(low: ~11, high: 00), 0 as Bit, .anywhere,   half + 3 as M)
+            Test().count(T(low:  11, high: 11), 0 as Bit, .anywhere,   full - 6 as M)
+            Test().count(T(low: ~11, high: 11), 0 as Bit, .anywhere,   half)
             
-            for bit: Bit in [0, 1] {
-                for selection: BitSelection in [.anywhere, .ascending, .descending] {
-                    Test().same(T(low:  0, high:  0).count(bit, where: selection), bit == 0 ? T.size : 0)
-                    Test().same(T(low: ~0, high: ~0).count(bit, where: selection), bit == 1 ? T.size : 0)
-                }
-                
-                for selection: BitSelection in [.anywhere] {
-                    Test().same(T(low:  .lsb, high:  .msb).count(bit, where: selection), bit == 0 ? T.size - 2 : 2)
-                    Test().same(T(low:  .lsb, high: ~.msb).count(bit, where: selection), M(low: Base.size))
-                    Test().same(T(low: ~.lsb, high:  .msb).count(bit, where: selection), M(low: Base.size))
-                    Test().same(T(low: ~.lsb, high: ~.msb).count(bit, where: selection), bit == 1 ? T.size - 2 : 2)
-                }
-                
-                for selection: BitSelection in [.ascending, .descending] {
-                    Test().same(T(low:  .lsb, high:  .msb).count(bit, where: selection), (bit == 0) ? 0 : 1)
-                    Test().same(T(low:  .lsb, high: ~.msb).count(bit, where: selection), (bit == 0) == (selection == .ascending) ? 0 : 1)
-                    Test().same(T(low: ~.lsb, high:  .msb).count(bit, where: selection), (bit == 1) == (selection == .ascending) ? 0 : 1)
-                    Test().same(T(low: ~.lsb, high: ~.msb).count(bit, where: selection), (bit == 1) ? 0 : 1)
-                }
-                
-                for element: (value: T, bit: Bit) in [(11, 0), (~11, 1)] {
-                    Test().same(element.value.count(bit, where:   .anywhere), bit == element.bit ? T.size - 3 : 3)
-                    Test().same(element.value.count(bit, where:  .ascending), bit == element.bit ?              0 : 2)
-                    Test().same(element.value.count(bit, where: .descending), bit == element.bit ? T.size - 4 : 0)
-                }
-            }
+            Test().count(T(low:  00, high: 00), 1 as Bit, .anywhere,   none)
+            Test().count(T(low: ~00, high: 00), 1 as Bit, .anywhere,   half)
+            Test().count(T(low:  00, high: 11), 1 as Bit, .anywhere,   none + 3 as M)
+            Test().count(T(low: ~00, high: 11), 1 as Bit, .anywhere,   half + 3 as M)
+            Test().count(T(low:  11, high: 00), 1 as Bit, .anywhere,   none + 3 as M)
+            Test().count(T(low: ~11, high: 00), 1 as Bit, .anywhere,   half - 3 as M)
+            Test().count(T(low:  11, high: 11), 1 as Bit, .anywhere,   none + 6 as M)
+            Test().count(T(low: ~11, high: 11), 1 as Bit, .anywhere,   half)
+            
+            Test().count(T(low:  00, high: 00), 0 as Bit, .ascending,  full)
+            Test().count(T(low: ~00, high: 00), 0 as Bit, .ascending,  none)
+            Test().count(T(low:  00, high: 11), 0 as Bit, .ascending,  half)
+            Test().count(T(low: ~00, high: 11), 0 as Bit, .ascending,  none)
+            Test().count(T(low:  11, high: 00), 0 as Bit, .ascending,  none)
+            Test().count(T(low: ~11, high: 00), 0 as Bit, .ascending,  none + 2 as M)
+            Test().count(T(low:  11, high: 11), 0 as Bit, .ascending,  none)
+            Test().count(T(low: ~11, high: 11), 0 as Bit, .ascending,  none + 2 as M)
+            
+            Test().count(T(low:  00, high: 00), 1 as Bit, .ascending,  none)
+            Test().count(T(low: ~00, high: 00), 1 as Bit, .ascending,  half)
+            Test().count(T(low:  00, high: 11), 1 as Bit, .ascending,  none)
+            Test().count(T(low: ~00, high: 11), 1 as Bit, .ascending,  half + 2 as M)
+            Test().count(T(low:  11, high: 00), 1 as Bit, .ascending,  none + 2 as M)
+            Test().count(T(low: ~11, high: 00), 1 as Bit, .ascending,  none)
+            Test().count(T(low:  11, high: 11), 1 as Bit, .ascending,  none + 2 as M)
+            Test().count(T(low: ~11, high: 11), 1 as Bit, .ascending,  none)
+            
+            Test().count(T(low:  00, high: 00), 0 as Bit, .descending, full)
+            Test().count(T(low: ~00, high: 00), 0 as Bit, .descending, half)
+            Test().count(T(low:  00, high: 11), 0 as Bit, .descending, half - 4 as M)
+            Test().count(T(low: ~00, high: 11), 0 as Bit, .descending, half - 4 as M)
+            Test().count(T(low:  11, high: 00), 0 as Bit, .descending, full - 4 as M)
+            Test().count(T(low: ~11, high: 00), 0 as Bit, .descending, half)
+            Test().count(T(low:  11, high: 11), 0 as Bit, .descending, half - 4 as M)
+            Test().count(T(low: ~11, high: 11), 0 as Bit, .descending, half - 4 as M)
+            
+            Test().count(T(low:  00, high: 00), 1 as Bit, .descending, none)
+            Test().count(T(low: ~00, high: 00), 1 as Bit, .descending, none)
+            Test().count(T(low:  00, high: 11), 1 as Bit, .descending, none)
+            Test().count(T(low: ~00, high: 11), 1 as Bit, .descending, none)
+            Test().count(T(low:  11, high: 00), 1 as Bit, .descending, none)
+            Test().count(T(low: ~11, high: 00), 1 as Bit, .descending, none)
+            Test().count(T(low:  11, high: 11), 1 as Bit, .descending, none)
+            Test().count(T(low: ~11, high: 11), 1 as Bit, .descending, none)
         }
 
         for base in bases {
