@@ -40,7 +40,7 @@ extension InfiniInt {
         //=--------------------------------------=
         // path: distance is >= body per protocol
         //=--------------------------------------=
-        let shift = IX.exactly(Magnitude(bitPattern: distance.value)).unwrap("BinaryInteger/body")
+        let shift = IX.exactly(Magnitude(bitPattern: distance.value)).unwrap("BinaryInteger/body/0...IX.max")
         //=--------------------------------------=
         // path: success or allocation is too big
         //=--------------------------------------=

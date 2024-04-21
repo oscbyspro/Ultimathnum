@@ -212,11 +212,9 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func elementsCanBeRebound<OtherElement>(to type: OtherElement.Type) -> Bool where OtherElement: SystemsInteger {
-        //=--------------------------------------=
         let size      = Int.zero == MemoryLayout<Self.Element>.size      % MemoryLayout<OtherElement>.size
         let stride    = Int.zero == MemoryLayout<Self.Element>.stride    % MemoryLayout<OtherElement>.stride
         let alignment = Int.zero == MemoryLayout<Self.Element>.alignment % MemoryLayout<OtherElement>.alignment
-        //=--------------------------------------=
         return Bool(Bit(size) & Bit(stride) & Bit(alignment))
     }
 }
