@@ -29,24 +29,4 @@ extension BidirectionalCollection {
         
         return self.prefix(upTo: lastIndex)
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Remove Count
-    //=------------------------------------------------------------------------=
-    
-    /// Removes `count` prefixing elements.
-    @inlinable package mutating func removePrefix(count: Int) -> Self where Self == SubSequence {
-        let index  = self.index(self.startIndex, offsetBy: count)
-        let prefix = self.prefix(upTo: index)
-        self = self.suffix(from: index)
-        return prefix as Self
-    }
-    
-    /// Removes `count` suffixing elements.
-    @inlinable package mutating func removeSuffix(count: Int) -> Self where Self == SubSequence {
-        let index  = self.index(self.endIndex, offsetBy: -count)
-        let suffix = self.suffix(from: index)
-        self = self.prefix(upTo: index)
-        return suffix as Self
-    }
 }
