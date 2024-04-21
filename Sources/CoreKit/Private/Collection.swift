@@ -49,22 +49,4 @@ extension BidirectionalCollection {
         self = self.prefix(upTo: index)
         return suffix as Self
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Remove Max Length
-    //=------------------------------------------------------------------------=
-    
-    /// Removes up to `maxLength` prefixing elements.
-    @inlinable package mutating func removePrefix(maxLength: Int) -> Self where Self == SubSequence {
-        let prefix = self.prefix(maxLength)
-        self = self.suffix(from: prefix.endIndex)
-        return prefix as Self
-    }
-    
-    /// Removes up to `maxLength` suffixing elements.
-    @inlinable package mutating func removeSuffix(maxLength: Int) -> Self where Self == SubSequence {
-        let suffix = self.suffix(maxLength)
-        self = self.prefix(upTo: suffix.startIndex)
-        return suffix as Self
-    }
 }
