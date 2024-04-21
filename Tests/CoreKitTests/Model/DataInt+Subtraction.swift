@@ -195,7 +195,7 @@ extension DataIntTests.Canvas {
 
     func minus(_ elements: [Element], plus bit: Bool, is expectation: Fallible<[Element]>) {
         //=--------------------------------------=
-        let normal = elements.dropLast(while:{ $0 == 0 })
+        var normal = elements[...]; while normal.last == 0 { normal.removeLast() }
         //=--------------------------------------=
         // decrement: none + bit
         //=--------------------------------------=
@@ -266,7 +266,7 @@ extension DataIntTests.Canvas {
 
     func minus(_ elements: [Element], times multiplier: Element, plus decrement: Element, is expectation: Fallible<[Element]>) {
         //=--------------------------------------=
-        let normal = elements.dropLast(while:{ $0 == 0 })
+        var normal = elements[...]; while normal.last == 0 { normal.removeLast() }
         //=--------------------------------------=
         // decrement: some
         //=--------------------------------------=
