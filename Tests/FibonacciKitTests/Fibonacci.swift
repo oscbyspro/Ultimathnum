@@ -59,6 +59,14 @@ extension FibonacciTests.Case {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    func check(_ element: Value?) {
+        test.same(item.element, element)
+        
+        if  invariants {
+            self.checkDivisionInvariants()
+        }
+    }
+    
     func check(index: Value, element: Value, next: Value) {
         test.same(item.index,   index)
         test.same(item.element, element)
@@ -70,7 +78,7 @@ extension FibonacciTests.Case {
     }
     
     func checkDivisionInvariants() {
-        for divisor: Value in [2, 3, 5, 7].compactMap({ Value.exactly($0).optional() }) {
+        for divisor: Value in [2, 3, 5, 7] {
             brrrrrr: do {
                 let a = self.item
                 let b = try Item(self.item.index.quotient(divisor).get())
@@ -111,7 +119,11 @@ extension FibonacciTests.Case {
         copy.check(index: item.index, element: item.element, next: item.next)
     }
     
-    static func checkInstancesNearZeroIndex(_ test: Test) {
+    static func checkInstancesNearZeroIndex(_ test: Test, invariants: Bool = true) {
+        func make(_ item: Item) -> Self {
+            Self(item, invariants: invariants)
+        }
+        
         if  Value.isSigned {
             test.failure({ try Item(-1) })
             test.failure({ try Item(-2) })
@@ -121,26 +133,26 @@ extension FibonacciTests.Case {
         }
         
         zero: do {
-            Self(    Item( )).checkIsAtZeroIndex()
-            Self(try Item(0)).checkIsAtZeroIndex()
+            make(    Item( )).checkIsAtZeroIndex()
+            make(try Item(0)).checkIsAtZeroIndex()
         }   catch {
             test.fail(error.localizedDescription)
         }
         
         index: do {
-            Self(    Item( )).check(index: 0, element: 0, next: 1)
-            Self(try Item(0)).check(index: 0, element: 0, next: 1)
-            Self(try Item(1)).check(index: 1, element: 1, next: 1)
-            Self(try Item(2)).check(index: 2, element: 1, next: 2)
-            Self(try Item(3)).check(index: 3, element: 2, next: 3)
-            Self(try Item(4)).check(index: 4, element: 3, next: 5)
-            Self(try Item(5)).check(index: 5, element: 5, next: 8)
+            make(    Item( )).check(index: 0, element: 0, next: 1)
+            make(try Item(0)).check(index: 0, element: 0, next: 1)
+            make(try Item(1)).check(index: 1, element: 1, next: 1)
+            make(try Item(2)).check(index: 2, element: 1, next: 2)
+            make(try Item(3)).check(index: 3, element: 2, next: 3)
+            make(try Item(4)).check(index: 4, element: 3, next: 5)
+            make(try Item(5)).check(index: 5, element: 5, next: 8)
         }   catch {
             test.fail(error.localizedDescription)
         }
         
         increment: if let item = test.some(try? Item(0)) {
-            var instance = Self(item, test: test)
+            var instance = make(item)
             
             instance.check(index: 0, element: 0, next: 1)
             instance.test.success({ try instance.item.increment() })
@@ -156,7 +168,7 @@ extension FibonacciTests.Case {
         }
         
         decrement: if let item = test.some(try? Item(5)) {
-            var instance = Self(item, test: test)
+            var instance = make(item)
             
             instance.check(index: 5, element: 5, next: 8)
             instance.test.success({ try instance.item.decrement() })
@@ -172,7 +184,7 @@ extension FibonacciTests.Case {
         }
         
         double: if let item = test.some(try? Item(1)) {
-            var instance = Self(item, test: test)
+            var instance = make(item)
             
             instance.check(index: 1, element: 1, next: 1)
             instance.test.success({ try instance.item.double() })

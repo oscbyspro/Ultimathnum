@@ -120,6 +120,7 @@ let package = Package(
             dependencies: [
                 "DoubleIntKit",
                 "FibonacciKit",
+                "InfiniIntKit",
                 "TestKit"
             ]
         ),
