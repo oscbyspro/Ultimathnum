@@ -17,17 +17,6 @@ extension Namespace {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// Grants unsafe access to a temporary allocation of `1` element.
-    @inlinable public static func withUnsafeTemporaryAllocation<Element, Result>(
-    of  type: Element.Type, perform: (UnsafeMutablePointer<Element>) throws -> Result) rethrows -> Result {
-        try Swift.withUnsafeTemporaryAllocation(of: Element.self, capacity: 1) {
-            //=----------------------------------=
-            // allocation: count <= $0.count
-            //=----------------------------------=
-            try perform($0.baseAddress.unsafelyUnwrapped)
-        }
-    }
-    
     /// Grants unsafe access to a temporary allocation of `count` elements.
     @inlinable public static func withUnsafeTemporaryAllocation<Element, Result>(
     of  type: Element.Type, count: Int, perform: (UnsafeMutableBufferPointer<Element>) throws -> Result) rethrows -> Result {
@@ -38,10 +27,6 @@ extension Namespace {
             try perform(UnsafeMutableBufferPointer(start: $0.baseAddress, count: count))
         }
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities x Copying
-    //=------------------------------------------------------------------------=
     
     /// Copies the elements of the given `collection` to a temporary allocation of `collection.count` elements.
     ///
