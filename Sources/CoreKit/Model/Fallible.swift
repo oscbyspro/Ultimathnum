@@ -84,10 +84,11 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func unwrap(
+    @discardableResult @inlinable public consuming func unwrap(
         _ message: @autoclosure () -> String = String(),
         file: StaticString = #file, line: UInt = #line
     )   -> Value {
+        
         if  self.error {
             Swift.preconditionFailure(message(), file: file, line: line)
         }
@@ -95,10 +96,11 @@
         return self.value
     }
     
-    @inlinable public consuming func assert(
+    @discardableResult @inlinable public consuming func assert(
         _ message: @autoclosure () -> String = String(),
         file: StaticString = #file, line: UInt = #line
     ) -> Value {
+        
         if  self.error {
             Swift.assertionFailure(message(), file: file, line: line)
         }

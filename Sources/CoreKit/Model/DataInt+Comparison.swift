@@ -27,7 +27,7 @@ extension DataInt {
         //=--------------------------------------=
         // comparison: succinct count
         //=--------------------------------------=
-        return Signum(Bit(!instance.body.buffer().allSatisfy({ $0 == 0 })))
+        return Signum(Bit(instance.body.isZero))
     }
     
     @inlinable package static func compare(
@@ -81,6 +81,10 @@ extension DataInt.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    @inlinable public var isZero: Bool {
+        self.buffer().allSatisfy({ $0 == Element.zero })
+    }
+    
     @inlinable public borrowing func compared(to other: Self) -> Signum {
         DataInt.compare(
             lhs: DataInt(self),
@@ -88,5 +92,24 @@ extension DataInt.Body {
             rhs: DataInt(other),
             rhsIsSigned: false
         )
+    }
+}
+
+//*============================================================================*
+// MARK: * Data Int x Comparison x Canvas
+//*============================================================================*
+
+extension DataInt.Canvas {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var isZero: Bool {
+        Body(self).isZero
+    }
+    
+    @inlinable public borrowing func compared(to other: Self) -> Signum {
+        Body(self).compared(to: Body(other))
     }
 }
