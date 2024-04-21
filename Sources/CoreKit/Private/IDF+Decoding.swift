@@ -59,7 +59,7 @@ extension Namespace.IntegerDescriptionFormat {
     
     @frozen public struct Decoder {
         
-        @frozen public enum Error: Swift.Error { 
+        @frozen public enum Error: Swift.Error {
             case unknown
             case magnitudeIsInfinite
         }
@@ -116,6 +116,7 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    #warning("make nongeneric")
     @inlinable func magnitude<Magnitude>(numerals: consuming UnsafeBufferPointer<UInt8>) throws -> Magnitude where Magnitude: BinaryInteger {
         typealias IDF = Namespace.IntegerDescriptionFormat
         //=--------------------------------------=
@@ -127,42 +128,32 @@ extension Namespace.IntegerDescriptionFormat.Decoder {
         let division = IX(numerals.count).division(self.radix.exponent).unwrap()
         return try Namespace.withUnsafeTemporaryAllocation(of: UX.self, count: Int(division.ceil().unwrap())) {
             let words = DataInt<UX>.Canvas(consume $0)!
-            var index = IX.zero
             //=----------------------------------=
             // pointee: deferred deinitialization
             //=----------------------------------=
             defer {
-                words.start.deinitialize(count: Int(index))
+                words.start.deinitialize(count: Int(words.count))
             }
             //=----------------------------------=
             // pointee: initialization
             //=----------------------------------=
-            forwards: if division.remainder > 0 {
-                var element = 0 as UX
-                
-                for ascii  in numerals[..<Int(division.remainder)] {
-                    element = try element &* 10 &+ UX(load: U8(IDF.decode(ascii: ascii)))
-                }
-                
-                numerals = UnsafeBufferPointer(rebasing: numerals[Int(division.remainder)...])
-                words[unchecked: index] = element
-                index[{ $0.incremented().assert() }]
+            var remainder = division.remainder
+            if  remainder == .zero {
+                remainder = self.radix.exponent
             }
             
-            forwards: while index < words.count {
-                var element = 0 as UX
-                
-                for ascii  in numerals[..<Int(self.radix.exponent)] {
-                    element = try element &* 10 &+ UX(load: U8(IDF.decode(ascii: ascii)))
+            for index in words.indices {
+                var element = UX.zero
+                for character in numerals[..<Int(remainder)] {
+                    element = try element &* self.radix.base &+ UX(load: U8(IDF.decode(ascii: character)))
                 }
                 
-                numerals = UnsafeBufferPointer(rebasing: numerals[Int(self.radix.exponent)...])
+                numerals = UnsafeBufferPointer(rebasing: numerals[Int(remainder)...])
                 words[unchecked: index] = words[unchecked: ..<index].multiply(by: self.radix.power, add: element)
-                index[{ $0.incremented().assert() }]
+                remainder = self.radix.exponent
             }
             //=----------------------------------=
             Swift.assert(numerals.isEmpty)
-            Swift.assert(index == words.count)
             //=----------------------------------=
             return try Magnitude.exactly(DataInt(words), mode: .unsigned).get()
         }
