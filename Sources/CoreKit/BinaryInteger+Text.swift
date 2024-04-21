@@ -22,13 +22,13 @@
     
     @inlinable public init?(_ description: String) {
         brr: do  {
-            self = try IDF.Decoder().decode(description)
+            self = try Namespace.IntegerDescriptionFormat.Decoder().decode(description)
         }   catch  {
             return nil
         }
     }
     
     @inlinable public var description: String {
-        IDF.Encoder().encode(self)
+        Namespace.IntegerDescriptionFormat.Encoder().encode(self)
     }
 }
