@@ -48,7 +48,7 @@ extension Namespace.IntegerDescriptionFormat {
         }
         
         @inlinable public func divisibilityByPowerUpperBound(magnitude: DataInt<UX>.Body) -> IX {
-            IX(magnitude.count) * IX(bitPattern: UX.size / self.base.count(.descending(0))) + 1
+            IX(UX(bitPattern: magnitude.count) * UX.size / self.base.count(.descending(0)) + 1)
         }
     }
 }
