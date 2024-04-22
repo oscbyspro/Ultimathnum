@@ -41,9 +41,8 @@ extension Test {
     )   where T: BinaryInteger {
         
         checkSameSizeInverseInvariant: do {
-            let lhs = expectation.map({ $0.remainder.plus($0.quotient.times(divisor)) })
-            let rhs = Fallible(dividend, error: expectation.error)
-            same(lhs, rhs, "dividend != divisor &* quotient &+ remainder")
+            let reversed = expectation.map({ $0.quotient &* divisor &+ $0.remainder }).value
+            same(dividend, reversed, "dividend != divisor &* quotient &+ remainder")
         }
         
         if !expectation.error {

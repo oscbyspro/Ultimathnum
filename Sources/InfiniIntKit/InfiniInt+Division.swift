@@ -29,6 +29,10 @@ extension InfiniInt {
     
     @inline(never) @inlinable consuming public func division(_ divisor: consuming Self) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
+        if  divisor.storage.isZero {
+            return Fallible.failure(Division(quotient: .zero, remainder: self))
+        }
+        //=--------------------------------------=
         let lhsAppendixIsSet = Bool(self   .appendix)
         let rhsAppendixIsSet = Bool(divisor.appendix)
         //=--------------------------------------=
@@ -83,8 +87,10 @@ extension InfiniInt where Source == Source.Magnitude {
         // divisor is at most one element
         //=--------------------------------------=
         if  other.storage.count <= 1 {
-            let divisor = other.storage.body.first ?? Element.zero
-            
+            //=----------------------------------=
+            // division: divisor != 0
+            //=----------------------------------=
+            let divisor = other.storage.body.first! as Element.Magnitude
             let remainder = self.withUnsafeMutableBinaryIntegerBody {
                 $0.divisionSetQuotientGetRemainder(Nonzero(unchecked: divisor))
             }
