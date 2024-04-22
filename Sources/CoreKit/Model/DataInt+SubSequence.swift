@@ -66,6 +66,22 @@ extension DataInt.Body {
             return Self(self.start + Int(range.lowerBound), count: IX(range.count))
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// ### Development
+    ///
+    /// - TODO: Consider a `Doublet<Self>` return type.
+    ///
+    @inlinable public consuming func split(at index: Index) -> (low: Self, high: Self) {
+        //=--------------------------------------=
+        Swift.assert(index >= 0000000000, String.indexOutOfBounds())
+        Swift.assert(index <= self.count, String.indexOutOfBounds())
+        //=--------------------------------------=
+        return (low: (copy self)[unchecked: ..<index], high: (consume self)[unchecked: index...])
+    }
 }
 
 //*============================================================================*

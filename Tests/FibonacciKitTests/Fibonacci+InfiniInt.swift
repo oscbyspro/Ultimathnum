@@ -36,7 +36,7 @@ extension FibonacciTests {
     
     func testInfiniInt() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            Case<T>.checkInstancesNearZeroIndex(Test(), invariants: false)
+            Case<T>.checkInstancesNearZeroIndex(Test())
         }
         
         for type in Self.infiniIntList {
@@ -48,7 +48,7 @@ extension FibonacciTests {
     func testInfiniIntIXLPrime3131() {
         let (sequence) = try? Fibonacci<IXL>(28751)
         guard let sequence = Test().some(sequence) else { return }
-        Case(sequence, invariants: false).check(IXL("""
+        Case(sequence).check(IXL("""
         0000000179539422936879670273043077421513074187637090531654188941\
         5741714251061429371751580439620520390780557350979774794868208366\
         4166176620878272615316694300157066431179767088884468131326626406\
@@ -150,7 +150,7 @@ extension FibonacciTests {
     func testInfiniIntUXLPrime3131() {
         let (sequence) = try? Fibonacci<UXL>(28751)
         guard let sequence = Test().some(sequence) else { return }
-        Case(sequence, invariants: false).check(UXL("""
+        Case(sequence).check(UXL("""
         0000000179539422936879670273043077421513074187637090531654188941\
         5741714251061429371751580439620520390780557350979774794868208366\
         4166176620878272615316694300157066431179767088884468131326626406\

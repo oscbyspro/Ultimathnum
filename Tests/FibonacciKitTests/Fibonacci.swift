@@ -78,10 +78,10 @@ extension FibonacciTests.Case {
     }
     
     func checkDivisionInvariants() {
-        for divisor: Value in [2, 3, 5, 7] {
+        for divisor: Value in [2, 3, 5, 7, 11] {
             brrrrrr: do {
                 let a = self.item
-                let b = try Item(self.item.index.quotient(divisor).get())
+                let b = try Item(a.index.quotient(divisor).get())
                 let c = try Item(a.index.minus(b.index).get())
                 let d = try a.next.division(b.next).get()
                 let e = try b.element.times(c.element).get()

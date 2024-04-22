@@ -104,6 +104,10 @@ extension InfiniInt {
         _ action: (DataInt<Element.Magnitude>.Canvas) throws -> T
     )   rethrows -> T {
         
-        try self.storage.withUnsafeMutableBinaryIntegerBody(action)
+        defer {
+            self.storage.normalize()
+        }
+        
+        return try self.storage.withUnsafeMutableBinaryIntegerBody(action)
     }
 }

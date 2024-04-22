@@ -101,7 +101,7 @@ extension DataInt.Canvas {
     /// - Parameter self: A nonempty buffer of size `dividend.count - divisor.count`.
     ///
     /// - Parameter dividend: The normalized `dividend`. It must be wider than
-    ///   the `divisor` and less than `divisor << (Element.bitWidth * self.count)`
+    ///   the `divisor` and less than `divisor << (Element.size * self.count)`
     ///   to ensure that the `quotient` fits.
     ///
     /// - Parameter divisor: The normalized `divisor`. Its last element's most significant

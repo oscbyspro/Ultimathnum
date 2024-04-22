@@ -41,16 +41,16 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func signum() -> Signum {
-        self.compared(to: 0)
-    }
-    
     /// Returns whether this value is less than zero.
     ///
     /// It checks `isSigned` first which is preferred in inlinable generic code.
     ///
     @inlinable public var isNegative: Bool {
         Self.isSigned && Bool(self.appendix)
+    }
+    
+    @inlinable public borrowing func signum() -> Signum {
+        self.compared(to: 0)
     }
 }
 

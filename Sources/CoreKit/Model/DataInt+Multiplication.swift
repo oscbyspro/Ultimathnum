@@ -196,10 +196,10 @@ extension DataInt.Canvas {
     /// Initializes `self` to the [Karatsuba][algorithm] product of `lhs` and `rhs`.
     ///
     ///
-    ///                 <───────── suffix ────────────>
-    ///       ┌───────────────────┬───────────────────┐
+    ///                 i         j
+    ///       ┌─────────┴─────╌╌╌╌┴───────────────╌╌╌╌┐
     ///       │       a * x       │       b * y       ->
-    ///       └─────────┬─────────┴─────────┬─────────┘
+    ///       └─────────┬─────╌╌╌╌┴─────────┬─────╌╌╌╌┘
     ///             add │       a * x       ├ u
     ///                 ├───────────────────┤
     ///             add │       b * y       ├ v
@@ -217,19 +217,22 @@ extension DataInt.Canvas {
         //=--------------------------------------=
         Swift.assert(self.count == lhs.count + rhs.count, String.indexOutOfBounds())
         //=--------------------------------------=
-        let i: IX = Swift.max(lhs.count, rhs.count) &>> 1
-        let j: IX = i &<< 1
+        let i: IX = (self.count &>> 2)
+        let j: IX = (((((i))))) &<< 1
         
-        var a: Body = lhs[unchecked: ..<i].normalized()
-        var b: Body = lhs[unchecked: i...].normalized()
+        var (a,b) = lhs.split(at: Swift.min(i, lhs.count))
+        a = a.normalized()
+        b = b.normalized()
         
-        var x: Body = rhs[unchecked: ..<i].normalized()
-        var y: Body = rhs[unchecked: i...].normalized()
+        var (x,y) = rhs.split(at: Swift.min(i, rhs.count))
+        x = x.normalized()
+        y = y.normalized()
         
         let axCount: IX = a.count + x.count
         let byCount: IX = b.count + y.count
         let maxSize: IX = Swift.max(a.count, b.count) + Swift.max(x.count, y.count)
-        
+
+        Swift.assert(axCount <= j)
         Namespace.withUnsafeTemporaryAllocation(of: Element.self, count: Int(2 * maxSize)) { buffer in
             //=----------------------------------=
             // pointee: deferred deinitialization
@@ -249,17 +252,18 @@ extension DataInt.Canvas {
             u[unchecked: axCount...].initialize(repeating: Element.zero)
             v[unchecked: ..<byCount].initialize(to: b, times: y)
             v[unchecked: byCount...].initialize(repeating: Element.zero)
+            Swift.assert(v[unchecked:(count-j)...].isZero)
             //=----------------------------------=
             // set (a * x) and (b * y)
             //=----------------------------------=
-            self[unchecked: ..<j].load(Body(u[unchecked: ..<axCount]))
-            self[unchecked: j...].load(Body(v[unchecked: ..<byCount]))
+            self[unchecked: ..<j].load(Body(u[unchecked: ..<(axCount)]))
+            self[unchecked: j...].load(Body(v[unchecked: ..<(count-j)]))
             //=----------------------------------=
             // sub (a * x) and (b * y)
             //=----------------------------------=
             let suffix = self[unchecked: i...]
-            _ = suffix.increment(by: Body(u[unchecked: ..<axCount]))
-            _ = suffix.increment(by: Body(v[unchecked: ..<byCount]))
+            _ = suffix.increment(by: Body(u[unchecked: ..<(axCount)]))
+            _ = suffix.increment(by: Body(v[unchecked: ..<(count-j)]))
             //=----------------------------------=
             // regions
             //=----------------------------------=
