@@ -65,7 +65,12 @@ extension DataInt.Canvas {
     // MARK: Initialization
     //=------------------------------------------------------------------------=
     
-    /// Initializes each elements in `self` to `element`.
+    /// Deinitializes each element in `self`.
+    @inlinable public func deinitialize() {
+        self.start.deinitialize(count: Int(self.count))
+    }
+    
+    /// Initializes each element in `self` to `element`.
     @inlinable public func initialize(repeating element: Element) {
         self.start.initialize(repeating: element, count: Int(self.count))
     }

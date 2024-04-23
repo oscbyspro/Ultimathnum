@@ -8,47 +8,45 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Integer Description Format x Exponentiation
+// MARK: * Text Int x Exponentiation
 //*============================================================================*
 
-extension Namespace.IntegerDescriptionFormat {
+extension TextInt {
     
-    @frozen public struct Exponentiation {
+    @frozen @usableFromInline package struct Exponentiation {
         
         //=--------------------------------------------------------------------=
         // MARK: State
         //=--------------------------------------------------------------------=
         
-        public let exponent: IX
         public let power: UX
+        public let exponent: IX
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
-        @inlinable public init() {
-            var exponent = 01 as IX
-            var power = 00010 as UX
-            
-            while let next = power.times(10).optional() {
-                exponent &+= 1
-                power = next
+        @inlinable public init(_ radix: UX) throws {
+            if  radix < 2 {
+                throw Failure.invalid
             }
             
+            var power = radix as UX
+            var exponent = 01 as IX
+            
+            while true {
+                let next = power.multiplication(radix)
+                
+                if  next.high == 0 || (next.high == 1 && next.low == 0) {
+                    power = next.low
+                    exponent &+= 1
+                }
+                
+                guard next.high == 0 else { break }
+            }
+            
+            self.power    = power
             self.exponent = exponent
-            self.power = power
-        }
-        
-        //=--------------------------------------------------------------------=
-        // MARK: Utilities
-        //=--------------------------------------------------------------------=
-        
-        @inlinable public var base: UX {
-            10
-        }
-        
-        @inlinable public func divisibilityByPowerUpperBound(magnitude: DataInt<UX>.Body) -> IX {
-            IX(UX(bitPattern: magnitude.count) * UX.size / self.base.count(.descending(0)) + 1)
         }
     }
 }

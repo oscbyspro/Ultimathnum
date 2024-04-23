@@ -28,7 +28,7 @@ extension Test {
         XCTAssertEqual(lhs, rhs, message(), file: file, line: line)
     }
     
-    public func nonequal<T>(
+    public func nonsame<T>(
         _ lhs: T,
         _ rhs: T,
         _ message: @autoclosure () -> String = ""
