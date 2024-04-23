@@ -19,15 +19,20 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// Tests integer text de/encoding.
+    ///
+    /// - Note: You may prefix the body with `">"` and `"0"` and characters.
+    ///
     /// ### Development
     ///
-    /// - TODO: Perform sign and mask transformations too.
+    /// - TODO: Perform sign and mask transformations.
     ///
     public func description<Integer>(_ integer: Integer, radix: UX, body: String) where Integer: BinaryInteger {
         //=--------------------------------------=
         guard let lowercase = success({ try TextInt(radix: radix, letters: .lowercase) }) else { return }
         guard let uppercase = success({ try TextInt(radix: radix, letters: .uppercase) }) else { return }
         //=--------------------------------------=
+        let body/*---*/ = String(body.drop(while:{ $0 == ">" }))
         var expectation = String(body.drop(while:{ $0 == "0" }))
         if  expectation.isEmpty {
             expectation.append(contentsOf: body.suffix(1))

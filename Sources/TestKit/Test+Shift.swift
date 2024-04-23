@@ -31,7 +31,6 @@ extension Test {
         _ direction: ShiftDirection,
         _ semantics: ShiftSemantics
     )   where T: SystemsInteger {
-        
         //=--------------------------------------=
         self.shift(instance, distance, expectation, direction, semantics, BinaryIntegerID())
         //=--------------------------------------=
