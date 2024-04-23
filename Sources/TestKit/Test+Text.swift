@@ -25,8 +25,8 @@ extension Test {
     ///
     public func description<Integer>(_ integer: Integer, radix: UX, body: String) where Integer: BinaryInteger {
         //=--------------------------------------=
-        guard let lowercase = success({ try TextInt(radix: radix, uppercase: false) }) else { return }
-        guard let uppercase = success({ try TextInt(radix: radix, uppercase: true ) }) else { return }
+        guard let lowercase = success({ try TextInt(radix: radix, letters: .lowercase) }) else { return }
+        guard let uppercase = success({ try TextInt(radix: radix, letters: .uppercase) }) else { return }
         //=--------------------------------------=
         var expectation = String(body.drop(while:{ $0 == "0" }))
         if  expectation.isEmpty {

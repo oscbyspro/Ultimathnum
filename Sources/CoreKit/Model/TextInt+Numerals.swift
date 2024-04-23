@@ -28,13 +28,13 @@ extension TextInt {
         @usableFromInline let o00x10: U8
 
         @usableFromInline let i10x36: U8
-        @usableFromInline let o10x36: U8
+        @usableFromInline var o10x36: U8
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
-        @inlinable public init(_ radix: UX, uppercase: Bool) throws {
+        @inlinable public init(_ radix: UX, letters: Letters) throws {
             if  radix <= 10 {
                 self.i00x10 = U8(load: radix)
                 self.i10x36 = 00
@@ -46,7 +46,21 @@ extension TextInt {
             }
             
             self.o00x10 = 48
-            self.o10x36 = uppercase ? 65 : 97
+            self.o10x36 = letters.start
+        }
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Transformations
+        //=--------------------------------------------------------------------=
+        
+        @inlinable public consuming func lowercased() -> Self {
+            self.o10x36 = Letters.lowercase.start
+            return self
+        }
+        
+        @inlinable public consuming func uppercased() -> Self {
+            self.o10x36 = Letters.uppercase.start
+            return self
         }
         
         //=--------------------------------------------------------------------=
@@ -57,8 +71,12 @@ extension TextInt {
             self.i00x10 &+ self.i10x36
         }
         
-        @inlinable public var uppercase: Bool {
-            self.o10x36 == 65
+        @inlinable public var letters: Letters {
+            switch self.o10x36 {
+            case Letters.uppercase.start: return Letters.uppercase
+            case Letters.lowercase.start: return Letters.lowercase
+            default: preconditionFailure(String.brokenInvariant())
+            }
         }
         
         //=--------------------------------------------------------------------=
@@ -83,7 +101,7 @@ extension TextInt {
         //=--------------------------------------------------------------------=
         
         /// Decodes the given numerals and truncates the result if it is too big.
-        @inlinable public func load(_ numerals: consuming UnsafeBufferPointer<UInt8>, as type: UX.Type) throws -> UX {
+        @inlinable func load(_ numerals: consuming UnsafeBufferPointer<UInt8>, as type: UX.Type) throws -> UX {
             var value = UX.zero
             let radix = UX(load: self.radix)
             

@@ -30,27 +30,42 @@
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    public static let decimal = try! Self(radix: 10)
+    public static let decimal = Self.radix(10)
     
-    #warning("WIP")
-    @inlinable public static func radix(_ radix: UX) -> Self {
-        try! Self(radix: radix)
-    }
-        
+    public static let hexadecimal = Self.radix(16)
+    
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    @usableFromInline let numerals: Numerals
-    @usableFromInline let exponentiation: Exponentiation
+    @usableFromInline var numerals: Numerals
+    @usableFromInline var exponentiation: Exponentiation
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(radix: UX, uppercase: Bool = false) throws {
-        self.numerals = try Numerals(radix, uppercase: uppercase)
+    @inlinable public static func radix(_ radix: UX) -> Self {
+        try! Self(radix: radix)
+    }
+    
+    @inlinable public init(radix: UX, letters: Letters = .lowercase) throws {
+        self.numerals = try Numerals(radix, letters: letters)
         self.exponentiation = try Exponentiation(radix)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func  lowercased() -> Self {
+        self.numerals = self.numerals.lowercased()
+        return self
+    }
+    
+    @inlinable public consuming func  uppercased() -> Self {
+        self.numerals = self.numerals.uppercased()
+        return self
     }
     
     //=------------------------------------------------------------------------=
@@ -61,19 +76,8 @@
         UX(load: self.numerals.radix as U8)
     }
     
-    @inlinable public var uppercase: Bool {
-        self.numerals.uppercase
-    }
-    
-    //*========================================================================*
-    // MARK: * Failure
-    //*========================================================================*
-    
-    @frozen public enum Failure: Swift.Error & Equatable {
-        
-        case invalid
-        
-        case overflow
+    @inlinable public var letters: Letters {
+        self.numerals.letters
     }
 }
 

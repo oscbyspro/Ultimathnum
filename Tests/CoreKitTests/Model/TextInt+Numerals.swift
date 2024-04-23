@@ -26,19 +26,19 @@ extension TextIntTests {
         //=--------------------------------------=
         // test: the maximum radix is 36
         //=--------------------------------------=
-        Test().failure({ try T.Numerals(37, uppercase: false) }, E.invalid)
-        Test().failure({ try T.Numerals(37, uppercase: true ) }, E.invalid)
+        Test().failure({ try T.Numerals(37, letters: .lowercase) }, E.invalid)
+        Test().failure({ try T.Numerals(37, letters: .uppercase) }, E.invalid)
         //=--------------------------------------=
         // test: for each radix in 0 through 36
         //=--------------------------------------=
         for radix: UX in 0 ... 36  {
-            guard let lowercase = Test().success({ try T.Numerals(radix, uppercase: false) }) else { break }
-            guard let uppercase = Test().success({ try T.Numerals(radix, uppercase: true ) }) else { break }
+            guard let lowercase = Test().success({ try T.Numerals(radix, letters: .lowercase) }) else { break }
+            guard let uppercase = Test().success({ try T.Numerals(radix, letters: .uppercase) }) else { break }
             //=----------------------------------=
-            Test().same(lowercase.radix, U8(load: radix))
-            Test().same(lowercase.uppercase, false)
-            Test().same(uppercase.radix, U8(load: radix))
-            Test().same(uppercase.uppercase, true )
+            Test().same(lowercase.radix,   U8(load: radix))
+            Test().same(lowercase.letters, TextInt.Letters.lowercase)
+            Test().same(uppercase.radix,   U8(load: radix))
+            Test().same(uppercase.letters, TextInt.Letters.uppercase)
             //=----------------------------------=
             // test: decoding
             //=----------------------------------=

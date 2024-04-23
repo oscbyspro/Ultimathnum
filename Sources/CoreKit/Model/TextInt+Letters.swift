@@ -8,39 +8,33 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Binary Integer x Text
+// MARK: * Text Int x Letters
 //*============================================================================*
+
+extension TextInt {
+    
+    @frozen public enum Letters: Equatable {
+        
+        case uppercase
+        
+        case lowercase
+    }
+}
+
 //=----------------------------------------------------------------------------=
-// TODO: @_unavailableInEmbedded is not a known attribute in Swift 5.9
+// MARK: + Details
 //=----------------------------------------------------------------------------=
 
-/* @_unavailableInEmbedded */ extension BinaryInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init?(_ description: String) {
-        brr: do  {
-            self = try TextInt.decimal.decode(description)
-        }   catch  {
-            return nil
-        }
-    }
-    
-    @inlinable public init(_ description: some StringProtocol, in format: TextInt) throws {
-        self = try format.decode(description)
-    }
+extension TextInt.Letters {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public var description: String {
-        TextInt.decimal.encode(self)
-    }
-    
-    @inlinable public func description(in format: TextInt) -> String {
-        format.encode(self)
+    @inlinable var start: U8 {
+        switch self {
+        case .uppercase: return 065
+        case .lowercase: return 097
+        }
     }
 }

@@ -27,8 +27,8 @@ extension TextIntTests {
             let negative = T.isSigned ? R.success(-1) : R.failure(.overflow)
             //=----------------------------------=
             for radix in Self.radices {
-                guard let lowercase = Test().some(try? TextInt(radix: radix, uppercase: false)) else { return }
-                guard let uppercase = Test().some(try? TextInt(radix: radix, uppercase: true )) else { return }
+                guard let lowercase = Test().some(try? TextInt(radix: radix, letters: .lowercase)) else { return }
+                guard let uppercase = Test().some(try? TextInt(radix: radix, letters: .uppercase)) else { return }
                 
                 for item in [lowercase, uppercase] {
                     Case(item).decode(   "0", R.success(0))
@@ -122,8 +122,8 @@ extension TextIntTests {
     
     func testEncodingAsAnyBaseIsValid() {
         for radix in Self.radices {
-            guard let lowercase = Test().success({ try TextInt(radix: radix, uppercase: false) }) else { break }
-            guard let uppercase = Test().success({ try TextInt(radix: radix, uppercase: true ) }) else { break }
+            guard let lowercase = Test().success({ try TextInt(radix: radix, letters: .lowercase) }) else { break }
+            guard let uppercase = Test().success({ try TextInt(radix: radix, letters: .uppercase) }) else { break }
             //=----------------------------------=
             // test: no elements in body is zero
             //=----------------------------------=
