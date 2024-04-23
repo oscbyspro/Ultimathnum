@@ -57,19 +57,14 @@ extension TextInt {
     // MARK: Utiliites
     //=------------------------------------------------------------------------=
     
+    #warning("move")
     @inlinable func magnitude<Magnitude: BinaryInteger>(
         numerals: consuming UnsafeBufferPointer<UInt8>
     )   throws -> Magnitude {
         var magnitude: Magnitude?
         
-        if  self.exponentiation.power == 0 {
-            try self.words16(numerals: numerals) {
-                magnitude = Magnitude.exactly($0, mode: .unsigned).optional()
-            }
-        }   else {
-            try self.words10(numerals: numerals) {
-                magnitude = Magnitude.exactly($0, mode: .unsigned).optional()
-            }
+        try self.words(numerals: numerals) {
+            magnitude = Magnitude.exactly($0, mode: .unsigned).optional()
         }
         
         if  let magnitude {
@@ -79,13 +74,10 @@ extension TextInt {
         }
     }
     
-    /// - Requires: The `power` must be zero.
-    @usableFromInline func words16(
+    @usableFromInline func words(
         numerals: consuming UnsafeBufferPointer<UInt8>,
         success: (DataInt<UX>) throws -> Void
     )   throws {
-        //=--------------------------------------=
-        Swift.assert(self.exponentiation.power == 0)
         //=--------------------------------------=
         if  numerals.isEmpty {
             throw Failure.invalid
@@ -94,73 +86,42 @@ extension TextInt {
         numerals = UnsafeBufferPointer(rebasing: numerals.drop(while:{ $0 == 48 }))
         let division = IX(numerals.count).division(self.exponentiation.exponent).unwrap()
         return try Namespace.withUnsafeTemporaryAllocation(of: UX.self, count: Int(division.ceil().unwrap())) {
-            let words = DataInt<UX>.Canvas(consume $0)!
-            var index = words.count
-            //=----------------------------------=
-            // pointee: deferred deinitialization
-            //=----------------------------------=
-            defer {
-                words[unchecked: index...].deinitialize()
-            }
-            //=----------------------------------=
-            // pointee: initialization
-            //=----------------------------------=
-            var stride = division.remainder
-            if  stride == IX.zero {
-                stride = self.exponentiation.exponent
-            }
-                        
-            while  index > IX.zero {
-                let part = UnsafeBufferPointer(rebasing: numerals[..<Int(stride)])
-                numerals = UnsafeBufferPointer(rebasing: numerals[Int(stride)...])
-                let element = try self.numerals.load(part, as: UX.self)
-                index[{ $0.decremented().assert() }]
-                words[unchecked: index] = element
-                stride = self.exponentiation.exponent
-            }
-            
-            Swift.assert(numerals.isEmpty)
-            Swift.assert(index == IX.zero)
-            return try success(DataInt(words))
-        }
-    }
-    
-    /// - Requires: The `power` must be nonzero.
-    @usableFromInline func words10(
-        numerals: consuming UnsafeBufferPointer<UInt8>,
-        success: (DataInt<UX>) throws -> Void
-    )   throws {
-        //=--------------------------------------=
-        Swift.assert(self.exponentiation.power != 0)
-        //=--------------------------------------=
-        if  numerals.isEmpty {
-            throw Failure.invalid
-        }
-        //=--------------------------------------=
-        numerals = UnsafeBufferPointer(rebasing: numerals.drop(while:{ $0 == 48 }))
-        let division = IX(numerals.count).division(self.exponentiation.exponent).unwrap()
-        return try Namespace.withUnsafeTemporaryAllocation(of: UX.self, count: Int(division.ceil().unwrap())) {
+            let backwards = self.exponentiation.power == .zero
             let words = DataInt<UX>.Canvas(consume $0)!
             var index = IX.zero
             //=----------------------------------=
             // pointee: deferred deinitialization
             //=----------------------------------=
             defer {
-                words[unchecked: ..<index].deinitialize()
+                
+                let initialized = if backwards {
+                    words[unchecked: (words.count - index)...]
+                }   else {
+                    words[unchecked: ..<index]
+                };  initialized.deinitialize()
+                
             }
             //=----------------------------------=
             // pointee: initialization
             //=----------------------------------=
+            let mask = IX(repeating: Bit(backwards))
+            let head = words.count & mask
+            
             var stride = division.remainder
             if  stride == IX.zero {
                 stride = self.exponentiation.exponent
             }
-            
+                        
             while  index < words.count {
                 let part = UnsafeBufferPointer(rebasing: numerals[..<Int(stride)])
                 numerals = UnsafeBufferPointer(rebasing: numerals[Int(stride)...])
-                let element = try self.numerals.load(part, as: UX.self)
-                words[unchecked: index] = words[unchecked: ..<index].multiply(by: self.exponentiation.power, add: element)
+                var element = try self.numerals.load(part, as: UX.self)
+
+                if !backwards {
+                    element = words[unchecked: ..<index].multiply(by: self.exponentiation.power, add: element)
+                }
+                
+                words[unchecked:index ^ mask &+ head] = element
                 index[{  $0.incremented().assert() }]
                 stride = self.exponentiation.exponent
             }
