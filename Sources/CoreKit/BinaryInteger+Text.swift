@@ -28,7 +28,21 @@
         }
     }
     
+    #warning("new")
+    @inlinable public init(_ description: some StringProtocol, in format: TextInt) throws {
+        self = try format.decode(description)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
     @inlinable public var description: String {
         TextInt.decimal.encode(self)
+    }
+    
+    #warning("new")
+    @inlinable public func description(in format: TextInt) -> String {
+        format.encode(self)
     }
 }

@@ -32,6 +32,11 @@
     
     public static let decimal = try! Self(radix: 10)
     
+    #warning("WIP")
+    @inlinable public static func radix(_ radix: UX) -> Self {
+        try! Self(radix: radix)
+    }
+        
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
