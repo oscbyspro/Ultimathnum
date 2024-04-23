@@ -29,18 +29,26 @@ extension TextInt {
     @inlinable public func decode<T: BinaryInteger>(_ description: UnsafeBufferPointer<UInt8>) throws -> T {
         let components = TextInt.makeSignMaskBody(from: description)
         let numerals = UnsafeBufferPointer(rebasing: components.body)
-        var body: T.Magnitude = try self.magnitude(numerals: numerals)
+        var body = Fallible(T.Magnitude.zero, error: true)
+        
+        try self.words(numerals: numerals) {
+            body = T.Magnitude.exactly($0, mode: .unsigned)
+        }
+        
+        if  body.error {
+            throw Failure.overflow
+        }
         
         if  components.mask == Bit.one {
             if  T.size.isInfinite {
-                body.toggle()
+                body.value.toggle()
             }   else {
                 throw Failure.overflow
             }
         }
         
         branch: do {
-            return try T.exactly(sign: components.sign, magnitude: body).get()
+            return try T.exactly(sign: components.sign, magnitude: body.value).get()
         }   catch {
             throw Failure.overflow
         }
@@ -57,38 +65,20 @@ extension TextInt {
     // MARK: Utiliites
     //=------------------------------------------------------------------------=
     
-    #warning("move")
-    @inlinable func magnitude<Magnitude: BinaryInteger>(
-        numerals: consuming UnsafeBufferPointer<UInt8>
-    )   throws -> Magnitude {
-        var magnitude: Magnitude?
-        
-        try self.words(numerals: numerals) {
-            magnitude = Magnitude.exactly($0, mode: .unsigned).optional()
-        }
-        
-        if  let magnitude {
-            return magnitude
-        }   else {
-            throw Failure.overflow
-        }
-    }
-    
-    @usableFromInline func words(
-        numerals: consuming UnsafeBufferPointer<UInt8>,
-        success: (DataInt<UX>) throws -> Void
-    )   throws {
+    @usableFromInline func words(numerals: consuming UnsafeBufferPointer<UInt8>, success: (DataInt<UX>) -> Void) throws {
         //=--------------------------------------=
         if  numerals.isEmpty {
             throw Failure.invalid
+        }   else {
+            numerals = UnsafeBufferPointer(rebasing: numerals.drop(while:{ $0 == 48 }))
         }
         //=--------------------------------------=
-        numerals = UnsafeBufferPointer(rebasing: numerals.drop(while:{ $0 == 48 }))
         let division = IX(numerals.count).division(self.exponentiation.exponent).unwrap()
-        return try Namespace.withUnsafeTemporaryAllocation(of: UX.self, count: Int(division.ceil().unwrap())) {
-            let backwards = self.exponentiation.power == .zero
+        let count = division.ceil().unwrap()
+        return try Namespace.withUnsafeTemporaryAllocation(of: UX.self, count: Int(count)) {
             let words = DataInt<UX>.Canvas(consume $0)!
             var index = IX.zero
+            let backwards = self.exponentiation.power == .zero
             //=----------------------------------=
             // pointee: deferred deinitialization
             //=----------------------------------=
@@ -125,10 +115,12 @@ extension TextInt {
                 index[{  $0.incremented().assert() }]
                 stride = self.exponentiation.exponent
             }
-            
+            //=----------------------------------=
+            // path: success
+            //=----------------------------------=
             Swift.assert(numerals.isEmpty)
             Swift.assert(index == words.count)
-            return try success(DataInt(words))
+            return success(DataInt(words))
         }
     }
 }
