@@ -81,13 +81,13 @@ extension TextIntTests {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             typealias R = Result<T, TextInt.Failure>
 
-            Case(try! TextInt(radix: 02)).decode("2", R.failure(.invalid))
-            Case(try! TextInt(radix: 10)).decode("A", R.failure(.invalid))
-            Case(try! TextInt(radix: 16)).decode("G", R.failure(.invalid))
+            Case(TextInt.radix(02)).decode("2", R.failure(.invalid))
+            Case(TextInt.radix(10)).decode("a", R.failure(.invalid))
+            Case(TextInt.radix(16)).decode("g", R.failure(.invalid))
             
             for radix in Self.radices {
-                guard let item = Test().success({ try TextInt(radix: radix) }) else { return }
-        
+                let (item) = TextInt.radix(radix)
+
                 Case(item).decode(   " ", R.failure(.invalid))
                 Case(item).decode(   "+", R.failure(.invalid))
                 Case(item).decode(   "-", R.failure(.invalid))

@@ -22,7 +22,7 @@ extension TextIntTests {
     
     func testEncodingAsBase10() {
         func whereTypeIs<T>(_ type: T.Type) where T: BinaryInteger {
-            let item = try! TextInt(radix: 10)
+            let (item) = TextInt.radix(10)
 
             guard T.size >= U8.size else { return }
             if  T.isSigned {

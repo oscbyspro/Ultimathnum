@@ -18,7 +18,7 @@ extension TextInt {
     //*========================================================================*
     
     /// Codes values in `0` to `36` to and from ASCII.
-    @frozen @usableFromInline package struct Numerals {
+    @frozen @usableFromInline package struct Numerals: Equatable {
         
         //=--------------------------------------------------------------------=
         // MARK: State
@@ -95,10 +95,6 @@ extension TextInt {
             data &-= 10; if data < self.i10x36 { return data &+ self.o10x36 }
             throw TextInt.Failure.invalid
         }
-        
-        //=--------------------------------------------------------------------=
-        // MARK: Utilities
-        //=--------------------------------------------------------------------=
         
         /// Decodes the given numerals and truncates the result if it is too big.
         @inlinable func load(_ numerals: consuming UnsafeBufferPointer<UInt8>, as type: UX.Type) throws -> UX {

@@ -24,7 +24,7 @@
 ///
 /// - TODO: Consider adding a `<= UX.size` fast path.
 ///
-@frozen public struct TextInt {
+@frozen public struct TextInt: Equatable {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -46,10 +46,10 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public static func radix(_ radix: UX) -> Self {
-        try! Self(radix: radix)
+        try! Self(radix: radix, letters: .lowercase)
     }
     
-    @inlinable public init(radix: UX, letters: Letters = .lowercase) throws {
+    @inlinable public init(radix: UX, letters: Letters) throws {
         self.numerals = try Numerals(radix, letters: letters)
         self.exponentiation = try Exponentiation(radix)
     }
@@ -78,6 +78,14 @@
     
     @inlinable public var letters: Letters {
         self.numerals.letters
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        lhs.numerals == rhs.numerals
     }
 }
 

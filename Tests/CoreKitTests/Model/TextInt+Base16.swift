@@ -22,8 +22,8 @@ extension TextIntTests {
     
     func testEncodingAsBase16() {
         func whereTypeIs<T>(_ type: T.Type) where T: BinaryInteger {
-            let item = try! TextInt(radix: 16)
-            
+            let (item) = TextInt.radix(16)
+
             guard T.size >= U8.size else { return }
             if  T.isSigned {
                 Case(item).encode(T(load: I8 (load: 0x00 as U64)),   "0")
