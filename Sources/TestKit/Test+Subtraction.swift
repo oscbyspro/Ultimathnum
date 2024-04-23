@@ -41,11 +41,11 @@ extension Test {
         if !expectation.error {
             let abc: T = rhs.minus(lhs).value.negated().value
             let xyz: T = lhs.minus(rhs).value
-            same(abc, xyz, "binary integer subtraction must be reversible")
+            same(abc, xyz, "binary integer subtraction must be reversible [0]")
         }   else {
             let abc: T = rhs.minus(lhs).value
             let xyz: T = lhs.minus(rhs).value.negated().value
-            same(abc, xyz, "binary integer subtraction must be reversible")
+            same(abc, xyz, "binary integer subtraction must be reversible [1]")
         }
         
         if  rhs == 1 {
