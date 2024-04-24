@@ -8,8 +8,11 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Message
+// MARK: * String
 //*============================================================================*
+//=----------------------------------------------------------------------------=
+// MARK: + Errors
+//=----------------------------------------------------------------------------=
 
 extension String {
     
@@ -23,6 +26,7 @@ extension String {
         file: StaticString = #file,
         line: UInt = #line
     )   -> String {
+        
         "broken invariant in \(function) at \(file):\(line)"
     }
     
@@ -32,6 +36,7 @@ extension String {
         file: StaticString = #file,
         line: UInt = #line
     )   -> String {
+        
         "out of bounds in \(function) at \(file):\(line)"
     }
     
@@ -41,6 +46,7 @@ extension String {
         file: StaticString = #file,
         line: UInt = #line
     )   -> String {
+        
         "overflow in \(function) at \(file):\(line)"
     }
     
@@ -50,6 +56,7 @@ extension String {
         file: StaticString = #file,
         line: UInt = #line
     )    -> String {
+        
         "unreachable code path taken in \(function) at \(file):\(line)"
     }
 }
