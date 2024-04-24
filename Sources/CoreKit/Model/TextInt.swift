@@ -101,7 +101,7 @@ extension TextInt {
     
     @inlinable package static func makeSignMaskBody<UTF8>(
         from description: UTF8
-    )   -> (sign: Sign, mask: Bit?, body: UTF8.SubSequence) where UTF8: Collection<UInt8> {
+    )   -> (sign: Sign, mask: Bit, body: UTF8.SubSequence) where UTF8: Collection<UInt8> {
         var body = description[...] as UTF8.SubSequence
         let sign = self.removeLeadingSign(from: &body) ?? .plus
         let mask = self.removeLeadingMask(from: &body) ?? .zero

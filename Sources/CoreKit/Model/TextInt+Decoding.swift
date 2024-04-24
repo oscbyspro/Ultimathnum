@@ -77,8 +77,8 @@ extension TextInt {
         //=--------------------------------------=
         // capacity is measured in radix powers
         //=--------------------------------------=
-        let division = IX(numerals.count).division(self.exponentiation.exponent).unwrap()
-        let capacity = division.ceil().unwrap()
+        let division = IX(numerals.count).division(self.exponentiation.exponent).assert()
+        let capacity = division.ceil().assert()
         //=--------------------------------------=
         return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
             let words = DataInt<UX>.Canvas(consume $0)![unchecked: ..<(consume capacity)]
