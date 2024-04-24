@@ -33,7 +33,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func test02() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 02, body: "-" + """
         1000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000\
@@ -47,7 +46,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         1111111111111111111111111111111111111111111111111111111111111111\
         1111111111111111111111111111111111111111111111111111111111111111
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 02, body: """
         0001111100011110000111010001110000011011000110100001100100011000\
         0001011100010110000101010001010000010011000100100001000100010000\
@@ -71,7 +70,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
     
     func test03() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 03, body: """
         >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>-212211221201222221221111021020222\
         0000022211002111211122012220121222021011210212200122010001000121\
@@ -83,7 +81,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         0000022211002111211122012220121222021011210212200122010001000121\
         0120212210102020010111121211022111102111220220201211121011101021
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 03, body: """
         0000000000000000000000000000000012210112211101210122010202201212\
         2200112221212101221211222010022020100210220200100011100100222021\
@@ -104,7 +102,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test04() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 04, body: "-" + """
         2000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000
@@ -114,7 +111,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         1333333333333333333333333333333333333333333333333333333333333333\
         3333333333333333333333333333333333333333333333333333333333333333
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 04, body: """
         0133013201310130012301220121012001130112011101100103010201010100\
         0033003200310030002300220021002000130012001100100003000200010000
@@ -132,7 +129,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test05() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 05, body: """
         >>>>>>>>>>>>>>>>>-3334323240241144222433141011441000210314332402\
         3003242313133442033313110111332210012111100301020311021043214333
@@ -142,7 +138,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         0000000000000000003334323240241144222433141011441000210314332402\
         3003242313133442033313110111332210012111100301020311021043214332
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 05, body: """
         0000000000000000000424043311031102404011202312202132022104340041\
         4431003121344314114341012313341313423214420311244321214230031301
@@ -160,7 +156,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test06() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 06, body: """
         >>>>>>>>>>>>>>>>>>>>>>>>>>>>-31050325110053101131501013415513154\
         2350301310035104345400013243452501132403430315320140313343525012
@@ -170,7 +165,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         0000000000000000000000000000031050325110053101131501013415513154\
         2350301310035104345400013243452501132403430315320140313343525011
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 06, body: """
         0000000000000000000000000000004353050531332542114015530141512113\
         1210015440102001011522210020211244125255022541512055450000200144
@@ -188,7 +183,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test07() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 07, body: """
         >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>-502516521126261130633636133\
         3504421064511062363204066403424464106430553254544410111601410511
@@ -198,7 +192,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         0000000000000000000000000000000000000502516521126261130633636133\
         3504421064511062363204066403424464106430553254544410111601410510
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 07, body: """
         0000000000000000000000000000000000000114142063044505436351120634\
         3333263503132100565010106005630324255134635601621240633030645403
@@ -216,7 +210,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test08() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 08, body: """
         >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>-1000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000
@@ -226,7 +219,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         0000000000000000000000000000000000000000000777777777777777777777\
         7777777777777777777777777777777777777777777777777777777777777777
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 08, body: """
         0000000000000000000000000000000000000000000174360721603306414430\
         0561302505011422042100170340641402605011020034060120200300400400
@@ -244,7 +237,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
     
     func test09() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 09, body: """
         >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>-25757658857437228\
         0028407474818655823472561810101716783366114554274374826654534338
@@ -254,7 +246,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         0000000000000000000000000000000000000000000000025757658857437228\
         0028407474818655823472561810101716783366114554274374826654534337
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 09, body: """
         0000000000000000000000000000000000000000000000005715741718122655\
         8048777185486326632382030431086760556185430443785630144484523371
@@ -272,7 +264,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test10() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 10, body: """
         >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>-5789604461865\
         8097711785492504343953926634992332820282019728792003956564819968
@@ -282,7 +273,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         0000000000000000000000000000000000000000000000000005789604461865\
         8097711785492504343953926634992332820282019728792003956564819967
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 10, body: """
         0000000000000000000000000000000000000000000000000001407490462640\
         1341155369551180448584754667373453244490859944217516317499064576
@@ -300,7 +291,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
     
     func test11() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 11, body: """
         >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>-5564a636a6\
         83a141740734645043a52561643a0a749a7776a6175922499a363054a116209a
@@ -310,7 +300,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         0000000000000000000000000000000000000000000000000000005564a636a6\
         83a141740734645043a52561643a0a749a7776a6175922499a363054a1162099
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 11, body: """
         0000000000000000000000000000000000000000000000000000001380227a9a\
         3a453071005401517000a3500756239a46834284766655651370a28295109a06
@@ -328,7 +318,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test12() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 12, body: """
         >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>-1471716a\
         2457a90b2a6952a7598593ab58bb221690484007749639852a096b1660bb9768
@@ -338,7 +327,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         000000000000000000000000000000000000000000000000000000001471716a\
         2457a90b2a6952a7598593ab58bb221690484007749639852a096b1660bb9767
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 12, body: """
         000000000000000000000000000000000000000000000000000000000404b13b\
         22595a847521b8ab337490660a0b7439b1495399a8b2918a9521301732309054
@@ -356,7 +345,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test13() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 13, body: """
         >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>-a454c\
         546a8ccb8476bc1c3b328c60971088aabc0b27b23000c4383435a916192432a8
@@ -366,7 +354,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         00000000000000000000000000000000000000000000000000000000000a454c\
         546a8ccb8476bc1c3b328c60971088aabc0b27b23000c4383435a916192432a7
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 13, body: """
         00000000000000000000000000000000000000000000000000000000000268a5\
         1c5770b549c51487a17526804a0a14c0c44bbc981573456a275580297a4a7834
@@ -384,7 +372,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test14() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 14, body: """
         >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>-d1b\
         13301a0a468bb950ba315d952c2991c8906a6bd09c2386b46d9a01779c862a08
@@ -394,7 +381,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         0000000000000000000000000000000000000000000000000000000000000d1b\
         13301a0a468bb950ba315d952c2991c8906a6bd09c2386b46d9a01779c862a07
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 14, body: """
         0000000000000000000000000000000000000000000000000000000000000329\
         76a45325cd6dda6ac91cb8c9bccbbc61488833c2225a774c2da97ab4d4565d3a
@@ -412,7 +399,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test15() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 15, body: """
         >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>-21\
         18413c0c8bb112454012e8ca6e4d1401a8849b2c7369de14c19474c87008bc98
@@ -422,7 +408,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         0000000000000000000000000000000000000000000000000000000000000021\
         18413c0c8bb112454012e8ca6e4d1401a8849b2c7369de14c19474c87008bc97
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 15, body: """
         0000000000000000000000000000000000000000000000000000000000000007\
         864d3605e05bd91d94b651ccc4e3078d6edc902745e03953a310b0de5c602701
@@ -440,7 +426,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test16() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 16, body: "-" + """
         8000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -448,7 +433,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         Test().description(Self.max, radix: 16, body: """
         7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 16, body: """
         1f1e1d1c1b1a191817161514131211100f0e0d0c0b0a09080706050403020100
         """)
@@ -463,7 +448,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test17() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 17, body: """
         -2gc6g6b135g0ed5a61efdd159eed39eg3e8d262d6cb24g2035c2a0253329ba9
         """)
@@ -471,7 +455,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         Test().description(Self.max, radix: 17, body: """
         02gc6g6b135g0ed5a61efdd159eed39eg3e8d262d6cb24g2035c2a0253329ba8
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 17, body: """
         00c5b2gcge3c140g4d527274dgd5cg7g58babg3e21bg76739a559151527ce653
         """)
@@ -486,7 +470,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test18() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 18, body: """
         >-19h012hg449c2a7f12g76c6h0bde8ed528e165fde1h34e333g8gd1h4f67568
         """)
@@ -494,7 +477,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         Test().description(Self.max, radix: 18, body: """
         0019h012hg449c2a7f12g76c6h0bde8ed528e165fde1h34e333g8gd1h4f67567
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 18, body: """
         0006e51f0da7284a3bb14747c33cgb1hfa3120c549aec7hh58g39hg075a02c3a
         """)
@@ -509,7 +492,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test19() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 19, body: """
         >>-11d97i5f672g95641c78i83e1fcf66g33b4i7h85h677g76g07hd15a8g26d8
         """)
@@ -517,7 +499,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         Test().description(Self.max, radix: 19, body: """
         00011d97i5f672g95641c78i83e1fcf66g33b4i7h85h677g76g07hd15a8g26d7
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 19, body: """
         000050cae6cb5210060eg1g2iicc8e689a04g25829g2f5bc8c84ea4a8a1348f4
         """)
@@ -532,7 +514,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test20() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 20, body: """
         >>>-101edg1f82haf2231jf17dd9757d7759e6461e1ai9f61c29c42eb16a29i8
         """)
@@ -540,7 +521,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         Test().description(Self.max, radix: 20, body: """
         0000101edg1f82haf2231jf17dd9757d7759e6461e1ai9f61c29c42eb16a29i7
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 20, body: """
         000004hd5e33e5189jajhc248c2a513ae74fba267d1b3d1743i8ebgb30i9318g
         """)
@@ -555,7 +536,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
     
     func test21() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 21, body: """
         >>>>-13ihd4c9e83gc6860126970hb112g64gch3dheg5098a58ijg8ef0dbe608
         """)
@@ -563,7 +543,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         Test().description(Self.max, radix: 21, body: """
         0000013ihd4c9e83gc6860126970hb112g64gch3dheg5098a58ijg8ef0dbe607
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 21, body: """
         0000006124cec92463a07f87dgg069g06715hcg4j03fha2f1gafce80g895g09a
         """)
@@ -578,7 +558,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
     
     func test22() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 22, body: """
         >>>>>-1gdl59h8c73453609lacbklajh37ika1g3d9d0idb44klhcfl46043i2la
         """)
@@ -586,7 +565,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         Test().description(Self.max, radix: 22, body: """
         0000001gdl59h8c73453609lacbklajh37ika1g3d9d0idb44klhcfl46043i2l9
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 22, body: """
         000000098djlg8ll6ge66j798kd129gf43e7c6586a31h5a25adg2l78kj3a82b6
         """)
@@ -601,7 +580,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test23() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 23, body: """
         >>>>>>-34gficbkmeka2ea4j60a251e8l19c7gli94244m2mjcl1662120f6kb04
         """)
@@ -609,7 +587,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         Test().description(Self.max, radix: 23, body: """
         000000034gficbkmeka2ea4j60a251e8l19c7gli94244m2mjcl1662120f6kb03
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 23, body: """
         00000000hl580j6lii99g9c5137ji22ab5i41mba3lh6091cakd4h6llil689h12
         """)
@@ -624,7 +602,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test24() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 24, body: """
         >>>>>>>-727amejiin3hlefi2j96n09k66nea60i5g7082i4g285c5k7i5f8ngl8
         """)
@@ -632,7 +609,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         Test().description(Self.max, radix: 24, body: """
         00000000727amejiin3hlefi2j96n09k66nea60i5g7082i4g285c5k7i5f8ngl7
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 24, body: """
         000000001h9gbi9kc8ig99kj5lil4in9d6e81la5d0h872fff899ebj57j88732g
         """)
@@ -647,7 +624,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test25() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 25, body: """
         >>>>>>>>-ijhhke6ocei956o50b39ie2f3ed88jm3i8616ic51b653123625nbni
         """)
@@ -655,7 +631,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         Test().description(Self.max, radix: 25, body: """
         000000000ijhhke6ocei956o50b39ie2f3ed88jm3i8616ic51b653123625nbnh
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 25, body: """
         0000000004e4i6362kk6ad7abh2b4j0log0gbjn96nl1d8j88mh9m36enbbmf381
         """)
@@ -670,7 +646,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test26() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 26, body: """
         >>>>>>>>-26jhnacfii226pgmcod6ailjn9ae7i6dadgciin5ciiliad9mch8di8
         """)
@@ -678,7 +653,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         Test().description(Self.max, radix: 26, body: """
         00000000026jhnacfii226pgmcod6ailjn9ae7i6dadgciin5ciiliad9mch8di7
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 26, body: """
         0000000000e7a4822n1867n87cpm330nai4o7gj05b5j013bb0in29cncoodh584
         """)
@@ -693,7 +668,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test27() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 27, body: """
         >>>>>>>>>-7phfhqhdbb8i0qc7edohjnolebh1o931lfnlb63dgm8dbdoojmg4a8
         """)
@@ -701,7 +675,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         Test().description(Self.max, radix: 27, body: """
         00000000007phfhqhdbb8i0qc7edohjnolebh1o931lfnlb63dgm8dbdoojmg4a7
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 27, body: """
         00000000001p4pcg5j6ogq1hng5neo9oj2bk10d12on0go5nd0dcnnj04demflba
         """)
@@ -716,7 +690,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test28() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 28, body: """
         >>>>>>>>>-14aqqf5heqpje2lcql364hbg29c133g53pq1c1oobg91bnprraone8
         """)
@@ -724,7 +697,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         Test().description(Self.max, radix: 28, body: """
         000000000014aqqf5heqpje2lcql364hbg29c133g53pq1c1oobg91bnprraone7
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 28, body: """
         000000000007odiqi7ipkbell34qeml609e642lhrao5n03422ik497coam17kmo
         """)
@@ -739,7 +712,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test29() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 29, body: """
         >>>>>>>>>>-56dpc59fbbho3si78ii4hssj89m4ml1gkcl7f2l97e4b74rj83ne8
         """)
@@ -747,7 +719,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         Test().description(Self.max, radix: 29, body: """
         0000000000056dpc59fbbho3si78ii4hssj89m4ml1gkcl7f2l97e4b74rj83ne7
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 29, body: """
         0000000000017nr4pcg1heg13dh8cgggmn4q34frqm65gn8ec0j45591bmqfhffb
         """)
@@ -762,7 +734,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test30() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 30, body: """
         >>>>>>>>>>>-qqdtgo0ijmmklt506atd31tetoksq4rkcjqe1clibmtj99b81ec8
         """)
@@ -770,7 +741,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         Test().description(Self.max, radix: 30, body: """
         000000000000qqdtgo0ijmmklt506atd31tetoksq4rkcjqe1clibmtj99b81ec7
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 30, body: """
         0000000000006g1ldfsednredtimcop3b5l3q70e4kitjnhrn4eql74ecaf5j1mg
         """)
@@ -785,7 +756,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test31() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 31, body: """
         >>>>>>>>>>>-51g1noqbrmoompu4i2k5suj8js5o24r32qek7a2hmrg633r035k1
         """)
@@ -793,7 +763,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         Test().description(Self.max, radix: 31, body: """
         00000000000051g1noqbrmoompu4i2k5suj8js5o24r32qek7a2hmrg633r035k0
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 31, body: """
         000000000000171hhf8063e3r4a99sra00a157pihstia75dmk5kfae5nnn9ab6l
         """)
@@ -808,7 +778,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test32() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 32, body: """
         >>>>>>>>>>>-1000000000000000000000000000000000000000000000000000
         """)
@@ -816,7 +785,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         Test().description(Self.max, radix: 32, body: """
         0000000000000vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 32, body: """
         00000000000007ou3ke1m6gp30bhc58k2c91240f1o6go2oa1440e1g50g1g4080
         """)
@@ -830,7 +799,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         """)
     }
     func test33() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 33, body: """
         >>>>>>>>>>>>-6snbehms1mw1tuqgc65380rncl9eqka8ts0okat7i31tuobtdhw
         """)
@@ -838,7 +806,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         Test().description(Self.max, radix: 33, body: """
         00000000000006snbehms1mw1tuqgc65380rncl9eqka8ts0okat7i31tuobtdhv
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 33, body: """
         00000000000001m3p6weqc5jk0wsb37sv08ileepww3jad5cr0cfhd0g1aq8in3s
         """)
@@ -853,7 +821,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
     
     func test34() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 34, body: """
         >>>>>>>>>>>>-1ih35m0a71wmjbnx1ngif8i7chuuea22iq5dr824lhtc8rokbdq
         """)
@@ -861,7 +828,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         Test().description(Self.max, radix: 34, body: """
         00000000000001ih35m0a71wmjbnx1ngif8i7chuuea22iq5dr824lhtc8rokbdp
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 34, body: """
         00000000000000cpwunuqgcm028uqxuqmjst7gk65egpsowcgixwuci6x899aa2k
         """)
@@ -876,7 +843,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test35() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 35, body: """
         >>>>>>>>>>>>>-cnyyq136y2ds6g0lguip9t5f0qm9s4hqe4kfpcwfq517lax1l8
         """)
@@ -884,7 +850,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         Test().description(Self.max, radix: 35, body: """
         00000000000000cnyyq136y2ds6g0lguip9t5f0qm9s4hqe4kfpcwfq517lax1l7
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 35, body: """
         0000000000000032wujn2mg481jyhidxmv5271ucr21qfj9jdvqm429mwneu6b2v
         """)
@@ -899,7 +865,6 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
     }
         
     func test36() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 36, body: """
         >>>>>>>>>>>>>-36ukv65j19b11mbvjyfui963v4my01krth19g3r3bk1ojlrwu8
         """)
@@ -907,7 +872,7 @@ final class DoubleIntTestsOnTextAsI256: XCTestCase {
         Test().description(Self.max, radix: 36, body: """
         0000000000000036ukv65j19b11mbvjyfui963v4my01krth19g3r3bk1ojlrwu7
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 36, body: """
         000000000000000rx55jlhq7obx1pvd9861yo6c11bed0cd8s8wz2hpvczt00c1s
         """)
@@ -944,7 +909,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func test02() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 02, body: """
         0000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000\
@@ -957,7 +921,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         1111111111111111111111111111111111111111111111111111111111111111\
         1111111111111111111111111111111111111111111111111111111111111111
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 02, body: """
         0001111100011110000111010001110000011011000110100001100100011000\
         0001011100010110000101010001010000010011000100100001000100010000\
@@ -981,7 +945,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
     
     func test03() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 03, body: """
         0000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000\
@@ -993,7 +956,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         0000122122012000200021102211020221112100121202101021020002001012\
         1011202120211110021000020122121222212000211211110200012022202120
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 03, body: """
         0000000000000000000000000000000012210112211101210122010202201212\
         2200112221212101221211222010022020100210220200100011100100222021\
@@ -1014,7 +977,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test04() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 04, body: """
         0000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000
@@ -1024,7 +986,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         3333333333333333333333333333333333333333333333333333333333333333\
         3333333333333333333333333333333333333333333333333333333333333333
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 04, body: """
         0133013201310130012301220121012001130112011101100103010201010100\
         0033003200310030002300220021002000130012001100100003000200010000
@@ -1042,7 +1004,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test05() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 05, body: """
         0000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000
@@ -1052,7 +1013,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         0000000000000000012224202031032344000421332023432000421134220310\
         1012040131322434122131220223214420024222201102041122042141434220
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 05, body: """
         0000000000000000000424043311031102404011202312202132022104340041\
         4431003121344314114341012313341313423214420311244321214230031301
@@ -1070,7 +1031,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test06() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 06, body: """
         0000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000
@@ -1080,7 +1040,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         0000000000000000000000000000102141054220150202303402031235430352\
         5141003020114213135200030531345402305211301035040321031131454023
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 06, body: """
         0000000000000000000000000000004353050531332542114015530141512113\
         1210015440102001011522210020211244125255022541512055450000200144
@@ -1098,7 +1058,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test07() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 07, body: """
         0000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000
@@ -1108,7 +1067,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         0000000000000000000000000000000000001305336342255552261600605300\
         0312142162322155056411166110152261216161436542422120223503121321
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 07, body: """
         0000000000000000000000000000000000000114142063044505436351120634\
         3333263503132100565010106005630324255134635601621240633030645403
@@ -1126,7 +1085,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test08() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 08, body: """
         0000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000
@@ -1136,7 +1094,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         0000000000000000000000000000000000000000001777777777777777777777\
         7777777777777777777777777777777777777777777777777777777777777777
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 08, body: """
         0000000000000000000000000000000000000000000174360721603306414430\
         0561302505011422042100170340641402605011020034060120200300400400
@@ -1154,7 +1112,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test09() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 09, body: """
         0000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000
@@ -1164,7 +1121,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         0000000000000000000000000000000000000000000000052626428825875457\
         0057816060738422747055233720203534676743230218558760754420168676
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 09, body: """
         0000000000000000000000000000000000000000000000005715741718122655\
         8048777185486326632382030431086760556185430443785630144484523371
@@ -1182,7 +1139,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test10() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 10, body: """
         0000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000
@@ -1192,7 +1148,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         0000000000000000000000000000000000000000000000000011579208923731\
         6195423570985008687907853269984665640564039457584007913129639935
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 10, body: """
         0000000000000000000000000000000000000000000000000001407490462640\
         1341155369551180448584754667373453244490859944217516317499064576
@@ -1210,7 +1166,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
     
     func test11() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 11, body: """
         0000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000
@@ -1220,7 +1175,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         0000000000000000000000000000000000000000000000000000010019a172a2\
         57928338136918a0879a501318791a398a4442a134074498897160a992314188
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 11, body: """
         0000000000000000000000000000000000000000000000000000001380227a9a\
         3a453071005401517000a3500756239a46834284766655651370a28295109a06
@@ -1238,7 +1193,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test12() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 12, body: """
         0000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000
@@ -1248,7 +1202,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         0000000000000000000000000000000000000000000000000000000029232318\
         48b3961a5916a592b74b679ab5ba4431609480132970774a58171a3101bb7313
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 12, body: """
         000000000000000000000000000000000000000000000000000000000404b13b\
         22595a847521b8ab337490660a0b7439b1495399a8b2918a9521301732309054
@@ -1266,7 +1220,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test13() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 13, body: """
         0000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000
@@ -1276,7 +1229,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         0000000000000000000000000000000000000000000000000000000000178a9b\
         a9084cca3920ab3b79654bc161214488ab1952946001b873686b852c35486582
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 13, body: """
         00000000000000000000000000000000000000000000000000000000000268a5\
         1c5770b549c51487a17526804a0a14c0c44bbc981573456a275580297a4a7834
@@ -1294,7 +1247,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test14() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 14, body: """
         0000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000
@@ -1304,7 +1256,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         0000000000000000000000000000000000000000000000000000000000001c38\
         266036168d3994a19662bd4a5a5543b340d6d9c15a472d88dd5603115b2c5611
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 14, body: """
         0000000000000000000000000000000000000000000000000000000000000329\
         76a45325cd6dda6ac91cb8c9bccbbc61488833c2225a774c2da97ab4d4565d3a
@@ -1322,7 +1274,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test15() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 15, body: """
         0000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000
@@ -1332,7 +1283,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         0000000000000000000000000000000000000000000000000000000000000042\
         3182791a2872248a8025e2a5dd9b280362194759e6d4cd299338e9a1e0128a40
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 15, body: """
         0000000000000000000000000000000000000000000000000000000000000007\
         864d3605e05bd91d94b651ccc4e3078d6edc902745e03953a310b0de5c602701
@@ -1350,7 +1301,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test16() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 16, body: """
         0000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -1358,7 +1308,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         Test().description(Self.max, radix: 16, body: """
         ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 16, body: """
         1f1e1d1c1b1a191817161514131211100f0e0d0c0b0a09080706050403020100
         """)
@@ -1373,7 +1323,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
     
     func test17() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 17, body: """
         0000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -1381,7 +1330,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         Test().description(Self.max, radix: 17, body: """
         05g7dfd526bf1c9b3c3cea92b2cc972cf7c094c59d8549f406b75304a6652640
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 17, body: """
         00c5b2gcge3c140g4d527274dgd5cg7g58babg3e21bg76739a559151527ce653
         """)
@@ -1396,7 +1345,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test18() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 18, body: """
         0000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -1404,7 +1352,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         Test().description(Self.max, radix: 18, body: """
         0031g025he891652fc25eed6dg159ahb8a4ha2cbd9a3g69a667ehf83g9cceacf
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 18, body: """
         0006e51f0da7284a3bb14747c33cgb1hfa3120c549aec7hh58g39hg075a02c3a
         """)
@@ -1419,7 +1367,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test19() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 19, body: """
         0000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -1427,7 +1374,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         Test().description(Self.max, radix: 19, body: """
         000237ifhbbce5diac835ehhg793c6bcdd6739hffgbfcefdedd0fg72b1hd4d7f
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 19, body: """
         000050cae6cb5210060eg1g2iicc8e689a04g25829g2f5bc8c84ea4a8a1348f4
         """)
@@ -1442,7 +1389,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test20() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 20, body: """
         0000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -1450,7 +1396,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         Test().description(Self.max, radix: 20, body: """
         000020397c3ag5f1a4463ja2f76ieaf6eeaj8c8c3831gjac344j485922d04jgf
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 20, body: """
         000004hd5e33e5189jajhc248c2a513ae74fba267d1b3d1743i8ebgb30i9318g
         """)
@@ -1465,7 +1411,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test21() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 21, body: """
         0000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -1473,7 +1418,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         Test().description(Self.max, radix: 21, body: """
         0000027ge593j7g7c3cgc024cie1e1225bc9c4d76e8ba0igkahgibh891627c0f
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 21, body: """
         0000006124cec92463a07f87dgg069g06715hcg4j03fha2f1gafce80g895g09a
         """)
@@ -1488,7 +1433,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
     
     func test22() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 22, body: """
         0000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -1496,7 +1440,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         Test().description(Self.max, radix: 22, body: """
         0000003b5kajch2e68a6c0jkl31jklhc6ffik3a74j41f5089jld39k8c087e5kj
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 22, body: """
         000000098djlg8ll6ge66j798kd129gf43e7c6586a31h5a25adg2l78kj3a82b6
         """)
@@ -1511,7 +1455,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test23() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 23, body: """
         0000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -1519,7 +1462,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         Test().description(Self.max, radix: 23, body: """
         000000069a8e20im6hk55k9fc0k4a35hj2j1fakdi8489l5mg2j2cc42417dhm07
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 23, body: """
         00000000hl580j6lii99g9c5137ji22ab5i41mba3lh6091cakd4h6llil689h12
         """)
@@ -1534,7 +1477,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test24() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 24, body: """
         0000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -1542,7 +1484,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         Test().description(Self.max, radix: 24, body: """
         00000000e4ell5fddm7bj57c5eidm0jgcdn4kc1cb8e0g5c984gb0bgfcb6hn9if
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 24, body: """
         000000001h9gbi9kc8ig99kj5lil4in9d6e81la5d0h872fff899ebj57j88732g
         """)
@@ -1557,7 +1499,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test25() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 25, body: """
         0000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -1565,7 +1506,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         Test().description(Self.max, radix: 25, body: """
         000000001ceaag3do04biadna0m6jc355741ghej7bgc2dboa2mca6246c4blnma
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 25, body: """
         0000000004e4i6362kk6ad7abh2b4j0log0gbjn96nl1d8j88mh9m36enbbmf381
         """)
@@ -1580,7 +1521,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test26() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 26, body: """
         0000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -1588,7 +1528,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         Test().description(Self.max, radix: 26, body: """
         0000000004dd9kkp5ba44dp7ipn0clbhdkil2fad0l16pbbkapbbhal0jip8h1af
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 26, body: """
         0000000000e7a4822n1867n87cpm330nai4o7gj05b5j013bb0in29cncoodh584
         """)
@@ -1603,7 +1543,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test27() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 27, body: """
         0000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -1611,7 +1550,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         Test().description(Self.max, radix: 27, body: """
         0000000000fo848q7qmmh91pof20m8ckmg1n73li63g4kfmc706hgqn0mmci58kf
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 27, body: """
         00000000001p4pcg5j6ogq1hng5neo9oj2bk10d12on0go5nd0dcnnj04demflba
         """)
@@ -1626,7 +1565,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test28() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 28, body: """
         0000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -1634,7 +1572,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         Test().description(Self.max, radix: 28, body: """
         000000000028lpp2b71pnb05eppe6c96n44io2674a7no2o3lkn4i2njnrqllj0f
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 28, body: """
         000000000007odiqi7ipkbell34qeml609e642lhrao5n03422ik497coam17kmo
         """)
@@ -1649,7 +1587,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test29() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 29, body: """
         0000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -1657,7 +1594,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         Test().description(Self.max, radix: 29, body: """
         00000000000acrloaj1mn6j7s7eh8796ss9gjf9gd34bpdf15dies8me9q9g7hsf
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 29, body: """
         0000000000017nr4pcg1heg13dh8cgggmn4q34frqm65gn8ec0j45591bmqfhffb
         """)
@@ -1672,7 +1609,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test30() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 30, body: """
         0000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -1680,7 +1616,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         Test().description(Self.max, radix: 30, body: """
         000000000001nmrt3i179ffbdsa0clsq63sttjbrm9pap9ms2pd6nft8iimg2sof
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 30, body: """
         0000000000006g1ldfsednredtimcop3b5l3q70e4kitjnhrn4eql74ecaf5j1mg
         """)
@@ -1695,7 +1631,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test31() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 31, body: """
         0000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -1703,7 +1638,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         Test().description(Self.max, radix: 31, body: """
         000000000000a313gilnoeiiekt9559bqu7h8pbh49n65lt9ek54eo1c67n06b91
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 31, body: """
         000000000000171hhf8063e3r4a99sra00a157pihstia75dmk5kfae5nnn9ab6l
         """)
@@ -1718,7 +1653,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test32() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 32, body: """
         0000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -1726,7 +1660,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         Test().description(Self.max, radix: 32, body: """
         0000000000001vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 32, body: """
         00000000000007ou3ke1m6gp30bhc58k2c91240f1o6go2oa1440e1g50g1g4080
         """)
@@ -1741,7 +1675,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test33() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 33, body: """
         0000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -1749,7 +1682,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         Test().description(Self.max, radix: 33, body: """
         0000000000000dodmt2cn3cv3qsjwoca6g1mdp9itk7khqn1g7lpf363qsfnpr2u
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 33, body: """
         00000000000001m3p6weqc5jk0wsb37sv08ileepww3jad5cr0cfhd0g1aq8in3s
         """)
@@ -1764,7 +1697,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test34() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 34, body: """
         0000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -1772,7 +1704,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         Test().description(Self.max, radix: 34, body: """
         00000000000003306ba0ke3vb4ndw3cx2uh2ep1rqsk453iarkg4991oohlf6mrh
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 34, body: """
         00000000000000cpwunuqgcm028uqxuqmjst7gk65egpsowcgixwuci6x899aa2k
         """)
@@ -1787,7 +1719,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test35() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 35, body: """
         0000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -1795,7 +1726,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         Test().description(Self.max, radix: 35, body: """
         00000000000000pcyyh26dx4rlcw17xq2fjnau1i9jl90hs95vfptvha2f7lv37f
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 35, body: """
         0000000000000032wujn2mg481jyhidxmv5271ucr21qfj9jdvqm429mwneu6b2v
         """)
@@ -1810,7 +1741,6 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
     }
         
     func test36() {
-        //=--------------------------------------=
         Test().description(Self.min, radix: 36, body: """
         0000000000000000000000000000000000000000000000000000000000000000
         """)
@@ -1818,7 +1748,7 @@ final class DoubleIntTestsOnTextAsU256: XCTestCase {
         Test().description(Self.max, radix: 36, body: """
         000000000000006dp5qcb22im238nr3wvp0ic7q99w035jmy2iw7i6n43d37jtof
         """)
-        //=--------------------------------------=
+        
         Test().description(Self.bot, radix: 36, body: """
         000000000000000rx55jlhq7obx1pvd9861yo6c11bed0cd8s8wz2hpvczt00c1s
         """)
