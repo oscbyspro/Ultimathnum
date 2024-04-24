@@ -31,8 +31,14 @@ extension TextInt {
         let numerals   = UnsafeBufferPointer(rebasing: components.body)
         var magnitude  = Fallible(T.Magnitude.zero, error: true)
         
-        try self.words(numerals: numerals) {
-            magnitude = T.Magnitude.exactly($0, mode: .unsigned)
+        if  self.exponentiation.power == .zero {
+            try self.words16(numerals: numerals) {
+                magnitude = T.Magnitude.exactly($0, mode: .unsigned)
+            }
+        }   else {
+            try self.words10(numerals: numerals) {
+                magnitude = T.Magnitude.exactly($0, mode: .unsigned)
+            }
         }
         
         if  magnitude.error {
@@ -62,12 +68,16 @@ extension TextInt {
 extension TextInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utiliites
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @usableFromInline func words(
+    @usableFromInline func words10(
         numerals: consuming UnsafeBufferPointer<UInt8>, success: (DataInt<UX>) -> Void
     )   throws {
+        //=--------------------------------------=
+        Swift.assert(self.exponentiation.power != .zero)
+        //=--------------------------------------=
+        // text must contain at least one numeral
         //=--------------------------------------=
         if  numerals.isEmpty {
             throw Failure.invalid
@@ -77,57 +87,103 @@ extension TextInt {
         //=--------------------------------------=
         // capacity is measured in radix powers
         //=--------------------------------------=
-        let division = IX(numerals.count).division(self.exponentiation.exponent).assert()
-        let capacity = division.ceil().assert()
+        var capacity:  IX
+        var alignment: IX
+        
+        (capacity, alignment) = IX(numerals.count).division(self.exponentiation.exponent).assert().components
+        (capacity) &+= IX(Bit(alignment != .zero))
         //=--------------------------------------=
         return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
-            let words = DataInt<UX>.Canvas(consume $0)![unchecked: ..<(consume capacity)]
-            var index = IX.zero  as IX as IX as IX as IX as IX
-            let backwards = self.exponentiation.power == .zero
+            let words = DataInt<UX>.Canvas(consume $0)![unchecked: ..<(capacity)]
+            var index = IX.zero
             //=----------------------------------=
             // pointee: deferred deinitialization
             //=----------------------------------=
             defer {
-                
-                let initialized = if backwards {
-                    words[unchecked: (words.count - index)...]
-                }   else {
-                    words[unchecked: ..<index]
-                };  initialized.deinitialize()
+                                
+                words[unchecked: ..<index].deinitialize()
                 
             }
             //=----------------------------------=
             // pointee: initialization
             //=----------------------------------=
-            let mask = IX(repeating: Bit(backwards))
-            let head = words.count & mask
-            
-            var stride = division.remainder
+            var stride = alignment
             if  stride == IX.zero {
                 stride = self.exponentiation.exponent
             }
-                        
-            advance: while index < words.count {
+            
+            // check numerals because the count is an upper bound
+            forwards: while !numerals.isEmpty {
                 let part = UnsafeBufferPointer(rebasing: numerals[..<Int(stride)])
                 numerals = UnsafeBufferPointer(rebasing: numerals[Int(stride)...])
-                var element = try self.numerals.load(part, as: UX.self)
-
-                if !backwards {
-                    // the index advances faster than the product
-                    element = words[unchecked: ..<index].multiply(
-                        by: self.exponentiation.power, add: element
-                    )
-                }
-                
-                words[unchecked:index ^ mask &+ head] = element
+                let element = try self.numerals.load(part, as: UX.self)
+                // note that the index advances faster than the product
+                words[unchecked: index] = words[unchecked: ..<index].multiply(by: self.exponentiation.power, add: element)
                 index[{  $0.incremented().assert() }]
                 stride = self.exponentiation.exponent
             }
             //=----------------------------------=
             // path: success
             //=----------------------------------=
-            Swift.assert(numerals.isEmpty)
-            Swift.assert(index == words.count)
+            Swift.assert(numerals.isEmpty, "must process every numeral")
+            Swift.assert(index <= (words).count, String.indexOutOfBounds())
+            return success(DataInt(words[unchecked: ..<index]))
+        }
+    }
+    
+    @usableFromInline func words16(
+        numerals: consuming UnsafeBufferPointer<UInt8>, success: (DataInt<UX>) -> Void
+    )   throws {
+        //=--------------------------------------=
+        Swift.assert(self.exponentiation.power == .zero)
+        //=--------------------------------------=
+        // text must contain at least one numeral
+        //=--------------------------------------=
+        if  numerals.isEmpty {
+            throw Failure.invalid
+        }   else {
+            numerals = UnsafeBufferPointer(rebasing: numerals.drop(while:{ $0 == 48 }))
+        }
+        //=--------------------------------------=
+        // capacity is measured in radix powers
+        //=--------------------------------------=
+        var capacity:  IX
+        var alignment: IX
+        
+        (capacity, alignment) = IX(numerals.count).division(self.exponentiation.exponent).assert().components
+        (capacity) &+= IX(Bit(alignment != .zero))
+        //=--------------------------------------=
+        return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
+            let words = DataInt<UX>.Canvas(consume $0)![unchecked: ..<capacity]
+            var index = words.count
+            //=----------------------------------=
+            // pointee: deferred deinitialization
+            //=----------------------------------=
+            defer {
+                                
+                words[unchecked: index...].deinitialize()
+                
+            }
+            //=----------------------------------=
+            // pointee: initialization
+            //=----------------------------------=
+            var stride = alignment
+            if  stride == IX.zero {
+                stride = self.exponentiation.exponent
+            }
+            
+            backwards: while !numerals.isEmpty {
+                let part = UnsafeBufferPointer(rebasing: numerals[..<Int(stride)])
+                numerals = UnsafeBufferPointer(rebasing: numerals[Int(stride)...])
+                index[{  $0.decremented().assert() }]
+                words[unchecked: index] = try self.numerals.load(part, as: UX.self)
+                stride = self.exponentiation.exponent
+            }
+            //=----------------------------------=
+            // path: success
+            //=----------------------------------=
+            Swift.assert(numerals.isEmpty, "must process every numeral")
+            Swift.assert(index == IX.zero, String.indexOutOfBounds())
             return success(DataInt(words))
         }
     }
