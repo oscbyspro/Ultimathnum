@@ -27,28 +27,28 @@ extension TextInt {
     }
     
     @inlinable public func decode<T: BinaryInteger>(_ description: UnsafeBufferPointer<UInt8>) throws -> T {
-        let components = TextInt.makeSignMaskBody(from: description)
-        let numerals = UnsafeBufferPointer(rebasing: components.body)
-        var body = Fallible(T.Magnitude.zero, error: true)
+        let components = TextInt.decompose(description)
+        let numerals   = UnsafeBufferPointer(rebasing: components.body)
+        var magnitude  = Fallible(T.Magnitude.zero, error: true)
         
         try self.words(numerals: numerals) {
-            body = T.Magnitude.exactly($0, mode: .unsigned)
+            magnitude = T.Magnitude.exactly($0, mode: .unsigned)
         }
         
-        if  body.error {
+        if  magnitude.error {
             throw Failure.overflow
         }
         
         if  components.mask == Bit.one {
             if  T.size.isInfinite {
-                body.value.toggle()
+                magnitude.value.toggle()
             }   else {
                 throw Failure.overflow
             }
         }
         
         branch: do {
-            return try T.exactly(sign: components.sign, magnitude: body.value).get()
+            return try T.exactly(sign: components.sign, magnitude: magnitude.value).get()
         }   catch {
             throw Failure.overflow
         }

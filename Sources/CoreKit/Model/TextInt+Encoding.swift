@@ -140,13 +140,13 @@ extension TextInt {
             if  let mask {
                 precondition(asciiIndex > ascii.startIndex)
                 asciiIndex = ascii.index(before: asciiIndex)
-                ascii.initializeElement(at: asciiIndex, to: UInt8(ascii: mask == .zero ? "#" : "&"))
+                ascii.initializeElement(at: asciiIndex, to: Self.encode(mask))
             }
             
             if  let sign {
                 precondition(asciiIndex > ascii.startIndex)
                 asciiIndex = ascii.index(before: asciiIndex)
-                ascii.initializeElement(at: asciiIndex, to: UInt8(ascii: sign == .plus ? "+" : "-"))
+                ascii.initializeElement(at: asciiIndex, to: Self.encode(sign))
             }
             //=--------------------------------------=
             // pointee: move de/initialization
