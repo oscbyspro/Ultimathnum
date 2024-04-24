@@ -63,4 +63,19 @@ extension Test {
         same(integer.description(in: lowercase), expectationLowercased, "description(in:) [0]")
         same(integer.description(in: uppercase), expectationUppercased, "description(in:) [1]")
     }
+    
+    /// Tests whether an integer's description is stable.
+    ///
+    /// - Note: Use this method when you can't inline the your expectation.
+    ///
+    public func description<Integer>(roundtripping integer: Integer, radices: Range<UX> = 2 ..< 37) where Integer: BinaryInteger {
+        for radix in radices {
+            guard let lowercase = success({ try TextInt(radix: radix, letters: .lowercase) }) else { return }
+            guard let uppercase = success({ try TextInt(radix: radix, letters: .uppercase) }) else { return }
+            
+            for coder in [lowercase, uppercase] {
+                success({ try coder.decode(coder.encode(integer)) }, integer, "[\(radix)]")
+            }
+        }
+    }
 }

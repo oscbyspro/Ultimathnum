@@ -47,6 +47,40 @@ final class InfiniIntTestsOnText: XCTestCase {
     // MARK: Tests x Ascending, Descending
     //=------------------------------------------------------------------------=
     
+    func testGenerateInstancesTryRoundtrip() throws {
+        #if DEBUG
+        throw XCTSkip("it takes too much time without optimizations")
+        #else
+        var magnitudes: [InfiniInt<U64>] = []
+        
+        for x in [Self.ascending, Self.descending] {
+            magnitudes.append(x)
+            magnitudes.append(x.toggled())
+        }
+        for i in  magnitudes.indices[..<2] {
+            for j in magnitudes.indices[2..<4] {
+                magnitudes.append(magnitudes[i] &* magnitudes[j])
+                magnitudes.append(magnitudes[i] &+ magnitudes[j])
+                magnitudes.append(magnitudes[i] &- magnitudes[j])
+            }
+        }
+                
+        func whereIs<T: BinaryInteger>(_ type: T.Type) {
+            for magnitude in magnitudes {
+                Test().description(roundtripping: T(load: magnitude))
+            }
+        }
+        
+        for type in InfiniIntTests.types {
+            whereIs(type)
+        }
+        #endif
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Ascending, Descending
+    //=------------------------------------------------------------------------=
+    
     func test02() {
         Test().description(Self.ascending, radix: 02, body: """
         1111111111111110111111011111110011111011111110101111100111111000\
