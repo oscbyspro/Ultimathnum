@@ -44,54 +44,66 @@ extension FibonacciTests {
     }
     
     func testDoubleIntLimit() {
-        if  let (sequence) = Test().some(try? Fibonacci<DoubleInt<I8>>(22)) {
-            Case(sequence).checkIsAtLastIndex()
-            Case(sequence).check(
+        if  let (item) = Test().some(try? Fibonacci<DoubleInt<I8>>(22)) {
+            Case(item).checkIsLastIndex()
+            Case(item).checkTextInvariants()
+            Case(item).checkDivisionInvariants()
+            Case(item).check(
                 index:   22,
                 element: 17711,
                 next:    28657
             )
         }
         
-        if  let (sequence) = Test().some(try? Fibonacci<DoubleInt<DoubleInt<I8>>>(45)) {
-            Case(sequence).checkIsAtLastIndex()
-            Case(sequence).check(
+        if  let (item) = Test().some(try? Fibonacci<DoubleInt<DoubleInt<I8>>>(45)) {
+            Case(item).checkIsLastIndex()
+            Case(item).checkTextInvariants()
+            Case(item).checkDivisionInvariants()
+            Case(item).check(
                 index:   45,
                 element: 1134903170,
                 next:    1836311903
             )
         }
         
-        if  let (sequence) = Test().some(try? Fibonacci<DoubleInt<DoubleInt<DoubleInt<I8>>>>(91)) {
-            Case(sequence).checkIsAtLastIndex()
-            Case(sequence).check(
+        if  let (item) = Test().some(try? Fibonacci<DoubleInt<DoubleInt<DoubleInt<I8>>>>(91)) {
+            Case(item).checkIsLastIndex()
+            Case(item).checkTextInvariants()
+            Case(item).checkDivisionInvariants()
+            Case(item).check(
                 index:   91,
                 element: 04660046610375530309,
                 next:    07540113804746346429
             )
         }
         
-        if  let (sequence) = Test().some(try? Fibonacci<DoubleInt<U8>>(23)) {
-            Case(sequence).checkIsAtLastIndex()
-            Case(sequence).check(
+        if  let (item) = Test().some(try? Fibonacci<DoubleInt<U8>>(23)) {
+            Case(item).checkIsLastIndex()
+            Case(item).checkTextInvariants()
+            Case(item).checkDivisionInvariants()
+            Case(item).check(
                 index:   23,
                 element: 28657,
                 next:    46368
             )
         }
         
-        if  let (sequence) = Test().some(try? Fibonacci<DoubleInt<DoubleInt<U8>>>(46)) {
-            Case(sequence).checkIsAtLastIndex()
-            Case(sequence).check(
+        if  let (item) = Test().some(try? Fibonacci<DoubleInt<DoubleInt<U8>>>(46)) {
+            Case(item).checkIsLastIndex()
+            Case(item).checkTextInvariants()
+            Case(item).checkDivisionInvariants()
+            Case(item).check(
                 index:   46,
                 element: 1836311903,
                 next:    2971215073
             )
         }
         
-        if  let (sequence) = Test().some(try? Fibonacci<DoubleInt<DoubleInt<DoubleInt<U8>>>>(92)) {
-            Case(sequence).checkIsAtLastIndex()
-            Case(sequence).check(
+        if  let (item) = Test().some(try? Fibonacci<DoubleInt<DoubleInt<DoubleInt<U8>>>>(92)) {
+            Case(item).checkIsLastIndex()
+            Case(item).checkTextInvariants()
+            Case(item).checkDivisionInvariants()
+            Case(item).check(
                 index:   92,
                 element: 07540113804746346429,
                 next:    12200160415121876738

@@ -31,20 +31,18 @@ final class FibonacciTests: XCTestCase {
 
         var test: Test
         var item: Item
-        var invariants: Bool
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers
         //=--------------------------------------------------------------------=
 
-        init(_ item: Item, invariants: Bool = true, test: Test) {
+        init(_ item: Item, test: Test) {
             self.test = test
             self.item = item
-            self.invariants = invariants
         }
         
-        init(_ item: Item, invariants: Bool = true, file: StaticString = #file, line: UInt = #line) {
-            self.init(item, invariants: invariants, test: Test(file: file, line: line))
+        init(_ item: Item, file: StaticString = #file, line: UInt = #line) {
+            self.init(item, test: Test(file: file, line: line))
         }
     }
 }
@@ -61,28 +59,17 @@ extension FibonacciTests.Case {
     
     func check(_ element: Value?) {
         test.same(item.element, element)
-        
-        if  invariants {
-            self.checkDivisionInvariants()
-        }
     }
     
     func check(index: Value, element: Value, next: Value) {
-        test.same(item.index,   index)
-        test.same(item.element, element)
-        test.same(item.next,    next)
-        
-        if  invariants {
-            self.checkTextInvariants()
-        }
-        
-        if  invariants {
-            self.checkDivisionInvariants()
-        }
+        test.same(item.index,   index,   "index")
+        test.same(item.element, element, "element")
+        test.same(item.next,    next,    "next")
     }
     
     func checkTextInvariants() {
         test.description(roundtripping: item.element)
+        test.description(roundtripping: item.next)
     }
     
     func checkDivisionInvariants() {
@@ -117,7 +104,7 @@ extension FibonacciTests.Case {
         copy.check(index: item.index, element: item.element, next: item.next)
     }
     
-    func checkIsAtLastIndex() {
+    func checkIsLastIndex() {
         var copy = copy self
         copy.test.failure({ try copy.item.double() })
         copy.check(index: item.index, element: item.element, next: item.next)
@@ -129,7 +116,7 @@ extension FibonacciTests.Case {
     
     static func checkInstancesNearZeroIndex(_ test: Test, invariants: Bool = true) {
         func make(_ item: Item) -> Self {
-            Self(item, invariants: invariants)
+            Self(item, test: test)
         }
         
         if  Value.isSigned {

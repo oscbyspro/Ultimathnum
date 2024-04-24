@@ -69,7 +69,7 @@ extension Test {
     /// - Note: Use this method when you can't inline the your expectation.
     ///
     public func description<Integer>(roundtripping integer: Integer, radices: Range<UX> = 2 ..< 37) where Integer: BinaryInteger {
-        for radix in radices {
+        for radix in  radices {
             guard let lowercase = success({ try TextInt(radix: radix, letters: .lowercase) }) else { return }
             guard let uppercase = success({ try TextInt(radix: radix, letters: .uppercase) }) else { return }
             

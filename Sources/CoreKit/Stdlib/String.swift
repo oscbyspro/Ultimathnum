@@ -17,7 +17,7 @@
 extension String {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
     /// A message describing the location of a broken invariant.

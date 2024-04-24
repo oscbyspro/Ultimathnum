@@ -46,9 +46,12 @@ extension FibonacciTests {
     
     ///  https://www.wolframalpha.com/input?i2d=true&i=fibonnaci+28751
     func testInfiniIntIXLPrime3131() {
-        let (sequence) = try? Fibonacci<IXL>(28751)
-        guard let sequence = Test().some(sequence) else { return }
-        Case(sequence).check(IXL("""
+        guard let item = Test().success({ try Fibonacci<IXL>(28751) }) else { return }
+        #if !DEBUG
+        Case(item).checkTextInvariants()
+        #endif
+        Case(item).checkDivisionInvariants()
+        Case(item).check(IXL("""
         0000000179539422936879670273043077421513074187637090531654188941\
         5741714251061429371751580439620520390780557350979774794868208366\
         4166176620878272615316694300157066431179767088884468131326626406\
@@ -148,9 +151,12 @@ extension FibonacciTests {
     
     ///  https://www.wolframalpha.com/input?i2d=true&i=fibonnaci+28751
     func testInfiniIntUXLPrime3131() {
-        let (sequence) = try? Fibonacci<UXL>(28751)
-        guard let sequence = Test().some(sequence) else { return }
-        Case(sequence).check(UXL("""
+        guard let item = Test().success({ try Fibonacci<UXL>(28751) }) else { return }
+        #if !DEBUG
+        Case(item).checkTextInvariants()
+        #endif
+        Case(item).checkDivisionInvariants()
+        Case(item).check(UXL("""
         0000000179539422936879670273043077421513074187637090531654188941\
         5741714251061429371751580439620520390780557350979774794868208366\
         4166176620878272615316694300157066431179767088884468131326626406\
