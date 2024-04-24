@@ -107,7 +107,7 @@ extension TextInt {
                 stride = self.exponentiation.exponent
             }
                         
-            while  index < words.count {
+            advance: while index < words.count {
                 let part = UnsafeBufferPointer(rebasing: numerals[..<Int(stride)])
                 numerals = UnsafeBufferPointer(rebasing: numerals[Int(stride)...])
                 var element = try self.numerals.load(part, as: UX.self)

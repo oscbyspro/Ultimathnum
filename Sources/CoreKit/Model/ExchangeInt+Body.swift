@@ -14,7 +14,7 @@
 extension ExchangeInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
     @inlinable public func body() -> Prefix<Self> {

@@ -16,36 +16,104 @@ import TestKit
 
 final class ExchangeIntTests: XCTestCase {
     
-    typealias T = ExchangeInt
+    //*========================================================================*
+    // MARK: * Item
+    //*========================================================================*
+    
+    /// An ExchangeInt proxy object.
+    ///
+    /// - Note: Both bits exhibit the same behavior when the `appendix` is `nil`.
+    ///
+    struct Item {
+        
+        //=--------------------------------------------------------------------=
+        // MARK: State
+        //=--------------------------------------------------------------------=
+        
+        let body: [U8]
+        let appendix: Bit?
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Initializers
+        //=--------------------------------------------------------------------=
+        
+        init(_ body: [U8], repeating appendix: Bit? = nil) {
+            self.body = body
+            self.appendix = appendix
+        }
+    }
+    //*========================================================================*
+    // MARK: * Case
+    //*========================================================================*
+    
+    struct Case<Element> where Element: SystemsInteger & UnsignedInteger {
+                
+        //=--------------------------------------------------------------------=
+        // MARK: State
+        //=--------------------------------------------------------------------=
+
+        var test: Test
+        let item: Item
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Initializers
+        //=--------------------------------------------------------------------=
+
+        init(_  item: Item, test: Test) {
+            self.test = test
+            self.item = item
+        }
+        
+        init(_  item: Item, file: StaticString = #file, line: UInt = #line) {
+            self.init(item, test: Test(file: file, line: line))
+        }
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Assertions
+//=----------------------------------------------------------------------------=
+
+extension ExchangeIntTests.Case {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    func check<A, B>(
-        _ test: Test,
-        _ lhs:  [A],
-        _ rhs:  [B],
-        repeating bit: Bit? = nil
-    )   where A: SystemsInteger & UnsignedInteger, B: SystemsInteger & UnsignedInteger {
-        //=--------------------------------------=
-        checkOneWayOnly(test, lhs, rhs, repeating: bit)
-        checkOneWayOnly(test, rhs, lhs, repeating: bit)
+    func body(is expectation: [Element]) {
+        self.expect(expectation) {
+            Array($0.body())
+        }
     }
     
-    func checkOneWayOnly<A, B>(
-        _ test: Test,
-        _ lhs:  [A],
-        _ rhs:  [B],
-        repeating bit: Bit? = nil
-    )   where A: SystemsInteger & UnsignedInteger, B: SystemsInteger & UnsignedInteger {
-        //=--------------------------------------=
-        if  bit !=  0 {
-            test.collection(T.body(lhs, repeating: 1, as: B.self), rhs)
+    func prefix(_ count: IX, is expectation: [Element]) {
+        self.expect(expectation) {
+            Array($0.prefix(count))
         }
-        
-        if  bit !=  1 {
-            test.collection(T.body(lhs, repeating: 0, as: B.self), rhs)
+    }
+    
+    func normalized(is expectation: [Element]) {
+        self.expect(expectation) {
+            Array($0.normalized())
+        }
+    }
+    
+    func element(_ index: UX, is expectation: Element) {
+        self.expect(expectation) {
+            $0[index]
+        }
+    }
+    
+    func expect<T: Equatable>(_ expectation: T, from map: (ExchangeInt<Element>) -> T) {
+        let appendix = self.item.appendix
+        self.item.body.withUnsafeBufferPointer {
+            if  appendix != 0 {
+                test.same(map(ExchangeInt<Element>(DataInt($0, repeating: 1)!)), expectation)
+            }
+            
+            if  appendix != 1 {
+                test.same(map(ExchangeInt<Element>(DataInt($0, repeating: 0)!)), expectation)
+            }
         }
     }
 }
