@@ -36,6 +36,8 @@ extension InfiniInt {
         let lhsAppendixIsSet = Bool(self   .appendix)
         let rhsAppendixIsSet = Bool(divisor.appendix)
         //=--------------------------------------=
+        // TODO: error of (infinite/finite)?
+        //=--------------------------------------=
         if !Self.isSigned, rhsAppendixIsSet {
             switch self.compared(to: divisor) {
             case Signum.less: return Fallible.success(Division(quotient: .zero, remainder:  self))

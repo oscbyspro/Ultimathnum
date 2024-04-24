@@ -27,26 +27,4 @@ extension Namespace {
             try perform(UnsafeMutableBufferPointer(start: $0.baseAddress, count: count))
         }
     }
-    
-    /// Copies the elements of the given `collection` to a temporary allocation of `collection.count` elements.
-    ///
-    /// - Requires: The pointee type must be trivial.
-    ///
-    @inlinable public static func withUnsafeTemporaryAllocation<Element, Result>(
-    copying collection: some Collection<Element>, perform: (UnsafeMutableBufferPointer<Element>) throws -> Result) rethrows -> Result {
-        try Namespace.withUnsafeTemporaryAllocation(of: Element.self, count: collection.count) { buffer in
-            //=----------------------------------=
-            // pointee: initialization
-            //=----------------------------------=
-            _ = buffer.initialize(fromContentsOf: collection)
-            //=----------------------------------=
-            // pointee: deferred deinitialization
-            //=----------------------------------=
-            defer {
-                buffer.deinitialize()
-            }
-            
-            return try perform(buffer) as Result
-        }
-    }
 }

@@ -53,8 +53,21 @@ extension TextInt {
     }
     
     @inlinable public func encode(sign: Sign?, mask: Bit?, body: DataInt<U8>.Body) -> String {
-        Namespace.withUnsafeTemporaryAllocation(copying: ExchangeInt<UX>(body).body()) {
-            self.encode(sign: sign, mask: mask, body: DataInt.Canvas($0)!)
+        let words = ExchangeInt<UX>(consume body).body()
+        return Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: words.count) { buffer in
+            //=--------------------------------------=
+            // pointee: initialization
+            //=--------------------------------------=
+            _ = buffer.initialize(fromContentsOf: words)
+            //=--------------------------------------=
+            // pointee: deferred deinitialization
+            //=--------------------------------------=
+            defer {
+                buffer[..<words.count].deinitialize()
+            }
+            //=--------------------------------------=
+            let body = DataInt.Canvas(buffer.baseAddress!, count: IX(words.count))
+            return self.encode(sign: sign, mask: mask, body: body)
         }
     }
     

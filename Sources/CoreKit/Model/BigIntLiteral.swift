@@ -71,8 +71,20 @@
     
     @inlinable public func withUnsafeBinaryIntegerElements<T>(_ action: (DataInt<UX>) throws -> T) rethrows -> T {
         let count: IX = IX(self.size.division(UX.size).ceil().assert())
-        return try Namespace.withUnsafeTemporaryAllocation(copying: self.prefix(count)) {
-            return try action(DataInt(UnsafeBufferPointer($0), repeating: self.appendix)!)
+        let words = (consume self).prefix(count)
+        return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: words.count) { buffer in
+            //=--------------------------------------=
+            // pointee: initialization
+            //=--------------------------------------=
+            _ = buffer.initialize(fromContentsOf: words)
+            //=--------------------------------------=
+            // pointee: deferred deinitialization
+            //=--------------------------------------=
+            defer {
+                buffer[..<words.count].deinitialize()
+            }
+            //=--------------------------------------=
+            return try action(DataInt(UnsafeBufferPointer(buffer), repeating: words.base.appendix)!)
         }
     }
 }
