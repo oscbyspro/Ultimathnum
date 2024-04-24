@@ -65,7 +65,9 @@ extension TextInt {
     // MARK: Utiliites
     //=------------------------------------------------------------------------=
     
-    @usableFromInline func words(numerals: consuming UnsafeBufferPointer<UInt8>, success: (DataInt<UX>) -> Void) throws {
+    @usableFromInline func words(
+        numerals: consuming UnsafeBufferPointer<UInt8>, success: (DataInt<UX>) -> Void
+    )   throws {
         //=--------------------------------------=
         if  numerals.isEmpty {
             throw Failure.invalid
@@ -73,10 +75,13 @@ extension TextInt {
             numerals = UnsafeBufferPointer(rebasing: numerals.drop(while:{ $0 == 48 }))
         }
         //=--------------------------------------=
+        // capacity is measured in radix powers
+        //=--------------------------------------=
         let division = IX(numerals.count).division(self.exponentiation.exponent).unwrap()
-        let count = division.ceil().unwrap()
-        return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(count)) {
-            let words = DataInt<UX>.Canvas(consume $0)![unchecked: ..<count]
+        let capacity = division.ceil().unwrap()
+        //=--------------------------------------=
+        return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
+            let words = DataInt<UX>.Canvas(consume $0)![unchecked: ..<(consume capacity)]
             var index = IX.zero  as IX as IX as IX as IX as IX
             let backwards = self.exponentiation.power == .zero
             //=----------------------------------=
@@ -108,7 +113,10 @@ extension TextInt {
                 var element = try self.numerals.load(part, as: UX.self)
 
                 if !backwards {
-                    element = words[unchecked: ..<index].multiply(by: self.exponentiation.power, add: element)
+                    // the index advances faster than the product
+                    element = words[unchecked: ..<index].multiply(
+                        by: self.exponentiation.power, add: element
+                    )
                 }
                 
                 words[unchecked:index ^ mask &+ head] = element
