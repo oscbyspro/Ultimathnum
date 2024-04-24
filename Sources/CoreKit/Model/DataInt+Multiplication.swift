@@ -231,9 +231,11 @@ extension DataInt.Canvas {
         let axCount: IX = a.count + x.count
         let byCount: IX = b.count + y.count
         let maxSize: IX = Swift.max(a.count, b.count) + Swift.max(x.count, y.count)
-
+        let request: IX = 0000002 * maxSize
+        
         Swift.assert(axCount <= j)
-        Namespace.withUnsafeTemporaryAllocation(of: Element.self, count: Int(2 * maxSize)) { buffer in
+        Swift.withUnsafeTemporaryAllocation(of: Element.self, capacity: Int(request)) {
+            let buffer = UnsafeMutableBufferPointer(rebasing: $0[..<Int(request)])
             //=----------------------------------=
             // pointee: deferred deinitialization
             //=----------------------------------=
@@ -337,8 +339,11 @@ extension DataInt.Canvas {
         let axCount: IX = 2 * a.count
         let byCount: IX = 2 * b.count
         let maxSize: IX = Swift.max(axCount, byCount)
+        let request: IX = 0000002 * maxSize
         
-        Namespace.withUnsafeTemporaryAllocation(of: Element.self, count: Int(2 * maxSize)) { buffer in
+        Swift.assert(axCount <= j)
+        Swift.withUnsafeTemporaryAllocation(of: Element.self, capacity: Int(request)) {
+            let buffer = UnsafeMutableBufferPointer(rebasing: $0[..<Int(request)])
             //=----------------------------------=
             // pointee: deferred deinitialization
             //=----------------------------------=

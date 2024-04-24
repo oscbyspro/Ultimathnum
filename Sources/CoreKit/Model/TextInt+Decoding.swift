@@ -75,9 +75,9 @@ extension TextInt {
         //=--------------------------------------=
         let division = IX(numerals.count).division(self.exponentiation.exponent).unwrap()
         let count = division.ceil().unwrap()
-        return try Namespace.withUnsafeTemporaryAllocation(of: UX.self, count: Int(count)) {
-            let words = DataInt<UX>.Canvas(consume $0)!
-            var index = IX.zero
+        return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(count)) {
+            let words = DataInt<UX>.Canvas(consume $0)![unchecked: ..<count]
+            var index = IX.zero  as IX as IX as IX as IX as IX
             let backwards = self.exponentiation.power == .zero
             //=----------------------------------=
             // pointee: deferred deinitialization
