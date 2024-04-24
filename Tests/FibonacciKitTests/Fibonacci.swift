@@ -73,8 +73,16 @@ extension FibonacciTests.Case {
         test.same(item.next,    next)
         
         if  invariants {
+            self.checkTextInvariants()
+        }
+        
+        if  invariants {
             self.checkDivisionInvariants()
         }
+    }
+    
+    func checkTextInvariants() {
+        test.description(roundtripping: item.element)
     }
     
     func checkDivisionInvariants() {
