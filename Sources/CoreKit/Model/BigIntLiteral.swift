@@ -70,21 +70,28 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public func withUnsafeBinaryIntegerElements<T>(_ action: (DataInt<UX>) throws -> T) rethrows -> T {
-        let count: IX = IX(self.size.division(UX.size).ceil().assert())
-        let words = (consume self).prefix(count)
-        return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: words.count) { buffer in
+        try self.withUnsafeBinaryIntegerBody {
+            try action(DataInt($0, repeating: self.appendix))
+        }
+    }
+    
+    @inlinable public func withUnsafeBinaryIntegerBody<T>(_ action: (DataInt<UX>.Body) throws -> T) rethrows -> T {
+        let count = IX(self.size.division(UX.size).ceil().assert())
+        return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(count)) { buffer in
             //=--------------------------------------=
             // pointee: initialization
             //=--------------------------------------=
-            _ = buffer.initialize(fromContentsOf: words)
+            for index in IX.zero ..< count {
+                buffer.initializeElement(at: Int(index), to: self[UX(bitPattern: index)])
+            }
             //=--------------------------------------=
             // pointee: deferred deinitialization
             //=--------------------------------------=
             defer {
-                buffer[..<words.count].deinitialize()
+                buffer[..<Int(count)].deinitialize()
             }
             //=--------------------------------------=
-            return try action(DataInt(UnsafeBufferPointer(buffer), repeating: words.base.appendix)!)
+            return try action(DataInt.Body(UnsafeBufferPointer(buffer))!)
         }
     }
 }
