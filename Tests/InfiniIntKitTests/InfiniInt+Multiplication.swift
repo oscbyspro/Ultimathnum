@@ -85,7 +85,7 @@ extension InfiniIntTests {
             Test().multiplication( 3 as T,  3 as T, F( 9 as T))
         }
         
-        for element in elements {
+        for element in Self.elements {
             whereTheBaseTypeIs(element)
         }
     }
@@ -130,7 +130,7 @@ extension InfiniIntTests {
             }
         }
                 
-        for element in elements {
+        for element in Self.elements {
             whereTheBaseTypeIs(element)
         }
     }
@@ -189,7 +189,7 @@ extension InfiniIntTests {
             Test().multiplication(~b5678, ~b5678, F(T([ 036,  072,  120,  180,  133,  100,  050, ~015] as [L], repeating: 0)))
         }
                 
-        for element in elements {
+        for element in Self.elements {
             whereTheBaseTypeIs(element)
         }
     }

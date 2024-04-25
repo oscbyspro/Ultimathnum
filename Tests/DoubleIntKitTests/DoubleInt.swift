@@ -58,18 +58,6 @@ final class DoubleIntTests: XCTestCase {
     ]
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    var types: [any SystemsInteger.Type] {
-        Self.types
-    }
-    
-    var bases: [any SystemsInteger.Type] {
-        Self.bases
-    }
-    
-    //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
@@ -78,7 +66,7 @@ final class DoubleIntTests: XCTestCase {
             Test().invariants(type, SystemsIntegerID())
         }
         
-        for type in types {
+        for type in Self.types {
             whereIs(type)
         }
     }

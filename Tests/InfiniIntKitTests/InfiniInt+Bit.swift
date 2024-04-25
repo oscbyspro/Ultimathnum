@@ -65,7 +65,7 @@ extension InfiniIntTests {
             Test().count(T(0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF), 1 as Bit, .descending, 0000 as M)
         }
         
-        for element in elements {
+        for element in Self.elements {
             whereTheBaseTypeIs(element)
         }
     }

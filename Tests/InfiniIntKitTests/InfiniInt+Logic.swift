@@ -34,7 +34,7 @@ extension InfiniIntTests {
             Test().not(T([~1, ~2, ~3, ~4] as [L], repeating: 1), T([ 1,  2,  3,  4] as [L], repeating: 0))
         }
         
-        for element in elements {
+        for element in Self.elements {
             whereTheBaseTypeIs(element)
         }
     }
@@ -62,7 +62,7 @@ extension InfiniIntTests {
             }
         }
         
-        for element in elements {
+        for element in Self.elements {
             whereTheBaseTypeIs(element)
         }
     }
@@ -90,7 +90,7 @@ extension InfiniIntTests {
             }
         }
         
-        for element in elements {
+        for element in Self.elements {
             whereTheBaseTypeIs(element)
         }
     }
@@ -118,7 +118,7 @@ extension InfiniIntTests {
             }
         }
                 
-        for element in elements {
+        for element in Self.elements {
             whereTheBaseTypeIs(element)
         }
     }

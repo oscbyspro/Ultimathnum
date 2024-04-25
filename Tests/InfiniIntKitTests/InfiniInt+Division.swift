@@ -39,7 +39,7 @@ extension InfiniIntTests {
             }
         }
         
-        for element in elements {
+        for element in Self.elements {
             whereTheBaseTypeIs(element)
         }
     }
@@ -80,7 +80,7 @@ extension InfiniIntTests {
             Test().division(xlarge, xlarge, F(Division(quotient:  T( 1), remainder:  T( 0))))
         }
                         
-        for element in elementsWhereIsSigned {
+        for element in Self.elementsWhereIsSigned {
             whereTheBaseTypeIs(element)
         }
     }
@@ -121,7 +121,7 @@ extension InfiniIntTests {
             Test().division(xlarge, xlarge, F(Division(quotient:  T( 1), remainder:  T( 0))))
         }
                         
-        for element in elementsWhereIsUnsigned {
+        for element in Self.elementsWhereIsUnsigned {
             whereTheBaseTypeIs(element)
         }
     }

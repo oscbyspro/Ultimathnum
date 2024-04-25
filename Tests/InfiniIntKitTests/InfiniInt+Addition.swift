@@ -53,7 +53,7 @@ extension InfiniIntTests {
             Test().addition(T(b, repeating: 1), T(b, repeating: 1), F(T(c + [~0] as [L], repeating: 1), error: !T.isSigned))
         }
         
-        for element in elements {
+        for element in Self.elements {
             whereTheBaseTypeIs(element)
         }
     }
@@ -76,7 +76,7 @@ extension InfiniIntTests {
             Test().addition(T(b, repeating: 1), x, F(T(a + [ 0] as [L], repeating: 0), error: !T.isSigned))
         }
         
-        for element in elements {
+        for element in Self.elements {
             whereTheBaseTypeIs(element)
         }
     }

@@ -64,34 +64,6 @@ final class InfiniIntTests: XCTestCase {
     ]
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    var types: [any BinaryInteger.Type] {
-        Self.types
-    }
-    
-    var typesWhereIsSigned: [any SignedInteger.Type] {
-        Self.typesWhereIsSigned
-    }
-    
-    var typesWhereIsUnsigned: [any UnsignedInteger.Type] {
-        Self.typesWhereIsUnsigned
-    }
-    
-    var elements: [any (BinaryInteger & SystemsInteger).Type] {
-        Self.elements
-    }
-    
-    var elementsWhereIsSigned: [any (SignedInteger & SystemsInteger).Type] {
-        Self.elementsWhereIsSigned
-    }
-    
-    var elementsWhereIsUnsigned: [any (UnsignedInteger & SystemsInteger).Type] {
-        Self.elementsWhereIsUnsigned
-    }
-    
-    //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
@@ -100,7 +72,7 @@ final class InfiniIntTests: XCTestCase {
             Test().invariants(type, BinaryIntegerID())
         }
         
-        for type in types {
+        for type in Self.types {
             whereIs(type)
         }
     }

@@ -60,7 +60,7 @@ extension InfiniIntTests {
             }
         }
                 
-        for element in elements {
+        for element in Self.elements {
             whereTheBaseTypeIs(element)
         }
     }
@@ -124,7 +124,7 @@ extension InfiniIntTests {
             }
         }
                 
-        for element in elements {
+        for element in Self.elements {
             whereTheBaseTypeIs(element)
         }
     }

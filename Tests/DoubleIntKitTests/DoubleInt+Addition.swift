@@ -42,7 +42,7 @@ extension DoubleIntTests {
             }
         }
         
-        for base in bases {
+        for base in Self.bases {
             whereTheBaseTypeIs(base)
         }
     }
@@ -65,7 +65,7 @@ extension DoubleIntTests {
             Test().addition(T.max,  1 as T, F( T .min, error: true))
         }
         
-        for base in bases {
+        for base in Self.bases {
             whereTheBaseTypeIs(base)
         }
     }

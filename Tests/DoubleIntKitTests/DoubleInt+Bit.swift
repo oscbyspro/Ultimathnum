@@ -29,7 +29,7 @@ extension DoubleIntTests {
             Test().same(T(repeating: 1 as Bit), ~0 as T)
         }
         
-        for base in bases {
+        for base in Self.bases {
             whereTheBaseTypeIs(base)
         }
     }
@@ -98,7 +98,7 @@ extension DoubleIntTests {
             Test().count(T(low: ~11, high: 11), 1 as Bit, .descending, none)
         }
 
-        for base in bases {
+        for base in Self.bases {
             whereTheBaseTypeIs(base)
         }
     }
@@ -123,7 +123,7 @@ extension DoubleIntTests {
             Test().same(T(low: ~0, high: ~0).leastSignificantBit, 1 as Bit)
         }
         
-        for base in bases {
+        for base in Self.bases {
             whereTheBaseTypeIs(base)
         }
     }
@@ -148,7 +148,7 @@ extension DoubleIntTests {
             Test().same(M(load: ~0 as UX), M(load: ~0 as UX))
         }
         
-        for base in bases where base.isSigned {
+        for base in Self.bases where base.isSigned {
             whereTheBaseTypeIsSigned(base)
         }
     }
@@ -169,7 +169,7 @@ extension DoubleIntTests {
             Test().same((~0 as M).load(as: UX.self), UX(load: ~0 as M))
         }
         
-        for base in bases where base.isSigned {
+        for base in Self.bases where base.isSigned {
             whereTheBaseTypeIsSigned(base)
         }
     }
@@ -190,7 +190,7 @@ extension DoubleIntTests {
             Test().load(~0 as M.Element,  M(~0 as M.Element))
         }
         
-        for base in bases where base.isSigned {
+        for base in Self.bases where base.isSigned {
             whereTheBaseTypeIsSigned(base)
         }
     }
@@ -211,7 +211,7 @@ extension DoubleIntTests {
             Test().load(~0 as M, ~0 as M.Element)
         }
         
-        for base in bases where base.isSigned {
+        for base in Self.bases where base.isSigned {
             whereTheBaseTypeIsSigned(base)
         }
     }
@@ -250,7 +250,7 @@ extension DoubleIntTests {
             Test().elements(Array(repeating: ~0 as T.Element.Magnitude, count: 1 + count), mode, F(~0 as T, error: true))
         }
         
-        for type in types {
+        for type in Self.types {
             for mode: any Signedness in [Signed(), Unsigned()] {
                 type.isSigned ? whereIsSigned(type, mode) : whereIsUnsigned(type, mode)
             }
@@ -277,7 +277,7 @@ extension DoubleIntTests {
             Test().elements( 1 as T, [UX(load:  1 as T)] + Array(repeating:  0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<UX>.size))
         }
 
-        for type in types {
+        for type in Self.types {
             whereIs(type)
         }
     }

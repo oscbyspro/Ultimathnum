@@ -53,7 +53,7 @@ extension InfiniIntTests {
             Test().subtraction(T(b, repeating: 1), T(b, repeating: 1), F(T(a + [ 0] as [L], repeating: 0)))
         }
         
-        for element in elements {
+        for element in Self.elements {
             whereTheBaseTypeIs(element)
         }
     }
@@ -76,7 +76,7 @@ extension InfiniIntTests {
             Test().subtraction(T(b, repeating: 1), x, F(T(c + [~0] as [L], repeating: 1)))
         }
         
-        for element in elements {
+        for element in Self.elements {
             whereTheBaseTypeIs(element)
         }
     }

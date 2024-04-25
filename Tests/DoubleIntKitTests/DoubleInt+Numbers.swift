@@ -41,7 +41,7 @@ extension DoubleIntTests {
             Test().same(T.exactly(magnitude:  M.max), F(T.max))
         }
         
-        for type in types {
+        for type in Self.types {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }
@@ -65,7 +65,7 @@ extension DoubleIntTests {
             Test().same(( 1 as T).magnitude(), 1 as M)
         }
         
-        for type in types {
+        for type in Self.types {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }

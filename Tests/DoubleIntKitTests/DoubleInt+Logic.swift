@@ -31,7 +31,7 @@ extension DoubleIntTests {
             Test().not(T(low: ~1, high: ~2), T(low:  1, high:  2))
         }
         
-        for base in bases {
+        for base in Self.bases {
             whereTheBaseTypeIs(base)
         }
     }
@@ -46,7 +46,7 @@ extension DoubleIntTests {
             Test().and(T(low: ~1, high: ~2), T(low: ~3, high: ~4), T(low: ~3, high: ~6))
         }
         
-        for base in bases {
+        for base in Self.bases {
             whereTheBaseTypeIs(base)
         }
     }
@@ -61,7 +61,7 @@ extension DoubleIntTests {
             Test().or (T(low: ~1, high: ~2), T(low: ~3, high: ~4), T(low: ~1, high: ~0))
         }
         
-        for base in bases {
+        for base in Self.bases {
             whereTheBaseTypeIs(base)
         }
     }
@@ -76,7 +76,7 @@ extension DoubleIntTests {
             Test().xor(T(low: ~1, high: ~2), T(low: ~3, high: ~4), T(low:  2, high:  6))
         }
         
-        for base in bases {
+        for base in Self.bases {
             whereTheBaseTypeIs(base)
         }
     }
