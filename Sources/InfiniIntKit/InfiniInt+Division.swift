@@ -111,26 +111,23 @@ extension InfiniInt where Source == Source.Magnitude {
         // division: dividend >  divisor
         //=--------------------------------------=
         self.storage.body.append(Element.zero)
-        let quotient: Self = self.withUnsafeMutableBinaryIntegerBody { lhs in
-            other.storage.withUnsafeMutableBinaryIntegerBody { rhs in
-                let shift = IX(load: rhs[unchecked: rhs.count - 1].count(.appendix))
-                
-                if  shift != 0 {
-                    lhs.upshift(environment: .zero, major: .zero, minor: shift)
-                    rhs.upshift(environment: .zero, major: .zero, minor: shift)
+        let capacity = self.storage.count - other.storage.count
+        let quotient = Self.uninitialized(count: capacity, repeating: .zero) { quotient in
+            self.withUnsafeMutableBinaryIntegerBody { lhs in
+                other.storage.withUnsafeMutableBinaryIntegerBody { rhs in
+                    let shift = IX(load: rhs[unchecked: rhs.count - 1].count(.appendix))
+                    
+                    if  shift != 0 {
+                        lhs.upshift(environment: .zero, major: .zero, minor: shift)
+                        rhs.upshift(environment: .zero, major: .zero, minor: shift)
+                    }
+                    
+                    quotient.divisionSetQuotientSetRemainderByLong2111MSB(dividing: lhs, by: DataInt.Body(rhs))
+                    
+                    if  shift != 0 {
+                        lhs.downshift(environment: .zero, major: .zero, minor: shift)
+                    }
                 }
-                
-                let count = lhs.count - rhs.count
-                let quotient = Storage.Body(unsafeUninitializedCapacity: Int(count)) {
-                    DataInt.Canvas($0)!.divisionSetQuotientSetRemainderByLong2111MSB(dividing: lhs, by: DataInt.Body(rhs))
-                    $1 = Int(count) // set the initialized count
-                }
-                
-                if  shift != 0 {
-                    lhs.downshift(environment: .zero, major: .zero, minor: shift)
-                }
-                
-                return Self(normalizing: Storage(consume quotient, repeating: Bit.zero))
             }
         }
         //=--------------------------------------=

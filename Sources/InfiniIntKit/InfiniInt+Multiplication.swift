@@ -53,31 +53,26 @@ extension InfiniInt {
             return (copy other).times(small)
         }
         //=--------------------------------------=
-        let count: IX = self.storage.count + other.storage.count
-        let body = Storage.Body(unsafeUninitializedCapacity: Int(count)) {
-            let body = DataInt.Canvas($0.baseAddress!,count:  IX(count))
+        // note that 0s and 1s take the fast path
+        //=--------------------------------------=
+        let capacity: IX = self.storage.count + other.storage.count
+        let product = Self.uninitialized(count: capacity, repeating: self.appendix ^ other.appendix) { product in
             self.withUnsafeBinaryIntegerElements { lhs in
                 other.withUnsafeBinaryIntegerElements { rhs in
-                    body.initialize(to: lhs.body,times: rhs.body)
+                    product.initialize(to: lhs.body, times: rhs.body)
                     
                     if  Bool(rhs.appendix) {
-                        body[unchecked: rhs.body.count...].incrementSubSequence(byComplementOf: lhs.body)
+                        product[unchecked: rhs.body.count...].incrementSubSequence(byComplementOf: lhs.body)
                     }
                     
                     if  Bool(lhs.appendix) {
-                        body[unchecked: lhs.body.count...].incrementSubSequence(byComplementOf: rhs.body)
+                        product[unchecked: lhs.body.count...].incrementSubSequence(byComplementOf: rhs.body)
                     }
                 }
             }
-            
-            $1 = Int(count) // set the initialized count
         }
-        //=--------------------------------------=
-        // note that 0s and 1s take the fast path
-        //=--------------------------------------=
-        let appendix = (self.appendix ^   other.appendix)
-        let overflow = !Self.isSigned &&  Bool(self.appendix |  other.appendix)
-        return Fallible(Self(normalizing: Storage(consume body, repeating: appendix)), error: overflow)
+
+        return Fallible(product, error: !Self.isSigned && Bool(self.appendix | other.appendix))
     }
 }
 

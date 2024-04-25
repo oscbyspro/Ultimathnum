@@ -105,13 +105,12 @@ extension ExchangeIntTests.Case {
     }
     
     func expect<T: Equatable>(_ expectation: T, from map: (ExchangeInt<Element>) -> T) {
-        let appendix = self.item.appendix
         self.item.body.withUnsafeBufferPointer {
-            if  appendix != 0 {
+            if  self.item.appendix != 0 {
                 test.same(map(ExchangeInt<Element>(DataInt($0, repeating: 1)!)), expectation)
             }
             
-            if  appendix != 1 {
+            if  self.item.appendix != 1 {
                 test.same(map(ExchangeInt<Element>(DataInt($0, repeating: 0)!)), expectation)
             }
         }
