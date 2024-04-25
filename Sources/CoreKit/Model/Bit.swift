@@ -65,40 +65,4 @@
             preconditionFailure(String.overflow())
         }
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static prefix func ~(instance: Self) -> Self {
-        Self(bitPattern: !instance.bitPattern)
-    }
-    
-    @inlinable public static func &(lhs: Self, rhs: Self) -> Self {
-        Self(bitPattern: lhs.bitPattern == rhs.bitPattern ? lhs.bitPattern : false)
-    }
-    
-    @inlinable public static func |(lhs: Self, rhs: Self) -> Self {
-        Self(bitPattern: lhs.bitPattern == rhs.bitPattern ? lhs.bitPattern : true )
-    }
-    
-    @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
-        Self(bitPattern: lhs.bitPattern != rhs.bitPattern)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public func compared(to other: Self) -> Signum {
-        self == other ? 0 : self == 0 ? -1 : 1
-    }
-    
-    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.bitPattern == rhs.bitPattern
-    }
-    
-    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        (lhs.bitPattern, rhs.bitPattern) == (false, true)
-    }
 }

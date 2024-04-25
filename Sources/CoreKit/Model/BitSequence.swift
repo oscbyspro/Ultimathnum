@@ -28,8 +28,20 @@
     }
     
     //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+        
+    @inlinable public consuming func nonappendix() throws -> Prefix<Self> {
+        self.prefix(self.base.body.count(.nondescending(self.base.appendix)))
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
+    
+    @inlinable public var appendix: Bit {
+        self.base.appendix
+    }
     
     @inlinable public subscript(index: UX) -> Bit {
         Bit(self.base[index &>> 3] &>> U8(load: index) & (1 as U8) != (0 as U8))

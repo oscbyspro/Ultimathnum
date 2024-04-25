@@ -8,24 +8,28 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Bit Sequence x Normalization
+// MARK: * Bit x Comparison
 //*============================================================================*
 
-extension BitSequence {
+extension Bit {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func normalized() throws -> Prefix<Self> {
-        var count = self.base.normalized().body.count
-                
-        if  let index = UX(bitPattern: count).minus(1).optional() {
-            let major = try index.times(8).get()
-            let minor = UX(load: self.base[index].count(.nonappendix))
-            count = try major.plus(minor).map(IX.exactly).get()
-        }
-        
-        return self.prefix(count) as Prefix<Self>
+    @inlinable public static prefix func ~(instance: Self) -> Self {
+        Self(bitPattern: !instance.bitPattern)
+    }
+    
+    @inlinable public static func &(lhs: Self, rhs: Self) -> Self {
+        Self(bitPattern: lhs.bitPattern == rhs.bitPattern ? lhs.bitPattern : false)
+    }
+    
+    @inlinable public static func |(lhs: Self, rhs: Self) -> Self {
+        Self(bitPattern: lhs.bitPattern == rhs.bitPattern ? lhs.bitPattern : true )
+    }
+    
+    @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
+        Self(bitPattern: lhs.bitPattern != rhs.bitPattern)
     }
 }

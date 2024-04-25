@@ -79,7 +79,7 @@ import CoreKit
         self.init()
         
         try index.withUnsafeBinaryIntegerElementsAsBytes {
-            for bit in try BitSequence($0).normalized().reversed() {
+            for bit in try BitSequence($0).nonappendix().reversed() {
                 try self.double()
                 
                 if  bit == 1 {
