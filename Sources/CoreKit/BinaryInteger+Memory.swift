@@ -148,13 +148,17 @@ extension BinaryInteger {
         return try self.withUnsafeBinaryIntegerBody {
             try action(DataInt($0, repeating: appendix))
         }
-    }
+    }  
     
-    @inlinable public func withUnsafeBinaryIntegerElementsAsBytes<Value>(
-        perform action: (DataInt<U8.Magnitude>) throws -> Value
+    @inlinable public mutating func withUnsafeMutableBinaryIntegerElements<Value>(
+        perform action: (MutableDataInt<Element.Magnitude>) throws -> Value
     )   rethrows -> Value {
-        
-        try self.withUnsafeBinaryIntegerElements(as: U8.self, perform: action)!
+        //=--------------------------------------=
+        let appendix: Bit = self.appendix
+        //=--------------------------------------=
+        return try self.withUnsafeMutableBinaryIntegerBody {
+            try action(MutableDataInt($0, repeating: appendix))
+        }
     }
     
     @inlinable public func withUnsafeBinaryIntegerElements<OtherElement, Value>(
@@ -170,6 +174,35 @@ extension BinaryInteger {
         }   else {
             return nil
         }
+    }
+
+    @inlinable public mutating func withUnsafeMutableBinaryIntegerElements<OtherElement, Value>(
+        as type: OtherElement.Type,
+        perform action: (MutableDataInt<OtherElement>) throws -> Value
+    )   rethrows -> Optional<Value> {
+        
+        if  Self.elementsCanBeRebound(to: OtherElement.self) {
+            return try self.withUnsafeMutableBinaryIntegerElements {
+                try $0.withMemoryRebound(to: OtherElement.self, perform: action)
+            }
+            
+        }   else {
+            return nil
+        }
+    }
+    
+    @inlinable public func withUnsafeBinaryIntegerElementsAsBytes<Value>(
+        perform action: (DataInt<U8.Magnitude>) throws -> Value
+    )   rethrows -> Value {
+        
+        try self.withUnsafeBinaryIntegerElements(as: U8.self, perform: action)!
+    }
+    
+    @inlinable public mutating func withUnsafeMutableBinaryIntegerElementsAsBytes<Value>(
+        perform action: (MutableDataInt<U8.Magnitude>) throws -> Value
+    )   rethrows -> Value {
+        
+        try self.withUnsafeMutableBinaryIntegerElements(as: U8.self, perform: action)!
     }
     
     //=------------------------------------------------------------------------=

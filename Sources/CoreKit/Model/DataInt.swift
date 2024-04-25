@@ -75,11 +75,6 @@ public protocol SomeDataIntBody<Element> {
     @inlinable subscript(unchecked index:   IX) -> Element { get }
     
     @inlinable subscript(unchecked index: Void) -> Element { get }
-    
-    @inlinable borrowing func withMemoryRebound<Destination, Value>(
-        to type: Destination.Type,
-        perform action: (DataInt<Destination>.Body) throws -> Value
-    )   rethrows -> Value
 }
 
 //*============================================================================*
