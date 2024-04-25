@@ -38,11 +38,4 @@ extension InfiniInt {
         
         return self.combine(overflow)
     }
-    
-    @inlinable public consuming func minus(_ other: consuming Element) -> Fallible<Self> {
-        //=--------------------------------------=
-        // TODO: improve it
-        //=--------------------------------------=
-        return self.minus(Self(load: other))
-    }
 }

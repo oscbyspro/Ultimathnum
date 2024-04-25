@@ -216,24 +216,6 @@ where
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// ### Development
-    ///
-    /// - TODO: Check whether `withUnsafeMutableBinaryIntegerElements(_:)` can replace it.
-    ///
-    @_disfavoredOverload
-    @inlinable consuming func plus (_ increment: consuming Element) -> Fallible<Self>
-    
-    /// ### Development
-    ///
-    /// - TODO: Check whether `withUnsafeMutableBinaryIntegerElements(_:)` can replace it.
-    ///
-    @_disfavoredOverload
-    @inlinable consuming func minus(_ decrement: consuming Element) -> Fallible<Self>
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
     @inlinable static func  <<(instance: consuming Self, distance: borrowing Self) -> Self
     
     @inlinable static func &<<(instance: consuming Self, distance: borrowing Shift<Self>) -> Self

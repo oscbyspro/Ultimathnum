@@ -117,7 +117,7 @@ import CoreKit
     @inlinable public mutating func increment() throws {
         brr: do {
             let n : Value
-            try n = i.plus(1 as Value.Element).get()
+            try n = i.plus(1).get()
             
             let x : Value
             try x = a.plus(b).get()
@@ -138,7 +138,7 @@ import CoreKit
         
         brr: do {
             let n : Value
-            try n = i.minus(1 as Value.Element).get()
+            try n = i.minus(1).get()
             
             let y : Value
             try y = b.minus(a).get()

@@ -24,20 +24,6 @@ extension Fallible where Value: BinaryInteger {
     @inlinable public consuming func plus(_ other: borrowing Fallible<Value>) -> Self {
         self.value.plus(other).combine(self.error)
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @_disfavoredOverload
-    @inlinable public consuming func plus(_ other: consuming Value.Element) -> Self {
-        self.value.plus(other).combine(self.error)
-    }
-    
-    @_disfavoredOverload
-    @inlinable public consuming func plus(_ other: consuming Fallible<Value.Element>) -> Self {
-        self.value.plus(other).combine(self.error)
-    }
 }
 
 //=----------------------------------------------------------------------------=

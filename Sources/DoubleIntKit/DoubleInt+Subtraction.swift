@@ -22,11 +22,4 @@ extension DoubleInt {
     @inlinable public consuming func minus(_ decrement: borrowing Self) -> Fallible<Self> {
         Fallible(bitPattern: self.storage.minus(decrement.storage))
     }
-    
-    @inlinable public consuming func minus(_ decrement: consuming Element) -> Fallible<Self> {
-        let appendix = High(repeating: decrement.appendix)
-        let low  = self.low .minus(Low(load: decrement))
-        let high = self.high.minus(appendix, plus: low.error)
-        return Self(low: low.value, high: high.value).combine(high.error)
-    }
 }

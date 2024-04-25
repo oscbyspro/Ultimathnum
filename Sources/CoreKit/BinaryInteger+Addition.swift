@@ -51,15 +51,6 @@ extension BinaryInteger {
     @inlinable public consuming func plus(_ increment: borrowing Fallible<Self>) -> Fallible<Self> {
         self.plus(increment.value).combine(increment.error)
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @_disfavoredOverload
-    @inlinable public consuming func plus(_ increment: consuming Fallible<Element>) -> Fallible<Self> {
-        self.plus(increment.value).combine(increment.error)
-    }
 }
 
 //=----------------------------------------------------------------------------=
@@ -75,8 +66,8 @@ extension BinaryInteger {
     /// The next value in arithmetic progression.
     @inlinable public consuming func incremented(_ condition: consuming Bool = true) -> Fallible<Self> {
         switch Self.isSigned {
-        case true : self.minus(Element(repeating: Bit(condition)))
-        case false: self.plus (Element(/*------*/ Bit(condition)))
+        case true : self.minus(Self(repeating: Bit(condition)))
+        case false: self.plus (Self(/*------*/ Bit(condition)))
         }
     }
 }

@@ -22,11 +22,4 @@ extension DoubleInt {
     @inlinable public consuming func plus(_ increment: borrowing Self) -> Fallible<Self> {
         Fallible(bitPattern: self.storage.plus(increment.storage))
     }
-    
-    @inlinable public consuming func plus(_ increment: consuming Element) -> Fallible<Self> {
-        let appendix = High(repeating: increment.appendix)
-        let low  = self.low .plus(Low(load: increment))
-        let high = self.high.plus(appendix, plus: low.error)
-        return Self(low: low.value, high: high.value).combine(high.error)
-    }
 }

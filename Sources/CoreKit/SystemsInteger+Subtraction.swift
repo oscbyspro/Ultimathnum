@@ -23,7 +23,7 @@ extension SystemsInteger {
         //=--------------------------------------=
         let error: Bool
         (self, error) = self.minus(decrement).components
-        (self, extra) = self.minus(Element(Bit(extra))).components
+        (self, extra) = self.minus(Self(Bit(extra))).components
         return self.combine(error != extra)
     }
 }
