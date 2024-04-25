@@ -36,7 +36,7 @@ extension CoreIntTests {
     func testBitCountSelection() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             for bit: Bit in [0, 1] {
-                for selection: BitSelection in [.anywhere, .ascending, .descending] {
+                for selection: Bit.Selection in [.anywhere, .ascending, .descending] {
                     Test().same(( 0 as T).count(bit, where: selection), bit == 0 ? T.size : 0)
                     Test().same((~0 as T).count(bit, where: selection), bit == 1 ? T.size : 0)
                 }

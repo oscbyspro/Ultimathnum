@@ -23,11 +23,11 @@ extension SomeDataIntBody {
     }
     
     @inlinable public borrowing func count(_ bit: Bit) -> IX {
-        self.count(bit, where: BitSelection.anywhere)
+        self.count(bit, where: Bit.Selection.anywhere)
     }
     
-    @inlinable public borrowing func count(_ selection: BitSelection.Body) -> IX {
-        typealias T = BitSelection
+    @inlinable public borrowing func count(_ selection: Bit.Selection.Body) -> IX {
+        typealias T = Bit.Selection
         return switch selection {
             
         case .bit:
@@ -50,8 +50,8 @@ extension SomeDataIntBody {
         }
     }
     
-    @inlinable public func count(_ bit: Bit, where selection: BitSelection) -> IX {
-        typealias T = BitSelection
+    @inlinable public func count(_ bit: Bit, where selection: Bit.Selection) -> IX {
+        typealias T = Bit.Selection
         var count = Fallible(IX.zero, error: false)
         switch selection {
             

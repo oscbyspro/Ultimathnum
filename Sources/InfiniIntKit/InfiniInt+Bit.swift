@@ -41,11 +41,11 @@ extension InfiniInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func count(_ bit: Bit, where selection: BitSelection) -> Magnitude {
+    @inlinable public borrowing func count(_ bit: Bit, where selection: Bit.Selection) -> Magnitude {
         var count = Magnitude()
         
         switch selection {
-        case BitSelection.anywhere:
+        case Bit.Selection.anywhere:
             let contrast = self.appendix.toggled()
             self.storage.withUnsafeBinaryIntegerBody {
                 count = Magnitude(load: $0.count(contrast, where: selection))
@@ -54,7 +54,7 @@ extension InfiniInt {
                 }
             }
             
-        case BitSelection.ascending:
+        case Bit.Selection.ascending:
             let bitIsAppendix = self.appendix == bit
             self.storage.withUnsafeBinaryIntegerBody {
                 let ascending =  $0.count(bit,where: selection)                
@@ -65,7 +65,7 @@ extension InfiniInt {
                 }
             }
             
-        case BitSelection.descending:
+        case Bit.Selection.descending:
             if  self.appendix == bit {
                 self.withUnsafeBinaryIntegerBody {
                     count = Self.size - Magnitude(load: $0.count(.nondescending(bit)))

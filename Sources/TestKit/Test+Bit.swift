@@ -26,7 +26,7 @@ extension Test {
     public func count<T>(
         _ instance: T,
         _ bit: Bit,
-        _ selection: BitSelection,
+        _ selection: Bit.Selection,
         _ expectation: T.Magnitude
     )   where T: BinaryInteger {
         //=--------------------------------------=
@@ -36,22 +36,22 @@ extension Test {
         let expectation = (normal: expectation, inverse: expectationInverse)
         //=--------------------------------------=
         switch selection {
-        case BitSelection.anywhere:
+        case Bit.Selection.anywhere:
             same(instance.normal .count( bit, where: selection), expectation.normal,  "where [0]")
             same(instance.normal .count(~bit, where: selection), expectation.inverse, "where [1]")
             same(instance.inverse.count( bit, where: selection), expectation.inverse, "where [2]")
             same(instance.inverse.count(~bit, where: selection), expectation.normal,  "where [3]")
         
-        case BitSelection.ascending:
+        case Bit.Selection.ascending:
             same(instance.normal .count( bit, where: selection), expectation.normal,  "where [4]")
             same(instance.inverse.count(~bit, where: selection), expectation.normal,  "where [5]")
         
-        case BitSelection.descending:
+        case Bit.Selection.descending:
             same(instance.normal .count( bit, where: selection), expectation.normal,  "where [6]")
             same(instance.inverse.count(~bit, where: selection), expectation.normal,  "where [7]")
         }
         
-        branch: if selection == BitSelection.anywhere {
+        branch: if selection == Bit.Selection.anywhere {
             same(instance.normal .count( bit), expectation.normal,  "count [0]")
             same(instance.normal .count(~bit), expectation.inverse, "count [1]")
             same(instance.inverse.count( bit), expectation.inverse, "count [2]")
@@ -63,14 +63,14 @@ extension Test {
             same(instance.inverse.count(.bit), T.size, "bit [1]")
         }
         
-        branch: if selection == BitSelection.anywhere {
+        branch: if selection == Bit.Selection.anywhere {
             same(instance.normal .count(.each( bit)), expectation.normal,  "each [0]")
             same(instance.normal .count(.each(~bit)), expectation.inverse, "each [1]")
             same(instance.inverse.count(.each( bit)), expectation.inverse, "each [2]")
             same(instance.inverse.count(.each(~bit)), expectation.normal,  "each [3]")
         }
         
-        branch: if selection == BitSelection.ascending {
+        branch: if selection == Bit.Selection.ascending {
             same(instance.normal .count(.ascending( bit)), expectation.normal, "ascending [0]")
             same(instance.inverse.count(.ascending(~bit)), expectation.normal, "ascending [1]")
             
@@ -80,7 +80,7 @@ extension Test {
             }
         }
         
-        branch: if selection == BitSelection.ascending {
+        branch: if selection == Bit.Selection.ascending {
             same(instance.normal .count(.nonascending( bit)), expectation.inverse,  "nonascending [0]")
             same(instance.inverse.count(.nonascending(~bit)), expectation.inverse,  "nonascending [1]")
             
@@ -90,7 +90,7 @@ extension Test {
             }
         }
         
-        branch: if selection == BitSelection.descending {
+        branch: if selection == Bit.Selection.descending {
             same(instance.normal .count(.descending( bit)), expectation.normal, "descending [0]")
             same(instance.inverse.count(.descending(~bit)), expectation.normal, "descending [1]")
             
@@ -100,7 +100,7 @@ extension Test {
             }
         }
         
-        branch: if selection == BitSelection.descending {
+        branch: if selection == Bit.Selection.descending {
             same(instance.normal .count(.nondescending( bit)), expectation.inverse,  "nondescending [0]")
             same(instance.inverse.count(.nondescending(~bit)), expectation.inverse,  "nondescending [1]")
 
@@ -110,11 +110,11 @@ extension Test {
             }
         }
         
-        branch: if selection == BitSelection.descending, bit == instance.normal.appendix {
+        branch: if selection == Bit.Selection.descending, bit == instance.normal.appendix {
             same(instance.normal .count(.appendix), expectation.normal, "appendix [0]")
         }
         
-        branch: if selection == BitSelection.descending, bit == instance.normal.appendix {
+        branch: if selection == Bit.Selection.descending, bit == instance.normal.appendix {
             same(instance.normal .count(.nonappendix), expectation.inverse, "nonappendix [0]")
         }
     }
