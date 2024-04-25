@@ -52,11 +52,6 @@
 ///
 /// - Important: Infinite values take on the order of their host type.
 ///
-/// ### Development
-///
-/// - TODO: Check whether `incrementAtEndIndex(_:)` composes well.
-/// - TODO: Check whether `decrementAtEndIndex(_:)` composes well.
-///
 public protocol BinaryInteger<BitPattern>:
     BitCastable,
     BitOperable,

@@ -17,11 +17,6 @@ extension BinaryInteger {
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    /// Indicates whether this type can represent all bit patterns.
-    @inlinable public var isInfinite: Bool {
-        !Self.isSigned && Bool(self.appendix)
-    }
-    
     /// Indicates whether this type can represent negative values.
     ///
     /// ```
@@ -41,14 +36,23 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// Indicates whether this value is is greater than all finite values.
+    ///
+    /// It checks `isSigned`, which is preferred in inlinable generic code.
+    ///
+    @inlinable public var isInfinite: Bool {
+        !Self.isSigned && Bool(self.appendix)
+    }
+    
     /// Returns whether this value is less than zero.
     ///
-    /// It checks `isSigned` first which is preferred in inlinable generic code.
+    /// It checks `isSigned`, which is preferred in inlinable generic code.
     ///
     @inlinable public var isNegative: Bool {
         Self.isSigned && Bool(self.appendix)
     }
     
+    /// A three-way comparison of `self` versus `zero`.
     @inlinable public borrowing func signum() -> Signum {
         self.compared(to: 0)
     }

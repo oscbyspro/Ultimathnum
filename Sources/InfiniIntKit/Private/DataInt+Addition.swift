@@ -20,8 +20,8 @@ extension MutableDataInt.Body {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func increment(
-        by bit: consuming Bool, 
-        plusOnRepeat pattern: consuming Bool
+        repeating pattern: consuming Bool,
+        plus bit: consuming Bool
     )   -> Bool {
         
         if  bit != pattern {
@@ -36,7 +36,7 @@ extension MutableDataInt.Body {
         return bit as Bool as Bool as Bool as Bool
     }
     
-    @inlinable public consuming func incrementSubSequence(byComplementOf elements: Immutable) {
+    @inlinable public consuming func incrementSubSequence(complementOf elements: Immutable) {
         var bit: Bool = true
         
         for index in elements.indices {

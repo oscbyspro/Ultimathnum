@@ -20,9 +20,9 @@ extension MutableDataInt.Body {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func decrement(
-        by bit: consuming Bool,
-        plusOnRepeat pattern: consuming Bool
-    ) -> Bool {
+        repeating pattern: consuming Bool,
+        plus bit: consuming Bool
+    )   -> Bool {
         
         if  bit != pattern {
             let predicate = copy bit

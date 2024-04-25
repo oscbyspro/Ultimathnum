@@ -26,13 +26,13 @@ extension InfiniInt {
         self.storage.withUnsafeMutableBinaryIntegerBody { lhs in
             other.withUnsafeBinaryIntegerElements { rhs in
                 var lhs  = consume lhs
-                overflow = lhs[{ $0.decrementSubSequence(by: rhs.body,plus: overflow) }]
-                overflow = lhs.decrement(by: overflow, plusOnRepeat: Bool(rhs.appendix))
+                overflow = lhs[{ $0.decrementSubSequence(by: rhs.body  ,plus: overflow) }]
+                overflow = lhs.decrement(repeating: Bool(rhs.appendix), plus: overflow)
             }
         }
                 
         var last = Element(repeating: self.appendix)
-        overflow = last[{ $0.minus(Element(repeating: other.appendix),plus: overflow) }]
+        overflow = last[{ $0.minus(Element(repeating: other.appendix), plus: overflow) }]
         self.storage.appendix = Element.Signitude(bitPattern: last).appendix
         self.storage.normalize(appending: Element.Magnitude(bitPattern: last))
         
