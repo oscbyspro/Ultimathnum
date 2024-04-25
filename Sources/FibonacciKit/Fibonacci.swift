@@ -79,10 +79,11 @@ import CoreKit
         self.init()
         
         try index.withUnsafeBinaryIntegerElementsAsBytes {
-            for bit in try BitSequence($0).nonappendix().reversed() {
+            let x = $0.body.count(.nondescending(.zero))
+            for x in (0 ..< x).reversed() {
                 try self.double()
                 
-                if  bit == 1 {
+                if  $0.body[unchecked: x &>> 3] &>> U8(load: x) & 1 != 0 {
                     try self.increment()
                 }
             }
