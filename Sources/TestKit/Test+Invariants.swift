@@ -19,29 +19,39 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func invariants<T>(_ type: T.Type, _ id: SystemsIntegerID = .init()) where T: SystemsInteger {
+    public func invariants<T>(_ type: T.Type, _ id: SystemsIntegerID) where T: SystemsInteger {
         //=--------------------------------------=
         same(
             T.size.count(.each(1)),
             T.Magnitude(1),
-            "\(T.self).bitWidth must be a power of 2"
+            "\(T.self).size must be a power of 2"
         )
-        nonless(
-            UX(size: T.self),
-            UX(size: T.Element.self),
-            "\(T.self) must be at least as wide as \(T.Element.self)"
+        
+        same(
+            MemoryLayout<T>.size,
+            MemoryLayout<T>.stride,
+            "\(T.self)'s size must be the same as its stride"
+        )
+        
+        yay(
+            MemoryLayout<T>.size.isMultiple(of: MemoryLayout<T.Element>.alignment),
+            "\(T.self)'s size must be a multiple of \(T.Element.self)'s size"
+        )
+        
+        yay(
+            MemoryLayout<T>.stride.isMultiple(of: MemoryLayout<T.Element>.alignment),
+            "\(T.self)'s stride must be a multiple of \(T.Element.self)'s stride"
+        )
+        
+        yay(
+            MemoryLayout<T>.alignment.isMultiple(of: MemoryLayout<T.Element>.alignment),
+            "\(T.self)'s alignment must be a multiple of \(T.Element.self)'s alignment"
         )
         //=--------------------------------------=
         invariants(type, BinaryIntegerID())
     }
     
-    public func invariants<T>(_ type: T.Type, _ id: BinaryIntegerID = .init()) where T: BinaryInteger {
-        //=--------------------------------------=
-        same(
-            T.Element.size.count(.each(1)),
-            T.Element.Magnitude(1),
-            "\(T.Element.self).bitWidth must be a power of 2"
-        )
+    public func invariants<T>(_ type: T.Type, _ id: BinaryIntegerID) where T: BinaryInteger {
         //=--------------------------------------=
         same( T.isSigned, T.self is any   SignedInteger.Type)
         same(!T.isSigned, T.self is any UnsignedInteger.Type)

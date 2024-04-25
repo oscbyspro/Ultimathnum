@@ -68,4 +68,18 @@ final class DoubleIntTests: XCTestCase {
     var bases: [any SystemsInteger.Type] {
         Self.bases
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testInvariants() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            Test().invariants(type, SystemsIntegerID())
+        }
+        
+        for type in types {
+            whereIs(type)
+        }
+    }
 }

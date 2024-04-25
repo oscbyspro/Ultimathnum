@@ -90,4 +90,18 @@ final class InfiniIntTests: XCTestCase {
     var elementsWhereIsUnsigned: [any (UnsignedInteger & SystemsInteger).Type] {
         Self.elementsWhereIsUnsigned
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testInvariants() {
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            Test().invariants(type, BinaryIntegerID())
+        }
+        
+        for type in types {
+            whereIs(type)
+        }
+    }
 }
