@@ -17,7 +17,7 @@ extension ExchangeInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func normalized() -> Prefix<Self> {
+    @inlinable public consuming func normalized() -> Prefix {
         Self(self.base.normalized()).body()
     }
 }

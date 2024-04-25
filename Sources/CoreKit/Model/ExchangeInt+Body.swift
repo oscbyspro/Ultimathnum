@@ -17,13 +17,12 @@ extension ExchangeInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func body() -> Prefix<Self> {
+    @inlinable public func body() -> Prefix {
         let ratio = UX(bitPattern: MemoryLayout<Element>.stride)
         var major = UX(bitPattern: self.base.body.count)
         major  &>>= UX(bitPattern: ratio.count(0, where: BitSelection.ascending))
         var minor = UX(bitPattern: self.base.body.count)
         minor    &= UX(bitPattern: ratio.minus(1).assert())
-        let count = major.plus(UX(Bit(minor != 0))).assert()
-        return self.prefix(IX(bitPattern: count))
+        return self.prefix(major.plus(UX(Bit(minor != 0))).assert())
     }
 }

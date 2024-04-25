@@ -86,7 +86,7 @@ extension ExchangeIntTests.Case {
         }
     }
     
-    func prefix(_ count: IX, is expectation: [Element]) {
+    func prefix(_ count: UX, is expectation: [Element]) {
         self.expect(expectation) {
             Array($0.prefix(count))
         }
