@@ -29,11 +29,11 @@ extension InfiniIntStorage {
     }
     
     @inlinable public mutating func withUnsafeMutableBinaryIntegerBody<T>(
-        _ action: (DataInt<Element>.Canvas) throws -> T
+        _ action: (MutableDataInt<Element>.Body) throws -> T
     )   rethrows -> T {
         
         let result = try self.body.withUnsafeMutableBufferPointer {
-            try action(DataInt.Canvas($0)!)
+            try action(MutableDataInt.Body($0)!)
         }
         
         return result as T

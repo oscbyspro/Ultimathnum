@@ -66,12 +66,12 @@ extension TextInt {
                 buffer[..<words.count].deinitialize()
             }
             //=--------------------------------------=
-            let body = DataInt.Canvas(buffer.baseAddress!, count: IX(words.count))
+            let body = MutableDataInt.Body(buffer.baseAddress!, count: IX(words.count))
             return self.encode(sign: sign, mask: mask, body: body)
         }
     }
     
-    @usableFromInline func encode(sign: Sign?, mask: Bit?, body: consuming DataInt<UX>.Canvas) -> String {
+    @usableFromInline func encode(sign: Sign?, mask: Bit?, body: consuming MutableDataInt<UX>.Body) -> String {
         //=--------------------------------------=
         // normalization
         //=--------------------------------------=

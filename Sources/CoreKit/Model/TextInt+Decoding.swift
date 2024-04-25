@@ -94,7 +94,7 @@ extension TextInt {
         (capacity) &+= IX(Bit(alignment != .zero))
         //=--------------------------------------=
         return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
-            let words = DataInt<UX>.Canvas(consume $0)![unchecked: ..<(capacity)]
+            let words = MutableDataInt<UX>.Body(consume $0)![unchecked: ..<(capacity)]
             var index = IX.zero
             //=----------------------------------=
             // pointee: deferred deinitialization
@@ -154,7 +154,7 @@ extension TextInt {
         (capacity) &+= IX(Bit(alignment != .zero))
         //=--------------------------------------=
         return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
-            let words = DataInt<UX>.Canvas(consume $0)![unchecked: ..<capacity]
+            let words = MutableDataInt<UX>.Body(consume $0)![unchecked: ..<capacity]
             var index = words.count
             //=----------------------------------=
             // pointee: deferred deinitialization

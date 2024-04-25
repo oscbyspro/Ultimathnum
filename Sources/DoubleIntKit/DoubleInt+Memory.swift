@@ -104,13 +104,13 @@ extension DoubleInt {
     }
     
     @inlinable public mutating func withUnsafeMutableBinaryIntegerBody<T>(
-        _ action: (DataInt<Element.Magnitude>.Canvas) throws -> T
+        _ action: (MutableDataInt<Element.Magnitude>.Body) throws -> T
     )   rethrows -> T {
         
         try Swift.withUnsafeMutablePointer(to: &self) {
             let count = MemoryLayout<Self>.stride / MemoryLayout<Element.Magnitude>.stride
             return try $0.withMemoryRebound(to: Element.Magnitude.self, capacity: count) {
-                try action(DataInt.Canvas($0, count: IX(count)))
+                try action(MutableDataInt.Body($0, count: IX(count)))
             }
         }
     }

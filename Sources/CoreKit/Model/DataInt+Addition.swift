@@ -8,13 +8,13 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Data Int x Addition x Canvas
+// MARK: * Data Int x Addition x Read|Write|Body
 //*============================================================================*
 //=----------------------------------------------------------------------------=
 // MARK: + Bit
 //=----------------------------------------------------------------------------=
 
-extension DataInt.Canvas {
+extension MutableDataInt.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -42,7 +42,7 @@ extension DataInt.Canvas {
 // MARK: + Some
 //=----------------------------------------------------------------------------=
 
-extension DataInt.Canvas {
+extension MutableDataInt.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -75,7 +75,7 @@ extension DataInt.Canvas {
 // MARK: + Some + Bit
 //=----------------------------------------------------------------------------=
 
-extension DataInt.Canvas {
+extension MutableDataInt.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -114,14 +114,14 @@ extension DataInt.Canvas {
 // MARK: + Many + Bit
 //=----------------------------------------------------------------------------=
 
-extension DataInt.Canvas {
+extension MutableDataInt.Body {
 
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
 
     @inlinable public consuming func increment(
-        by elements: Body, 
+        by elements: Immutable,
         plus bit: consuming Bool = false
     )   -> Fallible<Self> {
         
@@ -133,7 +133,7 @@ extension DataInt.Canvas {
     }
     
     @inlinable public consuming func incrementSubSequence(
-        by elements: borrowing Body,
+        by elements: borrowing Immutable,
         plus bit: consuming Bool = false
     )   -> Fallible<Self> {
         
@@ -153,14 +153,14 @@ extension DataInt.Canvas {
 // MARK: + Many × Some + Some
 //=----------------------------------------------------------------------------=
 
-extension DataInt.Canvas {
+extension MutableDataInt.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     @discardableResult @inlinable public consuming func increment(
-        by elements: Body,
+        by elements: Immutable,
         times multiplier: consuming Element,
         plus increment: consuming Element = .zero
     )   -> Fallible<Self> {
@@ -173,7 +173,7 @@ extension DataInt.Canvas {
     }
     
     @discardableResult @inlinable public consuming func incrementSubSequence(
-        by elements: borrowing Body,
+        by elements: borrowing Immutable,
         times multiplier: consuming Element,
         plus increment: Element = .zero
     )   -> Fallible<Self> {

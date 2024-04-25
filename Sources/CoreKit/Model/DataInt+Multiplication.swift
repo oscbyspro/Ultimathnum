@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Data Int x Multiplication x Some x Canvas
+// MARK: * Data Int x Multiplication x Read|Write|Body x Some
 //*============================================================================*
 
-extension DataInt.Canvas {
+extension MutableDataInt.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -45,10 +45,10 @@ extension DataInt.Canvas {
 }
 
 //*============================================================================*
-// MARK: * Data Int x Multiplication x Many x Canvas
+// MARK: * Data Int x Multiplication x Read|Write|Body x Many
 //*============================================================================*
 
-extension DataInt.Canvas {
+extension MutableDataInt.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -60,7 +60,7 @@ extension DataInt.Canvas {
     ///
     /// [algorithm]: https://en.wikipedia.org/wiki/multiplication_algorithm
     ///
-    @inlinable public consuming func initialize(to lhs: Body, times rhs: Body) {
+    @inlinable public consuming func initialize(to lhs: Immutable, times rhs: Immutable) {
         if  16 > Swift.min(lhs.count, rhs.count) {
             self.initializeByLongAlgorithm(to: lhs, times: rhs, plus: Element.zero)
         }   else {
@@ -72,7 +72,7 @@ extension DataInt.Canvas {
     ///
     /// - Parameter self: A buffer of size `2 * elements`.
     ///
-    @inlinable public consuming func initialize(toSquareProductOf elements: Body) {
+    @inlinable public consuming func initialize(toSquareProductOf elements: Immutable) {
         if  16 > elements.count {
             self.initializeByLongAlgorithm(toSquareProductOf: elements, plus: Element.zero)
         }   else {
@@ -82,10 +82,10 @@ extension DataInt.Canvas {
 }
 
 //*============================================================================*
-// MARK: * Data Int x Multiplication x Long x Canvas
+// MARK: * Data Int x Multiplication x Read|Write|Body x Long
 //*============================================================================*
 
-extension DataInt.Canvas {
+extension MutableDataInt.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -98,7 +98,7 @@ extension DataInt.Canvas {
     /// [algorithm]: https://en.wikipedia.org/wiki/multiplication_algorithm
     ///
     @inline(never) @inlinable public consuming func initializeByLongAlgorithm(
-        to lhs: Body, times rhs: Body, plus increment: Element = .zero
+        to lhs: Immutable, times rhs: Immutable, plus increment: Element = .zero
     ) {
         //=--------------------------------------=
         Swift.assert(self.count >= 1 || increment == 0, String.indexOutOfBounds())
@@ -143,7 +143,7 @@ extension DataInt.Canvas {
     /// [algorithm]: https://en.wikipedia.org/wiki/multiplication_algorithm
     ///
     @inline(never) @inlinable public consuming func initializeByLongAlgorithm(
-         toSquareProductOf elements: Body, plus increment: Element = .zero
+         toSquareProductOf elements: Immutable, plus increment: Element = .zero
     ) {
         //=--------------------------------------=
         Swift.assert(self.count >= 1 || increment == 0, String.indexOutOfBounds())
@@ -157,7 +157,7 @@ extension DataInt.Canvas {
         var carry = increment
         //=--------------------------------------=
         while UX(bitPattern: self.count) > 0 {
-            let multiplier = Body(elements.start + Int(index), count: 1)
+            let multiplier = Immutable(elements.start + Int(index), count: 1)
             index = index.incremented().assert()
             //=----------------------------------=
             // add non-diagonal products
@@ -184,10 +184,10 @@ extension DataInt.Canvas {
 }
 
 //*============================================================================*
-// MARK: * Data Int x Multiplication x Karatsuba x Canvas
+// MARK: * Data Int x Multiplication x Read|Write|Body x Karatsuba
 //*============================================================================*
 
-extension DataInt.Canvas {
+extension MutableDataInt.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -213,7 +213,7 @@ extension DataInt.Canvas {
     ///
     /// [algorithm]: https://en.wikipedia.org/wiki/karatsuba_algorithm
     ///
-    @inline(never) @inlinable public consuming func initializeByKaratsubaAlgorithm(to lhs: Body, times rhs: Body) {
+    @inline(never) @inlinable public consuming func initializeByKaratsubaAlgorithm(to lhs: Immutable, times rhs: Immutable) {
         //=--------------------------------------=
         Swift.assert(self.count == lhs.count + rhs.count, String.indexOutOfBounds())
         //=--------------------------------------=
@@ -258,14 +258,14 @@ extension DataInt.Canvas {
             //=----------------------------------=
             // set (a * x) and (b * y)
             //=----------------------------------=
-            self[unchecked: ..<j].load(Body(u[unchecked: ..<(axCount)]))
-            self[unchecked: j...].load(Body(v[unchecked: ..<(count-j)]))
+            self[unchecked: ..<j].initialize(load: Immutable(u[unchecked: ..<(axCount)]))
+            self[unchecked: j...].initialize(load: Immutable(v[unchecked: ..<(count-j)]))
             //=----------------------------------=
             // sub (a * x) and (b * y)
             //=----------------------------------=
             let suffix = self[unchecked: i...]
-            _ = suffix.increment(by: Body(u[unchecked: ..<(axCount)]))
-            _ = suffix.increment(by: Body(v[unchecked: ..<(count-j)]))
+            _ = suffix.increment(by: Immutable(u[unchecked: ..<(axCount)]))
+            _ = suffix.increment(by: Immutable(v[unchecked: ..<(count-j)]))
             //=----------------------------------=
             // regions
             //=----------------------------------=
@@ -290,14 +290,14 @@ extension DataInt.Canvas {
             n.initialize(to: y)
             n.decrement (by: x).assert()
             
-            v.initialize(to: Body(m), times: Body(n))
+            v.initialize(to: Immutable(m), times: Immutable(n))
             //=----------------------------------=
             // sub (b - a) mul (y - x)
             //=----------------------------------=
             if  abSwap == xySwap {
-                _ = suffix.decrement(by: Body(v))
+                _ = suffix.decrement(by: Immutable(v))
             }   else {
-                _ = suffix.increment(by: Body(v))
+                _ = suffix.increment(by: Immutable(v))
             }
         }
     }
@@ -326,15 +326,15 @@ extension DataInt.Canvas {
     ///
     /// - TODO: Add a test case where `elements` has redundant zeros.
     ///
-    @inline(never) @inlinable public consuming func initializeByKaratsubaAlgorithm(toSquareProductOf elements: Body) {
+    @inline(never) @inlinable public consuming func initializeByKaratsubaAlgorithm(toSquareProductOf elements: Immutable) {
         //=--------------------------------------=
         Swift.assert(self.count == 2 * elements.count, String.indexOutOfBounds())
         //=--------------------------------------=
         let i: IX = elements.count &>> 1
         let j: IX = i &<< 1
         
-        var a: Body = elements[unchecked: ..<i].normalized()
-        var b: Body = elements[unchecked: i...].normalized()
+        var a: Immutable = elements[unchecked: ..<i].normalized()
+        var b: Immutable = elements[unchecked: i...].normalized()
 
         let axCount: IX = 2 * a.count
         let byCount: IX = 2 * b.count
@@ -365,14 +365,14 @@ extension DataInt.Canvas {
             //=----------------------------------=
             // set (a * x) and (b * y)
             //=----------------------------------=
-            self[unchecked: ..<j].load(Body(u[unchecked: ..<axCount]))
-            self[unchecked: j...].load(Body(v[unchecked: ..<byCount]))
+            self[unchecked: ..<j].initialize(load: Immutable(u[unchecked: ..<axCount]))
+            self[unchecked: j...].initialize(load: Immutable(v[unchecked: ..<byCount]))
             //=----------------------------------=
             // set (a * x) and (b * y)
             //=----------------------------------=
             let suffix = self[unchecked: i...]
-            suffix.increment(by: Body(u[unchecked: ..<axCount])).assert()
-            suffix.increment(by: Body(v[unchecked: ..<byCount])).assert()
+            suffix.increment(by: Immutable(u[unchecked: ..<axCount])).assert()
+            suffix.increment(by: Immutable(v[unchecked: ..<byCount])).assert()
             //=----------------------------------=
             // regions
             //=----------------------------------=
@@ -384,11 +384,11 @@ extension DataInt.Canvas {
             //=----------------------------------=
             u[unchecked: ..<b.count].initialize(to: b)
             u[unchecked: ..<b.count].decrement (by: a).assert()
-            v.initialize(toSquareProductOf: Body(u[unchecked: ..<b.count]))
+            v.initialize(toSquareProductOf: Immutable(u[unchecked: ..<b.count]))
             //=----------------------------------=
             // sub (b - a) mul (y - x)
             //=----------------------------------=
-            _ = suffix.decrement(by: Body(v))
+            _ = suffix.decrement(by: Immutable(v))
         }
     }
 }

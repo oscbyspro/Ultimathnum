@@ -30,11 +30,11 @@ extension InfiniIntStorage {
     @inlinable public static func uninitialized(
         count: IX,
         repeating appendix: Bit,
-        delegate: (DataInt<Element.Magnitude>.Canvas) -> Void
+        delegate: (MutableDataInt<Element.Magnitude>.Body) -> Void
     )   -> Self {
         
         let body = Body(unsafeUninitializedCapacity: Int(count)) {
-            delegate(DataInt.Canvas($0.baseAddress!, count: IX(count)))
+            delegate(MutableDataInt.Body($0.baseAddress!, count: IX(count)))
             $1 = Int(count)
         }
         

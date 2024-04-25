@@ -55,36 +55,26 @@ extension DataIntTests.Canvas {
     
     func division(_ divisor: Nonzero<Element>, quotient: [Element], remainder: Element) {
         //=--------------------------------------=
-        // division: remainder (R)
-        //=--------------------------------------=
-        remainder: do {
-            let result = self.body.withUnsafeBufferPointer {
-                DataInt.Body($0)!.remainder(divisor)
-            }
-            
-            test.same(result, remainder)
-        }
-        //=--------------------------------------=
-        // division: remainder (W)
+        // division: remainder
         //=--------------------------------------=
         remainder: do {
             var body = self.body
             let result = body.withUnsafeMutableBufferPointer {
-                DataInt.Canvas($0)!.remainder(divisor)
+                MutableDataInt.Body($0)!.remainder(divisor)
             }
             
             test.same(body,   self.body)
             test.same(result, remainder)
         }
         //=--------------------------------------=
-        // division: quotient and remainder (W)
+        // division: quotient and remainder
         //=--------------------------------------=
         division: do {
             var result: (quotient: [Element], remainder: Element)
             
             result.quotient  = self.body
             result.remainder = result.quotient.withUnsafeMutableBufferPointer {
-                DataInt.Canvas($0)!.divisionSetQuotientGetRemainder(divisor)
+                MutableDataInt.Body($0)!.divisionSetQuotientGetRemainder(divisor)
             }
             
             test.same(result.quotient,  quotient)

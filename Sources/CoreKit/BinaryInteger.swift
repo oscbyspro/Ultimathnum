@@ -282,6 +282,6 @@ where
     )   rethrows -> T
     
     @inlinable mutating func withUnsafeMutableBinaryIntegerBody<T>(
-        _ action: (DataInt<Element.Magnitude>.Canvas) throws -> T
+        _ action: (MutableDataInt<Element.Magnitude>.Body) throws -> T
     )   rethrows -> T
 }

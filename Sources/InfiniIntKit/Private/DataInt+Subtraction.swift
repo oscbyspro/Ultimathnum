@@ -13,7 +13,7 @@ import CoreKit
 // MARK: * Data Int x Subtraction
 //*============================================================================*
 
-extension DataInt.Canvas {
+extension MutableDataInt.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

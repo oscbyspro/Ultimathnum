@@ -8,16 +8,16 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Data Int x Division x Element x Body
+// MARK: * Data Int x Division x Read|Write|Body x Some
 //*============================================================================*
 
-extension DataInt.Body {
+extension MutableDataInt.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Returns the `remainder` of dividing `self` by the `divisor`.
+    /// Returns the `quotient` and `remainder` of dividing `self` by the `divisor`.
     ///
     /// - Requires: The `divisor` must be nonzero.
     ///
@@ -37,31 +37,6 @@ extension DataInt.Body {
         
         return remainder as Element
     }
-}
-
-//*============================================================================*
-// MARK: * Data Int x Division x Element x Canvas
-//*============================================================================*
-
-extension DataInt.Canvas {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    /// Returns the `quotient` and `remainder` of dividing `self` by the `divisor`.
-    ///
-    /// - Requires: The `divisor` must be nonzero.
-    ///
-    /// - Returns: The `remainder` is returned. Note that the value of the `remainder` is less than the `divisor`.
-    ///
-    /// - Note: This operation does not need `write` access.
-    ///
-    /// - Important: This is `unsigned` and `finite`.
-    ///
-    @inlinable public func remainder(_ divisor: borrowing Nonzero<Element>) -> Element {
-        Body(self).remainder(divisor)
-    }
     
     /// Returns the `quotient` and `remainder` of dividing `self` by the `divisor`.
     ///
@@ -78,7 +53,8 @@ extension DataInt.Canvas {
         for index in self.indices.reversed() {
             let dividend = Doublet(low: self[unchecked: index], high: remainder)
             let division = Element.division(dividend, by: divisor.value).assert()
-            (self[unchecked: index], remainder) = division.components
+            self[unchecked:index] = division.quotient
+            ((((((remainder)))))) = division.remainder
         }
         
         return remainder as Element
@@ -86,10 +62,10 @@ extension DataInt.Canvas {
 }
 
 //*============================================================================*
-// MARK: * Data Int x Division x Long x Canvas
+// MARK: * Data Int x Division x Read|Write|Body x Long
 //*============================================================================*
 
-extension DataInt.Canvas {
+extension MutableDataInt.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -112,14 +88,14 @@ extension DataInt.Canvas {
     ///
     /// [algorithm]: https://en.wikipedia.org/wiki/long_division
     ///
-    @inlinable public func divisionSetQuotientSetRemainderByLong2111MSB(dividing dividend: Self, by divisor: Body) {
+    @inlinable public func divisionSetQuotientSetRemainderByLong2111MSB(dividing dividend: Self, by divisor: Immutable) {
         //=--------------------------------------=
         Swift.assert(
             self.count >= 1 && self.count == dividend.count - divisor.count,
             "the dividend must be wider than the divisor"
         )
         Swift.assert(
-            Body(dividend[unchecked: self.count...]).compared(to: divisor) == Signum.less,
+            dividend[unchecked: self.count...].compared(to: divisor) == Signum.less,
             "the quotient must fit in dividend.count - divisor.count elements"
         )
         //=--------------------------------------=
@@ -145,7 +121,7 @@ extension DataInt.Canvas {
     ///   bit must be set to ensure that the initial `quotient` element approximation does
     ///   not exceed the real `quotient` by more than 2.
     ///
-    @inlinable public func divisionSetRemainderGetQuotientByLong2111MSBIteration(_ divisor: Body) -> Element {
+    @inlinable public func divisionSetRemainderGetQuotientByLong2111MSBIteration(_ divisor: Immutable) -> Element {
         //=--------------------------------------=
         Swift.assert(
             divisor[unchecked: divisor.count - 1] >= Element.msb,
@@ -156,7 +132,7 @@ extension DataInt.Canvas {
             "the dividend must be exactly one element wider than the divisor"
         )
         Swift.assert(
-            Body(self[unchecked: 1...]).compared(to: divisor) == Signum.less,
+            self[unchecked: 1...].compared(to: divisor) == Signum.less,
             "the quotient of each iteration must fit in one element"
         )
         //=--------------------------------------=
@@ -183,7 +159,7 @@ extension DataInt.Canvas {
             overflow = !self.increment(by: divisor).error
         }
         
-        Swift.assert(Body(self).compared(to: divisor) == Signum.less)
+        Swift.assert(self.compared(to: divisor) == Signum.less)
         return quotient as Element
     }
 }

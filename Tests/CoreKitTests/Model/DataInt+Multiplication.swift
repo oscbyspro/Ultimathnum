@@ -115,7 +115,7 @@ extension DataIntTests.Canvas {
         if  multiplier.count == 1, let first = multiplier.first {
             var value = self.body
             let last  = value.withUnsafeMutableBufferPointer {
-                DataInt.Canvas($0)!.multiply(by: first, add: increment)
+                MutableDataInt.Body($0)!.multiply(by: first, add: increment)
             }
             
             value.append(last)
@@ -129,7 +129,7 @@ extension DataIntTests.Canvas {
             var value = [Element](repeating: 144, count: count)
 
             value.withUnsafeMutableBufferPointer {
-                let value = DataInt.Canvas($0)!
+                let value = MutableDataInt.Body($0)!
                 self.body.withUnsafeBufferPointer {
                     let body = DataInt.Body($0)!
                     multiplier.withUnsafeBufferPointer {
@@ -149,7 +149,7 @@ extension DataIntTests.Canvas {
             var value = [Element](repeating: 144, count: count)
 
             value.withUnsafeMutableBufferPointer {
-                let value = DataInt.Canvas($0)!
+                let value = MutableDataInt.Body($0)!
                 self.body.withUnsafeBufferPointer {
                     let body = DataInt.Body($0)!
                     multiplier.withUnsafeBufferPointer {
@@ -169,7 +169,7 @@ extension DataIntTests.Canvas {
             var value = [Element](repeating: 144, count: count)
             
             value.withUnsafeMutableBufferPointer {
-                let value = DataInt.Canvas($0)!
+                let value = MutableDataInt.Body($0)!
                 self.body.withUnsafeBufferPointer {
                     let body = DataInt.Body($0)!
                     value.initializeByLongAlgorithm(toSquareProductOf: body)
@@ -186,7 +186,7 @@ extension DataIntTests.Canvas {
             var value = [Element](repeating: 144, count: count)
             
             value.withUnsafeMutableBufferPointer {
-                let value = DataInt.Canvas($0)!
+                let value = MutableDataInt.Body($0)!
                 self.body.withUnsafeBufferPointer {
                     let body = DataInt.Body($0)!
                     value.initializeByLongAlgorithm(toSquareProductOf: body, plus: increment)

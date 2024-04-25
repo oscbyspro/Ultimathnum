@@ -11,7 +11,7 @@
 // MARK: * Data Int x Normalization
 //*============================================================================*
 
-extension DataInt {
+extension SomeDataInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -26,7 +26,7 @@ extension DataInt {
 // MARK: * Data Int x Normalization x Body
 //*============================================================================*
 
-extension DataInt.Body {
+extension SomeDataIntBody {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -43,20 +43,5 @@ extension DataInt.Body {
         }
         
         return Self(self.start, count: endIndex)
-    }
-}
-
-//*============================================================================*
-// MARK: * Data Int x Normalization x Canvas
-//*============================================================================*
-
-extension DataInt.Canvas {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func normalized(repeating appendix: Bit = .zero) -> Self {
-        Self(mutating: Body(self).normalized(repeating: appendix))
     }
 }

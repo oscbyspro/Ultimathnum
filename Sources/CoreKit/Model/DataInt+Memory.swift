@@ -11,21 +11,19 @@
 // MARK: * Data Int x Memory
 //*============================================================================*
 
-extension DataInt {
+extension SomeDataInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func withMemoryRebound<Destination, Value>(
+    @inlinable public func withMemoryRebound<Destination, Value>(
         to type: Destination.Type,
         perform action: (DataInt<Destination>) throws -> Value
     )   rethrows -> Value {
-        //=--------------------------------------=
-        let appendix = self.appendix
-        //=--------------------------------------=
-        return try self.body.withMemoryRebound(to: Destination.self) {
-            try action(DataInt<Destination>($0, repeating: appendix))
+        
+        try self.body.withMemoryRebound(to: Destination.self) {
+            try action(DataInt<Destination>($0, repeating: self.appendix))
         }
     }
 }
@@ -50,55 +48,16 @@ extension DataInt.Body {
         let ratio = IX(size: Element.self) / IX(size: Destination.self)
         let count = self.count * ratio
         return try  self.start.withMemoryRebound(to:  Destination.self, capacity: Int(count)) {
-            try action(DataInt<Destination>.Body($0, count: count))
+            try action(DataInt<Destination>.Body($0,  count: count))
         }
     }
 }
 
 //*============================================================================*
-// MARK: * Data Int x Memory x Canvas
+// MARK: * Data Int x Memory x Read & Write x Body
 //*============================================================================*
 
-extension DataInt.Canvas {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initialization
-    //=------------------------------------------------------------------------=
-    
-    /// Deinitializes each element in `self`.
-    @inlinable public func deinitialize() {
-        self.start.deinitialize(count: Int(self.count))
-    }
-    
-    /// Initializes each element in `self` to `element`.
-    @inlinable public func initialize(repeating element: Element) {
-        self.start.initialize(repeating: element, count: Int(self.count))
-    }
-    
-    /// Initializes the elements of `self` to the elements of `source`.
-    ///
-    /// - Requires: `self.count == source.count`
-    ///
-    @inlinable public func initialize(to source: Body) {
-        //=--------------------------------------=
-        Swift.assert(self.count == source.count, String.indexOutOfBounds())
-        //=--------------------------------------=
-        self.start.initialize(from: source.start, count: Int(source.count))
-    }
-    
-    /// Initializes the elements of `self` to the bit pattern of `source`.
-    ///
-    /// All elements in `self[source.count...]` are initialized to zero.
-    ///
-    /// - Requires: `self.count >= source.count`
-    ///
-    @inlinable public func load(_ source: Body) {
-        //=--------------------------------------=
-        Swift.assert(self.count >=  source.count, String.indexOutOfBounds())
-        //=--------------------------------------=
-        self.start.initialize(from: source.start, count: Int(source.count))
-        self.start.advanced(by: Int(source.count)).initialize(repeating: Element.zero, count: Int(self.count - source.count))
-    }
+extension MutableDataInt.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -114,7 +73,7 @@ extension DataInt.Canvas {
         let ratio = IX(size: Element.self) / IX(size: Destination.self)
         let count = self.count * ratio
         return try  self.start.withMemoryRebound(to:  Destination.self, capacity: Int(count)) {
-            try action(DataInt<Destination>.Body($0, count: count))
+            try action(DataInt<Destination>.Body($0,  count: count))
         }
     }
 }

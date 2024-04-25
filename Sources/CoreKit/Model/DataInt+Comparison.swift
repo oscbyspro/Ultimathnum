@@ -75,7 +75,7 @@ extension DataInt {
 // MARK: * Data Int x Comparison x Body
 //*============================================================================*
 
-extension DataInt.Body {
+extension SomeDataIntBody {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -85,31 +85,12 @@ extension DataInt.Body {
         self.buffer().allSatisfy({ $0 == Element.zero })
     }
     
-    @inlinable public borrowing func compared(to other: Self) -> Signum {
+    @inlinable public func compared(to other: some SomeDataIntBody<Element>) -> Signum {
         DataInt.compare(
             lhs: DataInt(self),
             lhsIsSigned: false,
             rhs: DataInt(other),
             rhsIsSigned: false
         )
-    }
-}
-
-//*============================================================================*
-// MARK: * Data Int x Comparison x Canvas
-//*============================================================================*
-
-extension DataInt.Canvas {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public var isZero: Bool {
-        Body(self).isZero
-    }
-    
-    @inlinable public borrowing func compared(to other: Self) -> Signum {
-        Body(self).compared(to: Body(other))
     }
 }

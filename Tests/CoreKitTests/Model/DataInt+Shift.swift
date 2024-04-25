@@ -207,7 +207,7 @@ extension DataIntTests.Canvas {
             var value = self.body
             
             value.withUnsafeMutableBufferPointer {
-                let value = DataInt.Canvas($0)!
+                let value = MutableDataInt.Body($0)!
                 value.upshift(environment: environment, major: major, minor: minor)
             }
             
@@ -218,7 +218,7 @@ extension DataIntTests.Canvas {
             var value = self.body
             
             value.withUnsafeMutableBufferPointer {
-                let value = DataInt.Canvas($0)!
+                let value = MutableDataInt.Body($0)!
                 value.upshift(environment: environment, majorAtLeastOne: major, minor: Void())
             }
             
@@ -229,7 +229,7 @@ extension DataIntTests.Canvas {
             var value = self.body
             
             value.withUnsafeMutableBufferPointer {
-                let value = DataInt.Canvas($0)!
+                let value = MutableDataInt.Body($0)!
                 value.upshift(environment: environment, major: major, minorAtLeastOne: minor)
             }
             
@@ -245,7 +245,7 @@ extension DataIntTests.Canvas {
             var value = self.body
             
             value.withUnsafeMutableBufferPointer {
-                let value = DataInt.Canvas($0)!
+                let value = MutableDataInt.Body($0)!
                 value.downshift(environment: environment, major: major, minor: minor)
             }
             
@@ -256,7 +256,7 @@ extension DataIntTests.Canvas {
             var value = self.body
             
             value.withUnsafeMutableBufferPointer {
-                let value = DataInt.Canvas($0)!
+                let value = MutableDataInt.Body($0)!
                 value.downshift(environment: environment, majorAtLeastOne: major, minor: Void())
             }
             
@@ -267,7 +267,7 @@ extension DataIntTests.Canvas {
             var value = self.body
             
             value.withUnsafeMutableBufferPointer {
-                let value = DataInt.Canvas($0)!
+                let value = MutableDataInt.Body($0)!
                 value.downshift(environment: environment, major: major, minorAtLeastOne: minor)
             }
             

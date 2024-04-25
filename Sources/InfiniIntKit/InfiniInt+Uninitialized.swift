@@ -30,7 +30,7 @@ extension InfiniInt {
     @inlinable public static func uninitialized(
         count: IX,
         repeating appendix: Bit,
-        delegate: (DataInt<Element.Magnitude>.Canvas) -> Void
+        delegate: (MutableDataInt<Element.Magnitude>.Body) -> Void
     )   -> Self {
         
         var storage = Storage.uninitialized(

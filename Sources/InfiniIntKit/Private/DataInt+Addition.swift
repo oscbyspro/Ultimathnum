@@ -13,7 +13,7 @@ import CoreKit
 // MARK: * Data Int x Addtion
 //*============================================================================*
 
-extension DataInt.Canvas {
+extension MutableDataInt.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -36,7 +36,7 @@ extension DataInt.Canvas {
         return bit as Bool as Bool as Bool as Bool
     }
     
-    @inlinable public consuming func incrementSubSequence(byComplementOf elements: Body) {
+    @inlinable public consuming func incrementSubSequence(byComplementOf elements: Immutable) {
         var bit: Bool = true
         
         for index in elements.indices {

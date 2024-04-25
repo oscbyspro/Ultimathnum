@@ -202,7 +202,7 @@ extension DataIntTests.Canvas {
         if  normal.count == 0 {
             var value = self.body
             let error = value.withUnsafeMutableBufferPointer {
-                let value = DataInt.Canvas($0)!
+                let value = MutableDataInt.Body($0)!
                 return value.increment(by: bit).error
             }
             
@@ -214,7 +214,7 @@ extension DataIntTests.Canvas {
         if  normal.count == 1, !bit {
             var value = self.body
             let error = value.withUnsafeMutableBufferPointer {
-                let value = DataInt.Canvas($0)!
+                let value = MutableDataInt.Body($0)!
                 return value.increment(by: normal.first!).error
             }
             
@@ -226,7 +226,7 @@ extension DataIntTests.Canvas {
         if  normal.count == 1 {
             var value = self.body
             let error = value.withUnsafeMutableBufferPointer {
-                let value = DataInt.Canvas($0)!
+                let value = MutableDataInt.Body($0)!
                 return value.increment(by: normal.first!, plus: bit).error
             }
             
@@ -238,7 +238,7 @@ extension DataIntTests.Canvas {
         for many in [normal, elements[...]] where bit == false {
             var value = self.body
             let error = value.withUnsafeMutableBufferPointer {
-                let value = DataInt.Canvas($0)!
+                let value = MutableDataInt.Body($0)!
                 return (many).withUnsafeBufferPointer {
                     let many = DataInt.Body($0)!
                     return value.increment(by: many).error
@@ -253,7 +253,7 @@ extension DataIntTests.Canvas {
         for many in [normal, elements[...]] {
             var value = self.body
             let error = value.withUnsafeMutableBufferPointer {
-                let value = DataInt.Canvas($0)!
+                let value = MutableDataInt.Body($0)!
                 return (many).withUnsafeBufferPointer {
                     let many = DataInt.Body($0)!
                     return value.increment(by: many, plus: bit).error
@@ -285,7 +285,7 @@ extension DataIntTests.Canvas {
         for many in [normal, elements[...]] where increment == 0 {
             var value = self.body
             let error = value.withUnsafeMutableBufferPointer {
-                let value = DataInt.Canvas($0)!
+                let value = MutableDataInt.Body($0)!
                 return (many).withUnsafeBufferPointer {
                     let many = DataInt.Body($0)!
                     return value.increment(by: many, times: multiplier).error
@@ -300,7 +300,7 @@ extension DataIntTests.Canvas {
         for many in [normal, elements[...]] {
             var value = self.body
             let error = value.withUnsafeMutableBufferPointer {
-                let value = DataInt.Canvas($0)!
+                let value = MutableDataInt.Body($0)!
                 return (many).withUnsafeBufferPointer {
                     let many = DataInt.Body($0)!
                     return value.increment(by: many, times: multiplier, plus: increment).error

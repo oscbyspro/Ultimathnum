@@ -11,13 +11,13 @@
 // MARK: * Data Int x Bit x Body
 //*============================================================================*
 
-extension DataInt.Body {
+extension SomeDataIntBody {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func count(_ bit: Bit.Type) -> IX {
+    @inlinable public func count(_ bit: Bit.Type) -> IX {
         let count = self.count.times(IX(size: Element.self))
         return count.unwrap("BinaryInteger/body/0...IX.max")
     }
@@ -50,7 +50,7 @@ extension DataInt.Body {
         }
     }
     
-    @inlinable public borrowing func count(_ bit: Bit, where selection: BitSelection) -> IX {
+    @inlinable public func count(_ bit: Bit, where selection: BitSelection) -> IX {
         typealias T = BitSelection
         var count = Fallible(IX.zero, error: false)
         switch selection {
@@ -81,10 +81,10 @@ extension DataInt.Body {
 }
 
 //*============================================================================*
-// MARK: * Data Int x Bit x Canvas
+// MARK: * Data Int x Bit x Read|Write|Body
 //*============================================================================*
 
-extension DataInt.Canvas {
+extension MutableDataInt.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -104,25 +104,5 @@ extension DataInt.Canvas {
         }
         
         return increment as Bool
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public borrowing func count(_ bit: Bit.Type) -> IX {
-        Body(self).count(bit)
-    }
-    
-    @inlinable public borrowing func count(_ bit: Bit) -> IX {
-        Body(self).count(bit)
-    }
-    
-    @inlinable public borrowing func count(_ selection: BitSelection.Body) -> IX {
-        Body(self).count(selection)
-    }
-    
-    @inlinable public borrowing func count(_ bit: Bit, where selection: BitSelection) -> IX {
-        Body(self).count(bit, where: selection)
     }
 }
