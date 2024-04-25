@@ -11,7 +11,7 @@
 // MARK: * Big Int Literal
 //*============================================================================*
 
-@frozen public struct BigIntLiteral: ExpressibleByIntegerLiteral, NaturallyIndexable, Sendable {
+@frozen public struct BigIntLiteral: ExpressibleByIntegerLiteral, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
