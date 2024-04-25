@@ -58,11 +58,11 @@
 /// - TODO: Check whether `decrementAtEndIndex(_:)` composes well.
 ///
 public protocol BinaryInteger<BitPattern>:
-    Functional,
     BitCastable,
     BitOperable,
     Comparable,
     ExpressibleByIntegerLiteral,
+    Functional,
     Hashable,
     Sendable,
     Strideable,
@@ -80,15 +80,12 @@ where
     
     associatedtype Mode: Signedness
         
-    associatedtype Element: SystemsInteger 
-    where Element.Element == Element
+    associatedtype Element:    SystemsInteger where Element.Element == Element
     
-    associatedtype Signitude: SignedInteger
-    where Signitude.Signitude == Signitude
+    associatedtype Signitude:   SignedInteger where Signitude.Signitude == Signitude
     
-    associatedtype Magnitude: UnsignedInteger 
-    where Magnitude.Magnitude == Magnitude
-        
+    associatedtype Magnitude: UnsignedInteger where Magnitude.Magnitude == Magnitude
+    
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=

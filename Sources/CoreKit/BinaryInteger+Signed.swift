@@ -8,8 +8,19 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Unsigned Integer
+// MARK: * Binary Integer x Signed
 //*============================================================================*
 
-/// An unsigned binary integer.
-public protocol UnsignedInteger: BinaryInteger where Element: UnsignedInteger, Magnitude == Self, Mode == Unsigned { }
+/// A signed binary integer.
+///
+/// ### Await: Generalized Opaque and Existential Type Constraints
+///
+/// This protocol is really just a named associated type constraint. So it might
+/// be possible to replace with the following, at some point:
+///
+/// ```swift
+/// any  BinaryInteger<.Signitude == .Self>
+/// some BinaryInteger<.Signitude == .Self>
+/// ```
+///
+public protocol SignedInteger: BinaryInteger where Element: SignedInteger, Signitude == Self, Mode == Signed { }

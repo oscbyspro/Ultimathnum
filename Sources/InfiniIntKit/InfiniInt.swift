@@ -13,6 +13,10 @@ import CoreKit
 // MARK: * Infini Int
 //*============================================================================*
 
+/// ### Development
+///
+/// - TODO: Make it generic over its `Element` type.
+///
 @frozen public struct InfiniInt<Source>: BinaryInteger where Source: SystemsInteger {
     
     public typealias Element = Source.Element
