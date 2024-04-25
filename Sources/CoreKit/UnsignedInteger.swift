@@ -12,15 +12,4 @@
 //*============================================================================*
 
 /// An unsigned binary integer.
-///
-/// - Note: Its static `isSigned` value is `false`.
-///
-/// ### Magnitude
-///
-/// An unsigned integer can by definition represent its magnitude. As such, the
-/// magnitude should be of the same type. While alternative designs are possible,
-/// this design makes generic code simpler.
-///
-/// - Requires: The magnitude must be of the same type.
-///
 public protocol UnsignedInteger: BinaryInteger where Element: UnsignedInteger, Magnitude == Self, Mode == Unsigned { }

@@ -24,9 +24,9 @@ extension Test {
         _ integer: Integer
     )   where Integer: BinaryInteger, Element: SystemsInteger<Integer.Element.BitPattern> {
         //=--------------------------------------=
-        same(Integer(load:       element), integer)
         same(Integer(load: element), integer)
-        same(Integer(load:       element).load(as: Element.self), element)
+        same(Integer(load: element), integer)
+        same(Integer(load: element).load(as: Element.self), element)
     }
     
     public func load<Integer, Element>(

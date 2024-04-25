@@ -76,45 +76,43 @@ extension CoreIntTests {
     //=------------------------------------------------------------------------=
         
     func testInitBody() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
+        func whereIsSigned<T, U>(_ type: T.Type, _ mode: U) where T: SystemsInteger, U: Signedness {
             typealias M = T.Magnitude
             typealias F = Fallible<T>
             
-            for isSigned in [true, false] {
-                Test().elements(( T.min).body(), .isSigned(isSigned), F( T.min, error: !isSigned))
-                Test().elements(( T.max).body(), .isSigned(isSigned), F( T.max))
-                
-                Test().elements(( M.min).body(), .isSigned(isSigned), F( T( 0)))
-                Test().elements(( M.max).body(), .isSigned(isSigned), F( T(-1), error: !isSigned))
-                Test().elements(( M.msb).body(), .isSigned(isSigned), F( T.min, error: !isSigned))
-                Test().elements((~M.msb).body(), .isSigned(isSigned), F(~T.msb))
-                
-                Test().elements(Array(repeating:  0 as T.Element.Magnitude, count: 2), .isSigned(isSigned), F( 0 as T))
-                Test().elements(Array(repeating:  1 as T.Element.Magnitude, count: 2), .isSigned(isSigned), F( 1 as T, error: true))
-                Test().elements(Array(repeating: ~1 as T.Element.Magnitude, count: 2), .isSigned(isSigned), F(~1 as T, error: true))
-                Test().elements(Array(repeating: ~0 as T.Element.Magnitude, count: 2), .isSigned(isSigned), F(-1 as T, error: !isSigned))
-            }
+            Test().elements(( T.min).body(), mode, F( T.min, error: !mode.isSigned))
+            Test().elements(( T.max).body(), mode, F( T.max))
+            
+            Test().elements(( M.min).body(), mode, F( T( 0)))
+            Test().elements(( M.max).body(), mode, F( T(-1), error: !mode.isSigned))
+            Test().elements(( M.msb).body(), mode, F( T.min, error: !mode.isSigned))
+            Test().elements((~M.msb).body(), mode, F(~T.msb))
+            
+            Test().elements(Array(repeating:  0 as T.Element.Magnitude, count: 2), mode, F( 0 as T))
+            Test().elements(Array(repeating:  1 as T.Element.Magnitude, count: 2), mode, F( 1 as T, error: true))
+            Test().elements(Array(repeating: ~1 as T.Element.Magnitude, count: 2), mode, F(~1 as T, error: true))
+            Test().elements(Array(repeating: ~0 as T.Element.Magnitude, count: 2), mode, F(-1 as T, error: !mode.isSigned))
         }
         
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
+        func whereIsUnsigned<T, U>(_ type: T.Type, _ mode: U) where T: SystemsInteger, U: Signedness {
             typealias M = T.Magnitude
             typealias F = Fallible<T>
             
-            for isSigned in [true, false] {
-                Test().elements(( M.min).body(), .isSigned(isSigned), F( T( 0)))
-                Test().elements(( M.max).body(), .isSigned(isSigned), F( T.max, error: isSigned))
-                Test().elements(( M.msb).body(), .isSigned(isSigned), F( T.msb, error: isSigned))
-                Test().elements((~M.msb).body(), .isSigned(isSigned), F(~T.msb))
-                
-                Test().elements(Array(repeating:  0 as T.Element.Magnitude, count: 2), .isSigned(isSigned), F( 0 as T))
-                Test().elements(Array(repeating:  1 as T.Element.Magnitude, count: 2), .isSigned(isSigned), F( 1 as T, error: true))
-                Test().elements(Array(repeating: ~1 as T.Element.Magnitude, count: 2), .isSigned(isSigned), F(~1 as T, error: true))
-                Test().elements(Array(repeating: ~0 as T.Element.Magnitude, count: 2), .isSigned(isSigned), F(~0 as T, error: true))
-            }
+            Test().elements(( M.min).body(), mode, F( T( 0)))
+            Test().elements(( M.max).body(), mode, F( T.max, error: mode.isSigned))
+            Test().elements(( M.msb).body(), mode, F( T.msb, error: mode.isSigned))
+            Test().elements((~M.msb).body(), mode, F(~T.msb))
+            
+            Test().elements(Array(repeating:  0 as T.Element.Magnitude, count: 2), mode, F( 0 as T))
+            Test().elements(Array(repeating:  1 as T.Element.Magnitude, count: 2), mode, F( 1 as T, error: true))
+            Test().elements(Array(repeating: ~1 as T.Element.Magnitude, count: 2), mode, F(~1 as T, error: true))
+            Test().elements(Array(repeating: ~0 as T.Element.Magnitude, count: 2), mode, F(~0 as T, error: true))
         }
         
         for type in coreSystemsIntegers {
-            type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
+            for mode: any Signedness in [Signed(), Unsigned()] {
+                type.isSigned ? whereIsSigned(type, mode) : whereIsUnsigned(type, mode)
+            }
         }
     }
     

@@ -29,3 +29,13 @@
         false
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Lookup
+//=----------------------------------------------------------------------------=
+
+extension Signedness where Self == Unsigned {
+    @inlinable public static var unsigned: Self {
+        Self()
+    }
+}
