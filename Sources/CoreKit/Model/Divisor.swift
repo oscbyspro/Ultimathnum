@@ -11,7 +11,15 @@
 // MARK: * Divisor
 //*============================================================================*
 
-@frozen public struct Divisor<Value> where Value: BinaryInteger {
+@frozen public struct Divisor<Value>: Functional where Value: BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func predicate(_ value: borrowing Value) -> Bool {
+        value != Value.zero
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -32,12 +40,16 @@
         Swift.assert(Self.predicate(value), String.brokenInvariant())
         self.value = value
     }
-    
+        
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func predicate(_ value: borrowing Value) -> Bool {
-        value != Value.zero
+    @inlinable public consuming func complement() -> Divisor<Value> {
+        Self(unchecked: self.value.complement())
+    }
+    
+    @inlinable public consuming func magnitude() -> Divisor<Value.Magnitude> {
+        Divisor<Value.Magnitude>(unchecked: self.value.magnitude())
     }
 }

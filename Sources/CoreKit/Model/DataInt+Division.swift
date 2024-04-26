@@ -32,7 +32,7 @@ extension MutableDataInt.Body {
         
         for index in self.indices.reversed() {
             let dividend = Doublet(low: self[unchecked: index], high: remainder)
-            remainder = Element.division(dividend, by: divisor.value).assert().remainder
+            remainder = Element.division(dividend, by: divisor).assert().remainder
         }
         
         return remainder as Element
@@ -52,7 +52,7 @@ extension MutableDataInt.Body {
         
         for index in self.indices.reversed() {
             let dividend = Doublet(low: self[unchecked: index], high: remainder)
-            let division = Element.division(dividend, by: divisor.value).assert()
+            let division = Element.division(dividend, by: divisor).assert()
             self[unchecked:index] = division.quotient
             ((((((remainder)))))) = division.remainder
         }
@@ -140,12 +140,12 @@ extension MutableDataInt.Body {
             low:  self[unchecked: self.count - 2],
             high: self[unchecked: self.count - 1]
         )
-        let denominator = divisor[
-            unchecked: divisor.count - 1
-        ]
+        let denominator = Divisor(
+            unchecked: divisor[unchecked: divisor.count - 1]
+        )
         //=--------------------------------------=
-        var quotient: Element = if denominator == numerator.high {
-            Element.max //  the quotient must fit in one element
+        var quotient: Element = if denominator.value == numerator.high {
+            Element.max // the quotient must fit in one element
         }   else {
             Element.division(numerator, by: denominator).assert().quotient
         }

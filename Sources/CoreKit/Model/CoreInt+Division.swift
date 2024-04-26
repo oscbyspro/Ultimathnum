@@ -17,37 +17,30 @@ extension CoreInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func quotient (_ divisor: borrowing Self) -> Fallible<Self> {
-        var result = self.base.dividedReportingOverflow(by: divisor.base)
-        //=--------------------------------------=
-        // Ultimathnum: custom division semantics
-        //=--------------------------------------=
-        if  result.overflow {
-            result.partialValue &*= divisor.base
-        }
-        //=--------------------------------------=
+    @inlinable public consuming func quotient (_ divisor: borrowing Divisor<Self>) -> Fallible<Self> {
+        var result = self.base.dividedReportingOverflow(by: divisor.value.base)
         return Self(result.partialValue).combine(result.overflow)
     }
     
-    @inlinable public consuming func remainder(_ divisor: borrowing Self) -> Fallible<Self> {
-        let result = self.base.remainderReportingOverflow(dividingBy: divisor.base)
-        return Self(result.partialValue).combine(result.overflow)
+    @inlinable public consuming func remainder(_ divisor: borrowing Divisor<Self>) -> Self {
+        let result = self.base.remainderReportingOverflow(dividingBy: divisor.value.base)
+        return Self(result.partialValue)
     }
     
-    @inlinable public consuming func division (_ divisor: borrowing Self) -> Fallible<Division<Self, Self>> {
+    @inlinable public consuming func division (_ divisor: borrowing Divisor<Self>) -> Fallible<Division<Self, Self>> {
         let quotient  = (copy    self).quotient (divisor)
         let remainder = (consume self).remainder(divisor)
-        return Division(quotient: quotient.value, remainder: remainder.value).combine(quotient.error || remainder.error)
+        return Division(quotient: quotient.value, remainder: remainder).combine(quotient.error)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func division(_ dividend: consuming Doublet<Self>, by divisor: Self) -> Fallible<Division<Self, Self>> {
+    @inlinable public static func division(_ dividend: consuming Doublet<Self>, by divisor: Divisor<Self>) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
         let lhsIsLessThanZero = dividend.high.isNegative
-        let rhsIsLessThanZero = divisor/*--*/.isNegative
+        let rhsIsLessThanZero = divisor.value.isNegative
         //=--------------------------------------=
         var result = Fallible<Division<Self, Self>>(
             bitPattern: Magnitude.division(dividend.magnitude(), by: divisor.magnitude())
@@ -76,20 +69,16 @@ extension CoreInt where Self == Magnitude {
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable static func division(_ dividend: consuming Doublet<Self>, by divisor: Self) -> Fallible<Division<Self, Self>> {
-        //=--------------------------------------=
-        if  divisor == 0 {
-            return Fallible.failure(Division(quotient: 0, remainder: dividend.low))
-        }
+    @inlinable static func division(_ dividend: consuming Doublet<Self>, by divisor: Divisor<Self>) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
         var overflow = false
         //=--------------------------------------=
-        if  divisor <= dividend.high {
+        if  divisor.value <= dividend.high {
             overflow = true
-            dividend.high[{ $0.remainder(divisor).assert() }]
+            dividend.high[{ $0.remainder(divisor) }]
         }
         //=--------------------------------------=
-        let result = divisor.base.dividingFullWidth((high: dividend.high.base, low: dividend.low.base))
+        let result = divisor.value.base.dividingFullWidth((high: dividend.high.base, low: dividend.low.base))
         return Division(quotient: Self(result.quotient), remainder: Self(result.remainder)).combine(overflow)
     }
 }

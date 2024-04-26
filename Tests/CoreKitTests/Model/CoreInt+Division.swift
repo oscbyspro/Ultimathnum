@@ -31,19 +31,19 @@ extension CoreIntTests {
             Test().division(-7 as T,  3 as T, F(D(quotient: -2, remainder: -1)))
             Test().division(-7 as T, -3 as T, F(D(quotient:  2, remainder: -1)))
             
-            Test().division(-2 as T,  0 as T, F(D(quotient:  0, remainder: -2), error: true))
-            Test().division(-1 as T,  0 as T, F(D(quotient:  0, remainder: -1), error: true))
-            Test().division( 0 as T,  0 as T, F(D(quotient:  0, remainder:  0), error: true))
-            Test().division( 1 as T,  0 as T, F(D(quotient:  0, remainder:  1), error: true))
+            Test().division(-2 as T,  0 as T, nil)
+            Test().division(-1 as T,  0 as T, nil)
+            Test().division( 0 as T,  0 as T, nil)
+            Test().division( 1 as T,  0 as T, nil)
             
             Test().division( T .min, -2 as T, F(D(quotient:  T(bitPattern: M.msb >> 1 + 0), remainder: 0)))
             Test().division( T .min, -1 as T, F(D(quotient:  T.min, remainder: T(  )), error: true))
-            Test().division( T .min,  0 as T, F(D(quotient:  T(  ), remainder: T.min), error: true))
+            Test().division( T .min,  0 as T, nil)
             Test().division( T .min,  1 as T, F(D(quotient:  T(bitPattern: M.msb >> 0 + 0), remainder: 0)))
             
             Test().division( T .max, -2 as T, F(D(quotient:  T(bitPattern: T.min >> 1 + 1), remainder: 1)))
             Test().division( T .max, -1 as T, F(D(quotient:  T(bitPattern: T.min +  1 + 0), remainder: 0)))
-            Test().division( T .max,  0 as T, F(D(quotient:  T(  ), remainder: T.max), error: true))
+            Test().division( T .max,  0 as T, nil)
             Test().division( T .max,  1 as T, F(D(quotient:  T(bitPattern: T.max >> 0 + 0), remainder: 0)))
         }
         
@@ -51,15 +51,15 @@ extension CoreIntTests {
             typealias D = Division<T, T>
             typealias F = Fallible<Division<T, T>>
             
-            Test().division( 7 as T,  0 as T, F(D(quotient:  0, remainder:  7), error: true))
+            Test().division( 7 as T,  0 as T, nil)
             Test().division( 7 as T,  1 as T, F(D(quotient:  7, remainder:  0)))
             Test().division( 7 as T,  2 as T, F(D(quotient:  3, remainder:  1)))
             Test().division( 7 as T,  3 as T, F(D(quotient:  2, remainder:  1)))
             
-            Test().division( 0 as T,  0 as T, F(D(quotient:  0, remainder:  0), error: true))
-            Test().division( 1 as T,  0 as T, F(D(quotient:  0, remainder:  1), error: true))
-            Test().division( 2 as T,  0 as T, F(D(quotient:  0, remainder:  2), error: true))
-            Test().division( 3 as T,  0 as T, F(D(quotient:  0, remainder:  3), error: true))
+            Test().division( 0 as T,  0 as T, nil)
+            Test().division( 1 as T,  0 as T, nil)
+            Test().division( 2 as T,  0 as T, nil)
+            Test().division( 3 as T,  0 as T, nil)
         }
         
         for type in coreSystemsIntegers {
@@ -83,13 +83,13 @@ extension CoreIntTests {
             //=----------------------------------=
             Test().division(X(low:  1 as M, high:  0 as T), -2 as T, F(D(quotient:  0,     remainder:  1)))
             Test().division(X(low: ~0 as M, high: -1 as T),  2 as T, F(D(quotient:  0,     remainder: -1)))
-            Test().division(X(low:  7 as M, high:  0 as T),  0 as T, F(D(quotient:  0,     remainder:  7), error: true))
-            Test().division(X(low:  7 as M, high: -1 as T),  0 as T, F(D(quotient:  0,     remainder:  7), error: true))
+            Test().division(X(low:  7 as M, high:  0 as T),  0 as T, nil)
+            Test().division(X(low:  7 as M, high: -1 as T),  0 as T, nil)
             Test().division(X(low: ~M .msb, high:  0 as T), -1 as T, F(D(quotient: -T.max, remainder:  0)))
             Test().division(X(low:  M .msb, high: -1 as T), -1 as T, F(D(quotient:  T.min, remainder:  0), error: true))
             //=----------------------------------=
-            Test().division(X(low:  0 as M, high: ~0 as T),  0 as T, F(D(quotient:  0,                                  remainder: 0), error: true))
-            Test().division(X(low:  0 as M, high: ~0 as T),  1 as T, F(D(quotient:  0,                                  remainder: 0), error: true))
+            Test().division(X(low:  0 as M, high: ~0 as T),  0 as T, nil)
+            Test().division(X(low:  0 as M, high: ~0 as T),  1 as T, F(D(quotient: ~0 << T(bitPattern: T.size - 0), remainder: 0), error: true))
             Test().division(X(low:  0 as M, high: ~0 as T),  2 as T, F(D(quotient: ~0 << T(bitPattern: T.size - 1), remainder: 0)))
             Test().division(X(low:  0 as M, high: ~0 as T),  4 as T, F(D(quotient: ~0 << T(bitPattern: T.size - 2), remainder: 0)))
             Test().division(X(low:  0 as M, high: ~0 as T),  8 as T, F(D(quotient: ~0 << T(bitPattern: T.size - 3), remainder: 0)))
@@ -104,13 +104,13 @@ extension CoreIntTests {
             Test().division(X(low:  1 as M, high: ~1 as T), ~0 as T, F(D(quotient: ~0, remainder:  0)))
             Test().division(X(low: ~0 as M, high: ~1 as T), ~0 as T, F(D(quotient: ~0, remainder: ~1)))
             //=----------------------------------=
-            Test().division(X(low:  7 as M, high:  0 as T),  0 as T, F(D(quotient:  0, remainder:  7), error: true))
-            Test().division(X(low:  7 as M, high: ~0 as T),  0 as T, F(D(quotient:  0, remainder:  7), error: true))
+            Test().division(X(low:  7 as M, high:  0 as T),  0 as T, nil)
+            Test().division(X(low:  7 as M, high: ~0 as T),  0 as T, nil)
             Test().division(X(low:  0 as M, high: ~0 as T), ~0 as T, F(D(quotient:  0, remainder:  0), error: true))
             Test().division(X(low: ~0 as M, high: ~1 as T), ~0 as T, F(D(quotient: ~0, remainder: ~1)))
             //=----------------------------------=
-            Test().division(X(low:  0 as M, high: ~0 as T),  0 as T, F(D(quotient:  0,                                  remainder:  0), error: true))
-            Test().division(X(low:  0 as M, high: ~0 as T),  1 as T, F(D(quotient:  0,                                  remainder:  0), error: true))
+            Test().division(X(low:  0 as M, high: ~0 as T),  0 as T, nil)
+            Test().division(X(low:  0 as M, high: ~0 as T),  1 as T, F(D(quotient: ~0 << T(bitPattern: T.size - 0), remainder:  0), error: true))
             Test().division(X(low:  0 as M, high: ~0 as T),  2 as T, F(D(quotient: ~0 << T(bitPattern: T.size - 1), remainder:  0), error: true))
             Test().division(X(low:  0 as M, high: ~0 as T),  4 as T, F(D(quotient: ~0 << T(bitPattern: T.size - 2), remainder:  0), error: true))
             Test().division(X(low:  0 as M, high: ~0 as T),  8 as T, F(D(quotient: ~0 << T(bitPattern: T.size - 3), remainder:  0), error: true))
@@ -134,8 +134,7 @@ extension CoreIntTests {
         for divisor     in T.min...T.max {
             for high    in T.min...T.max {
                 for low in T.Magnitude.min...T.Magnitude.max {
-                    let dividend = Doublet(high: high, low: low)
-                    if !T.division(dividend, by: divisor).error {
+                    if  let divisor = Divisor(divisor), !T.division(Doublet(high: high, low: low), by: divisor).error {
                         success += 1
                     }   else {
                         failure += 1
@@ -157,8 +156,7 @@ extension CoreIntTests {
         for divisor     in T.min...T.max {
             for high    in T.min...T.max {
                 for low in T.Magnitude.min...T.Magnitude.max {
-                    let dividend = Doublet(high: high, low: low)
-                    if !T.division(dividend, by: divisor).error {
+                    if  let divisor = Divisor(divisor), !T.division(Doublet(high: high, low: low), by: divisor).error {
                         success += 1
                     }   else {
                         failure += 1

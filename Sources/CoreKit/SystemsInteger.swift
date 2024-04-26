@@ -63,5 +63,5 @@ public protocol SystemsInteger<BitPattern>: BinaryInteger where Magnitude: Syste
     
     @inlinable borrowing func multiplication(_ multiplier: borrowing Self) -> Doublet<Self>
     
-    @inlinable static func division(_ dividend: consuming Doublet<Self>, by divisor: borrowing Self) -> Fallible<Division<Self, Self>>
+    @inlinable static func division(_ dividend: consuming Doublet<Self>, by divisor: borrowing Divisor<Self>) -> Fallible<Division<Self, Self>>
 }

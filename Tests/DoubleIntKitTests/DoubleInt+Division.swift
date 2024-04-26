@@ -135,11 +135,11 @@ extension DoubleIntTests {
             typealias D = Division<T, T>
             typealias F = Fallible<Division<T, T>>
             
-            Test().division(~1 as T,  0 as T, F(D(quotient:      0, remainder: ~1), error: true))
-            Test().division(~0 as T,  0 as T, F(D(quotient:      0, remainder: ~0), error: true))
-            Test().division( 0 as T,  0 as T, F(D(quotient:      0, remainder:  0), error: true))
-            Test().division( 1 as T,  0 as T, F(D(quotient:      0, remainder:  1), error: true))
-            Test().division( 2 as T,  0 as T, F(D(quotient:      0, remainder:  2), error: true))
+            Test().division(~1 as T,  0 as T, nil)
+            Test().division(~0 as T,  0 as T, nil)
+            Test().division( 0 as T,  0 as T, nil)
+            Test().division( 1 as T,  0 as T, nil)
+            Test().division( 2 as T,  0 as T, nil)
             
             guard T.isSigned else { return }
             
@@ -160,8 +160,8 @@ extension DoubleIntTests {
             typealias X = Doublet<T>
             typealias F = Fallible<Division<T, T>>
             
-            Test().division(X(low:  7 as M, high:  0 as T),  0 as T, F(D(quotient:      0, remainder:  7), error: true))
-            Test().division(X(low:  7 as M, high: ~0 as T),  0 as T, F(D(quotient:      0, remainder:  7), error: true))
+            Test().division(X(low:  7 as M, high:  0 as T),  0 as T, nil)
+            Test().division(X(low:  7 as M, high: ~0 as T),  0 as T, nil)
             Test().division(X(low: ~0 as M, high: -1 as T),  2 as T, F(D(quotient:      0, remainder: -1)))
             Test().division(X(low:  1 as M, high:  0 as T), -2 as T, F(D(quotient:      0, remainder:  1)))
             Test().division(X(low: ~M .msb, high:  0 as T), -1 as T, F(D(quotient: -T.max, remainder:  0)))
@@ -180,8 +180,8 @@ extension DoubleIntTests {
             typealias X = Doublet<T>
             typealias F = Fallible<Division<T, T>>
             
-            Test().division(X(low:  7 as M, high:  0 as T),  0 as T, F(D(quotient:  0, remainder:  7), error: true))
-            Test().division(X(low:  7 as M, high: ~0 as T),  0 as T, F(D(quotient:  0, remainder:  7), error: true))
+            Test().division(X(low:  7 as M, high:  0 as T),  0 as T, nil)
+            Test().division(X(low:  7 as M, high: ~0 as T),  0 as T, nil)
             Test().division(X(low: ~0 as M, high: ~1 as T), ~0 as T, F(D(quotient: ~0, remainder: ~1)))
             Test().division(X(low:  0 as M, high: ~0 as T), ~0 as T, F(D(quotient:  0, remainder:  0), error: true))
         }

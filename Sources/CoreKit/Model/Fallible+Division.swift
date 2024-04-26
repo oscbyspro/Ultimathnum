@@ -17,27 +17,15 @@ extension Fallible where Value: BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func quotient (_ divisor: borrowing Value) -> Self {
+    @inlinable public consuming func quotient (_ divisor: borrowing Divisor<Value>) -> Self {
         self.value.quotient (divisor).combine(self.error)
     }
     
-    @inlinable public consuming func quotient (_ divisor: borrowing Self ) -> Self {
-        self.value.quotient (divisor).combine(self.error)
-    }
-    
-    @inlinable public consuming func remainder(_ divisor: borrowing Value) -> Self {
+    @inlinable public consuming func remainder(_ divisor: borrowing Divisor<Value>) -> Self {
         self.value.remainder(divisor).combine(self.error)
     }
     
-    @inlinable public consuming func remainder(_ divisor: borrowing Self ) -> Self {
-        self.value.remainder(divisor).combine(self.error)
-    }
-    
-    @inlinable public consuming func division (_ divisor: borrowing Value) -> Fallible<Division<Value, Value>> {
-        self.value.division (divisor).combine(self.error)
-    }
-    
-    @inlinable public consuming func division (_ divisor: borrowing Self ) -> Fallible<Division<Value, Value>> {
+    @inlinable public consuming func division (_ divisor: borrowing Divisor<Value>) -> Fallible<Division<Value, Value>> {
         self.value.division (divisor).combine(self.error)
     }
 }

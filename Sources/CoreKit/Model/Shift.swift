@@ -20,6 +20,14 @@
 @frozen public struct Shift<Value> where Value: BinaryInteger {
     
     //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func predicate(_ value: Value) -> Bool {
+        !Bool(value.appendix) && Value.Magnitude(bitPattern: value) < Value.size
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
@@ -37,13 +45,5 @@
     @inlinable public init(unchecked value: consuming Value) {
         Swift.assert(Self.predicate(value), String.brokenInvariant())
         self.value = value
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static func predicate(_ value: Value) -> Bool {
-        !Bool(value.appendix) && Value.Magnitude(bitPattern: value) < Value.size
     }
 }

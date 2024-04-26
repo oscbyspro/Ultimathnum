@@ -35,7 +35,7 @@ extension InfiniIntTests {
             let xlarge = large.complement()
             //=----------------------------------=
             for value in [small, xsmall, large, xlarge] {
-                Test().division(value, T.zero, F(D(quotient: T.zero, remainder: value), error: true))
+                Test().division(value,  T.zero, nil)
             }
         }
         

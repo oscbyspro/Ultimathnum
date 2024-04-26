@@ -76,7 +76,7 @@
     }
     
     @inlinable public func withUnsafeBinaryIntegerBody<T>(_ action: (DataInt<UX>.Body) throws -> T) rethrows -> T {
-        let count = IX(self.size.division(UX.size).ceil().assert())
+        let count = IX(self.size.division(Divisor(unchecked: UX.size)).ceil().assert())
         return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(count)) { buffer in
             //=--------------------------------------=
             // pointee: initialization

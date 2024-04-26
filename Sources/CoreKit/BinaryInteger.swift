@@ -140,7 +140,7 @@ where
     @inlinable init(load source: DataInt<U8.Magnitude>)
     
     @inlinable init(load source: DataInt<Element.Magnitude>)
-        
+    
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
@@ -163,31 +163,14 @@ where
     /// │ I8( 7)   │ I8(-3)  │ I8(-2)   │ I8(-1)    │ false    │
     /// │ I8(-7)   │ I8( 3)  │ I8(-2)   │ I8(-1)    │ false    │
     /// │ I8(-7)   │ I8(-3)  │ I8( 2)   │ I8( 0)    │ false    │
-    /// │──────────┤──────── → ─────────┤───────────┤──────────┤
-    /// │ I8( 7)   │ I8( 0)  │ I8( 0)   │ I8( 7)    │ true     │
+    /// ├──────────┤──────── → ─────────┤───────────┤──────────┤
     /// │ I8.min   │ I8(-1)  │ I8.min   │ I8( 0)    │ true     │
+    /// ├──────────┤──────── → ─────────┤───────────┤──────────┤
+    /// │ I8( 7)   │ I8( 0)  │ ######   │ ######    │ #####    │ - nondivisor
     /// └──────────┴──────── → ─────────┴───────────┴──────────┘
     /// ```
     ///
-    @inlinable consuming func quotient (_ divisor: borrowing Self) -> Fallible<Self>
-    
-    /// ### Examples
-    ///
-    /// ```
-    /// ┌──────────┬──────── → ─────────┬───────────┬──────────┐
-    /// │ dividend │ divisor │ quotient | remainder │ error    │
-    /// ├──────────┼──────── → ─────────┤───────────┤──────────┤
-    /// │ I8( 7)   │ I8( 3)  │ I8( 2)   │ I8( 0)    │ false    │
-    /// │ I8( 7)   │ I8(-3)  │ I8(-2)   │ I8(-1)    │ false    │
-    /// │ I8(-7)   │ I8( 3)  │ I8(-2)   │ I8(-1)    │ false    │
-    /// │ I8(-7)   │ I8(-3)  │ I8( 2)   │ I8( 0)    │ false    │
-    /// │──────────┤──────── → ─────────┤───────────┤──────────┤
-    /// │ I8( 7)   │ I8( 0)  │ I8( 0)   │ I8( 7)    │ true     │
-    /// │ I8.min   │ I8(-1)  │ I8.min   │ I8( 0)    │ true     │
-    /// └──────────┴──────── → ─────────┴───────────┴──────────┘
-    /// ```
-    ///
-    @inlinable consuming func remainder(_ divisor: borrowing Self) -> Fallible<Self>
+    @inlinable consuming func quotient (_ divisor: borrowing Divisor<Self>) -> Fallible<Self>
     
     /// ### Examples
     ///
@@ -200,12 +183,32 @@ where
     /// │ I8(-7)   │ I8( 3)  │ I8(-2)   │ I8(-1)    │ false    │
     /// │ I8(-7)   │ I8(-3)  │ I8( 2)   │ I8( 0)    │ false    │
     /// ├──────────┤──────── → ─────────┤───────────┤──────────┤
-    /// │ I8( 7)   │ I8( 0)  │ I8( 0)   │ I8( 7)    │ true     │
     /// │ I8.min   │ I8(-1)  │ I8.min   │ I8( 0)    │ true     │
+    /// ├──────────┤──────── → ─────────┤───────────┤──────────┤
+    /// │ I8( 7)   │ I8( 0)  │ ######   │ ######    │ #####    │ - nondivisor
     /// └──────────┴──────── → ─────────┴───────────┴──────────┘
     /// ```
     ///
-    @inlinable consuming func division (_ divisor: borrowing Self) -> Fallible<Division<Self, Self>>
+    @inlinable consuming func remainder(_ divisor: borrowing Divisor<Self>) -> Self
+    
+    /// ### Examples
+    ///
+    /// ```
+    /// ┌──────────┬──────── → ─────────┬───────────┬──────────┐
+    /// │ dividend │ divisor │ quotient | remainder │ error    │
+    /// ├──────────┼──────── → ─────────┤───────────┤──────────┤
+    /// │ I8( 7)   │ I8( 3)  │ I8( 2)   │ I8( 0)    │ false    │
+    /// │ I8( 7)   │ I8(-3)  │ I8(-2)   │ I8(-1)    │ false    │
+    /// │ I8(-7)   │ I8( 3)  │ I8(-2)   │ I8(-1)    │ false    │
+    /// │ I8(-7)   │ I8(-3)  │ I8( 2)   │ I8( 0)    │ false    │
+    /// ├──────────┤──────── → ─────────┤───────────┤──────────┤
+    /// │ I8.min   │ I8(-1)  │ I8.min   │ I8( 0)    │ true     │
+    /// ├──────────┤──────── → ─────────┤───────────┤──────────┤
+    /// │ I8( 7)   │ I8( 0)  │ ######   │ ######    │ #####    │ - nondivisor
+    /// └──────────┴──────── → ─────────┴───────────┴──────────┘
+    /// ```
+    ///
+    @inlinable consuming func division (_ divisor: borrowing Divisor<Self>) -> Fallible<Division<Self, Self>>
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

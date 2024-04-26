@@ -18,11 +18,11 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func /(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs.quotient (rhs).unwrap()
+        lhs.quotient (Divisor(copy rhs)!).unwrap()
     }
     
     @inlinable public static func %(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs.remainder(rhs).unwrap()
+        lhs.remainder(Divisor(copy rhs)!)
     }
     
     //=------------------------------------------------------------------------=
@@ -35,28 +35,5 @@ extension BinaryInteger {
 
     @inlinable public static func %=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs % rhs
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Result
-//=----------------------------------------------------------------------------=
-
-extension BinaryInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func quotient (_ divisor: borrowing Fallible<Self>) -> Fallible<Self> {
-        self.quotient (divisor.value).combine(divisor.error)
-    }
-    
-    @inlinable public consuming func remainder(_ divisor: borrowing Fallible<Self>) -> Fallible<Self> {
-        self.remainder(divisor.value).combine(divisor.error)
-    }
-    
-    @inlinable public consuming func division (_ divisor: borrowing Fallible<Self>) -> Fallible<Division<Self, Self>> {
-        self.division (divisor.value).combine(divisor.error)
     }
 }

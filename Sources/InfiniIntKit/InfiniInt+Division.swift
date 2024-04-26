@@ -19,30 +19,26 @@ extension InfiniInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming public func quotient (_ divisor: consuming Self) -> Fallible<Self> {
+    @inlinable consuming public func quotient (_ divisor: consuming Divisor<Self>) -> Fallible<Self> {
         self.division(divisor).map({ $0.quotient  })
     }
     
-    @inlinable consuming public func remainder(_ divisor: consuming Self) -> Fallible<Self> {
-        self.division(divisor).map({ $0.remainder })
+    @inlinable consuming public func remainder(_ divisor: consuming Divisor<Self>) -> Self {
+        self.division(divisor).value.remainder
     }
     
-    @inline(never) @inlinable consuming public func division(_ divisor: consuming Self) -> Fallible<Division<Self, Self>> {
+    @inline(never) @inlinable consuming public func division(_ divisor: consuming Divisor<Self>) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
-        if  divisor.storage.isZero {
-            return Fallible.failure(Division(quotient: .zero, remainder: self))
-        }
-        //=--------------------------------------=
-        let lhsAppendixIsSet = Bool(self   .appendix)
-        let rhsAppendixIsSet = Bool(divisor.appendix)
+        let lhsAppendixIsSet = Bool(self.appendix)
+        let rhsAppendixIsSet = Bool(divisor.value.appendix)
         //=--------------------------------------=
         // TODO: error of (infinite/finite)?
         //=--------------------------------------=
         if !Self.isSigned, rhsAppendixIsSet {
-            switch self.compared(to: divisor) {
+            switch self.compared(to: divisor.value) {
             case Signum.less: return Fallible.success(Division(quotient: .zero, remainder:  self))
             case Signum.same: return Fallible.success(Division(quotient:  0001, remainder: .zero))
-            case Signum.more: return Fallible.success(Division(quotient:  0001, remainder:  self - divisor))
+            case Signum.more: return Fallible.success(Division(quotient:  0001, remainder:  self - divisor.value))
             }
         }
         //=--------------------------------------=
@@ -54,7 +50,7 @@ extension InfiniInt {
             divisor[{ $0.complement() }]
         }
         //=--------------------------------------=
-        var result = Magnitude(bitPattern: self).divisionAsFiniteByFiniteNonzeroDivisor(Magnitude(bitPattern: divisor))
+        var result = Magnitude(bitPattern: self).divisionAsFiniteByFiniteNonzeroDivisor(Magnitude(bitPattern: divisor.value))
         //=--------------------------------------=
         if  lhsAppendixIsSet != rhsAppendixIsSet {
             result.quotient [{ $0.complement() }]

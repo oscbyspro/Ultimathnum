@@ -90,7 +90,7 @@ extension TextInt {
         var capacity:  IX
         var alignment: IX
         
-        (capacity, alignment) = IX(numerals.count).division(self.exponentiation.exponent).assert().components
+        (capacity, alignment) = IX(numerals.count).division(Divisor(unchecked: self.exponentiation.exponent)).assert().components
         (capacity) &+= IX(Bit(alignment != .zero))
         //=--------------------------------------=
         return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
@@ -150,7 +150,7 @@ extension TextInt {
         var capacity:  IX
         var alignment: IX
         
-        (capacity, alignment) = IX(numerals.count).division(self.exponentiation.exponent).assert().components
+        (capacity, alignment) = IX(numerals.count).division(Divisor(unchecked: self.exponentiation.exponent)).assert().components
         (capacity) &+= IX(Bit(alignment != .zero))
         //=--------------------------------------=
         return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {

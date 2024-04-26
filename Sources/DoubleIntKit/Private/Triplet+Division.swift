@@ -19,9 +19,8 @@ extension Triplet where Base == Base.Magnitude {
     // MARK: Transformations x 3 by 1
     //=------------------------------------------------------------------------=
     
-    @inlinable package consuming func division3121(unchecked divisor: Base) -> Division<Doublet<Base>, Base> {
-        Swift.assert(divisor != 0, "must not divide by zero")
-        Swift.assert(divisor >  self.high, "quotient must fit in two halves")
+    @inlinable package consuming func division3121(unchecked divisor: Divisor<Base>) -> Division<Doublet<Base>, Base> {
+        Swift.assert(divisor.value > self.high, "quotient must fit in two halves")
         let high = Doublet(low: self.mid, high: self.high     ).division2111(divisor).assert()
         let low  = Doublet(low: self.low, high: high.remainder).division2111(divisor).assert()
         return Division(quotient: Doublet(low: low.quotient, high: high.quotient), remainder: low.remainder)
@@ -45,7 +44,7 @@ extension Triplet where Base == Base.Magnitude {
         var quotient: Base = if divisor.high == self.high {
             Base.max // the quotient must fit in one part
         }   else {
-            Doublet(low: self.mid, high: self.high).division2111(divisor.high).assert().quotient
+            Doublet(low: self.mid, high: self.high).division2111(Divisor(unchecked: divisor.high)).assert().quotient
         }
         //=--------------------------------------=
         // decrement when overestimated (max 2)

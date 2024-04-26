@@ -44,7 +44,7 @@ extension InfiniInt {
         //=--------------------------------------=
         // path: success or allocation is too big
         //=--------------------------------------=
-        let split = shift.division(IX(size: Element.self)).assert()
+        let split = shift.division(Divisor(unchecked: IX(size: Element.self))).assert()
         instance.storage.resizeByLenientUpshift(major: split.quotient, minor: split.remainder)
         Swift.assert(instance.storage.isNormal)
         return instance as Self as Self as Self
@@ -79,7 +79,7 @@ extension InfiniInt {
         //=--------------------------------------=
         // path: success
         //=--------------------------------------=
-        let split = shift.value.division(IX(size: Element.self)).assert()
+        let split = shift.value.division(Divisor(unchecked: IX(size: Element.self))).assert()
         instance.storage.resizeByLenientDownshift(major: split.quotient, minor: split.remainder)
         Swift.assert(instance.storage.isNormal)
         return instance as Self as Self as Self
