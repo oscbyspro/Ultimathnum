@@ -18,7 +18,7 @@ extension CoreInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func quotient (_ divisor: borrowing Divisor<Self>) -> Fallible<Self> {
-        var result = self.base.dividedReportingOverflow(by: divisor.value.base)
+        let result = self.base.dividedReportingOverflow(by: divisor.value.base)
         return Self(result.partialValue).combine(result.overflow)
     }
     

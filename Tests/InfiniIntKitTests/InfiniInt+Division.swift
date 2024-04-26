@@ -26,7 +26,6 @@ extension InfiniIntTests {
             typealias E = Base.Element
             typealias L = Base.Element.Magnitude
             typealias T = InfiniInt<Base>
-            typealias D = Division<T, T>
             typealias F = Fallible<Division<T, T>>
             //=----------------------------------=
             let  small = T(0x0000000000000000000000000000007F)
@@ -49,7 +48,6 @@ extension InfiniIntTests {
             typealias E = Base.Element
             typealias L = Base.Element.Magnitude
             typealias T = InfiniInt<Base>
-            typealias D = Division<T, T>
             typealias F = Fallible<Division<T, T>>
             //=----------------------------------=
             let  small = T(0x0000000000000000000000000000007F)
@@ -59,25 +57,25 @@ extension InfiniIntTests {
             let  ratio = T(0x020406080A0C0E10121416181A1C1E20)
             let xratio = ratio.complement()
             //=----------------------------------=
-            Test().division( small,  small, F(Division(quotient:  T( 1), remainder:  T( 0))))
-            Test().division( small, xsmall, F(Division(quotient: ~T( 0), remainder:  T( 0))))
-            Test().division(xsmall,  small, F(Division(quotient: ~T( 0), remainder:  T( 0))))
-            Test().division(xsmall, xsmall, F(Division(quotient:  T( 1), remainder:  T( 0))))
+            Test().division( small,  small, F(quotient:  T( 1), remainder:  T( 0)))
+            Test().division( small, xsmall, F(quotient: ~T( 0), remainder:  T( 0)))
+            Test().division(xsmall,  small, F(quotient: ~T( 0), remainder:  T( 0)))
+            Test().division(xsmall, xsmall, F(quotient:  T( 1), remainder:  T( 0)))
             
-            Test().division( small,  large, F(Division(quotient:  T( 0), remainder:  small)))
-            Test().division( small, xlarge, F(Division(quotient:  T( 0), remainder:  small)))
-            Test().division(xsmall,  large, F(Division(quotient:  T( 0), remainder: xsmall)))
-            Test().division(xsmall, xlarge, F(Division(quotient:  T( 0), remainder: xsmall)))
+            Test().division( small,  large, F(quotient:  T( 0), remainder:  small))
+            Test().division( small, xlarge, F(quotient:  T( 0), remainder:  small))
+            Test().division(xsmall,  large, F(quotient:  T( 0), remainder: xsmall))
+            Test().division(xsmall, xlarge, F(quotient:  T( 0), remainder: xsmall))
             
-            Test().division( large,  small, F(Division(quotient:  ratio, remainder:  00016)))
-            Test().division( large, xsmall, F(Division(quotient: xratio, remainder:  00016)))
-            Test().division(xlarge,  small, F(Division(quotient: xratio, remainder: ~00015)))
-            Test().division(xlarge, xsmall, F(Division(quotient:  ratio, remainder: ~00015)))
+            Test().division( large,  small, F(quotient:  ratio, remainder:  00016))
+            Test().division( large, xsmall, F(quotient: xratio, remainder:  00016))
+            Test().division(xlarge,  small, F(quotient: xratio, remainder: ~00015))
+            Test().division(xlarge, xsmall, F(quotient:  ratio, remainder: ~00015))
             
-            Test().division( large,  large, F(Division(quotient:  T( 1), remainder:  T( 0))))
-            Test().division( large, xlarge, F(Division(quotient: ~T( 0), remainder:  T( 0))))
-            Test().division(xlarge,  large, F(Division(quotient: ~T( 0), remainder:  T( 0))))
-            Test().division(xlarge, xlarge, F(Division(quotient:  T( 1), remainder:  T( 0))))
+            Test().division( large,  large, F(quotient:  T( 1), remainder:  T( 0)))
+            Test().division( large, xlarge, F(quotient: ~T( 0), remainder:  T( 0)))
+            Test().division(xlarge,  large, F(quotient: ~T( 0), remainder:  T( 0)))
+            Test().division(xlarge, xlarge, F(quotient:  T( 1), remainder:  T( 0)))
         }
                         
         for element in Self.elementsWhereIsSigned {
@@ -90,7 +88,6 @@ extension InfiniIntTests {
             typealias E = Base.Element
             typealias L = Base.Element.Magnitude
             typealias T = InfiniInt<Base>
-            typealias D = Division<T, T>
             typealias F = Fallible<Division<T, T>>
             //=----------------------------------=
             let  small = T(0x0000000000000000000000000000007F)
@@ -100,25 +97,25 @@ extension InfiniIntTests {
             let  ratio = T(0x020406080A0C0E10121416181A1C1E20)
             let xratio = ratio.complement()
             //=----------------------------------=
-            Test().division( small,  small, F(Division(quotient:  T( 1), remainder:  T( 0))))
-            Test().division( small, xsmall, F(Division(quotient:  T( 0), remainder:  small)))
-            Test().division(xsmall,  small, F(Division(quotient: ~T( 0), remainder:  T( 0))))
-            Test().division(xsmall, xsmall, F(Division(quotient:  T( 1), remainder:  T( 0))))
+            Test().division( small,  small, F(quotient:  T( 1), remainder:  T( 0)))
+            Test().division( small, xsmall, F(quotient:  T( 0), remainder:  small))
+            Test().division(xsmall,  small, F(quotient: ~T( 0), remainder:  T( 0)))
+            Test().division(xsmall, xsmall, F(quotient:  T( 1), remainder:  T( 0)))
             
-            Test().division( small,  large, F(Division(quotient:  T( 0), remainder:  small)))
-            Test().division( small, xlarge, F(Division(quotient:  T( 0), remainder:  small)))
-            Test().division(xsmall,  large, F(Division(quotient:  T( 0), remainder: xsmall)))
-            Test().division(xsmall, xlarge, F(Division(quotient:  T( 1), remainder:  large - small)))
+            Test().division( small,  large, F(quotient:  T( 0), remainder:  small))
+            Test().division( small, xlarge, F(quotient:  T( 0), remainder:  small))
+            Test().division(xsmall,  large, F(quotient:  T( 0), remainder: xsmall))
+            Test().division(xsmall, xlarge, F(quotient:  T( 1), remainder:  large - small))
             
-            Test().division( large,  small, F(Division(quotient:  ratio, remainder:  00016)))
-            Test().division( large, xsmall, F(Division(quotient:  T( 0), remainder:  large)))
-            Test().division(xlarge,  small, F(Division(quotient: xratio, remainder: ~00015)))
-            Test().division(xlarge, xsmall, F(Division(quotient:  T( 0), remainder: xlarge)))
+            Test().division( large,  small, F(quotient:  ratio, remainder:  00016))
+            Test().division( large, xsmall, F(quotient:  T( 0), remainder:  large))
+            Test().division(xlarge,  small, F(quotient: xratio, remainder: ~00015))
+            Test().division(xlarge, xsmall, F(quotient:  T( 0), remainder: xlarge))
             
-            Test().division( large,  large, F(Division(quotient:  T( 1), remainder:  T( 0))))
-            Test().division( large, xlarge, F(Division(quotient:  T( 0), remainder:  large)))
-            Test().division(xlarge,  large, F(Division(quotient: ~T( 0), remainder:  T( 0))))
-            Test().division(xlarge, xlarge, F(Division(quotient:  T( 1), remainder:  T( 0))))
+            Test().division( large,  large, F(quotient:  T( 1), remainder:  T( 0)))
+            Test().division( large, xlarge, F(quotient:  T( 0), remainder:  large))
+            Test().division(xlarge,  large, F(quotient: ~T( 0), remainder:  T( 0)))
+            Test().division(xlarge, xlarge, F(quotient:  T( 1), remainder:  T( 0)))
         }
                         
         for element in Self.elementsWhereIsUnsigned {
