@@ -21,7 +21,7 @@ extension Doublet {
     
     @inlinable package consuming func upshift(unchecked distance: Base.Magnitude) -> Self {
         //=--------------------------------------=
-        Swift.assert(distance < Base.size &<< 2 &- 1, String.brokenInvariant())
+        Swift.assert(distance <= Base.size &<< 1 &- 1, String.brokenInvariant())
         //=--------------------------------------=
         if  distance.load(as: UX.self) >= UX(size: Base.self) {
             self.high     = Base(bitPattern: self.low &<< Shift(unchecked: distance &- Base.size))
@@ -37,7 +37,7 @@ extension Doublet {
     
     @inlinable package consuming func downshift(unchecked distance: Base.Magnitude) -> Self {
         //=--------------------------------------=
-        Swift.assert(distance < Base.size &<< 2 &- 1, String.brokenInvariant())
+        Swift.assert(distance <= Base.size &<< 1 &- 1, String.brokenInvariant())
         //=--------------------------------------=
         if  distance.load(as: UX.self) >= UX(size: Base.self) {
             self.low      = Base.Magnitude(bitPattern: self.high &>> Shift(unchecked: Base(bitPattern: distance &- Base.size)))
@@ -58,6 +58,7 @@ extension Doublet {
     @inlinable package consuming func upshift(unchecked distance: Self) -> Self {
         //=--------------------------------------=
         Swift.assert(distance.high == 0, String.brokenInvariant())
+        Swift.assert(distance.low  <= Base.size &<< 1 &- 1, String.brokenInvariant())
         //=--------------------------------------=
         return self.upshift(unchecked: distance.low)
     }
@@ -65,6 +66,7 @@ extension Doublet {
     @inlinable package consuming func downshift(unchecked distance: Self) -> Self {
         //=--------------------------------------=
         Swift.assert(distance.high == 0, String.brokenInvariant())
+        Swift.assert(distance.low  <= Base.size &<< 1 &- 1, String.brokenInvariant())
         //=--------------------------------------=
         return self.downshift(unchecked: distance.low)
     }

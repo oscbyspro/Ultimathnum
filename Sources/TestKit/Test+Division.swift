@@ -20,7 +20,6 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    #warning("...")
     public func division<T>(
         _ dividend:  T,
         _ divisor:   T,
@@ -30,8 +29,8 @@ extension Test {
         _ id: BinaryIntegerID = .init()
     )   where T: BinaryInteger {
         
-        let division = Division(quotient: quotient, remainder: remainder)
-        self.division(dividend, divisor, Fallible(division, error: error))
+        let expctation = Fallible(quotient: quotient, remainder: remainder, error: error)
+        self.division(dividend, divisor, expctation)
     }
     
     public func division<T>(
