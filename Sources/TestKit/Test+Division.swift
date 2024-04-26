@@ -67,30 +67,21 @@ extension Test {
         quotient: do {
             let expectation = expectation.map(\.quotient)
             same(dividend.quotient(divisor), expectation)
-            #warning("...")
-            //same(dividend.quotient(Fallible(divisor)),           expectation)
             same(Fallible(dividend, error: false).quotient(divisor), expectation)
             same(Fallible(dividend, error: true ).quotient(divisor), expectation.combine(true))
-            //same(Fallible(dividend).quotient(Fallible(divisor)), expectation)
         }
         
         remainder: do {
             let expectation = expectation.value.remainder
             same(dividend.remainder(divisor), expectation)
-            #warning("...")
-            //same(dividend.remainder(Fallible(divisor)),           expectation)
             same(Fallible(dividend, error: false).remainder(divisor), Fallible(expectation, error: false))
             same(Fallible(dividend, error: true ).remainder(divisor), Fallible(expectation, error: true ))
-            //same(Fallible(dividend).remainder(Fallible(divisor)), expectation)
         }
         
         division: do {
             same(dividend.division(divisor), expectation)
-            #warning("...")
-            //same(dividend.division(Fallible(divisor)),           expectation)
             same(Fallible(dividend, error: false).division(divisor), expectation)
             same(Fallible(dividend, error: true ).division(divisor), expectation.combine(true))
-            //same(Fallible(dividend).division(Fallible(divisor)), expectation)
         }
     }
 }
@@ -105,7 +96,6 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    #warning("TODO")
     public func division<T>(
         _ dividend: Doublet<T>, 
         _ divisor: T,
@@ -121,15 +111,17 @@ extension Test {
             return none(expectation, "division by zero is undefined [1]")
         }
         //=--------------------------------------=
-        //=--------------------------------------=
         let result = T.division(dividend, by: divisor)
         //=--------------------------------------=
-        // TODO: Doublet plus(_:) minus(_:)
-        //=--------------------------------------=
-        if !expectation.error {
-            // TODO: reverse engineer the dividend
+        recover: if !expectation.error {
+            var bit = false
+            var reversed = expectation.value.quotient.multiplication(divisor.value)
+            bit = reversed.low [{ $0.plus(T.Magnitude(bitPattern: expectation.value.remainder), plus: bit) }]
+            bit = reversed.high[{ $0.plus(T(repeating:   expectation.value.remainder.appendix), plus: bit) }]
+            same(bit,      false,    "dividend != divisor * quotient + remainder [0]")
+            same(dividend, reversed, "dividend != divisor * quotient + remainder [1]")
         }
         //=--------------------------------------=
-        same(result, expectation)
+        same(result, expectation, "2 by 1 division")
     }
 }
