@@ -27,7 +27,7 @@ extension MutableDataInt.Body {
     ///
     /// - Important: This is `unsigned` and `finite`.
     ///
-    @inlinable public func remainder(_ divisor: borrowing Nonzero<Element>) -> Element {
+    @inlinable public func remainder(_ divisor: borrowing Divisor<Element>) -> Element {
         var remainder = Element()
         
         for index in self.indices.reversed() {
@@ -47,7 +47,7 @@ extension MutableDataInt.Body {
     ///
     /// - Important: This is `unsigned` and `finite`.
     ///
-    @inlinable public func divisionSetQuotientGetRemainder(_ divisor: borrowing Nonzero<Element>) -> Element {
+    @inlinable public func divisionSetQuotientGetRemainder(_ divisor: borrowing Divisor<Element>) -> Element {
         var remainder = Element()
         
         for index in self.indices.reversed() {

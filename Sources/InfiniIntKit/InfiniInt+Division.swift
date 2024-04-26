@@ -94,7 +94,7 @@ extension InfiniInt where Source == Source.Magnitude {
             //=----------------------------------=
             let divisor = other.storage.body.first! as Element.Magnitude
             let remainder = self.withUnsafeMutableBinaryIntegerBody {
-                $0.divisionSetQuotientGetRemainder(Nonzero(unchecked: divisor))
+                $0.divisionSetQuotientGetRemainder(Divisor(unchecked: divisor))
             }
             
             return Division(quotient: self, remainder: Self(load: remainder))

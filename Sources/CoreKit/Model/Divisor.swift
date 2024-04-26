@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Nonzero
+// MARK: * Divisor
 //*============================================================================*
 
-@frozen public struct Nonzero<Value> where Value: Equatable & ExpressibleByIntegerLiteral {
+@frozen public struct Divisor<Value> where Value: BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -38,6 +38,6 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public static func predicate(_ value: borrowing Value) -> Bool {
-        (value != 0)
+        value != Value.zero
     }
 }
