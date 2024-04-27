@@ -11,10 +11,17 @@
 // MARK: * Load Int
 //*============================================================================*
 
+/// A binary integer view that generates `Element` chunks.
+///
+/// Use this view to access larger elements than supported by the memory layout
+/// of the binary integer source object. You may need it when your generic algorithm
+/// depends on a specific element type, given that you may only downsize binary
+/// integer elements through reinterpretation.
+///
 @frozen public struct LoadInt<Element> where Element: SystemsInteger & UnsignedInteger {
     
     public typealias Element = Element
-        
+    
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
