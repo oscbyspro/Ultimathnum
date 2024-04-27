@@ -37,7 +37,7 @@ extension BinaryInteger {
     }
     
     @inlinable public static func exactly(
-        _ source: DataInt<U8.Magnitude>, mode: some Signedness
+        _ source: LoadInt<Element.Magnitude>, mode: some Signedness
     )   -> Fallible<Self> {
         //=--------------------------------------=
         let instance = Self(load: source)
@@ -49,7 +49,7 @@ extension BinaryInteger {
         
         if  let size  = UX(size: Self.self) {
             let ratio = size / UX(size: U8.Magnitude.self)
-            success  &= Bit(source[ratio...].normalized().body.count == .zero)
+            success  &= Bit(source.base[ratio...].normalized().body.count == .zero)
         }
         //=--------------------------------------=
         return instance.combine(!Bool(success))
@@ -66,7 +66,7 @@ extension BinaryInteger {
             
         }   else {
             return (source).withMemoryRebound(to: U8.Magnitude.self) {
-                return Self.exactly($0, mode: mode)
+                return Self.exactly(LoadInt($0, as: Self.Element.Magnitude.self), mode: mode)
             }
         }
     }
@@ -75,7 +75,9 @@ extension BinaryInteger {
         if  OtherElement.elementsCanBeRebound(to: Self.Element.Magnitude.self) {
             self = (source).withMemoryRebound(to: Self.Element.Magnitude.self, perform: Self.init(load:))
         }   else {
-            self = (source).withMemoryRebound(to: U8.self, perform: Self.init(load:))
+            self = (source).withMemoryRebound(to: U8.Magnitude.self) {
+                return Self.init(load:LoadInt($0, as: Self.Element.Magnitude.self))
+            }
         }
     }
     
@@ -236,7 +238,7 @@ extension BinaryInteger {
     @inlinable public func body<T>(as type: T.Type = T.self) -> T where
     T: RangeReplaceableCollection, T.Element: SystemsInteger & UnsignedInteger {
         self.withUnsafeBinaryIntegerElementsAsBytes {
-            T(LoadInt($0).body())
+            T(LoadInt($0).source())
         }
     }
     

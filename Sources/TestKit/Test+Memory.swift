@@ -47,7 +47,7 @@ extension Test {
         integer.withUnsafeBinaryIntegerElements {
             let body = Array($0.body.buffer())
             let elements = $0.withMemoryRebound(to: U8.self) {
-                [Element](LoadInt($0).body())
+                [Element](LoadInt($0).source())
             }
             
             self.pure(elements.elementsEqual(expectation), "\(Array(body)).body -> \(elements)")

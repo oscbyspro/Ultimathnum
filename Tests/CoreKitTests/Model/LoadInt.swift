@@ -82,7 +82,7 @@ extension LoadIntTests.Case {
     
     func body(is expectation: [Element]) {
         self.expect(expectation) {
-            Array($0.body())
+            Array($0.source())
         }
     }
     

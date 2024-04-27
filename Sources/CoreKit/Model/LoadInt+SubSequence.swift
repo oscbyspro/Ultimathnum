@@ -8,16 +8,18 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Load Int x Normalization
+// MARK: * Load Int
 //*============================================================================*
 
 extension LoadInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func normalized() -> Prefix {
-        Self(self.base.normalized()).source()
+    @inlinable public subscript(range: PartialRangeFrom<UX>) -> Self {
+        consuming get {
+            Self(self.base[(range.lowerBound * UX(bitPattern: MemoryLayout<Element>.stride))...])
+        }
     }
 }

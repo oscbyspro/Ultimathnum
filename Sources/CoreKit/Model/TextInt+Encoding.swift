@@ -53,7 +53,7 @@ extension TextInt {
     }
     
     @inlinable public func encode(sign: Sign?, mask: Bit?, body: DataInt<U8>.Body) -> String {
-        let words = LoadInt<UX>(consume body).body()
+        let words = LoadInt<UX>(consume body).normalized()
         return Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: words.count) { buffer in
             //=--------------------------------------=
             // pointee: initialization
@@ -67,15 +67,13 @@ extension TextInt {
             }
             //=--------------------------------------=
             let body = MutableDataInt.Body(buffer.baseAddress!, count: IX(words.count))
-            return self.encode(sign: sign, mask: mask, body: body)
+            return self.encode(sign: sign, mask: mask, normalized: body)
         }
     }
     
-    @usableFromInline func encode(sign: Sign?, mask: Bit?, body: consuming MutableDataInt<UX>.Body) -> String {
-        //=--------------------------------------=
-        // normalization
-        //=--------------------------------------=
-        body = body.normalized()
+    @usableFromInline func encode(sign: Sign?, mask: Bit?, normalized body: consuming MutableDataInt<UX>.Body) -> String {
+        //=--------------------------------------=        
+        Swift.assert(body.count == 0 || body[unchecked: body.count - 1] != 0)
         //=--------------------------------------=
         // text: capacity upper bound
         //=--------------------------------------=

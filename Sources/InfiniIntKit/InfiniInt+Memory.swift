@@ -75,8 +75,8 @@ extension InfiniInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(load source: DataInt<I8.Magnitude>) {
-        let body = Storage.Body(LoadInt(source).body())
+    @inlinable public init(load source: LoadInt<Element.Magnitude>) {
+        let body = Storage.Body(source.source())
         self.init(normalizing: Storage(body, repeating: source.appendix))
     }
     

@@ -53,6 +53,14 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    @inlinable public var body: DataInt<U8>.Body {
+        self.base.body
+    }
+    
+    @inlinable public var appendix: Bit {
+        self.base.appendix
+    }
+    
     @inlinable public subscript(index: UX) -> Element {
         let ratio = UX(IX(MemoryLayout<Element>.stride))
         if  ratio == 1 {
