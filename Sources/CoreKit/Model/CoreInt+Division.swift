@@ -42,20 +42,20 @@ extension CoreInt {
         let lhsIsNegative = dividend.high.isNegative
         let rhsIsNegative = divisor.value.isNegative
         //=--------------------------------------=
-        var result = Fallible<Division<Self, Self>>(
+        var division = Fallible<Division<Self, Self>>(
             bitPattern: Magnitude.division(dividend.magnitude(), by: divisor.magnitude())
         )
         
-        var suboverflow  = Bit( result.value.quotient.isNegative)
+        var suboverflow  = Bit( division.value.quotient.isNegative)
         if  lhsIsNegative  != rhsIsNegative {
-            suboverflow &= Bit(!result.value.quotient[{ $0.complement(true) }])
+            suboverflow &= Bit(!division.value.quotient[{ $0.complement(true) }])
         }
         
         if  lhsIsNegative {
-            result.value.remainder = result.value.remainder.complement()
+            division.value.remainder = division.value.remainder.complement()
         }
         
-        return result.combine(Bool(suboverflow))
+        return division.combine(Bool(suboverflow))
     }
 }
 

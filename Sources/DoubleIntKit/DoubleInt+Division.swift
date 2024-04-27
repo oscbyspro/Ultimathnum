@@ -32,20 +32,20 @@ extension DoubleInt {
         let lhsIsNegative = /*-----*/self.isNegative
         let rhsIsNegative = divisor.value.isNegative
         //=--------------------------------------=
-        var result = Division<Self, Self>(
+        var division = Division<Self, Self>(
             bitPattern: self.magnitude().division2222(divisor.magnitude())
         )
         
-        var suboverflow  = Bit( result.quotient.high.isNegative)
+        var suboverflow  = Bit( division.quotient.high.isNegative)
         if  lhsIsNegative != rhsIsNegative {
-            suboverflow &= Bit(!result.quotient[{ $0.complement(true) }])
+            suboverflow &= Bit(!division.quotient[{ $0.complement(true) }])
         }
         
         if  lhsIsNegative {
-            result.remainder = result.remainder.complement()
+            division.remainder = division.remainder.complement()
         }
         
-        return result.combine(Bool(suboverflow)) as Fallible<Division<Self, Self>>
+        return division.combine(Bool(suboverflow)) as Fallible<Division<Self, Self>>
     }
     
     //=------------------------------------------------------------------------=
@@ -57,22 +57,22 @@ extension DoubleInt {
         let lhsIsNegative = dividend.high.isNegative
         let rhsIsNegative = divisor.value.isNegative
         //=--------------------------------------=
-        var result = Fallible<Division<Self, Self>>(
+        var division = Fallible<Division<Self, Self>>(
             bitPattern: Magnitude.division4222(
                 dividend.magnitude(), by: divisor.magnitude()
             )
         )
         
-        var suboverflow  = Bit( result.value.quotient.high.isNegative)
+        var suboverflow  = Bit( division.value.quotient.high.isNegative)
         if  lhsIsNegative  != rhsIsNegative {
-            suboverflow &= Bit(!result.value.quotient[{ $0.complement(true) }])
+            suboverflow &= Bit(!division.value.quotient[{ $0.complement(true) }])
         }
         
         if  lhsIsNegative {
-            result.value.remainder = result.value.remainder.complement()
+            division.value.remainder = division.value.remainder.complement()
         }
         
-        return result.combine(Bool(suboverflow)) as Fallible<Division<Self, Self>>
+        return division.combine(Bool(suboverflow)) as Fallible<Division<Self, Self>>
     }
 }
 

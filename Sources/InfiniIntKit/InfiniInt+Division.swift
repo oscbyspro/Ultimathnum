@@ -50,17 +50,17 @@ extension InfiniInt {
             divisor[{ $0.complement() }]
         }
         //=--------------------------------------=
-        var result = Magnitude(bitPattern: self).divisionAsFiniteByFiniteNonzeroDivisor(Magnitude(bitPattern: divisor.value))
+        var division = Magnitude(bitPattern: self).divisionAsFiniteByFiniteNonzeroDivisor(Magnitude(bitPattern: divisor.value))
         //=--------------------------------------=
         if  lhsAppendixIsSet != rhsAppendixIsSet {
-            result.quotient [{ $0.complement() }]
+            division.quotient [{ $0.complement() }]
         }
         
         if  lhsAppendixIsSet {
-            result.remainder[{ $0.complement() }]
+            division.remainder[{ $0.complement() }]
         }
         
-        return Fallible.success(Division(bitPattern: result))
+        return Fallible.success(Division(bitPattern: division))
     }
 }
 
