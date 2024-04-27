@@ -76,7 +76,7 @@ extension InfiniInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(load source: LoadInt<Element.Magnitude>) {
-        let body = Storage.Body(source.source())
+        let body = Storage.Body(source.body())
         self.init(normalizing: Storage(body, repeating: source.appendix))
     }
     

@@ -18,25 +18,6 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func exactly(
-        _ source: DataInt<Element.Magnitude>, mode: some Signedness
-    )   -> Fallible<Self> {
-        //=--------------------------------------=
-        let instance = Self(load: source)
-        var success  = Bit(instance.appendix == source.appendix)
-        //=--------------------------------------=
-        if  Self.isSigned != mode.isSigned {
-            success &= (((~source.appendix)))
-        }
-        
-        if  let size  = UX(size: Self.self) {
-            let ratio = size / UX(size: Element.Magnitude.self)
-            success  &= Bit(source[ratio...].normalized().body.count == .zero)
-        }
-        //=--------------------------------------=
-        return instance.combine(!Bool(success))
-    }
-    
-    @inlinable public static func exactly(
         _ source: LoadInt<Element.Magnitude>, mode: some Signedness
     )   -> Fallible<Self> {
         //=--------------------------------------=
@@ -44,12 +25,33 @@ extension BinaryInteger {
         var success  = Bit(instance.appendix == source.appendix)
         //=--------------------------------------=
         if  Self.isSigned != mode.isSigned {
-            success &= (((~source.appendix)))
+            success &= source.appendix.toggled()
         }
         
         if  let size  = UX(size: Self.self) {
             let ratio = size / UX(size: U8.Magnitude.self)
-            success  &= Bit(source.base[ratio...].normalized().body.count == .zero)
+            let suffix: DataInt<U8.Magnitude> = source.base[ratio...]
+            success  &= Bit(suffix.normalized().body.isEmpty)
+        }
+        //=--------------------------------------=
+        return instance.combine(!Bool(success))
+    }
+    
+    @inlinable public static func exactly(
+        _ source: DataInt<Element.Magnitude>, mode: some Signedness
+    )   -> Fallible<Self> {
+        //=--------------------------------------=
+        let instance = Self(load: source)
+        var success  = Bit(instance.appendix == source.appendix)
+        //=--------------------------------------=
+        if  Self.isSigned != mode.isSigned {
+            success &= source.appendix.toggled()
+        }
+        
+        if  let size  = UX(size: Self.self) {
+            let ratio = size / UX(size: Element.Magnitude.self)
+            let suffix: DataInt<Element.Magnitude> = source[ratio...]
+            success  &= Bit(suffix.normalized().body.isEmpty)
         }
         //=--------------------------------------=
         return instance.combine(!Bool(success))
@@ -238,7 +240,7 @@ extension BinaryInteger {
     @inlinable public func body<T>(as type: T.Type = T.self) -> T where
     T: RangeReplaceableCollection, T.Element: SystemsInteger & UnsignedInteger {
         self.withUnsafeBinaryIntegerElementsAsBytes {
-            T(LoadInt($0).source())
+            T(LoadInt($0).body())
         }
     }
     

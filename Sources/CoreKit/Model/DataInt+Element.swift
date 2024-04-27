@@ -36,6 +36,10 @@ extension SomeDataIntBody {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    @inlinable public var isEmpty: Bool {
+        self.count == 0
+    }
+    
     @inlinable public var indices: Range<IX> {
         Range(uncheckedBounds:(0, self.count))
     }

@@ -18,6 +18,6 @@ extension LoadInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func normalized() -> Prefix {
-        Self(self.base.normalized()).source()
+        Self(self.base.normalized()).body()
     }
 }

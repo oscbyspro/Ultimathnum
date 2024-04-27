@@ -8,7 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Load Int x Source
+// MARK: * Load Int x Body
 //*============================================================================*
 
 extension LoadInt {
@@ -17,8 +17,7 @@ extension LoadInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    #warning("the body() name was better...")
-    @inlinable public func source() -> Prefix {
+    @inlinable public func body() -> Prefix {
         let ratio = UX(bitPattern: MemoryLayout<Element>.stride)
         var major = UX(bitPattern: self.base.body.count)
         major  &>>= UX(bitPattern: ratio.count(0, where: Bit.Selection.ascending))
