@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Exchange Int
+// MARK: * Load Int
 //*============================================================================*
 
-@frozen public struct ExchangeInt<Element> where Element: SystemsInteger & UnsignedInteger {
+@frozen public struct LoadInt<Element> where Element: SystemsInteger & UnsignedInteger {
     
     public typealias Element = Element
         

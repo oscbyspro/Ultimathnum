@@ -11,10 +11,10 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Exchange Int x Normalization
+// MARK: * Load Int x Normalization
 //*============================================================================*
 
-extension ExchangeIntTests {
+extension LoadIntTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests

@@ -11,16 +11,16 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Exchange Int
+// MARK: * Load Int
 //*============================================================================*
 
-final class ExchangeIntTests: XCTestCase {
+final class LoadIntTests: XCTestCase {
     
     //*========================================================================*
     // MARK: * Item
     //*========================================================================*
     
-    /// An ExchangeInt proxy object.
+    /// A proxy object.
     ///
     /// - Note: Both bits exhibit the same behavior when the `appendix` is `nil`.
     ///
@@ -74,7 +74,7 @@ final class ExchangeIntTests: XCTestCase {
 // MARK: + Assertions
 //=----------------------------------------------------------------------------=
 
-extension ExchangeIntTests.Case {
+extension LoadIntTests.Case {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -104,14 +104,14 @@ extension ExchangeIntTests.Case {
         }
     }
     
-    func expect<T: Equatable>(_ expectation: T, from map: (ExchangeInt<Element>) -> T) {
+    func expect<T: Equatable>(_ expectation: T, from map: (LoadInt<Element>) -> T) {
         self.item.body.withUnsafeBufferPointer {
             if  self.item.appendix != 0 {
-                test.same(map(ExchangeInt<Element>(DataInt($0, repeating: 1)!)), expectation)
+                test.same(map(LoadInt<Element>(DataInt($0, repeating: 1)!)), expectation)
             }
             
             if  self.item.appendix != 1 {
-                test.same(map(ExchangeInt<Element>(DataInt($0, repeating: 0)!)), expectation)
+                test.same(map(LoadInt<Element>(DataInt($0, repeating: 0)!)), expectation)
             }
         }
     }

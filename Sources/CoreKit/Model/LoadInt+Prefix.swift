@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Exchange Int x Prefix
+// MARK: * Load Int x Prefix
 //*============================================================================*
 
-extension ExchangeInt {
+extension LoadInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -31,14 +31,14 @@ extension ExchangeInt {
         // MARK: State
         //=--------------------------------------------------------------------=
         
-        public let base: ExchangeInt
+        public let base: LoadInt
         public let count: UX
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
-        @inlinable public init(_ base: ExchangeInt, count: UX) {
+        @inlinable public init(_ base: LoadInt, count: UX) {
             self.base  = base
             self.count = count
         }

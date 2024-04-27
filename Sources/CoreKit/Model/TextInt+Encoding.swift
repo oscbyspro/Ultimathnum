@@ -53,7 +53,7 @@ extension TextInt {
     }
     
     @inlinable public func encode(sign: Sign?, mask: Bit?, body: DataInt<U8>.Body) -> String {
-        let words = ExchangeInt<UX>(consume body).body()
+        let words = LoadInt<UX>(consume body).body()
         return Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: words.count) { buffer in
             //=--------------------------------------=
             // pointee: initialization

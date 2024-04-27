@@ -43,7 +43,7 @@ extension InfiniInt {
     
     @inlinable public borrowing func load(as type: UX.BitPattern.Type) -> UX.BitPattern {
         self.withUnsafeBinaryIntegerElementsAsBytes {
-            ExchangeInt($0, as: UX.self)[UX.zero].bitPattern
+            LoadInt($0, as: UX.self)[UX.zero].bitPattern
         }
     }
     
@@ -76,7 +76,7 @@ extension InfiniInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(load source: DataInt<I8.Magnitude>) {
-        let body = Storage.Body(ExchangeInt(source).body())
+        let body = Storage.Body(LoadInt(source).body())
         self.init(normalizing: Storage(body, repeating: source.appendix))
     }
     

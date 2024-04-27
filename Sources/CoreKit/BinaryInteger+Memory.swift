@@ -236,7 +236,7 @@ extension BinaryInteger {
     @inlinable public func body<T>(as type: T.Type = T.self) -> T where
     T: RangeReplaceableCollection, T.Element: SystemsInteger & UnsignedInteger {
         self.withUnsafeBinaryIntegerElementsAsBytes {
-            T(ExchangeInt($0).body())
+            T(LoadInt($0).body())
         }
     }
     
