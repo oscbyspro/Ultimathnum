@@ -24,12 +24,4 @@ extension Functional {
     @inlinable public consuming func map<T>(_ map: (Self) throws -> Fallible<T>) rethrows -> Fallible<T> {
         try map(self)
     }
-    
-    @inlinable public consuming func map<T, U>(_ input: borrowing U, map: (Self, U) throws -> T) rethrows -> T {
-        try map(self, input)
-    }
-    
-    @inlinable public consuming func map<T, U>(_ input: borrowing U, map: (Self, U) throws -> Fallible<T>) rethrows -> Fallible<T> {
-        try map(self, input)
-    }
 }

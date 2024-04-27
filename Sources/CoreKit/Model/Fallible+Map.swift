@@ -24,12 +24,4 @@ extension Fallible {
     @inlinable public consuming func map<T>(_ map: (Value) throws -> Fallible<T>) rethrows -> Fallible<T> {
         try map(self.value).combine(self.error)
     }
-    
-    @inlinable public consuming func map<T, U>(_ input: borrowing U, map: (Value, U) throws -> T) rethrows -> Fallible<T> {
-        Fallible<T>(try map(self.value, input), error: self.error)
-    }
-    
-    @inlinable public consuming func map<T, U>(_ input: borrowing U, map: (Value, U) throws -> Fallible<T>) rethrows -> Fallible<T> {
-        try map(self.value, input).combine(self.error)
-    }
 }
