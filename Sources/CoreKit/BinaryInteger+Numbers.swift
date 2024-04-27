@@ -67,10 +67,10 @@ extension BinaryInteger {
                 
             }   else if lhsSize >= rhsSize {
                 Swift.assert(Self.mode.isSigned != Other.mode.isSigned)
-                let rhsIsLessThanZero = source.isNegative
+                let rhsIsNegative = source.isNegative
                 let result = Self(load: source)
-                let lhsIsLessThanZero = result.isNegative
-                return result.combine(lhsIsLessThanZero != rhsIsLessThanZero)
+                let lhsIsNegative = result.isNegative
+                return result.combine(lhsIsNegative != rhsIsNegative)
                 
             }   else {
                 let bit   = Bit(Self.isSigned) & Bit(source.isNegative)

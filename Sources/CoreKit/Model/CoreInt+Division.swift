@@ -39,19 +39,19 @@ extension CoreInt {
     
     @inlinable public static func division(_ dividend: consuming Doublet<Self>, by divisor: Divisor<Self>) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
-        let lhsIsLessThanZero = dividend.high.isNegative
-        let rhsIsLessThanZero = divisor.value.isNegative
+        let lhsIsNegative = dividend.high.isNegative
+        let rhsIsNegative = divisor.value.isNegative
         //=--------------------------------------=
         var result = Fallible<Division<Self, Self>>(
             bitPattern: Magnitude.division(dividend.magnitude(), by: divisor.magnitude())
         )
         
         var suboverflow  = Bit( result.value.quotient.isNegative)
-        if  lhsIsLessThanZero != rhsIsLessThanZero {
+        if  lhsIsNegative  != rhsIsNegative {
             suboverflow &= Bit(!result.value.quotient[{ $0.complement(true) }])
         }
         
-        if  lhsIsLessThanZero {
+        if  lhsIsNegative {
             result.value.remainder = result.value.remainder.complement()
         }
         

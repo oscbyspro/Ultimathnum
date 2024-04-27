@@ -56,7 +56,7 @@
             var shift = Element.zero
             
             if  var start = index.times(ratio).optional() {
-                let (end) = start.plus(ratio)
+                let (end) = start.plus (ratio)
                 
                 if  Bool(Bit(!end.error) & Bit(end.value < UX(bitPattern: self.base.body.count))) {
                     let pointer = UnsafeRawPointer(self.base.body.start)
