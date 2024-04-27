@@ -15,6 +15,10 @@
 ///
 /// ### Development
 ///
+/// - TODO: It should conform to BitCastable.
+///
+/// ### Development
+///
 /// Swift does not expose unchecked shifts to there's no reason to premask it.
 ///
 @frozen public struct Shift<Value> where Value: BinaryInteger {
@@ -45,5 +49,13 @@
     @inlinable public init(unchecked value: consuming Value) {
         Swift.assert(Self.predicate(value), String.brokenInvariant())
         self.value = value
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func nondistance() -> Self where Value: SystemsInteger {
+        Self(unchecked: Value(bitPattern: Value.size).minus(self.value).assert())
     }
 }

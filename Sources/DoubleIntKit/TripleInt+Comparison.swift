@@ -10,29 +10,34 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Doublet x Addition
+// MARK: * Triple Int x Comparison
 //*============================================================================*
 
-extension Doublet {
+extension TripleInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x 2 by 1
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
-        
-    @inlinable public consuming func plus(_ increment: Base) -> Fallible<Self> {
-        let appendix = High.init(repeating: increment.appendix)
-        let low  = self.low .plus(Low(bitPattern: increment))
-        let high = self.high.plus(appendix, plus: low.error)
-        return Self(low: low.value, high: high.value).combine(high.error)
+    
+    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        lhs.storage == rhs.storage
+    }
+    
+    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        lhs.storage <  rhs.storage
+    }
+    
+    @inlinable public borrowing func compared(to other: borrowing Self) -> Signum {
+        self.storage.compared(to: other.storage)
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x 2 by 2
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable package consuming func plus(_ increment: borrowing Self) -> Fallible<Self> {
-        let low  = self.low .plus(increment.low)
-        let high = self.high.plus(increment.high, plus: low.error)
-        return Self(low: low.value, high: high.value).combine(high.error)
+    @inlinable public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.low )
+        hasher.combine(self.mid )
+        hasher.combine(self.high)
     }
 }

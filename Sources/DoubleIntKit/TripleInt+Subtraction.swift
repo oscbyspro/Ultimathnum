@@ -10,20 +10,20 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Triplet x Addition
+// MARK: * Triple Int x Subtraction
 //*============================================================================*
 
-extension Triplet {
+extension TripleInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x 3 by 2
     //=------------------------------------------------------------------------=
     
-    @inlinable package consuming func plus(_ increment: borrowing Doublet<Base>) -> Fallible<Self> {
-        let appendix = High(repeating: increment.high.appendix)
-        let low  = self.low .plus(increment.low)
-        let mid  = self.mid .plus(Mid(bitPattern: increment.high), plus: low.error)
-        let high = self.high.plus(appendix, plus: mid.error)
+    @inlinable package consuming func minus(_ decrement: borrowing DoubleInt<Base>) -> Fallible<Self> {
+        let appendix = High(repeating: decrement.storage.high.appendix)
+        let low  = self.storage.low .minus(decrement.storage.low)
+        let mid  = self.storage.mid .minus(Mid(bitPattern: decrement.storage.high), plus: low.error)
+        let high = self.storage.high.minus(appendix, plus: mid.error)
         return Self(low: low.value, mid: mid.value, high: high.value).combine(high.error)
     }
     
@@ -31,10 +31,10 @@ extension Triplet {
     // MARK: Transformations x 3 by 3
     //=------------------------------------------------------------------------=
     
-    @inlinable package consuming func plus(_ increment: borrowing Self) -> Fallible<Self> {
-        let low  = self.low .plus(increment.low)
-        let mid  = self.mid .plus(increment.mid,  plus: low.error)
-        let high = self.high.plus(increment.high, plus: mid.error)
+    @inlinable package consuming func minus(_ decrement: borrowing Self) -> Fallible<Self> {
+        let low  = self.storage.low .minus(decrement.storage.low)
+        let mid  = self.storage.mid .minus(decrement.storage.mid,  plus: low.error)
+        let high = self.storage.high.minus(decrement.storage.high, plus: mid.error)
         return Self(low: low.value, mid: mid.value, high: high.value).combine(high.error)
     }
 }

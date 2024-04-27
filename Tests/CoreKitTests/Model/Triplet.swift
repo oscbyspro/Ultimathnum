@@ -20,32 +20,6 @@ final class TripletTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testIsSigned() {
-        func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = Triplet<Base>
-            
-            Test().same(T.mode.isSigned, Base.isSigned)
-        }
-        
-        for base in coreSystemsIntegers {
-            whereTheBaseIs(base)
-        }
-    }
-    
-    func testBitWidth() {
-        func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = Triplet<Base>
-            
-            Test().same(T.size.low,  Base.size.multiplication(3).low)
-            Test().same(T.size.mid,  Base.size.multiplication(3).high)
-            Test().same(T.size.high, Base.Magnitude())
-        }
-        
-        for base in coreSystemsIntegers {
-            whereTheBaseIs(base)
-        }
-    }
-    
     func testMemoryLayout() {
         func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = Triplet<Base>

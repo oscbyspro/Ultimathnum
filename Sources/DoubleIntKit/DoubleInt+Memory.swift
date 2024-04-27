@@ -33,16 +33,22 @@ extension DoubleInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(load source: consuming  UX.Signitude) {
-        self.init(Storage(load: source))
+    @inlinable public init(load source: IX) {
+        let low  = Low (load: source)
+        let high = High(load: source >> IX(size: Low.self))
+        self.init(low: low, high: high)
     }
     
-    @inlinable public init(load source: consuming  UX.Magnitude) {
-        self.init(Storage(load: source))
+    @inlinable public init(load source: UX) {
+        let low  = Low (load: source)
+        let high = High(load: source >> UX(size: Low.self))
+        self.init(low: low, high: high)
     }
     
     @inlinable public borrowing func load(as type: UX.BitPattern.Type) -> UX.BitPattern {
-        self.storage.load(as: UX.self).bitPattern
+        let low  = self.storage.low .load(as: UX.self)
+        let high = self.storage.high.load(as: UX.self) << UX(size: Low.self)
+        return UX.BitPattern.init(bitPattern: low | high)
     }
     
     //=------------------------------------------------------------------------=

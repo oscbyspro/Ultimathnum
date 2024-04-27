@@ -18,7 +18,83 @@ import TestKit
 extension DoubleIntTests {
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests
+    // MARK: Tests x 2 by 1
+    //=------------------------------------------------------------------------=
+    
+    func testSubtraction21B() {
+        func whereTheBaseIsSigned<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
+            typealias F = Fallible<DoubleInt<B>>
+                        
+            Test().same(T(low:  0, high:  0).minus(B(~3)), F(T(low:  4, high:  0)))
+            Test().same(T(low:  1, high:  2).minus(B(~3)), F(T(low:  5, high:  2)))
+            Test().same(T(low: ~1, high: ~2).minus(B( 3)), F(T(low: ~4, high: ~2)))
+            Test().same(T(low: ~0, high: ~0).minus(B( 3)), F(T(low: ~3, high: ~0)))
+            
+            Test().same(T(low: ~4, high: ~B.msb).minus(B(~3)), F(T(low: ~0, high: ~B.msb)))
+            Test().same(T(low: ~3, high: ~B.msb).minus(B(~3)), F(T(low:  0, high:  B.msb), error: true))
+            Test().same(T(low:  3, high:  B.msb).minus(B( 3)), F(T(low:  0, high:  B.msb)))
+            Test().same(T(low:  2, high:  B.msb).minus(B( 3)), F(T(low: ~0, high: ~B.msb), error: true))
+        }
+        
+        func whereTheBaseIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
+            typealias F = Fallible<DoubleInt<B>>
+            
+            Test().same(T(low:  0, high:  0).minus(B(~3)), F(T(low:  4, high: ~0), error: true))
+            Test().same(T(low:  1, high:  2).minus(B(~3)), F(T(low:  5, high:  1)))
+            Test().same(T(low: ~1, high: ~2).minus(B( 3)), F(T(low: ~4, high: ~2)))
+            Test().same(T(low: ~0, high: ~0).minus(B( 3)), F(T(low: ~3, high: ~0)))
+            
+            Test().same(T(low: ~3, high:  0).minus(B(~3)), F(T(low:  0, high:  0)))
+            Test().same(T(low: ~4, high:  0).minus(B(~3)), F(T(low: ~0, high: ~0), error: true))
+            Test().same(T(low:  3, high:  0).minus(B( 3)), F(T(low:  0, high:  0)))
+            Test().same(T(low:  2, high:  0).minus(B( 3)), F(T(low: ~0, high: ~0), error: true))
+        }
+        
+        for base in coreSystemsIntegers {
+            base.isSigned ? whereTheBaseIsSigned(base) : whereTheBaseIsUnsigned(base)
+        }
+    }
+    
+    func testSubtraction22B() {
+        func whereTheBaseIsSigned<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
+            typealias F = Fallible<DoubleInt<B>>
+                        
+            Test().same(T(low:  0, high:  0).minus(T(low: ~3, high: ~4)), F(T(low:  4, high:  4)))
+            Test().same(T(low:  1, high:  2).minus(T(low: ~3, high: ~4)), F(T(low:  5, high:  6)))
+            Test().same(T(low: ~1, high: ~2).minus(T(low:  3, high:  4)), F(T(low: ~4, high: ~6)))
+            Test().same(T(low: ~0, high: ~0).minus(T(low:  3, high:  4)), F(T(low: ~3, high: ~4)))
+            
+            Test().same(T(low: ~4, high: ~B.msb - 4).minus(T(low: ~3, high: ~4)), F(T(low: ~0, high: ~B.msb)))
+            Test().same(T(low: ~3, high: ~B.msb - 4).minus(T(low: ~3, high: ~4)), F(T(low:  0, high:  B.msb), error: true))
+            Test().same(T(low:  3, high:  B.msb + 4).minus(T(low:  3, high:  4)), F(T(low:  0, high:  B.msb)))
+            Test().same(T(low:  2, high:  B.msb + 4).minus(T(low:  3, high:  4)), F(T(low: ~0, high: ~B.msb), error: true))
+        }
+        
+        func whereTheBaseIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
+            typealias F = Fallible<DoubleInt<B>>
+            
+            Test().same(T(low:  0, high:  0).minus(T(low: ~3, high: ~4)), F(T(low:  4, high:  4), error: true))
+            Test().same(T(low:  1, high:  2).minus(T(low: ~3, high: ~4)), F(T(low:  5, high:  6), error: true))
+            Test().same(T(low: ~1, high: ~2).minus(T(low:  3, high:  4)), F(T(low: ~4, high: ~6)))
+            Test().same(T(low: ~0, high: ~0).minus(T(low:  3, high:  4)), F(T(low: ~3, high: ~4)))
+            
+            Test().same(T(low: ~3, high: ~4).minus(T(low: ~3, high: ~4)), F(T(low:  0, high:  0)))
+            Test().same(T(low: ~4, high: ~4).minus(T(low: ~3, high: ~4)), F(T(low: ~0, high: ~0), error: true))
+            Test().same(T(low:  3, high:  4).minus(T(low:  3, high:  4)), F(T(low:  0, high:  0)))
+            Test().same(T(low:  2, high:  4).minus(T(low:  3, high:  4)), F(T(low: ~0, high: ~0), error: true))
+        }
+        
+        for base in coreSystemsIntegers {
+            base.isSigned ? whereTheBaseIsSigned(base) : whereTheBaseIsUnsigned(base)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x 2 by 2
     //=------------------------------------------------------------------------=
     
     func testSubtraction() {

@@ -23,18 +23,6 @@
     public typealias Magnitude = Triplet<Base.Magnitude>
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static var mode: Base.Mode {
-        Base.mode
-    }
-    
-    @inlinable public static var size: Magnitude {
-        Magnitude(low: Base.size.multiplication(3), high: Magnitude.High())
-    }
-    
-    //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     

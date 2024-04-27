@@ -28,6 +28,28 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public borrowing func count(_ bit: Bit, where selection: Bit.Selection) -> Magnitude {
-        Magnitude(self.storage.count(bit, where: selection))
+        var count: UX
+
+        switch selection {
+        case .anywhere:
+            
+            count  = UX(load: self.storage.low .count(bit, where: selection))
+            count += UX(load: self.storage.high.count(bit, where: selection))
+        
+        case .ascending:
+            
+            count  = UX(load: self.storage.low .count(bit, where: selection))
+            guard count == UX(size: Base.self) else { break }
+            count += UX(load: self.storage.high.count(bit, where: selection))
+            
+        case .descending:
+            
+            count  = UX(load: self.storage.high.count(bit, where: selection))
+            guard count == UX(size: Base.self) else { break }
+            count += UX(load: self.storage.low .count(bit, where: selection))
+            
+        }
+        
+        return Magnitude(load: count)
     }
 }

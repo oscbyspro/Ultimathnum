@@ -10,14 +10,16 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Double Int
+// MARK: * Triple Int
 //*============================================================================*
 
-@frozen public struct DoubleInt<Base: SystemsInteger>: SystemsInteger {
+@frozen public struct TripleInt<Base: SystemsInteger>: BitCastable, Comparable, Functional, Hashable {
     
-    public typealias Storage = Doublet<Base>
+    public typealias Storage = Triplet<Base>
     
     public typealias High = Base
+    
+    public typealias Mid  = Base.Magnitude
     
     public typealias Low  = Base.Magnitude
             
@@ -25,9 +27,9 @@ import CoreKit
     
     public typealias Element = Base.Element
     
-    public typealias Magnitude = DoubleInt<Base.Magnitude>
+    public typealias Magnitude = TripleInt<Base.Magnitude>
     
-    public typealias Signitude = DoubleInt<Base.Signitude>
+    public typealias Signitude = TripleInt<Base.Signitude>
     
     public typealias IntegerLiteralType = StaticBigInt
     
@@ -40,7 +42,7 @@ import CoreKit
     }
     
     @inlinable public static var size: Magnitude {
-        Magnitude(Base.size.multiplication(2))
+        Magnitude(low: Base.size.multiplication(3), high: Base.Magnitude())
     }
     
     //=------------------------------------------------------------------------=
@@ -57,20 +59,48 @@ import CoreKit
         self.storage = storage
     }
     
-    @inlinable public init(integerLiteral: BigIntLiteral.IntegerLiteralType) {
-        self = Self.exactly(BigIntLiteral(integerLiteral: integerLiteral)).unwrap()
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(low: consuming Base.Magnitude, mid: consuming Base.Magnitude, high: consuming Base) {
+        self.init(Storage(low: low, mid: mid, high: high))
+    }
+    
+    @inlinable public init(high: consuming Base, mid: consuming Base.Magnitude, low: consuming Base.Magnitude) {
+        self.init(Storage(high: high, mid: mid, low: low))
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(low: consuming Low, high: consuming High = 0) {
-        self.init(Doublet(low: low, high: high))
+    @inlinable public init(low: consuming Base.Magnitude, high: consuming Doublet<Base>) {
+        self.init(Storage(low: low, high: high))
     }
     
-    @inlinable public init(high: consuming High, low: consuming Low = 0) {
-        self.init(Doublet(high: high, low: low))
+    @inlinable public init(low: consuming Doublet<Base.Magnitude>, high: consuming Base) {
+        self.init(Storage(low: low, high: high))
+    }
+    
+    @inlinable public init(high: consuming Doublet<Base>, low: consuming Base.Magnitude) {
+        self.init(Storage(high: high, low: low))
+    }
+    
+    @inlinable public init(high: consuming Base, low: consuming Doublet<Base.Magnitude>) {
+        self.init(Storage(high: high, low: low))
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(bitPattern: consuming BitPattern) {
+        self.init(Storage(bitPattern: bitPattern))
+    }
+    
+    @inlinable public var bitPattern: BitPattern {
+        BitPattern(bitPattern: self.storage)
     }
     
     //=------------------------------------------------------------------------=
@@ -85,6 +115,15 @@ import CoreKit
             self.storage.low = newValue
         }
     }
+        
+    @inlinable public var mid: Mid {
+        get {
+            self.storage.mid
+        }
+        mutating set {
+            self.storage.mid = newValue
+        }
+    }
     
     @inlinable public var high: High {
         get {
@@ -95,50 +134,3 @@ import CoreKit
         }
     }
 }
-
-//=----------------------------------------------------------------------------=
-// MARK: + Un/signed
-//=----------------------------------------------------------------------------=
-
-extension DoubleInt:   SignedInteger where Base:   SignedInteger { }
-extension DoubleInt: UnsignedInteger where Base: UnsignedInteger { }
-
-//=----------------------------------------------------------------------------=
-// MARK: + Aliases
-//=----------------------------------------------------------------------------=
-
-/// A signed, 128-bit, integer.
-public typealias I128  = DoubleInt<I64>
-
-/// An unsigned, 128-bit, integer.
-public typealias U128  = DoubleInt<U64>
-
-/// A signed, 256-bit, integer.
-public typealias I256  = DoubleInt<I128>
-
-/// An unsigned, 256-bit, integer.
-public typealias U256  = DoubleInt<U128>
-
-/// A signed, 512-bit, integer.
-public typealias I512  = DoubleInt<I256>
-
-/// An unsigned, 512-bit, integer.
-public typealias U512  = DoubleInt<U256>
-
-/// A signed, 1024-bit, integer.
-public typealias I1024 = DoubleInt<I512>
-
-/// An unsigned, 1024-bit, integer.
-public typealias U1024 = DoubleInt<U512>
-
-/// A signed, 2048-bit, integer.
-public typealias I2048 = DoubleInt<I1024>
-
-/// An unsigned, 2048-bit, integer.
-public typealias U2048 = DoubleInt<U1024>
-
-/// A signed, 4096-bit, integer.
-public typealias I4096 = DoubleInt<I2048>
-
-/// An unsigned, 4096-bit, integer.
-public typealias U4096 = DoubleInt<U2048>

@@ -12,7 +12,7 @@ import DoubleIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Triplet
+// MARK: * Triple Int
 //*============================================================================*
 
-final class TripletTests: XCTestCase { }
+final class TripleIntTests: XCTestCase { }

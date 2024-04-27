@@ -8,30 +8,26 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import TestKit
 
 //*============================================================================*
-// MARK: * Doublet
+// MARK: * Triple Int x Bit
 //*============================================================================*
 
-final class DoubletTests: XCTestCase {
+extension TripleInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    func testMemoryLayout() {
-        func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = Doublet<Base>
-            
-            Test().same(MemoryLayout<T>.self, MemoryLayout<(Base, Base)>.self)
-            Test().same(MemoryLayout<T>.size, 2 * MemoryLayout<Base>.size)
-            Test().same(MemoryLayout<T>.size, 2 * MemoryLayout<Base>.stride)
-            Test().same(MemoryLayout<T>.size, 2 * MemoryLayout<Base>.alignment)
-        }
-        
-        for base in coreSystemsIntegers {
-            whereTheBaseIs(base)
-        }
+    @inlinable public consuming func complement() -> Self {
+        Self(self.storage.complement())
+    }
+    
+    @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
+        Fallible(bitPattern: self.storage.complement(increment))
+    }
+    
+    @inlinable public consuming func magnitude() -> Magnitude {
+        Magnitude(self.storage.magnitude())
     }
 }

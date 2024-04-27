@@ -16,10 +16,23 @@ import CoreKit
 extension DoubleInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Transformations x 2 by 1
+    //=------------------------------------------------------------------------=
+        
+    @inlinable public consuming func minus(_ decrement: Base) -> Fallible<Self> {
+        let appendix = High.init(repeating: decrement.appendix)
+        let low  = self.low .minus(Low(bitPattern: decrement))
+        let high = self.high.minus(appendix, plus: low.error)
+        return Self(low: low.value, high: high.value).combine(high.error)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x 2 by 2
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func minus(_ decrement: borrowing Self) -> Fallible<Self> {
-        Fallible(bitPattern: self.storage.minus(decrement.storage))
+        let low  = self.storage.low .minus(decrement.storage.low)
+        let high = self.storage.high.minus(decrement.storage.high, plus: low.error)
+        return Self(low: low.value, high: high.value).combine(high.error)
     }
 }
