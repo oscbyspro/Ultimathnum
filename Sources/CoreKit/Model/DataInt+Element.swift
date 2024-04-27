@@ -39,6 +39,14 @@ extension SomeDataIntBody {
     @inlinable public var indices: Range<IX> {
         Range(uncheckedBounds:(0, self.count))
     }
+    
+    @inlinable public subscript(optional index: IX) -> Optional<Element> {
+        if  UX(bitPattern: index) < UX(bitPattern: self.count) {
+            return self[unchecked: index]
+        }   else {
+            return nil
+        }
+    }
 }
 
 //*============================================================================*
