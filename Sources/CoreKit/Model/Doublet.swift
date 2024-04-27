@@ -18,7 +18,9 @@
     
     public typealias Low  = Base.Magnitude
     
-    public typealias Magnitude = Doublet<Base.Magnitude>
+    public typealias BitPattern = Doublet<Base.Magnitude>
+    
+    public typealias Magnitude  = Doublet<Base.Magnitude>
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -44,5 +46,25 @@
     @inlinable public init(high: consuming Base, low: consuming Base.Magnitude) {
         self.high = high
         self.low  = low
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(bitPattern: consuming BitPattern) {
+        self.init(
+            low:  bitPattern.low,
+            high: Base(bitPattern: bitPattern.high)
+        )
+    }
+    
+    @inlinable public var bitPattern: BitPattern {
+        consuming get {
+            BitPattern(
+                low:  self.low,
+                high: Base.Magnitude(bitPattern: self.high)
+            )
+        }
     }
 }

@@ -14,26 +14,6 @@
 extension Doublet {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(bitPattern: consuming Doublet<Base.Magnitude>) {
-        self.init(
-            low:  bitPattern.low,
-            high: Base(bitPattern: bitPattern.high)
-        )
-    }
-    
-    @inlinable public var bitPattern: Doublet<Base.Magnitude> {
-        consuming get {
-            Doublet<Base.Magnitude>(
-                low:  self.low,
-                high: Base.Magnitude(bitPattern: self.high)
-            )
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     

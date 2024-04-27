@@ -20,7 +20,9 @@
     
     public typealias Low  = Base.Magnitude
     
-    public typealias Magnitude = Triplet<Base.Magnitude>
+    public typealias BitPattern = Triplet<Base.Magnitude>
+    
+    public typealias Magnitude  = Triplet<Base.Magnitude>
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -78,5 +80,27 @@
         self.low  = low.low
         self.mid  = low.high
         self.high = high
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(bitPattern: consuming BitPattern) {
+        self.init(
+            low:  bitPattern.low,
+            mid:  bitPattern.mid,
+            high: Base(bitPattern: bitPattern.high)
+        )
+    }
+    
+    @inlinable public var bitPattern: BitPattern {
+        consuming get {
+            BitPattern(
+                low:  self.low,
+                mid:  self.mid,
+                high: Base.Magnitude(bitPattern: self.high)
+            )
+        }
     }
 }
