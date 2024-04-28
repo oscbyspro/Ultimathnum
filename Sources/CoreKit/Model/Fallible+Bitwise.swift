@@ -8,24 +8,20 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Bit x Logic
+// MARK: * Fallible x Bitwise
 //*============================================================================*
 
-extension Bit {
+extension Fallible: BitCastable where Value: BitCastable {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public func compared(to other: Self) -> Signum {
-        self == other ? 0 : self == 0 ? -1 : 1
+    @inlinable public init(raw source: consuming Fallible<Value.BitPattern>) {
+        self.init(Value(raw: source.value), error: source.error)
     }
     
-    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.base == rhs.base
-    }
-    
-    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        (lhs.base, rhs.base) == (false, true)
+    @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
+        Fallible<Value.BitPattern>(Value.BitPattern(raw: self.value), error: self.error)
     }
 }

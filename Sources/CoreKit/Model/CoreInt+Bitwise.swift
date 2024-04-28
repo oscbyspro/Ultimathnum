@@ -8,7 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Core Int x Bit
+// MARK: * Core Int x Bitwise
 //*============================================================================*
 
 extension CoreInt {
@@ -16,7 +16,27 @@ extension CoreInt {
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
-
+    
+    @inlinable public static prefix func ~(instance: consuming Self) -> Self {
+        Self(~instance.base)
+    }
+    
+    @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        Self(lhs.base & rhs.base)
+    }
+    
+    @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        Self(lhs.base | rhs.base)
+    }
+    
+    @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        Self(lhs.base ^ rhs.base)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
     @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
         (~self).incremented(increment)
     }

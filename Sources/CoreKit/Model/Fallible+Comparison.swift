@@ -8,28 +8,18 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Core Int x Logic
+// MARK: * Fallible x Comparison
 //*============================================================================*
 
-extension CoreInt {
+extension Fallible: Equatable where Value: Equatable { 
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Logic
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static prefix func ~(instance: consuming Self) -> Self {
-        Self(~instance.base)
-    }
-    
-    @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(lhs.base & rhs.base)
-    }
-    
-    @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(lhs.base | rhs.base)
-    }
-    
-    @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(lhs.base ^ rhs.base)
+    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        let value = lhs.value == rhs.value
+        let error = lhs.error == rhs.error
+        return Bool(Bit(value) & Bit(error))
     }
 }

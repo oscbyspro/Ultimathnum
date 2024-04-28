@@ -10,10 +10,30 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Double Int x Bit
+// MARK: * Double Int x Bitwise
 //*============================================================================*
 
 extension DoubleInt {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static prefix func ~(instance: consuming Self) -> Self {
+        Self(low: ~instance.storage.low, high: ~instance.storage.high)
+    }
+    
+    @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        Self(low: lhs.storage.low & rhs.storage.low, high: lhs.storage.high & rhs.storage.high)
+    }
+    
+    @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        Self(low: lhs.storage.low | rhs.storage.low, high: lhs.storage.high | rhs.storage.high)
+    }
+    
+    @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        Self(low: lhs.storage.low ^ rhs.storage.low, high: lhs.storage.high ^ rhs.storage.high)
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

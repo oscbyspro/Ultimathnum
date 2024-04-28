@@ -8,28 +8,24 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Bit x Comparison
+// MARK: * Bit x Logic
 //*============================================================================*
 
 extension Bit {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static prefix func ~(instance: Self) -> Self {
-        Self(raw: !instance.base)
+    @inlinable public func compared(to other: Self) -> Signum {
+        self == other ? 0 : self == 0 ? -1 : 1
     }
     
-    @inlinable public static func &(lhs: Self, rhs: Self) -> Self {
-        Self(raw: lhs.base == rhs.base ? lhs.base : false)
+    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        lhs.base == rhs.base
     }
     
-    @inlinable public static func |(lhs: Self, rhs: Self) -> Self {
-        Self(raw: lhs.base == rhs.base ? lhs.base : true )
-    }
-    
-    @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
-        Self(raw: lhs.base != rhs.base)
+    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        (lhs.base, rhs.base) == (false, true)
     }
 }

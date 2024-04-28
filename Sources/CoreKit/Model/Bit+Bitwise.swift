@@ -8,26 +8,28 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Doublet x Bit
+// MARK: * Bit x Bitwise
 //*============================================================================*
 
-extension Doublet {
+extension Bit {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func complement() -> Self {
-        self.complement(true).value
+    @inlinable public static prefix func ~(instance: Self) -> Self {
+        Self(raw: !instance.base)
     }
     
-    @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
-        increment = self.low [{ $0.complement(increment) }]
-        increment = self.high[{ $0.complement(increment) }]
-        return self.combine(increment)
+    @inlinable public static func &(lhs: Self, rhs: Self) -> Self {
+        Self(raw: lhs.base == rhs.base ? lhs.base : false)
     }
     
-    @inlinable public consuming func magnitude() -> Magnitude {
-        Magnitude(raw: self.high.isNegative ? self.complement() : self)
+    @inlinable public static func |(lhs: Self, rhs: Self) -> Self {
+        Self(raw: lhs.base == rhs.base ? lhs.base : true )
+    }
+    
+    @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
+        Self(raw: lhs.base != rhs.base)
     }
 }

@@ -8,20 +8,27 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Fallible x Bit
+// MARK: * Triplet x Bit
 //*============================================================================*
 
-extension Fallible: BitCastable where Value: BitCastable {
+extension Triplet {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(raw source: consuming Fallible<Value.BitPattern>) {
-        self.init(Value(raw: source.value), error: source.error)
+    @inlinable public consuming func complement() -> Self {
+        self.complement(true).value
     }
     
-    @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
-        Fallible<Value.BitPattern>(Value.BitPattern(raw: self.value), error: self.error)
+    @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
+        increment = self.low [{ $0.complement(increment) }]
+        increment = self.mid [{ $0.complement(increment) }]
+        increment = self.high[{ $0.complement(increment) }]
+        return self.combine(increment) as Fallible<Self>
+    }
+    
+    @inlinable public consuming func magnitude() -> Magnitude {
+        Magnitude(raw: self.high.isNegative ? self.complement() : self)
     }
 }

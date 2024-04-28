@@ -8,28 +8,26 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Sign x Logic
+// MARK: * Doublet x Bit
 //*============================================================================*
 
-extension Sign {
+extension Doublet {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static prefix func ~(instance: Self) -> Self {
-        instance ^ minus
+    @inlinable public consuming func complement() -> Self {
+        self.complement(true).value
     }
     
-    @inlinable public static func &(lhs: Self, rhs: Self) -> Self {
-        lhs == rhs ? lhs : plus
+    @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
+        increment = self.low [{ $0.complement(increment) }]
+        increment = self.high[{ $0.complement(increment) }]
+        return self.combine(increment) as Fallible<Self>
     }
     
-    @inlinable public static func |(lhs: Self, rhs: Self) -> Self {
-        lhs == plus ? rhs : lhs
-    }
-    
-    @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
-        lhs == rhs ? plus : minus
+    @inlinable public consuming func magnitude() -> Magnitude {
+        Magnitude(raw: self.high.isNegative ? self.complement() : self)
     }
 }
