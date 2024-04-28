@@ -21,7 +21,7 @@ public protocol BitCastable<BitPattern> {
     
     @inlinable init(raw: consuming BitPattern)
     
-    @inlinable var bitPattern: BitPattern { consuming get }
+    @inlinable consuming func load(as type: BitPattern.Type) -> BitPattern
 }
 
 //=----------------------------------------------------------------------------=
@@ -38,7 +38,7 @@ extension BitCastable where BitPattern == Self {
         self = source
     }
     
-    @inlinable public var bitPattern: BitPattern {
-        consuming get { self }
+    @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
+        self
     }
 }

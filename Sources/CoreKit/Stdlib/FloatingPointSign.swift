@@ -25,7 +25,7 @@ extension FloatingPointSign: BitCastable {
         self = source ? Self.minus : Self.plus
     }
     
-    @inlinable public var bitPattern: Bool {
+    @inlinable public consuming func load(as type: Bool.Type) -> Bool {
         self == Self.minus
     }
 }

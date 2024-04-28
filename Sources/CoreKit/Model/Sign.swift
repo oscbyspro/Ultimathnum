@@ -44,7 +44,7 @@
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public var bitPattern: Bool {
+    @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
         self == Self.minus
     }
     

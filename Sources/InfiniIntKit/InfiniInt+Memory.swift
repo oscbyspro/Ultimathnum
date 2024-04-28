@@ -19,14 +19,12 @@ extension InfiniInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(raw source: consuming Magnitude) {
+    @inlinable public init(raw source: consuming BitPattern) {
         self.init(unchecked: source.storage)
     }
     
-    @inlinable public var bitPattern: Magnitude {
-        consuming get {
-            Magnitude(unchecked: self.storage)
-        }
+    @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
+        Magnitude(unchecked: self.storage)
     }
     
     //=------------------------------------------------------------------------=
@@ -43,7 +41,7 @@ extension InfiniInt {
     
     @inlinable public borrowing func load(as type: UX.BitPattern.Type) -> UX.BitPattern {
         self.withUnsafeBinaryIntegerElementsAsBytes {
-            LoadInt($0, as: UX.self)[UX.zero].bitPattern
+            LoadInt($0, as: UX.self)[UX.zero].load(as: UX.BitPattern.self)
         }
     }
     
@@ -65,9 +63,9 @@ extension InfiniInt {
     
     @inlinable public borrowing func load(as type: Element.BitPattern.Type) -> Element.BitPattern {
         if  let element = self.storage.body.first {
-            return element.bitPattern
+            return element.load(as: Element.BitPattern.self)
         }   else {
-            return Element(repeating: self.appendix).bitPattern
+            return Element(repeating: self.appendix).load(as: Element.BitPattern.self)
         }
     }
     

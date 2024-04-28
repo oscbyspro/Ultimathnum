@@ -21,9 +21,7 @@ extension Fallible: BitCastable where Value: BitCastable {
         self.init(Value(raw: source.value), error: source.error)
     }
     
-    @inlinable public var bitPattern: Fallible<Value.BitPattern> {
-        consuming get {
-            Fallible<Value.BitPattern>(Value.BitPattern(raw: self.value), error: self.error)
-        }
+    @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
+        Fallible<Value.BitPattern>(Value.BitPattern(raw: self.value), error: self.error)
     }
 }

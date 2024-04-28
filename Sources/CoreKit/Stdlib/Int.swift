@@ -19,12 +19,12 @@ extension Int: CoreInteger {
         Signed()
     }
     
-    @inlinable public init(raw source: Magnitude) {
-        self.init(bitPattern:  source)
+    @inlinable public init(raw source: consuming Magnitude) {
+        self.init(bitPattern: source)
     }
     
-    @inlinable public var bitPattern: Magnitude {
-        Magnitude(bitPattern:  self)
+    @inlinable public consuming func load(as type: Magnitude.Type) -> Magnitude {
+        Magnitude(bitPattern: self)
     }
 }
 
@@ -36,12 +36,12 @@ extension Int8: CoreInteger {
         Signed()
     }
     
-    @inlinable public init(raw source: Magnitude) {
-        self.init(bitPattern:  source)
+    @inlinable public init(raw source: consuming Magnitude) {
+        self.init(bitPattern: source)
     }
     
-    @inlinable public var bitPattern: Magnitude {
-        Magnitude(bitPattern:  self)
+    @inlinable public consuming func load(as type: Magnitude.Type) -> Magnitude {
+        Magnitude(bitPattern: self)
     }
 }
 
@@ -53,12 +53,12 @@ extension Int16: CoreInteger {
         Signed()
     }
     
-    @inlinable public init(raw source: Magnitude) {
-        self.init(bitPattern:  source)
+    @inlinable public init(raw source: consuming Magnitude) {
+        self.init(bitPattern: source)
     }
     
-    @inlinable public var bitPattern: Magnitude {
-        Magnitude(bitPattern:  self)
+    @inlinable public consuming func load(as type: Magnitude.Type) -> Magnitude {
+        Magnitude(bitPattern: self)
     }
 }
 
@@ -70,12 +70,12 @@ extension Int32: CoreInteger {
         Signed()
     }
     
-    @inlinable public init(raw source: Magnitude) {
-        self.init(bitPattern:  source)
+    @inlinable public init(raw source: consuming Magnitude) {
+        self.init(bitPattern: source)
     }
     
-    @inlinable public var bitPattern: Magnitude {
-        Magnitude(bitPattern:  self)
+    @inlinable public consuming func load(as type: Magnitude.Type) -> Magnitude {
+        Magnitude(bitPattern: self)
     }
 }
 
@@ -87,11 +87,11 @@ extension Int64: CoreInteger {
         Signed()
     }
     
-    @inlinable public init(raw source: Magnitude) {
-        self.init(bitPattern:  source)
+    @inlinable public init(raw source: consuming Magnitude) {
+        self.init(bitPattern: source)
     }
     
-    @inlinable public var bitPattern: Magnitude {
-        Magnitude(bitPattern:  self)
+    @inlinable public consuming func load(as type: Magnitude.Type) -> Magnitude {
+        Magnitude(bitPattern: self)
     }
 }

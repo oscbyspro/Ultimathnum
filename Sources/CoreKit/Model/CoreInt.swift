@@ -17,10 +17,12 @@
     
     public typealias Element = Self
     
+    public typealias BitPattern = Base.BitPattern
+    
     public typealias Magnitude = CoreInt<Base.Magnitude>
     
     public typealias Signitude = CoreInt<Base.Signitude>
-        
+    
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=

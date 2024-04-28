@@ -13,6 +13,8 @@
 
 @frozen public struct Bit: BitCastable, BitOperable, Comparable, Hashable, ExpressibleByIntegerLiteral {
     
+    public typealias BitPattern = Bool
+    
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
@@ -34,7 +36,7 @@
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    public let bitPattern: Bool
+    @usableFromInline let base: Bool
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -52,10 +54,6 @@
         self.init(raw: source)
     }
     
-    @inlinable public init(raw source: Bool) {
-        self.bitPattern = source
-    }
-    
     @inlinable public init(integerLiteral: Swift.Int.IntegerLiteralType) {
         if  integerLiteral == 0 {
             self.init(false)
@@ -64,5 +62,17 @@
         }   else {
             preconditionFailure(String.overflow())
         }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(raw source: BitPattern) {
+        self.base = source
+    }
+    
+    @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
+        self.base
     }
 }

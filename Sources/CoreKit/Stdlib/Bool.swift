@@ -20,10 +20,10 @@ extension Bool: BitCastable {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(_ source: consuming Bit) {
-        self = source.bitPattern
+        self = source.load(as: Self.self)
     }
     
     @inlinable public init(_ source: consuming Sign) {
-        self = source.bitPattern
+        self = source.load(as: Self.self)
     }
 }

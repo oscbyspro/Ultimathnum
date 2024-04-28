@@ -26,12 +26,10 @@ extension Division: BitCastable where Quotient: BitCastable, Remainder: BitCasta
         )
     }
     
-    @inlinable public var bitPattern: BitPattern {
-        consuming get {
-            BitPattern(
-                quotient:  Quotient .BitPattern(raw: self.quotient ),
-                remainder: Remainder.BitPattern(raw: self.remainder)
-            )
-        }
+    @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
+        BitPattern(
+            quotient:  Quotient .BitPattern(raw: self.quotient ),
+            remainder: Remainder.BitPattern(raw: self.remainder)
+        )
     }
 }

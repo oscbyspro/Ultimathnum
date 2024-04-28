@@ -18,18 +18,18 @@ extension Bit {
     //=------------------------------------------------------------------------=
     
     @inlinable public static prefix func ~(instance: Self) -> Self {
-        Self(raw: !instance.bitPattern)
+        Self(raw: !instance.base)
     }
     
     @inlinable public static func &(lhs: Self, rhs: Self) -> Self {
-        Self(raw: lhs.bitPattern == rhs.bitPattern ? lhs.bitPattern : false)
+        Self(raw: lhs.base == rhs.base ? lhs.base : false)
     }
     
     @inlinable public static func |(lhs: Self, rhs: Self) -> Self {
-        Self(raw: lhs.bitPattern == rhs.bitPattern ? lhs.bitPattern : true )
+        Self(raw: lhs.base == rhs.base ? lhs.base : true )
     }
     
     @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
-        Self(raw: lhs.bitPattern != rhs.bitPattern)
+        Self(raw: lhs.base != rhs.base)
     }
 }

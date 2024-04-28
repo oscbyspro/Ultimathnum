@@ -99,8 +99,8 @@ import CoreKit
         self.init(Storage(raw: source))
     }
     
-    @inlinable public var bitPattern: BitPattern {
-        BitPattern(raw: self.storage)
+    @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
+        self.storage.load(as: BitPattern.self)
     }
     
     //=------------------------------------------------------------------------=

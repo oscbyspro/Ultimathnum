@@ -22,10 +22,10 @@ extension Bit {
     }
     
     @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.bitPattern == rhs.bitPattern
+        lhs.base == rhs.base
     }
     
     @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        (lhs.bitPattern, rhs.bitPattern) == (false, true)
+        (lhs.base, rhs.base) == (false, true)
     }
 }

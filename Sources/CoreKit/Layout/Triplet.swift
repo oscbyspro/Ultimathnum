@@ -94,13 +94,11 @@
         )
     }
     
-    @inlinable public var bitPattern: BitPattern {
-        consuming get {
-            BitPattern(
-                low:  self.low,
-                mid:  self.mid,
-                high: Base.Magnitude(raw: self.high)
-            )
-        }
+    @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
+        BitPattern(
+            low:  self.low,
+            mid:  self.mid,
+            high: Base.Magnitude(raw: self.high)
+        )
     }
 }
