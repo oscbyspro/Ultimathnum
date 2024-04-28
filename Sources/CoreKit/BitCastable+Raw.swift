@@ -17,6 +17,7 @@ extension BitCastable {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    @inline(__always) //  performance: please fold it like a paper airplane
     @inlinable public init(raw source: consuming some BitCastable<BitPattern>) {
         self.init(raw: source.bitPattern)
     }
