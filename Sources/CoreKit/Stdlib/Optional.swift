@@ -8,37 +8,33 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Bit Castable
+// MARK: * Optional
 //*============================================================================*
-
-public protocol BitCastable<BitPattern> {
-    
-    associatedtype BitPattern: BitCastable<BitPattern> & Sendable
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable init(raw source: consuming BitPattern)
-    
-    @inlinable consuming func load(as type: BitPattern.Type) -> BitPattern
-}
-
 //=----------------------------------------------------------------------------=
-// MARK: + where Bit Pattern is Self
+// MARK: + Bit Cast
 //=----------------------------------------------------------------------------=
 
-extension BitCastable where BitPattern == Self {
+extension Optional: BitCastable where Wrapped: BitCastable {
+    
+    public typealias BitPattern = Optional<Wrapped.BitPattern>
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
     @inlinable public init(raw source: consuming BitPattern) {
-        self = source
+        if  let source {
+            self.init(Wrapped(raw: source))
+        }   else {
+            self = nil
+        }
     }
     
-    @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
-        self
+    @inlinable public func load(as type: BitPattern.Type) -> BitPattern {
+        if  let self {
+            return self.load(as: Wrapped.BitPattern.self)
+        }   else {
+            return nil
+        }
     }
 }
