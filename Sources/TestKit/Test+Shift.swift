@@ -79,13 +79,13 @@ extension Test {
         case (.left, .smart):
             
             brr: do {
-                same({         instance    <<  distance           }(), expectation)
-                same({ var x = instance; x <<= distance; return x }(), expectation)
+                same({         instance    <<  distance           }(), expectation, "<<")
+                same({ var x = instance; x <<= distance; return x }(), expectation, "<<=")
             }
             
             if  let distance = distance.negated().optional() {
-                same({         instance    >>  distance           }(), expectation)
-                same({ var x = instance; x >>= distance; return x }(), expectation)
+                same({         instance    >>  distance           }(), expectation, ">>")
+                same({ var x = instance; x >>= distance; return x }(), expectation, ">>=")
             }
             
             if  Shift.predicate(distance) {
@@ -95,13 +95,13 @@ extension Test {
         case (.right, .smart):
             
             brr: do {
-                same({         instance    >>  distance           }(), expectation)
-                same({ var x = instance; x >>= distance; return x }(), expectation)
+                same({         instance    >>  distance           }(), expectation, ">>")
+                same({ var x = instance; x >>= distance; return x }(), expectation, ">>=")
             }
             
             if  let distance = distance.negated().optional() {
-                same({         instance    <<  distance           }(), expectation)
-                same({ var x = instance; x <<= distance; return x }(), expectation)
+                same({         instance    <<  distance           }(), expectation, "<<")
+                same({ var x = instance; x <<= distance; return x }(), expectation, "<<=")
             }
             
             if  Shift.predicate(distance) {
@@ -110,13 +110,13 @@ extension Test {
             
         case (.left, .masked):
             guard let distance = some(Shift(distance)) else { return }
-            same({         instance    &<<  distance           }(), expectation)
-            same({ var x = instance; x &<<= distance; return x }(), expectation)
+            same({         instance    &<<  distance           }(), expectation, "&<<")
+            same({ var x = instance; x &<<= distance; return x }(), expectation, "&<<=")
             
         case (.right, .masked):
             guard let distance = some(Shift(distance)) else { return }
-            same({         instance    &>>  distance           }(), expectation)
-            same({ var x = instance; x &>>= distance; return x }(), expectation)
+            same({         instance    &>>  distance           }(), expectation, "&>>")
+            same({ var x = instance; x &>>= distance; return x }(), expectation, "&>>=")
         }
     }
 }

@@ -71,7 +71,7 @@ extension DoubleInt {
         if  distance.value.low.load(as: UX.self) >= UX(size: Base.self) {
             let distance  = Shift(unchecked: Base(raw: distance.value.low.minus(Base.size).assert()))
             instance.low  = Base.Magnitude(raw: instance.high &>> distance)
-            instance.high = Base(repeating: Bit(instance.isNegative))
+            instance.high = Base(repeating: Bit(instance.high.isNegative ))
         }   else {
             instance.storage = Base.downshift(instance.storage, by: Shift(unchecked: Base(raw: distance.value.low)))
         }
@@ -94,7 +94,7 @@ extension DoubleInt {
         if  distance >= Self.size {
             return Self(repeating: Bit.zero)
         }   else {
-            return instance &<< Self(raw: distance)
+            return instance &<< Shift(unchecked: Self(raw: distance))
         }
     }
     
@@ -102,7 +102,7 @@ extension DoubleInt {
         if  distance >= Self.size {
             return Self(repeating: instance.appendix)
         }   else {
-            return instance &>> Self(raw: distance)
+            return instance &>> Shift(unchecked: Self(raw: distance))
         }
     }
 }

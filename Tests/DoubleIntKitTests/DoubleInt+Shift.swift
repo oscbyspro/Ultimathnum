@@ -53,8 +53,13 @@ extension DoubleIntTests {
             }
             
             for semantics: Test.ShiftSemantics in [.smart, .masked] {
-                Test().shift(T(low: 0, high: Base.msb), mid - 1 as T, T(low: T.isSigned ?  0 : 0, high: T.isSigned ? ~0 : 1), .right, semantics)
-                Test().shift(T(low: 0, high: Base.msb), top - 1 as T, T(low: T.isSigned ? ~0 : 1, high: T.isSigned ? ~0 : 0), .right, semantics)
+                if  T.isSigned {
+                    Test().shift(T(low: 0, high: Base.msb), mid - 1 as T, T(low:  0, high: ~0), .right, semantics)
+                    Test().shift(T(low: 0, high: Base.msb), top - 1 as T, T(low: ~0, high: ~0), .right, semantics)
+                }   else {
+                    Test().shift(T(low: 0, high: Base.msb), mid - 1 as T, T(low:  0, high:  1), .right, semantics)
+                    Test().shift(T(low: 0, high: Base.msb), top - 1 as T, T(low:  1, high:  0), .right, semantics)
+                }
             }
         }
         

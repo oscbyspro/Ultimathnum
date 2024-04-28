@@ -106,43 +106,12 @@ extension DoubleIntTests {
     }
     
     func testInitBody() {
-        func whereIsSigned<T, U>(_ type: T.Type, _ mode: U) where T: SystemsInteger, U: Signedness {
-            typealias M = T.Magnitude
-            typealias F = Fallible<T>
-            
-            let count = MemoryLayout<T>.size / MemoryLayout<T.Element>.stride
-            
-            Test().elements(( T.min).body(), mode, F( T.min, error: !mode.isSigned))
-            Test().elements(( T.max).body(), mode, F( T.max))
-            
-            Test().elements(( M.min).body(), mode, F( T( 0)))
-            Test().elements(( M.max).body(), mode, F( T(-1), error: !mode.isSigned))
-            Test().elements(( M.msb).body(), mode, F( T.min, error: !mode.isSigned))
-            Test().elements((~M.msb).body(), mode, F(~T.msb))
-            
-            Test().elements(Array(repeating:  0 as T.Element.Magnitude, count: 1 + count), mode, F( 0 as T))
-            Test().elements(Array(repeating: ~0 as T.Element.Magnitude, count: 1 + count), mode, F(~0 as T, error: !mode.isSigned))
-        }
-        
-        func whereIsUnsigned<T, U>(_ type: T.Type, _ mode: U) where T: SystemsInteger, U: Signedness {
-            typealias M = T.Magnitude
-            typealias F = Fallible<T>
-            
-            let count = MemoryLayout<T>.size / MemoryLayout<T.Element>.stride
-            
-            Test().elements(( M.min).body(), mode, F( T( 0)))
-            Test().elements(( M.max).body(), mode, F( T.max, error: mode.isSigned))
-            Test().elements(( M.msb).body(), mode, F( T.msb, error: mode.isSigned))
-            Test().elements((~M.msb).body(), mode, F(~T.msb))
-            
-            Test().elements(Array(repeating:  0 as T.Element.Magnitude, count: 1 + count), mode, F( 0 as T))
-            Test().elements(Array(repeating: ~0 as T.Element.Magnitude, count: 1 + count), mode, F(~0 as T, error: true))
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            Test().commonInitBody(T.self, id: SystemsIntegerID())
         }
         
         for type in Self.types {
-            for mode: any Signedness in [Signed(), Unsigned()] {
-                type.isSigned ? whereIsSigned(type, mode) : whereIsUnsigned(type, mode)
-            }
+            whereIs(type)
         }
     }
     

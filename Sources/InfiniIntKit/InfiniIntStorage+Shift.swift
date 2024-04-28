@@ -19,18 +19,24 @@ extension InfiniIntStorage {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    #warning("TODO: Handle the full-shift-esque case.")
     @inlinable internal mutating func resizeByLenientUpshift(major: IX, minor: IX) {
         //=--------------------------------------=
         Swift.assert(major >= 00000000000)
         Swift.assert(UX(raw: minor) < UX(size: Element.self))
         //=--------------------------------------=
         let test = Bit.Selection.Integer.descending(self.appendix)
-        let last   = self.body.last ?? Element(repeating: Bit.zero)
+        let last   = self.body.last ?? Element(repeating: .zero)
         let target = self.count + major + IX(Bit(IX(load: last.count(test)) < minor))
         //=--------------------------------------=
+        if  major != .zero {
+            let zeros = repeatElement(Element.zero, count: Int(major))
+            self.body.insert(contentsOf: zeros , at: Int.zero)
+        }
+        
         self.resize(minCount: target)
         self.withUnsafeMutableBinaryIntegerBody {
-            $0.upshift(environment: Element(), major: major, minor: minor)
+            $0.upshift(environment: Element(), major: .zero, minor: minor)
         }
     }
     

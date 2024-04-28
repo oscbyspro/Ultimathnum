@@ -33,7 +33,7 @@ extension SystemsInteger {
         //=--------------------------------------=
         if  distance.value != .zero {
             instance.high  &<<= distance
-            instance.high    |= Self(raw: instance.low) &>> distance.nondistance()
+            instance.high    |= Self(raw: instance.low &>> Shift<Magnitude>(raw: distance).nondistance())
             instance.low   &<<= Shift(unchecked: Magnitude(raw:  distance.value))
         }
         //=--------------------------------------=

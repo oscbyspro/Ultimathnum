@@ -127,7 +127,8 @@ extension TextIntTests.Case {
                 body = body.complement(I.isSigned).value
             }
             
-            self.encode(sign, mask, body.body(), expectation)
+            let array = body.withUnsafeBinaryIntegerBody({ Array($0.buffer()) })
+            self.encode(sign, mask, array, expectation)
         }
     }
     

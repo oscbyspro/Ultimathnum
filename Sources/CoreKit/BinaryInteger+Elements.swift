@@ -35,7 +35,18 @@ extension BinaryInteger {
         }
         //=--------------------------------------=
         return instance.combine(!Bool(success))
+    }    
+    
+    @inlinable public static func exactly<OtherElement>(
+        _ source: LoadInt<OtherElement>, mode: some Signedness
+    )   -> Fallible<Self> {
+        
+        Self.exactly(LoadInt<Element.Magnitude>(source.base), mode: mode)
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
     
     @inlinable public static func exactly(
         _ source: DataInt<Element.Magnitude>, mode: some Signedness
@@ -207,42 +218,6 @@ extension BinaryInteger {
     )   rethrows -> Value {
         
         try self.withUnsafeMutableBinaryIntegerElements(as: U8.self, perform: action)!
-    }
-    
-    #warning("TODO")
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    /// ### Development
-    ///
-    /// This is an Unsafe Pyramid of Doom convenience method.
-    ///
-    /// ``` swift
-    /// IX(123).elements.body()       // when view types exist
-    /// IX(123).elements.prefix(1234) // when view types exist
-    /// IX(123).elements.normalized() // when view types exist
-    /// ```
-    ///
-    @inlinable public func body() -> [Element.Magnitude] {
-        self.body(as: [Element.Magnitude].self)
-    }
-    
-    /// ### Development
-    ///
-    /// This is an Unsafe Pyramid of Doom convenience method.
-    ///
-    /// ``` swift
-    /// IX(123).elements.body()       // when view types exist
-    /// IX(123).elements.prefix(1234) // when view types exist
-    /// IX(123).elements.normalized() // when view types exist
-    /// ```
-    ///
-    @inlinable public func body<T>(as type: T.Type = T.self) -> T where
-    T: RangeReplaceableCollection, T.Element: SystemsInteger & UnsignedInteger {
-        self.withUnsafeBinaryIntegerElementsAsBytes {
-            T(LoadInt($0).body())
-        }
     }
     
     //=------------------------------------------------------------------------=
