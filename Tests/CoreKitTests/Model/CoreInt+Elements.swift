@@ -32,20 +32,7 @@ extension CoreIntTests {
     
     func testMakeBody() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            Test().elements(~1 as T, [~1 as T.Element.Magnitude])
-            Test().elements(~0 as T, [~0 as T.Element.Magnitude])
-            Test().elements( 0 as T, [ 0 as T.Element.Magnitude])
-            Test().elements( 1 as T, [ 1 as T.Element.Magnitude])
-            
-            Test().elements(~1 as T, [U8(load: ~1 as T)] + Array(repeating: ~0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<U8>.size))
-            Test().elements(~0 as T, [U8(load: ~0 as T)] + Array(repeating: ~0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<U8>.size))
-            Test().elements( 0 as T, [U8(load:  0 as T)] + Array(repeating:  0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<U8>.size))
-            Test().elements( 1 as T, [U8(load:  1 as T)] + Array(repeating:  0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<U8>.size))
-            
-            Test().elements(~1 as T, [UX(load: ~1 as T)] + Array(repeating: ~0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<UX>.size))
-            Test().elements(~0 as T, [UX(load: ~0 as T)] + Array(repeating: ~0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<UX>.size))
-            Test().elements( 0 as T, [UX(load:  0 as T)] + Array(repeating:  0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<UX>.size))
-            Test().elements( 1 as T, [UX(load:  1 as T)] + Array(repeating:  0, count: (MemoryLayout<T>.size - 1) / MemoryLayout<UX>.size))
+            Test().commonMakeBody(T.self, id: SystemsIntegerID())
         }
 
         for type in coreSystemsIntegers {

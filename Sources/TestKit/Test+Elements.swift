@@ -39,19 +39,22 @@ extension Test {
         same(Integer(load: element).load(as: Element.self), element)
     }
     
-    public func elements<Integer, Element>(
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    public func elements<Integer>(
         _ integer: Integer,
-        _ expectation: [Element]
-    )   where Integer: BinaryInteger, Element: SystemsInteger & UnsignedInteger {
+        _ body: [Integer.Element.Magnitude],
+        _ appendix: Bit
+    )   where Integer: BinaryInteger {
+        //=--------------------------------------=
+        let expectation = Fallible(integer)
         //=--------------------------------------=
         integer.withUnsafeBinaryIntegerElements {
-            let body = Array($0.body.buffer())
-            let elements = $0.withMemoryRebound(to: U8.self) {
-                [Element](LoadInt($0).body())
-            }
-            
-            self.pure(elements.elementsEqual(expectation), "\(Array(body)).body -> \(elements)")
-            self.exactly(elements, Integer.mode, Fallible(integer))
+            same(Array($0.body.buffer()), body, "body")
+            same(appendix, $0.appendix, "appendix")
+            same(Integer.exactly($0, mode: Integer.mode), expectation, "rountrip")
         }
     }
     
@@ -212,5 +215,20 @@ extension Test {
         check(Array(repeating:  1, count: count), mode: .unsigned, error: !T.size.isInfinite)
         check(Array(repeating: ~1, count: count), mode: .unsigned, error: !T.size.isInfinite)
         check(Array(repeating: ~0, count: count), mode: .unsigned, error: !T.size.isInfinite)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    public func commonMakeBody<T>(_ type: T.Type, id: SystemsIntegerID) where T: SystemsInteger {
+        typealias E = T.Element.Magnitude
+        //=--------------------------------------=
+        let count = IX(size: T.self) / IX(size: E.self)
+        //=--------------------------------------=
+        self.elements(~1 as T, [E(load: ~1 as T)] + [E](repeating: ~0, count: Int(count - 1)), Bit(T.isSigned))
+        self.elements(~0 as T, [E(load: ~0 as T)] + [E](repeating: ~0, count: Int(count - 1)), Bit(T.isSigned))
+        self.elements( 0 as T, [E(load:  0 as T)] + [E](repeating:  0, count: Int(count - 1)), Bit.zero)
+        self.elements( 1 as T, [E(load:  1 as T)] + [E](repeating:  0, count: Int(count - 1)), Bit.zero)
     }
 }
