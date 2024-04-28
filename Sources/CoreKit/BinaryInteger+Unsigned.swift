@@ -15,8 +15,8 @@
 ///
 /// ### Await: Generalized Opaque and Existential Type Constraints
 ///
-/// This protocol is really just a named associated type constraint. So it might
-/// be possible to replace with the following, at some point:
+/// This protocol is basically just a named type constraint. So it
+/// might be possible to replace with the following, at some point:
 ///
 /// ```swift
 /// any  BinaryInteger<.Magnitude == .Self>
