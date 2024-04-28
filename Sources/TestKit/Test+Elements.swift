@@ -99,7 +99,7 @@ extension Test {
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Test Suite
+// MARK: + Common
 //=----------------------------------------------------------------------------=
 
 extension Test {
@@ -115,25 +115,25 @@ extension Test {
         //=----------------------------------=
         self.commonInitBody(T.self, id: BinaryIntegerID())
         //=----------------------------------=
-        self.exactly( (S).min, F( T(raw: (S).min), error: T.isSigned == false))
-        self.exactly( (S).lsb, F( T(raw: (S).lsb)))
-        self.exactly( (S).msb, F( T(raw: (S).msb), error: T.isSigned == false))
-        self.exactly( (S).max, F( T(raw: (S).max)))
+        self.exactly( S.min, F( T(raw: S.min), error: T.isSigned == false))
+        self.exactly( S.lsb, F( T(raw: S.lsb)))
+        self.exactly( S.msb, F( T(raw: S.msb), error: T.isSigned == false))
+        self.exactly( S.max, F( T(raw: S.max)))
         
-        self.exactly(~(S).min, F(~T(raw: (S).min)))
-        self.exactly(~(S).lsb, F(~T(raw: (S).lsb), error: T.isSigned == false))
-        self.exactly(~(S).msb, F(~T(raw: (S).msb)))
-        self.exactly(~(S).max, F(~T(raw: (S).max), error: T.isSigned == false))
+        self.exactly(~S.min, F(~T(raw: S.min)))
+        self.exactly(~S.lsb, F(~T(raw: S.lsb), error: T.isSigned == false))
+        self.exactly(~S.msb, F(~T(raw: S.msb)))
+        self.exactly(~S.max, F(~T(raw: S.max), error: T.isSigned == false))
         
-        self.exactly( (M).min, F( T(raw: (M).min)))
-        self.exactly( (M).lsb, F( T(raw: (M).lsb)))
-        self.exactly( (M).msb, F( T(raw: (M).msb), error: T.isSigned == true ))
-        self.exactly( (M).max, F( T(raw: (M).max), error: T.isSigned == true ))
+        self.exactly( M.min, F( T(raw: M.min)))
+        self.exactly( M.lsb, F( T(raw: M.lsb)))
+        self.exactly( M.msb, F( T(raw: M.msb), error: T.isSigned == true ))
+        self.exactly( M.max, F( T(raw: M.max), error: T.isSigned == true ))
         
-        self.exactly(~(M).min, F(~T(raw: (M).min), error: T.isSigned == true))
-        self.exactly(~(M).lsb, F(~T(raw: (M).lsb), error: T.isSigned == true))
-        self.exactly(~(M).msb, F(~T(raw: (M).msb)))
-        self.exactly(~(M).max, F(~T(raw: (M).max)))
+        self.exactly(~M.min, F(~T(raw: M.min), error: T.isSigned == true))
+        self.exactly(~M.lsb, F(~T(raw: M.lsb), error: T.isSigned == true))
+        self.exactly(~M.msb, F(~T(raw: M.msb)))
+        self.exactly(~M.max, F(~T(raw: M.max)))
     }
     
     public func commonInitBody<T>(_ type: T.Type, id: BinaryIntegerID) where T: BinaryInteger {
@@ -141,33 +141,42 @@ extension Test {
         typealias M = T.Magnitude
         typealias F = Fallible<T>
         //=----------------------------------=
-        self.commonInitBodyByArray(T.self, id: BinaryIntegerID())
-        //=----------------------------------=
-        self.exactly( I32.min, F( T(load:  I32.min), error: T.size < 32 || (T.isSigned == false)))
-        self.exactly( I32.lsb, F( T(load:  I32.lsb)))
-        self.exactly( I32.msb, F( T(load:  I32.msb), error: T.size < 32 || (T.isSigned == false)))
-        self.exactly( I32.max, F( T(load:  I32.max), error: T.size < 32))
-        
-        self.exactly(~I32.min, F(~T(load:  I32.min), error: T.size < 32))
-        self.exactly(~I32.lsb, F(~T(load:  I32.lsb), error: T.isSigned == false))
-        self.exactly(~I32.msb, F(~T(load:  I32.msb), error: T.size < 32))
-        self.exactly(~I32.max, F(~T(load:  I32.max), error: T.size < 32 || (T.isSigned == false)))
-        
-        self.exactly( U32.min, F( T(load:  U32.min)))
-        self.exactly( U32.lsb, F( T(load:  U32.lsb)))
-        self.exactly( U32.msb, F( T(load:  U32.msb), error: T.size < 32 || (T.isSigned && T.size == 32)))
-        self.exactly( U32.max, F( T(load:  U32.max), error: T.size < 32 || (T.isSigned && T.size == 32)))
-        
-        self.exactly(~U32.min, F( T(load: ~U32.min), error: T.size < 32 || (T.isSigned && T.size == 32)))
-        self.exactly(~U32.lsb, F( T(load: ~U32.lsb), error: T.size < 32 || (T.isSigned && T.size == 32)))
-        self.exactly(~U32.msb, F( T(load: ~U32.msb), error: T.size < 32))
-        self.exactly(~U32.max, F( T(load: ~U32.max)))
+        self.commonInitBodyByBigArray(T.self, id: BinaryIntegerID())
         //=----------------------------------=
         self.exactly([T.Element.Magnitude](),   .signed, F(T.zero))
         self.exactly([T.Element.Magnitude](), .unsigned, F(T.zero))
+        //=----------------------------------=
+        func whereIs<Other>(_ other: Other.Type) where Other: SystemsInteger {
+            typealias I = Other.Signitude
+            typealias U = Other.Magnitude
+            
+            self.exactly( I.min, F( T(load:  I.min), error: T.size < I.size || (T.isSigned == false)))
+            self.exactly( I.lsb, F( T(load:  I.lsb)))
+            self.exactly( I.msb, F( T(load:  I.msb), error: T.size < I.size || (T.isSigned == false)))
+            self.exactly( I.max, F( T(load:  I.max), error: T.size < I.size))
+            
+            self.exactly(~I.min, F(~T(load:  I.min), error: T.size < I.size))
+            self.exactly(~I.lsb, F(~T(load:  I.lsb), error: T.isSigned == false))
+            self.exactly(~I.msb, F(~T(load:  I.msb), error: T.size < I.size))
+            self.exactly(~I.max, F(~T(load:  I.max), error: T.size < I.size || (T.isSigned == false)))
+            
+            self.exactly( U.min, F( T(load:  U.min)))
+            self.exactly( U.lsb, F( T(load:  U.lsb)))
+            self.exactly( U.msb, F( T(load:  U.msb), error: T.size < U.size || (T.isSigned && T.size == U.size)))
+            self.exactly( U.max, F( T(load:  U.max), error: T.size < U.size || (T.isSigned && T.size == U.size)))
+            
+            self.exactly(~U.min, F( T(load: ~U.min), error: T.size < U.size || (T.isSigned && T.size == U.size)))
+            self.exactly(~U.lsb, F( T(load: ~U.lsb), error: T.size < U.size || (T.isSigned && T.size == U.size)))
+            self.exactly(~U.msb, F( T(load: ~U.msb), error: T.size < U.size))
+            self.exactly(~U.max, F( T(load: ~U.max)))
+        }
+        
+        for other in coreSystemsIntegers {
+            whereIs(other)
+        }
     }
     
-    public func commonInitBodyByArray<T>(_ type: T.Type, id: BinaryIntegerID) where T: BinaryInteger {
+    public func commonInitBodyByBigArray<T>(_ type: T.Type, id: BinaryIntegerID) where T: BinaryInteger {
         //=--------------------------------------=
         var count = Int(T.size.isInfinite ? 12 : IX(load: T.size) / IX(size: T.Element.self))
         //=--------------------------------------=
