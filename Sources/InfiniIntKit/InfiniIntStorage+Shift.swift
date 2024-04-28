@@ -19,7 +19,6 @@ extension InfiniIntStorage {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    #warning("TODO: Handle the full-shift-esque case.")
     @inlinable internal mutating func resizeByLenientUpshift(major: IX, minor: IX) {
         //=--------------------------------------=
         Swift.assert(major >= 00000000000)
@@ -29,14 +28,14 @@ extension InfiniIntStorage {
         let last   = self.body.last ?? Element(repeating: .zero)
         let target = self.count + major + IX(Bit(IX(load: last.count(test)) < minor))
         //=--------------------------------------=
-        if  major != .zero {
+        if  target == major {
             let zeros = repeatElement(Element.zero, count: Int(major))
-            self.body.insert(contentsOf: zeros , at: Int.zero)
-        }
-        
-        self.resize(minCount: target)
-        self.withUnsafeMutableBinaryIntegerBody {
-            $0.upshift(environment: Element(), major: .zero, minor: minor)
+            self.body.insert(contentsOf: zeros, at: Int.zero)
+        }   else {
+            self.resize(minCount: target)
+            self.withUnsafeMutableBinaryIntegerBody {
+                $0.upshift(environment: Element.zero, major: major, minor: minor)
+            }
         }
     }
     
@@ -49,7 +48,7 @@ extension InfiniIntStorage {
         let last   = self.body.last ?? Element(repeating: self.appendix)
         let target = self.count - major - IX(Bit(IX(load: last.count(test)) < minor))
         //=--------------------------------------=
-        if  target > 0 {
+        if  target > .zero  {
             let environment = Element(repeating: self.appendix)
             self.withUnsafeMutableBinaryIntegerBody {
                 $0.downshift(environment: environment, major: major, minor: minor)

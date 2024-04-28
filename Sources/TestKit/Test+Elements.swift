@@ -175,7 +175,8 @@ extension Test {
             var value = T(repeating: Bit(mode.isSigned && (body.last ?? 0) >= .msb))
             
             for element in body.reversed() {
-                value = value << T(T.Element.size) | T(load: element)
+                value <<= T(T.Element.Magnitude.size)
+                value  |= T(load: element)
             }
             
             self.exactly(body, mode, Fallible(value, error: error))
