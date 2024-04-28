@@ -52,6 +52,14 @@
     @inlinable public init(integerLiteral: consuming Base.IntegerLiteralType) {
         self.init(Base(integerLiteral: integerLiteral))
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+
+    @inlinable public init(raw source: consuming Base.BitPattern) {
+        self.init(Base(raw: source))
+    }
 }
 
 //=----------------------------------------------------------------------------=

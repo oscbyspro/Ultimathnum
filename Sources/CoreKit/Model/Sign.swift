@@ -36,35 +36,15 @@
         self.init(raw: source)
     }
     
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
     @inlinable public init(raw source: Bool) {
         self = source ? Self.minus : Self.plus
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
     @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
         self == Self.minus
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static prefix func ~(instance: Self) -> Self {
-        instance ^ minus
-    }
-    
-    @inlinable public static func &(lhs: Self, rhs: Self) -> Self {
-        lhs == rhs ? lhs : plus
-    }
-    
-    @inlinable public static func |(lhs: Self, rhs: Self) -> Self {
-        lhs == plus ? rhs : lhs
-    }
-    
-    @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
-        lhs == rhs ? plus : minus
     }
 }
