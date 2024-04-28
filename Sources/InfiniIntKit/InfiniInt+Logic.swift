@@ -74,7 +74,7 @@ extension InfiniInt {
         lhs.storage.withUnsafeMutableBinaryIntegerBody { lhs in
             rhs.withUnsafeBinaryIntegerElements { rhs in
                 for index in lhs.indices {
-                    lhs[unchecked: index] ^= rhs[UX(bitPattern: index)]
+                    lhs[unchecked: index] ^= rhs[UX(raw: index)]
                 }
             }
         }

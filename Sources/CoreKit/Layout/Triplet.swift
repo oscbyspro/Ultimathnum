@@ -86,11 +86,11 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: consuming BitPattern) {
+    @inlinable public init(raw source: consuming BitPattern) {
         self.init(
-            low:  bitPattern.low,
-            mid:  bitPattern.mid,
-            high: Base(bitPattern: bitPattern.high)
+            low:  source.low,
+            mid:  source.mid,
+            high: Base(raw: source.high)
         )
     }
     
@@ -99,7 +99,7 @@
             BitPattern(
                 low:  self.low,
                 mid:  self.mid,
-                high: Base.Magnitude(bitPattern: self.high)
+                high: Base.Magnitude(raw: self.high)
             )
         }
     }

@@ -32,7 +32,7 @@ extension Test {
         multiplication(
             lhs,
             rhs,
-            expectation.map(\.low).map(T.init(bitPattern:)),
+            expectation.map(\.low).map(T.init(raw:)),
             BinaryIntegerID()
         )
     }

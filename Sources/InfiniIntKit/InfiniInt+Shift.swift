@@ -23,7 +23,7 @@ extension InfiniInt {
         if  distance.isNegative {
             return instance >> distance.magnitude()
         }   else {
-            return instance << Magnitude(bitPattern: distance)
+            return instance << Magnitude(raw: distance)
         }
     }
     
@@ -40,7 +40,7 @@ extension InfiniInt {
         //=--------------------------------------=
         // path: distance is >= body per protocol
         //=--------------------------------------=
-        let shift = IX.exactly(Magnitude(bitPattern: distance.value)).unwrap("BinaryInteger/body/0...IX.max")
+        let shift = IX.exactly(Magnitude(raw: distance.value)).unwrap("BinaryInteger/body/0...IX.max")
         //=--------------------------------------=
         // path: success or allocation is too big
         //=--------------------------------------=
@@ -54,7 +54,7 @@ extension InfiniInt {
         if  distance.isNegative {
             return instance << distance.magnitude()
         }   else {
-            return instance >> Magnitude(bitPattern: distance)
+            return instance >> Magnitude(raw: distance)
         }
     }
     
@@ -69,7 +69,7 @@ extension InfiniInt {
             return instance
         }
         //=--------------------------------------=
-        let shift = IX.exactly(Magnitude(bitPattern: distance.value))
+        let shift = IX.exactly(Magnitude(raw: distance.value))
         //=--------------------------------------=
         // path: distance is >= body per protocol
         //=--------------------------------------=
@@ -100,7 +100,7 @@ extension InfiniInt {
         if  distance.isInfinite {
             return Self(repeating: Bit.zero)
         }   else {
-            return instance &<< Shift(unchecked: Self(bitPattern: distance))
+            return instance &<< Shift(unchecked: Self(raw: distance))
         }
     }
     
@@ -108,7 +108,7 @@ extension InfiniInt {
         if  distance.isInfinite {
             return Self(repeating: instance.appendix)
         }   else {
-            return instance &>> Shift(unchecked: Self(bitPattern: distance))
+            return instance &>> Shift(unchecked: Self(raw: distance))
         }
     }
 }

@@ -33,7 +33,7 @@ extension DoubleInt {
         let rhsIsNegative = divisor.value.isNegative
         //=--------------------------------------=
         var division = Division<Self, Self>(
-            bitPattern: self.magnitude().division2222(divisor.magnitude())
+            raw: self.magnitude().division2222(divisor.magnitude())
         )
         
         var suboverflow  = Bit( division.quotient.high.isNegative)
@@ -58,7 +58,7 @@ extension DoubleInt {
         let rhsIsNegative = divisor.value.isNegative
         //=--------------------------------------=
         var division = Fallible<Division<Self, Self>>(
-            bitPattern: Magnitude.division4222(
+            raw: Magnitude.division4222(
                 dividend.magnitude(), by: divisor.magnitude()
             )
         )

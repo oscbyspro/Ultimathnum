@@ -41,19 +41,19 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public init(_  source: Sign) {
-        self.init(bitPattern: source)
+        self.init(raw: source)
     }
     
     @inlinable public init(_  source: FloatingPointSign) {
-        self.init(bitPattern: source)
+        self.init(raw: source)
     }
     
     @inlinable public init(_  source: Bool) {
-        self.init(bitPattern: source)
+        self.init(raw: source)
     }
     
-    @inlinable public init(bitPattern: Bool) {
-        self.bitPattern = (bitPattern)
+    @inlinable public init(raw source: Bool) {
+        self.bitPattern = source
     }
     
     @inlinable public init(integerLiteral: Swift.Int.IntegerLiteralType) {

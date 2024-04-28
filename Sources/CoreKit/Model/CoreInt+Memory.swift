@@ -17,12 +17,14 @@ extension CoreInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: consuming Base.BitPattern) {
-        self.base = Base(bitPattern: bitPattern)
+    @inlinable public init(raw source: consuming Base.BitPattern) {        
+        self.init(Base(raw: source))
     }
     
     @inlinable public var bitPattern: Base.BitPattern {
-        consuming get { self.base.bitPattern }
+        consuming get {
+            self.base.bitPattern
+        }
     }
     
     //=------------------------------------------------------------------------=
@@ -62,11 +64,11 @@ extension CoreInt {
     //=------------------------------------------------------------------------=
         
     @inlinable public init(load source: LoadInt<Element.Magnitude>) {
-        self.init(bitPattern: source[UX.zero])
+        self.init(raw: source[UX.zero])
     }
     
     @inlinable public init(load source: DataInt<Element.Magnitude>) {
-        self.init(bitPattern: source[UX.zero])
+        self.init(raw: source[UX.zero])
     }
     
     //=------------------------------------------------------------------------=

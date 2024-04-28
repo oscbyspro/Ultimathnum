@@ -26,7 +26,7 @@ extension MutableDataInt.Body {
         //=--------------------------------------=
         // performance: compare index then bit
         //=--------------------------------------=
-        while UX(bitPattern: self.count) > 0, copy bit {
+        while UX(raw: self.count) > 0, copy bit {
             bit  = self[unchecked: Void()][{ 
                 $0.incremented()
             }]

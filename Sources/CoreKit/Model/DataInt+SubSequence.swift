@@ -19,8 +19,8 @@ extension SomeDataInt {
     
     @inlinable public subscript(range: PartialRangeFrom<UX>) -> Self {
         consuming get {
-            let start = Swift.min(range.lowerBound, UX(bitPattern: self.body.count))
-            return Self(self.body[unchecked: IX(bitPattern: start)...], repeating: self.appendix)
+            let start = Swift.min(range.lowerBound, UX(raw: self.body.count))
+            return Self(self.body[unchecked: IX(raw: start)...], repeating: self.appendix)
         }
     }
 }

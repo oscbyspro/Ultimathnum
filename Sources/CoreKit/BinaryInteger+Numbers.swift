@@ -47,7 +47,7 @@ extension BinaryInteger {
             isLessThanZero = magnitude[{ $0.negated() }]
         }
         
-        let value = Self(bitPattern: magnitude)
+        let value = Self(raw: magnitude)
         return value.combine(value.isNegative != isLessThanZero)
     }
     

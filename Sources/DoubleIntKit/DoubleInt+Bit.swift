@@ -20,7 +20,7 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
-        Fallible(bitPattern: self.storage.complement(increment))
+        Fallible(raw: self.storage.complement(increment))
     }
 
     //=------------------------------------------------------------------------=

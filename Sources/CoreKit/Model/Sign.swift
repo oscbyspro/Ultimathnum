@@ -24,20 +24,20 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_  source: Bit) {
-        self.init(bitPattern: source)
+    @inlinable public init(_ source: Bit) {
+        self.init(raw: source)
     }
     
-    @inlinable public init(_  source: Bool) {
-        self.init(bitPattern: source)
+    @inlinable public init(_ source: Bool) {
+        self.init(raw: source)
     }
     
-    @inlinable public init(_  source: FloatingPointSign) {
-        self.init(bitPattern: source)
+    @inlinable public init(_ source: FloatingPointSign) {
+        self.init(raw: source)
     }
     
-    @inlinable public init(bitPattern: Bool) {
-        self = bitPattern ? Self.minus : Self.plus
+    @inlinable public init(raw source: Bool) {
+        self = source ? Self.minus : Self.plus
     }
     
     //=------------------------------------------------------------------------=

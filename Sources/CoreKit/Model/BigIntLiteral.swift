@@ -59,7 +59,7 @@
     /// The word at the given index, from least significant to most.
     @inlinable public subscript(index: UX) -> UX {
         if  let index = IX.exactly(index).optional() {
-            return UX(bitPattern: self.base[Int(index)])
+            return UX(raw: self.base[Int(index)])
         }   else {
             return UX.init(repeating: self.appendix)
         }
@@ -82,7 +82,7 @@
             // pointee: initialization
             //=--------------------------------------=
             for index in IX.zero ..< count {
-                buffer.initializeElement(at: Int(index), to: self[UX(bitPattern: index)])
+                buffer.initializeElement(at: Int(index), to: self[UX(raw: index)])
             }
             //=--------------------------------------=
             // pointee: deferred deinitialization

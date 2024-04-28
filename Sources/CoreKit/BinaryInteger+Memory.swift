@@ -89,14 +89,14 @@ extension BinaryInteger {
     
     @inlinable public init<T>(load source: consuming T) where T: SystemsInteger<UX.BitPattern> {
         if  T.isSigned {
-            self.init(load: UX.Signitude(bitPattern: source))
+            self.init(load: UX.Signitude(raw: source))
         }   else {
-            self.init(load: UX.Magnitude(bitPattern: source))
+            self.init(load: UX.Magnitude(raw: source))
         }
     }
     
     @inlinable public borrowing func load<T>(as type: T.Type) -> T where T: SystemsInteger<UX.BitPattern> {
-        T(bitPattern: self.load(as: UX.BitPattern.self))
+        T(raw: self.load(as: UX.BitPattern.self))
     }
     
     //=------------------------------------------------------------------------=
@@ -105,14 +105,14 @@ extension BinaryInteger {
     
     @inlinable public init<T>(load source: consuming T) where T: SystemsInteger<Element.BitPattern> {
         if  T.isSigned {
-            self.init(load: Element.Signitude(bitPattern: source))
+            self.init(load: Element.Signitude(raw: source))
         }   else {
-            self.init(load: Element.Magnitude(bitPattern: source))
+            self.init(load: Element.Magnitude(raw: source))
         }
     }
     
     @inlinable public borrowing func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern> {
-        T(bitPattern: self.load(as: Element.BitPattern.self))
+        T(raw: self.load(as: Element.BitPattern.self))
     }
     
     //=------------------------------------------------------------------------=

@@ -28,7 +28,7 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public static func predicate(_ value: Value) -> Bool {
-        !Bool(value.appendix) && Value.Magnitude(bitPattern: value) < Value.size
+        !Bool(value.appendix) && Value.Magnitude(raw: value) < Value.size
     }
     
     //=------------------------------------------------------------------------=
@@ -56,6 +56,6 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func nondistance() -> Self where Value: SystemsInteger {
-        Self(unchecked: Value(bitPattern: Value.size).minus(self.value).assert())
+        Self(unchecked: Value(raw: Value.size).minus(self.value).assert())
     }
 }

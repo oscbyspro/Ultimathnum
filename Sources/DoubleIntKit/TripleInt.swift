@@ -95,12 +95,12 @@ import CoreKit
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: consuming BitPattern) {
-        self.init(Storage(bitPattern: bitPattern))
+    @inlinable public init(raw source: consuming BitPattern) {
+        self.init(Storage(raw: source))
     }
     
     @inlinable public var bitPattern: BitPattern {
-        BitPattern(bitPattern: self.storage)
+        BitPattern(raw: self.storage)
     }
     
     //=------------------------------------------------------------------------=

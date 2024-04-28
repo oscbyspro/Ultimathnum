@@ -26,7 +26,7 @@ extension DoubleInt {
     
     @inlinable public consuming func times(_ multiplier: Self) -> Fallible<Self> {
         let minus  = self.high.isNegative != multiplier.high.isNegative
-        var result = Fallible<Self>(bitPattern: self.magnitude().times(multiplier.magnitude()))
+        var result = Fallible<Self>(raw: self.magnitude().times(multiplier.magnitude()))
         
         var suboverflow = (result.value.high.isNegative)
         if  minus {
@@ -42,7 +42,7 @@ extension DoubleInt {
 
     @inlinable package func multiplication(_ multiplier: Base) -> TripleInt<Base> {
         let minus  = self.high.isNegative != multiplier.isNegative
-        let result = TripleInt<Base>(bitPattern: self.magnitude().multiplication(multiplier.magnitude()))
+        let result = TripleInt<Base>(raw: self.magnitude().multiplication(multiplier.magnitude()))
         return minus ? result.complement() : result
     }
 
@@ -53,7 +53,7 @@ extension DoubleInt {
     @inlinable public func multiplication(_ multiplier: Self) -> Doublet<Self> {
         let minus  = self.high.isNegative != multiplier.high.isNegative
         let result: Doublet<Magnitude> = self.magnitude().multiplication(multiplier.magnitude())
-        return Doublet(bitPattern: minus ? result.complement() : result)
+        return Doublet(raw: minus ? result.complement() : result)
     }
 }
 
@@ -87,7 +87,7 @@ extension DoubleInt where Base == Base.Magnitude {
         let o1 = ax.high[{ $0.plus(bx.value) }]
         
         let error = Bit(by) | Bit(ay.error) | Bit(bx.error) | Bit(o0) | Bit(o1)
-        return Fallible(Self(bitPattern: ax), error: Bool(error))
+        return Fallible(Self(raw: ax), error: Bool(error))
     }
     
     //=------------------------------------------------------------------------=

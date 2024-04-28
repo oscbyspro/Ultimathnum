@@ -17,26 +17,7 @@ extension BitCastable {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern source: consuming some BitCastable<BitPattern>) {
-        self.init(bitPattern: source.bitPattern)
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + where Bit Pattern is Self
-//=----------------------------------------------------------------------------=
-
-extension BitCastable where BitPattern == Self {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(bitPattern: consuming BitPattern) {
-        self = bitPattern
-    }
-    
-    @inlinable public var bitPattern: BitPattern {
-        consuming get { self }
+    @inlinable public init(raw source: consuming some BitCastable<BitPattern>) {
+        self.init(raw: source.bitPattern)
     }
 }

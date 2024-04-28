@@ -18,11 +18,11 @@ extension SystemsInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static var lsb: Self {
-        Self(bitPattern: 1 as Magnitude)
+        Self(raw: 1 as Magnitude)
     }
     
     @inlinable public static var msb: Self {
-        Self(bitPattern: 1 as Magnitude &<< (size &- 1))
+        Self(raw: 1 as Magnitude &<< (size &- 1))
     }
 }
 

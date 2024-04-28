@@ -22,7 +22,7 @@ extension TripleInt {
     @inlinable public consuming func plus(_ increment: borrowing DoubleInt<Base>) -> Fallible<Self> {
         let appendix = High(repeating: increment.storage.high.appendix)
         let low  = self.storage.low .plus(increment.storage.low)
-        let mid  = self.storage.mid .plus(Mid(bitPattern: increment.storage.high), plus: low.error)
+        let mid  = self.storage.mid .plus(Mid(raw: increment.storage.high), plus: low.error)
         let high = self.storage.high.plus(appendix, plus: mid.error)
         return Self(low: low.value, mid: mid.value, high: high.value).combine(high.error)
     }

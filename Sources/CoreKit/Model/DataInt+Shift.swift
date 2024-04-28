@@ -47,10 +47,10 @@ extension MutableDataInt.Body {
         Swift.assert(000000 < ((source)), String.indexOutOfBounds())
         Swift.assert(source < self.count, String.indexOutOfBounds())
         //=--------------------------------------=
-        while UX(bitPattern: destination) > .zero {
+        while UX(raw: destination) > .zero {
             let element:  Element
             
-            if  UX(bitPattern: source) > .zero {
+            if  UX(raw: source) > .zero {
                 source[{ $0.decremented().assert() }]
                 element = self[unchecked: source]
             }   else {
@@ -74,7 +74,7 @@ extension MutableDataInt.Body {
         Swift.assert(000001 <= minor, String.indexOutOfBounds())
         Swift.assert(minor  <  IX(size: Element.self), String.indexOutOfBounds())
         //=--------------------------------------=
-        let push = Element(load: UX(bitPattern: minor))
+        let push = Element(load: UX(raw: minor))
         let pull = push.complement()
         //=--------------------------------------=
         var destination = self.count as Index
@@ -85,10 +85,10 @@ extension MutableDataInt.Body {
         //=--------------------------------------=
         var element = self[unchecked: source] as Element
         
-        while UX(bitPattern: destination) >  .zero {
+        while UX(raw: destination) >  .zero {
             let pushed: Element = element &<< push
             
-            if  UX(bitPattern: source) > .zero {
+            if  UX(raw: source) > .zero {
                 source[{ $0.decremented().assert() }]
                 element = self[unchecked: source]
             }   else {
@@ -134,10 +134,10 @@ extension MutableDataInt.Body {
         Swift.assert(000000 < ((source)), String.indexOutOfBounds())
         Swift.assert(source < self.count, String.indexOutOfBounds())
         //=--------------------------------------=
-        while UX(bitPattern: destination) < UX(bitPattern: self.count)  {
+        while UX(raw: destination) < UX(raw: self.count)  {
             let element: Element
             
-            if  UX(bitPattern: source) <  UX(bitPattern: self.count) {
+            if  UX(raw: source) <  UX(raw: self.count) {
                 element = self[unchecked: source]
                 source[{ $0.incremented().assert() }]
             }   else {
@@ -161,7 +161,7 @@ extension MutableDataInt.Body {
         Swift.assert(00001 <= minor, String.indexOutOfBounds())
         Swift.assert(minor <  IX(size: Element.self), String.indexOutOfBounds())
         //=--------------------------------------=
-        let push = Element(load: UX(bitPattern: minor))
+        let push = Element(load: UX(raw: minor))
         let pull = push.complement()
         //=--------------------------------------=
         var destination = Index.zero
@@ -173,10 +173,10 @@ extension MutableDataInt.Body {
         var element: Element = self[unchecked: source]
         source[{ $0.incremented().assert() }]
         
-        while UX(bitPattern: destination) < UX(bitPattern: self.count) {
+        while UX(raw: destination) < UX(raw: self.count) {
             let pushed: Element = element &>> push
             
-            if  UX(bitPattern: source) <  UX(bitPattern: self.count) {
+            if  UX(raw: source) <  UX(raw: self.count) {
                 element = self[unchecked: source]
                 source[{ $0.incremented().assert() }]
             }   else {

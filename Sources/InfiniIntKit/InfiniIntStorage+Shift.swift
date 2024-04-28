@@ -22,7 +22,7 @@ extension InfiniIntStorage {
     @inlinable internal mutating func resizeByLenientUpshift(major: IX, minor: IX) {
         //=--------------------------------------=
         Swift.assert(major >= 00000000000)
-        Swift.assert(UX(bitPattern: minor) < UX(size: Element.self))
+        Swift.assert(UX(raw: minor) < UX(size: Element.self))
         //=--------------------------------------=
         let test = Bit.Selection.Integer.descending(self.appendix)
         let last   = self.body.last ?? Element(repeating: Bit.zero)
@@ -37,7 +37,7 @@ extension InfiniIntStorage {
     @inlinable internal mutating func resizeByLenientDownshift(major: IX, minor: IX) {
         //=--------------------------------------=
         Swift.assert(major >= 00000000000)
-        Swift.assert(UX(bitPattern: minor) < UX(size: Element.self))
+        Swift.assert(UX(raw: minor) < UX(size: Element.self))
         //=--------------------------------------=
         let test = Bit.Selection.Integer.nondescending(self.appendix)
         let last   = self.body.last ?? Element(repeating: self.appendix)

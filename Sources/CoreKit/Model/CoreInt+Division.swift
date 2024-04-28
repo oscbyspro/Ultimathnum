@@ -43,7 +43,7 @@ extension CoreInt {
         let rhsIsNegative = divisor.value.isNegative
         //=--------------------------------------=
         var division = Fallible<Division<Self, Self>>(
-            bitPattern: Magnitude.division(dividend.magnitude(), by: divisor.magnitude())
+            raw: Magnitude.division(dividend.magnitude(), by: divisor.magnitude())
         )
         
         var suboverflow  = Bit( division.value.quotient.isNegative)

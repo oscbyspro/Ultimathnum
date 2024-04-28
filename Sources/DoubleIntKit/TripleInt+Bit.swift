@@ -24,7 +24,7 @@ extension TripleInt {
     }
     
     @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
-        Fallible(bitPattern: self.storage.complement(increment))
+        Fallible(raw: self.storage.complement(increment))
     }
     
     @inlinable public consuming func magnitude() -> Magnitude {

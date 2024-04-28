@@ -19,8 +19,8 @@ extension InfiniInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: consuming Magnitude) {
-        self.init(unchecked: bitPattern.storage)
+    @inlinable public init(raw source: consuming Magnitude) {
+        self.init(unchecked: source.storage)
     }
     
     @inlinable public var bitPattern: Magnitude {
@@ -53,13 +53,13 @@ extension InfiniInt {
     
     @inlinable public init(load source: consuming  Element.Signitude) {
         let appendix = source.appendix
-        let body = Element.Magnitude(bitPattern: source)
+        let body = Element.Magnitude(raw: source)
         self.init(normalizing: Storage([body], repeating: appendix))
     }
         
     @inlinable public init(load source: consuming  Element.Magnitude) {
         let appendix = source.appendix
-        let body = Element.Magnitude(bitPattern: source)
+        let body = Element.Magnitude(raw: source)
         self.init(normalizing: Storage([body], repeating: appendix))
     }
     

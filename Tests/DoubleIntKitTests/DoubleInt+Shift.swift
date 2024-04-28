@@ -26,7 +26,7 @@ extension DoubleIntTests {
             typealias T = DoubleInt<Base>
             let low = T.zero
             let mid = T(low: Base.size)
-            let top = T(bitPattern: T.size)
+            let top = T(raw: T.size)
             
             for semantics: Test.ShiftSemantics in [.smart, .masked] {
                 Test().shift(T(low: 1, high:  2), low + 0 as T, T(low:  1, high:  2), .left,  semantics)

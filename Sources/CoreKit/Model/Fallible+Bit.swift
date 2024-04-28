@@ -17,13 +17,13 @@ extension Fallible: BitCastable where Value: BitCastable {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: consuming Fallible<Value.BitPattern>) {
-        self.init(Value(bitPattern: bitPattern.value), error: bitPattern.error)
+    @inlinable public init(raw source: consuming Fallible<Value.BitPattern>) {
+        self.init(Value(raw: source.value), error: source.error)
     }
     
     @inlinable public var bitPattern: Fallible<Value.BitPattern> {
         consuming get {
-            Fallible<Value.BitPattern>(Value.BitPattern(bitPattern: self.value), error: self.error)
+            Fallible<Value.BitPattern>(Value.BitPattern(raw: self.value), error: self.error)
         }
     }
 }

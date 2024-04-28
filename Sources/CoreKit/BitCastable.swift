@@ -19,7 +19,26 @@ public protocol BitCastable<BitPattern> {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable init(bitPattern: consuming BitPattern)
+    @inlinable init(raw: consuming BitPattern)
     
     @inlinable var bitPattern: BitPattern { consuming get }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + where Bit Pattern is Self
+//=----------------------------------------------------------------------------=
+
+extension BitCastable where BitPattern == Self {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(raw source: consuming BitPattern) {
+        self = source
+    }
+    
+    @inlinable public var bitPattern: BitPattern {
+        consuming get { self }
+    }
 }

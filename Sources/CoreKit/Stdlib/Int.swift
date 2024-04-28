@@ -19,8 +19,12 @@ extension Int: CoreInteger {
         Signed()
     }
     
+    @inlinable public init(raw source: Magnitude) {
+        self.init(bitPattern:  source)
+    }
+    
     @inlinable public var bitPattern: Magnitude {
-        Magnitude(bitPattern: self)
+        Magnitude(bitPattern:  self)
     }
 }
 
@@ -32,8 +36,12 @@ extension Int8: CoreInteger {
         Signed()
     }
     
+    @inlinable public init(raw source: Magnitude) {
+        self.init(bitPattern:  source)
+    }
+    
     @inlinable public var bitPattern: Magnitude {
-        Magnitude(bitPattern: self)
+        Magnitude(bitPattern:  self)
     }
 }
 
@@ -45,8 +53,12 @@ extension Int16: CoreInteger {
         Signed()
     }
     
+    @inlinable public init(raw source: Magnitude) {
+        self.init(bitPattern:  source)
+    }
+    
     @inlinable public var bitPattern: Magnitude {
-        Magnitude(bitPattern: self)
+        Magnitude(bitPattern:  self)
     }
 }
 
@@ -58,8 +70,12 @@ extension Int32: CoreInteger {
         Signed()
     }
     
+    @inlinable public init(raw source: Magnitude) {
+        self.init(bitPattern:  source)
+    }
+    
     @inlinable public var bitPattern: Magnitude {
-        Magnitude(bitPattern: self)
+        Magnitude(bitPattern:  self)
     }
 }
 
@@ -71,7 +87,11 @@ extension Int64: CoreInteger {
         Signed()
     }
     
+    @inlinable public init(raw source: Magnitude) {
+        self.init(bitPattern:  source)
+    }
+    
     @inlinable public var bitPattern: Magnitude {
-        Magnitude(bitPattern: self)
+        Magnitude(bitPattern:  self)
     }
 }

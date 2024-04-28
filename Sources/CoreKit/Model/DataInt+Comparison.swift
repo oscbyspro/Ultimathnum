@@ -22,7 +22,7 @@ extension DataInt {
         // comparison: appendix
         //=--------------------------------------=
         if  Bool(instance.appendix) {
-            return Signum.one(Sign(bitPattern: isSigned))
+            return Signum.one(Sign(raw: isSigned))
         }
         //=--------------------------------------=
         // comparison: succinct count
@@ -38,7 +38,7 @@ extension DataInt {
         // comparison: appendix
         //=--------------------------------------=
         if  lhs.appendix != rhs.appendix {
-            return Signum.one(Sign(bitPattern: Bool(lhs.appendix) ? lhsIsSigned : !rhsIsSigned))
+            return Signum.one(Sign(raw: Bool(lhs.appendix) ? lhsIsSigned : !rhsIsSigned))
         }
         //=--------------------------------------=
         // normalization
@@ -49,7 +49,7 @@ extension DataInt {
         // comparison: count
         //=--------------------------------------=
         if  lhs.body.count != rhs.body.count {
-            return Signum.one(Sign(bitPattern: lhs.appendix == Bit(lhs.body.count > rhs.body.count)))
+            return Signum.one(Sign(raw: lhs.appendix == Bit(lhs.body.count > rhs.body.count)))
         }
         //=--------------------------------------=
         // comparison: body
@@ -61,7 +61,7 @@ extension DataInt {
             let rhsElement: Element = rhs.body[unchecked: index]
             
             if  lhsElement != rhsElement {
-                return Signum.one(Sign(bitPattern: lhsElement < rhsElement))
+                return Signum.one(Sign(raw: lhsElement < rhsElement))
             }
         }
         //=--------------------------------------=

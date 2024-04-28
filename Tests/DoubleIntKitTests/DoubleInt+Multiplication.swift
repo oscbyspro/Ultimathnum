@@ -83,10 +83,10 @@ extension DoubleIntTests {
             typealias P = Doublet<T>
             typealias F = Fallible<Doublet<T>>
             
-            Test().multiplication(T.min,  T .min, F(P(low: 0 as M, high: T(bitPattern:  M.msb >> 1)), error: true))
-            Test().multiplication(T.min,  T .max, F(P(low: M .msb, high: T(bitPattern:  T.msb >> 1)), error: true))
-            Test().multiplication(T.max,  T .min, F(P(low: M .msb, high: T(bitPattern:  T.msb >> 1)), error: true))
-            Test().multiplication(T.max,  T .max, F(P(low: 1 as M, high: T(bitPattern: ~M.msb >> 1)), error: true))
+            Test().multiplication(T.min,  T .min, F(P(low: 0 as M, high: T(raw:  M.msb >> 1)), error: true))
+            Test().multiplication(T.min,  T .max, F(P(low: M .msb, high: T(raw:  T.msb >> 1)), error: true))
+            Test().multiplication(T.max,  T .min, F(P(low: M .msb, high: T(raw:  T.msb >> 1)), error: true))
+            Test().multiplication(T.max,  T .max, F(P(low: 1 as M, high: T(raw: ~M.msb >> 1)), error: true))
             
             Test().multiplication(T.min, ~1 as T, F(P(low:  0 as M, high:  1 as T), error: true))
             Test().multiplication(T.min, ~0 as T, F(P(low:  M .msb, high:  0 as T), error: true))

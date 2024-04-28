@@ -33,8 +33,8 @@ extension InfiniInt {
                 
         var last = Element(repeating: self.appendix)
         overflow = last[{ $0.minus(Element(repeating: other.appendix), plus: overflow) }]
-        self.storage.appendix = Element.Signitude(bitPattern: last).appendix
-        self.storage.normalize(appending: Element.Magnitude(bitPattern: last))
+        self.storage.appendix = Element.Signitude(raw: last).appendix
+        self.storage.normalize(appending: Element.Magnitude(raw: last))
         
         return self.combine(overflow)
     }

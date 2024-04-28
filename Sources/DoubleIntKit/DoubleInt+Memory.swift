@@ -19,8 +19,8 @@ extension DoubleInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: consuming Storage.BitPattern) {
-        self.init(Storage(bitPattern: bitPattern))
+    @inlinable public init(raw source: consuming Storage.BitPattern) {
+        self.init(Storage(raw: source))
     }
     
     @inlinable public var bitPattern: BitPattern {
@@ -48,7 +48,7 @@ extension DoubleInt {
     @inlinable public borrowing func load(as type: UX.BitPattern.Type) -> UX.BitPattern {
         let low  = self.storage.low .load(as: UX.self)
         let high = self.storage.high.load(as: UX.self) << UX(size: Low.self)
-        return UX.BitPattern.init(bitPattern: low | high)
+        return UX.BitPattern.init(raw: low | high)
     }
     
     //=------------------------------------------------------------------------=

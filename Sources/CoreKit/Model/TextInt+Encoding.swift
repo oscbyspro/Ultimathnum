@@ -84,7 +84,7 @@ extension TextInt {
             rate -= 1 + self.exponentiation.power.count(.descending(.zero))
         }
 
-        capacity /= IX(bitPattern: rate)
+        capacity /= IX(raw: rate)
         capacity += 1
         capacity *= self.exponentiation.exponent
         capacity += IX(Bit(sign != nil))

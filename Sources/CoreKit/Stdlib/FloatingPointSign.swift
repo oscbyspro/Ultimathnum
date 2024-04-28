@@ -18,11 +18,11 @@ extension FloatingPointSign: BitCastable {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(_  sign: Sign) {
-        self.init(bitPattern: sign)
+        self.init(raw: sign)
     }
     
-    @inlinable public init(bitPattern: Bool) {
-        self = bitPattern ? Self.minus : Self.plus
+    @inlinable public init(raw source: Bool) {
+        self = source ? Self.minus : Self.plus
     }
     
     @inlinable public var bitPattern: Bool {

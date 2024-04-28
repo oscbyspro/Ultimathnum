@@ -40,7 +40,7 @@ extension BinaryInteger {
     }
     
     @inlinable public consuming func magnitude() -> Magnitude {
-        Magnitude(bitPattern: self.isNegative ? self.complement() : self)
+        Magnitude(raw: self.isNegative ? self.complement() : self)
     }
     
     //=------------------------------------------------------------------------=

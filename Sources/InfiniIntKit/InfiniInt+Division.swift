@@ -50,7 +50,7 @@ extension InfiniInt {
             divisor[{ $0.complement() }]
         }
         //=--------------------------------------=
-        var division = Magnitude(bitPattern: self).divisionAsFiniteByFiniteNonzeroDivisor(Magnitude(bitPattern: divisor.value))
+        var division = Magnitude(raw: self).divisionAsFiniteByFiniteNonzeroDivisor(Magnitude(raw: divisor.value))
         //=--------------------------------------=
         if  lhsAppendixIsSet != rhsAppendixIsSet {
             division.quotient [{ $0.complement() }]
@@ -60,7 +60,7 @@ extension InfiniInt {
             division.remainder[{ $0.complement() }]
         }
         
-        return Fallible.success(Division(bitPattern: division))
+        return Fallible.success(Division(raw: division))
     }
 }
 

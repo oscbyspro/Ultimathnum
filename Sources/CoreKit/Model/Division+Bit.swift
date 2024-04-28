@@ -19,18 +19,18 @@ extension Division: BitCastable where Quotient: BitCastable, Remainder: BitCasta
     // MARK: Details x Bit Pattern
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(bitPattern: consuming BitPattern) {
+    @inlinable public init(raw source: consuming BitPattern) {
         self.init(
-            quotient:  Quotient (bitPattern: bitPattern.quotient ),
-            remainder: Remainder(bitPattern: bitPattern.remainder)
+            quotient:  Quotient (raw: source.quotient ),
+            remainder: Remainder(raw: source.remainder)
         )
     }
     
     @inlinable public var bitPattern: BitPattern {
         consuming get {
             BitPattern(
-                quotient:  Quotient .BitPattern(bitPattern: self.quotient ),
-                remainder: Remainder.BitPattern(bitPattern: self.remainder)
+                quotient:  Quotient .BitPattern(raw: self.quotient ),
+                remainder: Remainder.BitPattern(raw: self.remainder)
             )
         }
     }

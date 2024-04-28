@@ -19,7 +19,7 @@ extension LoadInt {
     
     @inlinable public subscript(range: PartialRangeFrom<UX>) -> Self {
         consuming get {
-            Self(self.base[(range.lowerBound * UX(bitPattern: MemoryLayout<Element>.stride))...])
+            Self(self.base[(range.lowerBound * UX(raw: MemoryLayout<Element>.stride))...])
         }
     }
 }

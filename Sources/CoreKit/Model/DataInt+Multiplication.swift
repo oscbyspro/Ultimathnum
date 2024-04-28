@@ -32,7 +32,7 @@ extension MutableDataInt.Body {
         
         var increment = increment // consume: compiler bug...
         
-        while UX(bitPattern: self.count) > 0 {
+        while UX(raw: self.count) > 0 {
             var product = self[unchecked: Void()].multiplication(multiplier)
             product.high &+= Element(Bit(product.low[{ $0.plus(increment) }]))
             increment = product.high
@@ -156,7 +156,7 @@ extension MutableDataInt.Body {
         var index = 000 as IX
         var carry = increment
         //=--------------------------------------=
-        while UX(bitPattern: self.count) > 0 {
+        while UX(raw: self.count) > 0 {
             let multiplier = Immutable(elements.start + Int(index), count: 1)
             index = index.incremented().assert()
             //=----------------------------------=

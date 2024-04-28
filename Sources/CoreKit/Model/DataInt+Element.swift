@@ -18,8 +18,8 @@ extension SomeDataInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public subscript(index: UX) -> Element {
-        if  index < UX(bitPattern: self.body.count) {
-            return self.body[unchecked: IX(bitPattern: index)]
+        if  index < UX(raw: self.body.count) {
+            return self.body[unchecked: IX(raw: index)]
         }   else {
             return Element(repeating: self.appendix)
         }
@@ -45,7 +45,7 @@ extension SomeDataIntBody {
     }
     
     @inlinable public subscript(optional index: IX) -> Optional<Element> {
-        if  UX(bitPattern: index) < UX(bitPattern: self.count) {
+        if  UX(raw: index) < UX(raw: self.count) {
             return self[unchecked: index]
         }   else {
             return nil

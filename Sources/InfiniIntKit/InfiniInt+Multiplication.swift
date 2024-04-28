@@ -114,7 +114,7 @@ extension InfiniInt {
             other.body = $0.multiply(by: other.body)
         }
         
-        self.storage.normalize(appending: Element.Magnitude(bitPattern: other.body))
+        self.storage.normalize(appending: Element.Magnitude(raw: other.body))
         
         if !homogeneous {
             self = self.complement()

@@ -69,19 +69,19 @@
             if  var start = index.times(ratio).optional() {
                 let (end) = start.plus (ratio)
                 
-                if  Bool(Bit(!end.error) & Bit(end.value < UX(bitPattern: self.base.body.count))) {
+                if  Bool(Bit(!end.error) & Bit(end.value < UX(raw: self.base.body.count))) {
                     let pointer = UnsafeRawPointer(self.base.body.start)
-                    return pointer.loadUnaligned(fromByteOffset: Int(bitPattern: start), as: Element.self)
+                    return pointer.loadUnaligned(fromByteOffset: Int(raw: start), as: Element.self)
                 }
                 
-                while start < UX(bitPattern: self.base.body.count) {
-                    value = value | Element(load: self.base.body[unchecked: IX(bitPattern: start)]) &<< shift
+                while start < UX(raw: self.base.body.count) {
+                    value = value | Element(load: self.base.body[unchecked: IX(raw: start)]) &<< shift
                     shift = shift.plus(8).assert()
                     start = start.plus(1).assert()
                 }
             }
             
-            return value | Element(repeating: self.base.appendix) << Element(bitPattern: shift)
+            return value | Element(repeating: self.base.appendix) << Element(raw: shift)
         }
     }
 }
