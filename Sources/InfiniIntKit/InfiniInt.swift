@@ -74,6 +74,18 @@ import CoreKit
     @inlinable public init(_ body: some Sequence<Element.Magnitude>, repeating appendix: Bit = .zero) {
         self.init(normalizing: Storage(Storage.Body(body), repeating: appendix))
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(raw source: consuming BitPattern) {
+        self.init(unchecked: source.storage)
+    }
+    
+    @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
+        Magnitude(unchecked: self.storage)
+    }
 }
 
 //=----------------------------------------------------------------------------=

@@ -74,6 +74,18 @@ import CoreKit
     }
     
     //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(raw source: consuming Storage.BitPattern) {
+        self.init(Storage(raw: source))
+    }
+    
+    @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
+        self.storage.load(as: BitPattern.self)
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     

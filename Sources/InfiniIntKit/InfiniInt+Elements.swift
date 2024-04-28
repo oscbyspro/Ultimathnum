@@ -10,22 +10,10 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Infini Int x Memory
+// MARK: * Infini Int x Elements
 //*============================================================================*
 
 extension InfiniInt {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(raw source: consuming BitPattern) {
-        self.init(unchecked: source.storage)
-    }
-    
-    @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
-        Magnitude(unchecked: self.storage)
-    }
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers

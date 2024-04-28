@@ -42,13 +42,13 @@ extension BinaryInteger {
         magnitude: consuming Magnitude
     )   -> Fallible<Self> {
         
-        var isLessThanZero = Bool(sign)
-        if  isLessThanZero {
-            isLessThanZero = magnitude[{ $0.negated() }]
+        var isNegative = Bool(sign)
+        if  isNegative {
+            isNegative = magnitude[{ $0.negated() }]
         }
         
         let value = Self(raw: magnitude)
-        return value.combine(value.isNegative != isLessThanZero)
+        return value.combine(value.isNegative != isNegative)
     }
     
     //=------------------------------------------------------------------------=
