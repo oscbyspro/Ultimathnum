@@ -17,10 +17,12 @@ extension CoreInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    @_disfavoredOverload // required because this model is generic
     @inlinable public init(load source: consuming  UX.Signitude) {
         self.init(Base(truncatingIfNeeded: UInt.Signitude(source)))
     }
     
+    @_disfavoredOverload // required because this model is generic
     @inlinable public init(load source: consuming  UX.Magnitude) {
         self.init(Base(truncatingIfNeeded: UInt.Magnitude(source)))
     }
@@ -29,7 +31,7 @@ extension CoreInt {
     @inlinable public borrowing func load(as type: UX.BitPattern.Type) -> UX.BitPattern {
         UInt(truncatingIfNeeded: self.base)
     }
-        
+    
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
