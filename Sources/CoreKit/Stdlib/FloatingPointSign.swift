@@ -17,7 +17,7 @@ extension FloatingPointSign: BitCastable {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_  sign: Sign) {
+    @inlinable public init(_ sign: Sign) {
         self.init(raw: sign)
     }
     
