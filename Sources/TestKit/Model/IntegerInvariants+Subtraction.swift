@@ -21,9 +21,8 @@ extension IntegerInvariants {
     
     public func subtractionOfMinMaxEsque() where T: BinaryInteger {
         //=--------------------------------------=
-        let shl: T = (T.size.isInfinite ?  127 : T(raw: T.size - 1))
-        let min: T = (T.isSigned ? -001 << shl :  000)
-        let max: T = (T.isSigned ? ~min        : ~000)
+        let min: T = Self.minEsque
+        let max: T = Self.maxEsque
         //=--------------------------------------=
         test.subtraction(min,  min, F(000))
         test.subtraction(min,  max, F(001 | min << 1, error: !(T.isSigned &&  T.size.isInfinite)))
@@ -64,12 +63,15 @@ extension IntegerInvariants {
     
     public func subtractionByNegation() where T: BinaryInteger {
         //=--------------------------------------=
-        let shl: T = (T.size.isInfinite ?  127 : T(raw: T.size - 1))
-        let min: T = (T.isSigned ? -001 << shl :  000)
-        let max: T = (T.isSigned ? ~min        : ~000)
+        let min: T = Self.minEsque
+        let max: T = Self.maxEsque
+        let msb: T = Self.msbEsque
+        let bot: T = Self.botEsque
         //=--------------------------------------=
         test.subtraction(T.zero, min, F(min.complement(), error:  T.isSigned && !T.size.isInfinite))
         test.subtraction(T.zero, max, F(max.complement(), error: !T.isSigned))
+        test.subtraction(T.zero, msb, F(msb.complement(), error: !T.isSigned || !T.size.isInfinite))
+        test.subtraction(T.zero, bot, F(bot.complement(), error: !T.isSigned))
         //=--------------------------------------=
         test.subtraction(T.zero, ~1 as T, F( 2 as T, error: !T.isSigned))
         test.subtraction(T.zero, ~0 as T, F( 1 as T, error: !T.isSigned))

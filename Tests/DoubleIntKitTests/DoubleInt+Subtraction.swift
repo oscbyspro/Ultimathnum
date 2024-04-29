@@ -102,8 +102,8 @@ extension DoubleIntTests {
             typealias T = DoubleInt<Base>
             typealias F = Fallible<T>
             //=----------------------------------=
-            IntegerInvariants(T.self).subtractionOfMinMaxEsque()
             IntegerInvariants(T.self).subtractionByNegation()
+            IntegerInvariants(T.self).subtractionOfMinMaxEsque()
             IntegerInvariants(T.self).subtractionOfRepeatingBit(BinaryIntegerID())
             //=----------------------------------=
             Test().subtraction(T(low:  0, high:   0), T(low:  0, high:  0), F(T(low:  0, high:  0)))

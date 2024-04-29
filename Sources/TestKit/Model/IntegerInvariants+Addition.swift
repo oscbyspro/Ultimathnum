@@ -21,9 +21,8 @@ extension IntegerInvariants {
     
     public func additionOfMinMaxEsque() where T: BinaryInteger {
         //=--------------------------------------=
-        let shl: T = (T.size.isInfinite ?  127 : T(raw: T.size - 1))
-        let min: T = (T.isSigned ? -001 << shl :  000)
-        let max: T = (T.isSigned ? ~min        : ~000)
+        let min: T = Self.minEsque
+        let max: T = Self.maxEsque
         //=--------------------------------------=
         test.addition(min,  min, F( min << 001,      error:  (T.isSigned && !T.size.isInfinite)))
         test.addition(min,  max, F(~000))

@@ -34,6 +34,30 @@ public struct IntegerInvariants<T> where T: BinaryInteger {
     typealias F  = Fallible<T>
     
     //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static var shlEsque: T {
+        (T.size.isInfinite ? 127 : T(raw: T.size - 1))
+    }
+    
+    @inlinable public static var minEsque: T {
+        (T.isSigned ? T(repeating: 1) << shlEsque : T.zero)
+    }
+    
+    @inlinable public static var maxEsque: T {
+        (T.isSigned ? minEsque.toggled() : T(repeating: 1))
+    }
+    
+    @inlinable public static var msbEsque: T {
+        (T.isSigned ? T(repeating: 1) : 1) << shlEsque
+    }
+    
+    @inlinable public static var botEsque: T {
+        (T.isSigned ? msbEsque.toggled() : msbEsque - 1)
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     

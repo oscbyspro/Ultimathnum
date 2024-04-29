@@ -21,26 +21,25 @@ extension IntegerInvariants {
     
     public func divisionOfMsbEsque() where T: BinaryInteger {
         //=--------------------------------------=
-        let shl: T = (T.size.isInfinite ? 127 : T(raw: T.size - 1))
-        let msb: T = (T.isSigned ? -001 : 001) << shl
-        let inv: T = (T.isSigned ? ~msb : msb  &- 01)
+        let msb: T = Self.msbEsque
+        let bot: T = Self.botEsque
         //=--------------------------------------=
-        if T.isSigned {
+        if  T.isSigned {
             test.division(msb, msb >> 1, Fallible(quotient:  2, remainder: 0))
-            test.division(inv, msb >> 1, Fallible(quotient: -1, remainder: (msb >> 1 + 1).complement()))
+            test.division(bot, msb >> 1, Fallible(quotient: -1, remainder: (msb >> 1 + 1).complement()))
         }   else {
             test.division(msb, msb >> 1, Fallible(quotient:  2, remainder: 0))
-            test.division(inv, msb >> 1, Fallible(quotient:  1, remainder: (msb >> 1 - 1)))
+            test.division(bot, msb >> 1, Fallible(quotient:  1, remainder: (msb >> 1 - 1)))
         }
         
         if  T.isSigned {
-            test.division(inv, ~3 as T, Fallible(quotient: msb >> 2 + 1, remainder: 3))
-            test.division(inv, ~1 as T, Fallible(quotient: msb >> 1 + 1, remainder: 1))
-            test.division(inv, ~0 as T, Fallible(quotient: msb >> 0 + 1, remainder: 0))
-            test.division(inv,  0 as T, nil)
-            test.division(inv,  1 as T, Fallible(quotient: inv,          remainder: 0))
-            test.division(inv,  2 as T, Fallible(quotient: inv >> 1,     remainder: 1))
-            test.division(inv,  4 as T, Fallible(quotient: inv >> 2,     remainder: 3))
+            test.division(bot, ~3 as T, Fallible(quotient: msb >> 2 + 1, remainder: 3))
+            test.division(bot, ~1 as T, Fallible(quotient: msb >> 1 + 1, remainder: 1))
+            test.division(bot, ~0 as T, Fallible(quotient: msb >> 0 + 1, remainder: 0))
+            test.division(bot,  0 as T, nil)
+            test.division(bot,  1 as T, Fallible(quotient: bot,          remainder: 0))
+            test.division(bot,  2 as T, Fallible(quotient: bot >> 1,     remainder: 1))
+            test.division(bot,  4 as T, Fallible(quotient: bot >> 2,     remainder: 3))
             
             test.division(msb, ~3 as T, Fallible(quotient: (msb >> 2).complement(), remainder: 0))
             test.division(msb, ~1 as T, Fallible(quotient: (msb >> 1).complement(), remainder: 0))
@@ -50,12 +49,12 @@ extension IntegerInvariants {
             test.division(msb,  2 as T, Fallible(quotient: msb >> 1,     remainder: 0))
             test.division(msb,  4 as T, Fallible(quotient: msb >> 2,     remainder: 0))
         }   else {
-            test.division(inv, ~3 as T, Fallible(quotient: T.zero,       remainder: inv))
-            test.division(inv, ~1 as T, Fallible(quotient: T.zero,       remainder: inv))
-            test.division(inv, ~0 as T, Fallible(quotient: T.zero,       remainder: inv))
-            test.division(inv,  0 as T, nil)
-            test.division(inv,  1 as T, Fallible(quotient: inv,          remainder: 0))
-            test.division(inv,  2 as T, Fallible(quotient: inv >> 1,     remainder: 1))
+            test.division(bot, ~3 as T, Fallible(quotient: T.zero,       remainder: bot))
+            test.division(bot, ~1 as T, Fallible(quotient: T.zero,       remainder: bot))
+            test.division(bot, ~0 as T, Fallible(quotient: T.zero,       remainder: bot))
+            test.division(bot,  0 as T, nil)
+            test.division(bot,  1 as T, Fallible(quotient: bot,          remainder: 0))
+            test.division(bot,  2 as T, Fallible(quotient: bot >> 1,     remainder: 1))
             
             test.division(msb, ~1 as T, Fallible(quotient: T.zero,       remainder: msb))
             test.division(msb, ~0 as T, Fallible(quotient: T.zero,       remainder: msb))
