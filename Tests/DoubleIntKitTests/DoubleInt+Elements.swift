@@ -107,7 +107,9 @@ extension DoubleIntTests {
     
     func testInitBody() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            Test().commonInitBody(T.self, id: SystemsIntegerID())
+            IntegerInvariants(T.self).exactlyArrayBodyMode()
+            IntegerInvariants(T.self).exactlyCoreSystemsIntegers()
+            IntegerInvariants(T.self).exactlySameSizeSystemsIntegers()
         }
         
         for type in Self.types {
@@ -117,7 +119,7 @@ extension DoubleIntTests {
     
     func testMakeBody() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            Test().commonMakeBody(T.self, id: SystemsIntegerID())
+            IntegerInvariants(T.self).elements()
         }
 
         for type in Self.types {

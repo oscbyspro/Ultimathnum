@@ -8,37 +8,34 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import TestKit
 
 //*============================================================================*
-// MARK: * Core Int x Elements
+// MARK: * Integer Invariants
 //*============================================================================*
 
-extension CoreIntTests {
+public struct IntegerInvariants<T> where T: BinaryInteger {
+    
+    typealias S = T.Signitude
+    
+    typealias M = T.Magnitude
+    
+    typealias F = Fallible<T>
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests
+    // MARK: State
     //=------------------------------------------------------------------------=
     
-    func testInitBody() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self).exactlyArrayBodyMode()
-            IntegerInvariants(T.self).exactlyCoreSystemsIntegers()
-            IntegerInvariants(T.self).exactlySameSizeSystemsIntegers()
-        }
-        
-        for type in coreSystemsIntegers {
-            whereIs(type)
-        }
+    let test: Test
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+
+    public init(_ item: T.Type, test: Test) {
+        self.test = test
     }
     
-    func testMakeBody() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self).elements()
-        }
-
-        for type in coreSystemsIntegers {
-            whereIs(type)
-        }
+    public init(_ item: T.Type, file: StaticString = #file, line: UInt = #line) {
+        self.init(item, test: Test(file: file, line: line))
     }
 }
