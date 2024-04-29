@@ -110,49 +110,49 @@ extension Test {
             signum: if rhs.signum() == Signum.same {
                 let result:  Signum = lhs.signum()
                 let success: Bool = result == expectation
-                pure(success, "\(lhs).signum() -> \(result)")
+                expect(success, "\(lhs).signum() -> \(result)")
             }
             
             comparison: do {
                 let result:  Signum = lhs.compared(to: rhs)
                 let success: Bool = result == expectation
-                pure(success, "\(lhs).compared(to: \(rhs)) -> \(result)")
+                expect(success, "\(lhs).compared(to: \(rhs)) -> \(result)")
             }
             
             less: do {
                 let result:  Bool = lhs <  rhs
                 let success: Bool = result == (expectation == .less)
-                pure(success, "\(lhs) <  \(rhs) -> \(result)")
+                expect(success, "\(lhs) <  \(rhs) -> \(result)")
             }
             
             same: do {
                 let result:  Bool = lhs == rhs
                 let success: Bool = result == (expectation == .same)
-                pure(success, "\(lhs) == \(rhs) -> \(result)")
+                expect(success, "\(lhs) == \(rhs) -> \(result)")
             }
             
             more: do {
                 let result:  Bool = lhs >  rhs
                 let success: Bool = result == (expectation == .more)
-                pure(success, "\(lhs) >  \(rhs) -> \(result)")
+                expect(success, "\(lhs) >  \(rhs) -> \(result)")
             }
             
             nonless: do {
                 let result:  Bool = lhs >= rhs
                 let success: Bool = result == (expectation != .less)
-                pure(success, "\(lhs) >= \(rhs) -> \(result)")
+                expect(success, "\(lhs) >= \(rhs) -> \(result)")
             }
             
             nonsame: do {
                 let result:  Bool = lhs != rhs
                 let success: Bool = result == (expectation != .same)
-                pure(success, "\(lhs) != \(rhs) -> \(result)")
+                expect(success, "\(lhs) != \(rhs) -> \(result)")
             }
             
             nonmore: do {
                 let result:  Bool = lhs <= rhs
                 let success: Bool = result == (expectation != .more)
-                pure(success, "\(lhs) <= \(rhs) -> \(result)")
+                expect(success, "\(lhs) <= \(rhs) -> \(result)")
             }
         }
         

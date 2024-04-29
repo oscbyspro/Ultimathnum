@@ -69,7 +69,8 @@ final class InfiniIntTests: XCTestCase {
     
     func testInvariants() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            Test().invariants(type, BinaryIntegerID())
+            IntegerInvariants(T.self).mode(BinaryIntegerID())
+            IntegerInvariants(T.self).size(BinaryIntegerID())
         }
         
         for type in Self.types {

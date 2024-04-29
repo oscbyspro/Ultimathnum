@@ -17,7 +17,7 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func pure(_ instance: Bool, _ message: @autoclosure () -> String = "") {
+    public func expect(_ instance: Bool, _ message: @autoclosure () -> String = "") {
         XCTAssert(instance, message(), file: file, line: line)
     }
     
