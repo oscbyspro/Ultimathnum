@@ -78,7 +78,7 @@ extension Test {
         switch (direction, semantics) {
         case (.left, .smart):
             
-            brr: do {
+            always: do {
                 same({         instance    <<  distance           }(), expectation, "<<")
                 same({ var x = instance; x <<= distance; return x }(), expectation, "<<=")
             }
@@ -94,7 +94,7 @@ extension Test {
             
         case (.right, .smart):
             
-            brr: do {
+            always: do {
                 same({         instance    >>  distance           }(), expectation, ">>")
                 same({ var x = instance; x >>= distance; return x }(), expectation, ">>=")
             }

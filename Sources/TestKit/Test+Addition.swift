@@ -25,7 +25,7 @@ extension Test {
         _ expectation: Fallible<T>,
         identifier: BinaryIntegerID = .init()
     )   where T: BinaryInteger {
-        brr: do {
+        always: do {
             same(lhs &+ rhs, expectation.value)
             same(rhs &+ lhs, expectation.value)
         };  if !expectation.error {
@@ -33,7 +33,7 @@ extension Test {
             same(rhs  + lhs, expectation.value)
         }
         
-        brr: do {
+        always: do {
             same({ var x = lhs; x &+= rhs; return x }(), expectation.value)
             same({ var x = rhs; x &+= lhs; return x }(), expectation.value)
         };  if !expectation.error {
@@ -46,14 +46,14 @@ extension Test {
             same(Fallible(lhs).incremented(), expectation)
         }
         
-        brr: do {
+        always: do {
             same(lhs.plus(rhs),                     expectation)
             same(lhs.plus(Fallible(rhs)),           expectation)
             same(Fallible(lhs).plus(rhs),           expectation)
             same(Fallible(lhs).plus(Fallible(rhs)), expectation)
         }
         
-        brr: do {
+        always: do {
             same(rhs.plus(lhs),                     expectation)
             same(rhs.plus(Fallible(lhs)),           expectation)
             same(Fallible(rhs).plus(lhs),           expectation)

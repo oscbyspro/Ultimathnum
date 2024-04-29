@@ -203,7 +203,7 @@ extension DataIntTests.Canvas {
         //=------------------------------------------=
         let (major, minor) = distance.division(Divisor(IX(size: Element.self))!).unwrap().components
         //=------------------------------------------=
-        brr: do {
+        always: do {
             var value = self.body
             
             value.withUnsafeMutableBufferPointer {
@@ -241,7 +241,7 @@ extension DataIntTests.Canvas {
         //=------------------------------------------=
         let (major, minor) = distance.division(Divisor(IX(size: Element.self))!).unwrap().components
         //=------------------------------------------=
-        brr: do {
+        always: do {
             var value = self.body
             
             value.withUnsafeMutableBufferPointer {

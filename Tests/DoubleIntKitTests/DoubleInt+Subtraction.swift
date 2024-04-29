@@ -103,6 +103,7 @@ extension DoubleIntTests {
             typealias F = Fallible<T>
             //=----------------------------------=
             IntegerInvariants(T.self).subtractionAboutMinMax(SystemsIntegerID())
+            IntegerInvariants(T.self).subtractionAboutNegation(SystemsIntegerID())
             IntegerInvariants(T.self).subtractionAboutRepeatingBit(BinaryIntegerID())
             //=----------------------------------=
             Test().subtraction(T(low:  0, high:   0), T(low:  0, high:  0), F(T(low:  0, high:  0)))
@@ -118,28 +119,6 @@ extension DoubleIntTests {
             if  T.isSigned {
                 Test().subtraction(T(low: .min, high: .min), -1 as T, F(T(low: .min + 1, high: .min))) // carry 1st
                 Test().subtraction(T(low: .min, high: .max), -1 as T, F(T(low: .min + 1, high: .max))) // carry 2nd
-            }
-        }
-        
-        for base in Self.bases {
-            whereTheBaseTypeIs(base)
-        }
-    }
-    
-    func testSubtractionNegation() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = DoubleInt<Base>
-            typealias F = Fallible<T>
-            
-            Test().subtraction(0 as T, ~1 as T, F( 2 as T, error: !T.isSigned))
-            Test().subtraction(0 as T, ~0 as T, F( 1 as T, error: !T.isSigned))
-            Test().subtraction(0 as T,  0 as T, F( 0 as T))
-            Test().subtraction(0 as T,  1 as T, F(~0 as T, error: !T.isSigned))
-            Test().subtraction(0 as T,  2 as T, F(~1 as T, error: !T.isSigned))
-            
-            for x in [T.init(), T.min, T.max, T.lsb, T.msb] {
-                Test().subtraction(0 as T, x, F(~x &+ 1, error: T.isSigned == (x == T.min)))
-                Test().subtraction(0 as T, x, F(~x &+ 1, error: T.isSigned == (x == T.min)))
             }
         }
         

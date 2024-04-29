@@ -33,6 +33,10 @@ extension IntegerInvariants {
         test.subtraction(T.max,  1 as T, F( T .max - 1))
     }
     
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
     public func subtractionAboutRepeatingBit(_ id: BinaryIntegerID) where T: BinaryInteger {
         //=--------------------------------------=
         let x0 = T(repeating: 0)
@@ -47,5 +51,27 @@ extension IntegerInvariants {
             test.subtraction(x0, decrement, F(decrement.complement(), error: !T.isSigned))
             test.subtraction(x1, decrement, F(decrement.toggled()))
         }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    public func subtractionAboutNegation(_ id: SystemsIntegerID) where T: SystemsInteger {
+        //=--------------------------------------=
+        self.subtractionAboutNegation(BinaryIntegerID())
+        //=--------------------------------------=
+        for x in [T.min, T.max, T.lsb, T.msb] {
+            test.subtraction(0 as T, x, F(x.complement(), error: T.isSigned == (x == T.min)))
+            test.subtraction(0 as T, x, F(x.complement(), error: T.isSigned == (x == T.min)))
+        }
+    }
+    
+    public func subtractionAboutNegation(_ id: BinaryIntegerID) where T: BinaryInteger {
+        test.subtraction(0 as T, ~1 as T, F( 2 as T, error: !T.isSigned))
+        test.subtraction(0 as T, ~0 as T, F( 1 as T, error: !T.isSigned))
+        test.subtraction(0 as T,  0 as T, F( 0 as T))
+        test.subtraction(0 as T,  1 as T, F(~0 as T, error: !T.isSigned))
+        test.subtraction(0 as T,  2 as T, F(~1 as T, error: !T.isSigned))
     }
 }

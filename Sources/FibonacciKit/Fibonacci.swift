@@ -115,7 +115,7 @@ import CoreKit
     
     /// Forms the sequence pair at `index + 1`.
     @inlinable public mutating func increment() throws {
-        brr: do {
+        always: do {
             let n : Value
             try n = i.plus(1).get()
             
@@ -136,7 +136,7 @@ import CoreKit
             throw Error.overflow
         }
         
-        brr: do {
+        always: do {
             let n : Value
             try n = i.minus(1).get()
             
@@ -153,7 +153,7 @@ import CoreKit
     
     /// Forms the sequence pair at `index * 2`.
     @inlinable public mutating func double() throws {
-        brr: do {
+        always: do {
             let n : Value
             try n = i.times(2).get()
             

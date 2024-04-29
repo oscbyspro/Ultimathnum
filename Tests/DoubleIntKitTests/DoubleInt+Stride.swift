@@ -68,7 +68,7 @@ extension DoubleIntTests {
             typealias T = DoubleInt<Base>
             typealias F = Fallible
             
-            brr: do {
+            always: do {
                 Test().same(T.min.distance(to: T.min.advanced(by:    126)), F(I8 .max - 1))
                 Test().same(T.min.distance(to: T.min.advanced(by:    127)), F(I8 .max))
                 Test().same(T.min.distance(to: T.min.advanced(by:    128)), F(I8 .min, error: true))

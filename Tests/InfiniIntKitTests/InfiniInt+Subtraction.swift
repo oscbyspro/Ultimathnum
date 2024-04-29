@@ -28,6 +28,7 @@ extension InfiniIntTests {
             typealias T = InfiniInt<E>
             typealias F = Fallible<InfiniInt<E>>
             //=----------------------------------=
+            IntegerInvariants(T.self).subtractionAboutNegation(BinaryIntegerID())
             IntegerInvariants(T.self).subtractionAboutRepeatingBit(BinaryIntegerID())
             //=----------------------------------=
             let a: [L] = [ 0,  0,  0,  0]

@@ -58,6 +58,7 @@ extension CoreIntTests {
             Test().subtraction(-1 as T, -1 as T, F( 0 as T))
             
             IntegerInvariants(T.self).subtractionAboutMinMax(SystemsIntegerID())
+            IntegerInvariants(T.self).subtractionAboutNegation(SystemsIntegerID())
             IntegerInvariants(T.self).subtractionAboutRepeatingBit(BinaryIntegerID())
         }
         
@@ -70,6 +71,7 @@ extension CoreIntTests {
             Test().subtraction( 1 as T,  1 as T, F( 0 as T))
             
             IntegerInvariants(T.self).subtractionAboutMinMax(SystemsIntegerID())
+            IntegerInvariants(T.self).subtractionAboutNegation(SystemsIntegerID())
             IntegerInvariants(T.self).subtractionAboutRepeatingBit(BinaryIntegerID())
         }
         

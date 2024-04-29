@@ -44,7 +44,7 @@ extension Test {
         _ id: BinaryIntegerID = .init()
     )   where T: BinaryInteger {
         
-        brr: do {
+        always: do {
             same(lhs &* rhs, expectation.value)
             same(rhs &* lhs, expectation.value)
         };  if !expectation.error {
@@ -52,7 +52,7 @@ extension Test {
             same(rhs  * lhs, expectation.value)
         }
         
-        brr: do {
+        always: do {
             same({ var x = lhs; x &*= rhs; return x }(), expectation.value)
             same({ var x = rhs; x &*= lhs; return x }(), expectation.value)
         };  if !expectation.error {
@@ -60,14 +60,14 @@ extension Test {
             same({ var x = rhs; x  *= lhs; return x }(), expectation.value)
         }
         
-        brr: do {
+        always: do {
             same(lhs.times(rhs),                     expectation)
             same(lhs.times(Fallible(rhs)),           expectation)
             same(Fallible(lhs).times(rhs),           expectation)
             same(Fallible(lhs).times(Fallible(rhs)), expectation)
         }
         
-        brr: do {
+        always: do {
             same(rhs.times(lhs),                     expectation)
             same(rhs.times(Fallible(lhs)),           expectation)
             same(Fallible(rhs).times(lhs),           expectation)
