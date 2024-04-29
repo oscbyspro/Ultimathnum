@@ -102,9 +102,9 @@ extension DoubleIntTests {
             typealias T = DoubleInt<Base>
             typealias F = Fallible<T>
             //=----------------------------------=
-            IntegerInvariants(T.self).subtractionAboutMinMax(SystemsIntegerID())
-            IntegerInvariants(T.self).subtractionAboutNegation(SystemsIntegerID())
-            IntegerInvariants(T.self).subtractionAboutRepeatingBit(BinaryIntegerID())
+            IntegerInvariants(T.self).subtractionOfMinMax(SystemsIntegerID())
+            IntegerInvariants(T.self).subtractionByNegation(SystemsIntegerID())
+            IntegerInvariants(T.self).subtractionOfRepeatingBit(BinaryIntegerID())
             //=----------------------------------=
             Test().subtraction(T(low:  0, high:   0), T(low:  0, high:  0), F(T(low:  0, high:  0)))
             Test().subtraction(T(low:  0, high:   0), T(low: ~0, high: ~0), F(T(low:  1, high:  0), error: !T.isSigned))

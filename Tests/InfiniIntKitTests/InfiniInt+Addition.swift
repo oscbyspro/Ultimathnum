@@ -28,8 +28,8 @@ extension InfiniIntTests {
             typealias T = InfiniInt<E>
             typealias F = Fallible<InfiniInt<E>>
             //=----------------------------------=
-            IntegerInvariants(T.self).additionAboutMinMaxEsque()
-            IntegerInvariants(T.self).additionAboutRepeatingBit(BinaryIntegerID())
+            IntegerInvariants(T.self).additionOfMinMaxEsque()
+            IntegerInvariants(T.self).additionOfRepeatingBit(BinaryIntegerID())
             //=----------------------------------=
             let a: [L] = [ 0,  0,  0,  0]
             let b: [L] = [~0, ~0, ~0, ~0]

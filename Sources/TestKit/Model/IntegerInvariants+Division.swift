@@ -19,7 +19,7 @@ extension IntegerInvariants {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func divisionAboutMsbEsque() where T: BinaryInteger {
+    public func divisionOfMsbEsque() where T: BinaryInteger {
         //=--------------------------------------=
         let shl: T = (T.size.isInfinite ? 127 : T(raw: T.size - 1))
         let msb: T = (T.isSigned ? -001 : 001) << shl
@@ -70,7 +70,7 @@ extension IntegerInvariants {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func divisionAboutSmallBySmall() where T: BinaryInteger {
+    public func divisionOfSmallBySmall() where T: BinaryInteger {
         //=--------------------------------------=
         let x0 = 0 as T
         let x7 = 7 as T
@@ -96,9 +96,9 @@ extension IntegerInvariants {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func divisionAboutZeroDivisor(_ id: SystemsIntegerID) where T: SystemsInteger {
+    public func divisionByZero(_ id: SystemsIntegerID) where T: SystemsInteger {
         //=--------------------------------------=
-        self.divisionAboutZeroDivisor(BinaryIntegerID())
+        self.divisionByZero(BinaryIntegerID())
         //=--------------------------------------=
         let values: [T] = [4, 3, 2, 1, 0, ~0, ~1, ~2, ~3, ~4]
         
@@ -109,7 +109,7 @@ extension IntegerInvariants {
         }
     }
     
-    public func divisionAboutZeroDivisor(_ id: BinaryIntegerID) where T: BinaryInteger {
+    public func divisionByZero(_ id: BinaryIntegerID) where T: BinaryInteger {
         for value: T in [4, 3, 2, 1, 0, ~0, ~1, ~2, ~3, ~4] {
             test.division(value, T.zero, nil)
         }

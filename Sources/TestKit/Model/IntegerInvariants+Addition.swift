@@ -19,7 +19,7 @@ extension IntegerInvariants {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func additionAboutMinMaxEsque() where T: BinaryInteger {
+    public func additionOfMinMaxEsque() where T: BinaryInteger {
         //=--------------------------------------=
         let shl: T = (T.size.isInfinite ?  127 : T(raw: T.size - 1))
         let min: T = (T.isSigned ? -001 << shl :  000)
@@ -42,7 +42,7 @@ extension IntegerInvariants {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func additionAboutRepeatingBit(_ id: BinaryIntegerID) where T: BinaryInteger {
+    public func additionOfRepeatingBit(_ id: BinaryIntegerID) where T: BinaryInteger {
         //=--------------------------------------=
         let x0 = T(repeating: 0)
         let x1 = T(repeating: 1)

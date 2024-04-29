@@ -50,8 +50,8 @@ extension DoubleIntTests {
         func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
             
-            IntegerInvariants(T.self).multiplicationAboutMsb(SystemsIntegerID())
-            IntegerInvariants(T.self).multiplicationAboutRepeatingBit(SystemsIntegerID())
+            IntegerInvariants(T.self).multiplicationOfMsb(SystemsIntegerID())
+            IntegerInvariants(T.self).multiplicationOfRepeatingBit(SystemsIntegerID())
         }
         
         func whereTheBaseTypeIsSigned<B>(_ type: B.Type) where B: SystemsInteger {

@@ -19,7 +19,7 @@ extension IntegerInvariants {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func subtractionAboutMinMax(_ id: SystemsIntegerID) where T: SystemsInteger {
+    public func subtractionOfMinMax(_ id: SystemsIntegerID) where T: SystemsInteger {
         test.subtraction(T.min,  T .min, F( 0 as T))
         test.subtraction(T.min,  T .max, F( 1 as T, error: true))
         test.subtraction(T.max,  T .min, F(~0 as T, error: T.isSigned))
@@ -37,7 +37,7 @@ extension IntegerInvariants {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func subtractionAboutRepeatingBit(_ id: BinaryIntegerID) where T: BinaryInteger {
+    public func subtractionOfRepeatingBit(_ id: BinaryIntegerID) where T: BinaryInteger {
         //=--------------------------------------=
         let x0 = T(repeating: 0)
         let x1 = T(repeating: 1)
@@ -57,9 +57,9 @@ extension IntegerInvariants {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func subtractionAboutNegation(_ id: SystemsIntegerID) where T: SystemsInteger {
+    public func subtractionByNegation(_ id: SystemsIntegerID) where T: SystemsInteger {
         //=--------------------------------------=
-        self.subtractionAboutNegation(BinaryIntegerID())
+        self.subtractionByNegation(BinaryIntegerID())
         //=--------------------------------------=
         for x in [T.min, T.max, T.lsb, T.msb] {
             test.subtraction(0 as T, x, F(x.complement(), error: T.isSigned == (x == T.min)))
@@ -67,7 +67,7 @@ extension IntegerInvariants {
         }
     }
     
-    public func subtractionAboutNegation(_ id: BinaryIntegerID) where T: BinaryInteger {
+    public func subtractionByNegation(_ id: BinaryIntegerID) where T: BinaryInteger {
         test.subtraction(0 as T, ~1 as T, F( 2 as T, error: !T.isSigned))
         test.subtraction(0 as T, ~0 as T, F( 1 as T, error: !T.isSigned))
         test.subtraction(0 as T,  0 as T, F( 0 as T))

@@ -89,9 +89,10 @@ extension Test {
         _ expectation: Fallible<Integer>
     )   where Integer: BinaryInteger, Element: SystemsInteger & UnsignedInteger {
         body.withUnsafeBufferPointer {
+            //=----------------------------------=
             let appendix = Bit(mode.isSigned && ($0.last ?? 0) >= Element.msb)
             let elements = DataInt($0, repeating: appendix)!
-            
+            //=----------------------------------=
             same(Integer.exactly(elements, mode: mode), expectation, "Integer.exactly(_:mode:) - DataInt")
 
             elements.withMemoryRebound(to: U8.self) {

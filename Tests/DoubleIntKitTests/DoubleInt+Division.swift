@@ -23,9 +23,9 @@ extension DoubleIntTests {
     
     func testDivision() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self).divisionAboutMsbEsque()
-            IntegerInvariants(T.self).divisionAboutSmallBySmall()
-            IntegerInvariants(T.self).divisionAboutZeroDivisor(SystemsIntegerID())
+            IntegerInvariants(T.self).divisionOfMsbEsque()
+            IntegerInvariants(T.self).divisionOfSmallBySmall()
+            IntegerInvariants(T.self).divisionByZero(SystemsIntegerID())
         }
         
         for type in Self.types {

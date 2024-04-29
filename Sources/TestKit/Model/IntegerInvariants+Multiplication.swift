@@ -19,7 +19,7 @@ extension IntegerInvariants {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func multiplicationAboutMsb(_ id: SystemsIntegerID) where T: SystemsInteger {
+    public func multiplicationOfMsb(_ id: SystemsIntegerID) where T: SystemsInteger {
         //=--------------------------------------=
         let msb = T.msb
         let inv = T.msb.toggled()
@@ -80,7 +80,7 @@ extension IntegerInvariants {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func multiplicationAboutRepeatingBit(_ id: SystemsIntegerID) where T: SystemsInteger {
+    public func multiplicationOfRepeatingBit(_ id: SystemsIntegerID) where T: SystemsInteger {
         //=--------------------------------------=
         let x0 = T(repeating: 0)
         let x1 = T(repeating: 1)
@@ -114,7 +114,7 @@ extension IntegerInvariants {
         }
     }
     
-    public func multiplicationAboutRepeatingBit(_ id: BinaryIntegerID) where T: BinaryInteger {
+    public func multiplicationOfRepeatingBit(_ id: BinaryIntegerID) where T: BinaryInteger {
         let x0 = T(repeating: 0)
         let x1 = T(repeating: 1)
         

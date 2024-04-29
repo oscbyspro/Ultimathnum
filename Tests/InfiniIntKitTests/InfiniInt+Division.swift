@@ -23,9 +23,9 @@ extension InfiniIntTests {
     
     func testDivision() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            IntegerInvariants(T.self).divisionAboutMsbEsque()
-            IntegerInvariants(T.self).divisionAboutSmallBySmall()
-            IntegerInvariants(T.self).divisionAboutZeroDivisor(BinaryIntegerID())
+            IntegerInvariants(T.self).divisionOfMsbEsque()
+            IntegerInvariants(T.self).divisionOfSmallBySmall()
+            IntegerInvariants(T.self).divisionByZero(BinaryIntegerID())
         }
         
         for type in Self.types {

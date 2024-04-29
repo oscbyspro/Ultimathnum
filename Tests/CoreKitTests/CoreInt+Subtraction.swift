@@ -22,9 +22,9 @@ extension CoreIntTests {
     
     func testSubtraction() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self).subtractionAboutMinMax(SystemsIntegerID())
-            IntegerInvariants(T.self).subtractionAboutNegation(SystemsIntegerID())
-            IntegerInvariants(T.self).subtractionAboutRepeatingBit(BinaryIntegerID())
+            IntegerInvariants(T.self).subtractionOfMinMax(SystemsIntegerID())
+            IntegerInvariants(T.self).subtractionByNegation(SystemsIntegerID())
+            IntegerInvariants(T.self).subtractionOfRepeatingBit(BinaryIntegerID())
         }
         
         for type in coreSystemsIntegers {

@@ -26,8 +26,8 @@ extension CoreIntTests {
             typealias X = Doublet<T>
             typealias F = Fallible<Doublet<T>>
             
-            IntegerInvariants(T.self).multiplicationAboutMsb(SystemsIntegerID())
-            IntegerInvariants(T.self).multiplicationAboutRepeatingBit(SystemsIntegerID())
+            IntegerInvariants(T.self).multiplicationOfMsb(SystemsIntegerID())
+            IntegerInvariants(T.self).multiplicationOfRepeatingBit(SystemsIntegerID())
         }
         
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
