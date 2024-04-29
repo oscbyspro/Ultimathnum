@@ -71,12 +71,11 @@ extension InfiniIntTests {
             let a: [L] = [ 0,  0,  0,  0]
             let b: [L] = [~0, ~0, ~0, ~0]
             let c: [L] = [~1, ~0, ~0, ~0]
-            let x: (T) = T([1], repeating: 0)
-
-            Test().subtraction(T(a, repeating: 0), x, F(T(b + [~0] as [L], repeating: 1), error: !T.isSigned))
-            Test().subtraction(T(a, repeating: 1), x, F(T(b + [~1] as [L], repeating: 1)))
-            Test().subtraction(T(b, repeating: 0), x, F(T(c + [ 0] as [L], repeating: 0)))
-            Test().subtraction(T(b, repeating: 1), x, F(T(c + [~0] as [L], repeating: 1)))
+            
+            Test().subtraction(T(a, repeating: 0), 1, F(T(b + [~0] as [L], repeating: 1), error: !T.isSigned))
+            Test().subtraction(T(a, repeating: 1), 1, F(T(b + [~1] as [L], repeating: 1)))
+            Test().subtraction(T(b, repeating: 0), 1, F(T(c + [ 0] as [L], repeating: 0)))
+            Test().subtraction(T(b, repeating: 1), 1, F(T(c + [~0] as [L], repeating: 1)))
         }
         
         for element in Self.elements {

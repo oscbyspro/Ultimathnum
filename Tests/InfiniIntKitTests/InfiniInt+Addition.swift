@@ -71,12 +71,11 @@ extension InfiniIntTests {
             let a: [L] = [ 0,  0,  0,  0]
             let b: [L] = [~0, ~0, ~0, ~0]
             let c: [L] = [ 1,  0,  0,  0]
-            let x: (T) = T([1], repeating: 0)
-
-            Test().addition(T(a, repeating: 0), x, F(T(c + [ 0] as [L], repeating: 0)))
-            Test().addition(T(a, repeating: 1), x, F(T(c + [~0] as [L], repeating: 1)))
-            Test().addition(T(b, repeating: 0), x, F(T(a + [ 1] as [L], repeating: 0)))
-            Test().addition(T(b, repeating: 1), x, F(T(a + [ 0] as [L], repeating: 0), error: !T.isSigned))
+            
+            Test().addition(T(a, repeating: 0), 1, F(T(c + [ 0] as [L], repeating: 0)))
+            Test().addition(T(a, repeating: 1), 1, F(T(c + [~0] as [L], repeating: 1)))
+            Test().addition(T(b, repeating: 0), 1, F(T(a + [ 1] as [L], repeating: 0)))
+            Test().addition(T(b, repeating: 1), 1, F(T(a + [ 0] as [L], repeating: 0), error: !T.isSigned))
         }
         
         for element in Self.elements {
