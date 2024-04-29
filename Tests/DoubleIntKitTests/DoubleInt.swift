@@ -35,25 +35,41 @@ final class DoubleIntTests: XCTestCase {
     // MARK: Meta Data
     //=------------------------------------------------------------------------=
     
-    static let types: [any SystemsInteger.Type] = [
+    static let types: [any SystemsInteger.Type] = {
+        typesWhereIsSigned +
+        typesWhereIsUnsigned
+    }()
+    
+    static let typesWhereIsSigned: [any (SystemsInteger & SignedInteger).Type] = [
         I8x2.self,
-        U8x2.self,
         I8x4.self,
-        U8x4.self,
         IXx2.self,
-        UXx2.self,
         IXx4.self,
+    ]
+    
+    static let typesWhereIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = [
+        U8x2.self,
+        U8x4.self,
+        UXx2.self,
         UXx4.self,
     ]
     
-    static let bases: [any SystemsInteger.Type] = [
+    static let bases: [any SystemsInteger.Type] = {
+        basesWhereIsSigned +
+        basesWhereIsUnsigned
+    }()
+    
+    static let basesWhereIsSigned: [any (SystemsInteger & SignedInteger).Type] = [
         I8x2.High.self,
-        U8x2.High.self,
         I8x4.High.self,
-        U8x4.High.self,
         IXx2.High.self,
-        UXx2.High.self,
         IXx4.High.self,
+    ]
+    
+    static let basesWhereIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = [
+        U8x2.High.self,
+        U8x4.High.self,
+        UXx2.High.self,
         UXx4.High.self,
     ]
     

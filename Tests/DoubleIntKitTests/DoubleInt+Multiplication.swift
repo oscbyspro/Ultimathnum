@@ -47,6 +47,13 @@ extension DoubleIntTests {
     //=------------------------------------------------------------------------=
     
     func testMultiplication() {
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
+            
+            IntegerInvariants(T.self).multiplicationAboutMsb(SystemsIntegerID())
+            IntegerInvariants(T.self).multiplicationAboutRepeatingBit(SystemsIntegerID())
+        }
+        
         func whereTheBaseTypeIsSigned<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
             typealias M = DoubleInt<B>.Magnitude
@@ -64,7 +71,7 @@ extension DoubleIntTests {
             typealias M = DoubleInt<B>.Magnitude
             typealias P = Doublet<T>
             typealias F = Fallible<Doublet<T>>
-
+            
             Test().multiplication(T(low:  1, high:  2), T(low:  3, high:  4), F(P(low: M(low:  3, high:  10), high: T(low:  8, high:  0)), error: true))
             Test().multiplication(T(low:  1, high:  2), T(low: ~3, high: ~4), F(P(low: M(low: ~3, high: ~12), high: T(low: ~7, high:  1)), error: true))
             Test().multiplication(T(low: ~1, high: ~2), T(low:  3, high:  4), F(P(low: M(low: ~5, high: ~14), high: T(low: ~5, high:  3)), error: true))
@@ -72,61 +79,15 @@ extension DoubleIntTests {
         }
         
         for base in Self.bases {
-            base.isSigned ? whereTheBaseTypeIsSigned(base) : whereTheBaseTypeIsUnsigned(base)
-        }
-    }
-    
-    func testMultiplicationMinMax() {
-        func whereTheBaseTypeIsSigned<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias T = DoubleInt<B>
-            typealias M = DoubleInt<B>.Magnitude
-            typealias P = Doublet<T>
-            typealias F = Fallible<Doublet<T>>
-            
-            Test().multiplication(T.min,  T .min, F(P(low: 0 as M, high: T(raw:  M.msb >> 1)), error: true))
-            Test().multiplication(T.min,  T .max, F(P(low: M .msb, high: T(raw:  T.msb >> 1)), error: true))
-            Test().multiplication(T.max,  T .min, F(P(low: M .msb, high: T(raw:  T.msb >> 1)), error: true))
-            Test().multiplication(T.max,  T .max, F(P(low: 1 as M, high: T(raw: ~M.msb >> 1)), error: true))
-            
-            Test().multiplication(T.min, ~1 as T, F(P(low:  0 as M, high:  1 as T), error: true))
-            Test().multiplication(T.min, ~0 as T, F(P(low:  M .msb, high:  0 as T), error: true))
-            Test().multiplication(T.min,  0 as T, F(P(low:  0 as M, high:  0 as T)))
-            Test().multiplication(T.min,  1 as T, F(P(low:  M .msb, high: ~0 as T)))
-            Test().multiplication(T.min,  2 as T, F(P(low:  0 as M, high: ~0 as T), error: true))
-            
-            Test().multiplication(T.max, ~1 as T, F(P(low:  2 as M, high: ~0 as T), error: true))
-            Test().multiplication(T.max, ~0 as T, F(P(low:  .msb+1, high: ~0 as T)))
-            Test().multiplication(T.max,  0 as T, F(P(low:  0 as M, high:  0 as T)))
-            Test().multiplication(T.max,  1 as T, F(P(low: ~M .msb, high:  0 as T)))
-            Test().multiplication(T.max,  2 as T, F(P(low: ~1 as M, high:  0 as T), error: true))
+            whereTheBaseTypeIs(base)
         }
         
-        func whereTheBaseTypeIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias T = DoubleInt<B>
-            typealias M = DoubleInt<B>.Magnitude
-            typealias P = Doublet<T>
-            typealias F = Fallible<Doublet<T>>
-            
-            Test().multiplication(T.min,  T .min, F(P(low:  0 as M, high:  0 as T)))
-            Test().multiplication(T.min,  T .max, F(P(low:  0 as M, high:  0 as T)))
-            Test().multiplication(T.max,  T .min, F(P(low:  0 as M, high:  0 as T)))
-            Test().multiplication(T.max,  T .max, F(P(low:  1 as M, high: ~1 as T), error: true))
-            
-            Test().multiplication(T.min, ~1 as T, F(P(low:  0 as M, high:  0 as T)))
-            Test().multiplication(T.min, ~0 as T, F(P(low:  0 as M, high:  0 as T)))
-            Test().multiplication(T.min,  0 as T, F(P(low:  0 as M, high:  0 as T)))
-            Test().multiplication(T.min,  1 as T, F(P(low:  0 as M, high:  0 as T)))
-            Test().multiplication(T.min,  2 as T, F(P(low:  0 as M, high:  0 as T)))
-            
-            Test().multiplication(T.max, ~1 as T, F(P(low:  2 as M, high: ~2 as T), error: true))
-            Test().multiplication(T.max, ~0 as T, F(P(low:  1 as M, high: ~1 as T), error: true))
-            Test().multiplication(T.max,  0 as T, F(P(low:  0 as M, high:  0 as T)))
-            Test().multiplication(T.max,  1 as T, F(P(low: ~0 as M, high:  0 as T)))
-            Test().multiplication(T.max,  2 as T, F(P(low: ~1 as M, high:  1 as T), error: true))
+        for base in Self.basesWhereIsSigned {
+            whereTheBaseTypeIsSigned(base)
         }
         
-        for base in Self.bases {
-            base.isSigned ? whereTheBaseTypeIsSigned(base) : whereTheBaseTypeIsUnsigned(base)
+        for base in Self.basesWhereIsUnsigned {
+            whereTheBaseTypeIsUnsigned(base)
         }
     }
 }

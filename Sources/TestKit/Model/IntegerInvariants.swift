@@ -15,11 +15,23 @@ import CoreKit
 
 public struct IntegerInvariants<T> where T: BinaryInteger {
     
-    typealias S = T.Signitude
+    typealias T2 = Doublet<T> where T: SystemsInteger
+
+    typealias T3 = Triplet<T> where T: SystemsInteger
     
-    typealias M = T.Magnitude
+    typealias S  = T.Signitude
     
-    typealias F = Fallible<T>
+    typealias S2 = Doublet<S> where T: SystemsInteger
+
+    typealias S3 = Triplet<S> where T: SystemsInteger
+    
+    typealias M  = T.Magnitude
+    
+    typealias M2 = Doublet<M> where T: SystemsInteger
+
+    typealias M3 = Triplet<M> where T: SystemsInteger
+    
+    typealias F  = Fallible<T>
     
     //=------------------------------------------------------------------------=
     // MARK: State
