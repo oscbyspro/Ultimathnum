@@ -98,8 +98,6 @@ final class BitTests: XCTestCase {
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
-    // TODO: Write a custom Comparable protocol with a compared(to:) method.
-    //=------------------------------------------------------------------------=
     
     func checkComparison(_ lhs: T, _ rhs: T, _ expectation: Signum, _ check: Test = .init()) {
         for (x, y, z) in [(lhs, rhs, expectation), (rhs, lhs, expectation.negated())] {
