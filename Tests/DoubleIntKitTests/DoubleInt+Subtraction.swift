@@ -101,7 +101,10 @@ extension DoubleIntTests {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
             typealias F = Fallible<T>
-                        
+            //=----------------------------------=
+            IntegerInvariants(T.self).subtractionAboutMinMax(SystemsIntegerID())
+            IntegerInvariants(T.self).subtractionAboutRepeatingBit(BinaryIntegerID())
+            //=----------------------------------=
             Test().subtraction(T(low:  0, high:   0), T(low:  0, high:  0), F(T(low:  0, high:  0)))
             Test().subtraction(T(low:  0, high:   0), T(low: ~0, high: ~0), F(T(low:  1, high:  0), error: !T.isSigned))
             Test().subtraction(T(low: ~0, high:  ~0), T(low:  0, high:  0), F(T(low: ~0, high: ~0)))
@@ -116,29 +119,6 @@ extension DoubleIntTests {
                 Test().subtraction(T(low: .min, high: .min), -1 as T, F(T(low: .min + 1, high: .min))) // carry 1st
                 Test().subtraction(T(low: .min, high: .max), -1 as T, F(T(low: .min + 1, high: .max))) // carry 2nd
             }
-        }
-        
-        for base in Self.bases {
-            whereTheBaseTypeIs(base)
-        }
-    }
-    
-    func testSubtractionMinMax() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = DoubleInt<Base>
-            typealias F = Fallible<T>
-            
-            Test().subtraction(T.min,  T .min, F( 0 as T))
-            Test().subtraction(T.min,  T .max, F( 1 as T, error: true))
-            Test().subtraction(T.max,  T .min, F(~0 as T, error: T.isSigned))
-            Test().subtraction(T.max,  T .max, F( 0 as T))
-            
-            Test().subtraction(T.min, ~0 as T, F( T .min + 1, error: !T.isSigned))
-            Test().subtraction(T.min,  0 as T, F( T .min))
-            Test().subtraction(T.min,  1 as T, F( T .max, error: true))
-            Test().subtraction(T.max, ~0 as T, F( T .min, error: T.isSigned))
-            Test().subtraction(T.max,  0 as T, F( T .max))
-            Test().subtraction(T.max,  1 as T, F( T .max - 1))
         }
         
         for base in Self.bases {

@@ -28,7 +28,6 @@ extension IntegerInvariants {
         test.addition(T.min, ~0 as T, F( T .max, error: T.isSigned))
         test.addition(T.min,  0 as T, F( T .min))
         test.addition(T.min,  1 as T, F( T .min + 1))
-        
         test.addition(T.max, ~0 as T, F( T .max - 1, error: !T.isSigned))
         test.addition(T.max,  0 as T, F( T .max))
         test.addition(T.max,  1 as T, F( T .min, error: true))

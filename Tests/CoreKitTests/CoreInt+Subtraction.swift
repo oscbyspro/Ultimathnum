@@ -57,17 +57,8 @@ extension CoreIntTests {
             Test().subtraction( 0 as T, -1 as T, F( 1 as T))
             Test().subtraction(-1 as T, -1 as T, F( 0 as T))
             
-            Test().subtraction( T .min,  T .min, F( 0 as T))
-            Test().subtraction( T .max,  T .min, F(-1 as T, error: true))
-            Test().subtraction( T .min,  T .max, F( 1 as T, error: true))
-            Test().subtraction( T .max,  T .max, F( 0 as T))
-
-            Test().subtraction( T .max,  1 as T, F( T .max - 1))
-            Test().subtraction( T .max,  0 as T, F( T .max))
-            Test().subtraction( T .max, -1 as T, F( T .min, error: true))
-            Test().subtraction( T .min,  1 as T, F( T .max, error: true))
-            Test().subtraction( T .min,  0 as T, F( T .min))
-            Test().subtraction( T .min, -1 as T, F( T .min + 1))
+            IntegerInvariants(T.self).subtractionAboutMinMax(SystemsIntegerID())
+            IntegerInvariants(T.self).subtractionAboutRepeatingBit(BinaryIntegerID())
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
@@ -78,17 +69,8 @@ extension CoreIntTests {
             Test().subtraction( 0 as T,  1 as T, F(~0 as T, error: true))
             Test().subtraction( 1 as T,  1 as T, F( 0 as T))
             
-            Test().subtraction( T .min,  T .min, F( T .min))
-            Test().subtraction( T .max,  T .min, F( T .max))
-            Test().subtraction( T .min,  T .max, F( 1 as T, error: true))
-            Test().subtraction( T .max,  T .max, F( T .min))
-            
-            Test().subtraction( T .min,  2 as T, F( T .max - 1, error: true))
-            Test().subtraction( T .min,  1 as T, F( T .max - 0, error: true))
-            Test().subtraction( T .min,  0 as T, F( T .min - 0))
-            Test().subtraction( T .max,  2 as T, F( T .max - 2))
-            Test().subtraction( T .max,  1 as T, F( T .max - 1))
-            Test().subtraction( T .max,  0 as T, F( T .max - 0))
+            IntegerInvariants(T.self).subtractionAboutMinMax(SystemsIntegerID())
+            IntegerInvariants(T.self).subtractionAboutRepeatingBit(BinaryIntegerID())
         }
         
         for type in coreSystemsIntegers {
