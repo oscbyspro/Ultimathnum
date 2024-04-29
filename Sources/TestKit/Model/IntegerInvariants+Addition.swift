@@ -19,19 +19,28 @@ extension IntegerInvariants {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func additionAboutMinMax(_ id: SystemsIntegerID) where T: SystemsInteger {
-        test.addition(T.min,  T .min, F( 0 as T, error: T.isSigned))
-        test.addition(T.min,  T .max, F(~0 as T))
-        test.addition(T.max,  T .min, F(~0 as T))
-        test.addition(T.max,  T .max, F(~1 as T, error: true))
-        
-        test.addition(T.min, ~0 as T, F( T .max, error: T.isSigned))
-        test.addition(T.min,  0 as T, F( T .min))
-        test.addition(T.min,  1 as T, F( T .min + 1))
-        test.addition(T.max, ~0 as T, F( T .max - 1, error: !T.isSigned))
-        test.addition(T.max,  0 as T, F( T .max))
-        test.addition(T.max,  1 as T, F( T .min, error: true))
+    public func additionAboutMinMaxEsque() where T: BinaryInteger {
+        //=--------------------------------------=
+        let shl: T = (T.size.isInfinite ?  127 : T(raw: T.size - 1))
+        let min: T = (T.isSigned ? -001 << shl :  000)
+        let max: T = (T.isSigned ? ~min        : ~000)
+        //=--------------------------------------=
+        test.addition(min,  min, F( min << 001,      error:  (T.isSigned && !T.size.isInfinite)))
+        test.addition(min,  max, F(~000))
+        test.addition(max,  min, F(~000))
+        test.addition(max,  max, F( max << 001,      error: !(T.isSigned &&  T.size.isInfinite)))
+
+        test.addition(min, ~000, F( max |  min << 1, error:  (T.isSigned && !T.size.isInfinite)))
+        test.addition(min,  000, F( min))
+        test.addition(min,  001, F( min |  001))
+        test.addition(max, ~000, F( max ^  001,      error: !(T.isSigned)))
+        test.addition(max,  000, F( max))
+        test.addition(max,  001, F( min ^  min << 1, error: !(T.isSigned && T.size.isInfinite)))
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
     
     public func additionAboutRepeatingBit(_ id: BinaryIntegerID) where T: BinaryInteger {
         //=--------------------------------------=

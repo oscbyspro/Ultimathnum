@@ -22,7 +22,7 @@ extension CoreIntTests {
     
     func testAddition() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self).additionAboutMinMax(SystemsIntegerID())
+            IntegerInvariants(T.self).additionAboutMinMaxEsque()
             IntegerInvariants(T.self).additionAboutRepeatingBit(BinaryIntegerID())
         }
         
