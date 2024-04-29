@@ -27,7 +27,9 @@ extension InfiniIntTests {
             typealias L = Base.Element.Magnitude
             typealias T = InfiniInt<E>
             typealias F = Fallible<InfiniInt<E>>
-            
+            //=----------------------------------=
+            IntegerInvariants(T.self).additionAboutRepeatingBit(BinaryIntegerID())
+            //=----------------------------------=
             let a: [L] = [ 0,  0,  0,  0]
             let b: [L] = [~0, ~0, ~0, ~0]
             let c: [L] = [~1, ~0, ~0, ~0] // +1
