@@ -20,63 +20,15 @@ extension CoreIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testNegation() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias F = Fallible<T>
-            
-            Test().subtraction( 0 as T,  0 as T, F( 0 as T))
-            Test().subtraction( 0 as T,  1 as T, F(~0 as T))
-            Test().subtraction( 0 as T, -1 as T, F( 1 as T))
-            
-            Test().subtraction( 0 as T,  T .max, F( T .min + 1))
-            Test().subtraction( 0 as T,  T .min, F( T .min + 0, error: true))
-        }
-        
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias F = Fallible<T>
-            
-            Test().subtraction( 0 as T,  0 as T, F( 0 as T))
-            Test().subtraction( 0 as T,  1 as T, F(~0 as T, error: true))
-            Test().subtraction( 0 as T,  2 as T, F(~1 as T, error: true))
-            
-            Test().subtraction( 0 as T,  T .min, F( T .min + 0))
-            Test().subtraction( 0 as T,  T .max, F( T .min + 1, error: true))
-        }
-        
-        for type in coreSystemsIntegers {
-            type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
-        }
-    }
-    
     func testSubtraction() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias F = Fallible<T>
-            
-            Test().subtraction( 0 as T,  0 as T, F( 0 as T))
-            Test().subtraction(-1 as T,  0 as T, F(-1 as T))
-            Test().subtraction( 0 as T, -1 as T, F( 1 as T))
-            Test().subtraction(-1 as T, -1 as T, F( 0 as T))
-            
-            IntegerInvariants(T.self).subtractionAboutMinMax(SystemsIntegerID())
-            IntegerInvariants(T.self).subtractionAboutNegation(SystemsIntegerID())
-            IntegerInvariants(T.self).subtractionAboutRepeatingBit(BinaryIntegerID())
-        }
-        
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias F = Fallible<T>
-            
-            Test().subtraction( 0 as T,  0 as T, F( 0 as T))
-            Test().subtraction( 1 as T,  0 as T, F( 1 as T))
-            Test().subtraction( 0 as T,  1 as T, F(~0 as T, error: true))
-            Test().subtraction( 1 as T,  1 as T, F( 0 as T))
-            
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             IntegerInvariants(T.self).subtractionAboutMinMax(SystemsIntegerID())
             IntegerInvariants(T.self).subtractionAboutNegation(SystemsIntegerID())
             IntegerInvariants(T.self).subtractionAboutRepeatingBit(BinaryIntegerID())
         }
         
         for type in coreSystemsIntegers {
-            type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
+            whereIs(type)
         }
     }
 }

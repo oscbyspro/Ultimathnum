@@ -43,7 +43,7 @@ extension IntegerInvariants {
         test.addition(x1, x0, F(x1))
         test.addition(x1, x1, F(~1, error: !T.isSigned))
         //=--------------------------------------=
-        for increment: T in [1, 2, 3] {
+        for increment: T in [1, 2, 3, ~1, ~2, ~3]  {
             test.addition(x0, increment, F(increment))
             test.addition(x1, increment, F(increment - 1, error: !T.isSigned))
         }

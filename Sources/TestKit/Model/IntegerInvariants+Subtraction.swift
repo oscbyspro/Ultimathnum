@@ -47,7 +47,7 @@ extension IntegerInvariants {
         test.subtraction(x1, x0, F(x1))
         test.subtraction(x1, x1, F(x0))
         //=--------------------------------------=
-        for decrement: T in [1, 2, 3] {
+        for decrement: T in [1, 2, 3, ~1, ~2, ~3] {
             test.subtraction(x0, decrement, F(decrement.complement(), error: !T.isSigned))
             test.subtraction(x1, decrement, F(decrement.toggled()))
         }
