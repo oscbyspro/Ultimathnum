@@ -21,33 +21,22 @@ extension InfiniIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testDivisionByZero() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias E = Base.Element
-            typealias L = Base.Element.Magnitude
-            typealias T = InfiniInt<Base>
-            typealias F = Fallible<Division<T, T>>
-            //=----------------------------------=
-            let  small = T(0x0000000000000000000000000000007F)
-            let xsmall = small.complement()
-            let  large = T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0)
-            let xlarge = large.complement()
-            //=----------------------------------=
-            for value in [small, xsmall, large, xlarge] {
-                Test().division(value,  T.zero, nil)
-            }
+    func testDivision() {
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            IntegerInvariants(T.self).divisionAboutMsbEsque()
+            IntegerInvariants(T.self).divisionAboutSmallBySmall()
+            IntegerInvariants(T.self).divisionAboutZeroDivisor(BinaryIntegerID())
         }
         
-        for element in Self.elements {
-            whereTheBaseTypeIs(element)
+        for type in Self.types {
+            whereIs(type)
         }
     }
     
     func testDivisionByNegative() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger & SignedInteger {
-            typealias E = Base.Element
-            typealias L = Base.Element.Magnitude
-            typealias T = InfiniInt<Base>
+        func whereIs<T>(_ type: T.Type) where T: SignedInteger {
+            typealias E = T.Element
+            typealias L = T.Element.Magnitude
             typealias F = Fallible<Division<T, T>>
             //=----------------------------------=
             let  small = T(0x0000000000000000000000000000007F)
@@ -78,16 +67,15 @@ extension InfiniIntTests {
             Test().division(xlarge, xlarge, F(quotient:  T( 1), remainder:  T( 0)))
         }
                         
-        for element in Self.elementsWhereIsSigned {
-            whereTheBaseTypeIs(element)
+        for element in Self.typesWhereIsSigned {
+            whereIs(element)
         }
     }
     
     func testDivisionByInfinite() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger & UnsignedInteger {
-            typealias E = Base.Element
-            typealias L = Base.Element.Magnitude
-            typealias T = InfiniInt<Base>
+        func whereIs<T>(_ type: T.Type) where T: UnsignedInteger {
+            typealias E = T.Element
+            typealias L = T.Element.Magnitude
             typealias F = Fallible<Division<T, T>>
             //=----------------------------------=
             let  small = T(0x0000000000000000000000000000007F)
@@ -118,8 +106,8 @@ extension InfiniIntTests {
             Test().division(xlarge, xlarge, F(quotient:  T( 1), remainder:  T( 0)))
         }
                         
-        for element in Self.elementsWhereIsUnsigned {
-            whereTheBaseTypeIs(element)
+        for element in Self.typesWhereIsUnsigned {
+            whereIs(element)
         }
     }
 }

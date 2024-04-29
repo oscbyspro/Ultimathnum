@@ -21,48 +21,14 @@ extension CoreIntTests {
     //=------------------------------------------------------------------------=
     
     func testDivision() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias M = T.Magnitude
-            typealias F = Fallible<Division<T, T>>
-            
-            Test().division( 7 as T,  3 as T, F(quotient:  2, remainder:  1))
-            Test().division( 7 as T, -3 as T, F(quotient: -2, remainder:  1))
-            Test().division(-7 as T,  3 as T, F(quotient: -2, remainder: -1))
-            Test().division(-7 as T, -3 as T, F(quotient:  2, remainder: -1))
-            
-            Test().division(-2 as T,  0 as T, nil)
-            Test().division(-1 as T,  0 as T, nil)
-            Test().division( 0 as T,  0 as T, nil)
-            Test().division( 1 as T,  0 as T, nil)
-            
-            Test().division( T .min, -2 as T, F(quotient:  T(raw: M.msb >> 1 + 0), remainder: 0))
-            Test().division( T .min, -1 as T, F(quotient:  T.min, remainder: T(  ), error: true))
-            Test().division( T .min,  0 as T, nil)
-            Test().division( T .min,  1 as T, F(quotient:  T(raw: M.msb >> 0 + 0), remainder: 0))
-            
-            Test().division( T .max, -2 as T, F(quotient:  T(raw: T.min >> 1 + 1), remainder: 1))
-            Test().division( T .max, -1 as T, F(quotient:  T(raw: T.min +  1 + 0), remainder: 0))
-            Test().division( T .max,  0 as T, nil)
-            Test().division( T .max,  1 as T, F(quotient:  T(raw: T.max >> 0 + 0), remainder: 0))
-        }
-        
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias D = Division<T, T>
-            typealias F = Fallible<Division<T, T>>
-            
-            Test().division( 7 as T,  0 as T, nil)
-            Test().division( 7 as T,  1 as T, F(quotient:  7, remainder:  0))
-            Test().division( 7 as T,  2 as T, F(quotient:  3, remainder:  1))
-            Test().division( 7 as T,  3 as T, F(quotient:  2, remainder:  1))
-            
-            Test().division( 0 as T,  0 as T, nil)
-            Test().division( 1 as T,  0 as T, nil)
-            Test().division( 2 as T,  0 as T, nil)
-            Test().division( 3 as T,  0 as T, nil)
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            IntegerInvariants(T.self).divisionAboutMsbEsque()
+            IntegerInvariants(T.self).divisionAboutSmallBySmall()
+            IntegerInvariants(T.self).divisionAboutZeroDivisor(SystemsIntegerID())
         }
         
         for type in coreSystemsIntegers {
-            type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
+            whereIs(type)
         }
     }
     
@@ -122,7 +88,10 @@ extension CoreIntTests {
     // MARK: Tests x RELEASE
     //=------------------------------------------------------------------------=
     
-    func testDivision2111I8() {
+    func testDivision2111I8() throws {
+        #if DEBUG
+        throw XCTSkip("too slow without compiler optimization")
+        #else
         typealias T = I8
         
         var success = 0
@@ -142,9 +111,13 @@ extension CoreIntTests {
         
         XCTAssertEqual(success, 04210433)
         XCTAssertEqual(failure, 12566783)
+        #endif
     }
     
-    func testDivision2111U8() {
+    func testDivision2111U8() throws {
+        #if DEBUG
+        throw XCTSkip("too slow without compiler optimization")
+        #else
         typealias T = U8
         
         var success = 0
@@ -164,5 +137,6 @@ extension CoreIntTests {
         
         XCTAssertEqual(success, 08355840)
         XCTAssertEqual(failure, 08421376)
+        #endif
     }
 }
