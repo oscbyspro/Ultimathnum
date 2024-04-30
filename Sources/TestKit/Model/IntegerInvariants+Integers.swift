@@ -10,7 +10,7 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Integer Invariants x Numbers
+// MARK: * Integer Invariants x Integers
 //*============================================================================*
 
 extension IntegerInvariants {

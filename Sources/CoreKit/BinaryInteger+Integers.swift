@@ -8,7 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Binary Integer x Numbers
+// MARK: * Binary Integer x Integers
 //*============================================================================*
 
 extension BinaryInteger {
@@ -98,7 +98,7 @@ extension BinaryInteger {
 }
 
 //*============================================================================*
-// MARK: * Binary Integer x Numbers x Enclosed
+// MARK: * Binary Integer x Integers x Enclosed
 //*============================================================================*
 
 extension EnclosedInteger {
@@ -129,7 +129,7 @@ extension EnclosedInteger {
 }
 
 //*============================================================================*
-// MARK: * Binary Integer x Numbers x Systems
+// MARK: * Binary Integer x Integers x Systems
 //*============================================================================*
 
 extension SystemsInteger {
@@ -146,7 +146,6 @@ extension SystemsInteger {
         Self(raw: 1 as Magnitude &<< (size &- 1))
     }
 }
-
 
 //=----------------------------------------------------------------------------=
 // MARK: + Machine Word

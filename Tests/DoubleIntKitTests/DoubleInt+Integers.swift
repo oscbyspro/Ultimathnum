@@ -8,13 +8,14 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import DoubleIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Core Int x Numbers
+// MARK: * Double Int x Integers
 //*============================================================================*
 
-extension CoreIntTests {
+extension DoubleIntTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -23,11 +24,11 @@ extension CoreIntTests {
     func testNumbers() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             IntegerInvariants(T.self).clampingCoreSystemsIntegers()
+            IntegerInvariants(T.self).exactlyCoreSystemsIntegers()
             IntegerInvariants(T.self).exactlySameSizeSystemsIntegers()
-            IntegerInvariants(T.self).clampingCoreSystemsIntegers()
         }
         
-        for type in coreSystemsIntegers {
+        for type in Self.types {
             whereIs(type)
         }
     }
@@ -40,7 +41,7 @@ extension CoreIntTests {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             typealias F = Fallible<T>
-                        
+            
             Test().same(T.exactly(magnitude:  M( 0)), F(T( 0)))
             Test().same(T.exactly(magnitude:  M( 1)), F(T( 1)))
             Test().same(T.exactly(magnitude: ~M.msb), F(T.max))
@@ -56,14 +57,15 @@ extension CoreIntTests {
             Test().same(T.exactly(magnitude:  M.max), F(T.max))
         }
         
-        for type in coreSystemsIntegers {
+        for type in Self.types {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }
     
     func testMakeMagnitude() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias M = T.Magnitude
+            typealias M  = T.Magnitude
+            typealias AR = Fallible<T>
             
             Test().same((-1 as T).magnitude(),  1 as M)
             Test().same(( 0 as T).magnitude(),  0 as M)
@@ -72,13 +74,14 @@ extension CoreIntTests {
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias M = T.Magnitude
+            typealias M  = T.Magnitude
+            typealias AR = Fallible<T>
             
             Test().same(( 0 as T).magnitude(), 0 as M)
             Test().same(( 1 as T).magnitude(), 1 as M)
         }
         
-        for type in coreSystemsIntegers {
+        for type in Self.types {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }
