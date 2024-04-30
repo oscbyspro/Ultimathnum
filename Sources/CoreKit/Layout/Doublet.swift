@@ -22,6 +22,8 @@
     
     public typealias Magnitude  = Doublet<Base.Magnitude>
     
+    public typealias Signitude  = Doublet<Base.Signitude>
+    
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=

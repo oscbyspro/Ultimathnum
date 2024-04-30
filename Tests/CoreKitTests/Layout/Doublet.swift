@@ -20,6 +20,39 @@ final class DoubletTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
+    func testInit() {
+        func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = Doublet<B>
+            
+            Test().same(T(low: 1, high: 2).low,  1 as B.Magnitude)
+            Test().same(T(low: 1, high: 2).high, 2 as B)
+            
+            Test().same(T(high: 1, low: 2).low,  2 as B.Magnitude)
+            Test().same(T(high: 1, low: 2).high, 1 as B)
+        }
+        
+        for base in coreSystemsIntegers {
+            whereTheBaseIs(base)
+        }
+    }
+    
+    func testBitCast() {
+        func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = Doublet<B>
+            typealias S = Doublet<B>.Signitude
+            typealias M = Doublet<B>.Magnitude
+            
+            Test().same(M(raw: T(low:  1, high:  2)), M(low:  1, high:  2))
+            Test().same(S(raw: T(low:  1, high:  2)), S(low:  1, high:  2))
+            Test().same(M(raw: T(low: ~1, high: ~2)), M(low: ~1, high: ~2))
+            Test().same(S(raw: T(low: ~1, high: ~2)), S(low: ~1, high: ~2))
+        }
+        
+        for base in coreSystemsIntegers {
+            whereTheBaseIs(base)
+        }
+    }
+    
     func testMemoryLayout() {
         func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = Doublet<B>
