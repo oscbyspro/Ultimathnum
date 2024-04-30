@@ -12,15 +12,4 @@
 //*============================================================================*
 
 /// A signed binary integer.
-///
-/// ### Await: Generalized Opaque and Existential Type Constraints
-///
-/// This protocol is basically just a named type constraint. So it
-/// might be possible to replace with the following, at some point:
-///
-/// ```swift
-/// any  BinaryInteger<.Signitude == .Self>
-/// some BinaryInteger<.Signitude == .Self>
-/// ```
-///
 public protocol SignedInteger: BinaryInteger where Element: SignedInteger, Signitude == Self, Mode == Signed { }

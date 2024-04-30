@@ -71,4 +71,13 @@ extension IntegerInvariants {
             test.expect(T.size <= IX.max, "the maximum finite size is IX.max")
         }
     }
+    
+    public func protocols() where T: BinaryInteger {
+        //=--------------------------------------=
+        let isEnclosed = !T.isSigned || !T.size.isInfinite
+        //=--------------------------------------=
+        test.same( T.isSigned, T.self is any   SignedInteger.Type,   "SignedInteger")
+        test.same(!T.isSigned, T.self is any UnsignedInteger.Type, "UnsignedInteger")
+        test.same( isEnclosed, T.self is any EnclosedInteger.Type, "EnclosedInteger")
+    }
 }

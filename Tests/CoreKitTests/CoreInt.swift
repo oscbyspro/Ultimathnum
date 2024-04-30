@@ -24,6 +24,7 @@ final class CoreIntTests: XCTestCase {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             IntegerInvariants(T.self).mode(BinaryIntegerID())
             IntegerInvariants(T.self).size(SystemsIntegerID())
+            IntegerInvariants(T.self).protocols()
         }
         
         for type in coreSystemsIntegers {

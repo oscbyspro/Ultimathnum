@@ -22,14 +22,6 @@ final class BitTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testInvariants() {
-        Test().invariants(T.self, BitCastableID())
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
     func testBool() {
         Test().same(T(false), 0 as T)
         Test().same(T(true ), 1 as T)

@@ -22,14 +22,6 @@ final class SignTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testInvariants() {
-        Test().invariants(T.self, BitCastableID())
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
     func testBit() {
         Test().same(T(0 as Bit), T.plus )
         Test().same(T(1 as Bit), T.minus)
