@@ -40,17 +40,10 @@ Functional where Quotient: BinaryInteger, Remainder: BinaryInteger {
     // MARK: Accessors
     //=------------------------------------------------------------------------=
     
-    @inlinable public var components: (quotient: Quotient, remainder: Remainder) {
-        consuming get {
-            (quotient: self.quotient, remainder: self.remainder)
-        }
-        
-        mutating set {
-            (quotient: self.quotient, remainder: self.remainder) = newValue
-        }
+    @inlinable public consuming func components() -> (quotient: Quotient, remainder: Remainder) {
+        (quotient: self.quotient, remainder: self.remainder)
     }
     
-        
     //=------------------------------------------------------------------------=
     // MARK: Details x Bit Pattern
     //=------------------------------------------------------------------------=

@@ -42,14 +42,8 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
 
-    @inlinable public var components: (value: Value, error: Bool) {
-        consuming get {
-            (value: self.value, error: self.error)
-        }
-        
-        mutating set {
-            (value: self.value, error: self.error) = newValue
-        }
+    @inlinable public consuming func components() -> (value: Value, error: Bool) {
+        (value: self.value, error: self.error)
     }
     
     //=------------------------------------------------------------------------=

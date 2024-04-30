@@ -122,7 +122,7 @@ extension TextInt {
                 small: repeat {
                 
                     let lowest: UX
-                    (chunk, lowest) = chunk.division(Divisor(unchecked: self.radix)).assert().components
+                    (chunk, lowest) = chunk.division(Divisor(unchecked: self.radix)).assert().components()
                     let element = try! self.numerals.encode(U8(load: lowest))
                     precondition(asciiIndex > ascii.startIndex)
                     asciiIndex = ascii.index(before: asciiIndex)

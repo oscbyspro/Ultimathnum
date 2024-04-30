@@ -87,8 +87,8 @@ extension SystemsInteger {
         // performance: consume instance then bit
         //=--------------------------------------=
         let error: Bool
-        (self, error) = self.plus(increment).components
-        (self, extra) = self.plus(Self(Bit(extra))).components
+        (self, error) = self.plus(increment).components()
+        (self, extra) = self.plus(Self(Bit(extra))).components()
         return self.combine(error != extra)
     }
 }
