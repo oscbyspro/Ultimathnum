@@ -86,3 +86,89 @@ extension BinaryInteger {
         }
     }
 }
+
+//*============================================================================*
+// MARK: * Binary Integer x Numbers x Enclosed
+//*============================================================================*
+
+extension EnclosedInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static var min: Self {
+        isSigned ? Self(raw: 1 as Magnitude &<< Shift(unchecked: size &- 1)) : Self()
+    }
+    
+    @inlinable public static var max: Self {
+        ~(min)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(clamping source: some BinaryInteger) {
+        if  let instance = Self.exactly(source).optional() {
+            self = instance
+        }   else {
+            self = source.isNegative ? Self.min : Self.max
+        }
+    }
+}
+
+//*============================================================================*
+// MARK: * Binary Integer x Numbers x Systems
+//*============================================================================*
+
+extension SystemsInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static var lsb: Self {
+        Self(raw: 1 as Magnitude)
+    }
+    
+    @inlinable public static var msb: Self {
+        Self(raw: 1 as Magnitude &<< (size &- 1))
+    }
+}
+
+
+//=----------------------------------------------------------------------------=
+// MARK: + Machine Word
+//=----------------------------------------------------------------------------=
+
+extension SystemsInteger where BitPattern == UX.BitPattern {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    /// Returns the size of the given type as a machine word.
+    ///
+    /// - Note: A finite integer size must fit in this type per protocol.
+    ///
+    /// - Important: A binary integer's size is measured in bits.
+    ///
+    @inlinable public init<T>(size type: T.Type) where T: SystemsInteger {
+        self = T.size.load(as: Self.self)
+    }
+    
+    /// Returns the size of the given type as a machine word, if possible.
+    ///
+    /// - Note: A finite integer size must fit in this type per protocol.
+    ///
+    /// - Important: A binary integer's size is measured in bits.
+    ///
+    @inlinable public init?<T>(size type: T.Type) where T: BinaryInteger {
+        if  T.size.isInfinite {
+            return nil
+        }   else {
+            self = T.size.load(as: Self.self)
+        }
+    }
+}

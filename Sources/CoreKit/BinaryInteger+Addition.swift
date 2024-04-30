@@ -71,3 +71,24 @@ extension BinaryInteger {
         }
     }
 }
+
+//*============================================================================*
+// MARK: * Binary Integer x Addition x Systems
+//*============================================================================*
+
+extension SystemsInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Composition
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func plus(_ increment: borrowing Self, plus extra: consuming Bool) -> Fallible<Self> {
+        //=--------------------------------------=
+        // performance: consume instance then bit
+        //=--------------------------------------=
+        let error: Bool
+        (self, error) = self.plus(increment).components
+        (self, extra) = self.plus(Self(Bit(extra))).components
+        return self.combine(error != extra)
+    }
+}

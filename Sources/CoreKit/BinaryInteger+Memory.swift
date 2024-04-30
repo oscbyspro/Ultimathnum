@@ -8,32 +8,20 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Systems Integer x Numbers
+// MARK: * Binary Integer x Memory x Systems
 //*============================================================================*
 
 extension SystemsInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static var min: Self {
-        isSigned ? msb : 0
-    }
-    
-    @inlinable public static var max: Self {
-        ~(min)
-    }
-    
-    //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(clamping source: some BinaryInteger) {
-        if  let instance = Self.exactly(source).optional() {
-            self = instance
-        }   else {
-            self = source.isNegative ? Self.min : Self.max
-        }
+    @inlinable public init<T>(load source: borrowing T) where T: BinaryInteger, BitPattern == UX.BitPattern {
+        self = source.load(as: Self.self)
+    }
+    
+    @inlinable public init<T>(load source: borrowing T) where T: BinaryInteger, BitPattern == T.Element.BitPattern {
+        self = source.load(as: Self.self)
     }
 }
