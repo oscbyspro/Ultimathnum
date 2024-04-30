@@ -21,13 +21,13 @@ final class DoubletTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testMemoryLayout() {
-        func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = Doublet<Base>
+        func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = Doublet<B>
             
-            Test().same(MemoryLayout<T>.self, MemoryLayout<(Base, Base)>.self)
-            Test().same(MemoryLayout<T>.size, 2 * MemoryLayout<Base>.size)
-            Test().same(MemoryLayout<T>.size, 2 * MemoryLayout<Base>.stride)
-            Test().same(MemoryLayout<T>.size, 2 * MemoryLayout<Base>.alignment)
+            Test().same(MemoryLayout<T>.self, MemoryLayout<(B, B)>.self)
+            Test().same(MemoryLayout<T>.size, 2 * MemoryLayout<B>.size)
+            Test().same(MemoryLayout<T>.size, 2 * MemoryLayout<B>.stride)
+            Test().same(MemoryLayout<T>.size, 2 * MemoryLayout<B>.alignment)
         }
         
         for base in coreSystemsIntegers {

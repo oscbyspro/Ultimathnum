@@ -20,14 +20,65 @@ final class TripletTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testMemoryLayout() {
-        func whereTheBaseIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = Triplet<Base>
+    func testInit() {
+        func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = Triplet<B>
             
-            Test().same(MemoryLayout<T>.self, MemoryLayout<(Base, Base, Base)>.self)
-            Test().same(MemoryLayout<T>.size, 3 * MemoryLayout<Base>.size)
-            Test().same(MemoryLayout<T>.size, 3 * MemoryLayout<Base>.stride)
-            Test().same(MemoryLayout<T>.size, 3 * MemoryLayout<Base>.alignment)
+            Test().same(T(low: 1, mid: 2, high: 3).low,  1 as B.Magnitude)
+            Test().same(T(low: 1, mid: 2, high: 3).mid,  2 as B.Magnitude)
+            Test().same(T(low: 1, mid: 2, high: 3).high, 3 as B)
+            
+            Test().same(T(high: 1, mid: 2, low: 3).low,  3 as B.Magnitude)
+            Test().same(T(high: 1, mid: 2, low: 3).mid,  2 as B.Magnitude)
+            Test().same(T(high: 1, mid: 2, low: 3).high, 1 as B)
+            
+            Test().same(T(low:  1, high: Doublet(low:  2, high: 3)).low,   1 as B.Magnitude)
+            Test().same(T(low:  1, high: Doublet(low:  2, high: 3)).mid,   2 as B.Magnitude)
+            Test().same(T(low:  1, high: Doublet(low:  2, high: 3)).high,  3 as B)
+            
+            Test().same(T(high: 1, low: Doublet(high:  2,  low:  3)).low,  3 as B.Magnitude)
+            Test().same(T(high: 1, low: Doublet(high:  2,  low:  3)).mid,  2 as B.Magnitude)
+            Test().same(T(high: 1, low: Doublet(high:  2,  low:  3)).high, 1 as B)
+            
+            Test().same(T(low:  Doublet(low:  1, high: 2), high: 3 ).low,  1 as B.Magnitude)
+            Test().same(T(low:  Doublet(low:  1, high: 2), high: 3 ).mid,  2 as B.Magnitude)
+            Test().same(T(low:  Doublet(low:  1, high: 2), high: 3 ).high, 3 as B)
+            
+            Test().same(T(high: Doublet(high: 1, low:  2), low:  3 ).low,  3 as B.Magnitude)
+            Test().same(T(high: Doublet(high: 1, low:  2), low:  3 ).mid,  2 as B.Magnitude)
+            Test().same(T(high: Doublet(high: 1, low:  2), low:  3 ).high, 1 as B)
+        }
+        
+        for base in coreSystemsIntegers {
+            whereTheBaseIs(base)
+        }
+    }
+    
+    func testBitCast() {
+        func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = Triplet<B>
+            typealias S = Triplet<B>.Signitude
+            typealias M = Triplet<B>.Magnitude
+            
+            Test().same(M(raw: T(low:  1, mid:  2, high:  3)), M(low:  1, mid:  2, high:  3))
+            Test().same(S(raw: T(low:  1, mid:  2, high:  3)), S(low:  1, mid:  2, high:  3))
+            Test().same(M(raw: T(low: ~1, mid: ~2, high: ~3)), M(low: ~1, mid: ~2, high: ~3))
+            Test().same(S(raw: T(low: ~1, mid: ~2, high: ~3)), S(low: ~1, mid: ~2, high: ~3))
+        }
+        
+        for base in coreSystemsIntegers {
+            whereTheBaseIs(base)
+        }
+    }
+    
+    func testMemoryLayout() {
+        func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = Triplet<B>
+            
+            Test().same(MemoryLayout<T>.self, MemoryLayout<(B, B, B)>.self)
+            Test().same(MemoryLayout<T>.size, 3 * MemoryLayout<B>.size)
+            Test().same(MemoryLayout<T>.size, 3 * MemoryLayout<B>.stride)
+            Test().same(MemoryLayout<T>.size, 3 * MemoryLayout<B>.alignment)
         }
         
         for base in coreSystemsIntegers {

@@ -21,8 +21,10 @@
     public typealias Low  = Base.Magnitude
     
     public typealias BitPattern = Triplet<Base.Magnitude>
-    
+        
     public typealias Magnitude  = Triplet<Base.Magnitude>
+    
+    public typealias Signitude  = Triplet<Base.Signitude>
     
     //=------------------------------------------------------------------------=
     // MARK: State
