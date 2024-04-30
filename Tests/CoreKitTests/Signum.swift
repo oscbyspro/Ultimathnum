@@ -22,11 +22,20 @@ final class SignumTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
+    func testInitBit() {
+        Test().same(T(0 as Bit), T.same)
+        Test().same(T(1 as Bit), T.more)
+    }
+    
     func testInitIntegerLiteral() {
         Test().same(-1 as T, T.less)
         Test().same( 0 as T, T.same)
         Test().same( 1 as T, T.more)
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
     
     func testComparison() {
         Test().same(T.less, T.less)
