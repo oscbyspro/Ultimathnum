@@ -18,6 +18,22 @@ import TestKit
 extension DoubleIntTests {
     
     //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testNumbers() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            IntegerInvariants(T.self).clampingCoreSystemsIntegers()
+            IntegerInvariants(T.self).exactlyCoreSystemsIntegers()
+            IntegerInvariants(T.self).exactlySameSizeSystemsIntegers()
+        }
+        
+        for type in Self.types {
+            whereIs(type)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Tests x Magnitude
     //=------------------------------------------------------------------------=
     

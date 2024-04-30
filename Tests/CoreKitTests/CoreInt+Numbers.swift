@@ -17,6 +17,22 @@ import TestKit
 extension CoreIntTests {
     
     //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testNumbers() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            IntegerInvariants(T.self).clampingCoreSystemsIntegers()
+            IntegerInvariants(T.self).exactlySameSizeSystemsIntegers()
+            IntegerInvariants(T.self).clampingCoreSystemsIntegers()
+        }
+        
+        for type in coreSystemsIntegers {
+            whereIs(type)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Tests x Magnitude
     //=------------------------------------------------------------------------=
     

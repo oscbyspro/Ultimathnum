@@ -84,8 +84,8 @@ extension BinaryInteger {
                 
             }   else {
                 let bit   = Bit(Self.isSigned) & Bit(source.isNegative)
-                let count = rhsSize.minus(UX(load: source.count(.descending(((bit)))))).assert()
-                let limit = lhsSize.minus(UX(Bit(Self.isSigned) & Bit(Other.isSigned))).assert()
+                let count = rhsSize.minus(UX(load: source.count(.descending(bit)))).assert()
+                let limit = lhsSize.minus(UX(Bit(Self.isSigned))).assert()
                 return Self(load: source).combine(limit < count)
             }
             

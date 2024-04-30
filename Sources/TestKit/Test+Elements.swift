@@ -62,27 +62,6 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func exactly<Input, Output>(
-        _ input: Input,
-        _ expectation: Fallible<Output>
-    )   where Input: BinaryInteger, Output: BinaryInteger {
-        //=--------------------------------------=
-        same(Output.exactly(input), expectation, "T.exactly(some BinaryInteger)")
-        //=--------------------------------------=
-        input.withUnsafeBinaryIntegerBody {
-            let body = Array($0.buffer())
-            self.exactly(body, Input.mode, expectation)
-        }
-        
-        input.withUnsafeBinaryIntegerElements {
-            same(Output.exactly($0, mode: Input.mode), expectation, "Integer.exactly(_:mode:) [0]")
-        }
-        
-        input.withUnsafeBinaryIntegerElementsAsBytes {
-            same(Output.exactly(LoadInt($0), mode: Input.mode), expectation, "Integer.exactly(_:mode:) [1]")
-        }
-    }
-    
     public func exactly<Integer, Element>(
         _ body: [Element],
         _ mode: some Signedness,

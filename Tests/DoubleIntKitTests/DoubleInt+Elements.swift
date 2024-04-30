@@ -108,8 +108,6 @@ extension DoubleIntTests {
     func testInitBody() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             IntegerInvariants(T.self).exactlyArrayBodyMode()
-            IntegerInvariants(T.self).exactlyCoreSystemsIntegers()
-            IntegerInvariants(T.self).exactlySameSizeSystemsIntegers()
         }
         
         for type in Self.types {

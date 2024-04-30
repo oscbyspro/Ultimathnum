@@ -8,35 +8,34 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import InfiniIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Core Int x Elements
+// MARK: * Infini Int x Numbers
 //*============================================================================*
 
-extension CoreIntTests {
+extension InfiniIntTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testInitBody() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self).exactlyArrayBodyMode()
+    func testNumbers() {
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            IntegerInvariants(T.self).exactlyCoreSystemsIntegers()
         }
         
-        for type in coreSystemsIntegers {
+        func whereIsUnsigned<T>(_ type: T.Type) where T: UnsignedInteger {
+            IntegerInvariants(T.self).clampingCoreSystemsIntegers()
+        }
+        
+        for type in Self.types {
             whereIs(type)
         }
-    }
-    
-    func testMakeBody() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self).elements()
-        }
-
-        for type in coreSystemsIntegers {
-            whereIs(type)
+        
+        for type in Self.typesWhereIsUnsigned {
+            whereIsUnsigned(type)
         }
     }
 }
