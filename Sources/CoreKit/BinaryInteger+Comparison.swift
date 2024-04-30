@@ -115,7 +115,8 @@ extension BinaryInteger {
             }
             
         }   else {
-            if Other.elementsCanBeRebound(to: Self.Element.Magnitude.self) {
+            //  note that the elements must be rebindable one way or the other
+            if  Other.elementsCanBeRebound(to: Self.Element.Magnitude.self) {
                 return self.withUnsafeBinaryIntegerElements { lhs in
                     (other).withUnsafeBinaryIntegerElements(as: Self.Element.Magnitude.self) { rhs in
                         DataInt.compare(
@@ -125,7 +126,8 @@ extension BinaryInteger {
                     }!
                 }
                 
-            }   else if Self.elementsCanBeRebound(to: Other.Element.Magnitude.self) {
+            }   else {
+                Swift.assert(Self.elementsCanBeRebound(to: Other.Element.Magnitude.self))
                 return self.withUnsafeBinaryIntegerElements(as: Other.Element.Magnitude.self) { lhs in
                     (other).withUnsafeBinaryIntegerElements { rhs in
                         DataInt.compare(
@@ -134,9 +136,6 @@ extension BinaryInteger {
                         )
                     }
                 }!
-                
-            }   else {
-                Swift.fatalError("invalid binary integer invoked BinaryInteger/compared(to:)")
             }
         }
     }
