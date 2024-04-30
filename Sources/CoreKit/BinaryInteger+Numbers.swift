@@ -51,6 +51,16 @@ extension BinaryInteger {
         return value.combine(value.isNegative != isNegative)
     }
     
+    @inlinable public static func exactly<Other>(
+        sign: consuming Sign = .plus,
+        magnitude: consuming Other
+    )   -> Fallible<Self> where Other: UnsignedInteger {
+        
+        let magnitude = Magnitude.exactly(magnitude)
+        let result = Self.exactly(sign: sign, magnitude: magnitude.value)
+        return result.combine(magnitude.error)
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
