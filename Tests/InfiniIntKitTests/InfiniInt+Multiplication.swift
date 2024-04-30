@@ -23,6 +23,7 @@ extension InfiniIntTests {
         
     func testMultiplication() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            IntegerInvariants(T.self).multiplicationOfMsbEsque()
             IntegerInvariants(T.self).multiplicationOfRepeatingBit(BinaryIntegerID())
         }
         

@@ -63,7 +63,7 @@ extension BinaryInteger {
             
         }   else {
             let distance = Fallible<Signitude>(raw: other.minus(self))
-            let superoverflow = distance.value.isNegative != distance.error
+            let superoverflow =  distance.value.isNegative != distance.error
             return Other.exactly(distance.value).combine(superoverflow)
         }
     }

@@ -22,10 +22,6 @@ extension CoreIntTests {
     
     func testMultiplication() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias M = T.Magnitude
-            typealias X = Doublet<T>
-            typealias F = Fallible<Doublet<T>>
-            
             IntegerInvariants(T.self).multiplicationOfMsb(SystemsIntegerID())
             IntegerInvariants(T.self).multiplicationOfRepeatingBit(SystemsIntegerID())
         }
