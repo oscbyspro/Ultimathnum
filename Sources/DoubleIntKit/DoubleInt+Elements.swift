@@ -62,7 +62,7 @@ extension DoubleInt {
     @inlinable public init(load source: LoadInt<Element.Magnitude>) {
         //=--------------------------------------=
         let low  = Low (load: source)
-        let high = High(load: source[Low.size(relativeTo: Element.Magnitude.self).ratio...])
+        let high = High(load: source[(UX(size: Low.self) / UX(size: Element.Magnitude.self))...])
         //=--------------------------------------=
         self.init(low: consume low, high: consume high)
     }
@@ -70,7 +70,7 @@ extension DoubleInt {
     @inlinable public init(load source: DataInt<Element.Magnitude>) {
         //=--------------------------------------=
         let low  = Low (load: source)
-        let high = High(load: source[Low.size(relativeTo: Element.Magnitude.self).ratio...])
+        let high = High(load: source[(UX(size: Low.self) / UX(size: Element.Magnitude.self))...])
         //=--------------------------------------=
         self.init(low: consume low, high: consume high)
     }
