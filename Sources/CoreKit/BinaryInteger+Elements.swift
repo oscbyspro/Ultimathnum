@@ -30,7 +30,7 @@ extension BinaryInteger {
         
         if  let size  = UX(size: Self.self) {
             let ratio = size / UX(size: U8.Magnitude.self)
-            let suffix: DataInt<U8.Magnitude> = source.base[ratio...]
+            let suffix: DataInt<U8.Magnitude> = source.data[ratio...]
             success  &= Bit(suffix.normalized().body.isEmpty)
         }
         //=--------------------------------------=
@@ -41,7 +41,7 @@ extension BinaryInteger {
         _ source: LoadInt<OtherElement>, mode: some Signedness
     )   -> Fallible<Self> {
         
-        Self.exactly(LoadInt<Element.Magnitude>(source.base), mode: mode)
+        Self.exactly(LoadInt<Element.Magnitude>(source.data), mode: mode)
     }
     
     //=------------------------------------------------------------------------=

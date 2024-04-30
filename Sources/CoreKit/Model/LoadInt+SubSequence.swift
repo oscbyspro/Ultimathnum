@@ -8,7 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Load Int
+// MARK: * Load Int x Sub Sequence
 //*============================================================================*
 
 extension LoadInt {
@@ -17,9 +17,13 @@ extension LoadInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public subscript(range: PartialRangeFrom<UX>) -> Self {
+    @inlinable public consuming func successor() -> Self {
+        (consume self)[bytes: Self.ratio...]
+    }
+    
+    @inlinable public subscript(bytes range: PartialRangeFrom<UX>) -> Self {
         consuming get {
-            Self(self.base[(range.lowerBound * UX(raw: MemoryLayout<Element>.stride))...])
+            Self(self.data[range.lowerBound...])
         }
     }
 }

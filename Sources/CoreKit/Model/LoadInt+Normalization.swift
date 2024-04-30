@@ -14,10 +14,10 @@
 extension LoadInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func normalized() -> Prefix {
-        Self(self.base.normalized()).body()
+    @inlinable public consuming func normalized() -> Self {
+        Self(self.data.normalized())
     }
 }

@@ -53,7 +53,7 @@ extension CoreInt {
     //=------------------------------------------------------------------------=
         
     @inlinable public init(load source: LoadInt<Element.Magnitude>) {
-        self.init(raw: source[UX.zero])
+        self.init(raw: source.load())
     }
     
     @inlinable public init(load source: DataInt<Element.Magnitude>) {

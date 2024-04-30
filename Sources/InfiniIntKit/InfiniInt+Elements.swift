@@ -29,7 +29,7 @@ extension InfiniInt {
     
     @inlinable public borrowing func load(as type: UX.BitPattern.Type) -> UX.BitPattern {
         self.withUnsafeBinaryIntegerElementsAsBytes {
-            LoadInt($0, as: UX.self)[UX.zero].load(as: UX.BitPattern.self)
+            LoadInt($0, as: UX.self).load().load(as: UX.BitPattern.self)
         }
     }
     
@@ -61,8 +61,14 @@ extension InfiniInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(load source: LoadInt<Element.Magnitude>) {
-        let body = Storage.Body(source.body())
+    @inlinable public init(load source: consuming LoadInt<Element.Magnitude>) {
+        var body = Storage.Body()
+        body.reserveCapacity(Int(raw: source.appendixIndex()))
+        
+        while !source.appendixIndexIsZero {
+            body.append(source.next())
+        }
+        
         self.init(normalizing: Storage(body, repeating: source.appendix))
     }
     

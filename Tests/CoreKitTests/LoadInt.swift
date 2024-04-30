@@ -16,6 +16,45 @@ import TestKit
 
 final class LoadIntTests: XCTestCase {
     
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testInitDataInt() {
+        [U8](repeating: 0, count: 16).withUnsafeBufferPointer {
+            let body = DataInt<U8>.Body($0)!
+            
+            for bit: Bit in [0, 1] {
+                Test().same(LoadInt<U8>(body, repeating: bit).data.body.start, $0.baseAddress!)
+                Test().same(LoadInt<U8>(body, repeating: bit).data.body.count, IX($0.count))
+                Test().same(LoadInt<U8>(body, repeating: bit).appendix, bit)
+                
+                Test().same(LoadInt<U8>(DataInt(body, repeating: bit)).data.body.start, $0.baseAddress!)
+                Test().same(LoadInt<U8>(DataInt(body, repeating: bit)).data.body.count, IX($0.count))
+                Test().same(LoadInt<U8>(DataInt(body, repeating: bit)).appendix, bit)
+            }
+        }
+    }
+    
+    func testInitUnsafeBufferPointer() {
+        Test().none(LoadInt<U8>(UnsafeBufferPointer(start: nil, count: 0)))
+        
+        [U8](repeating: 0, count: 16).withUnsafeBufferPointer {
+            Test().same(LoadInt<U8>($0)!.appendix,   .zero)
+            Test().same(LoadInt<U8>($0.baseAddress!, count: IX($0.count)).appendix, .zero)
+
+            for bit: Bit in [0, 1] {
+                Test().same(LoadInt<U8>($0, repeating: bit)!.data.body.start, $0.baseAddress!)
+                Test().same(LoadInt<U8>($0, repeating: bit)!.data.body.count, IX($0.count))
+                Test().same(LoadInt<U8>($0, repeating: bit)!.appendix, bit)
+                
+                Test().same(LoadInt<U8>($0.baseAddress!, count: IX($0.count), repeating: bit).data.body.start, $0.baseAddress!)
+                Test().same(LoadInt<U8>($0.baseAddress!, count: IX($0.count), repeating: bit).data.body.count, IX($0.count))
+                Test().same(LoadInt<U8>($0.baseAddress!, count: IX($0.count), repeating: bit).appendix, bit)
+            }
+        }
+    }
+    
     //*========================================================================*
     // MARK: * Item
     //*========================================================================*
@@ -42,6 +81,7 @@ final class LoadIntTests: XCTestCase {
             self.appendix = appendix
         }
     }
+    
     //*========================================================================*
     // MARK: * Case
     //*========================================================================*
@@ -82,36 +122,58 @@ extension LoadIntTests.Case {
     
     func body(is expectation: [Element]) {
         self.expect(expectation) {
-            Array($0.body())
+            var elements = [Element]()
+            
+            while !$0.appendixIndexIsZero {
+                elements.append($0.next())
+            }
+            
+            return elements
         }
     }
     
     func prefix(_ count: UX, is expectation: [Element]) {
         self.expect(expectation) {
-            Array($0.prefix(count))
+            var elements = [Element]()
+            
+            for _ in 0 ..< count {
+                elements.append($0.next())
+            }
+            
+            return elements
         }
     }
     
     func normalized(is expectation: [Element]) {
         self.expect(expectation) {
-            Array($0.normalized())
+            var elements = [Element]()
+            
+            $0 = $0.normalized()
+            
+            while !$0.appendixIndexIsZero {
+                elements.append($0.next())
+            }
+            
+            return elements
         }
     }
     
-    func element(_ index: UX, is expectation: Element) {
+    func load(bytes index: PartialRangeFrom<UX>, is expectation: Element) {
         self.expect(expectation) {
-            $0[index]
+            $0[bytes: index.lowerBound...].load()
         }
     }
     
-    func expect<T: Equatable>(_ expectation: T, from map: (LoadInt<Element>) -> T) {
+    func expect<T: Equatable>(_ expectation: T, from map: (inout LoadInt<Element>) -> T) {
         self.item.body.withUnsafeBufferPointer {
             if  self.item.appendix != 0 {
-                test.same(map(LoadInt<Element>(DataInt($0, repeating: 1)!)), expectation)
+                var source = LoadInt<Element>(DataInt($0, repeating: 1)!)
+                test.same(map(&source), expectation)
             }
             
             if  self.item.appendix != 1 {
-                test.same(map(LoadInt<Element>(DataInt($0, repeating: 0)!)), expectation)
+                var source = LoadInt<Element>(DataInt($0, repeating: 0)!)
+                test.same(map(&source), expectation)
             }
         }
     }
