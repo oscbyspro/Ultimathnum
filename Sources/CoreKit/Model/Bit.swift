@@ -42,15 +42,11 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_  source: Sign) {
+    @inlinable public init(_ source: Sign) {
         self.init(raw: source)
     }
     
-    @inlinable public init(_  source: FloatingPointSign) {
-        self.init(raw: source)
-    }
-    
-    @inlinable public init(_  source: Bool) {
+    @inlinable public init(_ source: Bool) {
         self.init(raw: source)
     }
     
