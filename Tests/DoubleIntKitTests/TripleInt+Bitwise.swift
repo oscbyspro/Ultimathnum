@@ -8,13 +8,14 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import DoubleIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Doublet x Bitwise
+// MARK: * Triple Int x Bitwise
 //*============================================================================*
 
-extension DoubletTests {
+extension TripleIntTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -22,18 +23,18 @@ extension DoubletTests {
     
     func testComplement() {
         func whereTheBaseTypeIs<B>(_ base: B.Type) where B: SystemsInteger {
-            typealias T = Doublet<B>
+            typealias T = TripleInt<B>
             typealias F = Fallible<T>
             
-            Case(T(low:  0, high:  0)).complement(false, is: F(T(low: ~0, high: ~0)))
-            Case(T(low:  0, high:  0)).complement(true,  is: F(T(low:  0, high:  0), error: !B.isSigned))
-            Case(T(low:  1, high:  2)).complement(false, is: F(T(low: ~1, high: ~2)))
-            Case(T(low:  1, high:  2)).complement(true,  is: F(T(low: ~0, high: ~2)))
+            Case(T(low:  0, mid:  0, high:  00000)).complement(false, is: F(T(low: ~0, mid: ~0, high: ~00000)))
+            Case(T(low:  0, mid:  0, high:  00000)).complement(true,  is: F(T(low:  0, mid:  0, high:  00000), error: !B.isSigned))
+            Case(T(low:  1, mid:  2, high:  00003)).complement(false, is: F(T(low: ~1, mid: ~2, high: ~00003)))
+            Case(T(low:  1, mid:  2, high:  00003)).complement(true,  is: F(T(low: ~0, mid: ~2, high: ~00003)))
             
-            Case(T(low: ~0, high: ~B.msb)).complement(false, is: F(T(low:  0, high:  B.msb)))
-            Case(T(low: ~0, high: ~B.msb)).complement(true,  is: F(T(low:  1, high:  B.msb)))
-            Case(T(low:  0, high:  B.msb)).complement(false, is: F(T(low: ~0, high: ~B.msb)))
-            Case(T(low:  0, high:  B.msb)).complement(true,  is: F(T(low:  0, high:  B.msb), error: B.isSigned))
+            Case(T(low: ~0, mid: ~0, high: ~B.msb)).complement(false, is: F(T(low:  0, mid:  0, high:  B.msb)))
+            Case(T(low: ~0, mid: ~0, high: ~B.msb)).complement(true,  is: F(T(low:  1, mid:  0, high:  B.msb)))
+            Case(T(low:  0, mid:  0, high:  B.msb)).complement(false, is: F(T(low: ~0, mid: ~0, high: ~B.msb)))
+            Case(T(low:  0, mid:  0, high:  B.msb)).complement(true,  is: F(T(low:  0, mid:  0, high:  B.msb), error:  B.isSigned))
         }
         
         for base in coreSystemsIntegers {

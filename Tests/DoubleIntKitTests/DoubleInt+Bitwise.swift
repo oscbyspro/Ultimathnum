@@ -102,6 +102,31 @@ extension DoubleIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
+    func testComplement() {
+        func whereTheBaseTypeIs<B>(_ base: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
+            typealias F = Fallible<T>
+            
+            Case(T(low:  0, high:  00000)).complement(false, is: F(T(low: ~0, high: ~00000)))
+            Case(T(low:  0, high:  00000)).complement(true,  is: F(T(low:  0, high:  00000), error: !B.isSigned))
+            Case(T(low:  1, high:  00002)).complement(false, is: F(T(low: ~1, high: ~00002)))
+            Case(T(low:  1, high:  00002)).complement(true,  is: F(T(low: ~0, high: ~00002)))
+            
+            Case(T(low: ~0, high: ~B.msb)).complement(false, is: F(T(low:  0, high:  B.msb)))
+            Case(T(low: ~0, high: ~B.msb)).complement(true,  is: F(T(low:  1, high:  B.msb)))
+            Case(T(low:  0, high:  B.msb)).complement(false, is: F(T(low: ~0, high: ~B.msb)))
+            Case(T(low:  0, high:  B.msb)).complement(true,  is: F(T(low:  0, high:  B.msb), error:  B.isSigned))
+        }
+        
+        for base in coreSystemsIntegers {
+            whereTheBaseTypeIs(base)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
     func testBitCountSelection() {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
