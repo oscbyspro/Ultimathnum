@@ -25,7 +25,7 @@ extension DataInt {
             return Signum.one(Sign(raw: isSigned))
         }
         //=--------------------------------------=
-        // comparison: succinct count
+        // comparison: body
         //=--------------------------------------=
         return Signum(Bit(instance.body.isZero))
     }
