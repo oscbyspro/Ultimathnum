@@ -116,10 +116,10 @@ import CoreKit
     /// Forms the sequence pair at `index + 1`.
     @inlinable public mutating func increment() throws {
         let n : Value
-        try n = i.plus(1).get(Error.overflow)
+        try n = i.plus(1).prune(Error.overflow)
         
         let x : Value
-        try x = a.plus(b).get(Error.overflow)
+        try x = a.plus(b).prune(Error.overflow)
         
         self.i = consume n
         self.a = consume x
@@ -133,10 +133,10 @@ import CoreKit
         }
         
         let n : Value
-        try n = i.minus(1).get(Error.overflow)
+        try n = i.minus(1).prune(Error.overflow)
         
         let y : Value
-        try y = b.minus(a).get(Error.overflow)
+        try y = b.minus(a).prune(Error.overflow)
         
         self.i = consume n
         self.b = consume y
@@ -146,15 +146,13 @@ import CoreKit
     /// Forms the sequence pair at `index * 2`.
     @inlinable public mutating func double() throws {
         let n : Value
-        try n = i.times(2).get(Error.overflow)
+        try n = i.times(2).prune(Error.overflow)
         
         var x : Value
-        try x = b.times(2).get(Error.overflow)
-        try x = x.minus(a).get(Error.overflow)
-        try x = x.times(a).get(Error.overflow)
+        try x = b.times(2).minus(a).times (a).prune(Error.overflow)
         
         var y : Value
-        try y = b.squared().plus(a.squared()).get(Error.overflow)
+        try y = b.squared().plus(a.squared()).prune(Error.overflow)
         
         self.i = consume n
         self.a = consume x

@@ -91,11 +91,11 @@ extension FibonacciTests.Case {
         for divisor: Divisor<Value> in [2, 3, 5, 7, 11].map(Divisor.init) {
             brrrrrr: do {
                 let a = self.item
-                let b = try Item(a.index.quotient(divisor).get(Bad.division))
-                let c = try Item(a.index.minus(b.index).get(Bad.substraction))
-                let d = try a.next.division(Divisor(b.next)!).get(Bad.division)
-                let e = try b.element.times(c.element).get(Bad.multiplication)
-                let f = try d.quotient.minus(c.next).times(b.next).plus(d.remainder).get(Bad.any)
+                let b = try Item(a.index.quotient(divisor).prune(Bad.division))
+                let c = try Item(a.index.minus(b.index).prune(Bad.substraction))
+                let d = try a.next.division(Divisor(b.next)!).prune(Bad.division)
+                let e = try b.element.times(c.element).prune(Bad.multiplication)
+                let f = try d.quotient.minus(c.next).times(b.next).plus(d.remainder).prune(Bad.any)
                 self.test.same(e, f, "arithmetic invariant error")
                 
             }   catch let error {

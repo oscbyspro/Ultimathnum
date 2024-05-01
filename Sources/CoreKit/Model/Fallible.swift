@@ -50,19 +50,19 @@
         }
     }
     
+    @inlinable public consuming func prune<Failure>(_ failure: @autoclosure () -> Failure) throws -> Value where Failure: Error {
+        if  self.error {
+            throw  failure()
+        }   else {
+            return self.value
+        }
+    }
+    
     @inlinable public consuming func result<Failure>(_ failure: @autoclosure () -> Failure) -> Result<Value, Failure> {
         if  self.error {
             return Result.failure(failure())
         }   else {
             return Result.success(self.value)
-        }
-    }
-    
-    @inlinable public consuming func get<Failure>(_ failure: @autoclosure () -> Failure) throws -> Value where Failure: Error {
-        if  self.error {
-            throw  failure()
-        }   else {
-            return self.value
         }
     }
     

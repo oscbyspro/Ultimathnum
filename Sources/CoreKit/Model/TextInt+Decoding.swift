@@ -53,7 +53,7 @@ extension TextInt {
             }
         }
         
-        return try T.exactly(sign: components.sign, magnitude: magnitude.value).get(Failure.overflow)
+        return try T.exactly(sign: components.sign, magnitude: magnitude.value).prune(Failure.overflow)
     }
 }
 
