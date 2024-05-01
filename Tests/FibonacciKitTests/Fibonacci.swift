@@ -18,6 +18,18 @@ import TestKit
 final class FibonacciTests: XCTestCase {
     
     //*========================================================================*
+    // MARK: * Failure
+    //*========================================================================*
+    
+    enum Failure: Error {
+        case any
+        case addition
+        case division
+        case multiplication
+        case substraction
+    }
+    
+    //*========================================================================*
     // MARK: * Case
     //*========================================================================*
     
@@ -73,15 +85,19 @@ extension FibonacciTests.Case {
     }
     
     func checkDivisionInvariants() {
+        //=--------------------------------------=
+        typealias Bad = FibonacciTests.Failure
+        //=--------------------------------------=
         for divisor: Divisor<Value> in [2, 3, 5, 7, 11].map(Divisor.init) {
             brrrrrr: do {
                 let a = self.item
-                let b = try Item(a.index.quotient(divisor).get(Overflow()))
-                let c = try Item(a.index.minus(b.index).get(Overflow()))
-                let d = try a.next.division(Divisor(b.next)!).get(Overflow())
-                let e = try b.element.times(c.element).get(Overflow())
-                let f = try d.quotient.minus(c.next).times(b.next).plus(d.remainder).get(Overflow())
+                let b = try Item(a.index.quotient(divisor).get(Bad.division))
+                let c = try Item(a.index.minus(b.index).get(Bad.substraction))
+                let d = try a.next.division(Divisor(b.next)!).get(Bad.division)
+                let e = try b.element.times(c.element).get(Bad.multiplication)
+                let f = try d.quotient.minus(c.next).times(b.next).plus(d.remainder).get(Bad.any)
                 self.test.same(e, f, "arithmetic invariant error")
+                
             }   catch let error {
                 self.test.fail("unexpected arithmetic failure: \(error)")
             }

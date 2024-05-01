@@ -53,11 +53,7 @@ extension TextInt {
             }
         }
         
-        branch: do {
-            return try T.exactly(sign: components.sign, magnitude: magnitude.value).get(Overflow())
-        }   catch {
-            throw Failure.overflow
-        }
+        return try T.exactly(sign: components.sign, magnitude: magnitude.value).get(Failure.overflow)
     }
 }
 
