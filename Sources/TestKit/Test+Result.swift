@@ -17,6 +17,30 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    @discardableResult public func result<T: Equatable, E: Error & Equatable>(
+        _ value: () throws -> T,
+        _ expectation: Result<T, E>,
+        _ message:  @autoclosure () -> String = String()
+    )  -> Result<T, E> {
+                
+        var result = expectation
+        
+        do {
+            result = Result.success(try value())
+        }   catch let error as E {
+            result = Result.failure(error)
+        }   catch let error {
+            XCTFail("error: \(error) - \(message())", file: file, line: line)
+        }
+        
+        same(result, expectation, message())
+        return result
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
     @discardableResult public func success<T>(
         _ value: () throws -> T,
         _ message:  @autoclosure () -> String = String()
