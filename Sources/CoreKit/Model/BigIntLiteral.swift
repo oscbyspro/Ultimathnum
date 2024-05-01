@@ -36,19 +36,19 @@
     }
     
     @inlinable public init(integerLiteral: Swift.StaticBigInt) {
-        self.base = Swift.StaticBigInt(integerLiteral: integerLiteral)
+        self.init(integerLiteral)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public var appendix: Bit {
-        Bit(self.base.signum() < 0)
-    }
-    
     @inlinable public var size: UX {
         UX(IX(self.base.bitWidth))
+    }
+    
+    @inlinable public var appendix: Bit {
+        Bit(self.base.signum() < 0)
     }
     
     /// A three-way comparison against zero.
