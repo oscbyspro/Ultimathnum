@@ -115,19 +115,15 @@ import CoreKit
     
     /// Forms the sequence pair at `index + 1`.
     @inlinable public mutating func increment() throws {
-        always: do {
-            let n : Value
-            try n = i.plus(1).get()
-            
-            let x : Value
-            try x = a.plus(b).get()
-            
-            self.i = consume n
-            self.a = consume x
-            Swift.swap(&a, &b)
-        }   catch {
-            throw Error.overflow
-        }
+        let n : Value
+        try n = i.plus(1).get(Error.overflow)
+        
+        let x : Value
+        try x = a.plus(b).get(Error.overflow)
+        
+        self.i = consume n
+        self.a = consume x
+        Swift.swap(&a, &b)
     }
     
     /// Forms the sequence pair at `index - 1`.
@@ -136,41 +132,33 @@ import CoreKit
             throw Error.overflow
         }
         
-        always: do {
-            let n : Value
-            try n = i.minus(1).get()
-            
-            let y : Value
-            try y = b.minus(a).get()
-            
-            self.i = consume n
-            self.b = consume y
-            Swift.swap(&a, &b)
-        }   catch {
-            throw Error.overflow
-        }
+        let n : Value
+        try n = i.minus(1).get(Error.overflow)
+        
+        let y : Value
+        try y = b.minus(a).get(Error.overflow)
+        
+        self.i = consume n
+        self.b = consume y
+        Swift.swap(&a, &b)
     }
     
     /// Forms the sequence pair at `index * 2`.
     @inlinable public mutating func double() throws {
-        always: do {
-            let n : Value
-            try n = i.times(2).get()
-            
-            var x : Value
-            try x = b.times(2).get()
-            try x = x.minus(a).get()
-            try x = x.times(a).get()
-            
-            var y : Value
-            try y = b.squared().plus(a.squared()).get()
-            
-            self.i = consume n
-            self.a = consume x
-            self.b = consume y
-        }   catch {
-            throw Error.overflow
-        }
+        let n : Value
+        try n = i.times(2).get(Error.overflow)
+        
+        var x : Value
+        try x = b.times(2).get(Error.overflow)
+        try x = x.minus(a).get(Error.overflow)
+        try x = x.times(a).get(Error.overflow)
+        
+        var y : Value
+        try y = b.squared().plus(a.squared()).get(Error.overflow)
+        
+        self.i = consume n
+        self.a = consume x
+        self.b = consume y
     }
 }
 

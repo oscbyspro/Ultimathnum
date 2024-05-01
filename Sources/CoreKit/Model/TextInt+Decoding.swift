@@ -54,7 +54,7 @@ extension TextInt {
         }
         
         branch: do {
-            return try T.exactly(sign: components.sign, magnitude: magnitude.value).get()
+            return try T.exactly(sign: components.sign, magnitude: magnitude.value).get(Overflow())
         }   catch {
             throw Failure.overflow
         }

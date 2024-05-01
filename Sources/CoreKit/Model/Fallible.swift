@@ -33,7 +33,7 @@
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
-
+    
     @inlinable public consuming func components() -> (value: Value, error: Bool) {
         (value: self.value, error: self.error)
     }
@@ -42,27 +42,27 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func get() throws -> Value {
-        if  self.error {
-            throw  Overflow()
-        }   else {
-            return self.value
-        }
-    }
-    
-    @inlinable public consuming func result() -> Result<Value, Overflow> {
-        if  self.error {
-            return Result.failure(Overflow())
-        }   else {
-            return Result.success(self.value)
-        }
-    }
-    
     @inlinable public consuming func optional() -> Optional<Value> {
         if  self.error {
             return Optional.none
         }   else {
             return Optional.some(self.value)
+        }
+    }
+    
+    @inlinable public consuming func result<Failure>(_ failure: @autoclosure () -> Failure) -> Result<Value, Failure> {
+        if  self.error {
+            return Result.failure(failure())
+        }   else {
+            return Result.success(self.value)
+        }
+    }
+    
+    @inlinable public consuming func get<Failure>(_ failure: @autoclosure () -> Failure) throws -> Value where Failure: Error {
+        if  self.error {
+            throw  failure()
+        }   else {
+            return self.value
         }
     }
     
