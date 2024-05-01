@@ -30,14 +30,6 @@
         self.error = error
     }
     
-    @inlinable public static func success(_ value: consuming Value) -> Self {
-        Self(value, error: false)
-    }
-    
-    @inlinable public static func failure(_ value: consuming Value) -> Self {
-        Self(value, error: true )
-    }
-    
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=

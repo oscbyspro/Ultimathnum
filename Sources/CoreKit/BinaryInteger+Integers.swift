@@ -73,7 +73,7 @@ extension BinaryInteger {
         if  let lhsSize = UX(size: Self.self), let rhsSize = UX(size: Other.self) {
             if (lhsSize >  rhsSize && (Self.isSigned))
             || (lhsSize >= rhsSize && (Self.isSigned == Other.isSigned)) {
-                return Fallible.success(Self(load: source))
+                return Fallible(Self(load: source))
                 
             }   else if lhsSize >= rhsSize {
                 Swift.assert(Self.mode.isSigned != Other.mode.isSigned)

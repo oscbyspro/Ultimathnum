@@ -36,9 +36,9 @@ extension InfiniInt {
         //=--------------------------------------=
         if !Self.isSigned, rhsAppendixIsSet {
             switch self.compared(to: divisor.value) {
-            case Signum.less: return Fallible.success(Division(quotient: .zero, remainder:  self))
-            case Signum.same: return Fallible.success(Division(quotient:  0001, remainder: .zero))
-            case Signum.more: return Fallible.success(Division(quotient:  0001, remainder:  self - divisor.value))
+            case Signum.less: return Fallible(Division(quotient: .zero, remainder:  self))
+            case Signum.same: return Fallible(Division(quotient:  0001, remainder: .zero))
+            case Signum.more: return Fallible(Division(quotient:  0001, remainder:  self - divisor.value))
             }
         }
         //=--------------------------------------=
@@ -60,7 +60,7 @@ extension InfiniInt {
             division.remainder[{ $0.complement() }]
         }
         
-        return Fallible.success(Division(raw: division))
+        return Fallible(Division(raw: division))
     }
 }
 
