@@ -115,45 +115,34 @@ import CoreKit
     
     /// Forms the sequence pair at `index + 1`.
     @inlinable public mutating func increment() throws {
-        let n : Value
-        try n = i.plus(1).prune(Error.overflow)
-        
-        let x : Value
-        try x = a.plus(b).prune(Error.overflow)
+        let  n = try i.plus(1).prune(Error.overflow)
+        let  x = try a.plus(b).prune(Error.overflow)
         
         self.i = consume n
-        self.a = consume x
-        Swift.swap(&a, &b)
+        self.a = b
+        self.b = consume x
     }
     
     /// Forms the sequence pair at `index - 1`.
     @inlinable public mutating func decrement() throws {
-        if  i == 0 {
+        let  n = try i.minus(1).prune(Error.overflow)
+        let  y = try b.minus(a).prune(Error.overflow)
+        
+        if  n.isNegative {
             throw Error.overflow
         }
         
-        let n : Value
-        try n = i.minus(1).prune(Error.overflow)
-        
-        let y : Value
-        try y = b.minus(a).prune(Error.overflow)
-        
         self.i = consume n
-        self.b = consume y
-        Swift.swap(&a, &b)
+        self.b = a
+        self.a = consume y
     }
     
     /// Forms the sequence pair at `index * 2`.
     @inlinable public mutating func double() throws {
-        let n : Value
-        try n = i.times(2).prune(Error.overflow)
-        
-        var x : Value
-        try x = b.times(2).minus(a).times (a).prune(Error.overflow)
-        
-        var y : Value
-        try y = b.squared().plus(a.squared()).prune(Error.overflow)
-        
+        let  n = try i.times(2).prune(Error.overflow)
+        let  x = try b.times(2).minus(a).times (a).prune(Error.overflow)
+        let  y = try b.squared().plus(a.squared()).prune(Error.overflow)
+
         self.i = consume n
         self.a = consume x
         self.b = consume y
