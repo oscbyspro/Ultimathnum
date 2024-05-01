@@ -1,5 +1,8 @@
 # Ultimathnum
 
+> Binary integers are dead.\
+> Long live binary integers!
+
 ## Table of Contents
 
 * [CoreKit](#corekit)
