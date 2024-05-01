@@ -37,15 +37,7 @@ Functional where Quotient: BinaryInteger, Remainder: BinaryInteger {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Accessors
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func components() -> (quotient: Quotient, remainder: Remainder) {
-        (quotient: self.quotient, remainder: self.remainder)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Details x Bit Pattern
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
     @inlinable public init(raw source: consuming BitPattern) {
@@ -60,5 +52,13 @@ Functional where Quotient: BinaryInteger, Remainder: BinaryInteger {
             quotient:  BitPattern.Quotient (raw: self.quotient),
             remainder: BitPattern.Remainder(raw: self.remainder)
         )
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Accessors
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func components() -> (quotient: Quotient, remainder: Remainder) {
+        (quotient: self.quotient, remainder: self.remainder)
     }
 }
