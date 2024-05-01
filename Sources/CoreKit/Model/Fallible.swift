@@ -42,6 +42,16 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// Returns the current `value`, or `nil` if the `error` indicator is set.
+    ///
+    /// ```swift
+    /// if  let index = unsigned.minus(1).optional() {
+    ///     assert(unsigned >= 1)
+    /// }   else {
+    ///     assert(unsigned == 0)
+    /// }
+    /// ```
+    ///
     @inlinable public consuming func optional() -> Optional<Value> {
         if  self.error {
             return Optional.none
@@ -50,6 +60,16 @@
         }
     }
     
+    /// Returns the current `value`, or throws `failure` if the `error` indicator is set.
+    ///
+    /// ```swift
+    /// always: do {
+    ///     try IX.max.plus(1).prune(Oops())
+    /// }   catch let error {
+    ///     // recover from failure and save the day
+    /// }
+    /// ```
+    ///
     @inlinable public consuming func prune<Failure>(_ failure: @autoclosure () -> Failure) throws -> Value where Failure: Error {
         if  self.error {
             throw  failure()
@@ -58,6 +78,16 @@
         }
     }
     
+    /// Returns the current `value`, or `failure` if the `error` indicator is set.
+    ///
+    /// ```swift
+    /// switch IX.max.plus(1).prune(Oops()) {
+    /// case Result<IX, Oops>.success(value): // ...
+    /// case Result<IX, Oops>.failure(error): // ...
+    /// }
+    ///
+    /// ```
+    ///
     @inlinable public consuming func result<Failure>(_ failure: @autoclosure () -> Failure) -> Result<Value, Failure> {
         if  self.error {
             return Result.failure(failure())
