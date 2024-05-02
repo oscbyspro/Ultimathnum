@@ -34,7 +34,7 @@ extension MakeInt {
     /// └──────┴──────────── → ────────┘
     /// ```
     ///
-    @inlinable public var entropy: UX {
+    @inlinable public func entropy() -> UX {
         UX(IX(self.base.bitWidth))
     }
     

@@ -27,7 +27,7 @@ extension MakeInt {
         if  let index = IX.exactly(index).optional() {
             return UX(raw: self.base[Int(index)])
         }   else {
-            return UX.init(repeating: self.appendix)
+            return UX(repeating: self.appendix)
         }
     }
     
@@ -42,7 +42,7 @@ extension MakeInt {
     }
     
     @inlinable public func withUnsafeBinaryIntegerBody<T>(_ action: (DataInt<UX>.Body) throws -> T) rethrows -> T {
-        let count = Int(raw: self.entropy.division(Divisor(unchecked: UX.size)).ceil().assert())
+        let count = Int(raw: self.entropy().division(Divisor(UX.size)!).ceil().assert())
         return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: count) { buffer in
             //=--------------------------------------=
             // pointee: initialization

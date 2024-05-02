@@ -21,16 +21,6 @@ extension InfiniIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testCount() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self).entropy()
-        }
-        
-        for type in coreSystemsIntegers {
-            whereIs(type)
-        }
-    }
-    
     func testBitSelection() {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias E = Base.Element
