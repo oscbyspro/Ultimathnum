@@ -22,7 +22,9 @@
 
 - BinaryInteger
 - BitCastable
+- BitCountable
 - BitOperable
+- BitSelection
 - CoreInteger
 - EnclosedInteger
 - Functional

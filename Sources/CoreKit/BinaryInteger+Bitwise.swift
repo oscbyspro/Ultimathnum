@@ -56,38 +56,4 @@ extension BinaryInteger {
     @inlinable public var leastSignificantBit: Bit {
         Bit(self.load(as: Element.self) & Element.lsb != 0)
     }
-    
-    @inlinable public func count(_ bit: Bit) -> Magnitude {
-        self.count(bit, where: Bit.Selection.anywhere)
-    }
-    
-    @inlinable public func count(_ selection: Bit.Selection.Integer) -> Magnitude {
-        typealias T = Bit.Selection
-        return switch selection {
-            
-        case .bit:
-            Self.size
-            
-        case let .each(x):
-            self.count(x, where: T.anywhere)
-            
-        case let .ascending(x):
-            self.count(x, where: T.ascending)
-            
-        case let .nonascending(x):
-            Self.size.minus(self.count(x, where: T.ascending)).assert()
-            
-        case let .descending(x):
-            self.count(x, where: T.descending)
-            
-        case let .nondescending(x):
-            Self.size.minus(self.count(x, where: T.descending)).assert()
-            
-        case .appendix:
-            self.count(self.appendix, where: T.descending)
-            
-        case .nonappendix:
-            Self.size.minus(self.count(self.appendix, where: T.descending)).assert()
-        }
-    }
 }

@@ -105,43 +105,4 @@ extension InfiniInt {
         Swift.assert(self.storage.isNormal, String.brokenInvariant())
         return self.combine(!Self.isSigned && increment)
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public borrowing func count(_ bit: Bit, where selection: Bit.Selection) -> Magnitude {
-        var count = Magnitude()
-        
-        switch selection {
-        case Bit.Selection.anywhere:
-            let contrast = self.appendix.toggled()
-            self.storage.withUnsafeBinaryIntegerBody {
-                count = Magnitude(load: $0.count(contrast, where: selection))
-                if  contrast != bit {
-                    count.toggle()
-                }
-            }
-            
-        case Bit.Selection.ascending:
-            let bitIsAppendix = self.appendix == bit
-            self.storage.withUnsafeBinaryIntegerBody {
-                let ascending =  $0.count(bit,where: selection)                
-                if  ascending == $0.count(Bit.self), bitIsAppendix {
-                    count = Magnitude.size
-                }   else {
-                    count = Magnitude(load: ascending)
-                }
-            }
-            
-        case Bit.Selection.descending:
-            if  self.appendix == bit {
-                self.withUnsafeBinaryIntegerBody {
-                    count = Self.size - Magnitude(load: $0.count(.nondescending(bit)))
-                }
-            }
-        }
-        
-        return count as Magnitude
-    }
 }

@@ -8,28 +8,20 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Data Int x Bitwise x Read|Write|Body
+// MARK: * Bit Countable x Count
 //*============================================================================*
 
-extension MutableDataInt.Body {
+extension BitCountable {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
-
-    /// Toggles each bit in its binary representation.
-    @inlinable public borrowing func toggle() {
-        for index in self.indices {
-            self[unchecked: index][{ $0.toggled() }]
-        }
+    
+    @inlinable public borrowing func count(_ selection: Bit) -> BitCount {
+        Bit.Anywhere<Self>(selection).count(in: self)
     }
     
-    /// Toggles each bit in its binary representation then adds `increment`.
-   @inlinable public borrowing func toggle(carrying increment: consuming Bool) -> Bool {
-        for index in self.indices {
-            increment = self[unchecked: index][{ $0.complement(increment) }]
-        }
-        
-        return increment as Bool
+    @inlinable public borrowing func count(_ selection: some BitSelection<Self>) -> BitCount {
+        selection.count(in: self)
     }
 }

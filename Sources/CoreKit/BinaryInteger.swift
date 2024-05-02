@@ -54,6 +54,7 @@
 ///
 public protocol BinaryInteger<BitPattern>:
     BitCastable,
+    BitCountable,
     BitOperable,
     Comparable,
     ExpressibleByIntegerLiteral,
@@ -63,14 +64,15 @@ public protocol BinaryInteger<BitPattern>:
     Strideable,
     MaybeLosslessStringConvertible
 where
-    Stride == Swift.Int,
+    BitCount == Magnitude,
     Element.Mode == Mode,
     Magnitude.BitPattern == BitPattern,
     Magnitude.Element    == Element.Magnitude,
     Magnitude.Signitude  == Signitude,
     Signitude.BitPattern == BitPattern,
     Signitude.Element    == Element.Signitude,
-    Signitude.Magnitude  == Magnitude
+    Signitude.Magnitude  == Magnitude,
+    Stride == Swift.Int
 {
     
     associatedtype Mode: Signedness
@@ -233,9 +235,7 @@ where
     //=------------------------------------------------------------------------=
     
     @inlinable borrowing func compared(to other: borrowing Self) -> Signum
-        
-    @inlinable borrowing func count(_ bit: Bit, where selection: Bit.Selection) -> Magnitude
-        
+    
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=

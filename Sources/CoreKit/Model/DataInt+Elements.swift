@@ -36,6 +36,10 @@ extension SomeDataIntBody {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    @inlinable public var appendix: Bit {
+        Bit.zero
+    }
+    
     @inlinable public var isEmpty: Bool {
         self.count == 0
     }

@@ -24,7 +24,7 @@ extension InfiniIntStorage {
         Swift.assert(major >= 00000000000)
         Swift.assert(UX(raw: minor) < UX(size: Element.self))
         //=--------------------------------------=
-        let test = Bit.Selection.Integer.descending(self.appendix)
+        let test = Bit.Descending<Element>(self.appendix)
         let last   = self.body.last ?? Element(repeating: .zero)
         let target = self.count + major + IX(Bit(IX(load: last.count(test)) < minor))
         //=--------------------------------------=
@@ -44,7 +44,7 @@ extension InfiniIntStorage {
         Swift.assert(major >= 00000000000)
         Swift.assert(UX(raw: minor) < UX(size: Element.self))
         //=--------------------------------------=
-        let test = Bit.Selection.Integer.nondescending(self.appendix)
+        let test = Bit.Nondescending<Element>(self.appendix)
         let last   = self.body.last ?? Element(repeating: self.appendix)
         let target = self.count - major - IX(Bit(IX(load: last.count(test)) < minor))
         //=--------------------------------------=

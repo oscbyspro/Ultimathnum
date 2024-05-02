@@ -36,7 +36,7 @@ public protocol SomeDataInt<Element> {
 // MARK: * Data Int x Body
 //*============================================================================*
 
-public protocol SomeDataIntBody<Element> {
+public protocol SomeDataIntBody<Element>: BitCountable where BitCount == IX {
     
     associatedtype Address: Strideable<Int>
     
@@ -119,6 +119,8 @@ public protocol SomeDataIntBody<Element> {
     /// - Note: Its operations are `unsigned` and `finite` by default.
     ///
     @frozen public struct Body: SomeDataIntBody {
+        
+        public typealias BitCount = IX
         
         public typealias Address = UnsafePointer<Element>
         
@@ -211,6 +213,8 @@ public protocol SomeDataIntBody<Element> {
     /// - Note: Its operations are `unsigned` and `finite` by default.
     ///
     @frozen public struct Body: Functional, SomeDataIntBody {
+        
+        public typealias BitCount = IX
         
         public typealias Address = UnsafeMutablePointer<Element>
         
