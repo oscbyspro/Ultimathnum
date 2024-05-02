@@ -38,39 +38,4 @@
     @inlinable public init(integerLiteral: Swift.StaticBigInt) {
         self.init(integerLiteral)
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    /// The number of bits needed to represent `self`.
-    ///
-    /// ```
-    /// ┌──────┬──────────── → ────────┐
-    /// │ self │ bit pattern │ entropy │
-    /// ├──────┼──────────── → ────────┤
-    /// │ -4   │ 00........1 │ 3       │
-    /// │ -3   │ 10........1 │ 3       │
-    /// │ -2   │ 0.........1 │ 2       │
-    /// │ -1   │ ..........1 │ 1       │
-    /// │  0   │ ..........0 │ 1       │
-    /// │  1   │ 1.........0 │ 2       │
-    /// │  2   │ 01........0 │ 3       │
-    /// │  3   │ 11........0 │ 3       │
-    /// └──────┴──────────── → ────────┘
-    /// ```
-    ///
-    @inlinable public var entropy: UX {
-        UX(IX(self.base.bitWidth))
-    }
-    
-    /// The bit that extends the body of this integer.
-    @inlinable public var appendix: Bit {
-        Bit(self.base.signum() < 0)
-    }
-    
-    /// A three-way comparison against zero.
-    @inlinable public func signum() -> Signum {
-        IX(self.base.signum()).signum()
-    }
 }

@@ -17,6 +17,11 @@ extension MakeInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// The bit that extends the body of this integer.
+    @inlinable public var appendix: Bit {
+        Bit(self.base.signum() < 0)
+    }
+    
     /// The word at `index`, ordered from least significant to most significant.
     @inlinable public subscript(index: UX) -> UX {
         if  let index = IX.exactly(index).optional() {
