@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Big Int Literal
+// MARK: * Make Int
 //*============================================================================*
 
-@frozen public struct BigIntLiteral: ExpressibleByIntegerLiteral, Sendable {
+@frozen public struct MakeInt: ExpressibleByIntegerLiteral, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data
@@ -43,10 +43,28 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// The number of bits needed to represent `self`.
+    ///
+    /// ```
+    /// ┌──────┬──────────── → ─────┐
+    /// │ self │ bit pattern │ size │
+    /// ├──────┼──────────── → ─────┤
+    /// │ -4   │ 00........1 │ 3    │
+    /// │ -3   │ 10........1 │ 3    │
+    /// │ -2   │ 0.........1 │ 2    │
+    /// │ -1   │ ..........1 │ 1    │
+    /// │  0   │ ..........0 │ 1    │
+    /// │  1   │ 1.........0 │ 2    │
+    /// │  2   │ 01........0 │ 3    │
+    /// │  2   │ 11........0 │ 3    │
+    /// └──────┴──────────── → ─────┘
+    /// ```
+    ///
     @inlinable public var size: UX {
         UX(IX(self.base.bitWidth))
     }
     
+    /// The bit that extends the body of this integer.
     @inlinable public var appendix: Bit {
         Bit(self.base.signum() < 0)
     }
@@ -54,44 +72,5 @@
     /// A three-way comparison against zero.
     @inlinable public func signum() -> Signum {
         IX(self.base.signum()).signum()
-    }
-    
-    /// The word at the given index, from least significant to most.
-    @inlinable public subscript(index: UX) -> UX {
-        if  let index = IX.exactly(index).optional() {
-            return UX(raw: self.base[Int(index)])
-        }   else {
-            return UX.init(repeating: self.appendix)
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public func withUnsafeBinaryIntegerElements<T>(_ action: (DataInt<UX>) throws -> T) rethrows -> T {
-        try self.withUnsafeBinaryIntegerBody {
-            try action(DataInt($0, repeating: self.appendix))
-        }
-    }
-    
-    @inlinable public func withUnsafeBinaryIntegerBody<T>(_ action: (DataInt<UX>.Body) throws -> T) rethrows -> T {
-        let count = IX(self.size.division(Divisor(unchecked: UX.size)).ceil().assert())
-        return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(count)) { buffer in
-            //=--------------------------------------=
-            // pointee: initialization
-            //=--------------------------------------=
-            for index in IX.zero ..< count {
-                buffer.initializeElement(at: Int(index), to: self[UX(raw: index)])
-            }
-            //=--------------------------------------=
-            // pointee: deferred deinitialization
-            //=--------------------------------------=
-            defer {
-                buffer[..<Int(count)].deinitialize()
-            }
-            //=--------------------------------------=
-            return try action(DataInt.Body(UnsafeBufferPointer(buffer))!)
-        }
     }
 }

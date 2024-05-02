@@ -33,7 +33,6 @@
 
 ### Models
 
-- BigIntLiteral
 - Bit
 - CoreInt
 - DataInt
@@ -42,6 +41,7 @@
 - Doublet
 - Fallible
 - LoadInt
+- MakeInt
 - Shift
 - Sign
 - Signed

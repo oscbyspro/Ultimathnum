@@ -11,12 +11,12 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Big Int Literal
+// MARK: * Make Int
 //*============================================================================*
 
-final class BigIntLiteralTests: XCTestCase {
+final class MakeIntTests: XCTestCase {
     
-    typealias T = BigIntLiteral
+    typealias T = MakeInt
     
     //=------------------------------------------------------------------------=
     // MARK: Tests

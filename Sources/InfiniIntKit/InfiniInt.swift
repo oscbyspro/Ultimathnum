@@ -67,8 +67,8 @@ import CoreKit
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(integerLiteral: BigIntLiteral.IntegerLiteralType) {
-        self = Self.exactly(BigIntLiteral(integerLiteral: integerLiteral)).unwrap()
+    @inlinable public init(integerLiteral: MakeInt.IntegerLiteralType) {
+        self = Self.exactly(MakeInt(integerLiteral: integerLiteral)).unwrap()
     }
     
     @inlinable public init(_ body: some Sequence<Element.Magnitude>, repeating appendix: Bit = .zero) {
