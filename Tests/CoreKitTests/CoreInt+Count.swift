@@ -20,22 +20,9 @@ extension CoreIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testBitSelection() {
+    func testCount() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            for bit: Bit in [0, 1] {
-                Test().same(( 0 as T).count(           (bit)), bit == 0 ? T.size : 0)
-                Test().same((~0 as T).count(           (bit)), bit == 1 ? T.size : 0)
-                Test().same(( 0 as T).count( .ascending(bit)), bit == 0 ? T.size : 0)
-                Test().same((~0 as T).count( .ascending(bit)), bit == 1 ? T.size : 0)
-                Test().same(( 0 as T).count(.descending(bit)), bit == 0 ? T.size : 0)
-                Test().same((~0 as T).count(.descending(bit)), bit == 1 ? T.size : 0)
-                
-                for element: (value: T, bit: Bit) in [(11, 0), (~11, 1)] {
-                    Test().same(element.value.count(           (bit)), bit == element.bit ? T.size - 3 : 3)
-                    Test().same(element.value.count( .ascending(bit)), bit == element.bit ? 0000000000 : 2)
-                    Test().same(element.value.count(.descending(bit)), bit == element.bit ? T.size - 4 : 0)
-                }
-            }
+            IntegerInvariants(T.self).count()
         }
         
         for type in coreSystemsIntegers {
