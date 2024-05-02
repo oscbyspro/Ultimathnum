@@ -11,10 +11,10 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Big Integer Literal
+// MARK: * Big Int Literal
 //*============================================================================*
 
-final class BigIntegerLiteralTests: XCTestCase {
+final class BigIntLiteralTests: XCTestCase {
     
     typealias T = BigIntLiteral
     
