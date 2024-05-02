@@ -37,19 +37,19 @@ extension MakeInt {
     }
     
     @inlinable public func withUnsafeBinaryIntegerBody<T>(_ action: (DataInt<UX>.Body) throws -> T) rethrows -> T {
-        let count = IX(self.size.division(Divisor(UX.size)!).ceil().assert())
-        return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(count)) { buffer in
+        let count = Int(raw: self.entropy.division(Divisor(unchecked: UX.size)).ceil().assert())
+        return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: count) { buffer in
             //=--------------------------------------=
             // pointee: initialization
             //=--------------------------------------=
-            for index in IX.zero ..< count {
-                buffer.initializeElement(at: Int(index), to: self[UX(raw: index)])
+            for index in Int.zero ..< count {
+                buffer.initializeElement(at: index, to: self[UX(raw: index)])
             }
             //=--------------------------------------=
             // pointee: deferred deinitialization
             //=--------------------------------------=
             defer {
-                buffer[..<Int(count)].deinitialize()
+                buffer[..<count].deinitialize()
             }
             //=--------------------------------------=
             return try action(DataInt.Body(UnsafeBufferPointer(buffer))!)
