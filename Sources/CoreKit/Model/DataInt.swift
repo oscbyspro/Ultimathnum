@@ -101,6 +101,10 @@ public protocol SomeDataIntBody<Element> {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    @inlinable public init(_ data: some SomeDataInt<Element>) {
+        self.init(data.body, repeating: data.appendix)
+    }
+    
     @inlinable public init(_ body: some SomeDataIntBody<Element>, repeating appendix: Bit = .zero) {
         self.body = body.reader()
         self.appendix = appendix

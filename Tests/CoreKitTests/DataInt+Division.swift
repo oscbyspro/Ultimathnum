@@ -41,6 +41,48 @@ extension DataIntTests {
             whereIs(type)
         }
     }
+    
+    /// Checks that each 2-by-1 as U8 is equivalent to U16 by U16(U8).
+    func testDivisionByElementForEach2By1AsU8() throws {
+        #if DEBUG
+        throw XCTSkip("takes too much time in -Onone mode")
+        #else
+        var success = UX.zero
+        var failure = UX.zero
+        
+        var body = [U8](repeating: 0, count: 2)
+        body.withUnsafeMutableBufferPointer {
+            let body = MutableDataInt.Body($0)!
+            
+            for low: U8 in U8.min ... U8.max {
+                for high: U8 in U8.min ... U8.max {
+                    body[unchecked: 0] = low
+                    body[unchecked: 1] = high
+                    
+                    let dividend: U16 = LoadInt(body).load()
+                    for divisor:  U8 in 1 ... U8.max {
+                        let expectation = dividend.division(Divisor(U16(divisor))!).unwrap()
+                        
+                        body[unchecked: 0] = low
+                        body[unchecked: 1] = high
+                        
+                        let remainder: U8 = body.divisionSetQuotientGetRemainder(Divisor(divisor)!)
+                        let quotient: U16 = LoadInt(body).load()
+                        
+                        if  Division(quotient: quotient, remainder: U16(remainder)) == expectation {
+                            success  += 1
+                        }   else {
+                            failure  += 1
+                        }
+                    }
+                }
+            }
+        }
+        
+        Test().same(success, 256 * 256 * 255)
+        Test().same(failure, 000000000000000)
+        #endif
+    }
 }
 
 //*============================================================================*

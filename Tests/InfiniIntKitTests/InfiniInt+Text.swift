@@ -49,7 +49,7 @@ final class InfiniIntTestsOnText: XCTestCase {
     
     func testGenerateInstancesTryRoundtrip() throws {
         #if DEBUG
-        throw XCTSkip("it takes too much time without optimizations")
+        throw XCTSkip("takes too much time in -Onone mode")
         #else
         var magnitudes: [InfiniInt<U64>] = []
         

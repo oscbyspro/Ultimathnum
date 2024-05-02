@@ -31,11 +31,11 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ base: DataInt<U8>, as element: Element.Type = Element.self) {
-        self.data = base
+    @inlinable public init(_ data: some SomeDataInt<U8>, as element: Element.Type = Element.self) {
+        self.data = DataInt(data)
     }
     
-    @inlinable public init(_ body: DataInt<U8>.Body, repeating appendix: Bit = .zero, as element: Element.Type = Element.self) {
+    @inlinable public init(_ body: some SomeDataIntBody<U8>, repeating appendix: Bit = .zero, as element: Element.Type = Element.self) {
         self.init(DataInt(body, repeating: appendix))
     }
     

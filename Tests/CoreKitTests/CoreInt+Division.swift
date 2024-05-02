@@ -116,7 +116,7 @@ extension CoreIntTests {
     
     func testDivision2111U8() throws {
         #if DEBUG
-        throw XCTSkip("too slow without compiler optimization")
+        throw XCTSkip("takes too much time in -Onone mode")
         #else
         typealias T = U8
         
