@@ -85,9 +85,11 @@ try! Fibonacci<UXL>(1_000_000) // 0.06s on MacBook Pro, 13-inch, M1, 2020
 But you can also step through it manually:
 
 ```swift
-mutating func increment() throws // index + 1
-mutating func decrement() throws // index - 1
-mutating func    double() throws // index * 2
+mutating func double()       throws // index * 2
+mutating func increment()    throws // index + 1
+mutating func decrement()    throws // index - 1
+mutating func increment(by:) throws // index + x.index
+mutating func decrement(by:) throws // index - x.index
 ```
 
 <a name="infiniintkit"/>

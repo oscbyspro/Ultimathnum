@@ -52,7 +52,7 @@ extension FibonacciTests {
         if  let (item) = Test().some(try? Fibonacci<I8>(10)) {
             Case(item).checkIsLastIndex()
             Case(item).checkTextInvariants()
-            Case(item).checkDivisionInvariants()
+            Case(item).checkMathInvariants()
             Case(item).check(
                 index:   10,
                 element: 00000000000000000055,
@@ -63,7 +63,7 @@ extension FibonacciTests {
         if  let (item) = Test().some(try? Fibonacci<U8>(12)) {
             Case(item).checkIsLastIndex()
             Case(item).checkTextInvariants()
-            Case(item).checkDivisionInvariants()
+            Case(item).checkMathInvariants()
             Case(item).check(
                 index:   12,
                 element: 00000000000000000144,
@@ -74,7 +74,7 @@ extension FibonacciTests {
         if  let (item) = Test().some(try? Fibonacci<I16>(22)) {
             Case(item).checkIsLastIndex()
             Case(item).checkTextInvariants()
-            Case(item).checkDivisionInvariants()
+            Case(item).checkMathInvariants()
             Case(item).check(
                 index:   22,
                 element: 00000000000000017711,
@@ -85,7 +85,7 @@ extension FibonacciTests {
         if  let (item) = Test().some(try? Fibonacci<U16>(23)) {
             Case(item).checkIsLastIndex()
             Case(item).checkTextInvariants()
-            Case(item).checkDivisionInvariants()
+            Case(item).checkMathInvariants()
             Case(item).check(
                 index:   23,
                 element: 00000000000000028657,
@@ -96,7 +96,7 @@ extension FibonacciTests {
         if  let (item) = Test().some(try? Fibonacci<I32>(45)) {
             Case(item).checkIsLastIndex()
             Case(item).checkTextInvariants()
-            Case(item).checkDivisionInvariants()
+            Case(item).checkMathInvariants()
             Case(item).check(
                 index:   45,
                 element: 00000000001134903170,
@@ -107,7 +107,7 @@ extension FibonacciTests {
         if  let (item) = Test().some(try? Fibonacci<U32>(46)) {
             Case(item).checkIsLastIndex()
             Case(item).checkTextInvariants()
-            Case(item).checkDivisionInvariants()
+            Case(item).checkMathInvariants()
             Case(item).check(
                 index:   46,
                 element: 00000000001836311903,
@@ -118,7 +118,7 @@ extension FibonacciTests {
         if  let (item) = Test().some(try? Fibonacci<I64>(91)) {
             Case(item).checkIsLastIndex()
             Case(item).checkTextInvariants()
-            Case(item).checkDivisionInvariants()
+            Case(item).checkMathInvariants()
             Case(item).check(
                 index:   91,
                 element: 04660046610375530309,
@@ -129,7 +129,7 @@ extension FibonacciTests {
         if  let (item) = Test().some(try? Fibonacci<U64>(92)) {
             Case(item).checkIsLastIndex()
             Case(item).checkTextInvariants()
-            Case(item).checkDivisionInvariants()
+            Case(item).checkMathInvariants()
             Case(item).check(
                 index:   92,
                 element: 07540113804746346429,

@@ -84,22 +84,22 @@ extension FibonacciTests.Case {
         test.description(roundtripping: item.next)
     }
     
-    func checkDivisionInvariants() {
-        //=--------------------------------------=
-        typealias Bad = FibonacciTests.Failure
-        //=--------------------------------------=
+    func checkMathInvariants() {
+        typealias Failure = FibonacciTests.Failure
         for divisor: Divisor<Value> in [2, 3, 5, 7, 11].map(Divisor.init) {
-            brrrrrr: do {
-                let a = self.item
-                let b = try Item(a.index.quotient(divisor).prune(Bad.division))
-                let c = try Item(a.index.minus(b.index).prune(Bad.substraction))
-                let d = try a.next.division(Divisor(b.next)!).prune(Bad.division)
-                let e = try b.element.times(c.element).prune(Bad.multiplication)
-                let f = try d.quotient.minus(c.next).times(b.next).plus(d.remainder).prune(Bad.any)
-                self.test.same(e, f, "arithmetic invariant error")
+            always: do {
+                var a = item
+                let b = try Item(a.index.quotient(divisor).prune(Failure.division))
+                try a.decrement(by: b)
+                let c = try item.next.division(Divisor(b.next)!).prune(Failure.division)
+                let d = try b.element.times(a.element).prune(Failure.multiplication)
+                let e = try c.quotient.minus(a.next).times(b.next).plus(c.remainder).prune(Failure.any)
+                try a.increment(by: b)
+                test.same(d, e, "arithmetic invariant error")
+                check(index: a.index, element: a.element, next: a.next)
                 
             }   catch let error {
-                self.test.fail("unexpected arithmetic failure: \(error)")
+                test.fail("unexpected arithmetic failure: \(error)")
             }
         }
     }
@@ -202,6 +202,46 @@ extension FibonacciTests.Case {
             instance.check(index: 2, element: 1, next: 2)
             instance.test.success({ try instance.item.double() })
             instance.check(index: 4, element: 3, next: 5)
+        }
+        
+        increment: if let item = test.some(try? Item(1)) {
+            var lhs = make(item)
+            var rhs = make(item)
+            
+            lhs.check(index: 01, element: 01, next: 01)
+            rhs.check(index: 01, element: 01, next: 01)
+            
+            test.success({ try lhs.item.increment(by: rhs.item) })
+            lhs.check(index: 02, element: 01, next: 02)
+            test.success({ try rhs.item.increment(by: lhs.item) })
+            rhs.check(index: 03, element: 02, next: 03)
+            test.success({ try lhs.item.increment(by: rhs.item) })
+            lhs.check(index: 05, element: 05, next: 08)
+            test.success({ try rhs.item.increment(by: lhs.item) })
+            rhs.check(index: 08, element: 21, next: 34)
+        }
+        
+        decrement: if let low = test.some(try? Item(5)), let high = test.some(try? Item(8)) {
+            var lhs = make(low )
+            var rhs = make(high)
+            
+            lhs.check(index: 05, element: 05, next: 08)
+            rhs.check(index: 08, element: 21, next: 34)
+            
+            test.success({ try rhs.item.decrement(by: lhs.item) })
+            rhs.check(index: 03, element: 02, next: 03)
+            test.success({ try lhs.item.decrement(by: rhs.item) })
+            lhs.check(index: 02, element: 01, next: 02)
+            test.success({ try rhs.item.decrement(by: lhs.item) })
+            rhs.check(index: 01, element: 01, next: 01)
+            test.success({ try lhs.item.decrement(by: rhs.item) })
+            lhs.check(index: 01, element: 01, next: 01)
+            test.success({ try rhs.item.decrement(by: lhs.item) })
+            rhs.check(index: 00, element: 00, next: 01)
+            test.success({ try lhs.item.decrement(by: rhs.item) })
+            lhs.check(index: 01, element: 01, next: 01)
+            test.failure({ try rhs.item.decrement(by: lhs.item) })
+            rhs.check(index: 00, element: 00, next: 01)
         }
     }
 }

@@ -40,7 +40,6 @@ import CoreKit
 /// f(x + 6 + 1) == f(x) * 0008 + f(x + 1) * 00000013
 /// ─────────────────────────────────────────────────
 /// f(x + y + 1) == f(x) * f(y) + f(x + 1) * f(y + 1)
-/// f(x + x + 1) == f(x) ^ 0002 + f(x + 1) ^ 00000002
 /// ```
 ///
 /// ### Un/signed vs Magnitude
@@ -49,7 +48,7 @@ import CoreKit
 ///
 @frozen public struct Fibonacci<Value> where Value: BinaryInteger {
     
-    public enum Error: Swift.Error { case overflow }
+    public enum Failure: Error { case overflow }
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -73,7 +72,7 @@ import CoreKit
     /// Creates the sequence pair at the given `index`.
     @inlinable public init(_ index: Value) throws {
         if  index.appendix == 1 {
-            throw Error.overflow
+            throw Failure.overflow
         }
         
         self.init()
@@ -115,37 +114,67 @@ import CoreKit
     
     /// Forms the sequence pair at `index + 1`.
     @inlinable public mutating func increment() throws {
-        let  n = try i.plus(1).prune(Error.overflow)
-        let  x = try a.plus(b).prune(Error.overflow)
+        let ix = try i.plus(1).prune(Failure.overflow)
+        let bx = try a.plus(b).prune(Failure.overflow)
         
-        self.i = consume n
+        self.i = consume ix
         self.a = b
-        self.b = consume x
+        self.b = consume bx
     }
     
     /// Forms the sequence pair at `index - 1`.
     @inlinable public mutating func decrement() throws {
-        let  n = try i.minus(1).prune(Error.overflow)
-        let  y = try b.minus(a).prune(Error.overflow)
+        let ix = try i.minus(1).veto({ $0.isNegative }).prune(Failure.overflow)
+        let ax = try b.minus(a).prune(Failure.overflow)
         
-        if  n.isNegative {
-            throw Error.overflow
-        }
-        
-        self.i = consume n
+        self.i = consume ix
         self.b = a
-        self.a = consume y
+        self.a = consume ax
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
     
     /// Forms the sequence pair at `index * 2`.
     @inlinable public mutating func double() throws {
-        let  n = try i.times(2).prune(Error.overflow)
-        let  x = try b.times(2).minus(a).times (a).prune(Error.overflow)
-        let  y = try b.squared().plus(a.squared()).prune(Error.overflow)
+        let ix = try i.times(2).prune(Failure.overflow)
+        let ax = try b.times(2).minus(a).times (a).prune(Failure.overflow)
+        let bx = try b.squared().plus(a.squared()).prune(Failure.overflow)
 
-        self.i = consume n
-        self.a = consume x
-        self.b = consume y
+        self.i = consume ix
+        self.a = consume ax
+        self.b = consume bx
+    }
+    
+    /// Forms the sequence pair at `index + x.index`.
+    @inlinable public mutating func increment(by x: Self) throws {
+        let ix = try i.plus (x.i).prune(Failure.overflow)
+        let ax = try a.times(x.b).plus(b.minus(a).times(x.a)).prune(Failure.overflow)
+        let bx = try b.times(x.b).plus(a/*-----*/.times(x.a)).prune(Failure.overflow)
+
+        self.i = consume ix
+        self.a = consume ax
+        self.b = consume bx
+    }
+    
+    /// Forms the sequence pair at `index - x.index`.
+    @inlinable public mutating func decrement(by x: Self) throws {
+        let ix = try i.minus(x.i).veto({ $0.isNegative }).prune(Failure.overflow)
+        
+        var a0 = b.times(x.a).value
+        var a1 = a.times(x.b).value
+        var b0 = b.plus(a).times(x.a).value
+        var b1 = b.times(x.b).value
+        
+        if  Bool(x.index.leastSignificantBit) {
+            Swift.swap(&a0, &a1)
+            Swift.swap(&b0, &b1)
+        }
+        
+        self.i = consume ix
+        self.a = a1.minus(a0).value
+        self.b = b1.minus(b0).value
     }
 }
 

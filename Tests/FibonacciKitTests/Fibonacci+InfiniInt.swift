@@ -48,9 +48,9 @@ extension FibonacciTests {
     func testInfiniIntIXLPrime3131() {
         guard let item = Test().success({ try Fibonacci<IXL>(28751) }) else { return }
         #if !DEBUG
+        Case(item).checkMathInvariants()
         Case(item).checkTextInvariants()
         #endif
-        Case(item).checkDivisionInvariants()
         Case(item).check(IXL("""
         0000000179539422936879670273043077421513074187637090531654188941\
         5741714251061429371751580439620520390780557350979774794868208366\
@@ -153,9 +153,9 @@ extension FibonacciTests {
     func testInfiniIntUXLPrime3131() {
         guard let item = Test().success({ try Fibonacci<UXL>(28751) }) else { return }
         #if !DEBUG
+        Case(item).checkMathInvariants()
         Case(item).checkTextInvariants()
         #endif
-        Case(item).checkDivisionInvariants()
         Case(item).check(UXL("""
         0000000179539422936879670273043077421513074187637090531654188941\
         5741714251061429371751580439620520390780557350979774794868208366\
