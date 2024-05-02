@@ -8,17 +8,17 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Bit x Appendix
+// MARK: * Bit x Entropy
 //*============================================================================*
 
 extension Bit {
     
     //*========================================================================*
-    // MARK: * Appendix
+    // MARK: * Entropy
     //*========================================================================*
 
-    @frozen public struct Appendix<Target>: BitSelection where Target: BitCountable {
-                
+    @frozen public struct Entropy<Target>: BitSelection where Target: BitCountable {
+        
         //=--------------------------------------------------------------------=
         // MARK: Initializers
         //=--------------------------------------------------------------------=
@@ -32,30 +32,7 @@ extension Bit {
         //=--------------------------------------------------------------------=
         
         @inlinable public func count(in source: borrowing Target) -> Target.BitCount {
-            Descending((copy source).appendix).count(in: source)
-        }
-    }
-
-    //*========================================================================*
-    // MARK: * Nonappendix
-    //*========================================================================*
-
-    @frozen public struct Nonappendix<Target>: BitSelection where Target: BitCountable {
-                
-        //=--------------------------------------------------------------------=
-        // MARK: Initializers
-        //=--------------------------------------------------------------------=
-        
-        @inlinable public init() {
-            
-        }
-        
-        //=--------------------------------------------------------------------=
-        // MARK: Utilities
-        //=--------------------------------------------------------------------=
-        
-        @inlinable public func count(in source: borrowing Target) -> Target.BitCount {
-            Nondescending<Target>((copy source).appendix).count(in: source)
+            Nonappendix().count(in: source).incremented().assert()
         }
     }
 }

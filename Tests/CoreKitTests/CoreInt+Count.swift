@@ -20,6 +20,16 @@ extension CoreIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
+    func testCount() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            IntegerInvariants(T.self).entropy()
+        }
+        
+        for type in coreSystemsIntegers {
+            whereIs(type)
+        }
+    }
+    
     func testBitSelection() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             for bit: Bit in [0, 1] {

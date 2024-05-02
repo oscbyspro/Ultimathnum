@@ -21,6 +21,10 @@ extension BitSelection {
         Self()
     }
     
+    @inlinable public static func entropy<T>() -> Self where Self == Bit.Entropy<T> {
+        Self()
+    }
+    
     @inlinable public static func anywhere<T>(_ bit: Bit) -> Self where Self == Bit.Anywhere<T> {
         Self(bit)
     }
