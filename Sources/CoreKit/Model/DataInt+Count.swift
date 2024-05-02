@@ -22,22 +22,22 @@ extension SomeDataIntBody {
         return count.unwrap("BinaryInteger/body/0...IX.max")
     }
     
-    @inlinable public func count(_ bit: Bit, where selection: Bit.Anywhere<Self>.Type) -> IX {
+    @inlinable public func count(_ selection: Bit) -> IX {
         var count = Fallible(IX.zero, error: false)
         
         for index in self.indices {
-            let subcount = self[unchecked: index].count(.anywhere(bit))
+            let subcount = self[unchecked: index].count(selection)
             count = count.plus(IX(load: subcount))
         }
         
         return count.unwrap("BinaryInteger/body/0...IX.max")
     }
     
-    @inlinable public func count(_ bit: Bit, where selection: Bit.Ascending<Self>.Type) -> IX {
+    @inlinable public func count(_ selection: Bit.Ascending) -> IX {
         var count = Fallible(IX.zero, error: false)
         
         for index in self.indices {
-            let subcount = self[unchecked: index].count(.ascending(bit))
+            let subcount = self[unchecked: index].count(selection)
             count = count.plus(IX(load: subcount))
             guard subcount == Element.size else { break }
         }
@@ -45,11 +45,11 @@ extension SomeDataIntBody {
         return count.unwrap("BinaryInteger/body/0...IX.max")
     }
     
-    @inlinable public func count(_ bit: Bit, where selection: Bit.Descending<Self>.Type) -> IX {
+    @inlinable public func count(_ selection: Bit.Descending) -> IX {
         var count = Fallible(IX.zero, error: false)
         
         for index in self.indices.reversed() {
-            let subcount = self[unchecked: index].count(.descending(bit))
+            let subcount = self[unchecked: index].count(selection)
             count = count.plus(IX(load: subcount))
             guard subcount == Element.size else { break }
         }

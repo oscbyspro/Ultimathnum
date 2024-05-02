@@ -23,14 +23,12 @@ extension CoreIntTests {
     func testBitSelection() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             for bit: Bit in [0, 1] {
-                for selection: any BitSelection<T> in [
-                    Bit  .Anywhere<T>(bit),
-                    Bit .Ascending<T>(bit),
-                    Bit.Descending<T>(bit)
-                ] {
-                    Test().same(( 0 as T).count(selection), bit == 0 ? T.size : 0)
-                    Test().same((~0 as T).count(selection), bit == 1 ? T.size : 0)
-                }
+                Test().same(( 0 as T).count(           (bit)), bit == 0 ? T.size : 0)
+                Test().same((~0 as T).count(           (bit)), bit == 1 ? T.size : 0)
+                Test().same(( 0 as T).count( .ascending(bit)), bit == 0 ? T.size : 0)
+                Test().same((~0 as T).count( .ascending(bit)), bit == 1 ? T.size : 0)
+                Test().same(( 0 as T).count(.descending(bit)), bit == 0 ? T.size : 0)
+                Test().same((~0 as T).count(.descending(bit)), bit == 1 ? T.size : 0)
                 
                 for element: (value: T, bit: Bit) in [(11, 0), (~11, 1)] {
                     Test().same(element.value.count(           (bit)), bit == element.bit ? T.size - 3 : 3)

@@ -83,7 +83,7 @@ extension TextInt {
         // text: capacity upper bound
         //=--------------------------------------=
         var capacity: IX = body.count(.nondescending(.zero))
-        var rate: UX = self.exponentiation.power.count(.size())
+        var rate: UX = self.exponentiation.power.size()
         
         if  self.exponentiation.power != .zero {
             rate -= 1 + self.exponentiation.power.count(.descending(.zero))

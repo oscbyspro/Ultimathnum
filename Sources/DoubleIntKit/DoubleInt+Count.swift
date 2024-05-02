@@ -19,34 +19,34 @@ extension DoubleInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func count(_ bit: Bit, where selection: Bit.Anywhere<Self>.Type) -> Magnitude {
+    @inlinable public borrowing func count(_ selection: Bit) -> Magnitude {
         var count: UX
 
-        count  = UX(load: self.storage.low .count(.anywhere(bit)))
-        count += UX(load: self.storage.high.count(.anywhere(bit)))
+        count  = UX(load: self.storage.low .count(selection))
+        count += UX(load: self.storage.high.count(selection))
         
         return Magnitude(load: count)
     }
     
-    @inlinable public func count(_ bit: Bit, where selection: Bit.Ascending<Self>.Type) -> Magnitude {
+    @inlinable public borrowing func count(_ selection: Bit.Ascending) -> Magnitude {
         var count: UX
 
         always: do {
-            count  = UX(load: self.storage.low .count(.ascending(bit)))
+            count  = UX(load: self.storage.low .count(selection))
             guard count == UX(size: Base.self) else { break always }
-            count += UX(load: self.storage.high.count(.ascending(bit)))
+            count += UX(load: self.storage.high.count(selection))
         }
         
         return Magnitude(load: count)
     }
     
-    @inlinable public func count(_ bit: Bit, where selection: Bit.Descending<Self>.Type) -> Magnitude {
+    @inlinable public borrowing func count(_ selection: Bit.Descending) -> Magnitude {
         var count: UX
 
         always: do {
-            count  = UX(load: self.storage.high.count(.descending(bit)))
+            count  = UX(load: self.storage.high.count(selection))
             guard count == UX(size: Base.self) else { break always }
-            count += UX(load: self.storage.low .count(.descending(bit)))
+            count += UX(load: self.storage.low .count(selection))
         }
         
         return Magnitude(load: count)

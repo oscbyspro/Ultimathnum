@@ -22,36 +22,26 @@ extension Test {
     /// - Note: Each call tests `instance` and `instance.toggled()`.
     public func count<T>(
         _ instance: T,
-        _ selection: Bit.Anywhere<T>,
+        _ selection: Bit,
         _ expectation: T.Magnitude
     )   where T: BinaryInteger {
         //=--------------------------------------=
         guard let expectationInverse = some(T.size.minus(expectation).optional(), "inverse") else { return }
         //=--------------------------------------=
-        let bit: Bit    = selection.bit
+        let bit: Bit    = selection
         let instance    = (normal: instance,    inverse: instance.toggled())
         let expectation = (normal: expectation, inverse: expectationInverse)
-        //=--------------------------------------=
-        same(instance.normal .count( bit, where: type(of: selection)), expectation.normal,  "where [0]")
-        same(instance.normal .count(~bit, where: type(of: selection)), expectation.inverse, "where [1]")
-        same(instance.inverse.count( bit, where: type(of: selection)), expectation.inverse, "where [2]")
-        same(instance.inverse.count(~bit, where: type(of: selection)), expectation.normal,  "where [3]")
         //=--------------------------------------=
         same(instance.normal .count( bit), expectation.normal,  "count [0]")
         same(instance.normal .count(~bit), expectation.inverse, "count [1]")
         same(instance.inverse.count( bit), expectation.inverse, "count [2]")
         same(instance.inverse.count(~bit), expectation.normal,  "count [3]")
-        
-        same(instance.normal .count(.anywhere( bit)), expectation.normal,  "each [0]")
-        same(instance.normal .count(.anywhere(~bit)), expectation.inverse, "each [1]")
-        same(instance.inverse.count(.anywhere( bit)), expectation.inverse, "each [2]")
-        same(instance.inverse.count(.anywhere(~bit)), expectation.normal,  "each [3]")
     }
     
     /// - Note: Each call tests `instance` and `instance.toggled()`.
     public func count<T>(
         _ instance: T,
-        _ selection: Bit.Ascending<T>,
+        _ selection: Bit.Ascending,
         _ expectation: T.Magnitude
     )   where T: BinaryInteger {
         //=--------------------------------------=
@@ -60,9 +50,6 @@ extension Test {
         let bit: Bit    = selection.bit
         let instance    = (normal: instance,    inverse: instance.toggled())
         let expectation = (normal: expectation, inverse: expectationInverse)
-        //=--------------------------------------=
-        same(instance.normal .count( bit, where: type(of: selection)), expectation.normal,  "where [4]")
-        same(instance.inverse.count(~bit, where: type(of: selection)), expectation.normal,  "where [5]")
         //=--------------------------------------=
         same(instance.normal .count(.ascending( bit)), expectation.normal, "ascending [0]")
         same(instance.inverse.count(.ascending(~bit)), expectation.normal, "ascending [1]")
@@ -84,7 +71,7 @@ extension Test {
     /// - Note: Each call tests `instance` and `instance.toggled()`.
     public func count<T>(
         _ instance: T,
-        _ selection: Bit.Descending<T>,
+        _ selection: Bit.Descending,
         _ expectation: T.Magnitude
     )   where T: BinaryInteger {
         //=--------------------------------------=
@@ -93,9 +80,6 @@ extension Test {
         let bit: Bit    = selection.bit
         let instance    = (normal: instance,    inverse: instance.toggled())
         let expectation = (normal: expectation, inverse: expectationInverse)
-        //=--------------------------------------=
-        same(instance.normal .count( bit, where: type(of: selection)), expectation.normal,  "where [6]")
-        same(instance.inverse.count(~bit, where: type(of: selection)), expectation.normal,  "where [7]")
         //=--------------------------------------=
         same(instance.normal .count(.descending( bit)), expectation.normal, "descending [0]")
         same(instance.inverse.count(.descending(~bit)), expectation.normal, "descending [1]")
@@ -114,8 +98,8 @@ extension Test {
         }
         //=--------------------------------------=
         branch: if bit == instance.normal.appendix {
-            same(instance.normal .count(   .appendix()), expectation.normal,     "appendix [0]")
-            same(instance.normal .count(.nonappendix()), expectation.inverse, "nonappendix [0]")
+            same(instance.normal .count(   .appendix), expectation.normal,     "appendix [0]")
+            same(instance.normal .count(.nonappendix), expectation.inverse, "nonappendix [0]")
         }
     }
 }

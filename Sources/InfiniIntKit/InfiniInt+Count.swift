@@ -19,13 +19,13 @@ extension InfiniInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func count(_ bit: Bit, where selection: Bit.Anywhere<Self>.Type) -> Magnitude {
+    @inlinable public func count(_ selection: Bit) -> Magnitude {
         var count = Magnitude()
         
         let contrast = self.appendix.toggled()
         self.storage.withUnsafeBinaryIntegerBody {
-            count = Magnitude(load: $0.count(.anywhere(contrast)))
-            if  contrast != bit {
+            count = Magnitude(load: $0.count(contrast))
+            if  contrast != selection {
                 count.toggle()
             }
         }
@@ -33,12 +33,12 @@ extension InfiniInt {
         return count as Magnitude
     }
     
-    @inlinable public func count(_ bit: Bit, where selection: Bit.Ascending<Self>.Type) -> Magnitude {
+    @inlinable public func count(_ selection: Bit.Ascending) -> Magnitude {
         var count = Magnitude()
         
-        let bitIsAppendix = self.appendix == bit
+        let bitIsAppendix = self.appendix == selection.bit
         self.storage.withUnsafeBinaryIntegerBody {
-            let ascending =  $0.count(.ascending(bit))
+            let ascending =  $0.count(selection)
             if  ascending == $0.size(), bitIsAppendix {
                 count = Magnitude.size
             }   else {
@@ -49,12 +49,12 @@ extension InfiniInt {
         return count as Magnitude
     }
     
-    @inlinable public func count(_ bit: Bit, where selection: Bit.Descending<Self>.Type) -> Magnitude {
+    @inlinable public func count(_ selection: Bit.Descending) -> Magnitude {
         var count = Magnitude()
         
-        if  self.appendix == bit {
+        if  self.appendix == selection.bit {
             self.withUnsafeBinaryIntegerBody {
-                count = Self.size - Magnitude(load: $0.count(.nondescending(bit)))
+                count = Self.size - Magnitude(load: $0.count(.nondescending(selection.bit)))
             }
         }
         

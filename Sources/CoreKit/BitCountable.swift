@@ -16,8 +16,8 @@
 ///
 /// ```swift
 /// U8(11).size()                // 8
-/// U8(11).count(  .anywhere(0)) // 5
-/// U8(11).count(  .anywhere(1)) // 3
+/// U8(11).count(           (0)) // 5
+/// U8(11).count(           (1)) // 3
 /// U8(11).count( .ascending(0)) // 0
 /// U8(11).count( .ascending(1)) // 2
 /// U8(11).count(.descending(0)) // 4
@@ -36,9 +36,9 @@ public protocol BitCountable {
     
     @inlinable borrowing func size() -> BitCount
             
-    @inlinable borrowing func count(_ bit: Bit, where selection: Bit  .Anywhere<Self>.Type) -> BitCount
+    @inlinable borrowing func count(_ selection: Bit) -> BitCount
     
-    @inlinable borrowing func count(_ bit: Bit, where selection: Bit .Ascending<Self>.Type) -> BitCount
+    @inlinable borrowing func count(_ selection: Bit .Ascending) -> BitCount
     
-    @inlinable borrowing func count(_ bit: Bit, where selection: Bit.Descending<Self>.Type) -> BitCount
+    @inlinable borrowing func count(_ selection: Bit.Descending) -> BitCount
 }

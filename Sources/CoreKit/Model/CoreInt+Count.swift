@@ -17,22 +17,22 @@ extension CoreInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func count(_ bit: Bit, where selection: Bit.Anywhere<Self>.Type) -> Magnitude {
-        switch Bool(bit) {
+    @inlinable public func count(_ selection: Bit) -> Magnitude {
+        switch Bool(selection) {
         case true:  Magnitude(Base.Magnitude(truncatingIfNeeded: ( self).base.nonzeroBitCount))
         case false: Magnitude(Base.Magnitude(truncatingIfNeeded: (~self).base.nonzeroBitCount))
         }
     }
     
-    @inlinable public func count(_ bit: Bit, where selection: Bit.Ascending<Self>.Type) -> Magnitude {
-        switch Bool(bit) {
+    @inlinable public func count(_ selection: Bit.Ascending) -> Magnitude {
+        switch Bool(selection.bit) {
         case true:  Magnitude(Base.Magnitude(truncatingIfNeeded: (~self).base.trailingZeroBitCount))
         case false: Magnitude(Base.Magnitude(truncatingIfNeeded: ( self).base.trailingZeroBitCount))
         }
     }
     
-    @inlinable public func count(_ bit: Bit, where selection: Bit.Descending<Self>.Type) -> Magnitude {
-        switch Bool(bit) {
+    @inlinable public func count(_ selection: Bit.Descending) -> Magnitude {
+        switch Bool(selection.bit) {
         case true:  Magnitude(Base.Magnitude(truncatingIfNeeded: (~self).base.leadingZeroBitCount))
         case false: Magnitude(Base.Magnitude(truncatingIfNeeded: ( self).base.leadingZeroBitCount))
         }

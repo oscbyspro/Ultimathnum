@@ -111,7 +111,7 @@ extension InfiniInt where Source == Source.Magnitude {
         let quotient = Self.uninitialized(count: capacity, repeating: .zero) { quotient in
             self.withUnsafeMutableBinaryIntegerBody { lhs in
                 other.storage.withUnsafeMutableBinaryIntegerBody { rhs in
-                    let shift = IX(load: rhs[unchecked: rhs.count - 1].count(.appendix()))
+                    let shift = IX(load: rhs[unchecked: rhs.count - 1].count(.appendix))
                     
                     if  shift != 0 {
                         lhs.upshift(environment: .zero, major: .zero, minor: shift)
