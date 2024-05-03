@@ -37,6 +37,16 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    @inlinable public static func exactly(_ source: consuming RootInt) -> Fallible<Self> {
+        source.withUnsafeBinaryIntegerElements {
+            Self.exactly($0, mode: .signed)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
     @inlinable public static func exactly(
         sign: consuming Sign = .plus,
         magnitude: consuming Magnitude

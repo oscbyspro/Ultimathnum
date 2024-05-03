@@ -21,7 +21,7 @@ extension DoubleIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testNumbers() {
+    func testIntegers() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             IntegerInvariants(T.self).clampingCoreSystemsIntegers()
             IntegerInvariants(T.self).exactlyCoreSystemsIntegers()
@@ -31,6 +31,28 @@ extension DoubleIntTests {
         for type in Self.types {
             whereIs(type)
         }
+    }
+    
+    func testIntegerLiterals() {
+        Test().same(I8x2.exactly(-0000032769 as RootInt), Fallible(I8x2.max, error: true))
+        Test().same(I8x2.exactly(-0000032768 as RootInt), Fallible(I8x2.min))
+        Test().same(I8x2.exactly( 0000032767 as RootInt), Fallible(I8x2.max))
+        Test().same(I8x2.exactly( 0000032768 as RootInt), Fallible(I8x2.min, error: true))
+        
+        Test().same(U8x2.exactly(-0000000001 as RootInt), Fallible(U8x2.max, error: true))
+        Test().same(U8x2.exactly( 0000000000 as RootInt), Fallible(U8x2.min))
+        Test().same(U8x2.exactly( 0000065535 as RootInt), Fallible(U8x2.max))
+        Test().same(U8x2.exactly( 0000065536 as RootInt), Fallible(U8x2.min, error: true))
+        
+        Test().same(I8x4.exactly(-2147483649 as RootInt), Fallible(I8x4.max, error: true))
+        Test().same(I8x4.exactly(-2147483648 as RootInt), Fallible(I8x4.min))
+        Test().same(I8x4.exactly( 2147483647 as RootInt), Fallible(I8x4.max))
+        Test().same(I8x4.exactly( 2147483648 as RootInt), Fallible(I8x4.min, error: true))
+                
+        Test().same(U8x4.exactly(-0000000001 as RootInt), Fallible(U8x4.max, error: true))
+        Test().same(U8x4.exactly( 0000000000 as RootInt), Fallible(U8x4.min))
+        Test().same(U8x4.exactly( 4294967295 as RootInt), Fallible(U8x4.max))
+        Test().same(U8x4.exactly( 4294967296 as RootInt), Fallible(U8x4.min, error: true))
     }
     
     //=------------------------------------------------------------------------=
