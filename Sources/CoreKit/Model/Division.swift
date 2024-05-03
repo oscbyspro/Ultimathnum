@@ -12,7 +12,7 @@
 //*============================================================================*
 
 @frozen public struct Division<Quotient,  Remainder>: BitCastable, Equatable,
-Functional where Quotient: BinaryInteger, Remainder: BinaryInteger {
+Recoverable where Quotient: BinaryInteger, Remainder: BinaryInteger {
     
     public typealias Quotient  = Quotient
     

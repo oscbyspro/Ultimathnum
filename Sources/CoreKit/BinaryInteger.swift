@@ -58,8 +58,8 @@ public protocol BinaryInteger<BitPattern>:
     BitOperable,
     Comparable,
     ExpressibleByIntegerLiteral,
-    Functional,
     Hashable,
+    Recoverable,
     Sendable,
     Strideable,
     MaybeLosslessStringConvertible

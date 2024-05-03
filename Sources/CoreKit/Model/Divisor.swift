@@ -26,7 +26,7 @@
 /// init(unchecked:) // error: unsafe (with debug assertions)
 /// ```
 ///
-@frozen public struct Divisor<Value>: Functional where Value: BinaryInteger {
+@frozen public struct Divisor<Value>: Recoverable where Value: BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data

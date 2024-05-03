@@ -8,17 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Recoverable x Veto
+// MARK: * Recoverable
 //*============================================================================*
 
-extension Fallible where Value: Recoverable {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    /// Sets the `error` indicator if the `predicate` return `true`.
-    @inlinable public consuming func veto(_ predicate: (Value) -> Bool) -> Self {
-        self.value.veto(predicate).combine(self.error)
-    }
-}
+public protocol Recoverable { }

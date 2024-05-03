@@ -8,16 +8,26 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Functional x Combine
+// MARK: * Recoverable x Capture
 //*============================================================================*
 
-extension Functional {
+extension Recoverable {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func combine(_ error: consuming Bool) -> Fallible<Self> {
-        Fallible(self, error: error)
+    @inlinable public subscript(map: (Self) -> Self) -> Void {
+        mutating get {
+            self = map(consume self)
+        }
+    }
+    
+    @inlinable public subscript(map: (Self) -> Fallible<Self>) -> Bool {
+        mutating get {
+            let result = map(consume self)
+            self = result.value
+            return result.error
+        }
     }
 }

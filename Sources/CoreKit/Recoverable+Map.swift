@@ -8,7 +8,20 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Functional
+// MARK: * Recoverable x Map
 //*============================================================================*
 
-public protocol Functional { }
+extension Recoverable {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func map<T>(_ map: (Self) throws -> T) rethrows -> T {
+        try map(self)
+    }
+    
+    @inlinable public consuming func map<T>(_ map: (Self) throws -> Fallible<T>) rethrows -> Fallible<T> {
+        try map(self)
+    }
+}

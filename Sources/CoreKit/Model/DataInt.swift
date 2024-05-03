@@ -212,7 +212,7 @@ public protocol SomeDataIntBody<Element>: BitCountable where BitCount == IX {
     ///
     /// - Note: Its operations are `unsigned` and `finite` by default.
     ///
-    @frozen public struct Body: Functional, SomeDataIntBody {
+    @frozen public struct Body: Recoverable, SomeDataIntBody {
         
         public typealias BitCount = IX
         
