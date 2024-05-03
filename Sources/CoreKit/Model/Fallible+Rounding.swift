@@ -17,13 +17,11 @@ extension Fallible {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func ceil<Quotient, Remainder>() -> Fallible<Quotient> where
-    Value == Division<Quotient, Remainder>, Quotient: BinaryInteger, Remainder: BinaryInteger {
+    @inlinable public consuming func ceil<Quotient, Remainder>() -> Fallible<Quotient> where Value == Division<Quotient, Remainder> {
         self.value.ceil().combine(self.error)
     }
     
-    @inlinable public consuming func floor<Quotient, Remainder>() -> Fallible<Quotient> where
-    Value == Division<Quotient, Remainder>, Quotient: BinaryInteger, Remainder: BinaryInteger {
+    @inlinable public consuming func floor<Quotient, Remainder>() -> Fallible<Quotient> where Value == Division<Quotient, Remainder> {
         self.value.floor().combine(self.error)
     }    
 }

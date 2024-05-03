@@ -124,3 +124,22 @@
         return self.value
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + where Value is BitCastable
+//=----------------------------------------------------------------------------=
+
+extension Fallible: BitCastable where Value: BitCastable {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(raw source: consuming Fallible<Value.BitPattern>) {
+        self.init(Value(raw: source.value), error: source.error)
+    }
+    
+    @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
+        Fallible<Value.BitPattern>(Value.BitPattern(raw: self.value), error: self.error)
+    }
+}

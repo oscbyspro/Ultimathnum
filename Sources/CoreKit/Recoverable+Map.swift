@@ -21,7 +21,21 @@ extension Recoverable {
         try map(self)
     }
     
-    @inlinable public consuming func map<T>(_ map: (Self) throws -> Fallible<T>) rethrows -> Fallible<T> {
-        try map(self)
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public subscript(map: (Self) -> Self) -> Void {
+        mutating get {
+            self = map(consume self)
+        }
+    }
+    
+    @inlinable public subscript(map: (Self) -> Fallible<Self>) -> Bool {
+        mutating get {
+            let result = map(consume self)
+            self = result.value
+            return result.error
+        }
     }
 }

@@ -15,9 +15,7 @@
 ///
 /// ### Trusted Input
 ///
-/// This is a Trusted Input™ type. It is not allowed to pass through the standard
-/// `Fallible<Value>` propagation mechanism. Instead, create valid instances with
-/// initializers such as:
+/// This is a trusted input type. Validate inputs with these methods:
 ///
 /// ```
 /// init(_:)         // error: traps
@@ -27,6 +25,8 @@
 /// ```
 ///
 @frozen public struct Shift<Value>: BitCastable where Value: BinaryInteger {
+    
+    public typealias Value = Value
     
     public typealias BitPattern = Shift<Value.Magnitude>
     
@@ -52,7 +52,7 @@
     ///
     /// - Warning: Use this method only when you are 100% sure the input is valid.
     ///
-    @_disfavoredOverload // elements.map(Divisor.init)
+    @_disfavoredOverload // enables: elements.map(Self.init)
     @inlinable public init(unchecked value: consuming Value) {
         Swift.assert(Self.predicate(value), String.brokenInvariant())
         self.value = value

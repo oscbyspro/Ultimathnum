@@ -20,6 +20,21 @@ final class DivisorTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
+    func testBitCast() {
+        func whereValueIs<Value>(_ type: Value.Type) where Value: SystemsInteger {
+            typealias T = Divisor<Value>
+            typealias S = Divisor<Value.Signitude>
+            typealias M = Divisor<Value.Magnitude>
+            
+            Test().same(T(raw: M(1)).value, 1 as T.Value)
+            Test().same(T(raw: S(2)).value, 2 as T.Value)
+        }
+        
+        for type in coreSystemsIntegers {
+            whereValueIs(type)
+        }
+    }
+    
     func testInitExactly() {
         func whereValueIs<Value>(_ type: Value.Type) where Value: SystemsInteger {
             typealias T = Divisor<Value>

@@ -47,7 +47,7 @@ extension InfiniInt {
         }
         
         if  rhsAppendixIsSet {
-            divisor[{ $0.complement() }]
+            divisor = divisor.complement()
         }
         //=--------------------------------------=
         var division = Magnitude(raw: self).divisionAsFiniteByFiniteNonzeroDivisor(Magnitude(raw: divisor.value))

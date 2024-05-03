@@ -55,7 +55,7 @@ Recoverable where Quotient: BinaryInteger, Remainder: BinaryInteger {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Accessors
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func components() -> (quotient: Quotient, remainder: Remainder) {
