@@ -23,10 +23,10 @@ extension FibonacciTests {
     //=------------------------------------------------------------------------=
     
     private static let doubleIntList: [any SystemsInteger.Type] = [
-        DoubleInt<I8>.self, DoubleInt<DoubleInt<I8>>.self, // DoubleInt<DoubleInt<DoubleInt<I8>>>.self,
-        DoubleInt<U8>.self, DoubleInt<DoubleInt<U8>>.self, // DoubleInt<DoubleInt<DoubleInt<U8>>>.self,
-        DoubleInt<IX>.self, DoubleInt<DoubleInt<IX>>.self, // DoubleInt<DoubleInt<DoubleInt<IX>>>.self,
-        DoubleInt<UX>.self, DoubleInt<DoubleInt<UX>>.self, // DoubleInt<DoubleInt<DoubleInt<IX>>>.self,
+        DoubleInt<I8>.self, DoubleInt<DoubleInt<I8>>.self,
+        DoubleInt<U8>.self, DoubleInt<DoubleInt<U8>>.self,
+        DoubleInt<IX>.self, DoubleInt<DoubleInt<IX>>.self,
+        DoubleInt<UX>.self, DoubleInt<DoubleInt<UX>>.self,
     ]
     
     //=------------------------------------------------------------------------=

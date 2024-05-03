@@ -82,6 +82,10 @@ extension FibonacciTests.Case {
         test.same(item.next,    next,    "next")
     }
     
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities x Invariants
+    //=------------------------------------------------------------------------=
+    
     func checkTextInvariants() {
         test.description(roundtripping: item.element)
         test.description(roundtripping: item.next)
