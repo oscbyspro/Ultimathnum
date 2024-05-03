@@ -40,7 +40,7 @@
         Swift.assert(Self.predicate(value), String.brokenInvariant())
         self.value = value
     }
-        
+    
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
