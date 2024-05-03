@@ -24,17 +24,17 @@ extension DataIntTests {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
             typealias Canvas = DataIntTests.Canvas<T>
             
-            Canvas([ ] as [T]).division(Divisor(1)!, quotient:[ ] as [T], remainder: 0)
-            Canvas([ ] as [T]).division(Divisor(2)!, quotient:[ ] as [T], remainder: 0)
-            Canvas([0] as [T]).division(Divisor(1)!, quotient:[0] as [T], remainder: 0)
-            Canvas([0] as [T]).division(Divisor(2)!, quotient:[0] as [T], remainder: 0)
-            Canvas([7] as [T]).division(Divisor(1)!, quotient:[7] as [T], remainder: 0)
-            Canvas([7] as [T]).division(Divisor(2)!, quotient:[3] as [T], remainder: 1)
+            Canvas([ ] as [T]).division(Divisor(1), quotient:[ ] as [T], remainder: 0)
+            Canvas([ ] as [T]).division(Divisor(2), quotient:[ ] as [T], remainder: 0)
+            Canvas([0] as [T]).division(Divisor(1), quotient:[0] as [T], remainder: 0)
+            Canvas([0] as [T]).division(Divisor(2), quotient:[0] as [T], remainder: 0)
+            Canvas([7] as [T]).division(Divisor(1), quotient:[7] as [T], remainder: 0)
+            Canvas([7] as [T]).division(Divisor(2), quotient:[3] as [T], remainder: 1)
             
-            Canvas([~2,  ~4,  ~6,  9] as [T]).division(Divisor(2)!, quotient:[~1, ~2, ~3, 4] as [T], remainder: 1)
-            Canvas([~3,  ~6,  ~9, 14] as [T]).division(Divisor(3)!, quotient:[~1, ~2, ~3, 4] as [T], remainder: 2)
-            Canvas([~4,  ~8, ~12, 19] as [T]).division(Divisor(4)!, quotient:[~1, ~2, ~3, 4] as [T], remainder: 3)
-            Canvas([~5, ~10, ~15, 24] as [T]).division(Divisor(5)!, quotient:[~1, ~2, ~3, 4] as [T], remainder: 4)
+            Canvas([~2,  ~4,  ~6,  9] as [T]).division(Divisor(2), quotient:[~1, ~2, ~3, 4] as [T], remainder: 1)
+            Canvas([~3,  ~6,  ~9, 14] as [T]).division(Divisor(3), quotient:[~1, ~2, ~3, 4] as [T], remainder: 2)
+            Canvas([~4,  ~8, ~12, 19] as [T]).division(Divisor(4), quotient:[~1, ~2, ~3, 4] as [T], remainder: 3)
+            Canvas([~5, ~10, ~15, 24] as [T]).division(Divisor(5), quotient:[~1, ~2, ~3, 4] as [T], remainder: 4)
         }
         
         for type in coreSystemsIntegersWhereIsUnsigned {
@@ -61,12 +61,12 @@ extension DataIntTests {
                     
                     let dividend: U16 = LoadInt(body).load()
                     for divisor:  U8 in 1 ... U8.max {
-                        let expectation = dividend.division(Divisor(U16(divisor))!).unwrap()
+                        let expectation = dividend.division(Divisor(U16(divisor))).unwrap()
                         
                         body[unchecked: 0] = low
                         body[unchecked: 1] = high
                         
-                        let remainder: U8 = body.divisionSetQuotientGetRemainder(Divisor(divisor)!)
+                        let remainder: U8 = body.divisionSetQuotientGetRemainder(Divisor(divisor))
                         let quotient: U16 = LoadInt(body).load()
                         
                         if  Division(quotient: quotient, remainder: U16(remainder)) == expectation {

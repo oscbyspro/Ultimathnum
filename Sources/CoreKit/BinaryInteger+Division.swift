@@ -17,12 +17,12 @@ extension BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func /(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs.quotient (Divisor(copy rhs)!).unwrap()
+    @inlinable public static func /(lhs: consuming Self, rhs: Self) -> Self {
+        lhs.quotient (Divisor(rhs)).unwrap()
     }
     
-    @inlinable public static func %(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        lhs.remainder(Divisor(copy rhs)!)
+    @inlinable public static func %(lhs: consuming Self, rhs: Self) -> Self {
+        lhs.remainder(Divisor(rhs))
     }
     
     //=------------------------------------------------------------------------=

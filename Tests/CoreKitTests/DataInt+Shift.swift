@@ -201,7 +201,7 @@ extension DataIntTests.Canvas {
     
     func upshift(by distance: IX, with environment: Element, is expectation: [Element]) {
         //=------------------------------------------=
-        let (major, minor) = distance.division(Divisor(IX(size: Element.self))!).unwrap().components()
+        let (major, minor) = distance.division(Divisor(IX(size: Element.self))).unwrap().components()
         //=------------------------------------------=
         always: do {
             var value = self.body
@@ -239,7 +239,7 @@ extension DataIntTests.Canvas {
 
     func downshift(by distance: IX, with environment: Element, is expectation: [Element]) {
         //=------------------------------------------=
-        let (major, minor) = distance.division(Divisor(IX(size: Element.self))!).unwrap().components()
+        let (major, minor) = distance.division(Divisor(IX(size: Element.self))).unwrap().components()
         //=------------------------------------------=
         always: do {
             var value = self.body

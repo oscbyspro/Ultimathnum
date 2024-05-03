@@ -44,7 +44,7 @@ extension Test {
             return same(divisor, 0,  "division by zero is undefined [0]")
         }
         
-        guard let divisor = Divisor(divisor) else {
+        guard let divisor = Divisor(exactly: divisor) else {
             return none(expectation, "division by zero is undefined [1]")
         }
         //=--------------------------------------=
@@ -106,7 +106,7 @@ extension Test {
             return same(divisor, 0,  "division by zero is undefined [0]")
         }
         
-        guard let divisor = Divisor(divisor) else {
+        guard let divisor = Divisor(exactly: divisor) else {
             return none(expectation, "division by zero is undefined [1]")
         }
         //=--------------------------------------=

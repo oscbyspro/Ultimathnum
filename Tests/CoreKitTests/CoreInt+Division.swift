@@ -93,14 +93,13 @@ extension CoreIntTests {
         throw XCTSkip("too slow without compiler optimization")
         #else
         typealias T = I8
-        
         var success = 0
         var failure = 0
         
         for divisor     in T.min...T.max {
             for high    in T.min...T.max {
                 for low in T.Magnitude.min...T.Magnitude.max {
-                    if  let divisor = Divisor(divisor), !T.division(Doublet(high: high, low: low), by: divisor).error {
+                    if  let divisor = Divisor(exactly: divisor), !T.division(Doublet(high: high, low: low), by: divisor).error {
                         success += 1
                     }   else {
                         failure += 1
@@ -119,14 +118,13 @@ extension CoreIntTests {
         throw XCTSkip("takes too much time in -Onone mode")
         #else
         typealias T = U8
-        
         var success = 0
         var failure = 0
         
         for divisor     in T.min...T.max {
             for high    in T.min...T.max {
                 for low in T.Magnitude.min...T.Magnitude.max {
-                    if  let divisor = Divisor(divisor), !T.division(Doublet(high: high, low: low), by: divisor).error {
+                    if  let divisor = Divisor(exactly: divisor), !T.division(Doublet(high: high, low: low), by: divisor).error {
                         success += 1
                     }   else {
                         failure += 1

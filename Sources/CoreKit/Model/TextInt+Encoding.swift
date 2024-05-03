@@ -109,7 +109,7 @@ extension TextInt {
             //=----------------------------------=
             big: while true {
                                                 
-                if  let divisor = Divisor(self.exponentiation.power) {
+                if  let divisor = Divisor(exactly: self.exponentiation.power) {
                     chunk = body.divisionSetQuotientGetRemainder(divisor)
                     body  = body.normalized()
                 }   else if body.count != .zero {
