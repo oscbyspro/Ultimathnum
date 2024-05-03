@@ -11,12 +11,12 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Make Int
+// MARK: * Root Int
 //*============================================================================*
 
-final class MakeIntTests: XCTestCase {
+final class RootIntTests: XCTestCase {
     
-    typealias T = MakeInt
+    typealias T = RootInt
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -24,24 +24,6 @@ final class MakeIntTests: XCTestCase {
     
     func testMode() {
         Test().yay(T.mode.isSigned)
-    }
-    
-    func testEntropy() {
-        Test().same(T(-6).entropy(), 4 as UX, "010....1")
-        Test().same(T(-5).entropy(), 4 as UX, "110....1")
-        Test().same(T(-4).entropy(), 3 as UX, "00.....1")
-        Test().same(T(-3).entropy(), 3 as UX, "10.....1")
-        Test().same(T(-2).entropy(), 2 as UX, "0......1")
-        Test().same(T(-1).entropy(), 1 as UX, ".......1")
-        Test().same(T( 0).entropy(), 1 as UX, ".......0")
-        Test().same(T( 1).entropy(), 2 as UX, "1......0")
-        Test().same(T( 2).entropy(), 3 as UX, "01.....0")
-        Test().same(T( 3).entropy(), 3 as UX, "11.....0")
-        Test().same(T( 4).entropy(), 4 as UX, "001....0")
-        Test().same(T( 5).entropy(), 4 as UX, "101....0")
-        
-        Test().same(T(-0x80000000000000000000000000000000).entropy(), 128)
-        Test().same(T( 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF).entropy(), 128)
     }
     
     func testAppendix() {
@@ -62,24 +44,6 @@ final class MakeIntTests: XCTestCase {
         Test().same(T( 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF).appendix, 0 as Bit)
     }
     
-    func testSignum() {
-        Test().same(T(-6).signum(), Signum.less)
-        Test().same(T(-5).signum(), Signum.less)
-        Test().same(T(-4).signum(), Signum.less)
-        Test().same(T(-3).signum(), Signum.less)
-        Test().same(T(-2).signum(), Signum.less)
-        Test().same(T(-1).signum(), Signum.less)
-        Test().same(T( 0).signum(), Signum.same)
-        Test().same(T( 1).signum(), Signum.more)
-        Test().same(T( 2).signum(), Signum.more)
-        Test().same(T( 3).signum(), Signum.more)
-        Test().same(T( 4).signum(), Signum.more)
-        Test().same(T( 5).signum(), Signum.more)
-        
-        Test().same(T(-0x80000000000000000000000000000000).signum(), Signum.less)
-        Test().same(T( 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF).signum(), Signum.more)
-    }
-        
     func testElements() throws {
         Test().same(T(-123)[UX(  )], ~122 as UX)
         Test().same(T(-001)[UX(  )], ~000 as UX)

@@ -8,10 +8,16 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Make Int
+// MARK: * Root Int
 //*============================================================================*
 
-@frozen public struct MakeInt: ExpressibleByIntegerLiteral, Sendable {
+/// An immutable arbitrary-precision signed integer.
+///
+/// Use this type to spawn integers or other, similar, objects.
+///
+/// - Note: *We don't know where it comes from, only that it exists.*
+///
+@frozen public struct RootInt: ExpressibleByIntegerLiteral, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data

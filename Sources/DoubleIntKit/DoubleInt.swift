@@ -57,8 +57,8 @@ import CoreKit
         self.storage = storage
     }
     
-    @inlinable public init(integerLiteral: MakeInt.IntegerLiteralType) {
-        self = Self.exactly(MakeInt(integerLiteral: integerLiteral)).unwrap()
+    @inlinable public init(integerLiteral: RootInt.IntegerLiteralType) {
+        self = Self.exactly(RootInt(integerLiteral: integerLiteral)).unwrap()
     }
     
     //=------------------------------------------------------------------------=

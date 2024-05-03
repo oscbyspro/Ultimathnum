@@ -42,7 +42,7 @@
 - Doublet
 - Fallible
 - LoadInt
-- MakeInt
+- RootInt
 - Shift
 - Sign
 - Signed
