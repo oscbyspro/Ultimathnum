@@ -7,20 +7,18 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
 // MARK: * Functional x Filter
 //*============================================================================*
 
-extension Functional {
+extension Fallible where Value: Functional {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func veto(_ predicate: (Self) -> Bool) -> Fallible<Self> {
-        let error = predicate(self)
-        return self.combine(error)
+    /// Sets the `error` indicator if the `predicate` return `true`.
+    @inlinable public consuming func veto(_ predicate: (Value) -> Bool) -> Self {
+        self.value.veto(predicate).combine(self.error)
     }
 }
