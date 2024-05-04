@@ -95,13 +95,19 @@ extension SystemsInteger {
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func minus(_ decrement: borrowing Self, plus extra: consuming Bool) -> Fallible<Self> {
-        //=--------------------------------------=
-        // performance: consume instance then bit
-        //=--------------------------------------=
-        let error: Bool
-        (self, error) = self.minus(decrement).components()
-        (self, extra) = self.minus(Self(Bit(extra))).components()
-        return self.combine(error != extra)
+    /// Returns the result of `self` - (`other` + `bit`).
+    ///
+    /// ```
+    /// min: -(low:  0, high: 1)
+    /// max: +(low: ~0, high: 0)
+    /// ```
+    ///
+    @inlinable public consuming func minus(_ other: borrowing Self, plus bit: consuming Bool) -> Fallible<Self> {
+        let a: Bool, b: Bool
+        
+        (self, a) = self.minus(other).components()
+        (self, b) = self.minus(Self(Bit(bit))).components()
+        
+        return self.combine(a != b)
     }
 }
