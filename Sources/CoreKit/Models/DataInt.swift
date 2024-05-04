@@ -8,80 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Data Int
-//*============================================================================*
-
-public protocol SomeDataInt<Element> {
-    
-    associatedtype Body: SomeDataIntBody<Element>
-    
-    associatedtype Element: SystemsInteger & UnsignedInteger
-    
-    //=------------------------------------------------------------------------=
-    // MARK: State
-    //=------------------------------------------------------------------------=
-    
-    @inlinable var body: Body { get }
-    
-    @inlinable var appendix: Bit { get }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable init(_ start: Body, repeating appendix: Bit)
-}
-
-//*============================================================================*
-// MARK: * Data Int x Body
-//*============================================================================*
-
-public protocol SomeDataIntBody<Element>: BitCountable where BitCount == IX {
-    
-    associatedtype Address: Strideable<Int>
-    
-    associatedtype Buffer: RandomAccessCollection<Element>
-    
-    associatedtype Element: SystemsInteger & UnsignedInteger
-    
-    //=------------------------------------------------------------------------=
-    // MARK: State
-    //=------------------------------------------------------------------------=
-    
-    @inlinable var start: Address { get }
-    
-    @inlinable var count: IX { get }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-        
-    @inlinable init?(_ buffer: Buffer)
-    
-    @inlinable init(_ start: Address, count: IX)
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable consuming func buffer() -> Buffer
-    
-    @inlinable consuming func reader() -> DataInt<Element>.Body
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable subscript(unchecked index:   IX) -> Element { get }
-    
-    @inlinable subscript(unchecked index: Void) -> Element { get }
-}
-
-//*============================================================================*
 // MARK: * Data Int x Read
 //*============================================================================*
 
-@frozen public struct DataInt<Element>: SomeDataInt where Element: SystemsInteger & UnsignedInteger {
+@frozen public struct DataInt<Element>: DataInteger where Element: SystemsInteger & UnsignedInteger {
         
     public typealias Element = Element
     
@@ -101,11 +31,11 @@ public protocol SomeDataIntBody<Element>: BitCountable where BitCount == IX {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ data: some SomeDataInt<Element>) {
+    @inlinable public init(_ data: some DataInteger<Element>) {
         self.init(data.body, repeating: data.appendix)
     }
     
-    @inlinable public init(_ body: some SomeDataIntBody<Element>, repeating appendix: Bit = .zero) {
+    @inlinable public init(_ body: some DataIntegerBody<Element>, repeating appendix: Bit = .zero) {
         self.body = body.reader()
         self.appendix = appendix
     }
@@ -118,7 +48,7 @@ public protocol SomeDataIntBody<Element>: BitCountable where BitCount == IX {
     ///
     /// - Note: Its operations are `unsigned` and `finite` by default.
     ///
-    @frozen public struct Body: SomeDataIntBody {
+    @frozen public struct Body: DataIntegerBody {
         
         public typealias BitCount = IX
         
@@ -175,7 +105,7 @@ public protocol SomeDataIntBody<Element>: BitCountable where BitCount == IX {
 // MARK: * Data Int x Read|Write
 //*============================================================================*
 
-@frozen public struct MutableDataInt<Element>: SomeDataInt where Element: SystemsInteger & UnsignedInteger {
+@frozen public struct MutableDataInt<Element>: DataInteger where Element: SystemsInteger & UnsignedInteger {
         
     public typealias Element = Element
     
@@ -212,7 +142,7 @@ public protocol SomeDataIntBody<Element>: BitCountable where BitCount == IX {
     ///
     /// - Note: Its operations are `unsigned` and `finite` by default.
     ///
-    @frozen public struct Body: SomeDataIntBody {
+    @frozen public struct Body: DataIntegerBody {
         
         public typealias BitCount = IX
         

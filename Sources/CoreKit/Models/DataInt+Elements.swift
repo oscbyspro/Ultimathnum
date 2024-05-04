@@ -8,56 +8,6 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Data Int x Element
-//*============================================================================*
-
-extension SomeDataInt {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public subscript(index: UX) -> Element {
-        if  index < UX(raw: self.body.count) {
-            return self.body[unchecked: IX(raw: index)]
-        }   else {
-            return Element(repeating: self.appendix)
-        }
-    }
-}
-
-//*============================================================================*
-// MARK: * Data Int x Element x Body
-//*============================================================================*
-
-extension SomeDataIntBody {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public var appendix: Bit {
-        Bit.zero
-    }
-    
-    @inlinable public var isEmpty: Bool {
-        self.count == 0
-    }
-    
-    @inlinable public var indices: Range<IX> {
-        Range(uncheckedBounds:(0, self.count))
-    }
-    
-    @inlinable public subscript(optional index: IX) -> Optional<Element> {
-        if  UX(raw: index) < UX(raw: self.count) {
-            return self[unchecked: index]
-        }   else {
-            return nil
-        }
-    }
-}
-
-//*============================================================================*
 // MARK: * Data Int x Element x Read|Body
 //*============================================================================*
 

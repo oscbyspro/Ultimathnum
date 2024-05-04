@@ -8,26 +8,6 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Data Int x Initialization
-//*============================================================================*
-
-extension SomeDataInt {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init?(_ body: Body.Buffer, repeating appendix: Bit = .zero) {
-        guard let body = Body(body) else { return nil }
-        self.init(body, repeating: appendix)
-    }
-    
-    @inlinable public init(_ start: Body.Address, count: IX, repeating appendix: Bit = .zero) {
-        self.init(Body(start, count: count), repeating: appendix)
-    }
-}
-
-//*============================================================================*
 // MARK: * Data Int x Initialization x Read|Write|Body
 //*============================================================================*
 

@@ -8,40 +8,51 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Data Int x Normalization
+// MARK: * Data Integer x Elements
 //*============================================================================*
 
-extension SomeDataInt {
+extension DataInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func normalized() -> Self {
-        Self(self.body.normalized(repeating: self.appendix), repeating: self.appendix)
+    @inlinable public subscript(index: UX) -> Element {
+        if  index < UX(raw: self.body.count) {
+            return self.body[unchecked: IX(raw: index)]
+        }   else {
+            return Element(repeating: self.appendix)
+        }
     }
 }
 
 //*============================================================================*
-// MARK: * Data Int x Normalization x Body
+// MARK: * Data Int x Elements x Body
 //*============================================================================*
 
-extension SomeDataIntBody {
+extension DataIntegerBody {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func normalized(repeating appendix: Bit = .zero) -> Self {
-        let appendix = Element(repeating: appendix)
-        var endIndex = self.count
-        
-        while endIndex > 0 {
-            let lastIndex = endIndex.minus(1).assert()
-            guard self[unchecked: lastIndex] == appendix else { break }
-            endIndex = lastIndex
+    @inlinable public var appendix: Bit {
+        Bit.zero
+    }
+    
+    @inlinable public var isEmpty: Bool {
+        self.count == 0
+    }
+    
+    @inlinable public var indices: Range<IX> {
+        Range(uncheckedBounds:(0, self.count))
+    }
+    
+    @inlinable public subscript(optional index: IX) -> Optional<Element> {
+        if  UX(raw: index) < UX(raw: self.count) {
+            return self[unchecked: index]
+        }   else {
+            return nil
         }
-        
-        return Self(self.start, count: endIndex)
     }
 }

@@ -70,27 +70,3 @@ extension DataInt {
         return Signum.same as Signum as Signum as Signum
     }
 }
-
-//*============================================================================*
-// MARK: * Data Int x Comparison x Body
-//*============================================================================*
-
-extension SomeDataIntBody {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public var isZero: Bool {
-        self.buffer().allSatisfy({ $0 == Element.zero })
-    }
-    
-    @inlinable public func compared(to other: some SomeDataIntBody<Element>) -> Signum {
-        DataInt.compare(
-            lhs: DataInt(self),
-            lhsIsSigned: false,
-            rhs: DataInt(other),
-            rhsIsSigned: false
-        )
-    }
-}
