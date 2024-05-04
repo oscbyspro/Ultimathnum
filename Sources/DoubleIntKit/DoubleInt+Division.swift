@@ -45,7 +45,7 @@ extension DoubleInt {
             division.remainder = division.remainder.complement()
         }
         
-        return division.combine(Bool(suboverflow)) as Fallible<Division<Self, Self>>
+        return division.veto(Bool(suboverflow)) as Fallible<Division<Self, Self>>
     }
     
     //=------------------------------------------------------------------------=
@@ -72,7 +72,7 @@ extension DoubleInt {
             division.value.remainder = division.value.remainder.complement()
         }
         
-        return division.combine(Bool(suboverflow)) as Fallible<Division<Self, Self>>
+        return division.veto(Bool(suboverflow)) as Fallible<Division<Self, Self>>
     }
 }
 
@@ -162,7 +162,7 @@ extension DoubleInt where Base == Base.Magnitude {
             lhs.high = Self(lhs.high.division2222(rhs, normalization: normalization).remainder)
         }
         //=--------------------------------------=
-        return Self.division4222(lhs, by: rhs, normalization: normalization).combine(overflow)
+        return Self.division4222(lhs, by: rhs, normalization: normalization).veto(overflow)
     }
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.

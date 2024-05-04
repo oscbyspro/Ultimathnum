@@ -120,6 +120,6 @@ extension InfiniInt {
             self = self.complement()
         }
         
-        return self.combine(overflow) as Fallible<Self>
+        return self.veto(overflow) as Fallible<Self>
     }
 }

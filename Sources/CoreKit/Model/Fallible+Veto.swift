@@ -11,14 +11,20 @@
 // MARK: * Recoverable x Veto
 //*============================================================================*
 
-extension Fallible where Value: Recoverable {
+extension Fallible {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Sets the `error` indicator when `condition` is `true`.
+    @inlinable public consuming func veto(_ condition: Bool) -> Self {
+        Self(self.value, error: Bool(Bit(self.error) | Bit(condition)))
+    }
+    
     /// Sets the `error` indicator if the `predicate` return `true`.
     @inlinable public consuming func veto(_ predicate: (Value) -> Bool) -> Self {
-        self.value.veto(predicate).combine(self.error)
+        let condition = predicate(self.value)
+        return self.veto(condition)
     }
 }

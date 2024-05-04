@@ -58,7 +58,7 @@ extension BinaryInteger {
         }
         
         let value = Self(raw: magnitude)
-        return value.combine(value.isNegative != isNegative)
+        return value.veto(value.isNegative != isNegative)
     }
     
     @inlinable public static func exactly<Other>(
@@ -68,7 +68,7 @@ extension BinaryInteger {
         
         let magnitude = Magnitude.exactly(magnitude)
         let result = Self.exactly(sign: sign, magnitude: magnitude.value)
-        return result.combine(magnitude.error)
+        return result.veto(magnitude.error)
     }
     
     //=------------------------------------------------------------------------=
@@ -90,13 +90,13 @@ extension BinaryInteger {
                 let rhsIsNegative = source.isNegative
                 let result = Self(load: source)
                 let lhsIsNegative = result.isNegative
-                return result.combine(lhsIsNegative != rhsIsNegative)
+                return result.veto(lhsIsNegative != rhsIsNegative)
                 
             }   else {
                 let bit   = Bit(Self.isSigned) & Bit(source.isNegative)
                 let count = rhsSize.minus(UX(load: source.count(.descending(bit)))).assert()
                 let limit = lhsSize.minus(UX(Bit(Self.isSigned))).assert()
-                return Self(load: source).combine(limit < count)
+                return Self(load: source).veto(limit < count)
             }
             
         }   else {

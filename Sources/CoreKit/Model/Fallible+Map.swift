@@ -22,6 +22,6 @@ extension Fallible {
     }
     
     @inlinable public consuming func map<T>(_ map: (Value) throws -> Fallible<T>) rethrows -> Fallible<T> {
-        try map(self.value).combine(self.error)
+        try map(self.value).veto(self.error)
     }
 }

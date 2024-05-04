@@ -23,7 +23,7 @@ extension DoubleInt {
         let appendix = High.init(repeating: increment.appendix)
         let low  = self.low .plus(Low(raw: increment))
         let high = self.high.plus(appendix, plus: low.error)
-        return Self(low: low.value, high: high.value).combine(high.error)
+        return Self(low: low.value, high: high.value).veto(high.error)
     }
     
     //=------------------------------------------------------------------------=
@@ -33,6 +33,6 @@ extension DoubleInt {
     @inlinable public consuming func plus(_ increment: borrowing Self) -> Fallible<Self> {
         let low  = self.storage.low .plus(increment.storage.low)
         let high = self.storage.high.plus(increment.storage.high, plus: low.error)
-        return Self(low: low.value, high: high.value).combine(high.error)
+        return Self(low: low.value, high: high.value).veto(high.error)
     }
 }

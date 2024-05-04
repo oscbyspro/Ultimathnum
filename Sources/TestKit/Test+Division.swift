@@ -67,7 +67,7 @@ extension Test {
             let expectation = expectation.map(\.quotient)
             same(dividend.quotient(divisor), expectation)
             same(Fallible(dividend, error: false).quotient(divisor), expectation)
-            same(Fallible(dividend, error: true ).quotient(divisor), expectation.combine(true))
+            same(Fallible(dividend, error: true ).quotient(divisor), expectation.veto(true))
         }
         
         remainder: do {
@@ -80,7 +80,7 @@ extension Test {
         division: do {
             same(dividend.division(divisor), expectation)
             same(Fallible(dividend, error: false).division(divisor), expectation)
-            same(Fallible(dividend, error: true ).division(divisor), expectation.combine(true))
+            same(Fallible(dividend, error: true ).division(divisor), expectation.veto(true))
         }
     }
 }

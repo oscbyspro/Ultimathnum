@@ -33,7 +33,7 @@ extension DoubleInt {
             suboverflow = !result.value[{ $0.complement(true) }] && suboverflow
         }
         
-        return result.combine(suboverflow)
+        return result.veto(suboverflow)
     }
     
     //=------------------------------------------------------------------------=

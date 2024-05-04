@@ -36,6 +36,6 @@ extension InfiniInt {
         self.storage.appendix = Element.Signitude(raw: last).appendix
         self.storage.normalize(appending: Element.Magnitude(raw: last))
         
-        return self.combine(overflow)
+        return self.veto(overflow)
     }
 }
