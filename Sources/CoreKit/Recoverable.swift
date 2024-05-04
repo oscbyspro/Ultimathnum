@@ -11,4 +11,5 @@
 // MARK: * Recoverable
 //*============================================================================*
 
+/// A value that can recover from validation failure.
 public protocol Recoverable { }

@@ -17,14 +17,6 @@ extension Recoverable {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func map<T>(_ map: (Self) throws -> T) rethrows -> T {
-        try map(self)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
     @inlinable public subscript(map: (Self) -> Self) -> Void {
         mutating get {
             self = map(consume self)
