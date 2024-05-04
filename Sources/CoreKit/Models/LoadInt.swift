@@ -35,7 +35,7 @@
         self.data = DataInt(data)
     }
     
-    @inlinable public init(_ body: some DataIntegerBody<U8>, repeating appendix: Bit = .zero, as element: Element.Type = Element.self) {
+    @inlinable public init(_ body: some BodyInteger<U8>, repeating appendix: Bit = .zero, as element: Element.Type = Element.self) {
         self.init(DataInt(body, repeating: appendix))
     }
     

@@ -24,7 +24,9 @@
 - BitCastable
 - BitCountable
 - BitOperable
+- BodyInteger
 - CoreInteger
+- DataInteger
 - EnclosedInteger
 - SignedInteger
 - Signedness

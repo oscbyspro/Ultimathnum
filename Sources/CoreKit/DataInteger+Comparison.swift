@@ -11,7 +11,7 @@
 // MARK: * Data Integer x Comparison x Body
 //*============================================================================*
 
-extension DataIntegerBody {
+extension BodyInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -21,7 +21,7 @@ extension DataIntegerBody {
         self.buffer().allSatisfy({ $0 == Element.zero })
     }
     
-    @inlinable public func compared(to other: some DataIntegerBody<Element>) -> Signum {
+    @inlinable public func compared(to other: some BodyInteger<Element>) -> Signum {
         DataInt.compare(
             lhs: DataInt(self),
             lhsIsSigned: false,

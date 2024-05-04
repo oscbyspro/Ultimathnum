@@ -26,7 +26,7 @@ extension DataInteger {
 // MARK: * Data Integer x Normalization x Body
 //*============================================================================*
 
-extension DataIntegerBody {
+extension BodyInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

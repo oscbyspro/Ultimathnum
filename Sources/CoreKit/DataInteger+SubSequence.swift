@@ -29,7 +29,7 @@ extension DataInteger {
 // MARK: * Data Integer x Sub Sequence x Body
 //*============================================================================*
 
-extension DataIntegerBody {
+extension BodyInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

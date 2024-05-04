@@ -15,7 +15,7 @@
 ///
 /// - Warning: Its operations are unchecked by default.
 ///
-public protocol DataIntegerBody<Element>: BitCountable where BitCount == IX {
+public protocol BodyInteger<Element>: BitCountable where BitCount == IX {
     
     associatedtype Address: Strideable<Int>
     

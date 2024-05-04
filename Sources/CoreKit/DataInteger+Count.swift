@@ -11,7 +11,7 @@
 // MARK: * Data Integer x Count x Body
 //*============================================================================*
 
-extension DataIntegerBody {
+extension BodyInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

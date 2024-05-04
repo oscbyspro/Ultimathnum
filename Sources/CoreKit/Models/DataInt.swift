@@ -35,7 +35,7 @@
         self.init(data.body, repeating: data.appendix)
     }
     
-    @inlinable public init(_ body: some DataIntegerBody<Element>, repeating appendix: Bit = .zero) {
+    @inlinable public init(_ body: some BodyInteger<Element>, repeating appendix: Bit = .zero) {
         self.body = body.reader()
         self.appendix = appendix
     }
@@ -48,7 +48,7 @@
     ///
     /// - Note: Its operations are `unsigned` and `finite` by default.
     ///
-    @frozen public struct Body: DataIntegerBody {
+    @frozen public struct Body: BodyInteger {
         
         public typealias BitCount = IX
         
@@ -142,7 +142,7 @@
     ///
     /// - Note: Its operations are `unsigned` and `finite` by default.
     ///
-    @frozen public struct Body: DataIntegerBody {
+    @frozen public struct Body: BodyInteger {
         
         public typealias BitCount = IX
         

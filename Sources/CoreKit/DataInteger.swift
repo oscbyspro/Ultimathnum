@@ -17,7 +17,7 @@
 ///
 public protocol DataInteger<Element> {
     
-    associatedtype Body: DataIntegerBody<Element>
+    associatedtype Body: BodyInteger<Element>
     
     associatedtype Element: SystemsInteger & UnsignedInteger
     

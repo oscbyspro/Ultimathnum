@@ -30,7 +30,7 @@ extension DataInteger {
 // MARK: * Data Int x Elements x Body
 //*============================================================================*
 
-extension DataIntegerBody {
+extension BodyInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
