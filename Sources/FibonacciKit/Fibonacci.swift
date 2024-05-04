@@ -151,7 +151,7 @@ import CoreKit
     @inlinable public mutating func increment(by x: Self) throws {
         let ix = try i.plus (x.i).prune(Failure.overflow)
         let ax = try a.times(x.b).plus(b.minus(a).times(x.a)).prune(Failure.overflow)
-        let bx = try b.times(x.b).plus(a/*-----*/.times(x.a)).prune(Failure.overflow)
+        let bx = try b.times(x.b).plus(       (a).times(x.a)).prune(Failure.overflow)
 
         self.i = consume ix
         self.a = consume ax
@@ -167,7 +167,7 @@ import CoreKit
         var b0 = b.plus(a).times(x.a).value
         var b1 = b.times(x.b).value
         
-        if  Bool(x.index.leastSignificantBit) {
+        if  Bool(x.i.leastSignificantBit) {
             Swift.swap(&a0, &a1)
             Swift.swap(&b0, &b1)
         }

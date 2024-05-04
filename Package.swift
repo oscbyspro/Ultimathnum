@@ -24,121 +24,68 @@ let package = Package(
         .watchOS(.v10),
     ],
     products: [
-        //=--------------------------------------=
-        // Ultimathnum
-        //=--------------------------------------=
         .library(
             name: "Ultimathnum",
             targets: ["Ultimathnum"]
         ),
-        //=--------------------------------------=
-        // CoreKit
-        //=--------------------------------------=
         .library(
             name: "CoreKit",
             targets: ["CoreKit"]
         ),
-        //=--------------------------------------=
-        // DoubleIntKit
-        //=--------------------------------------=
         .library(
             name: "DoubleIntKit",
             targets: ["DoubleIntKit"]
         ),
-        //=--------------------------------------=
-        // FibonacciKit
-        //=--------------------------------------=
         .library(
             name: "FibonacciKit",
             targets: ["FibonacciKit"]
         ),
-        //=--------------------------------------=
-        // InfiniIntKit
-        //=--------------------------------------=
         .library(
             name: "InfiniIntKit",
             targets: ["InfiniIntKit"]
         ),
     ],
     targets: [
-        //=--------------------------------------=
-        // Ultimathnum
-        //=--------------------------------------=
         .target(
             name: "Ultimathnum",
-            dependencies: [
-                "CoreKit",
-                "DoubleIntKit",
-                "FibonacciKit",
-                "InfiniIntKit",
-            ]
+            dependencies: ["CoreKit", "DoubleIntKit", "FibonacciKit", "InfiniIntKit"]
         ),
-        
         .testTarget(
             name: "UltimathnumTests",
             dependencies: ["Ultimathnum", "TestKit"]
         ),
-        //=--------------------------------------=
-        // CoreKit
-        //=--------------------------------------=
         .target(
             name: "CoreKit",
             dependencies: []
         ),
-        
         .testTarget(
             name: "CoreKitTests",
-            dependencies: [
-                "CoreKit",
-                "DoubleIntKit",
-                "InfiniIntKit",
-                "TestKit",
-            ]
+            dependencies: ["CoreKit", "DoubleIntKit", "InfiniIntKit", "TestKit"]
         ),
-        //=--------------------------------------=
-        // DoubleIntKit
-        //=--------------------------------------=
         .target(
             name: "DoubleIntKit",
             dependencies: ["CoreKit"]
         ),
-        
         .testTarget(
             name: "DoubleIntKitTests",
             dependencies: ["DoubleIntKit", "TestKit"]
         ),
-        //=--------------------------------------=
-        // FibonacciKit
-        //=--------------------------------------=
         .target(
             name: "FibonacciKit",
             dependencies: ["CoreKit"]
         ),
-        
         .testTarget(
             name: "FibonacciKitTests",
-            dependencies: [
-                "DoubleIntKit",
-                "FibonacciKit",
-                "InfiniIntKit",
-                "TestKit"
-            ]
+            dependencies: ["DoubleIntKit", "FibonacciKit", "InfiniIntKit", "TestKit"]
         ),
-        //=--------------------------------------=
-        // InfiniIntKit
-        //=--------------------------------------=
         .target(
             name: "InfiniIntKit",
             dependencies: ["CoreKit"]
         ),
-        
         .testTarget(
             name: "InfiniIntKitTests",
             dependencies: ["InfiniIntKit", "TestKit"]
         ),
-        //=--------------------------------------=
-        // TestKit
-        //=--------------------------------------=
         .target(
             name: "TestKit",
             dependencies: ["CoreKit"]

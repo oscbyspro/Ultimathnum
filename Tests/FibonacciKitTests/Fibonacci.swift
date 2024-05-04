@@ -118,7 +118,7 @@ extension FibonacciTests.Case {
             always: do {
                 var a = self.item as Fibonacci<Value>
                 let b = try Fibonacci(a.index.quotient(divisor).prune(Bad.division))
-                let c = try a.next.division(Divisor(b.next, prune:Bad.divisor)).prune(Bad.division)
+                let c = try a.next.division(Divisor(b.next, prune: Bad.divisor)).prune(Bad.division)
                 try a.decrement(by: b)
                 let d = try b.element.times(a.element).prune(Bad.multiplication)
                 let e = try c.quotient.minus(a.next).times(b.next).plus(c.remainder).prune(Bad.any)
