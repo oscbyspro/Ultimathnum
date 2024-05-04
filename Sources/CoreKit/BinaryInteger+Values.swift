@@ -8,7 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Binary Integer x Integers
+// MARK: * Binary Integer x Values
 //*============================================================================*
 
 extension BinaryInteger {
@@ -32,83 +32,10 @@ extension BinaryInteger {
     @inlinable public init(_ source: consuming Self) {
         self = source
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static func exactly(_ source: consuming RootInt) -> Fallible<Self> {
-        source.withUnsafeBinaryIntegerElements {
-            Self.exactly($0, mode: .signed)
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static func exactly(
-        sign: consuming Sign = .plus,
-        magnitude: consuming Magnitude
-    )   -> Fallible<Self> {
-        
-        var isNegative = Bool(sign)
-        if  isNegative {
-            isNegative = magnitude[{ $0.negated() }]
-        }
-        
-        let value = Self(raw: magnitude)
-        return value.invalidated(value.isNegative != isNegative)
-    }
-    
-    @inlinable public static func exactly<Other>(
-        sign: consuming Sign = .plus,
-        magnitude: consuming Other
-    )   -> Fallible<Self> where Other: UnsignedInteger {
-        
-        let magnitude = Magnitude.exactly(magnitude)
-        let result = Self.exactly(sign: sign, magnitude: magnitude.value)
-        return result.invalidated(magnitude.error)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init<Other>(_ source: consuming Other) where Other: BinaryInteger {
-        self = Self.exactly(source).unwrap()
-    }
-    
-    @inlinable public static func exactly<Other>(_ source: consuming Other) -> Fallible<Self> where Other: BinaryInteger {
-        if  let lhsSize = UX(size: Self.self), let rhsSize = UX(size: Other.self) {
-            if (lhsSize >  rhsSize && (Self.isSigned))
-            || (lhsSize >= rhsSize && (Self.isSigned == Other.isSigned)) {
-                return Fallible(Self(load: source))
-                
-            }   else if lhsSize >= rhsSize {
-                Swift.assert(Self.mode.isSigned != Other.mode.isSigned)
-                let rhsIsNegative = source.isNegative
-                let result = Self(load: source)
-                let lhsIsNegative = result.isNegative
-                return result.invalidated(lhsIsNegative != rhsIsNegative)
-                
-            }   else {
-                let bit   = Bit(Self.isSigned) & Bit(source.isNegative)
-                let count = rhsSize.minus(UX(load: source.count(.descending(bit)))).assert()
-                let limit = lhsSize.minus(UX(Bit(Self.isSigned))).assert()
-                return Self(load: source).invalidated(limit < count)
-            }
-            
-        }   else {
-            return source.withUnsafeBinaryIntegerElements {
-                Self.exactly($0, mode: Other.mode)
-            }
-        }
-    }
 }
 
 //*============================================================================*
-// MARK: * Binary Integer x Integers x Enclosed
+// MARK: * Binary Integer x Values x Enclosed
 //*============================================================================*
 
 extension EnclosedInteger {
@@ -124,22 +51,10 @@ extension EnclosedInteger {
     @inlinable public static var max: Self {
         ~(min)
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(clamping source: some BinaryInteger) {
-        if  let instance = Self.exactly(source).optional() {
-            self = instance
-        }   else {
-            self = source.isNegative ? Self.min : Self.max
-        }
-    }
 }
 
 //*============================================================================*
-// MARK: * Binary Integer x Integers x Systems
+// MARK: * Binary Integer x Values x Systems
 //*============================================================================*
 
 extension SystemsInteger {

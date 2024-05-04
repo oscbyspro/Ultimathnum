@@ -11,7 +11,7 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Core Int x Integers
+// MARK: * Core Int x Validation
 //*============================================================================*
 
 extension CoreIntTests {

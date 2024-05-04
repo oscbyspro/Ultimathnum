@@ -12,7 +12,7 @@ import DoubleIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Double Int x Integers
+// MARK: * Double Int x Validation
 //*============================================================================*
 
 extension DoubleIntTests {
