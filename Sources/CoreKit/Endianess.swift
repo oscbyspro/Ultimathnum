@@ -13,10 +13,6 @@
 
 #if _endian(little)
 
-
-
 #else
-
 #error("Ultimathnum does not yet support big endian platforms.")
-
 #endif
