@@ -8,11 +8,19 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Endianness
+// MARK: * Requirements
 //*============================================================================*
 
 #if _endian(little)
 
 #else
 #error("Ultimathnum does not yet support big endian platforms.")
+#endif
+
+#if $Embedded
+public typealias   MaybeCustomStringConvertible = Any
+public typealias MaybeLosslessStringConvertible = Any
+#else
+public typealias   MaybeCustomStringConvertible =   CustomStringConvertible
+public typealias MaybeLosslessStringConvertible = LosslessStringConvertible
 #endif
