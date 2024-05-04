@@ -34,7 +34,7 @@ extension BinaryInteger {
             success  &= Bit(suffix.normalized().body.isEmpty)
         }
         //=--------------------------------------=
-        return instance.veto(!Bool(success))
+        return instance.invalidated(!Bool(success))
     }    
     
     @inlinable public static func exactly<OtherElement>(
@@ -65,7 +65,7 @@ extension BinaryInteger {
             success  &= Bit(suffix.normalized().body.isEmpty)
         }
         //=--------------------------------------=
-        return instance.veto(!Bool(success))
+        return instance.invalidated(!Bool(success))
     }
     
     @inlinable public static func exactly<OtherElement>(

@@ -108,12 +108,12 @@ extension DivisionTests.Case {
     func ceil(_ expectation: Fallible<Quotient>) {
         test.same(item.ceil(), expectation, "Division/ceil()")
         test.same(Fallible(item, error: false).ceil(), expectation, "Fallible/ceil() [0]")
-        test.same(Fallible(item, error: true ).ceil(), expectation.veto(true), "Fallible/ceil() [1]")
+        test.same(Fallible(item, error: true ).ceil(), expectation.invalidated(true), "Fallible/ceil() [1]")
     }
     
     func floor(_ expectation: Fallible<Quotient>) {
         test.same(item.floor(), expectation, "Division/floor()")
         test.same(Fallible(item, error: false).floor(), expectation, "Fallible/floor() [0]")
-        test.same(Fallible(item, error: true ).floor(), expectation.veto(true), "Fallible/floor() [1]")
+        test.same(Fallible(item, error: true ).floor(), expectation.invalidated(true), "Fallible/floor() [1]")
     }
 }

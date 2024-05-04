@@ -49,7 +49,7 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func plus(_ increment: borrowing Fallible<Self>) -> Fallible<Self> {
-        self.plus(increment.value).veto(increment.error)
+        self.plus(increment.value).invalidated(increment.error)
     }
 }
 
@@ -95,6 +95,6 @@ extension SystemsInteger {
         (self, a) = self.plus(other).components()
         (self, b) = self.plus(Self(Bit(bit))).components()
         
-        return self.veto(a != b)
+        return self.invalidated(a != b)
     }
 }

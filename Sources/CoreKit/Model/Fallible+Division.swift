@@ -18,15 +18,15 @@ extension Fallible where Value: BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func quotient (_ divisor: borrowing Divisor<Value>) -> Self {
-        self.value.quotient (divisor).veto(self.error)
+        self.value.quotient (divisor).invalidated(self.error)
     }
     
     @inlinable public consuming func remainder(_ divisor: borrowing Divisor<Value>) -> Self {
-        self.value.remainder(divisor).veto(self.error)
+        self.value.remainder(divisor).invalidated(self.error)
     }
     
     @inlinable public consuming func division (_ divisor: borrowing Divisor<Value>) -> Fallible<Division<Value, Value>> {
-        self.value.division (divisor).veto(self.error)
+        self.value.division (divisor).invalidated(self.error)
     }
 }
 

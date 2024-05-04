@@ -23,7 +23,7 @@ extension CoreInt {
     
     @inlinable public consuming func times(_ multiplier: borrowing Self) -> Fallible<Self> {
         let result = self.base.multipliedReportingOverflow(by: multiplier.base)
-        return Self(result.partialValue).veto(result.overflow)
+        return Self(result.partialValue).invalidated(result.overflow)
     }
     
     //=------------------------------------------------------------------------=

@@ -8,7 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Recoverable x Veto
+// MARK: * Recoverable x Validation
 //*============================================================================*
 
 extension Fallible {
@@ -18,13 +18,13 @@ extension Fallible {
     //=------------------------------------------------------------------------=
     
     /// Sets the `error` indicator when `condition` is `true`.
-    @inlinable public consuming func veto(_ condition: Bool) -> Self {
+    @inlinable public consuming func invalidated(_ condition: Bool) -> Self {
         Self(self.value, error: Bool(Bit(self.error) | Bit(condition)))
     }
     
     /// Sets the `error` indicator if the `predicate` return `true`.
-    @inlinable public consuming func veto(_ predicate: (Value) -> Bool) -> Self {
+    @inlinable public consuming func invalidated(_ predicate: (Value) -> Bool) -> Self {
         let condition = predicate(self.value)
-        return self.veto(condition)
+        return self.invalidated(condition)
     }
 }

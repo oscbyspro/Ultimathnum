@@ -24,7 +24,7 @@ extension Doublet {
     @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
         increment = self.low [{ $0.complement(increment) }]
         increment = self.high[{ $0.complement(increment) }]
-        return self.veto(increment) as Fallible<Self>
+        return self.invalidated(increment) as Fallible<Self>
     }
     
     @inlinable public consuming func magnitude() -> Magnitude {

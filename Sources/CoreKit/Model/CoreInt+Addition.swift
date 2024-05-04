@@ -19,6 +19,6 @@ extension CoreInt {
     
     @inlinable public consuming func plus(_ increment: borrowing Self) -> Fallible<Self> {
         let result = self.base.addingReportingOverflow(increment.base)
-        return Self(result.partialValue).veto(result.overflow)
+        return Self(result.partialValue).invalidated(result.overflow)
     }
 }

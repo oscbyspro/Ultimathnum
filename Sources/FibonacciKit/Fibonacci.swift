@@ -124,7 +124,7 @@ import CoreKit
     
     /// Forms the sequence pair at `index - 1`.
     @inlinable public mutating func decrement() throws {
-        let ix = try i.minus(1).veto({ $0.isNegative }).prune(Failure.overflow)
+        let ix = try i.minus(1).invalidated({ $0.isNegative }).prune(Failure.overflow)
         let ax = try b.minus(a).prune(Failure.overflow)
         
         self.i = consume ix
@@ -160,7 +160,7 @@ import CoreKit
     
     /// Forms the sequence pair at `index - x.index`.
     @inlinable public mutating func decrement(by x: Self) throws {
-        let ix = try i.minus(x.i).veto({ $0.isNegative }).prune(Failure.overflow)
+        let ix = try i.minus(x.i).invalidated({ $0.isNegative }).prune(Failure.overflow)
         
         var a0 = b.times(x.a).value
         var a1 = a.times(x.b).value

@@ -19,6 +19,6 @@ extension CoreInt {
     
     @inlinable public consuming func minus(_ decrement: borrowing Self) -> Fallible<Self> {
         let result = self.base.subtractingReportingOverflow(decrement.base)
-        return Self(result.partialValue).veto(result.overflow)
+        return Self(result.partialValue).invalidated(result.overflow)
     }
 }

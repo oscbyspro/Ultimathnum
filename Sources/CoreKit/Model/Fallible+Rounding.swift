@@ -18,10 +18,10 @@ extension Fallible {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func ceil<Quotient, Remainder>() -> Fallible<Quotient> where Value == Division<Quotient, Remainder> {
-        self.value.ceil().veto(self.error)
+        self.value.ceil().invalidated(self.error)
     }
     
     @inlinable public consuming func floor<Quotient, Remainder>() -> Fallible<Quotient> where Value == Division<Quotient, Remainder> {
-        self.value.floor().veto(self.error)
+        self.value.floor().invalidated(self.error)
     }    
 }

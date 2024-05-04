@@ -18,11 +18,11 @@ extension Fallible where Value: BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func plus(_ other: borrowing Value) -> Self {
-        self.value.plus(other).veto(self.error)
+        self.value.plus(other).invalidated(self.error)
     }
     
     @inlinable public consuming func plus(_ other: borrowing Fallible<Value>) -> Self {
-        self.value.plus(other).veto(self.error)
+        self.value.plus(other).invalidated(self.error)
     }
 }
 
@@ -38,6 +38,6 @@ extension Fallible where Value: BinaryInteger {
     
     /// The next value in arithmetic progression.
     @inlinable public consuming func incremented(_ condition: consuming Bool = true) -> Self {
-        self.value.incremented(condition).veto(self.error)
+        self.value.incremented(condition).invalidated(self.error)
     }
 }

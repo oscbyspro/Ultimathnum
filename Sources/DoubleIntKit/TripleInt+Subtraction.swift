@@ -24,7 +24,7 @@ extension TripleInt {
         let low  = self.storage.low .minus(decrement.storage.low)
         let mid  = self.storage.mid .minus(Mid(raw: decrement.storage.high), plus: low.error)
         let high = self.storage.high.minus(appendix, plus: mid.error)
-        return Self(low: low.value, mid: mid.value, high: high.value).veto(high.error)
+        return Self(low: low.value, mid: mid.value, high: high.value).invalidated(high.error)
     }
     
     //=------------------------------------------------------------------------=
@@ -35,6 +35,6 @@ extension TripleInt {
         let low  = self.storage.low .minus(decrement.storage.low)
         let mid  = self.storage.mid .minus(decrement.storage.mid,  plus: low.error)
         let high = self.storage.high.minus(decrement.storage.high, plus: mid.error)
-        return Self(low: low.value, mid: mid.value, high: high.value).veto(high.error)
+        return Self(low: low.value, mid: mid.value, high: high.value).invalidated(high.error)
     }
 }
