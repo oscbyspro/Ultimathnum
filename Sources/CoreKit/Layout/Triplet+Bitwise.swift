@@ -25,7 +25,7 @@ extension Triplet {
         increment = self.low [{ $0.complement(increment) }]
         increment = self.mid [{ $0.complement(increment) }]
         increment = self.high[{ $0.complement(increment) }]
-        return self.invalidated(increment) as Fallible<Self>
+        return Fallible(self, error: increment)
     }
     
     @inlinable public consuming func magnitude() -> Magnitude {

@@ -16,11 +16,11 @@ public protocol SomeDataInt<Element> {
     associatedtype Body: SomeDataIntBody<Element>
     
     associatedtype Element: SystemsInteger & UnsignedInteger
-        
+    
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
-
+    
     @inlinable var body: Body { get }
     
     @inlinable var appendix: Bit { get }
@@ -212,7 +212,7 @@ public protocol SomeDataIntBody<Element>: BitCountable where BitCount == IX {
     ///
     /// - Note: Its operations are `unsigned` and `finite` by default.
     ///
-    @frozen public struct Body: Recoverable, SomeDataIntBody {
+    @frozen public struct Body: SomeDataIntBody {
         
         public typealias BitCount = IX
         

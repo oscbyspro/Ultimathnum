@@ -11,8 +11,8 @@
 // MARK: * Division
 //*============================================================================*
 
-@frozen public struct Division<Quotient,  Remainder>: BitCastable, Equatable,
-Recoverable where Quotient: BinaryInteger, Remainder: BinaryInteger {
+@frozen public struct Division<Quotient, Remainder>: BitCastable, Equatable where
+Quotient: BinaryInteger, Remainder: BinaryInteger {
     
     public typealias Quotient  = Quotient
     

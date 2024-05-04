@@ -7,12 +7,13 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+#warning("Equatable")
 //*============================================================================*
 // MARK: * Doublet
 //*============================================================================*
 
 /// An integer split into 2 parts.
-@frozen public struct Doublet<Base>: BitCastable, Comparable, Recoverable where Base: SystemsInteger {
+@frozen public struct Doublet<Base>: BitCastable, Comparable where Base: SystemsInteger {
     
     public typealias High = Base
     

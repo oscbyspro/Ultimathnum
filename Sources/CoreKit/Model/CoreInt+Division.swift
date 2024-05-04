@@ -30,7 +30,8 @@ extension CoreInt {
     @inlinable public consuming func division (_ divisor: borrowing Divisor<Self>) -> Fallible<Division<Self, Self>> {
         let quotient  = (copy    self).quotient (divisor)
         let remainder = (consume self).remainder(divisor)
-        return Division(quotient: quotient.value, remainder: remainder).invalidated(quotient.error)
+        let division  = Division(quotient: quotient.value, remainder: remainder)
+        return Fallible(division,   error: quotient.error)
     }
     
     //=------------------------------------------------------------------------=
@@ -79,6 +80,6 @@ extension CoreInt where Self == Magnitude {
         }
         //=--------------------------------------=
         let result = divisor.value.base.dividingFullWidth((high: dividend.high.base, low: dividend.low.base))
-        return Division(quotient: Self(result.quotient), remainder: Self(result.remainder)).invalidated(overflow)
+        return Fallible(quotient: Self(result.quotient), remainder: Self(result.remainder), error: overflow)
     }
 }

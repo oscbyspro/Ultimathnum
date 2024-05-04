@@ -8,23 +8,26 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Fallible x Validation
+// MARK: * Data Int x Map x Read|Write|Body
 //*============================================================================*
 
-extension Fallible {
+extension MutableDataInt.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Sets the `error` indicator when `condition` is `true`.
-    @inlinable public consuming func invalidated(_ condition: Bool) -> Self {
-        Self(self.value, error: Bool(Bit(self.error) | Bit(condition)))
+    @inlinable public subscript(map: (Self) -> Self) -> Void {
+        mutating get {
+            self = map(self)
+        }
     }
     
-    /// Sets the `error` indicator if the `predicate` return `true`.
-    @inlinable public consuming func invalidated(_ predicate: (Value) -> Bool) -> Self {
-        let condition = predicate(self.value)
-        return self.invalidated(condition)
+    @inlinable public subscript(map: (Self) -> Fallible<Self>) -> Bool {
+        mutating get {
+            let result = map(self)
+            self = result.value
+            return result.error
+        }
     }
 }

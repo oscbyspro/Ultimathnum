@@ -26,7 +26,6 @@
 - BitOperable
 - CoreInteger
 - EnclosedInteger
-- Functional
 - SignedInteger
 - Signedness
 - SystemsInteger

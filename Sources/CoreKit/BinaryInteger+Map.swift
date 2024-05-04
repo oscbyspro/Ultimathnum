@@ -8,23 +8,26 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Recoverable x Validation
+// MARK: * Binary Integer x Map
 //*============================================================================*
 
-extension Recoverable {
+extension BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Sets the `error` indicator when `condition` is `true`.
-    @inlinable public consuming func invalidated(_ condition: consuming Bool) -> Fallible<Self> {
-        Fallible(self, error: condition)
+    @inlinable public subscript(map: (Self) -> Self) -> Void {
+        mutating get {
+            self = map(self)
+        }
     }
     
-    /// Sets the `error` indicator if the `predicate` return `true`.
-    @inlinable public consuming func invalidated(_ predicate: (Self) -> Bool) -> Fallible<Self> {
-        let error = predicate(self)
-        return self.invalidated(error)
+    @inlinable public subscript(map: (Self) -> Fallible<Self>) -> Bool {
+        mutating get {
+            let result = map(self)
+            self = result.value
+            return result.error
+        }
     }
 }
