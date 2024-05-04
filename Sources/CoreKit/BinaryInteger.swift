@@ -146,6 +146,12 @@ where
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    @inlinable consuming func complement(_ increment: consuming Bool) -> Fallible<Self>
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
     @inlinable consuming func plus (_ increment:  borrowing Self) -> Fallible<Self>
     
     @inlinable consuming func minus(_ decrement:  borrowing Self) -> Fallible<Self>
@@ -224,12 +230,6 @@ where
     @inlinable static func &>>(instance: consuming Self, distance: borrowing Shift<Self>) -> Self
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable consuming func complement(_ increment: consuming Bool) -> Fallible<Self>
-    
-    //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
@@ -251,7 +251,7 @@ where
     /// └──────────┴───────────┴───────────┘
     /// ```
     ///
-    @inlinable var appendix: Bit { get }
+    @inlinable var appendix: Bit { borrowing get }
     
     @inlinable borrowing func withUnsafeBinaryIntegerBody<T>(
         _ action: (DataInt<Element.Magnitude>.Body) throws -> T

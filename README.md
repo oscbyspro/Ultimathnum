@@ -1,22 +1,75 @@
 # Ultimathnum
 
-> Binary integers are dead.\
-> Long live binary integers!
+> [!IMPORTANT]
+> Work in progress...
 
 ## Table of Contents
 
+* [Introduction](#introduction)
 * [CoreKit](#corekit)
 * [DoubleIntKit](#doubleintkit)
-* [FibonacciKit](#fibonaccikit)
 * [InfiniIntKit](#infiniintkit)
+* [FibonacciKit](#fibonaccikit)
 * [Installation](#installation)
+
+<a name="introduction"/>
+
+## Introduction
+
+> It doesn't matter how many times you fall.\
+> It matters how many time you get back up.
+
+### What's a binary integer?
+
+This project presents a novel binary integer abstraction that works for all sizes.
+In fact, it views all binary integers as infinite bit sequences with various modes of operation.
+It also extends the maximum unsigned value to infinity and lets you recover from failure through 
+an intuitive and ergonomic failure propagation mechanism.
+
+```swift
+IXL(raw: 0 &- 1 as UXL) == -1
+UXL(raw: 0 &- 1 as IXL) == ~0
+```
+
+```
+func sum<T: BinaryInteger>(_ a: T, b: T) throws(Oops) -> T {
+    a.plus(b).prune(Oops.overflow) // the error can be whatever
+}
+```
+
+In practice, an infinite integer is represented by its least significant *body* elements,
+followed by a repetition of its *appendix* bit. All signed and/or infinite integers store
+this bit in memory, but unsigned fixed-width integers return zero through the type system. 
+This makes all *systems* integers compatible with the standard un/signed two's complement
+representation.
+
+```
+~(~(x)) == x for all x
+┌────────────────────┐
+│ some BinaryInteger │
+├──────┬─────────────┤
+│ body │ appendix... │
+└──────┴─────────────┘
+```
+
+Some definitions have been updated to fit the new binary integer format. What was once called
+the sign bit is now the appendix bit. This means a so-called signed right shift treats an infinite
+unsigned integer like a negative signed integer.
+
+```swift
+(~2 as UXL) >> 1 == (~1 as UXL)
+(~1 as UXL) >> 1 == (~0 as UXL)
+(~0 as UXL) >> 1 == (~0 as UXL)
+( 0 as UXL) >> 1 == ( 0 as UXL)
+( 1 as UXL) >> 1 == ( 0 as UXL)
+( 2 as UXL) >> 1 == ( 1 as UXL)
+```
 
 <a name="corekit"/>
 
 ## CoreKit
 
-> [!IMPORTANT]
-> Work in progress...
+The abstraction layer.
 
 ### Protocols
 
@@ -56,8 +109,33 @@
 
 ## DoubleIntKit
 
-> [!IMPORTANT]
-> Work in progress...
+> Veni, vidi, vici. I came, I saw, I conquered.
+
+```
+ DoubleInt<I64>           DoubleInt<U64>
+┌───────────────────────┐┌───────────────────────┐
+│ I256                  ││ U256                  │
+├───────────┬───────────┤├───────────┬───────────┤
+│ U128      │ I128      ││ U128      │ U128      │
+├─────┬─────┼─────┬─────┤├─────┬─────┼─────┬─────┤
+│ U64 │ U64 │ U64 │ I64 ││ U64 │ U64 │ U64 │ U64 │
+└─────┴─────┴─────┴─────┘└─────┴─────┴─────┴─────┘
+```
+
+<a name="infiniintkit"/>
+
+## InfiniIntKit
+
+> Author: *Slaps roof of car.* This baby can fit infinity!
+
+```
+ InfiniInt<IX>            InfiniInt<UX>
+┌───────────────────────┐┌───────────────────────┐
+│ IXL                   ││ UXL                   │
+├─────────────────┬─────┤├─────────────────┬─────┤
+│ UX............. │ Bit ││ UX............. │ Bit │
+└─────────────────┴─────┘└─────────────────┴─────┘
+```
 
 <a name="fibonaccikit"/>
 
@@ -92,13 +170,6 @@ mutating func decrement()    throws // index - 1
 mutating func increment(by:) throws // index + x.index
 mutating func decrement(by:) throws // index - x.index
 ```
-
-<a name="infiniintkit"/>
-
-## InfiniIntKit
-
-> [!IMPORTANT]
-> Work in progress...
 
 <a name="installation"/>
 
