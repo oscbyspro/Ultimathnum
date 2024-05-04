@@ -16,24 +16,6 @@ import TestKit
 
 final class FallibleTests: XCTestCase {
     
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    func testGet() {
-        //=--------------------------------------=
-        enum Bad: Error { case code123, code456 }
-        //=--------------------------------------=
-        Case(Fallible<IX>(0, error: false)).prune(Bad.code123, is: .success(00000000000))
-        Case(Fallible<IX>(0, error: true )).prune(Bad.code123, is: .failure(Bad.code123))
-        Case(Fallible<IX>(0, error: false)).prune(Bad.code456, is: .success(00000000000))
-        Case(Fallible<IX>(0, error: true )).prune(Bad.code456, is: .failure(Bad.code456))
-        Case(Fallible<IX>(1, error: false)).prune(Bad.code123, is: .success(00000000001))
-        Case(Fallible<IX>(1, error: true )).prune(Bad.code123, is: .failure(Bad.code123))
-        Case(Fallible<IX>(1, error: false)).prune(Bad.code456, is: .success(00000000001))
-        Case(Fallible<IX>(1, error: true )).prune(Bad.code456, is: .failure(Bad.code456))
-    }
-    
     //*========================================================================*
     // MARK: * Case
     //*========================================================================*

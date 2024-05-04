@@ -17,6 +17,11 @@ extension Fallible {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Sets the `error` indicator.
+    @inlinable public consuming func invalidated() -> Self {
+        Self(self.value, error: true)
+    }
+    
     /// Sets the `error` indicator when `condition` is `true`.
     @inlinable public consuming func invalidated(_ condition: Bool) -> Self {
         Self(self.value, error: Bool(Bit(self.error) | Bit(condition)))

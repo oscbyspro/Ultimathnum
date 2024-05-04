@@ -18,7 +18,7 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     /// Sets the `error` indicator when `condition` is `true`.
-    @inlinable public consuming func invalidated(_ condition: consuming Bool) -> Fallible<Self> {
+    @inlinable public consuming func invalidated(_ condition: Bool = true) -> Fallible<Self> {
         Fallible(self, error: condition)
     }
     
