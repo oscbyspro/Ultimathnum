@@ -13,13 +13,7 @@
 
 /// A binary systems integer.
 ///
-/// ### Trivial
-///
-/// Its bit pattern must represent its value. It may not use indirection.
-///
-/// - Requires: It must be bitwise copyable.
-///
-/// ### Bit Width
+/// ### Size
 ///
 /// Keep it simple.
 ///
@@ -29,13 +23,11 @@
 ///
 /// - Requires: Its bit width must fit in `IX`.
 ///
-/// ### Magnitude
+/// ### Trivial
 ///
-/// The magnitude must have the same bit width as this type. It then follows that
-/// the magnitude must also be unsigned. This ensures that the type can represent
-/// the minimum signed value's magnitude.
+/// Its bit pattern must represent its value. It may not use indirection.
 ///
-/// - Requires: Its magnitude must be unsigned and the same size as this type.
+/// - Requires: It must be bitwise copyable.
 ///
 public protocol SystemsInteger<BitPattern>: EdgyInteger where Magnitude: SystemsInteger, Signitude: SystemsInteger {
     

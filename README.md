@@ -33,24 +33,9 @@ intuitive and ergonomic error propagation mechanisms.
 (~1 as UXL) //  ∞ - 1
 ```
 
-In practice, an infinite integer is represented by its least significant *body* elements,
-followed by a repetition of its *appendix* bit. All signed and/or infinite integers store
-this bit in memory, but unsigned fixed-width integers return zero through the type system. 
-This makes all *systems* integers compatible with the standard un/signed two's complement
-representation.
-
-```
-~(~(x)) == x for all x
-┌────────────────────┐
-│ some BinaryInteger │
-├──────┬─────────────┤
-│ body │ appendix... │
-└──────┴─────────────┘
-```
-
 Some definitions have been updated to fit the new binary integer format. What was once called
-the sign bit is now the appendix bit. This means a so-called signed right shift treats an infinite
-unsigned integer like a negative signed integer.
+the *sign* bit is now the *appendix* bit. This means a so-called signed right shift treats an 
+infinite unsigned integer like a negative signed integer.
 
 ```swift
 (~2 as UXL) >> 1 == (~1 as UXL)
@@ -61,6 +46,55 @@ unsigned integer like a negative signed integer.
 ( 2 as UXL) >> 1 == ( 1 as UXL)
 ```
 
+In practice, an infinite integer is represented by its least significant *body* elements,
+followed by an infinite repetition of its *appendix* bit. All signed integers and all infinite 
+integers store this bit in memory, but unsigned *systems* integers return zero through the 
+type system. This makes all *systems* integers compatible with the un/signed two's complement format.
+
+```
+~(~(x)) == x for all x
+┌────────────────────┐
+│ some BinaryInteger │
+├──────┬─────────────┤
+│ body │ appendix... │
+└──────┴─────────────┘
+```
+
+### What's a data integer?
+
+A binary integer must provide contigous access to their endianess sensitive *body*. This
+allocation may be viewed through a *data* integer. Such types keep track of memory alignment 
+and may downsize their element type by through reinterpretation.
+
+| some DataInteger           | some DataIntegerBody           |
+|:---------------------------|:-------------------------------|
+| DataInt\<Element\>         | DataInt\<Element\>.Body        |
+| MutableDataInt\<Element\>  | MutableDataInt\<Element\>.Body |
+
+Note that element reinrepretation simplifies the binary integer conversion process. All 
+binary integers implement a fixed number of conversions to and from *data* integers and 
+intrinsic *systems* integer types. This prevents the square-matrix-of-doom formed by generic 
+conversion requirements. 
+
+### What's a systems integer?
+
+You may realize that the infinite bit pattern definition binary integers implies a static size
+for all such types. Indeed, you can compare the size of all binary integers through their type
+meta data. Still, not all binary integers are trivial. A *systems* integer is represented in memory
+by its bit pattern. Additionally, a systems integer's size must be a power of two in [8, IX.max].
+
+| Signed | Unsigned |
+|:------:|:--------:|
+| IX     | UX       |
+| I8     | U8       |
+| I16    | U16      |
+| I32    | U32      |
+| I64    | U64      |
+
+Systems integers are intentionally simple, because it's better to remove complexity than deal
+with it. The only protocol requirements are multiplication and divison algorithms for working
+with full precision in generic code.
+
 <a name="corekit"/>
 
 ## CoreKit
@@ -68,12 +102,12 @@ unsigned integer like a negative signed integer.
 > It doesn't matter how many times you fall.\
 > It matters how many time you get back up.
 
-### Validation and recovery through `Fallible<Value>`.
+### Validation and recovery through Fallible\<Value\>.
 
 Proper error handling is a cornerstone of this project and a lot of effort goes into ensuring
-that a path to redemption. The `Fallible<Value>` wrapper plays an important part in this story. 
-Use it to handle errors when you want, and how you want. Here's a real example from the generic 
-`Fibonacci<Value>` sequence:
+that a path to redemption. The Fallible\<Value\> wrapper plays an important part in this story.
+Use it to handle errors when you want and how you want. Here's a real example from the generic 
+Fibonacci\<Value\> sequence:
 
 ```swift
 /// Forms the sequence pair at `index + x.index`.
@@ -88,16 +122,24 @@ Use it to handle errors when you want, and how you want. Here's a real example f
 }
 ```
 
-Note that each operation propagates failure by setting `Fallible<Value>`'s error indicator, which is 
+Note that each operation propagates failure by setting Fallible\<Value\>'s error indicator, which is 
 lazily checked in the throwing *prune(\_:)* method. Alternatively, you may use *optional(\_:)*, *result(\_:)*
 *unwrap(\_:)*, *assert(\_:)* or plain *value* and *error* to validate your results. Also, note that each
-operation accepts both `Value` and `Fallible<Value>` inputs to make error handling as seamless as possible.
+operation accepts both `Value` and Fallible\<Value\> inputs to make error handling as seamless as possible.
 In the same vein, use any of the common arithmetic operators for trapping or wrapping results:
 
 ```swift
 static func  +(lhs: consuming Self, borrowing Self) -> Self // trapping
 static func &+(lhs: consuming Self, borrowing Self) -> Self // wrapping
 ```
+
+### Upsize binary integer elements with LoadInt\<Element\>
+
+The *data* integer types lets you downsize *binary* integer elements by reinterpretation. This awesome power 
+comes from the strict *systems* integer memory layout requirements. Note that you may not upsize integers in 
+this way because the memory alignment of a smaller *systems* integer may not be compatible with a larger *systems* 
+integer. Instead, you may use LoadInt\<Element\> to load elements of any size. It performs an unaligned load when
+possible and handles the case where the load would read past the end.
 
 <a name="doubleintkit"/>
 
