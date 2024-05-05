@@ -81,7 +81,7 @@ extension IntegerInvariants {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func clampingCoreSystemsIntegers() where T: EnclosedInteger {
+    public func clampingCoreSystemsIntegers() where T: EdgyInteger {
         func whereOtherIs<Other>(_ other: Other.Type) where Other: SystemsInteger {
             typealias I = Other.Signitude
             typealias U = Other.Magnitude

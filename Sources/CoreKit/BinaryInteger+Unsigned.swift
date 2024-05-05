@@ -12,4 +12,4 @@
 //*============================================================================*
 
 /// An unsigned binary integer.
-public protocol UnsignedInteger: EnclosedInteger where Element: UnsignedInteger, Magnitude == Self, Mode == Unsigned { }
+public protocol UnsignedInteger: EdgyInteger where Element: UnsignedInteger, Magnitude == Self, Mode == Unsigned { }

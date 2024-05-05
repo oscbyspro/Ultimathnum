@@ -93,7 +93,7 @@ import CoreKit
 //=----------------------------------------------------------------------------=
 
 extension InfiniInt:   SignedInteger where Source:   SignedInteger { }
-extension InfiniInt: EnclosedInteger where Source: UnsignedInteger { }
+extension InfiniInt: EdgyInteger where Source: UnsignedInteger { }
 extension InfiniInt: UnsignedInteger where Source: UnsignedInteger { }
 
 //=----------------------------------------------------------------------------=

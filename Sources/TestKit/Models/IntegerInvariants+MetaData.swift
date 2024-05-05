@@ -74,10 +74,10 @@ extension IntegerInvariants {
     
     public func protocols() where T: BinaryInteger {
         //=--------------------------------------=
-        let isEnclosed = !T.isSigned || !T.size.isInfinite
+        let isEdgy = !T.isSigned || !T.size.isInfinite
         //=--------------------------------------=
+        test.same(   isEdgy,   T.self is any     EdgyInteger.Type,     "EdgyInteger")
         test.same( T.isSigned, T.self is any   SignedInteger.Type,   "SignedInteger")
         test.same(!T.isSigned, T.self is any UnsignedInteger.Type, "UnsignedInteger")
-        test.same( isEnclosed, T.self is any EnclosedInteger.Type, "EnclosedInteger")
     }
 }

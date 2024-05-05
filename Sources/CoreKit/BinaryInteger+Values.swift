@@ -35,10 +35,10 @@ extension BinaryInteger {
 }
 
 //*============================================================================*
-// MARK: * Binary Integer x Values x Enclosed
+// MARK: * Binary Integer x Values x Edgy
 //*============================================================================*
 
-extension EnclosedInteger {
+extension EdgyInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Meta Data

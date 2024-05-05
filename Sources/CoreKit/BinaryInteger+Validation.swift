@@ -110,10 +110,10 @@ extension BinaryInteger {
 }
 
 //*============================================================================*
-// MARK: * Binary Integer x Validation x Enclosed
+// MARK: * Binary Integer x Validation x Edgy
 //*============================================================================*
 
-extension EnclosedInteger {
+extension EdgyInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers

@@ -177,7 +177,7 @@ This project contains several modules. Import some or all of them.
 > Anything MAY change at any time.\
 > The public API SHOULD NOT be considered stable.
 
-### Using [SwiftPM](https://swift.org/package-manager)
+### [Swift Package Manager](https://swift.org/package-manager)
 
 Add this package to your list of package dependencies.
 

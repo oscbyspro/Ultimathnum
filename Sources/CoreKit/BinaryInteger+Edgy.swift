@@ -8,12 +8,12 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Binary Integer x Enclosed
+// MARK: * Binary Integer x Edgy
 //*============================================================================*
 
-/// An enclosed binary integer.
+/// An edgy binary integer.
 ///
-/// An enclosed binary integer has a `min` and `max` value.
+/// An edgy binary integer has `min` and `max` values.
 ///
 ///
 ///                ┌───────────┬───────────┐
@@ -25,4 +25,4 @@
 ///     └──────────┴───────────┴───────────┘
 ///
 ///
-public protocol EnclosedInteger: BinaryInteger { }
+public protocol EdgyInteger: BinaryInteger { }
