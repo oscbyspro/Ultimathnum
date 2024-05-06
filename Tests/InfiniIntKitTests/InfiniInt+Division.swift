@@ -21,6 +21,27 @@ extension InfiniIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
+    func testDocumentationTables() {
+        Test().division( 7 as IXL,  3 as IXL, Fallible(quotient:  2 as IXL, remainder:  1 as IXL))
+        Test().division( 7 as IXL, -3 as IXL, Fallible(quotient: -2 as IXL, remainder:  1 as IXL))
+        Test().division(-7 as IXL,  3 as IXL, Fallible(quotient: -2 as IXL, remainder: -1 as IXL))
+        Test().division(-7 as IXL, -3 as IXL, Fallible(quotient:  2 as IXL, remainder: -1 as IXL))
+        //=--------------------------------------=
+        Test().division(~2 as UXL, ~0 as UXL, Fallible(quotient:  0 as UXL, remainder: ~2 as UXL))
+        Test().division(~2 as UXL, ~1 as UXL, Fallible(quotient:  0 as UXL, remainder: ~2 as UXL))
+        Test().division(~2 as UXL, ~2 as UXL, Fallible(quotient:  1 as UXL, remainder:  0 as UXL))
+        Test().division(~2 as UXL, ~3 as UXL, Fallible(quotient:  1 as UXL, remainder:  1 as UXL))
+        
+        Test().division(~2 as UXL,  1 as UXL, Fallible(quotient: ~2 as UXL, remainder:  0 as UXL))
+        Test().division(~2 as UXL,  2 as UXL, Fallible(quotient: ~0 as UXL, remainder: ~0 as UXL)) // TODO: error
+        Test().division(~2 as UXL,  3 as UXL, Fallible(quotient: ~0 as UXL, remainder:  0 as UXL)) // TODO: error
+        Test().division(~2 as UXL,  4 as UXL, Fallible(quotient:  0 as UXL, remainder: ~2 as UXL)) // TODO: error
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
     func testDivision() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             IntegerInvariants(T.self).divisionOfMsbEsque()

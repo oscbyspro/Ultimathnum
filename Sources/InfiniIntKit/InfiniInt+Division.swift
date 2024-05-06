@@ -20,19 +20,18 @@ extension InfiniInt {
     //=------------------------------------------------------------------------=
     
     @inlinable consuming public func quotient (_ divisor: consuming Divisor<Self>) -> Fallible<Self> {
-        self.division(divisor).map({ $0.quotient  })
+        self.division(divisor).map({ $0.quotient })
     }
     
     @inlinable consuming public func remainder(_ divisor: consuming Divisor<Self>) -> Self {
         self.division(divisor).value.remainder
     }
     
+    #warning("todo: infinite by finite")
     @inline(never) @inlinable consuming public func division(_ divisor: consuming Divisor<Self>) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
         let lhsAppendixIsSet = Bool(self.appendix)
         let rhsAppendixIsSet = Bool(divisor.value.appendix)
-        //=--------------------------------------=
-        // TODO: error of (infinite/finite)?
         //=--------------------------------------=
         if !Self.isSigned, rhsAppendixIsSet {
             switch self.compared(to: divisor.value) {

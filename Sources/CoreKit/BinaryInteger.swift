@@ -160,62 +160,137 @@ where
     
     @inlinable consuming func squared() -> Fallible<Self>
     
-    /// ### Examples
+    /// Returns the `quotient` and `error` of dividing `self` by the `divisor`.
+    ///
+    /// ### Rules
     ///
     /// ```
-    /// ┌──────────┬──────── → ─────────┬───────────┬──────────┐
-    /// │ dividend │ divisor │ quotient | remainder │ error    │
-    /// ├──────────┼──────── → ─────────┤───────────┤──────────┤
-    /// │ I8( 7)   │ I8( 3)  │ I8( 2)   │ I8( 0)    │ false    │
-    /// │ I8( 7)   │ I8(-3)  │ I8(-2)   │ I8(-1)    │ false    │
-    /// │ I8(-7)   │ I8( 3)  │ I8(-2)   │ I8(-1)    │ false    │
-    /// │ I8(-7)   │ I8(-3)  │ I8( 2)   │ I8( 0)    │ false    │
-    /// ├──────────┤──────── → ─────────┤───────────┤──────────┤
-    /// │ I8.min   │ I8(-1)  │ I8.min   │ I8( 0)    │ true     │
-    /// ├──────────┤──────── → ─────────┤───────────┤──────────┤
-    /// │ I8( 7)   │ I8( 0)  │ ######   │ ######    │ #####    │ - nondivisor
-    /// └──────────┴──────── → ─────────┴───────────┴──────────┘
+    /// ┌──────────┬──────── → ─────────┬───────────┬───────┐
+    /// │ dividend │ divisor │ quotient | remainder │ error │
+    /// ├──────────┼──────── → ─────────┤───────────┤───────┤
+    /// │ I32( 7)  │ I32( 3) │ I32( 2)  │ I32( 1)   │ false │
+    /// │ I32( 7)  │ I32(-3) │ I32(-2)  │ I32( 1)   │ false │
+    /// │ I32(-7)  │ I32( 3) │ I32(-2)  │ I32(-1)   │ false │
+    /// │ I32(-7)  │ I32(-3) │ I32( 2)  │ I32(-1)   │ false │
+    /// ├──────────┤──────── → ─────────┤───────────┤───────┤
+    /// │ I32.min  │ I32(-1) │ I32.min  │ I32( 0)   │ true  │
+    /// │ I32( 7)  │ I32( 0) │ -------  │ -------   │ ----- │ // invalid
+    /// └──────────┴──────── → ─────────┴───────────┴───────┘
     /// ```
     ///
-    @inlinable consuming func quotient (_ divisor: borrowing Divisor<Self>) -> Fallible<Self>
+    /// ```
+    /// ┌──────────┬──────── → ─────────┬───────────┬───────┐
+    /// │ dividend │ divisor │ quotient | remainder │ error │
+    /// ├──────────┼──────── → ─────────┤───────────┤───────┤
+    /// │ UXL(~2)  │ UXL(~0) │ UXL( 0)  │ UXL(~2)   │ false │
+    /// │ UXL(~2)  │ UXL(~1) │ UXL( 0)  │ UXL(~2)   │ false │
+    /// │ UXL(~2)  │ UXL(~2) │ UXL( 1)  │ UXL( 0)   │ false │
+    /// │ UXL(~2)  │ UXL(~3) │ UXL( 1)  │ UXL( 1)   │ false │
+    /// ├──────────┤──────── → ─────────┤───────────┤───────┤
+    /// │ UXL(~2)  │ UXL( 1) │ UXL(~2)  │ UXL( 0)   │ false │
+    /// │ UXL(~2)  │ UXL( 2) │ UXL(~0)  │ UXL(~0)   │ true  │
+    /// │ UXL(~2)  │ UXL( 3) │ UXL(~0)  │ UXL( 0)   │ true  │
+    /// │ UXL(~2)  │ UXL( 4) │ UXL( 0)  │ UXL(~2)   │ true  │
+    /// └──────────┴──────── → ─────────┴───────────┴───────┘
+    /// ```
+    ///
+    /// - Note: Infinite by finite reinterprets infinite as negative.
+    ///
+    /// ### Invariants
+    ///
+    /// ```
+    /// dividend == divisor &* quotient &+ remainder
+    /// ```
+    ///
+    @inlinable consuming func quotient(_ divisor: borrowing Divisor<Self>) -> Fallible<Self>
     
-    /// ### Examples
+    /// Returns the `remainder` of dividing `self` by the `divisor`.
+    ///
+    /// ### Rules
     ///
     /// ```
-    /// ┌──────────┬──────── → ─────────┬───────────┬──────────┐
-    /// │ dividend │ divisor │ quotient | remainder │ error    │
-    /// ├──────────┼──────── → ─────────┤───────────┤──────────┤
-    /// │ I8( 7)   │ I8( 3)  │ I8( 2)   │ I8( 0)    │ false    │
-    /// │ I8( 7)   │ I8(-3)  │ I8(-2)   │ I8(-1)    │ false    │
-    /// │ I8(-7)   │ I8( 3)  │ I8(-2)   │ I8(-1)    │ false    │
-    /// │ I8(-7)   │ I8(-3)  │ I8( 2)   │ I8( 0)    │ false    │
-    /// ├──────────┤──────── → ─────────┤───────────┤──────────┤
-    /// │ I8.min   │ I8(-1)  │ I8.min   │ I8( 0)    │ true     │
-    /// ├──────────┤──────── → ─────────┤───────────┤──────────┤
-    /// │ I8( 7)   │ I8( 0)  │ ######   │ ######    │ #####    │ - nondivisor
-    /// └──────────┴──────── → ─────────┴───────────┴──────────┘
+    /// ┌──────────┬──────── → ─────────┬───────────┬───────┐
+    /// │ dividend │ divisor │ quotient | remainder │ error │
+    /// ├──────────┼──────── → ─────────┤───────────┤───────┤
+    /// │ I32( 7)  │ I32( 3) │ I32( 2)  │ I32( 1)   │ false │
+    /// │ I32( 7)  │ I32(-3) │ I32(-2)  │ I32( 1)   │ false │
+    /// │ I32(-7)  │ I32( 3) │ I32(-2)  │ I32(-1)   │ false │
+    /// │ I32(-7)  │ I32(-3) │ I32( 2)  │ I32(-1)   │ false │
+    /// ├──────────┤──────── → ─────────┤───────────┤───────┤
+    /// │ I32.min  │ I32(-1) │ I32.min  │ I32( 0)   │ true  │
+    /// │ I32( 7)  │ I32( 0) │ -------  │ -------   │ ----- │ // invalid
+    /// └──────────┴──────── → ─────────┴───────────┴───────┘
+    /// ```
+    ///
+    /// ```
+    /// ┌──────────┬──────── → ─────────┬───────────┬───────┐
+    /// │ dividend │ divisor │ quotient | remainder │ error │
+    /// ├──────────┼──────── → ─────────┤───────────┤───────┤
+    /// │ UXL(~2)  │ UXL(~0) │ UXL( 0)  │ UXL(~2)   │ false │
+    /// │ UXL(~2)  │ UXL(~1) │ UXL( 0)  │ UXL(~2)   │ false │
+    /// │ UXL(~2)  │ UXL(~2) │ UXL( 1)  │ UXL( 0)   │ false │
+    /// │ UXL(~2)  │ UXL(~3) │ UXL( 1)  │ UXL( 1)   │ false │
+    /// ├──────────┤──────── → ─────────┤───────────┤───────┤
+    /// │ UXL(~2)  │ UXL( 1) │ UXL(~2)  │ UXL( 0)   │ false │
+    /// │ UXL(~2)  │ UXL( 2) │ UXL(~0)  │ UXL(~0)   │ true  │
+    /// │ UXL(~2)  │ UXL( 3) │ UXL(~0)  │ UXL( 0)   │ true  │
+    /// │ UXL(~2)  │ UXL( 4) │ UXL( 0)  │ UXL(~2)   │ true  │
+    /// └──────────┴──────── → ─────────┴───────────┴───────┘
+    /// ```
+    ///
+    /// - Note: Infinite by finite reinterprets infinite as negative.
+    ///
+    /// ### Invariants
+    ///
+    /// ```
+    /// dividend == divisor &* quotient &+ remainder
     /// ```
     ///
     @inlinable consuming func remainder(_ divisor: borrowing Divisor<Self>) -> Self
     
-    /// ### Examples
+    /// Returns the result of dividing `self` by the `divisor`.
+    ///
+    /// ### Rules
     ///
     /// ```
-    /// ┌──────────┬──────── → ─────────┬───────────┬──────────┐
-    /// │ dividend │ divisor │ quotient | remainder │ error    │
-    /// ├──────────┼──────── → ─────────┤───────────┤──────────┤
-    /// │ I8( 7)   │ I8( 3)  │ I8( 2)   │ I8( 0)    │ false    │
-    /// │ I8( 7)   │ I8(-3)  │ I8(-2)   │ I8(-1)    │ false    │
-    /// │ I8(-7)   │ I8( 3)  │ I8(-2)   │ I8(-1)    │ false    │
-    /// │ I8(-7)   │ I8(-3)  │ I8( 2)   │ I8( 0)    │ false    │
-    /// ├──────────┤──────── → ─────────┤───────────┤──────────┤
-    /// │ I8.min   │ I8(-1)  │ I8.min   │ I8( 0)    │ true     │
-    /// ├──────────┤──────── → ─────────┤───────────┤──────────┤
-    /// │ I8( 7)   │ I8( 0)  │ ######   │ ######    │ #####    │ - nondivisor
-    /// └──────────┴──────── → ─────────┴───────────┴──────────┘
+    /// ┌──────────┬──────── → ─────────┬───────────┬───────┐
+    /// │ dividend │ divisor │ quotient | remainder │ error │
+    /// ├──────────┼──────── → ─────────┤───────────┤───────┤
+    /// │ I32( 7)  │ I32( 3) │ I32( 2)  │ I32( 1)   │ false │
+    /// │ I32( 7)  │ I32(-3) │ I32(-2)  │ I32( 1)   │ false │
+    /// │ I32(-7)  │ I32( 3) │ I32(-2)  │ I32(-1)   │ false │
+    /// │ I32(-7)  │ I32(-3) │ I32( 2)  │ I32(-1)   │ false │
+    /// ├──────────┤──────── → ─────────┤───────────┤───────┤
+    /// │ I32.min  │ I32(-1) │ I32.min  │ I32( 0)   │ true  │
+    /// │ I32( 7)  │ I32( 0) │ -------  │ -------   │ ----- │ // invalid
+    /// └──────────┴──────── → ─────────┴───────────┴───────┘
     /// ```
     ///
-    @inlinable consuming func division (_ divisor: borrowing Divisor<Self>) -> Fallible<Division<Self, Self>>
+    /// ```
+    /// ┌──────────┬──────── → ─────────┬───────────┬───────┐
+    /// │ dividend │ divisor │ quotient | remainder │ error │
+    /// ├──────────┼──────── → ─────────┤───────────┤───────┤
+    /// │ UXL(~2)  │ UXL(~0) │ UXL( 0)  │ UXL(~2)   │ false │
+    /// │ UXL(~2)  │ UXL(~1) │ UXL( 0)  │ UXL(~2)   │ false │
+    /// │ UXL(~2)  │ UXL(~2) │ UXL( 1)  │ UXL( 0)   │ false │
+    /// │ UXL(~2)  │ UXL(~3) │ UXL( 1)  │ UXL( 1)   │ false │
+    /// ├──────────┤──────── → ─────────┤───────────┤───────┤
+    /// │ UXL(~2)  │ UXL( 1) │ UXL(~2)  │ UXL( 0)   │ false │
+    /// │ UXL(~2)  │ UXL( 2) │ UXL(~0)  │ UXL(~0)   │ true  │
+    /// │ UXL(~2)  │ UXL( 3) │ UXL(~0)  │ UXL( 0)   │ true  │
+    /// │ UXL(~2)  │ UXL( 4) │ UXL( 0)  │ UXL(~2)   │ true  │
+    /// └──────────┴──────── → ─────────┴───────────┴───────┘
+    /// ```
+    ///
+    /// - Note: Infinite by finite reinterprets infinite as negative.
+    ///
+    /// ### Invariants
+    ///
+    /// ```
+    /// dividend == divisor &* quotient &+ remainder
+    /// ```
+    ///
+    @inlinable consuming func division(_ divisor: borrowing Divisor<Self>) -> Fallible<Division<Self, Self>>
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
