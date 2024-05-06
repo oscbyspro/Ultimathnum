@@ -21,21 +21,21 @@ extension InfiniIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testDocumentationTables() {
+    func testBinaryIntegerDocumentationExamples() {
         Test().division( 7 as IXL,  3 as IXL, Fallible(quotient:  2 as IXL, remainder:  1 as IXL))
         Test().division( 7 as IXL, -3 as IXL, Fallible(quotient: -2 as IXL, remainder:  1 as IXL))
         Test().division(-7 as IXL,  3 as IXL, Fallible(quotient: -2 as IXL, remainder: -1 as IXL))
         Test().division(-7 as IXL, -3 as IXL, Fallible(quotient:  2 as IXL, remainder: -1 as IXL))
-        //=--------------------------------------=
+        
         Test().division(~2 as UXL, ~0 as UXL, Fallible(quotient:  0 as UXL, remainder: ~2 as UXL))
         Test().division(~2 as UXL, ~1 as UXL, Fallible(quotient:  0 as UXL, remainder: ~2 as UXL))
         Test().division(~2 as UXL, ~2 as UXL, Fallible(quotient:  1 as UXL, remainder:  0 as UXL))
         Test().division(~2 as UXL, ~3 as UXL, Fallible(quotient:  1 as UXL, remainder:  1 as UXL))
         
         Test().division(~2 as UXL,  1 as UXL, Fallible(quotient: ~2 as UXL, remainder:  0 as UXL))
-        Test().division(~2 as UXL,  2 as UXL, Fallible(quotient: ~0 as UXL, remainder: ~0 as UXL)) // TODO: error
-        Test().division(~2 as UXL,  3 as UXL, Fallible(quotient: ~0 as UXL, remainder:  0 as UXL)) // TODO: error
-        Test().division(~2 as UXL,  4 as UXL, Fallible(quotient:  0 as UXL, remainder: ~2 as UXL)) // TODO: error
+        Test().division(~2 as UXL,  2 as UXL, Fallible(quotient: ~0 as UXL, remainder: ~0 as UXL, error: true))
+        Test().division(~2 as UXL,  3 as UXL, Fallible(quotient: ~0 as UXL, remainder:  0 as UXL, error: true))
+        Test().division(~2 as UXL,  4 as UXL, Fallible(quotient:  0 as UXL, remainder: ~2 as UXL, error: true))
     }
     
     //=------------------------------------------------------------------------=
@@ -108,22 +108,22 @@ extension InfiniIntTests {
             //=----------------------------------=
             Test().division( small,  small, F(quotient:  T( 1), remainder:  T( 0)))
             Test().division( small, xsmall, F(quotient:  T( 0), remainder:  small))
-            Test().division(xsmall,  small, F(quotient: ~T( 0), remainder:  T( 0)))
+            Test().division(xsmall,  small, F(quotient: ~T( 0), remainder:  T( 0),  error: !T.isSigned))
             Test().division(xsmall, xsmall, F(quotient:  T( 1), remainder:  T( 0)))
             
             Test().division( small,  large, F(quotient:  T( 0), remainder:  small))
             Test().division( small, xlarge, F(quotient:  T( 0), remainder:  small))
-            Test().division(xsmall,  large, F(quotient:  T( 0), remainder: xsmall))
+            Test().division(xsmall,  large, F(quotient:  T( 0), remainder: xsmall,  error: !T.isSigned))
             Test().division(xsmall, xlarge, F(quotient:  T( 1), remainder:  large - small))
             
             Test().division( large,  small, F(quotient:  ratio, remainder:  00016))
             Test().division( large, xsmall, F(quotient:  T( 0), remainder:  large))
-            Test().division(xlarge,  small, F(quotient: xratio, remainder: ~00015))
+            Test().division(xlarge,  small, F(quotient: xratio, remainder: ~00015,  error: !T.isSigned))
             Test().division(xlarge, xsmall, F(quotient:  T( 0), remainder: xlarge))
             
             Test().division( large,  large, F(quotient:  T( 1), remainder:  T( 0)))
             Test().division( large, xlarge, F(quotient:  T( 0), remainder:  large))
-            Test().division(xlarge,  large, F(quotient: ~T( 0), remainder:  T( 0)))
+            Test().division(xlarge,  large, F(quotient: ~T( 0), remainder:  T( 0),  error: !T.isSigned))
             Test().division(xlarge, xlarge, F(quotient:  T( 1), remainder:  T( 0)))
         }
                         

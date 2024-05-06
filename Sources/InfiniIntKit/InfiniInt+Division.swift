@@ -27,9 +27,9 @@ extension InfiniInt {
         self.division(divisor).value.remainder
     }
     
-    #warning("todo: infinite by finite")
     @inline(never) @inlinable consuming public func division(_ divisor: consuming Divisor<Self>) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
+        var overflow = false
         let lhsAppendixIsSet = Bool(self.appendix)
         let rhsAppendixIsSet = Bool(divisor.value.appendix)
         //=--------------------------------------=
@@ -39,6 +39,8 @@ extension InfiniInt {
             case Signum.same: return Fallible(Division(quotient:  0001, remainder: .zero))
             case Signum.more: return Fallible(Division(quotient:  0001, remainder:  self - divisor.value))
             }
+        }   else if !Self.isSigned, lhsAppendixIsSet {
+            overflow = !(divisor.value.storage.count == 1 && divisor.value.storage.body[.zero] == 1)
         }
         //=--------------------------------------=
         if  lhsAppendixIsSet {
@@ -52,14 +54,14 @@ extension InfiniInt {
         var division = Magnitude(raw: self).divisionAsFiniteByFiniteNonzeroDivisor(Magnitude(raw: divisor.value))
         //=--------------------------------------=
         if  lhsAppendixIsSet != rhsAppendixIsSet {
-            division.quotient [{ $0.complement() }]
+            division.quotient[{  $0.complement() }]
         }
         
         if  lhsAppendixIsSet {
             division.remainder[{ $0.complement() }]
         }
         
-        return Fallible(Division(raw: division))
+        return Fallible(Division(raw: division), error: overflow)
     }
 }
 
