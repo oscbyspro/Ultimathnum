@@ -21,17 +21,19 @@ final class OptionalTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testBitCast() {
-        //=--------------------------------------=
-        typealias S = Optional<IX>
-        typealias M = Optional<UX>
-        //=--------------------------------------=
-        Test().same(S(raw: S.none),     S.none)
-        Test().same(S(raw: M.none),     S.none)
-        Test().same(M(raw: S.none),     M.none)
-        Test().same(M(raw: M.none),     M.none)
-        Test().same(S(raw: S.some(-1)), S.some(-1))
-        Test().same(S(raw: M.some(~1)), S.some(-2))
-        Test().same(M(raw: S.some(-3)), M.some(~2))
-        Test().same(M(raw: M.some(~3)), M.some(~3))
+        func whereIs<B>(_ type: B.Type) where B: BinaryInteger {
+            typealias T = Optional<B>
+            typealias S = Optional<B.Signitude>
+            typealias M = Optional<B.Magnitude>
+            
+            Test().same(T(raw: S.none),     T.none)
+            Test().same(T(raw: M.none),     T.none)
+            Test().same(T(raw: S.some(~3)), T.some(~3))
+            Test().same(T(raw: M.some(~5)), T.some(~5))
+        }
+        
+        for type in coreSystemsIntegers {
+            whereIs(type)
+        }
     }
 }
