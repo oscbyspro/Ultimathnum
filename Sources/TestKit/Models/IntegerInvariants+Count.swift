@@ -29,11 +29,10 @@ extension IntegerInvariants {
             test.count(~0 as T, .descending(bit), bit == 1 ? T.size : 0)
             
             for element: (value: T, bit: Bit) in [(11, 0), (~11, 1)] {
-                Test().same(element.value.count(           (bit)), bit == element.bit ? T.size - 3 : 3)
-                Test().same(element.value.count( .ascending(bit)), bit == element.bit ? 0000000000 : 2)
-                Test().same(element.value.count(.descending(bit)), bit == element.bit ? T.size - 4 : 0)
+                test.same(element.value.count(           (bit)), bit == element.bit ? T.size - 3 : 3)
+                test.same(element.value.count( .ascending(bit)), bit == element.bit ? 0000000000 : 2)
+                test.same(element.value.count(.descending(bit)), bit == element.bit ? T.size - 4 : 0)
             }
         }
-        
     }
 }

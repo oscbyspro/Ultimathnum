@@ -177,6 +177,7 @@ extension DoubleIntTests.Case {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    #warning("todo")
     func complement(_ increment: Bool, is expectation: Fallible<Item>) {
         always: do {
             test.same(item.complement(increment), expectation, "complement [0]")

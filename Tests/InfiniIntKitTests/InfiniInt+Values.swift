@@ -11,23 +11,25 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Core Int
+// MARK: * Infini Int x Values
 //*============================================================================*
 
-final class CoreIntTests: XCTestCase {
+extension InfiniIntTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testInvariants() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self).mode(BinaryIntegerID())
-            IntegerInvariants(T.self).size(SystemsIntegerID())
-            IntegerInvariants(T.self).protocols()
+    func testValues() {
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            
         }
         
-        for type in coreSystemsIntegers {
+        func whereIsUnsigned<T>(_ type: T.Type) where T: UnsignedInteger {
+            IntegerInvariants(T.self).edgesMinMax()
+        }
+        
+        for type in Self.types {
             whereIs(type)
         }
     }

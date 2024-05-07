@@ -7,36 +7,27 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+import TestKit
+
 //*============================================================================*
-// MARK: * Identifiers
+// MARK: * Double Int x Values
 //*============================================================================*
 
-public struct BinaryIntegerID {
+extension DoubleIntTests {
     
-    public init() { }
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
     
-}
-
-public struct EdgyIntegerID {
-    
-    public init() { }
-    
-}
-
-public struct SignedIntegerID {
-    
-    public init() { }
-    
-}
-
-public struct SystemsIntegerID {
-    
-    public init() { }
-    
-}
-
-public struct UnsignedIntegerID {
-    
-    public init() { }
-    
+    func testValues() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            IntegerInvariants(T.self).edgesLsbMsb()
+            IntegerInvariants(T.self).edgesMinMax()
+        }
+        
+        for type in Self.types {
+            whereIs(type)
+        }
+    }
 }

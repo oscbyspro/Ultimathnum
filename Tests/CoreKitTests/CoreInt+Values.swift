@@ -11,20 +11,19 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Core Int
+// MARK: * Core Int x Values
 //*============================================================================*
 
-final class CoreIntTests: XCTestCase {
+extension CoreIntTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testInvariants() {
+    func testValues() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self).mode(BinaryIntegerID())
-            IntegerInvariants(T.self).size(SystemsIntegerID())
-            IntegerInvariants(T.self).protocols()
+            IntegerInvariants(T.self).edgesLsbMsb()
+            IntegerInvariants(T.self).edgesMinMax()
         }
         
         for type in coreSystemsIntegers {

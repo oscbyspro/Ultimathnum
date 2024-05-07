@@ -62,11 +62,12 @@ extension IntegerInvariants {
     }
     
     public func size(_ id: BinaryIntegerID) where T: BinaryInteger {
+        //=--------------------------------------=
         test.same(T.size, M.size, "Self.size == Self.Magnitude.size")
         test.same(T.size, S.size, "Self.size == Self.Signitude.size")
-        
+        //=--------------------------------------=
         if  T.size.isInfinite {
-            test.same(T.size, M(repeating: 1), "log2(max+1) size should be promoted to maximum infinite value")
+            test.same(T.size, M(repeating: 1), "log2(max+1) size should be promoted to max infinite value")
         }   else {
             test.expect(T.size <= IX.max, "the maximum finite size is IX.max")
         }
