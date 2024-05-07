@@ -21,7 +21,7 @@ extension InfiniIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testBitwiseNot() {
+    func testLogicalNot() {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias E = Base.Element
             typealias L = Base.Element.Magnitude
@@ -39,7 +39,7 @@ extension InfiniIntTests {
         }
     }
     
-    func testBitwiseAnd() {
+    func testLogicalAnd() {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias E = Base.Element
             typealias L = Base.Element.Magnitude
@@ -67,7 +67,7 @@ extension InfiniIntTests {
         }
     }
     
-    func testBitwiseOr() {
+    func testLogicalOr() {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias E = Base.Element
             typealias L = Base.Element.Magnitude
@@ -95,7 +95,7 @@ extension InfiniIntTests {
         }
     }
     
-    func testBitwiseXor() {
+    func testLogicalXor() {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias E = Base.Element
             typealias L = Base.Element.Magnitude

@@ -72,4 +72,27 @@ extension Test {
         same({ var x = lhs; x ^= rhs; return x }(), expectation)
         same({ var x = rhs; x ^= lhs; return x }(), expectation)
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    public func complement<T>(_ instance: T, _ increment: Bool, _ expectation: Fallible<T>) where T: BinaryInteger {
+        always: do {
+            same(instance.complement(increment), expectation, "complement [0]")
+        }
+        
+        if  increment {
+            same(instance.complement(), expectation.value, "complement [1]")
+        }   else {
+            let  roundtrip = instance.complement(increment).value.complement(increment).value
+            same(roundtrip,  instance, "complement [2]")
+        }
+        
+        if  increment,  instance.isNegative {
+            same(T(raw: instance.magnitude()), expectation.value, "complement [3]")
+        }   else {
+            same(T(raw: instance.magnitude()), instance, "complement [4]")
+        }
+    }
 }

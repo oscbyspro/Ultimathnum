@@ -166,31 +166,3 @@ final class DoubleIntTests: XCTestCase {
         }
     }
 }
-
-//=----------------------------------------------------------------------------=
-// MARK: + Assertions
-//=----------------------------------------------------------------------------=
-
-extension DoubleIntTests.Case {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    #warning("todo")
-    func complement(_ increment: Bool, is expectation: Fallible<Item>) {
-        always: do {
-            test.same(item.complement(increment), expectation, "complement [0]")
-        }
-        
-        if  increment {
-            test.same(item.complement(), expectation.value, "complement [1]")
-        }
-        
-        if  increment, item.high.isNegative {
-            test.same(Item(raw: item.magnitude()), expectation.value, "complement [2]")
-        }   else {
-            test.same(Item(raw: item.magnitude()), item, "complement [3]")
-        }
-    }
-}

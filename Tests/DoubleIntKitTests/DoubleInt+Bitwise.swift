@@ -107,15 +107,15 @@ extension DoubleIntTests {
             typealias T = DoubleInt<B>
             typealias F = Fallible<T>
             
-            Case(T(low:  0, high:  00000)).complement(false, is: F(T(low: ~0, high: ~00000)))
-            Case(T(low:  0, high:  00000)).complement(true,  is: F(T(low:  0, high:  00000), error: !B.isSigned))
-            Case(T(low:  1, high:  00002)).complement(false, is: F(T(low: ~1, high: ~00002)))
-            Case(T(low:  1, high:  00002)).complement(true,  is: F(T(low: ~0, high: ~00002)))
+            Test().complement(T(low:  0, high:  00000), false,  F(T(low: ~0, high: ~00000)))
+            Test().complement(T(low:  0, high:  00000), true,   F(T(low:  0, high:  00000), error: !B.isSigned))
+            Test().complement(T(low:  1, high:  00002), false,  F(T(low: ~1, high: ~00002)))
+            Test().complement(T(low:  1, high:  00002), true,   F(T(low: ~0, high: ~00002)))
             
-            Case(T(low: ~0, high: ~B.msb)).complement(false, is: F(T(low:  0, high:  B.msb)))
-            Case(T(low: ~0, high: ~B.msb)).complement(true,  is: F(T(low:  1, high:  B.msb)))
-            Case(T(low:  0, high:  B.msb)).complement(false, is: F(T(low: ~0, high: ~B.msb)))
-            Case(T(low:  0, high:  B.msb)).complement(true,  is: F(T(low:  0, high:  B.msb), error:  B.isSigned))
+            Test().complement(T(low: ~0, high: ~B.msb), false,  F(T(low:  0, high:  B.msb)))
+            Test().complement(T(low: ~0, high: ~B.msb), true,   F(T(low:  1, high:  B.msb)))
+            Test().complement(T(low:  0, high:  B.msb), false,  F(T(low: ~0, high: ~B.msb)))
+            Test().complement(T(low:  0, high:  B.msb), true,   F(T(low:  0, high:  B.msb), error:  B.isSigned))
         }
         
         for base in coreSystemsIntegers {
