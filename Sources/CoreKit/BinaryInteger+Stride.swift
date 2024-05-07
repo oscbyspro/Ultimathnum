@@ -47,10 +47,10 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func distance(to other: Self) -> Swift.Int {
-        Int(self.distance(to: other, as: IX.self).unwrap())
+        Swift.Int(self.distance(to: other, as: IX.self).unwrap())
     }
     
-    @inlinable package consuming func distance<Other>(
+    @inlinable public consuming func distance<Other>(
         to other: Self,
         as type: Other.Type = Other.self
     )   -> Fallible<Other> where Other: SignedInteger {

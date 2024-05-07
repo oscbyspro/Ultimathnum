@@ -141,6 +141,58 @@ this way because the memory alignment of a smaller *systems* integer may not be 
 integer. Instead, you may use LoadInt\<Element\> to load elements of any size. It performs an unaligned load when
 possible and handles the case where the load would read past the end.
 
+### Perform type-safe bit casts with BitCastable\<BitPattern\>
+
+The BitCastable\<BitPattern\> protocol lets you perform this type-safe bit casts in bulk. This is expecially
+pertinent to binary integer algorithms since the binary integer abstraction is basically two representations
+bridged by a common bit pattern transformation. 
+
+```swift
+U8(raw:  -1 as I8) // 255
+I8(raw: 255 as U8) //  -1
+```
+
+The *init(raw:)* initializer is basically *init(load:)* with a same-size requirement, so it should be free as
+long as the optimizer wills it. Each BitCastable\<BitPattern\> types provides an input and output conversion, 
+which allows this type-safe operation to cascade through nested objects.
+
+```swift
+@inlinable public consuming func distance<Other>(
+    to other: Self,
+    as type: Other.Type = Other.self
+)   -> Fallible<Other> where Other: SignedInteger {
+    
+    if  Self.size < Other.size {
+        return Other(load: other).minus(Other(load: self))
+    
+    }   else if Self.isSigned {
+        return other.minus(self).map(Other.exactly)
+        
+    }   else {
+        let distance = Fallible<Signitude>(raw: other.minus(self))
+        let superoverflow = (distance.value).isNegative != distance.error
+        return Other.exactly(distance.value).invalidated(superoverflow)
+    }
+}
+```
+
+The above example shows the a generic *Strideable/distance(from:to:)*-esque method. In the unsigned, 
+narrowing, case you find that the subtraction is immediately converted to a same-size signed integer 
+type via the *init(raw:)* bulk operation. Note that such type relationships are generically available 
+to all binary integers. Also, note that this method is both fully generic and fully recoverable. 
+
+<details>
+<summary>
+Here's how you would translate it to <i>Strideable/distance(from:to:)</i>-proper...
+</summary>
+
+```swift
+@inlinable public consuming func distance(to other: Self) -> Swift.Int {
+    Swift.Int(self.distance(to: other, as: IX.self).unwrap())
+}
+```
+</details>
+
 <a name="doubleintkit"/>
 
 ## DoubleIntKit
