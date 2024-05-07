@@ -29,7 +29,7 @@ extension BitCastable {
     /// Reinterprets this instance as an instance of type `T`.
     ///
     /// ```swift
-    /// var value = IX(0)
+    /// var value = 0 as IX
     /// var error = value[raw: UX.self][{ $0.decremented() }]
     ///
     /// print(value) // -1

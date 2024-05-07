@@ -6,7 +6,13 @@
 ## Table of Contents
 
 * [Introduction](#introduction)
+  - [What is a binary integer?](#introduction-binary-integer)
+  - [What is a data integer?](#introduction-data-integer)
+  - [What is a systems integer?](#introduction-systems-integer)
 * [CoreKit](#corekit)
+  - [Validation and recovery through Fallible\<Value\>](#corekit-validation)
+  - [Upsize binary integer elements with LoadInt\<Element\>](#corekit-upsize)
+  - [Perform type-safe bit casts with BitCastable\<BitPattern\>](#corekit-bit-cast)
 * [DoubleIntKit](#doubleintkit)
 * [InfiniIntKit](#infiniintkit)
 * [FibonacciKit](#fibonaccikit)
@@ -19,7 +25,9 @@
 > Binary integers are dead.\
 > Long live binary integers!
 
-### What's a binary integer?
+<a name="introduction-binary-integer"/>
+
+### What is a binary integer?
 
 This project presents a novel binary integer abstraction that works for all sizes.
 In fact, it views all binary integers as infinite bit sequences with various modes of operation.
@@ -60,7 +68,9 @@ type system. This makes all *systems* integers compatible with the un/signed two
 └──────┴─────────────┘
 ```
 
-### What's a data integer?
+<a name="introduction-data-integer"/>
+
+### What is a data integer?
 
 A binary integer must provide contigous access to their endianess sensitive *body*. This
 allocation may be viewed through a *data* integer. Such types keep track of memory alignment 
@@ -76,7 +86,9 @@ binary integers implement a fixed number of conversions to and from *data* integ
 intrinsic *systems* integer types. This prevents the square-matrix-of-doom formed by generic 
 conversion requirements. 
 
-### What's a systems integer?
+<a name="introduction-systems-integer"/>
+
+### What is a systems integer?
 
 You may realize that the infinite bit pattern definition binary integers implies a static size
 for all such types. Indeed, you can compare the size of all binary integers through their type
@@ -102,7 +114,9 @@ with full precision in generic code.
 > It doesn't matter how many times you fall.\
 > It matters how many time you get back up.
 
-### Validation and recovery through Fallible\<Value\>.
+<a name="corekit-validation"/>
+
+### Validation and recovery through Fallible\<Value\>
 
 Proper error handling is a cornerstone of this project and a lot of effort goes into ensuring
 that a path to redemption. The Fallible\<Value\> wrapper plays an important part in this story.
@@ -133,6 +147,8 @@ static func  +(lhs: consuming Self, borrowing Self) -> Self // trapping
 static func &+(lhs: consuming Self, borrowing Self) -> Self // wrapping
 ```
 
+<a name="corekit-upsize"/>
+
 ### Upsize binary integer elements with LoadInt\<Element\>
 
 The *data* integer types lets you downsize *binary* integer elements by reinterpretation. This awesome power 
@@ -140,6 +156,8 @@ comes from the strict *systems* integer memory layout requirements. Note that yo
 this way because the memory alignment of a smaller *systems* integer may not be compatible with a larger *systems* 
 integer. Instead, you may use LoadInt\<Element\> to load elements of any size. It performs an unaligned load when
 possible and handles the case where the load would read past the end.
+
+<a name="corekit-bit-cast"/>
 
 ### Perform type-safe bit casts with BitCastable\<BitPattern\>
 
@@ -150,11 +168,17 @@ bridged by a common bit pattern transformation.
 ```swift
 U8(raw:  -1 as I8) // 255
 I8(raw: 255 as U8) //  -1
+
+var value = 0 as I8
+var error = value[raw: UX.self][{ $0.decremented() }]
+
+print(value) // -1
+print(error) // true
 ```
 
-The *init(raw:)* initializer is basically *init(load:)* with a same-size requirement, so it should be free as
-long as the optimizer wills it. Each BitCastable\<BitPattern\> types provides an input and output conversion, 
-which allows this type-safe operation to cascade through nested objects.
+You perform type-safe bit-casts by calling the *init(raw:)* method. It is similar to *init(load:)* 
+but with same-size, and possibly other, requirements. Alternatively, you can use *subscript(raw:)* 
+to the same effect, or to perform an in-place reinterpretation.
 
 ```swift
 @inlinable public consuming func distance<Other>(
@@ -176,14 +200,9 @@ which allows this type-safe operation to cascade through nested objects.
 }
 ```
 
-The above example shows the a generic *Strideable/distance(from:to:)*-esque method. In the unsigned, 
-narrowing, case you find that the subtraction is immediately converted to a same-size signed integer 
-type via the *init(raw:)* bulk operation. Note that such type relationships are generically available 
-to all binary integers. Also, note that this method is both fully generic and fully recoverable. 
-
 <details>
 <summary>
-Here's how you would translate it to <i>Strideable/distance(from:to:)</i>-proper...
+Here's how you translate it to <i>Strideable/distance(from:to:)</i> proper...
 </summary>
 
 ```swift
@@ -192,6 +211,11 @@ Here's how you would translate it to <i>Strideable/distance(from:to:)</i>-proper
 }
 ```
 </details>
+
+The above example shows a generic *Strideable/distance(from:to:)* esque method. In the narrowing 
+unsigned case you find that the difference is reinterpreted as a same-size signed integer type 
+via the *init(raw:)* bulk operation. Note that such type relationships are generically available 
+to all binary integers. Also, note that this method is both fully generic and fully recoverable. 
 
 <a name="doubleintkit"/>
 
@@ -262,8 +286,6 @@ mutating func decrement(by:) throws // index - x.index
 <a name="installation"/>
 
 ## Installation
-
-This project contains several modules. Import some or all of them.
 
 ### [SemVer 2.0.0](https://semver.org)
 
