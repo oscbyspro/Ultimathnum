@@ -91,7 +91,7 @@ extension Test {
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Integer
+// MARK: + Signum
 //=----------------------------------------------------------------------------=
 
 extension Test {
@@ -119,6 +119,60 @@ extension Test {
                 expect(success, "\(lhs).compared(to: \(rhs)) -> \(result)")
             }
             
+            less: do {
+                let result:  Bool = lhs <  rhs
+                let success: Bool = result == (expectation == .less)
+                expect(success, "\(lhs) <  \(rhs) -> \(result)")
+            }
+            
+            same: do {
+                let result:  Bool = lhs == rhs
+                let success: Bool = result == (expectation == .same)
+                expect(success, "\(lhs) == \(rhs) -> \(result)")
+            }
+            
+            more: do {
+                let result:  Bool = lhs >  rhs
+                let success: Bool = result == (expectation == .more)
+                expect(success, "\(lhs) >  \(rhs) -> \(result)")
+            }
+            
+            nonless: do {
+                let result:  Bool = lhs >= rhs
+                let success: Bool = result == (expectation != .less)
+                expect(success, "\(lhs) >= \(rhs) -> \(result)")
+            }
+            
+            nonsame: do {
+                let result:  Bool = lhs != rhs
+                let success: Bool = result == (expectation != .same)
+                expect(success, "\(lhs) != \(rhs) -> \(result)")
+            }
+            
+            nonmore: do {
+                let result:  Bool = lhs <= rhs
+                let success: Bool = result == (expectation != .more)
+                expect(success, "\(lhs) <= \(rhs) -> \(result)")
+            }
+        }
+        
+        unidirectional(lhs, rhs, expectation)
+        unidirectional(rhs, lhs, expectation.negated())
+        same(lhs.hashValue == rhs.hashValue, expectation == Signum.same)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    public func comparison<T>(
+        _ lhs: T,
+        _ rhs: T,
+        _ expectation: Signum,
+        id: ComparableID
+    )   where T: Comparable {
+        //=--------------------------------------=
+        func unidirectional<U>(_ lhs: U, _ rhs: U, _ expectation: Signum) where U: Comparable {
             less: do {
                 let result:  Bool = lhs <  rhs
                 let success: Bool = result == (expectation == .less)

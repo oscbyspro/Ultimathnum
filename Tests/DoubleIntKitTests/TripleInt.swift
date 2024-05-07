@@ -17,6 +17,33 @@ import TestKit
 
 final class TripleIntTests: XCTestCase {
     
+    typealias X3<Base> = TripleInt<Base> where Base: SystemsInteger
+    
+    typealias I8x3 = TripleInt<I8>
+    typealias U8x3 = TripleInt<U8>
+    
+    typealias IXx3 = TripleInt<IX>
+    typealias UXx3 = TripleInt<UX>
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Meta Data
+    //=------------------------------------------------------------------------=
+    
+    static let bases: [any SystemsInteger.Type] = {
+        basesWhereIsSigned +
+        basesWhereIsUnsigned
+    }()
+    
+    static let basesWhereIsSigned: [any (SystemsInteger & SignedInteger).Type] = [
+        I8x3.High.self,
+        IXx3.High.self,
+    ]
+    
+    static let basesWhereIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = [
+        U8x3.High.self,
+        UXx3.High.self,
+    ]
+    
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
@@ -113,33 +140,6 @@ final class TripleIntTests: XCTestCase {
         
         init(_ item: Item, file: StaticString = #file, line: UInt = #line) {
             self.init(item, test: Test(file: file, line: line))
-        }
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Assertions
-//=----------------------------------------------------------------------------=
-
-extension TripleIntTests.Case {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    func complement(_ increment: Bool, is expectation: Fallible<Item>) {
-        always: do {
-            test.same(item.complement(increment), expectation, "complement [0]")
-        }
-        
-        if  increment {
-            test.same(item.complement(), expectation.value, "complement [1]")
-        }
-        
-        if  increment, item.high.isNegative {
-            test.same(Item(raw: item.magnitude()), expectation.value, "complement [2]")
-        }   else {
-            test.same(Item(raw: item.magnitude()), item, "complement [3]")
         }
     }
 }

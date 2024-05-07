@@ -17,6 +17,12 @@ public struct BinaryIntegerID {
     
 }
 
+public struct ComparableID {
+    
+    public init() { }
+    
+}
+
 public struct EdgyIntegerID {
     
     public init() { }

@@ -35,16 +35,6 @@ extension DoubleIntTests {
             Test().comparison(T(low:  1, high:  2), T(low:  1, high:  1),  1 as Signum)
             Test().comparison(T(low:  2, high:  2), T(low:  1, high:  1),  1 as Signum)
             
-            Test().comparison(T(low: ~0, high: ~0), T(low:  1, high:  1),  Signum.one(Sign(raw: T.isSigned)))
-            Test().comparison(T(low: ~1, high: ~0), T(low:  1, high:  1),  Signum.one(Sign(raw: T.isSigned)))
-            Test().comparison(T(low: ~2, high: ~0), T(low:  1, high:  1),  Signum.one(Sign(raw: T.isSigned)))
-            Test().comparison(T(low: ~0, high: ~1), T(low:  1, high:  1),  Signum.one(Sign(raw: T.isSigned)))
-            Test().comparison(T(low: ~1, high: ~1), T(low:  1, high:  1),  Signum.one(Sign(raw: T.isSigned)))
-            Test().comparison(T(low: ~2, high: ~1), T(low:  1, high:  1),  Signum.one(Sign(raw: T.isSigned)))
-            Test().comparison(T(low: ~0, high: ~2), T(low:  1, high:  1),  Signum.one(Sign(raw: T.isSigned)))
-            Test().comparison(T(low: ~1, high: ~2), T(low:  1, high:  1),  Signum.one(Sign(raw: T.isSigned)))
-            Test().comparison(T(low: ~2, high: ~2), T(low:  1, high:  1),  Signum.one(Sign(raw: T.isSigned)))
-            
             Test().comparison(T(low:  0, high:  0), T(low: ~1, high: ~1), -Signum.one(Sign(raw: T.isSigned)))
             Test().comparison(T(low:  1, high:  0), T(low: ~1, high: ~1), -Signum.one(Sign(raw: T.isSigned)))
             Test().comparison(T(low:  2, high:  0), T(low: ~1, high: ~1), -Signum.one(Sign(raw: T.isSigned)))
@@ -54,6 +44,16 @@ extension DoubleIntTests {
             Test().comparison(T(low:  0, high:  2), T(low: ~1, high: ~1), -Signum.one(Sign(raw: T.isSigned)))
             Test().comparison(T(low:  1, high:  2), T(low: ~1, high: ~1), -Signum.one(Sign(raw: T.isSigned)))
             Test().comparison(T(low:  2, high:  2), T(low: ~1, high: ~1), -Signum.one(Sign(raw: T.isSigned)))
+            
+            Test().comparison(T(low: ~0, high: ~0), T(low:  1, high:  1),  Signum.one(Sign(raw: T.isSigned)))
+            Test().comparison(T(low: ~1, high: ~0), T(low:  1, high:  1),  Signum.one(Sign(raw: T.isSigned)))
+            Test().comparison(T(low: ~2, high: ~0), T(low:  1, high:  1),  Signum.one(Sign(raw: T.isSigned)))
+            Test().comparison(T(low: ~0, high: ~1), T(low:  1, high:  1),  Signum.one(Sign(raw: T.isSigned)))
+            Test().comparison(T(low: ~1, high: ~1), T(low:  1, high:  1),  Signum.one(Sign(raw: T.isSigned)))
+            Test().comparison(T(low: ~2, high: ~1), T(low:  1, high:  1),  Signum.one(Sign(raw: T.isSigned)))
+            Test().comparison(T(low: ~0, high: ~2), T(low:  1, high:  1),  Signum.one(Sign(raw: T.isSigned)))
+            Test().comparison(T(low: ~1, high: ~2), T(low:  1, high:  1),  Signum.one(Sign(raw: T.isSigned)))
+            Test().comparison(T(low: ~2, high: ~2), T(low:  1, high:  1),  Signum.one(Sign(raw: T.isSigned)))
             
             Test().comparison(T(low: ~0, high: ~0), T(low: ~1, high: ~1),  1 as Signum)
             Test().comparison(T(low: ~1, high: ~0), T(low: ~1, high: ~1),  1 as Signum)

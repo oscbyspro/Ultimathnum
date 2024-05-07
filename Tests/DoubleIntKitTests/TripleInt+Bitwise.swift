@@ -42,3 +42,33 @@ extension TripleIntTests {
         }
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Assertions
+//=----------------------------------------------------------------------------=
+
+extension TripleIntTests.Case {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    func complement(_ increment: Bool, is expectation: Fallible<Item>) {
+        always: do {
+            test.same(item.complement(increment), expectation, "complement [0]")
+        }
+        
+        if  increment {
+            test.same(item.complement(), expectation.value, "complement [1]")
+        }   else {
+            let roundtrip = item.complement(increment).value.complement(increment).value
+            test.same(roundtrip,  item, "complement [2]")
+        }
+        
+        if  increment, item.high.isNegative {
+            test.same(Item(raw: item.magnitude()), expectation.value, "complement [3]")
+        }   else {
+            test.same(Item(raw: item.magnitude()), item, "complement [4]")
+        }
+    }
+}
