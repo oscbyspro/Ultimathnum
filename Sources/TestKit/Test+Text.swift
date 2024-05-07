@@ -50,8 +50,8 @@ extension Test {
             same(Integer.init(expectationUppercased), integer, "init?(_ description: String) [3]")
         }
         
-        success({ try Integer.init(body,        in: lowercase) }, integer)
-        success({ try Integer.init(expectation, in: uppercase) }, integer)
+        success({ try Integer.init(body,        as: lowercase) }, integer)
+        success({ try Integer.init(expectation, as: uppercase) }, integer)
         //=--------------------------------------=
         // test: encoding
         //=--------------------------------------=
@@ -60,8 +60,8 @@ extension Test {
             same(String.init(integer), expectation, "String.init(_:) - LosslessStringConvertible")
         }
                 
-        same(integer.description(in: lowercase), expectationLowercased, "description(in:) [0]")
-        same(integer.description(in: uppercase), expectationUppercased, "description(in:) [1]")
+        same(integer.description(as: lowercase), expectationLowercased, "description(in:) [0]")
+        same(integer.description(as: uppercase), expectationUppercased, "description(in:) [1]")
     }
     
     /// Tests whether an integer's description is stable.
