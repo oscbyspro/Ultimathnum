@@ -134,7 +134,7 @@ extension BinaryInteger {
     ///
     /// - TODO: Consider BinaryInteger.Largest asseociated type fast path.
     ///
-    @inlinable public init<Other>(load source: consuming Other) where Other: BinaryInteger {
+    @inlinable public init<Other>(load source: borrowing Other) where Other: BinaryInteger {
         let lhsIsSmall = UX(size: Self .self).map({ $0 <= UX.size }) == true
         let rhsIsSmall = UX(size: Other.self).map({ $0 <= UX.size }) == true
         

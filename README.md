@@ -15,6 +15,7 @@
   - [Validation and recovery through Fallible\<Value\>](#corekit-validation)
   - [Upsize binary integer elements with LoadInt\<Element\>](#corekit-upsize)
   - [Type-safe bit casts with BitCastable\<BitPattern\>](#corekit-bit-cast)
+  - [Lightweight text decoding and encoding with TextInt](#corekit-text-int)
   
 * [DoubleIntKit](#doubleintkit)
 * [InfiniIntKit](#infiniintkit)
@@ -205,21 +206,21 @@ but with same-size, and possibly other, requirements. Alternatively, you can use
 to the same effect, or to perform an in-place reinterpretation.
 
 ```swift
-@inlinable public consuming func distance<Other>(
+@inlinable public func distance<Distance>(
     to other: Self,
-    as type: Other.Type = Other.self
-)   -> Fallible<Other> where Other: SignedInteger {
-    
-    if  Self.size < Other.size {
-        return Other(load: other).minus(Other(load: self))
+    as type: Distance.Type = Distance.self
+)   -> Fallible<Distance> where Distance: SignedInteger {
+            
+    if  Self.size < Distance.size {
+        return Distance(load: other).minus(Distance(load: self))
     
     }   else if Self.isSigned {
-        return other.minus(self).map(Other.exactly)
+        return other.minus(self).map(Distance.exactly)
         
     }   else {
         let distance = Fallible<Signitude>(raw: other.minus(self))
         let superoverflow = (distance.value).isNegative != distance.error
-        return Other.exactly(distance.value).invalidated(superoverflow)
+        return Distance.exactly(distance.value).invalidated(superoverflow)
     }
 }
 ```
@@ -230,7 +231,7 @@ Here's how you translate it to Strideable/distance(from:to:) proper...
 </summary>
 
 ```swift
-@inlinable public consuming func distance(to other: Self) -> Swift.Int {
+@inlinable public func distance(to other: Self) -> Swift.Int {
     Swift.Int(self.distance(to: other, as: IX.self).unwrap())
 }
 ```
@@ -240,6 +241,12 @@ The above example shows a generic Strideable/distance(from:to:) esque method. In
 unsigned case you find that the difference is reinterpreted as a same-size signed integer type 
 via the init(raw:) bulk operation. Note that such type relationships are generically available 
 to all binary integers. Also, note that this method is both fully generic and fully recoverable. 
+
+<a name="corekit-text-int"/>
+
+### Lightweight text decoding and encoding with TextInt
+
+> Todo...
 
 <a name="doubleintkit"/>
 
