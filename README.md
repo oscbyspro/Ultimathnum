@@ -10,10 +10,12 @@
   - [What is a data integer?](#introduction-data-integer)
   - [What is a systems integer?](#introduction-systems-integer)
   - [What is a trusted input?](#introduction-trusted-input)
+  
 * [CoreKit](#corekit)
   - [Validation and recovery through Fallible\<Value\>](#corekit-validation)
   - [Upsize binary integer elements with LoadInt\<Element\>](#corekit-upsize)
-  - [Perform type-safe bit casts with BitCastable\<BitPattern\>](#corekit-bit-cast)
+  - [Type-safe bit casts with BitCastable\<BitPattern\>](#corekit-bit-cast)
+  
 * [DoubleIntKit](#doubleintkit)
 * [InfiniIntKit](#infiniintkit)
 * [FibonacciKit](#fibonaccikit)
@@ -23,12 +25,12 @@
 
 ## Introduction
 
-> Binary integers are dead.\
-> Long live binary integers!
-
 <a name="introduction-binary-integer"/>
 
 ### What is a binary integer?
+
+> Binary integers are dead.\
+> Long live binary integers!
 
 This project presents a novel binary integer abstraction that works for all sizes.
 In fact, it views all binary integers as infinite bit sequences with various modes of operation.
@@ -91,6 +93,8 @@ conversion requirements.
 
 ### What is a systems integer?
 
+> Simplicity is complexity resolved.
+
 You may realize that the infinite bit pattern definition binary integers implies a static size
 for all such types. Indeed, you can compare the size of all binary integers through their type
 meta data. Still, not all binary integers are trivial. A *systems* integer is represented in memory
@@ -104,9 +108,9 @@ by its bit pattern. Additionally, a systems integer's size must be a power of tw
 | I32    | U32      |
 | I64    | U64      |
 
-Systems integers are intentionally simple, because it's better to remove complexity than deal
-with it. The only protocol requirements are multiplication and divison algorithms for working
-with full precision in generic code.
+Systems integers are intentionally simple so that the things you build with them may be simple. 
+The only protocol requirements are multiplication and divison algorithms for working with full 
+precision in generic code.
 
 <a name="introduction-trusted-input"/>
 
@@ -131,12 +135,12 @@ init(unchecked:) // error: unsafe (with debug assertions)
 
 ## CoreKit
 
-> It doesn't matter how many times you fall.\
-> It matters how many time you get back up.
-
 <a name="corekit-validation"/>
 
 ### Validation and recovery through Fallible\<Value\>
+
+> It doesn't matter how many times you fall.\
+> It matters how many time you get back up.
 
 Proper error handling is a cornerstone of this project and a lot of effort goes into ensuring
 that a path to redemption. The Fallible\<Value\> wrapper plays an important part in this story.
@@ -179,7 +183,7 @@ possible and handles the case where the load would read past the end.
 
 <a name="corekit-bit-cast"/>
 
-### Perform type-safe bit casts with BitCastable\<BitPattern\>
+### Type-safe bit casts with BitCastable\<BitPattern\>
 
 The BitCastable\<BitPattern\> protocol lets you perform this type-safe bit casts in bulk. This is expecially
 pertinent to binary integer algorithms since the binary integer abstraction is basically two representations
