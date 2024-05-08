@@ -9,6 +9,7 @@
   - [What is a binary integer?](#introduction-binary-integer)
   - [What is a data integer?](#introduction-data-integer)
   - [What is a systems integer?](#introduction-systems-integer)
+  - [What is a trusted input?](#introduction-trusted-input)
 * [CoreKit](#corekit)
   - [Validation and recovery through Fallible\<Value\>](#corekit-validation)
   - [Upsize binary integer elements with LoadInt\<Element\>](#corekit-upsize)
@@ -106,6 +107,25 @@ by its bit pattern. Additionally, a systems integer's size must be a power of tw
 Systems integers are intentionally simple, because it's better to remove complexity than deal
 with it. The only protocol requirements are multiplication and divison algorithms for working
 with full precision in generic code.
+
+<a name="introduction-trusted-input"/>
+
+### What is a trusted input?
+
+> Trust me, I know what I'm doing...
+
+One you start using primitive types to form more complex types, you notice that some semantics
+compose better than others. A *trusted input* delegates some precondition validation to the 
+programmer, so that complex types can be built with less overhead. The type system will compell
+you to approve each *trusted input* with one of the following methods. Your choice will either 
+make your code safer or easier to audit.
+
+```swift
+init(_:)         // error: traps
+init(_:prune:)   // error: throws
+init(exactly:)   // error: nil
+init(unchecked:) // error: unsafe (with debug assertions)
+```
 
 <a name="corekit"/>
 
