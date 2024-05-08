@@ -110,10 +110,10 @@ a systems integer's size must be a power of two in [8, IX.max].
 | Size    | Signed | Unsigned |
 |--------:|:------:|:--------:|
 | pointer | IX     | UX       |
-|  8-bit  | I8     | U8       |
-| 16-bit  | I16    | U16      |
-| 32-bit  | I32    | U32      |
-| 64-bit  | I64    | U64      |
+|   8-bit | I8     | U8       |
+|  16-bit | I16    | U16      |
+|  32-bit | I32    | U32      |
+|  64-bit | I64    | U64      |
 
 Systems integers are intentionally simple so that the things you build with them may be simple. 
 The only protocol requirements are multiplication and divison algorithms for working with full 
@@ -246,7 +246,26 @@ to all binary integers. Also, note that this method is both fully generic and fu
 
 ### Lightweight text decoding and encoding with TextInt
 
-> Todo...
+At some point, you'll want to convert your binary integers to a human-readable format. When 
+that happens, the description(as:) or init(\_:as:) methods let you perform the common radix 
+conversions through TextInt. The latter uses a fixed number of non-generic and non-inlinable
+algorithms, which are shared by all binary integers. This is an intentional size over performance 
+optimization, although it still goes brrr.
+
+```swift
+try! TextInt(radix:  12, letters: .uppercase)
+try! IXL("123", as: .decimal).description(as: .hexadecimal) //  7b
+try! IXL("123", as: .hexadecimal).description(as: .decimal) // 291
+```
+
+Note that the introduction of infinite values necessitates changes to the integer description 
+format. The new format adds the plain "#" and masked "&" markers. The former is just a spacer
+whereas the latter represents a bitwise negation. In other words, "+&123" translates to maximum 
+infinty minus 123.
+
+```swift
+let regex: Regex = /^(?<sign>\+|-)(?<mask>#|&)(?<body>[0-9a-zA-z]+)$/
+```
 
 <a name="doubleintkit"/>
 
