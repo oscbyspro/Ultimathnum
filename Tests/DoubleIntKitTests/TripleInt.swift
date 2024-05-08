@@ -48,6 +48,20 @@ final class TripleIntTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
+    func testInvariants() {
+        func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = TripleInt<B>
+            typealias M = TripleInt<B>.Magnitude
+            
+            Test().same(T.mode.isSigned, B.isSigned)
+            Test().same(T.size, M(low: 3 * B.size, mid: 0, high: 0))
+        }
+        
+        for base in coreSystemsIntegers {
+            whereTheBaseIs(base)
+        }
+    }
+    
     func testInit() {
         func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = TripleInt<B>
@@ -107,6 +121,25 @@ final class TripleIntTests: XCTestCase {
             Test().same(MemoryLayout<T>.size, 3 * MemoryLayout<B>.size)
             Test().same(MemoryLayout<T>.size, 3 * MemoryLayout<B>.stride)
             Test().same(MemoryLayout<T>.size, 3 * MemoryLayout<B>.alignment)
+        }
+        
+        for base in coreSystemsIntegers {
+            whereTheBaseIs(base)
+        }
+    }
+    
+    func testComponents() {
+        func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = TripleInt<B>
+            
+            let rhs  = T(low: 1, mid: 2, high: 3)
+            var lhs  = T(low: 0, mid: 0, high: 0)
+            
+            lhs.low  = rhs.low
+            lhs.mid  = rhs.mid
+            lhs.high = rhs.high
+            
+            Test().same(lhs, rhs)
         }
         
         for base in coreSystemsIntegers {
