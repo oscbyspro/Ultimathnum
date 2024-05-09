@@ -22,6 +22,8 @@
   - [Recoverable infinite division](#infiniintkit-division)
 * [FibonacciKit](#fibonaccikit)
 * [Installation](#installation)
+  - [SemVer 2.0.0](#installation-semver)
+  - [Swift Package Manager](#installation-swift-package-manager)
 
 <a name="introduction"/>
 
@@ -408,11 +410,15 @@ mutating func decrement(by:) throws // index - x.index
 
 ## Installation
 
+<a name="installation-semver"/>
+
 ### [SemVer 2.0.0](https://semver.org)
 
 > Major version zero (0.y.z) is for initial development.\
 > Anything MAY change at any time.\
 > The public API SHOULD NOT be considered stable.
+
+<a name="installation-swift-package-manager"/>
 
 ### [Swift Package Manager](https://swift.org/package-manager)
 
