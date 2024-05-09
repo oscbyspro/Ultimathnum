@@ -96,6 +96,23 @@ init(load source: DataInt<Element.Magnitude>) // aligned
 init(load source: LoadInt<Element.Magnitude>) // unknown
 ```
 
+<details><summary>
+Here's the other conversion requirements...
+</summary><br><blockquote><p>
+Please :pray: that we may remove these at some point.
+</p></blockquote>
+
+```swift
+@inlinable init(load source: consuming  UX.Signitude)
+@inlinable init(load source: consuming  UX.Magnitude)
+@inlinable borrowing func load(as type: UX.BitPattern.Type) -> UX.BitPattern
+
+@inlinable init(load source: consuming  Element.Signitude)
+@inlinable init(load source: consuming  Element.Magnitude)
+@inlinable borrowing func load(as type: Element.BitPattern.Type) -> Element.BitPattern
+```
+</details>
+
 <a name="introduction-systems-integer"/>
 
 ### What is a systems integer?
