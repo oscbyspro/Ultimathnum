@@ -10,15 +10,16 @@
   - [What is a data integer?](#introduction-data-integer)
   - [What is a systems integer?](#introduction-systems-integer)
   - [What is a trusted input?](#introduction-trusted-input)
-  
 * [CoreKit](#corekit)
   - [Validation and recovery through Fallible\<Value\>](#corekit-validation)
   - [Upsize binary integer elements with LoadInt\<Element\>](#corekit-upsize)
   - [Type-safe bit casts with BitCastable\<BitPattern\>](#corekit-bit-cast)
   - [Lightweight text decoding and encoding with TextInt](#corekit-text-int)
-  
 * [DoubleIntKit](#doubleintkit)
 * [InfiniIntKit](#infiniintkit)
+  - [Recoverable infinite addition (+/-)](#infiniintkit-addition)
+  - [Recoverable infinite multiplication](#infiniintkit-multiplication)
+  - [Recoverable infinite division](#infiniintkit-division)
 * [FibonacciKit](#fibonaccikit)
 * [Installation](#installation)
 
@@ -314,6 +315,59 @@ let regex: Regex = /^(?<sign>\+|-)(?<mask>#|&)(?<body>[0-9a-zA-z]+)$/
 ├─────────────────┬─────┤├─────────────────┬─────┤
 │ UX............. │ Bit ││ UX............. │ Bit │
 └─────────────────┴─────┘└─────────────────┴─────┘
+```
+
+It may or may not sound intuitive at first, but this infinite binary integer
+has a fixed size too. It is imporant to remember this when you consdier the
+recover modes of its arithmetic operations. It overflows and underflows just
+like the systems integers you know and love. 
+
+The main difference between a systems integer and an infinite integer is that 
+the appendix bit is the only addressable infinity bit, which means you cannot 
+cut infinity in in half. Likewise, the log2(max+1) size must be promoted to a 
+representable value. In order to work with infinite numerical values, you must 
+know where your values come from. Keep in mind that its main purpose is recovery.
+
+> ![NOTE]
+> The introduction of infinity is what permits \~(\~(x)) == x for all x.
+
+<a name="infiniintkit-addition"/>
+
+### Recoverable infinite addition (+/-)
+
+Addition at and around infinity just works.
+
+```swift
+UXL.min.decremented() // value: max, error: true
+UXL.max.incremented() // value: min, error: true
+```
+
+<a name="infiniintkit-multiplication"/>
+
+### Recoverable infinite multiplication
+
+Multiplication is also unchanged. All of the complicated stuff forms at one bit
+past the appendix bit. Just imagine a really large integer, and a product of twice
+that size. It just works.
+
+```swift
+U32.max.times(U32.max) // value: 001, error: true
+UXL.max.times(UXL.max) // value: 001, error: true
+```
+
+<a name="infiniintkit-division"/>
+
+### Recoverable infinite division
+
+So, this is where things gets tricky. Wait, no, it still just works in most cases.
+Since you know finite-by-finite division, I'm sure you intuit that finite-by-infinite
+division is trivial and that infinite-by-infinite division is at most one subtraction.
+The only weird case is infinite-by-finite division, because the proper computation
+requires infinite memory. So, in this case, we just let the algorithm run and mark it 
+as an error unless the divisor is one. This yields results similar to signed division.
+
+```swift
+dividend == divisor &* quotient &+ remainder // for all binary integers
 ```
 
 <a name="fibonaccikit"/>
