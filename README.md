@@ -39,10 +39,10 @@
 > Binary integers are dead.\
 > Long live binary integers!
 
-This project presents a novel binary integer abstraction that works for all sizes.
-In fact, it views all binary integers as infinite bit sequences with various modes of operation.
-It also extends the maximum unsigned value to infinity and lets you recover from failure through 
-intuitive and ergonomic error propagation mechanisms.
+This project presents a novel binary integer abstraction that unifies the different
+sizes. It views all binary integers as infinite bit sequences with various modes 
+of operation. It extends the maximum unsigned value to infinity and lets you recover 
+from failure through intuitive, ergonomic, and generic error propagation mechanisms.
 
 ```swift
 (~0 as IXL) // -1
@@ -51,9 +51,9 @@ intuitive and ergonomic error propagation mechanisms.
 (~1 as UXL) //  ∞ - 1
 ```
 
-Some definitions have been updated to fit the new binary integer format. What was once called
-the sign bit is now the appendix bit. This means a so-called signed right shift treats an infinite 
-unsigned integer like a negative signed integer, for example.
+Some definitions have been updated to fit the new binary integer format. What was once 
+called the sign bit is now the appendix bit. This means a so-called signed right shift
+treats an infinite unsigned integer like a negative signed integer, for example.
 
 ```swift
 (~2 as UXL) >> 1 == (~1 as UXL)
@@ -64,10 +64,11 @@ unsigned integer like a negative signed integer, for example.
 ( 2 as UXL) >> 1 == ( 1 as UXL)
 ```
 
-In practice, an infinite integer is represented by its least significant body elements,
-followed by an infinite repetition of its appendix bit. All signed integers and all infinite 
-integers store this bit in memory, but unsigned systems integers return zero through the 
-type system. This makes all systems integers compatible with the un/signed two's complement format.
+In practice, an infinite integer is represented by its least significant body
+elements, followed by an infinite repetition of its appendix bit. All signed integers
+and all infinite integers store this bit in memory, but unsigned systems integers 
+return zero through the type system. This makes all systems integers compatible with 
+the un/signed two's complement format.
 
 ```
 ~(~(x)) == x for all x
@@ -82,19 +83,19 @@ type system. This makes all systems integers compatible with the un/signed two's
 
 ### What is a data integer?
 
-A binary integer must provide contigous access to their endianess sensitive body. This
-allocation may be viewed through a data integer. Such types keep track of memory alignments
-and may downsize their element type through reinterpretation.
+A binary integer must provide contiguous access to its endianness-sensitive body, which can
+be viewed through a data integer. Such view types keep track of memory alignments and may downsize 
+their element type through reinterpretation.
 
 | some DataInteger           | some DataIntegerBody           |
 |:---------------------------|:-------------------------------|
 | DataInt\<Element\>         | DataInt\<Element\>.Body        |
 | MutableDataInt\<Element\>  | MutableDataInt\<Element\>.Body |
 
-All binary integers agree on this format, which let us perform arbitrary conversions with 
-a fixed set of protocol witnesses. Compare this to the square-matrix-of-doom that is formed 
-by generic protocol requirements. In theory, a binary integer needs two initializers. One for 
-aligned loads from compatible sources and one for unaligned loads from unknown sources.
+All binary integers agree on this format, which lets us perform arbitrary conversions with 
+a fixed set of protocol witnesses. Compare this to the square matrix of doom that is formed 
+by generic protocol requirements. In theory, a binary integer needs two initializers. One 
+for aligned loads from compatible sources and one for unaligned loads from unknown sources.
 In practice, this depends on whether the optimizer can turn them into appropriate instructions.
 
 ```swift
@@ -103,9 +104,9 @@ init(load source: LoadInt<Element.Magnitude>) // unknown
 ```
 
 <details><summary>
-Here's the other conversion requirements...
+Here are the other conversion requirements...
 </summary><br><blockquote><p>
-Please :pray: that we may remove these at some point.
+Please :pray: that we may remove them at some point.
 </p></blockquote>
 
 ```swift
@@ -125,10 +126,10 @@ Please :pray: that we may remove these at some point.
 
 > Keep it simple.
 
-You may realize that the infinite bit pattern definition implies a static size for all binary 
-integers. Indeed, you can compare their sizes through meta data. Still, not all binary integers 
-are trivial. A systems integer is represented in memory by its bit pattern alone. Additionally, 
-a systems integer's size must be a power of two in [8, IX.max].
+You may realize that the infinite bit pattern definition implies a static size for all binary
+integers. Indeed, you can compare their sizes through metadata alone. Still, not all binary integers 
+are trivial. A systems integer is represented in memory by its bit pattern alone. Additionally, a 
+systems integer's size must be a power of two in [8, IX.max].
 
 | Size    | Signed | Unsigned |
 |--------:|:------:|:--------:|
@@ -139,7 +140,7 @@ a systems integer's size must be a power of two in [8, IX.max].
 |  64-bit | I64    | U64      |
 
 Systems integers are intentionally simple so that the things you build with them may be simple. 
-The only protocol requirements are multiplication and divison algorithms for working with full 
+The only protocol requirements are multiplication and division algorithms for working with full 
 precision in generic code.
 
 <a name="introduction-trusted-input"/>
@@ -148,11 +149,11 @@ precision in generic code.
 
 > Trust me, I know what I'm doing...
 
-One you start using primitive types to form more complex types, you notice that some semantics
+Once you start using primitive types to form more complex types, you notice that some semantics
 compose better than others. A trusted input delegates some precondition validation to the 
-programmer, so that complex types can be built with less overhead. The type system will compell
-you to approve each trusted input with one of the following methods. Your choice will either 
-make your code safer or easier to audit.
+programmer so that complex types can be built with less overhead. The type system will compel you 
+to approve each trusted input with one of the following methods. Your choice will either make your 
+code safer or easier to audit.
 
 ```swift
 init(_:)         // error: traps
@@ -170,7 +171,7 @@ init(unchecked:) // error: unsafe (with debug assertions)
 ### Validation and recovery through Fallible\<Value\>
 
 > It doesn't matter how many times you fall.\
-> It matters how many time you get back up.
+> It matters how many times you get back up.
 
 Proper error handling is a cornerstone of this project and a lot of effort goes into ensuring
 that a path to redemption. The Fallible\<Value\> wrapper plays an important part in this story.
@@ -205,7 +206,7 @@ static func &+(lhs: consuming Self, borrowing Self) -> Self // wrapping
 
 ### Upsize binary integer elements with LoadInt\<Element\>
 
-The data integer types lets you downsize binary integer elements by reinterpretation. This awesome power 
+The data integer types let you downsize binary integer elements by reinterpretation. This awesome power 
 stems from strict systems integer layout requirements. Note that you may not upsize integers in this way 
 because the memory alignment of a smaller systems integer may not be compatible with a larger systems integer. 
 Instead, you may use LoadInt\<Element\> to load elements of any size. It performs an unaligned load when
@@ -216,8 +217,7 @@ possible and handles the case where the load would read past the end.
 ### Type-safe bit casts with BitCastable\<BitPattern\>
 
 The BitCastable\<BitPattern\> protocol lets you perform type-safe bit casts in bulk. This is pertinent
-to binary integers since the abstraction is basically two representations bridged by a common bit pattern 
-transformation. 
+to binary integers since the abstraction is two representations bridged by a bit pattern transformation. 
 
 ```swift
 U8(raw:  -1 as I8) // 255
@@ -272,7 +272,7 @@ to all binary integers. Also, note that this method is both fully generic and fu
 At some point, you'll want to convert your binary integers to a human-readable format. When 
 that happens, the description(as:) or init(\_:as:) methods let you perform the common radix 
 conversions through TextInt. The latter uses a fixed number of non-generic and non-inlinable
-algorithms, which are shared by all binary integers. This is an intentional size over performance 
+algorithms, which are shared by all binary integers. This is an intentional size-over-performance 
 optimization, although it still goes brrr.
 
 ```swift
@@ -283,8 +283,8 @@ try! IXL("123", as: .hexadecimal).description(as: .decimal) // 291
 
 Note that the introduction of infinite values necessitates changes to the integer description 
 format. The new format adds the plain "#" and masked "&" markers. The former is just a spacer
-whereas the latter represents a bitwise negation. In other words, "+&123" translates to maximum 
-infinty minus 123.
+whereas the latter represents a bitwise negation. In other words, "+&123" translates to maximum
+infinity minus 123.
 
 ```swift
 let regex: Regex = /^(?<sign>\+|-)(?<mask>#|&)(?<body>[0-9a-zA-z]+)$/
@@ -323,15 +323,15 @@ let regex: Regex = /^(?<sign>\+|-)(?<mask>#|&)(?<body>[0-9a-zA-z]+)$/
 ```
 
 It may or may not sound intuitive at first, but this infinite binary integer
-has a fixed size too. It is imporant to remember this when you consdier the
-recover modes of its arithmetic operations. It overflows and underflows just
+has a fixed size too. It is important to remember this when you consider the
+recovery modes of its arithmetic operations. It overflows and underflows just
 like the systems integers you know and love. 
 
 The main difference between a systems integer and an infinite integer is that 
 the appendix bit is the only addressable infinity bit, which means you cannot 
-cut infinity in in half. Likewise, the log2(max+1) size must be promoted to a 
-representable value. In order to work with infinite numerical values, you must 
-know where your values come from. Keep in mind that its main purpose is recovery.
+cut infinity in half. Likewise, the log2(max+1) size must be promoted. To
+work with infinite numerical values, you must track where your values come 
+from. Keep in mind that recovery from failure is the main purpose of infinity.
 
 > ![NOTE]
 > The introduction of infinity is what permits \~(\~(x)) == x for all x.
@@ -352,8 +352,8 @@ UXL.max.incremented() // value: min, error: true
 ### Recoverable infinite multiplication
 
 Multiplication is also unchanged. All of the complicated stuff forms at one bit
-past the appendix bit. Imagine a really large integer, and a product twice that 
-size. It just works.
+past the appendix bit. Imagine a really big integer and a product of twice that 
+size with truncating behavior. It just works.
 
 ```swift
 U32.max.times(U32.max) // value: 001, error: true
@@ -364,10 +364,10 @@ UXL.max.times(UXL.max) // value: 001, error: true
 
 ### Recoverable infinite division
 
-So, this is where things gets tricky. Wait, no, it still just works in most cases.
+So, this is where things get tricky. Wait, no, it still just works in most cases.
 Since you know finite-by-finite division, I'm sure you intuit that finite-by-infinite
 division is trivial and that infinite-by-infinite division is at most one subtraction.
-The only weird case is infinite-by-finite division, because the proper computation
+The only weird case is infinite-by-finite division because the proper computation
 requires infinite memory. So, in this case, we just let the algorithm run and mark it 
 as an error unless the divisor is one. This yields results similar to signed division.
 
@@ -416,7 +416,7 @@ mutating func decrement(by:) throws // index - x.index
 ### Fast sequence addition (+/-)
 
 You may have noticed that you can pick any two adjacent elements and express
-the sequence in terms of those elements. This obervation allows you to climb
+the sequence in terms of those elements. This observation allows us to climb
 up and down the index ladder. The idea is super simple:
 
 ```
@@ -446,9 +446,9 @@ f(x - y) == ± f(x) * f(y + 1) ± f(x + 1) * f(y)
 
 ### Code coverage with sequence invariants
 
-We have a some cute algorithms and a fully generic sequence. Let's use them to
-stress test our models! The sequence addition formula can be rearranged in such
-a way that we call all basic arithmetic operations:
+We have some cute algorithms and a generic sequence. Let's use them to stress 
+test our models! Note that the sequence addition formula can be rearranged in 
+such a way that we call all of the basic arithmetic operations.
 
 ```swift
 f(x) * f(y) == (f(x+y+1) / f(x+1) - f(y+1)) * f(x+1) + f(x+y+1) % f(x+1)
@@ -468,7 +468,7 @@ Here's the real version that we call in all, or most, of our sequence tests...
 /// f(x) * f(y) == (f(x+y+1) / f(x+1) - f(y+1)) * f(x+1) + f(x+y+1) % f(x+1)
 /// ```
 ///
-/// ### Calls: Fibonacci
+/// ### Calls: Fibonacci<Value>
 ///
 /// - Fibonacci.init(\_:)
 /// - Fibonacci/increment(by:)

@@ -23,7 +23,6 @@ extension DoubleInt {
         self.times(copy self)
     }
     
-    
     @inlinable public consuming func times(_ multiplier: Self) -> Fallible<Self> {
         let minus  = self.high.isNegative != multiplier.high.isNegative
         var result = Fallible<Self>(raw: self.magnitude().times(multiplier.magnitude()))

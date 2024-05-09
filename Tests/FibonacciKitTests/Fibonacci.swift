@@ -99,7 +99,7 @@ extension FibonacciTests.Case {
     /// f(x) * f(y) == (f(x+y+1) / f(x+1) - f(y+1)) * f(x+1) + f(x+y+1) % f(x+1)
     /// ```
     ///
-    /// ### Calls: Fibonacci
+    /// ### Calls: Fibonacci<Value>
     ///
     /// - Fibonacci.init(\_:)
     /// - Fibonacci/increment(by:)
