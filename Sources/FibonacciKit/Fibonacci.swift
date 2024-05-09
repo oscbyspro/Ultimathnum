@@ -41,6 +41,19 @@ import CoreKit
 /// f(x + 1 + y) == f(x) * f(y) + f(x + 1) * f(y + 1)
 /// ```
 ///
+/// Going the other direction is a bit more complicated, but not much:
+///
+/// ```swift
+/// f(x - 0) == + f(x) * 00000001 - f(x + 1) * 0000
+/// f(x - 1) == - f(x) * 00000001 + f(x + 1) * 0001
+/// f(x - 2) == + f(x) * 00000002 - f(x + 1) * 0001
+/// f(x - 3) == - f(x) * 00000003 + f(x + 1) * 0002
+/// f(x - 4) == + f(x) * 00000005 - f(x + 1) * 0003
+/// f(x - 5) == - f(x) * 00000008 + f(x + 1) * 0005
+/// f(x - 6) == + f(x) * 00000013 - f(x + 1) * 0008
+/// f(x - y) == ± f(x) * f(y + 1) ± f(x + 1) * f(y)
+/// ```
+///
 /// ### Un/signed vs Magnitude
 ///
 /// It permits both signed and unsigned values for testing purposes.

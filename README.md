@@ -21,6 +21,9 @@
   - [Recoverable infinite multiplication](#infiniintkit-multiplication)
   - [Recoverable infinite division](#infiniintkit-division)
 * [FibonacciKit](#fibonaccikit)
+  - [The Fibonacci\<Value\> sequence](#fibonaccikit-sequence)
+  - [Fast sequence addition (+/-)](#fibonaccikit-addition)
+  - [Code coverage with sequence invariants](#fibonaccikit-invariants)
 * [Installation](#installation)
   - [SemVer 2.0.0](#installation-semver)
   - [Swift Package Manager](#installation-swift-package-manager)
@@ -349,8 +352,8 @@ UXL.max.incremented() // value: min, error: true
 ### Recoverable infinite multiplication
 
 Multiplication is also unchanged. All of the complicated stuff forms at one bit
-past the appendix bit. Just imagine a really large integer, and a product of twice
-that size. It just works.
+past the appendix bit. Imagine a really large integer, and a product twice that 
+size. It just works.
 
 ```swift
 U32.max.times(U32.max) // value: 001, error: true
@@ -376,7 +379,9 @@ dividend == divisor &* quotient &+ remainder // for all binary integers
 
 ## FibonacciKit
 
-### Fibonacci\<Value\>
+<a name="fibonaccikit-sequence"/>
+
+### The Fibonacci\<Value\> sequence
 
 > Question: How do you test silly numbers?\
 > Answer: With silly number generators, of course!
@@ -405,6 +410,98 @@ mutating func decrement()    throws // index - 1
 mutating func increment(by:) throws // index + x.index
 mutating func decrement(by:) throws // index - x.index
 ```
+
+<a name="fibonaccikit-addition"/>
+
+### Fast sequence addition (+/-)
+
+You may have noticed that you can pick any two adjacent elements and express
+the sequence in terms of those elements. This obervation allows you to climb
+up and down the index ladder. The idea is super simple:
+
+```
+f(x + 1 + 0) == f(x) * 0000 + f(x + 1) * 00000001
+f(x + 1 + 1) == f(x) * 0001 + f(x + 1) * 00000001
+f(x + 1 + 2) == f(x) * 0001 + f(x + 1) * 00000002
+f(x + 1 + 3) == f(x) * 0002 + f(x + 1) * 00000003
+f(x + 1 + 4) == f(x) * 0003 + f(x + 1) * 00000005
+f(x + 1 + 5) == f(x) * 0005 + f(x + 1) * 00000008
+f(x + 1 + y) == f(x) * f(y) + f(x + 1) * f(y + 1)
+```
+
+Going the other direction is a bit more complicated, but not much:
+
+```
+f(x - 0) == + f(x) * 00000001 - f(x + 1) * 0000
+f(x - 1) == - f(x) * 00000001 + f(x + 1) * 0001
+f(x - 2) == + f(x) * 00000002 - f(x + 1) * 0001
+f(x - 3) == - f(x) * 00000003 + f(x + 1) * 0002
+f(x - 4) == + f(x) * 00000005 - f(x + 1) * 0003
+f(x - 5) == - f(x) * 00000008 + f(x + 1) * 0005
+f(x - 6) == + f(x) * 00000013 - f(x + 1) * 0008
+f(x - y) == ± f(x) * f(y + 1) ± f(x + 1) * f(y)
+```
+
+<a name="fibonaccikit-invariants"/>
+
+### Code coverage with sequence invariants
+
+We have a some cute algorithms and a fully generic sequence. Let's use them to
+stress test our models! The sequence addition formula can be rearranged in such
+a way that we call all basic arithmetic operations:
+
+```swift
+f(x) * f(y) == (f(x+y+1) / f(x+1) - f(y+1)) * f(x+1) + f(x+y+1) % f(x+1)
+```
+
+<details>
+<summary>
+Here's the real version that we call in all, or most, of our sequence tests...
+</summary>
+
+```swift
+/// Generates new instances and uses them to check math invariants.
+///
+/// ### Invariants
+///
+/// ```
+/// f(x) * f(y) == (f(x+y+1) / f(x+1) - f(y+1)) * f(x+1) + f(x+y+1) % f(x+1)
+/// ```
+///
+/// ### Calls: Fibonacci
+///
+/// - Fibonacci.init(\_:)
+/// - Fibonacci/increment(by:)
+/// - Fibonacci/decrement(by:)
+///
+/// ### Calls: BinaryInteger
+///
+/// - BinaryInteger/plus(\_:)
+/// - BinaryInteger/minus(\_:)
+/// - BinaryInteger/times(\_:)
+/// - BinaryInteger/quotient(\_:)
+/// - BinaryInteger/division(\_:)
+///
+func checkMathInvariants() {
+    for divisor: Divisor<Value> in [2, 3, 5, 7, 11].map(Divisor.init) {
+        always: do {
+            var a = self.item as Fibonacci<Value>
+            let b = try Fibonacci(a.index.quotient(divisor).prune(Bad.division))
+            let c = try a.next.division(Divisor(b.next, prune: Bad.divisor)).prune(Bad.division)
+            try a.decrement(by: b)
+            let d = try b.element.times(a.element).prune(Bad.multiplication)
+            let e = try c.quotient.minus(a.next).times(b.next).plus(c.remainder).prune(Bad.any)
+            try a.increment(by: b)
+            test.same(d, e, "arithmetic invariant error")
+            self.same(index: a.index, element: a.element, next: a.next)
+            
+        }   catch let error {
+            test.fail("unexpected arithmetic failure: \(error)")
+        }
+    }
+}
+```
+</details>
 
 <a name="installation"/>
 
