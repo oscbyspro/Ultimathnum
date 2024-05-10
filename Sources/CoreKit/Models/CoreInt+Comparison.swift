@@ -11,7 +11,7 @@
 // MARK: * Core Int x Comparison
 //*============================================================================*
 
-extension CoreInt {
+extension _CoreInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -21,11 +21,11 @@ extension CoreInt {
         self < other ? -1 : self == other ? 0 : 1
     }
     
-    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+    @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
         lhs.base == rhs.base
     }
     
-    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+    @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
         lhs.base <  rhs.base
     }
 }

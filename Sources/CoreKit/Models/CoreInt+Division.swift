@@ -11,34 +11,41 @@
 // MARK: * Core Int x Division
 //*============================================================================*
 
-extension CoreInt {
+extension _CoreInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func quotient (_ divisor: borrowing Divisor<Self>) -> Fallible<Self> {
+    @inlinable public func quotient (_ divisor: Divisor<Self>) -> Fallible<Self> {
         let result = self.base.dividedReportingOverflow(by: divisor.value.base)
         return Self(result.partialValue).invalidated(result.overflow)
     }
     
-    @inlinable public consuming func remainder(_ divisor: borrowing Divisor<Self>) -> Self {
+    @inlinable public func remainder(_ divisor: Divisor<Self>) -> Self {
         let result = self.base.remainderReportingOverflow(dividingBy: divisor.value.base)
         return Self(result.partialValue)
     }
     
-    @inlinable public consuming func division (_ divisor: borrowing Divisor<Self>) -> Fallible<Division<Self, Self>> {
-        let quotient  = (copy    self).quotient (divisor)
-        let remainder = (consume self).remainder(divisor)
+    @inlinable public func division (_ divisor: Divisor<Self>) -> Fallible<Division<Self, Self>> {
+        let quotient  = self.quotient (divisor)
+        let remainder = self.remainder(divisor)
         let division  = Division(quotient: quotient.value, remainder: remainder)
         return Fallible(division,   error: quotient.error)
     }
+}
+
+//*============================================================================*
+// MARK: * Core Int x Division x Signed
+//*============================================================================*
+
+extension _CoreSignedInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func division(_ dividend: consuming Doublet<Self>, by divisor: Divisor<Self>) -> Fallible<Division<Self, Self>> {
+    @inlinable public static func division(_ dividend: Doublet<Self>, by divisor: Divisor<Self>) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
         let lhsIsNegative = dividend.high.isNegative
         let rhsIsNegative = divisor.value.isNegative
@@ -64,13 +71,13 @@ extension CoreInt {
 // MARK: * Core Int x Division x Unsigned
 //*============================================================================*
 
-extension CoreInt where Self == Magnitude {
+extension _CoreUnsignedInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable static func division(_ dividend: consuming Doublet<Self>, by divisor: Divisor<Self>) -> Fallible<Division<Self, Self>> {
+    @inlinable public static func division(_ dividend: consuming Doublet<Self>, by divisor: Divisor<Self>) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
         var overflow = false
         //=--------------------------------------=

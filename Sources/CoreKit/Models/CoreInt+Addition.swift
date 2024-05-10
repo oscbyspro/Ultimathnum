@@ -11,13 +11,13 @@
 // MARK: * Core Int x Addition
 //*============================================================================*
 
-extension CoreInt {
+extension _CoreInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func plus(_ increment: borrowing Self) -> Fallible<Self> {
+    @inlinable public func plus(_ increment: Self) -> Fallible<Self> {
         let result = self.base.addingReportingOverflow(increment.base)
         return Self(result.partialValue).invalidated(result.overflow)
     }

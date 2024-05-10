@@ -11,33 +11,33 @@
 // MARK: * Core Int x Shift
 //*============================================================================*
 
-extension CoreInt {
+extension _CoreInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func  <<(instance: consuming Self, distance: borrowing Self) -> Self {
+    @inlinable public static func  <<(instance: Self, distance: Self) -> Self {
         Self(instance.base  << distance.base)
     }
     
-    @inlinable public static func &<<(instance: consuming Self, distance: borrowing Self) -> Self {
+    @inlinable public static func &<<(instance: Self, distance: Self) -> Self {
         Self(instance.base &<< distance.base)
     }
     
-    @inlinable public static func &<<(instance: consuming Self, distance: borrowing Shift<Self>) -> Self {
+    @inlinable public static func &<<(instance: Self, distance: Shift<Self>) -> Self {
         Self(instance.base &<< distance.value.base) // there are no unchecked shifts in Swift
     }
     
-    @inlinable public static func  >>(instance: consuming Self, distance: borrowing Self) -> Self {
+    @inlinable public static func  >>(instance: Self, distance: Self) -> Self {
         Self(instance.base  >> distance.base)
     }
     
-    @inlinable public static func &>>(instance: consuming Self, distance: borrowing Self) -> Self {
+    @inlinable public static func &>>(instance: Self, distance: Self) -> Self {
         Self(instance.base &>> distance.base)
     }
     
-    @inlinable public static func &>>(instance: consuming Self, distance: borrowing Shift<Self>) -> Self {
+    @inlinable public static func &>>(instance: Self, distance: Shift<Self>) -> Self {
         Self(instance.base &>> distance.value.base) // there are no unchecked shifts in Swift
     }
 }

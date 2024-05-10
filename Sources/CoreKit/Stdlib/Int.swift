@@ -11,12 +11,14 @@
 // MARK: * Int
 //*============================================================================*
 
-extension Int: CoreInteger {
+extension Int: BitCastable {
     
-    public typealias Signitude = Self
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
     
-    @inlinable public static var mode: Signed {
-        Signed()
+    @inlinable public init(_ source: IX) {
+        self = source.base
     }
     
     @inlinable public init(raw source: consuming Magnitude) {
@@ -28,12 +30,18 @@ extension Int: CoreInteger {
     }
 }
 
-extension Int8: CoreInteger {
+//*============================================================================*
+// MARK: * Int x 8
+//*============================================================================*
+
+extension Int8: BitCastable {
     
-    public typealias Signitude = Self
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
     
-    @inlinable public static var mode: Signed {
-        Signed()
+    @inlinable public init(_ source: I8) {
+        self = source.base
     }
     
     @inlinable public init(raw source: consuming Magnitude) {
@@ -45,12 +53,18 @@ extension Int8: CoreInteger {
     }
 }
 
-extension Int16: CoreInteger {
+//*============================================================================*
+// MARK: * Int x 16
+//*============================================================================*
+
+extension Int16: BitCastable {
         
-    public typealias Signitude = Self
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
     
-    @inlinable public static var mode: Signed {
-        Signed()
+    @inlinable public init(_ source: I16) {
+        self = source.base
     }
     
     @inlinable public init(raw source: consuming Magnitude) {
@@ -62,12 +76,18 @@ extension Int16: CoreInteger {
     }
 }
 
-extension Int32: CoreInteger {
+//*============================================================================*
+// MARK: * Int x 32
+//*============================================================================*
+
+extension Int32: BitCastable {
         
-    public typealias Signitude = Self
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
     
-    @inlinable public static var mode: Signed {
-        Signed()
+    @inlinable public init(_ source: I32) {
+        self = source.base
     }
     
     @inlinable public init(raw source: consuming Magnitude) {
@@ -79,12 +99,18 @@ extension Int32: CoreInteger {
     }
 }
 
-extension Int64: CoreInteger {
+//*============================================================================*
+// MARK: * Int x 64
+//*============================================================================*
+
+extension Int64: BitCastable {
         
-    public typealias Signitude = Self
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
     
-    @inlinable public static var mode: Signed {
-        Signed()
+    @inlinable public init(_ source: I64) {
+        self = source.base
     }
     
     @inlinable public init(raw source: consuming Magnitude) {

@@ -11,7 +11,7 @@
 // MARK: * Core Int x Count
 //*============================================================================*
 
-extension CoreInt {
+extension _CoreInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -19,22 +19,22 @@ extension CoreInt {
     
     @inlinable public func count(_ selection: Bit) -> Magnitude {
         switch Bool(selection) {
-        case true:  Magnitude(Base.Magnitude(truncatingIfNeeded: ( self).base.nonzeroBitCount))
-        case false: Magnitude(Base.Magnitude(truncatingIfNeeded: (~self).base.nonzeroBitCount))
+        case true:  Magnitude(Stdlib.Magnitude(truncatingIfNeeded: ( self).base.nonzeroBitCount))
+        case false: Magnitude(Stdlib.Magnitude(truncatingIfNeeded: (~self).base.nonzeroBitCount))
         }
     }
     
     @inlinable public func count(_ selection: Bit.Ascending) -> Magnitude {
         switch Bool(selection.bit) {
-        case true:  Magnitude(Base.Magnitude(truncatingIfNeeded: (~self).base.trailingZeroBitCount))
-        case false: Magnitude(Base.Magnitude(truncatingIfNeeded: ( self).base.trailingZeroBitCount))
+        case true:  Magnitude(Stdlib.Magnitude(truncatingIfNeeded: (~self).base.trailingZeroBitCount))
+        case false: Magnitude(Stdlib.Magnitude(truncatingIfNeeded: ( self).base.trailingZeroBitCount))
         }
     }
     
     @inlinable public func count(_ selection: Bit.Descending) -> Magnitude {
         switch Bool(selection.bit) {
-        case true:  Magnitude(Base.Magnitude(truncatingIfNeeded: (~self).base.leadingZeroBitCount))
-        case false: Magnitude(Base.Magnitude(truncatingIfNeeded: ( self).base.leadingZeroBitCount))
+        case true:  Magnitude(Stdlib.Magnitude(truncatingIfNeeded: (~self).base.leadingZeroBitCount))
+        case false: Magnitude(Stdlib.Magnitude(truncatingIfNeeded: ( self).base.leadingZeroBitCount))
         }
     }
 }

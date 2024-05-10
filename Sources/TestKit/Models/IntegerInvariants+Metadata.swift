@@ -10,7 +10,7 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Integer Invariants x Meta Data
+// MARK: * Integer Invariants x Metadata
 //*============================================================================*
 
 extension IntegerInvariants {
@@ -37,6 +37,12 @@ extension IntegerInvariants {
             T.size.count(1),
             T.Magnitude (1),
             "\(T.self).size must be a power of 2"
+        )
+        
+        test.same(
+            IX(T.size),
+            IX(MemoryLayout<T>.size) * 8,
+            "\(T.self).size must match memory layout"
         )
         
         test.same(

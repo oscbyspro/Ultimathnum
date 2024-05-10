@@ -11,25 +11,25 @@
 // MARK: * Core Int x Bitwise
 //*============================================================================*
 
-extension CoreInt {
+extension _CoreInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static prefix func ~(instance: consuming Self) -> Self {
+    @inlinable public static prefix func ~(instance: Self) -> Self {
         Self(~instance.base)
     }
     
-    @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func &(lhs: Self, rhs: Self) -> Self {
         Self(lhs.base & rhs.base)
     }
     
-    @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func |(lhs: Self, rhs: Self) -> Self {
         Self(lhs.base | rhs.base)
     }
     
-    @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
         Self(lhs.base ^ rhs.base)
     }
     
@@ -37,7 +37,7 @@ extension CoreInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
+    @inlinable public func complement(_ increment: Bool) -> Fallible<Self> {
         (~self).incremented(increment)
     }
 }

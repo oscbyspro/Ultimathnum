@@ -11,55 +11,101 @@
 // MARK: * UInt
 //*============================================================================*
 
-extension UInt: CoreInteger {
+extension UInt: BitCastable {
     
     public typealias BitPattern = Magnitude
     
-    public typealias Signitude  = Int
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(_ source: UX) {
+        self = source.base
+    }
     
     @inlinable public static var mode: Unsigned {
         Unsigned()
     }
 }
 
-extension UInt8: CoreInteger {
+//*============================================================================*
+// MARK: * UInt x 8
+//*============================================================================*
+
+extension UInt8: BitCastable {
     
     public typealias BitPattern = Magnitude
         
-    public typealias Signitude  = Int8
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(_ source: U8) {
+        self = source.base
+    }
     
     @inlinable public static var mode: Unsigned {
         Unsigned()
     }
 }
 
-extension UInt16: CoreInteger {
+//*============================================================================*
+// MARK: * UInt x 16
+//*============================================================================*
+
+extension UInt16: BitCastable {
     
     public typealias BitPattern = Magnitude
         
-    public typealias Signitude  = Int16
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(_ source: U16) {
+        self = source.base
+    }
     
     @inlinable public static var mode: Unsigned {
         Unsigned()
     }
 }
 
-extension UInt32: CoreInteger {
+//*============================================================================*
+// MARK: * UInt x 32
+//*============================================================================*
+
+extension UInt32: BitCastable {
     
     public typealias BitPattern = Magnitude
         
-    public typealias Signitude  = Int32
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(_ source: U32) {
+        self = source.base
+    }
     
     @inlinable public static var mode: Unsigned {
         Unsigned()
     }
 }
 
-extension UInt64: CoreInteger {
+//*============================================================================*
+// MARK: * UInt x 64
+//*============================================================================*
+
+extension UInt64: BitCastable {
     
     public typealias BitPattern = Magnitude
     
-    public typealias Signitude  = Int64
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(_ source: U64) {
+        self = source.base
+    }
     
     @inlinable public static var mode: Unsigned {
         Unsigned()

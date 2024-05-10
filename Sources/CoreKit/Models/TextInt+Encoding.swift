@@ -17,7 +17,9 @@ extension TextInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func encode<T: BinaryInteger>(_ integer: consuming T) -> String {
+    @inlinable public func encode<T: BinaryInteger>(_ integer: T) -> String {
+        var integer = integer // TODO: await ownership fixes
+        
         let integerAppendixIsSet = Bool(integer.appendix)
         let integerIsInfinite = !T.isSigned && integerAppendixIsSet
         let integerIsNegative =  T.isSigned && integerAppendixIsSet
@@ -25,7 +27,7 @@ extension TextInt {
         if  integerAppendixIsSet {
             integer = integer.complement(T.isSigned).value
         }
-        
+                
         return integer.withUnsafeBinaryIntegerElementsAsBytes {
             self.encode(
                 sign: integerIsNegative ? .minus : nil,

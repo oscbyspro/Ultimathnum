@@ -11,17 +11,17 @@
 // MARK: * Core Int x Multiplication
 //*============================================================================*
 
-extension CoreInt {
+extension _CoreInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func squared() -> Fallible<Self> {
-        self.times(copy self)
+    @inlinable public func squared() -> Fallible<Self> {
+        self.times(self)
     }
     
-    @inlinable public consuming func times(_ multiplier: borrowing Self) -> Fallible<Self> {
+    @inlinable public func times(_ multiplier: Self) -> Fallible<Self> {
         let result = self.base.multipliedReportingOverflow(by: multiplier.base)
         return Self(result.partialValue).invalidated(result.overflow)
     }
@@ -30,7 +30,7 @@ extension CoreInt {
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func multiplication(_  multiplier: borrowing Self) -> Doublet<Self> {
+    @inlinable public func multiplication(_  multiplier: Self) -> Doublet<Self> {
         let result = self.base.multipliedFullWidth(by: multiplier.base)
         return Doublet(high: Self(result.high), low: Magnitude(result.low))
     }
