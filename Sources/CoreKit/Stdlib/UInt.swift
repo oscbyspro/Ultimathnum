@@ -22,10 +22,6 @@ extension UInt: BitCastable {
     @inlinable public init(_ source: UX) {
         self = source.base
     }
-    
-    @inlinable public static var mode: Unsigned {
-        Unsigned()
-    }
 }
 
 //*============================================================================*
@@ -42,10 +38,6 @@ extension UInt8: BitCastable {
     
     @inlinable public init(_ source: U8) {
         self = source.base
-    }
-    
-    @inlinable public static var mode: Unsigned {
-        Unsigned()
     }
 }
 
@@ -64,10 +56,6 @@ extension UInt16: BitCastable {
     @inlinable public init(_ source: U16) {
         self = source.base
     }
-    
-    @inlinable public static var mode: Unsigned {
-        Unsigned()
-    }
 }
 
 //*============================================================================*
@@ -85,10 +73,6 @@ extension UInt32: BitCastable {
     @inlinable public init(_ source: U32) {
         self = source.base
     }
-    
-    @inlinable public static var mode: Unsigned {
-        Unsigned()
-    }
 }
 
 //*============================================================================*
@@ -105,9 +89,5 @@ extension UInt64: BitCastable {
     
     @inlinable public init(_ source: U64) {
         self = source.base
-    }
-    
-    @inlinable public static var mode: Unsigned {
-        Unsigned()
     }
 }
