@@ -1,11 +1,13 @@
 # Ultimathnum
 
-> [!IMPORTANT]\
-> This is an experimental work in progress.
-
 ## Table of Contents
 
 * [Introduction](#introduction)
+  - [A rock-solid foundation](#introduction-foundation)
+  - [Derive  all the things!](#introduction-minimalism)
+  - [Recover all the things!](#introduction-recoverable)
+  - [Functional ownership](#introduction-functional)
+  - [Limit stdlib extensions](#introduction-stdlib)
 * [Nomenclature](#nomenclature)
   - [What is a binary integer?](#nomenclature-binary-integer)
   - [What is a data integer?](#nomenclature-data-integer)
@@ -32,6 +34,45 @@
 <a name="introduction"/>
 
 ## Introduction
+
+<a name="introduction-foundation"/>
+
+### A rock-solid foundation
+
+> Everyone who hears these words of mine and does them is like a wise man who
+> built his house on rock. The rain fell, the flood came, and the winds beat 
+> against that house, but it did not collapse because its foundation had been 
+> laid on rock. (Matthew 7:24-25)
+
+In programming, complexity is sand, and simplicity is a rock. In this project,
+you will find unified abstractions and curated design principles that make 
+numbers a breeze. Would you believe there's no difference between generic and 
+non-generic code? In any case, make some tea, have a seat, then let's explore
+what it's all about.
+
+<a name="introduction-minimalism"/>
+
+### Derive all the things!
+
+> Todo...
+
+<a name="introduction-recoverable"/>
+
+### Recover all the things!
+
+> Todo...
+
+<a name="introduction-functional"/>
+
+### Functional ownership
+
+> Todo...
+
+<a name="introduction-stdlib"/>
+
+### Limit stdlib extensions
+
+> Todo...
 
 ## Nomenclature
 
