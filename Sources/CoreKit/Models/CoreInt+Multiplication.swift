@@ -11,7 +11,7 @@
 // MARK: * Core Int x Multiplication
 //*============================================================================*
 
-extension _CoreInteger {
+extension CoreInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

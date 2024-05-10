@@ -19,7 +19,7 @@ import TestKit
 extension FibonacciTests {
 
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Metadata
     //=------------------------------------------------------------------------=
     
     private static let infiniIntList: [any BinaryInteger.Type] = [

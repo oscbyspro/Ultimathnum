@@ -26,7 +26,7 @@ final class TripleIntTests: XCTestCase {
     typealias UXx3 = TripleInt<UX>
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Metadata
     //=------------------------------------------------------------------------=
     
     static let bases: [any SystemsInteger.Type] = {

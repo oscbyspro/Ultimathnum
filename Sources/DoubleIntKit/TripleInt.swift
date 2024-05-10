@@ -34,7 +34,7 @@ import CoreKit
     public typealias IntegerLiteralType = StaticBigInt
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Metadata
     //=------------------------------------------------------------------------=
     
     @inlinable public static var mode: Base.Mode {

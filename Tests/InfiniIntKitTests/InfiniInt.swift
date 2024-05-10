@@ -18,7 +18,7 @@ import TestKit
 final class InfiniIntTests: XCTestCase {
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Metadata
     //=------------------------------------------------------------------------=
         
     static let types: [any BinaryInteger.Type] = {

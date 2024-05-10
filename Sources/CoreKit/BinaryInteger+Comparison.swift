@@ -14,7 +14,7 @@
 extension BinaryInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Metadata
     //=------------------------------------------------------------------------=
     
     /// Indicates whether this type can represent negative values.

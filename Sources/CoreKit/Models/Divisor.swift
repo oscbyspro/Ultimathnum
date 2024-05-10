@@ -31,7 +31,7 @@
     public typealias BitPattern = Divisor<Value.Magnitude>
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Metadata
     //=------------------------------------------------------------------------=
     
     @inlinable public static func predicate(_ value: borrowing Value) -> Bool {

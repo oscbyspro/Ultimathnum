@@ -27,7 +27,7 @@
 @frozen public struct TextInt: Equatable {
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Metadata
     //=------------------------------------------------------------------------=
     
     public static let decimal = Self.radix(10)

@@ -14,7 +14,7 @@
 @frozen public struct LoadInt<Element> where Element: SystemsInteger & UnsignedInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Metadata
     //=------------------------------------------------------------------------=
     
     @inlinable static var ratio: UX {

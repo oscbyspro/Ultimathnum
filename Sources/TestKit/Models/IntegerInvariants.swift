@@ -34,7 +34,7 @@ public struct IntegerInvariants<T> where T: BinaryInteger {
     typealias F  = Fallible<T>
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Metadata
     //=------------------------------------------------------------------------=
     
     @inlinable public static var shlEsque: T {

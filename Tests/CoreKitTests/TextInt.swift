@@ -20,7 +20,7 @@ final class TextIntTests: XCTestCase {
     typealias E = TextInt.Failure
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Metadata
     //=------------------------------------------------------------------------=
         
     static let radices: Range<UX> = 2 ..< 37

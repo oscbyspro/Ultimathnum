@@ -83,7 +83,7 @@ where
     associatedtype Magnitude: UnsignedInteger where Magnitude.Magnitude == Magnitude
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Metadata
     //=------------------------------------------------------------------------=
     
     /// Indicates whether this integer type can represent negative values.

@@ -12,7 +12,7 @@
 //*============================================================================*
 
 
-/// A collection of bits that can be counted.
+/// A countable collection of bits.
 ///
 /// ```swift
 /// U8(11).size()                // 8

@@ -18,7 +18,7 @@ import TestKit
 extension FibonacciTests {
 
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Metadata
     //=------------------------------------------------------------------------=
     
     private static let coreIntList: [any SystemsInteger.Type] = [

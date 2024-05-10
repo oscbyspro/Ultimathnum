@@ -32,7 +32,7 @@ import CoreKit
     @usableFromInline typealias Storage = InfiniIntStorage<Element.Magnitude>
         
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Metadata
     //=------------------------------------------------------------------------=
     
     @inlinable public static var mode: Source.Mode {

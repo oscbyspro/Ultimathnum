@@ -32,7 +32,7 @@ final class DoubleIntTests: XCTestCase {
     typealias UXx4 = DoubleInt<UXx2>
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Metadata
     //=------------------------------------------------------------------------=
     
     static let types: [any SystemsInteger.Type] = {

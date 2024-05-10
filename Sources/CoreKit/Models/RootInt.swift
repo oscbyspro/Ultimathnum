@@ -20,7 +20,7 @@
 @frozen public struct RootInt: ExpressibleByIntegerLiteral, Sendable {
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Metadata
     //=------------------------------------------------------------------------=
     
     @inlinable public static var mode: Signed {

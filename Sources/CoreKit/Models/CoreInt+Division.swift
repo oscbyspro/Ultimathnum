@@ -11,7 +11,7 @@
 // MARK: * Core Int x Division
 //*============================================================================*
 
-extension _CoreInteger {
+extension CoreInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -39,7 +39,7 @@ extension _CoreInteger {
 // MARK: * Core Int x Division x Signed
 //*============================================================================*
 
-extension _CoreSignedInteger {
+extension CoreSignedInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Composition
@@ -71,7 +71,7 @@ extension _CoreSignedInteger {
 // MARK: * Core Int x Division x Unsigned
 //*============================================================================*
 
-extension _CoreUnsignedInteger {
+extension CoreUnsignedInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Composition

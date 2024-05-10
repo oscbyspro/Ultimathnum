@@ -11,7 +11,9 @@
 // MARK: * Core Int
 //*============================================================================*
 
-/// The stuff other integers are made of.
+/// The stuff integers are made of.
+///
+/// This protocol is meant to reduce code duplication.
 ///
 /// ### Models
 ///
@@ -28,9 +30,9 @@
 /// - `U32`
 /// - `U64`
 ///
-@usableFromInline protocol _CoreInteger: SystemsInteger where
-BitPattern == Stdlib.BitPattern, Element == Self, Signitude: _CoreInteger,
-Magnitude: _CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
+@usableFromInline protocol CoreInteger: SystemsInteger where
+BitPattern == Stdlib.BitPattern, Element == Self, Signitude: CoreInteger,
+Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
     
     associatedtype Stdlib: Swift.FixedWidthInteger & BitCastable & Sendable
     
@@ -51,16 +53,16 @@ Magnitude: _CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
 // MARK: + Composition
 //=----------------------------------------------------------------------------=
 
-@usableFromInline protocol _CoreNumberedInteger: _CoreInteger { }
-@usableFromInline protocol   _CoreSignedInteger: _CoreInteger &   SignedInteger where Stdlib: Swift  .SignedInteger { }
-@usableFromInline protocol _CoreUnsignedInteger: _CoreInteger & UnsignedInteger where Stdlib: Swift.UnsignedInteger { }
+@usableFromInline protocol CoreNumberedInteger: CoreInteger { }
+@usableFromInline protocol   CoreSignedInteger: CoreInteger &   SignedInteger where Stdlib: Swift  .SignedInteger { }
+@usableFromInline protocol CoreUnsignedInteger: CoreInteger & UnsignedInteger where Stdlib: Swift.UnsignedInteger { }
 
 //*============================================================================*
 // MARK: * Core Int x IX
 //*============================================================================*
 
 /// A pointer-bit signed binary integer.
-@frozen public struct IX: _CoreSignedInteger {
+@frozen public struct IX: CoreSignedInteger {
     
     @usableFromInline typealias Stdlib = Swift.Int
     
@@ -108,7 +110,7 @@ Magnitude: _CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
 //*============================================================================*
 
 /// An 8-bit signed binary integer.
-@frozen public struct I8: _CoreSignedInteger, _CoreNumberedInteger {
+@frozen public struct I8: CoreSignedInteger, CoreNumberedInteger {
     
     @usableFromInline typealias Stdlib = Swift.Int8
     
@@ -154,7 +156,7 @@ Magnitude: _CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
 //*============================================================================*
 
 /// A 16-bit signed binary integer.
-@frozen public struct I16: _CoreSignedInteger, _CoreNumberedInteger {
+@frozen public struct I16: CoreSignedInteger, CoreNumberedInteger {
     
     @usableFromInline typealias Stdlib = Swift.Int16
     
@@ -200,7 +202,7 @@ Magnitude: _CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
 //*============================================================================*
 
 /// A 32-bit signed binary integer.
-@frozen public struct I32: _CoreSignedInteger, _CoreNumberedInteger {
+@frozen public struct I32: CoreSignedInteger, CoreNumberedInteger {
     
     @usableFromInline typealias Stdlib = Swift.Int32
     
@@ -246,7 +248,7 @@ Magnitude: _CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
 //*============================================================================*
 
 /// A 64-bit signed binary integer.
-@frozen public struct I64: _CoreSignedInteger, _CoreNumberedInteger {
+@frozen public struct I64: CoreSignedInteger, CoreNumberedInteger {
     
     @usableFromInline typealias Stdlib = Swift.Int64
     
@@ -292,7 +294,7 @@ Magnitude: _CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
 //*============================================================================*
 
 /// A pointer-bit unsigned binary integer.
-@frozen public struct UX: _CoreUnsignedInteger {
+@frozen public struct UX: CoreUnsignedInteger {
     
     @usableFromInline typealias Stdlib = Swift.UInt
     
@@ -340,7 +342,7 @@ Magnitude: _CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
 //*============================================================================*
 
 /// An 8-bit unsigned binary integer.
-@frozen public struct U8: _CoreUnsignedInteger, _CoreNumberedInteger {
+@frozen public struct U8: CoreUnsignedInteger, CoreNumberedInteger {
     
     @usableFromInline typealias Stdlib = Swift.UInt8
     
@@ -386,7 +388,7 @@ Magnitude: _CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
 //*============================================================================*
 
 /// A 16-bit unsigned binary integer.
-@frozen public struct U16: _CoreUnsignedInteger, _CoreNumberedInteger {
+@frozen public struct U16: CoreUnsignedInteger, CoreNumberedInteger {
     
     @usableFromInline typealias Stdlib = Swift.UInt16
     
@@ -432,7 +434,7 @@ Magnitude: _CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
 //*============================================================================*
 
 /// A 32-bit unsigned binary integer.
-@frozen public struct U32: _CoreUnsignedInteger, _CoreNumberedInteger {
+@frozen public struct U32: CoreUnsignedInteger, CoreNumberedInteger {
     
     @usableFromInline typealias Stdlib = Swift.UInt32
     
@@ -478,7 +480,7 @@ Magnitude: _CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
 //*============================================================================*
 
 /// A 64-bit unsigned binary integer.
-@frozen public struct U64: _CoreUnsignedInteger, _CoreNumberedInteger {
+@frozen public struct U64: CoreUnsignedInteger, CoreNumberedInteger {
     
     @usableFromInline typealias Stdlib = Swift.UInt64
     

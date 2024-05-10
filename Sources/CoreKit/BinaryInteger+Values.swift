@@ -14,7 +14,7 @@
 extension BinaryInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Metadata
     //=------------------------------------------------------------------------=
     
     @inlinable public static var zero: Self {
@@ -41,7 +41,7 @@ extension BinaryInteger {
 extension EdgyInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Metadata
     //=------------------------------------------------------------------------=
     
     @inlinable public static var min: Self {
@@ -60,7 +60,7 @@ extension EdgyInteger {
 extension SystemsInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Meta Data
+    // MARK: Metadata
     //=------------------------------------------------------------------------=
     
     @inlinable public static var lsb: Self {
