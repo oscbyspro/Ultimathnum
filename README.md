@@ -6,10 +6,11 @@
 ## Table of Contents
 
 * [Introduction](#introduction)
-  - [What is a binary integer?](#introduction-binary-integer)
-  - [What is a data integer?](#introduction-data-integer)
-  - [What is a systems integer?](#introduction-systems-integer)
-  - [What is a trusted input?](#introduction-trusted-input)
+* [Nomenclature](#nomenclature)
+  - [What is a binary integer?](#nomenclature-binary-integer)
+  - [What is a data integer?](#nomenclature-data-integer)
+  - [What is a systems integer?](#nomenclature-systems-integer)
+  - [What is a trusted input?](#nomenclature-trusted-input)
 * [CoreKit](#corekit)
   - [Validation and recovery through Fallible\<Value\>](#corekit-validation)
   - [Upsize binary integer elements with LoadInt\<Element\>](#corekit-upsize)
@@ -32,7 +33,9 @@
 
 ## Introduction
 
-<a name="introduction-binary-integer"/>
+## Nomenclature
+
+<a name="nomenclature-binary-integer"/>
 
 ### What is a binary integer?
 
@@ -79,7 +82,7 @@ the un/signed two's complement format.
 └──────┴─────────────┘
 ```
 
-<a name="introduction-data-integer"/>
+<a name="nomenclature-data-integer"/>
 
 ### What is a data integer?
 
@@ -120,7 +123,7 @@ Please :pray: that we may remove them at some point.
 ```
 </details>
 
-<a name="introduction-systems-integer"/>
+<a name="nomenclature-systems-integer"/>
 
 ### What is a systems integer?
 
@@ -143,7 +146,7 @@ Systems integers are intentionally simple so that the things you build with them
 The only protocol requirements are multiplication and division algorithms for working with full 
 precision in generic code.
 
-<a name="introduction-trusted-input"/>
+<a name="nomenclature-trusted-input"/>
 
 ### What is a trusted input?
 
