@@ -320,10 +320,10 @@ to all binary integers. Also, note that this method is both fully generic and fu
 #### Lightweight text decoding and encoding with TextInt
 
 At some point, you'll want to convert your binary integers to a human-readable format. When 
-that happens, the description(as:) or init(\_:as:) methods let you perform the common radix 
-conversions through TextInt. The latter uses a fixed number of non-generic and non-inlinable
+that happens, the description(as:) and init(\_:as:) methods let you perform the common radix 
+conversions via TextInt. The latter uses a fixed number of non-generic and non-inlinable
 algorithms, which are shared by all binary integers. This is an intentional size-over-performance 
-optimization, although it still goes brrr.
+optimization.
 
 ```swift
 try! TextInt(radix:  12, letters: .uppercase)
@@ -332,9 +332,8 @@ try! IXL("123", as: .hexadecimal).description(as: .decimal) // 291
 ```
 
 Note that the introduction of infinite values necessitates changes to the integer description 
-format. The new format adds the plain "#" and masked "&" markers. The former is just a spacer
-whereas the latter represents a bitwise negation. In other words, "+&123" translates to maximum
-infinity minus 123.
+format. The new format adds the # and & markers. The former is a just spacer whereas the latter 
+represents bitwise negation. In other words, +&123 translates to ∞ minus 123.
 
 ```swift
 let regex: Regex = /^(?<sign>\+|-)(?<mask>#|&)(?<body>[0-9a-zA-z]+)$/
@@ -496,9 +495,11 @@ f(x - y) == ± f(x) * f(y + 1) ± f(x + 1) * f(y)
 
 #### Code coverage with sequence invariants
 
-We have some cute algorithms and a generic sequence. Let's use them to stress 
-test our models! Note that the sequence addition formula can be rearranged in 
-such a way that we call all of the basic arithmetic operations.
+We have some peculiar algorithms and a generic sequence. Let's use them to
+stress test our models! Note that the sequence addition formula can be 
+rearranged in such a way that we call all of the basic arithmetic operations.
+We don't need to know the inputs and outputs ahead of time, because we know
+that this equation must hold true for all indices. It's neat, isn't it?
 
 ```swift
 f(x) * f(y) == (f(x+y+1) / f(x+1) - f(y+1)) * f(x+1) + f(x+y+1) % f(x+1)
@@ -506,7 +507,7 @@ f(x) * f(y) == (f(x+y+1) / f(x+1) - f(y+1)) * f(x+1) + f(x+y+1) % f(x+1)
 
 <details>
 <summary>
-Here's the real version that we call in all, or most, of our sequence tests...
+Here's the actual implementation that we call in all, or most, of our tests...
 </summary>
 
 ```swift
@@ -538,10 +539,14 @@ func checkMathInvariants() {
             var a = self.item as Fibonacci<Value>
             let b = try Fibonacci(a.index.quotient(divisor).prune(Bad.division))
             let c = try a.next.division(Divisor(b.next, prune: Bad.divisor)).prune(Bad.division)
+            
             try a.decrement(by: b)
+            
             let d = try b.element.times(a.element).prune(Bad.multiplication)
             let e = try c.quotient.minus(a.next).times(b.next).plus(c.remainder).prune(Bad.any)
+            
             try a.increment(by: b)
+            
             test.same(d, e, "arithmetic invariant error")
             self.same(index: a.index, element: a.element, next: a.next)
             

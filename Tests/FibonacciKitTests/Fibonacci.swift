@@ -93,19 +93,19 @@ extension FibonacciTests.Case {
     
     /// Generates new instances and uses them to check math invariants.
     ///
-    /// ### Invariants
+    /// #### Invariants
     ///
     /// ```
     /// f(x) * f(y) == (f(x+y+1) / f(x+1) - f(y+1)) * f(x+1) + f(x+y+1) % f(x+1)
     /// ```
     ///
-    /// ### Calls: Fibonacci<Value>
+    /// #### Calls: Fibonacci<Value>
     ///
     /// - Fibonacci.init(\_:)
     /// - Fibonacci/increment(by:)
     /// - Fibonacci/decrement(by:)
     ///
-    /// ### Calls: BinaryInteger
+    /// #### Calls: BinaryInteger
     ///
     /// - BinaryInteger/plus(\_:)
     /// - BinaryInteger/minus(\_:)
@@ -119,10 +119,14 @@ extension FibonacciTests.Case {
                 var a = self.item as Fibonacci<Value>
                 let b = try Fibonacci(a.index.quotient(divisor).prune(Bad.division))
                 let c = try a.next.division(Divisor(b.next, prune: Bad.divisor)).prune(Bad.division)
+                
                 try a.decrement(by: b)
+                
                 let d = try b.element.times(a.element).prune(Bad.multiplication)
                 let e = try c.quotient.minus(a.next).times(b.next).plus(c.remainder).prune(Bad.any)
+                
                 try a.increment(by: b)
+                
                 test.same(d, e, "arithmetic invariant error")
                 self.same(index: a.index, element: a.element, next: a.next)
                 
