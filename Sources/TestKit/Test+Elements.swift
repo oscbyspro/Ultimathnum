@@ -52,9 +52,33 @@ extension Test {
         let expectation = Fallible(integer)
         //=--------------------------------------=
         integer.withUnsafeBinaryIntegerElements {
-            same(Array($0.body.buffer()), body, "body")
-            same(appendix, $0.appendix, "appendix")
-            same(Integer.exactly($0, mode: Integer.mode), expectation, "rountrip")
+            same(Array($0.body.buffer()), body, "body [0]")
+            same(appendix, $0.appendix, "appendix [0]")
+            same(Integer.exactly($0, mode: Integer.mode), expectation, "rountrip [0]")
+        }
+        
+        integer.withUnsafeBinaryIntegerElementsAsBytes {
+            same(appendix, $0.appendix, "appendix [1]")
+            same(Integer.exactly($0, mode: Integer.mode), expectation, "rountrip [1]")
+        }
+        //=--------------------------------------=
+        if  var mutableInteger = Optional.some(integer) {
+            mutableInteger.withUnsafeMutableBinaryIntegerElements {
+                same(Array($0.body.buffer()), body, "body [2]")
+                same(appendix, $0.appendix, "appendix [2]")
+                $0.body.initialize(repeating: Integer.Element.Magnitude(repeating: $0.appendix))
+            }
+            
+            same(mutableInteger, Integer(repeating: appendix), "override body [2]")
+        }
+        
+        if  var mutableInteger = Optional.some(integer) {
+            mutableInteger.withUnsafeMutableBinaryIntegerElementsAsBytes {
+                same(appendix, $0.appendix, "appendix [3]")
+                $0.body.initialize(repeating: U8(repeating: $0.appendix))
+            }
+            
+            same(mutableInteger, Integer(repeating: appendix), "override body [3]")
         }
     }
     
