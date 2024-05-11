@@ -39,4 +39,21 @@ extension CoreIntTests {
             whereIs(type)
         }
     }
+    
+    func testElementsCanBeRebound() {
+        func whereIs<T, U>(_ type: T.Type, _ destination: U.Type) where T: SystemsInteger, U: SystemsInteger {
+            Test().same(T.elementsCanBeRebound(to: U.self), T.size >= U.size)
+
+            if  T.size < U.size, var value = Optional(T.zero) {
+                Test().none(value.withUnsafeBinaryIntegerElements(as:        U.Magnitude.self, perform:{ _ in }))
+                Test().none(value.withUnsafeMutableBinaryIntegerElements(as: U.Magnitude.self, perform:{ _ in }))
+            }
+        }
+
+        for source in coreSystemsIntegers {
+            for destination in coreSystemsIntegers {
+                whereIs(source, destination)
+            }
+        }
+    }
 }
