@@ -158,7 +158,10 @@ extension Test {
         
         unidirectional(lhs, rhs, expectation)
         unidirectional(rhs, lhs, expectation.negated())
-        same(lhs.hashValue == rhs.hashValue, expectation == Signum.same)
+        
+        if  T.self == U.self {
+            same(lhs.hashValue == rhs.hashValue, expectation == Signum.same, "hashValue")
+        }
     }
     
     //=------------------------------------------------------------------------=

@@ -65,6 +65,12 @@ extension DataInt {
             }
         }
         //=--------------------------------------=
+        // comparison: different sections
+        //=--------------------------------------=
+        if  lhsIsSigned != rhsIsSigned && Bool(lhs.appendix) {
+            return Signum.one(Sign(lhsIsSigned))
+        }
+        //=--------------------------------------=
         // comparison: same
         //=--------------------------------------=
         return Signum.same as Signum as Signum as Signum

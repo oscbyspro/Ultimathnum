@@ -24,7 +24,10 @@ extension DoubleIntTests {
     func testComparison() {
         func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
             typealias T = DoubleInt<Base>
-            
+            //=--------------------------------------=
+            IntegerInvariants(T.self).comparisonAgainstOneByte()
+            IntegerInvariants(T.self).comparisonOfRepeatingBit()
+            //=--------------------------------------=
             Test().comparison(T(low:  0, high:  0), T(low:  1, high:  1), -1 as Signum)
             Test().comparison(T(low:  1, high:  0), T(low:  1, high:  1), -1 as Signum)
             Test().comparison(T(low:  2, high:  0), T(low:  1, high:  1), -1 as Signum)

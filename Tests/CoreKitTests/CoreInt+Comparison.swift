@@ -21,6 +21,11 @@ extension CoreIntTests {
     //=------------------------------------------------------------------------=
     
     func testComparison() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            IntegerInvariants(T.self).comparisonAgainstOneByte()
+            IntegerInvariants(T.self).comparisonOfRepeatingBit()
+        }
+        
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             Test().comparison( 0 as T,  0 as T,  0 as Signum)
             Test().comparison(-1 as T,  0 as T, -1 as Signum)
@@ -61,7 +66,15 @@ extension CoreIntTests {
         }
         
         for type in coreSystemsIntegers {
-            type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
+            whereIs(type)
+        }
+        
+        for type in coreSystemsIntegersWhereIsSigned {
+            whereIsSigned(type)
+        }
+        
+        for type in coreSystemsIntegersWhereIsUnsigned {
+            whereIsUnsigned(type)
         }
     }
 }
