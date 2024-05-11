@@ -1,13 +1,17 @@
 # Ultimathnum
 
+> Everyone who hears these words of mine and does them is like a wise man who
+> built his house on rock. The rain fell, the flood came, and the winds beat 
+> against that house, but it did not collapse because its foundation had been 
+> laid on rock. (Matthew 7:24-25)
+
 ## Table of Contents
 
 * [Introduction](#introduction)
   - [A rock-solid foundation](#introduction-foundation)
-  - [Derive  all the things!](#introduction-minimalism)
+  - [Keep stdlib extensions to a minimum](#introduction-stdlib)
+  - [Derive  all the things!](#introduction-minimalistic)
   - [Recover all the things!](#introduction-recoverable)
-  - [Functional ownership](#introduction-functional)
-  - [Limit stdlib extensions](#introduction-stdlib)
 * [Nomenclature](#nomenclature)
   - [What is a binary integer?](#nomenclature-binary-integer)
   - [What is a data integer?](#nomenclature-data-integer)
@@ -37,48 +41,50 @@
 
 <a name="introduction-foundation"/>
 
-### A rock-solid foundation
+#### A rock-solid foundation
 
-> Everyone who hears these words of mine and does them is like a wise man who
-> built his house on rock. The rain fell, the flood came, and the winds beat 
-> against that house, but it did not collapse because its foundation had been 
-> laid on rock. (Matthew 7:24-25)
-
-In programming, complexity is sand, and simplicity is a rock. In this project,
-you will find unified abstractions and curated design principles that make 
-numbers a breeze. Would you believe there's no difference between generic and 
-non-generic code? In any case, make some tea, have a seat, then let's explore
-what it's all about.
-
-<a name="introduction-minimalism"/>
-
-### Derive all the things!
-
-> Todo...
-
-<a name="introduction-recoverable"/>
-
-### Recover all the things!
-
-> Todo...
-
-<a name="introduction-functional"/>
-
-### Functional ownership
-
-> Todo...
+In programming, complexity is sand, and simplicity is a rock. The former is, by 
+definition, a sum of parts. In this project, you will find unified abstractions 
+that reduce the number of individual parts and streamlined design principles to 
+keep the parts similar to each other. So make some tea, have a seat, then let's 
+explore what it's all about.
 
 <a name="introduction-stdlib"/>
 
-### Limit stdlib extensions
+#### Keep stdlib extensions to a minimum
 
-> Todo...
+Note that this project is mostly self-contained. It only extends the standard 
+library when necessary. In practice, this means adding conversion to and from
+new types. All other functionality either belongs to the new types or is kept 
+private through access control. This ensures interoperability without confusion 
+or accidental dependencies.
+
+<a name="introduction-minimalistic"/>
+
+#### Derive all the things!
+
+The are many ways to abstract and there are pros and cons to all of them. Here,
+we keep it simple. We use a small set of primitives to derive most things. Our 
+abstractions are purposeful and close to the machine so that our derivatives 
+perform like would-be primitives. Similarly, you will not find many mutating 
+methods. Instead, we introduce a mutating syntax that destructures functional 
+results. This cuts the project in half, compared to previous iterations of it.
+
+<a name="introduction-recoverable"/>
+
+#### Recover all the things!
+
+If simplicity is a rock, then recovery is the capstone. Gone are they days of
+unavoidable traps because there now exists a recoverable alternative for every 
+safe operation. Overflow, underflow, whatever—the framework will lazily prompt
+you to handle it. Furthermore, the abstractions and recovery mechanisms presented 
+to you are ever-present in generic code as well.
 
 ## Nomenclature
 
 <a name="nomenclature-binary-integer"/>
 
-### What is a binary integer?
+#### What is a binary integer?
 
 > Binary integers are dead.\
 > Long live binary integers!
@@ -125,7 +131,7 @@ the un/signed two's complement format.
 
 <a name="nomenclature-data-integer"/>
 
-### What is a data integer?
+#### What is a data integer?
 
 A binary integer must provide contiguous access to its endianness-sensitive body, which can
 be viewed through a data integer. Such view types keep track of memory alignments and may downsize 
@@ -166,7 +172,7 @@ Please :pray: that we may remove them at some point.
 
 <a name="nomenclature-systems-integer"/>
 
-### What is a systems integer?
+#### What is a systems integer?
 
 > Keep it simple.
 
@@ -189,7 +195,7 @@ precision in generic code.
 
 <a name="nomenclature-trusted-input"/>
 
-### What is a trusted input?
+#### What is a trusted input?
 
 > Trust me, I know what I'm doing...
 
@@ -212,7 +218,7 @@ init(unchecked:) // error: unsafe (with debug assertions)
 
 <a name="corekit-validation"/>
 
-### Validation and recovery through Fallible\<Value\>
+#### Validation and recovery through Fallible\<Value\>
 
 > It doesn't matter how many times you fall.\
 > It matters how many times you get back up.
@@ -248,7 +254,7 @@ static func &+(lhs: consuming Self, borrowing Self) -> Self // wrapping
 
 <a name="corekit-upsize"/>
 
-### Upsize binary integer elements with LoadInt\<Element\>
+#### Upsize binary integer elements with LoadInt\<Element\>
 
 The data integer types let you downsize binary integer elements by reinterpretation. This awesome power 
 stems from strict systems integer layout requirements. Note that you may not upsize integers in this way 
@@ -258,7 +264,7 @@ possible and handles the case where the load would read past the end.
 
 <a name="corekit-bit-cast"/>
 
-### Type-safe bit casts with BitCastable\<BitPattern\>
+#### Type-safe bit casts with BitCastable\<BitPattern\>
 
 The BitCastable\<BitPattern\> protocol lets you perform type-safe bit casts in bulk. This is pertinent
 to binary integers since the abstraction is two representations bridged by a bit pattern transformation. 
@@ -311,7 +317,7 @@ to all binary integers. Also, note that this method is both fully generic and fu
 
 <a name="corekit-text-int"/>
 
-### Lightweight text decoding and encoding with TextInt
+#### Lightweight text decoding and encoding with TextInt
 
 At some point, you'll want to convert your binary integers to a human-readable format. When 
 that happens, the description(as:) or init(\_:as:) methods let you perform the common radix 
@@ -382,7 +388,7 @@ from. Keep in mind that recovery from failure is the main purpose of infinity.
 
 <a name="infiniintkit-addition"/>
 
-### Recoverable infinite addition (+/-)
+#### Recoverable infinite addition (+/-)
 
 Addition at and around infinity just works.
 
@@ -393,7 +399,7 @@ UXL.max.incremented() // value: min, error: true
 
 <a name="infiniintkit-multiplication"/>
 
-### Recoverable infinite multiplication
+#### Recoverable infinite multiplication
 
 Multiplication is also unchanged. All of the complicated stuff forms at one bit
 past the appendix bit. Imagine a really big integer and a product of twice that 
@@ -406,7 +412,7 @@ UXL.max.times(UXL.max) // value: 001, error: true
 
 <a name="infiniintkit-division"/>
 
-### Recoverable infinite division
+#### Recoverable infinite division
 
 So, this is where things get tricky. Wait, no, it still just works in most cases.
 Since you know finite-by-finite division, I'm sure you intuit that finite-by-infinite
@@ -425,7 +431,7 @@ dividend == divisor &* quotient &+ remainder // for all binary integers
 
 <a name="fibonaccikit-sequence"/>
 
-### The Fibonacci\<Value\> sequence
+#### The Fibonacci\<Value\> sequence
 
 > Question: How do you test silly numbers?\
 > Answer: With silly number generators, of course!
@@ -457,7 +463,7 @@ mutating func decrement(by:) throws // index - x.index
 
 <a name="fibonaccikit-addition"/>
 
-### Fast sequence addition (+/-)
+#### Fast sequence addition (+/-)
 
 You may have noticed that you can pick any two adjacent elements and express
 the sequence in terms of those elements. This observation allows us to climb
@@ -488,7 +494,7 @@ f(x - y) == ± f(x) * f(y + 1) ± f(x + 1) * f(y)
 
 <a name="fibonaccikit-invariants"/>
 
-### Code coverage with sequence invariants
+#### Code coverage with sequence invariants
 
 We have some cute algorithms and a generic sequence. Let's use them to stress 
 test our models! Note that the sequence addition formula can be rearranged in 
@@ -506,19 +512,19 @@ Here's the real version that we call in all, or most, of our sequence tests...
 ```swift
 /// Generates new instances and uses them to check math invariants.
 ///
-/// ### Invariants
+/// #### Invariants
 ///
 /// ```
 /// f(x) * f(y) == (f(x+y+1) / f(x+1) - f(y+1)) * f(x+1) + f(x+y+1) % f(x+1)
 /// ```
 ///
-/// ### Calls: Fibonacci<Value>
+/// #### Calls: Fibonacci<Value>
 ///
 /// - Fibonacci.init(\_:)
 /// - Fibonacci/increment(by:)
 /// - Fibonacci/decrement(by:)
 ///
-/// ### Calls: BinaryInteger
+/// #### Calls: BinaryInteger
 ///
 /// - BinaryInteger/plus(\_:)
 /// - BinaryInteger/minus(\_:)
@@ -553,7 +559,7 @@ func checkMathInvariants() {
 
 <a name="installation-semver"/>
 
-### [SemVer 2.0.0](https://semver.org)
+#### SemVer 2.0.0
 
 > Major version zero (0.y.z) is for initial development.\
 > Anything MAY change at any time.\
@@ -561,7 +567,7 @@ func checkMathInvariants() {
 
 <a name="installation-swift-package-manager"/>
 
-### [Swift Package Manager](https://swift.org/package-manager)
+#### Swift Package Manager
 
 Add this package to your list of package dependencies.
 
@@ -569,7 +575,7 @@ Add this package to your list of package dependencies.
 .package(url: "https://github.com/oscbyspro/Ultimathnum.git", exact: "x.y.z"),
 ```
 
-Choose target dependencies from the products in [Package.swift](Package.swift).
+Choose target dependencies from this list of products.
 
 ```swift
 .product(name: "Ultimathnum",  package: "Ultimathnum"), // umbrella
