@@ -22,7 +22,7 @@ extension DataIntTests {
     
     func testAdditionLargeByLarge() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias C = DataIntTests.Canvas<T>
+            typealias C = DataIntTests.Body<T>
             typealias F = Fallible<[T]>
             
             C([ 0,  0,  0,  0] as [T]).plus([ 0,  0,  0,  0] as [T], plus: false, is: F([ 0,  0,  0,  0] as [T]))
@@ -83,7 +83,7 @@ extension DataIntTests {
     
     func testAdditionLargeBySmall() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias C = DataIntTests.Canvas<T>
+            typealias C = DataIntTests.Body<T>
             typealias F = Fallible<[T]>
             
             C([ 0,  0,  0,  0] as [T]).plus([T.min], plus: false, is: F([ 0,  0,  0,  0] as [T]))
@@ -122,7 +122,7 @@ extension DataIntTests {
     
     func testAdditionLargeBySmallProduct() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias C = DataIntTests.Canvas<T>
+            typealias C = DataIntTests.Body<T>
             typealias F = Fallible<[T]>
             
             C([ 0    ] as [T]).plus([ ] as [T], times: T( ), plus: T(0), is: F([ 0    ] as [T]))
@@ -158,7 +158,7 @@ extension DataIntTests {
 
     func testAdditionLargeByLargeProduct() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias C = DataIntTests.Canvas<T>
+            typealias C = DataIntTests.Body<T>
             typealias F = Fallible<[T]>
             
             let a: [T] = [ 0,  0,  0,  0,  0,  0,  0,  0]
@@ -187,7 +187,7 @@ extension DataIntTests {
 // MARK: * Data Int x Addition x Assertions
 //*============================================================================*
 
-extension DataIntTests.Canvas {
+extension DataIntTests.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

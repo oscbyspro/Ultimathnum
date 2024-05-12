@@ -17,10 +17,10 @@ import TestKit
 final class DataIntTests: XCTestCase {
     
     //*========================================================================*
-    // MARK: * Canvas
+    // MARK: * Body
     //*========================================================================*
     
-    struct Canvas<Element> where Element: SystemsInteger & UnsignedInteger {
+    struct Body<Element> where Element: SystemsInteger & UnsignedInteger {
         
         //=--------------------------------------------------------------------=
         // MARK: State
@@ -42,6 +42,76 @@ final class DataIntTests: XCTestCase {
         init(_ body: [Element], file: StaticString = #file, line: UInt = #line) {
             self.test = Test(file: file, line: line)
             self.body = body
+        }
+    }
+    
+    //*========================================================================*
+    // MARK: * Extension
+    //*========================================================================*
+    
+    struct Extension<Element> where Element: SystemsInteger & UnsignedInteger {
+        
+        typealias Item = (body: [Element], appendix: Bit?)
+        
+        //=--------------------------------------------------------------------=
+        // MARK: State
+        //=--------------------------------------------------------------------=
+
+        var test: Test
+        let item: Item
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Initializers
+        //=--------------------------------------------------------------------=
+
+        init(_  item: Item, test: Test) {
+            self.test = test
+            self.item = item
+        }
+        
+        init(_  body: [Element], repeating appendix: Bit?, file: StaticString = #file, line: UInt = #line) {
+            self.init((body, appendix), test: Test(file: file, line: line))
+        }
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Utilities
+        //=--------------------------------------------------------------------=
+        
+        func expect<T: Equatable>(
+            _ expectation: T,
+            read:  (inout DataInt<Element>) -> T,
+            write: (inout MutableDataInt<Element>) -> T
+        ) {
+            
+            var copy = item
+            copy.body.withUnsafeBufferPointer {
+                if  self.item.appendix != 0 {
+                    var source = DataInt($0, repeating: 1)!
+                    test.same(read(&source), expectation)
+                }
+                
+                if  self.item.appendix != 1 {
+                    var source = DataInt($0, repeating: 0)!
+                    test.same(read(&source), expectation)
+                }
+            }
+            
+            copy = self.item
+            copy.body.withUnsafeMutableBufferPointer {
+                if  self.item.appendix != 0 {
+                    var source = MutableDataInt($0, repeating: 1)!
+                    test.same(write(&source), expectation)
+                }
+            }
+            
+            
+            copy = self.item
+            copy.body.withUnsafeMutableBufferPointer {
+                if  self.item.appendix != 1 {
+                    var source = MutableDataInt($0, repeating: 0)!
+                    test.same(write(&source), expectation)
+                }
+            }
         }
     }
 }

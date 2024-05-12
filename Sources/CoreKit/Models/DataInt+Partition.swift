@@ -8,7 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Data Int x Sub Sequence x Read
+// MARK: * Data Int x Partition x Read
 //*============================================================================*
 
 extension DataInt {
@@ -26,7 +26,7 @@ extension DataInt {
 }
 
 //*============================================================================*
-// MARK: * Data Int x Sub Sequence x Read|Write
+// MARK: * Data Int x Partition x Read|Write
 //*============================================================================*
 
 extension MutableDataInt {
@@ -43,7 +43,7 @@ extension MutableDataInt {
 }
 
 //*============================================================================*
-// MARK: * Data Integer x Sub Sequence x Read|Body
+// MARK: * Data Integer x Partition x Read|Body
 //*============================================================================*
 
 extension DataInt.Body {
@@ -99,7 +99,7 @@ extension DataInt.Body {
 }
 
 //*============================================================================*
-// MARK: * Data Integer x Sub Sequence x Read|Write|Body
+// MARK: * Data Integer x Partition x Read|Write|Body
 //*============================================================================*
 
 extension MutableDataInt.Body {

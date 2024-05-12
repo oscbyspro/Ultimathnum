@@ -54,27 +54,30 @@ extension TextInt {
         }
     }
     
-    @inlinable public func encode(sign: Sign?, mask: Bit?, body: DataInt<U8>.Body) -> String {
+    @inlinable public func encode(sign: Sign?, mask: Bit?, body: consuming DataInt<U8>.Body) -> String {
         //=--------------------------------------=
-        var words = LoadInt<UX>(body).normalized()
-        let count = IX(raw: words.appendixIndex())
+        // body: normalization
+        //=--------------------------------------=
+        body = body.normalized()
+        //=--------------------------------------=
+        let count = body.count(as: UX.self)
         //=--------------------------------------=
         return Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(count)) { buffer in
-            let body = MutableDataInt.Body(buffer.baseAddress!, count: count)
+            let words = MutableDataInt.Body(buffer.baseAddress!, count: count)
             //=--------------------------------------=
             // pointee: initialization
             //=--------------------------------------=
-            for index in body.indices {
-                body[unchecked: index] = words.next()
+            for index in words.indices {
+                words[unchecked: index] = body[unchecked:(index &* IX(MemoryLayout<UX>.stride))...].load(as: UX.self)
             }
             //=--------------------------------------=
             // pointee: deferred deinitialization
             //=--------------------------------------=
             defer {
-                body.deinitialize()
+                words.deinitialize()
             }
             //=--------------------------------------=
-            return self.encode(sign: sign, mask: mask, normalized: body)
+            return self.encode(sign: sign, mask: mask, normalized: words)
         }
     }
     

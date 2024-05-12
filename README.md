@@ -19,7 +19,7 @@
   - [What is a trusted input?](#nomenclature-trusted-input)
 * [CoreKit](#corekit)
   - [Validation and recovery through Fallible\<Value\>](#corekit-validation)
-  - [Upsize binary integer elements with LoadInt\<Element\>](#corekit-upsize)
+  - [Upsize binary integer elements with DataInt\<U8\>](#corekit-upsize)
   - [Type-safe bit casts with BitCastable\<BitPattern\>](#corekit-bit-cast)
   - [Lightweight text decoding and encoding with TextInt](#corekit-text-int)
 * [DoubleIntKit](#doubleintkit)
@@ -149,8 +149,8 @@ for aligned loads from compatible sources and one for unaligned loads from unkno
 In practice, this depends on whether the optimizer can turn them into appropriate instructions.
 
 ```swift
+init(load source: DataInt<U8>)                // unknown
 init(load source: DataInt<Element.Magnitude>) // aligned
-init(load source: LoadInt<Element.Magnitude>) // unknown
 ```
 
 <details><summary>
@@ -254,13 +254,14 @@ static func &+(lhs: consuming Self, borrowing Self) -> Self // wrapping
 
 <a name="corekit-upsize"/>
 
-#### Upsize binary integer elements with LoadInt\<Element\>
+#### Upsize binary integer elements with DataInt\<U8\>
 
-The data integer types let you downsize binary integer elements by reinterpretation. This awesome power 
-stems from strict systems integer layout requirements. Note that you may not upsize integers in this way 
-because the memory alignment of a smaller systems integer may not be compatible with a larger systems integer. 
-Instead, you may use LoadInt\<Element\> to load elements of any size. It performs an unaligned load when
-possible and handles the case where the load would read past the end.
+The data integer types let you downsize binary integer elements by reinterpretation. This versatile
+power stems from strict systems integer layout requirements. You may not upsize elements in this way,
+however, because the memory alignment of a smaller systems integer may not be compatible with a
+larger systems integer. Instead, you may use DataInt\<U8\> to load elements of any size. It performs 
+an unaligned load when possible and handles the case where the load would read past the end. All 
+binary integers can form a DataInt\<U8\> view since a byte is the smallest possible systems integer type.
 
 <a name="corekit-bit-cast"/>
 

@@ -136,7 +136,7 @@ where
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable init(load source: LoadInt<Element.Magnitude>)
+    @inlinable init(load source: DataInt<U8>)
     
     @inlinable init(load source: DataInt<Element.Magnitude>)
     

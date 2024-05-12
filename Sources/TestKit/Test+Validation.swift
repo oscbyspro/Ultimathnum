@@ -36,7 +36,7 @@ extension Test {
         }
         
         input.withUnsafeBinaryIntegerElementsAsBytes {
-            same(Output.exactly(LoadInt($0), mode: Input.mode), expectation, "Integer.exactly(_:mode:) [1]")
+            same(Output.exactly($0, mode: Input.mode), expectation, "Integer.exactly(_:mode:) [1]")
         }
     }
 }

@@ -22,7 +22,7 @@ extension DataIntTests {
     
     func testUpshiftByMinor() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias C = DataIntTests.Canvas<T>
+            typealias C = DataIntTests.Body<T>
             typealias F = Fallible<[T]>
             //=----------------------------------=
             let base = [01, 02, 03, 04] as [T]
@@ -42,7 +42,7 @@ extension DataIntTests {
 
     func testUpshiftByMajor() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias C = DataIntTests.Canvas<T>
+            typealias C = DataIntTests.Body<T>
             typealias F = Fallible<[T]>
             //=----------------------------------=
             let size = IX(size: T.self)
@@ -63,7 +63,7 @@ extension DataIntTests {
 
     func testUpshiftByMajorMinor() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias C = DataIntTests.Canvas<T>
+            typealias C = DataIntTests.Body<T>
             typealias F = Fallible<[T]>
             //=----------------------------------=
             let size = IX(size: T.self)
@@ -86,7 +86,7 @@ extension DataIntTests {
 
     func testUpshiftSuchThatElementsSplit() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias C = DataIntTests.Canvas<T>
+            typealias C = DataIntTests.Body<T>
             typealias F = Fallible<[T]>
             //=----------------------------------=
             for x: T in [0, 1, ~1, ~0] {
@@ -108,7 +108,7 @@ extension DataIntTests {
     
     func testDownshiftByMinor() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias C = DataIntTests.Canvas<T>
+            typealias C = DataIntTests.Body<T>
             typealias F = Fallible<[T]>
             //=----------------------------------=
             let base = [08, 16, 24, 32] as [T]
@@ -128,7 +128,7 @@ extension DataIntTests {
 
     func testDownshiftByMajor() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias C = DataIntTests.Canvas<T>
+            typealias C = DataIntTests.Body<T>
             typealias F = Fallible<[T]>
             //=----------------------------------=
             let size = IX(size: T.self)
@@ -149,7 +149,7 @@ extension DataIntTests {
 
     func testDownshiftByMajorMinor() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias C = DataIntTests.Canvas<T>
+            typealias C = DataIntTests.Body<T>
             typealias F = Fallible<[T]>
             //=----------------------------------=
             let size = IX(size: T.self)
@@ -172,7 +172,7 @@ extension DataIntTests {
 
     func testDownshiftSuchThatElementsSplit() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias C = DataIntTests.Canvas<T>
+            typealias C = DataIntTests.Body<T>
             typealias F = Fallible<[T]>
             //=----------------------------------=
             for x: T in [0, 1, ~1, ~0] {
@@ -193,7 +193,7 @@ extension DataIntTests {
 // MARK: * Data Int x Shift x Assertions
 //*============================================================================*
 
-extension DataIntTests.Canvas {
+extension DataIntTests.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

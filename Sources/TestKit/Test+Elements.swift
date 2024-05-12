@@ -99,7 +99,7 @@ extension Test {
             same(Integer.exactly(elements, mode: mode), expectation, "Integer.exactly(_:mode:) - DataInt")
 
             elements.withMemoryRebound(to: U8.self) {
-                same(Integer.exactly(LoadInt($0), mode: mode), expectation, "Integer.exactly(_:mode:) - LoadInt")
+                same(Integer.exactly($0, mode: mode), expectation, "Integer.exactly(_:mode:) - DataInt<U8>")
             }
         }
     }

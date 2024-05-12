@@ -14,12 +14,8 @@
 extension CoreInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
-        
-    @inlinable public init(load source: LoadInt<Element.Magnitude>) {
-        self.init(raw: source.load())
-    }
     
     @inlinable public init(load source: DataInt<Element.Magnitude>) {
         self.init(raw: source[.zero])
@@ -60,7 +56,7 @@ extension CoreInteger {
 // MARK: + where Self is not IX or UX
 //=----------------------------------------------------------------------------=
 
-extension CoreNumberedInteger {
+extension CoreIntegerWhereIsNotWord {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -92,6 +88,21 @@ extension CoreNumberedInteger {
     
     @inlinable public func load(as type: UX.BitPattern.Type) -> UX.BitPattern {
         UInt(truncatingIfNeeded: self.base)
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + where Self is not I8 or U8
+//=----------------------------------------------------------------------------=
+
+extension CoreIntegerWhereIsNotByte {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+        
+    @inlinable public init(load source: DataInt<U8>) {
+        self.init(raw: source.load(as: Element.Magnitude.self))
     }
 }
 

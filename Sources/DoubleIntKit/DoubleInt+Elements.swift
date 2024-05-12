@@ -59,10 +59,10 @@ extension DoubleInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(load source: LoadInt<Element.Magnitude>) {
+    @inlinable public init(load source: DataInt<U8>) {
         //=--------------------------------------=
         let low  = Low (load: source)
-        let high = High(load: source[bytes: UX(raw: MemoryLayout<Low>.stride)...])
+        let high = High(load: source[UX(raw: MemoryLayout<Low>.stride)...])
         //=--------------------------------------=
         self.init(low: consume low, high: consume high)
     }

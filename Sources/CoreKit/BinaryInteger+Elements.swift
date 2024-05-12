@@ -18,7 +18,7 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func exactly(
-        _ source: LoadInt<Element.Magnitude>, mode: some Signedness
+        _ source: DataInt<U8>, mode: some Signedness
     )   -> Fallible<Self> {
         //=--------------------------------------=
         let instance = Self(load: source)
@@ -30,18 +30,11 @@ extension BinaryInteger {
         
         if  let size  = UX(size: Self.self) {
             let ratio = size / UX(size: U8.Magnitude.self)
-            let suffix: DataInt<U8.Magnitude> = source.data[ratio...]
+            let suffix: DataInt<U8.Magnitude> = source[ratio...]
             success  &= Bit(suffix.normalized().body.isEmpty)
         }
         //=--------------------------------------=
         return instance.invalidated(!Bool(success))
-    }    
-    
-    @inlinable public static func exactly<OtherElement>(
-        _ source: LoadInt<OtherElement>, mode: some Signedness
-    )   -> Fallible<Self> {
-        
-        Self.exactly(LoadInt<Element.Magnitude>(source.data), mode: mode)
     }
     
     //=------------------------------------------------------------------------=
@@ -78,8 +71,8 @@ extension BinaryInteger {
             }
             
         }   else {
-            return (source).withMemoryRebound(to: U8.Magnitude.self) {
-                return Self.exactly(LoadInt($0, as: Self.Element.Magnitude.self), mode: mode)
+            return (source).withMemoryRebound(to: U8.self) {
+                return Self.exactly($0, mode: mode)
             }
         }
     }
@@ -88,9 +81,7 @@ extension BinaryInteger {
         if  OtherElement.elementsCanBeRebound(to: Self.Element.Magnitude.self) {
             self = (source).withMemoryRebound(to: Self.Element.Magnitude.self, perform: Self.init(load:))
         }   else {
-            self = (source).withMemoryRebound(to: U8.Magnitude.self) {
-                return Self.init(load:LoadInt($0, as: Self.Element.Magnitude.self))
-            }
+            self = (source).withMemoryRebound(to: U8.self, perform: Self.init(load:))
         }
     }
     

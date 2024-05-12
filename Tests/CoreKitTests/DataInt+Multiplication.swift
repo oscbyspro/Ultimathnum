@@ -22,7 +22,7 @@ extension DataIntTests {
     
     func testMultiplicationLargeBySmall() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias Canvas = DataIntTests.Canvas<T>
+            typealias Canvas = DataIntTests.Body<T>
             
             Canvas([ 0,  0,  0,  0] as [T]).times([ 0] as [T], plus:  0, is:[ 0,  0,  0,  0,  0] as [T])
             Canvas([ 0,  0,  0,  0] as [T]).times([ 0] as [T], plus: ~0, is:[~0,  0,  0,  0,  0] as [T])
@@ -66,7 +66,7 @@ extension DataIntTests {
     
     func testMultiplicationLargeByLarge() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias Canvas = DataIntTests.Canvas<T>
+            typealias Canvas = DataIntTests.Body<T>
             
             Canvas([ 1,  2,  3,  4] as [T]).times([ 2,  0,  0,  0] as [T], plus:  5, is:[ 7,  4,  6,  8,  0,  0,  0,  0] as [T])
             Canvas([ 1,  2,  3,  4] as [T]).times([ 0,  2,  0,  0] as [T], plus:  5, is:[ 5,  2,  4,  6,  8,  0,  0,  0] as [T])
@@ -94,7 +94,7 @@ extension DataIntTests {
 // MARK: * Data Int x Multiplication x Assertions
 //*============================================================================*
 
-extension DataIntTests.Canvas {
+extension DataIntTests.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

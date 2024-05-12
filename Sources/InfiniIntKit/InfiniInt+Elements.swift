@@ -32,7 +32,7 @@ extension InfiniInt {
     @_disfavoredOverload // this is needed when Element is UX or IX
     @inlinable public borrowing func load(as type: UX.BitPattern.Type) -> UX.BitPattern {
         self.withUnsafeBinaryIntegerElementsAsBytes {
-            LoadInt($0, as: UX.self).load().load(as: UX.BitPattern.self)
+            $0.load(as: UX.self).load(as: UX.BitPattern.self)
         }
     }
     
@@ -64,12 +64,13 @@ extension InfiniInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(load source: consuming LoadInt<Element.Magnitude>) {
+    @inlinable public init(load source: consuming DataInt<U8>) {
         var body = Storage.Body()
-        body.reserveCapacity(Int(raw: source.appendixIndex()))
+        body.reserveCapacity(Int(raw: source.body.count(as: Element.Magnitude.self)))
         
-        while !source.appendixIndexIsZero {
-            body.append(source.next())
+        while !source.body.isEmpty {
+            body.append(source.load(as: Element.Magnitude.self))
+            (source) = (source.drop(as: Element.Magnitude.self))
         }
         
         self.init(normalizing: Storage(body, repeating: source.appendix))

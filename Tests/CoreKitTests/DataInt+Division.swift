@@ -22,7 +22,7 @@ extension DataIntTests {
     
     func testDivisionByElement() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias Canvas = DataIntTests.Canvas<T>
+            typealias Canvas = DataIntTests.Body<T>
             
             Canvas([ ] as [T]).division(Divisor(1), quotient:[ ] as [T], remainder: 0)
             Canvas([ ] as [T]).division(Divisor(2), quotient:[ ] as [T], remainder: 0)
@@ -59,7 +59,7 @@ extension DataIntTests {
                     body[unchecked: 0] = low
                     body[unchecked: 1] = high
                     
-                    let dividend: U16 = LoadInt(body).load()
+                    let dividend: U16 = DataInt(body).load(as: U16.self)
                     for divisor:  U8 in 1 ... U8.max {
                         let expectation = dividend.division(Divisor(U16(divisor))).unwrap()
                         
@@ -67,7 +67,7 @@ extension DataIntTests {
                         body[unchecked: 1] = high
                         
                         let remainder: U8 = body.divisionSetQuotientGetRemainder(Divisor(divisor))
-                        let quotient: U16 = LoadInt(body).load()
+                        let quotient: U16 = DataInt(body).load(as: U16.self)
                         
                         if  Division(quotient: quotient, remainder: U16(remainder)) == expectation {
                             success  += 1
@@ -89,7 +89,7 @@ extension DataIntTests {
 // MARK: * Data Int x Multiplication x Assertions
 //*============================================================================*
 
-extension DataIntTests.Canvas {
+extension DataIntTests.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
