@@ -46,7 +46,7 @@ extension DataInt {
         lhs = lhs.normalized()
         rhs = rhs.normalized()
         //=--------------------------------------=
-        // comparison: count
+        // comparison: size
         //=--------------------------------------=
         if  lhs.body.count != rhs.body.count {
             return Signum.one(Sign(raw: lhs.appendix == Bit(lhs.body.count > rhs.body.count)))
@@ -65,7 +65,7 @@ extension DataInt {
             }
         }
         //=--------------------------------------=
-        // comparison: different sections
+        // comparison: negative vs infinite
         //=--------------------------------------=
         if  lhsIsSigned != rhsIsSigned && Bool(lhs.appendix) {
             return Signum.one(Sign(lhsIsSigned))

@@ -19,14 +19,17 @@ extension InfiniInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    @_disfavoredOverload // this is needed when Element is UX or IX
     @inlinable public init(load source: consuming  UX.Signitude) {
         self = source.withUnsafeBinaryIntegerElementsAsBytes(perform: Self.init(load:))
     }
-        
+    
+    @_disfavoredOverload // this is needed when Element is UX or IX
     @inlinable public init(load source: consuming  UX.Magnitude) {
         self = source.withUnsafeBinaryIntegerElementsAsBytes(perform: Self.init(load:))
     }
     
+    @_disfavoredOverload // this is needed when Element is UX or IX
     @inlinable public borrowing func load(as type: UX.BitPattern.Type) -> UX.BitPattern {
         self.withUnsafeBinaryIntegerElementsAsBytes {
             LoadInt($0, as: UX.self).load().load(as: UX.BitPattern.self)
