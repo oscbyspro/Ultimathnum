@@ -155,9 +155,7 @@ init(load source: DataInt<Element.Magnitude>) // aligned
 
 <details><summary>
 Here are the other conversion requirements...
-</summary><br><blockquote><p>
-Please :pray: that we may remove them at some point.
-</p></blockquote>
+</summary>
 
 ```swift
 @inlinable init(load source: consuming  UX.Signitude)
@@ -223,10 +221,10 @@ init(unchecked:) // error: unsafe (with debug assertions)
 > It doesn't matter how many times you fall.\
 > It matters how many times you get back up.
 
-Proper error handling is a cornerstone of this project and a lot of effort goes into ensuring
-that a path to redemption. The Fallible\<Value\> wrapper plays an important part in this story.
-Use it to handle errors when you want and how you want. Here's a real example from the generic 
-Fibonacci\<Value\> sequence:
+Ergonomic error handling is one of the cornerstones of this project and a lot of effort has 
+gone into ensuring that there's always a path to redemption. The Fallible\<Value\> wrapper plays 
+an important part the recovery story. Use it to handle errors when you want and how you want. 
+Here's a real example from the generic Fibonacci\<Value\> sequence:
 
 ```swift
 /// Forms the sequence pair at `index + x.index`.

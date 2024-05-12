@@ -27,10 +27,7 @@ extension MutableDataInt.Body {
         // performance: compare index then bit
         //=--------------------------------------=
         while UX(raw: self.count) > 0, copy bit {
-            bit  = self[unchecked: Void()][{
-                $0.decremented()
-            }]
-            
+            bit  = self[unchecked: ()][{ $0.decremented() }]
             self = (consume self)[unchecked: 1...]
         }
         //=--------------------------------------=
@@ -59,15 +56,12 @@ extension MutableDataInt.Body {
         return self.decrement(by: bit)
     }
     
-    @discardableResult @inlinable public func decrementSubSequence(
+    @discardableResult @inlinable public consuming func decrementSubSequence(
         by element: consuming Element
     )   -> Fallible<Self> {
         
-        let bit = self[unchecked: Void()][{
-            $0.minus(element)
-        }]
-        
-        return Fallible(self[unchecked: 1...], error: bit)
+        let bit = self[unchecked: ()][{ $0.minus(element) }]
+        return Fallible((consume self)[unchecked: 1...], error: bit)
     }
 }
 
@@ -93,7 +87,7 @@ extension MutableDataInt.Body {
         return self.decrement(by: bit)
     }
     
-    @inlinable public func decrementSubSequence(
+    @inlinable public consuming func decrementSubSequence(
         by decrement: consuming Element,
         plus bit: consuming Bool
     )   -> Fallible<Self> {
@@ -103,10 +97,10 @@ extension MutableDataInt.Body {
         }
         
         if !(copy bit) {
-            bit = self[unchecked: Void()][{ $0.minus(decrement) }]
+            bit = self[unchecked: ()][{ $0.minus(decrement) }]
         }
         
-        return Fallible(self[unchecked: 1...], error: bit)
+        return Fallible((consume self)[unchecked: 1...], error: bit)
     }
 }
 

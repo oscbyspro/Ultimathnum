@@ -222,3 +222,22 @@ extension BinaryInteger {
         return Bool(Bit(size) & Bit(stride) & Bit(alignment))
     }
 }
+
+//*============================================================================*
+// MARK: * Binary Integer x Elements x Systems
+//*============================================================================*
+
+extension SystemsInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init<T>(load source: borrowing T) where T: BinaryInteger, BitPattern == UX.BitPattern {
+        self = source.load(as: Self.self)
+    }
+    
+    @inlinable public init<T>(load source: borrowing T) where T: BinaryInteger, BitPattern == T.Element.BitPattern {
+        self = source.load(as: Self.self)
+    }
+}

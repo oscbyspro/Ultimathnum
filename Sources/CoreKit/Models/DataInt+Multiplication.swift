@@ -33,10 +33,10 @@ extension MutableDataInt.Body {
         var increment = increment // consume: compiler bug...
         
         while UX(raw: self.count) > 0 {
-            var product = self[unchecked: Void()].multiplication(multiplier)
+            var product = self[unchecked: ()].multiplication(multiplier)
             product.high &+= Element(Bit(product.low[{ $0.plus(increment) }]))
             increment = product.high
-            self[unchecked: Void()] = product.low
+            self[unchecked: ()] = product.low
             self = (consume self)[unchecked: 1...] // consume: compiler bug...
         }
         
@@ -109,7 +109,7 @@ extension MutableDataInt.Body {
         // pointee: initialization 1
         //=--------------------------------------=
         var carry: Element = increment
-        let first: Element = rhs.count > 0 ? rhs[unchecked: Void()] : Element()
+        let first: Element = rhs.count > 0 ? rhs[unchecked: ()] : Element()
         
         for index in lhs.indices {
             // maximum: (low:  1, high: ~1) == max * max
@@ -164,7 +164,7 @@ extension MutableDataInt.Body {
             //=----------------------------------=
             (copy self)[unchecked: 1...].incrementSubSequence(
                 by:    elements[unchecked: index...],
-                times: multiplier[unchecked: Void()],
+                times: multiplier[unchecked: ()],
                 plus:  Element.zero
             )
             //=----------------------------------=
@@ -176,7 +176,7 @@ extension MutableDataInt.Body {
             //=----------------------------------=
             carry &+=  Element(Bit(self[{$0.incrementSubSequence(
                 by:    multiplier,
-                times: multiplier[unchecked: Void()],
+                times: multiplier[unchecked: ()],
                 plus:  Element.zero
             )}])) //   note that this advances self by two steps
         }
