@@ -24,7 +24,7 @@ extension MutableDataInt.Body {
     ///   - major: `0 <= major < self.count`
     ///   - minor: `0 <= minor < IX(size: Element.self)`
     ///
-    @inlinable public func upshift(environment: Element, major: Index, minor: Index) {
+    @inlinable public func upshift(environment: Element, major: IX, minor: IX) {
         if  minor != .zero {
             self.upshift(environment: environment, major: major, minorAtLeastOne: minor)
         }   else if major != .zero {
@@ -38,9 +38,9 @@ extension MutableDataInt.Body {
     ///   - environment: The element that fills the void.
     ///   - major: `1 <= major < self.count`
     ///
-    @inlinable public func upshift(environment: Element, majorAtLeastOne major: Index, minor: Void) {
+    @inlinable public func upshift(environment: Element, majorAtLeastOne major: IX, minor: Void) {
         //=--------------------------------------=
-        var destination: Index = self.count
+        var destination: IX = self.count
         var source = destination.plus(major.complement()).assert()
         //=--------------------------------------=
         Swift.assert(000000 < self.count, String.indexOutOfBounds())
@@ -69,7 +69,7 @@ extension MutableDataInt.Body {
     ///   - major: `0 <= major < self.count`
     ///   - minor: `1 <= minor < IX(size: Element.self)`
     ///
-    @inlinable public func upshift(environment: Element, major: Index, minorAtLeastOne minor: Index) {
+    @inlinable public func upshift(environment: Element, major: IX, minorAtLeastOne minor: IX) {
         //=--------------------------------------=
         Swift.assert(000001 <= minor, String.indexOutOfBounds())
         Swift.assert(minor  <  IX(size: Element.self), String.indexOutOfBounds())
@@ -77,7 +77,7 @@ extension MutableDataInt.Body {
         let push = Element(load: UX(raw: minor))
         let pull = push.complement()
         //=--------------------------------------=
-        var destination = self.count as Index
+        var destination = self.count as IX
         var source = destination.plus(major.toggled()).assert()
         //=--------------------------------------=
         Swift.assert(000000 <= ((source)), String.indexOutOfBounds())
@@ -112,7 +112,7 @@ extension MutableDataInt.Body {
     ///   - major: `0 <= major < self.count`
     ///   - minor: `0 <= minor < IX(size: Element.self)`
     ///
-    @inlinable public func downshift(environment: Element, major: Index, minor: Index) {
+    @inlinable public func downshift(environment: Element, major: IX, minor: IX) {
         if  minor != .zero {
             self.downshift(environment: environment, major: major, minorAtLeastOne: minor)
         }   else if major != .zero {
@@ -126,9 +126,9 @@ extension MutableDataInt.Body {
     ///   - environment: The element that fills the void.
     ///   - major: `1 <= major < self.count`
     ///
-    @inlinable public func downshift(environment: Element, majorAtLeastOne major: Index, minor: Void) {
+    @inlinable public func downshift(environment: Element, majorAtLeastOne major: IX, minor: Void) {
         //=--------------------------------------=
-        var destination = Index.zero
+        var destination = IX.zero
         var source = destination.plus(major).assert()
         //=--------------------------------------=
         Swift.assert(000000 < ((source)), String.indexOutOfBounds())
@@ -156,7 +156,7 @@ extension MutableDataInt.Body {
     ///   - major: `0 <= major < self.count`
     ///   - minor: `1 <= minor < IX(size: Element.self)`
     ///
-    @inlinable public func downshift(environment: Element, major: Index, minorAtLeastOne minor: Index) {
+    @inlinable public func downshift(environment: Element, major: IX, minorAtLeastOne minor: IX) {
         //=--------------------------------------=
         Swift.assert(00001 <= minor, String.indexOutOfBounds())
         Swift.assert(minor <  IX(size: Element.self), String.indexOutOfBounds())
@@ -164,7 +164,7 @@ extension MutableDataInt.Body {
         let push = Element(load: UX(raw: minor))
         let pull = push.complement()
         //=--------------------------------------=
-        var destination = Index.zero
+        var destination = IX.zero
         var source = destination.plus(major).assert()
         //=--------------------------------------=
         Swift.assert(000000 <= ((source)), String.indexOutOfBounds())

@@ -17,12 +17,12 @@ extension DataInt.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func size() -> IX {
+    @inlinable borrowing public func size() -> IX {
         let count = self.count.times(IX(size: Element.self))
         return count.unwrap("BinaryInteger/body/0...IX.max")
     }
     
-    @inlinable public func count(_ selection: Bit) -> IX {
+    @inlinable borrowing public func count(_ selection: Bit) -> IX {
         var count = Fallible(IX.zero, error: false)
         
         for index in self.indices {
@@ -33,7 +33,7 @@ extension DataInt.Body {
         return count.unwrap("BinaryInteger/body/0...IX.max")
     }
     
-    @inlinable public func count(_ selection: Bit.Ascending) -> IX {
+    @inlinable borrowing public func count(_ selection: Bit.Ascending) -> IX {
         var count = Fallible(IX.zero, error: false)
         
         for index in self.indices {
@@ -45,7 +45,7 @@ extension DataInt.Body {
         return count.unwrap("BinaryInteger/body/0...IX.max")
     }
     
-    @inlinable public func count(_ selection: Bit.Descending) -> IX {
+    @inlinable borrowing public func count(_ selection: Bit.Descending) -> IX {
         var count = Fallible(IX.zero, error: false)
         
         for index in self.indices.reversed() {
@@ -55,6 +55,26 @@ extension DataInt.Body {
         }
         
         return count.unwrap("BinaryInteger/body/0...IX.max")
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable borrowing public func count(_ selection: Bit.Appendix) -> IX {
+        self.count(.descending(self.appendix))
+    }
+    
+    @inlinable borrowing public func count(_ selection: Bit.Nonappendix) -> IX {
+        self.size().minus(self.count(.appendix)).assert("inverse bit count")
+    }
+    
+    @inlinable borrowing public func count(_ selection: Bit.Nonascending) -> IX {
+        self.size().minus(self.count( .ascending(selection.bit))).assert("inverse bit count")
+    }
+    
+    @inlinable borrowing public func count(_ selection: Bit.Nondescending) -> IX {
+        self.size().minus(self.count(.descending(selection.bit))).assert("inverse bit count")
     }
 }
 
@@ -68,19 +88,39 @@ extension MutableDataInt.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func size() -> IX {
+    @inlinable borrowing public func size() -> IX {
         Immutable(self).size()
     }
     
-    @inlinable public func count(_ selection: Bit) -> IX {
+    @inlinable borrowing public func count(_ selection: Bit) -> IX {
         Immutable(self).count(selection)
     }
     
-    @inlinable public func count(_ selection: Bit.Ascending) -> IX {
+    @inlinable borrowing public func count(_ selection: Bit.Ascending) -> IX {
         Immutable(self).count(selection)
     }
     
-    @inlinable public func count(_ selection: Bit.Descending) -> IX {
+    @inlinable borrowing public func count(_ selection: Bit.Descending) -> IX {
+        Immutable(self).count(selection)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable borrowing public func count(_ selection: Bit.Appendix) -> IX {
+        Immutable(self).count(selection)
+    }
+    
+    @inlinable borrowing public func count(_ selection: Bit.Nonappendix) -> IX {
+        Immutable(self).count(selection)
+    }
+    
+    @inlinable borrowing public func count(_ selection: Bit.Nonascending) -> IX {
+        Immutable(self).count(selection)
+    }
+    
+    @inlinable borrowing public func count(_ selection: Bit.Nondescending) -> IX {
         Immutable(self).count(selection)
     }
 }

@@ -14,9 +14,7 @@
 @frozen public struct DataInt<Element> where Element: SystemsInteger & UnsignedInteger {
         
     public typealias Element = Element
-    
-    public typealias Index = IX
-    
+        
     public typealias Mutable = MutableDataInt<Element>
     
     //=------------------------------------------------------------------------=
@@ -64,12 +62,10 @@
     ///
     /// - Note: Its operations are `unsigned` and `finite` by default.
     ///
-    @frozen public struct Body: BitCountable {
+    @frozen public struct Body {
                 
         public typealias Element = DataInt.Element
-        
-        public typealias Index = DataInt.Index
-        
+                
         public typealias Mutable = MutableDataInt<Element>.Body
         
         //=--------------------------------------------------------------------=
@@ -118,9 +114,7 @@
 @frozen public struct MutableDataInt<Element> where Element: SystemsInteger & UnsignedInteger {
         
     public typealias Element = Element
-    
-    public typealias Index = IX
-    
+        
     public typealias Immutable = DataInt<Element>
     
     //=------------------------------------------------------------------------=
@@ -165,12 +159,10 @@
     ///
     /// - Note: Its operations are `unsigned` and `finite` by default.
     ///
-    @frozen public struct Body: BitCountable {
+    @frozen public struct Body {
                         
         public typealias Element = MutableDataInt.Element
-        
-        public typealias Index = MutableDataInt.Index
-        
+                
         public typealias Immutable = DataInt<Element>.Body
         
         //=--------------------------------------------------------------------=

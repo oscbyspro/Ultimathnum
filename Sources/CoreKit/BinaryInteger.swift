@@ -54,7 +54,6 @@
 ///
 public protocol BinaryInteger<BitPattern>:
     BitCastable,
-    BitCountable,
     BitOperable,
     Comparable,
     ExpressibleByIntegerLiteral,
@@ -63,7 +62,6 @@ public protocol BinaryInteger<BitPattern>:
     Strideable,
     MaybeLosslessStringConvertible
 where
-    BitCount == Magnitude,
     Element.Mode == Mode,
     Magnitude.BitPattern == BitPattern,
     Magnitude.Element    == Element.Magnitude,
@@ -309,6 +307,16 @@ where
     //=------------------------------------------------------------------------=
     
     @inlinable borrowing func compared(to other: borrowing Self) -> Signum
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable borrowing func count(_ selection: Bit) -> Magnitude
+        
+    @inlinable borrowing func count(_ selection: Bit.Ascending) -> Magnitude
+    
+    @inlinable borrowing func count(_ selection: Bit.Descending) -> Magnitude
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
