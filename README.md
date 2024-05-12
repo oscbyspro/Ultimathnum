@@ -137,10 +137,10 @@ A binary integer must provide contiguous access to its endianness-sensitive body
 be viewed through a data integer. Such view types keep track of memory alignments and may downsize 
 their element type through reinterpretation.
 
-| some DataInteger           | some DataIntegerBody           |
-|:---------------------------|:-------------------------------|
-| DataInt\<Element\>         | DataInt\<Element\>.Body        |
-| MutableDataInt\<Element\>  | MutableDataInt\<Element\>.Body |
+| Read                     | Read & Write                   |
+|:-------------------------|:-------------------------------|
+| DataInt\<Element\>       | MutableDataInt\<Element\>.Body |
+| DataInt\<Element\>.Body  | MutableDataInt\<Element\>.Body |
 
 All binary integers agree on this format, which lets us perform arbitrary conversions with 
 a fixed set of protocol witnesses. Compare this to the square matrix of doom that is formed 
