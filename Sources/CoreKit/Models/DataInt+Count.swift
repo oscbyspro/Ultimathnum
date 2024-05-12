@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Data Integer x Count x Body
+// MARK: * Data Int x Count x Read|Body
 //*============================================================================*
 
-extension BodyInteger {
+extension DataInt.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -55,5 +55,32 @@ extension BodyInteger {
         }
         
         return count.unwrap("BinaryInteger/body/0...IX.max")
+    }
+}
+
+//*============================================================================*
+// MARK: * Data Int x Count x Read|Write|Body
+//*============================================================================*
+
+extension MutableDataInt.Body {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public func size() -> IX {
+        Immutable(self).size()
+    }
+    
+    @inlinable public func count(_ selection: Bit) -> IX {
+        Immutable(self).count(selection)
+    }
+    
+    @inlinable public func count(_ selection: Bit.Ascending) -> IX {
+        Immutable(self).count(selection)
+    }
+    
+    @inlinable public func count(_ selection: Bit.Descending) -> IX {
+        Immutable(self).count(selection)
     }
 }

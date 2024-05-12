@@ -24,7 +24,7 @@
 /// U8(11).count(.descending(1)) // 0
 /// ```
 ///
-public protocol BitCountable {
+public protocol BitCountable<BitCount> {
     
     associatedtype BitCount: BinaryInteger
     

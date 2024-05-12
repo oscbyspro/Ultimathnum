@@ -23,11 +23,11 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ data: some DataInteger<U8>, as element: Element.Type = Element.self) {
-        self.data = DataInt(data)
+    @inlinable public init(_ data: DataInt<U8>, as element: Element.Type = Element.self) {
+        self.data = data
     }
     
-    @inlinable public init(_ body: some BodyInteger<U8>, repeating appendix: Bit = .zero, as element: Element.Type = Element.self) {
+    @inlinable public init(_ body: DataInt<U8>.Body, repeating appendix: Bit = .zero, as element: Element.Type = Element.self) {
         self.init(DataInt(body, repeating: appendix))
     }
     
@@ -38,6 +38,18 @@
     
     @inlinable public init(_ start: UnsafePointer<U8>, count: IX, repeating appendix: Bit = .zero, as element: Element.Type = Element.self) {
         self.init(DataInt(start, count: count, repeating: appendix))
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(_ data: MutableDataInt<U8>, as element: Element.Type = Element.self) {
+        self.init(DataInt(data))
+    }
+    
+    @inlinable public init(_ body: MutableDataInt<U8>.Body, repeating appendix: Bit = .zero, as element: Element.Type = Element.self) {
+        self.init(DataInt.Body(body), repeating: appendix)
     }
     
     //=------------------------------------------------------------------------=

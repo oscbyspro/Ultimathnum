@@ -27,7 +27,7 @@ extension DataInt {
         //=--------------------------------------=
         // comparison: body
         //=--------------------------------------=
-        return Signum(Bit(instance.body.isZero))
+        return instance.body.signum()
     }
     
     @inlinable package static func compare(
@@ -74,5 +74,70 @@ extension DataInt {
         // comparison: same
         //=--------------------------------------=
         return Signum.same as Signum as Signum as Signum
+    }
+}
+
+//*============================================================================*
+// MARK: * Data Int x Comparison x Read|Body
+//*============================================================================*
+
+extension DataInt.Body {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var isZero: Bool {
+        self.buffer().allSatisfy({ $0 == Element.zero })
+    }
+    
+    @inlinable public func signum() -> Signum {
+        Signum(Bit(!self.isZero))
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public func compared(to other: Self) -> Signum {
+        DataInt.compare(
+            lhs: DataInt(self ), lhsIsSigned: false,
+            rhs: DataInt(other), rhsIsSigned: false
+        )
+    }
+    
+    @inlinable public func compared(to other: Mutable) -> Signum {
+        self.compared(to: Self(other))
+    }
+}
+
+//*============================================================================*
+// MARK: * Data Int x Comparison x Read|Write|Body
+//*============================================================================*
+
+extension MutableDataInt.Body {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var isZero: Bool {
+        Immutable(self).isZero
+    }
+        
+    @inlinable public func signum() -> Signum {
+        Immutable(self).signum()
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public func compared(to other: Self) -> Signum {
+        self.compared(to: Immutable(other))
+    }
+    
+    @inlinable public func compared(to other: Immutable) -> Signum {
+        Immutable(self).compared(to: other)
     }
 }

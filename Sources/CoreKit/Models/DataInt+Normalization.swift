@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Data Integer x Normalization
+// MARK: * Data Int x Normalization x Read
 //*============================================================================*
 
-extension DataInteger {
+extension DataInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -23,10 +23,25 @@ extension DataInteger {
 }
 
 //*============================================================================*
-// MARK: * Data Integer x Normalization x Body
+// MARK: * Data Int x Normalization x Read|Write
 //*============================================================================*
 
-extension BodyInteger {
+extension MutableDataInt {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func normalized() -> Self {
+        Self(mutating: Immutable(self).normalized())
+    }
+}
+
+//*============================================================================*
+// MARK: * Data Integer x Normalization x Read|Body
+//*============================================================================*
+
+extension DataInt.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -43,5 +58,20 @@ extension BodyInteger {
         }
         
         return Self(self.start, count: endIndex)
+    }
+}
+
+//*============================================================================*
+// MARK: * Data Integer x Normalization x Read|Write|Body
+//*============================================================================*
+
+extension MutableDataInt.Body {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func normalized(repeating appendix: Bit = .zero) -> Self {
+        Self(mutating: Immutable(self).normalized(repeating: appendix))
     }
 }

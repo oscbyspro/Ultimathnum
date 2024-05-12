@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Data Integer x Sub Sequence
+// MARK: * Data Int x Sub Sequence x Read
 //*============================================================================*
 
-extension DataInteger {
+extension DataInt {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -26,10 +26,27 @@ extension DataInteger {
 }
 
 //*============================================================================*
-// MARK: * Data Integer x Sub Sequence x Body
+// MARK: * Data Int x Sub Sequence x Read|Write
 //*============================================================================*
 
-extension BodyInteger {
+extension MutableDataInt {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public subscript(range: PartialRangeFrom<UX>) -> Self {
+        consuming get {
+            Self(mutating: Immutable(self)[range])
+        }
+    }
+}
+
+//*============================================================================*
+// MARK: * Data Integer x Sub Sequence x Read|Body
+//*============================================================================*
+
+extension DataInt.Body {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -72,15 +89,49 @@ extension BodyInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// ### Development
-    ///
-    /// - TODO: Consider a `Doublet<Self>` return type.
-    ///
     @inlinable public consuming func split(at index: IX) -> (low: Self, high: Self) {
         //=--------------------------------------=
         Swift.assert(index >= 0000000000, String.indexOutOfBounds())
         Swift.assert(index <= self.count, String.indexOutOfBounds())
         //=--------------------------------------=
         return (low: (copy self)[unchecked: ..<index], high: (consume self)[unchecked: index...])
+    }
+}
+
+//*============================================================================*
+// MARK: * Data Integer x Sub Sequence x Read|Write|Body
+//*============================================================================*
+
+extension MutableDataInt.Body {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public subscript(unchecked range: PartialRangeFrom<IX>) -> Self {
+        consuming get {
+            Self(mutating: Immutable(self)[unchecked: range])
+        }
+    }
+    
+    @inlinable public subscript(unchecked range: PartialRangeUpTo<IX>) -> Self {
+        consuming get {
+            Self(mutating: Immutable(self)[unchecked: range])
+        }
+    }
+    
+    @inlinable public subscript(unchecked range: Range<IX>) -> Self {
+        consuming get {
+            Self(mutating: Immutable(self)[unchecked: range])
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func split(at index: IX) -> (low: Self, high: Self) {
+        let (low, high) = Immutable(self).split(at: index)
+        return (low: Self(mutating: low), high: Self(mutating: high))
     }
 }
