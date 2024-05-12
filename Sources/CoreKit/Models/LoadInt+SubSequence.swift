@@ -18,7 +18,7 @@ extension LoadInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func successor() -> Self {
-        (consume self)[bytes: Self.ratio...]
+        (consume self)[bytes: UX(raw: MemoryLayout<Element>.stride)...]
     }
     
     @inlinable public subscript(bytes range: PartialRangeFrom<UX>) -> Self {

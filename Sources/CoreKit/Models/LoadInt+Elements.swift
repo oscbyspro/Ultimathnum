@@ -26,24 +26,23 @@ extension LoadInt {
     }
     
     @inlinable public borrowing func load() -> Element {
-        if  Self.ratio == 1 {
-            return Element(load: self.data[UX.zero])
-            
-        }   else if Self.ratio < UX(raw: self.data.body.count) {
+        if  IX(MemoryLayout<Element>.size)  <= self.data.body.count as IX {
             return UnsafeRawPointer(self.data.body.start).loadUnaligned(as: Element.self)
             
-        }   else {
-            var start = IX.zero
-            var value = Element.zero
-            var shift = Element.zero
+        }   else if IX(MemoryLayout<Element>.size) == 1 {
+            return Element(repeating: self.appendix)
             
-            while start < UX(raw: self.data.body.count) {
-                value = value | Element(load: self.data.body[unchecked: IX(raw: start)]) &<< shift
-                shift = shift.plus(8).assert()
-                start = start.plus(1).assert()
+        }   else {
+            var start = self.data.body.count
+            var value = Element(repeating: self.appendix)
+            
+            while start  > 0 as IX {
+                start  &-= 1 as IX
+                value &<<= 8 as Element
+                value   |= Element(load: self.data.body[unchecked: start])
             }
             
-            return value | Element(repeating: self.data.appendix) << Element(raw: shift)
+            return value
         }
     }
 }

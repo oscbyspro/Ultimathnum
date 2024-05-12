@@ -14,14 +14,6 @@
 @frozen public struct LoadInt<Element> where Element: SystemsInteger & UnsignedInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Metadata
-    //=------------------------------------------------------------------------=
-    
-    @inlinable static var ratio: UX {
-        UX(IX(MemoryLayout<Element>.stride))
-    }
-    
-    //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
@@ -62,8 +54,8 @@
     
     @inlinable public borrowing func appendixIndex() -> UX {
         let count = UX(raw:   self.data.body.count)
-        let major = count &>> Self.ratio.count(.ascending((0)))
-        let minor = count &   Self.ratio.decremented().assert()
+        let major = count &>> UX(raw: MemoryLayout<Element>.stride).count(.ascending((0)))
+        let minor = count &   UX(raw: MemoryLayout<Element>.stride).decremented().assert()
         return major.plus(UX(Bit(minor != 0))).assert()
     }
 }
