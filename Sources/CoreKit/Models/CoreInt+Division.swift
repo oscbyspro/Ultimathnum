@@ -19,7 +19,7 @@ extension CoreInteger {
     
     @inlinable public func quotient (_ divisor: Divisor<Self>) -> Fallible<Self> {
         let result = self.base.dividedReportingOverflow(by: divisor.value.base)
-        return Self(result.partialValue).invalidated(result.overflow)
+        return Self(result.partialValue).veto(result.overflow)
     }
     
     @inlinable public func remainder(_ divisor: Divisor<Self>) -> Self {
@@ -63,7 +63,7 @@ extension CoreIntegerWhereIsSigned {
             division.value.remainder = division.value.remainder.complement()
         }
         
-        return division.invalidated(Bool(suboverflow))
+        return division.veto(Bool(suboverflow))
     }
 }
 

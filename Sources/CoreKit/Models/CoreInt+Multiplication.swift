@@ -23,7 +23,7 @@ extension CoreInteger {
     
     @inlinable public func times(_ multiplier: Self) -> Fallible<Self> {
         let result = self.base.multipliedReportingOverflow(by: multiplier.base)
-        return Self(result.partialValue).invalidated(result.overflow)
+        return Self(result.partialValue).veto(result.overflow)
     }
     
     //=------------------------------------------------------------------------=

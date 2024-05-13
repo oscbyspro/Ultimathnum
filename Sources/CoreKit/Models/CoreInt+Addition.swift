@@ -19,6 +19,6 @@ extension CoreInteger {
     
     @inlinable public func plus(_ increment: Self) -> Fallible<Self> {
         let result = self.base.addingReportingOverflow(increment.base)
-        return Self(result.partialValue).invalidated(result.overflow)
+        return Self(result.partialValue).veto(result.overflow)
     }
 }

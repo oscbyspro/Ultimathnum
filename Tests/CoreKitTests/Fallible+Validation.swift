@@ -35,15 +35,15 @@ extension FallibleTests {
     }
     
     func testInvalidation() {
-        Test().same(Fallible<IX>(0, error: false).invalidated(              ), Fallible(0, error: true ))
-        Test().same(Fallible<IX>(0, error: true ).invalidated(              ), Fallible(0, error: true ))
-        Test().same(Fallible<IX>(0, error: false).invalidated(       false  ), Fallible(0, error: false))
-        Test().same(Fallible<IX>(0, error: false).invalidated(       true   ), Fallible(0, error: true ))
-        Test().same(Fallible<IX>(0, error: true ).invalidated(       false  ), Fallible(0, error: true ))
-        Test().same(Fallible<IX>(0, error: true ).invalidated(       true   ), Fallible(0, error: true ))
-        Test().same(Fallible<IX>(0, error: false).invalidated({ _ in false }), Fallible(0, error: false))
-        Test().same(Fallible<IX>(0, error: false).invalidated({ _ in true  }), Fallible(0, error: true ))
-        Test().same(Fallible<IX>(0, error: true ).invalidated({ _ in false }), Fallible(0, error: true ))
-        Test().same(Fallible<IX>(0, error: true ).invalidated({ _ in true  }), Fallible(0, error: true ))
+        Test().same(Fallible<IX>(0, error: false).veto(              ), Fallible(0, error: true ))
+        Test().same(Fallible<IX>(0, error: true ).veto(              ), Fallible(0, error: true ))
+        Test().same(Fallible<IX>(0, error: false).veto(       false  ), Fallible(0, error: false))
+        Test().same(Fallible<IX>(0, error: false).veto(       true   ), Fallible(0, error: true ))
+        Test().same(Fallible<IX>(0, error: true ).veto(       false  ), Fallible(0, error: true ))
+        Test().same(Fallible<IX>(0, error: true ).veto(       true   ), Fallible(0, error: true ))
+        Test().same(Fallible<IX>(0, error: false).veto({ _ in false }), Fallible(0, error: false))
+        Test().same(Fallible<IX>(0, error: false).veto({ _ in true  }), Fallible(0, error: true ))
+        Test().same(Fallible<IX>(0, error: true ).veto({ _ in false }), Fallible(0, error: true ))
+        Test().same(Fallible<IX>(0, error: true ).veto({ _ in true  }), Fallible(0, error: true ))
     }
 }

@@ -103,6 +103,6 @@ extension InfiniInt {
         }
         
         Swift.assert(self.storage.isNormal, String.brokenInvariant())
-        return self.invalidated(!Self.isSigned && increment)
+        return self.veto(!Self.isSigned && increment)
     }
 }

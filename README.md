@@ -295,7 +295,7 @@ to the same effect, or to perform an in-place reinterpretation.
     }   else {
         let distance = Fallible<Signitude>(raw: other.minus(self))
         let superoverflow = (distance.value).isNegative != distance.error
-        return Distance.exactly(distance.value).invalidated(superoverflow)
+        return Distance.exactly(distance.value).veto(superoverflow)
     }
 }
 ```

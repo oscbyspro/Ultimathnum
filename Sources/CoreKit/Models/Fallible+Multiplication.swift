@@ -18,14 +18,14 @@ extension Fallible where Value: BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func squared() -> Self {
-        self.value.squared().invalidated(self.error)
+        self.value.squared().veto(self.error)
     }
     
     @inlinable public consuming func times(_ other: borrowing Value) -> Self {
-        self.value.times(other).invalidated(self.error)
+        self.value.times(other).veto(self.error)
     }
     
     @inlinable public consuming func times(_ other: borrowing Self ) -> Self {
-        self.value.times(other).invalidated(self.error)
+        self.value.times(other).veto(self.error)
     }
 }

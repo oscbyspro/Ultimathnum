@@ -32,7 +32,7 @@ extension DoubleInt {
             suboverflow = !result.value[{ $0.complement(true) }] && suboverflow
         }
         
-        return result.invalidated(suboverflow)
+        return result.veto(suboverflow)
     }
     
     //=------------------------------------------------------------------------=

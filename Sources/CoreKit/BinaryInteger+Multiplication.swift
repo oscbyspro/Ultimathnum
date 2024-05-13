@@ -49,6 +49,6 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func times(_ result: borrowing Fallible<Self>) -> Fallible<Self> {
-        self.times(result.value).invalidated(result.error)
+        self.times(result.value).veto(result.error)
     }
 }

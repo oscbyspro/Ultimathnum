@@ -72,7 +72,7 @@ extension DoubleInt {
             division.value.remainder = division.value.remainder.complement()
         }
         
-        return division.invalidated(Bool(suboverflow)) as Fallible<Division<Self, Self>>
+        return division.veto(Bool(suboverflow)) as Fallible<Division<Self, Self>>
     }
 }
 

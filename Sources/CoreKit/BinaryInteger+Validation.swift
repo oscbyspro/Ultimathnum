@@ -18,14 +18,14 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     /// Sets the `error` indicator when `condition` is `true`.
-    @inlinable public consuming func invalidated(_ condition: Bool = true) -> Fallible<Self> {
+    @inlinable public consuming func veto(_ condition: Bool = true) -> Fallible<Self> {
         Fallible(self, error: condition)
     }
     
     /// Sets the `error` indicator if the `predicate` return `true`.
-    @inlinable public consuming func invalidated(_ predicate: (Self) -> Bool) -> Fallible<Self> {
+    @inlinable public consuming func veto(_ predicate: (Self) -> Bool) -> Fallible<Self> {
         let error = predicate(self)
-        return self.invalidated(error)
+        return self.veto(error)
     }
 }
 
@@ -60,7 +60,7 @@ extension BinaryInteger {
         }
         
         let value = Self(raw: magnitude)
-        return value.invalidated(value.isNegative != isNegative)
+        return value.veto(value.isNegative != isNegative)
     }
     
     @inlinable public static func exactly<Other>(
@@ -70,7 +70,7 @@ extension BinaryInteger {
         
         let magnitude = Magnitude.exactly(magnitude)
         let result = Self.exactly(sign: sign, magnitude: magnitude.value)
-        return result.invalidated(magnitude.error)
+        return result.veto(magnitude.error)
     }
     
     //=------------------------------------------------------------------------=
@@ -92,13 +92,13 @@ extension BinaryInteger {
                 let rhsIsNegative = source.isNegative
                 let result = Self(load: source)
                 let lhsIsNegative = result.isNegative
-                return result.invalidated(lhsIsNegative != rhsIsNegative)
+                return result.veto(lhsIsNegative != rhsIsNegative)
                 
             }   else {
                 let bit   = Bit(Self.isSigned) & Bit(source.isNegative)
                 let count = rhsSize.minus(UX(load: source.count(.descending(bit)))).assert()
                 let limit = lhsSize.minus(UX(Bit(Self.isSigned))).assert()
-                return Self(load: source).invalidated(limit < count)
+                return Self(load: source).veto(limit < count)
             }
             
         }   else {

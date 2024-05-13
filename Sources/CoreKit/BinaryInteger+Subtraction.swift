@@ -58,11 +58,11 @@ extension BinaryInteger {
     
     @inlinable public consuming func negated() -> Fallible<Self> {
         let result: Fallible<Self> =  self.complement(true)
-        return result.value.invalidated(result.error == Self.isSigned)
+        return result.value.veto(result.error == Self.isSigned)
     }
     
     @inlinable public consuming func minus(_ decrement: borrowing Fallible<Self>) -> Fallible<Self> {
-        self.minus(decrement.value).invalidated(decrement.error)
+        self.minus(decrement.value).veto(decrement.error)
     }
 }
 
@@ -108,6 +108,6 @@ extension SystemsInteger {
         (self, a) = self.minus(other).components()
         (self, b) = self.minus(Self(Bit(bit))).components()
         
-        return self.invalidated(a != b)
+        return self.veto(a != b)
     }
 }
