@@ -7,23 +7,17 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-import TestKit
-
 //*============================================================================*
-// MARK: * Root Int
+// MARK: * Signedness x Comparison
 //*============================================================================*
 
-final class RootIntTests: XCTestCase {
-    
-    typealias T = RootInt
+extension Signedness {
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    func testMode() {
-        Test().yay(T.isSigned)
-        Test().yay(T.mode.matchesSignedTwosComplementFormat)
+    @inlinable public func matches(signedness: some Signedness) -> Bool {
+        self.matchesSignedTwosComplementFormat == signedness.matchesSignedTwosComplementFormat
     }
 }

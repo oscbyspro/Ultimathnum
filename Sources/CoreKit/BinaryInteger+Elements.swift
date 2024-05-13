@@ -24,7 +24,7 @@ extension BinaryInteger {
         let instance = Self(load: source)
         var success  = Bit(instance.appendix == source.appendix)
         //=--------------------------------------=
-        if  Self.isSigned != mode.isSigned {
+        if !Self.mode.matches(signedness: mode) {
             success &= source.appendix.toggled()
         }
         
@@ -48,7 +48,7 @@ extension BinaryInteger {
         let instance = Self(load: source)
         var success  = Bit(instance.appendix == source.appendix)
         //=--------------------------------------=
-        if  Self.isSigned != mode.isSigned {
+        if !Self.mode.matches(signedness: mode) {
             success &= source.appendix.toggled()
         }
         

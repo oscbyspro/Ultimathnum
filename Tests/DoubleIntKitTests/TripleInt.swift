@@ -53,7 +53,7 @@ final class TripleIntTests: XCTestCase {
             typealias T = TripleInt<B>
             typealias M = TripleInt<B>.Magnitude
             
-            Test().same(T.mode.isSigned, B.isSigned)
+            Test().same(T.mode.matchesSignedTwosComplementFormat, B.isSigned)
             Test().same(T.size, M(low: 3 * B.size, mid: 0, high: 0))
         }
         

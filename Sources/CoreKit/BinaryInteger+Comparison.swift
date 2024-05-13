@@ -29,7 +29,7 @@ extension BinaryInteger {
     /// ```
     ///
     @inlinable public static var isSigned: Bool {
-        Self.mode.isSigned
+        Self.mode.matches(signedness: .signed)
     }
     
     //=------------------------------------------------------------------------=

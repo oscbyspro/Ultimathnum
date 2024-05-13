@@ -8,34 +8,16 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Unsigned
+// MARK: * Endianness x Comparison
 //*============================================================================*
 
-@frozen public struct Unsigned: Signedness {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-        
-    @inlinable public init() {
-        
-    }
+extension Endianness {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public var isSigned: Bool {
-        false
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Lookup
-//=----------------------------------------------------------------------------=
-
-extension Signedness where Self == Unsigned {
-    @inlinable public static var unsigned: Self {
-        Self()
+    @inlinable public func matches(endianness: some Endianness) -> Bool {
+        self.matchesLittleEndianByteOrder == endianness.matchesLittleEndianByteOrder
     }
 }

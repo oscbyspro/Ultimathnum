@@ -26,7 +26,7 @@ extension IntegerInvariants {
         var count = Int(T.size.isInfinite ? 12 : IX(load: T.size) / IX(size: T.Element.self))
         //=--------------------------------------=
         func check(_ body: Array<T.Element.Magnitude>, mode: some Signedness, error: Bool = false) {
-            var value = T(repeating: Bit(mode.isSigned && (body.last ?? 0) >= .msb))
+            var value = T(repeating: Bit(mode.matchesSignedTwosComplementFormat && (body.last ?? 0) >= .msb))
             
             for element in body.reversed() {
                 value <<= T(T.Element.Magnitude.size)

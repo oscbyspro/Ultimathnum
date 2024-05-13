@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Signed
+// MARK: * Ascending
 //*============================================================================*
 
-@frozen public struct Signed: Signedness {
+@frozen public struct Ascending: Endianness {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -25,17 +25,7 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public var isSigned: Bool {
-        true
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Lookup
-//=----------------------------------------------------------------------------=
-
-extension Signedness where Self == Signed {
-    @inlinable public static var signed: Self {
-        Self()
+    @inlinable public var matchesLittleEndianByteOrder: Bool {
+        false
     }
 }

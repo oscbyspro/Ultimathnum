@@ -8,30 +8,48 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Signedness
+// MARK: * Endianness
 //*============================================================================*
 
-public protocol Signedness {
+public protocol Endianness {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
-    
-    @inlinable var matchesSignedTwosComplementFormat: Bool { get }
+        
+    @inlinable var matchesLittleEndianByteOrder: Bool { get }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + System
+//=----------------------------------------------------------------------------=
+
+#if _endian(little)
+public typealias SystemByteOrder = Ascending
+#elseif _endian(big)
+public typealias SystemByteOrder = Descending
+#else
+public typealias SystemByteOrder = Never
+#endif
 
 //=----------------------------------------------------------------------------=
 // MARK: + Lookup
 //=----------------------------------------------------------------------------=
 
-extension Signedness where Self == Signed {
-    @inlinable public static var signed: Self {
+extension Endianness where Self == Ascending {
+    @inlinable public static var little: Self {
         Self()
     }
 }
 
-extension Signedness where Self == Unsigned {
-    @inlinable public static var unsigned: Self {
+extension Endianness where Self == Descending {
+    @inlinable public static var big: Self {
+        Self()
+    }
+}
+
+extension Endianness where Self == SystemByteOrder {
+    @inlinable public static var system: Self {
         Self()
     }
 }

@@ -84,14 +84,14 @@ where
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    /// Indicates whether this integer type can represent negative values.
+    /// Indicates whether this type uses the signed two's complement format.
     ///
     /// ```
     /// ┌──────┬──────────┬──────┬──────┐
-    /// │ type │ isSigned │  min │  max │
+    /// │ type │     mode │  min │  max │
     /// ├──────┼──────────┼──────┼──────┤
-    /// │ I8   │ true     │ -128 │  127 │
-    /// │ U8   │ false    │    0 │  255 │
+    /// │ I8   │   signed │ -128 │  127 │
+    /// │ U8   │ unsigned │    0 │  255 │
     /// └──────┴──────────┴──────┴──────┘
     /// ```
     ///

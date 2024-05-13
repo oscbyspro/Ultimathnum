@@ -7,23 +7,25 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-import TestKit
-
 //*============================================================================*
-// MARK: * Root Int
+// MARK: * Unsigned
 //*============================================================================*
 
-final class RootIntTests: XCTestCase {
-    
-    typealias T = RootInt
+@frozen public struct Unsigned: Signedness {
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+        
+    @inlinable public init() {
+        
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    func testMode() {
-        Test().yay(T.isSigned)
-        Test().yay(T.mode.matchesSignedTwosComplementFormat)
+    @inlinable public var matchesSignedTwosComplementFormat: Bool {
+        false
     }
 }

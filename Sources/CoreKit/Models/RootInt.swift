@@ -27,6 +27,10 @@
         Signed()
     }
     
+    @inlinable public static var isSigned: Bool {
+        Self.mode.matchesSignedTwosComplementFormat
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=

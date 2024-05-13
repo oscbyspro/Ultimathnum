@@ -88,7 +88,7 @@ extension BinaryInteger {
                 return Fallible(Self(load: source))
                 
             }   else if lhsSize >= rhsSize {
-                Swift.assert(Self.mode.isSigned != Other.mode.isSigned)
+                Swift.assert(Self.isSigned != Other.isSigned)
                 let rhsIsNegative = source.isNegative
                 let result = Self(load: source)
                 let lhsIsNegative = result.isNegative
