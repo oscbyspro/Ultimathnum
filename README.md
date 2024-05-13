@@ -21,6 +21,7 @@
   - [Validation and recovery through Fallible\<Value\>](#corekit-validation)
   - [Upsize binary integer elements with DataInt\<U8\>](#corekit-upsize)
   - [Type-safe bit casts with BitCastable\<BitPattern\>](#corekit-bit-cast)
+  - [Generic logic gates with BitOperable](#corekit-bitwise-logic)
   - [Lightweight text decoding and encoding with TextInt](#corekit-text-int)
 * [DoubleIntKit](#doubleintkit)
 * [InfiniIntKit](#infiniintkit)
@@ -313,6 +314,38 @@ The above example shows a generic Strideable/distance(from:to:) esque method. In
 unsigned case you find that the difference is reinterpreted as a same-size signed integer type 
 via the init(raw:) bulk operation. Note that such type relationships are generically available 
 to all binary integers. Also, note that this method is both fully generic and fully recoverable. 
+
+<a name="corekit-bitwise-logic"/>
+
+#### Generic logic gates with BitOperable
+
+Many types in this project let you perform bitwise logic through the common AND, OR, XOR, 
+and NOT operations. This capability extends to generic code when a type conforms to BitOperable.
+Note that all binary integers conform to this protocol and that their transformations are always 
+sound now that unsigned integers may end in infinitely repeating ones.
+
+```swift
+static prefix func ~(instance: consuming Self) -> Self
+static func &(lhs: consuming Self, rhs: borrowing Self) -> Self
+static func |(lhs: consuming Self, rhs: borrowing Self) -> Self
+static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self
+```
+
+<details>
+<summary>
+Here are the derived operations that are available in the core module...
+</summary>
+
+```swift
+mutating  func toggle()
+consuming func toggled() -> Self
+
+static func &=(lhs: inout Self, rhs: Self)
+static func |=(lhs: inout Self, rhs: Self)
+static func ^=(lhs: inout Self, rhs: Self)
+```
+
+</details>
 
 <a name="corekit-text-int"/>
 
