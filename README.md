@@ -189,7 +189,7 @@ systems integer's size must be a power of two in [8, IX.max].
 
 Systems integers are intentionally simple so that the things you build with them may be simple. 
 The only protocol requirements are multiplication and division algorithms for working with full 
-precision in generic code.
+precision in generic code, and byte swapping for efficient endianness conversions.
 
 <a name="nomenclature-trusted-input"/>
 

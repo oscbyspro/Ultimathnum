@@ -50,6 +50,12 @@ public protocol SystemsInteger<BitPattern>: EdgyInteger where Magnitude: Systems
     @inlinable static func &>>(instance: consuming Self, distance: borrowing Self) -> Self
     
     //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable consuming func reversed(_ type: U8.Type) -> Self
+    
+    //=------------------------------------------------------------------------=
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     

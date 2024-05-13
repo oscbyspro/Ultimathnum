@@ -7,26 +7,26 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+import TestKit
+
 //*============================================================================*
-// MARK: * Ascending
+// MARK: * Endianness
 //*============================================================================*
 
-/// An ascending order.
-@frozen public struct Ascending: Endianness {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
+final class EndiannessTests: XCTestCase {
         
-    @inlinable public init() {
-        
-    }
-    
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @inlinable public var matchesLittleEndianByteOrder: Bool {
-        false
+    func testSystem() {
+        #if _endian(little)
+        Test().yay( Ascending().matches(endianness: .system))
+        Test().nay(Descending().matches(endianness: .system))
+        #elseif _endian(big)
+        Test().nay( Ascending().matches(endianness: .system))
+        Test().yay(Descending().matches(endianness: .system))
+        #endif
     }
 }

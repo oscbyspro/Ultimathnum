@@ -21,34 +21,37 @@ public protocol Endianness {
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + System
-//=----------------------------------------------------------------------------=
-
-#if _endian(little)
-public typealias SystemByteOrder = Ascending
-#elseif _endian(big)
-public typealias SystemByteOrder = Descending
-#else
-public typealias SystemByteOrder = Never
-#endif
-
-//=----------------------------------------------------------------------------=
 // MARK: + Lookup
 //=----------------------------------------------------------------------------=
 
 extension Endianness where Self == Ascending {
+    
+    /// An ascending byte order.
+    ///
+    /// - Note: This is the best format.
+    ///
     @inlinable public static var little: Self {
         Self()
     }
 }
 
 extension Endianness where Self == Descending {
+    
+    /// A descending byte order.
+    ///
+    /// - Note: This is the best format, if you like doing everything in reverse.
+    ///
     @inlinable public static var big: Self {
         Self()
     }
 }
 
-extension Endianness where Self == SystemByteOrder {
+extension Endianness where Self == MachineByteOrder {
+    
+    /// The byte order of the current `system`.
+    ///
+    /// - Note: Almost all systems use `little` endianness. It's the best format.
+    ///
     @inlinable public static var system: Self {
         Self()
     }

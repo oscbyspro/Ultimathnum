@@ -151,4 +151,43 @@ extension DoubleIntTests {
             whereTheBaseTypeIs(base)
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testEndianess() {
+        func whereTheBaseTypeIs<B>(_ base: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
+            typealias M = DoubleInt<B.Magnitude>
+            typealias U = DoubleInt<T>
+            //=----------------------------------=
+            IntegerInvariants(T.self).endianness()
+            IntegerInvariants(U.self).endianness()
+            //=----------------------------------=
+            let b1 = B.Magnitude(1).endianness(.big), l1 = B.Magnitude(1).endianness(.little)
+            let b2 = B.Magnitude(2).endianness(.big), l2 = B.Magnitude(2).endianness(.little)
+            let b3 = B.Magnitude(3).endianness(.big), l3 = B.Magnitude(3).endianness(.little)
+            let b4 = B.Magnitude(4).endianness(.big), l4 = B.Magnitude(4).endianness(.little)
+            
+            Test().same(
+                U(low: M(low: 01, high: 02), high: T(low: 03, high: 0000000004)).endianness(.system),
+                U(low: M(low: 01, high: 02), high: T(low: 03, high: 0000000004))
+            )
+            
+            Test().same(
+                U(low: M(low: l1, high: l2), high: T(low: l3, high: B(raw: l4))).reversed(U8.self),
+                U(low: M(low: b4, high: b3), high: T(low: b2, high: B(raw: b1)))
+            )
+            
+            Test().same(
+                U(low: M(low: l1, high: l2), high: T(low: l3, high: B(raw: l4))),
+                U(low: M(low: b4, high: b3), high: T(low: b2, high: B(raw: b1))).reversed(U8.self)
+            )
+        }
+        
+        for base in Self.bases {
+            whereTheBaseTypeIs(base)
+        }
+    }
 }

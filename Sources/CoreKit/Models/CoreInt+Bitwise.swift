@@ -37,6 +37,10 @@ extension CoreInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    @inlinable public func reversed(_ type: U8.Type) -> Self {
+        Self(self.base.byteSwapped)
+    }
+    
     @inlinable public func complement(_ increment: Bool) -> Fallible<Self> {
         (~self).incremented(increment)
     }

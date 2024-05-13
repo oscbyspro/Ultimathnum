@@ -57,3 +57,26 @@ extension BinaryInteger {
         Bit(self.load(as: Element.self) & Element.lsb != 0)
     }
 }
+
+//*============================================================================*
+// MARK: * Binary Integer x Bitwise x Systems
+//*============================================================================*
+
+extension SystemsInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// Returns an instance with this value on an `endianess` system.
+    ///
+    /// - Note: This operation is equivalent to a conditional byte swap.
+    ///
+    @inlinable public consuming func endianness(_ endianess: some Endianness) -> Self {
+        if  endianess.matches(endianness: .system) {
+            return self
+        }   else {
+            return self.reversed(U8.self)
+        }
+    }
+}

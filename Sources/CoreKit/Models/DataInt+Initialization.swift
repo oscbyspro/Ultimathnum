@@ -33,7 +33,7 @@ extension MutableDataInt.Body {
     ///
     @inlinable public func initialize(to source: Immutable) {
         //=--------------------------------------=
-        Swift.assert(self.count == source.count, String.indexOutOfBounds())
+        Swift.assert(self.count ==  source.count, String.indexOutOfBounds())
         //=--------------------------------------=
         self.start.initialize(from: source.start, count: Int(source.count))
     }

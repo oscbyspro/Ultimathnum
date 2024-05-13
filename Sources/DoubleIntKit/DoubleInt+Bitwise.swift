@@ -39,6 +39,12 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    @inlinable public consuming func reversed(_ type: U8.Type) -> Self {
+        let low  = Low (raw: self.storage.high.reversed(type))
+        let high = High(raw: self.storage.low .reversed(type))
+        return Self(low: low, high: high)
+    }
+    
     @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
         Fallible(raw: self.storage.complement(increment))
     }
