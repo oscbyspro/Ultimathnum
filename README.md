@@ -24,6 +24,8 @@
   - [Generic logic gates with BitOperable](#corekit-bitwise-logic)
   - [Lightweight text decoding and encoding with TextInt](#corekit-text-int)
 * [DoubleIntKit](#doubleintkit)
+  - [A big systems integer](#doubleintkit-systems-integer)
+  - [A non-recursive model](#doubleintkit-non-recursive-model)
 * [InfiniIntKit](#infiniintkit)
   - [Recoverable infinite addition (+/-)](#infiniintkit-addition)
   - [Recoverable infinite multiplication](#infiniintkit-multiplication)
@@ -386,6 +388,33 @@ let regex: Regex = /^(?<sign>\+|-)(?<mask>#|&)(?<body>[0-9a-zA-z]+)$/
 ├─────┬─────┼─────┬─────┤├─────┬─────┼─────┬─────┤
 │ U64 │ U64 │ U64 │ I64 ││ U64 │ U64 │ U64 │ U64 │
 └─────┴─────┴─────┴─────┘└─────┴─────┴─────┴─────┘
+```
+
+<a name="doubleintkit-systems-integer"/>
+
+#### A big systems integer
+
+The DoubleInt\<Base\> model lets you create software-defined systems integers
+larger than the ones supported by your hardware. Like all systems integers, 
+it is stored without indirection. This makes it superior to arbitrary precision 
+models in situations where the doubled precision is enough. It also has a niche
+on the stack when heap allocations are prohibitive.
+
+<a name="doubleintkit-non-recursive-model"/> 
+
+#### A non-recursive model
+
+Given that systems integers need some 2x width operations, it is both easy and
+tempting to accept and return DoubleInt\<Base\> instances. Swift's generic type
+system even allows it! The problem, however, is that it makes the model recursive
+and reliant on unspecialized runtime features. While runtime generics are awesome 
+and overpowered in some cases, they're not appropriate for primitives. This is 
+why the core module features Doublet\<Base\> instead. Here's a brief illustration 
+of how that stops the recusion:
+
+```swift
+DoubleInt<Base> -> Doublet  <DoubleInt<Base>> // Doublet cannot upsize itself
+DoubleInt<Base> -> DoubleInt<DoubleInt<Base>> -> ............................
 ```
 
 <a name="infiniintkit"/>
