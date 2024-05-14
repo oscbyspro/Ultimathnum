@@ -48,20 +48,4 @@
         default: fatalError(.overflow())
         }
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func negated() -> Self {
-        switch self {
-        case .less: .more
-        case .same: .same
-        case .more: .less
-        }
-    }
-    
-    @inlinable public static prefix func -(instance: consuming Self) -> Self {
-        instance.negated()
-    }
 }

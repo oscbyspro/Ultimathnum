@@ -8,24 +8,24 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Bit x Comparison
+// MARK: * Signum x Subtraction
 //*============================================================================*
 
-extension Bit {
+extension Signum {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func compared(to other: Self) -> Signum {
-        self == other ? 0 : self == 0 ? -1 : 1
+    @inlinable public consuming func negated() -> Self {
+        switch self {
+        case .less: .more
+        case .same: .same
+        case .more: .less
+        }
     }
     
-    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.base == rhs.base
-    }
-    
-    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        (lhs.base, rhs.base) == (false, true)
+    @inlinable public static prefix func -(instance: consuming Self) -> Self {
+        instance.negated()
     }
 }

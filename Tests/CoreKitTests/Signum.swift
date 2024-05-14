@@ -49,6 +49,18 @@ final class SignumTests: XCTestCase {
         Test().more(T.more, T.less)
         Test().more(T.more, T.same)
         Test().same(T.more, T.more)
+        
+        Test().same(T.less.compared(to: T.less),  0 as Signum)
+        Test().same(T.less.compared(to: T.same), -1 as Signum)
+        Test().same(T.less.compared(to: T.more), -1 as Signum)
+        
+        Test().same(T.same.compared(to: T.less),  1 as Signum)
+        Test().same(T.same.compared(to: T.same),  0 as Signum)
+        Test().same(T.same.compared(to: T.more), -1 as Signum)
+        
+        Test().same(T.more.compared(to: T.less),  1 as Signum)
+        Test().same(T.more.compared(to: T.same),  1 as Signum)
+        Test().same(T.more.compared(to: T.more),  0 as Signum)
     }
     
     func testNegation() {
