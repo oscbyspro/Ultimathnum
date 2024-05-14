@@ -18,7 +18,7 @@
   - [What is a systems integer?](#nomenclature-systems-integer)
   - [What is a trusted input?](#nomenclature-trusted-input)
 * [CoreKit](#corekit)
-  - [Validation and recovery through Fallible\<Value\>](#corekit-validation)
+  - [Validation and recovery with Fallible\<Value\>](#corekit-validation)
   - [Upsize binary integer elements with DataInt\<U8\>](#corekit-upsize)
   - [Lightweight text decoding and encoding with TextInt](#corekit-text-int)
   - [Type-safe bit casts with BitCastable\<BitPattern\>](#corekit-bit-cast)
@@ -47,11 +47,10 @@
 
 #### A rock-solid foundation
 
-In programming, complexity is sand, and simplicity is a rock. The former is, by 
-definition, a sum of parts. In this project, you will find unified abstractions 
-that reduce the number of individual parts and streamlined design principles to 
-keep the parts similar to each other. So make some tea, have a seat, then let's 
-explore what it's all about.
+In programming, complexity is sand, and simplicity is a rock. The former is, 
+by definition, a sum of parts. In this project, you will find unified abstractions 
+and streamlined models that keep the parts few and similar to each other. So bring 
+your favorite cup of tea, have a seat, then let's explore what it's all about.
 
 <a name="introduction-stdlib"/>
 
@@ -67,12 +66,12 @@ or accidental dependencies.
 
 #### Derive all the things!
 
-The are many ways to abstract and there are pros and cons to all of them. Here,
-we keep it simple. We use a small set of primitives to derive most things. Our 
-abstractions are purposeful and close to the machine so that our derivatives 
-perform like would-be primitives. Similarly, you will not find many mutating 
-methods. Instead, we introduce a mutating syntax that destructures functional 
-results. This cuts the project in half, compared to previous iterations of it.
+The are many ways to abstract and there are pros and cons to all of them.
+Here, we keep it simple. We use a small set of primitives to derive most things. 
+Our  abstractions are purposeful and close to the machine. You will not find many 
+mutating methods, for example. Instead, we introduce a mutating syntax that 
+destructures functional results. This cuts the project in half, compared to 
+previous iterations of it.
 
 <a name="introduction-recoverable"/>
 
@@ -220,7 +219,7 @@ init(unchecked:) // error: unsafe (with debug assertions)
 
 <a name="corekit-validation"/>
 
-#### Validation and recovery through Fallible\<Value\>
+#### Validation and recovery with Fallible\<Value\>
 
 > It doesn't matter how many times you fall.\
 > It matters how many times you get back up.
