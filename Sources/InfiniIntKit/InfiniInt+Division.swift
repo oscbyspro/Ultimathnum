@@ -44,7 +44,7 @@ extension InfiniInt {
         }
         //=--------------------------------------=
         if  lhsAppendixIsSet {
-            self[{ $0.complement() }]
+            self = self.complement()
         }
         
         if  rhsAppendixIsSet {
@@ -53,12 +53,12 @@ extension InfiniInt {
         //=--------------------------------------=
         var division = Magnitude(raw: self).divisionAsFiniteByFiniteNonzeroDivisor(Magnitude(raw: divisor.value))
         //=--------------------------------------=
-        if  lhsAppendixIsSet != rhsAppendixIsSet {
-            division.quotient[{  $0.complement() }]
+        if  lhsAppendixIsSet  != rhsAppendixIsSet {
+            division.quotient  = division.quotient .complement()
         }
         
         if  lhsAppendixIsSet {
-            division.remainder[{ $0.complement() }]
+            division.remainder = division.remainder.complement()
         }
         
         return Fallible(Division(raw: division), error: overflow)

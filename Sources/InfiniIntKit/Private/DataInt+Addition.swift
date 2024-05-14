@@ -29,7 +29,7 @@ extension MutableDataInt.Body {
             let increment = copy bit ? 1 : ~0 as Element
             
             while self.count > 0, copy bit == predicate {
-                bit = self[{ $0.incrementSubSequence(by: increment) }]
+                (self, bit) = self.incrementSubSequence(by: increment).components()
             }
         }
         
@@ -40,8 +40,9 @@ extension MutableDataInt.Body {
         var bit: Bool = true
         
         for index in elements.indices {
-            let element: Element  = elements[unchecked: index].toggled()
-            bit = self[unchecked: index][{ $0.plus(element, plus: bit) }]
+            let element: Element = elements[unchecked: index].toggled()
+            (self[unchecked: index], bit) =
+            (self[unchecked: index]).plus(element, plus: bit).components()
         }
     }
 }

@@ -17,20 +17,6 @@
 /// the `Fallible<Value>` recovery metchanism. Such types should not have any
 /// independent failure modes.
 ///
-/// - Note: This protocol is about ergonomic enhancements.
-///
-/// #### Perform mutations with a special subscript syntax
-///
-/// Types that conform to this protocol may perform mutations with a special
-/// subscript syntax. The syntax reduces the amount of code that needs testing,
-/// while acknowledging the convenience of mutations.
-///
-/// ```swift
-/// var value = U8.zero
-/// let error = value[{ $0.decremented() }]
-///
-/// print(value) // 255
-/// print(error) // true
-/// ```
+/// - Note: This protocol offers some ergonomic enhancements.
 ///
 public protocol Recoverable { }

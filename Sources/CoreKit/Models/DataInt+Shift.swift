@@ -51,13 +51,13 @@ extension MutableDataInt.Body {
             let element:  Element
             
             if  UX(raw: source) > .zero {
-                source[{ $0.decremented().assert() }]
+                source  = source.decremented().assert()
                 element = self[unchecked: source]
             }   else {
                 element = environment
             }
             
-            destination[{ $0.decremented().assert() }]
+            destination = destination.decremented().assert()            
             self[unchecked: destination] = element
         }
     }
@@ -89,14 +89,14 @@ extension MutableDataInt.Body {
             let pushed: Element = element &<< push
             
             if  UX(raw: source) > .zero {
-                source[{ $0.decremented().assert() }]
+                source  = source.decremented().assert()
                 element = self[unchecked: source]
             }   else {
                 element = environment
             }
             
             let pulled: Element = element &>> pull
-            destination[{ $0.decremented().assert() }]
+            destination = destination.decremented().assert()
             self[unchecked: destination] = pushed | pulled
         }
     }
@@ -139,13 +139,13 @@ extension MutableDataInt.Body {
             
             if  UX(raw: source) <  UX(raw: self.count) {
                 element = self[unchecked: source]
-                source[{ $0.incremented().assert() }]
+                source  = source.incremented().assert()
             }   else {
                 element = environment
             }
             
             self[unchecked: destination] = element
-            destination[{ $0.incremented().assert() }]
+            destination = destination.incremented().assert()
         }
     }
     
@@ -171,21 +171,21 @@ extension MutableDataInt.Body {
         Swift.assert(source <  self.count, String.indexOutOfBounds())
         //=--------------------------------------=
         var element: Element = self[unchecked: source]
-        source[{ $0.incremented().assert() }]
+        source = source.incremented().assert()
         
         while UX(raw: destination) < UX(raw: self.count) {
             let pushed: Element = element &>> push
             
             if  UX(raw: source) <  UX(raw: self.count) {
                 element = self[unchecked: source]
-                source[{ $0.incremented().assert() }]
+                source  = source.incremented().assert()
             }   else {
                 element = environment
             }
             
             let pulled: Element = element &<< pull
             self[unchecked: destination] = pushed | pulled
-            destination[{ $0.incremented().assert() }]
+            destination = destination.incremented().assert()
         }
     }
 }

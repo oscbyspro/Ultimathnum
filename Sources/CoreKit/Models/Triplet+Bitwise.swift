@@ -22,9 +22,9 @@ extension Triplet {
     }
     
     @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
-        increment = self.low [{ $0.complement(increment) }]
-        increment = self.mid [{ $0.complement(increment) }]
-        increment = self.high[{ $0.complement(increment) }]
+        (self.low,  increment) = self.low .complement(increment).components()
+        (self.mid,  increment) = self.mid .complement(increment).components()
+        (self.high, increment) = self.high.complement(increment).components()
         return Fallible(self, error: increment)
     }
     

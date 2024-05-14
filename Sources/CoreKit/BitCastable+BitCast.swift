@@ -21,28 +21,4 @@ extension BitCastable {
     @inlinable public init(raw source: consuming some BitCastable<BitPattern>) {
         self.init(raw: source.load(as: BitPattern.self))
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    /// Reinterprets this instance as an instance of type `T`.
-    ///
-    /// ```swift
-    /// var value = 0 as IX
-    /// var error = value[raw: UX.self][{ $0.decremented() }]
-    ///
-    /// print(value) // -1
-    /// print(error) // true
-    /// ```
-    ///
-    @inlinable public subscript<T>(raw type: T.Type) -> T where T: BitCastable<BitPattern> {
-        consuming get {
-            T(raw: self)
-        }
-        
-        mutating set {
-            self = Self(raw: newValue)
-        }
-    }
 }

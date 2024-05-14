@@ -116,7 +116,7 @@ extension TextInt {
                 let element = try self.numerals.load(part, as: UX.self)
                 // note that the index advances faster than the product
                 words[unchecked: index] = words[unchecked: ..<index].multiply(by: self.exponentiation.power, add: element)
-                index[{  $0.incremented().assert() }]
+                index  = index.incremented().assert()
                 stride = self.exponentiation.exponent
             }
             //=----------------------------------=
@@ -173,7 +173,7 @@ extension TextInt {
             backwards: while !numerals.isEmpty {
                 let part = UnsafeBufferPointer(rebasing: numerals[..<Int(stride)])
                 numerals = UnsafeBufferPointer(rebasing: numerals[Int(stride)...])
-                index[{  $0.decremented().assert() }]
+                index  = index.decremented().assert()
                 words[unchecked: index] = try self.numerals.load(part, as: UX.self)
                 stride = self.exponentiation.exponent
             }

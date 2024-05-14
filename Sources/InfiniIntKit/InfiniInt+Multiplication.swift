@@ -28,7 +28,7 @@ extension InfiniInt {
         var overflow = Bool(self.appendix)
         if  overflow {
             overflow = !Self.isSigned
-            self[{ $0.complement() }]
+            self = self.complement()
         }
         
         let count: IX = self.storage.count * 2

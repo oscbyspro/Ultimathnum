@@ -21,10 +21,10 @@ extension Doublet {
         self.complement(true).value
     }
     
-    @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
-        increment = self.low [{ $0.complement(increment) }]
-        increment = self.high[{ $0.complement(increment) }]
-        return Fallible(self, error: increment)
+    @inlinable public consuming func complement(_ increment: Bool) -> Fallible<Self> {
+        let low  = self.low .complement(increment)
+        let high = self.high.complement(low.error)
+        return Fallible(Self(low: low.value, high: high.value), error: high.error)
     }
     
     @inlinable public consuming func magnitude() -> Magnitude {

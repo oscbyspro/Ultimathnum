@@ -20,14 +20,15 @@ extension MutableDataInt.Body {
     /// Toggles each bit in its binary representation.
     @inlinable public borrowing func toggle() {
         for index in self.indices {
-            self[unchecked: index][{ $0.toggled() }]
+            self[unchecked: index] = self[unchecked: index].toggled()
         }
     }
     
     /// Toggles each bit in its binary representation then adds `increment`.
     @inlinable public borrowing func toggle(carrying increment: consuming Bool) -> Bool {
         for index in self.indices {
-            increment = self[unchecked: index][{ $0.complement(increment) }]
+            (self[unchecked: index], increment) = 
+            (self[unchecked: index]).complement(increment).components()
         }
         
         return increment as Bool

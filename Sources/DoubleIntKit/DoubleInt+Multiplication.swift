@@ -24,12 +24,13 @@ extension DoubleInt {
     }
     
     @inlinable public consuming func times(_ multiplier: Self) -> Fallible<Self> {
-        let minus  = self.high.isNegative != multiplier.high.isNegative
+        var minus  = self.high.isNegative != multiplier.high.isNegative
         var result = Fallible<Self>(raw: self.magnitude().times(multiplier.magnitude()))
         
-        var suboverflow = (result.value.high.isNegative)
+        var suboverflow = result.value.high.isNegative
         if  minus {
-            suboverflow = !result.value[{ $0.complement(true) }] && suboverflow
+            (result.value, minus) = result.value.complement(true).components()
+            suboverflow = Bool(Bit(suboverflow) & Bit(!minus))
         }
         
         return result.veto(suboverflow)
@@ -77,14 +78,18 @@ extension DoubleInt where Base == Base.Magnitude {
     //=------------------------------------------------------------------------=
     
     @inlinable func times(_ multiplier: Self) -> Fallible<Self> {
+        //=--------------------------------------=
         var ax = self.low .multiplication(multiplier.low)
         let ay = self.low .times(multiplier.high)
         let bx = self.high.times(multiplier.low )
         let by = !Bool(Bit(self.high == 0) | Bit(multiplier.high == 0))
-        
-        let o0 = ax.high[{ $0.plus(ay.value) }]
-        let o1 = ax.high[{ $0.plus(bx.value) }]
-        
+        //=--------------------------------------=
+        var o0 : Bool
+        var o1 : Bool
+        //=--------------------------------------=
+        (ax.high, o0) = ax.high.plus(ay.value).components()
+        (ax.high, o1) = ax.high.plus(bx.value).components()
+        //=--------------------------------------=
         let error = Bit(by) | Bit(ay.error) | Bit(bx.error) | Bit(o0) | Bit(o1)
         return Fallible(Self(raw: ax), error: Bool(error))
     }
@@ -94,20 +99,24 @@ extension DoubleInt where Base == Base.Magnitude {
     //=------------------------------------------------------------------------=
     
     @inlinable func multiplication(_ multiplier: Self) -> Doublet<Self> {
+        //=--------------------------------------=
         var ax = Self(self.low .multiplication(multiplier.low ))
         let ay = Self(self.low .multiplication(multiplier.high))
         let bx = Self(self.high.multiplication(multiplier.low ))
         var by = Self(self.high.multiplication(multiplier.high))
         //=--------------------------------------=
-        let a0 = ax.high[{ $0.plus(ay.low ) }]
-        let a1 = ax.high[{ $0.plus(bx.low ) }]
-        let a2 = Low(Bit(a0)) &+  Low(Bit(a1))
+        var o0 : Bool
+        var o1 : Bool
         //=--------------------------------------=
-        let b0 = by.low [{ $0.plus(ay.high) }]
-        let b1 = by.low [{ $0.plus(bx.high) }]
-        let b2 = Low(Bit(b0)) &+  Low(Bit(b1))
+        (ax.high, o0) = ax.high.plus(ay.low ).components()
+        (ax.high, o1) = ax.high.plus(bx.low ).components()
+        let az = Low(Bit(o0)) &+ Low(Bit(o1))
         //=--------------------------------------=
-        by = by.plus(Self(low: a2, high: b2)).assert()
+        (by.low,  o0) = by.low .plus(ay.high).components()
+        (by.low,  o1) = by.low .plus(bx.high).components()
+        let bz = Low(Bit(o0)) &+ Low(Bit(o1))
+        //=--------------------------------------=
+        by = by.plus(Self(low: az, high: bz)).assert()
         //=--------------------------------------=
         return Doublet(low: Magnitude(ax), high: Magnitude(by))
     }

@@ -115,8 +115,10 @@ extension Test {
         recover: if !expectation.error {
             var bit = false
             var reversed = expectation.value.quotient.multiplication(divisor.value)
-            bit = reversed.low [{ $0.plus(T.Magnitude.init(raw: expectation.value.remainder), plus: bit) }]
-            bit = reversed.high[{ $0.plus(T(repeating: expectation.value.remainder.appendix), plus: bit) }]
+            
+            (reversed.low,  bit) = reversed.low .plus(T.Magnitude.init(raw: expectation.value.remainder), plus: bit).components()
+            (reversed.high, bit) = reversed.high.plus(T(repeating: expectation.value.remainder.appendix), plus: bit).components()
+            
             same(bit,      false,    "dividend != divisor * quotient + remainder [0]")
             same(dividend, reversed, "dividend != divisor * quotient + remainder [1]")
         }

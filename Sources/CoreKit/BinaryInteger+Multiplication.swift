@@ -52,3 +52,23 @@ extension BinaryInteger {
         self.times(result.value).veto(result.error)
     }
 }
+
+//*============================================================================*
+// MARK: * Binary Integer x Multiplication x Systems
+//*============================================================================*
+
+extension SystemsInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// Returns the full result of `self * multiplier + increment`.
+    @inlinable public consuming func multiplication(_ multiplier: Self, plus increment: Magnitude) -> Doublet<Self> {
+        let bit: Bool
+        var product = self.multiplication(multiplier)
+        (product.low, bit) = product.low.plus(increment).components()
+        (product.high) = product.high.plus(Self(Bit((bit)))).assert()
+        return product
+    }
+}

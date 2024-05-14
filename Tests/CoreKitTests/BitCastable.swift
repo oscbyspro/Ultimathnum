@@ -36,31 +36,4 @@ final class BitCastableTests: XCTestCase {
             whereIs(type)
         }
     }
-    
-    func testRawSubscriptUsingCoreSystemsIntegers() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias S = T.Signitude
-            typealias M = T.Magnitude
-            //=----------------------------------=
-            var value:  T
-            //=----------------------------------=
-            value = T(raw: M.max)
-            
-            Test().same(true,  value[raw: M.self][{ $0.incremented() }])
-            Test().same(value, T(raw: M.min))
-            Test().same(false, value[raw: S.self][{ $0.decremented() }])
-            Test().same(value, T(raw: M.max))
-
-            value = T(raw: S.max)
-            
-            Test().same(true,  value[raw: S.self][{ $0.incremented() }])
-            Test().same(value, T(raw: S.min))
-            Test().same(false, value[raw: M.self][{ $0.decremented() }])
-            Test().same(value, T(raw: S.max))
-        }
-
-        for type in coreSystemsIntegers {
-            whereIs(type)
-        }
-    }
 }

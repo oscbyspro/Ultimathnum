@@ -10,6 +10,9 @@
 //*============================================================================*
 // MARK: * Binary Integer x Validation
 //*============================================================================*
+//=----------------------------------------------------------------------------=
+// MARK: + Integers
+//=----------------------------------------------------------------------------=
 
 extension BinaryInteger {
     
@@ -32,9 +35,11 @@ extension BinaryInteger {
         magnitude: consuming Magnitude
     )   -> Fallible<Self> {
         
+        var magnitude  = magnitude // await consuming fix
         var isNegative = Bool(sign)
+        
         if  isNegative {
-            isNegative = magnitude[{ $0.negated() }]
+            (magnitude, isNegative) = magnitude.negated().components()
         }
         
         let value = Self(raw: magnitude)
@@ -90,6 +95,9 @@ extension BinaryInteger {
 //*============================================================================*
 // MARK: * Binary Integer x Validation x Edgy
 //*============================================================================*
+//=----------------------------------------------------------------------------=
+// MARK: + Integers
+//=----------------------------------------------------------------------------=
 
 extension EdgyInteger {
     

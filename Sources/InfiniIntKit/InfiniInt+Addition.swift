@@ -25,15 +25,15 @@ extension InfiniInt {
         self.storage.resize(minCount: other.storage.count)
         self.storage.withUnsafeMutableBinaryIntegerBody { lhs in
             other.withUnsafeBinaryIntegerElements { rhs in
-                var lhs  = consume lhs
-                overflow = lhs[{ $0.incrementSubSequence(by: rhs.body,  plus: overflow) }]
-                overflow = lhs.increment(repeating: Bool(rhs.appendix), plus: overflow)
+                var lhs = consume lhs
+                (lhs, overflow) = lhs.incrementSubSequence(by: rhs.body,  plus: overflow).components()
+                (overflow) = lhs.increment(repeating: Bool(rhs.appendix), plus: overflow)
             }
         }
         
         var last = Element(repeating: self.appendix)
-        overflow = last[{ $0.plus(Element(repeating: other.appendix), plus: overflow) }]
-        self.storage.appendix = Element.Signitude(raw: last).appendix
+        (last, overflow) = last.plus(Element(repeating: other.appendix), plus: overflow).components()
+        self.storage.appendix = Element.Signitude(raw:  last).appendix
         self.storage.normalize(appending: Element.Magnitude(raw: last))
         
         return self.veto(overflow)

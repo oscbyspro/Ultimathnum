@@ -103,4 +103,16 @@
             high: Base.Magnitude(raw: self.high)
         )
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func ascending() -> (low: Low, mid: Mid, high: High) {
+        (low: self.low, mid: self.mid, high: self.high)
+    }
+    
+    @inlinable public consuming func descending() -> (high: High, mid: Mid, low: Low) {
+        (high: self.high, mid: self.mid, low: self.low)
+    }
 }

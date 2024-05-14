@@ -33,11 +33,9 @@ extension MutableDataInt.Body {
         var increment = increment // consume: compiler bug...
         
         while UX(raw: self.count) > 0 {
-            var product = self[unchecked: ()].multiplication(multiplier)
-            product.high &+= Element(Bit(product.low[{ $0.plus(increment) }]))
-            increment = product.high
-            self[unchecked: ()] = product.low
-            self = (consume self)[unchecked: 1...] // consume: compiler bug...
+            (self[unchecked: ()], increment) = 
+            (self[unchecked: ()]).multiplication(multiplier, plus: increment).ascending()
+            (self) = (consume self)[unchecked: 1...]
         }
         
         return increment as Element
@@ -112,10 +110,8 @@ extension MutableDataInt.Body {
         let first: Element = rhs.count > 0 ? rhs[unchecked: ()] : Element()
         
         for index in lhs.indices {
-            // maximum: (low:  1, high: ~1) == max * max
-            var product = lhs[unchecked: index].multiplication(first)
-            // maximum: (low:  0, high: ~0) == max * max + max
-            carry = product.high.plus(Element(Bit(product.low[{ $0.plus(carry) }]))).assert()
+            let product = lhs[unchecked: index].multiplication(first, plus: carry)
+            carry = product.high
             pointer.initialize(to: product.low)
             pointer = pointer.successor()
         }
@@ -153,32 +149,28 @@ extension MutableDataInt.Body {
         //=--------------------------------------=
         self.start.initialize(repeating: 0, count: Int(self.count))
         //=--------------------------------------=
+        var bit: Bool
         var index = 000 as IX
         var carry = increment
         //=--------------------------------------=
         while UX(raw: self.count) > 0 {
+            //=----------------------------------=
             let multiplier = Immutable(elements.start + Int(index), count: 1)
+            let (diagonal) = multiplier[unchecked:()]
             index = index.incremented().assert()
             //=----------------------------------=
             // add non-diagonal products
             //=----------------------------------=
-            (copy self)[unchecked: 1...].incrementSubSequence(
-                by:    elements[unchecked: index...],
-                times: multiplier[unchecked: ()],
-                plus:  Element.zero
-            )
+            (copy self)[unchecked: 1...].incrementSubSequence(by: elements[unchecked: index...], times: diagonal)
             //=----------------------------------=
             // partially double non-diagonal
             //=----------------------------------=
-            carry = (copy self)[unchecked: ..<2].multiply(by: 2, add: carry)
+            (carry) = (copy self)[unchecked: ..<2].multiply(by: 2, add: carry)
             //=----------------------------------=
             // add this iteration's diagonal
             //=----------------------------------=
-            carry &+=  Element(Bit(self[{$0.incrementSubSequence(
-                by:    multiplier,
-                times: multiplier[unchecked: ()],
-                plus:  Element.zero
-            )}])) //   note that this advances self by two steps
+            (self, bit) = self.incrementSubSequence(by: multiplier, times: diagonal).components()
+            (carry) &+= Element(Bit(bit))
         }
     }
 }

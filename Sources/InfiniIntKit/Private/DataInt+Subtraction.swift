@@ -29,7 +29,7 @@ extension MutableDataInt.Body {
             let increment = copy bit ? 1 : ~0 as Element
             
             while self.count > 0, copy bit == predicate {
-                bit = self[{ $0.decrementSubSequence(by: increment) }]
+                (self, bit) = self.decrementSubSequence(by: increment).components()                
             }
         }
         

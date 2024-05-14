@@ -36,16 +36,18 @@ extension DoubleInt {
             raw: self.magnitude().division2222(divisor.magnitude())
         )
         
-        var suboverflow  = Bit( division.quotient.high.isNegative)
+        var suboverflow = Bit(division.quotient.high.isNegative)
         if  lhsIsNegative != rhsIsNegative {
-            suboverflow &= Bit(!division.quotient[{ $0.complement(true) }])
+            let complement = division.quotient.complement(true)
+            suboverflow &= Bit(!complement.error)
+            division.quotient = complement.value
         }
         
         if  lhsIsNegative {
             division.remainder = division.remainder.complement()
         }
         
-        return Fallible(division, error: Bool(suboverflow))
+        return division.veto(Bool(suboverflow))
     }
     
     //=------------------------------------------------------------------------=
@@ -63,9 +65,11 @@ extension DoubleInt {
             )
         )
         
-        var suboverflow  = Bit( division.value.quotient.high.isNegative)
-        if  lhsIsNegative  != rhsIsNegative {
-            suboverflow &= Bit(!division.value.quotient[{ $0.complement(true) }])
+        var suboverflow = Bit(division.value.quotient.high.isNegative)
+        if  lhsIsNegative != rhsIsNegative {
+            let complement = division.value.quotient.complement(true)
+            suboverflow &= Bit(!complement.error)
+            division.value.quotient = complement.value
         }
         
         if  lhsIsNegative {

@@ -27,11 +27,12 @@ extension MutableDataInt.Body {
         // performance: compare index then bit
         //=--------------------------------------=
         while UX(raw: self.count) > 0, copy bit {
-            bit  = self[unchecked: ()][{ $0.incremented() }]
-            self = (consume self)[unchecked: 1...]
+            (self[unchecked: ()], bit) =
+            (self[unchecked: ()]).incremented().components()
+            (self) = (consume self)[unchecked: 1...]
         }
         //=--------------------------------------=
-        return Fallible(consume self, error: bit)
+        return self.veto(bit)
     }
 }
 
@@ -49,19 +50,17 @@ extension MutableDataInt.Body {
         by element: consuming Element
     )   -> Fallible<Self> {
         
-        let bit = self[{
-            $0.incrementSubSequence(by: element)
-        }]
-        
-        return self.increment(by: bit)
+        let result = self.incrementSubSequence(by: element)
+        return result.value.increment(by: result.error)
     }
     
     @discardableResult @inlinable public consuming func incrementSubSequence(
         by element: consuming Element
     )   -> Fallible<Self> {
         
-        let bit = self[unchecked: ()][{ $0.plus(element) }]
-        return Fallible((consume self)[unchecked: 1...], error: bit)
+        let result = self[unchecked: ()].plus(element)
+        self[unchecked: ()] = result.value
+        return (consume self)[unchecked: 1...].veto(result.error)
     }
 }
 
@@ -80,11 +79,8 @@ extension MutableDataInt.Body {
         plus bit: consuming Bool
     )   -> Fallible<Self> {
         
-        bit = self[{ 
-            $0.incrementSubSequence(by: increment, plus: bit)
-        }]
-        
-        return self.increment(by: bit)
+        let result = self.incrementSubSequence(by: increment, plus: bit)
+        return result.value.increment(by: result.error)
     }
     
     @inlinable public consuming func incrementSubSequence(
@@ -93,14 +89,14 @@ extension MutableDataInt.Body {
     )   -> Fallible<Self> {
         
         if  (copy bit) {
-            bit = increment[{ $0.incremented() }]
+            (increment, bit) = increment.incremented().components()
         }
         
         if !(copy bit) {
-            bit = self[unchecked: ()][{ $0.plus(increment) }]
+            (self[unchecked: ()], bit) = self[unchecked: ()].plus(increment).components()
         }
         
-        return Fallible((consume self)[unchecked: 1...], error: bit)
+        return (consume self)[unchecked: 1...].veto(bit)
     }
 }
 
@@ -119,11 +115,8 @@ extension MutableDataInt.Body {
         plus bit: consuming Bool = false
     )   -> Fallible<Self> {
         
-        let bit = self[{
-            $0.incrementSubSequence(by: elements, plus: bit)
-        }]
-        
-        return self.increment(by: bit)
+        let result = self.incrementSubSequence(by: elements, plus: bit)
+        return result.value.increment(by: result.error)
     }
     
     @inlinable public consuming func incrementSubSequence(
@@ -133,13 +126,10 @@ extension MutableDataInt.Body {
         
         for index in elements.indices {
             let element = elements[unchecked: index]
-            
-            bit = self[{
-                $0.incrementSubSequence(by: element, plus: bit)
-            }]
+            (self, bit) = self.incrementSubSequence(by: element, plus: bit).components()
         }
         
-        return Fallible(self, error: bit)
+        return self.veto(bit)
     }
 }
 
@@ -159,11 +149,8 @@ extension MutableDataInt.Body {
         plus increment: consuming Element = .zero
     )   -> Fallible<Self> {
         
-        let bit = self[{
-            $0.incrementSubSequence(by: elements, times: multiplier, plus: increment)
-        }]
-        
-        return self.increment(by: bit)
+        let result = self.incrementSubSequence(by: elements, times: multiplier, plus: increment)
+        return result.value.increment(by: result.error)
     }
     
     @discardableResult @inlinable public consuming func incrementSubSequence(
@@ -172,19 +159,15 @@ extension MutableDataInt.Body {
         plus increment: Element = .zero
     )   -> Fallible<Self> {
         
+        var bit: Bool
         var increment = increment // consume: compiler bug...
         
         for index in elements.indices {
-            // maximum: (low:  1, high: ~1) == max * max
-            var product = elements[unchecked: index].multiplication(multiplier)
-            // maximum: (low:  0, high: ~0) == max * max + max
-            product.high &+= Element(Bit(product.low[{ $0.plus(increment) }]))
-            // maximum: (low: ~0, high: ~0) == max * max + max + max
-            product.high &+= Element(Bit(self[{ $0.incrementSubSequence(by: product.low) }]))
-            // store the high part in the next iteration's increment
-            increment = product.high
+            let product = elements[unchecked: index].multiplication(multiplier, plus: increment)
+            (self[unchecked: index], bit) = (self[unchecked: index]).plus(product.low).components()
+            (increment) = product.high.plus(Element(Bit(bit))).assert()
         }
         
-        return self.incrementSubSequence(by: increment)
+        return (consume self)[unchecked: elements.count...].incrementSubSequence(by: increment)
     }
 }

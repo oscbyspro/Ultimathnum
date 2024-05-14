@@ -155,9 +155,9 @@ where
     
     @inlinable consuming func minus(_ decrement:  borrowing Self) -> Fallible<Self>
             
-    @inlinable consuming func times(_ multiplier: borrowing Self) -> Fallible<Self>
+    @inlinable borrowing func times(_ multiplier: borrowing Self) -> Fallible<Self>
     
-    @inlinable consuming func squared() -> Fallible<Self>
+    @inlinable borrowing func squared() -> Fallible<Self>
     
     /// Returns the `quotient` and `error` of dividing `self` by the `divisor`.
     ///

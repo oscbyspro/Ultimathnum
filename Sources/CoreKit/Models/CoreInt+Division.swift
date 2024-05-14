@@ -54,9 +54,11 @@ extension CoreIntegerWhereIsSigned {
             raw: Magnitude.division(dividend.magnitude(), by: divisor.magnitude())
         )
         
-        var suboverflow  = Bit( division.value.quotient.isNegative)
-        if  lhsIsNegative  != rhsIsNegative {
-            suboverflow &= Bit(!division.value.quotient[{ $0.complement(true) }])
+        var suboverflow = Bit(division.value.quotient.isNegative)
+        if  lhsIsNegative != rhsIsNegative {
+            let complement = division.value.quotient.complement(true)
+            suboverflow &= Bit(!complement.error)
+            division.value.quotient = complement.value
         }
         
         if  lhsIsNegative {
@@ -77,13 +79,14 @@ extension CoreIntegerWhereIsUnsigned {
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func division(_ dividend: consuming Doublet<Self>, by divisor: Divisor<Self>) -> Fallible<Division<Self, Self>> {
+    @inlinable public static func division(_ dividend: Doublet<Self>, by divisor: Divisor<Self>) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
         var overflow = false
+        var dividend = dividend // await consuming fix
         //=--------------------------------------=
         if  divisor.value <= dividend.high {
             overflow = true
-            dividend.high[{ $0.remainder(divisor) }]
+            dividend.high = dividend.high.remainder(divisor)
         }
         //=--------------------------------------=
         let result = divisor.value.base.dividingFullWidth((high: dividend.high.base, low: dividend.low.base))
