@@ -19,6 +19,7 @@
   - [What is a trusted input?](#nomenclature-trusted-input)
 * [CoreKit](#corekit)
   - [Validation and recovery with Fallible\<Value\>](#corekit-validation)
+  - [Let there be binary integers with RootInt](#corekit-root-int)
   - [Upsize binary integer elements with DataInt\<U8\>](#corekit-upsize)
   - [Lightweight text decoding and encoding with TextInt](#corekit-text-int)
   - [Type-safe bit casts with BitCastable\<BitPattern\>](#corekit-bit-cast)
@@ -253,6 +254,20 @@ static func  +(lhs: consuming Self, borrowing Self) -> Self // trapping
 static func &+(lhs: consuming Self, borrowing Self) -> Self // wrapping
 ```
 
+<a name="corekit-root-int"/>
+
+#### Let there be binary integers with RootInt
+
+> *We don't know where it comes from, only that it exists.*
+
+You may create integers our of thin air with RootInt, which is a wrapper around Swift's 
+StaticBigInt model. It comes with some additional bells and whistles. You may, for example,
+use it to query whether a type can represent an integer literal in generic code.
+
+```swift
+static func exactly(_ source: RootInt) -> Fallible<Self>
+```
+
 <a name="corekit-upsize"/>
 
 #### Upsize binary integer elements with DataInt\<U8\>
@@ -263,7 +278,6 @@ however, because the memory alignment of a smaller systems integer may not be co
 larger systems integer. Instead, you may use DataInt\<U8\> to load elements of any size. It performs 
 an unaligned load when possible and handles the case where the load would read past the end. All 
 binary integers can form a DataInt\<U8\> view since a byte is the smallest possible systems integer type.
-
 
 <a name="corekit-text-int"/>
 
