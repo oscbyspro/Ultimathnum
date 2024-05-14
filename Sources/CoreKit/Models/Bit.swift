@@ -56,7 +56,7 @@
         }   else if integerLiteral == 1 {
             self.init(true )
         }   else {
-            preconditionFailure(String.overflow())
+            Swift.preconditionFailure(.overflow())
         }
     }
     

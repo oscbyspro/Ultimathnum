@@ -11,7 +11,7 @@
 // MARK: * Data Int x Read
 //*============================================================================*
 
-@frozen public struct DataInt<Element> where Element: SystemsInteger & UnsignedInteger {
+@frozen public struct DataInt<Element>: Recoverable where Element: SystemsInteger & UnsignedInteger {
         
     public typealias Element = Element
         
@@ -62,7 +62,7 @@
     ///
     /// - Note: Its operations are `unsigned` and `finite` by default.
     ///
-    @frozen public struct Body {
+    @frozen public struct Body: Recoverable {
                 
         public typealias Element = DataInt.Element
                 
@@ -111,7 +111,7 @@
 // MARK: * Data Int x Read|Write
 //*============================================================================*
 
-@frozen public struct MutableDataInt<Element> where Element: SystemsInteger & UnsignedInteger {
+@frozen public struct MutableDataInt<Element>: Recoverable where Element: SystemsInteger & UnsignedInteger {
         
     public typealias Element = Element
         
@@ -159,7 +159,7 @@
     ///
     /// - Note: Its operations are `unsigned` and `finite` by default.
     ///
-    @frozen public struct Body {
+    @frozen public struct Body: Recoverable {
                         
         public typealias Element = MutableDataInt.Element
                 

@@ -8,26 +8,23 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Binary Integer x Map
+// MARK: * Recoverable x Veto
 //*============================================================================*
 
-extension BinaryInteger {
+extension Recoverable {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public subscript(map: (Self) -> Self) -> Void {
-        mutating get {
-            self = map(self)
-        }
+    /// Sets the `error` indicator when `condition` is `true`.
+    @inlinable public consuming func veto(_ condition: Bool = true) -> Fallible<Self> {
+        Fallible(self, error: condition)
     }
     
-    @inlinable public subscript(map: (Self) -> Fallible<Self>) -> Bool {
-        mutating get {
-            let result = map(self)
-            self = result.value
-            return result.error
-        }
+    /// Sets the `error` indicator if the `predicate` return `true`.
+    @inlinable public consuming func veto(_ predicate: (Self) -> Bool) -> Fallible<Self> {
+        let error = predicate(self)
+        return self.veto(error)
     }
 }

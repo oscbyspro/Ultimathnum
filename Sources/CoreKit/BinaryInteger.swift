@@ -58,6 +58,7 @@ public protocol BinaryInteger<BitPattern>:
     Comparable,
     ExpressibleByIntegerLiteral,
     Hashable,
+    Recoverable,
     Sendable,
     Strideable,
     MaybeLosslessStringConvertible

@@ -122,7 +122,7 @@ extension TextInt {
             //=----------------------------------=
             // path: success
             //=----------------------------------=
-            Swift.assert(numerals.isEmpty, "must process every numeral")
+            Swift.assert(numerals.isEmpty)
             Swift.assert(index <= (words).count, String.indexOutOfBounds())
             return success(DataInt(words[unchecked: ..<index]))
         }
@@ -180,7 +180,7 @@ extension TextInt {
             //=----------------------------------=
             // path: success
             //=----------------------------------=
-            Swift.assert(numerals.isEmpty, "must process every numeral")
+            Swift.assert(numerals.isEmpty)
             Swift.assert(index == IX.zero, String.indexOutOfBounds())
             return success(DataInt(words))
         }
