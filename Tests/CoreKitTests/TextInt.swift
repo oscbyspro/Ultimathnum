@@ -108,6 +108,10 @@ extension TextIntTests.Case {
             test.same(Result.success(value), expectation)
         }   catch let error as TextInt.Failure {
             test.same(Result.failure(error), expectation)
+            
+            if  item.radix == 10 {
+                test.same(I(description), nil, "BinaryInteger.init?(_:)")
+            }
         }   catch {
             test.fail("unknown error before typed throws: \(error)")
         }
