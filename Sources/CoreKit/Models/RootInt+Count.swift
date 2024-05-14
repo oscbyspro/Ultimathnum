@@ -34,7 +34,28 @@ extension RootInt {
     /// └──────┴──────────── → ────────┘
     /// ```
     ///
-    @inlinable public func entropy() -> UX {
+    @inlinable public func count(_ selection: Bit.Entropy) -> UX {
         UX(IX(self.base.bitWidth))
+    }
+    
+    /// The number of bits in `self` minus the repeating `appendix` sequence.
+    ///
+    /// ```
+    /// ┌──────┬──────────── → ────────────┐
+    /// │ self │ bit pattern │ nonappendix │
+    /// ├──────┼──────────── → ────────────┤
+    /// │ -4   │ 00........1 │ 2           │
+    /// │ -3   │ 10........1 │ 2           │
+    /// │ -2   │ 0.........1 │ 1           │
+    /// │ -1   │ ..........1 │ 0           │
+    /// │  0   │ ..........0 │ 0           │
+    /// │  1   │ 1.........0 │ 1           │
+    /// │  2   │ 01........0 │ 2           │
+    /// │  3   │ 11........0 │ 2           │
+    /// └──────┴──────────── → ────────────┘
+    /// ```
+    ///
+    @inlinable public func count(_ selection: Bit.Nonappendix) -> UX {
+        self.count(.entropy).decremented().assert("entropy >= 1")
     }
 }
