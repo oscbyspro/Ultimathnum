@@ -23,6 +23,7 @@
   - [Type-safe bit casts with BitCastable\<BitPattern\>](#corekit-bit-cast)
   - [Generic logic gates with BitOperable](#corekit-bitwise-logic)
   - [Lightweight text decoding and encoding with TextInt](#corekit-text-int)
+  - [More ones and zeros with Bit, Sign and Signum](#corekit-bit-sign-signum)
 * [DoubleIntKit](#doubleintkit)
   - [A big systems integer](#doubleintkit-systems-integer)
   - [A non-recursive model](#doubleintkit-non-recursive-model)
@@ -346,7 +347,6 @@ static func &=(lhs: inout Self, rhs: Self)
 static func |=(lhs: inout Self, rhs: Self)
 static func ^=(lhs: inout Self, rhs: Self)
 ```
-
 </details>
 
 <a name="corekit-text-int"/>
@@ -372,6 +372,34 @@ represents bitwise negation. In other words, +&123 translates to ∞ minus 123.
 ```swift
 let regex: Regex = /^(?<sign>\+|-)(?<mask>#|&)(?<body>[0-9a-zA-z]+)$/
 ```
+
+<a name="corekit-bit-sign-signum"/>
+
+#### More ones and zeros with Bit, Sign and Signum
+
+You may have noticed that this project introduces various additional types. Some are more 
+important than other, so here's a rundown of the three most prominent ones: Bit, Sign and Signum.
+Bit and Sign are a lot like Bool, but with bitwise operations and no short-circuits. Signum comes 
+up a lot because it's the return type of the compared(to:) method. It also offers various 
+conveniences for common transformations.
+
+| Type   | Values         |
+|:-------|---------------:|
+| Bit    |       `0`, `1` |
+| Sign   |       `+`, `-` |
+| Signum | `-1`, `0`, `1` |
+
+<details>
+<summary>
+Here's the some of the most common signum operations...
+</summary>
+
+```swift    
+init(_ source: Bit) //....................  0 or 1
+static func one(_ sign: Sign) -> Signum // -1 or 1
+func negated() -> Self //................. toggles -1 and 1
+```
+</details>
 
 <a name="doubleintkit"/>
 
