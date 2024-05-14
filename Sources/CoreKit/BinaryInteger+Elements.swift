@@ -17,6 +17,7 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a validated instance from the given `source` and `mode`.
     @inlinable public static func exactly(
         _ source: DataInt<U8>, mode: some Signedness
     )   -> Fallible<Self> {
@@ -41,6 +42,7 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a validated instance from the given `source` and `mode`.
     @inlinable public static func exactly(
         _ source: DataInt<Element.Magnitude>, mode: some Signedness
     )   -> Fallible<Self> {
@@ -61,6 +63,7 @@ extension BinaryInteger {
         return instance.veto(!Bool(success))
     }
     
+    /// Creates a validated instance from the given `source` and `mode`.
     @inlinable public static func exactly<OtherElement>(
         _ source: DataInt<OtherElement>, mode: some Signedness
     )   -> Fallible<Self> {
@@ -77,6 +80,7 @@ extension BinaryInteger {
         }
     }
     
+    /// Creates a new instance from the bit pattern of `source` that fits.
     @inlinable public init<OtherElement>(load source: DataInt<OtherElement>) {
         if  OtherElement.elementsCanBeRebound(to: Self.Element.Magnitude.self) {
             self = (source).withMemoryRebound(to: Self.Element.Magnitude.self, perform: Self.init(load:))
@@ -89,6 +93,7 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a new instance from the bit pattern of `source` that fits.
     @inlinable public init<T>(load source: consuming T) where T: SystemsInteger<UX.BitPattern> {
         if  T.isSigned {
             self.init(load: UX.Signitude(raw: source))
@@ -97,6 +102,7 @@ extension BinaryInteger {
         }
     }
     
+    /// Returns instance of `type` from the bit pattern of `self` that fits.
     @inlinable public borrowing func load<T>(as type: T.Type) -> T where T: SystemsInteger<UX.BitPattern> {
         T(raw: self.load(as: UX.BitPattern.self))
     }
@@ -105,6 +111,7 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a new instance from the bit pattern of `source` that fits.
     @inlinable public init<T>(load source: consuming T) where T: SystemsInteger<Element.BitPattern> {
         if  T.isSigned {
             self.init(load: Element.Signitude(raw: source))
@@ -113,6 +120,7 @@ extension BinaryInteger {
         }
     }
     
+    /// Returns instance of `type` from the bit pattern of `self` that fits.
     @inlinable public borrowing func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern> {
         T(raw: self.load(as: Element.BitPattern.self))
     }
@@ -121,10 +129,7 @@ extension BinaryInteger {
     // MARK: Initializeres
     //=------------------------------------------------------------------------=
     
-    /// ### Development
-    ///
-    /// - TODO: Consider BinaryInteger.Largest asseociated type fast path.
-    ///
+    /// Creates a new instance from the bit pattern of `source` that fits.
     @inlinable public init<Other>(load source: borrowing Other) where Other: BinaryInteger {
         let lhsIsSmall = UX(size: Self .self).map({ $0 <= UX.size }) == true
         let rhsIsSmall = UX(size: Other.self).map({ $0 <= UX.size }) == true
@@ -145,6 +150,7 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// Executes the `action` with the `body` and `appendix` of `self`.
     @inlinable public func withUnsafeBinaryIntegerElements<Value>(
         perform action: (DataInt<Element.Magnitude>) throws -> Value
     )   rethrows -> Value {
@@ -156,6 +162,7 @@ extension BinaryInteger {
         }
     }  
     
+    /// Executes the `action` with the mutable `body` and `appendix` of `self`.
     @inlinable public mutating func withUnsafeMutableBinaryIntegerElements<Value>(
         perform action: (MutableDataInt<Element.Magnitude>) throws -> Value
     )   rethrows -> Value {
@@ -167,6 +174,8 @@ extension BinaryInteger {
         }
     }
     
+    /// Executes the `action` with the `body` and `appendix` of `self`,
+    /// with an attempt to reinterpreted each element as `type`.
     @inlinable public func withUnsafeBinaryIntegerElements<OtherElement, Value>(
         as type: OtherElement.Type,
         perform action: (DataInt<OtherElement>) throws -> Value
@@ -182,6 +191,8 @@ extension BinaryInteger {
         }
     }
 
+    /// Executes the `action` with the mutable `body` and `appendix` of `self`,
+    /// with an attempt to reinterpreted each element as `type`.
     @inlinable public mutating func withUnsafeMutableBinaryIntegerElements<OtherElement, Value>(
         as type: OtherElement.Type,
         perform action: (MutableDataInt<OtherElement>) throws -> Value
@@ -197,6 +208,11 @@ extension BinaryInteger {
         }
     }
     
+    /// Executes the `action` with the `body` and `appendix` of `self`,
+    /// where each element has been reinterpreted as a byte.
+    ///
+    /// - Note: A byte is the smallest systems integer type.
+    ///
     @inlinable public func withUnsafeBinaryIntegerElementsAsBytes<Value>(
         perform action: (DataInt<U8.Magnitude>) throws -> Value
     )   rethrows -> Value {
@@ -204,6 +220,11 @@ extension BinaryInteger {
         try self.withUnsafeBinaryIntegerElements(as: U8.self, perform: action)!
     }
     
+    /// Executes the `action` with the mutable `body` and `appendix` of `self`,
+    /// where each element has been reinterpreted as a byte.
+    ///
+    /// - Note: A byte is the smallest systems integer type.
+    ///
     @inlinable public mutating func withUnsafeMutableBinaryIntegerElementsAsBytes<Value>(
         perform action: (MutableDataInt<U8.Magnitude>) throws -> Value
     )   rethrows -> Value {
@@ -215,6 +236,7 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// Indicates whether `Element` can be rebound to `OtherElement`.
     @inlinable public static func elementsCanBeRebound<OtherElement>(to type: OtherElement.Type) -> Bool where OtherElement: SystemsInteger {
         let size      = Int.zero == MemoryLayout<Self.Element>.size      % MemoryLayout<OtherElement>.size
         let stride    = Int.zero == MemoryLayout<Self.Element>.stride    % MemoryLayout<OtherElement>.stride
@@ -233,10 +255,12 @@ extension SystemsInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a new instance from the bit pattern of `source` that fits.
     @inlinable public init<T>(load source: borrowing T) where T: BinaryInteger, BitPattern == UX.BitPattern {
         self = source.load(as: Self.self)
     }
     
+    /// Creates a new instance from the bit pattern of `source` that fits.
     @inlinable public init<T>(load source: borrowing T) where T: BinaryInteger, BitPattern == T.Element.BitPattern {
         self = source.load(as: Self.self)
     }

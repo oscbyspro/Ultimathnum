@@ -17,10 +17,12 @@ extension BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Returns the trapping result of `self * increment`.
     @inlinable public static func *(lhs: consuming Self, rhs: borrowing Self) -> Self {
         lhs.times(rhs).unwrap()
     }
     
+    /// Returns the wrapping result of `self * increment`.
     @inlinable public static func &*(lhs: consuming Self, rhs: borrowing Self) -> Self {
         lhs.times(rhs).value
     }
@@ -29,10 +31,12 @@ extension BinaryInteger {
     // MARK: Transformations x Inout
     //=------------------------------------------------------------------------=
 
+    /// Forms the trapping result of `self * increment`.
     @inlinable public static func *=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs * rhs
     }
 
+    /// Forms the wrapping result of `self * increment`.
     @inlinable public static func &*=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs &* rhs
     }

@@ -53,12 +53,14 @@ public protocol SystemsInteger<BitPattern>: EdgyInteger where Magnitude: Systems
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Returns the byte swapped version of `self`.
     @inlinable consuming func reversed(_ type: U8.Type) -> Self
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
+    /// Returns the `low` and `high` product of `self` times `multiplier`.
     @inlinable borrowing func multiplication(_ multiplier: borrowing Self) -> Doublet<Self>
     
     @inlinable static func division(_ dividend: consuming Doublet<Self>, by divisor: borrowing Divisor<Self>) -> Fallible<Division<Self, Self>>

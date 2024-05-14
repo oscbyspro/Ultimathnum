@@ -17,18 +17,34 @@ extension BinaryInteger {
     // MARK: Transformations x Inout
     //=------------------------------------------------------------------------=
 
+    /// Forms the result that fits of a so-called smart left shift.
+    ///
+    ///  - Note: The `0` bit fills the void.
+    ///
     @inlinable public static func  <<=(instance: inout Self, distance: Self) {
         instance = instance  << distance
     }
     
+    /// Forms the result that fits of a so-called exact left shift.
+    ///
+    ///  - Note: The `0` bit fills the void.
+    ///
     @inlinable public static func &<<=(instance: inout Self, distance: Shift<Self>) {
         instance = instance &<< distance
     }
     
+    /// Forms the result that fits of a so-called un/signed smart right shift.
+    ///
+    /// - Note: The `appendix` fills the void.
+    ///
     @inlinable public static func  >>=(instance: inout Self, distance: Self) {
         instance = instance  >> distance
     }
 
+    /// Forms the result that fits of a so-called un/signed exact right shift.
+    ///
+    /// - Note: The `appendix` fills the void.
+    ///
     @inlinable public static func &>>=(instance: inout Self, distance: Shift<Self>) {
         instance = instance &>> distance
     }
@@ -44,10 +60,18 @@ extension SystemsInteger {
     // MARK: Transformations x Inout
     //=------------------------------------------------------------------------=
     
+    /// Forms the result that fits of a so-called masked left shift.
+    ///
+    ///  - Note: The `0` bit fills the void.
+    ///
     @inlinable public static func &<<=(instance: inout Self, shift: borrowing Self) {
         instance = instance &<< shift
     }
     
+    /// Forms the result that fits of a so-called un/signed masked right shift.
+    ///
+    /// - Note: The `appendix` fills the void.
+    ///
     @inlinable public static func &>>=(instance: inout Self, shift: borrowing Self) {
         instance = instance &>> shift
     }
@@ -56,6 +80,10 @@ extension SystemsInteger {
     // MARK: Transformations x 2 by 1 as 2
     //=------------------------------------------------------------------------=
 
+    /// Returns the result that fits of a so-called left shift.
+    ///
+    ///  - Note: The `0` bit fills the void.
+    ///
     @inlinable public static func upshift(_ instance: consuming Doublet<Self>, by distance: Shift<Self>) -> Doublet<Self> {
         //=--------------------------------------=
         if  distance.value != .zero {
@@ -67,6 +95,10 @@ extension SystemsInteger {
         return instance as Doublet<Self> as Doublet<Self>
     }
     
+    /// Returns the result that fits of a so-called un/signed right shift.
+    ///
+    /// - Note: The `appendix` fills the void.
+    ///
     @inlinable public static func downshift(_ instance: consuming Doublet<Self>, by distance: Shift<Self>) -> Doublet<Self> {
         //=--------------------------------------=
         if  distance.value != .zero {

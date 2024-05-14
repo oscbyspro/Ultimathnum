@@ -17,10 +17,12 @@ extension BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Returns the trapping `quotient` of `lhs` divided by `rhs`.
     @inlinable public static func /(lhs: consuming Self, rhs: Self) -> Self {
         lhs.quotient (Divisor(rhs)).unwrap()
     }
     
+    /// Returns the trapping `remainder` of `lhs` divided by `rhs`.
     @inlinable public static func %(lhs: consuming Self, rhs: Self) -> Self {
         lhs.remainder(Divisor(rhs))
     }
@@ -29,10 +31,12 @@ extension BinaryInteger {
     // MARK: Transformations x Inout
     //=------------------------------------------------------------------------=
 
+    /// Forms the trapping `quotient` of `lhs` divided by `rhs`.
     @inlinable public static func /=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs / rhs
     }
 
+    /// Forms the trapping `remainder` of `lhs` divided by `rhs`.
     @inlinable public static func %=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs % rhs
     }

@@ -17,10 +17,12 @@ extension BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Returns the trapping result of `lhs + rhs`.
     @inlinable public static func +(lhs: consuming Self, rhs: borrowing Self) -> Self {
         lhs.plus(rhs).unwrap()
     }
     
+    /// Returns the wrapping result of `lhs + rhs`.
     @inlinable public static func &+(lhs: consuming Self, rhs: borrowing Self) -> Self {
         lhs.plus(rhs).value
     }
@@ -29,10 +31,12 @@ extension BinaryInteger {
     // MARK: Transformations x Inout
     //=------------------------------------------------------------------------=
     
+    /// Forms the trapping result of `lhs + rhs`.
     @inlinable public static func +=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs + rhs
     }
     
+    /// Forms the wrapping result of `lhs + rhs`.
     @inlinable public static func &+=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs &+ rhs
     }
@@ -48,6 +52,7 @@ extension BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Returns the result of `self + increment` that fits.
     @inlinable public consuming func plus(_ increment: borrowing Fallible<Self>) -> Fallible<Self> {
         self.plus(increment.value).veto(increment.error)
     }
@@ -63,7 +68,7 @@ extension BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// The next value in arithmetic progression.
+    /// The next value in arithmetic progression, or `self`.
     @inlinable public consuming func incremented(_ condition: consuming Bool = true) -> Fallible<Self> {
         switch Self.isSigned {
         case true : self.minus(Self(repeating: Bit(condition)))
@@ -83,12 +88,6 @@ extension SystemsInteger {
     //=------------------------------------------------------------------------=
     
     /// Returns the result of `self` + (`other` + `bit`).
-    ///
-    /// ```
-    /// min: +(low:  0, high: 0)
-    /// max: +(low: ~0, high: 1)
-    /// ```
-    ///
     @inlinable public consuming func plus(_ other: borrowing Self, plus bit: Bool) -> Fallible<Self> {
         let a: Bool, b: Bool
         

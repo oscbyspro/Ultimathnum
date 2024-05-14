@@ -16,7 +16,7 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     // MARK: Metadata
     //=------------------------------------------------------------------------=
- 
+    
     @inlinable public static var mode: Signed {
         Signed()
     }
@@ -31,7 +31,7 @@ extension UnsignedInteger {
     //=------------------------------------------------------------------------=
     // MARK: Metadata
     //=------------------------------------------------------------------------=
- 
+    
     @inlinable public static var mode: Unsigned {
         Unsigned()
     }

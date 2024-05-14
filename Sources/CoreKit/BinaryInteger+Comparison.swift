@@ -52,7 +52,7 @@ extension BinaryInteger {
         Self.isSigned && Bool(self.appendix)
     }
     
-    /// A three-way comparison of `self` versus `zero`.
+    /// Performs a three-way comparison of `self` versus `zero`.
     @inlinable public borrowing func signum() -> Signum {
         self.compared(to: 0)
     }
@@ -96,6 +96,7 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// Performs a three-way comparison of `self` versus `other`.
     @inlinable public func compared<Other>(to other: Other) -> Signum where Other: BinaryInteger {
         if  let lhsSize = UX(size: Self.self), let rhsSize = UX(size: Other.self) {
             if  lhsSize < rhsSize {

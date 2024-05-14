@@ -45,7 +45,7 @@
         case -1: .less
         case  0: .same
         case  1: .more
-        default: Swift.preconditionFailure(.overflow())
+        default: Swift.preconditionFailure(String.overflow())
         }
     }
 }

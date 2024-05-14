@@ -75,10 +75,16 @@ where
     
     associatedtype Mode: Signedness
         
-    associatedtype Element:    SystemsInteger where Element.Element == Element
+    /// The stuff this binary integer type is made of.
+    ///
+    /// - Important: `Self` must be properly aligned for accessing `Element`.
+    ///
+    associatedtype Element: SystemsInteger where Element.Element == Element
     
-    associatedtype Signitude:   SignedInteger where Signitude.Signitude == Signitude
+    /// A signed binary integer type of equal size.
+    associatedtype Signitude: SignedInteger where Signitude.Signitude == Signitude
     
+    /// An unsigned binary integer type of equal size.
     associatedtype Magnitude: UnsignedInteger where Magnitude.Magnitude == Magnitude
     
     //=------------------------------------------------------------------------=
@@ -117,46 +123,62 @@ where
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a new instance from the bit pattern of `source` that fits.
     @inlinable init(load source: consuming  UX.Signitude)
     
+    /// Creates a new instance from the bit pattern of `source` that fits.
     @inlinable init(load source: consuming  UX.Magnitude)
     
+    /// Returns instance of `type` from the bit pattern of `self` that fits.
     @inlinable borrowing func load(as type: UX.BitPattern.Type) -> UX.BitPattern
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a new instance from the bit pattern of `source` that fits.
     @inlinable init(load source: consuming  Element.Signitude)
     
+    /// Creates a new instance from the bit pattern of `source` that fits.
     @inlinable init(load source: consuming  Element.Magnitude)
     
+    /// Returns instance of `type` from the bit pattern of `self` that fits.
     @inlinable borrowing func load(as type: Element.BitPattern.Type) -> Element.BitPattern
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a new instance from the bit pattern of `source` that fits.
     @inlinable init(load source: DataInt<U8>)
     
+    /// Creates a new instance from the bit pattern of `source` that fits.
     @inlinable init(load source: DataInt<Element.Magnitude>)
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Returns the 1's or 2's complement of `self`.
+    ///
+    /// - Note: The carry from addition is stored in the `error` field.
+    ///
     @inlinable consuming func complement(_ increment: consuming Bool) -> Fallible<Self>
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Returns the validated result of `self + increment`.
     @inlinable consuming func plus (_ increment:  borrowing Self) -> Fallible<Self>
     
+    /// Returns the validated result of `self - increment`.
     @inlinable consuming func minus(_ decrement:  borrowing Self) -> Fallible<Self>
-            
+    
+    /// Returns the validated result of `self * increment`.
     @inlinable borrowing func times(_ multiplier: borrowing Self) -> Fallible<Self>
     
+    /// Returns the validated result of `self ^ 2`.
     @inlinable borrowing func squared() -> Fallible<Self>
     
     /// Returns the `quotient` and `error` of dividing `self` by the `divisor`.
@@ -295,12 +317,28 @@ where
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Returns the result that fits of a so-called smart left shift.
+    ///
+    ///  - Note: The `0` bit fills the void.
+    ///
     @inlinable static func  <<(instance: consuming Self, distance: borrowing Self) -> Self
     
+    /// Returns the result that fits of a so-called exact left shift.
+    ///
+    ///  - Note: The `0` bit fills the void.
+    ///
     @inlinable static func &<<(instance: consuming Self, distance: borrowing Shift<Self>) -> Self
     
+    /// Returns the result that fits of a so-called un/signed smart right shift.
+    ///
+    /// - Note: The `appendix` fills the void.
+    ///
     @inlinable static func  >>(instance: consuming Self, distance: borrowing Self) -> Self
     
+    /// Returns the result that fits of a so-called un/signed exact right shift.
+    ///
+    /// - Note: The `appendix` fills the void.
+    ///
     @inlinable static func &>>(instance: consuming Self, distance: borrowing Shift<Self>) -> Self
     
     //=------------------------------------------------------------------------=
@@ -313,10 +351,35 @@ where
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// The number of bits in `self` that match the `selection`.
+    ///
+    /// ```swift
+    /// I8(11).count(0) // 5
+    /// I8(11).count(1) // 3
+    /// ```
+    ///
     @inlinable borrowing func count(_ selection: Bit) -> Magnitude
-        
+    
+    /// The number of bits in `self` that match the `selection`.
+    ///
+    /// ```swift
+    /// I8(11).count(.ascending(0)) // 0
+    /// I8(11).count(.ascending(1)) // 2
+    /// I8(22).count(.ascending(0)) // 1
+    /// I8(22).count(.ascending(1)) // 0
+    /// ```
+    ///
     @inlinable borrowing func count(_ selection: Bit.Ascending) -> Magnitude
     
+    /// The number of bits in `self` that match the `selection`.
+    ///
+    /// ```swift
+    /// I8(11).count(.descending(0)) // 4
+    /// I8(11).count(.descending(1)) // 0
+    /// I8(22).count(.descending(0)) // 3
+    /// I8(22).count(.descending(1)) // 0
+    /// ```
+    ///
     @inlinable borrowing func count(_ selection: Bit.Descending) -> Magnitude
     
     //=------------------------------------------------------------------------=
@@ -337,10 +400,12 @@ where
     ///
     @inlinable var appendix: Bit { borrowing get }
     
+    /// Executes the `action` with the `body` of `self`.
     @inlinable borrowing func withUnsafeBinaryIntegerBody<T>(
         _ action: (DataInt<Element.Magnitude>.Body) throws -> T
     )   rethrows -> T
     
+    /// Executes the `action` with the mutable `body` of `self`.
     @inlinable mutating func withUnsafeMutableBinaryIntegerBody<T>(
         _ action: (MutableDataInt<Element.Magnitude>.Body) throws -> T
     )   rethrows -> T

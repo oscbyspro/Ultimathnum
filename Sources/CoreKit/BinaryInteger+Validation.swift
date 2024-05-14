@@ -20,6 +20,7 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a validated instance from the given `source`.
     @inlinable public static func exactly(_ source: consuming RootInt) -> Fallible<Self> {
         source.withUnsafeBinaryIntegerElements {
             Self.exactly($0, mode: .signed)
@@ -30,6 +31,7 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a validated instance from the given `sign` and `magnitude`.
     @inlinable public static func exactly(
         sign: consuming Sign = .plus,
         magnitude: consuming Magnitude
@@ -46,6 +48,7 @@ extension BinaryInteger {
         return value.veto(value.isNegative != isNegative)
     }
     
+    /// Creates a validated instance from the given `sign` and `magnitude`.
     @inlinable public static func exactly<Other>(
         sign: consuming Sign = .plus,
         magnitude: consuming Other
@@ -60,10 +63,12 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a validated instance from the given `source` then traps on failure.
     @inlinable public init<Other>(_ source: consuming Other) where Other: BinaryInteger {
         self = Self.exactly(source).unwrap()
     }
     
+    /// Creates a validated instance from the given `source`.
     @inlinable public static func exactly<Other>(_ source: consuming Other) -> Fallible<Self> where Other: BinaryInteger {
         if  let lhsSize = UX(size: Self.self), let rhsSize = UX(size: Other.self) {
             if (lhsSize >  rhsSize && (Self.isSigned))
@@ -105,6 +110,7 @@ extension EdgyInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a new instance from by clamping the given `source`.
     @inlinable public init(clamping source: some BinaryInteger) {
         if  let instance = Self.exactly(source).optional() {
             self = instance

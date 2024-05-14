@@ -69,10 +69,9 @@ or accidental dependencies.
 
 The are many ways to abstract and there are pros and cons to all of them.
 Here, we keep it simple. We use a small set of primitives to derive most things. 
-Our  abstractions are purposeful and close to the machine. You will not find many 
-mutating methods, for example. Instead, we introduce a mutating syntax that 
-destructures functional results. This cuts the project in half, compared to 
-previous iterations of it.
+Our abstractions are purposeful and close to the machine. Likewise, you will not 
+find many mutating methods. Instead, we opt for consuming methods. This cuts the 
+project in half, compared to previous iterations of it.
 
 <a name="introduction-recoverable"/>
 
