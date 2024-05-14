@@ -20,9 +20,9 @@
 * [CoreKit](#corekit)
   - [Validation and recovery through Fallible\<Value\>](#corekit-validation)
   - [Upsize binary integer elements with DataInt\<U8\>](#corekit-upsize)
+  - [Lightweight text decoding and encoding with TextInt](#corekit-text-int)
   - [Type-safe bit casts with BitCastable\<BitPattern\>](#corekit-bit-cast)
   - [Generic logic gates with BitOperable](#corekit-bitwise-logic)
-  - [Lightweight text decoding and encoding with TextInt](#corekit-text-int)
   - [More ones and zeros with Bit, Sign and Signum](#corekit-bit-sign-signum)
 * [DoubleIntKit](#doubleintkit)
   - [A big systems integer](#doubleintkit-systems-integer)
@@ -265,6 +265,31 @@ larger systems integer. Instead, you may use DataInt\<U8\> to load elements of a
 an unaligned load when possible and handles the case where the load would read past the end. All 
 binary integers can form a DataInt\<U8\> view since a byte is the smallest possible systems integer type.
 
+
+<a name="corekit-text-int"/>
+
+#### Lightweight text decoding and encoding with TextInt
+
+At some point, you'll want to convert your binary integers to a human-readable format. When 
+that happens, the description(as:) and init(\_:as:) methods let you perform the common radix 
+conversions via TextInt. The latter uses a fixed number of non-generic and non-inlinable
+algorithms, which are shared by all binary integers. This is an intentional size-over-performance 
+optimization.
+
+```swift
+try! TextInt(radix:  12, letters: .uppercase)
+try! IXL("123", as: .decimal).description(as: .hexadecimal) //  7b
+try! IXL("123", as: .hexadecimal).description(as: .decimal) // 291
+```
+
+Note that the introduction of infinite values necessitates changes to the integer description 
+format. The new format adds the # and & markers. The former is a just spacer whereas the latter 
+represents bitwise negation. In other words, +&123 translates to ∞ minus 123.
+
+```swift
+let regex: Regex = /^(?<sign>\+|-)(?<mask>#|&)(?<body>[0-9a-zA-z]+)$/
+```
+
 <a name="corekit-bit-cast"/>
 
 #### Type-safe bit casts with BitCastable\<BitPattern\>
@@ -349,37 +374,13 @@ static func ^=(lhs: inout Self, rhs: Self)
 ```
 </details>
 
-<a name="corekit-text-int"/>
-
-#### Lightweight text decoding and encoding with TextInt
-
-At some point, you'll want to convert your binary integers to a human-readable format. When 
-that happens, the description(as:) and init(\_:as:) methods let you perform the common radix 
-conversions via TextInt. The latter uses a fixed number of non-generic and non-inlinable
-algorithms, which are shared by all binary integers. This is an intentional size-over-performance 
-optimization.
-
-```swift
-try! TextInt(radix:  12, letters: .uppercase)
-try! IXL("123", as: .decimal).description(as: .hexadecimal) //  7b
-try! IXL("123", as: .hexadecimal).description(as: .decimal) // 291
-```
-
-Note that the introduction of infinite values necessitates changes to the integer description 
-format. The new format adds the # and & markers. The former is a just spacer whereas the latter 
-represents bitwise negation. In other words, +&123 translates to ∞ minus 123.
-
-```swift
-let regex: Regex = /^(?<sign>\+|-)(?<mask>#|&)(?<body>[0-9a-zA-z]+)$/
-```
-
 <a name="corekit-bit-sign-signum"/>
 
 #### More ones and zeros with Bit, Sign and Signum
 
-You may have noticed that this project introduces various additional types. Some are more 
-important than other, so here's a rundown of the three most prominent ones: Bit, Sign and Signum.
-Bit and Sign are a lot like Bool, but with bitwise operations and no short-circuits. Signum comes 
+This project introduces various additional types. Some are more important than other,
+so here's a rundown of the three most prominent ones: Bit, Sign and Signum. Bit and 
+Sign are a lot like Bool, but with bitwise operations and no short-circuits. Signum comes 
 up a lot because it's the return type of the compared(to:) method. It also offers various 
 conveniences for common transformations.
 
