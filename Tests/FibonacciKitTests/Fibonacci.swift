@@ -148,31 +148,32 @@ extension FibonacciTests.Case {
         copy.same(index: item.index, element: item.element, next: item.next)
         
         copy = self
-        copy.test.failure({ try copy.item.decrement() })
+        copy.test.failure({ try copy.item.decrement() }, Item.Failure.indexOutOfBounds)
         copy.same(index: item.index, element: item.element, next: item.next)
     }
     
     func checkIsLastIndex() {
         var copy = copy self
-        copy.test.failure({ try copy.item.double() })
+        copy.test.failure({ try copy.item.double() }, Item.Failure.overflow)
         copy.same(index: item.index, element: item.element, next: item.next)
         
         copy = self
-        copy.test.failure({ try copy.item.increment() })
+        copy.test.failure({ try copy.item.increment() }, Item.Failure.overflow)
         copy.same(index: item.index, element: item.element, next: item.next)
     }
     
-    static func checkInstancesNearZeroIndex(_ test: Test, invariants: Bool = true) {
+    static func checkInstancesNearZeroIndex(_ test: Test) {
         func make(_ item: Item) -> Self {
             Self(item, test: test)
         }
         
-        if  Value.isSigned {
-            test.failure({ try Item(-1) })
-            test.failure({ try Item(-2) })
-            test.failure({ try Item(-3) })
-            test.failure({ try Item(-4) })
-            test.failure({ try Item(-5) })
+        beyond: do {
+            let error: Item.Failure = Value.isSigned ? .indexOutOfBounds : .overflow
+            test.failure({ try Item(~0) }, error)
+            test.failure({ try Item(~1) }, error)
+            test.failure({ try Item(~2) }, error)
+            test.failure({ try Item(~3) }, error)
+            test.failure({ try Item(~4) }, error)
         }
         
         zero: do {
@@ -272,7 +273,7 @@ extension FibonacciTests.Case {
             rhs.same(index: 00, element: 00, next: 01)
             test.success({ try lhs.item.decrement(by: rhs.item) })
             lhs.same(index: 01, element: 01, next: 01)
-            test.failure({ try rhs.item.decrement(by: lhs.item) })
+            test.failure({ try rhs.item.decrement(by: lhs.item) }, Item.Failure.indexOutOfBounds)
             rhs.same(index: 00, element: 00, next: 01)
         }
     }

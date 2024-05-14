@@ -58,9 +58,7 @@ import CoreKit
 ///
 /// It permits both signed and unsigned values for testing purposes.
 ///
-@frozen public struct Fibonacci<Value> where Value: BinaryInteger {
-    
-    public enum Failure: Error { case overflow }
+@frozen public struct Fibonacci<Value>: CustomStringConvertible where Value: BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -83,18 +81,18 @@ import CoreKit
     
     /// Creates the sequence pair at the given `index`.
     @inlinable public init(_ index: Value) throws {
-        if  index.appendix == 1 {
-            throw Failure.overflow
+        if  Bool(index.appendix) {
+            throw Value.isSigned ? Failure.indexOutOfBounds : Failure.overflow
         }
         
         self.init()
         
         try index.withUnsafeBinaryIntegerElementsAsBytes {
             let x = $0.body.count(.nondescending(.zero))
-            for x in (0 ..< x).reversed() {
+            for i in (0 ..< x).reversed() {
                 try self.double()
                 
-                if  $0.body[unchecked: x &>> 3] &>> U8(load: x) & 1 != 0 {
+                if  $0.body[unchecked: i &>> 3] &>> U8(load: i) & 1 != 0 {
                     try self.increment()
                 }
             }
@@ -106,7 +104,7 @@ import CoreKit
     //=------------------------------------------------------------------------=
     
     /// The sequence `index`.
-    @inlinable public var index: Value {
+    @inlinable public var index: Value { 
         self.i
     }
     
@@ -116,7 +114,7 @@ import CoreKit
     }
     
     /// The sequence `element` at `index + 1`.
-    @inlinable public var next: Value {
+    @inlinable public var next: Value { 
         self.b
     }
     
@@ -136,7 +134,7 @@ import CoreKit
     
     /// Forms the sequence pair at `index - 1`.
     @inlinable public mutating func decrement() throws {
-        let ix = try i.minus(1).veto({ $0.isNegative }).prune(Failure.overflow)
+        let ix = try i.minus(1).veto({ $0.isNegative }).prune(Failure.indexOutOfBounds)
         let ax = try b.minus(a).prune(Failure.overflow)
         
         self.i = consume ix
@@ -172,7 +170,7 @@ import CoreKit
     
     /// Forms the sequence pair at `index - x.index`.
     @inlinable public mutating func decrement(by x: Self) throws {
-        let ix = try i.minus(x.i).veto({ $0.isNegative }).prune(Failure.overflow)
+        let ix = try i.minus(x.i).veto({ $0.isNegative }).prune(Failure.indexOutOfBounds)
         
         var a0 = b.times(x.a).value
         var a1 = a.times(x.b).value
@@ -188,13 +186,6 @@ import CoreKit
         self.a = a1.minus(a0).value
         self.b = b1.minus(b0).value
     }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Description
-//=----------------------------------------------------------------------------=
-
-extension Fibonacci: CustomStringConvertible {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -202,5 +193,18 @@ extension Fibonacci: CustomStringConvertible {
     
     @inlinable public var description: String {
         String(describing: self.element)
+    }
+    
+    //*========================================================================*
+    // MARK: * Failure
+    //*========================================================================*
+    
+    public enum Failure: Error {
+        
+        /// Tried to form a sequence pair that cannot be represented.
+        case overflow
+        
+        /// Tried to form a sequence pair at an index less than zero.
+        case indexOutOfBounds
     }
 }
