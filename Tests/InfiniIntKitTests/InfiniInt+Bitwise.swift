@@ -22,9 +22,9 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testLogicalNot() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias E = Base.Element
-            typealias L = Base.Element.Magnitude
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias E = B.Element
+            typealias L = B.Element.Magnitude
             typealias T = InfiniInt<E>
             typealias F = Fallible<InfiniInt<E>>
             //=--------------------------------------=
@@ -40,9 +40,9 @@ extension InfiniIntTests {
     }
     
     func testLogicalAnd() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias E = Base.Element
-            typealias L = Base.Element.Magnitude
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias E = B.Element
+            typealias L = B.Element.Magnitude
             typealias T = InfiniInt<E>
             typealias F = Fallible<InfiniInt<E>>
             //=--------------------------------------=
@@ -68,9 +68,9 @@ extension InfiniIntTests {
     }
     
     func testLogicalOr() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias E = Base.Element
-            typealias L = Base.Element.Magnitude
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias E = B.Element
+            typealias L = B.Element.Magnitude
             typealias T = InfiniInt<E>
             typealias F = Fallible<InfiniInt<E>>
             //=--------------------------------------=
@@ -96,9 +96,9 @@ extension InfiniIntTests {
     }
     
     func testLogicalXor() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias E = Base.Element
-            typealias L = Base.Element.Magnitude
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias E = B.Element
+            typealias L = B.Element.Magnitude
             typealias T = InfiniInt<E>
             typealias F = Fallible<InfiniInt<E>>
             //=--------------------------------------=

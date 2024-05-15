@@ -54,11 +54,11 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    func division3212MSB<Base>(
-        _ dividend: TripleInt<Base>,
-        _ divisor:  DoubleInt<Base>,
-        _ expectation: Division<Base, DoubleInt<Base>>?
-    )   where Base: SystemsInteger & UnsignedInteger {
+    func division3212MSB<B>(
+        _ dividend: TripleInt<B>,
+        _ divisor:  DoubleInt<B>,
+        _ expectation: Division<B, DoubleInt<B>>?
+    )   where B: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
         guard let expectation else {
             return same(divisor, 0,  "division by zero is undefined [0]")
@@ -68,10 +68,10 @@ extension Test {
             return none(expectation, "division by zero is undefined [1]")
         }
         //=--------------------------------------=
-        let result: Division<Base, DoubleInt<Base>> = dividend.division3212(normalized: divisor)
+        let result: Division<B, DoubleInt<B>> = dividend.division3212(normalized: divisor)
         //=--------------------------------------=
         recover: do {
-            let remainder = TripleInt(low: result.remainder.low, mid: result.remainder.high, high: Base.zero)
+            let remainder = TripleInt(low: result.remainder.low, mid: result.remainder.high, high: B.zero)
             let recovered = divisor.value.multiplication(result.quotient).plus(remainder)
             same(Fallible(dividend), recovered, "dividend != divisor * quotient + remainder")
         }

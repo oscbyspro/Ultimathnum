@@ -22,11 +22,11 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testSubtraction() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias E = Base.Element
-            typealias L = Base.Element.Magnitude
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias E = B.Element
+            typealias L = E.Magnitude
             typealias T = InfiniInt<E>
-            typealias F = Fallible<InfiniInt<E>>
+            typealias F = Fallible<T>
             //=----------------------------------=
             IntegerInvariants(T.self).subtractionByNegation()
             IntegerInvariants(T.self).subtractionOfMinMaxEsque()
@@ -63,11 +63,11 @@ extension InfiniIntTests {
     }
     
     func testSubtractionBy1() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias E = Base.Element
-            typealias L = Base.Element.Magnitude
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias E = B.Element
+            typealias L = E.Magnitude
             typealias T = InfiniInt<E>
-            typealias F = Fallible<InfiniInt<E>>
+            typealias F = Fallible<T>
             
             let a: [L] = [ 0,  0,  0,  0]
             let b: [L] = [~0, ~0, ~0, ~0]

@@ -22,8 +22,8 @@ extension DoubleIntTests {
     //=------------------------------------------------------------------------=
     
     func testInitBit() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = DoubleInt<Base>
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
             
             Test().same(T(repeating: 0 as Bit),  0 as T)
             Test().same(T(repeating: 1 as Bit), ~0 as T)
@@ -39,8 +39,8 @@ extension DoubleIntTests {
     //=------------------------------------------------------------------------=
     
     func testLogicalNot() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = DoubleInt<Base>
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
             
             Test().not(T(low:  1, high:  2), T(low: ~1, high: ~2))
             Test().not(T(low:  1, high: ~2), T(low: ~1, high:  2))
@@ -54,8 +54,8 @@ extension DoubleIntTests {
     }
     
     func testLogicalAnd() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = DoubleInt<Base>
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
             
             Test().and(T(low:  1, high:  2), T(low:  3, high:  4), T(low:  1, high:  0))
             Test().and(T(low:  1, high:  2), T(low: ~3, high: ~4), T(low:  0, high:  2))
@@ -69,8 +69,8 @@ extension DoubleIntTests {
     }
     
     func testLogicalOr() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = DoubleInt<Base>
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
             
             Test().or (T(low:  1, high:  2), T(low:  3, high:  4), T(low:  3, high:  6))
             Test().or (T(low:  1, high:  2), T(low: ~3, high: ~4), T(low: ~2, high: ~4))
@@ -84,8 +84,8 @@ extension DoubleIntTests {
     }
     
     func testLogicalXor() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = DoubleInt<Base>
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
             
             Test().xor(T(low:  1, high:  2), T(low:  3, high:  4), T(low:  2, high:  6))
             Test().xor(T(low:  1, high:  2), T(low: ~3, high: ~4), T(low: ~2, high: ~6))
@@ -128,9 +128,9 @@ extension DoubleIntTests {
     //=------------------------------------------------------------------------=
     
     func testLeastSignificantBit() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = DoubleInt<Base>
-            typealias M = DoubleInt<Base>.Magnitude
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
+            typealias M = DoubleInt<B>.Magnitude
             
             Test().same(( T .min).leastSignificantBit, 0 as Bit)
             Test().same(( T .max).leastSignificantBit, 1 as Bit)

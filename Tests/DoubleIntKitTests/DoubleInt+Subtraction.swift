@@ -100,8 +100,8 @@ extension DoubleIntTests {
     //=------------------------------------------------------------------------=
     
     func testSubtraction() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = DoubleInt<Base>
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
             typealias F = Fallible<T>
             //=----------------------------------=
             IntegerInvariants(T.self).subtractionByNegation()

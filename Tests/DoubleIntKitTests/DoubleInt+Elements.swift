@@ -22,9 +22,9 @@ extension DoubleIntTests {
     //=------------------------------------------------------------------------=
     
     func testInitToken() {
-        func whereTheBaseTypeIsSigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = DoubleInt<Base>
-            typealias M = DoubleInt<Base>.Magnitude
+        func whereTheBaseTypeIsSigned<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
+            typealias M = DoubleInt<B>.Magnitude
                         
             Test().same(T(load:  0 as IX), T(load:  0 as IX))
             Test().same(T(load: -1 as IX), T(load: ~0 as IX))
@@ -43,9 +43,9 @@ extension DoubleIntTests {
     }
     
     func testMakeToken() {
-        func whereTheBaseTypeIsSigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = DoubleInt<Base>
-            typealias M = DoubleInt<Base>.Magnitude
+        func whereTheBaseTypeIsSigned<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
+            typealias M = DoubleInt<B>.Magnitude
             
             Test().same(( 0 as T).load(as: IX.self), IX(load:  0 as T))
             Test().same((~0 as T).load(as: IX.self), IX(load: ~0 as T))
@@ -64,9 +64,9 @@ extension DoubleIntTests {
     }
     
     func testInitElement() {
-        func whereTheBaseTypeIsSigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = DoubleInt<Base>
-            typealias M = DoubleInt<Base>.Magnitude
+        func whereTheBaseTypeIsSigned<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
+            typealias M = DoubleInt<B>.Magnitude
             
             Test().load( 0 as T.Element,  0 as T)
             Test().load(-1 as T.Element, ~0 as T)
@@ -85,9 +85,9 @@ extension DoubleIntTests {
     }
     
     func testMakeElement() {
-        func whereTheBaseTypeIsSigned<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = DoubleInt<Base>
-            typealias M = DoubleInt<Base>.Magnitude
+        func whereTheBaseTypeIsSigned<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
+            typealias M = DoubleInt<B>.Magnitude
             
             Test().load( 0 as T,  0 as T.Element)
             Test().load(-1 as T, ~0 as T.Element)

@@ -22,10 +22,10 @@ extension DoubleIntTests {
     //=------------------------------------------------------------------------=
     
     func testShift() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = DoubleInt<Base>
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
             let low = T.zero
-            let mid = T(low: Base.size)
+            let mid = T(low: B.size)
             let top = T(raw: T.size)
             
             for semantics: Test.ShiftSemantics in [.smart, .masked] {
@@ -54,11 +54,11 @@ extension DoubleIntTests {
             
             for semantics: Test.ShiftSemantics in [.smart, .masked] {
                 if  T.isSigned {
-                    Test().shift(T(low: 0, high: Base.msb), mid - 1 as T, T(low:  0, high: ~0), .right, semantics)
-                    Test().shift(T(low: 0, high: Base.msb), top - 1 as T, T(low: ~0, high: ~0), .right, semantics)
+                    Test().shift(T(low: 0, high: B.msb), mid - 1 as T, T(low:  0, high: ~0), .right, semantics)
+                    Test().shift(T(low: 0, high: B.msb), top - 1 as T, T(low: ~0, high: ~0), .right, semantics)
                 }   else {
-                    Test().shift(T(low: 0, high: Base.msb), mid - 1 as T, T(low:  0, high:  1), .right, semantics)
-                    Test().shift(T(low: 0, high: Base.msb), top - 1 as T, T(low:  1, high:  0), .right, semantics)
+                    Test().shift(T(low: 0, high: B.msb), mid - 1 as T, T(low:  0, high:  1), .right, semantics)
+                    Test().shift(T(low: 0, high: B.msb), top - 1 as T, T(low:  1, high:  0), .right, semantics)
                 }
             }
         }
@@ -69,8 +69,8 @@ extension DoubleIntTests {
     }
     
     func testSmartShiftByMinSigned() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = DoubleInt<Base>
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
             //=----------------------------------=
             precondition(T.isSigned)
             //=----------------------------------=

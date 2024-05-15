@@ -54,7 +54,14 @@ extension BinaryInteger {
     
     /// Performs a three-way comparison of `self` versus `zero`.
     @inlinable public borrowing func signum() -> Signum {
-        self.compared(to: 0)
+        if !Self.size.isInfinite {
+            return self.compared(to: Self.zero)
+            
+        }   else {
+            return self.withUnsafeBinaryIntegerElements {
+                DataInt.signum(of: $0, isSigned: Self.isSigned)
+            }
+        }
     }
 }
 

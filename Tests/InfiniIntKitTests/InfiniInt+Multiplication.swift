@@ -33,11 +33,11 @@ extension InfiniIntTests {
     }
     
     func testMultiplicationOfSmallBySmall() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias E = Base.Element
-            typealias L = Base.Element.Magnitude
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias E = B.Element
+            typealias L = E.Magnitude
             typealias T = InfiniInt<E>
-            typealias F = Fallible<InfiniInt<E>>
+            typealias F = Fallible<T>
             //=----------------------------------=
             Test().multiplication(~2 as T, ~2 as T, F( 9 as T, error: !T.isSigned))
             Test().multiplication(~2 as T, ~1 as T, F( 6 as T, error: !T.isSigned))
@@ -102,11 +102,11 @@ extension InfiniIntTests {
     }
     
     func testMultiplicationOfLargeBySmall() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias E = Base.Element
-            typealias L = Base.Element.Magnitude
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias E = B.Element
+            typealias L = E.Magnitude
             typealias T = InfiniInt<E>
-            typealias F = Fallible<InfiniInt<E>>
+            typealias F = Fallible<T>
             //=----------------------------------=
             let a1234 = T([1, 2, 3, 4] as [L], repeating: 0)
             let a5678 = T([5, 6, 7, 8] as [L], repeating: 0)
@@ -147,11 +147,11 @@ extension InfiniIntTests {
     }
     
     func testMultiplicationOfLargeByLarge() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias E = Base.Element
-            typealias L = Base.Element.Magnitude
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias E = B.Element
+            typealias L = E.Magnitude
             typealias T = InfiniInt<E>
-            typealias F = Fallible<InfiniInt<E>>
+            typealias F = Fallible<T>
             //=----------------------------------=
             let a1234 = T([1, 2, 3, 4] as [L], repeating: 0)
             let a5678 = T([5, 6, 7, 8] as [L], repeating: 0)

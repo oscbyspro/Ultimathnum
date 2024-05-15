@@ -32,12 +32,12 @@ extension DoubleIntTests {
     }
     
     func testBitSelection() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = DoubleInt<Base>
-            typealias M = DoubleInt<Base>.Magnitude
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
+            typealias M = DoubleInt<B>.Magnitude
             //=----------------------------------=
             let full = M.size
-            let half = M(low: Base.size)
+            let half = M(low: B.size)
             let none = M.zero
             //=----------------------------------=
             Test().count(T(low:  00, high: 00),            (0), full)

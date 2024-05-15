@@ -32,11 +32,11 @@ extension InfiniIntTests {
     }
     
     func testBitSelection() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias E = Base.Element
-            typealias L = Base.Element.Magnitude
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias E = B.Element
+            typealias L = B.Element.Magnitude
             typealias T = InfiniInt<E>
-            typealias M = InfiniInt<E>.Magnitude
+            typealias M = T.Magnitude
             
             Test().count(T(0x00000000000000000000000000000000),            (0), ~000 as M)
             Test().count(T(0x0F0E0D0C0B0A09080706050403020100),            (0), ~032 as M)

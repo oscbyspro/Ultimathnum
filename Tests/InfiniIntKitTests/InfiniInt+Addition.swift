@@ -22,8 +22,11 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testAddition() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias E = Base.Element; typealias L = E.Magnitude; typealias T = InfiniInt<E>; typealias F = Fallible<T>
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias E = B.Element
+            typealias L = E.Magnitude
+            typealias T = InfiniInt<E>
+            typealias F = Fallible<T>
             //=----------------------------------=
             IntegerInvariants(T.self).additionOfMinMaxEsque()
             IntegerInvariants(T.self).additionOfRepeatingBit(BinaryIntegerID())
@@ -59,9 +62,12 @@ extension InfiniIntTests {
     }
     
     func testAdditionBy1() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias E = Base.Element; typealias L = E.Magnitude; typealias T = InfiniInt<E>; typealias F = Fallible<T>
-
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias E = B.Element
+            typealias L = E.Magnitude
+            typealias T = InfiniInt<E>
+            typealias F = Fallible<T>
+            
             let a: [L] = [ 0,  0,  0,  0]
             let b: [L] = [~0, ~0, ~0, ~0]
             let c: [L] = [ 1,  0,  0,  0]

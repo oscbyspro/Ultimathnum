@@ -64,8 +64,8 @@ extension DoubleIntTests {
     }
     
     func testStrideDistanceTo() {
-        func whereTheBaseTypeIs<Base>(_ type: Base.Type) where Base: SystemsInteger {
-            typealias T = DoubleInt<Base>
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = DoubleInt<B>
             typealias F = Fallible
             
             always: do {

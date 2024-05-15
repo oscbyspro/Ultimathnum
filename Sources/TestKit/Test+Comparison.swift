@@ -105,9 +105,16 @@ extension Test {
         _ rhs: U, 
         _ expectation: Signum
     )   where T: BinaryInteger, U: BinaryInteger {
-        //=--------------------------------------=
-        func unidirectional<A, B>(_ lhs: A, _ rhs: B, _ expectation: Signum) where A: BinaryInteger, B: BinaryInteger {
-            signum: if rhs.signum() == Signum.same {
+        
+        func unidirectional<A, B>(
+            _ lhs: A,
+            _ rhs: B,
+            _ expectation: Signum
+        )   where A: BinaryInteger, B: BinaryInteger {
+            //=----------------------------------=
+            let rhsIsZero = rhs.signum() == Signum.same
+            //=----------------------------------=
+            signum: if rhsIsZero {
                 let result:  Signum = lhs.signum()
                 let success: Bool = result == expectation
                 expect(success, "\(lhs).signum() -> \(result)")
@@ -154,6 +161,50 @@ extension Test {
                 let success: Bool = result == (expectation != .more)
                 expect(success, "\(lhs) <= \(rhs) -> \(result)")
             }
+            
+            func elements<E>(_ lhs: MutableDataInt<E>, _ rhs: MutableDataInt<E>) {
+                always: do {
+                    let result = DataInt.compare(
+                        lhs: DataInt(lhs), lhsIsSigned: A.isSigned,
+                        rhs: DataInt(rhs), rhsIsSigned: B.isSigned
+                    )
+
+                    same(result, expectation, "elements.compared(to:)")
+                }
+                
+                if  rhsIsZero {
+                    same(DataInt.signum(of: DataInt(lhs), isSigned: A.isSigned), expectation, "elements.signum()")
+                }
+                                
+                if  rhsIsZero, lhs.appendix == 0, rhs.appendix == 0 {
+                    same(lhs.body.signum(), expectation, "body.signum()")
+                    same(lhs.body.isZero,   expectation == Signum.same, "body.isZero")
+                }
+                
+                if  lhs.appendix == 0, rhs.appendix == 0 {
+                    same(            (lhs.body).compared(to:             (rhs.body)), expectation, "body.compared(to:) [0]")
+                    same(            (lhs.body).compared(to: DataInt.Body(rhs.body)), expectation, "body.compared(to:) [1]")
+                    same(DataInt.Body(lhs.body).compared(to:             (rhs.body)), expectation, "body.compared(to:) [2]")
+                    same(DataInt.Body(lhs.body).compared(to: DataInt.Body(rhs.body)), expectation, "body.compared(to:) [3]")
+                }
+            }
+            
+            elements: do { var lhs = lhs, rhs = rhs
+
+                if  B.elementsCanBeRebound(to: A.Element.Magnitude.self) {
+                    lhs.withUnsafeMutableBinaryIntegerElements { lhs in
+                        rhs.withUnsafeMutableBinaryIntegerElements(as: A.Element.Magnitude.self) { rhs in
+                            elements(lhs, rhs)
+                        }!
+                    }
+                }   else {
+                    lhs.withUnsafeMutableBinaryIntegerElements(as: B.Element.Magnitude.self) { lhs in
+                        rhs.withUnsafeMutableBinaryIntegerElements { rhs in
+                            elements(lhs, rhs)
+                        }
+                    }!
+                }
+            }
         }
         
         unidirectional(lhs, rhs, expectation)
@@ -174,8 +225,13 @@ extension Test {
         _ expectation: Signum,
         id: ComparableID
     )   where T: Comparable {
-        //=--------------------------------------=
-        func unidirectional<U>(_ lhs: U, _ rhs: U, _ expectation: Signum) where U: Comparable {
+
+        func unidirectional<U>(
+            _ lhs: U,
+            _ rhs: U,
+            _ expectation: Signum
+        )   where U: Comparable {
+            
             less: do {
                 let result:  Bool = lhs <  rhs
                 let success: Bool = result == (expectation == .less)
