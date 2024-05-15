@@ -102,8 +102,18 @@ extension TextIntTests.Case {
     // MARK: Utilities x Decoding
     //=------------------------------------------------------------------------=
     
-    func decode<I: BinaryInteger>(_ description: String, _ expectation: Result<I, E>) {
-        branch: do {
+    func decode<I: BinaryInteger>(_ description: StaticString, _ expectation: Result<I, E>) {
+        if  case let .success(value) = expectation {
+            test.same(self.item.decode(description), value)
+        }
+        
+        description.withUTF8Buffer {
+            self.decode(normal: String(decoding: $0, as: UTF8.self), expectation)
+        }
+    }
+    
+    func decode<I: BinaryInteger>(normal description: String, _ expectation: Result<I, E>) {
+        always: do {
             let value = try self.item.decode(description) as I
             test.same(Result.success(value), expectation)
         }   catch let error as TextInt.Failure {
@@ -124,7 +134,7 @@ extension TextIntTests.Case {
     func encode<I: BinaryInteger>(_ integer: I, _ expectation: String) {
         //=--------------------------------------=
         decoding: do {
-            self.decode(expectation, .success(integer))
+            self.decode(normal: expectation, .success(integer))
         }
         //=--------------------------------------=
         encoding: do {

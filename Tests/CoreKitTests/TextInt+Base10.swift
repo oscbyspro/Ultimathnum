@@ -17,13 +17,73 @@ import TestKit
 extension TextIntTests {
     
     //=------------------------------------------------------------------------=
+    // MARK: Tests x Decoding
+    //=------------------------------------------------------------------------=
+    
+    func testDecodingEdges08AsBase10() {
+        typealias R<T> = Result<T, TextInt.Failure>
+        
+        let (item) = TextInt.radix(10)        
+        Case(item).decode("-129", R<I8>.failure(.overflow))
+        Case(item).decode("-128", R<I8>.success(.min))
+        Case(item).decode("+127", R<I8>.success(.max))
+        Case(item).decode("+128", R<I8>.failure(.overflow))
+        Case(item).decode("-001", R<U8>.failure(.overflow))
+        Case(item).decode("-000", R<U8>.success(.min))
+        Case(item).decode("+255", R<U8>.success(.max))
+        Case(item).decode("+256", R<U8>.failure(.overflow))
+    } 
+    
+    func testDecodingEdges16AsBase10() {
+        typealias R<T> = Result<T, TextInt.Failure>
+        
+        let (item) = TextInt.radix(10)
+        Case(item).decode("-32769", R<I16>.failure(.overflow))
+        Case(item).decode("-32768", R<I16>.success(.min))
+        Case(item).decode("+32767", R<I16>.success(.max))
+        Case(item).decode("+32768", R<I16>.failure(.overflow))
+        Case(item).decode("-00001", R<U16>.failure(.overflow))
+        Case(item).decode("-00000", R<U16>.success(.min))
+        Case(item).decode("+65535", R<U16>.success(.max))
+        Case(item).decode("+65536", R<U16>.failure(.overflow))
+    }
+    
+    func testDecodingEdges32AsBase10() {
+        typealias R<T> = Result<T, TextInt.Failure>
+        
+        let (item) = TextInt.radix(10)
+        Case(item).decode("-2147483649", R<I32>.failure(.overflow))
+        Case(item).decode("-2147483648", R<I32>.success(.min))
+        Case(item).decode("+2147483647", R<I32>.success(.max))
+        Case(item).decode("+2147483648", R<I32>.failure(.overflow))
+        Case(item).decode("-0000000001", R<U32>.failure(.overflow))
+        Case(item).decode("-0000000000", R<U32>.success(.min))
+        Case(item).decode("+4294967295", R<U32>.success(.max))
+        Case(item).decode("+4294967296", R<U32>.failure(.overflow))
+    }
+    
+    func testDecodingEdges64AsBase10() {
+        typealias R<T> = Result<T, TextInt.Failure>
+        
+        let (item) = TextInt.radix(10)
+        Case(item).decode("-09223372036854775809", R<I64>.failure(.overflow))
+        Case(item).decode("-09223372036854775808", R<I64>.success(.min))
+        Case(item).decode("+09223372036854775807", R<I64>.success(.max))
+        Case(item).decode("+09223372036854775808", R<I64>.failure(.overflow))
+        Case(item).decode("-00000000000000000001", R<U64>.failure(.overflow))
+        Case(item).decode("-00000000000000000000", R<U64>.success(.min))
+        Case(item).decode("+18446744073709551615", R<U64>.success(.max))
+        Case(item).decode("+18446744073709551616", R<U64>.failure(.overflow))
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Tests x Encoding (and Decoding)
     //=------------------------------------------------------------------------=
     
     func testEncodingAsBase10() {
+        let item = TextInt.radix(10)
+        
         func whereTypeIs<T>(_ type: T.Type) where T: BinaryInteger {
-            let (item) = TextInt.radix(10)
-
             guard T.size >= U8.size else { return }
             if  T.isSigned {
                 Case(item).encode(T(load: I8 (load: 0x00 as U64)),    "0")

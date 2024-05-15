@@ -15,6 +15,40 @@ import TestKit
 // MARK: * Infini Int x Text
 //*============================================================================*
 
+extension InfiniIntTests {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testTextForEachRadixWhereIs1s0s() {
+        func whereIsSigned<T>(_ type: T.Type) where T: BinaryInteger {
+            for radix: UX in 2 ... 36 {
+                Test().description(~0 as T, radix: radix, body: "-1")
+                Test().description( 0 as T, radix: radix, body:  "0")
+                Test().description( 1 as T, radix: radix, body:  "1")
+            }
+        }
+        
+        func whereIsUnsigned<T>(_ type: T.Type) where T: BinaryInteger {
+            for radix: UX in 2 ... 36 {
+                Test().description(~1 as T, radix: radix, body: "&1")
+                Test().description(~0 as T, radix: radix, body: "&0")
+                Test().description( 0 as T, radix: radix, body:  "0")
+                Test().description( 1 as T, radix: radix, body:  "1")
+            }
+        }
+                
+        for type in Self.types {
+            type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
+        }
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + For Each Radix
+//=----------------------------------------------------------------------------=
+
 final class InfiniIntTestsOnText: XCTestCase {
     
     //=------------------------------------------------------------------------=

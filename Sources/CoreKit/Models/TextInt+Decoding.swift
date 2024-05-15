@@ -116,15 +116,15 @@ extension TextInt {
                 let element = try self.numerals.load(part, as: UX.self)
                 // note that the index advances faster than the product
                 words[unchecked: index] = words[unchecked: ..<index].multiply(by: self.exponentiation.power, add: element)
-                index  = index.incremented().unchecked()
                 stride = self.exponentiation.exponent
+                index  = index.incremented().unchecked()
             }
             //=----------------------------------=
             // path: success
             //=----------------------------------=
             Swift.assert(numerals.isEmpty)
-            Swift.assert(index <= (words).count, String.indexOutOfBounds())
-            return success(DataInt(words[unchecked: ..<index]))
+            Swift.assert(index == (words).count)
+            return success(DataInt(words).normalized())
         }
     }
     
@@ -181,7 +181,7 @@ extension TextInt {
             // path: success
             //=----------------------------------=
             Swift.assert(numerals.isEmpty)
-            Swift.assert(index == IX.zero, String.indexOutOfBounds())
+            Swift.assert(index == IX.zero)
             return success(DataInt(words))
         }
     }
