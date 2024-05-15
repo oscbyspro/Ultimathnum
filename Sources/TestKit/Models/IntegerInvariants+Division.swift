@@ -20,48 +20,50 @@ extension IntegerInvariants {
     //=------------------------------------------------------------------------=
     
     public func divisionOfMsbEsque() where T: BinaryInteger {
+        typealias D = Division<T, T>
+        typealias F = Fallible<D>
         //=--------------------------------------=
         let msb: T = Self.msbEsque
         let bot: T = Self.botEsque
         //=--------------------------------------=
         if  T.isSigned {
-            test.division(msb, msb >> 1, Fallible(quotient:  2, remainder: 0))
-            test.division(bot, msb >> 1, Fallible(quotient: -1, remainder: (msb >> 1 + 1).complement()))
+            test.division(msb, msb >> 1, F(D(quotient:  2, remainder: 0)))
+            test.division(bot, msb >> 1, F(D(quotient: -1, remainder: (msb >> 1 + 1).complement())))
         }   else {
-            test.division(msb, msb >> 1, Fallible(quotient:  2, remainder: 0))
-            test.division(bot, msb >> 1, Fallible(quotient:  1, remainder: (msb >> 1 - 1)))
+            test.division(msb, msb >> 1, F(D(quotient:  2, remainder: 0)))
+            test.division(bot, msb >> 1, F(D(quotient:  1, remainder: (msb >> 1 - 1))))
         }
         
         if  T.isSigned {
-            test.division(bot, ~3 as T, Fallible(quotient: msb >> 2 + 1, remainder: 3))
-            test.division(bot, ~1 as T, Fallible(quotient: msb >> 1 + 1, remainder: 1))
-            test.division(bot, ~0 as T, Fallible(quotient: msb >> 0 + 1, remainder: 0))
+            test.division(bot, ~3 as T, F(D(quotient: msb >> 2 + 1, remainder: 3)))
+            test.division(bot, ~1 as T, F(D(quotient: msb >> 1 + 1, remainder: 1)))
+            test.division(bot, ~0 as T, F(D(quotient: msb >> 0 + 1, remainder: 0)))
             test.division(bot,  0 as T, nil)
-            test.division(bot,  1 as T, Fallible(quotient: bot,          remainder: 0))
-            test.division(bot,  2 as T, Fallible(quotient: bot >> 1,     remainder: 1))
-            test.division(bot,  4 as T, Fallible(quotient: bot >> 2,     remainder: 3))
+            test.division(bot,  1 as T, F(D(quotient: bot,          remainder: 0)))
+            test.division(bot,  2 as T, F(D(quotient: bot >> 1,     remainder: 1)))
+            test.division(bot,  4 as T, F(D(quotient: bot >> 2,     remainder: 3)))
             
-            test.division(msb, ~3 as T, Fallible(quotient: (msb >> 2).complement(), remainder: 0))
-            test.division(msb, ~1 as T, Fallible(quotient: (msb >> 1).complement(), remainder: 0))
-            test.division(msb, ~0 as T, Fallible(quotient: (msb >> 0).complement(), remainder: 0, error: msb.count(.ascending(0)) == T.size - 1))
+            test.division(msb, ~3 as T, F(D(quotient: (msb >> 2).complement(), remainder: 0)))
+            test.division(msb, ~1 as T, F(D(quotient: (msb >> 1).complement(), remainder: 0)))
+            test.division(msb, ~0 as T, F(D(quotient: (msb >> 0).complement(), remainder: 0), error: msb.count(.ascending(0)) == T.size - 1))
             test.division(msb,  0 as T, nil)
-            test.division(msb,  1 as T, Fallible(quotient: msb,          remainder: 0))
-            test.division(msb,  2 as T, Fallible(quotient: msb >> 1,     remainder: 0))
-            test.division(msb,  4 as T, Fallible(quotient: msb >> 2,     remainder: 0))
+            test.division(msb,  1 as T, F(D(quotient: msb,          remainder: 0)))
+            test.division(msb,  2 as T, F(D(quotient: msb >> 1,     remainder: 0)))
+            test.division(msb,  4 as T, F(D(quotient: msb >> 2,     remainder: 0)))
         }   else {
-            test.division(bot, ~3 as T, Fallible(quotient: T.zero,       remainder: bot))
-            test.division(bot, ~1 as T, Fallible(quotient: T.zero,       remainder: bot))
-            test.division(bot, ~0 as T, Fallible(quotient: T.zero,       remainder: bot))
+            test.division(bot, ~3 as T, F(D(quotient: T.zero,       remainder: bot)))
+            test.division(bot, ~1 as T, F(D(quotient: T.zero,       remainder: bot)))
+            test.division(bot, ~0 as T, F(D(quotient: T.zero,       remainder: bot)))
             test.division(bot,  0 as T, nil)
-            test.division(bot,  1 as T, Fallible(quotient: bot,          remainder: 0))
-            test.division(bot,  2 as T, Fallible(quotient: bot >> 1,     remainder: 1))
+            test.division(bot,  1 as T, F(D(quotient: bot,          remainder: 0)))
+            test.division(bot,  2 as T, F(D(quotient: bot >> 1,     remainder: 1)))
             
-            test.division(msb, ~1 as T, Fallible(quotient: T.zero,       remainder: msb))
-            test.division(msb, ~0 as T, Fallible(quotient: T.zero,       remainder: msb))
+            test.division(msb, ~1 as T, F(D(quotient: T.zero,       remainder: msb)))
+            test.division(msb, ~0 as T, F(D(quotient: T.zero,       remainder: msb)))
             test.division(msb,  0 as T, nil)
-            test.division(msb,  1 as T, Fallible(quotient: msb,          remainder: 0))
-            test.division(msb,  2 as T, Fallible(quotient: msb >> 1,     remainder: 0))
-            test.division(msb,  4 as T, Fallible(quotient: msb >> 2,     remainder: 0))
+            test.division(msb,  1 as T, F(D(quotient: msb,          remainder: 0)))
+            test.division(msb,  2 as T, F(D(quotient: msb >> 1,     remainder: 0)))
+            test.division(msb,  4 as T, F(D(quotient: msb >> 2,     remainder: 0)))
         }
     }
     
@@ -70,24 +72,26 @@ extension IntegerInvariants {
     //=------------------------------------------------------------------------=
     
     public func divisionOfSmallBySmall() where T: BinaryInteger {
+        typealias D = Division<T, T>
+        typealias F = Fallible<D>
         //=--------------------------------------=
         let x0 = 0 as T
         let x7 = 7 as T
         //=--------------------------------------=
         for divisor:  T in [4, 3, 2, 1, ~0, ~1, ~2, ~3, ~4] {
-            test.division( x0, divisor, Fallible(quotient: x0, remainder: x0))
+            test.division( x0, divisor, F(D(quotient: x0, remainder: x0)))
         }
         
         if  T.isSigned {
-            test.division( x7,  3 as T, Fallible(quotient:  2, remainder:  1))
-            test.division( x7, -3 as T, Fallible(quotient: -2, remainder:  1))
-            test.division(-x7,  3 as T, Fallible(quotient: -2, remainder: -1))
-            test.division(-x7, -3 as T, Fallible(quotient:  2, remainder: -1))
+            test.division( x7,  3 as T, F(D(quotient:  2, remainder:  1)))
+            test.division( x7, -3 as T, F(D(quotient: -2, remainder:  1)))
+            test.division(-x7,  3 as T, F(D(quotient: -2, remainder: -1)))
+            test.division(-x7, -3 as T, F(D(quotient:  2, remainder: -1)))
         }   else {
-            test.division( x7,  1 as T, Fallible(quotient:  7, remainder:  0))
-            test.division( x7,  2 as T, Fallible(quotient:  3, remainder:  1))
-            test.division( x7,  3 as T, Fallible(quotient:  2, remainder:  1))
-            test.division( x7,  4 as T, Fallible(quotient:  1, remainder:  3))
+            test.division( x7,  1 as T, F(D(quotient:  7, remainder:  0)))
+            test.division( x7,  2 as T, F(D(quotient:  3, remainder:  1)))
+            test.division( x7,  3 as T, F(D(quotient:  2, remainder:  1)))
+            test.division( x7,  4 as T, F(D(quotient:  1, remainder:  3)))
         }
     }
     

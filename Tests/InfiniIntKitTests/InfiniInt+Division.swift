@@ -22,20 +22,23 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testBinaryIntegerDocumentationExamples() {
-        Test().division( 7 as IXL,  3 as IXL, Fallible(quotient:  2 as IXL, remainder:  1 as IXL))
-        Test().division( 7 as IXL, -3 as IXL, Fallible(quotient: -2 as IXL, remainder:  1 as IXL))
-        Test().division(-7 as IXL,  3 as IXL, Fallible(quotient: -2 as IXL, remainder: -1 as IXL))
-        Test().division(-7 as IXL, -3 as IXL, Fallible(quotient:  2 as IXL, remainder: -1 as IXL))
+        typealias D = Division
+        typealias F = Fallible
         
-        Test().division(~2 as UXL, ~0 as UXL, Fallible(quotient:  0 as UXL, remainder: ~2 as UXL))
-        Test().division(~2 as UXL, ~1 as UXL, Fallible(quotient:  0 as UXL, remainder: ~2 as UXL))
-        Test().division(~2 as UXL, ~2 as UXL, Fallible(quotient:  1 as UXL, remainder:  0 as UXL))
-        Test().division(~2 as UXL, ~3 as UXL, Fallible(quotient:  1 as UXL, remainder:  1 as UXL))
+        Test().division( 7 as IXL,  3 as IXL, F(D(quotient:  2 as IXL, remainder:  1 as IXL)))
+        Test().division( 7 as IXL, -3 as IXL, F(D(quotient: -2 as IXL, remainder:  1 as IXL)))
+        Test().division(-7 as IXL,  3 as IXL, F(D(quotient: -2 as IXL, remainder: -1 as IXL)))
+        Test().division(-7 as IXL, -3 as IXL, F(D(quotient:  2 as IXL, remainder: -1 as IXL)))
         
-        Test().division(~2 as UXL,  1 as UXL, Fallible(quotient: ~2 as UXL, remainder:  0 as UXL))
-        Test().division(~2 as UXL,  2 as UXL, Fallible(quotient: ~0 as UXL, remainder: ~0 as UXL, error: true))
-        Test().division(~2 as UXL,  3 as UXL, Fallible(quotient: ~0 as UXL, remainder:  0 as UXL, error: true))
-        Test().division(~2 as UXL,  4 as UXL, Fallible(quotient:  0 as UXL, remainder: ~2 as UXL, error: true))
+        Test().division(~2 as UXL, ~0 as UXL, F(D(quotient:  0 as UXL, remainder: ~2 as UXL)))
+        Test().division(~2 as UXL, ~1 as UXL, F(D(quotient:  0 as UXL, remainder: ~2 as UXL)))
+        Test().division(~2 as UXL, ~2 as UXL, F(D(quotient:  1 as UXL, remainder:  0 as UXL)))
+        Test().division(~2 as UXL, ~3 as UXL, F(D(quotient:  1 as UXL, remainder:  1 as UXL)))
+        
+        Test().division(~2 as UXL,  1 as UXL, F(D(quotient: ~2 as UXL, remainder:  0 as UXL)))
+        Test().division(~2 as UXL,  2 as UXL, F(D(quotient: ~0 as UXL, remainder: ~0 as UXL), error: true))
+        Test().division(~2 as UXL,  3 as UXL, F(D(quotient: ~0 as UXL, remainder:  0 as UXL), error: true))
+        Test().division(~2 as UXL,  4 as UXL, F(D(quotient:  0 as UXL, remainder: ~2 as UXL), error: true))
     }
     
     //=------------------------------------------------------------------------=
@@ -57,8 +60,8 @@ extension InfiniIntTests {
     func testDivisionByNegative() {
         func whereIs<T>(_ type: T.Type) where T: SignedInteger {
             typealias E = T.Element
-            typealias L = T.Element.Magnitude
-            typealias F = Fallible<Division<T, T>>
+            typealias D = Division<T, T>
+            typealias F = Fallible<D>
             //=----------------------------------=
             let  small = T(0x0000000000000000000000000000007F)
             let xsmall = small.complement()
@@ -67,25 +70,25 @@ extension InfiniIntTests {
             let  ratio = T(0x020406080A0C0E10121416181A1C1E20)
             let xratio = ratio.complement()
             //=----------------------------------=
-            Test().division( small,  small, F(quotient:  T( 1), remainder:  T( 0)))
-            Test().division( small, xsmall, F(quotient: ~T( 0), remainder:  T( 0)))
-            Test().division(xsmall,  small, F(quotient: ~T( 0), remainder:  T( 0)))
-            Test().division(xsmall, xsmall, F(quotient:  T( 1), remainder:  T( 0)))
+            Test().division( small,  small, F(D(quotient:  T( 1), remainder:  T( 0))))
+            Test().division( small, xsmall, F(D(quotient: ~T( 0), remainder:  T( 0))))
+            Test().division(xsmall,  small, F(D(quotient: ~T( 0), remainder:  T( 0))))
+            Test().division(xsmall, xsmall, F(D(quotient:  T( 1), remainder:  T( 0))))
             
-            Test().division( small,  large, F(quotient:  T( 0), remainder:  small))
-            Test().division( small, xlarge, F(quotient:  T( 0), remainder:  small))
-            Test().division(xsmall,  large, F(quotient:  T( 0), remainder: xsmall))
-            Test().division(xsmall, xlarge, F(quotient:  T( 0), remainder: xsmall))
+            Test().division( small,  large, F(D(quotient:  T( 0), remainder:  small)))
+            Test().division( small, xlarge, F(D(quotient:  T( 0), remainder:  small)))
+            Test().division(xsmall,  large, F(D(quotient:  T( 0), remainder: xsmall)))
+            Test().division(xsmall, xlarge, F(D(quotient:  T( 0), remainder: xsmall)))
             
-            Test().division( large,  small, F(quotient:  ratio, remainder:  00016))
-            Test().division( large, xsmall, F(quotient: xratio, remainder:  00016))
-            Test().division(xlarge,  small, F(quotient: xratio, remainder: ~00015))
-            Test().division(xlarge, xsmall, F(quotient:  ratio, remainder: ~00015))
+            Test().division( large,  small, F(D(quotient:  ratio, remainder:  00016)))
+            Test().division( large, xsmall, F(D(quotient: xratio, remainder:  00016)))
+            Test().division(xlarge,  small, F(D(quotient: xratio, remainder: ~00015)))
+            Test().division(xlarge, xsmall, F(D(quotient:  ratio, remainder: ~00015)))
             
-            Test().division( large,  large, F(quotient:  T( 1), remainder:  T( 0)))
-            Test().division( large, xlarge, F(quotient: ~T( 0), remainder:  T( 0)))
-            Test().division(xlarge,  large, F(quotient: ~T( 0), remainder:  T( 0)))
-            Test().division(xlarge, xlarge, F(quotient:  T( 1), remainder:  T( 0)))
+            Test().division( large,  large, F(D(quotient:  T( 1), remainder:  T( 0))))
+            Test().division( large, xlarge, F(D(quotient: ~T( 0), remainder:  T( 0))))
+            Test().division(xlarge,  large, F(D(quotient: ~T( 0), remainder:  T( 0))))
+            Test().division(xlarge, xlarge, F(D(quotient:  T( 1), remainder:  T( 0))))
         }
                         
         for element in Self.typesWhereIsSigned {
@@ -96,8 +99,8 @@ extension InfiniIntTests {
     func testDivisionByInfinite() {
         func whereIs<T>(_ type: T.Type) where T: UnsignedInteger {
             typealias E = T.Element
-            typealias L = T.Element.Magnitude
-            typealias F = Fallible<Division<T, T>>
+            typealias D = Division<T, T>
+            typealias F = Fallible<D>
             //=----------------------------------=
             let  small = T(0x0000000000000000000000000000007F)
             let xsmall = small.complement()
@@ -106,25 +109,25 @@ extension InfiniIntTests {
             let  ratio = T(0x020406080A0C0E10121416181A1C1E20)
             let xratio = ratio.complement()
             //=----------------------------------=
-            Test().division( small,  small, F(quotient:  T( 1), remainder:  T( 0)))
-            Test().division( small, xsmall, F(quotient:  T( 0), remainder:  small))
-            Test().division(xsmall,  small, F(quotient: ~T( 0), remainder:  T( 0),  error: !T.isSigned))
-            Test().division(xsmall, xsmall, F(quotient:  T( 1), remainder:  T( 0)))
+            Test().division( small,  small, F(D(quotient:  T( 1), remainder:  T( 0))))
+            Test().division( small, xsmall, F(D(quotient:  T( 0), remainder:  small)))
+            Test().division(xsmall,  small, F(D(quotient: ~T( 0), remainder:  T( 0)),  error: !T.isSigned))
+            Test().division(xsmall, xsmall, F(D(quotient:  T( 1), remainder:  T( 0))))
             
-            Test().division( small,  large, F(quotient:  T( 0), remainder:  small))
-            Test().division( small, xlarge, F(quotient:  T( 0), remainder:  small))
-            Test().division(xsmall,  large, F(quotient:  T( 0), remainder: xsmall,  error: !T.isSigned))
-            Test().division(xsmall, xlarge, F(quotient:  T( 1), remainder:  large - small))
+            Test().division( small,  large, F(D(quotient:  T( 0), remainder:  small)))
+            Test().division( small, xlarge, F(D(quotient:  T( 0), remainder:  small)))
+            Test().division(xsmall,  large, F(D(quotient:  T( 0), remainder: xsmall),  error: !T.isSigned))
+            Test().division(xsmall, xlarge, F(D(quotient:  T( 1), remainder:  large - small)))
             
-            Test().division( large,  small, F(quotient:  ratio, remainder:  00016))
-            Test().division( large, xsmall, F(quotient:  T( 0), remainder:  large))
-            Test().division(xlarge,  small, F(quotient: xratio, remainder: ~00015,  error: !T.isSigned))
-            Test().division(xlarge, xsmall, F(quotient:  T( 0), remainder: xlarge))
+            Test().division( large,  small, F(D(quotient:  ratio, remainder:  00016)))
+            Test().division( large, xsmall, F(D(quotient:  T( 0), remainder:  large)))
+            Test().division(xlarge,  small, F(D(quotient: xratio, remainder: ~00015),  error: !T.isSigned))
+            Test().division(xlarge, xsmall, F(D(quotient:  T( 0), remainder: xlarge)))
             
-            Test().division( large,  large, F(quotient:  T( 1), remainder:  T( 0)))
-            Test().division( large, xlarge, F(quotient:  T( 0), remainder:  large))
-            Test().division(xlarge,  large, F(quotient: ~T( 0), remainder:  T( 0),  error: !T.isSigned))
-            Test().division(xlarge, xlarge, F(quotient:  T( 1), remainder:  T( 0)))
+            Test().division( large,  large, F(D(quotient:  T( 1), remainder:  T( 0))))
+            Test().division( large, xlarge, F(D(quotient:  T( 0), remainder:  large)))
+            Test().division(xlarge,  large, F(D(quotient: ~T( 0), remainder:  T( 0)),  error: !T.isSigned))
+            Test().division(xlarge, xlarge, F(D(quotient:  T( 1), remainder:  T( 0))))
         }
                         
         for element in Self.typesWhereIsUnsigned {

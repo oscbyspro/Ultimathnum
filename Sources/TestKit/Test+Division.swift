@@ -29,8 +29,8 @@ extension Test {
         _ id: BinaryIntegerID = .init()
     )   where T: BinaryInteger {
         
-        let expctation = Fallible(quotient: quotient, remainder: remainder, error: error)
-        self.division(dividend, divisor, expctation)
+        let division = Division(quotient: quotient, remainder: remainder)
+        self.division(dividend, divisor,  division.veto(error))
     }
     
     public func division<T>(

@@ -24,7 +24,7 @@ extension DoubleIntTests {
     func testAddition21B() {
         func whereTheBaseIsSigned<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
-            typealias F = Fallible<DoubleInt<B>>
+            typealias F = Fallible<T>
             //=----------------------------------=
             let x = B.msb
             //=----------------------------------=
@@ -41,8 +41,8 @@ extension DoubleIntTests {
         
         func whereTheBaseIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
-            typealias F = Fallible<DoubleInt<B>>
-            
+            typealias F = Fallible<T>
+
             Test().same(T(low:  0, high:  0).plus(B.Magnitude(~3)), F(T(low: ~3, high:  0)))
             Test().same(T(low:  1, high:  2).plus(B.Magnitude(~3)), F(T(low: ~2, high:  2)))
             Test().same(T(low: ~1, high: ~2).plus(B.Magnitude( 3)), F(T(low:  1, high: ~1)))
@@ -62,7 +62,7 @@ extension DoubleIntTests {
     func testAddition22B() {
         func whereTheBaseIsSigned<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
-            typealias F = Fallible<DoubleInt<B>>
+            typealias F = Fallible<T>
             
             Test().same(T(low:  0, high:  0).plus(T(low: ~3, high: ~4)), F(T(low: ~3, high: ~4)))
             Test().same(T(low:  1, high:  2).plus(T(low: ~3, high: ~4)), F(T(low: ~2, high: ~2)))
@@ -77,8 +77,8 @@ extension DoubleIntTests {
         
         func whereTheBaseIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
-            typealias F = Fallible<DoubleInt<B>>
-            
+            typealias F = Fallible<T>
+
             Test().same(T(low:  0, high:  0).plus(T(low: ~3, high: ~4)), F(T(low: ~3, high: ~4)))
             Test().same(T(low:  1, high:  2).plus(T(low: ~3, high: ~4)), F(T(low: ~2, high: ~2)))
             Test().same(T(low: ~1, high: ~2).plus(T(low:  3, high:  4)), F(T(low:  1, high:  2), error: true))

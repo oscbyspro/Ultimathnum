@@ -29,18 +29,3 @@ extension Fallible where Value: BinaryInteger {
         self.value.division (divisor).veto(self.error)
     }
 }
-
-//=----------------------------------------------------------------------------=
-// MARK: + where Value is Quotient and Remainder
-//=----------------------------------------------------------------------------=
-
-extension Fallible {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init<Q, R>(quotient: consuming Q, remainder: consuming R, error: Bool = false) where Value == Division<Q, R> {
-        self.init(Division(quotient: quotient, remainder: remainder), error: error)
-    }
-}

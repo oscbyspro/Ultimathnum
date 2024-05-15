@@ -90,6 +90,6 @@ extension CoreIntegerWhereIsUnsigned {
         }
         //=--------------------------------------=
         let result = divisor.value.base.dividingFullWidth((high: dividend.high.base, low: dividend.low.base))
-        return Fallible(quotient: Self(result.quotient), remainder: Self(result.remainder), error: overflow)
+        return Division(quotient: Self(result.quotient), remainder: Self(result.remainder)).veto(overflow)
     }
 }
