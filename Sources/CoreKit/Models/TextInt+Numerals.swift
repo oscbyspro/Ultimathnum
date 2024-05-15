@@ -72,10 +72,11 @@ extension TextInt {
         }
         
         @inlinable public var letters: Letters {
-            switch self.o10x36 {
-            case Letters.uppercase.start: return Letters.uppercase
-            case Letters.lowercase.start: return Letters.lowercase
-            default: preconditionFailure(String.brokenInvariant())
+            if  self.o10x36 == Letters.uppercase.start {
+                return Letters.uppercase
+            }   else {
+                Swift.assert(self.o10x36 == Letters.lowercase.start)
+                return Letters.lowercase
             }
         }
         
