@@ -133,4 +133,16 @@ import CoreKit
             self.storage.high = newValue
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func ascending() -> (low: Low, mid: Mid, high: High) {
+        self.storage.ascending()
+    }
+    
+    @inlinable public consuming func descending() -> (high: High, mid: Mid, low: Low) {
+        self.storage.descending()
+    }
 }

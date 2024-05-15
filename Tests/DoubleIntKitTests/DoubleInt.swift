@@ -89,7 +89,7 @@ final class DoubleIntTests: XCTestCase {
         }
     }
     
-    func testInit() {
+    func testComponents() {
         func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
             
@@ -98,9 +98,31 @@ final class DoubleIntTests: XCTestCase {
             
             Test().same(T(high: 1, low: 2).low,  2 as B.Magnitude)
             Test().same(T(high: 1, low: 2).high, 1 as B)
+            
+            setters: do {
+                let rhs  = T(low: 1, high: 2)
+                var lhs  = T(low: 0, high: 0)
+                
+                lhs.low  = rhs.low
+                lhs.high = rhs.high
+                
+                Test().same(lhs, rhs)
+            }
+            
+            ascending: do {
+                let (low, high) = T(low: 1, high: 2).ascending()
+                Test().same(low,  1 as B.Magnitude)
+                Test().same(high, 2 as B)
+            }
+            
+            descending: do {
+                let (high, low) = T(low: 1, high: 2).descending()
+                Test().same(low,  1 as B.Magnitude)
+                Test().same(high, 2 as B)
+            }
         }
         
-        for base in coreSystemsIntegers {
+        for base in Self.bases {
             whereTheBaseIs(base)
         }
     }
@@ -117,7 +139,7 @@ final class DoubleIntTests: XCTestCase {
             Test().same(S(raw: T(low: ~1, high: ~2)), S(low: ~1, high: ~2))
         }
         
-        for base in coreSystemsIntegers {
+        for base in Self.bases {
             whereTheBaseIs(base)
         }
     }
@@ -127,12 +149,12 @@ final class DoubleIntTests: XCTestCase {
             typealias T = DoubleInt<B>
             
             Test().same(MemoryLayout<T>.self, MemoryLayout<(B, B)>.self)
-            Test().same(MemoryLayout<T>.size, 2 * MemoryLayout<B>.size)
-            Test().same(MemoryLayout<T>.size, 2 * MemoryLayout<B>.stride)
-            Test().same(MemoryLayout<T>.size, 2 * MemoryLayout<B>.alignment)
+            Test().same(MemoryLayout<T>.size,      2 * MemoryLayout<B>.size)
+            Test().same(MemoryLayout<T>.stride,    2 * MemoryLayout<B>.stride)
+            Test().same(MemoryLayout<T>.alignment, 1 * MemoryLayout<B>.alignment)
         }
         
-        for base in coreSystemsIntegers {
+        for base in Self.bases {
             whereTheBaseIs(base)
         }
     }

@@ -102,9 +102,22 @@ import CoreKit
         get {
             self.storage.high
         }
+        
         mutating set {
             self.storage.high = newValue
         }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func ascending() -> (low: Low, high: High) {
+        self.storage.ascending()
+    }
+    
+    @inlinable public consuming func descending() -> (high: High, low: Low) {
+        self.storage.descending()
     }
 }
 
