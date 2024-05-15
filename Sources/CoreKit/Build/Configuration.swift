@@ -8,7 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Platform
+// MARK: * Configuration
 //*============================================================================*
 //=----------------------------------------------------------------------------=
 // MARK: + Endianness
@@ -18,6 +18,7 @@
 public typealias MachineByteOrder = Ascending
 #elseif _endian(big)
 public typealias MachineByteOrder = Descending
+#error("Ultimathnum does not yet support big endian platforms.")
 #else
 public typealias MachineByteOrder = Never
 #endif
