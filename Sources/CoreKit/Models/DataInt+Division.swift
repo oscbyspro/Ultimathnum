@@ -32,7 +32,7 @@ extension MutableDataInt.Body {
         
         for index in self.indices.reversed() {
             let dividend = Doublet(low: self[unchecked: index], high: remainder)
-            remainder = Element.division(dividend, by: divisor).assert().remainder
+            remainder = Element.division(dividend, by: divisor).unchecked().remainder
         }
         
         return remainder as Element
@@ -52,7 +52,7 @@ extension MutableDataInt.Body {
         
         for index in self.indices.reversed() {
             let dividend = Doublet(low: self[unchecked: index], high: remainder)
-            let division = Element.division(dividend, by: divisor).assert()
+            let division = Element.division(dividend, by: divisor).unchecked()
             self[unchecked:index] = division.quotient
             ((((((remainder)))))) = division.remainder
         }
@@ -147,7 +147,7 @@ extension MutableDataInt.Body {
         var quotient: Element = if denominator.value == numerator.high {
             Element.max // the quotient must fit in one element
         }   else {
-            Element.division(numerator, by: denominator).assert().quotient
+            Element.division(numerator, by: denominator).unchecked().quotient
         }
         //=--------------------------------------=
         if  quotient == 0 { return quotient }
@@ -155,7 +155,7 @@ extension MutableDataInt.Body {
         var overflow =  self.decrementSubSequence(by: divisor, times: quotient).error
         
         decrementQuotientAtMostTwice: while overflow {
-            quotient = quotient.minus(1).assert()
+            quotient = quotient.minus(1).unchecked()
             overflow = !self.increment(by: divisor).error
         }
         

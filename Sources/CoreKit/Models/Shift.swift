@@ -90,6 +90,6 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func nondistance() -> Self where Value: SystemsInteger {
-        Self(unchecked: Value(raw: Value.size).minus(self.value).assert())
+        Self(unchecked: Value(raw: Value.size).minus(self.value).unchecked())
     }
 }

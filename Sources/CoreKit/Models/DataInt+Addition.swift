@@ -165,7 +165,7 @@ extension MutableDataInt.Body {
         for index in elements.indices {
             let product = elements[unchecked: index].multiplication(multiplier, plus: increment)
             (self[unchecked: index], bit) = (self[unchecked: index]).plus(product.low).components()
-            (increment) = product.high.plus(Element(Bit(bit))).assert()
+            (increment) = product.high.plus(Element(Bit(bit))).unchecked()
         }
         
         return (consume self)[unchecked: elements.count...].incrementSubSequence(by: increment)

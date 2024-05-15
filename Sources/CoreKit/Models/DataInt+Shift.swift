@@ -41,7 +41,7 @@ extension MutableDataInt.Body {
     @inlinable public func upshift(environment: Element, majorAtLeastOne major: IX, minor: Void) {
         //=--------------------------------------=
         var destination: IX = self.count
-        var source = destination.plus(major.complement()).assert()
+        var source = destination.plus(major.complement()).unchecked()
         //=--------------------------------------=
         Swift.assert(000000 < self.count, String.indexOutOfBounds())
         Swift.assert(000000 < ((source)), String.indexOutOfBounds())
@@ -51,13 +51,13 @@ extension MutableDataInt.Body {
             let element:  Element
             
             if  UX(raw: source) > .zero {
-                source  = source.decremented().assert()
+                source  = source.decremented().unchecked()
                 element = self[unchecked: source]
             }   else {
                 element = environment
             }
             
-            destination = destination.decremented().assert()            
+            destination = destination.decremented().unchecked()            
             self[unchecked: destination] = element
         }
     }
@@ -78,7 +78,7 @@ extension MutableDataInt.Body {
         let pull = push.complement()
         //=--------------------------------------=
         var destination = self.count as IX
-        var source = destination.plus(major.toggled()).assert()
+        var source = destination.plus(major.toggled()).unchecked()
         //=--------------------------------------=
         Swift.assert(000000 <= ((source)), String.indexOutOfBounds())
         Swift.assert(source <  self.count, String.indexOutOfBounds())
@@ -89,14 +89,14 @@ extension MutableDataInt.Body {
             let pushed: Element = element &<< push
             
             if  UX(raw: source) > .zero {
-                source  = source.decremented().assert()
+                source  = source.decremented().unchecked()
                 element = self[unchecked: source]
             }   else {
                 element = environment
             }
             
             let pulled: Element = element &>> pull
-            destination = destination.decremented().assert()
+            destination = destination.decremented().unchecked()
             self[unchecked: destination] = pushed | pulled
         }
     }
@@ -129,7 +129,7 @@ extension MutableDataInt.Body {
     @inlinable public func downshift(environment: Element, majorAtLeastOne major: IX, minor: Void) {
         //=--------------------------------------=
         var destination = IX.zero
-        var source = destination.plus(major).assert()
+        var source = destination.plus(major).unchecked()
         //=--------------------------------------=
         Swift.assert(000000 < ((source)), String.indexOutOfBounds())
         Swift.assert(source < self.count, String.indexOutOfBounds())
@@ -139,13 +139,13 @@ extension MutableDataInt.Body {
             
             if  UX(raw: source) <  UX(raw: self.count) {
                 element = self[unchecked: source]
-                source  = source.incremented().assert()
+                source  = source.incremented().unchecked()
             }   else {
                 element = environment
             }
             
             self[unchecked: destination] = element
-            destination = destination.incremented().assert()
+            destination = destination.incremented().unchecked()
         }
     }
     
@@ -165,27 +165,27 @@ extension MutableDataInt.Body {
         let pull = push.complement()
         //=--------------------------------------=
         var destination = IX.zero
-        var source = destination.plus(major).assert()
+        var source = destination.plus(major).unchecked()
         //=--------------------------------------=
         Swift.assert(000000 <= ((source)), String.indexOutOfBounds())
         Swift.assert(source <  self.count, String.indexOutOfBounds())
         //=--------------------------------------=
         var element: Element = self[unchecked: source]
-        source = source.incremented().assert()
+        source = source.incremented().unchecked()
         
         while UX(raw: destination) < UX(raw: self.count) {
             let pushed: Element = element &>> push
             
             if  UX(raw: source) <  UX(raw: self.count) {
                 element = self[unchecked: source]
-                source  = source.incremented().assert()
+                source  = source.incremented().unchecked()
             }   else {
                 element = environment
             }
             
             let pulled: Element = element &<< pull
             self[unchecked: destination] = pushed | pulled
-            destination = destination.incremented().assert()
+            destination = destination.incremented().unchecked()
         }
     }
 }

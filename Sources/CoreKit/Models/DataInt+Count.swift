@@ -66,15 +66,15 @@ extension DataInt.Body {
     }
     
     @inlinable borrowing public func count(_ selection: Bit.Nonappendix) -> IX {
-        self.size().minus(self.count(.appendix)).assert("inverse bit count")
+        self.size().minus(self.count(.appendix)).unchecked("inverse bit count")
     }
     
     @inlinable borrowing public func count(_ selection: Bit.Nonascending) -> IX {
-        self.size().minus(self.count( .ascending(selection.bit))).assert("inverse bit count")
+        self.size().minus(self.count( .ascending(selection.bit))).unchecked("inverse bit count")
     }
     
     @inlinable borrowing public func count(_ selection: Bit.Nondescending) -> IX {
-        self.size().minus(self.count(.descending(selection.bit))).assert("inverse bit count")
+        self.size().minus(self.count(.descending(selection.bit))).unchecked("inverse bit count")
     }
 }
 

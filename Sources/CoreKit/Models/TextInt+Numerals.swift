@@ -40,7 +40,7 @@ extension TextInt {
                 self.i10x36 = 00
             }   else if radix <= 36 {
                 self.i00x10 = 10
-                self.i10x36 = U8(load: radix).minus(10).assert()
+                self.i10x36 = U8(load: radix).minus(10).unchecked()
             }   else {
                 throw TextInt.Failure.invalid
             }

@@ -70,7 +70,7 @@ extension DoubleInt where Base == Base.Magnitude {
     @inlinable func multiplication(_ multiplier: Base) -> TripleInt<Base> {
         let ax = Self(self.low .multiplication(multiplier))
         let bx = Self(self.high.multiplication(multiplier))
-        return TripleInt(low: ax.low, high: bx.plus(ax.high).assert().storage)
+        return TripleInt(low: ax.low, high: bx.plus(ax.high).unchecked().storage)
     }
     
     //=------------------------------------------------------------------------=
@@ -116,7 +116,7 @@ extension DoubleInt where Base == Base.Magnitude {
         (by.low,  o1) = by.low .plus(bx.high).components()
         let bz = Low(Bit(o0)) &+ Low(Bit(o1))
         //=--------------------------------------=
-        by = by.plus(Self(low: az, high: bz)).assert()
+        by = by.plus(Self(low: az, high: bz)).unchecked()
         //=--------------------------------------=
         return Doublet(low: Magnitude(ax), high: Magnitude(by))
     }

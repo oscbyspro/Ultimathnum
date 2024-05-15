@@ -56,6 +56,6 @@ extension RootInt {
     /// ```
     ///
     @inlinable public func count(_ selection: Bit.Nonappendix) -> UX {
-        self.count(.entropy).decremented().assert("entropy >= 1")
+        self.count(.entropy).decremented().unchecked("entropy >= 1")
     }
 }

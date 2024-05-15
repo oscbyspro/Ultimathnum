@@ -21,8 +21,8 @@ extension TripleInt where Base == Base.Magnitude {
     
     @inlinable package consuming func division3121(unchecked divisor: Divisor<Base>) -> Division<DoubleInt<Base>, Base> {
         Swift.assert(divisor.value > self.high, "quotient must fit in two halves")
-        let high = Base.division( Doublet(low: self.mid, high: self.high     ), by: divisor).assert()
-        let low  = Base.division( Doublet(low: self.low, high: high.remainder), by: divisor).assert()
+        let high = Base.division( Doublet(low: self.mid, high: self.high     ), by: divisor).unchecked()
+        let low  = Base.division( Doublet(low: self.low, high: high.remainder), by: divisor).unchecked()
         return Division(quotient: DoubleInt(low: low.quotient, high: high.quotient), remainder: low.remainder)
     }
     
@@ -38,7 +38,7 @@ extension TripleInt where Base == Base.Magnitude {
         var quotient: Base = if divisor.value.high == self.high {
             Base.max // the quotient must fit in one part
         }   else {
-            Base.division(Doublet(low: self.mid, high: self.high), by: Divisor(unchecked: divisor.value.high)).assert().quotient
+            Base.division(Doublet(low: self.mid, high: self.high), by: Divisor(unchecked: divisor.value.high)).unchecked().quotient
         }
         //=--------------------------------------=
         // decrement when overestimated (max 2)
@@ -46,9 +46,9 @@ extension TripleInt where Base == Base.Magnitude {
         var product: Self = divisor.value.multiplication(quotient)
         
         while self < product {
-            quotient = quotient.minus(0000001).assert()
-            product  = product .minus(divisor.value).assert()
-        };  ((self)) = ((self)).minus(product).assert()
+            quotient = quotient.minus(0000001).unchecked()
+            product  = product .minus(divisor.value).unchecked()
+        };  ((self)) = ((self)).minus(product).unchecked()
         
         Swift.assert(self.high == 0, "remainder must fit in two halves")
         Swift.assert(DoubleInt(low: self.low, high: self.mid) < divisor.value, "remainder must be less than divisor")

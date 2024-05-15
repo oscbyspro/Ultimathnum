@@ -59,7 +59,7 @@ extension DataInt.Body {
             Swift.assert(range.lowerBound <= self.count, String.indexOutOfBounds())
             //=----------------------------------=
             let start = self.start.advanced(by: Int(range.lowerBound))
-            let count = self.count.minus(range.lowerBound).assert()
+            let count = self.count.minus(range.lowerBound).unchecked()
             return Self(start, count: count)
         }
     }

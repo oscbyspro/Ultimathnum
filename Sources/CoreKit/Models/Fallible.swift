@@ -100,6 +100,7 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// Returns the `value` and traps on `error`.
     @discardableResult @inlinable public consuming func unwrap(
         _ message: @autoclosure () -> String = String(),
         file: StaticString = #file, line: UInt = #line
@@ -112,7 +113,8 @@
         return self.value
     }
     
-    @discardableResult @inlinable public consuming func assert(
+    /// Returns the `value` and traps on `error` in debug mode.
+    @discardableResult @inlinable public consuming func unchecked(
         _ message: @autoclosure () -> String = String(),
         file: StaticString = #file, line: UInt = #line
     ) -> Value {

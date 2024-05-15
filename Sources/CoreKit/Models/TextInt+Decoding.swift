@@ -87,7 +87,7 @@ extension TextInt {
         var alignment: IX
         
         let divisor = Divisor(unchecked: self.exponentiation.exponent)
-        (capacity, alignment) = IX(numerals.count).division(divisor).assert().components()
+        (capacity, alignment) = IX(numerals.count).division(divisor).unchecked().components()
         (capacity) &+= IX(Bit(alignment != .zero))
         //=--------------------------------------=
         return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
@@ -116,7 +116,7 @@ extension TextInt {
                 let element = try self.numerals.load(part, as: UX.self)
                 // note that the index advances faster than the product
                 words[unchecked: index] = words[unchecked: ..<index].multiply(by: self.exponentiation.power, add: element)
-                index  = index.incremented().assert()
+                index  = index.incremented().unchecked()
                 stride = self.exponentiation.exponent
             }
             //=----------------------------------=
@@ -148,7 +148,7 @@ extension TextInt {
         var alignment: IX
         
         let divisor = Divisor(unchecked: self.exponentiation.exponent)
-        (capacity, alignment) = IX(numerals.count).division(divisor).assert().components()
+        (capacity, alignment) = IX(numerals.count).division(divisor).unchecked().components()
         (capacity) &+= IX(Bit(alignment != .zero))
         //=--------------------------------------=
         return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
@@ -173,7 +173,7 @@ extension TextInt {
             backwards: while !numerals.isEmpty {
                 let part = UnsafeBufferPointer(rebasing: numerals[..<Int(stride)])
                 numerals = UnsafeBufferPointer(rebasing: numerals[Int(stride)...])
-                index  = index.decremented().assert()
+                index  = index.decremented().unchecked()
                 words[unchecked: index] = try self.numerals.load(part, as: UX.self)
                 stride = self.exponentiation.exponent
             }

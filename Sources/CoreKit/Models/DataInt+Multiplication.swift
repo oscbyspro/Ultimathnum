@@ -157,7 +157,7 @@ extension MutableDataInt.Body {
             //=----------------------------------=
             let multiplier = Immutable(elements.start + Int(index), count: 1)
             let (diagonal) = multiplier[unchecked:()]
-            index = index.incremented().assert()
+            index = index.incremented().unchecked()
             //=----------------------------------=
             // add non-diagonal products
             //=----------------------------------=
@@ -277,10 +277,10 @@ extension MutableDataInt.Body {
             // set (b - a) mul (y - x)
             //=----------------------------------=
             m.initialize(to: b)
-            m.decrement (by: a).assert()
+            m.decrement (by: a).unchecked()
             
             n.initialize(to: y)
-            n.decrement (by: x).assert()
+            n.decrement (by: x).unchecked()
             
             v.initialize(to: Immutable(m), times: Immutable(n))
             //=----------------------------------=
@@ -363,8 +363,8 @@ extension MutableDataInt.Body {
             // set (a * x) and (b * y)
             //=----------------------------------=
             let suffix = self[unchecked: i...]
-            suffix.increment(by: Immutable(u[unchecked: ..<axCount])).assert()
-            suffix.increment(by: Immutable(v[unchecked: ..<byCount])).assert()
+            suffix.increment(by: Immutable(u[unchecked: ..<axCount])).unchecked()
+            suffix.increment(by: Immutable(v[unchecked: ..<byCount])).unchecked()
             //=----------------------------------=
             // regions
             //=----------------------------------=
@@ -375,7 +375,7 @@ extension MutableDataInt.Body {
             // set (b - a) mul (y - x)
             //=----------------------------------=
             u[unchecked: ..<b.count].initialize(to: b)
-            u[unchecked: ..<b.count].decrement (by: a).assert()
+            u[unchecked: ..<b.count].decrement (by: a).unchecked()
             v.initialize(toSquareProductOf: Immutable(u[unchecked: ..<b.count]))
             //=----------------------------------=
             // sub (b - a) mul (y - x)

@@ -52,7 +52,7 @@ extension DataInt.Body {
         var endIndex = self.count
         
         while endIndex > 0 {
-            let lastIndex = endIndex.minus(1).assert()
+            let lastIndex = endIndex.minus(1).unchecked()
             guard self[unchecked: lastIndex] == appendix else { break }
             endIndex = lastIndex
         }

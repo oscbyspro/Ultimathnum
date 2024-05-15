@@ -48,7 +48,7 @@ extension BinaryInteger {
     /// ```
     ///
     @inlinable borrowing public func count(_ selection: Bit.Nonappendix) -> Magnitude {
-        self.size().minus(self.count(.appendix)).assert("inverse bit count")
+        self.size().minus(self.count(.appendix)).unchecked("inverse bit count")
     }
     
     /// The number of bits in `self` that match the `selection`.
@@ -61,7 +61,7 @@ extension BinaryInteger {
     /// ```
     ///
     @inlinable borrowing public func count(_ selection: Bit.Nonascending) -> Magnitude {
-        self.size().minus(self.count( .ascending(selection.bit))).assert("inverse bit count")
+        self.size().minus(self.count( .ascending(selection.bit))).unchecked("inverse bit count")
     }
     
     /// The number of bits in `self` that match the `selection`.
@@ -74,6 +74,6 @@ extension BinaryInteger {
     /// ```
     ///
     @inlinable borrowing public func count(_ selection: Bit.Nondescending) -> Magnitude {
-        self.size().minus(self.count(.descending(selection.bit))).assert("inverse bit count")
+        self.size().minus(self.count(.descending(selection.bit))).unchecked("inverse bit count")
     }
 }
