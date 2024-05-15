@@ -26,6 +26,7 @@ extension Test {
         _ expectation: Fallible<T>,
         _ id: BinaryIntegerID = .init()
     )   where T: BinaryInteger {
+        
         always: do {
             same(lhs &- rhs, expectation.value)
         };  if !expectation.error {
@@ -48,31 +49,49 @@ extension Test {
             same(abc, xyz, "binary integer subtraction must be reversible [1]")
         }
         
+        if  rhs == 0 {
+            same(lhs.minus(false),              expectation)
+            same(lhs.veto (false).minus(false), expectation)
+            same(lhs.veto (true ).minus(false), expectation.veto())
+        }
+        
         if  rhs == 1 {
-            same(lhs.decremented(),           expectation)
-            same(Fallible(lhs).decremented(), expectation)
+            same(lhs.minus(true),               expectation)
+            same(lhs.veto (false).minus(true),  expectation)
+            same(lhs.veto (true ).minus(true),  expectation.veto())
+            
+            same(lhs.decremented(),             expectation)
+            same(lhs.veto(false).decremented(), expectation)
+            same(lhs.veto(true ).decremented(), expectation.veto())
+        }
+        
+        func unidirectional(_ lhs: T, _ rhs: T, _ expectation: Fallible<T>) {
+            same(lhs.minus(rhs),             expectation)
+            same(lhs.minus(rhs.veto(false)), expectation)
+            same(lhs.minus(rhs.veto(true )), expectation.veto())
+            
+            same(lhs.veto (false).minus(rhs),             expectation)
+            same(lhs.veto (false).minus(rhs.veto(false)), expectation)
+            same(lhs.veto (false).minus(rhs.veto(true )), expectation.veto())
+            same(lhs.veto (true ).minus(rhs),             expectation.veto())
+            same(lhs.veto (true ).minus(rhs.veto(false)), expectation.veto())
+            same(lhs.veto (true ).minus(rhs.veto(true )), expectation.veto())
         }
         
         always: do {
-            same(lhs.minus(rhs),                     expectation)
-            same(lhs.minus(Fallible(rhs)),           expectation)
-            same(Fallible(lhs).minus(rhs),           expectation)
-            same(Fallible(lhs).minus(Fallible(rhs)), expectation)
+            unidirectional(lhs, rhs, expectation)
         }
         
-        if  !expectation.error {
-            let expectation = expectation.negated()
-            same(rhs.minus(lhs),                     expectation)
-            same(rhs.minus(Fallible(lhs)),           expectation)
-            same(Fallible(rhs).minus(lhs),           expectation)
-            same(Fallible(rhs).minus(Fallible(lhs)), expectation)
+        if !expectation.error {
+            unidirectional(rhs, lhs, expectation.negated())
         }
         //=--------------------------------------=
         // same as rhs negation when lhs is zero
         //=--------------------------------------=
         if  lhs == 0 {
-            same(rhs.negated(), expectation)
-            same(Fallible(rhs).negated(), expectation)
+            same(rhs.negated(),             expectation)
+            same(rhs.veto(false).negated(), expectation)
+            same(rhs.veto(true ).negated(), expectation.veto())
         }
         
         if  lhs == 0 && !expectation.error {
@@ -81,8 +100,8 @@ extension Test {
         }
         
         if  lhs == 0 && !expectation.error {
-            same(Fallible(rhs), expectation.value.negated())
-            same(Fallible(rhs), Fallible(expectation.value).negated())
+            same(rhs.veto(false), expectation.value.negated())
+            same(rhs.veto(false), expectation.value.veto(false).negated())
         }
     }
 }

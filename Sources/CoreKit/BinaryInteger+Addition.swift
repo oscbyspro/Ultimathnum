@@ -12,7 +12,7 @@
 //*============================================================================*
 
 extension BinaryInteger {
- 
+    
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
@@ -27,10 +27,6 @@ extension BinaryInteger {
         lhs.plus(rhs).value
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Inout
-    //=------------------------------------------------------------------------=
-    
     /// Forms the trapping result of `lhs + rhs`.
     @inlinable public static func +=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs + rhs
@@ -39,6 +35,23 @@ extension BinaryInteger {
     /// Forms the wrapping result of `lhs + rhs`.
     @inlinable public static func &+=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs &+ rhs
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// The next value in arithmetic progression.
+    @inlinable public consuming func incremented() -> Fallible<Self> {
+        self.plus(true)
+    }
+    
+    /// Returns the result of `self + increment`.
+    @inlinable public consuming func plus(_ increment: Bool) -> Fallible<Self> {
+        switch Self.isSigned {
+        case true : self.minus(Self(repeating: Bit(increment)))
+        case false: self.plus (Self(/*------*/ Bit(increment)))
+        }
     }
 }
 
@@ -58,25 +71,6 @@ extension BinaryInteger {
     }
 }
 
-//=----------------------------------------------------------------------------=
-// MARK: + Stride by 1
-//=----------------------------------------------------------------------------=
-
-extension BinaryInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    /// The next value in arithmetic progression, or `self`.
-    @inlinable public consuming func incremented(_ condition: consuming Bool = true) -> Fallible<Self> {
-        switch Self.isSigned {
-        case true : self.minus(Self(repeating: Bit(condition)))
-        case false: self.plus (Self(/*------*/ Bit(condition)))
-        }
-    }
-}
-
 //*============================================================================*
 // MARK: * Binary Integer x Addition x Systems
 //*============================================================================*
@@ -84,7 +78,7 @@ extension BinaryInteger {
 extension SystemsInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
     /// Returns the result of `self` + (`other` + `bit`).
@@ -92,7 +86,7 @@ extension SystemsInteger {
         let a: Bool, b: Bool
         
         (self, a) = self.plus(other).components()
-        (self, b) = self.incremented(bit).components()
+        (self, b) = self.plus((bit)).components()
         
         return self.veto(a != b)
     }

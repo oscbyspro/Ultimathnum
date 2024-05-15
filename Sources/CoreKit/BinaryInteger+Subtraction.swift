@@ -32,26 +32,15 @@ extension BinaryInteger {
         lhs.minus(rhs).value
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Inout
-    //=------------------------------------------------------------------------=
-
     /// Forms the trapping result of `lhs - rhs`.
     @inlinable public static func -=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs - rhs
     }
-
+    
     /// Forms the wrapping result of `lhs - rhs`.
     @inlinable public static func &-=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs &- rhs
     }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Fallible
-//=----------------------------------------------------------------------------=
-
-extension BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -63,28 +52,33 @@ extension BinaryInteger {
         return result.value.veto(result.error == Self.isSigned)
     }
     
-    /// Returns the result of `self - decrement` that fits.
-    @inlinable public consuming func minus(_ decrement: borrowing Fallible<Self>) -> Fallible<Self> {
-        self.minus(decrement.value).veto(decrement.error)
+    /// The next value in arithmetic progression.
+    @inlinable public consuming func decremented() -> Fallible<Self> {
+        self.minus(true)
+    }
+    
+    /// Returns the result of `self - increment`.
+    @inlinable public consuming func minus(_ decrement: Bool) -> Fallible<Self> {
+        switch Self.isSigned {
+        case true : self.plus (Self(repeating: Bit(decrement)))
+        case false: self.minus(Self(/*------*/ Bit(decrement)))
+        }
     }
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Stride by 1
+// MARK: + Fallible
 //=----------------------------------------------------------------------------=
 
 extension BinaryInteger {
-    
+
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Returns previous value in arithmetic progression, or `self`.
-    @inlinable public consuming func decremented(_ condition: consuming Bool = true) -> Fallible<Self> {
-        switch Self.isSigned {
-        case true : self.plus (Self(repeating: Bit(condition)))
-        case false: self.minus(Self(/*------*/ Bit(condition)))
-        }
+    /// Returns the result of `self - decrement` that fits.
+    @inlinable public consuming func minus(_ decrement: borrowing Fallible<Self>) -> Fallible<Self> {
+        self.minus(decrement.value).veto(decrement.error)
     }
 }
 
@@ -99,11 +93,11 @@ extension SystemsInteger {
     //=------------------------------------------------------------------------=
     
     /// Returns the result of `self` - (`other` + `bit`).
-    @inlinable public consuming func minus(_ other: borrowing Self, plus bit: consuming Bool) -> Fallible<Self> {
+    @inlinable public consuming func minus(_ other: borrowing Self, plus bit: Bool) -> Fallible<Self> {
         let a: Bool, b: Bool
         
         (self, a) = self.minus(other).components()
-        (self, b) = self.decremented(bit).components()
+        (self, b) = self.minus((bit)).components()
         
         return self.veto(a != b)
     }

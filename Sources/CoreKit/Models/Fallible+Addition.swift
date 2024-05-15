@@ -36,8 +36,13 @@ extension Fallible where Value: BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// The next value in arithmetic progression.
-    @inlinable public consuming func incremented(_ condition: consuming Bool = true) -> Self {
-        self.value.incremented(condition).veto(self.error)
+    /// Returns the next value in arithmetic progression.
+    @inlinable public consuming func incremented() -> Fallible<Value> {
+        self.plus(true)
+    }
+    
+    /// Returns the result of `self + increment`.
+    @inlinable public consuming func plus(_ increment: Bool) -> Fallible<Value> {
+        self.value.plus(increment).veto(self.error)
     }
 }

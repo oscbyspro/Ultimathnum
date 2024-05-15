@@ -40,8 +40,13 @@ extension Fallible where Value: BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// The previous value in arithmetic progression.
-    @inlinable public consuming func decremented(_ condition: consuming Bool = true) -> Self {
-        self.value.decremented(condition).veto(self.error)
+    /// Returns the previous value in arithmetic progression.
+    @inlinable public consuming func decremented() -> Fallible<Value> {
+        self.minus(true)
+    }
+    
+    /// Returns the result of `self - increment`.
+    @inlinable public consuming func minus(_ increment: Bool) -> Fallible<Value> {
+        self.value.minus(increment).veto(self.error)
     }
 }

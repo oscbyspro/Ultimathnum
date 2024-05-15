@@ -21,7 +21,7 @@ extension DoubleInt {
         
     @inlinable public consuming func minus(_ decrement: Base.Magnitude) -> Fallible<Self> {
         let low  = self.low .minus(Low(raw: decrement))
-        let high = self.high.decremented(low.error)
+        let high = self.high.minus(low.error)
         return Self(low: low.value, high: high.value).veto(high.error)
     }
     

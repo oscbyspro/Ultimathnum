@@ -42,6 +42,6 @@ extension CoreInteger {
     }
     
     @inlinable public func complement(_ increment: Bool) -> Fallible<Self> {
-        (~self).incremented(increment)
+        (~self).plus(increment)
     }
 }
