@@ -160,9 +160,7 @@ extension DataIntTests.Extension where Element == U8 {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    func load<T>(as type: T.Type, from index: UX, is expectation: T) 
-    where T: SystemsInteger & UnsignedInteger {
-        
+    func load<T>(as type: T.Type, from index: UX, is expectation: T) where T: SystemsInteger & UnsignedInteger {
         self.expect(expectation, read: {
             $0[index...].load(as: T.self)
         },  write: {
@@ -170,9 +168,7 @@ extension DataIntTests.Extension where Element == U8 {
         })
     }
     
-    func body<T>(as type: T.Type, is expectation: [T]) 
-    where T: SystemsInteger & UnsignedInteger {
-        
+    func body<T>(as type: T.Type, is expectation: [T]) where T: SystemsInteger & UnsignedInteger {
         self.expect(expectation, read: {
             let count = $0.body.count(as: T.self)
             var elements = [T]()
@@ -198,9 +194,7 @@ extension DataIntTests.Extension where Element == U8 {
         })
     }
     
-    func prefix<T>(_ count: UX, as type: T.Type, is expectation: [T]) 
-    where T: SystemsInteger & UnsignedInteger {
-        
+    func prefix<T>(_ count: UX, as type: T.Type, is expectation: [T]) where T: SystemsInteger & UnsignedInteger {
         self.expect(expectation, read: {
             var elements = [T]()
             
@@ -222,9 +216,7 @@ extension DataIntTests.Extension where Element == U8 {
         })
     }
     
-    func normalized<T>(as type: T.Type, is expectation: [T]) 
-    where T: SystemsInteger & UnsignedInteger {
-        
+    func normalized<T>(as type: T.Type, is expectation: [T]) where T: SystemsInteger & UnsignedInteger {
         self.expect(expectation, read: {
             var elements = [T]()
             $0 = $0.normalized()

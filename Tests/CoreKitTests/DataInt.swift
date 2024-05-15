@@ -43,6 +43,28 @@ final class DataIntTests: XCTestCase {
             self.test = Test(file: file, line: line)
             self.body = body
         }
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Utilities
+        //=--------------------------------------------------------------------=
+        
+        func expect<T: Equatable>(
+            _ expectation: T,
+            read:  (inout DataInt<Element>.Body) -> T,
+            write: (inout MutableDataInt<Element>.Body) -> T
+        ) {
+            
+            var copy = self.body
+            copy.withUnsafeBufferPointer {
+                var source = DataInt<Element>.Body($0)!
+                test.same(read(&source), expectation)
+            }
+            
+            copy.withUnsafeMutableBufferPointer {
+                var source = MutableDataInt<Element>.Body($0)!
+                test.same(write(&source), expectation)
+            }
+        }
     }
     
     //*========================================================================*
