@@ -157,7 +157,7 @@ extension MutableDataInt.Body {
             //=----------------------------------=
             let multiplier = Immutable(elements.start + Int(index), count: 1)
             let (diagonal) = multiplier[unchecked:()]
-            index = index.incremented().unchecked()
+            index = index.incremented().unchecked ()
             //=----------------------------------=
             // add non-diagonal products
             //=----------------------------------=
@@ -375,7 +375,7 @@ extension MutableDataInt.Body {
             // set (b - a) mul (y - x)
             //=----------------------------------=
             u[unchecked: ..<b.count].initialize(to: b)
-            u[unchecked: ..<b.count].decrement (by: a).unchecked()
+            u[unchecked: ..<b.count].decrement (by: a) .unchecked()
             v.initialize(toSquareProductOf: Immutable(u[unchecked: ..<b.count]))
             //=----------------------------------=
             // sub (b - a) mul (y - x)

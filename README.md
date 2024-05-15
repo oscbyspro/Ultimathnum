@@ -17,6 +17,7 @@
   - [What is a data integer?](#nomenclature-data-integer)
   - [What is a systems integer?](#nomenclature-systems-integer)
   - [What is a trusted input?](#nomenclature-trusted-input)
+  - [What is an unchecked operation?](#nomenclature-unchecked-value)
 * [CoreKit](#corekit)
   - [Validation and recovery with Fallible\<Value\>](#corekit-validation)
   - [Let there be binary integers with RootInt](#corekit-root-int)
@@ -179,8 +180,8 @@ Here are the other conversion requirements...
 
 You may realize that the infinite bit pattern definition implies a static size for all binary
 integers. Indeed, you can compare their sizes through metadata alone. Still, not all binary integers 
-are trivial. A systems integer is represented in memory by its bit pattern alone. Additionally, a 
-systems integer's size must be a power of two in [8, IX.max].
+are trivial. A systems integer is represented in memory by its bit pattern. Additionally, a systems 
+integer's size is a power of two in 8 through IX.max.
 
 | Size    | Signed | Unsigned |
 |--------:|:------:|:--------:|
@@ -210,8 +211,27 @@ code safer or easier to audit.
 init(_:)         // error: traps
 init(_:prune:)   // error: throws
 init(exactly:)   // error: nil
-init(unchecked:) // error: unsafe (with debug assertions)
+init(unchecked:) // error: unsafe, with debug assertions
 ```
+
+<a name="nomenclature-unchecked-value"/>
+
+#### What is an unchecked operation?
+
+We all know that dynamic precations come with performance penalties. This kind of performance tax 
+is often small in everyday code, but often noticeable when working with primitives. That is why some 
+operations have unchecked alternatives. In this project, however, we still validate all unchecked
+operations in debug mode. If an operation performs insufficient checks, even in debug mode, then we 
+call it unsafe.
+
+```swift
+U8.zero.decremented().error       // true
+U8.zero.decremented().value       // 255
+U8.zero.decremented().unchecked() // 255, but traps in debug mode
+```
+
+> [!IMPORTANT]
+> All unchecked operations are validated in debug mode.
 
 <a name="corekit"/>
 
