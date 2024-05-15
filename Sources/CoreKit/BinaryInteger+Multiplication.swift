@@ -72,7 +72,7 @@ extension SystemsInteger {
         let bit: Bool
         var product = self.multiplication(multiplier)
         (product.low, bit) = product.low.plus(increment).components()
-        (product.high) = product.high.plus(Self(Bit((bit)))).assert()
-        return product
+        (product.high)     = product.high.incremented(bit).assert()
+        return product as  Doublet<Self>
     }
 }

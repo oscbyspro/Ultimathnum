@@ -23,23 +23,25 @@ extension TripleIntTests {
     
     func testAddition32B() {
         func whereTheBaseIsSigned<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias X = DoubleInt<B>
+            typealias X = DoubleInt<B>.Magnitude
             typealias Y = TripleInt<B>
             typealias F = Fallible<TripleInt<B>>
-                        
-            Test().same(Y(low:  0, mid:  0, high:  0).plus(X(low: ~4, high: ~5)), F(Y(low: ~4, mid: ~5, high: ~0)))
-            Test().same(Y(low:  1, mid:  2, high:  3).plus(X(low: ~4, high: ~5)), F(Y(low: ~3, mid: ~3, high:  2)))
+            //=----------------------------------=
+            let x = B.msb
+            //=----------------------------------=
+            Test().same(Y(low:  0, mid:  0, high:  0).plus(X(low: ~4, high: ~5)), F(Y(low: ~4, mid: ~5, high:  0)))
+            Test().same(Y(low:  1, mid:  2, high:  3).plus(X(low: ~4, high: ~5)), F(Y(low: ~3, mid: ~3, high:  3)))
             Test().same(Y(low: ~1, mid: ~2, high: ~3).plus(X(low:  4, high:  5)), F(Y(low:  2, mid:  3, high: ~2)))
             Test().same(Y(low: ~0, mid: ~0, high: ~0).plus(X(low:  4, high:  5)), F(Y(low:  3, mid:  5, high:  0)))
             
-            Test().same(Y(low:  5, mid:  5, high:  B.msb).plus(X(low: ~4, high: ~5)), F(Y(low:  0, mid:  0, high:  B.msb)))
-            Test().same(Y(low:  4, mid:  5, high:  B.msb).plus(X(low: ~4, high: ~5)), F(Y(low: ~0, mid: ~0, high: ~B.msb), error: true))
-            Test().same(Y(low: ~4, mid: ~5, high: ~B.msb).plus(X(low:  4, high:  5)), F(Y(low: ~0, mid: ~0, high: ~B.msb)))
-            Test().same(Y(low: ~3, mid: ~5, high: ~B.msb).plus(X(low:  4, high:  5)), F(Y(low:  0, mid:  0, high:  B.msb), error: true))
+            Test().same(Y(low:  4, mid:  5, high:  x).plus(X(low: ~4, high: ~5)), F(Y(low: ~0, mid: ~0, high:  x)))
+            Test().same(Y(low:  5, mid:  5, high:  x).plus(X(low: ~4, high: ~5)), F(Y(low:  0, mid:  0, high:  x ^ 1)))
+            Test().same(Y(low: ~4, mid: ~5, high: ~x).plus(X(low:  4, high:  5)), F(Y(low: ~0, mid: ~0, high: ~x)))
+            Test().same(Y(low: ~3, mid: ~5, high: ~x).plus(X(low:  4, high:  5)), F(Y(low:  0, mid:  0, high:  x), error: true))
         }
         
         func whereTheBaseIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias X = DoubleInt<B>
+            typealias X = DoubleInt<B>.Magnitude
             typealias Y = TripleInt<B>
             typealias F = Fallible<TripleInt<B>>
             
@@ -64,16 +66,18 @@ extension TripleIntTests {
             typealias X = DoubleInt<B>
             typealias Y = TripleInt<B>
             typealias F = Fallible<TripleInt<B>>
-                        
+            //=----------------------------------=
+            let x = B.msb
+            //=----------------------------------=
             Test().same(Y(low:  0, mid:  0, high:  0).plus(Y(low: ~4, mid: ~5, high: ~6)), F(Y(low: ~4, mid: ~5, high: ~6)))
             Test().same(Y(low:  1, mid:  2, high:  3).plus(Y(low: ~4, mid: ~5, high: ~6)), F(Y(low: ~3, mid: ~3, high: ~3)))
             Test().same(Y(low: ~1, mid: ~2, high: ~3).plus(Y(low:  4, mid:  5, high:  6)), F(Y(low:  2, mid:  3, high:  3)))
             Test().same(Y(low: ~0, mid: ~0, high: ~0).plus(Y(low:  4, mid:  5, high:  6)), F(Y(low:  3, mid:  5, high:  6)))
             
-            Test().same(Y(low:  5, mid:  5, high:  B.msb + 6).plus(Y(low: ~4, mid: ~5, high: ~6)), F(Y(low:  0, mid:  0, high:  B.msb)))
-            Test().same(Y(low:  4, mid:  5, high:  B.msb + 6).plus(Y(low: ~4, mid: ~5, high: ~6)), F(Y(low: ~0, mid: ~0, high: ~B.msb), error: true))
-            Test().same(Y(low: ~4, mid: ~5, high: ~B.msb - 6).plus(Y(low:  4, mid:  5, high:  6)), F(Y(low: ~0, mid: ~0, high: ~B.msb)))
-            Test().same(Y(low: ~3, mid: ~5, high: ~B.msb - 6).plus(Y(low:  4, mid:  5, high:  6)), F(Y(low:  0, mid:  0, high:  B.msb), error: true))
+            Test().same(Y(low:  5, mid:  5, high:  x + 6).plus(Y(low: ~4, mid: ~5, high: ~6)), F(Y(low:  0, mid:  0, high:  x)))
+            Test().same(Y(low:  4, mid:  5, high:  x + 6).plus(Y(low: ~4, mid: ~5, high: ~6)), F(Y(low: ~0, mid: ~0, high: ~x), error: true))
+            Test().same(Y(low: ~4, mid: ~5, high: ~x - 6).plus(Y(low:  4, mid:  5, high:  6)), F(Y(low: ~0, mid: ~0, high: ~x)))
+            Test().same(Y(low: ~3, mid: ~5, high: ~x - 6).plus(Y(low:  4, mid:  5, high:  6)), F(Y(low:  0, mid:  0, high:  x), error: true))
         }
         
         func whereTheBaseIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger {

@@ -25,31 +25,33 @@ extension DoubleIntTests {
         func whereTheBaseIsSigned<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
             typealias F = Fallible<DoubleInt<B>>
-                        
-            Test().same(T(low:  0, high:  0).plus(B(~3)), F(T(low: ~3, high: ~0)))
-            Test().same(T(low:  1, high:  2).plus(B(~3)), F(T(low: ~2, high:  1)))
-            Test().same(T(low: ~1, high: ~2).plus(B( 3)), F(T(low:  1, high: ~1)))
-            Test().same(T(low: ~0, high: ~0).plus(B( 3)), F(T(low:  2, high:  0)))
+            //=----------------------------------=
+            let x = B.msb
+            //=----------------------------------=
+            Test().same(T(low:  0, high:  0).plus(B.Magnitude(~3)), F(T(low: ~3, high:  0)))
+            Test().same(T(low:  1, high:  2).plus(B.Magnitude(~3)), F(T(low: ~2, high:  2)))
+            Test().same(T(low: ~1, high: ~2).plus(B.Magnitude( 3)), F(T(low:  1, high: ~1)))
+            Test().same(T(low: ~0, high: ~0).plus(B.Magnitude( 3)), F(T(low:  2, high:  0)))
             
-            Test().same(T(low:  4, high:  B.msb).plus(B(~3)), F(T(low:  0, high:  B.msb)))
-            Test().same(T(low:  3, high:  B.msb).plus(B(~3)), F(T(low: ~0, high: ~B.msb), error: true))
-            Test().same(T(low: ~3, high: ~B.msb).plus(B( 3)), F(T(low: ~0, high: ~B.msb)))
-            Test().same(T(low: ~2, high: ~B.msb).plus(B( 3)), F(T(low:  0, high:  B.msb), error: true))
+            Test().same(T(low:  3, high:  x).plus(B.Magnitude(~3)), F(T(low: ~0, high:  x)))
+            Test().same(T(low:  4, high:  x).plus(B.Magnitude(~3)), F(T(low:  0, high:  x ^ 1)))
+            Test().same(T(low: ~3, high: ~x).plus(B.Magnitude( 3)), F(T(low: ~0, high: ~x)))
+            Test().same(T(low: ~2, high: ~x).plus(B.Magnitude( 3)), F(T(low:  0, high:  x), error: true))
         }
         
         func whereTheBaseIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
             typealias F = Fallible<DoubleInt<B>>
             
-            Test().same(T(low:  0, high:  0).plus(B(~3)), F(T(low: ~3, high:  0)))
-            Test().same(T(low:  1, high:  2).plus(B(~3)), F(T(low: ~2, high:  2)))
-            Test().same(T(low: ~1, high: ~2).plus(B( 3)), F(T(low:  1, high: ~1)))
-            Test().same(T(low: ~0, high: ~0).plus(B( 3)), F(T(low:  2, high:  0), error: true))
+            Test().same(T(low:  0, high:  0).plus(B.Magnitude(~3)), F(T(low: ~3, high:  0)))
+            Test().same(T(low:  1, high:  2).plus(B.Magnitude(~3)), F(T(low: ~2, high:  2)))
+            Test().same(T(low: ~1, high: ~2).plus(B.Magnitude( 3)), F(T(low:  1, high: ~1)))
+            Test().same(T(low: ~0, high: ~0).plus(B.Magnitude( 3)), F(T(low:  2, high:  0), error: true))
             
-            Test().same(T(low:  3, high: ~0).plus(B(~3)), F(T(low: ~0, high: ~0)))
-            Test().same(T(low:  4, high: ~0).plus(B(~3)), F(T(low:  0, high:  0), error: true))
-            Test().same(T(low: ~3, high: ~0).plus(B( 3)), F(T(low: ~0, high: ~0)))
-            Test().same(T(low: ~2, high: ~0).plus(B( 3)), F(T(low:  0, high:  0), error: true))
+            Test().same(T(low:  3, high: ~0).plus(B.Magnitude(~3)), F(T(low: ~0, high: ~0)))
+            Test().same(T(low:  4, high: ~0).plus(B.Magnitude(~3)), F(T(low:  0, high:  0), error: true))
+            Test().same(T(low: ~3, high: ~0).plus(B.Magnitude( 3)), F(T(low: ~0, high: ~0)))
+            Test().same(T(low: ~2, high: ~0).plus(B.Magnitude( 3)), F(T(low:  0, high:  0), error: true))
         }
         
         for base in coreSystemsIntegers {

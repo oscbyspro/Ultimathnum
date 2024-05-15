@@ -95,7 +95,7 @@ extension BinaryInteger {
 extension SystemsInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Composition
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     /// Returns the result of `self` - (`other` + `bit`).
@@ -103,7 +103,7 @@ extension SystemsInteger {
         let a: Bool, b: Bool
         
         (self, a) = self.minus(other).components()
-        (self, b) = self.minus(Self(Bit(bit))).components()
+        (self, b) = self.decremented(bit).components()
         
         return self.veto(a != b)
     }

@@ -19,11 +19,10 @@ extension TripleInt {
     // MARK: Transformations x 3 by 2
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func plus(_ increment: borrowing DoubleInt<Base>) -> Fallible<Self> {
-        let appendix = High(repeating: increment.storage.high.appendix)
+    @inlinable public consuming func plus(_ increment: borrowing DoubleInt<Base.Magnitude>) -> Fallible<Self> {
         let low  = self.storage.low .plus(increment.storage.low)
         let mid  = self.storage.mid .plus(Mid(raw: increment.storage.high), plus: low.error)
-        let high = self.storage.high.plus(appendix, plus: mid.error)
+        let high = self.storage.high.incremented(mid.error)
         return Fallible(Self(low: low.value, mid: mid.value, high: high.value), error: high.error)
     }
     

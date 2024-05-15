@@ -19,10 +19,9 @@ extension DoubleInt {
     // MARK: Transformations x 2 by 1
     //=------------------------------------------------------------------------=
         
-    @inlinable public consuming func minus(_ decrement: Base) -> Fallible<Self> {
-        let appendix = High.init(repeating: decrement.appendix)
+    @inlinable public consuming func minus(_ decrement: Base.Magnitude) -> Fallible<Self> {
         let low  = self.low .minus(Low(raw: decrement))
-        let high = self.high.minus(appendix, plus: low.error)
+        let high = self.high.decremented(low.error)
         return Self(low: low.value, high: high.value).veto(high.error)
     }
     
