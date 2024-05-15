@@ -17,16 +17,6 @@ extension Fallible {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public subscript(map: (Value) -> Value) -> Void {
-        mutating get {
-            self.value = map(self.value)
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
     @inlinable public consuming func map<T>(_ map: (Value) throws -> T) rethrows -> Fallible<T> {
         Fallible<T>(try map(self.value), error: self.error)
     }
