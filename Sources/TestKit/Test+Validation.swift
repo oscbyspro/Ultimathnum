@@ -26,6 +26,12 @@ extension Test {
         //=--------------------------------------=
         same(Output.exactly(input), expectation, "T.exactly(some BinaryInteger)")
         //=--------------------------------------=
+        always: do {
+            let sign = Sign(input.isNegative)
+            let magnitude = input.magnitude()
+            same(Output.exactly(sign: sign, magnitude: magnitude), expectation, "T.exactly(sign:magnitude:)")
+        }
+        //=--------------------------------------=
         input.withUnsafeBinaryIntegerBody {
             let body = Array($0.buffer())
             self.exactly(body, Input.mode, expectation)

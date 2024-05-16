@@ -32,36 +32,47 @@ extension Test {
         guard let lowercase = success({ try TextInt(radix: radix, letters: .lowercase) }) else { return }
         guard let uppercase = success({ try TextInt(radix: radix, letters: .uppercase) }) else { return }
         //=--------------------------------------=
-        let body/*---*/ = String(body.drop(while:{ $0 == ">" }))
-        var expectation = String(body.drop(while:{ $0 == "0" }))
-        if  expectation.isEmpty {
-            expectation.append(contentsOf: body.suffix(1))
+        var expectation: (base: String, lowercase: String, uppercase: String)
+        //=--------------------------------------=
+        let body/*----*/ = String(body.drop(while:{ $0 == ">" }))
+        expectation.base = String(body.drop(while:{ $0 == "0" }))
+        
+        if  expectation.base.isEmpty {
+            expectation.base.append(contentsOf: body.suffix(1))
         }
         
-        let expectationLowercased = expectation.lowercased()
-        let expectationUppercased = expectation.uppercased()
+        expectation.lowercase = expectation.base.lowercased()
+        expectation.uppercase = expectation.base.uppercased()
         //=--------------------------------------=
         // test: decoding
         //=--------------------------------------=
         if  radix == 10 {
             same(Integer.init(body),                  integer, "init?(_ description: String) [0]")
-            same(Integer.init(expectation),           integer, "init?(_ description: String) [1]")
-            same(Integer.init(expectationLowercased), integer, "init?(_ description: String) [2]")
-            same(Integer.init(expectationUppercased), integer, "init?(_ description: String) [3]")
+            same(Integer.init(expectation.base),      integer, "init?(_ description: String) [1]")
+            same(Integer.init(expectation.lowercase), integer, "init?(_ description: String) [2]")
+            same(Integer.init(expectation.uppercase), integer, "init?(_ description: String) [3]")
         }
         
-        success({ try Integer.init(body,        as: lowercase) }, integer)
-        success({ try Integer.init(expectation, as: uppercase) }, integer)
+        success({ try Integer.init(body,             as: lowercase) }, integer)
+        success({ try Integer.init(expectation.base, as: uppercase) }, integer)
         //=--------------------------------------=
         // test: encoding
         //=--------------------------------------=
         if  radix == 10 {
-            same(integer.description,  expectation, "BinaryInteger/description")
-            same(String.init(integer), expectation, "String.init(_:) - LosslessStringConvertible")
+            same(integer.description,  expectation.base, "BinaryInteger/description")
+            same(String.init(integer), expectation.base, "String.init(_:) - LosslessStringConvertible")
         }
                 
-        same(integer.description(as: lowercase), expectationLowercased, "description(in:) [0]")
-        same(integer.description(as: uppercase), expectationUppercased, "description(in:) [1]")
+        same(integer.description(as: lowercase), expectation.lowercase, "description(as:) [0]")
+        same(integer.description(as: uppercase), expectation.uppercase, "description(as:) [1]")
+        
+        always: do {
+            let sign = Sign(integer.isNegative)
+            let magnitude = integer.magnitude()
+            
+            same(lowercase.encode(sign: sign, magnitude: magnitude), expectation.lowercase, "TextInt/encode(sign:magnitude:) [0]")
+            same(uppercase.encode(sign: sign, magnitude: magnitude), expectation.uppercase, "TextInt/encode(sign:magnitude:) [1]")
+        }
     }
     
     /// Tests whether an integer's description is stable.

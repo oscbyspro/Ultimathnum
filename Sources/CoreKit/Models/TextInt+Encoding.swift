@@ -18,7 +18,7 @@ extension TextInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public func encode<T: BinaryInteger>(_ integer: T) -> String {
-        var integer = integer // TODO: await ownership fixes
+        var integer = integer // await consuming fix
         
         let integerAppendixIsSet = Bool(integer.appendix)
         let integerIsInfinite = !T.isSigned && integerAppendixIsSet
@@ -39,7 +39,7 @@ extension TextInt {
     
     @inlinable public func encode<T: UnsignedInteger>(sign: Sign, magnitude: consuming T) -> String {
         let integerIsInfinite = Bool(magnitude.appendix)
-        let integerIsNegative = Bool(sign) && (magnitude != 0)
+        let integerIsNegative = Bool(sign) && (magnitude != T.zero)
         
         if  integerIsInfinite {
             magnitude.toggle()
