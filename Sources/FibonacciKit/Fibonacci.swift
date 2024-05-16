@@ -13,7 +13,7 @@ import CoreKit
 // MARK: * Fibonacci
 //*============================================================================*
 
-/// The [Fibonacci sequence](https://en.wikipedia.org/wiki/fibonacci_sequence)\.
+/// The Fibonacci [sequence](https://en.wikipedia.org/wiki/fibonacci_sequence)\.
 ///
 /// It is represented by an index and two consecutive elements.
 ///
@@ -58,7 +58,7 @@ import CoreKit
 ///
 /// It permits both signed and unsigned values for testing purposes.
 ///
-@frozen public struct Fibonacci<Value>: CustomStringConvertible where Value: BinaryInteger {
+@frozen public struct Fibonacci<Value> where Value: BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -187,14 +187,6 @@ import CoreKit
         self.b = b1.minus(b0).value
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public var description: String {
-        String(describing: self.element)
-    }
-    
     //*========================================================================*
     // MARK: * Failure
     //*========================================================================*
@@ -206,5 +198,20 @@ import CoreKit
         
         /// Tried to form a sequence pair at an index less than zero.
         case indexOutOfBounds
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Text
+//=----------------------------------------------------------------------------=
+
+extension Fibonacci: CustomStringConvertible {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var description: String {
+        String(describing: self.element)
     }
 }
