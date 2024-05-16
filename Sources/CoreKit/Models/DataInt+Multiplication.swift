@@ -211,6 +211,7 @@ extension MutableDataInt.Body {
         //=--------------------------------------=
         let i: IX = (self.count &>> 2)
         let j: IX = (((((i))))) &<< 1
+        Swift.assert(self.count >=  j)
         
         var (a,b) = lhs.split(at: Swift.min(i, lhs.count))
         a = a.normalized()
@@ -226,6 +227,8 @@ extension MutableDataInt.Body {
         let request: IX = 0000002 * maxSize
         
         Swift.assert(axCount <= j)
+        Swift.assert(maxSize >= axCount)
+        Swift.assert(maxSize >= byCount)
         Swift.withUnsafeTemporaryAllocation(of: Element.self, capacity: Int(request)) {
             let buffer = UnsafeMutableBufferPointer(rebasing: $0[..<Int(request)])
             //=----------------------------------=
@@ -240,24 +243,26 @@ extension MutableDataInt.Body {
             let u = Self(buffer)![unchecked: ..<maxSize]
             let v = Self(buffer)![unchecked: maxSize...]
             //=----------------------------------=
+            let vjCount = Swift.min(v.count, self.count - j)
+            //=----------------------------------=
             // set (a * x) and (b * y)
             //=----------------------------------=
             u[unchecked: ..<axCount].initialize(to: a, times: x)
             u[unchecked: axCount...].initialize(repeating: Element.zero)
             v[unchecked: ..<byCount].initialize(to: b, times: y)
             v[unchecked: byCount...].initialize(repeating: Element.zero)
-            Swift.assert(v[unchecked:(count-j)...].isZero)
+            Swift.assert(v[unchecked: vjCount...].isZero)
             //=----------------------------------=
             // set (a * x) and (b * y)
             //=----------------------------------=
-            self[unchecked: ..<j].initialize(load: Immutable(u[unchecked: ..<(axCount)]))
-            self[unchecked: j...].initialize(load: Immutable(v[unchecked: ..<(count-j)]))
+            self[unchecked: ..<j].initialize(load: Immutable(u[unchecked: ..<axCount]))
+            self[unchecked: j...].initialize(load: Immutable(v[unchecked: ..<vjCount]))
             //=----------------------------------=
             // sub (a * x) and (b * y)
             //=----------------------------------=
             let suffix = self[unchecked: i...]
-            _ = suffix.increment(by: Immutable(u[unchecked: ..<(axCount)]))
-            _ = suffix.increment(by: Immutable(v[unchecked: ..<(count-j)]))
+            _ = suffix.increment(by: Immutable(u[unchecked: ..<axCount]))
+            _ = suffix.increment(by: Immutable(v[unchecked: ..<vjCount]))
             //=----------------------------------=
             // regions
             //=----------------------------------=
@@ -324,6 +329,7 @@ extension MutableDataInt.Body {
         //=--------------------------------------=
         let i: IX = elements.count &>> 1
         let j: IX = i &<< 1
+        Swift.assert(self.count >= j)
         
         var a: Immutable = elements[unchecked: ..<i].normalized()
         var b: Immutable = elements[unchecked: i...].normalized()
@@ -334,6 +340,8 @@ extension MutableDataInt.Body {
         let request: IX = 0000002 * maxSize
         
         Swift.assert(axCount <= j)
+        Swift.assert(maxSize >= axCount)
+        Swift.assert(maxSize >= byCount)
         Swift.withUnsafeTemporaryAllocation(of: Element.self, capacity: Int(request)) {
             let buffer = UnsafeMutableBufferPointer(rebasing: $0[..<Int(request)])
             //=----------------------------------=

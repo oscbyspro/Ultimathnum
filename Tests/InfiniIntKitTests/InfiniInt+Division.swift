@@ -134,4 +134,40 @@ extension InfiniIntTests {
             whereIs(element)
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Code Coverage
+    //=------------------------------------------------------------------------=
+    
+    func testDivisionLikeU256FullWidth3212MSB() {
+        func whereIs<T, S>(_ type: T.Type, _ source: S.Type) where T: BinaryInteger, S: SystemsInteger & UnsignedInteger {
+            //=--------------------------------------=
+            func make(_ source: [S]) -> T {
+                source.withUnsafeBufferPointer({ T.exactly(DataInt($0)!, mode: .unsigned).unwrap() })
+            }
+            //=--------------------------------------=
+            var dividend: T, divisor: T, quotient: T, remainder: T
+            //=--------------------------------------=
+            dividend  = make([ 0,  0,  0,  0,  0, ~0, ~0, ~0] as [S])
+            divisor   = make([~0, ~0, ~0, ~0,  0,  0,  0,  0] as [S])
+            quotient  = make([ 0, ~0, ~0, ~0,  0,  0,  0,  0] as [S])
+            remainder = make([ 0, ~0, ~0, ~0,  0,  0,  0,  0] as [S])
+            
+            Test().division(dividend, divisor, quotient, remainder)
+            //=--------------------------------------=
+            dividend  = make([~0, ~0, ~0, ~0,  0, ~0, ~0, ~0] as [S])
+            divisor   = make([~0, ~0, ~0, ~0,  0,  0,  0,  0] as [S])
+            quotient  = make([ 1, ~0, ~0, ~0,  0,  0,  0,  0] as [S])
+            remainder = make([ 0, ~0, ~0, ~0,  0,  0,  0,  0] as [S])
+            
+            Test().division(dividend, divisor, quotient, remainder)
+        }
+        
+        // 2024-05-15: The whereIs(InfiniInt<U8>.self, U64.self) case found a Karatsuba multiplication bug.
+        for type in Self.types {
+            for source in coreSystemsIntegersWhereIsUnsigned {
+                whereIs(type, source)
+            }
+        }
+    }
 }
