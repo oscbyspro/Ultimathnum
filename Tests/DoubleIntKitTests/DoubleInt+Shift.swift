@@ -27,7 +27,10 @@ extension DoubleIntTests {
             let low = T.zero
             let mid = T(low: B.size)
             let top = T(raw: T.size)
-            
+            //=----------------------------------=
+            IntegerInvariants(T.self)  .upshiftRepeatingBit()
+            IntegerInvariants(T.self).downshiftRepeatingBit()
+            //=----------------------------------=
             for semantics: Test.ShiftSemantics in [.smart, .masked] {
                 Test().shift(T(low: 1, high:  2), low + 0 as T, T(low:  1, high:  2), .left,  semantics)
                 Test().shift(T(low: 1, high:  2), low + 1 as T, T(low:  2, high:  4), .left,  semantics)

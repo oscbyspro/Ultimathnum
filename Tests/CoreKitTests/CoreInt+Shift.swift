@@ -22,6 +22,10 @@ extension CoreIntTests {
     
     func testShift() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            //=----------------------------------=
+            IntegerInvariants(T.self)  .upshiftRepeatingBit()
+            IntegerInvariants(T.self).downshiftRepeatingBit()
+            //=----------------------------------=
             for direction: Test.ShiftDirection in [.left, .right] {
                 Test().shift( 1 as T,  T .max,  00000000000000000000000000000000000000000000000 as T, direction, .smart)
                 Test().shift(~0 as T,  T .max,  T(repeating: Bit(T.isSigned && direction == .right)), direction, .smart)

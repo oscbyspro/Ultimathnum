@@ -18,6 +18,21 @@ import TestKit
 extension InfiniIntTests {
     
     //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testShift() {
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            IntegerInvariants(T.self)  .upshiftRepeatingBit()
+            IntegerInvariants(T.self).downshiftRepeatingBit()
+        }
+        
+        for type in Self.types {
+            whereIs(type)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Tests x Ascending
     //=------------------------------------------------------------------------=
     

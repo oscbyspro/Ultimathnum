@@ -32,7 +32,7 @@ extension InfiniInt {
         Swift.assert(!distance.value.isInfinite)
         Swift.assert(!distance.value.isNegative)
         //=--------------------------------------=
-        // path: trivial (0)
+        // path: zero would otherwise denormalize
         //=--------------------------------------=
         if  instance.storage.isZero {
             return instance
@@ -62,12 +62,6 @@ extension InfiniInt {
         //=--------------------------------------=
         Swift.assert(!distance.value.isInfinite)
         Swift.assert(!distance.value.isNegative)
-        //=--------------------------------------=
-        // path: trivial (-1, 0, ∞)
-        //=--------------------------------------=
-        if  instance.storage.count == .zero {
-            return instance
-        }
         //=--------------------------------------=
         let shift = IX.exactly(Magnitude(raw: distance.value))
         //=--------------------------------------=

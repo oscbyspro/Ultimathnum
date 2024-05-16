@@ -54,7 +54,7 @@ extension CoreIntTests {
     func testStrideAdvancedBy() {
         func whereIs<T, U>(_ type: T.Type, _ distance: U.Type) where T: SystemsInteger, U: SystemsInteger & SignedInteger {
             typealias F = Fallible<T>
-                        
+            
             Test().same(T.min.advanced(by: -4 as U), F(T.min &- 4, error: true))
             Test().same(T.min.advanced(by: -3 as U), F(T.min &- 3, error: true))
             Test().same(T.min.advanced(by: -2 as U), F(T.min &- 2, error: true))
