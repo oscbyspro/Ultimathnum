@@ -211,27 +211,25 @@ code safer or easier to audit.
 init(_:)         // error: traps
 init(_:prune:)   // error: throws
 init(exactly:)   // error: nil
-init(unchecked:) // error: unsafe, with debug assertions
+init(unchecked:) // error: unchecked
 ```
 
 <a name="nomenclature-unchecked-value"/>
 
 #### What is an unchecked operation?
 
-We all know that dynamic precations come with performance penalties. This kind of performance tax 
-is often small in everyday code, but often noticeable when working with primitives. That is why some 
-operations have unchecked alternatives. In this project, however, we still validate all unchecked
-operations in debug mode. If an operation performs insufficient checks, even in debug mode, then we 
-call it unsafe.
+We all know that dynamic validation comes at a price. The validation tax tends to be small
+in everyday code, but it can be noticeable when working with primitives. That is why some 
+operations have unchecked alternatives. In this project, we validate unchecked operations in 
+debug mode only. You may realize that it is sometimes correct to ignore errors completely. 
+It is, therefore, best to view unchecked operations as semantic markers in performance-sensitive 
+places.
 
 ```swift
-U8.zero.decremented().error       // true
-U8.zero.decremented().value       // 255
-U8.zero.decremented().unchecked() // 255, but traps in debug mode
+U8.zero.decremented().error       // true, because the result is not representable
+U8.zero.decremented().value       // 255,  this is the truncated bit pattern of -1
+U8.zero.decremented().unchecked() // 255,  with precondition failure in debug mode
 ```
-
-> [!IMPORTANT]
-> All unchecked operations are validated in debug mode.
 
 <a name="corekit"/>
 
