@@ -112,10 +112,14 @@ extension Test {
                 same(Integer.exactly($0, mode: mode), expectation, "T.exactly(_:mode:) - DataInt<U8>")
                 
                 if !expectation.error, $0.count(.entropy) <= UX.size {
+                    let word = $0.load(as: UX.self)
+                    
                     if  Integer.isSigned {
-                        same(Integer(load: ix($0.load(as: UX.self))), expectation.value, "T.init(load:) - IX")
+                        same(Integer(load:  ix(word)), expectation.value, "T.init(load:) - IX")
+                        same(IX(raw: word), expectation.value.load(as: IX.self), "T/load(as:) - IX")
                     }   else {
-                        same(Integer(load: ux($0.load(as: UX.self))), expectation.value, "T.init(load:) - UX")
+                        same(Integer(load:  ux(word)), expectation.value, "T.init(load:) - UX")
+                        same(UX(raw: word), expectation.value.load(as: UX.self), "T/load(as:) - UX")
                     }
                 }
             }
