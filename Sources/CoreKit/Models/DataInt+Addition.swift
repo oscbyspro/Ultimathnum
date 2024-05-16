@@ -89,14 +89,7 @@ extension MutableDataInt.Body {
         plus bit: consuming Bool
     )   -> Fallible<Self> {
         
-        if  (copy bit) {
-            (increment, bit) = increment.incremented().components()
-        }
-        
-        if !(copy bit) {
-            (self[unchecked: ()], bit) = self[unchecked: ()].plus(increment).components()
-        }
-        
+        (self[unchecked: ()], bit) = self[unchecked: ()].plus(increment, plus: bit).components()
         return (consume self)[unchecked: 1...].veto(bit)
     }
 }
@@ -127,6 +120,32 @@ extension MutableDataInt.Body {
         
         for index in elements.indices {
             let element = elements[unchecked: index]
+            (self, bit) = self.incrementSubSequence(by: element, plus: bit).components()
+        }
+        
+        return self.veto(bit)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func increment(
+        toggling elements: Immutable,
+        plus bit: consuming Bool = false
+    )   -> Fallible<Void> {
+
+        let result = self.incrementSubSequence(toggling: elements, plus: bit)
+        return result.value.increment(by: result.error)
+    }
+    
+    @inlinable public consuming func incrementSubSequence(
+        toggling elements: borrowing Immutable,
+        plus bit: consuming Bool = false
+    )   -> Fallible<Self> {
+        
+        for index in elements.indices {
+            let element = elements[unchecked: index].toggled()
             (self, bit) = self.incrementSubSequence(by: element, plus: bit).components()
         }
         

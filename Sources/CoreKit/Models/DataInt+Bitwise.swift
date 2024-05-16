@@ -25,12 +25,12 @@ extension MutableDataInt.Body {
     }
     
     /// Toggles each bit in its binary representation then adds `increment`.
-    @inlinable public borrowing func toggle(carrying increment: consuming Bool) -> Bool {
+    @inlinable public borrowing func toggle(carrying increment: consuming Bool) -> Fallible<Void> {
         for index in self.indices {
             (self[unchecked: index], increment) = 
             (self[unchecked: index]).complement(increment).components()
         }
         
-        return increment as Bool
+        return Fallible((), error: increment)
     }
 }

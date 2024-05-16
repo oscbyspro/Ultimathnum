@@ -312,6 +312,20 @@ extension DataIntTests.Body {
             
             test.same(Fallible(value, error: error), expectation)
         }
+        
+        for var many in [normal, elements[...]] where bit == false {
+            var value = self.body
+            let error = value.withUnsafeMutableBufferPointer {
+                let value = MutableDataInt.Body($0)!
+                return (many).withUnsafeMutableBufferPointer {
+                    let many = MutableDataInt.Body($0)!
+                    many.toggle(carrying: bit).discard()
+                    return value.decrement(toggling: DataInt.Body(many), plus: bit).error
+                }
+            }
+            
+            test.same(Fallible(value, error: error), expectation)
+        }
     }
     
     //=------------------------------------------------------------------------=

@@ -59,14 +59,15 @@ extension InfiniInt {
         let product = Self.uninitialized(count: capacity, repeating: self.appendix ^ other.appendix) { product in
             self.withUnsafeBinaryIntegerElements { lhs in
                 other.withUnsafeBinaryIntegerElements { rhs in
+                    //=--------------------------=
                     product.initialize(to: lhs.body, times: rhs.body)
-                    
+                    //=--------------------------=
                     if  Bool(rhs.appendix) {
-                        product[unchecked: rhs.body.count...].incrementSubSequence(complementOf: lhs.body).discard()
+                        product[unchecked: rhs.body.count...].incrementSubSequence(toggling: lhs.body, plus: true).discard()
                     }
                     
                     if  Bool(lhs.appendix) {
-                        product[unchecked: lhs.body.count...].incrementSubSequence(complementOf: rhs.body).discard()
+                        product[unchecked: lhs.body.count...].incrementSubSequence(toggling: rhs.body, plus: true).discard()
                     }
                 }
             }

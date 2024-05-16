@@ -91,7 +91,7 @@ extension DataIntTests {
             C([~0, ~0,  0,  0] as [T]).plus([T.min], plus: false, is: F([~0, ~0,  0,  0] as [T]))
             C([~0, ~0, ~0,  0] as [T]).plus([T.min], plus: false, is: F([~0, ~0, ~0,  0] as [T]))
             C([~0, ~0, ~0, ~0] as [T]).plus([T.min], plus: false, is: F([~0, ~0, ~0, ~0] as [T]))
-
+            
             C([ 0,  0,  0,  0] as [T]).plus([T.min], plus: true,  is: F([ 1,  0,  0,  0] as [T]))
             C([~0,  0,  0,  0] as [T]).plus([T.min], plus: true,  is: F([ 0,  1,  0,  0] as [T]))
             C([~0, ~0,  0,  0] as [T]).plus([T.min], plus: true,  is: F([ 0,  0,  1,  0] as [T]))
@@ -307,6 +307,20 @@ extension DataIntTests.Body {
                 return (many).withUnsafeBufferPointer {
                     let many = DataInt.Body($0)!
                     return value.increment(by: many, plus: bit).error
+                }
+            }
+            
+            test.same(Fallible(value, error: error), expectation)
+        }
+        
+        for var many in [normal, elements[...]] where bit == false {
+            var value = self.body
+            let error = value.withUnsafeMutableBufferPointer {
+                let value = MutableDataInt.Body($0)!
+                return (many).withUnsafeMutableBufferPointer {
+                    let many = MutableDataInt.Body($0)!
+                    many.toggle(carrying: bit).discard()
+                    return value.increment(toggling: DataInt.Body(many), plus: bit).error
                 }
             }
             

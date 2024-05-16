@@ -90,7 +90,7 @@ extension InfiniInt {
     
     @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
         self.storage.withUnsafeMutableBinaryIntegerBody {
-            increment = $0.toggle(carrying: increment)
+            increment = $0.toggle(carrying: increment).error
         }
         
         if !(copy increment) {
