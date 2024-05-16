@@ -27,7 +27,7 @@ final class FibonacciTests: XCTestCase {
         case division
         case divisor
         case multiplication
-        case substraction
+        case subtraction
     }
     
     //*========================================================================*

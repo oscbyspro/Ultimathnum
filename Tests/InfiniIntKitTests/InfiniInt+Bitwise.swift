@@ -12,7 +12,7 @@ import InfiniIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Infinit Int x Bitwise
+// MARK: * Infinite Int x Bitwise
 //*============================================================================*
 
 extension InfiniIntTests {

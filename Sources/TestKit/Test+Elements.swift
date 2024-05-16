@@ -54,12 +54,12 @@ extension Test {
         integer.withUnsafeBinaryIntegerElements {
             same(Array($0.body.buffer()), body, "body [0]")
             same(appendix, $0.appendix, "appendix [0]")
-            same(Integer.exactly($0, mode: Integer.mode), expectation, "rountrip [0]")
+            same(Integer.exactly($0, mode: Integer.mode), expectation, "roundtrip [0]")
         }
         
         integer.withUnsafeBinaryIntegerElementsAsBytes {
             same(appendix, $0.appendix, "appendix [1]")
-            same(Integer.exactly($0, mode: Integer.mode), expectation, "rountrip [1]")
+            same(Integer.exactly($0, mode: Integer.mode), expectation, "roundtrip [1]")
         }
         //=--------------------------------------=
         if  var mutableInteger = Optional.some(integer) {

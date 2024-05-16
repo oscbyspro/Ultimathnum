@@ -68,12 +68,12 @@ extension SystemsInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Returns an instance with this value on an `endianess` system.
+    /// Returns an instance with this value on an `endianness` system.
     ///
     /// - Note: This operation is equivalent to a conditional byte swap.
     ///
-    @inlinable public consuming func endianness(_ endianess: some Endianness) -> Self {
-        if  endianess.matches(endianness: .system) {
+    @inlinable public consuming func endianness(_ endianness: some Endianness) -> Self {
+        if  endianness.matches(endianness: .system) {
             return self
         }   else {
             return self.reversed(U8.self)
