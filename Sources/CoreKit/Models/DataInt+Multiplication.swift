@@ -287,9 +287,9 @@ extension MutableDataInt.Body {
             // sub (b - a) mul (y - x)
             //=----------------------------------=
             if  abSwap == xySwap {
-                _ = suffix.decrement(by: Immutable(v))
+                suffix.decrement(by: Immutable(v)).unchecked()
             }   else {
-                _ = suffix.increment(by: Immutable(v))
+                suffix.increment(by: Immutable(v)).unchecked()
             }
         }
     }
@@ -380,7 +380,7 @@ extension MutableDataInt.Body {
             //=----------------------------------=
             // sub (b - a) mul (y - x)
             //=----------------------------------=
-            _ = suffix.decrement(by: Immutable(v))
+            suffix.decrement(by: Immutable(v)).unchecked()
         }
     }
 }
