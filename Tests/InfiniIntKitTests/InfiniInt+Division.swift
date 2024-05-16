@@ -143,7 +143,7 @@ extension InfiniIntTests {
         func whereIs<T, S>(_ type: T.Type, _ source: S.Type) where T: BinaryInteger, S: SystemsInteger & UnsignedInteger {
             //=--------------------------------------=
             func make(_ source: [S]) -> T {
-                source.withUnsafeBufferPointer({ T.exactly(DataInt($0)!, mode: .unsigned).unwrap() })
+                source.withUnsafeBufferPointer({ T(DataInt($0)!, mode: .unsigned) })
             }
             //=--------------------------------------=
             var dividend: T, divisor: T, quotient: T, remainder: T

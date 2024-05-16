@@ -59,11 +59,19 @@ extension BinaryInteger {
         return result.veto(magnitude.error)
     }
     
+    /// Creates a new instance from the given `sign` and `magnitude` by trapping on failure.
+    @inlinable public init<Other>(
+        sign: consuming Sign = .plus,
+        magnitude: consuming Other
+    )   where Other: UnsignedInteger  {
+        self = Self.exactly(sign: sign, magnitude: magnitude).unwrap()
+    }
+
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Creates a validated instance from the given `source` then traps on failure.
+    /// Creates a new instance from the given `source` by trapping on failure.
     @inlinable public init<Other>(_ source: consuming Other) where Other: BinaryInteger {
         self = Self.exactly(source).unwrap()
     }

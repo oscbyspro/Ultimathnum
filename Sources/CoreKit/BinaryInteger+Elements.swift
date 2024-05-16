@@ -80,6 +80,15 @@ extension BinaryInteger {
         }
     }
     
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    /// Creates a new instance from the given `source` and `mode` by trapping on failure.
+    @inlinable public init<OtherElement>(_ source: DataInt<OtherElement>, mode: some Signedness) {
+        self = Self.exactly(source, mode: mode).unwrap()
+    }
+    
     /// Creates a new instance from the bit pattern of `source` that fits.
     @inlinable public init<OtherElement>(load source: DataInt<OtherElement>) {
         if  OtherElement.elementsCanBeRebound(to: Self.Element.Magnitude.self) {

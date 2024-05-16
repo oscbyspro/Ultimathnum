@@ -8,6 +8,45 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
+// MARK: * Data Int x Count x Read
+//*============================================================================*
+
+extension DataInt {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable borrowing public func count(_ selection: Bit.Entropy) -> IX {
+        let count = self.count(.nonappendix).incremented()
+        return count.unchecked("nonappendix < body.size() or body.size() == 0")
+    }
+    
+    @inlinable borrowing public func count(_ selection: Bit.Nonappendix) -> IX {
+        self.body.count(.nondescending(self.appendix))
+    }
+}
+
+//*============================================================================*
+// MARK: * Data Int x Count x Read|Write
+//*============================================================================*
+
+extension MutableDataInt {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable borrowing public func count(_ selection: Bit.Entropy) -> IX {
+        Immutable(self).count(selection)
+    }
+    
+    @inlinable borrowing public func count(_ selection: Bit.Nonappendix) -> IX {
+        Immutable(self).count(selection)
+    }
+}
+
+//*============================================================================*
 // MARK: * Data Int x Count x Read|Body
 //*============================================================================*
 
@@ -61,6 +100,11 @@ extension DataInt.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    @inlinable borrowing public func count(_ selection: Bit.Entropy) -> IX {
+        let count = self.count(.nonappendix).incremented()
+        return count.unchecked("nonappendix < self.size() or self.size() == 0")
+    }
+    
     @inlinable borrowing public func count(_ selection: Bit.Appendix) -> IX {
         self.count(.descending(self.appendix))
     }
@@ -107,6 +151,10 @@ extension MutableDataInt.Body {
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
+    
+    @inlinable borrowing public func count(_ selection: Bit.Entropy) -> IX {
+        Immutable(self).count(selection)
+    }
     
     @inlinable borrowing public func count(_ selection: Bit.Appendix) -> IX {
         Immutable(self).count(selection)

@@ -91,15 +91,33 @@ extension Test {
         _ mode: some Signedness,
         _ expectation: Fallible<Integer>
     )   where Integer: BinaryInteger, Element: SystemsInteger & UnsignedInteger {
+        //=--------------------------------------=
+        func ix(_ element: UX) -> some SystemsInteger<UX.BitPattern> { IX(raw: element) }
+        func ux(_ element: UX) -> some SystemsInteger<UX.BitPattern> { UX(raw: element) }
+        //=--------------------------------------=
         body.withUnsafeBufferPointer {
             //=----------------------------------=
             let appendix = Bit(mode.matchesSignedTwosComplementFormat && ($0.last ?? 0) >= Element.msb)
             let elements = DataInt($0, repeating: appendix)!
             //=----------------------------------=
-            same(Integer.exactly(elements, mode: mode), expectation, "Integer.exactly(_:mode:) - DataInt")
-
+            if !expectation.error {
+                same(Integer(load: elements), expectation.value, "T.init(load:) - DataInt")
+            }
+            
+            always: do {
+                same(Integer.exactly(elements, mode: mode), expectation, "T.exactly(_:mode:) - DataInt")
+            }
+            
             elements.withMemoryRebound(to: U8.self) {
-                same(Integer.exactly($0, mode: mode), expectation, "Integer.exactly(_:mode:) - DataInt<U8>")
+                same(Integer.exactly($0, mode: mode), expectation, "T.exactly(_:mode:) - DataInt<U8>")
+                
+                if !expectation.error, $0.count(.entropy) <= UX.size {
+                    if  Integer.isSigned {
+                        same(Integer(load: ix($0.load(as: UX.self))), expectation.value, "T.init(load:) - IX")
+                    }   else {
+                        same(Integer(load: ux($0.load(as: UX.self))), expectation.value, "T.init(load:) - UX")
+                    }
+                }
             }
         }
     }

@@ -30,6 +30,10 @@ extension Test {
             let sign = Sign(input.isNegative)
             let magnitude = input.magnitude()
             same(Output.exactly(sign: sign, magnitude: magnitude), expectation, "T.exactly(sign:magnitude:)")
+            
+            if !expectation.error {
+                same(Output(sign: sign, magnitude: magnitude), expectation.value, "T(sign:magnitude:)")
+            }
         }
         //=--------------------------------------=
         input.withUnsafeBinaryIntegerBody {

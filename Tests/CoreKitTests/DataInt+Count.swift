@@ -164,8 +164,15 @@ extension DataIntTests.Body {
         self.expect(size - expectation, read:{ $0.count((inverse)) }, write:{ $0.count((inverse)) })
         
         if  selection.bit == 0 {
-            self.expect(       expectation, read:{ $0.count(   .appendix) }, write:{ $0.count(   .appendix) })
-            self.expect(size - expectation, read:{ $0.count(.nonappendix) }, write:{ $0.count(.nonappendix) })
+            self.expect(           expectation, read:{ $0.count(   .appendix) }, write:{ $0.count(   .appendix) })
+            self.expect(    size - expectation, read:{ $0.count(.nonappendix) }, write:{ $0.count(.nonappendix) })
+            self.expect(1 + size - expectation, read:{ $0.count(    .entropy) }, write:{ $0.count(    .entropy) })
+        }
+        
+        always: do {
+            let other = DataIntTests.Extension((self.body, selection.bit), test: self.test)
+            other.expect(    size - expectation, read:{ $0.count(.nonappendix) }, write:{ $0.count(.nonappendix) })
+            other.expect(1 + size - expectation, read:{ $0.count(    .entropy) }, write:{ $0.count(    .entropy) })
         }
     }
 }
