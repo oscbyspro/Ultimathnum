@@ -52,8 +52,16 @@ extension InfiniIntTests {
             IntegerInvariants(T.self).divisionByZero(BinaryIntegerID())
         }
         
+        func whereIsUnsigned<T>(_ type: T.Type) where T: UnsignedInteger {
+            IntegerInvariants(T.self).divisionLongCodeCoverage(BinaryIntegerID())
+        }
+        
         for type in Self.types {
             whereIs(type)
+        }
+        
+        for type in Self.typesWhereIsUnsigned {
+            whereIsUnsigned(type)
         }
     }
     
@@ -139,7 +147,7 @@ extension InfiniIntTests {
     // MARK: Tests x Code Coverage
     //=------------------------------------------------------------------------=
     
-    func testDivisionLikeU256FullWidth3212MSB() {
+    func testDivisionLongCodeCoverage() {
         func whereIs<T, S>(_ type: T.Type, _ source: S.Type) where T: BinaryInteger, S: SystemsInteger & UnsignedInteger {
             //=--------------------------------------=
             func make(_ source: [S]) -> T {

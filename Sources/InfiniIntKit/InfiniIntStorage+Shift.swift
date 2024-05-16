@@ -46,7 +46,7 @@ extension InfiniIntStorage {
         //=--------------------------------------=
         let test   = Bit.Nondescending(self.appendix)
         let last   = self.body.last ?? Element(repeating: self.appendix)
-        let target = self.count - major - IX(Bit(IX(load: last.count(test)) < minor))
+        let target = self.count - major - IX(Bit(IX(load: last.count(test)) <= minor))
         //=--------------------------------------=
         if  target > .zero  {
             let environment = Element(repeating: self.appendix)

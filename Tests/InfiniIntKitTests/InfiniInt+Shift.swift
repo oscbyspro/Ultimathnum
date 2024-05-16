@@ -143,4 +143,40 @@ extension InfiniIntTests {
             whereTheBaseTypeIs(element)
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Edge Cases
+    //=------------------------------------------------------------------------=
+    
+    func testUpshiftAtEdgeOfElement() {
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            Test().shift( T(load: UX.max >> 7), 7 as T,  T(load: UX.max >> 7)  * 128, .left, .smart)
+            Test().shift( T(load: UX.max >> 7), 8 as T,  T(load: UX.max >> 7)  * 256, .left, .smart)
+            Test().shift( T(load: UX.max >> 7), 9 as T,  T(load: UX.max >> 7)  * 512, .left, .smart)
+
+            Test().shift(~T(load: UX.max >> 7), 7 as T, ~T(load: UX.max >> 7) &* 128, .left, .smart)
+            Test().shift(~T(load: UX.max >> 7), 8 as T, ~T(load: UX.max >> 7) &* 256, .left, .smart)
+            Test().shift(~T(load: UX.max >> 7), 9 as T, ~T(load: UX.max >> 7) &* 512, .left, .smart)
+        }
+    
+        for type in Self.types {
+            whereIs(type)
+        }
+    }
+    
+    func testDownshiftByNonappendix() {
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            Test().shift( 128 as T, 7 as T,  1 as T, .right, .smart)
+            Test().shift( 128 as T, 8 as T,  0 as T, .right, .smart)
+            Test().shift( 128 as T, 9 as T,  0 as T, .right, .smart)
+
+            Test().shift(~128 as T, 7 as T, ~1 as T, .right, .smart)
+            Test().shift(~128 as T, 8 as T, ~0 as T, .right, .smart)
+            Test().shift(~128 as T, 9 as T, ~0 as T, .right, .smart)
+        }
+    
+        for type in Self.types {
+            whereIs(type)
+        }
+    }
 }

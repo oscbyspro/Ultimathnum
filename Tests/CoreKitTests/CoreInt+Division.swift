@@ -27,9 +27,17 @@ extension CoreIntTests {
             IntegerInvariants(T.self).divisionByZero(SystemsIntegerID())
         }
         
+        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
+            IntegerInvariants(T.self).divisionLongCodeCoverage(SystemsIntegerID())
+        }
+        
         for type in coreSystemsIntegers {
             whereIs(type)
         }
+        
+        for type in coreSystemsIntegersWhereIsUnsigned {
+            whereIsUnsigned(type)
+        }        
     }
     
     func testDivision2111() {
