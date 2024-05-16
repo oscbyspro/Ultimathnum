@@ -62,11 +62,11 @@ extension InfiniInt {
                     product.initialize(to: lhs.body, times: rhs.body)
                     
                     if  Bool(rhs.appendix) {
-                        product[unchecked: rhs.body.count...].incrementSubSequence(complementOf: lhs.body)
+                        product[unchecked: rhs.body.count...].incrementSubSequence(complementOf: lhs.body).discard()
                     }
                     
                     if  Bool(lhs.appendix) {
-                        product[unchecked: lhs.body.count...].incrementSubSequence(complementOf: rhs.body)
+                        product[unchecked: lhs.body.count...].incrementSubSequence(complementOf: rhs.body).discard()
                     }
                 }
             }

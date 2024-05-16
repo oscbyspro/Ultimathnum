@@ -152,7 +152,7 @@ extension MutableDataInt.Body {
         //=--------------------------------------=
         if  quotient == 0 { return quotient }
         //=--------------------------------------=
-        var overflow =  self.decrementSubSequence(by: divisor, times: quotient).error
+        var overflow = self.decrementSubSequence(by: divisor, times: quotient).error
         
         decrementQuotientAtMostTwice: while overflow {
             quotient = quotient.minus(1).unchecked()

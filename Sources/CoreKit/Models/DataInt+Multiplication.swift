@@ -126,7 +126,7 @@ extension MutableDataInt.Body {
         for index in rhs.indices.dropFirst() {
             pointer.initialize(to: 00000)
             pointer = pointer.successor()
-            (copy self)[unchecked: index...].incrementSubSequence(by: lhs, times: rhs[unchecked: index], plus: 0)
+            (copy self)[unchecked: index...].incrementSubSequence(by: lhs, times: rhs[unchecked: index], plus: 0).unchecked()
         }
         
         Swift.assert(IX(self.start.distance(to: pointer)) == self.count)
@@ -161,7 +161,7 @@ extension MutableDataInt.Body {
             //=----------------------------------=
             // add non-diagonal products
             //=----------------------------------=
-            (copy self)[unchecked: 1...].incrementSubSequence(by: elements[unchecked: index...], times: diagonal)
+            (copy self)[unchecked: 1...].incrementSubSequence(by: elements[unchecked: index...], times: diagonal).unchecked()
             //=----------------------------------=
             // partially double non-diagonal
             //=----------------------------------=

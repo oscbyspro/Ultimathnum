@@ -26,8 +26,8 @@ extension InfiniInt {
         self.storage.withUnsafeMutableBinaryIntegerBody { lhs in
             other.withUnsafeBinaryIntegerElements { rhs in
                 var lhs = consume lhs
-                (lhs, overflow) = lhs.incrementSubSequence(by: rhs.body,  plus: overflow).components()
-                (overflow) = lhs.increment(repeating: Bool(rhs.appendix), plus: overflow)
+                (lhs, overflow) = lhs.incrementSubSequence(by: rhs.body, plus: overflow).components()
+                (overflow) = lhs.incrementSameSize(repeating: Bool(rhs.appendix), plus: overflow).error
             }
         }
         

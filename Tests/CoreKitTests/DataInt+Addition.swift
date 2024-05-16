@@ -17,7 +17,7 @@ import TestKit
 extension DataIntTests {
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests
+    // MARK: Tests x Many + Bit
     //=------------------------------------------------------------------------=
     
     func testAdditionLargeByLarge() {
@@ -117,6 +117,46 @@ extension DataIntTests {
     }
     
     //=------------------------------------------------------------------------=
+    // MARK: Tests x Many + Bit
+    //=------------------------------------------------------------------------=
+
+    func testAdditionLargeBySameSizePattern() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
+            typealias C = DataIntTests.Body<T>
+            typealias F = Fallible<[T]>
+            
+            C([              ] as [T]).plusSameSize(repeating: false, plus: false, is: F([              ] as [T]))
+            C([              ] as [T]).plusSameSize(repeating: true,  plus: false, is: F([              ] as [T]))
+            C([              ] as [T]).plusSameSize(repeating: false, plus: true,  is: F([              ] as [T], error: true))
+            C([              ] as [T]).plusSameSize(repeating: true,  plus: true,  is: F([              ] as [T], error: true))
+            
+            C([ 0,  0,  0,  0] as [T]).plusSameSize(repeating: false, plus: false, is: F([ 0,  0,  0,  0] as [T]))
+            C([ 0,  0,  0,  0] as [T]).plusSameSize(repeating: true,  plus: false, is: F([~0, ~0, ~0, ~0] as [T]))
+            C([ 0,  0,  0,  0] as [T]).plusSameSize(repeating: false, plus: true,  is: F([ 1,  0,  0,  0] as [T]))
+            C([ 0,  0,  0,  0] as [T]).plusSameSize(repeating: true,  plus: true,  is: F([ 0,  0,  0,  0] as [T], error: true))
+            
+            C([~0, ~0, ~0, ~0] as [T]).plusSameSize(repeating: false, plus: false, is: F([~0, ~0, ~0, ~0] as [T]))
+            C([~0, ~0, ~0, ~0] as [T]).plusSameSize(repeating: true,  plus: false, is: F([~1, ~0, ~0, ~0] as [T], error: true))
+            C([~0, ~0, ~0, ~0] as [T]).plusSameSize(repeating: false, plus: true,  is: F([ 0,  0,  0,  0] as [T], error: true))
+            C([~0, ~0, ~0, ~0] as [T]).plusSameSize(repeating: true,  plus: true,  is: F([~0, ~0, ~0, ~0] as [T], error: true))
+            
+            C([ 0,  1,  2,  3] as [T]).plusSameSize(repeating: false, plus: false, is: F([ 0,  1,  2,  3] as [T]))
+            C([ 0,  1,  2,  3] as [T]).plusSameSize(repeating: true,  plus: false, is: F([~0,  0,  2,  3] as [T], error: true))
+            C([ 0,  1,  2,  3] as [T]).plusSameSize(repeating: false, plus: true,  is: F([ 1,  1,  2,  3] as [T]))
+            C([ 0,  1,  2,  3] as [T]).plusSameSize(repeating: true,  plus: true,  is: F([ 0,  1,  2,  3] as [T], error: true))
+            
+            C([~0, ~1, ~2, ~3] as [T]).plusSameSize(repeating: false, plus: false, is: F([~0, ~1, ~2, ~3] as [T]))
+            C([~0, ~1, ~2, ~3] as [T]).plusSameSize(repeating: true,  plus: false, is: F([~1, ~1, ~2, ~3] as [T], error: true))
+            C([~0, ~1, ~2, ~3] as [T]).plusSameSize(repeating: false, plus: true,  is: F([ 0, ~0, ~2, ~3] as [T]))
+            C([~0, ~1, ~2, ~3] as [T]).plusSameSize(repeating: true,  plus: true,  is: F([~0, ~1, ~2, ~3] as [T], error: true))
+        }
+        
+        for type in coreSystemsIntegersWhereIsUnsigned {
+            whereIs(type)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Tests x Product
     //=------------------------------------------------------------------------=
     
@@ -199,6 +239,16 @@ extension DataIntTests.Body {
         //=--------------------------------------=
         // increment: none + bit
         //=--------------------------------------=
+        if  normal.count == 0, bit {
+            var value = self.body
+            let error = value.withUnsafeMutableBufferPointer {
+                let value = MutableDataInt.Body($0)!
+                return value.increment().error
+            }
+            
+            test.same(Fallible(value, error: error), expectation)
+        }
+        
         if  normal.count == 0 {
             var value = self.body
             let error = value.withUnsafeMutableBufferPointer {
@@ -263,6 +313,63 @@ extension DataIntTests.Body {
             test.same(Fallible(value, error: error), expectation)
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    func plusSameSize(repeating pattern: Bool, plus bit: Bool, is expectation: Fallible<[Element]>) {
+        //=--------------------------------------=
+        if  pattern == bit {
+            test.same(expectation, Fallible(self.body, error: bit))
+        }
+        //=--------------------------------------=
+        // increment: none + bit
+        //=--------------------------------------=
+        if !pattern {
+            var value = self.body
+            let error = value.withUnsafeMutableBufferPointer {
+                let value = MutableDataInt.Body($0)!
+                return value.increment(by: bit).error
+            }
+            
+            test.same(Fallible(value, error: error), expectation)
+        }
+        //=--------------------------------------=
+        // increment: many + bit
+        //=--------------------------------------=
+        if !bit {
+            var value = self.body
+            let error = value.withUnsafeMutableBufferPointer {
+                let value = MutableDataInt.Body($0)!
+                return value.incrementSameSize(repeating: pattern).error
+            }
+            
+            test.same(Fallible(value, error: error), expectation)
+        }
+        
+        always: do {
+            var value = self.body
+            let error = value.withUnsafeMutableBufferPointer {
+                let value = MutableDataInt.Body($0)!
+                return value.incrementSameSize(repeating: pattern, plus: bit).error
+            }
+            
+            test.same(Fallible(value, error: error), expectation)
+        }
+        //=--------------------------------------=
+        // increment: many + bit
+        //=--------------------------------------=
+        always: do {
+            let element  = Element(repeating: Bit(pattern))
+            let elements = Array(repeating: element, count: self.body.count)
+            self.plus(elements, plus: bit, is: expectation)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
 
     func plus(_ elements: [Element], times multiplier: Element, plus increment: Element, is expectation: Fallible<[Element]>) {
         //=--------------------------------------=

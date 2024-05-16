@@ -26,11 +26,11 @@ extension InfiniInt {
         self.storage.withUnsafeMutableBinaryIntegerBody { lhs in
             other.withUnsafeBinaryIntegerElements { rhs in
                 var lhs = consume lhs
-                (lhs, overflow) = lhs.decrementSubSequence(by: rhs.body,  plus: overflow).components()
-                (overflow) = lhs.decrement(repeating: Bool(rhs.appendix), plus: overflow)
+                (lhs, overflow) = lhs.decrementSubSequence(by: rhs.body, plus: overflow).components()
+                (overflow) = lhs.decrementSameSize(repeating: Bool(rhs.appendix), plus: overflow).error
             }
         }
-                
+        
         var last = Element(repeating: self.appendix)
         (last, overflow) = last.minus(Element(repeating: other.appendix), plus: overflow).components()
         self.storage.appendix = Element.Signitude(raw:   last).appendix

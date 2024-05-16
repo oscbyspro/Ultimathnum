@@ -20,19 +20,20 @@ extension MutableDataInt.Body {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Increments `self` by the given `bit`.
     @inlinable public consuming func increment(
-        by bit: consuming Bool
-    )   -> Fallible<Self> {
+        by bit: consuming Bool = true
+    )   -> Fallible<Void> {
         //=--------------------------------------=
         // performance: compare index then bit
         //=--------------------------------------=
-        while UX(raw: self.count) > 0, copy bit {
+        while UX(raw: self.count) > .zero, copy bit {
             (self[unchecked: ()], bit) =
             (self[unchecked: ()]).incremented().components()
             (self) = (consume self)[unchecked: 1...]
         }
-        //=--------------------------------------=
-        return self.veto(bit)
+        
+        return Fallible((), error: bit)
     }
 }
 
@@ -46,15 +47,15 @@ extension MutableDataInt.Body {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @discardableResult @inlinable public consuming func increment(
+    @inlinable public consuming func increment(
         by element: consuming Element
-    )   -> Fallible<Self> {
-        
+    )   -> Fallible<Void> {
+
         let result = self.incrementSubSequence(by: element)
         return result.value.increment(by: result.error)
     }
     
-    @discardableResult @inlinable public consuming func incrementSubSequence(
+    @inlinable public consuming func incrementSubSequence(
         by element: consuming Element
     )   -> Fallible<Self> {
         
@@ -77,8 +78,8 @@ extension MutableDataInt.Body {
     @inlinable public consuming func increment(
         by increment: consuming Element,
         plus bit: consuming Bool
-    )   -> Fallible<Self> {
-        
+    )   -> Fallible<Void> {
+
         let result = self.incrementSubSequence(by: increment, plus: bit)
         return result.value.increment(by: result.error)
     }
@@ -113,8 +114,8 @@ extension MutableDataInt.Body {
     @inlinable public consuming func increment(
         by elements: Immutable,
         plus bit: consuming Bool = false
-    )   -> Fallible<Self> {
-        
+    )   -> Fallible<Void> {
+
         let result = self.incrementSubSequence(by: elements, plus: bit)
         return result.value.increment(by: result.error)
     }
@@ -131,6 +132,28 @@ extension MutableDataInt.Body {
         
         return self.veto(bit)
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// Increments `self` by the given `bit` and the same-size `pattern`.
+    @inlinable public consuming func incrementSameSize(
+        repeating pattern: borrowing Bool,
+        plus bit: consuming Bool = false
+    )   -> Fallible<Void> {
+
+        if (pattern != bit) {
+            let predicate = copy bit
+            let increment = copy bit ? 1 : Element(repeating: 1)
+            
+            while UX(raw: self.count) > .zero, copy bit ==  predicate {
+                (self, bit) = self.incrementSubSequence(by: increment).components()
+            }
+        }
+        
+        return Fallible((), error: bit)
+    }
 }
 
 //=----------------------------------------------------------------------------=
@@ -143,17 +166,17 @@ extension MutableDataInt.Body {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @discardableResult @inlinable public consuming func increment(
+    @inlinable public consuming func increment(
         by elements: Immutable,
         times multiplier: consuming Element,
         plus increment: consuming Element = .zero
-    )   -> Fallible<Self> {
-        
+    )   -> Fallible<Void> {
+
         let result = self.incrementSubSequence(by: elements, times: multiplier, plus: increment)
         return result.value.increment(by: result.error)
     }
     
-    @discardableResult @inlinable public consuming func incrementSubSequence(
+    @inlinable public consuming func incrementSubSequence(
         by elements: borrowing Immutable,
         times multiplier: consuming Element,
         plus increment: Element = .zero

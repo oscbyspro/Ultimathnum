@@ -20,19 +20,20 @@ extension MutableDataInt.Body {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Decrements `self` by the given `bit`.
     @inlinable public consuming func decrement(
-        by bit: consuming Bool
-    )   -> Fallible<Self> {
+        by bit: consuming Bool = true
+    )   -> Fallible<Void> {
         //=--------------------------------------=
         // performance: compare index then bit
         //=--------------------------------------=
-        while UX(raw: self.count) > 0, copy bit {
+        while UX(raw: self.count) > .zero, copy bit {
             (self[unchecked: ()], bit) =
             (self[unchecked: ()]).decremented().components()
             (self) = (consume self)[unchecked: 1...]
         }
-        //=--------------------------------------=
-        return self.veto(bit)
+        
+        return Fallible((), error: bit)
     }
 }
 
@@ -46,15 +47,15 @@ extension MutableDataInt.Body {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @discardableResult @inlinable public consuming func decrement(
+    @inlinable public consuming func decrement(
         by element: consuming Element
-    )   -> Fallible<Self> {
-        
+    )   -> Fallible<Void> {
+
         let result = self.decrementSubSequence(by: element)
         return result.value.decrement(by: result.error)
     }
     
-    @discardableResult @inlinable public consuming func decrementSubSequence(
+    @inlinable public consuming func decrementSubSequence(
         by element: consuming Element
     )   -> Fallible<Self> {
         
@@ -77,8 +78,8 @@ extension MutableDataInt.Body {
     @inlinable public consuming func decrement(
         by decrement: consuming Element,
         plus bit: consuming Bool
-    )   -> Fallible<Self> {
-        
+    )   -> Fallible<Void> {
+
         let result = self.decrementSubSequence(by: decrement, plus: bit)
         return result.value.decrement(by: result.error)
     }
@@ -113,8 +114,8 @@ extension MutableDataInt.Body {
     @inlinable public consuming func decrement(
         by elements: Immutable,
         plus bit: consuming Bool = false
-    )   -> Fallible<Self> {
-        
+    )   -> Fallible<Void> {
+
         let result = self.decrementSubSequence(by: elements, plus: bit)
         return result.value.decrement(by: result.error)
     }
@@ -131,6 +132,28 @@ extension MutableDataInt.Body {
         
         return self.veto(bit)
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// Decrements `self` by the given `bit` and the same-size `pattern`.
+    @inlinable public consuming func decrementSameSize(
+        repeating pattern: borrowing Bool,
+        plus bit: consuming Bool = false
+    )   -> Fallible<Void> {
+        
+        if (pattern != bit) {
+            let predicate = copy bit
+            let increment = copy bit ? 1 : Element(repeating: 1)
+            
+            while UX(raw: self.count) > .zero, copy bit ==  predicate {
+                (self, bit) = self.decrementSubSequence(by: increment).components()
+            }
+        }
+        
+        return Fallible((), error: bit)
+    }
 }
 
 //=----------------------------------------------------------------------------=
@@ -143,17 +166,17 @@ extension MutableDataInt.Body {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @discardableResult @inlinable public consuming func decrement(
+    @inlinable public consuming func decrement(
         by elements: Immutable,
         times multiplier: consuming Element,
         plus decrement: consuming Element = .zero
-    )   -> Fallible<Self> {
-        
+    )   -> Fallible<Void> {
+
         let result = self.decrementSubSequence(by: elements, times: multiplier, plus: decrement)
         return result.value.decrement(by: result.error)
     }
     
-    @discardableResult @inlinable public consuming func decrementSubSequence(
+    @inlinable public consuming func decrementSubSequence(
         by elements: borrowing Immutable,
         times multiplier: consuming Element,
         plus decrement: Element = .zero
