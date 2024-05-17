@@ -566,8 +566,11 @@ try! Fibonacci<UXL>(5) // (index: 5, element: 5, next: 8)
 
 It uses a fast double-and-add algorithm:
 
+###### MacBook Pro, 13-inch, M1, 2020, -O, code coverage disabled.
+
 ```swift
-try! Fibonacci<UXL>(1_000_000) // 0.06s on MacBook Pro, 13-inch, M1, 2020
+try! Fibonacci<UXL>( 1_000_000) // 0.04s
+try! Fibonacci<UXL>(10_000_000) // 1.65s
 ```
 
 But you can also step through it manually:
