@@ -23,7 +23,7 @@
 ///
 /// ### Magnitude
 ///
-/// Its magnitude may be signed to accomodate lone big integers.
+/// Its magnitude may be signed to accommodate lone big integers.
 ///
 /// ### Stride
 ///

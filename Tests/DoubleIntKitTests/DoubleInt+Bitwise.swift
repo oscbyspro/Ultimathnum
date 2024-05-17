@@ -156,7 +156,7 @@ extension DoubleIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testEndianess() {
+    func testEndianness() {
         func whereTheBaseTypeIs<B>(_ base: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
             typealias M = DoubleInt<B.Magnitude>

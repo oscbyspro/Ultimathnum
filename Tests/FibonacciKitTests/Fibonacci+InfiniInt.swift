@@ -13,7 +13,7 @@ import InfiniIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Fibonacci x Infinit Int
+// MARK: * Fibonacci x Infini Int
 //*============================================================================*
 
 extension FibonacciTests {

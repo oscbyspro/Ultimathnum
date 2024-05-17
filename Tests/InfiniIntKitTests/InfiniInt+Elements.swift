@@ -12,7 +12,7 @@ import InfiniIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Infinit Int x Elements
+// MARK: * Infini Int x Elements
 //*============================================================================*
 
 extension InfiniIntTests {
