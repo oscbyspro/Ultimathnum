@@ -20,6 +20,11 @@ final class EndiannessTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
+    func testValues() {
+        Test().yay( Ascending().matchesLittleEndianByteOrder)
+        Test().nay(Descending().matchesLittleEndianByteOrder)
+    }
+    
     func testSystem() {
         #if _endian(little)
         Test().yay( Ascending().matches(endianness: .system))

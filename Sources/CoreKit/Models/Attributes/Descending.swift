@@ -27,6 +27,6 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public var matchesLittleEndianByteOrder: Bool {
-        true
+        false
     }
 }
