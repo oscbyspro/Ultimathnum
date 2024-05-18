@@ -700,7 +700,7 @@ func checkMathInvariants() {
 Add this package to your list of package dependencies.
 
 ```swift
-.package(url: "https://github.com/oscbyspro/Ultimathnum.git", exact: "0.1.0"),
+.package(url: "https://github.com/oscbyspro/Ultimathnum.git", exact: "x.y.z"),
 ```
 
 Choose target dependencies from this list of products.
