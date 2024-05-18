@@ -70,6 +70,8 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
+    // TODO: await appendix { borrowing get } fixes then make these borrowing
+    //=------------------------------------------------------------------------=
     
     /// Creates a new instance from the given `source` by trapping on failure.
     @inlinable public init<Other>(_ source: consuming Other) where Other: BinaryInteger {
@@ -118,7 +120,7 @@ extension EdgyInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Creates a new instance from by clamping the given `source`.
+    /// Creates a new instance by clamping the given `source`.
     @inlinable public init(clamping source: some BinaryInteger) {
         if  let instance = Self.exactly(source).optional() {
             self = instance

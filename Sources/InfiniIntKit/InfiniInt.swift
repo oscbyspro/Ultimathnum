@@ -53,12 +53,12 @@ import CoreKit
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable init(unchecked storage: consuming Storage) {
+    @inlinable internal init(unchecked storage: consuming Storage) {
         Swift.assert(storage.isNormal, String.brokenInvariant())
         self.storage = storage
     }
     
-    @inlinable init(normalizing storage: consuming Storage) {
+    @inlinable internal init(normalizing storage: consuming Storage) {
         storage.normalize()
         self.init(unchecked: storage)
     }
@@ -93,7 +93,7 @@ import CoreKit
 //=----------------------------------------------------------------------------=
 
 extension InfiniInt:   SignedInteger where Source:   SignedInteger { }
-extension InfiniInt: EdgyInteger where Source: UnsignedInteger { }
+extension InfiniInt:     EdgyInteger where Source: UnsignedInteger { }
 extension InfiniInt: UnsignedInteger where Source: UnsignedInteger { }
 
 //=----------------------------------------------------------------------------=

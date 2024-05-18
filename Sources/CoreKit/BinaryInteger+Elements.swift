@@ -158,6 +158,10 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
+    //=------------------------------------------------------------------------=
+    // TODO: await appendix { borrowing get } fixes then make these borrowing
+    //=------------------------------------------------------------------------=
+    
     
     /// Executes the `action` with the `body` and `appendix` of `self`.
     @inlinable public func withUnsafeBinaryIntegerElements<Value>(

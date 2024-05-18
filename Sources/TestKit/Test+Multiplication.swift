@@ -60,28 +60,28 @@ extension Test {
             same({ var x = rhs; x  *= lhs; return x }(), expectation.value)
         }
         
-        always: do {
-            same(lhs.times(rhs),                     expectation)
-            same(lhs.times(Fallible(rhs)),           expectation)
-            same(Fallible(lhs).times(rhs),           expectation)
-            same(Fallible(lhs).times(Fallible(rhs)), expectation)
+        func unidirectional(_ lhs: T, _ rhs: T, _ expectation: Fallible<T>) {
+            same(lhs.times(rhs),             expectation)
+            same(lhs.times(rhs.veto(false)), expectation)
+            same(lhs.times(rhs.veto(true )), expectation.veto())
+            
+            same(lhs.veto(false).times(rhs),             expectation)
+            same(lhs.veto(false).times(rhs.veto(false)), expectation)
+            same(lhs.veto(false).times(rhs.veto(true )), expectation.veto())
+            same(lhs.veto(true ).times(rhs),             expectation.veto())
+            same(lhs.veto(true ).times(rhs.veto(false)), expectation.veto())
+            same(lhs.veto(true ).times(rhs.veto(true )), expectation.veto())
         }
         
         always: do {
-            same(rhs.times(lhs),                     expectation)
-            same(rhs.times(Fallible(lhs)),           expectation)
-            same(Fallible(rhs).times(lhs),           expectation)
-            same(Fallible(rhs).times(Fallible(lhs)), expectation)
+            unidirectional(lhs, rhs, expectation)
+            unidirectional(rhs, lhs, expectation)
         }
         
         if  lhs == rhs {
-            same(rhs.squared(),           expectation)
-            same(Fallible(lhs).squared(), expectation)
-        }
-        
-        if  lhs == rhs {
-            same(rhs.squared(),           expectation)
-            same(Fallible(rhs).squared(), expectation)
+            same(lhs.squared(),             expectation)
+            same(lhs.veto(false).squared(), expectation)
+            same(lhs.veto(true ).squared(), expectation.veto())
         }
     }
 }

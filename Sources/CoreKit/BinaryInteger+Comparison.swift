@@ -36,9 +36,9 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// Indicates whether this value is is greater than all finite values.
+    /// Indicates whether this value is greater than all finite values.
     ///
-    /// It checks `isSigned`, which is preferred in inlinable generic code.
+    /// It checks `isSigned` first, which is preferred in inlinable generic code.
     ///
     @inlinable public var isInfinite: Bool {
         !Self.isSigned && Bool(self.appendix)
@@ -46,7 +46,7 @@ extension BinaryInteger {
     
     /// Returns whether this value is less than zero.
     ///
-    /// It checks `isSigned`, which is preferred in inlinable generic code.
+    /// It checks `isSigned` first, which is preferred in inlinable generic code.
     ///
     @inlinable public var isNegative: Bool {
         Self.isSigned && Bool(self.appendix)

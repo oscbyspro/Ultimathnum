@@ -93,21 +93,21 @@ extension IntegerInvariants {
                 guard Other.isSigned else { break branch }
                 
                 test.same(T(clamping: -1 as Other), T.zero, "-1 -> unsigned")
-                test.same(T.exactly  (-1 as Other), F(T(repeating: 1), error: true))
+                test.same(T.exactly(  -1 as Other), T.max.veto(true))
             }
             
             if  T.size < Other.size {
-                test.same(T(clamping: Other(T.max) - 1),   T.max - 1, "max - 1")
-                test.same(T(clamping: Other(T.max)),       T.max,     "max")
-                test.same(T(clamping: Other(T.max) + 1),   T.max,     "max + 1")
-                test.same(T.exactly(  Other(T.max) + 1), F(T.min, error: true))
+                test.same(T(clamping: Other(T.max) - 1), T.max - 1, "max - 1")
+                test.same(T(clamping: Other(T.max)),     T.max,     "max")
+                test.same(T(clamping: Other(T.max) + 1), T.max,     "max + 1")
+                test.same(T.exactly(  Other(T.max) + 1), T.min.veto(true))
             }
             
             if  T.isSigned, Other.isSigned, T.size < Other.size {
-                test.same(T.exactly(  Other(T.min) - 1), F(T.max, error: true))
-                test.same(T(clamping: Other(T.min) - 1),   T.min,     "min - 1")
-                test.same(T(clamping: Other(T.min)),       T.min,     "min")
-                test.same(T(clamping: Other(T.min) + 1),   T.min + 1, "min + 1")
+                test.same(T.exactly(  Other(T.min) - 1), T.max.veto(true))
+                test.same(T(clamping: Other(T.min) - 1), T.min,     "min - 1")
+                test.same(T(clamping: Other(T.min)),     T.min,     "min")
+                test.same(T(clamping: Other(T.min) + 1), T.min + 1, "min + 1")
             }
         }
         

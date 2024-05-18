@@ -17,8 +17,7 @@
 ///
 /// This coder unifies all integer types and all common radices (2...36) with
 /// a single non-inlinable and non-generic algorithm. This design favors code
-/// size over performance. If test de/encoding performance is important to you, 
-/// then you may want to use a dedicated hexadecimal formatter, for example.
+/// size over performance.
 ///
 /// ### Development
 ///

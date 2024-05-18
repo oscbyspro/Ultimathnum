@@ -106,10 +106,6 @@ extension MutableDataInt.Body {
         }
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
     /// Forms the `remainder` of dividing the `dividend` by the `divisor`,
     /// then returns the `quotient`. Its arguments must match the arguments
     /// of one long division iteration.

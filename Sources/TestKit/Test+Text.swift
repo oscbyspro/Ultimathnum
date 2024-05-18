@@ -77,7 +77,7 @@ extension Test {
     
     /// Tests whether an integer's description is stable.
     ///
-    /// - Note: Use this method when you can't inline the your expectation.
+    /// - Note: Use this method when you can't inline your expectation.
     ///
     public func description<Integer>(roundtripping integer: Integer, radices: Range<UX> = 2 ..< 37) where Integer: BinaryInteger {
         for radix in  radices {

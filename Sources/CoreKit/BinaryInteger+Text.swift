@@ -21,7 +21,7 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public init?(_ description: String) {
-        always: do  {
+        always: do {
             self = try TextInt.decimal.decode(description)
         }   catch  {
             return nil

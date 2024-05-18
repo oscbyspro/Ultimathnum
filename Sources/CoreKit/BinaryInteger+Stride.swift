@@ -33,6 +33,7 @@ extension BinaryInteger {
             }   else {
                 return self.plus(Self(load: distance))
             }
+            
         }   else {
             if  distance.isNegative {
                 return self.minus(Self.exactly(Distance.Magnitude(raw: distance.complement())))
@@ -60,13 +61,13 @@ extension BinaryInteger {
                 
         if  Self.size < Distance.size {
             return Distance(load: other).minus(Distance(load: self))
-        
+            
         }   else if Self.isSigned {
             return other.minus(self).map(Distance.exactly)
             
         }   else {
             let distance = Fallible<Signitude>(raw: other.minus(self))
-            let superoverflow = (distance.value).isNegative != distance.error
+            let superoverflow = distance.value.isNegative != distance.error
             return Distance.exactly(distance.value).veto(superoverflow)
         }
     }

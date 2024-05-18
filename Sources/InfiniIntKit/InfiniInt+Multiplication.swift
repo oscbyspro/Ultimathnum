@@ -33,7 +33,7 @@ extension InfiniInt {
         
         let count: IX = self.storage.count * 2
         let body = Storage.Body(unsafeUninitializedCapacity: Int(count)) {
-            let body = MutableDataInt.Body($0.baseAddress!,count:  IX(count))
+            let body = MutableDataInt.Body($0.baseAddress!, count: count)
             self.withUnsafeBinaryIntegerElements {
                 body.initialize(toSquareProductOf: $0.body)
             }

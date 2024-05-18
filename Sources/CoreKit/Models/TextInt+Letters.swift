@@ -33,8 +33,8 @@ extension TextInt.Letters {
     
     @inlinable var start: U8 {
         switch self {
-        case .uppercase: return 065
-        case .lowercase: return 097
+        case .uppercase: return 65
+        case .lowercase: return 97
         }
     }
 }

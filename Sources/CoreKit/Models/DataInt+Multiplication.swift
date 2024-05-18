@@ -211,7 +211,7 @@ extension MutableDataInt.Body {
         //=--------------------------------------=
         let i: IX = (self.count &>> 2)
         let j: IX = (((((i))))) &<< 1
-        Swift.assert(self.count >=  j)
+        Swift.assert(self.count >=  2 * j)
         
         var (a,b) = lhs.split(at: Swift.min(i, lhs.count))
         a = a.normalized()
@@ -325,11 +325,11 @@ extension MutableDataInt.Body {
     ///
     @inline(never) @inlinable public consuming func initializeByKaratsubaAlgorithm(toSquareProductOf elements: Immutable) {
         //=--------------------------------------=
-        Swift.assert(self.count == 2 * elements.count, String.indexOutOfBounds())
+        Swift.assert(self.count ==  2 * elements.count, String.indexOutOfBounds())
         //=--------------------------------------=
-        let i: IX = elements.count &>> 1
-        let j: IX = i &<< 1
-        Swift.assert(self.count >= j)
+        let i: IX = (self.count &>> 2)
+        let j: IX = (((((i))))) &<< 1
+        Swift.assert(self.count >=  2 * j)
         
         var a: Immutable = elements[unchecked: ..<i].normalized()
         var b: Immutable = elements[unchecked: i...].normalized()

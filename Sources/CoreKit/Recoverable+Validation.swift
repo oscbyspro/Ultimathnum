@@ -17,13 +17,13 @@ extension Recoverable {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Sets the `error` indicator when `condition` is `true`.
+    /// Sets the `error` indicator when the `condition` is `true`.
     @inlinable public consuming func veto(_ condition: Bool = true) -> Fallible<Self> {
         Fallible(self, error: condition)
     }
     
     /// Sets the `error` indicator if the `predicate` return `true`.
-    @inlinable public consuming func veto(_ predicate: (Self) -> Bool) -> Fallible<Self> {
+    @inlinable public consuming func veto(_ predicate: (borrowing Self) -> Bool) -> Fallible<Self> {
         let error = predicate(self)
         return self.veto(error)
     }

@@ -77,7 +77,7 @@ where
         
     /// The stuff this binary integer type is made of.
     ///
-    /// - Important: `Self` must be properly aligned for accessing `Element`.
+    /// - Important: `Self`'s body must be properly aligned for accessing `Element`.
     ///
     associatedtype Element: SystemsInteger where Element.Element == Element
     

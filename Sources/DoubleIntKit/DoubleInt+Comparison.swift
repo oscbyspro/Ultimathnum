@@ -35,8 +35,8 @@ extension DoubleInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func hash(into hasher: inout Hasher) {
-        hasher.combine(self.low )
-        hasher.combine(self.high)
+    @inlinable public borrowing func hash(into hasher: inout Hasher) {
+        hasher.combine(self.storage.low )
+        hasher.combine(self.storage.high)
     }
 }

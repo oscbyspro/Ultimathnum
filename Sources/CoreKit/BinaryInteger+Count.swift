@@ -35,7 +35,7 @@ extension BinaryInteger {
     /// ```
     ///
     @inlinable public func count(_ selection: Bit.Appendix) -> Magnitude {
-        self.count(.descending(self.appendix)) // TODO: await borrowing fix
+        self.count(.descending(self.appendix)) // await borrowing fix
     }
     
     /// The number of bits in `self` that match the `selection`.

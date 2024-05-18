@@ -158,7 +158,7 @@ import CoreKit
     }
     
     /// Forms the sequence pair at `index + x.index`.
-    @inlinable public mutating func increment(by x: Self) throws {
+    @inlinable public mutating func increment(by x: borrowing Self) throws {
         let ix = try i.plus (x.i).prune(Failure.overflow)
         let ax = try a.times(x.b).plus(b.minus(a).times(x.a)).prune(Failure.overflow)
         let bx = try b.times(x.b).plus(       (a).times(x.a)).prune(Failure.overflow)
@@ -169,7 +169,7 @@ import CoreKit
     }
     
     /// Forms the sequence pair at `index - x.index`.
-    @inlinable public mutating func decrement(by x: Self) throws {
+    @inlinable public mutating func decrement(by x: borrowing Self) throws {
         let ix = try i.minus(x.i).veto({ $0.isNegative }).prune(Failure.indexOutOfBounds)
         
         var a0 = b.times(x.a).value
