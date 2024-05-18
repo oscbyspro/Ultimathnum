@@ -17,7 +17,10 @@ extension DataInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable package static func signum(of instance: Self, isSigned: Bool) -> Signum {
+    /// Performs a three-way comparson of `instance` versus `zero` where the mode
+    /// of the `instance` is determined by `isSigned`.
+    ///
+    @inline(never) @inlinable public static func signum(of instance: Self, isSigned: Bool) -> Signum {
         //=--------------------------------------=
         // comparison: appendix
         //=--------------------------------------=
@@ -30,7 +33,10 @@ extension DataInt {
         return instance.body.signum()
     }
     
-    @inlinable package static func compare(
+    /// Performs a three-way comparson of `lhs` versus `rhs` where the mode
+    /// of each instance is determined by `lhsIsSigned` and `rhsIsSigned`.
+    ///
+    @inline(never) @inlinable public static func compare(
         lhs: consuming Self, lhsIsSigned: Bool,
         rhs: consuming Self, rhsIsSigned: Bool
     )   -> Signum {
