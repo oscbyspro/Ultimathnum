@@ -261,8 +261,8 @@ extension MutableDataInt.Body {
             // add (a * x) and (b * y)
             //=----------------------------------=
             let suffix = self[unchecked: i...]
-            _ = suffix.increment(by: Immutable(u[unchecked: ..<axCount]))
-            _ = suffix.increment(by: Immutable(v[unchecked: ..<vjCount]))
+            suffix.increment(by: Immutable(u[unchecked: ..<axCount])).unchecked()
+            suffix.increment(by: Immutable(v[unchecked: ..<vjCount])).unchecked()
             //=----------------------------------=
             // regions
             //=----------------------------------=
