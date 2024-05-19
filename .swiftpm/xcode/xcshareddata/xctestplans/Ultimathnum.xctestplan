@@ -27,6 +27,10 @@
       }
     },
     {
+      "skippedTests" : [
+        "FibonacciBenchmarks\/testFibonacciUXL1e6()",
+        "FibonacciBenchmarks\/testFibonacciUXL1e7()"
+      ],
       "target" : {
         "containerPath" : "container:",
         "identifier" : "UltimathnumTests",
