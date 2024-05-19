@@ -166,6 +166,14 @@ extension DataIntTests.Extension where Element == U8 {
         },  write: {
             $0[index...].load(as: T.self)
         })
+        
+        if  index == .zero, self.item.body.isEmpty {
+            DataIntTests.Body(self.item.body, test: self.test).expect(T.zero, read: {
+                $0.load(as: T.self)
+            },  write: {
+                $0.load(as: T.self)
+            })
+        }
     }
     
     func body<T>(as type: T.Type, is expectation: [T]) where T: SystemsInteger & UnsignedInteger {
@@ -192,26 +200,6 @@ extension DataIntTests.Extension where Element == U8 {
         })
     }
     
-    func prefix<T>(_ count: UX, as type: T.Type, is expectation: [T]) where T: SystemsInteger & UnsignedInteger {
-        self.expect(expectation, read: {
-            var elements = [T]()
-            
-            for _ in 0 ..< count {
-                elements.append($0.next(as: T.self))
-            }
-            
-            return elements
-        },  write: {
-            var elements = [T]()
-            
-            for _ in 0 ..< count {
-                elements.append($0.next(as: T.self))
-            }
-            
-            return elements
-        })
-    }
-    
     func normalized<T>(as type: T.Type, is expectation: [T]) where T: SystemsInteger & UnsignedInteger {
         self.expect(expectation, read: {
             var elements = [T]()
@@ -227,6 +215,26 @@ extension DataIntTests.Extension where Element == U8 {
             $0 = $0.normalized()
             
             while !$0.body.isEmpty {
+                elements.append($0.next(as: T.self))
+            }
+            
+            return elements
+        })
+    }
+    
+    func prefix<T>(_ count: UX, as type: T.Type, is expectation: [T]) where T: SystemsInteger & UnsignedInteger {
+        self.expect(expectation, read: {
+            var elements = [T]()
+            
+            for _ in 0 ..< count {
+                elements.append($0.next(as: T.self))
+            }
+            
+            return elements
+        },  write: {
+            var elements = [T]()
+            
+            for _ in 0 ..< count {
                 elements.append($0.next(as: T.self))
             }
             

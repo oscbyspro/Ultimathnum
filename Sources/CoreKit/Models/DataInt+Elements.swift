@@ -14,6 +14,20 @@
 extension DataInt {
     
     //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// Returns the least significant bit pattern that fits in an element, then
+    /// rebases `self` such that it starts at the end of this bit pattern.
+    @inlinable public mutating func next() -> Element {
+        defer {
+            self = self[1...]
+        }
+        
+        return self.load()
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
@@ -24,6 +38,19 @@ extension DataInt {
             return Element(repeating: self.appendix)
         }
     }
+    
+    /// Returns the least significant bit pattern that fits in an element.
+    ///
+    /// ### Load vs Subscript
+    ///
+    /// A load may be more efficient than a safe subscript access but this is
+    /// only because it does not need to perform any pointer arithmetic. Note,
+    /// however, that calling `body[unchecked: ()]` is still the most performant
+    /// option because it ommits bounds checks in release mode.
+    ///
+    @inlinable public borrowing func load() -> Element {
+        self.body.load(repeating: self.appendix)
+    }
 }
 
 //*============================================================================*
@@ -33,11 +60,40 @@ extension DataInt {
 extension MutableDataInt {
     
     //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+
+    /// Returns the least significant bit pattern that fits in an element, then
+    /// rebases `self` such that it starts at the end of this bit pattern.
+    @inlinable public mutating func next() -> Element {
+        var immutable = Immutable.init(self)
+
+        defer {
+            self = Self(mutating: immutable)
+        }
+        
+        return immutable.next() as Element
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
     @inlinable public subscript(index: UX) -> Element {
         Immutable(self)[index]
+    }
+    
+    /// Returns the least significant bit pattern that fits in an element.
+    ///
+    /// ### Load vs Subscript
+    ///
+    /// A load may be more efficient than a safe subscript access but this is
+    /// only because it does not need to perform any pointer arithmetic. Note,
+    /// however, that calling `body[unchecked: ()]` is still the most performant
+    /// option because it ommits bounds checks in release mode.
+    ///
+    @inlinable public borrowing func load() -> Element {
+        Immutable(self).load()
     }
 }
 
@@ -63,6 +119,29 @@ extension DataInt.Body {
         Range(uncheckedBounds:(0, self.count))
     }
     
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    /// Returns the least significant bit pattern that fits in an element.
+    ///
+    /// This method returns the first element when possible. It also handles the
+    /// case where the body is empty. In that case, it returns the repeating bit
+    /// pattern of `appendix`.
+    ///
+    @inlinable public borrowing func load(repeating appendix: Bit = .zero) -> Element {
+        if  UX(raw: self.count) > .zero {
+            return self[unchecked: ()]
+            
+        }   else {
+            return Element(repeating: appendix)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
     @inlinable public subscript(optional index: IX) -> Optional<Element> {
         if  UX(raw: index) < UX(raw: self.count) {
             return self[unchecked: index]
@@ -70,10 +149,6 @@ extension DataInt.Body {
             return nil
         }
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
     
     @inlinable public subscript(unchecked index: Void) -> Element {
         //=----------------------------------=
@@ -113,13 +188,27 @@ extension MutableDataInt.Body {
         Immutable(self).indices
     }
     
-    @inlinable public subscript(optional index: IX) -> Optional<Element> {
-        Immutable(self)[optional: index]
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    /// Returns the least significant bit pattern that fits in an element.
+    ///
+    /// This method returns the first element when possible. It also handles the
+    /// case where the body is empty. In that case, it returns the repeating bit
+    /// pattern of `appendix`.
+    ///
+    @inlinable public borrowing func load(repeating appendix: Bit = .zero) -> Element {
+        Immutable(self).load(repeating: appendix)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
+    
+    @inlinable public subscript(optional index: IX) -> Optional<Element> {
+        Immutable(self)[optional: index]
+    }
     
     @inlinable public subscript(unchecked index: Void) -> Element {
         nonmutating get {
