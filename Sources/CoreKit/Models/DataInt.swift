@@ -11,6 +11,7 @@
 // MARK: * Data Int x Read
 //*============================================================================*
 
+/// A binary integer `body` and `appendix` view.
 @frozen public struct DataInt<Element>: Recoverable where Element: SystemsInteger & UnsignedInteger {
         
     public typealias Element = Element
@@ -60,7 +61,7 @@
     
     /// A binary integer `body` view.
     ///
-    /// - Note: Its operations are `unsigned` and `finite` by default.
+    /// - Important: Its operations are finite, unsigned, and unchecked by default.
     ///
     @frozen public struct Body: Recoverable {
                 
@@ -85,6 +86,7 @@
         }
         
         @inlinable public init(_ start: UnsafePointer<Element>, count: IX) {
+            Swift.assert(count >= .zero, String.brokenInvariant())
             self.start = start
             self.count = count
         }
@@ -111,6 +113,7 @@
 // MARK: * Data Int x Read|Write
 //*============================================================================*
 
+/// A mutable binary integer `body` and `appendix` view.
 @frozen public struct MutableDataInt<Element>: Recoverable where Element: SystemsInteger & UnsignedInteger {
         
     public typealias Element = Element
@@ -157,7 +160,7 @@
     
     /// A mutable binary integer `body` view.
     ///
-    /// - Note: Its operations are `unsigned` and `finite` by default.
+    /// - Important: Its operations are finite, unsigned, and unchecked by default.
     ///
     @frozen public struct Body: Recoverable {
                         
@@ -182,6 +185,7 @@
         }
         
         @inlinable public init(_ start: UnsafeMutablePointer<Element>, count: IX) {
+            Swift.assert(count >= .zero, String.brokenInvariant())
             self.start = start
             self.count = count
         }

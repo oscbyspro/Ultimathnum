@@ -96,7 +96,7 @@ extension DataInt<U8>.Body {
     )   -> IX where Destination: SystemsInteger & UnsignedInteger {
         
         var count = UX(raw: self.count)
-        count   &+= UX(raw: MemoryLayout<Destination>.stride) &- 1
+        count   &+= UX(raw: MemoryLayout<Destination>.stride).minus(1).unchecked()
         count  &>>= UX(raw: MemoryLayout<Destination>.stride).count(.ascending(.zero))
         return IX(raw: count)
     }
