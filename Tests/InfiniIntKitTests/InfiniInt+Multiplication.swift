@@ -211,13 +211,13 @@ extension InfiniIntTests {
     
     func testMultiplicationLikeBigShift() {
         func whereIs<T, S>(_ type: T.Type, _ source: S.Type) where T: BinaryInteger, S: SystemsInteger & UnsignedInteger {
-            //=--------------------------------------=
+            //=----------------------------------=
             func make(_ source: [S]) -> T {
                 source.withUnsafeBufferPointer({ T(DataInt($0)!, mode: .unsigned) })
             }
-            //=--------------------------------------=
+            //=----------------------------------=
             var lhs: T, rhs: T, pro: T, array = [S]()
-            //=--------------------------------------=
+            //=----------------------------------=
             for index: S in 0 ..< 16 {
                 array.append(index)
             }
@@ -240,33 +240,33 @@ extension InfiniIntTests {
     
     func testMultiplicationLikeBigSystemsInteger() {
         func whereIs<T, S>(_ type: T.Type, _ source: S.Type) where T: BinaryInteger, S: SystemsInteger & UnsignedInteger {
-            //=--------------------------------------=
+            //=----------------------------------=
             func make(_ source: [S]) -> T {
                 source.withUnsafeBufferPointer({ T(DataInt($0)!, mode: .unsigned) })
             }
-            //=--------------------------------------=
+            //=----------------------------------=
             var lhs: T, rhs: T, pro: T, array = [S]()
-            //=--------------------------------------=
+            //=----------------------------------=
             // imagine: (U16.max - 0) * (U16.max - 0)
-            //=--------------------------------------=
+            //=----------------------------------=
             lhs = make([S](repeating: S.max, count: 16))
             rhs = make([S](repeating: S.max, count: 16))
             pro = make([1] as [S] + [S](repeating: S.min, count: 15) + [~1] as [S] + [S](repeating: S.max, count: 15))
             
             Test().same(lhs.times(rhs), Fallible(pro))
             Test().same(lhs.squared( ), Fallible(pro))
-            //=--------------------------------------=
+            //=----------------------------------=
             // imagine: (U16.max - 0) * (U16.max - 1)
-            //=--------------------------------------=
+            //=----------------------------------=
             lhs = make([S](repeating: S.max, count: 16))
             rhs = make([~1] as [S] + [S](repeating: S.max, count: 15))
             pro = make([ 2] as [S] + [S](repeating: S.min, count: 15) + [~2] as [S] + [S](repeating: S.max, count: 15))
             
             Test().same(lhs.times(rhs), Fallible(pro))
             Test().same(rhs.times(lhs), Fallible(pro))
-            //=--------------------------------------=
+            //=----------------------------------=
             // imagine: (U16.max - 1) * (U16.max - 1)
-            //=--------------------------------------=
+            //=----------------------------------=
             array += [ 4] as [S]
             array += Array(repeating: S.min, count: 15)
             array += [~3] as [S]
@@ -279,9 +279,9 @@ extension InfiniIntTests {
             
             Test().same(lhs.times(rhs), Fallible(pro))
             Test().same(lhs.squared( ), Fallible(pro))
-            //=--------------------------------------=
+            //=----------------------------------=
             // imagine: (U16.max - 0) * (U8 .max - 0)
-            //=--------------------------------------=
+            //=----------------------------------=
             array += [ 1] as [S]
             array += Array(repeating: S.min, count: 07)
             array += Array(repeating: S.max, count: 08)

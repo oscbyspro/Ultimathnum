@@ -263,8 +263,8 @@ Here's a real example from the generic Fibonacci\<Value\> sequence:
 Note that each operation propagates failure by setting Fallible\<Value\>'s error indicator, which is 
 lazily checked in the throwing prune(\_:) method. Alternatively, you may use optional(\_:), result(\_:)
 unwrap(\_:), assert(\_:) or plain value and error to validate your results. Also, note that each
-operation accepts both `Value` and Fallible\<Value\> inputs to make error handling as seamless as possible.
-In the same vein, use any of the common arithmetic operators for trapping or wrapping results:
+operation accepts both Value and Fallible\<Value\> inputs to make error handling as seamless as possible.
+Alternatively, you may use any of the common arithmetic operators for trapping or wrapping results:
 
 ```swift
 static func  +(lhs: consuming Self, borrowing Self) -> Self // trapping

@@ -19,7 +19,7 @@ extension DataInt {
     
     @inlinable borrowing public func count(_ selection: Bit.Entropy) -> IX {
         let count = self.count(.nonappendix).incremented()
-        return count.unchecked("nonappendix < body.size() or body.size() == 0")
+        return count.unchecked("Body/size() <= IX.max, Body/size() % 8 == 0")
     }
     
     @inlinable borrowing public func count(_ selection: Bit.Nonappendix) -> IX {
@@ -102,7 +102,7 @@ extension DataInt.Body {
     
     @inlinable borrowing public func count(_ selection: Bit.Entropy) -> IX {
         let count = self.count(.nonappendix).incremented()
-        return count.unchecked("nonappendix < self.size() or self.size() == 0")
+        return count.unchecked("Body/size() <= IX.max, Body/size() % 8 == 0")
     }
     
     @inlinable borrowing public func count(_ selection: Bit.Appendix) -> IX {

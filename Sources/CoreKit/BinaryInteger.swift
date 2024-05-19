@@ -13,18 +13,6 @@
 
 /// A binary integer.
 ///
-/// ### Binary
-///
-/// - Requires: Its body may store at most `IX.max` number of bits.
-///
-/// - Requires: `Infinite` values must use binary two's complement form.
-///
-/// - Requires: `Negative` values must use binary two's complement form.
-///
-/// ### Magnitude
-///
-/// Its magnitude may be signed to accommodate lone big integers.
-///
 /// ### Stride
 ///
 /// Its stride is Swift.Int which is used to step through Swift's ranges.
@@ -51,6 +39,14 @@
 /// In most cases, however, you should view infinite values as bit patterns.
 ///
 /// - Important: Infinite values take on the order of their host type.
+///
+/// ### Requirements
+///
+/// - Requires: Its `body` and `appendix` must fit in `IX.max` bits.
+///
+/// - Requires: `Infinite` values must use binary two's complement form.
+///
+/// - Requires: `Negative` values must use binary two's complement form.
 ///
 public protocol BinaryInteger<BitPattern>:
     BitCastable,
@@ -390,11 +386,11 @@ where
     ///
     /// ```
     ///            ┌───────────┬───────────┐
-    ///            │ 0x00      │ 0x01      |
+    ///            │ Bit.zero  │ Bit.one   |
     /// ┌──────────┼───────────┤───────────┤
     /// │ SIGNED   │ self >= 0 │ self <  0 │
     /// ├──────────┼───────────┤───────────┤
-    /// │ UNSIGNED │ self >= ∞ │ self <  ∞ │ // let ∞ be 0s then 1
+    /// │ UNSIGNED │ self <  ∞ │ self >= ∞ │
     /// └──────────┴───────────┴───────────┘
     /// ```
     ///

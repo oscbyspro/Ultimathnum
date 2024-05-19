@@ -81,13 +81,13 @@ extension InfiniInt where Source == Source.Magnitude {
         //=--------------------------------------=
         Swift.assert(!self .isInfinite)
         Swift.assert(!other.isInfinite)
-        Swift.assert((other) != 000000)
+        Swift.assert((other) !=  .zero)
         //=--------------------------------------=
         // divisor is at most one element
         //=--------------------------------------=
         if  other.storage.count <= 1 {
             //=----------------------------------=
-            // division: divisor != 0
+            // note: divisor != 0
             //=----------------------------------=
             let divisor = other.storage.body.first! as Element.Magnitude
             let remainder = self.withUnsafeMutableBinaryIntegerBody {
@@ -108,26 +108,27 @@ extension InfiniInt where Source == Source.Magnitude {
         // division: dividend >  divisor
         //=--------------------------------------=
         self.storage.body.append(Element.zero)
+        
         let capacity = self.storage.count - other.storage.count
         let quotient = Self.uninitialized(count: capacity, repeating: .zero) { quotient in
             self.withUnsafeMutableBinaryIntegerBody { lhs in
                 other.storage.withUnsafeMutableBinaryIntegerBody { rhs in
-                    let shift = IX(load: rhs[unchecked: rhs.count - 1].count(.appendix))
-                    
-                    if  shift != 0 {
+                    let shift  = IX(load: rhs[unchecked: rhs.count - 1].count(.appendix))
+
+                    if  shift != .zero {
                         lhs.upshift(environment: .zero, major: .zero, minor: shift)
                         rhs.upshift(environment: .zero, major: .zero, minor: shift)
                     }
                     
                     quotient.divisionSetQuotientSetRemainderByLong2111MSB(dividing: lhs, by: DataInt.Body(rhs))
                     
-                    if  shift != 0 {
+                    if  shift != .zero {
                         lhs.downshift(environment: .zero, major: .zero, minor: shift)
                     }
                 }
             }
         }
-        //=--------------------------------------=
+        
         Swift.assert(((self)).storage.isNormal)
         Swift.assert(quotient.storage.isNormal)
         //=--------------------------------------=
