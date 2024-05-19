@@ -69,8 +69,7 @@ extension InfiniInt {
         body.reserveCapacity(Int(raw: source.body.count(as: Element.Magnitude.self)))
         
         while !source.body.isEmpty {
-            body.append(source.load(as: Element.Magnitude.self))
-            (source) = (source.drop(as: Element.Magnitude.self))
+            body.append(source.next(as: Element.Magnitude.self))
         }
         
         self.init(normalizing: Storage(body, repeating: source.appendix))

@@ -17,17 +17,24 @@ extension DataInt<U8> {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func drop<Destination>(
+    /// Returns the least significant bit pattern that fits in the given type,
+    /// then rebases `self` such that it starts at the end of this bit pattern.
+    @inlinable public mutating func next<Destination>(
         as destination: Destination.Type
-    )   -> Self where Destination: SystemsInteger & UnsignedInteger {
+    )   -> Destination where Destination: SystemsInteger & UnsignedInteger {
         
-        (consume self)[UX(raw: MemoryLayout<Destination>.stride)...]
+        defer {
+            self = self[UX(raw: MemoryLayout<Destination>.stride)...]
+        }
+        
+        return self.load(as: Destination.self)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// Returns the least significant bit pattern that fits in the given type.
     @inlinable public borrowing func load<Destination>(
         as destination: Destination.Type
     )   -> Destination where Destination: SystemsInteger & UnsignedInteger {
@@ -46,17 +53,26 @@ extension MutableDataInt<U8> {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func drop<Destination>(
+    /// Returns the least significant bit pattern that fits in the given type,
+    /// then rebases `self` such that it starts at the end of this bit pattern.
+    @inlinable public mutating func next<Destination>(
         as destination: Destination.Type
-    )   -> Self where Destination: SystemsInteger & UnsignedInteger {
+    )   -> Destination where Destination: SystemsInteger & UnsignedInteger {
         
-        Self(mutating: Immutable(self).drop(as: Destination.self))
+        var immutable = Immutable.init(self)
+
+        defer {
+            self = Self(mutating: immutable)
+        }
+        
+        return immutable.next(as: Destination.self)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// Returns the least significant bit pattern that fits in the given type.
     @inlinable public borrowing func load<Destination>(
         as destination: Destination.Type
     )   -> Destination where Destination: SystemsInteger & UnsignedInteger {
@@ -89,6 +105,12 @@ extension DataInt<U8>.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// Returns the least significant bit pattern that fits in the given type.
+    ///
+    /// This method performs an unaligned load when possible. It also handles the
+    /// case where an unaligned load would read past the end. In that case, the void
+    /// is filled with the repeating bit pattern of `appendix`.
+    ///
     @inlinable public borrowing func load<Destination>(
         as destination: Destination.Type,
         repeating appendix: Bit = .zero
@@ -135,7 +157,13 @@ extension MutableDataInt<U8>.Body {
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
-    
+
+    /// Returns the least significant bit pattern that fits in the given type.
+    ///
+    /// This method performs an unaligned load when possible. It also handles the
+    /// case where an unaligned load would read past the end. In that case, the void
+    /// is filled with the repeating bit pattern of `appendix`.
+    ///
     @inlinable public borrowing func load<Destination>(
         as destination: Destination.Type,
         repeating appendix: Bit = .zero

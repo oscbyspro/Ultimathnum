@@ -174,8 +174,7 @@ extension DataIntTests.Extension where Element == U8 {
             var elements = [T]()
             
             while !$0.body.isEmpty {
-                elements.append($0.load(as: T.self))
-                $0 = $0.drop(as: T.self)
+                elements.append($0.next(as: T.self))
             }
             
             test.same(count, IX(elements.count), "count [0]")
@@ -185,8 +184,7 @@ extension DataIntTests.Extension where Element == U8 {
             var elements = [T]()
             
             while !$0.body.isEmpty {
-                elements.append($0.load(as: T.self))
-                $0 = $0.drop(as: T.self)
+                elements.append($0.next(as: T.self))
             }
             
             test.same(count, IX(elements.count), "count [1]")
@@ -199,8 +197,7 @@ extension DataIntTests.Extension where Element == U8 {
             var elements = [T]()
             
             for _ in 0 ..< count {
-                elements.append($0.load(as: T.self))
-                $0 = $0.drop(as: T.self)
+                elements.append($0.next(as: T.self))
             }
             
             return elements
@@ -208,8 +205,7 @@ extension DataIntTests.Extension where Element == U8 {
             var elements = [T]()
             
             for _ in 0 ..< count {
-                elements.append($0.load(as: T.self))
-                $0 = $0.drop(as: T.self)
+                elements.append($0.next(as: T.self))
             }
             
             return elements
@@ -222,8 +218,7 @@ extension DataIntTests.Extension where Element == U8 {
             $0 = $0.normalized()
             
             while !$0.body.isEmpty {
-                elements.append($0.load(as: T.self))
-                $0 = $0.drop(as: T.self)
+                elements.append($0.next(as: T.self))
             }
             
             return elements
@@ -232,8 +227,7 @@ extension DataIntTests.Extension where Element == U8 {
             $0 = $0.normalized()
             
             while !$0.body.isEmpty {
-                elements.append($0.load(as: T.self))
-                $0 = $0.drop(as: T.self)
+                elements.append($0.next(as: T.self))
             }
             
             return elements
