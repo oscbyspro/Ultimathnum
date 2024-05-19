@@ -114,6 +114,15 @@
 //*============================================================================*
 
 /// A mutable binary integer `body` and `appendix` view.
+///
+/// ### Updates go through initialization APIs
+///
+/// A mutable binary integer `body` is always bound to systems integer elements.
+/// As a result, it does not differentiate between initialization and updates.
+/// All updates go through Swift's initialization APIs, which require that the
+/// destination memory must be uninitialized or the pointee must be a trivial type.
+/// In this case, the latter is always true.
+///
 @frozen public struct MutableDataInt<Element>: Recoverable where Element: SystemsInteger & UnsignedInteger {
         
     public typealias Element = Element
@@ -161,6 +170,14 @@
     /// A mutable binary integer `body` view.
     ///
     /// - Important: Its operations are finite, unsigned, and unchecked by default.
+    ///
+    /// ### Updates go through initialization APIs
+    ///
+    /// A mutable binary integer `body` is always bound to systems integer elements.
+    /// As a result, it does not differentiate between initialization and updates.
+    /// All updates go through Swift's initialization APIs, which require that the
+    /// destination memory must be uninitialized or the pointee must be a trivial type.
+    /// In this case, the latter is always true.
     ///
     @frozen public struct Body: Recoverable {
                         

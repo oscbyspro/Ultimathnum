@@ -258,7 +258,7 @@ extension MutableDataInt.Body {
             self[unchecked: ..<j].initialize(load: Immutable(u[unchecked: ..<axCount]))
             self[unchecked: j...].initialize(load: Immutable(v[unchecked: ..<vjCount]))
             //=----------------------------------=
-            // sub (a * x) and (b * y)
+            // add (a * x) and (b * y)
             //=----------------------------------=
             let suffix = self[unchecked: i...]
             _ = suffix.increment(by: Immutable(u[unchecked: ..<axCount]))
@@ -368,7 +368,7 @@ extension MutableDataInt.Body {
             self[unchecked: ..<j].initialize(load: Immutable(u[unchecked: ..<axCount]))
             self[unchecked: j...].initialize(load: Immutable(v[unchecked: ..<byCount]))
             //=----------------------------------=
-            // set (a * x) and (b * y)
+            // add (a * x) and (b * y)
             //=----------------------------------=
             let suffix = self[unchecked: i...]
             suffix.increment(by: Immutable(u[unchecked: ..<axCount])).unchecked()
