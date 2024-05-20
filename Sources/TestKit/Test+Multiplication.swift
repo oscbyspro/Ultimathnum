@@ -83,5 +83,21 @@ extension Test {
             same(lhs.veto(false).squared(), expectation)
             same(lhs.veto(true ).squared(), expectation.veto())
         }
+        
+        complement: do {
+            let lhsComplement = lhs.complement()
+            let rhsComplement = rhs.complement()
+            let expectationComplement = expectation.value.complement()
+            
+            same(lhs.times(rhsComplement).value, expectationComplement)
+            same(lhsComplement.times(rhs).value, expectationComplement)
+            same(rhs.times(lhsComplement).value, expectationComplement)
+            same(rhsComplement.times(lhs).value, expectationComplement)
+            same(lhsComplement.times(rhsComplement).value, expectation.value)
+            
+            if  lhsComplement == rhsComplement {
+                same(lhsComplement.squared().value, expectation.value)
+            }
+        }
     }
 }
