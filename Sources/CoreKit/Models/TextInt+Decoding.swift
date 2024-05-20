@@ -123,8 +123,7 @@ extension TextInt {
             //=----------------------------------=
             Swift.assert(numerals.isEmpty)
             Swift.assert(index == (words).count)
-            // we normalize the result because the index advances faster than the product
-            return success(DataInt(words).normalized())
+            return success(DataInt(words))
         }
     }
     

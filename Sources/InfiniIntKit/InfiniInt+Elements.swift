@@ -65,6 +65,9 @@ extension InfiniInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(load source: consuming DataInt<U8>) {
+        //=--------------------------------------=
+        source = source.normalized()
+        //=--------------------------------------=
         var body = Storage.Body()
         body.reserveCapacity(Int(raw: source.body.count(as: Element.Magnitude.self)))
         
@@ -72,12 +75,15 @@ extension InfiniInt {
             body.append(source.next(as: Element.Magnitude.self))
         }
         
-        self.init(normalizing: Storage(body, repeating: source.appendix))
+        self.init(unchecked: Storage(body, repeating: source.appendix))
     }
     
-    @inlinable public init(load source: DataInt<Element.Magnitude>) {
+    @inlinable public init(load source: consuming DataInt<Element.Magnitude>) {
+        //=--------------------------------------=
+        source = source.normalized()
+        //=--------------------------------------=
         let body = Storage.Body(source.body.buffer())
-        self.init(normalizing: Storage(body, repeating: source.appendix))
+        self.init(unchecked: Storage(body, repeating: source.appendix))
     }
     
     //=------------------------------------------------------------------------=
