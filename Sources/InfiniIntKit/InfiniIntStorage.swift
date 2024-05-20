@@ -46,11 +46,11 @@ where Element: SystemsInteger & UnsignedInteger {
     @inlinable public var small: Small? {
         if  self.body.count >= 2 {
             return nil
-        }   else if self.body.count == 0 {
-            let element = Element(repeating: self.appendix)
+        }   else if self.body.count == 1 {
+            let element = self.body[.zero]
             return Small(element, repeating: self.appendix)
         }   else {
-            let element = self.body[.zero]
+            let element = Element(repeating: self.appendix)
             return Small(element, repeating: self.appendix)
         }
     }

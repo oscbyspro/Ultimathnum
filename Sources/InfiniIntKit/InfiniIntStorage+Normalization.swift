@@ -20,14 +20,14 @@ extension InfiniIntStorage {
     //=------------------------------------------------------------------------=
     
     @inlinable mutating func normalize() {
-        let appendix = Element.Magnitude(repeating: self.appendix)
+        let appendix = Element(repeating: self.appendix)
         while self.body.last == appendix {
             ((self.body)).removeLast()
         }
     }
     
     @inlinable mutating func normalize(appending element: Element) {
-        let appendix = Element.Magnitude(repeating: self.appendix)
+        let appendix = Element(repeating: self.appendix)
         if  element != appendix {
             self.body.append(element)
         }   else {
@@ -40,7 +40,7 @@ extension InfiniIntStorage {
     //=------------------------------------------------------------------------=
     
     @inlinable var isNormal: Bool {
-        let appendix = Element.Magnitude(repeating: self.appendix)
+        let appendix = Element(repeating: self.appendix)
         return self.body.last != appendix
     }
 }
