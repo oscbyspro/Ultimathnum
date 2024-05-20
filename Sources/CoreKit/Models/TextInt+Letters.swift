@@ -13,6 +13,7 @@
 
 extension TextInt {
     
+    /// A `lowercase` or `uppercase` indicator.
     @frozen public enum Letters: Equatable {
         
         case uppercase

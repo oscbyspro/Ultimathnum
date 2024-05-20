@@ -88,10 +88,10 @@ extension TextInt {
         
         let divisor = Divisor(unchecked: self.exponentiation.exponent)
         (capacity, alignment) = IX(numerals.count).division(divisor).unchecked().components()
-        (capacity) &+= IX(Bit(alignment != .zero))
+        (capacity) = capacity.plus(IX(Bit(alignment != .zero))).unchecked()
         //=--------------------------------------=
         return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
-            let words = MutableDataInt<UX>.Body(consume $0)![unchecked: ..<(capacity)]
+            let words = MutableDataInt<UX>.Body(consume $0)![unchecked: ..<capacity]
             var index = IX.zero
             //=----------------------------------=
             // pointee: deferred deinitialization
@@ -105,11 +105,10 @@ extension TextInt {
             // pointee: initialization
             //=----------------------------------=
             var stride = alignment
-            if  stride == IX.zero {
+            if  stride == .zero {
                 stride = self.exponentiation.exponent
             }
             
-            // check numerals because the count is an upper bound
             forwards: while !numerals.isEmpty {
                 let part = UnsafeBufferPointer(rebasing: numerals[..<Int(stride)])
                 numerals = UnsafeBufferPointer(rebasing: numerals[Int(stride)...])
@@ -124,6 +123,7 @@ extension TextInt {
             //=----------------------------------=
             Swift.assert(numerals.isEmpty)
             Swift.assert(index == (words).count)
+            // we normalize the result because the index advances faster than the product
             return success(DataInt(words).normalized())
         }
     }
@@ -133,6 +133,7 @@ extension TextInt {
     )   throws {
         //=--------------------------------------=
         Swift.assert(self.exponentiation.power == .zero)
+        Swift.assert(self.exponentiation.exponent.count(1) == 1)
         //=--------------------------------------=
         // text must contain at least one numeral
         //=--------------------------------------=
@@ -149,7 +150,7 @@ extension TextInt {
         
         let divisor = Divisor(unchecked: self.exponentiation.exponent)
         (capacity, alignment) = IX(numerals.count).division(divisor).unchecked().components()
-        (capacity) &+= IX(Bit(alignment != .zero))
+        (capacity) = capacity.plus(IX(Bit(alignment != .zero))).unchecked()
         //=--------------------------------------=
         return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
             let words = MutableDataInt<UX>.Body(consume $0)![unchecked: ..<capacity]
@@ -166,7 +167,7 @@ extension TextInt {
             // pointee: initialization
             //=----------------------------------=
             var stride = alignment
-            if  stride == IX.zero {
+            if  stride == .zero {
                 stride = self.exponentiation.exponent
             }
             

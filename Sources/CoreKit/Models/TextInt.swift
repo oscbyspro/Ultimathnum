@@ -29,8 +29,22 @@
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
+    /// A `TextInt` instance with a radix of `2`.
+    ///
+    /// - Note: This value caches the result of `radix(2)`.
+    ///
+    public static let binary = Self.radix(2)
+    
+    /// A `TextInt` instance with a radix of `10`.
+    ///
+    /// - Note: This value caches the result of `radix(10)`.
+    ///
     public static let decimal = Self.radix(10)
     
+    /// A `TextInt` instance with a radix of `16`.
+    ///
+    /// - Note: This value caches the result of `radix(16)`.
+    ///
     public static let hexadecimal = Self.radix(16)
     
     //=------------------------------------------------------------------------=
@@ -38,6 +52,7 @@
     //=------------------------------------------------------------------------=
     
     @usableFromInline var numerals: Numerals
+    
     @usableFromInline var exponentiation: Exponentiation
     
     //=------------------------------------------------------------------------=
@@ -57,11 +72,13 @@
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Returns a similar instance that encodes `lowercase` numerals.
     @inlinable public consuming func  lowercased() -> Self {
         self.numerals = self.numerals.lowercased()
         return self
     }
     
+    /// Returns a similar instance that encodes `uppercase` numerals.
     @inlinable public consuming func  uppercased() -> Self {
         self.numerals = self.numerals.uppercased()
         return self
@@ -71,12 +88,20 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public var radix: UX {
-        UX(load: self.numerals.radix as U8)
-    }
-    
+    /// The type of `letters` produced by this instance.
+    ///
+    /// - Returns: A `lowercase` or `uppercase` indicator.
+    ///
     @inlinable public var letters: Letters {
         self.numerals.letters
+    }
+    
+    /// The `radix` of the number system that is used by this instance.
+    ///
+    /// - Returns: A value in the closed range from `2` through `36`.
+    ///
+    @inlinable public var radix: UX {
+        UX(load: self.numerals.radix as U8)
     }
     
     //=------------------------------------------------------------------------=
