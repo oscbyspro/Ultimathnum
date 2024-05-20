@@ -23,7 +23,6 @@
 /// bit cast all kinds of binary integers and recover from bitwise negation.
 ///
 /// ```swift
-/// IXL(repeating: 0).toggled() == IXL(repeating: 1)
 /// UXL(repeating: 0).toggled() == UXL(repeating: 1)
 /// ```
 ///
@@ -33,7 +32,7 @@
 /// track where they came from.
 ///
 /// ```swift
-/// UXL(repeating: 0).count(0) // log2(x) -> UXL(repeating: 1)
+/// IXL.size // log2(UXL.max + 1) gets promoted to UXL.max
 /// ```
 ///
 /// In most cases, however, you should view infinite values as bit patterns.
@@ -100,7 +99,7 @@ where
     ///
     @inlinable static var mode: Mode { get }
     
-    /// The maximum number of bits that fit in the body of this integer type.
+    /// The number of bits that fit in the `body` of this binary integer type.
     ///
     /// ```
     /// ┌──────┬───────────────────┐
@@ -110,6 +109,8 @@ where
     /// │ IXL  │ UXL(repeating: 1) │
     /// └──────┴───────────────────┘
     /// ```
+    ///
+    /// - Note: `log2(UXL.max + 1)` gets promoted to `UXL.max`.
     ///
     /// - Invariant: `Self.size == self.count(0) + self.count(1)`.
     ///
@@ -385,23 +386,33 @@ where
     /// The bit that extends the integer's `body`.
     ///
     /// ```
-    ///            ┌───────────┬───────────┐
-    ///            │ Bit.zero  │ Bit.one   |
-    /// ┌──────────┼───────────┤───────────┤
-    /// │ SIGNED   │ self >= 0 │ self <  0 │
-    /// ├──────────┼───────────┤───────────┤
-    /// │ UNSIGNED │ self <  ∞ │ self >= ∞ │
-    /// └──────────┴───────────┴───────────┘
+    ///            ┌───────────────┬───────────────┐
+    ///            │ appendix == 0 │ appendix == 1 |
+    /// ┌──────────┼───────────────┤───────────────┤
+    /// │   SIGNED │ self >= 0     │ self <  0     │
+    /// ├──────────┼───────────────┤───────────────┤
+    /// │ UNSIGNED │ self <  ∞     │ self >= ∞     │
+    /// └──────────┴───────────────┴───────────────┘
     /// ```
     ///
     @inlinable var appendix: Bit { borrowing get }
     
     /// Executes the `action` with the `body` of `self`.
+    ///
+    /// ### Development
+    ///
+    /// - TODO: Rework this when buffer views are added to Swift.
+    ///
     @inlinable borrowing func withUnsafeBinaryIntegerBody<T>(
         _ action: (DataInt<Element.Magnitude>.Body) throws -> T
     )   rethrows -> T
     
     /// Executes the `action` with the mutable `body` of `self`.
+    ///
+    /// ### Development
+    ///
+    /// - TODO: Rework this when buffer views are added to Swift.
+    ///
     @inlinable mutating func withUnsafeMutableBinaryIntegerBody<T>(
         _ action: (MutableDataInt<Element.Magnitude>.Body) throws -> T
     )   rethrows -> T

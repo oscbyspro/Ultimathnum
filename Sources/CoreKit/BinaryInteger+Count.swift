@@ -17,6 +17,21 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// The number of bits that fit in the `body` of this binary integer type.
+    ///
+    /// ```
+    /// ┌──────┬───────────────────┐
+    /// │ type │ size              │
+    /// ├──────┼───────────────────┤
+    /// │ I64  │ 64                │
+    /// │ IXL  │ UXL(repeating: 1) │
+    /// └──────┴───────────────────┘
+    /// ```
+    ///
+    /// - Note: `log2(UXL.max + 1)` gets promoted to `UXL.max`.
+    ///
+    /// - Invariant: `Self.size == self.count(0) + self.count(1)`.
+    ///
     @inlinable public borrowing func size() -> Magnitude {
         Self.size
     }
