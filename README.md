@@ -338,6 +338,8 @@ try! UXL(fib1e6r10, as:     .decimal) // 0.040s (208988 digits)
 try! UXL(fib1e6r16, as: .hexadecimal) // 0.002s (173561 digits)
 ```
 
+*The TextInt model optimizes base 2, 4, and 16 conversions (but not 8 or 32).*
+
 <a name="corekit-bit-cast"/>
 
 #### Type-safe bit casts with BitCastable\<BitPattern\>
