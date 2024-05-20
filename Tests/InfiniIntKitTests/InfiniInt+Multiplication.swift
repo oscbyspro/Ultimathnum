@@ -229,6 +229,9 @@ extension InfiniIntTests {
             
             Test().same(lhs.times(rhs), Fallible(pro))
             Test().same(rhs.times(lhs), Fallible(pro))
+            #if !DEBUG
+            Test().multiplication(lhs, rhs, Fallible(pro))
+            #endif
         }
         
         for type in Self.types {
@@ -255,6 +258,9 @@ extension InfiniIntTests {
             
             Test().same(lhs.times(rhs), Fallible(pro))
             Test().same(lhs.squared( ), Fallible(pro))
+            #if !DEBUG
+            Test().multiplication(lhs, rhs, Fallible(pro))
+            #endif
             //=----------------------------------=
             // imagine: (U16.max - 0) * (U16.max - 1)
             //=----------------------------------=
@@ -264,6 +270,9 @@ extension InfiniIntTests {
             
             Test().same(lhs.times(rhs), Fallible(pro))
             Test().same(rhs.times(lhs), Fallible(pro))
+            #if !DEBUG
+            Test().multiplication(lhs, rhs, Fallible(pro))
+            #endif
             //=----------------------------------=
             // imagine: (U16.max - 1) * (U16.max - 1)
             //=----------------------------------=
@@ -279,6 +288,9 @@ extension InfiniIntTests {
             
             Test().same(lhs.times(rhs), Fallible(pro))
             Test().same(lhs.squared( ), Fallible(pro))
+            #if !DEBUG
+            Test().multiplication(lhs, rhs, Fallible(pro))
+            #endif
             //=----------------------------------=
             // imagine: (U16.max - 0) * (U8 .max - 0)
             //=----------------------------------=
@@ -295,6 +307,9 @@ extension InfiniIntTests {
             
             Test().same(lhs.times(rhs), Fallible(pro))
             Test().same(rhs.times(lhs), Fallible(pro))
+            #if !DEBUG
+            Test().multiplication(lhs, rhs, Fallible(pro))
+            #endif
         }
         
         for type in Self.types {
