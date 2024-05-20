@@ -312,12 +312,30 @@ try! IXL("123", as: .decimal).description(as: .hexadecimal) //  7b
 try! IXL("123", as: .hexadecimal).description(as: .decimal) // 291
 ```
 
-Note that the introduction of infinite values necessitates changes to the integer description 
-format. The new format adds the # and & markers. The former is a just spacer whereas the latter 
-represents bitwise negation. In other words, +&123 translates to ∞ minus 123.
+You may realize that the introduction of infinite values necessitates changes to the integer 
+description format. The new format adds the # and & markers. The former is a spacer (cf. +)
+whereas the latter represents bitwise negation. In other words, +&123 translates to ∞ minus 123.
+Here's the case-insensitive decoding regex for the maximum radix.
 
 ```swift
-let regex: Regex = /^(?<sign>\+|-)(?<mask>#|&)(?<body>[0-9a-zA-z]+)$/
+let regex: Regex = /^(\+|-)?(#|&)?([0-9a-zA-z]+)$/
+```
+
+While this model prioritizes size, its operations are still fast enough for most purposes. 
+The 210k-digit measurement illustrates this point. Keep in mind that hexadecimal radix 
+conversions are linear operations, whereas decimal conversions are superlinear but practically
+instant for numbers intended to be read by humans.
+
+###### MacBook Pro, 13-inch, M1, 2020, -O, code coverage disabled.
+
+```swift
+let fib1e6 = try! Fibonacci<UXL>(1_000_000)
+
+let fib1e6r10 = fib1e6.element.description(as:     .decimal) // 0.924s (208988 digits)
+let fib1e6r16 = fib1e6.element.description(as: .hexadecimal) // 0.002s (173561 digits)
+
+try! UXL(fib1e6r10, as:     .decimal) // 0.040s (208988 digits)
+try! UXL(fib1e6r16, as: .hexadecimal) // 0.002s (173561 digits)
 ```
 
 <a name="corekit-bit-cast"/>

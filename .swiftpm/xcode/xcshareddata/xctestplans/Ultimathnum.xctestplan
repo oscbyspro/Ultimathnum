@@ -28,8 +28,7 @@
     },
     {
       "skippedTests" : [
-        "FibonacciBenchmarks\/testFibonacciUXL1e6()",
-        "FibonacciBenchmarks\/testFibonacciUXL1e7()"
+        "FibonacciBenchmarks",
       ],
       "target" : {
         "containerPath" : "container:",
