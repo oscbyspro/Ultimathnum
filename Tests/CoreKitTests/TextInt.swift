@@ -22,7 +22,9 @@ final class TextIntTests: XCTestCase {
     //=------------------------------------------------------------------------=
     // MARK: Metadata
     //=------------------------------------------------------------------------=
-        
+            
+    static let regex36: Regex = #/^(\+|-)?(#|&)?([0-9A-Za-z]+)$/#
+    
     static let radices: Range<UX> = 2 ..< 37
     
     static let signs: [(data: Sign?, text: String)] = [(nil, ""), (Sign.plus, "+"), (Sign.minus, "-")]
@@ -114,15 +116,27 @@ extension TextIntTests.Case {
     }
     
     func decode<I: BinaryInteger>(normal description: String, _ expectation: Result<I, E>) {
+        let matches36 = description.matches(of: TextIntTests.regex36)
+        if  matches36.count != 1 {
+            test.same(expectation, Result.failure(E.invalid), "regex [36]")
+        }
+        
         always: do {
             let value = try self.item.decode(description) as I
             test.same(Result.success(value), expectation)
-        }   catch let error as TextInt.Failure {
+            test.same(matches36.count, 1, "regex [36][success]")
+            
+        }   catch let error as E {
             test.same(Result.failure(error), expectation)
             
             if  item.radix == 10 {
                 test.same(I(description), nil, "BinaryInteger.init?(_:)")
             }
+            
+            if  item.radix == 36, error == E.invalid {
+                test.nonsame(matches36.count, 1, "regex [36][failure]")
+            }
+            
         }   catch {
             test.fail("unknown error before typed throws: \(error)")
         }

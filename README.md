@@ -318,7 +318,7 @@ whereas the latter represents bitwise negation. In other words, +&123 translates
 Here's the case-insensitive decoding regex for the maximum radix.
 
 ```swift
-let regex: Regex = /^(\+|-)?(#|&)?([0-9A-Za-z]+)$/
+let regex: Regex = #/^(\+|-)?(#|&)?([0-9A-Za-z]+)$/#
 ```
 
 While this model prioritizes size, its operations are still fast enough for most purposes. 
