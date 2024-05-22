@@ -31,17 +31,14 @@ extension InfiniInt {
             self = self.complement()
         }
         
-        let count: IX = self.storage.count * 2
-        let body = Storage.Body(unsafeUninitializedCapacity: Int(count)) {
-            let body = MutableDataInt.Body($0.baseAddress!, count: count)
+        let count:  IX = 2 * self.storage.count
+        let instance = Self.uninitialized(count: count, repeating: .zero) { body in
             self.withUnsafeBinaryIntegerElements {
                 body.initialize(toSquareProductOf: $0.body)
             }
-            
-            $1 = Int(count) // set the initialized count
         }
         
-        return Fallible(Self(normalizing: Storage(consume body, repeating: Bit.zero)), error: overflow)
+        return Fallible(instance, error: overflow)
     }
     
     @inlinable public consuming func times(_ other: borrowing Self) -> Fallible<Self> {
@@ -55,8 +52,8 @@ extension InfiniInt {
         //=--------------------------------------=
         // note that 0s and 1s take the fast path
         //=--------------------------------------=
-        let capacity: IX = self.storage.count + other.storage.count
-        let product = Self.uninitialized(count: capacity, repeating: self.appendix ^ other.appendix) { product in
+        let count: IX = self.storage.count + other.storage.count
+        let product = Self.uninitialized(count: count, repeating: self.appendix ^ other.appendix) { product in
             self.withUnsafeBinaryIntegerElements { lhs in
                 other.withUnsafeBinaryIntegerElements { rhs in
                     //=--------------------------=

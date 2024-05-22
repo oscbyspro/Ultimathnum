@@ -40,16 +40,24 @@ extension InfiniInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(load source: consuming  Element.Signitude) {
-        let appendix = source.appendix
-        let body = Element.Magnitude(raw: source)
-        self.init(normalizing: Storage([body], repeating: appendix))
+    @inlinable public init(load source: consuming Element.Signitude) {
+        var storage = Storage([], repeating: source.appendix)
+        
+        if  source != Element.Signitude(repeating: storage.appendix) {
+            storage.body.append(Element.Magnitude(raw: source))
+        }
+        
+        self.init(unchecked: storage)
     }
         
-    @inlinable public init(load source: consuming  Element.Magnitude) {
-        let appendix = source.appendix
-        let body = Element.Magnitude(raw: source)
-        self.init(normalizing: Storage([body], repeating: appendix))
+    @inlinable public init(load source: consuming Element.Magnitude) {
+        var storage = Storage([], repeating: source.appendix)
+        
+        if  source != Element.Magnitude(repeating: storage.appendix) {
+            storage.body.append(source)
+        }
+        
+        self.init(unchecked: storage)
     }
     
     @inlinable public borrowing func load(as type: Element.BitPattern.Type) -> Element.BitPattern {

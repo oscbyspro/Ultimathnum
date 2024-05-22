@@ -69,11 +69,6 @@ import CoreKit
         self.storage = storage
     }
     
-    @inlinable internal init(normalizing storage: consuming Storage) {
-        storage.normalize()
-        self.init(unchecked: storage)
-    }
-    
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
@@ -83,7 +78,9 @@ import CoreKit
     }
     
     @inlinable public init(_ body: some Sequence<Element.Magnitude>, repeating appendix: Bit = .zero) {
-        self.init(normalizing: Storage(Storage.Body(body), repeating: appendix))
+        var storage = Storage(Storage.Body(body), repeating: appendix)
+        storage.normalize()
+        self.init(unchecked: storage)
     }
     
     //=------------------------------------------------------------------------=
