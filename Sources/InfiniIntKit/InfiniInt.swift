@@ -77,10 +77,16 @@ import CoreKit
         self = Self.exactly(RootInt(integerLiteral: integerLiteral)).unwrap()
     }
     
-    @inlinable public init(_ body: some Sequence<Element.Magnitude>, repeating appendix: Bit = .zero) {
-        var storage = Storage(Storage.Body(body), repeating: appendix)
-        storage.normalize()
-        self.init(unchecked: storage)
+    @inlinable public init<T>(_ body: Array<T>, repeating appendix: Bit = .zero) where T: SystemsInteger & UnsignedInteger {
+        self = body.withUnsafeBufferPointer {
+            Self(load: DataInt($0, repeating: appendix)!)
+        }
+    }
+    
+    @inlinable public init<T>(_ body: ContiguousArray<T>, repeating appendix: Bit = .zero) where T: SystemsInteger & UnsignedInteger {
+        self = body.withUnsafeBufferPointer {
+            Self(load: DataInt($0, repeating: appendix)!)
+        }
     }
     
     //=------------------------------------------------------------------------=

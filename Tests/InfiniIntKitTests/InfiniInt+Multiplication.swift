@@ -210,11 +210,9 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testMultiplicationLikeBigShift() {
-        func whereIs<T, S>(_ type: T.Type, _ source: S.Type) where T: BinaryInteger, S: SystemsInteger & UnsignedInteger {
-            //=----------------------------------=
-            func make(_ source: [S]) -> T {
-                source.withUnsafeBufferPointer({ T(DataInt($0)!, mode: .unsigned) })
-            }
+        func whereTheBaseTypeIs<B, S>(_ type: B.Type, _ source: S.Type) 
+        where B: SystemsInteger, S: SystemsInteger & UnsignedInteger {
+            typealias T = InfiniInt<B>
             //=----------------------------------=
             var lhs: T, rhs: T, pro: T, array = [S]()
             //=----------------------------------=
@@ -222,9 +220,9 @@ extension InfiniIntTests {
                 array.append(index)
             }
             
-            lhs = make(array)
+            lhs = T(array)
             array.removeAll()
-            rhs = make([S](repeating: S.min, count: 16) + [1] as [S])
+            rhs = T([S](repeating: S.min, count: 16) + [1] as [S])
             pro = lhs << T(S.size * 16)
             
             Test().same(lhs.times(rhs), Fallible(pro))
@@ -234,27 +232,25 @@ extension InfiniIntTests {
             #endif
         }
         
-        for type in Self.types {
+        for element in Self.elements {
             for source in coreSystemsIntegersWhereIsUnsigned {
-                whereIs(type, source)
+                whereTheBaseTypeIs(element, source)
             }
         }
     }
     
     func testMultiplicationLikeBigSystemsInteger() {
-        func whereIs<T, S>(_ type: T.Type, _ source: S.Type) where T: BinaryInteger, S: SystemsInteger & UnsignedInteger {
-            //=----------------------------------=
-            func make(_ source: [S]) -> T {
-                source.withUnsafeBufferPointer({ T(DataInt($0)!, mode: .unsigned) })
-            }
+        func whereTheBaseTypeIs<B, S>(_ type: B.Type, _ source: S.Type)
+        where B: SystemsInteger, S: SystemsInteger & UnsignedInteger {
+            typealias T = InfiniInt<B>
             //=----------------------------------=
             var lhs: T, rhs: T, pro: T, array = [S]()
             //=----------------------------------=
             // imagine: (U16.max - 0) * (U16.max - 0)
             //=----------------------------------=
-            lhs = make([S](repeating: S.max, count: 16))
-            rhs = make([S](repeating: S.max, count: 16))
-            pro = make([1] as [S] + [S](repeating: S.min, count: 15) + [~1] as [S] + [S](repeating: S.max, count: 15))
+            lhs = T([S](repeating: S.max, count: 16))
+            rhs = T([S](repeating: S.max, count: 16))
+            pro = T([1] as [S] + [S](repeating: S.min, count: 15) + [~1] as [S] + [S](repeating: S.max, count: 15))
             
             Test().same(lhs.times(rhs), Fallible(pro))
             Test().same(lhs.squared( ), Fallible(pro))
@@ -264,9 +260,9 @@ extension InfiniIntTests {
             //=----------------------------------=
             // imagine: (U16.max - 0) * (U16.max - 1)
             //=----------------------------------=
-            lhs = make([S](repeating: S.max, count: 16))
-            rhs = make([~1] as [S] + [S](repeating: S.max, count: 15))
-            pro = make([ 2] as [S] + [S](repeating: S.min, count: 15) + [~2] as [S] + [S](repeating: S.max, count: 15))
+            lhs = T([S](repeating: S.max, count: 16))
+            rhs = T([~1] as [S] + [S](repeating: S.max, count: 15))
+            pro = T([ 2] as [S] + [S](repeating: S.min, count: 15) + [~2] as [S] + [S](repeating: S.max, count: 15))
             
             Test().same(lhs.times(rhs), Fallible(pro))
             Test().same(rhs.times(lhs), Fallible(pro))
@@ -281,9 +277,9 @@ extension InfiniIntTests {
             array += [~3] as [S]
             array += Array(repeating: S.max, count: 15)
 
-            lhs = make([~1] as [S] + [S](repeating: S.max, count: 15))
-            rhs = make([~1] as [S] + [S](repeating: S.max, count: 15))
-            pro = make(array)
+            lhs = T([~1] as [S] + [S](repeating: S.max, count: 15))
+            rhs = T([~1] as [S] + [S](repeating: S.max, count: 15))
+            pro = T(array)
             array.removeAll()
             
             Test().same(lhs.times(rhs), Fallible(pro))
@@ -300,9 +296,9 @@ extension InfiniIntTests {
             array += [~1] as [S]
             array += Array(repeating: S.max, count: 07)
             
-            lhs = make([S](repeating: S.max, count: 16))
-            rhs = make([S](repeating: S.max, count: 08))
-            pro = make(array)
+            lhs = T([S](repeating: S.max, count: 16))
+            rhs = T([S](repeating: S.max, count: 08))
+            pro = T(array)
             array.removeAll()
             
             Test().same(lhs.times(rhs), Fallible(pro))
@@ -312,9 +308,9 @@ extension InfiniIntTests {
             #endif
         }
         
-        for type in Self.types {
+        for element in Self.elements {
             for source in coreSystemsIntegersWhereIsUnsigned {
-                whereIs(type, source)
+                whereTheBaseTypeIs(element, source)
             }
         }
     }
