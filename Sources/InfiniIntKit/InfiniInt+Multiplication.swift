@@ -108,11 +108,19 @@ extension InfiniInt {
             self = self.complement()
         }
         
-        self.storage.withUnsafeMutableBinaryIntegerBody {
-            other.body = $0.multiply(by: other.body)
+        //  TODO: consider compact small storage
+        if  rhsAppendix && other.body == .zero {
+            if !self.storage.isZero {
+                self.storage.body.insert(other.body, at: .zero)
+            }
+            
+        }   else {
+            self.storage.withUnsafeMutableBinaryIntegerBody {
+                other.body = $0.multiply(by:  other.body)
+            }
+            
+            self.storage.normalize(appending: other.body)
         }
-        
-        self.storage.normalize(appending: Element.Magnitude(raw: other.body))
         
         if !homogeneous {
             self = self.complement()

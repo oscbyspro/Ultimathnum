@@ -20,7 +20,7 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
-        
+    
     func testMultiplication() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             IntegerInvariants(T.self).multiplicationOfMsbEsque()
@@ -136,7 +136,7 @@ extension InfiniIntTests {
                 Test().multiplication(number,  1 as T, F(number))
             }
         }
-                
+        
         for element in Self.elements {
             whereTheBaseTypeIs(element)
         }
@@ -158,7 +158,7 @@ extension InfiniIntTests {
             Test().multiplication( a1234, ~a5678, F(T([~005, ~018, ~037, ~064, ~061, ~052, ~032, ~000] as [UX], repeating: 1), error: !T.isSigned))
             Test().multiplication(~a1234,  a5678, F(T([~009, ~022, ~041, ~068, ~061, ~052, ~032, ~000] as [UX], repeating: 1), error: !T.isSigned))
             Test().multiplication(~a1234, ~a5678, F(T([ 012,  024,  044,  072,  061,  052,  032,  000] as [UX], repeating: 0), error: !T.isSigned))
-                        
+            
             Test().multiplication( a5678,  a5678, F(T([ 025,  060,  106,  164,  145,  112,  064,  000] as [UX], repeating: 0)))
             Test().multiplication( a5678, ~a5678, F(T([~029, ~066, ~113, ~172, ~145, ~112, ~064, ~000] as [UX], repeating: 1), error: !T.isSigned))
             Test().multiplication(~a5678, ~a5678, F(T([ 036,  072,  120,  180,  145,  112,  064,  000] as [UX], repeating: 0), error: !T.isSigned))
@@ -179,14 +179,21 @@ extension InfiniIntTests {
             Test().multiplication( b5678, ~b5678, F(T([~029, ~066, ~113, ~172, ~134, ~100, ~050,  015] as [UX], repeating: 1), error: !T.isSigned))
             Test().multiplication(~b5678, ~b5678, F(T([ 036,  072,  120,  180,  133,  100,  050, ~015] as [UX], repeating: 0)))
         }
-                
+        
         for element in Self.elements {
             whereTheBaseTypeIs(element)
         }
     }
-    
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Code Coverage
+//=----------------------------------------------------------------------------=
+
+extension InfiniIntTests {
+
     //=------------------------------------------------------------------------=
-    // MARK: Tests x Code Coverage
+    // MARK: Tests
     //=------------------------------------------------------------------------=
     
     func testMultiplicationLikeBigShift() {
@@ -288,5 +295,24 @@ extension InfiniIntTests {
                 whereTheBaseTypeIs(element, source)
             }
         }
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Issues
+//=----------------------------------------------------------------------------=
+
+extension InfiniIntTests {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    /// - 2024-05-22: This found an issue in the small storage multiplication fast path.
+    func testMultiplicationBySmallStorageWhereBodyIsZeroAndAppendixIsOne() {
+        Test().same((~InfiniInt<I8>(U8.max)).times(256), Fallible(~65535, error: false))
+        Test().same((~InfiniInt<U8>(U8.max)).times(256), Fallible(~65535, error: true ))
+        Test().same((~InfiniInt<IX>(U8.max)).times(256), Fallible(~65535, error: false))
+        Test().same((~InfiniInt<UX>(U8.max)).times(256), Fallible(~65535, error: true ))
     }
 }
