@@ -13,6 +13,19 @@ import CoreKit
 // MARK: * Double Int
 //*============================================================================*
 
+/// A double-width un/signed binary integer type.
+///
+/// ```
+///  DoubleInt<I128>           DoubleInt<U128>
+/// ┌───────────────────────┐┌───────────────────────┐
+/// │ I256                  ││ U256                  │
+/// ├───────────┬───────────┤├───────────┬───────────┤
+/// │ U128      │ I128      ││ U128      │ U128      │
+/// ├─────┬─────┼─────┬─────┤├─────┬─────┼─────┬─────┤
+/// │ U64 │ U64 │ U64 │ I64 ││ U64 │ U64 │ U64 │ U64 │
+/// └─────┴─────┴─────┴─────┘└─────┴─────┴─────┴─────┘
+/// ```
+///
 @frozen public struct DoubleInt<Base: SystemsInteger>: SystemsInteger {
     
     public typealias Storage = Doublet<Base>

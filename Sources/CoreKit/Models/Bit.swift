@@ -50,7 +50,7 @@
         self.init(raw: source)
     }
     
-    @inlinable public init(integerLiteral: Swift.Int.IntegerLiteralType) {
+    @inlinable public init(integerLiteral: IX.IntegerLiteralType) {
         if  integerLiteral == 0 {
             self.init(false)
         }   else if integerLiteral == 1 {

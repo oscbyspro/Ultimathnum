@@ -22,7 +22,7 @@ extension Recoverable {
         Fallible(self, error: condition)
     }
     
-    /// Sets the `error` indicator if the `predicate` return `true`.
+    /// Sets the `error` indicator if the `predicate` returns `true`.
     @inlinable public consuming func veto(_ predicate: (borrowing Self) -> Bool) -> Fallible<Self> {
         let error = predicate(self)
         return self.veto(error)

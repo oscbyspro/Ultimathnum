@@ -56,7 +56,7 @@ final class InfiniIntTestsOnText: XCTestCase {
     //=------------------------------------------------------------------------=
     
     /// The bit pattern: `0xfffefdfcfbfaf9f8...0706050403020100`.
-    static let ascending =  InfiniInt<U64>([
+    static let ascending = InfiniInt<U64>([
     0x0706050403020100, 0x0f0e0d0c0b0a0908, 0x1716151413121110, 0x1f1e1d1c1b1a1918,
     0x2726252423222120, 0x2f2e2d2c2b2a2928, 0x3736353433323130, 0x3f3e3d3c3b3a3938,
     0x4746454443424140, 0x4f4e4d4c4b4a4948, 0x5756555453525150, 0x5f5e5d5c5b5a5958,

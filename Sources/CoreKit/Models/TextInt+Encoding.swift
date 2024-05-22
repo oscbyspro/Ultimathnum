@@ -12,7 +12,7 @@
 //*============================================================================*
 
 extension TextInt {
-
+    
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
@@ -27,7 +27,7 @@ extension TextInt {
         if  integerAppendixIsSet {
             integer = integer.complement(T.isSigned).value
         }
-                
+        
         return integer.withUnsafeBinaryIntegerElementsAsBytes {
             self.encode(
                 sign: integerIsNegative ? .minus : nil,
@@ -64,22 +64,33 @@ extension TextInt {
         //=--------------------------------------=
         return Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(count)) { buffer in
             let words = MutableDataInt.Body(buffer.baseAddress!, count: count)
-            //=--------------------------------------=
+            //=----------------------------------=
             // pointee: initialization
-            //=--------------------------------------=
+            //=----------------------------------=
             for index in words.indices {
                 words[unchecked: index] = body[unchecked:(index &* IX(MemoryLayout<UX>.stride))...].load(as: UX.self)
             }
-            //=--------------------------------------=
+            //=----------------------------------=
             // pointee: deferred deinitialization
-            //=--------------------------------------=
+            //=----------------------------------=
             defer {
                 words.deinitialize()
             }
-            //=--------------------------------------=
+            //=----------------------------------=
             return self.encode(sign: sign, mask: mask, normalized: words)
         }
     }
+}
+
+//=------------------------------------------------------------------------=
+// MARK: Algorithms
+//=------------------------------------------------------------------------=
+
+extension TextInt {
+    
+    //=--------------------------------------------------------------------=
+    // MARK: Utilities
+    //=--------------------------------------------------------------------=
     
     @usableFromInline func encode(sign: Sign?, mask: Bit?, normalized body: consuming MutableDataInt<UX>.Body) -> String {
         //=--------------------------------------=
@@ -88,7 +99,7 @@ extension TextInt {
         // text: capacity upper bound
         //=--------------------------------------=
         var capacity: IX = body.count(.nondescending(.zero))
-        var rate: UX = self.exponentiation.power.size()
+        var rate: UX  = self.exponentiation.power.size()
         
         if  self.exponentiation.power != .zero {
             rate -= 1 + self.exponentiation.power.count(.descending(.zero))
@@ -102,7 +113,7 @@ extension TextInt {
         //=--------------------------------------=
         return Swift.withUnsafeTemporaryAllocation(of: UInt8.self, capacity: Int(capacity)) { ascii in
             //=----------------------------------=
-            // pointee: initialization
+            // pointee: initialization, 48 == "0"
             //=----------------------------------=
             ascii.initialize(repeating: 48)
             //=----------------------------------=
@@ -112,7 +123,7 @@ extension TextInt {
             //=----------------------------------=
             // text: set numerals
             //=----------------------------------=
-            big: while true {
+            major: while true {
                                                 
                 if  let divisor = Divisor(exactly: self.exponentiation.power) {
                     chunk = body.divisionSetQuotientGetRemainder(divisor)
@@ -124,20 +135,20 @@ extension TextInt {
                     Swift.assert(chunk == .zero)
                 }
                 
-                small: repeat {
+                minor: repeat {
                 
                     let lowest: UX
                     (chunk, lowest) = chunk.division(Divisor(unchecked: self.radix)).unchecked().components()
                     let element = try! self.numerals.encode(U8(load: lowest))
-                    precondition(asciiIndex > ascii.startIndex)
+                    precondition(asciiIndex > ascii .startIndex)
                     asciiIndex = ascii.index(before: asciiIndex)
                     ascii.initializeElement(at: asciiIndex, to: UInt8(element))
                     
                 } while chunk != .zero
                 //=------------------------------=
-                if body.count == .zero  { break }
+                if body.count == .zero { break }
                 //=------------------------------=
-                // note initialization to zeros
+                // note preinitialization to 48s
                 //=------------------------------=
                 chunkIndex = chunkIndex - Int(self.exponentiation.exponent)
                 asciiIndex = chunkIndex
@@ -156,9 +167,9 @@ extension TextInt {
                 asciiIndex = ascii.index(before: asciiIndex)
                 ascii.initializeElement(at: asciiIndex, to: Self.encode(sign))
             }
-            //=--------------------------------------=
+            //=----------------------------------=
             // pointee: move de/initialization
-            //=--------------------------------------=
+            //=----------------------------------=
             let prefix = UnsafeMutableBufferPointer(rebasing: ascii[..<asciiIndex])
             let suffix = UnsafeMutableBufferPointer(rebasing: ascii[asciiIndex...])
             

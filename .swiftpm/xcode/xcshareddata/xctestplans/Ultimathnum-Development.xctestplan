@@ -54,6 +54,9 @@
       }
     },
     {
+      "skippedTests" : [
+        "FibonacciBenchmarks"
+      ],
       "target" : {
         "containerPath" : "container:",
         "identifier" : "UltimathnumTests",

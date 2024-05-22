@@ -29,14 +29,13 @@
 /// Keep in mind that infinite values take on the order of their host type.
 /// You may intuit that the size of an infinite integer is smaller than its
 /// upper bound. If you are interested in infinite values then you need to
-/// track where they came from.
+/// track where they came from. In most cases, however, it is enough to view
+/// infinite values as well-behaved bit patterns.
 ///
 /// ```swift
 /// IXL.size // log2(UXL.max + 1) gets promoted to UXL.max
 /// ```
-///
-/// In most cases, however, you should view infinite values as bit patterns.
-///
+/// 
 /// - Important: Infinite values take on the order of their host type.
 ///
 /// ### Requirements

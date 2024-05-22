@@ -15,8 +15,8 @@
 ///
 /// ### Tradeoffs
 ///
-/// This coder unifies all integer types and all common radices (2...36) with
-/// a single non-inlinable and non-generic algorithm. This design favors code
+/// This coder unifies all binary integer types and all radices (`2...36`)
+/// with non-generic and non-inlinable algorithms. This design favors code
 /// size over performance.
 ///
 /// ### Development

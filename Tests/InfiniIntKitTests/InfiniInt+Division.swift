@@ -149,20 +149,20 @@ extension InfiniIntTests {
     
     func testDivisionLongCodeCoverage() {
         func whereIs<T, S>(_ type: T.Type, _ source: S.Type) where T: BinaryInteger, S: SystemsInteger & UnsignedInteger {
-            //=--------------------------------------=
+            //=----------------------------------=
             func make(_ source: [S]) -> T {
                 source.withUnsafeBufferPointer({ T(DataInt($0)!, mode: .unsigned) })
             }
-            //=--------------------------------------=
+            //=----------------------------------=
             var dividend: T, divisor: T, quotient: T, remainder: T
-            //=--------------------------------------=
+            //=----------------------------------=
             dividend  = make([ 0,  0,  0,  0,  0, ~0, ~0, ~0] as [S])
             divisor   = make([~0, ~0, ~0, ~0,  0,  0,  0,  0] as [S])
             quotient  = make([ 0, ~0, ~0, ~0,  0,  0,  0,  0] as [S])
             remainder = make([ 0, ~0, ~0, ~0,  0,  0,  0,  0] as [S])
             
             Test().division(dividend, divisor, quotient, remainder)
-            //=--------------------------------------=
+            //=----------------------------------=
             dividend  = make([~0, ~0, ~0, ~0,  0, ~0, ~0, ~0] as [S])
             divisor   = make([~0, ~0, ~0, ~0,  0,  0,  0,  0] as [S])
             quotient  = make([ 1, ~0, ~0, ~0,  0,  0,  0,  0] as [S])

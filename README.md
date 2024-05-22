@@ -459,7 +459,7 @@ func negated() -> Self //................. toggles -1 and 1
 > Veni, vidi, vici. I came, I saw, I conquered.
 
 ```
- DoubleInt<I64>           DoubleInt<U64>
+ DoubleInt<I128>          DoubleInt<U128>
 ┌───────────────────────┐┌───────────────────────┐
 │ I256                  ││ U256                  │
 ├───────────┬───────────┤├───────────┬───────────┤

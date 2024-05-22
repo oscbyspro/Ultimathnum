@@ -46,7 +46,7 @@ extension DataInt {
     /// A load may be more efficient than a safe subscript access but this is
     /// only because it does not need to perform any pointer arithmetic. Note,
     /// however, that calling `body[unchecked: ()]` is still the most performant
-    /// option because it ommits bounds checks in release mode.
+    /// option because it omits bounds checks in release mode.
     ///
     @inlinable public borrowing func load() -> Element {
         self.body.load(repeating: self.appendix)
@@ -90,7 +90,7 @@ extension MutableDataInt {
     /// A load may be more efficient than a safe subscript access but this is
     /// only because it does not need to perform any pointer arithmetic. Note,
     /// however, that calling `body[unchecked: ()]` is still the most performant
-    /// option because it ommits bounds checks in release mode.
+    /// option because it omits bounds checks in release mode.
     ///
     @inlinable public borrowing func load() -> Element {
         Immutable(self).load()

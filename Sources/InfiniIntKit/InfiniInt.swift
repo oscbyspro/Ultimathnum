@@ -13,6 +13,17 @@ import CoreKit
 // MARK: * Infini Int
 //*============================================================================*
 
+/// An infinite un/signed binary integer type.
+///
+/// ```
+///  InfiniInt<IX>            InfiniInt<UX>
+/// ┌───────────────────────┐┌───────────────────────┐
+/// │ IXL                   ││ UXL                   │
+/// ├─────────────────┬─────┤├─────────────────┬─────┤
+/// │ UX............. │ Bit ││ UX............. │ Bit │
+/// └─────────────────┴─────┘└─────────────────┴─────┘
+/// ```
+///
 /// ### Development
 ///
 /// - TODO: Make it generic over its `Element` type.
@@ -100,5 +111,8 @@ extension InfiniInt: UnsignedInteger where Source: UnsignedInteger { }
 // MARK: + Aliases
 //=----------------------------------------------------------------------------=
 
+/// An infinite signed binary integer type.
 public typealias IXL = InfiniInt<IX>
+
+/// An infinite unsigned binary integer type.
 public typealias UXL = InfiniInt<UX>

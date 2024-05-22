@@ -118,13 +118,14 @@ extension TextIntTests.Case {
     func decode<I: BinaryInteger>(normal description: String, _ expectation: Result<I, E>) {
         let matches36 = description.matches(of: TextIntTests.regex36)
         if  matches36.count != 1 {
-            test.same(expectation, Result.failure(E.invalid), "regex [36]")
+            test.same(matches36.count, 0 as Int)
+            test.same(expectation, Result.failure(E.invalid), "regex [36][mismatch]")
         }
         
         always: do {
             let value = try self.item.decode(description) as I
             test.same(Result.success(value), expectation)
-            test.same(matches36.count, 1, "regex [36][success]")
+            test.same(matches36.count, 1 as Int, "regex [36][success]")
             
         }   catch let error as E {
             test.same(Result.failure(error), expectation)
@@ -134,7 +135,7 @@ extension TextIntTests.Case {
             }
             
             if  item.radix == 36, error == E.invalid {
-                test.nonsame(matches36.count, 1, "regex [36][failure]")
+                test.same(matches36.count, 0 as Int, "regex [36][failure]")
             }
             
         }   catch {

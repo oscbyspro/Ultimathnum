@@ -27,7 +27,7 @@ extension Fallible {
         Self(self.value, error: Bool(Bit(self.error) | Bit(condition)))
     }
     
-    /// Sets the `error` indicator if the `predicate` return `true`.
+    /// Sets the `error` indicator if the `predicate` returns `true`.
     @inlinable public consuming func veto(_ predicate: (Value) -> Bool) -> Self {
         let condition = predicate(self.value)
         return self.veto(condition)

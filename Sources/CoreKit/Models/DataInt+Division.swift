@@ -30,7 +30,7 @@ extension MutableDataInt.Body {
     @inlinable public func remainder(_ divisor: borrowing Divisor<Element>) -> Element {
         var remainder = Element()
         
-        for index in self.indices.reversed() {
+        for index: IX in self.indices.reversed() {
             let dividend = Doublet(low: self[unchecked: index], high: remainder)
             remainder = Element.division(dividend, by: divisor).unchecked().remainder
         }
@@ -50,11 +50,11 @@ extension MutableDataInt.Body {
     @inlinable public func divisionSetQuotientGetRemainder(_ divisor: borrowing Divisor<Element>) -> Element {
         var remainder = Element()
         
-        for index in self.indices.reversed() {
+        for index: IX in self.indices.reversed() {
             let dividend = Doublet(low: self[unchecked: index], high: remainder)
             let division = Element.division(dividend, by: divisor).unchecked()
-            self[unchecked:index] = division.quotient
-            ((((((remainder)))))) = division.remainder
+            self[unchecked: index] = division.quotient
+            ((((((remainder )))))) = division.remainder
         }
         
         return remainder as Element

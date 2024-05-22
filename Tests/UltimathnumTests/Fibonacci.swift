@@ -34,7 +34,7 @@ final class FibonacciBenchmarks: XCTestCase {
     // MARK: Initialization
     //=------------------------------------------------------------------------=
     
-    static override func setUp() {
+    override static func setUp() {
         #if !DEBUG
         blackHole(fib1e6)
         blackHole(fib1e6r10)
