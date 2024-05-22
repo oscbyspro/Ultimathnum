@@ -297,9 +297,10 @@ extension InfiniIntTests {
         }
     }
     
-    /// This test checks all combinations for inputs in `I12.min` to `I12.max`.
+    /// This checks all combinations for inputs in `I12.min...12.max`.
     ///
-    /// It uses `I8` and `U8` elements so that some inputs need two elements.
+    /// It uses `I8` and `U8` elements so that some inputs need two elements. 
+    /// Each product is compared against the result of addition.
     ///
     func testMultiplicationForEachSmallEntropyInRunnableRangeWhereElementIsByte() throws {
         func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
@@ -354,5 +355,29 @@ extension InfiniIntTests {
         whereTheBaseTypeIs(I8.self)
         whereTheBaseTypeIs(U8.self)
         #endif
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Issues
+//=----------------------------------------------------------------------------=
+
+extension InfiniIntTests {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    /// - 2024-05-22: Checks the small-storage multiplication fast path.
+    func testMultiplicationBySmallStorageWhereBodyIsZeroAndAppendixIsOne() {
+        Test().multiplication( InfiniInt<I8>(000000), ~InfiniInt<I8>(U8.max), Fallible(000000, error: false))
+        Test().multiplication( InfiniInt<U8>(000000), ~InfiniInt<U8>(U8.max), Fallible(000000, error: false))
+        Test().multiplication(~InfiniInt<I8>(U8.max),  InfiniInt<I8>(000000), Fallible(000000, error: false))
+        Test().multiplication(~InfiniInt<U8>(U8.max),  InfiniInt<U8>(000000), Fallible(000000, error: false))
+        
+        Test().multiplication( InfiniInt<I8>(000256), ~InfiniInt<I8>(U8.max), Fallible(~65535, error: false))
+        Test().multiplication( InfiniInt<U8>(000256), ~InfiniInt<U8>(U8.max), Fallible(~65535, error: true ))
+        Test().multiplication(~InfiniInt<I8>(U8.max),  InfiniInt<I8>(000256), Fallible(~65535, error: false))
+        Test().multiplication(~InfiniInt<U8>(U8.max),  InfiniInt<U8>(000256), Fallible(~65535, error: true ))
     }
 }
