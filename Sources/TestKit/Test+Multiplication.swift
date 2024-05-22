@@ -89,11 +89,11 @@ extension Test {
             let rhsComplement = rhs.complement()
             let expectationComplement = expectation.value.complement()
             
-            same(lhs.times(rhsComplement).value, expectationComplement)
-            same(lhsComplement.times(rhs).value, expectationComplement)
-            same(rhs.times(lhsComplement).value, expectationComplement)
-            same(rhsComplement.times(lhs).value, expectationComplement)
-            same(lhsComplement.times(rhsComplement).value, expectation.value)
+            same(lhs.times(rhsComplement).value, expectationComplement, "complement [0]")
+            same(lhsComplement.times(rhs).value, expectationComplement, "complement [1]")
+            same(rhs.times(lhsComplement).value, expectationComplement, "complement [2]")
+            same(rhsComplement.times(lhs).value, expectationComplement, "complement [3]")
+            same(lhsComplement.times(rhsComplement).value, expectation.value, "complement [4]")
             
             if  lhsComplement == rhsComplement {
                 same(lhsComplement.squared().value, expectation.value)
@@ -101,13 +101,13 @@ extension Test {
         }
         
         division: if !expectation.error {
-            if  let divisor = Divisor(exactly: rhs) {
+            if  let divisor  = Divisor(exactly: rhs) {
                 let division = expectation.value.division(divisor)
                 same(division.value.quotient,  lhs, "product / rhs == lhs")
                 same(division.value.remainder, 000, "product % rhs == 000")
             }
             
-            if  let divisor = Divisor(exactly: lhs) {
+            if  let divisor  = Divisor(exactly: lhs) {
                 let division = expectation.value.division(divisor)
                 same(division.value.quotient,  rhs, "product / lhs == rhs")
                 same(division.value.remainder, 000, "product % lhs == 000")

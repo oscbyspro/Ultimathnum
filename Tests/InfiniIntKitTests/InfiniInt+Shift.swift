@@ -39,7 +39,6 @@ extension InfiniIntTests {
     func testUpshift() {
         func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias E = B.Element
-            typealias L = E.Magnitude
             typealias T = InfiniInt<E>
             //=----------------------------------=
             let large = T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0)
@@ -95,7 +94,6 @@ extension InfiniIntTests {
     func testDownshift() {
         func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias E = B.Element
-            typealias L = E.Magnitude
             typealias T = InfiniInt<E>
             //=----------------------------------=
             let large = T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0)

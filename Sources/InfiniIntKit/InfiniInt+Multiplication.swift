@@ -31,14 +31,14 @@ extension InfiniInt {
             self = self.complement()
         }
         
-        let count:  IX = 2 * self.storage.count
-        let instance = Self.uninitialized(count: count, repeating: .zero) { body in
+        let count  = self.storage.count * 2
+        let result = Self.uninitialized(count: count, repeating: .zero) { body in
             self.withUnsafeBinaryIntegerElements {
                 body.initialize(toSquareProductOf: $0.body)
             }
         }
         
-        return Fallible(instance, error: overflow)
+        return Fallible(result, error: overflow)
     }
     
     @inlinable public consuming func times(_ other: borrowing Self) -> Fallible<Self> {
@@ -52,8 +52,8 @@ extension InfiniInt {
         //=--------------------------------------=
         // note that 0s and 1s take the fast path
         //=--------------------------------------=
-        let count: IX = self.storage.count + other.storage.count
-        let product = Self.uninitialized(count: count, repeating: self.appendix ^ other.appendix) { product in
+        let count  = self.storage.count + other.storage.count
+        let result = Self.uninitialized(count: count, repeating: self.appendix ^ other.appendix) { product in
             self.withUnsafeBinaryIntegerElements { lhs in
                 other.withUnsafeBinaryIntegerElements { rhs in
                     //=--------------------------=
@@ -70,7 +70,7 @@ extension InfiniInt {
             }
         }
 
-        return Fallible(product, error: !Self.isSigned && Bool(self.appendix | other.appendix))
+        return Fallible(result, error: !Self.isSigned && Bool(self.appendix | other.appendix))
     }
 }
 

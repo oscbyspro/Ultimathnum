@@ -34,9 +34,7 @@ extension InfiniIntTests {
     
     func testMultiplicationOfSmallBySmall() {
         func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias E = B.Element
-            typealias L = E.Magnitude
-            typealias T = InfiniInt<E>
+            typealias T = InfiniInt<B>
             typealias F = Fallible<T>
             //=----------------------------------=
             Test().multiplication(~2 as T, ~2 as T, F( 9 as T, error: !T.isSigned))
@@ -103,36 +101,34 @@ extension InfiniIntTests {
     
     func testMultiplicationOfLargeBySmall() {
         func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias E = B.Element
-            typealias L = E.Magnitude
-            typealias T = InfiniInt<E>
+            typealias T = InfiniInt<B>
             typealias F = Fallible<T>
             //=----------------------------------=
-            let a1234 = T([1, 2, 3, 4] as [L], repeating: 0)
-            let a5678 = T([5, 6, 7, 8] as [L], repeating: 0)
+            let a1234 = T([1, 2, 3, 4] as [UX], repeating: 0)
+            let a5678 = T([5, 6, 7, 8] as [UX], repeating: 0)
             //=----------------------------------=
-            Test().multiplication( a1234,  5 as T, F(T([ 05,  10,  15,  20,  00] as [L], repeating: 0)))
-            Test().multiplication( a1234, ~5 as T, F(T([~05, ~12, ~18, ~24, ~00] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~a1234,  5 as T, F(T([~09, ~10, ~15, ~20, ~00] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~a1234, ~5 as T, F(T([ 12,  12,  18,  24,  00] as [L], repeating: 0), error: !T.isSigned))
+            Test().multiplication( a1234,  5 as T, F(T([ 05,  10,  15,  20,  00] as [UX], repeating: 0)))
+            Test().multiplication( a1234, ~5 as T, F(T([~05, ~12, ~18, ~24, ~00] as [UX], repeating: 1), error: !T.isSigned))
+            Test().multiplication(~a1234,  5 as T, F(T([~09, ~10, ~15, ~20, ~00] as [UX], repeating: 1), error: !T.isSigned))
+            Test().multiplication(~a1234, ~5 as T, F(T([ 12,  12,  18,  24,  00] as [UX], repeating: 0), error: !T.isSigned))
             
-            Test().multiplication( a5678,  5 as T, F(T([ 25,  30,  35,  40,  00] as [L], repeating: 0)))
-            Test().multiplication( a5678, ~5 as T, F(T([~29, ~36, ~42, ~48, ~00] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~a5678,  5 as T, F(T([~29, ~30, ~35, ~40, ~00] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~a5678, ~5 as T, F(T([ 36,  36,  42,  48,  00] as [L], repeating: 0), error: !T.isSigned))
+            Test().multiplication( a5678,  5 as T, F(T([ 25,  30,  35,  40,  00] as [UX], repeating: 0)))
+            Test().multiplication( a5678, ~5 as T, F(T([~29, ~36, ~42, ~48, ~00] as [UX], repeating: 1), error: !T.isSigned))
+            Test().multiplication(~a5678,  5 as T, F(T([~29, ~30, ~35, ~40, ~00] as [UX], repeating: 1), error: !T.isSigned))
+            Test().multiplication(~a5678, ~5 as T, F(T([ 36,  36,  42,  48,  00] as [UX], repeating: 0), error: !T.isSigned))
             //=----------------------------------=
-            let b1234 = T([1, 2, 3, 4] as [L], repeating: 1)
-            let b5678 = T([5, 6, 7, 8] as [L], repeating: 1)
+            let b1234 = T([1, 2, 3, 4] as [UX], repeating: 1)
+            let b5678 = T([5, 6, 7, 8] as [UX], repeating: 1)
             //=----------------------------------=
-            Test().multiplication( b1234,  5 as T, F(T([ 05,  10,  15,  20, ~04] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication( b1234, ~5 as T, F(T([~05, ~12, ~18, ~24,  05] as [L], repeating: 0), error: !T.isSigned))
-            Test().multiplication(~b1234,  5 as T, F(T([~09, ~10, ~15, ~20,  04] as [L], repeating: 0)))
-            Test().multiplication(~b1234, ~5 as T, F(T([ 12,  12,  18,  24, ~05] as [L], repeating: 1), error: !T.isSigned))
+            Test().multiplication( b1234,  5 as T, F(T([ 05,  10,  15,  20, ~04] as [UX], repeating: 1), error: !T.isSigned))
+            Test().multiplication( b1234, ~5 as T, F(T([~05, ~12, ~18, ~24,  05] as [UX], repeating: 0), error: !T.isSigned))
+            Test().multiplication(~b1234,  5 as T, F(T([~09, ~10, ~15, ~20,  04] as [UX], repeating: 0)))
+            Test().multiplication(~b1234, ~5 as T, F(T([ 12,  12,  18,  24, ~05] as [UX], repeating: 1), error: !T.isSigned))
             
-            Test().multiplication( b5678,  5 as T, F(T([ 25,  30,  35,  40, ~04] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication( b5678, ~5 as T, F(T([~29, ~36, ~42, ~48,  05] as [L], repeating: 0), error: !T.isSigned))
-            Test().multiplication(~b5678,  5 as T, F(T([~29, ~30, ~35, ~40,  04] as [L], repeating: 0)))
-            Test().multiplication(~b5678, ~5 as T, F(T([ 36,  36,  42,  48, ~05] as [L], repeating: 1), error: !T.isSigned))
+            Test().multiplication( b5678,  5 as T, F(T([ 25,  30,  35,  40, ~04] as [UX], repeating: 1), error: !T.isSigned))
+            Test().multiplication( b5678, ~5 as T, F(T([~29, ~36, ~42, ~48,  05] as [UX], repeating: 0), error: !T.isSigned))
+            Test().multiplication(~b5678,  5 as T, F(T([~29, ~30, ~35, ~40,  04] as [UX], repeating: 0)))
+            Test().multiplication(~b5678, ~5 as T, F(T([ 36,  36,  42,  48, ~05] as [UX], repeating: 1), error: !T.isSigned))
             //=----------------------------------=
             for number in [a1234, ~a1234, b1234, ~b1234, a5678, ~a5678, b5678, ~b5678] {
                 Test().multiplication(number, ~0 as T, F(number.complement(), error: !T.isSigned))
@@ -148,56 +144,40 @@ extension InfiniIntTests {
     
     func testMultiplicationOfLargeByLarge() {
         func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias E = B.Element
-            typealias L = E.Magnitude
-            typealias T = InfiniInt<E>
+            typealias T = InfiniInt<B>
             typealias F = Fallible<T>
             //=----------------------------------=
-            let a1234 = T([1, 2, 3, 4] as [L], repeating: 0)
-            let a5678 = T([5, 6, 7, 8] as [L], repeating: 0)
+            let a1234 = T([1, 2, 3, 4] as [UX], repeating: 0)
+            let a5678 = T([5, 6, 7, 8] as [UX], repeating: 0)
             //=----------------------------------=
-            Test().multiplication( a1234,  a1234, F(T([ 001,  004,  010,  020,  025,  024,  016,  000] as [L], repeating: 0)))
-            Test().multiplication( a1234, ~a1234, F(T([~001, ~006, ~013, ~024, ~025, ~024, ~016, ~000] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~a1234,  a1234, F(T([~001, ~006, ~013, ~024, ~025, ~024, ~016, ~000] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~a1234, ~a1234, F(T([ 004,  008,  016,  028,  025,  024,  016,  000] as [L], repeating: 0), error: !T.isSigned))
+            Test().multiplication( a1234,  a1234, F(T([ 001,  004,  010,  020,  025,  024,  016,  000] as [UX], repeating: 0)))
+            Test().multiplication( a1234, ~a1234, F(T([~001, ~006, ~013, ~024, ~025, ~024, ~016, ~000] as [UX], repeating: 1), error: !T.isSigned))
+            Test().multiplication(~a1234, ~a1234, F(T([ 004,  008,  016,  028,  025,  024,  016,  000] as [UX], repeating: 0), error: !T.isSigned))
             
-            Test().multiplication( a1234,  a5678, F(T([ 005,  016,  034,  060,  061,  052,  032,  000] as [L], repeating: 0)))
-            Test().multiplication( a1234, ~a5678, F(T([~005, ~018, ~037, ~064, ~061, ~052, ~032, ~000] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~a1234,  a5678, F(T([~009, ~022, ~041, ~068, ~061, ~052, ~032, ~000] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~a1234, ~a5678, F(T([ 012,  024,  044,  072,  061,  052,  032,  000] as [L], repeating: 0), error: !T.isSigned))
-            
-            Test().multiplication( a5678,  a1234, F(T([ 005,  016,  034,  060,  061,  052,  032,  000] as [L], repeating: 0)))
-            Test().multiplication( a5678, ~a1234, F(T([~009, ~022, ~041, ~068, ~061, ~052, ~032, ~000] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~a5678,  a1234, F(T([~005, ~018, ~037, ~064, ~061, ~052, ~032, ~000] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~a5678, ~a1234, F(T([ 012,  024,  044,  072,  061,  052,  032,  000] as [L], repeating: 0), error: !T.isSigned))
-            
-            Test().multiplication( a5678,  a5678, F(T([ 025,  060,  106,  164,  145,  112,  064,  000] as [L], repeating: 0)))
-            Test().multiplication( a5678, ~a5678, F(T([~029, ~066, ~113, ~172, ~145, ~112, ~064, ~000] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~a5678,  a5678, F(T([~029, ~066, ~113, ~172, ~145, ~112, ~064, ~000] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~a5678, ~a5678, F(T([ 036,  072,  120,  180,  145,  112,  064,  000] as [L], repeating: 0), error: !T.isSigned))
+            Test().multiplication( a1234,  a5678, F(T([ 005,  016,  034,  060,  061,  052,  032,  000] as [UX], repeating: 0)))
+            Test().multiplication( a1234, ~a5678, F(T([~005, ~018, ~037, ~064, ~061, ~052, ~032, ~000] as [UX], repeating: 1), error: !T.isSigned))
+            Test().multiplication(~a1234,  a5678, F(T([~009, ~022, ~041, ~068, ~061, ~052, ~032, ~000] as [UX], repeating: 1), error: !T.isSigned))
+            Test().multiplication(~a1234, ~a5678, F(T([ 012,  024,  044,  072,  061,  052,  032,  000] as [UX], repeating: 0), error: !T.isSigned))
+                        
+            Test().multiplication( a5678,  a5678, F(T([ 025,  060,  106,  164,  145,  112,  064,  000] as [UX], repeating: 0)))
+            Test().multiplication( a5678, ~a5678, F(T([~029, ~066, ~113, ~172, ~145, ~112, ~064, ~000] as [UX], repeating: 1), error: !T.isSigned))
+            Test().multiplication(~a5678, ~a5678, F(T([ 036,  072,  120,  180,  145,  112,  064,  000] as [UX], repeating: 0), error: !T.isSigned))
             //=----------------------------------=
-            let b1234 = T([1, 2, 3, 4] as [L], repeating: 1)
-            let b5678 = T([5, 6, 7, 8] as [L], repeating: 1)
+            let b1234 = T([1, 2, 3, 4] as [UX], repeating: 1)
+            let b5678 = T([5, 6, 7, 8] as [UX], repeating: 1)
             //=----------------------------------=
-            Test().multiplication( b1234,  b1234, F(T([ 001,  004,  010,  020,  023,  020,  010, ~007] as [L], repeating: 0), error: !T.isSigned))
-            Test().multiplication( b1234, ~b1234, F(T([~001, ~006, ~013, ~024, ~022, ~020, ~010,  007] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~b1234,  b1234, F(T([~001, ~006, ~013, ~024, ~022, ~020, ~010,  007] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~b1234, ~b1234, F(T([ 004,  008,  016,  028,  021,  020,  010, ~007] as [L], repeating: 0)))
+            Test().multiplication( b1234,  b1234, F(T([ 001,  004,  010,  020,  023,  020,  010, ~007] as [UX], repeating: 0), error: !T.isSigned))
+            Test().multiplication( b1234, ~b1234, F(T([~001, ~006, ~013, ~024, ~022, ~020, ~010,  007] as [UX], repeating: 1), error: !T.isSigned))
+            Test().multiplication(~b1234, ~b1234, F(T([ 004,  008,  016,  028,  021,  020,  010, ~007] as [UX], repeating: 0)))
             
-            Test().multiplication( b1234,  b5678, F(T([ 005,  016,  034,  060,  055,  044,  022, ~011] as [L], repeating: 0), error: !T.isSigned))
-            Test().multiplication( b1234, ~b5678, F(T([~005, ~018, ~037, ~064, ~054, ~044, ~022,  011] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~b1234,  b5678, F(T([~009, ~022, ~041, ~068, ~054, ~044, ~022,  011] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~b1234, ~b5678, F(T([ 012,  024,  044,  072,  053,  044,  022, ~011] as [L], repeating: 0)))
+            Test().multiplication( b1234,  b5678, F(T([ 005,  016,  034,  060,  055,  044,  022, ~011] as [UX], repeating: 0), error: !T.isSigned))
+            Test().multiplication( b1234, ~b5678, F(T([~005, ~018, ~037, ~064, ~054, ~044, ~022,  011] as [UX], repeating: 1), error: !T.isSigned))
+            Test().multiplication(~b1234,  b5678, F(T([~009, ~022, ~041, ~068, ~054, ~044, ~022,  011] as [UX], repeating: 1), error: !T.isSigned))
+            Test().multiplication(~b1234, ~b5678, F(T([ 012,  024,  044,  072,  053,  044,  022, ~011] as [UX], repeating: 0)))
             
-            Test().multiplication( b5678,  b1234, F(T([ 005,  016,  034,  060,  055,  044,  022, ~011] as [L], repeating: 0), error: !T.isSigned))
-            Test().multiplication( b5678, ~b1234, F(T([~009, ~022, ~041, ~068, ~054, ~044, ~022,  011] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~b5678,  b1234, F(T([~005, ~018, ~037, ~064, ~054, ~044, ~022,  011] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~b5678, ~b1234, F(T([ 012,  024,  044,  072,  053,  044,  022, ~011] as [L], repeating: 0)))
-            
-            Test().multiplication( b5678,  b5678, F(T([ 025,  060,  106,  164,  135,  100,  050, ~015] as [L], repeating: 0), error: !T.isSigned))
-            Test().multiplication( b5678, ~b5678, F(T([~029, ~066, ~113, ~172, ~134, ~100, ~050,  015] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~b5678,  b5678, F(T([~029, ~066, ~113, ~172, ~134, ~100, ~050,  015] as [L], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~b5678, ~b5678, F(T([ 036,  072,  120,  180,  133,  100,  050, ~015] as [L], repeating: 0)))
+            Test().multiplication( b5678,  b5678, F(T([ 025,  060,  106,  164,  135,  100,  050, ~015] as [UX], repeating: 0), error: !T.isSigned))
+            Test().multiplication( b5678, ~b5678, F(T([~029, ~066, ~113, ~172, ~134, ~100, ~050,  015] as [UX], repeating: 1), error: !T.isSigned))
+            Test().multiplication(~b5678, ~b5678, F(T([ 036,  072,  120,  180,  133,  100,  050, ~015] as [UX], repeating: 0)))
         }
                 
         for element in Self.elements {
@@ -214,14 +194,9 @@ extension InfiniIntTests {
         where B: SystemsInteger, S: SystemsInteger & UnsignedInteger {
             typealias T = InfiniInt<B>
             //=----------------------------------=
-            var lhs: T, rhs: T, pro: T, array = [S]()
+            var lhs: T, rhs: T, pro: T
             //=----------------------------------=
-            for index: S in 0 ..< 16 {
-                array.append(index)
-            }
-            
-            lhs = T(array)
-            array.removeAll()
+            lhs = T((0 as S ..< 16).map({ $0 }))
             rhs = T([S](repeating: S.min, count: 16) + [1] as [S])
             pro = lhs << T(S.size * 16)
             

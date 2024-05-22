@@ -67,7 +67,6 @@ extension InfiniIntTests {
     
     func testDivisionByNegative() {
         func whereIs<T>(_ type: T.Type) where T: SignedInteger {
-            typealias E = T.Element
             typealias D = Division<T, T>
             typealias F = Fallible<D>
             //=----------------------------------=
@@ -106,7 +105,6 @@ extension InfiniIntTests {
     
     func testDivisionByInfinite() {
         func whereIs<T>(_ type: T.Type) where T: UnsignedInteger {
-            typealias E = T.Element
             typealias D = Division<T, T>
             typealias F = Fallible<D>
             //=----------------------------------=
