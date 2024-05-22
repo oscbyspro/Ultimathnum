@@ -72,6 +72,10 @@ extension IntegerInvariants {
         test.same(T.size, M.size, "Self.size == Self.Magnitude.size")
         test.same(T.size, S.size, "Self.size == Self.Signitude.size")
         //=--------------------------------------=
+        for value: T in [~3, ~2, ~1, ~0, 0, 1, 2, 3] {
+            test.same(value.count(0).plus(value.count(1)), Fallible(T.size), "size == 0s + 1s")
+        }
+        //=--------------------------------------=
         if  T.size.isInfinite {
             test.same(T.size, M(repeating: 1), "log2(max+1) size should be promoted to max infinite value")
         }   else {
