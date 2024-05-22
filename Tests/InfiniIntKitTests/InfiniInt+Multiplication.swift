@@ -296,23 +296,63 @@ extension InfiniIntTests {
             }
         }
     }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Issues
-//=----------------------------------------------------------------------------=
-
-extension InfiniIntTests {
     
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    /// - 2024-05-22: This found an issue in the small storage multiplication fast path.
-    func testMultiplicationBySmallStorageWhereBodyIsZeroAndAppendixIsOne() {
-        Test().same((~InfiniInt<I8>(U8.max)).times(256), Fallible(~65535, error: false))
-        Test().same((~InfiniInt<U8>(U8.max)).times(256), Fallible(~65535, error: true ))
-        Test().same((~InfiniInt<IX>(U8.max)).times(256), Fallible(~65535, error: false))
-        Test().same((~InfiniInt<UX>(U8.max)).times(256), Fallible(~65535, error: true ))
+    /// This test checks all combinations for inputs in `I12.min` to `I12.max`.
+    ///
+    /// It uses `I8` and `U8` elements so that some inputs need two elements.
+    ///
+    func testMultiplicationForEachSmallEntropyInRunnableRangeWhereElementIsByte() throws {
+        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+            typealias T = InfiniInt<B>
+            
+            var success: (value: IX, error: IX)
+            
+            success.value = IX.zero
+            success.error = IX.zero
+            
+            let one =  T(1)
+            var major: (lhs: T, rhs: T, pro: T)
+            var minor: (lhs: T, rhs: T, pro: T)
+            
+            major.lhs = T(load: I16.min) >> 4
+            major.rhs = T(load: I16.min) >> 4
+            major.pro = T(1) << 22
+            
+            for i in (I16.min >> 4) ... (I16.max >> 4) {
+                minor.lhs = major.lhs
+                minor.rhs = major.rhs
+                minor.pro = major.pro
+                
+                for j in (I16.min >> 4) ... (I16.max >> 4) {
+                    let a = (i < 0) && (j != 0 && j != 1)
+                    let b = (j < 0) && (i != 0 && i != 1)
+                    
+                    let product = minor.lhs.times(minor.rhs)
+                    if  product.value == minor.pro {
+                        success.value += 1
+                    }
+                    
+                    if  product.error == (T.isSigned ? false : (a || b)) {
+                        success.error += 1
+                    }
+                    
+                    minor.rhs &+= one
+                    minor.pro &+= minor.lhs
+                }
+                
+                major.lhs &+= one
+                major.pro &+= major.rhs
+            }
+            
+            Test().same(success.value, 1 << 24)
+            Test().same(success.error, 1 << 24)
+        }
+        
+        #if DEBUG
+        throw XCTSkip("req. release mode")
+        #else
+        whereTheBaseTypeIs(I8.self)
+        whereTheBaseTypeIs(U8.self)
+        #endif
     }
 }

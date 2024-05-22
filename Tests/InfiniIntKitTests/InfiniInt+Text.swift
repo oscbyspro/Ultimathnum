@@ -83,7 +83,7 @@ final class InfiniIntTestsOnText: XCTestCase {
     
     func testGenerateInstancesTryRoundtrip() throws {
         #if DEBUG
-        throw XCTSkip("takes too much time in -Onone mode")
+        throw XCTSkip("req. release mode")
         #else
         var magnitudes: [UXL] = []
         
