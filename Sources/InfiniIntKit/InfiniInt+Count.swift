@@ -34,12 +34,12 @@ extension InfiniInt {
     }
     
     @inline(never) @inlinable public func count(_ selection: Bit.Ascending) -> Magnitude {
+        let match = self.appendix == selection.bit
         var count = Magnitude()
         
-        let bitIsAppendix = self.appendix == selection.bit
         self.storage.withUnsafeBinaryIntegerBody {
             let ascending =  $0.count(selection)
-            if  ascending == $0.size(), bitIsAppendix {
+            if  ascending == $0.size(), match {
                 count = Magnitude.size
             }   else {
                 count = Magnitude(load: ascending)
@@ -50,11 +50,12 @@ extension InfiniInt {
     }
     
     @inline(never) @inlinable public func count(_ selection: Bit.Descending) -> Magnitude {
-        var count = Magnitude()
-        
-        if  self.appendix == selection.bit {
+        let match = self.appendix == selection.bit
+        var count = Magnitude(repeating: Bit(match))
+                
+        if  match {
             self.withUnsafeBinaryIntegerBody {
-                count = Self.size - Magnitude(load: $0.count(.nondescending(selection.bit)))
+                count -= Magnitude(load: $0.count(.nondescending(selection.bit)))
             }
         }
         
