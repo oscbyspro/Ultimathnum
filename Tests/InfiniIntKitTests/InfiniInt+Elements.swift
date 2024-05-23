@@ -69,4 +69,39 @@ extension InfiniIntTests {
             whereIs(type)
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    /// The initializer takes any sequence, but it's almost always an array.
+    func testInitNonContiguousBody() {
+        func whereTheElementTypeIs<E>(_ element: E.Type) where E: SystemsInteger {
+            typealias T = InfiniInt<E>
+            //=----------------------------------=
+            let body: some Sequence<U8> = [[1, 2], [3, 4]].lazy.joined()
+            //=----------------------------------=
+            Test().same(T(body             ),                T(0x04030201))
+            Test().same(T(body.dropFirst(1)),                T(0x00040302))
+            Test().same(T(body.dropFirst(2)),                T(0x00000403))
+            Test().same(T(body.dropFirst(3)),                T(0x00000004))
+            Test().same(T(body.dropFirst(4)),                T(0x00000000))
+            
+            Test().same(T(body,              repeating: 0),  T(0x04030201))
+            Test().same(T(body.dropFirst(1), repeating: 0),  T(0x00040302))
+            Test().same(T(body.dropFirst(2), repeating: 0),  T(0x00000403))
+            Test().same(T(body.dropFirst(3), repeating: 0),  T(0x00000004))
+            Test().same(T(body.dropFirst(4), repeating: 0),  T(0x00000000))
+            
+            Test().same(T(body,              repeating: 1), ~T(0xfbfcfdfe))
+            Test().same(T(body.dropFirst(1), repeating: 1), ~T(0x00fbfcfd))
+            Test().same(T(body.dropFirst(2), repeating: 1), ~T(0x0000fbfc))
+            Test().same(T(body.dropFirst(3), repeating: 1), ~T(0x000000fb))
+            Test().same(T(body.dropFirst(4), repeating: 1), ~T(0x00000000))
+        }
+        
+        for element in Self.elements {
+            whereTheElementTypeIs(element)
+        }
+    }
 }

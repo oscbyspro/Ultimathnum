@@ -77,19 +77,23 @@ import CoreKit
         self = Self.exactly(RootInt(integerLiteral: integerLiteral)).unwrap()
     }
     
-    @inlinable public init<T>(_ body: Array<T>, repeating appendix: Bit = .zero) 
-    where T: SystemsInteger & UnsignedInteger {
+    /// Creates a new instance from the given `body` and `appendix`.
+    ///
+    /// - Note: This is a convenience derived from `init<T>(DataInt<T>)`.
+    ///
+    @inlinable public init<T>(_ body: borrowing T, repeating appendix: Bit = .zero)
+    where T: Sequence, T.Element: SystemsInteger & UnsignedInteger {
         
-        self = body.withUnsafeBufferPointer {
+        let instance = body.withContiguousStorageIfAvailable {
             Self(load: DataInt($0, repeating: appendix)!)
         }
-    }
-    
-    @inlinable public init<T>(_ body: ContiguousArray<T>, repeating appendix: Bit = .zero) 
-    where T: SystemsInteger & UnsignedInteger {
         
-        self = body.withUnsafeBufferPointer {
-            Self(load: DataInt($0, repeating: appendix)!)
+        if  let    instance {
+            self = instance
+        }   else {
+            self = ContiguousArray(copy body).withUnsafeBufferPointer {
+                Self(load: DataInt($0, repeating: appendix)!)
+            }
         }
     }
     
