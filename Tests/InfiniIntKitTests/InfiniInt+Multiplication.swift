@@ -303,9 +303,7 @@ extension InfiniIntTests {
     /// Each product is compared against the result of addition.
     ///
     func testMultiplicationForEachSmallEntropyInRunnableRangeWhereElementIsByte() throws {
-        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias T = InfiniInt<B>
-            
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             var success: (value: IX, error: IX)
             
             success.value = IX.zero
@@ -315,8 +313,8 @@ extension InfiniIntTests {
             var major: (lhs: T, rhs: T, pro: T)
             var minor: (lhs: T, rhs: T, pro: T)
             
-            major.lhs = T(load: I16.min) >> 4
-            major.rhs = T(load: I16.min) >> 4
+            major.lhs = T(load: I16.min >> 4)
+            major.rhs = T(load: I16.min >> 4)
             major.pro = T(1) << 22
             
             for i in (I16.min >> 4) ... (I16.max >> 4) {
@@ -352,8 +350,11 @@ extension InfiniIntTests {
         #if DEBUG
         throw XCTSkip("req. release mode")
         #else
-        whereTheBaseTypeIs(I8.self)
-        whereTheBaseTypeIs(U8.self)
+        whereIs(InfiniInt<I8>.self)
+        whereIs(InfiniInt<U8>.self)
+        
+        whereIs(I64.self) // note that it behaves like InfiniInt<I8>.self
+        whereIs(U64.self) // note that it behaves like InfiniInt<U8>.self
         #endif
     }
 }
