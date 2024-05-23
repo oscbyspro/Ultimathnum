@@ -27,7 +27,7 @@ extension InfiniInt {
         }
     }
     
-    @inlinable public static func &<<(instance: consuming Self, distance: Shift<Self>) -> Self {
+    @inline(never) @inlinable public static func &<<(instance: consuming Self, distance: Shift<Self>) -> Self {
         //=--------------------------------------=
         Swift.assert(!distance.value.isInfinite)
         Swift.assert(!distance.value.isNegative)
@@ -58,7 +58,7 @@ extension InfiniInt {
         }
     }
     
-    @inlinable public static func &>>(instance: consuming Self, distance: Shift<Self>) -> Self {
+    @inline(never) @inlinable public static func &>>(instance: consuming Self, distance: Shift<Self>) -> Self {
         //=--------------------------------------=
         Swift.assert(!distance.value.isInfinite)
         Swift.assert(!distance.value.isNegative)

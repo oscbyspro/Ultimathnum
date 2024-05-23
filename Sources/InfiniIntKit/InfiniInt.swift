@@ -77,13 +77,17 @@ import CoreKit
         self = Self.exactly(RootInt(integerLiteral: integerLiteral)).unwrap()
     }
     
-    @inlinable public init<T>(_ body: Array<T>, repeating appendix: Bit = .zero) where T: SystemsInteger & UnsignedInteger {
+    @inlinable public init<T>(_ body: Array<T>, repeating appendix: Bit = .zero) 
+    where T: SystemsInteger & UnsignedInteger {
+        
         self = body.withUnsafeBufferPointer {
             Self(load: DataInt($0, repeating: appendix)!)
         }
     }
     
-    @inlinable public init<T>(_ body: ContiguousArray<T>, repeating appendix: Bit = .zero) where T: SystemsInteger & UnsignedInteger {
+    @inlinable public init<T>(_ body: ContiguousArray<T>, repeating appendix: Bit = .zero) 
+    where T: SystemsInteger & UnsignedInteger {
+        
         self = body.withUnsafeBufferPointer {
             Self(load: DataInt($0, repeating: appendix)!)
         }

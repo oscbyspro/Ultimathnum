@@ -19,7 +19,7 @@ extension InfiniInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func plus(_ other: borrowing Self) -> Fallible<Self> {
+    @inline(never) @inlinable public consuming func plus(_ other: borrowing Self) -> Fallible<Self> {
         var overflow = false
                 
         self.storage.resize(minCount: other.storage.count)

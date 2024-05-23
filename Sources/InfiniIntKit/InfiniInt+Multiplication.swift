@@ -19,7 +19,7 @@ extension InfiniInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func squared() -> Fallible<Self> {
+    @inline(never) @inlinable public consuming func squared() -> Fallible<Self> {
         //=--------------------------------------=
         if  let small = self.storage.small {            
             return self.times(small)
@@ -41,7 +41,7 @@ extension InfiniInt {
         return Fallible(result, error: overflow)
     }
     
-    @inlinable public consuming func times(_ other: borrowing Self) -> Fallible<Self> {
+    @inline(never) @inlinable public consuming func times(_ other: borrowing Self) -> Fallible<Self> {
         //=--------------------------------------=
         if  let small = other.storage.small {
             return self.times(small)
@@ -84,7 +84,7 @@ extension InfiniInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming func times(_ other: consuming Storage.Small) -> Fallible<Self> {
+    @inline(never) @inlinable internal consuming func times(_ other: consuming Storage.Small) -> Fallible<Self> {
         //=--------------------------------------=
         let lhsAppendix = Bool(self .appendix)
         let rhsAppendix = Bool(other.appendix)

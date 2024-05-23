@@ -25,7 +25,7 @@ extension InfiniInt {
         return instance
     }
     
-    @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inline(never) @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
         let count: IX = switch (Bool(lhs.appendix), Bool(rhs.appendix)) {
         case (false, false): Swift.min(lhs.storage.count, rhs.storage.count)
         case (false, true ): lhs.storage.count
@@ -47,7 +47,7 @@ extension InfiniInt {
         return lhs
     }
     
-    @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inline(never) @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
         let count: IX = switch (Bool(lhs.appendix), Bool(rhs.appendix)) {
         case (false, false): Swift.max(lhs.storage.count, rhs.storage.count)
         case (false, true ): rhs.storage.count
@@ -69,7 +69,7 @@ extension InfiniInt {
         return lhs
     }
     
-    @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inline(never) @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
         lhs.storage.resize(minCount: rhs.storage.count)
         lhs.storage.withUnsafeMutableBinaryIntegerBody { lhs in
             rhs.withUnsafeBinaryIntegerElements { rhs in
@@ -88,7 +88,7 @@ extension InfiniInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
+    @inline(never) @inlinable public consuming func complement(_ increment: consuming Bool) -> Fallible<Self> {
         self.storage.withUnsafeMutableBinaryIntegerBody {
             increment = $0.toggle(carrying: increment).error
         }

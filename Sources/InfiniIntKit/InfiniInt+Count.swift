@@ -19,7 +19,7 @@ extension InfiniInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func count(_ selection: Bit) -> Magnitude {
+    @inline(never) @inlinable public func count(_ selection: Bit) -> Magnitude {
         var count = Magnitude()
         
         let contrast = self.appendix.toggled()
@@ -33,7 +33,7 @@ extension InfiniInt {
         return count as Magnitude
     }
     
-    @inlinable public func count(_ selection: Bit.Ascending) -> Magnitude {
+    @inline(never) @inlinable public func count(_ selection: Bit.Ascending) -> Magnitude {
         var count = Magnitude()
         
         let bitIsAppendix = self.appendix == selection.bit
@@ -49,7 +49,7 @@ extension InfiniInt {
         return count as Magnitude
     }
     
-    @inlinable public func count(_ selection: Bit.Descending) -> Magnitude {
+    @inline(never) @inlinable public func count(_ selection: Bit.Descending) -> Magnitude {
         var count = Magnitude()
         
         if  self.appendix == selection.bit {
