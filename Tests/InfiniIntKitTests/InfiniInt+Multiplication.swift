@@ -309,7 +309,6 @@ extension InfiniIntTests {
             success.value = IX.zero
             success.error = IX.zero
             
-            let one =  T(1)
             var major: (lhs: T, rhs: T, pro: T)
             var minor: (lhs: T, rhs: T, pro: T)
             
@@ -317,12 +316,15 @@ extension InfiniIntTests {
             major.rhs = T(load: I16.min >> 4)
             major.pro = T(1) << 22
             
-            for i in (I16.min >> 4) ... (I16.max >> 4) {
+            let one = T(1)
+            let r12 = (I16.min >> 4) ... (I16.max >> 4)
+            
+            for i in  r12 {
                 minor.lhs = major.lhs
                 minor.rhs = major.rhs
                 minor.pro = major.pro
                 
-                for j in (I16.min >> 4) ... (I16.max >> 4) {
+                for j in r12 {
                     let a = (i < 0) && (j != 0 && j != 1)
                     let b = (j < 0) && (i != 0 && i != 1)
                     
@@ -331,7 +333,7 @@ extension InfiniIntTests {
                         success.value += 1
                     }
                     
-                    if  product.error == (T.isSigned ? false : (a || b)) {
+                    if  product.error == (!T.isSigned && (a || b)) {
                         success.error += 1
                     }
                     
@@ -353,14 +355,14 @@ extension InfiniIntTests {
         whereIs(InfiniInt<I8>.self)
         whereIs(InfiniInt<U8>.self)
         
-        whereIs(I64.self) // note that it behaves like InfiniInt<I8>.self
-        whereIs(U64.self) // note that it behaves like InfiniInt<U8>.self
+        whereIs(I64.self) // cf. InfiniInt<I8>.self
+        whereIs(U64.self) // cf. InfiniInt<U8>.self
         #endif
     }
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Issues
+// MARK: + Edge Cases
 //=----------------------------------------------------------------------------=
 
 extension InfiniIntTests {
@@ -371,14 +373,9 @@ extension InfiniIntTests {
     
     /// - 2024-05-22: Checks the small-storage multiplication fast path.
     func testMultiplicationBySmallStorageWhereBodyIsZeroAndAppendixIsOne() {
-        Test().multiplication( InfiniInt<I8>(000000), ~InfiniInt<I8>(U8.max), Fallible(000000, error: false))
-        Test().multiplication( InfiniInt<U8>(000000), ~InfiniInt<U8>(U8.max), Fallible(000000, error: false))
-        Test().multiplication(~InfiniInt<I8>(U8.max),  InfiniInt<I8>(000000), Fallible(000000, error: false))
-        Test().multiplication(~InfiniInt<U8>(U8.max),  InfiniInt<U8>(000000), Fallible(000000, error: false))
-        
-        Test().multiplication( InfiniInt<I8>(000256), ~InfiniInt<I8>(U8.max), Fallible(~65535, error: false))
-        Test().multiplication( InfiniInt<U8>(000256), ~InfiniInt<U8>(U8.max), Fallible(~65535, error: true ))
-        Test().multiplication(~InfiniInt<I8>(U8.max),  InfiniInt<I8>(000256), Fallible(~65535, error: false))
-        Test().multiplication(~InfiniInt<U8>(U8.max),  InfiniInt<U8>(000256), Fallible(~65535, error: true ))
+        Test().multiplication(~InfiniInt<I8>(U8.max), 000, Fallible( 00000, error: false))
+        Test().multiplication(~InfiniInt<U8>(U8.max), 000, Fallible( 00000, error: false))
+        Test().multiplication(~InfiniInt<I8>(U8.max), 256, Fallible(~65535, error: false))
+        Test().multiplication(~InfiniInt<U8>(U8.max), 256, Fallible(~65535, error: true ))
     }
 }

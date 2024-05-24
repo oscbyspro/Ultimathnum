@@ -32,8 +32,8 @@ extension MutableDataInt.Body {
         
         var increment = increment // consume: compiler bug...
         
-        while UX(raw: self.count) > 0 {
-            (self[unchecked: ()], increment) = 
+        while UX(raw: self.count) > .zero {
+            (self[unchecked: ()], increment) =
             (self[unchecked: ()]).multiplication(multiplier, plus: increment).ascending()
             (self) = (consume self)[unchecked: 1...]
         }
@@ -60,7 +60,7 @@ extension MutableDataInt.Body {
     ///
     @inlinable public consuming func initialize(to lhs: Immutable, times rhs: Immutable) {
         if  16 > Swift.min(lhs.count, rhs.count) {
-            self.initializeByLongAlgorithm(to: lhs, times: rhs, plus: Element.zero)
+            self.initializeByLongAlgorithm(to: lhs, times: rhs, plus: .zero)
         }   else {
             self.initializeByKaratsubaAlgorithm(to: lhs, times: rhs)
         }
@@ -72,7 +72,7 @@ extension MutableDataInt.Body {
     ///
     @inlinable public consuming func initialize(toSquareProductOf elements: Immutable) {
         if  16 > elements.count {
-            self.initializeByLongAlgorithm(toSquareProductOf: elements, plus: Element.zero)
+            self.initializeByLongAlgorithm(toSquareProductOf: elements, plus: .zero)
         }   else {
             self.initializeByKaratsubaAlgorithm(toSquareProductOf: elements)
         }
@@ -91,7 +91,9 @@ extension MutableDataInt.Body {
     
     /// Initializes `self` to the [long][algorithm] product of `lhs` and `rhs` plus `increment`.
     ///
-    /// - Requires: The `body` must be of size `lhs.count` + `rhs.count`.
+    /// - Parameter self: The `body` must be of size `lhs.count` + `rhs.count`.
+    ///
+    /// - Requires: If `self` is empty, then the `increment` must be zero.
     ///
     /// [algorithm]: https://en.wikipedia.org/wiki/multiplication_algorithm
     ///
@@ -99,15 +101,15 @@ extension MutableDataInt.Body {
         to lhs: Immutable, times rhs: Immutable, plus increment: Element = .zero
     ) {
         //=--------------------------------------=
-        Swift.assert(self.count >= 1 || increment == 0, String.indexOutOfBounds())
         Swift.assert(self.count == lhs.count+rhs.count, String.indexOutOfBounds())
+        Swift.assert(self.count >= 1 || increment == 0, String.indexOutOfBounds())
         //=--------------------------------------=
-        var pointer = self.start
+        var pointer: UnsafeMutablePointer<Element> = self.start
         //=--------------------------------------=
         // pointee: initialization 1
         //=--------------------------------------=
         var carry: Element = increment
-        let first: Element = rhs.count > 0 ? rhs[unchecked: ()] : Element()
+        let first: Element = rhs.count > .zero ? rhs[unchecked: ()] : Element()
         
         for index in lhs.indices {
             let product = lhs[unchecked: index].multiplication(first, plus: carry)
@@ -124,9 +126,9 @@ extension MutableDataInt.Body {
         // pointee: initialization 2
         //=--------------------------------------=
         for index in rhs.indices.dropFirst() {
-            pointer.initialize(to: 00000)
+            pointer.initialize(to: .zero)
             pointer = pointer.successor()
-            (copy self)[unchecked: index...].incrementSubSequence(by: lhs, times: rhs[unchecked: index], plus: 0).unchecked()
+            (copy self)[unchecked: index...].incrementSubSequence(by: lhs, times: rhs[unchecked: index], plus: .zero).unchecked()
         }
         
         Swift.assert(IX(self.start.distance(to: pointer)) == self.count)
@@ -136,24 +138,26 @@ extension MutableDataInt.Body {
     ///
     /// - Parameter self: A buffer of size `2 * elements`.
     ///
+    /// - Requires: If `self` is empty, then the `increment` must be zero.
+    ///
     /// [algorithm]: https://en.wikipedia.org/wiki/multiplication_algorithm
     ///
     @inline(never) @inlinable public consuming func initializeByLongAlgorithm(
          toSquareProductOf elements: Immutable, plus increment: Element = .zero
     ) {
         //=--------------------------------------=
-        Swift.assert(self.count >= 1 || increment == 0, String.indexOutOfBounds())
         Swift.assert(self.count == 2 *  elements.count, String.indexOutOfBounds())
+        Swift.assert(self.count >= 1 || increment == 0, String.indexOutOfBounds())
         //=--------------------------------------=
         // pointee: initialization
         //=--------------------------------------=
-        self.start.initialize(repeating: 0, count: Int(self.count))
+        self.initialize(repeating: .zero)
         //=--------------------------------------=
         var bit: Bool
         var index = 000 as IX
         var carry = increment
         //=--------------------------------------=
-        while UX(raw: self.count) > 0 {
+        while UX(raw: self.count) > .zero {
             //=----------------------------------=
             let multiplier = Immutable(elements.start + Int(index), count: 1)
             let (diagonal) = multiplier[unchecked:()]
@@ -188,6 +192,7 @@ extension MutableDataInt.Body {
     /// Initializes `self` to the [Karatsuba][algorithm] product of `lhs` and `rhs`.
     ///
     ///
+    ///                 <───────── suffix ────────────>
     ///                 i         j
     ///       ┌─────────┴─────╌╌╌╌┴───────────────╌╌╌╌┐
     ///       │       a * x       │       b * y       ->
@@ -247,10 +252,10 @@ extension MutableDataInt.Body {
             //=----------------------------------=
             // set (a * x) and (b * y)
             //=----------------------------------=
-            u[unchecked: ..<axCount].initialize(to: a, times: x)
-            u[unchecked: axCount...].initialize(repeating: Element.zero)
-            v[unchecked: ..<byCount].initialize(to: b, times: y)
-            v[unchecked: byCount...].initialize(repeating: Element.zero)
+            u[unchecked: ..<axCount].initialize(to: a, times:  x)
+            u[unchecked: axCount...].initialize(repeating: .zero)
+            v[unchecked: ..<byCount].initialize(to: b, times:  y)
+            v[unchecked: byCount...].initialize(repeating: .zero)
             Swift.assert(v[unchecked: vjCount...].isZero)
             //=----------------------------------=
             // set (a * x) and (b * y)
@@ -303,7 +308,8 @@ extension MutableDataInt.Body {
     ///
     ///
     ///                 <───────── suffix ────────────>
-    ///       ┌───────────────────┬───────────────────┐
+    ///                 i         j
+    ///       ┌─────────┴─────╌╌╌╌┴───────────────╌╌╌╌┐
     ///       │       a * x       │       b * y       ->
     ///       └─────────┬─────────┴─────────┬─────────┘
     ///             add │       a * x       ├ u
@@ -359,9 +365,9 @@ extension MutableDataInt.Body {
             // set (a * x) and (b * y)
             //=----------------------------------=
             u[unchecked: ..<axCount].initialize(toSquareProductOf: a)
-            u[unchecked: axCount...].initialize(repeating: Element.zero)
+            u[unchecked: axCount...].initialize(repeating: .zero)
             v[unchecked: ..<byCount].initialize(toSquareProductOf: b)
-            v[unchecked: byCount...].initialize(repeating: Element.zero)
+            v[unchecked: byCount...].initialize(repeating: .zero)
             //=----------------------------------=
             // set (a * x) and (b * y)
             //=----------------------------------=

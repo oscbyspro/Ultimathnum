@@ -18,12 +18,12 @@ extension MutableDataInt.Body {
     //=------------------------------------------------------------------------=
     
     /// Deinitializes each element in `self`.
-    @inlinable public func deinitialize() {
+    @inlinable public borrowing func deinitialize() {
         self.start.deinitialize(count: Int(self.count))
     }
     
     /// Initializes each element in `self` to `element`.
-    @inlinable public func initialize(repeating element: Element) {
+    @inlinable public borrowing func initialize(repeating element: Element) {
         self.start.initialize(repeating: element, count: Int(self.count))
     }
     
@@ -31,9 +31,11 @@ extension MutableDataInt.Body {
     ///
     /// - Requires: `self.count == source.count`
     ///
-    @inlinable public func initialize(to source: Immutable) {
+    @inlinable public borrowing func initialize(to source: Immutable) {
         //=--------------------------------------=
-        Swift.assert(self.count ==  source.count, String.indexOutOfBounds())
+        if  self.count != source.count {
+            Swift.assertionFailure(String.indexOutOfBounds())
+        }
         //=--------------------------------------=
         self.start.initialize(from: source.start, count: Int(source.count))
     }
@@ -44,11 +46,13 @@ extension MutableDataInt.Body {
     ///
     /// - Requires: `self.count >= source.count`
     ///
-    @inlinable public func initialize(load source: Immutable) {
+    @inlinable public borrowing func initialize(load source: Immutable) {
         //=--------------------------------------=
-        Swift.assert(self.count >=  source.count, String.indexOutOfBounds())
+        if  self.count < source.count {
+            Swift.assertionFailure(String.indexOutOfBounds())
+        }
         //=--------------------------------------=
         self.start.initialize(from: source.start, count: Int(source.count))
-        self.start.advanced(by: Int(source.count)).initialize(repeating: Element.zero, count: Int(self.count - source.count))
+        self.start.advanced(by: Int(source.count)).initialize(repeating: .zero, count: Int(self.count - source.count))
     }
 }

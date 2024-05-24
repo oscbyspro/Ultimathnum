@@ -79,9 +79,9 @@ extension InfiniIntTests {
         func whereTheElementTypeIs<E>(_ element: E.Type) where E: SystemsInteger {
             typealias T = InfiniInt<E>
             //=----------------------------------=
-            let body: some Sequence<U8> = [[1, 2], [3, 4]].lazy.joined()
+            let body: FlattenSequence<[[U8]]> = [[1, 2], [3, 4]].joined()
             //=----------------------------------=
-            Test().same(T(body             ),                T(0x04030201))
+            Test().same(T(body),                             T(0x04030201))
             Test().same(T(body.dropFirst(1)),                T(0x00040302))
             Test().same(T(body.dropFirst(2)),                T(0x00000403))
             Test().same(T(body.dropFirst(3)),                T(0x00000004))

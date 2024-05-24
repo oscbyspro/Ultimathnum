@@ -37,7 +37,7 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public var description: String {
-        TextInt.decimal.encode(self)
+        self.description(as: .decimal)
     }
     
     @inlinable public func description(as format: TextInt) -> String {

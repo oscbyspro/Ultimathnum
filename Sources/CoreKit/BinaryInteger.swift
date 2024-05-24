@@ -67,8 +67,9 @@ where
     Stride == Swift.Int
 {
     
+    /// The two's complement signedness of this type.
     associatedtype Mode: Signedness
-        
+    
     /// The stuff this binary integer type is made of.
     ///
     /// - Important: `Self`'s body must be properly aligned for accessing `Element`.
@@ -341,6 +342,7 @@ where
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// Performs a three-way comparison of `self` versus `other`.
     @inlinable borrowing func compared(to other: borrowing Self) -> Signum
     
     //=------------------------------------------------------------------------=
