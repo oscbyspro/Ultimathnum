@@ -31,14 +31,6 @@ extension DataInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public subscript(index: UX) -> Element {
-        if  index < UX(raw: self.body.count) {
-            return self.body[unchecked: IX(raw: index)]
-        }   else {
-            return Element(repeating: self.appendix)
-        }
-    }
-    
     /// Returns the least significant bit pattern that fits in an element.
     ///
     /// ### Load vs Subscript
@@ -50,6 +42,28 @@ extension DataInt {
     ///
     @inlinable public borrowing func load() -> Element {
         self.body.load(repeating: self.appendix)
+    }
+    
+    @inlinable public subscript(index: UX) -> Element {
+        if  index < UX(raw: self.body.count) {
+            return self.body[unchecked: IX(raw: index)]
+        }   else {
+            return Element(repeating: self.appendix)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public func withMemoryRebound<Destination, Value>(
+        to type: Destination.Type,
+        perform action: (DataInt<Destination>) throws -> Value
+    )   rethrows -> Value {
+        
+        try self.body.withMemoryRebound(to: Destination.self) {
+            try action(.init($0, repeating: self.appendix))
+        }
     }
 }
 
@@ -79,10 +93,6 @@ extension MutableDataInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public subscript(index: UX) -> Element {
-        Immutable(self)[index]
-    }
-    
     /// Returns the least significant bit pattern that fits in an element.
     ///
     /// ### Load vs Subscript
@@ -94,6 +104,24 @@ extension MutableDataInt {
     ///
     @inlinable public borrowing func load() -> Element {
         Immutable(self).load()
+    }
+    
+    @inlinable public subscript(index: UX) -> Element {
+        Immutable(self)[index]
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public func withMemoryRebound<Destination, Value>(
+        to type: Destination.Type,
+        perform action: (MutableDataInt<Destination>) throws -> Value
+    )   rethrows -> Value {
+        
+        try self.body.withMemoryRebound(to: Destination.self) {
+            try action(.init($0, repeating: self.appendix))
+        }
     }
 }
 
@@ -164,6 +192,24 @@ extension DataInt.Body {
         //=--------------------------------------=
         return self.start.advanced(by: Int(index)).pointee
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public borrowing func withMemoryRebound<Destination, Value>(
+        to type: Destination.Type,
+        perform action: (DataInt<Destination>.Body) throws -> Value
+    )   rethrows -> Value {
+        //=--------------------------------------=
+        precondition(Element.elementsCanBeRebound(to: Destination.self))
+        //=--------------------------------------=
+        let ratio = IX(size: Element.self) / IX(size: Destination.self)
+        let count = self.count * ratio
+        return try  self.start.withMemoryRebound(to:  Destination.self, capacity: Int(count)) {
+            try action(.init($0, count: count))
+        }
+    }
 }
 
 //*============================================================================*
@@ -171,6 +217,49 @@ extension DataInt.Body {
 //*============================================================================*
 
 extension MutableDataInt.Body {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initialization
+    //=------------------------------------------------------------------------=
+    
+    /// Deinitializes each element in `self`.
+    @inlinable public borrowing func deinitialize() {
+        self.start.deinitialize(count: Int(self.count))
+    }
+    
+    /// Initializes the elements of `self` to the elements of `source`.
+    ///
+    /// - Requires: `self.count == source.count`
+    ///
+    @inlinable public borrowing func initialize(to source: Immutable) {
+        //=--------------------------------------=
+        if  self.count != source.count {
+            Swift.assertionFailure(String.indexOutOfBounds())
+        }
+        //=--------------------------------------=
+        self.start.initialize(from: source.start, count: Int(source.count))
+    }
+    
+    /// Initializes the elements of `self` to the bit pattern of `source`.
+    ///
+    /// All elements in `self[source.count...]` are initialized to zero.
+    ///
+    /// - Requires: `self.count >= source.count`
+    ///
+    @inlinable public borrowing func initialize(load source: Immutable) {
+        //=--------------------------------------=
+        if  self.count < source.count {
+            Swift.assertionFailure(String.indexOutOfBounds())
+        }
+        //=--------------------------------------=
+        self.start.initialize(from: source.start, count: Int(source.count))
+        self.start.advanced(by: Int(source.count)).initialize(repeating: .zero, count: Int(self.count - source.count))
+    }
+    
+    /// Initializes each element in `self` to `element`.
+    @inlinable public borrowing func initialize(repeating element: Element) {
+        self.start.initialize(repeating: element, count: Int(self.count))
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -238,6 +327,24 @@ extension MutableDataInt.Body {
             // note that the pointee is trivial
             //=----------------------------------=
             return self.start.advanced(by: Int(index)).initialize(to: newValue)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public borrowing func withMemoryRebound<Destination, Value>(
+        to type: Destination.Type,
+        perform action: (MutableDataInt<Destination>.Body) throws -> Value
+    )   rethrows -> Value {
+        //=--------------------------------------=
+        precondition(Element.elementsCanBeRebound(to: Destination.self))
+        //=--------------------------------------=
+        let ratio = IX(size: Element.self) / IX(size: Destination.self)
+        let count = self.count * ratio
+        return try  self.start.withMemoryRebound(to:  Destination.self, capacity: Int(count)) {
+            try action(.init($0, count: count))
         }
     }
 }

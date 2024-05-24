@@ -17,6 +17,14 @@ extension DataInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    @inlinable public consuming func normalized() -> Self {
+        Self(self.body.normalized(repeating: self.appendix), repeating: self.appendix)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
     @inlinable public subscript(range: PartialRangeFrom<UX>) -> Self {
         consuming get {
             let start = Swift.min(range.lowerBound, UX(raw: self.body.count))
@@ -35,6 +43,14 @@ extension MutableDataInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    @inlinable public consuming func normalized() -> Self {
+        Self(mutating: Immutable(self).normalized())
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
     @inlinable public subscript(range: PartialRangeFrom<UX>) -> Self {
         consuming get {
             Self(mutating: Immutable(self)[range])
@@ -47,6 +63,31 @@ extension MutableDataInt {
 //*============================================================================*
 
 extension DataInt.Body {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func split(at index: IX) -> (low: Self, high: Self) {
+        //=--------------------------------------=
+        Swift.assert(index >= 0000000000, String.indexOutOfBounds())
+        Swift.assert(index <= self.count, String.indexOutOfBounds())
+        //=--------------------------------------=
+        return (low: (copy self)[unchecked: ..<index], high: (consume self)[unchecked: index...])
+    }
+    
+    @inlinable public consuming func normalized(repeating appendix: Bit = .zero) -> Self {
+        let appendix = Element(repeating: appendix)
+        var endIndex = self.count
+        
+        while endIndex > 0 {
+            let lastIndex = endIndex.minus(1).unchecked()
+            guard self[unchecked: lastIndex] == appendix else { break }
+            endIndex = lastIndex
+        }
+        
+        return Self(self.start, count: endIndex)
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -84,18 +125,6 @@ extension DataInt.Body {
             return Self(start, count: IX(range.count))
         }
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func split(at index: IX) -> (low: Self, high: Self) {
-        //=--------------------------------------=
-        Swift.assert(index >= 0000000000, String.indexOutOfBounds())
-        Swift.assert(index <= self.count, String.indexOutOfBounds())
-        //=--------------------------------------=
-        return (low: (copy self)[unchecked: ..<index], high: (consume self)[unchecked: index...])
-    }
 }
 
 //*============================================================================*
@@ -103,6 +132,19 @@ extension DataInt.Body {
 //*============================================================================*
 
 extension MutableDataInt.Body {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func split(at index: IX) -> (low: Self, high: Self) {
+        let (low, high) = Immutable(self).split(at: index)
+        return (low: Self(mutating: low), high: Self(mutating: high))
+    }
+    
+    @inlinable public consuming func normalized(repeating appendix: Bit = .zero) -> Self {
+        Self(mutating: Immutable(self).normalized(repeating: appendix))
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -124,14 +166,5 @@ extension MutableDataInt.Body {
         consuming get {
             Self(mutating: Immutable(self)[unchecked: range])
         }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func split(at index: IX) -> (low: Self, high: Self) {
-        let (low, high) = Immutable(self).split(at: index)
-        return (low: Self(mutating: low), high: Self(mutating: high))
     }
 }

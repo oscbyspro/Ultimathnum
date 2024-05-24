@@ -20,7 +20,8 @@
   - [What is an unchecked operation?](#nomenclature-unchecked-value)
 * [CoreKit](#corekit)
   - [Validation and recovery with Fallible\<Value\>](#corekit-validation)
-  - [Let there be binary integers with RootInt](#corekit-root-int)
+  - [Let there be binary integers with RootInt](#corekit-rootint)
+  - [A common representation with DataInt\<Element\>](#corekit-dataint)
   - [Upsize binary integer elements with DataInt\<U8\>](#corekit-upsize)
   - [Lightweight text decoding and encoding with TextInt](#corekit-text-int)
   - [Type-safe bit casts with BitCastable\<BitPattern\>](#corekit-bit-cast)
@@ -271,7 +272,7 @@ static func  +(lhs: consuming Self, borrowing Self) -> Self // trapping
 static func &+(lhs: consuming Self, borrowing Self) -> Self // wrapping
 ```
 
-<a name="corekit-root-int"/>
+<a name="corekit-rootint"/>
 
 #### Let there be binary integers with RootInt
 
@@ -283,6 +284,148 @@ use it to query whether a type can represent an integer literal in generic code.
 
 ```swift
 static func exactly(_ source: RootInt) -> Fallible<Self>
+```
+
+<a name="corekit-dataint"/>
+
+#### A common representation with DataInt\<Element\>
+
+Each data integer type operates on the contiguous in-memory representation of a binary integer 
+without taking ownership of it. The [Mutable]DataInt.Body type is fundamentally a buffer pointer 
+representing a finite bit pattern. The [Mutable]DataInt type extends this bit pattern with an 
+infinitely repeating appendix bit. You may perform various buffer and arithmetic operations on 
+these types, but remember that their operations are finite, unsigned, and unchecked by default.
+
+##### Addition
+
+```swift
+MutableDataInt.Body/increment(by: Bool) -> Fallible<Void>
+MutableDataInt.Body/incrementSameSize(repeating: Bool, plus: Bool) -> Fallible<Void>
+
+MutableDataInt.Body/increment[SubSequence](by: Element) -> Fallible<[Void/Self]>
+MutableDataInt.Body/increment[SubSequence](by: Element,   plus: Bool) -> Fallible<[Void/Self]>
+MutableDataInt.Body/increment[SubSequence](by: Immutable, plus: Bool) -> Fallible<[Void/Self]>
+MutableDataInt.Body/increment[SubSequence](by: Immutable, times: Element, plus: Element) -> Fallible<[Void/Self]>
+MutableDataInt.Body/increment[SubSequence](toggling: Immutable, plus: Bool) -> Fallible<[Void/Self]>
+```
+
+##### Bitwise
+
+```swift
+MutableDataInt.Body/toggle()
+MutableDataInt.Body/toggle(carrying: Bool)
+```
+
+##### Comparison
+
+```swift
+DataInt.signum (of:  Self, isSigned: Bool) -> Signum
+DataInt.compare(lhs: Self, lhsIsSigned: Bool, rhs: Self, rhsIsSigned: Bool) -> Signum
+
+[Mutable]DataInt.Body/isZero   ->  Bool
+[Mutable]DataInt.Body/signum() ->  Signum
+[Mutable]DataInt.Body/compared(to: [Mutable]DataInt<Element>.Body) -> Signum
+```
+
+##### Count
+
+```swift
+[Mutable]DataInt/count(Bit.Entropy)     -> IX
+[Mutable]DataInt/count(Bit.Nonappendix) -> IX
+
+[Mutable]DataInt.Body/size()                   -> IX
+[Mutable]DataInt.Body/count(Bit)               -> IX
+[Mutable]DataInt.Body/count(Bit.Entropy)       -> IX
+[Mutable]DataInt.Body/count(Bit.Appendix)      -> IX
+[Mutable]DataInt.Body/count(Bit.Nonappendix)   -> IX
+[Mutable]DataInt.Body/count(Bit.Ascending)     -> IX
+[Mutable]DataInt.Body/count(Bit.Nonascending)  -> IX
+[Mutable]DataInt.Body/count(Bit.Descending)    -> IX
+[Mutable]DataInt.Body/count(Bit.Nondescending) -> IX
+```
+
+##### Division
+
+```swift
+MutableDataInt.Body/remainder(Divisor<Element>) -> Element
+MutableDataInt.Body/divisionSetQuotientGetRemainder(Divisor<Element>) -> Element
+MutableDataInt.Body/divisionSetQuotientSetRemainderByLong2111MSB(dividing: Self, by: Immutable)
+MutableDataInt.Body/divisionSetRemainderGetQuotientByLong2111MSBIteration(Element) -> Element
+```
+
+##### Elements
+
+```swift
+[Mutable]DataInt/body     -> Body
+[Mutable]DataInt/appendix -> Bit
+[Mutable]DataInt/next() -> Element
+[Mutable]DataInt/load() -> Element
+[Mutable]DataInt/subscript(IX) -> Element
+[Mutable]DataInt/withMemoryRebound(to:as:)
+
+[Mutable]DataInt.Body/appendix -> Bit
+[Mutable]DataInt.Body/indices  -> Range<IX>
+[Mutable]DataInt.Body/isEmpty  -> Bool
+[Mutable]DataInt.Body/buffer() -> Unsafe[Mutable]BufferPointer
+[Mutable]DataInt.Body/load(repeating: Bit)       -> Element
+[Mutable]DataInt.Body/subscript(unchecked: Void) -> Element
+[Mutable]DataInt.Body/subscript(unchecked: IX)   -> Element
+[Mutable]DataInt.Body/subscript(optional:  IX)   -> Optional<Element>
+[Mutable]DataInt.Body/withMemoryRebound(to:as:)
+
+MutableDataInt.Body/deinitialize()
+MutableDataInt.Body/initialize(to:   Immutable)
+MutableDataInt.Body/initialize(load: Immutable)
+MutableDataInt.Body/initialize(repeating: Element)
+```
+
+##### Multiplication
+
+```swift
+MutableDataInt.Body/multiply(by: Element, add: Element) -> Element
+
+MutableDataInt.Body/initialize(to: Immutable, times: Immutable)
+MutableDataInt.Body/initialize(toSquareProductOf:    Immutable)
+
+MutableDataInt.Body/initializeByLongAlgorithm(to: Immutable, times: Immutable, plus: Element)
+MutableDataInt.Body/initializeByLongAlgorithm(toSquareProductOf:    Immutable, plus: Element)
+
+MutableDataInt.Body/initializeByKaratsubaAlgorithm(to: Immutable, times: Immutable)
+MutableDataInt.Body/initializeByKaratsubaAlgorithm(toSquareProductOf:    Immutable)
+```
+
+##### Partition
+
+```swift
+[Mutable]DataInt/normalized() -> Self
+[Mutable]DataInt/subscript(PartialRangeFrom<UX>) -> Self
+
+[Mutable]DataInt.Body/split(at: IX) -> Self
+[Mutable]DataInt.Body/normalized(repeating: Bit) -> Self
+[Mutable]DataInt.Body/subscript(unchecked: PartialRangeFrom<IX>) -> Self
+[Mutable]DataInt.Body/subscript(unchecked: PartialRangeUpTo<IX>) -> Self
+[Mutable]DataInt.Body/subscript(unchecked: Range<IX>) -> Self
+```
+
+##### Shift
+
+```swift
+MutableDataInt.Body/[up/down]shift(environment: Element, major: IX, minor: IX)
+MutableDataInt.Body/[up/down]shift(environment: Element, majorAtLeastOne: IX, minor: Void)
+MutableDataInt.Body/[up/down]shift(environment: Element, major: IX, minorAtLeastOne: IX)
+```
+
+##### Subtraction
+
+```swift
+MutableDataInt.Body/decrement(by: Bool) -> Fallible<Void>
+MutableDataInt.Body/decrementSameSize(repeating: Bool, plus: Bool) -> Fallible<Void>
+
+MutableDataInt.Body/decrement[SubSequence](by: Element) -> Fallible<[Void/Self]>
+MutableDataInt.Body/decrement[SubSequence](by: Element,   plus: Bool) -> Fallible<[Void/Self]>
+MutableDataInt.Body/decrement[SubSequence](by: Immutable, plus: Bool) -> Fallible<[Void/Self]>
+MutableDataInt.Body/decrement[SubSequence](by: Immutable, times: Element, plus: Element) -> Fallible<[Void/Self]>
+MutableDataInt.Body/decrement[SubSequence](toggling: Immutable, plus: Bool) -> Fallible<[Void/Self]>
 ```
 
 <a name="corekit-upsize"/>
@@ -322,7 +465,7 @@ let regex: Regex = #/^(\+|-)?(#|&)?([0-9A-Za-z]+)$/#
 ```
 
 While this model prioritizes size, its operations are still fast enough for most purposes. 
-The 210k-digit measurement illustrates this point. Keep in mind that hexadecimal radix 
+The 210k-digit measurement illustrates this point. Keep in mind that hexadecimal radix 
 conversions are linear operations, whereas decimal conversions are superlinear but instant 
 for numbers intended to be read by humans.
 
