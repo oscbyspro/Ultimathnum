@@ -291,7 +291,7 @@ extension DataIntTests.Body {
             test.same(result.high, 0, "UX [1]")
         }
         //=--------------------------------------=
-        // multiplication: many × 0001 + some
+        // multiplication: many + some
         //=--------------------------------------=
         if !self.body.isEmpty, multiplier.count == 1, multiplier.first == 1 {
             var value = Array(expectation)
@@ -301,10 +301,10 @@ extension DataIntTests.Body {
         //=--------------------------------------=
         // multiplication: many × some + some
         //=--------------------------------------=
-        if  multiplier.count == 1, let first = multiplier.first {
+        if  multiplier.count == 1 {
             var value = self.body
             let last  = value.withUnsafeMutableBufferPointer {
-                MutableDataInt.Body($0)!.multiply(by: first, add: increment)
+                MutableDataInt.Body($0)!.multiply(by: multiplier.first!, add: increment)
             }
             
             value.append(last)

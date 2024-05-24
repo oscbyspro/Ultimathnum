@@ -21,7 +21,7 @@
 * [CoreKit](#corekit)
   - [Validation and recovery with Fallible\<Value\>](#corekit-validation)
   - [Let there be binary integers with RootInt](#corekit-rootint)
-  - [A low-level representation with DataInt\<Element\>](#corekit-dataint)
+  - [Access binary integer data with DataInt\<Element\>](#corekit-dataint)
   - [Upsize binary integer elements with DataInt\<U8\>](#corekit-upsize)
   - [Lightweight text decoding and encoding with TextInt](#corekit-text-int)
   - [Type-safe bit casts with BitCastable\<BitPattern\>](#corekit-bit-cast)
@@ -288,144 +288,179 @@ static func exactly(_ source: RootInt) -> Fallible<Self>
 
 <a name="corekit-dataint"/>
 
-#### A low-level representation with DataInt\<Element\>
+#### Access binary integer data with DataInt\<Element\>
 
 Each data integer operates on the contiguous in-memory representation of binary integers without 
 taking ownership of them. The [Mutable]DataInt.Body type is fundamentally a buffer pointer. The 
-[Mutable]DataInt type extends the bit pattern of its body with an infinitely repeating appendix bit. 
-You may perform various buffer and arithmetic operations on these types, but remember that their 
-operations are finite, unsigned, and unchecked by default.
+[Mutable]DataInt type extends the bit pattern of its body with a repeating appendix bit. You may 
+perform various buffer and arithmetic operations on these types, but remember that their operations 
+are finite, unsigned, and unchecked by default.
 
 ##### Addition
 
 ```
-MutableDataInt.Body/increment(by: Bool) -> Fallible<Void>
-MutableDataInt.Body/incrementSameSize(repeating: Bool, plus: Bool) -> Fallible<Void>
+overview MutableDataInt.Body:
 
-MutableDataInt.Body/increment[SubSequence](by: Element) -> Fallible<[Void/Self]>
-MutableDataInt.Body/increment[SubSequence](by: Element,   plus: Bool) -> Fallible<[Void/Self]>
-MutableDataInt.Body/increment[SubSequence](by: Immutable, plus: Bool) -> Fallible<[Void/Self]>
-MutableDataInt.Body/increment[SubSequence](by: Immutable, times: Element, plus: Element) -> Fallible<[Void/Self]>
-MutableDataInt.Body/increment[SubSequence](toggling: Immutable, plus: Bool) -> Fallible<[Void/Self]>
+/increment(by: Bool) -> Fallible<Void>
+/incrementSameSize(repeating: Bool, plus: Bool) -> Fallible<Void>
+/increment[SubSequence](by: Element) -> Fallible<[Void/Self]>
+/increment[SubSequence](by: Element,   plus: Bool) -> Fallible<[Void/Self]>
+/increment[SubSequence](by: Immutable, plus: Bool) -> Fallible<[Void/Self]>
+/increment[SubSequence](by: Immutable, times: Element, plus: Element) -> Fallible<[Void/Self]>
+/increment[SubSequence](toggling: Immutable, plus: Bool) -> Fallible<[Void/Self]>
 ```
 
 ##### Bitwise
 
 ```
-MutableDataInt.Body/toggle()
-MutableDataInt.Body/toggle(carrying: Bool) -> Fallible<Void>
+overview MutableDataInt.Body:
+
+/toggle()
+/toggle(carrying: Bool) -> Fallible<Void>
 ```
 
 ##### Comparison
 
 ```
-DataInt.signum (of:  Self, isSigned: Bool) -> Signum
-DataInt.compare(lhs: Self, lhsIsSigned: Bool, rhs: Self, rhsIsSigned: Bool) -> Signum
+overview DataInt:
 
-[Mutable]DataInt.Body/isZero   ->  Bool
-[Mutable]DataInt.Body/signum() ->  Signum
-[Mutable]DataInt.Body/compared(to: [Mutable]DataInt<Element>.Body) -> Signum
+.signum (of:  Self, isSigned: Bool) -> Signum
+.compare(lhs: Self, lhsIsSigned: Bool, rhs: Self, rhsIsSigned: Bool) -> Signum
+```
+
+```
+overview [Mutable]DataInt.Body:
+
+/isZero   ->  Bool
+/signum() ->  Signum
+/compared(to: [Im]Mutable) -> Signum
 ```
 
 ##### Count
 
 ```
-[Mutable]DataInt/count(Bit.Entropy)     -> IX
-[Mutable]DataInt/count(Bit.Nonappendix) -> IX
+overview [Mutable]DataInt:
 
-[Mutable]DataInt.Body/size()                   -> IX
-[Mutable]DataInt.Body/count(Bit)               -> IX
-[Mutable]DataInt.Body/count(Bit.Entropy)       -> IX
-[Mutable]DataInt.Body/count(Bit.Appendix)      -> IX
-[Mutable]DataInt.Body/count(Bit.Nonappendix)   -> IX
-[Mutable]DataInt.Body/count(Bit.Ascending)     -> IX
-[Mutable]DataInt.Body/count(Bit.Nonascending)  -> IX
-[Mutable]DataInt.Body/count(Bit.Descending)    -> IX
-[Mutable]DataInt.Body/count(Bit.Nondescending) -> IX
+/count(Bit.Entropy)     -> IX
+/count(Bit.Nonappendix) -> IX
+```
+
+```
+overview [Mutable]DataInt.Body:
+
+/size()                   -> IX
+/count(Bit)               -> IX
+/count(Bit.Entropy)       -> IX
+/count(Bit.Appendix)      -> IX
+/count(Bit.Nonappendix)   -> IX
+/count(Bit.Ascending)     -> IX
+/count(Bit.Nonascending)  -> IX
+/count(Bit.Descending)    -> IX
+/count(Bit.Nondescending) -> IX
 ```
 
 ##### Division
 
 ```
-MutableDataInt.Body/remainder(Divisor<Element>) -> Element
-MutableDataInt.Body/divisionSetQuotientGetRemainder(Divisor<Element>) -> Element
-MutableDataInt.Body/divisionSetQuotientSetRemainderByLong2111MSB(dividing: Self, by: Immutable)
-MutableDataInt.Body/divisionGetQuotientSetRemainderByLong2111MSBIteration(Element) -> Element
+overview MutableDataInt.Body:
+
+/remainder(Divisor<Element>) -> Element
+/divisionSetQuotientGetRemainder(Divisor<Element>) -> Element
+/divisionSetQuotientSetRemainderByLong2111MSB(dividing: Self, by: Immutable)
+/divisionGetQuotientSetRemainderByLong2111MSBIteration(Element) -> Element
 ```
 
 ##### Elements
 
 ```
-[Mutable]DataInt/body     -> Body
-[Mutable]DataInt/appendix -> Bit
-[Mutable]DataInt/next() -> Element
-[Mutable]DataInt/load() -> Element
-[Mutable]DataInt/subscript(IX) -> Element
-[Mutable]DataInt/withMemoryRebound(to:as:)
+overview [Mutable]DataInt:
 
-[Mutable]DataInt.Body/appendix -> Bit
-[Mutable]DataInt.Body/indices  -> Range<IX>
-[Mutable]DataInt.Body/isEmpty  -> Bool
-[Mutable]DataInt.Body/buffer() -> Unsafe[Mutable]BufferPointer
-[Mutable]DataInt.Body/load(repeating: Bit)       -> Element
-[Mutable]DataInt.Body/subscript(unchecked: Void) -> Element
-[Mutable]DataInt.Body/subscript(unchecked: IX)   -> Element
-[Mutable]DataInt.Body/subscript(optional:  IX)   -> Element?
-[Mutable]DataInt.Body/withMemoryRebound(to:as:)
+/body     -> Body
+/appendix -> Bit
+/next() -> Element
+/load() -> Element
+/subscript(IX) -> Element
+/withMemoryRebound(to:as:)
+```
 
-MutableDataInt.Body/deinitialize()
-MutableDataInt.Body/initialize(to:   Immutable)
-MutableDataInt.Body/initialize(load: Immutable)
-MutableDataInt.Body/initialize(repeating: Element)
+```
+overview [Mutable]DataInt.Body:
+
+/appendix -> Bit
+/indices  -> Range<IX>
+/isEmpty  -> Bool
+/buffer() -> Unsafe[Mutable]BufferPointer
+/load(repeating: Bit)       -> Element
+/subscript(unchecked: Void) -> Element
+/subscript(unchecked: IX)   -> Element
+/subscript(optional:  IX)   -> Element?
+/withMemoryRebound(to:as:)
+```
+
+```
+overview MutableDataInt.Body:
+
+/deinitialize()
+/initialize(to:   Immutable)
+/initialize(load: Immutable)
+/initialize(repeating: Element)
 ```
 
 ##### Multiplication
 
 ```
-MutableDataInt.Body/multiply(by: Element, add: Element) -> Element
+overview MutableDataInt.Body:
 
-MutableDataInt.Body/initialize(to: Immutable, times: Immutable)
-MutableDataInt.Body/initialize(toSquareProductOf:    Immutable)
-
-MutableDataInt.Body/initializeByLongAlgorithm(to: Immutable, times: Immutable, plus: Element)
-MutableDataInt.Body/initializeByLongAlgorithm(toSquareProductOf:    Immutable, plus: Element)
-
-MutableDataInt.Body/initializeByKaratsubaAlgorithm(to: Immutable, times: Immutable)
-MutableDataInt.Body/initializeByKaratsubaAlgorithm(toSquareProductOf:    Immutable)
+/multiply(by: Element, add: Element) -> Element
+/initialize(to: Immutable, times: Immutable)
+/initializeByLongAlgorithm(to: Immutable, times: Immutable, plus: Element)
+/initializeByKaratsubaAlgorithm(to: Immutable, times: Immutable)
+/initialize(toSquareProductOf: Immutable)
+/initializeByLongAlgorithm(toSquareProductOf: Immutable, plus: Element)
+/initializeByKaratsubaAlgorithm(toSquareProductOf: Immutable)
 ```
 
 ##### Partition
 
 ```
-[Mutable]DataInt/normalized() -> Self
-[Mutable]DataInt/subscript(PartialRangeFrom<UX>) -> Self
+overview [Mutable]DataInt:
 
-[Mutable]DataInt.Body/split(at: IX) -> Self
-[Mutable]DataInt.Body/normalized(repeating: Bit) -> Self
-[Mutable]DataInt.Body/subscript(unchecked: PartialRangeFrom<IX>) -> Self
-[Mutable]DataInt.Body/subscript(unchecked: PartialRangeUpTo<IX>) -> Self
-[Mutable]DataInt.Body/subscript(unchecked: Range<IX>) -> Self
+/normalized() -> Self
+/subscript(PartialRangeFrom<UX>) -> Self
+```
+
+```
+overview [Mutable]DataInt.Body:
+
+/split(at: IX) -> Self
+/normalized(repeating: Bit) -> Self
+/subscript(unchecked: PartialRangeFrom<IX>) -> Self
+/subscript(unchecked: PartialRangeUpTo<IX>) -> Self
+/subscript(unchecked: Range<IX>) -> Self
 ```
 
 ##### Shift
 
 ```
-MutableDataInt.Body/[up/down]shift(environment: Element, major: IX, minor: IX)
-MutableDataInt.Body/[up/down]shift(environment: Element, majorAtLeastOne: IX, minor: Void)
-MutableDataInt.Body/[up/down]shift(environment: Element, major: IX, minorAtLeastOne: IX)
+overview MutableDataInt.Body:
+
+/[up/down]shift(environment: Element, major: IX, minor: IX)
+/[up/down]shift(environment: Element, majorAtLeastOne: IX, minor: Void)
+/[up/down]shift(environment: Element, major: IX, minorAtLeastOne: IX)
 ```
 
 ##### Subtraction
 
 ```
-MutableDataInt.Body/decrement(by: Bool) -> Fallible<Void>
-MutableDataInt.Body/decrementSameSize(repeating: Bool, plus: Bool) -> Fallible<Void>
+overview MutableDataInt.Body:
 
-MutableDataInt.Body/decrement[SubSequence](by: Element) -> Fallible<[Void/Self]>
-MutableDataInt.Body/decrement[SubSequence](by: Element,   plus: Bool) -> Fallible<[Void/Self]>
-MutableDataInt.Body/decrement[SubSequence](by: Immutable, plus: Bool) -> Fallible<[Void/Self]>
-MutableDataInt.Body/decrement[SubSequence](by: Immutable, times: Element, plus: Element) -> Fallible<[Void/Self]>
-MutableDataInt.Body/decrement[SubSequence](toggling: Immutable, plus: Bool) -> Fallible<[Void/Self]>
+/decrement(by: Bool) -> Fallible<Void>
+/decrementSameSize(repeating: Bool, plus: Bool) -> Fallible<Void>
+/decrement[SubSequence](by: Element) -> Fallible<[Void/Self]>
+/decrement[SubSequence](by: Element,   plus: Bool) -> Fallible<[Void/Self]>
+/decrement[SubSequence](by: Immutable, plus: Bool) -> Fallible<[Void/Self]>
+/decrement[SubSequence](by: Immutable, times: Element, plus: Element) -> Fallible<[Void/Self]>
+/decrement[SubSequence](toggling: Immutable, plus: Bool) -> Fallible<[Void/Self]>
 ```
 
 <a name="corekit-upsize"/>
