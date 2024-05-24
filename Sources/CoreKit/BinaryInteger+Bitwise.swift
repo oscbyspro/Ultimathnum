@@ -16,17 +16,16 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
-    // NOTE: The compiler wants to convert integer literals to Bit in init(_:).
-    //=------------------------------------------------------------------------=
     
-    /// ### Development
-    ///
-    /// - Note: This method is **important** for performance.
-    ///
-    @_disfavoredOverload @inlinable public init(_ bit: Bit) {
+    /// Creates a new instance that is equal to `1` or `0`.
+    @_disfavoredOverload // disfavor: 1-bit integer literal demotion
+    @inline(__always) // performance: please fold it like a paper airplane
+    @inlinable public init(_ bit: Bit) {
         self = Bool(bit) ?  1 : 0
     }
     
+    /// Creates a new instance from the repeating bit pattern of `bit` that fits.
+    @inline(__always) // performance: please fold it like a paper airplane
     @inlinable public init(repeating bit: Bit) {
         self = Bool(bit) ? ~0 : 0
     }

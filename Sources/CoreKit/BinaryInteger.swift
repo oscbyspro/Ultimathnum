@@ -158,7 +158,7 @@ where
     
     /// Returns the 1's or 2's complement of `self`.
     ///
-    /// - Note: The carry from addition is stored in the `error` field.
+    /// - Note: The overflow of addition is stored in the `error` field.
     ///
     @inlinable consuming func complement(_ increment: consuming Bool) -> Fallible<Self>
     
