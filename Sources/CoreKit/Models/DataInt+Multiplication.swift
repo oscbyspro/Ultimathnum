@@ -118,7 +118,7 @@ extension MutableDataInt.Body {
             pointer = pointer.successor()
         }
         
-        if  rhs.count != 0 {
+        if  rhs.count != .zero {
             pointer.initialize(to: carry)
             pointer = pointer.successor()
         }
@@ -266,8 +266,8 @@ extension MutableDataInt.Body {
             // add (a * x) and (b * y)
             //=----------------------------------=
             let suffix = self[unchecked: i...]
-            suffix.increment(by: Immutable(u[unchecked: ..<axCount])).unchecked()
-            suffix.increment(by: Immutable(v[unchecked: ..<vjCount])).unchecked()
+            suffix.increment(by: Immutable(u[unchecked: ..<axCount])).discard()
+            suffix.increment(by: Immutable(v[unchecked: ..<vjCount])).discard()
             //=----------------------------------=
             // regions
             //=----------------------------------=
@@ -287,19 +287,19 @@ extension MutableDataInt.Body {
             // set (b - a) mul (y - x)
             //=----------------------------------=
             m.initialize(to: b)
-            m.decrement (by: a).unchecked()
+            m.decrement (by: a).discard()
             
             n.initialize(to: y)
-            n.decrement (by: x).unchecked()
+            n.decrement (by: x).discard()
             
             v.initialize(to: Immutable(m), times: Immutable(n))
             //=----------------------------------=
             // sub (b - a) mul (y - x)
             //=----------------------------------=
             if  abSwap == xySwap {
-                suffix.decrement(by: Immutable(v)).unchecked()
+                suffix.decrement(by: Immutable(v)).discard()
             }   else {
-                suffix.increment(by: Immutable(v)).unchecked()
+                suffix.increment(by: Immutable(v)).discard()
             }
         }
     }
@@ -377,8 +377,8 @@ extension MutableDataInt.Body {
             // add (a * x) and (b * y)
             //=----------------------------------=
             let suffix = self[unchecked: i...]
-            suffix.increment(by: Immutable(u[unchecked: ..<axCount])).unchecked()
-            suffix.increment(by: Immutable(v[unchecked: ..<byCount])).unchecked()
+            suffix.increment(by: Immutable(u[unchecked: ..<axCount])).discard()
+            suffix.increment(by: Immutable(v[unchecked: ..<byCount])).discard()
             //=----------------------------------=
             // regions
             //=----------------------------------=
@@ -389,12 +389,12 @@ extension MutableDataInt.Body {
             // set (b - a) mul (y - x)
             //=----------------------------------=
             u[unchecked: ..<b.count].initialize(to: b)
-            u[unchecked: ..<b.count].decrement (by: a) .unchecked()
+            u[unchecked: ..<b.count].decrement (by: a).discard()
             v.initialize(toSquareProductOf: Immutable(u[unchecked: ..<b.count]))
             //=----------------------------------=
             // sub (b - a) mul (y - x)
             //=----------------------------------=
-            suffix.decrement(by: Immutable(v)).unchecked()
+            suffix.decrement(by: Immutable(v)).discard()
         }
     }
 }
