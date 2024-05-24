@@ -304,10 +304,10 @@ overview MutableDataInt.Body:
 /increment(by: Bool) -> Fallible<Void>
 /incrementSameSize(repeating: Bool, plus: Bool) -> Fallible<Void>
 /increment[SubSequence](by: Element) -> Fallible<[Void/Self]>
-/increment[SubSequence](by: Element,   plus: Bool) -> Fallible<[Void/Self]>
-/increment[SubSequence](by: Immutable, plus: Bool) -> Fallible<[Void/Self]>
-/increment[SubSequence](by: Immutable, times: Element, plus: Element) -> Fallible<[Void/Self]>
-/increment[SubSequence](toggling: Immutable, plus: Bool) -> Fallible<[Void/Self]>
+/increment[SubSequence](by: Element, plus: Bool) -> Fallible<[Void/Self]>
+/increment[SubSequence](by: DataInt.Body, plus: Bool) -> Fallible<[Void/Self]>
+/increment[SubSequence](by: DataInt.Body, times: Element, plus: Element) -> Fallible<[Void/Self]>
+/increment[SubSequence](toggling: DataInt.Body, plus: Bool) -> Fallible<[Void/Self]>
 ```
 
 ##### Bitwise
@@ -333,7 +333,7 @@ overview [Mutable]DataInt.Body:
 
 /isZero   ->  Bool
 /signum() ->  Signum
-/compared(to: [Im]Mutable) -> Signum
+/compared(to: [Mutable]DataInt.Body) -> Signum
 ```
 
 ##### Count
@@ -366,7 +366,7 @@ overview MutableDataInt.Body:
 
 /remainder(Divisor<Element>) -> Element
 /divisionSetQuotientGetRemainder(Divisor<Element>) -> Element
-/divisionSetQuotientSetRemainderByLong2111MSB(dividing: Self, by: Immutable)
+/divisionSetQuotientSetRemainderByLong2111MSB(dividing: Self, by: DataInt.Body)
 /divisionGetQuotientSetRemainderByLong2111MSBIteration(Element) -> Element
 ```
 
@@ -401,8 +401,8 @@ overview [Mutable]DataInt.Body:
 overview MutableDataInt.Body:
 
 /deinitialize()
-/initialize(to:   Immutable)
-/initialize(load: Immutable)
+/initialize(to:   DataInt.Body)
+/initialize(load: DataInt.Body)
 /initialize(repeating: Element)
 ```
 
@@ -412,12 +412,12 @@ overview MutableDataInt.Body:
 overview MutableDataInt.Body:
 
 /multiply(by: Element, add: Element) -> Element
-/initialize(to: Immutable, times: Immutable)
-/initializeByLongAlgorithm(to: Immutable, times: Immutable, plus: Element)
-/initializeByKaratsubaAlgorithm(to: Immutable, times: Immutable)
-/initialize(toSquareProductOf: Immutable)
-/initializeByLongAlgorithm(toSquareProductOf: Immutable, plus: Element)
-/initializeByKaratsubaAlgorithm(toSquareProductOf: Immutable)
+/initialize(to: DataInt.Body, times: DataInt.Body)
+/initializeByLongAlgorithm(to: DataInt.Body, times: DataInt.Body, plus: Element)
+/initializeByKaratsubaAlgorithm(to: DataInt.Body, times: DataInt.Body)
+/initialize(toSquareProductOf: DataInt.Body)
+/initializeByLongAlgorithm(toSquareProductOf: DataInt.Body, plus: Element)
+/initializeByKaratsubaAlgorithm(toSquareProductOf: DataInt.Body)
 ```
 
 ##### Partition
@@ -457,10 +457,10 @@ overview MutableDataInt.Body:
 /decrement(by: Bool) -> Fallible<Void>
 /decrementSameSize(repeating: Bool, plus: Bool) -> Fallible<Void>
 /decrement[SubSequence](by: Element) -> Fallible<[Void/Self]>
-/decrement[SubSequence](by: Element,   plus: Bool) -> Fallible<[Void/Self]>
-/decrement[SubSequence](by: Immutable, plus: Bool) -> Fallible<[Void/Self]>
-/decrement[SubSequence](by: Immutable, times: Element, plus: Element) -> Fallible<[Void/Self]>
-/decrement[SubSequence](toggling: Immutable, plus: Bool) -> Fallible<[Void/Self]>
+/decrement[SubSequence](by: Element, plus: Bool) -> Fallible<[Void/Self]>
+/decrement[SubSequence](by: DataInt.Body, plus: Bool) -> Fallible<[Void/Self]>
+/decrement[SubSequence](by: DataInt.Body, times: Element, plus: Element) -> Fallible<[Void/Self]>
+/decrement[SubSequence](toggling: DataInt.Body, plus: Bool) -> Fallible<[Void/Self]>
 ```
 
 <a name="corekit-upsize"/>
