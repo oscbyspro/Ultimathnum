@@ -101,7 +101,7 @@ extension MutableDataInt.Body {
         //=--------------------------------------=
         for index in self.indices.reversed() {
             let subsequence = dividend[unchecked: index  ..< index &+ divisor.count &+ 1]
-            let element = subsequence.divisionSetRemainderGetQuotientByLong2111MSBIteration(divisor)
+            let element = subsequence.divisionGetQuotientSetRemainderByLong2111MSBIteration(divisor)
             self[unchecked: index] = element
         }
     }
@@ -117,7 +117,7 @@ extension MutableDataInt.Body {
     ///   bit must be set to ensure that the initial `quotient` element approximation does
     ///   not exceed the real `quotient` by more than 2.
     ///
-    @inlinable public func divisionSetRemainderGetQuotientByLong2111MSBIteration(_ divisor: Immutable) -> Element {
+    @inlinable public func divisionGetQuotientSetRemainderByLong2111MSBIteration(_ divisor: Immutable) -> Element {
         //=--------------------------------------=
         Swift.assert(
             divisor[unchecked: divisor.count - 1] >= Element.msb,

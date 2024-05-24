@@ -21,7 +21,7 @@
 * [CoreKit](#corekit)
   - [Validation and recovery with Fallible\<Value\>](#corekit-validation)
   - [Let there be binary integers with RootInt](#corekit-rootint)
-  - [A common representation with DataInt\<Element\>](#corekit-dataint)
+  - [A low-level representation with DataInt\<Element\>](#corekit-dataint)
   - [Upsize binary integer elements with DataInt\<U8\>](#corekit-upsize)
   - [Lightweight text decoding and encoding with TextInt](#corekit-text-int)
   - [Type-safe bit casts with BitCastable\<BitPattern\>](#corekit-bit-cast)
@@ -288,17 +288,17 @@ static func exactly(_ source: RootInt) -> Fallible<Self>
 
 <a name="corekit-dataint"/>
 
-#### A common representation with DataInt\<Element\>
+#### A low-level representation with DataInt\<Element\>
 
-Each data integer type operates on the contiguous in-memory representation of a binary integer 
-without taking ownership of it. The [Mutable]DataInt.Body type is fundamentally a buffer pointer 
-representing a finite bit pattern. The [Mutable]DataInt type extends this bit pattern with an 
-infinitely repeating appendix bit. You may perform various buffer and arithmetic operations on 
-these types, but remember that their operations are finite, unsigned, and unchecked by default.
+Each data integer operates on the contiguous in-memory representation of binary integers without 
+taking ownership of them. The [Mutable]DataInt.Body type is fundamentally a buffer pointer. The 
+[Mutable]DataInt type extends the bit pattern of its body with an infinitely repeating appendix bit. 
+You may perform various buffer and arithmetic operations on these types, but remember that their 
+operations are finite, unsigned, and unchecked by default.
 
 ##### Addition
 
-```swift
+```
 MutableDataInt.Body/increment(by: Bool) -> Fallible<Void>
 MutableDataInt.Body/incrementSameSize(repeating: Bool, plus: Bool) -> Fallible<Void>
 
@@ -311,14 +311,14 @@ MutableDataInt.Body/increment[SubSequence](toggling: Immutable, plus: Bool) -> F
 
 ##### Bitwise
 
-```swift
+```
 MutableDataInt.Body/toggle()
-MutableDataInt.Body/toggle(carrying: Bool)
+MutableDataInt.Body/toggle(carrying: Bool) -> Fallible<Void>
 ```
 
 ##### Comparison
 
-```swift
+```
 DataInt.signum (of:  Self, isSigned: Bool) -> Signum
 DataInt.compare(lhs: Self, lhsIsSigned: Bool, rhs: Self, rhsIsSigned: Bool) -> Signum
 
@@ -329,7 +329,7 @@ DataInt.compare(lhs: Self, lhsIsSigned: Bool, rhs: Self, rhsIsSigned: Bool) -> S
 
 ##### Count
 
-```swift
+```
 [Mutable]DataInt/count(Bit.Entropy)     -> IX
 [Mutable]DataInt/count(Bit.Nonappendix) -> IX
 
@@ -346,16 +346,16 @@ DataInt.compare(lhs: Self, lhsIsSigned: Bool, rhs: Self, rhsIsSigned: Bool) -> S
 
 ##### Division
 
-```swift
+```
 MutableDataInt.Body/remainder(Divisor<Element>) -> Element
 MutableDataInt.Body/divisionSetQuotientGetRemainder(Divisor<Element>) -> Element
 MutableDataInt.Body/divisionSetQuotientSetRemainderByLong2111MSB(dividing: Self, by: Immutable)
-MutableDataInt.Body/divisionSetRemainderGetQuotientByLong2111MSBIteration(Element) -> Element
+MutableDataInt.Body/divisionGetQuotientSetRemainderByLong2111MSBIteration(Element) -> Element
 ```
 
 ##### Elements
 
-```swift
+```
 [Mutable]DataInt/body     -> Body
 [Mutable]DataInt/appendix -> Bit
 [Mutable]DataInt/next() -> Element
@@ -370,7 +370,7 @@ MutableDataInt.Body/divisionSetRemainderGetQuotientByLong2111MSBIteration(Elemen
 [Mutable]DataInt.Body/load(repeating: Bit)       -> Element
 [Mutable]DataInt.Body/subscript(unchecked: Void) -> Element
 [Mutable]DataInt.Body/subscript(unchecked: IX)   -> Element
-[Mutable]DataInt.Body/subscript(optional:  IX)   -> Optional<Element>
+[Mutable]DataInt.Body/subscript(optional:  IX)   -> Element?
 [Mutable]DataInt.Body/withMemoryRebound(to:as:)
 
 MutableDataInt.Body/deinitialize()
@@ -381,7 +381,7 @@ MutableDataInt.Body/initialize(repeating: Element)
 
 ##### Multiplication
 
-```swift
+```
 MutableDataInt.Body/multiply(by: Element, add: Element) -> Element
 
 MutableDataInt.Body/initialize(to: Immutable, times: Immutable)
@@ -396,7 +396,7 @@ MutableDataInt.Body/initializeByKaratsubaAlgorithm(toSquareProductOf:    Immutab
 
 ##### Partition
 
-```swift
+```
 [Mutable]DataInt/normalized() -> Self
 [Mutable]DataInt/subscript(PartialRangeFrom<UX>) -> Self
 
@@ -409,7 +409,7 @@ MutableDataInt.Body/initializeByKaratsubaAlgorithm(toSquareProductOf:    Immutab
 
 ##### Shift
 
-```swift
+```
 MutableDataInt.Body/[up/down]shift(environment: Element, major: IX, minor: IX)
 MutableDataInt.Body/[up/down]shift(environment: Element, majorAtLeastOne: IX, minor: Void)
 MutableDataInt.Body/[up/down]shift(environment: Element, major: IX, minorAtLeastOne: IX)
@@ -417,7 +417,7 @@ MutableDataInt.Body/[up/down]shift(environment: Element, major: IX, minorAtLeast
 
 ##### Subtraction
 
-```swift
+```
 MutableDataInt.Body/decrement(by: Bool) -> Fallible<Void>
 MutableDataInt.Body/decrementSameSize(repeating: Bool, plus: Bool) -> Fallible<Void>
 
@@ -781,68 +781,14 @@ f(x - y) == ± f(x) * f(y + 1) ± f(x + 1) * f(y)
 
 #### Code coverage with sequence invariants
 
-We have some peculiar algorithms and a generic sequence. Let's use them to
-stress test our models! Note that the sequence addition formula can be 
-rearranged in such a way that we call all of the basic arithmetic operations.
-We don't need to know the inputs and outputs ahead of time, because we know
-that this equation must hold true for all indices. It's neat, isn't it?
+We have some cute algorithms and a generic sequence. Let's combine them and
+unit-test our models! We can rearrange the sequence addition formula in such 
+a way that we call all basic arithmetic operations. Note that we don't need 
+to know the inputs and outputs ahead of time because it's an equation. Neat!
 
 ```swift
 f(x) * f(y) == (f(x+y+1) / f(x+1) - f(y+1)) * f(x+1) + f(x+y+1) % f(x+1)
 ```
-
-<details>
-<summary>
-Here's the actual implementation that we call in all, or most, of our tests...
-</summary>
-
-```swift
-/// Generates new instances and uses them to check math invariants.
-///
-/// #### Invariants
-///
-/// ```
-/// f(x) * f(y) == (f(x+y+1) / f(x+1) - f(y+1)) * f(x+1) + f(x+y+1) % f(x+1)
-/// ```
-///
-/// #### Calls: Fibonacci<Value>
-///
-/// - Fibonacci.init(\_:)
-/// - Fibonacci/increment(by:)
-/// - Fibonacci/decrement(by:)
-///
-/// #### Calls: BinaryInteger
-///
-/// - BinaryInteger/plus(\_:)
-/// - BinaryInteger/minus(\_:)
-/// - BinaryInteger/times(\_:)
-/// - BinaryInteger/quotient(\_:)
-/// - BinaryInteger/division(\_:)
-///
-func checkMathInvariants() {
-    for divisor: Divisor<Value> in [2, 3, 5, 7, 11].map(Divisor.init) {
-        always: do {
-            var a = self.item as Fibonacci<Value>
-            let b = try Fibonacci(a.index.quotient(divisor).prune(Bad.division))
-            let c = try a.next.division(Divisor(b.next, prune: Bad.divisor)).prune(Bad.division)
-            
-            try a.decrement(by: b)
-            
-            let d = try b.element.times(a.element).prune(Bad.multiplication)
-            let e = try c.quotient.minus(a.next).times(b.next).plus(c.remainder).prune(Bad.any)
-            
-            try a.increment(by: b)
-            
-            test.same(d, e, "arithmetic invariant error")
-            self.same(index: a.index, element: a.element, next: a.next)
-            
-        }   catch let error {
-            test.fail("unexpected arithmetic failure: \(error)")
-        }
-    }
-}
-```
-</details>
 
 <a name="installation"/>
 

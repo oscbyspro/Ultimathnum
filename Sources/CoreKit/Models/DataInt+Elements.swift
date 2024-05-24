@@ -170,7 +170,7 @@ extension DataInt.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public subscript(optional index: IX) -> Optional<Element> {
+    @inlinable public subscript(optional index: IX) -> Element? {
         if  UX(raw: index) < UX(raw: self.count) {
             return self[unchecked: index]
         }   else {
@@ -295,7 +295,7 @@ extension MutableDataInt.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public subscript(optional index: IX) -> Optional<Element> {
+    @inlinable public subscript(optional index: IX) -> Element? {
         Immutable(self)[optional: index]
     }
     
