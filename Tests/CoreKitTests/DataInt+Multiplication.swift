@@ -276,7 +276,20 @@ extension DataIntTests.Body {
     //=------------------------------------------------------------------------=
     
     func timesOneWayOnly(_ multiplier: [Element], plus increment: Element, is expectation: [Element]) {
+        //=--------------------------------------=
         let count = self.body.count + multiplier.count
+        //=--------------------------------------=
+        // multiplication: <= U64.max
+        //=--------------------------------------=
+        if  IX(expectation.count) * IX(size: Element.self) <= 64 {
+            let a = self.body  .withUnsafeBufferPointer({  U64(load: DataInt($0)!) })
+            let b = multiplier .withUnsafeBufferPointer({  U64(load: DataInt($0)!) })
+            let c = expectation.withUnsafeBufferPointer({  U64(load: DataInt($0)!) })
+            let result: Doublet<U64> = a.multiplication(b, plus: U64.init(increment))
+            
+            test.same(result.low,  c, "UX [0]")
+            test.same(result.high, 0, "UX [1]")
+        }
         //=--------------------------------------=
         // multiplication: many × 0001 + some
         //=--------------------------------------=
@@ -355,6 +368,7 @@ extension DataIntTests.Body {
     }
     
     func squareOneWayOnly(plus increment: Element, is expectation: [Element]) {
+        //=--------------------------------------=
         let count = self.body.count * 2
         //=--------------------------------------=
         // multiplication: many × many
