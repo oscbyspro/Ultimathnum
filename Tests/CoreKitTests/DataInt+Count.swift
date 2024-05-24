@@ -136,11 +136,11 @@ extension DataIntTests.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func size(is expectation: IX) {
+    func size(is expectation: IX) {
         self.expect(expectation, read:{ $0.size() }, write:{ $0.size() })
     }    
     
-    @inlinable public func count(_ selection: Bit, is expectation: IX) {
+    func count(_ selection: Bit, is expectation: IX) {
         let inverse = selection.toggled()
         let size = IX(self.body.count) * IX(size: Element.self)
         
@@ -148,7 +148,7 @@ extension DataIntTests.Body {
         self.expect(size - expectation, read:{ $0.count((inverse)) }, write:{ $0.count((inverse)) })
     }
     
-    @inlinable public func count(_ selection: Bit.Ascending, is expectation: IX) {
+    func count(_ selection: Bit.Ascending, is expectation: IX) {
         let inverse = Bit.Nonascending(selection.bit)
         let size = IX(self.body.count) * IX(size: Element.self)
         
@@ -156,7 +156,7 @@ extension DataIntTests.Body {
         self.expect(size - expectation, read:{ $0.count((inverse)) }, write:{ $0.count((inverse)) })
     }
     
-    @inlinable public func count(_ selection: Bit.Descending, is expectation: IX) {
+    func count(_ selection: Bit.Descending, is expectation: IX) {
         let inverse = Bit.Nondescending(selection.bit)
         let size = IX(self.body.count) * IX(size: Element.self)
         

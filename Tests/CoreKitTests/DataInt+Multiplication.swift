@@ -60,10 +60,6 @@ extension DataIntTests {
         }
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
     func testMultiplicationLargeByLarge() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
             typealias Canvas = DataIntTests.Body<T>
