@@ -49,14 +49,18 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testAdditionOfManyByBit() {
-        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+        func whereTheElementTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = InfiniInt<B>
             typealias F = Fallible<T>
-            
-            let a: [UX] = [ 0,  0,  0,  0,  0,  0,  0,  0]
-            let b: [UX] = [~0, ~0, ~0, ~0, ~0, ~0, ~0, ~0]
-            let c: [UX] = [ 1,  0,  0,  0,  0,  0,  0,  0]
-            
+            //=----------------------------------=
+            let x: (UX) = UX.msb
+            let a: [UX] = [ 0,  0,  0,  0]
+            let b: [UX] = [~0, ~0, ~0, ~0]
+            let c: [UX] = [ 1,  0,  0,  0]
+            let d: [UX] = [~0, ~0, ~0, ~x]
+            let e: [UX] = [ 0,  0,  0,  x]
+            let f: [UX] = [ 1,  0,  0,  x]
+            //=----------------------------------=
             Test().addition(T(a, repeating: 0), 0, F(T(a, repeating: 0)))
             Test().addition(T(a, repeating: 1), 0, F(T(a, repeating: 1)))
             Test().addition(T(b, repeating: 0), 0, F(T(b, repeating: 0)))
@@ -66,22 +70,36 @@ extension InfiniIntTests {
             Test().addition(T(a, repeating: 1), 1, F(T(c + [~0] as [UX], repeating: 1)))
             Test().addition(T(b, repeating: 0), 1, F(T(a + [ 1] as [UX], repeating: 0)))
             Test().addition(T(b, repeating: 1), 1, F(T(a + [ 0] as [UX], repeating: 0), error: !T.isSigned))
+            
+            Test().addition(T(d, repeating: 0), 0, F(T(d, repeating: 0)))
+            Test().addition(T(d, repeating: 1), 0, F(T(d, repeating: 1)))
+            Test().addition(T(e, repeating: 0), 0, F(T(e, repeating: 0)))
+            Test().addition(T(e, repeating: 1), 0, F(T(e, repeating: 1)))
+            
+            Test().addition(T(d, repeating: 0), 1, F(T(e, repeating: 0)))
+            Test().addition(T(d, repeating: 1), 1, F(T(e, repeating: 1)))
+            Test().addition(T(e, repeating: 0), 1, F(T(f, repeating: 0)))
+            Test().addition(T(e, repeating: 1), 1, F(T(f, repeating: 1)))
         }
         
         for element in Self.elements {
-            whereTheBaseTypeIs(element)
+            whereTheElementTypeIs(element)
         }
     }
     
     func testSubtractionOfManyByBit() {
-        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+        func whereTheElementTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = InfiniInt<B>
             typealias F = Fallible<T>
-            
-            let a: [UX] = [ 0,  0,  0,  0,  0,  0,  0,  0]
-            let b: [UX] = [~0, ~0, ~0, ~0, ~0, ~0, ~0, ~0]
-            let c: [UX] = [~1, ~0, ~0, ~0, ~0, ~0, ~0, ~0]
-            
+            //=----------------------------------=
+            let x: (UX) = UX.msb
+            let a: [UX] = [ 0,  0,  0,  0]
+            let b: [UX] = [~0, ~0, ~0, ~0]
+            let c: [UX] = [~1, ~0, ~0, ~0]
+            let d: [UX] = [~0, ~0, ~0, ~x]
+            let e: [UX] = [ 0,  0,  0,  x]
+            let f: [UX] = [~1, ~0, ~0, ~x]
+            //=----------------------------------=
             Test().subtraction(T(a, repeating: 0), 0, F(T(a, repeating: 0)))
             Test().subtraction(T(a, repeating: 1), 0, F(T(a, repeating: 1)))
             Test().subtraction(T(b, repeating: 0), 0, F(T(b, repeating: 0)))
@@ -91,10 +109,20 @@ extension InfiniIntTests {
             Test().subtraction(T(a, repeating: 1), 1, F(T(b + [~1] as [UX], repeating: 1)))
             Test().subtraction(T(b, repeating: 0), 1, F(T(c + [ 0] as [UX], repeating: 0)))
             Test().subtraction(T(b, repeating: 1), 1, F(T(c + [~0] as [UX], repeating: 1)))
+            
+            Test().subtraction(T(d, repeating: 0), 0, F(T(d, repeating: 0)))
+            Test().subtraction(T(d, repeating: 1), 0, F(T(d, repeating: 1)))
+            Test().subtraction(T(e, repeating: 0), 0, F(T(e, repeating: 0)))
+            Test().subtraction(T(e, repeating: 1), 0, F(T(e, repeating: 1)))
+            
+            Test().subtraction(T(d, repeating: 0), 1, F(T(f, repeating: 0)))
+            Test().subtraction(T(d, repeating: 1), 1, F(T(f, repeating: 1)))
+            Test().subtraction(T(e, repeating: 0), 1, F(T(d, repeating: 0)))
+            Test().subtraction(T(e, repeating: 1), 1, F(T(d, repeating: 1)))
         }
         
         for element in Self.elements {
-            whereTheBaseTypeIs(element)
+            whereTheElementTypeIs(element)
         }
     }
     
@@ -103,14 +131,17 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testAdditionOfManyByMany() {
-        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+        func whereTheElementTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = InfiniInt<B>
             typealias F = Fallible<T>
-            
-            let a: [UX] = [ 0,  0,  0,  0,  0,  0,  0,  0]
-            let b: [UX] = [~0, ~0, ~0, ~0, ~0, ~0, ~0, ~0]
-            let c: [UX] = [~1, ~0, ~0, ~0, ~0, ~0, ~0, ~0] // +1
-            
+            //=----------------------------------=
+            let x: (UX) = UX.msb
+            let a: [UX] = [ 0,  0,  0,  0]
+            let b: [UX] = [~0, ~0, ~0, ~0]
+            let c: [UX] = [~1, ~0, ~0, ~0]
+            let d: [UX] = [~0, ~0, ~0, ~x]
+            let e: [UX] = [ 0,  0,  0,  x]
+            //=----------------------------------=
             Test().addition(T(a, repeating: 0), T(a, repeating: 0), F(T(a + [ 0] as [UX], repeating: 0)))
             Test().addition(T(a, repeating: 0), T(a, repeating: 1), F(T(a + [~0] as [UX], repeating: 1)))
             Test().addition(T(a, repeating: 1), T(a, repeating: 0), F(T(a + [~0] as [UX], repeating: 1)))
@@ -130,22 +161,45 @@ extension InfiniIntTests {
             Test().addition(T(b, repeating: 0), T(b, repeating: 1), F(T(c + [ 0] as [UX], repeating: 0), error: !T.isSigned))
             Test().addition(T(b, repeating: 1), T(b, repeating: 0), F(T(c + [ 0] as [UX], repeating: 0), error: !T.isSigned))
             Test().addition(T(b, repeating: 1), T(b, repeating: 1), F(T(c + [~0] as [UX], repeating: 1), error: !T.isSigned))
+            //=----------------------------------=
+            Test().addition(T(d, repeating: 0), T(d, repeating: 0), F(T(c + [ 0] as [UX], repeating: 0)))
+            Test().addition(T(d, repeating: 0), T(d, repeating: 1), F(T(c + [~0] as [UX], repeating: 1)))
+            Test().addition(T(d, repeating: 1), T(d, repeating: 0), F(T(c + [~0] as [UX], repeating: 1)))
+            Test().addition(T(d, repeating: 1), T(d, repeating: 1), F(T(c + [~1] as [UX], repeating: 1), error: !T.isSigned))
+            
+            Test().addition(T(d, repeating: 0), T(e, repeating: 0), F(T(b + [ 0] as [UX], repeating: 0)))
+            Test().addition(T(d, repeating: 0), T(e, repeating: 1), F(T(b + [~0] as [UX], repeating: 1)))
+            Test().addition(T(d, repeating: 1), T(e, repeating: 0), F(T(b + [~0] as [UX], repeating: 1)))
+            Test().addition(T(d, repeating: 1), T(e, repeating: 1), F(T(b + [~1] as [UX], repeating: 1), error: !T.isSigned))
+            
+            Test().addition(T(e, repeating: 0), T(d, repeating: 0), F(T(b + [ 0] as [UX], repeating: 0)))
+            Test().addition(T(e, repeating: 0), T(d, repeating: 1), F(T(b + [~0] as [UX], repeating: 1)))
+            Test().addition(T(e, repeating: 1), T(d, repeating: 0), F(T(b + [~0] as [UX], repeating: 1)))
+            Test().addition(T(e, repeating: 1), T(d, repeating: 1), F(T(b + [~1] as [UX], repeating: 1), error: !T.isSigned))
+            
+            Test().addition(T(e, repeating: 0), T(e, repeating: 0), F(T(a + [ 1] as [UX], repeating: 0)))
+            Test().addition(T(e, repeating: 0), T(e, repeating: 1), F(T(a + [ 0] as [UX], repeating: 0), error: !T.isSigned))
+            Test().addition(T(e, repeating: 1), T(e, repeating: 0), F(T(a + [ 0] as [UX], repeating: 0), error: !T.isSigned))
+            Test().addition(T(e, repeating: 1), T(e, repeating: 1), F(T(a + [~0] as [UX], repeating: 1), error: !T.isSigned))
         }
         
         for element in Self.elements {
-            whereTheBaseTypeIs(element)
+            whereTheElementTypeIs(element)
         }
     }
     
     func testSubtractionOfManyByMany() {
-        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+        func whereTheElementTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = InfiniInt<B>
             typealias F = Fallible<T>
-            
-            let a: [UX] = [ 0,  0,  0,  0,  0,  0,  0,  0]
-            let b: [UX] = [~0, ~0, ~0, ~0, ~0, ~0, ~0, ~0]
-            let c: [UX] = [ 1,  0,  0,  0,  0,  0,  0,  0] // -1
-            
+            //=----------------------------------=
+            let x: (UX) = UX.msb
+            let a: [UX] = [ 0,  0,  0,  0]
+            let b: [UX] = [~0, ~0, ~0, ~0]
+            let c: [UX] = [ 1,  0,  0,  0]
+            let d: [UX] = [~0, ~0, ~0, ~x]
+            let e: [UX] = [ 0,  0,  0,  x]
+            //=----------------------------------=
             Test().subtraction(T(a, repeating: 0), T(a, repeating: 0), F(T(a + [ 0] as [UX], repeating: 0)))
             Test().subtraction(T(a, repeating: 0), T(a, repeating: 1), F(T(a + [ 1] as [UX], repeating: 0), error: !T.isSigned))
             Test().subtraction(T(a, repeating: 1), T(a, repeating: 0), F(T(a + [~0] as [UX], repeating: 1)))
@@ -165,10 +219,30 @@ extension InfiniIntTests {
             Test().subtraction(T(b, repeating: 0), T(b, repeating: 1), F(T(a + [ 1] as [UX], repeating: 0), error: !T.isSigned))
             Test().subtraction(T(b, repeating: 1), T(b, repeating: 0), F(T(a + [~0] as [UX], repeating: 1)))
             Test().subtraction(T(b, repeating: 1), T(b, repeating: 1), F(T(a + [ 0] as [UX], repeating: 0)))
+            //=----------------------------------=
+            Test().subtraction(T(d, repeating: 0), T(d, repeating: 0), F(T(a + [ 0] as [UX], repeating: 0)))
+            Test().subtraction(T(d, repeating: 0), T(d, repeating: 1), F(T(a + [ 1] as [UX], repeating: 0), error: !T.isSigned))
+            Test().subtraction(T(d, repeating: 1), T(d, repeating: 0), F(T(a + [~0] as [UX], repeating: 1)))
+            Test().subtraction(T(d, repeating: 1), T(d, repeating: 1), F(T(a + [ 0] as [UX], repeating: 0)))
+            
+            Test().subtraction(T(d, repeating: 0), T(e, repeating: 0), F(T(b + [~0] as [UX], repeating: 1), error: !T.isSigned))
+            Test().subtraction(T(d, repeating: 0), T(e, repeating: 1), F(T(b + [ 0] as [UX], repeating: 0), error: !T.isSigned))
+            Test().subtraction(T(d, repeating: 1), T(e, repeating: 0), F(T(b + [~1] as [UX], repeating: 1)))
+            Test().subtraction(T(d, repeating: 1), T(e, repeating: 1), F(T(b + [~0] as [UX], repeating: 1), error: !T.isSigned))
+            
+            Test().subtraction(T(e, repeating: 0), T(d, repeating: 0), F(T(c + [ 0] as [UX], repeating: 0)))
+            Test().subtraction(T(e, repeating: 0), T(d, repeating: 1), F(T(c + [ 1] as [UX], repeating: 0), error: !T.isSigned))
+            Test().subtraction(T(e, repeating: 1), T(d, repeating: 0), F(T(c + [~0] as [UX], repeating: 1)))
+            Test().subtraction(T(e, repeating: 1), T(d, repeating: 1), F(T(c + [ 0] as [UX], repeating: 0)))
+            
+            Test().subtraction(T(e, repeating: 0), T(e, repeating: 0), F(T(a + [ 0] as [UX], repeating: 0)))
+            Test().subtraction(T(e, repeating: 0), T(e, repeating: 1), F(T(a + [ 1] as [UX], repeating: 0), error: !T.isSigned))
+            Test().subtraction(T(e, repeating: 1), T(e, repeating: 0), F(T(a + [~0] as [UX], repeating: 1)))
+            Test().subtraction(T(e, repeating: 1), T(e, repeating: 1), F(T(a + [ 0] as [UX], repeating: 0)))
         }
         
         for element in Self.elements {
-            whereTheBaseTypeIs(element)
+            whereTheElementTypeIs(element)
         }
     }
 }

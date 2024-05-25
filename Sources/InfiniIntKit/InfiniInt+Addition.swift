@@ -31,6 +31,7 @@ extension InfiniInt {
             }
         }
         
+        //  this can only overflow when elements are unsigned (else ~1 ≤ last ≤ 1)
         var last = Element(repeating: self.appendix)
         (last, overflow) = last.plus(Element(repeating: other.appendix), plus: overflow).components()
         self.storage.appendix = Element.Signitude(raw:  last).appendix
@@ -51,6 +52,7 @@ extension InfiniInt {
             }
         }
         
+        //  this can only overflow when elements are unsigned (else ~1 ≤ last ≤ 1)
         var last = Element(repeating: self.appendix)
         (last, overflow) = last.minus(Element(repeating: other.appendix), plus: overflow).components()
         self.storage.appendix = Element.Signitude(raw:   last).appendix
