@@ -17,10 +17,42 @@ import TestKit
 extension DataIntTests {
     
     //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testAddition00() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
+            typealias C = DataIntTests.Body<T>
+            typealias F = Fallible<[T]>
+            
+            C([] as [T]).plus([] as [T], plus: false, is: F([] as [T]))
+            C([] as [T]).plus([] as [T], plus: true,  is: F([] as [T], error: true))
+        }
+        
+        for type in coreSystemsIntegersWhereIsUnsigned {
+            whereIs(type)
+        }
+    }
+    
+    func testSubtraction00() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
+            typealias C = DataIntTests.Body<T>
+            typealias F = Fallible<[T]>
+            
+            C([] as [T]).minus([] as [T], plus: false, is: F([] as [T]))
+            C([] as [T]).minus([] as [T], plus: true,  is: F([] as [T], error: true))
+        }
+        
+        for type in coreSystemsIntegersWhereIsUnsigned {
+            whereIs(type)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Tests x Many + Bit
     //=------------------------------------------------------------------------=
     
-    func testAddition41B() {
+    func testAddition41() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
             typealias C = DataIntTests.Body<T>
             typealias F = Fallible<[T]>
@@ -55,7 +87,7 @@ extension DataIntTests {
         }
     }
     
-    func testSubtraction41B() {
+    func testSubtraction41() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
             typealias C = DataIntTests.Body<T>
             typealias F = Fallible<[T]>
@@ -90,7 +122,7 @@ extension DataIntTests {
         }
     }
     
-    func testAddition44B() {
+    func testAddition44() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
             typealias C = DataIntTests.Body<T>
             typealias F = Fallible<[T]>
@@ -151,7 +183,7 @@ extension DataIntTests {
         }
     }
     
-    func testSubtraction44B() {
+    func testSubtraction44() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
             typealias C = DataIntTests.Body<T>
             typealias F = Fallible<[T]>
