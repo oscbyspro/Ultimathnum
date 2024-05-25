@@ -68,7 +68,7 @@ extension TextInt {
             // pointee: initialization
             //=----------------------------------=
             for index in words.indices {
-                words[unchecked: index] = body[unchecked:(index &* IX(MemoryLayout<UX>.stride))...].load(as: UX.self)
+                words[unchecked: index] = DataInt(body[unchecked:(index &* IX(MemoryLayout<UX>.stride))...]).load(as: UX.self)
             }
             //=----------------------------------=
             // pointee: deferred deinitialization

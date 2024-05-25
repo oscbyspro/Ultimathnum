@@ -41,7 +41,12 @@ extension DataInt {
     /// option because it omits bounds checks in release mode.
     ///
     @inlinable public borrowing func load() -> Element {
-        self.body.load(repeating: self.appendix)
+        if  self.body.count != .zero {
+            return self.body[unchecked: ()]
+            
+        }   else {
+            return Element(repeating: self.appendix)
+        }
     }
     
     @inlinable public subscript(index: UX) -> Element {
@@ -147,25 +152,6 @@ extension DataInt.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// Returns the least significant bit pattern that fits in an element.
-    ///
-    /// This method returns the first element when possible. It also handles the
-    /// case where the body is empty. In that case, it returns the repeating bit
-    /// pattern of `appendix`.
-    ///
-    @inlinable public borrowing func load(repeating appendix: Bit = .zero) -> Element {
-        if  UX(raw: self.count) > .zero {
-            return self[unchecked: ()]
-            
-        }   else {
-            return Element(repeating: appendix)
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
     @inlinable public subscript(unchecked index: Void) -> Element {
         //=----------------------------------=
         Swift.assert(00000 <  self.count, String.indexOutOfBounds())
@@ -259,20 +245,6 @@ extension MutableDataInt.Body {
     
     @inlinable public var indices: Range<IX> {
         Immutable(self).indices
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    /// Returns the least significant bit pattern that fits in an element.
-    ///
-    /// This method returns the first element when possible. It also handles the
-    /// case where the body is empty. In that case, it returns the repeating bit
-    /// pattern of `appendix`.
-    ///
-    @inlinable public borrowing func load(repeating appendix: Bit = .zero) -> Element {
-        Immutable(self).load(repeating: appendix)
     }
     
     //=------------------------------------------------------------------------=

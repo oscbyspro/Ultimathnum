@@ -14,7 +14,7 @@
 extension DataInt<U8> {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
     /// Returns the least significant bit pattern that fits in the given type,
@@ -30,16 +30,29 @@ extension DataInt<U8> {
         return self.load(as: Destination.self)
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
     /// Returns the least significant bit pattern that fits in the given type.
     @inlinable public borrowing func load<Destination>(
         as destination: Destination.Type
     )   -> Destination where Destination: SystemsInteger & UnsignedInteger {
         
-        self.body.load(as: Destination.self, repeating: self.appendix)
+        if  IX(MemoryLayout<Destination>.size) <= self.body.count {
+            return UnsafeRawPointer(self.body.start).loadUnaligned(as: Destination.self)
+            
+        }   else if IX(MemoryLayout<Destination>.size) == 1 {
+            return Destination(repeating: self.appendix)
+            
+        }   else {
+            var index = self.body.count
+            var value = Destination(repeating: self.appendix)
+            
+            while index  > 0 as IX {
+                index  &-= 1 as IX
+                value &<<= 8 as Destination
+                value   |= Destination(load: self.body[unchecked: index])
+            }
+            
+            return value
+        }
     }
 }
 
@@ -50,7 +63,7 @@ extension DataInt<U8> {
 extension MutableDataInt<U8> {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
     /// Returns the least significant bit pattern that fits in the given type,
@@ -68,16 +81,12 @@ extension MutableDataInt<U8> {
         return immutable.next(as: Destination.self)
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
     /// Returns the least significant bit pattern that fits in the given type.
     @inlinable public borrowing func load<Destination>(
         as destination: Destination.Type
     )   -> Destination where Destination: SystemsInteger & UnsignedInteger {
         
-        self.body.load(as: Destination.self, repeating: self.appendix)
+        Immutable(self).load(as: Destination.self)
     }
 }
 
@@ -100,41 +109,6 @@ extension DataInt<U8>.Body {
         count  &>>= UX(raw: MemoryLayout<Destination>.stride).count(.ascending(.zero))
         return IX(raw: count)
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    /// Returns the least significant bit pattern that fits in the given type.
-    ///
-    /// This method performs an unaligned load when possible. It also handles the
-    /// case where an unaligned load would read past the end. In that case, the void
-    /// is filled with the repeating bit pattern of `appendix`.
-    ///
-    @inlinable public borrowing func load<Destination>(
-        as destination: Destination.Type,
-        repeating appendix: Bit = .zero
-    )   -> Destination where Destination: SystemsInteger & UnsignedInteger {
-        
-        if  IX(MemoryLayout<Destination>.size) <= self.count {
-            return UnsafeRawPointer(self.start).loadUnaligned(as: Destination.self)
-            
-        }   else if IX(MemoryLayout<Destination>.size) == 1 {
-            return Destination(repeating: appendix)
-            
-        }   else {
-            var index = self.count
-            var value = Destination(repeating: appendix)
-            
-            while index  > 0 as IX {
-                index  &-= 1 as IX
-                value &<<= 8 as Destination
-                value   |= Destination(load: self[unchecked: index])
-            }
-            
-            return value
-        }
-    }
 }
 
 //*============================================================================*
@@ -152,23 +126,5 @@ extension MutableDataInt<U8>.Body {
     )   -> IX where Destination: SystemsInteger & UnsignedInteger {
         
         Immutable(self).count(as: Destination.self)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-
-    /// Returns the least significant bit pattern that fits in the given type.
-    ///
-    /// This method performs an unaligned load when possible. It also handles the
-    /// case where an unaligned load would read past the end. In that case, the void
-    /// is filled with the repeating bit pattern of `appendix`.
-    ///
-    @inlinable public borrowing func load<Destination>(
-        as destination: Destination.Type,
-        repeating appendix: Bit = .zero
-    )   -> Destination where Destination: SystemsInteger & UnsignedInteger {
-        
-        Immutable(self).load(as: Destination.self, repeating: appendix)
     }
 }

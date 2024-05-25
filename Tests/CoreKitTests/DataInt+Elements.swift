@@ -140,20 +140,6 @@ extension DataIntTests.Extension {
             },  write: {
                 $0[unchecked: index...][unchecked: ()]
             })
-            
-            DataIntTests.Body(self.item.body, test: self.test).expect(expectation, read: {
-                $0[unchecked: index...].load()
-            },  write: {
-                $0[unchecked: index...].load()
-            })
-        }
-        
-        if  index == .zero, self.item.body.isEmpty {
-            DataIntTests.Body(self.item.body, test: self.test).expect(00000000000, read: {
-                $0.load()
-            },  write: {
-                $0.load()
-            })
         }
     }
 }

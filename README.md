@@ -389,8 +389,7 @@ overview [Mutable]DataInt.Body:
 /buffer() -> Unsafe[Mutable]BufferPointer
 /count    -> IX
 /indices  -> Range<IX>
-/load(repeating: Bit) -> Element
-/start -> Unsafe[Mutable]Pointer
+/start    -> Unsafe[Mutable]Pointer
 /subscript(unchecked: Void) -> Element
 /subscript(unchecked: IX)   -> Element
 /withMemoryRebound(to:as:)

@@ -166,14 +166,6 @@ extension DataIntTests.Extension where Element == U8 {
         },  write: {
             $0[index...].load(as: T.self)
         })
-        
-        if  index == .zero, self.item.body.count == .zero {
-            DataIntTests.Body(self.item.body, test: self.test).expect(T.zero, read: {
-                $0.load(as: T.self)
-            },  write: {
-                $0.load(as: T.self)
-            })
-        }
     }
     
     func body<T>(as type: T.Type, is expectation: [T]) where T: SystemsInteger & UnsignedInteger {
