@@ -116,7 +116,7 @@ extension DataInt<U8>.Body {
         repeating appendix: Bit = .zero
     )   -> Destination where Destination: SystemsInteger & UnsignedInteger {
         
-        if  IX(MemoryLayout<Destination>.size) <= self.count as IX {
+        if  IX(MemoryLayout<Destination>.size) <= self.count {
             return UnsafeRawPointer(self.start).loadUnaligned(as: Destination.self)
             
         }   else if IX(MemoryLayout<Destination>.size) == 1 {

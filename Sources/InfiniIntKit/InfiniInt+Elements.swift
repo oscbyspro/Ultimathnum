@@ -79,7 +79,7 @@ extension InfiniInt {
         var body = Storage.Body()
         body.reserveCapacity(Int(raw: source.body.count(as: Element.Magnitude.self)))
         
-        while !source.body.isEmpty {
+        while source.body.count != .zero {
             body.append(source.next(as: Element.Magnitude.self))
         }
         

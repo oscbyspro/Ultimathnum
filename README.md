@@ -301,13 +301,13 @@ are finite, unsigned, and unchecked by default.
 ```
 overview MutableDataInt.Body:
 
-/[de/in]crement(by: Bool) -> Fallible<Void>
-/[de/in]crementSameSize(repeating: Bool, plus: Bool) -> Fallible<Void>
-/[de/in]crement[SubSequence](by: Element) -> Fallible<[Void/Self]>
-/[de/in]crement[SubSequence](by: Element, plus: Bool) -> Fallible<[Void/Self]>
-/[de/in]crement[SubSequence](by: DataInt.Body, plus: Bool) -> Fallible<[Void/Self]>
-/[de/in]crement[SubSequence](by: DataInt.Body, times: Element, plus: Element) -> Fallible<[Void/Self]>
-/[de/in]crement[SubSequence](toggling: DataInt.Body, plus: Bool) -> Fallible<[Void/Self]>
+/[de|in]crement(by: Bool) -> Fallible<Void>
+/[de|in]crementSameSize(repeating: Bool, plus: Bool) -> Fallible<Void>
+/[de|in]crement[SubSequence](by: Element) -> Fallible<[Void|Self]>
+/[de|in]crement[SubSequence](by: Element, plus: Bool) -> Fallible<[Void|Self]>
+/[de|in]crement[SubSequence](by: DataInt.Body, plus: Bool) -> Fallible<[Void|Self]>
+/[de|in]crement[SubSequence](by: DataInt.Body, times: Element, plus: Element) -> Fallible<[Void|Self]>
+/[de|in]crement[SubSequence](toggling: DataInt.Body, plus: Bool) -> Fallible<[Void|Self]>
 ```
 
 ##### Bitwise
@@ -374,11 +374,11 @@ overview MutableDataInt.Body:
 ```
 overview [Mutable]DataInt:
 
-/body     -> Body
 /appendix -> Bit
-/next() -> Element
-/load() -> Element
-/subscript(IX) -> Element
+/body     -> Body
+/load()   -> Element
+/next()   -> Element
+/subscript(UX) -> Element
 /withMemoryRebound(to:as:)
 ```
 
@@ -386,10 +386,11 @@ overview [Mutable]DataInt:
 overview [Mutable]DataInt.Body:
 
 /appendix -> Bit
-/indices  -> Range<IX>
-/isEmpty  -> Bool
 /buffer() -> Unsafe[Mutable]BufferPointer
-/load(repeating: Bit)       -> Element
+/count    -> IX
+/indices  -> Range<IX>
+/load(repeating: Bit) -> Element
+/start -> Unsafe[Mutable]Pointer
 /subscript(unchecked: Void) -> Element
 /subscript(unchecked: IX)   -> Element
 /withMemoryRebound(to:as:)
@@ -442,9 +443,9 @@ overview [Mutable]DataInt.Body:
 ```
 overview MutableDataInt.Body:
 
-/[up/down]shift(environment: Element, major: IX, minor: IX)
-/[up/down]shift(environment: Element, majorAtLeastOne: IX, minor: Void)
-/[up/down]shift(environment: Element, major: IX, minorAtLeastOne: IX)
+/[up|down]shift(environment: Element, major: IX, minor: IX)
+/[up|down]shift(environment: Element, majorAtLeastOne: IX, minor: Void)
+/[up|down]shift(environment: Element, major: IX, minorAtLeastOne: IX)
 ```
 
 <a name="corekit-upsize"/>

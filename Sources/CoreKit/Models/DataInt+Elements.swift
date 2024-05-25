@@ -139,10 +139,6 @@ extension DataInt.Body {
         Bit.zero
     }
     
-    @inlinable public var isEmpty: Bool {
-        self.count == 0
-    }
-    
     @inlinable public var indices: Range<IX> {
         Range(uncheckedBounds:(0, self.count))
     }
@@ -259,10 +255,6 @@ extension MutableDataInt.Body {
     
     @inlinable public var appendix: Bit {
         Immutable(self).appendix
-    }
-    
-    @inlinable public var isEmpty: Bool {
-        Immutable(self).isEmpty
     }
     
     @inlinable public var indices: Range<IX> {
