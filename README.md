@@ -393,7 +393,6 @@ overview [Mutable]DataInt.Body:
 /load(repeating: Bit)       -> Element
 /subscript(unchecked: Void) -> Element
 /subscript(unchecked: IX)   -> Element
-/subscript(optional:  IX)   -> Element?
 /withMemoryRebound(to:as:)
 ```
 

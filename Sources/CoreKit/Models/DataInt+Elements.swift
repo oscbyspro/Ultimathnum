@@ -170,14 +170,6 @@ extension DataInt.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public subscript(optional index: IX) -> Element? {
-        if  UX(raw: index) < UX(raw: self.count) {
-            return self[unchecked: index]
-        }   else {
-            return nil
-        }
-    }
-    
     @inlinable public subscript(unchecked index: Void) -> Element {
         //=----------------------------------=
         Swift.assert(00000 <  self.count, String.indexOutOfBounds())
@@ -294,10 +286,6 @@ extension MutableDataInt.Body {
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
-    
-    @inlinable public subscript(optional index: IX) -> Element? {
-        Immutable(self)[optional: index]
-    }
     
     @inlinable public subscript(unchecked index: Void) -> Element {
         nonmutating get {
