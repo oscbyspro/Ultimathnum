@@ -126,20 +126,20 @@ extension DataIntTests.Body {
     //=------------------------------------------------------------------------=
     
     func split(clamping index: IX, low: [Element], high: [Element]) {
-        self.split(at: Swift.min(Swift.max(IX.zero, index), IX(self.body.count)), low: low, high: high)
+        self.split(unchecked: Swift.min(Swift.max(IX.zero, index), IX(self.body.count)), low: low, high: high)
     }
 
-    func split(at index: IX, low: [Element], high: [Element]) {
+    func split(unchecked index: IX, low: [Element], high: [Element]) {
         self.expect(low, read:{
-            Array($0.split(at: index).low .buffer())
+            Array($0.split(unchecked: index).low .buffer())
         },  write: {
-            Array($0.split(at: index).low .buffer())
+            Array($0.split(unchecked: index).low .buffer())
         })
         
         self.expect(high, read:{
-            Array($0.split(at: index).high.buffer())
+            Array($0.split(unchecked: index).high.buffer())
         },  write: {
-            Array($0.split(at: index).high.buffer())
+            Array($0.split(unchecked: index).high.buffer())
         })
     }
 }

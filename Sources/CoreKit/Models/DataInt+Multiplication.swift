@@ -218,11 +218,11 @@ extension MutableDataInt.Body {
         let j: IX = (((((i))))) &<< 1
         Swift.assert(self.count >=  2 * j)
         
-        var (a,b) = lhs.split(at: Swift.min(i, lhs.count))
+        var (a,b) = lhs.split(unchecked: Swift.min(i, lhs.count))
         a = a.normalized()
         b = b.normalized()
         
-        var (x,y) = rhs.split(at: Swift.min(i, rhs.count))
+        var (x,y) = rhs.split(unchecked: Swift.min(i, rhs.count))
         x = x.normalized()
         y = y.normalized()
         

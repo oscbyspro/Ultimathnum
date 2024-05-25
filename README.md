@@ -432,11 +432,11 @@ overview [Mutable]DataInt:
 ```
 overview [Mutable]DataInt.Body:
 
-/split(at: IX) -> Self
 /normalized(repeating: Bit) -> Self
+/split(unchecked: IX) -> Self
+/subscript(unchecked: Range<IX>) -> Self
 /subscript(unchecked: PartialRangeFrom<IX>) -> Self
 /subscript(unchecked: PartialRangeUpTo<IX>) -> Self
-/subscript(unchecked: Range<IX>) -> Self
 ```
 
 ##### Shift
@@ -553,18 +553,6 @@ to the same effect, or to perform an in-place reinterpretation.
     }
 }
 ```
-
-<details>
-<summary>
-Here's how you translate it to Strideable/distance(from:to:) proper...
-</summary>
-
-```swift
-@inlinable public func distance(to other: Self) -> Swift.Int {
-    Swift.Int(self.distance(to: other, as: IX.self).unwrap())
-}
-```
-</details>
 
 The above example shows a generic Strideable/distance(from:to:) esque method. In the narrowing 
 unsigned case you find that the difference is reinterpreted as a same-size signed integer type 

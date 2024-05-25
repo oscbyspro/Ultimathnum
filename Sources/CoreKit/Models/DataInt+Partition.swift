@@ -68,14 +68,6 @@ extension DataInt.Body {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func split(at index: IX) -> (low: Self, high: Self) {
-        //=--------------------------------------=
-        Swift.assert(index >= 0000000000, String.indexOutOfBounds())
-        Swift.assert(index <= self.count, String.indexOutOfBounds())
-        //=--------------------------------------=
-        return (low: (copy self)[unchecked: ..<index], high: (consume self)[unchecked: index...])
-    }
-    
     @inlinable public consuming func normalized(repeating appendix: Bit = .zero) -> Self {
         let appendix = Element(repeating: appendix)
         var endIndex = self.count
@@ -89,9 +81,28 @@ extension DataInt.Body {
         return Self(self.start, count: endIndex)
     }
     
+    @inlinable public consuming func split(unchecked index: IX) -> (low: Self, high: Self) {
+        //=--------------------------------------=
+        Swift.assert(index >= 0000000000, String.indexOutOfBounds())
+        Swift.assert(index <= self.count, String.indexOutOfBounds())
+        //=--------------------------------------=
+        return (low: (copy self)[unchecked: ..<index], high: (consume self)[unchecked: index...])
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
+    
+    @inlinable public subscript(unchecked range: Range<IX>) -> Self {
+        consuming get {
+            //=----------------------------------=
+            Swift.assert(range.lowerBound >= 0000000000, String.indexOutOfBounds())
+            Swift.assert(range.upperBound <= self.count, String.indexOutOfBounds())
+            //=----------------------------------=
+            let start = self.start.advanced(by: Int(range.lowerBound))
+            return Self(start, count: IX(range.count))
+        }
+    }
     
     @inlinable public subscript(unchecked range: PartialRangeFrom<IX>) -> Self {
         consuming get {
@@ -114,17 +125,6 @@ extension DataInt.Body {
             return Self(self.start, count: range.upperBound)
         }
     }
-    
-    @inlinable public subscript(unchecked range: Range<IX>) -> Self {
-        consuming get {
-            //=----------------------------------=
-            Swift.assert(range.lowerBound >= 0000000000, String.indexOutOfBounds())
-            Swift.assert(range.upperBound <= self.count, String.indexOutOfBounds())
-            //=----------------------------------=
-            let start = self.start.advanced(by: Int(range.lowerBound))
-            return Self(start, count: IX(range.count))
-        }
-    }
 }
 
 //*============================================================================*
@@ -137,18 +137,24 @@ extension MutableDataInt.Body {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func split(at index: IX) -> (low: Self, high: Self) {
-        let (low, high) = Immutable(self).split(at: index)
-        return (low: Self(mutating: low), high: Self(mutating: high))
-    }
-    
     @inlinable public consuming func normalized(repeating appendix: Bit = .zero) -> Self {
         Self(mutating: Immutable(self).normalized(repeating: appendix))
+    }
+    
+    @inlinable public consuming func split(unchecked index: IX) -> (low: Self, high: Self) {
+        let (low, high) = Immutable(self).split(unchecked: index)
+        return (low: Self(mutating: low), high: Self(mutating: high))
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
+    
+    @inlinable public subscript(unchecked range: Range<IX>) -> Self {
+        consuming get {
+            Self(mutating: Immutable(self)[unchecked: range])
+        }
+    }
     
     @inlinable public subscript(unchecked range: PartialRangeFrom<IX>) -> Self {
         consuming get {
@@ -157,12 +163,6 @@ extension MutableDataInt.Body {
     }
     
     @inlinable public subscript(unchecked range: PartialRangeUpTo<IX>) -> Self {
-        consuming get {
-            Self(mutating: Immutable(self)[unchecked: range])
-        }
-    }
-    
-    @inlinable public subscript(unchecked range: Range<IX>) -> Self {
         consuming get {
             Self(mutating: Immutable(self)[unchecked: range])
         }
