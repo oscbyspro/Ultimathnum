@@ -17,6 +17,7 @@ extension Signum {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Returns the result of `0 - self`.
     @inlinable public consuming func negated() -> Self {
         switch self {
         case .less: .more
@@ -25,6 +26,7 @@ extension Signum {
         }
     }
     
+    /// Returns the result of `0 - instance`.
     @inlinable public static prefix func -(instance: consuming Self) -> Self {
         instance.negated()
     }
