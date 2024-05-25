@@ -301,13 +301,13 @@ are finite, unsigned, and unchecked by default.
 ```
 overview MutableDataInt.Body:
 
-/increment(by: Bool) -> Fallible<Void>
-/incrementSameSize(repeating: Bool, plus: Bool) -> Fallible<Void>
-/increment[SubSequence](by: Element) -> Fallible<[Void/Self]>
-/increment[SubSequence](by: Element, plus: Bool) -> Fallible<[Void/Self]>
-/increment[SubSequence](by: DataInt.Body, plus: Bool) -> Fallible<[Void/Self]>
-/increment[SubSequence](by: DataInt.Body, times: Element, plus: Element) -> Fallible<[Void/Self]>
-/increment[SubSequence](toggling: DataInt.Body, plus: Bool) -> Fallible<[Void/Self]>
+/[de/in]crement(by: Bool) -> Fallible<Void>
+/[de/in]crementSameSize(repeating: Bool, plus: Bool) -> Fallible<Void>
+/[de/in]crement[SubSequence](by: Element) -> Fallible<[Void/Self]>
+/[de/in]crement[SubSequence](by: Element, plus: Bool) -> Fallible<[Void/Self]>
+/[de/in]crement[SubSequence](by: DataInt.Body, plus: Bool) -> Fallible<[Void/Self]>
+/[de/in]crement[SubSequence](by: DataInt.Body, times: Element, plus: Element) -> Fallible<[Void/Self]>
+/[de/in]crement[SubSequence](toggling: DataInt.Body, plus: Bool) -> Fallible<[Void/Self]>
 ```
 
 ##### Bitwise
@@ -446,20 +446,6 @@ overview MutableDataInt.Body:
 /[up/down]shift(environment: Element, major: IX, minor: IX)
 /[up/down]shift(environment: Element, majorAtLeastOne: IX, minor: Void)
 /[up/down]shift(environment: Element, major: IX, minorAtLeastOne: IX)
-```
-
-##### Subtraction
-
-```
-overview MutableDataInt.Body:
-
-/decrement(by: Bool) -> Fallible<Void>
-/decrementSameSize(repeating: Bool, plus: Bool) -> Fallible<Void>
-/decrement[SubSequence](by: Element) -> Fallible<[Void/Self]>
-/decrement[SubSequence](by: Element, plus: Bool) -> Fallible<[Void/Self]>
-/decrement[SubSequence](by: DataInt.Body, plus: Bool) -> Fallible<[Void/Self]>
-/decrement[SubSequence](by: DataInt.Body, times: Element, plus: Element) -> Fallible<[Void/Self]>
-/decrement[SubSequence](toggling: DataInt.Body, plus: Bool) -> Fallible<[Void/Self]>
 ```
 
 <a name="corekit-upsize"/>

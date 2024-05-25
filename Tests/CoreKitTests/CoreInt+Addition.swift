@@ -30,4 +30,16 @@ extension CoreIntTests {
             whereIs(type)
         }
     }
+    
+    func testSubtraction() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            IntegerInvariants(T.self).negation()
+            IntegerInvariants(T.self).subtractionOfMinMaxEsque()
+            IntegerInvariants(T.self).subtractionOfRepeatingBit(BinaryIntegerID())
+        }
+        
+        for type in coreSystemsIntegers {
+            whereIs(type)
+        }
+    }
 }

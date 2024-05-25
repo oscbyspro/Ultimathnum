@@ -19,9 +19,15 @@ extension DoubleInt {
     // MARK: Transformations x 2 by 1
     //=------------------------------------------------------------------------=
         
-    @inlinable public consuming func plus(_ increment: Base.Magnitude) -> Fallible<Self> {
-        let low  = self.low .plus(Low(raw:  increment))
+    @inlinable public consuming func plus(_ other: Base.Magnitude) -> Fallible<Self> {
+        let low  = self.low .plus(Low(raw:  other))
         let high = self.high.plus(low.error)
+        return Self(low: low.value, high: high.value).veto(high.error)
+    }
+    
+    @inlinable public consuming func minus(_ other: Base.Magnitude) -> Fallible<Self> {
+        let low  = self.low .minus(Low(raw: other))
+        let high = self.high.minus(low.error)
         return Self(low: low.value, high: high.value).veto(high.error)
     }
     
@@ -29,9 +35,15 @@ extension DoubleInt {
     // MARK: Transformations x 2 by 2
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func plus(_ increment: borrowing Self) -> Fallible<Self> {
-        let low  = self.storage.low .plus(increment.storage.low)
-        let high = self.storage.high.plus(increment.storage.high, plus: low.error)
+    @inlinable public consuming func plus(_ other: borrowing Self) -> Fallible<Self> {
+        let low  = self.storage.low .plus(other.storage.low)
+        let high = self.storage.high.plus(other.storage.high, plus: low.error)
+        return Self(low: low.value, high: high.value).veto(high.error)
+    }
+    
+    @inlinable public consuming func minus(_ other: borrowing Self) -> Fallible<Self> {
+        let low  = self.storage.low .minus(other.storage.low)
+        let high = self.storage.high.minus(other.storage.high, plus: low.error)
         return Self(low: low.value, high: high.value).veto(high.error)
     }
 }

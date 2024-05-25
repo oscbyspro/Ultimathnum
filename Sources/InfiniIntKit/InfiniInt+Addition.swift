@@ -38,4 +38,24 @@ extension InfiniInt {
         
         return self.veto(overflow)
     }
+    
+    @inline(never) @inlinable public consuming func minus(_ other: borrowing Self) -> Fallible<Self> {
+        var overflow = false
+        
+        self.storage.resize(minCount: other.storage.count)
+        self.storage.withUnsafeMutableBinaryIntegerBody { lhs in
+            other.withUnsafeBinaryIntegerElements { rhs in
+                var lhs = consume lhs
+                (lhs, overflow) = lhs.decrementSubSequence(by: rhs.body, plus: overflow).components()
+                (overflow) = lhs.decrementSameSize(repeating: Bool(rhs.appendix), plus: overflow).error
+            }
+        }
+        
+        var last = Element(repeating: self.appendix)
+        (last, overflow) = last.minus(Element(repeating: other.appendix), plus: overflow).components()
+        self.storage.appendix = Element.Signitude(raw:   last).appendix
+        self.storage.normalize(appending: Element.Magnitude(raw: last))
+        
+        return self.veto(overflow)
+    }
 }

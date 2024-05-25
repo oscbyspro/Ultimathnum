@@ -17,12 +17,24 @@ extension Fallible where Value: BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    @inlinable public consuming func negated() -> Self {
+        self.value.negated().veto(self.error)
+    }
+    
     @inlinable public consuming func plus(_ other: borrowing Value) -> Self {
         self.value.plus(other).veto(self.error)
     }
     
+    @inlinable public consuming func minus(_ other: borrowing Value) -> Self {
+        self.value.minus(other).veto(self.error)
+    }
+    
     @inlinable public consuming func plus(_ other: borrowing Fallible<Value>) -> Self {
         self.value.plus(other).veto(self.error)
+    }
+    
+    @inlinable public consuming func minus(_ other: borrowing Fallible<Value>) -> Self {
+        self.value.minus(other).veto(self.error)
     }
 }
 
@@ -41,8 +53,18 @@ extension Fallible where Value: BinaryInteger {
         self.plus(true)
     }
     
-    /// Returns the result of `self + increment`.
-    @inlinable public consuming func plus(_ increment: Bool) -> Fallible<Value> {
-        self.value.plus(increment).veto(self.error)
+    /// Returns the previous value in arithmetic progression.
+    @inlinable public consuming func decremented() -> Fallible<Value> {
+        self.minus(true)
+    }
+    
+    /// Returns the result of `self + other`.
+    @inlinable public consuming func plus(_ other: Bool) -> Fallible<Value> {
+        self.value.plus(other).veto(self.error)
+    }
+    
+    /// Returns the result of `self - other`.
+    @inlinable public consuming func minus(_ other: Bool) -> Fallible<Value> {
+        self.value.minus(other).veto(self.error)
     }
 }

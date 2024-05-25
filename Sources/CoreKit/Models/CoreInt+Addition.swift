@@ -21,4 +21,9 @@ extension CoreInteger {
         let result = self.base.addingReportingOverflow(increment.base)
         return Self(result.partialValue).veto(result.overflow)
     }
+    
+    @inlinable public func minus(_ decrement: Self) -> Fallible<Self> {
+        let result = self.base.subtractingReportingOverflow(decrement.base)
+        return Self(result.partialValue).veto(result.overflow)
+    }
 }

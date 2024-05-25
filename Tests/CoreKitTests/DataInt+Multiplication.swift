@@ -279,16 +279,13 @@ extension DataIntTests.Body {
         //=--------------------------------------=
         let count = self.body.count + multiplier.count
         //=--------------------------------------=
-        // multiplication: <= U64.max
+        // multiplication: expectation <= U64.max
         //=--------------------------------------=
         if  IX(expectation.count) * IX(size: Element.self) <= 64 {
-            let a = self.body  .withUnsafeBufferPointer({  U64(load: DataInt($0)!) })
-            let b = multiplier .withUnsafeBufferPointer({  U64(load: DataInt($0)!) })
-            let c = expectation.withUnsafeBufferPointer({  U64(load: DataInt($0)!) })
-            let result: Doublet<U64> = a.multiplication(b, plus: U64.init(increment))
-            
-            test.same(result.low,  c, "UX [0]")
-            test.same(result.high, 0, "UX [1]")
+            let a = self.body  .withUnsafeBufferPointer({ U64(load: DataInt($0)!) })
+            let b = multiplier .withUnsafeBufferPointer({ U64(load: DataInt($0)!) })
+            let c = expectation.withUnsafeBufferPointer({ U64(load: DataInt($0)!) })
+            test.same(a * b + U64(increment), c, "U64")
         }
         //=--------------------------------------=
         // multiplication: many + some
