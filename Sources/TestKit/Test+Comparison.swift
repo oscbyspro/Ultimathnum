@@ -178,7 +178,6 @@ extension Test {
                                 
                 if  rhsIsZero, lhs.appendix == 0, rhs.appendix == 0 {
                     same(lhs.body.signum(), expectation, "body.signum()")
-                    same(lhs.body.isZero,   expectation == Signum.same, "body.isZero")
                 }
                 
                 if  lhs.appendix == 0, rhs.appendix == 0 {

@@ -93,17 +93,9 @@ extension DataInt.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public var isZero: Bool {
-        self.buffer().allSatisfy({ $0 == Element.zero })
-    }
-    
     @inlinable public func signum() -> Signum {
-        Signum(Bit(!self.isZero))
+        Signum(Bit(!self.buffer().allSatisfy({ $0 == .zero })))
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
     
     @inlinable public func compared(to other: Self) -> Signum {
         DataInt.compare(
@@ -127,17 +119,9 @@ extension MutableDataInt.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public var isZero: Bool {
-        Immutable(self).isZero
-    }
-        
     @inlinable public func signum() -> Signum {
         Immutable(self).signum()
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
     
     @inlinable public func compared(to other: Self) -> Signum {
         self.compared(to: Immutable(other))

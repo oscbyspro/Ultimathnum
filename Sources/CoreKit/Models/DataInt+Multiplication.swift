@@ -256,7 +256,7 @@ extension MutableDataInt.Body {
             u[unchecked: axCount...].initialize(repeating: .zero)
             v[unchecked: ..<byCount].initialize(to: b, times:  y)
             v[unchecked: byCount...].initialize(repeating: .zero)
-            Swift.assert(v[unchecked: vjCount...].isZero)
+            Swift.assert(v[unchecked: vjCount...].signum() == Signum.same)
             //=----------------------------------=
             // set (a * x) and (b * y)
             //=----------------------------------=
