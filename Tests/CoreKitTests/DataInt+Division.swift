@@ -22,19 +22,19 @@ extension DataIntTests {
     
     func testDivisionByElement() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias Canvas = DataIntTests.Body<T>
+            typealias C = DataIntTests.Body<T>
             
-            Canvas([ ] as [T]).division(Divisor(1), quotient:[ ] as [T], remainder: 0)
-            Canvas([ ] as [T]).division(Divisor(2), quotient:[ ] as [T], remainder: 0)
-            Canvas([0] as [T]).division(Divisor(1), quotient:[0] as [T], remainder: 0)
-            Canvas([0] as [T]).division(Divisor(2), quotient:[0] as [T], remainder: 0)
-            Canvas([7] as [T]).division(Divisor(1), quotient:[7] as [T], remainder: 0)
-            Canvas([7] as [T]).division(Divisor(2), quotient:[3] as [T], remainder: 1)
+            C([ ] as [T]).division(Divisor(1), quotient:[ ] as [T], remainder: 0)
+            C([ ] as [T]).division(Divisor(2), quotient:[ ] as [T], remainder: 0)
+            C([0] as [T]).division(Divisor(1), quotient:[0] as [T], remainder: 0)
+            C([0] as [T]).division(Divisor(2), quotient:[0] as [T], remainder: 0)
+            C([7] as [T]).division(Divisor(1), quotient:[7] as [T], remainder: 0)
+            C([7] as [T]).division(Divisor(2), quotient:[3] as [T], remainder: 1)
             
-            Canvas([~2,  ~4,  ~6,  9] as [T]).division(Divisor(2), quotient:[~1, ~2, ~3, 4] as [T], remainder: 1)
-            Canvas([~3,  ~6,  ~9, 14] as [T]).division(Divisor(3), quotient:[~1, ~2, ~3, 4] as [T], remainder: 2)
-            Canvas([~4,  ~8, ~12, 19] as [T]).division(Divisor(4), quotient:[~1, ~2, ~3, 4] as [T], remainder: 3)
-            Canvas([~5, ~10, ~15, 24] as [T]).division(Divisor(5), quotient:[~1, ~2, ~3, 4] as [T], remainder: 4)
+            C([~2,  ~4,  ~6,  9] as [T]).division(Divisor(2), quotient:[~1, ~2, ~3, 4] as [T], remainder: 1)
+            C([~3,  ~6,  ~9, 14] as [T]).division(Divisor(3), quotient:[~1, ~2, ~3, 4] as [T], remainder: 2)
+            C([~4,  ~8, ~12, 19] as [T]).division(Divisor(4), quotient:[~1, ~2, ~3, 4] as [T], remainder: 3)
+            C([~5, ~10, ~15, 24] as [T]).division(Divisor(5), quotient:[~1, ~2, ~3, 4] as [T], remainder: 4)
         }
         
         for type in coreSystemsIntegersWhereIsUnsigned {

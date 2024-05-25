@@ -23,9 +23,9 @@ extension DataIntTests {
     /// - Note: The increment must be zero if the combined input size is zero.
     func testMultiplication00() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias Canvas = DataIntTests.Body<T>
+            typealias C = DataIntTests.Body<T>
             
-            Canvas([] as [T]).times([] as [T], plus: 0, is:[] as [T])
+            C([] as [T]).times([] as [T], plus: 0, is:[] as [T])
         }
         
         for type in coreSystemsIntegersWhereIsUnsigned {
@@ -35,12 +35,12 @@ extension DataIntTests {
     
     func testMultiplication10() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias Canvas = DataIntTests.Body<T>
+            typealias C = DataIntTests.Body<T>
             
             for value: T in [~2, ~1, ~0, 0, 1, 2] {
                 for increment: T in [~2, ~1, ~0, 0, 1, 2] {
-                    Canvas([value] as [T]).times([     ] as [T], plus: increment, is:[increment] as [T])
-                    Canvas([     ] as [T]).times([value] as [T], plus: increment, is:[increment] as [T])
+                    C([value] as [T]).times([     ] as [T], plus: increment, is:[increment] as [T])
+                    C([     ] as [T]).times([value] as [T], plus: increment, is:[increment] as [T])
                 }
             }
         }
@@ -52,29 +52,29 @@ extension DataIntTests {
     
     func testMultiplication11() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias Canvas = DataIntTests.Body<T>
+            typealias C = DataIntTests.Body<T>
             
             for increment: (T) in [0, 1, ~1, ~0] {
-                Canvas([ 0] as [T]).times([ 0] as [T], plus: increment, is:[increment, 0] as [T])
-                Canvas([ 1] as [T]).times([ 0] as [T], plus: increment, is:[increment, 0] as [T])
-                Canvas([~1] as [T]).times([ 0] as [T], plus: increment, is:[increment, 0] as [T])
-                Canvas([~0] as [T]).times([ 0] as [T], plus: increment, is:[increment, 0] as [T])
+                C([ 0] as [T]).times([ 0] as [T], plus: increment, is:[increment, 0] as [T])
+                C([ 1] as [T]).times([ 0] as [T], plus: increment, is:[increment, 0] as [T])
+                C([~1] as [T]).times([ 0] as [T], plus: increment, is:[increment, 0] as [T])
+                C([~0] as [T]).times([ 0] as [T], plus: increment, is:[increment, 0] as [T])
             }
             
-            Canvas([ 1] as [T]).times([ 2] as [T], plus:  0, is:[ 2,  0] as [T])
-            Canvas([ 1] as [T]).times([ 2] as [T], plus:  1, is:[ 3,  0] as [T])
-            Canvas([ 1] as [T]).times([ 2] as [T], plus: ~1, is:[ 0,  1] as [T])
-            Canvas([ 1] as [T]).times([ 2] as [T], plus: ~0, is:[ 1,  1] as [T])
+            C([ 1] as [T]).times([ 2] as [T], plus:  0, is:[ 2,  0] as [T])
+            C([ 1] as [T]).times([ 2] as [T], plus:  1, is:[ 3,  0] as [T])
+            C([ 1] as [T]).times([ 2] as [T], plus: ~1, is:[ 0,  1] as [T])
+            C([ 1] as [T]).times([ 2] as [T], plus: ~0, is:[ 1,  1] as [T])
             
-            Canvas([~1] as [T]).times([~2] as [T], plus:  0, is:[ 6, ~4] as [T])
-            Canvas([~1] as [T]).times([~2] as [T], plus:  1, is:[ 7, ~4] as [T])
-            Canvas([~1] as [T]).times([~2] as [T], plus: ~1, is:[ 4, ~3] as [T])
-            Canvas([~1] as [T]).times([~2] as [T], plus: ~0, is:[ 5, ~3] as [T])
+            C([~1] as [T]).times([~2] as [T], plus:  0, is:[ 6, ~4] as [T])
+            C([~1] as [T]).times([~2] as [T], plus:  1, is:[ 7, ~4] as [T])
+            C([~1] as [T]).times([~2] as [T], plus: ~1, is:[ 4, ~3] as [T])
+            C([~1] as [T]).times([~2] as [T], plus: ~0, is:[ 5, ~3] as [T])
             
-            Canvas([~0] as [T]).times([~0] as [T], plus:  0, is:[ 1, ~1] as [T])
-            Canvas([~0] as [T]).times([~0] as [T], plus:  1, is:[ 2, ~1] as [T])
-            Canvas([~0] as [T]).times([~0] as [T], plus: ~1, is:[~0, ~1] as [T])
-            Canvas([~0] as [T]).times([~0] as [T], plus: ~0, is:[ 0, ~0] as [T])
+            C([~0] as [T]).times([~0] as [T], plus:  0, is:[ 1, ~1] as [T])
+            C([~0] as [T]).times([~0] as [T], plus:  1, is:[ 2, ~1] as [T])
+            C([~0] as [T]).times([~0] as [T], plus: ~1, is:[~0, ~1] as [T])
+            C([~0] as [T]).times([~0] as [T], plus: ~0, is:[ 0, ~0] as [T])
         }
         
         for type in coreSystemsIntegersWhereIsUnsigned {
@@ -84,27 +84,27 @@ extension DataIntTests {
     
     func testMultiplication21() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias Canvas = DataIntTests.Body<T>
+            typealias C = DataIntTests.Body<T>
             
-            Canvas([ 0,  0] as [T]).times([ 0] as [T], plus:  0, is:[ 0,  0,  0] as [T])
-            Canvas([ 0,  0] as [T]).times([ 0] as [T], plus:  1, is:[ 1,  0,  0] as [T])
-            Canvas([ 0,  0] as [T]).times([ 0] as [T], plus: ~1, is:[~1,  0,  0] as [T])
-            Canvas([ 0,  0] as [T]).times([ 0] as [T], plus: ~0, is:[~0,  0,  0] as [T])
+            C([ 0,  0] as [T]).times([ 0] as [T], plus:  0, is:[ 0,  0,  0] as [T])
+            C([ 0,  0] as [T]).times([ 0] as [T], plus:  1, is:[ 1,  0,  0] as [T])
+            C([ 0,  0] as [T]).times([ 0] as [T], plus: ~1, is:[~1,  0,  0] as [T])
+            C([ 0,  0] as [T]).times([ 0] as [T], plus: ~0, is:[~0,  0,  0] as [T])
             
-            Canvas([ 0,  1] as [T]).times([ 2] as [T], plus:  0, is:[ 0,  2,  0] as [T])
-            Canvas([ 0,  1] as [T]).times([ 2] as [T], plus:  1, is:[ 1,  2,  0] as [T])
-            Canvas([ 0,  1] as [T]).times([ 2] as [T], plus: ~1, is:[~1,  2,  0] as [T])
-            Canvas([ 0,  1] as [T]).times([ 2] as [T], plus: ~0, is:[~0,  2,  0] as [T])
+            C([ 0,  1] as [T]).times([ 2] as [T], plus:  0, is:[ 0,  2,  0] as [T])
+            C([ 0,  1] as [T]).times([ 2] as [T], plus:  1, is:[ 1,  2,  0] as [T])
+            C([ 0,  1] as [T]).times([ 2] as [T], plus: ~1, is:[~1,  2,  0] as [T])
+            C([ 0,  1] as [T]).times([ 2] as [T], plus: ~0, is:[~0,  2,  0] as [T])
 
-            Canvas([~0, ~1] as [T]).times([~2] as [T], plus:  0, is:[ 3,  2, ~3] as [T])
-            Canvas([~0, ~1] as [T]).times([~2] as [T], plus:  1, is:[ 4,  2, ~3] as [T])
-            Canvas([~0, ~1] as [T]).times([~2] as [T], plus: ~1, is:[ 1,  3, ~3] as [T])
-            Canvas([~0, ~1] as [T]).times([~2] as [T], plus: ~0, is:[ 2,  3, ~3] as [T])
+            C([~0, ~1] as [T]).times([~2] as [T], plus:  0, is:[ 3,  2, ~3] as [T])
+            C([~0, ~1] as [T]).times([~2] as [T], plus:  1, is:[ 4,  2, ~3] as [T])
+            C([~0, ~1] as [T]).times([~2] as [T], plus: ~1, is:[ 1,  3, ~3] as [T])
+            C([~0, ~1] as [T]).times([~2] as [T], plus: ~0, is:[ 2,  3, ~3] as [T])
             
-            Canvas([~0, ~0] as [T]).times([~0] as [T], plus:  0, is:[ 1, ~0, ~1] as [T])
-            Canvas([~0, ~0] as [T]).times([~0] as [T], plus:  1, is:[ 2, ~0, ~1] as [T])
-            Canvas([~0, ~0] as [T]).times([~0] as [T], plus: ~1, is:[~0, ~0, ~1] as [T])
-            Canvas([~0, ~0] as [T]).times([~0] as [T], plus: ~0, is:[ 0,  0, ~0] as [T])
+            C([~0, ~0] as [T]).times([~0] as [T], plus:  0, is:[ 1, ~0, ~1] as [T])
+            C([~0, ~0] as [T]).times([~0] as [T], plus:  1, is:[ 2, ~0, ~1] as [T])
+            C([~0, ~0] as [T]).times([~0] as [T], plus: ~1, is:[~0, ~0, ~1] as [T])
+            C([~0, ~0] as [T]).times([~0] as [T], plus: ~0, is:[ 0,  0, ~0] as [T])
         }
         
         for type in coreSystemsIntegersWhereIsUnsigned {
@@ -114,27 +114,27 @@ extension DataIntTests {
     
     func testMultiplication22() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias Canvas = DataIntTests.Body<T>
+            typealias C = DataIntTests.Body<T>
             
-            Canvas([ 0,  0] as [T]).times([ 0,  0] as [T], plus:  0, is:[ 0,  0,  0,  0] as [T])
-            Canvas([ 0,  0] as [T]).times([ 0,  0] as [T], plus:  1, is:[ 1,  0,  0,  0] as [T])
-            Canvas([ 0,  0] as [T]).times([ 0,  0] as [T], plus: ~1, is:[~1,  0,  0,  0] as [T])
-            Canvas([ 0,  0] as [T]).times([ 0,  0] as [T], plus: ~0, is:[~0,  0,  0,  0] as [T])
+            C([ 0,  0] as [T]).times([ 0,  0] as [T], plus:  0, is:[ 0,  0,  0,  0] as [T])
+            C([ 0,  0] as [T]).times([ 0,  0] as [T], plus:  1, is:[ 1,  0,  0,  0] as [T])
+            C([ 0,  0] as [T]).times([ 0,  0] as [T], plus: ~1, is:[~1,  0,  0,  0] as [T])
+            C([ 0,  0] as [T]).times([ 0,  0] as [T], plus: ~0, is:[~0,  0,  0,  0] as [T])
             
-            Canvas([ 0,  1] as [T]).times([ 2,  3] as [T], plus:  0, is:[ 0,  2,  3,  0] as [T])
-            Canvas([ 0,  1] as [T]).times([ 2,  3] as [T], plus:  1, is:[ 1,  2,  3,  0] as [T])
-            Canvas([ 0,  1] as [T]).times([ 2,  3] as [T], plus: ~1, is:[~1,  2,  3,  0] as [T])
-            Canvas([ 0,  1] as [T]).times([ 2,  3] as [T], plus: ~0, is:[~0,  2,  3,  0] as [T])
+            C([ 0,  1] as [T]).times([ 2,  3] as [T], plus:  0, is:[ 0,  2,  3,  0] as [T])
+            C([ 0,  1] as [T]).times([ 2,  3] as [T], plus:  1, is:[ 1,  2,  3,  0] as [T])
+            C([ 0,  1] as [T]).times([ 2,  3] as [T], plus: ~1, is:[~1,  2,  3,  0] as [T])
+            C([ 0,  1] as [T]).times([ 2,  3] as [T], plus: ~0, is:[~0,  2,  3,  0] as [T])
 
-            Canvas([~0, ~1] as [T]).times([~2, ~3] as [T], plus:  0, is:[ 3,  6, ~0, ~4] as [T])
-            Canvas([~0, ~1] as [T]).times([~2, ~3] as [T], plus:  1, is:[ 4,  6, ~0, ~4] as [T])
-            Canvas([~0, ~1] as [T]).times([~2, ~3] as [T], plus: ~1, is:[ 1,  7, ~0, ~4] as [T])
-            Canvas([~0, ~1] as [T]).times([~2, ~3] as [T], plus: ~0, is:[ 2,  7, ~0, ~4] as [T])
+            C([~0, ~1] as [T]).times([~2, ~3] as [T], plus:  0, is:[ 3,  6, ~0, ~4] as [T])
+            C([~0, ~1] as [T]).times([~2, ~3] as [T], plus:  1, is:[ 4,  6, ~0, ~4] as [T])
+            C([~0, ~1] as [T]).times([~2, ~3] as [T], plus: ~1, is:[ 1,  7, ~0, ~4] as [T])
+            C([~0, ~1] as [T]).times([~2, ~3] as [T], plus: ~0, is:[ 2,  7, ~0, ~4] as [T])
 
-            Canvas([~0, ~0] as [T]).times([~0, ~0] as [T], plus:  0, is:[ 1,  0, ~1, ~0] as [T])
-            Canvas([~0, ~0] as [T]).times([~0, ~0] as [T], plus:  1, is:[ 2,  0, ~1, ~0] as [T])
-            Canvas([~0, ~0] as [T]).times([~0, ~0] as [T], plus: ~1, is:[~0,  0, ~1, ~0] as [T])
-            Canvas([~0, ~0] as [T]).times([~0, ~0] as [T], plus: ~0, is:[ 0,  1, ~1, ~0] as [T])
+            C([~0, ~0] as [T]).times([~0, ~0] as [T], plus:  0, is:[ 1,  0, ~1, ~0] as [T])
+            C([~0, ~0] as [T]).times([~0, ~0] as [T], plus:  1, is:[ 2,  0, ~1, ~0] as [T])
+            C([~0, ~0] as [T]).times([~0, ~0] as [T], plus: ~1, is:[~0,  0, ~1, ~0] as [T])
+            C([~0, ~0] as [T]).times([~0, ~0] as [T], plus: ~0, is:[ 0,  1, ~1, ~0] as [T])
         }
         
         for type in coreSystemsIntegersWhereIsUnsigned {
@@ -148,44 +148,44 @@ extension DataIntTests {
     
     func testMultiplication41() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias Canvas = DataIntTests.Body<T>
+            typealias C = DataIntTests.Body<T>
             
-            Canvas([ 0,  0,  0,  0] as [T]).times([ 0] as [T], plus:  0, is:[ 0,  0,  0,  0,  0] as [T])
-            Canvas([ 0,  0,  0,  0] as [T]).times([ 0] as [T], plus: ~0, is:[~0,  0,  0,  0,  0] as [T])
-            Canvas([ 0,  0,  0,  0] as [T]).times([~0] as [T], plus:  0, is:[ 0,  0,  0,  0,  0] as [T])
-            Canvas([ 0,  0,  0,  0] as [T]).times([~0] as [T], plus: ~0, is:[~0,  0,  0,  0,  0] as [T])
-            Canvas([~0, ~0, ~0, ~0] as [T]).times([ 0] as [T], plus:  0, is:[ 0,  0,  0,  0,  0] as [T])
-            Canvas([~0, ~0, ~0, ~0] as [T]).times([ 0] as [T], plus: ~0, is:[~0,  0,  0,  0,  0] as [T])
-            Canvas([~0, ~0, ~0, ~0] as [T]).times([~0] as [T], plus:  0, is:[ 1, ~0, ~0, ~0, ~1] as [T])
-            Canvas([~0, ~0, ~0, ~0] as [T]).times([~0] as [T], plus: ~0, is:[ 0,  0,  0,  0, ~0] as [T])
+            C([ 0,  0,  0,  0] as [T]).times([ 0] as [T], plus:  0, is:[ 0,  0,  0,  0,  0] as [T])
+            C([ 0,  0,  0,  0] as [T]).times([ 0] as [T], plus: ~0, is:[~0,  0,  0,  0,  0] as [T])
+            C([ 0,  0,  0,  0] as [T]).times([~0] as [T], plus:  0, is:[ 0,  0,  0,  0,  0] as [T])
+            C([ 0,  0,  0,  0] as [T]).times([~0] as [T], plus: ~0, is:[~0,  0,  0,  0,  0] as [T])
+            C([~0, ~0, ~0, ~0] as [T]).times([ 0] as [T], plus:  0, is:[ 0,  0,  0,  0,  0] as [T])
+            C([~0, ~0, ~0, ~0] as [T]).times([ 0] as [T], plus: ~0, is:[~0,  0,  0,  0,  0] as [T])
+            C([~0, ~0, ~0, ~0] as [T]).times([~0] as [T], plus:  0, is:[ 1, ~0, ~0, ~0, ~1] as [T])
+            C([~0, ~0, ~0, ~0] as [T]).times([~0] as [T], plus: ~0, is:[ 0,  0,  0,  0, ~0] as [T])
             
-            Canvas([ 0,  0,  0,  0] as [T]).times([ 1] as [T], plus:  0, is:[ 0,  0,  0,  0,  0] as [T])
-            Canvas([ 0,  0,  0,  0] as [T]).times([ 1] as [T], plus: ~0, is:[~0,  0,  0,  0,  0] as [T])
-            Canvas([ 0,  0,  0,  0] as [T]).times([~1] as [T], plus:  0, is:[ 0,  0,  0,  0,  0] as [T])
-            Canvas([ 0,  0,  0,  0] as [T]).times([~1] as [T], plus: ~0, is:[~0,  0,  0,  0,  0] as [T])
-            Canvas([~0, ~0, ~0, ~0] as [T]).times([ 1] as [T], plus:  0, is:[~0, ~0, ~0, ~0,  0] as [T])
-            Canvas([~0, ~0, ~0, ~0] as [T]).times([ 1] as [T], plus: ~0, is:[~1,  0,  0,  0,  1] as [T])
-            Canvas([~0, ~0, ~0, ~0] as [T]).times([~1] as [T], plus:  0, is:[ 2, ~0, ~0, ~0, ~2] as [T])
-            Canvas([~0, ~0, ~0, ~0] as [T]).times([~1] as [T], plus: ~0, is:[ 1,  0,  0,  0, ~1] as [T])
+            C([ 0,  0,  0,  0] as [T]).times([ 1] as [T], plus:  0, is:[ 0,  0,  0,  0,  0] as [T])
+            C([ 0,  0,  0,  0] as [T]).times([ 1] as [T], plus: ~0, is:[~0,  0,  0,  0,  0] as [T])
+            C([ 0,  0,  0,  0] as [T]).times([~1] as [T], plus:  0, is:[ 0,  0,  0,  0,  0] as [T])
+            C([ 0,  0,  0,  0] as [T]).times([~1] as [T], plus: ~0, is:[~0,  0,  0,  0,  0] as [T])
+            C([~0, ~0, ~0, ~0] as [T]).times([ 1] as [T], plus:  0, is:[~0, ~0, ~0, ~0,  0] as [T])
+            C([~0, ~0, ~0, ~0] as [T]).times([ 1] as [T], plus: ~0, is:[~1,  0,  0,  0,  1] as [T])
+            C([~0, ~0, ~0, ~0] as [T]).times([~1] as [T], plus:  0, is:[ 2, ~0, ~0, ~0, ~2] as [T])
+            C([~0, ~0, ~0, ~0] as [T]).times([~1] as [T], plus: ~0, is:[ 1,  0,  0,  0, ~1] as [T])
                         
-            Canvas([ 1,  2,  3,  4] as [T]).times([ 0] as [T], plus:  0, is:[ 0,  0,  0,  0,  0] as [T])
-            Canvas([ 1,  2,  3,  4] as [T]).times([ 1] as [T], plus:  0, is:[ 1,  2,  3,  4,  0] as [T])
-            Canvas([ 1,  2,  3,  4] as [T]).times([ 2] as [T], plus:  0, is:[ 2,  4,  6,  8,  0] as [T])
-            Canvas([ 1,  2,  3,  4] as [T]).times([~0] as [T], plus:  0, is:[~0, ~1, ~1, ~1,  3] as [T])
-            Canvas([ 1,  2,  3,  4] as [T]).times([~1] as [T], plus:  0, is:[~1, ~3, ~4, ~5,  3] as [T])
-            Canvas([ 1,  2,  3,  4] as [T]).times([~2] as [T], plus:  0, is:[~2, ~5, ~7, ~9,  3] as [T])
+            C([ 1,  2,  3,  4] as [T]).times([ 0] as [T], plus:  0, is:[ 0,  0,  0,  0,  0] as [T])
+            C([ 1,  2,  3,  4] as [T]).times([ 1] as [T], plus:  0, is:[ 1,  2,  3,  4,  0] as [T])
+            C([ 1,  2,  3,  4] as [T]).times([ 2] as [T], plus:  0, is:[ 2,  4,  6,  8,  0] as [T])
+            C([ 1,  2,  3,  4] as [T]).times([~0] as [T], plus:  0, is:[~0, ~1, ~1, ~1,  3] as [T])
+            C([ 1,  2,  3,  4] as [T]).times([~1] as [T], plus:  0, is:[~1, ~3, ~4, ~5,  3] as [T])
+            C([ 1,  2,  3,  4] as [T]).times([~2] as [T], plus:  0, is:[~2, ~5, ~7, ~9,  3] as [T])
             
-            Canvas([ 1,  2,  3,  4] as [T]).times([ 0] as [T], plus:  5, is:[ 5,  0,  0,  0,  0] as [T])
-            Canvas([ 1,  2,  3,  4] as [T]).times([ 1] as [T], plus:  5, is:[ 6,  2,  3,  4,  0] as [T])
-            Canvas([ 1,  2,  3,  4] as [T]).times([ 2] as [T], plus:  5, is:[ 7,  4,  6,  8,  0] as [T])
-            Canvas([ 1,  2,  3,  4] as [T]).times([~0] as [T], plus:  5, is:[ 4, ~0, ~1, ~1,  3] as [T])
-            Canvas([ 1,  2,  3,  4] as [T]).times([~1] as [T], plus:  5, is:[ 3, ~2, ~4, ~5,  3] as [T])
-            Canvas([ 1,  2,  3,  4] as [T]).times([~2] as [T], plus:  5, is:[ 2, ~4, ~7, ~9,  3] as [T])
+            C([ 1,  2,  3,  4] as [T]).times([ 0] as [T], plus:  5, is:[ 5,  0,  0,  0,  0] as [T])
+            C([ 1,  2,  3,  4] as [T]).times([ 1] as [T], plus:  5, is:[ 6,  2,  3,  4,  0] as [T])
+            C([ 1,  2,  3,  4] as [T]).times([ 2] as [T], plus:  5, is:[ 7,  4,  6,  8,  0] as [T])
+            C([ 1,  2,  3,  4] as [T]).times([~0] as [T], plus:  5, is:[ 4, ~0, ~1, ~1,  3] as [T])
+            C([ 1,  2,  3,  4] as [T]).times([~1] as [T], plus:  5, is:[ 3, ~2, ~4, ~5,  3] as [T])
+            C([ 1,  2,  3,  4] as [T]).times([~2] as [T], plus:  5, is:[ 2, ~4, ~7, ~9,  3] as [T])
             
-            Canvas([~0, ~0, ~0, ~0] as [T]).times([ 0] as [T], plus:  0, is:[ 0,  0,  0,  0,  0] as [T])
-            Canvas([~0, ~0, ~0, ~0] as [T]).times([ 0] as [T], plus: ~0, is:[~0,  0,  0,  0,  0] as [T])
-            Canvas([~0, ~0, ~0, ~0] as [T]).times([~0] as [T], plus:  0, is:[ 1, ~0, ~0, ~0, ~1] as [T])
-            Canvas([~0, ~0, ~0, ~0] as [T]).times([~0] as [T], plus: ~0, is:[ 0,  0,  0,  0, ~0] as [T])
+            C([~0, ~0, ~0, ~0] as [T]).times([ 0] as [T], plus:  0, is:[ 0,  0,  0,  0,  0] as [T])
+            C([~0, ~0, ~0, ~0] as [T]).times([ 0] as [T], plus: ~0, is:[~0,  0,  0,  0,  0] as [T])
+            C([~0, ~0, ~0, ~0] as [T]).times([~0] as [T], plus:  0, is:[ 1, ~0, ~0, ~0, ~1] as [T])
+            C([~0, ~0, ~0, ~0] as [T]).times([~0] as [T], plus: ~0, is:[ 0,  0,  0,  0, ~0] as [T])
         }
         
         for type in coreSystemsIntegersWhereIsUnsigned {
@@ -195,52 +195,52 @@ extension DataIntTests {
     
     func testMultiplication44() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            typealias Canvas = DataIntTests.Body<T>
+            typealias C = DataIntTests.Body<T>
             
-            Canvas([ 0,  0,  0,  0] as [T]).times([ 0,  0,  0,  0] as [T], plus:  0, is:[ 0,  0,  0,  0,  0,  0,  0,  0] as [T])
-            Canvas([ 0,  0,  0,  0] as [T]).times([ 0,  0,  0,  0] as [T], plus:  1, is:[ 1,  0,  0,  0,  0,  0,  0,  0] as [T])
-            Canvas([ 0,  0,  0,  0] as [T]).times([ 0,  0,  0,  0] as [T], plus: ~1, is:[~1,  0,  0,  0,  0,  0,  0,  0] as [T])
-            Canvas([ 0,  0,  0,  0] as [T]).times([ 0,  0,  0,  0] as [T], plus: ~0, is:[~0,  0,  0,  0,  0,  0,  0,  0] as [T])
+            C([ 0,  0,  0,  0] as [T]).times([ 0,  0,  0,  0] as [T], plus:  0, is:[ 0,  0,  0,  0,  0,  0,  0,  0] as [T])
+            C([ 0,  0,  0,  0] as [T]).times([ 0,  0,  0,  0] as [T], plus:  1, is:[ 1,  0,  0,  0,  0,  0,  0,  0] as [T])
+            C([ 0,  0,  0,  0] as [T]).times([ 0,  0,  0,  0] as [T], plus: ~1, is:[~1,  0,  0,  0,  0,  0,  0,  0] as [T])
+            C([ 0,  0,  0,  0] as [T]).times([ 0,  0,  0,  0] as [T], plus: ~0, is:[~0,  0,  0,  0,  0,  0,  0,  0] as [T])
             
-            Canvas([~0, ~0, ~0, ~0] as [T]).times([~0, ~0, ~0, ~0] as [T], plus:  0, is:[ 1,  0,  0,  0, ~1, ~0, ~0, ~0] as [T])
-            Canvas([~0, ~0, ~0, ~0] as [T]).times([~0, ~0, ~0, ~0] as [T], plus:  1, is:[ 2,  0,  0,  0, ~1, ~0, ~0, ~0] as [T])
-            Canvas([~0, ~0, ~0, ~0] as [T]).times([~0, ~0, ~0, ~0] as [T], plus: ~1, is:[~0,  0,  0,  0, ~1, ~0, ~0, ~0] as [T])
-            Canvas([~0, ~0, ~0, ~0] as [T]).times([~0, ~0, ~0, ~0] as [T], plus: ~0, is:[ 0,  1,  0,  0, ~1, ~0, ~0, ~0] as [T])
+            C([~0, ~0, ~0, ~0] as [T]).times([~0, ~0, ~0, ~0] as [T], plus:  0, is:[ 1,  0,  0,  0, ~1, ~0, ~0, ~0] as [T])
+            C([~0, ~0, ~0, ~0] as [T]).times([~0, ~0, ~0, ~0] as [T], plus:  1, is:[ 2,  0,  0,  0, ~1, ~0, ~0, ~0] as [T])
+            C([~0, ~0, ~0, ~0] as [T]).times([~0, ~0, ~0, ~0] as [T], plus: ~1, is:[~0,  0,  0,  0, ~1, ~0, ~0, ~0] as [T])
+            C([~0, ~0, ~0, ~0] as [T]).times([~0, ~0, ~0, ~0] as [T], plus: ~0, is:[ 0,  1,  0,  0, ~1, ~0, ~0, ~0] as [T])
             
-            Canvas([~0, ~0, ~0,  0] as [T]).times([~0, ~0, ~0,  0] as [T], plus:  0, is:[ 1,  0,  0, ~1, ~0, ~0,  0,  0] as [T])
-            Canvas([~0, ~0, ~0,  0] as [T]).times([~0, ~0, ~0,  0] as [T], plus:  1, is:[ 2,  0,  0, ~1, ~0, ~0,  0,  0] as [T])
-            Canvas([~0, ~0, ~0,  0] as [T]).times([~0, ~0, ~0,  0] as [T], plus: ~1, is:[~0,  0,  0, ~1, ~0, ~0,  0,  0] as [T])
-            Canvas([~0, ~0, ~0,  0] as [T]).times([~0, ~0, ~0,  0] as [T], plus: ~0, is:[ 0,  1,  0, ~1, ~0, ~0,  0,  0] as [T])
+            C([~0, ~0, ~0,  0] as [T]).times([~0, ~0, ~0,  0] as [T], plus:  0, is:[ 1,  0,  0, ~1, ~0, ~0,  0,  0] as [T])
+            C([~0, ~0, ~0,  0] as [T]).times([~0, ~0, ~0,  0] as [T], plus:  1, is:[ 2,  0,  0, ~1, ~0, ~0,  0,  0] as [T])
+            C([~0, ~0, ~0,  0] as [T]).times([~0, ~0, ~0,  0] as [T], plus: ~1, is:[~0,  0,  0, ~1, ~0, ~0,  0,  0] as [T])
+            C([~0, ~0, ~0,  0] as [T]).times([~0, ~0, ~0,  0] as [T], plus: ~0, is:[ 0,  1,  0, ~1, ~0, ~0,  0,  0] as [T])
             
-            Canvas([ 0, ~0, ~0, ~0] as [T]).times([ 0, ~0, ~0, ~0] as [T], plus:  0, is:[ 0,  0,  1,  0,  0, ~1, ~0, ~0] as [T])
-            Canvas([ 0, ~0, ~0, ~0] as [T]).times([ 0, ~0, ~0, ~0] as [T], plus:  1, is:[ 1,  0,  1,  0,  0, ~1, ~0, ~0] as [T])
-            Canvas([ 0, ~0, ~0, ~0] as [T]).times([ 0, ~0, ~0, ~0] as [T], plus: ~1, is:[~1,  0,  1,  0,  0, ~1, ~0, ~0] as [T])
-            Canvas([ 0, ~0, ~0, ~0] as [T]).times([ 0, ~0, ~0, ~0] as [T], plus: ~0, is:[~0,  0,  1,  0,  0, ~1, ~0, ~0] as [T])
+            C([ 0, ~0, ~0, ~0] as [T]).times([ 0, ~0, ~0, ~0] as [T], plus:  0, is:[ 0,  0,  1,  0,  0, ~1, ~0, ~0] as [T])
+            C([ 0, ~0, ~0, ~0] as [T]).times([ 0, ~0, ~0, ~0] as [T], plus:  1, is:[ 1,  0,  1,  0,  0, ~1, ~0, ~0] as [T])
+            C([ 0, ~0, ~0, ~0] as [T]).times([ 0, ~0, ~0, ~0] as [T], plus: ~1, is:[~1,  0,  1,  0,  0, ~1, ~0, ~0] as [T])
+            C([ 0, ~0, ~0, ~0] as [T]).times([ 0, ~0, ~0, ~0] as [T], plus: ~0, is:[~0,  0,  1,  0,  0, ~1, ~0, ~0] as [T])
             
-            Canvas([ 1,  2,  3,  4] as [T]).times([ 2,  0,  0,  0] as [T], plus:  0, is:[ 2,  4,  6,  8,  0,  0,  0,  0] as [T])
-            Canvas([ 1,  2,  3,  4] as [T]).times([ 0,  2,  0,  0] as [T], plus:  0, is:[ 0,  2,  4,  6,  8,  0,  0,  0] as [T])
-            Canvas([ 1,  2,  3,  4] as [T]).times([ 0,  0,  2,  0] as [T], plus:  0, is:[ 0,  0,  2,  4,  6,  8,  0,  0] as [T])
-            Canvas([ 1,  2,  3,  4] as [T]).times([ 0,  0,  0,  2] as [T], plus:  0, is:[ 0,  0,  0,  2,  4,  6,  8,  0] as [T])
+            C([ 1,  2,  3,  4] as [T]).times([ 2,  0,  0,  0] as [T], plus:  0, is:[ 2,  4,  6,  8,  0,  0,  0,  0] as [T])
+            C([ 1,  2,  3,  4] as [T]).times([ 0,  2,  0,  0] as [T], plus:  0, is:[ 0,  2,  4,  6,  8,  0,  0,  0] as [T])
+            C([ 1,  2,  3,  4] as [T]).times([ 0,  0,  2,  0] as [T], plus:  0, is:[ 0,  0,  2,  4,  6,  8,  0,  0] as [T])
+            C([ 1,  2,  3,  4] as [T]).times([ 0,  0,  0,  2] as [T], plus:  0, is:[ 0,  0,  0,  2,  4,  6,  8,  0] as [T])
             
-            Canvas([ 1,  2,  3,  4] as [T]).times([ 2,  0,  0,  0] as [T], plus:  5, is:[ 7,  4,  6,  8,  0,  0,  0,  0] as [T])
-            Canvas([ 1,  2,  3,  4] as [T]).times([ 0,  2,  0,  0] as [T], plus:  5, is:[ 5,  2,  4,  6,  8,  0,  0,  0] as [T])
-            Canvas([ 1,  2,  3,  4] as [T]).times([ 0,  0,  2,  0] as [T], plus:  5, is:[ 5,  0,  2,  4,  6,  8,  0,  0] as [T])
-            Canvas([ 1,  2,  3,  4] as [T]).times([ 0,  0,  0,  2] as [T], plus:  5, is:[ 5,  0,  0,  2,  4,  6,  8,  0] as [T])
+            C([ 1,  2,  3,  4] as [T]).times([ 2,  0,  0,  0] as [T], plus:  5, is:[ 7,  4,  6,  8,  0,  0,  0,  0] as [T])
+            C([ 1,  2,  3,  4] as [T]).times([ 0,  2,  0,  0] as [T], plus:  5, is:[ 5,  2,  4,  6,  8,  0,  0,  0] as [T])
+            C([ 1,  2,  3,  4] as [T]).times([ 0,  0,  2,  0] as [T], plus:  5, is:[ 5,  0,  2,  4,  6,  8,  0,  0] as [T])
+            C([ 1,  2,  3,  4] as [T]).times([ 0,  0,  0,  2] as [T], plus:  5, is:[ 5,  0,  0,  2,  4,  6,  8,  0] as [T])
             
-            Canvas([~1, ~2, ~3, ~4] as [T]).times([ 2,  0,  0,  0] as [T], plus:  0, is:[~3, ~4, ~6, ~8,  1,  0,  0,  0] as [T])
-            Canvas([~1, ~2, ~3, ~4] as [T]).times([ 0,  2,  0,  0] as [T], plus:  0, is:[ 0, ~3, ~4, ~6, ~8,  1,  0,  0] as [T])
-            Canvas([~1, ~2, ~3, ~4] as [T]).times([ 0,  0,  2,  0] as [T], plus:  0, is:[ 0,  0, ~3, ~4, ~6, ~8,  1,  0] as [T])
-            Canvas([~1, ~2, ~3, ~4] as [T]).times([ 0,  0,  0,  2] as [T], plus:  0, is:[ 0,  0,  0, ~3, ~4, ~6, ~8,  1] as [T])
+            C([~1, ~2, ~3, ~4] as [T]).times([ 2,  0,  0,  0] as [T], plus:  0, is:[~3, ~4, ~6, ~8,  1,  0,  0,  0] as [T])
+            C([~1, ~2, ~3, ~4] as [T]).times([ 0,  2,  0,  0] as [T], plus:  0, is:[ 0, ~3, ~4, ~6, ~8,  1,  0,  0] as [T])
+            C([~1, ~2, ~3, ~4] as [T]).times([ 0,  0,  2,  0] as [T], plus:  0, is:[ 0,  0, ~3, ~4, ~6, ~8,  1,  0] as [T])
+            C([~1, ~2, ~3, ~4] as [T]).times([ 0,  0,  0,  2] as [T], plus:  0, is:[ 0,  0,  0, ~3, ~4, ~6, ~8,  1] as [T])
             
-            Canvas([~1, ~2, ~3, ~4] as [T]).times([ 2,  0,  0,  0] as [T], plus: ~5, is:[~9, ~3, ~6, ~8,  1,  0,  0,  0] as [T])
-            Canvas([~1, ~2, ~3, ~4] as [T]).times([ 0,  2,  0,  0] as [T], plus: ~5, is:[~5, ~3, ~4, ~6, ~8,  1,  0,  0] as [T])
-            Canvas([~1, ~2, ~3, ~4] as [T]).times([ 0,  0,  2,  0] as [T], plus: ~5, is:[~5,  0, ~3, ~4, ~6, ~8,  1,  0] as [T])
-            Canvas([~1, ~2, ~3, ~4] as [T]).times([ 0,  0,  0,  2] as [T], plus: ~5, is:[~5,  0,  0, ~3, ~4, ~6, ~8,  1] as [T])
+            C([~1, ~2, ~3, ~4] as [T]).times([ 2,  0,  0,  0] as [T], plus: ~5, is:[~9, ~3, ~6, ~8,  1,  0,  0,  0] as [T])
+            C([~1, ~2, ~3, ~4] as [T]).times([ 0,  2,  0,  0] as [T], plus: ~5, is:[~5, ~3, ~4, ~6, ~8,  1,  0,  0] as [T])
+            C([~1, ~2, ~3, ~4] as [T]).times([ 0,  0,  2,  0] as [T], plus: ~5, is:[~5,  0, ~3, ~4, ~6, ~8,  1,  0] as [T])
+            C([~1, ~2, ~3, ~4] as [T]).times([ 0,  0,  0,  2] as [T], plus: ~5, is:[~5,  0,  0, ~3, ~4, ~6, ~8,  1] as [T])
             
-            Canvas([ 0,  0,  0,  0] as [T]).times([ 0,  0,  0,  0] as [T], plus:  0, is:[ 0,  0,  0,  0,  0,  0,  0,  0] as [T])
-            Canvas([ 1,  2,  3,  4] as [T]).times([ 1,  2,  3,  4] as [T], plus:  5, is:[ 6,  4, 10, 20, 25, 24, 16,  0] as [T])
-            Canvas([~1, ~2, ~3, ~4] as [T]).times([~1, ~2, ~3, ~4] as [T], plus: ~5, is:[~1,  8, 16, 28, 21, 20, 10, ~7] as [T])
-            Canvas([~0, ~0, ~0, ~0] as [T]).times([~0, ~0, ~0, ~0] as [T], plus: ~0, is:[ 0,  1,  0,  0, ~1, ~0, ~0, ~0] as [T])
+            C([ 0,  0,  0,  0] as [T]).times([ 0,  0,  0,  0] as [T], plus:  0, is:[ 0,  0,  0,  0,  0,  0,  0,  0] as [T])
+            C([ 1,  2,  3,  4] as [T]).times([ 1,  2,  3,  4] as [T], plus:  5, is:[ 6,  4, 10, 20, 25, 24, 16,  0] as [T])
+            C([~1, ~2, ~3, ~4] as [T]).times([~1, ~2, ~3, ~4] as [T], plus: ~5, is:[~1,  8, 16, 28, 21, 20, 10, ~7] as [T])
+            C([~0, ~0, ~0, ~0] as [T]).times([~0, ~0, ~0, ~0] as [T], plus: ~0, is:[ 0,  1,  0,  0, ~1, ~0, ~0, ~0] as [T])
         }
         
         for type in coreSystemsIntegersWhereIsUnsigned {
