@@ -379,7 +379,7 @@ overview [Mutable]DataInt:
 /load()   -> Element
 /next()   -> Element
 /subscript(UX) -> Element
-/withMemoryRebound(to:as:)
+/withMemoryRebound(to:perform:)
 ```
 
 ```
@@ -392,7 +392,7 @@ overview [Mutable]DataInt.Body:
 /start    -> Unsafe[Mutable]Pointer
 /subscript(unchecked: Void) -> Element
 /subscript(unchecked: IX)   -> Element
-/withMemoryRebound(to:as:)
+/withMemoryRebound(to:perform:)
 ```
 
 ```
@@ -409,8 +409,8 @@ overview MutableDataInt.Body:
 ```
 overview MutableDataInt.Body:
 
-/multiply(by: Element, add: Element) -> Element
-/initialize(to: DataInt.Body, times: DataInt.Body)
+/multiply(by: Element,  add: Element) -> Element
+/initialize(to: DataInt.Body,  times: DataInt.Body)
 /initializeByLongAlgorithm(to: DataInt.Body, times: DataInt.Body, plus: Element)
 /initializeByKaratsubaAlgorithm(to: DataInt.Body, times: DataInt.Body)
 /initialize(toSquareProductOf: DataInt.Body)
@@ -431,8 +431,8 @@ overview [Mutable]DataInt:
 overview [Mutable]DataInt.Body:
 
 /normalized() -> Self
-/split(unchecked: IX) -> Self
-/subscript(unchecked: Range<IX>) -> Self
+/split(unchecked: IX) -> (low: Self, high: Self)
+/subscript(unchecked: Range<IX>) ->  Self
 /subscript(unchecked: PartialRangeFrom<IX>) -> Self
 /subscript(unchecked: PartialRangeUpTo<IX>) -> Self
 ```
@@ -477,7 +477,8 @@ try! IXL("123", as: .hexadecimal).description(as: .decimal) // 291
 You may realize that the introduction of infinite values necessitates changes to the integer
 description format. The new format adds the # and & markers. The former is a spacer (cf. +)
 whereas the latter represents bitwise negation. In other words, +&123 translates to ∞ minus 123.
-Here's the case-insensitive decoding regex for the maximum radix.
+
+###### The case-insensitive base 36 regex.
 
 ```swift
 let regex: Regex = #/^(\+|-)?(#|&)?([0-9A-Za-z]+)$/#
@@ -500,7 +501,7 @@ try! UXL(fib1e6r10, as:     .decimal) // 0.040s (208988 digits)
 try! UXL(fib1e6r16, as: .hexadecimal) // 0.002s (173561 digits)
 ```
 
-*TextInt optimizes base 2, 4, and 16 conversions (but not 8 or 32).*
+###### TextInt optimizes base 2, 4, and 16 conversions (but not 8 or 32).
 
 <a name="corekit-bit-cast"/>
 

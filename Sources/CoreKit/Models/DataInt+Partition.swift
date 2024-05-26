@@ -17,6 +17,7 @@ extension DataInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Removes descending `appendix` extensions from the `body`.
     @inlinable public consuming func normalized() -> Self {
         let appendix = Element(repeating: self.appendix)
         var endIndex = self.body.count
@@ -34,6 +35,7 @@ extension DataInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Rebases `self` such that it covers the given `range`.
     @inlinable public subscript(range: PartialRangeFrom<UX>) -> Self {
         consuming get {
             let start = Swift.min(range.lowerBound, UX(raw: self.body.count))
@@ -52,6 +54,7 @@ extension MutableDataInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Removes descending `appendix` extensions from the `body`.
     @inlinable public consuming func normalized() -> Self {
         Self(mutating: Immutable(self).normalized())
     }
@@ -60,6 +63,7 @@ extension MutableDataInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Rebases `self` such that it covers the given `range`.
     @inlinable public subscript(range: PartialRangeFrom<UX>) -> Self {
         consuming get {
             Self(mutating: Immutable(self)[range])
@@ -77,10 +81,18 @@ extension DataInt.Body {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Removes descending `appendix` extensions from `self`.
+    ///
+    /// - Note: The `appendix` of a binary integer body is always `zero`.
+    ///
     @inlinable public consuming func normalized() -> Self {
         DataInt(self).normalized().body
     }
     
+    /// Returns the `low` and `high` part relative to the given `index`.
+    ///
+    /// - Requires: `IX.zero <= index <= self.count`
+    ///
     @inlinable public consuming func split(unchecked index: IX) -> (low: Self, high: Self) {
         //=--------------------------------------=
         Swift.assert(index >= 0000000000, String.indexOutOfBounds())
@@ -93,6 +105,7 @@ extension DataInt.Body {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Rebases `self` such that it covers the given `range`.
     @inlinable public subscript(unchecked range: Range<IX>) -> Self {
         consuming get {
             //=----------------------------------=
@@ -104,6 +117,7 @@ extension DataInt.Body {
         }
     }
     
+    /// Rebases `self` such that it covers the given `range`.
     @inlinable public subscript(unchecked range: PartialRangeFrom<IX>) -> Self {
         consuming get {
             //=----------------------------------=
@@ -116,6 +130,7 @@ extension DataInt.Body {
         }
     }
     
+    /// Rebases `self` such that it covers the given `range`.
     @inlinable public subscript(unchecked range: PartialRangeUpTo<IX>) -> Self {
         consuming get {
             //=----------------------------------=
@@ -137,10 +152,18 @@ extension MutableDataInt.Body {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Removes descending `appendix` extensions from `self`.
+    ///
+    /// - Note: The `appendix` of a binary integer body is always `zero`.
+    ///
     @inlinable public consuming func normalized() -> Self {
         Self(mutating: Immutable(self).normalized())
     }
     
+    /// Returns the `low` and `high` part relative to the given `index`.
+    ///
+    /// - Requires: `IX.zero <= index <= self.count`
+    ///
     @inlinable public consuming func split(unchecked index: IX) -> (low: Self, high: Self) {
         let (low, high) = Immutable(self).split(unchecked: index)
         return (low: Self(mutating: low), high: Self(mutating: high))
@@ -150,18 +173,21 @@ extension MutableDataInt.Body {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Rebases `self` such that it covers the given `range`.
     @inlinable public subscript(unchecked range: Range<IX>) -> Self {
         consuming get {
             Self(mutating: Immutable(self)[unchecked: range])
         }
     }
     
+    /// Rebases `self` such that it covers the given `range`.
     @inlinable public subscript(unchecked range: PartialRangeFrom<IX>) -> Self {
         consuming get {
             Self(mutating: Immutable(self)[unchecked: range])
         }
     }
     
+    /// Rebases `self` such that it covers the given `range`.
     @inlinable public subscript(unchecked range: PartialRangeUpTo<IX>) -> Self {
         consuming get {
             Self(mutating: Immutable(self)[unchecked: range])

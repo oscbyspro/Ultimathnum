@@ -116,14 +116,14 @@ extension TextInt {
         //=--------------------------------------=
         // text: capacity upper bound
         //=--------------------------------------=
-        var capacity: IX = body.count(.nondescending(.zero))
-        var consumption: UX  = self.exponentiation.power.size()
+        var capacity: IX = body.count(.nonappendix)
+        var speed = self.exponentiation.power.size() as UX
         
         if  self.exponentiation.power != .zero {
-            consumption -= 1 + self.exponentiation.power.count(.descending(.zero))
+            speed = speed.decremented().minus(self.exponentiation.power.count(.appendix)).unchecked()
         }
         
-        capacity /= IX(raw: consumption)
+        capacity /= IX(raw: speed)
         capacity += 1
         capacity *= self.exponentiation.exponent
         capacity += IX(Bit(sign != nil))
