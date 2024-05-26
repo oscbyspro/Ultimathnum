@@ -18,52 +18,81 @@ extension TextInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public func encode<T: BinaryInteger>(_ integer: T) -> String {
-        var integer = integer // await consuming fix
+        var integer  = integer // await consuming fix
+        let appendix = Bool(integer.appendix)
         
-        let integerAppendixIsSet = Bool(integer.appendix)
-        let integerIsInfinite = !T.isSigned && integerAppendixIsSet
-        let integerIsNegative =  T.isSigned && integerAppendixIsSet
+        let sign = ( T.isSigned && appendix) ? Sign.minus : nil
+        let mask = (!T.isSigned && appendix) ? Bit .one   : nil
         
-        if  integerAppendixIsSet {
+        if  appendix {
+            // form magnitude or 1s complement bit pattern
             integer = integer.complement(T.isSigned).value
         }
         
-        return integer.withUnsafeBinaryIntegerElementsAsBytes {
-            self.encode(
-                sign: integerIsNegative ? .minus : nil,
-                mask: integerIsInfinite ? .one   : nil,
-                body: $0.body
-            )
+        if  let size = UX(size: T.self), size <= UX.size {
+            // this reinterprets the integer as unsigned
+            var fast = T.Magnitude(raw: integer).load(as: UX.self)
+            let count: IX = (fast == 0) ? 0 : 1
+            return fast.withUnsafeMutableBinaryIntegerBody {
+                self.encode(sign: sign, mask: mask, normalized: $0[unchecked: ..<count])
+            }
+            
+        }   else {
+            // this reinterprets the integer as unsigned
+            return integer.withUnsafeBinaryIntegerBody {
+                $0.withMemoryRebound(to: U8.self) {
+                    self.encode(sign: sign, mask: mask, body: $0)
+                }
+            }
         }
     }
     
     @inlinable public func encode<T: UnsignedInteger>(sign: Sign, magnitude: consuming T) -> String {
-        let integerIsInfinite = Bool(magnitude.appendix)
-        let integerIsNegative = Bool(sign) && (magnitude != T.zero)
+        let appendix = Bool(magnitude.appendix)
         
-        if  integerIsInfinite {
+        let sign = Bool(sign) && (magnitude != T.zero) ? sign : nil
+        let mask = appendix ? Bit.one : nil
+        
+        if  appendix {
             magnitude.toggle()
         }
         
-        return magnitude.withUnsafeBinaryIntegerElementsAsBytes {
-            self.encode(
-                sign: integerIsNegative ? .minus : nil,
-                mask: integerIsInfinite ? .one   : nil,
-                body: $0.body
-            )
+        if  let size = UX(size: T.self), size <= UX.size {
+            var fast = magnitude.load(as: UX.self)
+            let count: IX = (fast == 0) ? 0 : 1
+            return fast.withUnsafeMutableBinaryIntegerBody {
+                self.encode(sign: sign, mask: mask, normalized: $0[unchecked: ..<count])
+            }
+            
+        }   else {
+            return magnitude.withUnsafeBinaryIntegerBody {
+                $0.withMemoryRebound(to: U8.self) {
+                    self.encode(sign: sign, mask: mask, body: $0)
+                }
+            }
         }
     }
+}
+
+//=------------------------------------------------------------------------=
+// MARK: Algorithms
+//=------------------------------------------------------------------------=
+
+extension TextInt {
     
-    @inlinable public func encode(sign: Sign?, mask: Bit?, body: consuming DataInt<U8>.Body) -> String {
+    //=--------------------------------------------------------------------=
+    // MARK: Utilities
+    //=--------------------------------------------------------------------=
+    
+    @usableFromInline package func encode(sign: Sign?, mask: Bit?, body: consuming DataInt<U8>.Body) -> String {
         //=--------------------------------------=
         // body: normalization
         //=--------------------------------------=
         body = body.normalized()
-        //=--------------------------------------=
         let count = body.count(as: UX.self)
         //=--------------------------------------=
-        return Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(count)) { buffer in
-            let words = MutableDataInt.Body(buffer.baseAddress!, count: count)
+        return Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(count)) {
+            let words = MutableDataInt.Body((consume $0).baseAddress!, count: count)
             //=----------------------------------=
             // pointee: initialization
             //=----------------------------------=
@@ -80,32 +109,21 @@ extension TextInt {
             return self.encode(sign: sign, mask: mask, normalized: words)
         }
     }
-}
-
-//=------------------------------------------------------------------------=
-// MARK: Algorithms
-//=------------------------------------------------------------------------=
-
-extension TextInt {
     
-    //=--------------------------------------------------------------------=
-    // MARK: Utilities
-    //=--------------------------------------------------------------------=
-    
-    @usableFromInline func encode(sign: Sign?, mask: Bit?, normalized body: consuming MutableDataInt<UX>.Body) -> String {
+    @usableFromInline package func encode(sign: Sign?, mask: Bit?, normalized body: consuming MutableDataInt<UX>.Body) -> String {
         //=--------------------------------------=
         Swift.assert(body.count == .zero || body[unchecked: body.count - 1] != .zero)
         //=--------------------------------------=
         // text: capacity upper bound
         //=--------------------------------------=
         var capacity: IX = body.count(.nondescending(.zero))
-        var rate: UX  = self.exponentiation.power.size()
+        var consumption: UX  = self.exponentiation.power.size()
         
         if  self.exponentiation.power != .zero {
-            rate -= 1 + self.exponentiation.power.count(.descending(.zero))
+            consumption -= 1 + self.exponentiation.power.count(.descending(.zero))
         }
-
-        capacity /= IX(raw: rate)
+        
+        capacity /= IX(raw: consumption)
         capacity += 1
         capacity *= self.exponentiation.exponent
         capacity += IX(Bit(sign != nil))
@@ -124,7 +142,7 @@ extension TextInt {
             // text: set numerals
             //=----------------------------------=
             major: while true {
-                                                
+                
                 if  let divisor = Divisor(exactly: self.exponentiation.power) {
                     chunk = body.divisionSetQuotientGetRemainder(divisor)
                     body  = body.normalized()
