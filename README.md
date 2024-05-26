@@ -430,7 +430,7 @@ overview [Mutable]DataInt:
 ```
 overview [Mutable]DataInt.Body:
 
-/normalized(repeating: Bit) -> Self
+/normalized() -> Self
 /split(unchecked: IX) -> Self
 /subscript(unchecked: Range<IX>) -> Self
 /subscript(unchecked: PartialRangeFrom<IX>) -> Self

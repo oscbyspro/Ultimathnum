@@ -18,7 +18,16 @@ extension DataInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func normalized() -> Self {
-        Self(self.body.normalized(repeating: self.appendix), repeating: self.appendix)
+        let appendix = Element(repeating: self.appendix)
+        var endIndex = self.body.count
+        
+        while endIndex > 0 {
+            let lastIndex = endIndex.minus(1).unchecked()
+            guard self.body[unchecked: lastIndex] == appendix else { break }
+            endIndex = lastIndex
+        }
+        
+        return Self(self.body[unchecked: ..<endIndex], repeating: self.appendix)
     }
     
     //=------------------------------------------------------------------------=
@@ -68,17 +77,8 @@ extension DataInt.Body {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func normalized(repeating appendix: Bit = .zero) -> Self {
-        let appendix = Element(repeating: appendix)
-        var endIndex = self.count
-        
-        while endIndex > 0 {
-            let lastIndex = endIndex.minus(1).unchecked()
-            guard self[unchecked: lastIndex] == appendix else { break }
-            endIndex = lastIndex
-        }
-        
-        return Self(self.start, count: endIndex)
+    @inlinable public consuming func normalized() -> Self {
+        DataInt(self).normalized().body
     }
     
     @inlinable public consuming func split(unchecked index: IX) -> (low: Self, high: Self) {
@@ -137,8 +137,8 @@ extension MutableDataInt.Body {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func normalized(repeating appendix: Bit = .zero) -> Self {
-        Self(mutating: Immutable(self).normalized(repeating: appendix))
+    @inlinable public consuming func normalized() -> Self {
+        Self(mutating: Immutable(self).normalized())
     }
     
     @inlinable public consuming func split(unchecked index: IX) -> (low: Self, high: Self) {
