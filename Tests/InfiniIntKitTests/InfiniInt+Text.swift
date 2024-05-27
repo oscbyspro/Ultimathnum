@@ -45,10 +45,10 @@ extension InfiniIntTests {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests
+    // MARK: Tests x Each Numeral Pyramid
     //=------------------------------------------------------------------------=
     
-    /// Generates a decimal pyramid and compares arithmetic versus text manipulation.
+    /// Generates a hexadecimal pyramid and compares text manipulation versus arithmetic.
     ///
     ///     1
     ///     12
@@ -63,7 +63,7 @@ extension InfiniIntTests {
     ///     12345678901
     ///     ............
     ///
-    func testTextPyramidInBase10() {
+    func testTextEachNumeralPyramidInBase10() {
         //=--------------------------------------=
         let numerals: [String] = [
             "0", "1", "2", "3", "4",
@@ -74,10 +74,10 @@ extension InfiniIntTests {
             var encoded = T.zero
             var decoded = String()
         
-            for index:  IX  in (1 ... 100).lazy.map({ $0 % 10 }) {
+            for index:   IX in (1 ... 64).lazy.map({ $0 % 10 }) {
                 encoded &*= 10
                 encoded &+= T(index)
-                decoded  += numerals[Int(index)]
+                decoded.append(numerals[Int(index)])
                 
                 Test().description(encoded, radix: 10, body: decoded)
                 
@@ -92,7 +92,7 @@ extension InfiniIntTests {
         }
     }
     
-    /// Generates a hexadecimal pyramid and compares arithmetic versus text manipulation.
+    /// Generates a hexadecimal pyramid and compares text manipulation versus bitwise operations.
     ///
     ///     1
     ///     12
@@ -113,7 +113,7 @@ extension InfiniIntTests {
     ///     123456789abcdef01
     ///     ..................
     ///
-    func testTextPyramidInBase16() {
+    func testTextEachNumeralPyramidInBase16() {
         //=--------------------------------------=
         let numerals: [String] = [
             "0", "1", "2", "3", "4", "5", "6", "7",
@@ -124,11 +124,77 @@ extension InfiniIntTests {
             var encoded = T.zero
             var decoded = String()
         
-            for index:  IX  in (1 ... 100).lazy.map({ $0 % 16 }) {
-                encoded &*= 16
-                encoded &+= T(index)
-                decoded  += numerals[Int(index)]
+            for index:  IX  in (1 ... 64).lazy.map({ $0 % 16 }) {
+                encoded <<= 04
+                encoded  |= T(index)
+                decoded.append(numerals[Int(index)])
                 
+                Test().description(encoded, radix: 16, body: decoded)
+                
+                #if !DEBUG
+                Test().description(roundtripping: encoded)
+                #endif
+            }
+        }
+                
+        for type in Self.types {
+            whereIs(type)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x High Numeral Pyramid
+    //=------------------------------------------------------------------------=
+    
+    /// Generates a hexadecimal pyramid and compares text manipulation versus arithmetic.
+    ///
+    ///     9
+    ///     99
+    ///     999
+    ///     9999
+    ///     .....
+    ///
+    func testTextHighNumeralPyramidInBase10() {
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            var encoded = T.zero
+            var decoded = String()
+            
+            for _ in 0  as  UX ..< 64 {
+                encoded &*= 10
+                encoded &+= 09
+                decoded.append("9")
+                
+                Test().description(encoded, radix: 10, body: decoded)
+                
+                #if !DEBUG
+                Test().description(roundtripping: encoded)
+                #endif
+            }
+        }
+                
+        for type in Self.types {
+            whereIs(type)
+        }
+    }
+    
+    /// Generates a hexadecimal pyramid and compares text manipulation versus bitwise operations.
+    ///
+    ///     f
+    ///     ff
+    ///     fff
+    ///     ffff
+    ///     .....
+    ///
+    func testTextHighNumeralPyramidInBase16() {
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            var encoded = T.zero
+            var decoded = String()
+        
+            for _ in 0  as  UX ..< 64 {
+                encoded <<= 04
+                encoded  |= 15
+                decoded.append("f")
+
                 Test().description(encoded, radix: 16, body: decoded)
                 
                 #if !DEBUG
