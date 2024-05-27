@@ -93,10 +93,12 @@ extension DataInt.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// Performs a three-way comparison of `self` versus `zero`.
     @inlinable public func signum() -> Signum {
         Signum(Bit(!self.buffer().allSatisfy({ $0 == .zero })))
     }
     
+    /// Performs a three-way comparison of `self` versus `other`.
     @inlinable public func compared(to other: Self) -> Signum {
         DataInt.compare(
             lhs: DataInt(self ), lhsIsSigned: false,
@@ -104,6 +106,7 @@ extension DataInt.Body {
         )
     }
     
+    /// Performs a three-way comparison of `self` versus `other`.
     @inlinable public func compared(to other: Mutable) -> Signum {
         self.compared(to: Self(other))
     }
@@ -119,14 +122,17 @@ extension MutableDataInt.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// Performs a three-way comparison of `self` versus `zero`.
     @inlinable public func signum() -> Signum {
         Immutable(self).signum()
     }
     
+    /// Performs a three-way comparison of `self` versus `other`.
     @inlinable public func compared(to other: Self) -> Signum {
         self.compared(to: Immutable(other))
     }
     
+    /// Performs a three-way comparison of `self` versus `other`.
     @inlinable public func compared(to other: Immutable) -> Signum {
         Immutable(self).compared(to: other)
     }

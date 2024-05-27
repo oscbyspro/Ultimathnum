@@ -106,6 +106,9 @@ extension DataInt.Body {
     //=------------------------------------------------------------------------=
     
     /// Rebases `self` such that it covers the given `range`.
+    ///
+    /// - Requires: The given `range` must not extend beyond `self`.
+    ///
     @inlinable public subscript(unchecked range: Range<IX>) -> Self {
         consuming get {
             //=----------------------------------=
@@ -118,6 +121,9 @@ extension DataInt.Body {
     }
     
     /// Rebases `self` such that it covers the given `range`.
+    ///
+    /// - Requires: The given `range` must not extend beyond `self`.
+    ///
     @inlinable public subscript(unchecked range: PartialRangeFrom<IX>) -> Self {
         consuming get {
             //=----------------------------------=
@@ -131,6 +137,9 @@ extension DataInt.Body {
     }
     
     /// Rebases `self` such that it covers the given `range`.
+    ///
+    /// - Requires: The given `range` must not extend beyond `self`.
+    ///
     @inlinable public subscript(unchecked range: PartialRangeUpTo<IX>) -> Self {
         consuming get {
             //=----------------------------------=
@@ -174,6 +183,9 @@ extension MutableDataInt.Body {
     //=------------------------------------------------------------------------=
     
     /// Rebases `self` such that it covers the given `range`.
+    ///
+    /// - Requires: The given `range` must not extend beyond `self`.
+    ///
     @inlinable public subscript(unchecked range: Range<IX>) -> Self {
         consuming get {
             Self(mutating: Immutable(self)[unchecked: range])
@@ -181,6 +193,9 @@ extension MutableDataInt.Body {
     }
     
     /// Rebases `self` such that it covers the given `range`.
+    ///
+    /// - Requires: The given `range` must not extend beyond `self`.
+    ///
     @inlinable public subscript(unchecked range: PartialRangeFrom<IX>) -> Self {
         consuming get {
             Self(mutating: Immutable(self)[unchecked: range])
@@ -188,6 +203,9 @@ extension MutableDataInt.Body {
     }
     
     /// Rebases `self` such that it covers the given `range`.
+    ///
+    /// - Requires: The given `range` must not extend beyond `self`.
+    ///
     @inlinable public subscript(unchecked range: PartialRangeUpTo<IX>) -> Self {
         consuming get {
             Self(mutating: Immutable(self)[unchecked: range])
