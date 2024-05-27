@@ -43,6 +43,104 @@ extension InfiniIntTests {
             type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    /// Generates a decimal pyramid and compares arithmetic versus text manipulation.
+    ///
+    ///     1
+    ///     12
+    ///     123
+    ///     1234
+    ///     12345
+    ///     123456
+    ///     1234567
+    ///     12345678
+    ///     123456789
+    ///     1234567890
+    ///     12345678901
+    ///     ............
+    ///
+    func testTextPyramidInBase10() {
+        //=--------------------------------------=
+        let numerals: [String] = [
+            "0", "1", "2", "3", "4",
+            "5", "6", "7", "8", "9",
+        ]
+        //=--------------------------------------=
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            var encoded = T.zero
+            var decoded = String()
+        
+            for index:  IX  in (1 ... 100).lazy.map({ $0 % 10 }) {
+                encoded &*= 10
+                encoded &+= T(index)
+                decoded  += numerals[Int(index)]
+                
+                Test().description(encoded, radix: 10, body: decoded)
+                
+                #if !DEBUG
+                Test().description(roundtripping: encoded)
+                #endif
+            }
+        }
+                
+        for type in Self.types {
+            whereIs(type)
+        }
+    }
+    
+    /// Generates a hexadecimal pyramid and compares arithmetic versus text manipulation.
+    ///
+    ///     1
+    ///     12
+    ///     123
+    ///     1234
+    ///     12345
+    ///     123456
+    ///     1234567
+    ///     12345678
+    ///     123456789
+    ///     123456789a
+    ///     123456789ab
+    ///     123456789abc
+    ///     123456789abcd
+    ///     123456789abcde
+    ///     123456789abcdef
+    ///     123456789abcdef0
+    ///     123456789abcdef01
+    ///     ..................
+    ///
+    func testTextPyramidInBase16() {
+        //=--------------------------------------=
+        let numerals: [String] = [
+            "0", "1", "2", "3", "4", "5", "6", "7",
+            "8", "9", "a", "b", "c", "d", "e", "f",
+        ]
+        //=--------------------------------------=
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            var encoded = T.zero
+            var decoded = String()
+        
+            for index:  IX  in (1 ... 100).lazy.map({ $0 % 16 }) {
+                encoded &*= 16
+                encoded &+= T(index)
+                decoded  += numerals[Int(index)]
+                
+                Test().description(encoded, radix: 16, body: decoded)
+                
+                #if !DEBUG
+                Test().description(roundtripping: encoded)
+                #endif
+            }
+        }
+                
+        for type in Self.types {
+            whereIs(type)
+        }
+    }
 }
 
 //=----------------------------------------------------------------------------=
