@@ -39,6 +39,34 @@ final class TextIntBenchmarksOnRadix10: XCTestCase {
     }
     
     //=------------------------------------------------------------------------=
+    // MARK: Tests x Decoding
+    //=------------------------------------------------------------------------=
+    
+    func testDecodingOneMillionTimesBinaryIntegerAsUX() throws {
+        #if DEBUG
+        throw XCTSkip("benchmark")
+        #else
+        let encoded = blackHoleIdentity(Self.formatter.encode(UX.max))
+        
+        for _ in 0 as UX ..<  1_000_000 {
+            precondition((try? Self.formatter.decode(encoded) as UX) != nil)
+        }
+        #endif
+    }
+    
+    func testDecodingOneMillionTimesBinaryIntegerAsUXL() throws {
+        #if DEBUG
+        throw XCTSkip("benchmark")
+        #else
+        let encoded = blackHoleIdentity(Self.formatter.encode(UX.max))
+        
+        for _ in 0 as UX ..<  1_000_000 {
+            precondition((try? Self.formatter.decode(encoded) as UXL) != nil)
+        }
+        #endif
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Tests x Encoding
     //=------------------------------------------------------------------------=
     
