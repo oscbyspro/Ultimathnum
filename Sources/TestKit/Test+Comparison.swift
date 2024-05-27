@@ -190,18 +190,19 @@ extension Test {
             
             elements: do { var lhs = lhs, rhs = rhs
 
-                if  B.elementsCanBeRebound(to: A.Element.Magnitude.self) {
+                if  UX(size: B.Element.Magnitude.self) >= UX(size: A.Element.Magnitude.self) {
                     lhs.withUnsafeMutableBinaryIntegerElements { lhs in
                         rhs.withUnsafeMutableBinaryIntegerElements(as: A.Element.Magnitude.self) { rhs in
                             elements(lhs, rhs)
-                        }!
+                        }
                     }
+                    
                 }   else {
                     lhs.withUnsafeMutableBinaryIntegerElements(as: B.Element.Magnitude.self) { lhs in
                         rhs.withUnsafeMutableBinaryIntegerElements { rhs in
                             elements(lhs, rhs)
                         }
-                    }!
+                    }
                 }
             }
         }

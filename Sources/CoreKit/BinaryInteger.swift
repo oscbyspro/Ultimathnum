@@ -398,7 +398,7 @@ where
     ///
     @inlinable var appendix: Bit { borrowing get }
     
-    /// Executes the `action` with the `body` of `self`.
+    /// Performs the `action` on the `body` of `self`.
     ///
     /// ### Development
     ///
@@ -408,7 +408,7 @@ where
         _ action: (DataInt<Element.Magnitude>.Body) throws -> T
     )   rethrows -> T
     
-    /// Executes the `action` with the mutable `body` of `self`.
+    /// Performs the `action` on the mutable `body` of `self`.
     ///
     /// ### Development
     ///

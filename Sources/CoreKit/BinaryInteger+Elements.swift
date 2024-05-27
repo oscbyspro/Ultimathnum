@@ -32,7 +32,7 @@ extension BinaryInteger {
         if  let size  = UX(size: Self.self) {
             let ratio = size / UX(size: U8.self)
             let suffix: DataInt<U8> = source[ratio...]
-            success  &= Bit(suffix.normalized().body.count == .zero)
+            success = success & Bit(suffix.normalized().body.count == .zero)
         }
         //=--------------------------------------=
         return instance.veto(!Bool(success))
@@ -57,7 +57,7 @@ extension BinaryInteger {
         if  let size  = UX(size: Self.self) {
             let ratio = size / UX(size: Element.Magnitude.self)
             let suffix: DataInt<Element.Magnitude> = source[ratio...]
-            success  &= Bit(suffix.normalized().body.count == .zero)
+            success = success & Bit(suffix.normalized().body.count == .zero)
         }
         //=--------------------------------------=
         return instance.veto(!Bool(success))
@@ -68,13 +68,13 @@ extension BinaryInteger {
         _ source: DataInt<OtherElement>, mode: some Signedness
     )   -> Fallible<Self> {
                 
-        if  OtherElement.elementsCanBeRebound(to: Self.Element.Magnitude.self) {
-            return (source).withMemoryRebound(to: Self.Element.Magnitude.self) {
+        if  UX(size: OtherElement.self) >= UX(size: Self.Element.Magnitude.self) {
+            return source.reinterpret(as: Self.Element.Magnitude.self) {
                 return Self.exactly($0, mode: mode)
             }
             
         }   else {
-            return (source).withMemoryRebound(to: U8.self) {
+            return source.reinterpret(as: U8.self) {
                 return Self.exactly($0, mode: mode)
             }
         }
@@ -91,10 +91,10 @@ extension BinaryInteger {
     
     /// Creates a new instance from the bit pattern of `source` that fits.
     @inlinable public init<OtherElement>(load source: DataInt<OtherElement>) {
-        if  OtherElement.elementsCanBeRebound(to: Self.Element.Magnitude.self) {
-            self = (source).withMemoryRebound(to: Self.Element.Magnitude.self, perform: Self.init(load:))
+        if  UX(size: OtherElement.self) >= UX(size: Self.Element.Magnitude.self) {
+            self = source.reinterpret(as: Self.Element.Magnitude.self, perform: Self.init(load:))
         }   else {
-            self = (source).withMemoryRebound(to: U8.self, perform: Self.init(load:))
+            self = source.reinterpret(as: U8.self, perform: Self.init(load:))
         }
     }
     
@@ -151,7 +151,7 @@ extension BinaryInteger {
             }
 
         }   else {
-            self = source.withUnsafeBinaryIntegerElements(perform: Self.init(load:))
+            self = source.withUnsafeBinaryIntegerElements(Self.init(load:))
         }
     }
     
@@ -163,98 +163,116 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     
-    /// Executes the `action` with the `body` and `appendix` of `self`.
+    /// Performs the `action` on the `body` and `appendix` of `self`.
     @inlinable public func withUnsafeBinaryIntegerElements<Value>(
-        perform action: (DataInt<Element.Magnitude>) throws -> Value
+        _ action: (DataInt<Element.Magnitude>) throws -> Value
     )   rethrows -> Value {
-        //=--------------------------------------=
-        let appendix: Bit = self.appendix
-        //=--------------------------------------=
+        
+        let appendix = self.appendix
+        
         return try self.withUnsafeBinaryIntegerBody {
             try action(DataInt($0, repeating: appendix))
         }
     }  
     
-    /// Executes the `action` with the mutable `body` and `appendix` of `self`.
+    /// Performs the `action` on the mutable `body` and `appendix` of `self`.
     @inlinable public mutating func withUnsafeMutableBinaryIntegerElements<Value>(
-        perform action: (MutableDataInt<Element.Magnitude>) throws -> Value
+        _ action: (MutableDataInt<Element.Magnitude>) throws -> Value
     )   rethrows -> Value {
-        //=--------------------------------------=
+        
         let appendix: Bit = self.appendix
-        //=--------------------------------------=
+        
         return try self.withUnsafeMutableBinaryIntegerBody {
             try action(MutableDataInt($0, repeating: appendix))
         }
-    }
-    
-    /// Executes the `action` with the `body` and `appendix` of `self`,
-    /// with an attempt to reinterpreted each element as `type`.
-    @inlinable public func withUnsafeBinaryIntegerElements<OtherElement, Value>(
-        as type: OtherElement.Type,
-        perform action: (DataInt<OtherElement>) throws -> Value
-    )   rethrows -> Optional<Value> {
-        
-        if  Self.elementsCanBeRebound(to: OtherElement.self) {
-            return try self.withUnsafeBinaryIntegerElements {
-                try $0.withMemoryRebound(to: OtherElement.self, perform: action)
-            }
-            
-        }   else {
-            return nil
-        }
-    }
-
-    /// Executes the `action` with the mutable `body` and `appendix` of `self`,
-    /// with an attempt to reinterpreted each element as `type`.
-    @inlinable public mutating func withUnsafeMutableBinaryIntegerElements<OtherElement, Value>(
-        as type: OtherElement.Type,
-        perform action: (MutableDataInt<OtherElement>) throws -> Value
-    )   rethrows -> Optional<Value> {
-        
-        if  Self.elementsCanBeRebound(to: OtherElement.self) {
-            return try self.withUnsafeMutableBinaryIntegerElements {
-                try $0.withMemoryRebound(to: OtherElement.self, perform: action)
-            }
-            
-        }   else {
-            return nil
-        }
-    }
-    
-    /// Executes the `action` with the `body` and `appendix` of `self`,
-    /// where each element has been reinterpreted as a byte.
-    ///
-    /// - Note: A byte is the smallest systems integer type.
-    ///
-    @inlinable public func withUnsafeBinaryIntegerElementsAsBytes<Value>(
-        perform action: (DataInt<U8.Magnitude>) throws -> Value
-    )   rethrows -> Value {
-        
-        try self.withUnsafeBinaryIntegerElements(as: U8.self, perform: action)!
-    }
-    
-    /// Executes the `action` with the mutable `body` and `appendix` of `self`,
-    /// where each element has been reinterpreted as a byte.
-    ///
-    /// - Note: A byte is the smallest systems integer type.
-    ///
-    @inlinable public mutating func withUnsafeMutableBinaryIntegerElementsAsBytes<Value>(
-        perform action: (MutableDataInt<U8.Magnitude>) throws -> Value
-    )   rethrows -> Value {
-        
-        try self.withUnsafeMutableBinaryIntegerElements(as: U8.self, perform: action)!
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// Indicates whether `Element` can be rebound to `OtherElement`.
-    @inlinable public static func elementsCanBeRebound<OtherElement>(to type: OtherElement.Type) -> Bool where OtherElement: SystemsInteger {
-        let size      = Int.zero == MemoryLayout<Self.Element>.size      % MemoryLayout<OtherElement>.size
-        let stride    = Int.zero == MemoryLayout<Self.Element>.stride    % MemoryLayout<OtherElement>.stride
-        let alignment = Int.zero == MemoryLayout<Self.Element>.alignment % MemoryLayout<OtherElement>.alignment
-        return Bool(Bit(size) & Bit(stride) & Bit(alignment))
+    /// Performs the `action` on the `body` of `self`, 
+    /// and temporarily rebinds each element to `type`.
+    ///
+    /// Any attempt to rebind the elements of `self` to a larger element `type`
+    /// triggers a precondition failure. In other words, you may only downsize
+    /// elements with this method.
+    ///
+    /// - Requires: `Element.size >= Destination.size`
+    ///
+    /// - Note: You may always reinterpret its elements as bytes (`U8`).
+    ///
+    @inlinable public borrowing func withUnsafeBinaryIntegerBody<OtherElement, Value>(
+        as type: OtherElement.Type,
+        perform action: (DataInt<OtherElement>.Body) throws -> Value
+    )   rethrows -> Value {
+        
+        try self.withUnsafeBinaryIntegerBody {
+            try $0.reinterpret(as: OtherElement.self, perform: action)
+        }
+    }
+    
+    /// Performs the `action` on the mutable `body` of `self`, 
+    /// and temporarily rebinds each element to `type`.
+    ///
+    /// Any attempt to rebind the elements of `self` to a larger element `type`
+    /// triggers a precondition failure. In other words, you may only downsize
+    /// elements with this method.
+    ///
+    /// - Requires: `Element.size >= Destination.size`
+    ///
+    /// - Note: You may always reinterpret its elements as bytes (`U8`).
+    ///
+    @inlinable public mutating func withUnsafeMutableBinaryIntegerBody<OtherElement, Value>(
+        as type: OtherElement.Type,
+        perform action: (MutableDataInt<OtherElement>.Body) throws -> Value
+    )   rethrows -> Value {
+        
+        try self.withUnsafeMutableBinaryIntegerBody {
+            try $0.reinterpret(as: OtherElement.self, perform: action)
+        }
+    }
+    
+    /// Performs the `action` on the `body` and `appendix` of `self`,
+    /// and temporarily rebinds each element to `type`.
+    ///
+    /// Any attempt to rebind the elements of `self` to a larger element `type`
+    /// triggers a precondition failure. In other words, you may only downsize
+    /// elements with this method.
+    ///
+    /// - Requires: `Element.size >= Destination.size`
+    ///
+    /// - Note: You may always reinterpret its elements as bytes (`U8`).
+    ///
+    @inlinable public borrowing func withUnsafeBinaryIntegerElements<OtherElement, Value>(
+        as type: OtherElement.Type,
+        perform action: (DataInt<OtherElement>) throws -> Value
+    )   rethrows -> Value {
+        
+        try self.withUnsafeBinaryIntegerElements {
+            try $0.reinterpret(as: OtherElement.self, perform: action)
+        }
+    }
+    
+    /// Performs the `action` on the mutable `body` and `appendix` of `self`,
+    /// and temporarily rebinds each element to `type`.
+    ///
+    /// Any attempt to rebind the elements of `self` to a larger element `type`
+    /// triggers a precondition failure. In other words, you may only downsize
+    /// elements with this method.
+    ///
+    /// - Requires: `Element.size >= Destination.size`
+    ///
+    /// - Note: You may always reinterpret its elements as bytes (`U8`).
+    ///
+    @inlinable public mutating func withUnsafeMutableBinaryIntegerElements<OtherElement, Value>(
+        as type: OtherElement.Type,
+        perform action: (MutableDataInt<OtherElement>) throws -> Value
+    )   rethrows -> Value {
+        
+        try self.withUnsafeMutableBinaryIntegerElements {
+            try $0.reinterpret(as: OtherElement.self, perform: action)
+        }
     }
 }
 

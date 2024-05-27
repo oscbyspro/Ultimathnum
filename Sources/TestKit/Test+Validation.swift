@@ -24,7 +24,17 @@ extension Test {
         _ expectation: Fallible<Output>
     )   where Input: BinaryInteger, Output: BinaryInteger {
         //=--------------------------------------=
-        same(Output.exactly(input), expectation, "T.exactly(some BinaryInteger)")
+        // path: binary integer
+        //=--------------------------------------=
+        always: do {
+            same(Output.exactly(input), expectation, "T.exactly(some BinaryInteger)")
+
+            if !expectation.error {
+                same(Output(input), expectation.value,  "T.init(some BinaryInteger)")
+            }
+        }
+        //=--------------------------------------=
+        // path: sign and magnitude
         //=--------------------------------------=
         always: do {
             let sign = Sign(input.isNegative)
@@ -32,21 +42,26 @@ extension Test {
             same(Output.exactly(sign: sign, magnitude: magnitude), expectation, "T.exactly(sign:magnitude:)")
             
             if !expectation.error {
-                same(Output(sign: sign, magnitude: magnitude), expectation.value, "T(sign:magnitude:)")
+                same(Output(sign: sign, magnitude: magnitude), expectation.value,  "T.init(sign:magnitude:)")
             }
         }
         //=--------------------------------------=
-        input.withUnsafeBinaryIntegerBody {
-            let body = Array($0.buffer())
-            self.exactly(body, Input.mode, expectation)
-        }
-        
+        // path: elements
+        //=--------------------------------------=
         input.withUnsafeBinaryIntegerElements {
-            same(Output.exactly($0, mode: Input.mode), expectation, "Integer.exactly(_:mode:) [0]")
+            same(Output.exactly($0, mode: Input.mode), expectation, "T.exactly(_:mode:) [0]")
         }
         
-        input.withUnsafeBinaryIntegerElementsAsBytes {
-            same(Output.exactly($0, mode: Input.mode), expectation, "Integer.exactly(_:mode:) [1]")
+        input.withUnsafeBinaryIntegerElements(as: U8.self) {
+            same(Output.exactly($0, mode: Input.mode), expectation, "T.exactly(_:mode:) [1]")
+        }
+        //=--------------------------------------=
+        // path: body when compact or no appendix
+        //=--------------------------------------=
+        if !Input.size.isInfinite || !Bool(input.appendix) {
+            input.withUnsafeBinaryIntegerBody {
+                self.exactly(Array($0.buffer()), Input.mode, expectation)
+            }
         }
     }
 }

@@ -33,7 +33,7 @@ extension CoreInteger {
         _ action: (DataInt<Element.Magnitude>.Body) throws -> T
     )   rethrows -> T {
         
-        try Swift.withUnsafePointer(to: self) {
+        try Swift .withUnsafePointer(to: self) {
             try $0.withMemoryRebound(to: Element.Magnitude.self, capacity: 1) {
                 try action(DataInt.Body($0, count: 1))
             }
@@ -44,7 +44,7 @@ extension CoreInteger {
         _ action: (MutableDataInt<Element.Magnitude>.Body) throws -> T
     )   rethrows -> T {
         
-        try Swift.withUnsafeMutablePointer(to: &self) {
+        try Swift .withUnsafeMutablePointer(to: &self) {
             try $0.withMemoryRebound(to: Element.Magnitude.self, capacity: 1) {
                 try action(MutableDataInt.Body($0, count: 1))
             }

@@ -87,12 +87,12 @@ import CoreKit
         
         self.init()
         
-        try index.withUnsafeBinaryIntegerElementsAsBytes {
-            let x = $0.body.count(.nondescending(.zero))
+        try index.withUnsafeBinaryIntegerBody(as: U8.self) {
+            let x = $0.count(.nonappendix)
             for i in (0 ..< x).reversed() {
                 try self.double()
                 
-                if  $0.body[unchecked: i &>> 3] &>> U8(load: i) & 1 != 0 {
+                if  $0[unchecked: i &>> 3] &>> U8(load: i) & 1 != 0 {
                     try self.increment()
                 }
             }

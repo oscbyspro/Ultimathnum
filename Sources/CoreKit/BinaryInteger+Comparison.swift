@@ -124,18 +124,17 @@ extension BinaryInteger {
             
         }   else {
             //  note that the elements must be rebindable one way or the other
-            if  Other.elementsCanBeRebound(to: Self.Element.Magnitude.self) {
+            if  UX(size: Self.Element.Magnitude.self) <= UX(size: Other.Element.Magnitude.self) {
                 return self.withUnsafeBinaryIntegerElements { lhs in
                     (other).withUnsafeBinaryIntegerElements(as: Self.Element.Magnitude.self) { rhs in
                         DataInt.compare(
                             lhs: lhs, lhsIsSigned: Self .isSigned,
                             rhs: rhs, rhsIsSigned: Other.isSigned
                         )
-                    }!
+                    }
                 }
                 
             }   else {
-                Swift.assert(Self.elementsCanBeRebound(to: Other.Element.Magnitude.self))
                 return self.withUnsafeBinaryIntegerElements(as: Other.Element.Magnitude.self) { lhs in
                     (other).withUnsafeBinaryIntegerElements { rhs in
                         DataInt.compare(
@@ -143,7 +142,7 @@ extension BinaryInteger {
                             rhs: rhs, rhsIsSigned: Other.isSigned
                         )
                     }
-                }!
+                }
             }
         }
     }

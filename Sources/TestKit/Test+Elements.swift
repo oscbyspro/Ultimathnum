@@ -57,7 +57,7 @@ extension Test {
             same(Integer.exactly($0, mode: Integer.mode), expectation, "rountrip [0]")
         }
         
-        integer.withUnsafeBinaryIntegerElementsAsBytes {
+        integer.withUnsafeBinaryIntegerElements(as: U8.self) {
             same(appendix, $0.appendix, "appendix [1]")
             same(Integer.exactly($0, mode: Integer.mode), expectation, "rountrip [1]")
         }
@@ -73,7 +73,7 @@ extension Test {
         }
         
         if  var mutableInteger = Optional.some(integer) {
-            mutableInteger.withUnsafeMutableBinaryIntegerElementsAsBytes {
+            mutableInteger.withUnsafeMutableBinaryIntegerElements(as: U8.self) {
                 same(appendix, $0.appendix, "appendix [3]")
                 $0.body.initialize(repeating: U8(repeating: $0.appendix))
             }
@@ -108,7 +108,7 @@ extension Test {
                 same(Integer.exactly(elements, mode: mode), expectation, "T.exactly(_:mode:) - DataInt")
             }
             
-            elements.withMemoryRebound(to: U8.self) {
+            elements.reinterpret(as: U8.self) {
                 same(Integer.exactly($0, mode: mode), expectation, "T.exactly(_:mode:) - DataInt<U8>")
                 
                 if !expectation.error, $0.count(.entropy) <= UX.size {

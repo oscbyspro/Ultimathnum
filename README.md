@@ -379,7 +379,7 @@ overview [Mutable]DataInt:
 /load()   -> Element
 /next()   -> Element
 /subscript(UX) -> Element
-/withMemoryRebound(to:perform:)
+/reinterpret(as:perform:)
 ```
 
 ```
@@ -392,7 +392,7 @@ overview [Mutable]DataInt.Body:
 /start    -> Unsafe[Mutable]Pointer
 /subscript(unchecked: Void) -> Element
 /subscript(unchecked: IX)   -> Element
-/withMemoryRebound(to:perform:)
+/reinterpret(as:perform:)
 ```
 
 ```

@@ -39,10 +39,8 @@ extension TextInt {
             
         }   else {
             // this reinterprets the integer as unsigned
-            return integer.withUnsafeBinaryIntegerBody {
-                $0.withMemoryRebound(to: U8.self) {
-                    self.encode(sign: sign, mask: mask, body: $0)
-                }
+            return integer.withUnsafeBinaryIntegerBody(as: U8.self) {
+                self.encode(sign: sign, mask: mask, body: $0)
             }
         }
     }
@@ -65,10 +63,8 @@ extension TextInt {
             }
             
         }   else {
-            return magnitude.withUnsafeBinaryIntegerBody {
-                $0.withMemoryRebound(to: U8.self) {
-                    self.encode(sign: sign, mask: mask, body: $0)
-                }
+            return magnitude.withUnsafeBinaryIntegerBody(as: U8.self) {
+                self.encode(sign: sign, mask: mask, body: $0)
             }
         }
     }
