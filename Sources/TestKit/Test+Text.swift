@@ -89,4 +89,101 @@ extension Test {
             }
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities x Pyramids
+    //=------------------------------------------------------------------------=
+    
+    /// Generates a text pyramid and compares the result of text manipulation
+    /// versus arithmetic where the pyramid is built by appending 0s to 1.
+    ///
+    ///     10
+    ///     100
+    ///     1000
+    ///     .....
+    ///
+    public func descriptionByBaseNumeralPyramid<T>(_ type: T.Type, radix: UX, limit: UX) where T: BinaryInteger {
+        var decoded = T(1)
+        var encoded = String("1")
+        let multiplier = T(radix)
+                
+        always: do {
+            
+            for _ in 0 ..< limit {
+                decoded = try decoded.times(multiplier).prune(TextInt.Failure.overflow)
+                encoded.append("0")
+                
+                self.description(decoded, radix: radix, body: encoded)
+            }
+            
+        }   catch {
+            nay(T.size.isInfinite, "infinite integers should not overflow in this test")
+        }
+    }
+    
+    /// Generates a text pyramid and compares the result of text manipulation
+    /// versus arithmetic where the pyramid is built by repeating numerals in
+    /// ascending order from 1 with wrapping behavior.
+    ///
+    ///     1
+    ///     12
+    ///     123
+    ///     1234
+    ///     .....
+    ///
+    public func descriptionByEachNumeralPyramid<T>(_ type: T.Type, radix: UX, limit: UX) where T: BinaryInteger {
+        let encoder = try! TextInt.Numerals(36, letters: .lowercase)
+        var decoded = T.zero
+        var encoded = String()
+        
+        always: do {
+            
+            for index in (0 ..< limit).lazy.map({ ($0 &+ 1) % radix }) {
+                decoded = try decoded.times(T(radix)).prune(TextInt.Failure.overflow)
+                decoded = try decoded.plus (T(index)).prune(TextInt.Failure.overflow)
+                encoded.append(String(UnicodeScalar(UInt8(try! encoder.encode(U8(load: index))))))
+
+                self.description(decoded, radix: radix, body: encoded)
+            }
+            
+        }   catch {
+            nay(T.size.isInfinite, "infinite integers should not overflow in this test")
+        }
+    }
+    
+    /// Generates a text pyramid and compares the result of text manipulation 
+    /// versus arithmetic where the pyramid is built by repeating the highest
+    /// numeral.
+    ///
+    ///     9
+    ///     99
+    ///     999
+    ///     9999
+    ///     .....
+    ///
+    public func descriptionByHighNumeralPyramid<T>(_ type: T.Type, radix: UX, limit: UX) where T: BinaryInteger {
+        let encoder = try! TextInt.Numerals(36, letters: .lowercase)
+        var decoded = T.zero
+        var encoded = String()
+        
+        let values: (radix: T, index: T, numeral: String)
+        
+        values.radix   = T(radix)
+        values.index   = T(radix - 1)
+        values.numeral = String(UnicodeScalar(UInt8(try! encoder.encode(U8(radix - 1)))))
+        
+        always: do {
+            
+            for _ in 0 ..< limit {
+                decoded = try decoded.times(values.radix).prune(TextInt.Failure.overflow)
+                decoded = try decoded.plus (values.index).prune(TextInt.Failure.overflow)
+                encoded.append(values.numeral)
+                
+                self.description(decoded, radix: radix, body: encoded)
+            }
+            
+        }   catch {
+            nay(T.size.isInfinite, "infinite integers should not overflow in this test")
+        }
+    }
 }

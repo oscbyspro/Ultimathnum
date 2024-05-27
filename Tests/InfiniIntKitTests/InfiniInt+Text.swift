@@ -45,164 +45,55 @@ extension InfiniIntTests {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests x Each Numeral Pyramid
+    // MARK: Tests x Pyramids
     //=------------------------------------------------------------------------=
     
-    /// Generates a hexadecimal pyramid and compares text manipulation versus arithmetic.
-    ///
-    ///     1
-    ///     12
-    ///     123
-    ///     1234
-    ///     12345
-    ///     123456
-    ///     1234567
-    ///     12345678
-    ///     123456789
-    ///     1234567890
-    ///     12345678901
-    ///     ............
-    ///
-    func testTextEachNumeralPyramidInBase10() {
-        //=--------------------------------------=
-        let numerals: [String] = [
-            "0", "1", "2", "3", "4",
-            "5", "6", "7", "8", "9",
-        ]
-        //=--------------------------------------=
+    func testDescriptionByBaseNumeralPyramid() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            var encoded = T.zero
-            var decoded = String()
-        
-            for index:   IX in (1 ... 64).lazy.map({ $0 % 10 }) {
-                encoded &*= 10
-                encoded &+= T(index)
-                decoded.append(numerals[Int(index)])
-                
-                Test().description(encoded, radix: 10, body: decoded)
-                
-                #if !DEBUG
-                Test().description(roundtripping: encoded)
-                #endif
+            #if DEBUG
+            Test().descriptionByBaseNumeralPyramid(T.self, radix: 10, limit: 64)
+            Test().descriptionByBaseNumeralPyramid(T.self, radix: 16, limit: 64)
+            #else
+            for radix: UX in 2 ... 36 {
+                Test().descriptionByBaseNumeralPyramid(T.self, radix: radix, limit: 64)
             }
+            #endif
         }
-                
+        
         for type in Self.types {
             whereIs(type)
         }
     }
     
-    /// Generates a hexadecimal pyramid and compares text manipulation versus bitwise operations.
-    ///
-    ///     1
-    ///     12
-    ///     123
-    ///     1234
-    ///     12345
-    ///     123456
-    ///     1234567
-    ///     12345678
-    ///     123456789
-    ///     123456789a
-    ///     123456789ab
-    ///     123456789abc
-    ///     123456789abcd
-    ///     123456789abcde
-    ///     123456789abcdef
-    ///     123456789abcdef0
-    ///     123456789abcdef01
-    ///     ..................
-    ///
-    func testTextEachNumeralPyramidInBase16() {
-        //=--------------------------------------=
-        let numerals: [String] = [
-            "0", "1", "2", "3", "4", "5", "6", "7",
-            "8", "9", "a", "b", "c", "d", "e", "f",
-        ]
-        //=--------------------------------------=
+    func testDescriptionByEachNumeralPyramid() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            var encoded = T.zero
-            var decoded = String()
-        
-            for index:  IX  in (1 ... 64).lazy.map({ $0 % 16 }) {
-                encoded <<= 04
-                encoded  |= T(index)
-                decoded.append(numerals[Int(index)])
-                
-                Test().description(encoded, radix: 16, body: decoded)
-                
-                #if !DEBUG
-                Test().description(roundtripping: encoded)
-                #endif
+            #if DEBUG
+            Test().descriptionByEachNumeralPyramid(T.self, radix: 10, limit: 64)
+            Test().descriptionByEachNumeralPyramid(T.self, radix: 16, limit: 64)
+            #else
+            for radix: UX in 2 ... 36 {
+                Test().descriptionByEachNumeralPyramid(T.self, radix: radix, limit: 64)
             }
+            #endif
         }
-                
+        
         for type in Self.types {
             whereIs(type)
         }
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Tests x High Numeral Pyramid
-    //=------------------------------------------------------------------------=
-    
-    /// Generates a hexadecimal pyramid and compares text manipulation versus arithmetic.
-    ///
-    ///     9
-    ///     99
-    ///     999
-    ///     9999
-    ///     .....
-    ///
-    func testTextHighNumeralPyramidInBase10() {
+    func testDescriptionByHighNumeralPyramid() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            var encoded = T.zero
-            var decoded = String()
-            
-            for _ in 0  as  UX ..< 64 {
-                encoded &*= 10
-                encoded &+= 09
-                decoded.append("9")
-                
-                Test().description(encoded, radix: 10, body: decoded)
-                
-                #if !DEBUG
-                Test().description(roundtripping: encoded)
-                #endif
+            #if DEBUG
+            Test().descriptionByHighNumeralPyramid(T.self, radix: 10, limit: 64)
+            Test().descriptionByHighNumeralPyramid(T.self, radix: 16, limit: 64)
+            #else
+            for radix: UX in 2 ... 36 {
+                Test().descriptionByHighNumeralPyramid(T.self, radix: radix, limit: 64)
             }
+            #endif
         }
-                
-        for type in Self.types {
-            whereIs(type)
-        }
-    }
-    
-    /// Generates a hexadecimal pyramid and compares text manipulation versus bitwise operations.
-    ///
-    ///     f
-    ///     ff
-    ///     fff
-    ///     ffff
-    ///     .....
-    ///
-    func testTextHighNumeralPyramidInBase16() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            var encoded = T.zero
-            var decoded = String()
         
-            for _ in 0  as  UX ..< 64 {
-                encoded <<= 04
-                encoded  |= 15
-                decoded.append("f")
-
-                Test().description(encoded, radix: 16, body: decoded)
-                
-                #if !DEBUG
-                Test().description(roundtripping: encoded)
-                #endif
-            }
-        }
-                
         for type in Self.types {
             whereIs(type)
         }
