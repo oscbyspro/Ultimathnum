@@ -216,7 +216,7 @@ extension DataInt.Body {
         let ratio = IX(size: Element.self) / IX(size: Destination.self)
         let count = self.count * ratio
         return try (self.start).withMemoryRebound(to: Destination.self, capacity: Int(count)) {
-            try action(.init($0, count: count))
+            try action(DataInt<Destination>.Body.init($0, count: count))
         }
     }
 }

@@ -191,8 +191,8 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// Performs the `action` on the `body` of `self`, 
-    /// and temporarily rebinds each element to `type`.
+    /// Performs the `action` on the `body` of `self` and temporarily 
+    /// rebinds each element to the given `type`.
     ///
     /// Any attempt to rebind the elements of `self` to a larger element `type`
     /// triggers a precondition failure. In other words, you may only downsize
@@ -212,8 +212,8 @@ extension BinaryInteger {
         }
     }
     
-    /// Performs the `action` on the mutable `body` of `self`, 
-    /// and temporarily rebinds each element to `type`.
+    /// Performs the `action` on the mutable `body` of `self` and temporarily 
+    /// rebinds each element to the given `type`.
     ///
     /// Any attempt to rebind the elements of `self` to a larger element `type`
     /// triggers a precondition failure. In other words, you may only downsize
@@ -233,8 +233,8 @@ extension BinaryInteger {
         }
     }
     
-    /// Performs the `action` on the `body` and `appendix` of `self`,
-    /// and temporarily rebinds each element to `type`.
+    /// Performs the `action` on the `body` and `appendix` of `self` and temporarily
+    /// rebinds each element to the given `type`.
     ///
     /// Any attempt to rebind the elements of `self` to a larger element `type`
     /// triggers a precondition failure. In other words, you may only downsize
@@ -254,8 +254,8 @@ extension BinaryInteger {
         }
     }
     
-    /// Performs the `action` on the mutable `body` and `appendix` of `self`,
-    /// and temporarily rebinds each element to `type`.
+    /// Performs the `action` on the mutable `body` and `appendix` of `self` and temporarily
+    /// rebinds each element to the given `type`.
     ///
     /// Any attempt to rebind the elements of `self` to a larger element `type`
     /// triggers a precondition failure. In other words, you may only downsize

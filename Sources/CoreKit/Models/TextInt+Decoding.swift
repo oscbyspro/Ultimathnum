@@ -35,6 +35,7 @@ extension TextInt {
             try self.words16(numerals: numerals) {
                 magnitude = T.Magnitude.exactly($0, mode: .unsigned)
             }
+            
         }   else {
             try self.words10(numerals: numerals) {
                 magnitude = T.Magnitude.exactly($0, mode: .unsigned)
@@ -67,7 +68,7 @@ extension TextInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @usableFromInline func words10(
+    @usableFromInline package func words10(
         numerals: consuming UnsafeBufferPointer<UInt8>, success: (DataInt<UX>) -> Void
     )   throws {
         //=--------------------------------------=
@@ -127,7 +128,7 @@ extension TextInt {
         }
     }
     
-    @usableFromInline func words16(
+    @usableFromInline package func words16(
         numerals: consuming UnsafeBufferPointer<UInt8>, success: (DataInt<UX>) -> Void
     )   throws {
         //=--------------------------------------=

@@ -507,24 +507,16 @@ try! UXL(fib1e6r16, as: .hexadecimal) // 0.002s (173561 digits)
 
 #### Type-safe bit casts with BitCastable\<BitPattern\>
 
-The BitCastable\<BitPattern\> protocol lets you perform type-safe bit casts in bulk. This is pertinent
-to binary integers since the abstraction is two representations bridged by a bit pattern transformation. 
-
-```swift
-U8(raw:  -1 as I8) // 255
-I8(raw: 255 as U8) //  -1
-```
-
-You perform type-safe bit-casts by calling the init(raw:) method. It is similar to init(load:) 
-but with same-size, and possibly other, requirements. Alternatively, you can use subscript(raw:) 
-to the same effect, or to perform an in-place reinterpretation.
+The BitCastable\<BitPattern\> protocol lets you perform type-safe bit casts in bulk. This is 
+especially pertinent to binary integers since the abstraction is two representations bridged 
+by a bit pattern transformation. You perform type-safe bit-casts by calling init(raw:). 
 
 ```swift
 @inlinable public func distance<Distance>(
     to other: Self,
     as type: Distance.Type = Distance.self
 )   -> Fallible<Distance> where Distance: SignedInteger {
-            
+    
     if  Self.size < Distance.size {
         return Distance(load: other).minus(Distance(load: self))
     
@@ -542,7 +534,8 @@ to the same effect, or to perform an in-place reinterpretation.
 The above example shows a generic Strideable/distance(from:to:) esque method. In the narrowing 
 unsigned case you find that the difference is reinterpreted as a same-size signed integer type 
 via the init(raw:) bulk operation. Note that such type relationships are generically available 
-to all binary integers. Also, note that this method is both fully generic and fully recoverable. 
+to all binary integers. Also, note that this method is both fully generic and fully recoverable.
+The init(load:) method is similar, but it returns the bit pattern that fits.
 
 <a name="corekit-bitwise-logic"/>
 
