@@ -102,7 +102,7 @@ extension TextInt {
         //=--------------------------------------------------------------------=
         
         /// Decodes the given `numerals` and truncates the result if it is too big.
-        @inlinable internal func load(_ numerals: consuming UnsafeBufferPointer<UInt8>, as type: UX.Type) throws -> UX {
+        @inlinable internal func load(_ numerals: borrowing UnsafeBufferPointer<UInt8>, as type: UX.Type) throws -> UX {
             var value = UX.zero
             let radix = UX(load: self.radix)
             

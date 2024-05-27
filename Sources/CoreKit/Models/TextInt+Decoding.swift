@@ -84,13 +84,16 @@ extension TextInt {
         //=--------------------------------------=
         // capacity is measured in radix powers
         //=--------------------------------------=
-        var capacity:  IX
-        var alignment: IX
+        let divisor  = Divisor(unchecked: self.exponentiation.exponent)
+        var stride   = IX(numerals.count).remainder(divisor)
+        var capacity = IX(numerals.count).quotient (divisor).unchecked()
         
-        let divisor = Divisor(unchecked: self.exponentiation.exponent)
-        (capacity, alignment) = IX(numerals.count).division(divisor).unchecked().components()
-        (capacity) = capacity.plus(IX(Bit(alignment != .zero))).unchecked()
-        //=--------------------------------------=
+        if  stride  == .zero {
+            stride   = self.exponentiation.exponent
+        }   else {
+            capacity = capacity.plus(1).unchecked()
+        }
+        //=--------------------------------------=        
         return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
             let words = MutableDataInt<UX>.Body(consume $0)![unchecked: ..<capacity]
             var index = IX.zero
@@ -105,18 +108,13 @@ extension TextInt {
             //=----------------------------------=
             // pointee: initialization
             //=----------------------------------=
-            var stride = alignment
-            if  stride == .zero {
-                stride = self.exponentiation.exponent
-            }
-            
             forwards: while !numerals.isEmpty {
                 let part = UnsafeBufferPointer(rebasing: numerals[..<Int(stride)])
                 numerals = UnsafeBufferPointer(rebasing: numerals[Int(stride)...])
                 let element = try self.numerals.load(part, as: UX.self)
                 // note that the index advances faster than the product
                 words[unchecked: index] = words[unchecked: ..<index].multiply(by: self.exponentiation.power, add: element)
-                stride = self.exponentiation.exponent
+                stride = self.exponentiation.exponent // in case it was misaligned
                 index  = index.incremented().unchecked()
             }
             //=----------------------------------=
@@ -145,12 +143,15 @@ extension TextInt {
         //=--------------------------------------=
         // capacity is measured in radix powers
         //=--------------------------------------=
-        var capacity:  IX
-        var alignment: IX
+        let divisor  = Divisor(unchecked: self.exponentiation.exponent)
+        var stride   = IX(numerals.count).remainder(divisor)
+        var capacity = IX(numerals.count).quotient (divisor).unchecked()
         
-        let divisor = Divisor(unchecked: self.exponentiation.exponent)
-        (capacity, alignment) = IX(numerals.count).division(divisor).unchecked().components()
-        (capacity) = capacity.plus(IX(Bit(alignment != .zero))).unchecked()
+        if  stride  == .zero {
+            stride   = self.exponentiation.exponent
+        }   else {
+            capacity = capacity.plus(1).unchecked()
+        }
         //=--------------------------------------=
         return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
             let words = MutableDataInt<UX>.Body(consume $0)![unchecked: ..<capacity]
@@ -166,17 +167,12 @@ extension TextInt {
             //=----------------------------------=
             // pointee: initialization
             //=----------------------------------=
-            var stride = alignment
-            if  stride == .zero {
-                stride = self.exponentiation.exponent
-            }
-            
             backwards: while !numerals.isEmpty {
                 let part = UnsafeBufferPointer(rebasing: numerals[..<Int(stride)])
                 numerals = UnsafeBufferPointer(rebasing: numerals[Int(stride)...])
                 index  = index.decremented().unchecked()
                 words[unchecked: index] = try self.numerals.load(part, as: UX.self)
-                stride = self.exponentiation.exponent
+                stride = self.exponentiation.exponent // in case it was misaligned
             }
             //=----------------------------------=
             // path: success
