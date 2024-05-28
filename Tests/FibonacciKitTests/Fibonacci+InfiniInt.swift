@@ -44,6 +44,10 @@ extension FibonacciTests {
         }
     }
     
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Prime 3131
+    //=------------------------------------------------------------------------=
+    
     ///  https://www.wolframalpha.com/input?i2d=true&i=fibonnaci+28751
     func testInfiniIntIXLPrime3131() {
         guard let item = Test().success({ try Fibonacci<IXL>(28751) }) else { return }
@@ -252,5 +256,28 @@ extension FibonacciTests {
         6612569833761373691337107507656423822097124691089029473989643597\
         4231470719178170567974934919172609491675022209246170315053321249
         """))
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x 1 000 000
+    //=------------------------------------------------------------------------=
+    
+    func testInfiniInt1e6() throws {
+        #if DEBUG
+        throw XCTSkip("req. release mode")
+        #else
+        guard let item = Test().success({ try Fibonacci<IXL>(1000000) }) else { return }
+        let coder16 = TextInt.hexadecimal
+        
+        always: do {
+            Test().same(item.index, 1000000)
+            Case(item).checkMathInvariants()
+        }
+        
+        for x in [item.element, item.element.complement()] {
+            Test().same(IXL(raw: x), try? coder16.decode(coder16.encode(IXL(raw: x))))
+            Test().same(UXL(raw: x), try? coder16.decode(coder16.encode(UXL(raw: x))))
+        }
+        #endif
     }
 }
