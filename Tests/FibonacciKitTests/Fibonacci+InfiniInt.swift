@@ -267,7 +267,6 @@ extension FibonacciTests {
         throw XCTSkip("req. release mode")
         #else
         guard let item = Test().success({ try Fibonacci<IXL>(1000000) }) else { return }
-        let coder16 = TextInt.hexadecimal
         
         always: do {
             Test().same(item.index, 1000000)
@@ -275,8 +274,8 @@ extension FibonacciTests {
         }
         
         for x in [item.element, item.element.complement()] {
-            Test().same(IXL(raw: x), try? coder16.decode(coder16.encode(IXL(raw: x))))
-            Test().same(UXL(raw: x), try? coder16.decode(coder16.encode(UXL(raw: x))))
+            Test().description(roundtripping: IXL(raw: x), radix: 16)
+            Test().description(roundtripping: UXL(raw: x), radix: 16)
         }
         #endif
     }

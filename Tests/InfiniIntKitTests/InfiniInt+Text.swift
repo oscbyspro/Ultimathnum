@@ -111,26 +111,10 @@ final class InfiniIntTestsOnText: XCTestCase {
     //=------------------------------------------------------------------------=
     
     /// The bit pattern: `0xfffefdfcfbfaf9f8...0706050403020100`.
-    static let ascending = UXL([
-    0x0706050403020100, 0x0f0e0d0c0b0a0908, 0x1716151413121110, 0x1f1e1d1c1b1a1918,
-    0x2726252423222120, 0x2f2e2d2c2b2a2928, 0x3736353433323130, 0x3f3e3d3c3b3a3938,
-    0x4746454443424140, 0x4f4e4d4c4b4a4948, 0x5756555453525150, 0x5f5e5d5c5b5a5958,
-    0x6766656463626160, 0x6f6e6d6c6b6a6968, 0x7776757473727170, 0x7f7e7d7c7b7a7978,
-    0x8786858483828180, 0x8f8e8d8c8b8a8988, 0x9796959493929190, 0x9f9e9d9c9b9a9998,
-    0xa7a6a5a4a3a2a1a0, 0xafaeadacabaaa9a8, 0xb7b6b5b4b3b2b1b0, 0xbfbebdbcbbbab9b8,
-    0xc7c6c5c4c3c2c1c0, 0xcfcecdcccbcac9c8, 0xd7d6d5d4d3d2d1d0, 0xdfdedddcdbdad9d8,
-    0xe7e6e5e4e3e2e1e0, 0xefeeedecebeae9e8, 0xf7f6f5f4f3f2f1f0, 0xfffefdfcfbfaf9f8] as [U64])
+    static let ascending  = UXL((U8.min ... U8.max))
     
     /// The bit pattern: `0x0001020304050607...f8f9fafbfcfdfeff`.
-    static let descending = UXL([
-    0xf8f9fafbfcfdfeff, 0xf0f1f2f3f4f5f6f7, 0xe8e9eaebecedeeef, 0xe0e1e2e3e4e5e6e7,
-    0xd8d9dadbdcdddedf, 0xd0d1d2d3d4d5d6d7, 0xc8c9cacbcccdcecf, 0xc0c1c2c3c4c5c6c7,
-    0xb8b9babbbcbdbebf, 0xb0b1b2b3b4b5b6b7, 0xa8a9aaabacadaeaf, 0xa0a1a2a3a4a5a6a7,
-    0x98999a9b9c9d9e9f, 0x9091929394959697, 0x88898a8b8c8d8e8f, 0x8081828384858687,
-    0x78797a7b7c7d7e7f, 0x7071727374757677, 0x68696a6b6c6d6e6f, 0x6061626364656667,
-    0x58595a5b5c5d5e5f, 0x5051525354555657, 0x48494a4b4c4d4e4f, 0x4041424344454647,
-    0x38393a3b3c3d3e3f, 0x3031323334353637, 0x28292a2b2c2d2e2f, 0x2021222324252627,
-    0x18191a1b1c1d1e1f, 0x1011121314151617, 0x08090a0b0c0d0e0f, 0x0001020304050607] as [U64])
+    static let descending = UXL((U8.min ... U8.max).reversed())
     
     //=------------------------------------------------------------------------=
     // MARK: Tests x Ascending, Descending
@@ -146,6 +130,7 @@ final class InfiniIntTestsOnText: XCTestCase {
             magnitudes.append(x)
             magnitudes.append(x.toggled())
         }
+        
         for i in  magnitudes.indices[..<2] {
             for j in magnitudes.indices[2..<4] {
                 magnitudes.append(magnitudes[i] &* magnitudes[j])
@@ -153,10 +138,12 @@ final class InfiniIntTestsOnText: XCTestCase {
                 magnitudes.append(magnitudes[i] &- magnitudes[j])
             }
         }
-                
-        func whereIs<T: BinaryInteger>(_ type: T.Type) {
-            for magnitude in magnitudes {
-                Test().description(roundtripping: T(load: magnitude))
+        
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            for x in magnitudes.lazy.map(T.init(load:)) {
+                for radix: UX in 2 ... 36 {
+                    Test().description(roundtripping: x, radix: radix)
+                }
             }
         }
         

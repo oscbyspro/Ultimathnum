@@ -79,14 +79,13 @@ extension Test {
     ///
     /// - Note: Use this method when you can't inline your expectation.
     ///
-    public func description<Integer>(roundtripping integer: Integer, radices: Range<UX> = 2 ..< 37) where Integer: BinaryInteger {
-        for radix in  radices {
-            
-            guard let lowercase = success({ try TextInt(radix: radix, letters: .lowercase) }) else { return }
-            guard let uppercase = success({ try TextInt(radix: radix, letters: .uppercase) }) else { return }
-            
-            success({ try lowercase.decode(lowercase.encode(integer)) }, integer, "[\(radix)]")
-            success({ try uppercase.decode(uppercase.encode(integer)) }, integer, "[\(radix)]")
+    public func description<Integer>(roundtripping integer: Integer, radix: UX) where Integer: BinaryInteger {
+        if  let lowercase = success({ try TextInt(radix: radix, letters: .lowercase) }) {
+            success({ try lowercase.decode(lowercase.encode(integer)) }, integer, "[\(radix)][lowercase]")
+        }
+        
+        if  let uppercase = success({ try TextInt(radix: radix, letters: .uppercase) }) {
+            success({ try uppercase.decode(uppercase.encode(integer)) }, integer, "[\(radix)][uppercase]")
         }
     }
     

@@ -86,9 +86,11 @@ extension FibonacciTests.Case {
     // MARK: Utilities x Invariants
     //=------------------------------------------------------------------------=
     
+    /// Performs a description round-trip for each radix.
     func checkTextInvariants() {
-        test.description(roundtripping: item.element)
-        test.description(roundtripping: item.next)
+        for radix: UX in 2 ... 36 {
+            test.description(roundtripping: item.element, radix: radix)
+        }
     }
     
     /// Generates new instances and uses them to check math invariants.
@@ -140,7 +142,7 @@ extension FibonacciTests.Case {
     // MARK: Utilities x Min, Max
     //=------------------------------------------------------------------------=
     
-    func checkIsAtZeroIndex() {
+    func checkIsZeroIndex() {
         test.same(item.index, Value.zero)
         
         var copy = self
@@ -177,8 +179,8 @@ extension FibonacciTests.Case {
         }
         
         zero: do {
-            make(    Item( )).checkIsAtZeroIndex()
-            make(try Item(0)).checkIsAtZeroIndex()
+            make(    Item( )).checkIsZeroIndex()
+            make(try Item(0)).checkIsZeroIndex()
         }   catch {
             test.fail(error.localizedDescription)
         }
