@@ -21,13 +21,16 @@ extension InfiniInt {
     
     @inline(never) @inlinable public func count(_ selection: Bit) -> Magnitude {
         var count = Magnitude()
-        
         let contrast = self.appendix.toggled()
-        self.storage.withUnsafeBinaryIntegerBody {
-            count = Magnitude(load: $0.count(contrast))
+        
+        self.withUnsafeBinaryIntegerBody {
+            var small: IX = $0.count(contrast)
+            
             if  contrast != selection {
-                count.toggle()
+                small.toggle()
             }
+            
+            count = Magnitude(load: small as IX)
         }
         
         return count as Magnitude
@@ -35,13 +38,12 @@ extension InfiniInt {
     
     @inline(never) @inlinable public func count(_ selection: Bit.Ascending) -> Magnitude {
         let match = self.appendix == selection.bit
-        var count = Magnitude()
+        var count = Magnitude.size
         
-        self.storage.withUnsafeBinaryIntegerBody {
-            let ascending =  $0.count(selection)
-            if  ascending == $0.size(), match {
-                count = Magnitude.size
-            }   else {
+        self.withUnsafeBinaryIntegerBody {
+            let ascending = $0.count(selection)
+            let maximum = match && ascending == $0.size()
+            if !maximum {
                 count = Magnitude(load: ascending)
             }
         }
@@ -55,7 +57,8 @@ extension InfiniInt {
                 
         if  match {
             self.withUnsafeBinaryIntegerBody {
-                count -= Magnitude(load: $0.count(.nondescending(selection.bit)))
+                let nondecending: IX = $0.count(.nondescending(selection.bit))
+                count = count.minus(Magnitude(load: nondecending)).unchecked()
             }
         }
         
