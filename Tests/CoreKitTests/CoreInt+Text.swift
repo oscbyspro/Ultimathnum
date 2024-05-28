@@ -24,7 +24,7 @@ extension CoreIntTests {
     func testDescriptionByBaseNumeralPyramid() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             for radix: UX in 2 ... 36 {
-                Test().descriptionByBaseNumeralPyramid(T.self, radix: radix, limit: UX.max)
+                Test().descriptionByBaseNumeralPyramid(T.self, radix: radix)
             }
         }
         
@@ -36,7 +36,7 @@ extension CoreIntTests {
     func testDescriptionByEachNumeralPyramid() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             for radix: UX in 2 ... 36 {
-                Test().descriptionByEachNumeralPyramid(T.self, radix: radix, limit: UX.max)
+                Test().descriptionByEachNumeralPyramid(T.self, radix: radix)
             }
         }
         
@@ -48,7 +48,7 @@ extension CoreIntTests {
     func testDescriptionByHighNumeralPyramid() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             for radix: UX in 2 ... 36 {
-                Test().descriptionByHighNumeralPyramid(T.self, radix: radix, limit: UX.max)
+                Test().descriptionByHighNumeralPyramid(T.self, radix: radix)
             }
         }
         

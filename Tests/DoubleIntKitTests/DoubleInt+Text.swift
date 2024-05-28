@@ -24,11 +24,11 @@ extension DoubleIntTests {
     func testDescriptionByBaseNumeralPyramid() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             #if DEBUG
-            Test().descriptionByBaseNumeralPyramid(T.self, radix: 10, limit: UX.max)
-            Test().descriptionByBaseNumeralPyramid(T.self, radix: 16, limit: UX.max)
+            Test().descriptionByBaseNumeralPyramid(T.self, radix: 10)
+            Test().descriptionByBaseNumeralPyramid(T.self, radix: 16)
             #else
             for radix: UX in 2 ... 36 {
-                Test().descriptionByBaseNumeralPyramid(T.self, radix: radix, limit: UX.max)
+                Test().descriptionByBaseNumeralPyramid(T.self, radix: radix)
             }
             #endif
         }
@@ -41,11 +41,11 @@ extension DoubleIntTests {
     func testDescriptionByEachNumeralPyramid() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             #if DEBUG
-            Test().descriptionByEachNumeralPyramid(T.self, radix: 10, limit: UX.max)
-            Test().descriptionByEachNumeralPyramid(T.self, radix: 16, limit: UX.max)
+            Test().descriptionByEachNumeralPyramid(T.self, radix: 10)
+            Test().descriptionByEachNumeralPyramid(T.self, radix: 16)
             #else
             for radix: UX in 2 ... 36 {
-                Test().descriptionByEachNumeralPyramid(T.self, radix: radix, limit: UX.max)
+                Test().descriptionByEachNumeralPyramid(T.self, radix: radix)
             }
             #endif
         }
@@ -58,11 +58,11 @@ extension DoubleIntTests {
     func testDescriptionByHighNumeralPyramid() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             #if DEBUG
-            Test().descriptionByHighNumeralPyramid(T.self, radix: 10, limit: UX.max)
-            Test().descriptionByHighNumeralPyramid(T.self, radix: 16, limit: UX.max)
+            Test().descriptionByHighNumeralPyramid(T.self, radix: 10)
+            Test().descriptionByHighNumeralPyramid(T.self, radix: 16)
             #else
             for radix: UX in 2 ... 36 {
-                Test().descriptionByHighNumeralPyramid(T.self, radix: radix, limit: UX.max)
+                Test().descriptionByHighNumeralPyramid(T.self, radix: radix)
             }
             #endif
         }

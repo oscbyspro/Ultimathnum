@@ -302,12 +302,12 @@ are finite, unsigned, and unchecked by default.
 overview MutableDataInt.Body:
 
 /[de|in]crement(by: Bool) -> Fallible<Void>
-/[de|in]crementSameSize(repeating: Bool, plus: Bool) -> Fallible<Void>
+/[de|in]crementSameSize(repeating: Bool,  plus: Bool) -> Fallible<Void>
 /[de|in]crement[SubSequence](by: Element) -> Fallible<[Void|Self]>
 /[de|in]crement[SubSequence](by: Element, plus: Bool) -> Fallible<[Void|Self]>
-/[de|in]crement[SubSequence](by: DataInt.Body, plus: Bool) -> Fallible<[Void|Self]>
+/[de|in]crement[SubSequence](by: DataInt.Body, plus:  Bool) -> Fallible<[Void|Self]>
 /[de|in]crement[SubSequence](by: DataInt.Body, times: Element, plus: Element) -> Fallible<[Void|Self]>
-/[de|in]crement[SubSequence](toggling: DataInt.Body, plus: Bool) -> Fallible<[Void|Self]>
+/[de|in]crement[SubSequence](toggling: DataInt.Body,  plus: Bool) -> Fallible<[Void|Self]>
 ```
 
 ##### Bitwise

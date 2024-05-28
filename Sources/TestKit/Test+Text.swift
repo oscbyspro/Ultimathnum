@@ -81,12 +81,12 @@ extension Test {
     ///
     public func description<Integer>(roundtripping integer: Integer, radices: Range<UX> = 2 ..< 37) where Integer: BinaryInteger {
         for radix in  radices {
+            
             guard let lowercase = success({ try TextInt(radix: radix, letters: .lowercase) }) else { return }
             guard let uppercase = success({ try TextInt(radix: radix, letters: .uppercase) }) else { return }
             
-            for coder in [lowercase, uppercase] {
-                success({ try coder.decode(coder.encode(integer)) }, integer, "[\(radix)]")
-            }
+            success({ try lowercase.decode(lowercase.encode(integer)) }, integer, "[\(radix)]")
+            success({ try uppercase.decode(uppercase.encode(integer)) }, integer, "[\(radix)]")
         }
     }
     
@@ -102,7 +102,7 @@ extension Test {
     ///     1000
     ///     .....
     ///
-    public func descriptionByBaseNumeralPyramid<T>(_ type: T.Type, radix: UX, limit: UX) where T: BinaryInteger {
+    public func descriptionByBaseNumeralPyramid<T>(_ type: T.Type, radix: UX, limit: UX = .max) where T: BinaryInteger {
         var decoded = T(1)
         var encoded = String("1")
         let multiplier = T(radix)
@@ -131,7 +131,7 @@ extension Test {
     ///     1234
     ///     .....
     ///
-    public func descriptionByEachNumeralPyramid<T>(_ type: T.Type, radix: UX, limit: UX) where T: BinaryInteger {
+    public func descriptionByEachNumeralPyramid<T>(_ type: T.Type, radix: UX, limit: UX = .max) where T: BinaryInteger {
         let encoder = try! TextInt.Numerals(36, letters: .lowercase)
         var decoded = T.zero
         var encoded = String()
@@ -161,7 +161,7 @@ extension Test {
     ///     9999
     ///     .....
     ///
-    public func descriptionByHighNumeralPyramid<T>(_ type: T.Type, radix: UX, limit: UX) where T: BinaryInteger {
+    public func descriptionByHighNumeralPyramid<T>(_ type: T.Type, radix: UX, limit: UX = .max) where T: BinaryInteger {
         let encoder = try! TextInt.Numerals(36, letters: .lowercase)
         var decoded = T.zero
         var encoded = String()
