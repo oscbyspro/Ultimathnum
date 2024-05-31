@@ -111,6 +111,7 @@ import CoreKit
         get {
             self.storage.low
         }
+        
         mutating set {
             self.storage.low = newValue
         }
@@ -120,6 +121,7 @@ import CoreKit
         get {
             self.storage.mid
         }
+        
         mutating set {
             self.storage.mid = newValue
         }
@@ -129,6 +131,7 @@ import CoreKit
         get {
             self.storage.high
         }
+        
         mutating set {
             self.storage.high = newValue
         }

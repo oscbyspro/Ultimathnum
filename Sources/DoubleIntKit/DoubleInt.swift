@@ -106,6 +106,7 @@ import CoreKit
         get {
             self.storage.low
         }
+        
         mutating set {
             self.storage.low = newValue
         }
