@@ -25,7 +25,7 @@ extension Fallible where Value: BinaryInteger {
         self.value.times(other).veto(self.error)
     }
     
-    @inlinable public consuming func times(_ other: borrowing Self ) -> Self {
+    @inlinable public consuming func times(_ other: borrowing Fallible<Value>) -> Self {
         self.value.times(other).veto(self.error)
     }
 }

@@ -53,3 +53,20 @@ extension FallibleTests {
         Test().same(Fallible<IX>(9, error: true ).veto({ _ in true  }), Fallible(9, error: true ))
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Assertions
+//=----------------------------------------------------------------------------=
+
+extension FallibleTests.Case {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    func prune<E>(_ error: E, is expectation: Result<Value, E>) where E: Equatable {
+        test.result({ try item.prune(error) }, expectation, "prune")
+        test.same(item.result(error), expectation, "result")
+        test.same(item.optional(), try? expectation.get(), "optional")
+    }
+}

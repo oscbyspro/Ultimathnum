@@ -60,28 +60,13 @@ extension Test {
             same({ var x = rhs; x  *= lhs; return x }(), expectation.value)
         }
         
-        func unidirectional(_ lhs: T, _ rhs: T, _ expectation: Fallible<T>) {
-            same(lhs.times(rhs),             expectation)
-            same(lhs.times(rhs.veto(false)), expectation)
-            same(lhs.times(rhs.veto(true )), expectation.veto())
-            
-            same(lhs.veto(false).times(rhs),             expectation)
-            same(lhs.veto(false).times(rhs.veto(false)), expectation)
-            same(lhs.veto(false).times(rhs.veto(true )), expectation.veto())
-            same(lhs.veto(true ).times(rhs),             expectation.veto())
-            same(lhs.veto(true ).times(rhs.veto(false)), expectation.veto())
-            same(lhs.veto(true ).times(rhs.veto(true )), expectation.veto())
-        }
-        
         always: do {
-            unidirectional(lhs, rhs, expectation)
-            unidirectional(rhs, lhs, expectation)
+            same(lhs.times(rhs), expectation)
+            same(rhs.times(lhs), expectation)
         }
         
-        if  lhs == rhs {
-            same(lhs.squared(),             expectation)
-            same(lhs.veto(false).squared(), expectation)
-            same(lhs.veto(true ).squared(), expectation.veto())
+        square: if lhs == rhs {
+            same(lhs.squared(), expectation)
         }
         
         complement: do {

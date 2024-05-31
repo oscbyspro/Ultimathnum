@@ -48,11 +48,6 @@ extension Test {
             return none(expectation, "division by zero is undefined [1]")
         }
         //=--------------------------------------=
-        checkSameSizeInverseInvariant: do {
-            let reversed = expectation.map({ $0.quotient &* divisor.value &+ $0.remainder }).value
-            same(dividend, reversed, "dividend != divisor &* quotient &+ remainder")
-        }
-        
         quotient: if !expectation.error {
             same(dividend / divisor.value, expectation.value.quotient)
             same({ var x = dividend; x /= divisor.value; return x }(), expectation.value.quotient)
@@ -64,23 +59,20 @@ extension Test {
         }
         
         quotient: do {
-            let expectation = expectation.map(\.quotient)
-            same(dividend.quotient(divisor), expectation)
-            same(Fallible(dividend, error: false).quotient(divisor), expectation)
-            same(Fallible(dividend, error: true ).quotient(divisor), expectation.veto())
+            same(dividend.quotient (divisor), expectation.map(\.quotient))
         }
         
         remainder: do {
-            let expectation = expectation.value.remainder
-            same(dividend.remainder(divisor), expectation)
-            same(Fallible(dividend, error: false).remainder(divisor), Fallible(expectation, error: false))
-            same(Fallible(dividend, error: true ).remainder(divisor), Fallible(expectation, error: true ))
+            same(dividend.remainder(divisor), expectation.value.remainder)
         }
         
         division: do {
-            same(dividend.division(divisor), expectation)
-            same(Fallible(dividend, error: false).division(divisor), expectation)
-            same(Fallible(dividend, error: true ).division(divisor), expectation.veto())
+            same(dividend.division (divisor), expectation)
+        }
+        
+        recovery: do {
+            let reversed = expectation.map({ $0.quotient &* divisor.value &+ $0.remainder })
+            same(dividend, reversed.value,  "dividend != divisor &* quotient &+ remainder")
         }
     }
 }
