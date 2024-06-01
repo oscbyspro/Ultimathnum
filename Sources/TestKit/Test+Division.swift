@@ -70,9 +70,16 @@ extension Test {
             same(dividend.division (divisor), expectation)
         }
         
-        recovery: do {
-            let reversed = expectation.map({ $0.quotient &* divisor.value &+ $0.remainder })
-            same(dividend, reversed.value,  "dividend != divisor &* quotient &+ remainder")
+        invariant: do {
+            let (lhs) = dividend
+            let (rhs) = expectation.map({ divisor.value &* $0.quotient &+ $0.remainder }).value
+            same(lhs, rhs, "dividend == divisor &* quotient &+ remainder")
+        }
+        
+        invariant: do {
+            let (lhs) = dividend.minus(expectation.value.remainder).value
+            let (rhs) = expectation.map({ divisor.value &* $0.quotient }).value
+            same(lhs, rhs, "dividend &- remainder == dividend &* quotient")
         }
     }
 }
@@ -102,19 +109,30 @@ extension Test {
             return none(expectation, "division by zero is undefined [1]")
         }
         //=--------------------------------------=
-        let result = T.division(dividend, by: divisor)
+        same(T.division(dividend, by: divisor), expectation, "2 by 1 division")
         //=--------------------------------------=
-        recover: if !expectation.error {
+        invariant: if !expectation.error {
             var bit = false
-            var reversed = expectation.value.quotient.multiplication(divisor.value)
+            let lhs = dividend
+            var rhs = expectation.value.quotient.multiplication(divisor.value)
             
-            (reversed.low,  bit) = reversed.low .plus(T.Magnitude.init(raw: expectation.value.remainder), plus: bit).components()
-            (reversed.high, bit) = reversed.high.plus(T(repeating: expectation.value.remainder.appendix), plus: bit).components()
+            (rhs.low,  bit) = rhs.low .plus(T.Magnitude.init(raw: expectation.value.remainder), plus: bit).components()
+            (rhs.high, bit) = rhs.high.plus(T(repeating: expectation.value.remainder.appendix), plus: bit).components()
             
-            same(bit,      false,    "dividend != divisor * quotient + remainder [0]")
-            same(dividend, reversed, "dividend != divisor * quotient + remainder [1]")
+            same(bit, false, "dividend == divisor * quotient + remainder [0]")
+            same(lhs, (rhs), "dividend == divisor * quotient + remainder [1]")
         }
-        //=--------------------------------------=
-        same(result, expectation, "2 by 1 division")
+        
+        invariant: if !expectation.error {
+            var bit = false
+            var lhs = dividend
+            let rhs = expectation.value.quotient.multiplication(divisor.value)
+            
+            (lhs.low,  bit) = lhs.low .minus(T.Magnitude.init(raw: expectation.value.remainder), plus: bit).components()
+            (lhs.high, bit) = lhs.high.minus(T(repeating: expectation.value.remainder.appendix), plus: bit).components()
+            
+            same(bit, false, "dividend - remainder == divisor * quotient [0]")
+            same(lhs, (rhs), "dividend - remainder == divisor * quotient [1]")
+        }
     }
 }
