@@ -69,7 +69,9 @@ extension InfiniInt {
                 }
             }
         }
-
+        //=--------------------------------------=
+        Swift.assert(result.storage.isNormal)
+        //=--------------------------------------=
         return Fallible(result, error: !Self.isSigned && Bool(self.appendix | other.appendix))
     }
 }
@@ -125,7 +127,9 @@ extension InfiniInt {
         if !homogeneous {
             self = self.complement()
         }
-        
+        //=--------------------------------------=
+        Swift.assert(self.storage.isNormal)
+        //=--------------------------------------=
         return self.veto(overflow) as Fallible<Self>
     }
 }
