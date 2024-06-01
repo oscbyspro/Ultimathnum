@@ -178,6 +178,12 @@ extension InfiniIntTests {
             Test().multiplication( b5678,  b5678, F(T([ 025,  060,  106,  164,  135,  100,  050, ~015] as [UX], repeating: 0), error: !T.isSigned))
             Test().multiplication( b5678, ~b5678, F(T([~029, ~066, ~113, ~172, ~134, ~100, ~050,  015] as [UX], repeating: 1), error: !T.isSigned))
             Test().multiplication(~b5678, ~b5678, F(T([ 036,  072,  120,  180,  133,  100,  050, ~015] as [UX], repeating: 0)))
+            //=----------------------------------=
+            let x0000 = T([~0, ~0, ~0, ~0] as [UX], repeating: 0)
+            //=----------------------------------=
+            Test().multiplication( x0000,  x0000, F(T([ 001,  000,  000,  000, ~001, ~000, ~000, ~000] as [UX] + [ 0] as [UX], repeating: 0)))
+            Test().multiplication( x0000, ~x0000, F(T([ 000,  000,  000,  000,  001,  000,  000,  000] as [UX] + [~0] as [UX], repeating: 1), error: !T.isSigned))
+            Test().multiplication(~x0000, ~x0000, F(T([ 000,  000,  000,  000,  000,  000,  000,  000] as [UX] + [ 1] as [UX], repeating: 0), error: !T.isSigned))
         }
         
         for element in Self.elements {
@@ -371,11 +377,17 @@ extension InfiniIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    /// - 2024-05-22: Checks the small-storage multiplication fast path.
-    func testMultiplicationBySmallStorageWhereBodyIsZeroAndAppendixIsOne() {
+    /// - 2024-05-22: Checks the small-storage multiplication path.
+    func testMultiplicationBySmallStorageWhereBodyIsZerosAndAppendixIsOne() {
         Test().multiplication(~InfiniInt<I8>(U8.max), 000, Fallible( 00000, error: false))
         Test().multiplication(~InfiniInt<U8>(U8.max), 000, Fallible( 00000, error: false))
         Test().multiplication(~InfiniInt<I8>(U8.max), 256, Fallible(~65535, error: false))
         Test().multiplication(~InfiniInt<U8>(U8.max), 256, Fallible(~65535, error: true ))
+    }
+    
+    /// - 2024-05-31: Checks the large-storage multiplication path.
+    func testMultiplicationByLargeStorageWhereBodyIsZerosAndAppendixIsOne() {
+        Test().multiplication(InfiniInt<I8>(repeating: 1) << 16, InfiniInt<I8>(repeating: 1) << 16, Fallible(1 << 32, error: false))
+        Test().multiplication(InfiniInt<U8>(repeating: 1) << 16, InfiniInt<U8>(repeating: 1) << 16, Fallible(1 << 32, error: true ))
     }
 }
