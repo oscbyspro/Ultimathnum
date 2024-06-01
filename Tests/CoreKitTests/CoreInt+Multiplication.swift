@@ -80,4 +80,32 @@ extension CoreIntTests {
             whereIsUnsigned(type)
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Miscellaneous
+    //=------------------------------------------------------------------------=
+    
+    /// The complement of one input yields the complement of the output.
+    ///
+    /// - Note: This invariant only holds for truncating multiplication (`&*`).
+    ///
+    func testMultiplicationByComplementYieldsLowProductComplementForEachBytePair() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            var success = U32.min
+            
+            for a in T.min ... T.max {
+                for b in T.min ... T.max {
+                    let c = a &* b
+                    
+                    success &+= U32(Bit(a &* b.complement() == c.complement()))
+                    success &+= U32(Bit(a.complement() &* b == c.complement()))
+                }
+            }
+            
+            Test().same(success, 2 * 256 * 256)
+        }
+        
+        whereIs(I8.self)
+        whereIs(U8.self)
+    }
 }
