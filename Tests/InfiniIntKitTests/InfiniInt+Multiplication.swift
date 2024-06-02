@@ -388,7 +388,16 @@ extension InfiniIntTests {
     
     /// - 2024-05-31: Checks the large-storage multiplication path.
     func testMultiplicationByLargeStorageWhereBodyIsZerosAndAppendixIsOne() {
-        Test().multiplication(InfiniInt<I8>(repeating: 1) << 16, InfiniInt<I8>(repeating: 1) << 16, Fallible(1 << 32, error: false))
-        Test().multiplication(InfiniInt<U8>(repeating: 1) << 16, InfiniInt<U8>(repeating: 1) << 16, Fallible(1 << 32, error: true ))
+        //=--------------------------------------=
+        let i16 = InfiniInt<I8>(repeating: 1) << 16
+        let u16 = InfiniInt<U8>(repeating: 1) << 16
+        //=--------------------------------------=
+        Test().multiplication(i16, i16 - 1, Fallible((1 << 32) &- i16)) // OK
+        Test().multiplication(i16, i16,     Fallible((1 << 32)       )) // :(
+        Test().multiplication(i16, i16 + 1, Fallible((1 << 32) &+ i16)) // OK
+
+        Test().multiplication(u16, u16 - 1, Fallible((1 << 32) &- u16).veto()) // OK
+        Test().multiplication(u16, u16,     Fallible((1 << 32)       ).veto()) // :(
+        Test().multiplication(u16, u16 + 1, Fallible((1 << 32) &+ u16).veto()) // OK
     }
 }
