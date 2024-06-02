@@ -114,4 +114,47 @@ extension InfiniIntTests {
             whereTheBaseTypeIs(element)
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testComplement() {
+        func whereTheElementIs<E>(_ type: E.Type) where E: SystemsInteger {
+            typealias T = InfiniInt<E>
+            //=----------------------------------=
+            let x = UX.msb
+            //=----------------------------------=
+            Test().complement(T([ 0,  0] as [UX], repeating: 0), false, Fallible(T([~0, ~0    ] as [UX], repeating: 1)))
+            Test().complement(T([ 0,  0] as [UX], repeating: 0), true , Fallible(T([ 0,  0    ] as [UX], repeating: 0), error: !T.isSigned))
+            Test().complement(T([ 0,  0] as [UX], repeating: 1), false, Fallible(T([~0, ~0    ] as [UX], repeating: 0)))
+            Test().complement(T([ 0,  0] as [UX], repeating: 1), true , Fallible(T([ 0,  0,  1] as [UX], repeating: 0)))
+            Test().complement(T([~0, ~0] as [UX], repeating: 0), false, Fallible(T([ 0,  0    ] as [UX], repeating: 1)))
+            Test().complement(T([~0, ~0] as [UX], repeating: 0), true , Fallible(T([ 1,  0    ] as [UX], repeating: 1)))
+            Test().complement(T([~0, ~0] as [UX], repeating: 1), false, Fallible(T([ 0,  0    ] as [UX], repeating: 0)))
+            Test().complement(T([~0, ~0] as [UX], repeating: 1), true , Fallible(T([ 1,  0    ] as [UX], repeating: 0)))
+            
+            Test().complement(T([ 0,  x] as [UX], repeating: 0), false, Fallible(T([~0, ~x    ] as [UX], repeating: 1)))
+            Test().complement(T([ 0,  x] as [UX], repeating: 0), true , Fallible(T([ 0,  x    ] as [UX], repeating: 1)))
+            Test().complement(T([ 0,  x] as [UX], repeating: 1), false, Fallible(T([~0, ~x    ] as [UX], repeating: 0)))
+            Test().complement(T([ 0,  x] as [UX], repeating: 1), true , Fallible(T([ 0,  x    ] as [UX], repeating: 0)))
+            Test().complement(T([~0, ~x] as [UX], repeating: 0), false, Fallible(T([ 0,  x    ] as [UX], repeating: 1)))
+            Test().complement(T([~0, ~x] as [UX], repeating: 0), true , Fallible(T([ 1,  x    ] as [UX], repeating: 1)))
+            Test().complement(T([~0, ~x] as [UX], repeating: 1), false, Fallible(T([ 0,  x    ] as [UX], repeating: 0)))
+            Test().complement(T([~0, ~x] as [UX], repeating: 1), true , Fallible(T([ 1,  x    ] as [UX], repeating: 0)))
+            
+            Test().complement(T([ 1,  2] as [UX], repeating: 0), false, Fallible(T([~1, ~2    ] as [UX], repeating: 1)))
+            Test().complement(T([ 1,  2] as [UX], repeating: 0), true , Fallible(T([~0, ~2    ] as [UX], repeating: 1)))
+            Test().complement(T([ 1,  2] as [UX], repeating: 1), false, Fallible(T([~1, ~2    ] as [UX], repeating: 0)))
+            Test().complement(T([ 1,  2] as [UX], repeating: 1), true , Fallible(T([~0, ~2    ] as [UX], repeating: 0)))
+            Test().complement(T([~1, ~2] as [UX], repeating: 0), false, Fallible(T([ 1,  2    ] as [UX], repeating: 1)))
+            Test().complement(T([~1, ~2] as [UX], repeating: 0), true , Fallible(T([ 2,  2    ] as [UX], repeating: 1)))
+            Test().complement(T([~1, ~2] as [UX], repeating: 1), false, Fallible(T([ 1,  2    ] as [UX], repeating: 0)))
+            Test().complement(T([~1, ~2] as [UX], repeating: 1), true , Fallible(T([ 2,  2    ] as [UX], repeating: 0)))
+        }
+                
+        for element in Self.elements {
+            whereTheElementIs(element)
+        }
+    }
 }

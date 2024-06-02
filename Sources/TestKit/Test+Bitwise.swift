@@ -79,20 +79,38 @@ extension Test {
     
     public func complement<T>(_ instance: T, _ increment: Bool, _ expectation: Fallible<T>) where T: BinaryInteger {
         always: do {
-            same(instance.complement(increment), expectation, "complement [0]")
+            let (result) = instance.complement(increment)
+            same(result, expectation, "complement [0]")
         }
         
         if  increment {
-            same(instance.complement(), expectation.value, "complement [1]")
-        }   else {
-            let  roundtrip = instance.complement(increment).value.complement(increment).value
-            same(roundtrip,  instance, "complement [2]")
+            let (result) = instance.complement()
+            same(result, expectation.value, "complement [1]")
         }
         
-        if  increment,  instance.isNegative {
-            same(T(raw: instance.magnitude()), expectation.value, "complement [3]")
-        }   else {
-            same(T(raw: instance.magnitude()), instance, "complement [4]")
+        if !increment {
+            var (result) = instance
+            result = result.complement(increment).value
+            result = result.complement(increment).value
+            same(result,   instance, "complement [2]")
+        }
+        
+        if  increment {
+            let (result) = instance.toggled().plus(1)
+            same(result, expectation, "manual complement [0]")
+        }
+        
+        if !increment {
+            let (result) = Fallible(instance.toggled())
+            same(result, expectation, "manual complement [1]")
+        }
+        
+        if  instance.isNegative, increment {
+            same(T(raw: instance.magnitude()), expectation.value, "magnitude [0]")
+        }
+        
+        if !instance.isNegative {
+            same(T(raw: instance.magnitude()), instance, "magnitude [1]")
         }
     }
 }
