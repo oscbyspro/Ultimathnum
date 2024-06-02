@@ -61,12 +61,12 @@ extension Test {
         }
         
         always: do {
-            same(lhs.times(rhs), expectation)
-            same(rhs.times(lhs), expectation)
+            same(lhs.times(rhs), expectation, "lhs.times(rhs)")
+            same(rhs.times(lhs), expectation, "rhs.times(lhs)")
         }
         
         square: if lhs == rhs {
-            same(lhs.squared(), expectation)
+            same(lhs.squared(), expectation, "squared()")
         }
         
         complement: do {
@@ -81,7 +81,7 @@ extension Test {
             same(lhsComplement.times(rhsComplement).value, expectation.value, "complement [4]")
             
             if  lhsComplement == rhsComplement {
-                same(lhsComplement.squared().value, expectation.value)
+                same(lhsComplement.squared().value, expectation.value, "complement.squared()")
             }
         }
         

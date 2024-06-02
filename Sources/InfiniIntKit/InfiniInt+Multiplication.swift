@@ -19,32 +19,32 @@ extension InfiniInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inline(never) @inlinable public consuming func squared() -> Fallible<Self> {
+    @inline(never) @inlinable public borrowing func squared() -> Fallible<Self> {
         //=--------------------------------------=
         if  let small = self.storage.small {            
-            return self.times(small)
+            return (copy self).times(small)
         }
         //=--------------------------------------=
-        var overflow = Bool(self.appendix)
-        if  overflow {
-            overflow = !Self.isSigned
-            self = self.complement()
-        }
-        
         let count  = self.storage.count * 2
-        let result = Self.uninitialized(count: count, repeating: .zero) { body in
+        let result = Self.uninitialized(count: count, repeating: .zero) { result in
             self.withUnsafeBinaryIntegerElements {
-                body.initialize(toSquareProductOf: $0.body)
+                //=------------------------------=
+                result.initialize(toSquareProductOf: $0.body)
+                //=------------------------------=
+                if  Bool($0.appendix) {
+                    result[unchecked: $0.body.count...].incrementSubSequence(toggling: $0.body, plus: true).discard()
+                    result[unchecked: $0.body.count...].incrementSubSequence(toggling: $0.body, plus: true).discard()
+                }
             }
         }
         
-        return Fallible(result, error: overflow)
+        return Fallible(result, error: !Self.isSigned && Bool(self.appendix))
     }
     
-    @inline(never) @inlinable public consuming func times(_ other: borrowing Self) -> Fallible<Self> {
+    @inline(never) @inlinable public borrowing func times(_ other: borrowing Self) -> Fallible<Self> {
         //=--------------------------------------=
         if  let small = other.storage.small {
-            return self.times(small)
+            return (copy self ).times(small)
             
         }   else if let small = self.storage.small {
             return (copy other).times(small)
@@ -53,18 +53,18 @@ extension InfiniInt {
         // note that 0s and 1s take the fast path
         //=--------------------------------------=
         let count  = self.storage.count + other.storage.count
-        let result = Self.uninitialized(count: count, repeating: self.appendix ^ other.appendix) { product in
+        let result = Self.uninitialized(count: count, repeating: self.appendix ^ other.appendix) { result in
             self.withUnsafeBinaryIntegerElements { lhs in
                 other.withUnsafeBinaryIntegerElements { rhs in
                     //=--------------------------=
-                    product.initialize(to: lhs.body, times: rhs.body)
+                    result.initialize(to: lhs.body, times: rhs.body)
                     //=--------------------------=
                     if  Bool(rhs.appendix) {
-                        product[unchecked: rhs.body.count...].incrementSubSequence(toggling: lhs.body, plus: true).discard()
+                        result[unchecked: rhs.body.count...].incrementSubSequence(toggling: lhs.body, plus: true).discard()
                     }
                     
                     if  Bool(lhs.appendix) {
-                        product[unchecked: lhs.body.count...].incrementSubSequence(toggling: rhs.body, plus: true).discard()
+                        result[unchecked: lhs.body.count...].incrementSubSequence(toggling: rhs.body, plus: true).discard()
                     }
                 }
             }
@@ -90,11 +90,10 @@ extension InfiniInt {
         //=--------------------------------------=
         let lhsAppendix = Bool(self .appendix)
         let rhsAppendix = Bool(other.appendix)
-        let homogeneous = lhsAppendix == rhsAppendix
         //=--------------------------------------=
         let overflow = if Self.isSigned {
             false
-        }   else if homogeneous {
+        }   else if lhsAppendix == rhsAppendix {
             lhsAppendix
         }   else if lhsAppendix {
             other.body > 1
@@ -124,7 +123,7 @@ extension InfiniInt {
             self.storage.normalize(appending: other.body)
         }
         
-        if !homogeneous {
+        if  lhsAppendix != rhsAppendix {
             self = self.complement()
         }
         //=--------------------------------------=
