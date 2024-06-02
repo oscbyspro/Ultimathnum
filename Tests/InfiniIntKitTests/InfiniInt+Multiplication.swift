@@ -305,8 +305,9 @@ extension InfiniIntTests {
     
     /// This checks all combinations for inputs in `I12.min...12.max`.
     ///
-    /// It uses `I8` and `U8` elements so that some inputs need two elements. 
-    /// Each product is compared against the result of addition.
+    /// - Note: Each product is compared against the result of addition.
+    ///
+    /// - Note: It uses 8-bit elements so some inputs use large storage.
     ///
     func testMultiplicationForEachSmallEntropyInRunnableRangeWhereElementIsByte() throws {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {

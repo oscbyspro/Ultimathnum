@@ -174,6 +174,7 @@ extension DataInt.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// - Requires: `self.count >= 1`
     @inlinable public subscript(unchecked index: Void) -> Element {
         //=----------------------------------=
         Swift.assert(00000 <  self.count, String.indexOutOfBounds())
@@ -181,6 +182,7 @@ extension DataInt.Body {
         return self.start.pointee
     }
     
+    /// - Requires: `self.count >= index + 1`
     @inlinable public subscript(unchecked index: IX) -> Element {
         //=--------------------------------------=
         Swift.assert(index >= 0000000000, String.indexOutOfBounds())
@@ -286,6 +288,7 @@ extension MutableDataInt.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// - Requires: `self.count >= 1`
     @inlinable public subscript(unchecked index: Void) -> Element {
         nonmutating get {
             Immutable(self)[unchecked: index]
@@ -301,6 +304,7 @@ extension MutableDataInt.Body {
         }
     }
     
+    /// - Requires: `self.count >= index + 1`
     @inlinable public subscript(unchecked index: IX) -> Element {
         nonmutating get {
             Immutable(self)[unchecked: index]

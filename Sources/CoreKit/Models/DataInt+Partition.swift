@@ -91,7 +91,7 @@ extension DataInt.Body {
     
     /// Returns the `low` and `high` part relative to the given `index`.
     ///
-    /// - Requires: `IX.zero <= index <= self.count`
+    /// - Requires: `0 <= index <= self.count`
     ///
     @inlinable public consuming func split(unchecked index: IX) -> (low: Self, high: Self) {
         //=--------------------------------------=
@@ -171,7 +171,7 @@ extension MutableDataInt.Body {
     
     /// Returns the `low` and `high` part relative to the given `index`.
     ///
-    /// - Requires: `IX.zero <= index <= self.count`
+    /// - Requires: `0 <= index <= self.count`
     ///
     @inlinable public consuming func split(unchecked index: IX) -> (low: Self, high: Self) {
         let (low, high) = Immutable(self).split(unchecked: index)

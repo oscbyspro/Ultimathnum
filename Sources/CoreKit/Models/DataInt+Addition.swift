@@ -64,6 +64,7 @@ extension MutableDataInt.Body {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// - Requires: `self.count >= 1`
     @inlinable public consuming func increment(
         by element: consuming Element
     )   -> Fallible<Void> {
@@ -72,6 +73,7 @@ extension MutableDataInt.Body {
         return result.value.increment(by: result.error)
     }
     
+    /// - Requires: `self.count >= 1`
     @inlinable public consuming func incrementSubSequence(
         by element: consuming Element
     )   -> Fallible<Self> {
@@ -81,6 +83,7 @@ extension MutableDataInt.Body {
         return (consume self)[unchecked: 1...].veto(result.error)
     }
     
+    /// - Requires: `self.count >= 1`
     @inlinable public consuming func decrement(
         by element: consuming Element
     )   -> Fallible<Void> {
@@ -89,6 +92,7 @@ extension MutableDataInt.Body {
         return result.value.decrement(by: result.error)
     }
     
+    /// - Requires: `self.count >= 1`
     @inlinable public consuming func decrementSubSequence(
         by element: consuming Element
     )   -> Fallible<Self> {
@@ -109,6 +113,7 @@ extension MutableDataInt.Body {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// - Requires: `self.count >= 1`
     @inlinable public consuming func increment(
         by increment: consuming Element,
         plus bit: consuming Bool
@@ -118,6 +123,7 @@ extension MutableDataInt.Body {
         return result.value.increment(by: result.error)
     }
     
+    /// - Requires: `self.count >= 1`
     @inlinable public consuming func incrementSubSequence(
         by increment: consuming Element,
         plus bit: consuming Bool
@@ -127,6 +133,7 @@ extension MutableDataInt.Body {
         return (consume self)[unchecked: 1...].veto(bit)
     }
     
+    /// - Requires: `self.count >= 1`
     @inlinable public consuming func decrement(
         by decrement: consuming Element,
         plus bit: consuming Bool
@@ -136,6 +143,7 @@ extension MutableDataInt.Body {
         return result.value.decrement(by: result.error)
     }
     
+    /// - Requires: `self.count >= 1`
     @inlinable public consuming func decrementSubSequence(
         by decrement: consuming Element,
         plus bit: consuming Bool
@@ -156,6 +164,7 @@ extension MutableDataInt.Body {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
 
+    /// - Requires: `self.count >= elements.count`
     @inlinable public consuming func increment(
         by elements: Immutable,
         plus bit: consuming Bool = false
@@ -165,6 +174,7 @@ extension MutableDataInt.Body {
         return result.value.increment(by: result.error)
     }
     
+    /// - Requires: `self.count >= elements.count`
     @inlinable public consuming func incrementSubSequence(
         by elements: borrowing Immutable,
         plus bit: consuming Bool = false
@@ -178,6 +188,7 @@ extension MutableDataInt.Body {
         return self.veto(bit)
     }
     
+    /// - Requires: `self.count >= elements.count`
     @inlinable public consuming func decrement(
         by elements: Immutable,
         plus bit: consuming Bool = false
@@ -187,6 +198,7 @@ extension MutableDataInt.Body {
         return result.value.decrement(by: result.error)
     }
     
+    /// - Requires: `self.count >= elements.count`
     @inlinable public consuming func decrementSubSequence(
         by elements: borrowing Immutable,
         plus bit: consuming Bool = false
@@ -204,6 +216,7 @@ extension MutableDataInt.Body {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// - Requires: `self.count >= elements.count`
     @inlinable public consuming func increment(
         toggling elements: Immutable,
         plus bit: consuming Bool = false
@@ -213,6 +226,7 @@ extension MutableDataInt.Body {
         return result.value.increment(by: result.error)
     }
     
+    /// - Requires: `self.count >= elements.count`
     @inlinable public consuming func incrementSubSequence(
         toggling elements: borrowing Immutable,
         plus bit: consuming Bool = false
@@ -226,6 +240,7 @@ extension MutableDataInt.Body {
         return self.veto(bit)
     }
     
+    /// - Requires: `self.count >= elements.count`
     @inlinable public consuming func decrement(
         toggling elements: Immutable,
         plus bit: consuming Bool = false
@@ -235,6 +250,7 @@ extension MutableDataInt.Body {
         return result.value.decrement(by: result.error)
     }
 
+    /// - Requires: `self.count >= elements.count`
     @inlinable public consuming func decrementSubSequence(
         toggling elements: borrowing Immutable,
         plus bit: consuming Bool = false
@@ -299,6 +315,7 @@ extension MutableDataInt.Body {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// - Requires: `self.count >= elements.count + 1`
     @inlinable public consuming func increment(
         by elements: Immutable,
         times multiplier: consuming Element,
@@ -309,6 +326,7 @@ extension MutableDataInt.Body {
         return result.value.increment(by: result.error)
     }
     
+    /// - Requires: `self.count >= elements.count + 1`
     @inlinable public consuming func incrementSubSequence(
         by elements: borrowing Immutable,
         times multiplier: consuming Element,
@@ -327,6 +345,7 @@ extension MutableDataInt.Body {
         return (consume self)[unchecked: elements.count...].incrementSubSequence(by: increment)
     }
     
+    /// - Requires: `self.count >= elements.count + 1`
     @inlinable public consuming func decrement(
         by elements: Immutable,
         times multiplier: consuming Element,
@@ -337,6 +356,7 @@ extension MutableDataInt.Body {
         return result.value.decrement(by: result.error)
     }
     
+    /// - Requires: `self.count >= elements.count + 1`
     @inlinable public consuming func decrementSubSequence(
         by elements: borrowing Immutable,
         times multiplier: consuming Element,
