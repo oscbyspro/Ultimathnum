@@ -27,7 +27,7 @@ extension InfiniIntStorage {
     ///
     /// - Parameter delegate: A process that manually **initializes each element** passed to it.
     ///
-    @inlinable public static func uninitialized(
+    @inlinable internal static func uninitialized(
         count: IX,
         repeating appendix: Bit,
         delegate: (MutableDataInt<Element.Magnitude>.Body) -> Void

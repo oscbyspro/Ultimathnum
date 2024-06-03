@@ -10,7 +10,7 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Infini Int Storage x Memory
+// MARK: * Infini Int Storage x Elements
 //*============================================================================*
 
 extension InfiniIntStorage {
@@ -19,7 +19,19 @@ extension InfiniIntStorage {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func withUnsafeBinaryIntegerBody<T>(
+    @inlinable internal var count: IX {
+        IX(self.body.count)
+    }
+    
+    @inlinable internal func count(while predicate: (Element) -> Bool) -> IX {
+        IX(self.body.prefix(while: predicate).count)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable internal borrowing func withUnsafeBinaryIntegerBody<T>(
         _ action: (DataInt<Element>.Body) throws -> T
     )   rethrows -> T {
         
@@ -28,7 +40,7 @@ extension InfiniIntStorage {
         }
     }
     
-    @inlinable public mutating func withUnsafeMutableBinaryIntegerBody<T>(
+    @inlinable internal mutating func withUnsafeMutableBinaryIntegerBody<T>(
         _ action: (MutableDataInt<Element>.Body) throws -> T
     )   rethrows -> T {
         

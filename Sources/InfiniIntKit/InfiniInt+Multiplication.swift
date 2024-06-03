@@ -21,114 +21,105 @@ extension InfiniInt {
     
     @inline(never) @inlinable public borrowing func squared() -> Fallible<Self> {
         //=--------------------------------------=
-        if  let small = self.storage.small {            
-            return (copy self).times(small)
+        // path: 0 or 1
+        //=--------------------------------------=
+        if  self.storage.count <= 1, self.appendix == .zero {
+            if  self.storage.body.isEmpty {
+                return Fallible(Self.zero)
+            }
+            
+            if  self.storage.body[0] == 1 {
+                return Fallible(copy self)
+            }
         }
         //=--------------------------------------=
-        let count  = self.storage.count * 2
-        let result = Self.uninitialized(count: count, repeating: .zero) { result in
+        let zeros1 = self.storage.count(while:{ $0 == .zero })
+        let zeros2 = zeros1.times(2).unchecked()
+        let count2 = self.storage.count * 000002
+        //=--------------------------------------=
+        // path: (0s, 1s) x (0s, 1s)
+        //=--------------------------------------=
+        if  count2 == zeros2 {
+            Swift.assert(Bool(self.appendix))
+            return Fallible(Self(unchecked: Storage(1, at: count2, repeating: .zero)), error: !Self.isSigned)
+        }
+        //=--------------------------------------=
+        let result = Self.uninitialized(count: count2, repeating: .zero) { result in
             self.withUnsafeBinaryIntegerElements {
                 //=------------------------------=
-                result.initialize(toSquareProductOf: $0.body)
+                let suffix = $0.body[unchecked: zeros1...]
+                //=------------------------------=
+                result[unchecked: ..<zeros2].initialize(repeating: 00000000000000)
+                result[unchecked: zeros2...].initialize(toSquareProductOf: suffix)
                 //=------------------------------=
                 if  Bool($0.appendix) {
-                    result[unchecked: $0.body.count...].incrementSubSequence(toggling: $0.body, plus: true).discard()
-                    result[unchecked: $0.body.count...].incrementSubSequence(toggling: $0.body, plus: true).discard()
+                    result[unchecked: ($0.body.count &+ zeros1)...].incrementSubSequence(toggling: suffix, plus: true).discard()
+                    result[unchecked: ($0.body.count &+ zeros1)...].incrementSubSequence(toggling: suffix, plus: true).discard()
                 }
             }
         }
-        
+        //=--------------------------------------=
         return Fallible(result, error: !Self.isSigned && Bool(self.appendix))
     }
     
     @inline(never) @inlinable public borrowing func times(_ other: borrowing Self) -> Fallible<Self> {
         //=--------------------------------------=
-        if  let small = other.storage.small {
-            return (copy self ).times(small)
+        // path: 0 or 1
+        //=--------------------------------------=
+        if  other.storage.count <= 1, other.appendix == .zero {
+            if  other.storage.body.isEmpty {
+                return Fallible(Self.zero)
+            }
             
-        }   else if let small = self.storage.small {
-            return (copy other).times(small)
+            if  other.storage.body[0] == 1 {
+                return Fallible(copy self)
+            }
+        }
+        
+        if  self.storage.count <= 1, self.appendix == .zero {
+            if  self.storage.body.isEmpty {
+                return Fallible(Self.zero)
+            }
+            
+            if  self.storage.body[0] == 1 {
+                return Fallible(copy other)
+            }
         }
         //=--------------------------------------=
-        // note that 0s and 1s take the fast path
+        let zeros0 = self .storage.count(while:{ $0 == .zero })
+        let zeros1 = other.storage.count(while:{ $0 == .zero })
+        let zeros2 = zeros0.plus(zeros1).unchecked()
+        let count2 = self.storage.count + other.storage.count
         //=--------------------------------------=
-        let count  = self.storage.count + other.storage.count
-        let result = Self.uninitialized(count: count, repeating: self.appendix ^ other.appendix) { result in
+        // path: (0s, 1s) x (0s, 1s)
+        //=--------------------------------------=
+        if  count2 == zeros2 {
+            Swift.assert(Bool(self .appendix))
+            Swift.assert(Bool(other.appendix))
+            return Fallible(Self(unchecked: Storage(1, at: count2, repeating: .zero)), error: !Self.isSigned)
+        }
+        //=--------------------------------------=
+        let result = Self.uninitialized(count: count2, repeating: self.appendix ^ other.appendix) { result in
             self.withUnsafeBinaryIntegerElements { lhs in
                 other.withUnsafeBinaryIntegerElements { rhs in
                     //=--------------------------=
-                    result.initialize(to: lhs.body, times: rhs.body)
+                    let lhsSuffix = lhs.body[unchecked: zeros0...]
+                    let rhsSuffix = rhs.body[unchecked: zeros1...]
+                    //=--------------------------=
+                    result[unchecked: ..<zeros2].initialize(repeating: 00000000000000000000)
+                    result[unchecked: zeros2...].initialize(to: lhsSuffix, times: rhsSuffix)
                     //=--------------------------=
                     if  Bool(rhs.appendix) {
-                        result[unchecked: rhs.body.count...].incrementSubSequence(toggling: lhs.body, plus: true).discard()
+                        result[unchecked:(rhs.body.count &+ zeros0)...].incrementSubSequence(toggling: lhsSuffix, plus: true).discard()
                     }
                     
                     if  Bool(lhs.appendix) {
-                        result[unchecked: lhs.body.count...].incrementSubSequence(toggling: rhs.body, plus: true).discard()
+                        result[unchecked:(lhs.body.count &+ zeros1)...].incrementSubSequence(toggling: rhsSuffix, plus: true).discard()
                     }
                 }
             }
         }
         //=--------------------------------------=
-        Swift.assert(result.storage.isNormal)
-        //=--------------------------------------=
         return Fallible(result, error: !Self.isSigned && Bool(self.appendix | other.appendix))
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Algorithms
-//=----------------------------------------------------------------------------=
-
-extension InfiniInt {
-
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inline(never) @inlinable internal consuming func times(_ other: consuming Storage.Small) -> Fallible<Self> {
-        //=--------------------------------------=
-        let lhsAppendix = Bool(self .appendix)
-        let rhsAppendix = Bool(other.appendix)
-        //=--------------------------------------=
-        let overflow = if Self.isSigned {
-            false
-        }   else if lhsAppendix == rhsAppendix {
-            lhsAppendix
-        }   else if lhsAppendix {
-            other.body > 1
-        }   else {
-            self.storage.count > 1 || self.load(as: Element.Magnitude.self) > 1
-        }
-        
-        if  rhsAppendix {
-            other.body = other.body.complement()
-        }
-        
-        if  lhsAppendix {
-            self = self.complement()
-        }
-        
-        //  TODO: consider compact small storage
-        if  rhsAppendix && other.body == .zero {
-            if !self.storage.isZero {
-                self.storage.body.insert(other.body, at: .zero)
-            }
-            
-        }   else {
-            self.storage.withUnsafeMutableBinaryIntegerBody {
-                other.body = $0.multiply(by:  other.body)
-            }
-            
-            self.storage.normalize(appending: other.body)
-        }
-        
-        if  lhsAppendix != rhsAppendix {
-            self = self.complement()
-        }
-        //=--------------------------------------=
-        Swift.assert(self.storage.isNormal)
-        //=--------------------------------------=
-        return self.veto(overflow) as Fallible<Self>
     }
 }

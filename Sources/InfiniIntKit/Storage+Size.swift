@@ -19,12 +19,12 @@ extension InfiniIntStorage {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public mutating func resize(_ count: IX) {
+    @inlinable internal mutating func resize(_ count: IX) {
         self.resize(minCount: count)
         self.resize(maxCount: count)
     }
     
-    @inlinable public mutating func resize(minCount: IX) {
+    @inlinable internal mutating func resize(minCount: IX) {
         if minCount <= self.count { return }
         
         self.body.reserveCapacity(Int(minCount))
@@ -36,7 +36,9 @@ extension InfiniIntStorage {
         }
     }
     
-    @inlinable public mutating func resize(maxCount: IX) {
+    @inlinable internal mutating func resize(maxCount: IX) {
+        Swift.assert(maxCount >= 0, String.brokenInvariant())
+        
         if maxCount >= self.count { return }
         
         self.body.removeSubrange(Int(maxCount)...)

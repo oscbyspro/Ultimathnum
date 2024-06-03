@@ -380,24 +380,47 @@ extension InfiniIntTests {
     
     /// - 2024-05-22: Checks the small-storage multiplication path.
     func testMultiplicationBySmallStorageWhereBodyIsZerosAndAppendixIsOne() {
-        Test().multiplication(~InfiniInt<I8>(U8.max), 000, Fallible( 00000, error: false))
-        Test().multiplication(~InfiniInt<U8>(U8.max), 000, Fallible( 00000, error: false))
-        Test().multiplication(~InfiniInt<I8>(U8.max), 256, Fallible(~65535, error: false))
-        Test().multiplication(~InfiniInt<U8>(U8.max), 256, Fallible(~65535, error: true ))
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger, T.Element.BitPattern == U8.BitPattern {
+            compact: do {
+                Test().multiplication(~T(I8.max),  000, Fallible( 00000))
+                Test().multiplication(~T(I8.max),  100, Fallible(~12799, error: !T.isSigned))
+                Test().multiplication(~T(I8.max), ~100, Fallible( 12928, error: !T.isSigned))
+                Test().multiplication(~T(I8.max),  127, Fallible(~16255, error: !T.isSigned))
+                Test().multiplication(~T(I8.max), ~127, Fallible( 16384, error: !T.isSigned))
+            }
+            
+            extended: do {
+                Test().multiplication(~T(U8.max),  000, Fallible( 00000)) // OK
+                Test().multiplication(~T(U8.max),  100, Fallible(~25599, error: !T.isSigned)) // :(
+                Test().multiplication(~T(U8.max), ~100, Fallible( 25856, error: !T.isSigned)) // :(
+                Test().multiplication(~T(U8.max),  256, Fallible(~65535, error: !T.isSigned)) // :(
+                Test().multiplication(~T(U8.max), ~256, Fallible( 65792, error: !T.isSigned)) // :(
+            }
+        }
+        
+        whereIs(InfiniInt<I8>.self)
+        whereIs(InfiniInt<U8>.self)
     }
     
     /// - 2024-05-31: Checks the large-storage multiplication path.
     func testMultiplicationByLargeStorageWhereBodyIsZerosAndAppendixIsOne() {
-        //=--------------------------------------=
-        let i16 = InfiniInt<I8>(repeating: 1) << 16
-        let u16 = InfiniInt<U8>(repeating: 1) << 16
-        //=--------------------------------------=
-        Test().multiplication(i16, i16 - 1, Fallible((1 << 32) &- i16)) // OK
-        Test().multiplication(i16, i16,     Fallible((1 << 32)       )) // :(
-        Test().multiplication(i16, i16 + 1, Fallible((1 << 32) &+ i16)) // OK
-
-        Test().multiplication(u16, u16 - 1, Fallible((1 << 32) &- u16).veto()) // OK
-        Test().multiplication(u16, u16,     Fallible((1 << 32)       ).veto()) // :(
-        Test().multiplication(u16, u16 + 1, Fallible((1 << 32) &+ u16).veto()) // OK
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger, T.Element.BitPattern == U8.BitPattern {
+            compact: do {
+                let x16 = T(repeating: 1)  << 15
+                Test().multiplication(x16, x16 - 1, Fallible((1 << 30) &- x16, error: !T.isSigned))
+                Test().multiplication(x16, x16,     Fallible((1 << 30),        error: !T.isSigned))
+                Test().multiplication(x16, x16 + 1, Fallible((1 << 30) &+ x16, error: !T.isSigned))
+            }
+            
+            extended: do {
+                let x16 = T(repeating: 1)  << 16
+                Test().multiplication(x16, x16 - 1, Fallible((1 << 32) &- x16, error: !T.isSigned)) // OK
+                Test().multiplication(x16, x16,     Fallible((1 << 32),        error: !T.isSigned)) // :(
+                Test().multiplication(x16, x16 + 1, Fallible((1 << 32) &+ x16, error: !T.isSigned)) // OK
+            }
+        }
+        
+        whereIs(InfiniInt<I8>.self)
+        whereIs(InfiniInt<U8>.self)
     }
 }

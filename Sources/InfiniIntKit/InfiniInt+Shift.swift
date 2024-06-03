@@ -34,7 +34,7 @@ extension InfiniInt {
         //=--------------------------------------=
         // path: zero would otherwise denormalize
         //=--------------------------------------=
-        if  instance.storage.isZero {
+        if  instance.isZero {
             return instance
         }
         //=--------------------------------------=

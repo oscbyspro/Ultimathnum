@@ -24,17 +24,21 @@ extension InfiniIntStorage {
         Swift.assert(major >= 0000)
         Swift.assert(UX(raw: minor) < UX(size: Element.self))
         //=--------------------------------------=
-        let test   = Bit.Descending(self.appendix)
-        let last   = self.body.last ?? Element(repeating: .zero)
-        let target = self.count + major + IX(Bit(IX(load: last.count(test)) < minor))
-        //=--------------------------------------=
-        if  target == major {
-            let zeros = repeatElement(Element.zero, count: Int(major))
-            self.body.insert(contentsOf: zeros, at: Int.zero)
+        if  minor == .zero {
+            if  major != .zero {
+                let zeros = repeatElement(Element.zero, count: Int(major))
+                self.body.insert(contentsOf: zeros, at: Int.zero)
+            }
+            
         }   else {
+            let edge   = self.body.last ?? Element(repeating: .zero)
+            let margin = IX(load: edge.count(.descending(self.appendix)))
+            let target = self.count + major + IX(Bit(margin < minor))
+            
             self.resize(minCount: target)
+            
             self.withUnsafeMutableBinaryIntegerBody {
-                $0.upshift(environment: Element.zero, major: major, minor: minor)
+                $0.upshift(environment: Element.zero, major: major, minorAtLeastOne: minor)
             }
         }
     }
@@ -44,19 +48,24 @@ extension InfiniIntStorage {
         Swift.assert(major >= 0000)
         Swift.assert(UX(raw: minor) < UX(size: Element.self))
         //=--------------------------------------=
-        let test   = Bit.Nondescending(self.appendix)
-        let last   = self.body.last ?? Element(repeating: self.appendix)
-        let target = self.count - major - IX(Bit(IX(load: last.count(test)) <= minor))
+        guard let edge = self.body.last else { return }
         //=--------------------------------------=
-        if  target > .zero  {
+        let margin = IX(load: edge.count(.nondescending(self.appendix)))
+        let difference = major + IX(Bit(margin <= minor))
+        //=--------------------------------------=
+        if  difference >= self.count {
+            self.body.removeAll(keepingCapacity: true)
+
+        }   else if minor == .zero {
+            self.body.removeSubrange(..<Int(difference))
+
+        }   else {
             let environment = Element(repeating: self.appendix)
             self.withUnsafeMutableBinaryIntegerBody {
-                $0.downshift(environment: environment, major: major, minor: minor)
+                $0.downshift(environment: environment, major: major, minorAtLeastOne: minor)
             }
-            
-            self.resize(maxCount: target)
-        }   else {
-            self.body.removeAll(keepingCapacity: true)
+
+            self.resize(maxCount: self.count.minus(difference).unchecked())
         }
     }
 }
