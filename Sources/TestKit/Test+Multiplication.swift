@@ -102,5 +102,17 @@ extension Test {
                 same(division.value.remainder, 000, "product % lhs == 000")
             }
         }
+        
+        shift: if !expectation.error {
+            guard let zeros0 = lhs.count(.ascending(0)).veto(\.isInfinite).optional() else { break shift }
+            guard let zeros1 = rhs.count(.ascending(0)).veto(\.isInfinite).optional() else { break shift }
+            
+            let a = T(zeros0), lhsX = (lhs >> a)
+            let b = T(zeros1), rhsX = (rhs >> b)
+            
+            same(lhs .times(rhsX).map({ $0 << (    b) }), expectation, "multiplication [shift][0]")
+            same(lhsX.times(rhs ).map({ $0 << (a    ) }), expectation, "multiplication [shift][1]")
+            same(lhsX.times(rhsX).map({ $0 << (a + b) }), expectation, "multiplication [shift][2]")
+        }
     }
 }
