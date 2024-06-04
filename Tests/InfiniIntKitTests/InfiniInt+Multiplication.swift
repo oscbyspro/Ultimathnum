@@ -423,4 +423,53 @@ extension InfiniIntTests {
         whereIs(InfiniInt<I8>.self)
         whereIs(InfiniInt<U8>.self)
     }
+    
+    /// - Note: The algorithms may special-case ascending zeros like an upshift.
+    func testMultiplicationByAscendingZeros() {
+        func whereTheElementIs<E>(_ type: E.Type) where E: SystemsInteger {
+            typealias T = InfiniInt<E>
+            typealias F = Fallible<T>
+            //=----------------------------------=
+            let zeros: [[UX]] = (0 ..< 3).map({
+                Array(repeating: UX.zero, count: $0)
+            })
+            
+            for a: [UX] in zeros {
+                
+                let a0 = a + [ 1] as [UX]
+                let a1 = a + [ 0] as [UX]
+                let a2 = a + [~0] as [UX]
+                let a3 = a + [~1] as [UX]
+                
+                for b: [UX] in zeros {
+                    
+                    let b0 = b + [ 1] as [UX]
+                    let b1 = b + [ 0] as [UX]
+                    let b2 = b + [~0] as [UX]
+                    let b3 = b + [~1] as [UX]
+                    
+                    let c: [UX] = a + b
+                    
+                    Test().multiplication(T(a0, repeating: 0), T(b0, repeating: 0), F(T(c + [ 1        ] as [UX], repeating: 0)))
+                    Test().multiplication(T(a1, repeating: 0), T(b1, repeating: 0), F(T(c + [ 0        ] as [UX], repeating: 0)))
+                    Test().multiplication(T(a2, repeating: 0), T(b2, repeating: 0), F(T(c + [ 1, ~1    ] as [UX], repeating: 0)))
+                    Test().multiplication(T(a3, repeating: 0), T(b3, repeating: 0), F(T(c + [ 4, ~3    ] as [UX], repeating: 0)))
+                    
+                    Test().multiplication(T(a0, repeating: 0), T(b0, repeating: 1), F(T(c + [ 1        ] as [UX], repeating: 1), error: !T.isSigned && a.count > 0))
+                    Test().multiplication(T(a1, repeating: 0), T(b1, repeating: 1), F(T(c + [ 0        ] as [UX], repeating: 0)))
+                    Test().multiplication(T(a2, repeating: 0), T(b2, repeating: 1), F(T(c + [ 1        ] as [UX], repeating: 1), error: !T.isSigned))
+                    Test().multiplication(T(a3, repeating: 0), T(b3, repeating: 1), F(T(c + [ 4, ~1,   ] as [UX], repeating: 1), error: !T.isSigned))
+                    
+                    Test().multiplication(T(a0, repeating: 1), T(b0, repeating: 1), F(T(c + [ 1, ~1    ] as [UX], repeating: 0), error: !T.isSigned))
+                    Test().multiplication(T(a1, repeating: 1), T(b1, repeating: 1), F(T(c + [ 0,  0,  1] as [UX], repeating: 0), error: !T.isSigned))
+                    Test().multiplication(T(a2, repeating: 1), T(b2, repeating: 1), F(T(c + [ 1        ] as [UX], repeating: 0), error: !T.isSigned))
+                    Test().multiplication(T(a3, repeating: 1), T(b3, repeating: 1), F(T(c + [ 4        ] as [UX], repeating: 0), error: !T.isSigned))
+                }
+            }
+        }
+        
+        for element in Self.elements {
+            whereTheElementIs(element)
+        }
+    }
 }
