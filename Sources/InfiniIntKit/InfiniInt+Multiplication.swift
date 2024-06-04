@@ -33,28 +33,27 @@ extension InfiniInt {
             }
         }
         //=--------------------------------------=
-        let zeros1 = self.storage.count(while:{ $0 == .zero })
-        let zeros2 = zeros1.times(2).unchecked()
-        let count2 = self.storage.count * 000002
+        let count2 = self.storage.count * 2
+        let zeros0 = self.storage.count(while:{ $0 == .zero })
+        let zeros2 = zeros0.times(2).unchecked()
         //=--------------------------------------=
         // path: (0s, 1s) x (0s, 1s)
         //=--------------------------------------=
-        if  count2 == zeros2 {
+        if  zeros2 == count2 {
             Swift.assert(Bool(self.appendix))
             return Fallible(Self(unchecked: Storage(1, at: count2, repeating: .zero)), error: !Self.isSigned)
         }
         //=--------------------------------------=
         let result = Self.uninitialized(count: count2, repeating: .zero) { result in
-            self.withUnsafeBinaryIntegerElements {
+            self.storage.withUnsafeBinaryIntegerElements(unchecked: zeros0...) {
                 //=------------------------------=
-                let suffix = $0.body[unchecked: zeros1...]
-                //=------------------------------=
-                result[unchecked: ..<zeros2].initialize(repeating: 00000000000000)
-                result[unchecked: zeros2...].initialize(toSquareProductOf: suffix)
+                result[unchecked: ..<zeros2].initialize(repeating: 000000000000000)
+                result[unchecked: zeros2...].initialize(toSquareProductOf: $0.body)
                 //=------------------------------=
                 if  Bool($0.appendix) {
-                    result[unchecked: ($0.body.count &+ zeros1)...].incrementSubSequence(toggling: suffix, plus: true).discard()
-                    result[unchecked: ($0.body.count &+ zeros1)...].incrementSubSequence(toggling: suffix, plus: true).discard()
+                    let resultSuffix = result[unchecked: ($0.body.count  &+ zeros2)...]
+                    resultSuffix.incrementSubSequence(toggling: $0.body, plus: true).discard()
+                    resultSuffix.incrementSubSequence(toggling: $0.body, plus: true).discard()
                 }
             }
         }
@@ -86,35 +85,32 @@ extension InfiniInt {
             }
         }
         //=--------------------------------------=
+        let count2 = self .storage.count + other.storage.count
         let zeros0 = self .storage.count(while:{ $0 == .zero })
         let zeros1 = other.storage.count(while:{ $0 == .zero })
         let zeros2 = zeros0.plus(zeros1).unchecked()
-        let count2 = self.storage.count + other.storage.count
         //=--------------------------------------=
         // path: (0s, 1s) x (0s, 1s)
         //=--------------------------------------=
-        if  count2 == zeros2 {
+        if  zeros2 == count2 {
             Swift.assert(Bool(self .appendix))
             Swift.assert(Bool(other.appendix))
             return Fallible(Self(unchecked: Storage(1, at: count2, repeating: .zero)), error: !Self.isSigned)
         }
         //=--------------------------------------=
         let result = Self.uninitialized(count: count2, repeating: self.appendix ^ other.appendix) { result in
-            self.withUnsafeBinaryIntegerElements { lhs in
-                other.withUnsafeBinaryIntegerElements { rhs in
+            self.storage.withUnsafeBinaryIntegerElements(unchecked: zeros0...) { lhs in
+                other.storage.withUnsafeBinaryIntegerElements(unchecked: zeros1...) { rhs in
                     //=--------------------------=
-                    let lhsSuffix = lhs.body[unchecked: zeros0...]
-                    let rhsSuffix = rhs.body[unchecked: zeros1...]
-                    //=--------------------------=
-                    result[unchecked: ..<zeros2].initialize(repeating: 00000000000000000000)
-                    result[unchecked: zeros2...].initialize(to: lhsSuffix, times: rhsSuffix)
+                    result[unchecked: ..<zeros2].initialize(repeating: 000000000000000000)
+                    result[unchecked: zeros2...].initialize(to: lhs.body, times: rhs.body)
                     //=--------------------------=
                     if  Bool(rhs.appendix) {
-                        result[unchecked:(rhs.body.count &+ zeros0)...].incrementSubSequence(toggling: lhsSuffix, plus: true).discard()
+                        result[unchecked: (rhs.body.count &+ zeros2)...].incrementSubSequence(toggling: lhs.body, plus: true).discard()
                     }
                     
                     if  Bool(lhs.appendix) {
-                        result[unchecked:(lhs.body.count &+ zeros1)...].incrementSubSequence(toggling: rhsSuffix, plus: true).discard()
+                        result[unchecked: (lhs.body.count &+ zeros2)...].incrementSubSequence(toggling: rhs.body, plus: true).discard()
                     }
                 }
             }

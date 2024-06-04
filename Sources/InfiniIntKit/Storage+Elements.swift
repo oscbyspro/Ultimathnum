@@ -50,4 +50,20 @@ extension InfiniIntStorage {
         
         return result as T
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable internal borrowing func withUnsafeBinaryIntegerElements<T>(
+        unchecked range: PartialRangeFrom<IX>,
+        perform action: (DataInt<Element>) throws -> T
+    )   rethrows -> T {
+        
+        let appendix: Bit = self.appendix
+
+        return try self.body.withUnsafeBufferPointer {
+            try action(DataInt(DataInt.Body($0)![unchecked: range], repeating: appendix))
+        }
+    }
 }

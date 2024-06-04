@@ -238,7 +238,7 @@ extension InfiniIntTests {
             //=----------------------------------=
             lhs = T([S](repeating: S.max, count: 16))
             rhs = T([S](repeating: S.max, count: 16))
-            pro = T([1] as [S] + [S](repeating: S.min, count: 15) + [~1] as [S] + [S](repeating: S.max, count: 15))
+            pro = T([ 1] as [S] + [S](repeating:  0, count: 15) + [~1] as [S] + [S](repeating: ~0, count: 15))
             
             Test().same(lhs.times(rhs), Fallible(pro))
             Test().same(lhs.squared( ), Fallible(pro))
@@ -249,8 +249,8 @@ extension InfiniIntTests {
             // imagine: (U16.max - 0) * (U16.max - 1)
             //=----------------------------------=
             lhs = T([S](repeating: S.max, count: 16))
-            rhs = T([~1] as [S] + [S](repeating: S.max, count: 15))
-            pro = T([ 2] as [S] + [S](repeating: S.min, count: 15) + [~2] as [S] + [S](repeating: S.max, count: 15))
+            rhs = T([~1] as [S] + [S](repeating: ~0, count: 15))
+            pro = T([ 2] as [S] + [S](repeating:  0, count: 15) + [~2] as [S] + [S](repeating: ~0, count: 15))
             
             Test().same(lhs.times(rhs), Fallible(pro))
             Test().same(rhs.times(lhs), Fallible(pro))
@@ -261,12 +261,12 @@ extension InfiniIntTests {
             // imagine: (U16.max - 1) * (U16.max - 1)
             //=----------------------------------=
             array += [ 4] as [S]
-            array += Array(repeating: S.min, count: 15)
+            array += Array(repeating:  0, count: 15)
             array += [~3] as [S]
-            array += Array(repeating: S.max, count: 15)
+            array += Array(repeating: ~0, count: 15)
 
-            lhs = T([~1] as [S] + [S](repeating: S.max, count: 15))
-            rhs = T([~1] as [S] + [S](repeating: S.max, count: 15))
+            lhs = T([~1] as [S] + [S](repeating: ~0, count: 15))
+            rhs = T([~1] as [S] + [S](repeating: ~0, count: 15))
             pro = T(array)
             array.removeAll()
             
@@ -279,10 +279,10 @@ extension InfiniIntTests {
             // imagine: (U16.max - 0) * (U8 .max - 0)
             //=----------------------------------=
             array += [ 1] as [S]
-            array += Array(repeating: S.min, count: 07)
-            array += Array(repeating: S.max, count: 08)
+            array += Array(repeating:  0, count: 07)
+            array += Array(repeating: ~0, count: 08)
             array += [~1] as [S]
-            array += Array(repeating: S.max, count: 07)
+            array += Array(repeating: ~0, count: 07)
             
             lhs = T([S](repeating: S.max, count: 16))
             rhs = T([S](repeating: S.max, count: 08))
