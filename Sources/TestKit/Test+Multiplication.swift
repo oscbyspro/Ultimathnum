@@ -24,16 +24,16 @@ extension Test {
         _ lhs: T, 
         _ rhs: T,
         _ expectation: Fallible<Doublet<T>>,
-        _ id: SystemsIntegerID = .init()
+        id: SystemsIntegerID = .init()
     )   where T: SystemsInteger {
         //=--------------------------------------=
         same(lhs.multiplication(rhs), expectation.value)
         //=--------------------------------------=
-        multiplication(
+        self.multiplication(
             lhs,
             rhs,
             expectation.map(\.low).map(T.init(raw:)),
-            BinaryIntegerID()
+            id: BinaryIntegerID()
         )
     }
     
@@ -41,13 +41,15 @@ extension Test {
         _ lhs: T, 
         _ rhs: T, 
         _ expectation: Fallible<T>,
-        _ id: BinaryIntegerID = .init()
+        id: BinaryIntegerID = .init()
     )   where T: BinaryInteger {
         
         always: do {
             same(lhs &* rhs, expectation.value)
             same(rhs &* lhs, expectation.value)
-        };  if !expectation.error {
+        };  
+        
+        if !expectation.error {
             same(lhs  * rhs, expectation.value)
             same(rhs  * lhs, expectation.value)
         }
@@ -55,7 +57,9 @@ extension Test {
         always: do {
             same({ var x = lhs; x &*= rhs; return x }(), expectation.value)
             same({ var x = rhs; x &*= lhs; return x }(), expectation.value)
-        };  if !expectation.error {
+        }
+        
+        if !expectation.error {
             same({ var x = lhs; x  *= rhs; return x }(), expectation.value)
             same({ var x = rhs; x  *= lhs; return x }(), expectation.value)
         }
@@ -66,7 +70,7 @@ extension Test {
         }
         
         square: if lhs == rhs {
-            same(lhs.squared(), expectation, "squared()")
+            same(lhs.squared(),  expectation, "squared()")
         }
         
         complement: do {

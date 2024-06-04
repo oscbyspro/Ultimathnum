@@ -23,13 +23,21 @@ extension Test {
         _ lhs: T,
         _ rhs: T,
         _ expectation: Fallible<T>,
-        identifier: BinaryIntegerID = .init()
+        recursion: Bool = true,
+        id: BinaryIntegerID = .init()
     )   where T: BinaryInteger {
+        
+        subtraction: if recursion {
+            self.subtraction(expectation.value, rhs, Fallible(lhs, error: expectation.error), recursion: false)
+            self.subtraction(expectation.value, lhs, Fallible(rhs, error: expectation.error), recursion: false)
+        }
         
         always: do {
             same(lhs &+ rhs, expectation.value)
             same(rhs &+ lhs, expectation.value)
-        };  if !expectation.error {
+        }
+        
+        if !expectation.error {
             same(lhs  + rhs, expectation.value)
             same(rhs  + lhs, expectation.value)
         }
@@ -37,7 +45,9 @@ extension Test {
         always: do {
             same({ var x = lhs; x &+= rhs; return x }(), expectation.value)
             same({ var x = rhs; x &+= lhs; return x }(), expectation.value)
-        };  if !expectation.error {
+        }
+        
+        if !expectation.error {
             same({ var x = lhs; x  += rhs; return x }(), expectation.value)
             same({ var x = rhs; x  += lhs; return x }(), expectation.value)
         }
@@ -61,18 +71,31 @@ extension Test {
         _ lhs: T,
         _ rhs: T,
         _ expectation: Fallible<T>,
-        _ id: BinaryIntegerID = .init()
+        recursion: Bool = true,
+        id: BinaryIntegerID = .init()
     )   where T: BinaryInteger {
         
+        addition: if recursion {
+            self.addition(expectation.value, rhs, lhs.veto(expectation.error), recursion: false)
+        }
+        
+        addition: if let inverse = rhs.negated().optional() {
+            self.addition(lhs, inverse, expectation, recursion: false)
+        }
+                
         always: do {
             same(lhs &- rhs, expectation.value)
-        };  if !expectation.error {
+        }
+        
+        if !expectation.error {
             same(lhs  - rhs, expectation.value)
         }
         
         always: do {
             same({ var x = lhs; x &-= rhs; return x }(), expectation.value)
-        };  if !expectation.error {
+        }
+        
+        if !expectation.error {
             same({ var x = lhs; x  -= rhs; return x }(), expectation.value)
         }
         
