@@ -32,5 +32,9 @@ extension InfiniIntTests {
         for type in Self.types {
             whereIs(type)
         }
+        
+        for type in Self.typesWhereIsUnsigned {
+            whereIsUnsigned(type)
+        }
     }
 }
