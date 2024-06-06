@@ -54,6 +54,7 @@ extension FibonacciTests {
         #if !DEBUG
         Case(item).checkMathInvariants()
         Case(item).checkTextInvariants()
+        Case(item).checkSequencePairIsCoprime()
         #endif
         Case(item).element(IXL("""
         0000000179539422936879670273043077421513074187637090531654188941\
@@ -159,6 +160,7 @@ extension FibonacciTests {
         #if !DEBUG
         Case(item).checkMathInvariants()
         Case(item).checkTextInvariants()
+        Case(item).checkSequencePairIsCoprime()
         #endif
         Case(item).element(UXL("""
         0000000179539422936879670273043077421513074187637090531654188941\

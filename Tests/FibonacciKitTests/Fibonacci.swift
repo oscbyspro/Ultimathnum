@@ -86,13 +86,6 @@ extension FibonacciTests.Case {
     // MARK: Utilities x Invariants
     //=------------------------------------------------------------------------=
     
-    /// Performs a description round-trip for each radix.
-    func checkTextInvariants() {
-        for radix: UX in 2 ... 36 {
-            test.description(roundtripping: item.element, radix: radix)
-        }
-    }
-    
     /// Generates new instances and uses them to check math invariants.
     ///
     /// #### Invariants
@@ -136,6 +129,17 @@ extension FibonacciTests.Case {
                 test.fail("unexpected arithmetic failure: \(error)")
             }
         }
+    }
+    
+    /// Performs a description round-trip for each radix.
+    func checkTextInvariants() {
+        for radix: UX in 2 ... 36 {
+            test.description(roundtripping: item.element, radix: radix)
+        }
+    }
+    
+    func checkSequencePairIsCoprime() {
+        test.same(item.element.euclidean(item.next), 1)
     }
     
     //=------------------------------------------------------------------------=

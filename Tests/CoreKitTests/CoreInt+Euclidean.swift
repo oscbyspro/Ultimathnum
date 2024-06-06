@@ -131,17 +131,12 @@ extension CoreIntTests {
             //=----------------------------------=
             for lhs in values8 {
                 for rhs in values8 {
-                    let result0 = lhs.euclidean (rhs)
+                    let result  = lhs.euclidean (rhs)
                     let result1 = lhs.euclidean1(rhs)
                     let result2 = lhs.euclidean2(rhs)
                     
-                    always: do {
-                        coprime += U32(Bit(result0 == 1))
-                        coprime += U32(Bit(result2.divisor == 1))
-                    }
-                    
-                    if  result2.divisor == result0 {
-                        success += 1
+                    if  result  == 1 {
+                        coprime += 1
                     }
                     
                     always: do {
@@ -150,11 +145,11 @@ extension CoreIntTests {
                         success += U32(Bit((a + b) == result2.divisor))
                     }
                     
-                    if  result0 == result2.divisor {
+                    if  result  == result1.divisor {
                         success += 1
                     }
                     
-                    if  result1.divisor == result2.divisor {
+                    if  result  == result2.divisor {
                         success += 1
                     }
                     
@@ -163,15 +158,15 @@ extension CoreIntTests {
                     }
                     
                     if  lhs == 0, rhs == 0 {
-                        success += U32(Bit(result2.divisor == 0))
+                        success += U32(Bit(result == 0))
                     }   else {
-                        success += U32(Bit(result2.divisor >= 1))
+                        success += U32(Bit(result >= 1))
                     }                    
                 }
             }
             
-            Test().same(coprime, 2 * 39641)
-            Test().same(success, 6 * 65536)
+            Test().same(coprime, 1 * 39641)
+            Test().same(success, 5 * 65536)
         }
         
         whereIs(U8 .self)

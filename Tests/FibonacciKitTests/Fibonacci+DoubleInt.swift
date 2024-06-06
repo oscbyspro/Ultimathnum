@@ -48,6 +48,7 @@ extension FibonacciTests {
             Case(item).checkIsLastIndex()
             Case(item).checkMathInvariants()
             Case(item).checkTextInvariants()
+            Case(item).checkSequencePairIsCoprime()
             Case(item).same(
                 index:   22,
                 element: 17711,
@@ -59,6 +60,7 @@ extension FibonacciTests {
             Case(item).checkIsLastIndex()
             Case(item).checkMathInvariants()
             Case(item).checkTextInvariants()
+            Case(item).checkSequencePairIsCoprime()
             Case(item).same(
                 index:   45,
                 element: 1134903170,
@@ -70,6 +72,7 @@ extension FibonacciTests {
             Case(item).checkIsLastIndex()
             Case(item).checkMathInvariants()
             Case(item).checkTextInvariants()
+            Case(item).checkSequencePairIsCoprime()
             Case(item).same(
                 index:   91,
                 element: 04660046610375530309,
@@ -81,6 +84,7 @@ extension FibonacciTests {
             Case(item).checkIsLastIndex()
             Case(item).checkMathInvariants()
             Case(item).checkTextInvariants()
+            Case(item).checkSequencePairIsCoprime()
             Case(item).same(
                 index:   23,
                 element: 28657,
@@ -92,6 +96,7 @@ extension FibonacciTests {
             Case(item).checkIsLastIndex()
             Case(item).checkMathInvariants()
             Case(item).checkTextInvariants()
+            Case(item).checkSequencePairIsCoprime()
             Case(item).same(
                 index:   46,
                 element: 1836311903,
@@ -103,6 +108,7 @@ extension FibonacciTests {
             Case(item).checkIsLastIndex()
             Case(item).checkMathInvariants()
             Case(item).checkTextInvariants()
+            Case(item).checkSequencePairIsCoprime()
             Case(item).same(
                 index:   92,
                 element: 07540113804746346429,
