@@ -50,20 +50,19 @@
 
 #### A rock-solid foundation
 
-In programming, complexity is sand, and simplicity is a rock. The former is, 
-by definition, a sum of parts. In this project, you will find unified abstractions 
-and streamlined models that keep the parts few and similar to each other. So bring 
-your favorite cup of tea, have a seat, then let's explore what it's all about.
+In programming, complexity is sand, and simplicity is a rock. The former is 
+a sum of parts. This project unifies abstractions and streamlines models to
+keep the parts few and similar to each other. In this way, downstream projects 
+can be built free from the scattered mess of ideas that numbers usually are.
 
 <a name="introduction-stdlib"/>
 
 #### Keep stdlib extensions to a minimum
 
-Note that this project is mostly self-contained. It only extends the standard 
-library when necessary. In practice, this means adding conversion to and from
-new types. All other functionality either belongs to the new types or is kept 
-private through access control. This ensures interoperability without confusion 
-or accidental dependencies.
+This project is mostly self-contained. It only extends the standard library when 
+necessary. In practice, this means adding conversion to and from new types. Other 
+kinds of functionality either belongs to the new types or is kept private through 
+access control. This ensures interoperability without confusion or accidental dependencies.
 
 <a name="introduction-minimalistic"/>
 
