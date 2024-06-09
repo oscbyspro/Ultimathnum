@@ -8,21 +8,21 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Binary Integer x Edgy
+// MARK: * Finite Integer
 //*============================================================================*
 
-/// An edgy binary integer.
+/// A finite binary integer.
 ///
-/// An edgy binary integer has `min` and `max` values.
+/// A finite binary integer represents a value in the countable domain.
 ///
 ///
 ///                ┌───────────┬───────────┐
 ///                │  Systems  │ Arbitrary |
 ///     ┌──────────┼───────────┤───────────┤
-///     │   Signed │     X     │           │
+///     │   Signed │     X     │     X     │
 ///     ├──────────┼───────────┤───────────┤
-///     │ Unsigned │     X     │     X     │
+///     │ Unsigned │     X     │           │
 ///     └──────────┴───────────┴───────────┘
 ///
 ///
-public protocol EdgyInteger: BinaryInteger { }
+public protocol FiniteInteger: BinaryInteger { }

@@ -32,7 +32,11 @@ extension InfiniIntTests {
                 let rhs = primes54[b].reduce(1, *)
                 let gcd = primes54[c].reduce(1, *).magnitude()
                 test.euclidean(lhs, rhs, gcd)
-                test.euclidean(lhs.squared().unwrap(), rhs.squared().unwrap(), gcd.squared().unwrap())
+                test.euclidean(
+                    lhs.squared().unwrap(),
+                    rhs.squared().unwrap(),
+                    gcd.squared().unwrap()
+                )
             }
             //=----------------------------------=
             check(Test(), lhs: 00 ..< 27, rhs: 27 ..< 54, gcd: 27 ..< 27)

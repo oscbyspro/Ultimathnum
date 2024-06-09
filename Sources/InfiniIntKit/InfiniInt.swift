@@ -114,8 +114,9 @@ import CoreKit
 // MARK: + Un/signed
 //=----------------------------------------------------------------------------=
 
-extension InfiniInt:   SignedInteger where Source:   SignedInteger { }
 extension InfiniInt:     EdgyInteger where Source: UnsignedInteger { }
+extension InfiniInt:   FiniteInteger where Source:   SignedInteger { }
+extension InfiniInt:   SignedInteger where Source:   SignedInteger { }
 extension InfiniInt: UnsignedInteger where Source: UnsignedInteger { }
 
 //=----------------------------------------------------------------------------=

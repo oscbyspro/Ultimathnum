@@ -29,7 +29,7 @@
 ///
 /// - Requires: It must be bitwise copyable.
 ///
-public protocol SystemsInteger<BitPattern>: EdgyInteger where Magnitude: SystemsInteger, Signitude: SystemsInteger {
+public protocol SystemsInteger<BitPattern>: EdgyInteger, FiniteInteger where Magnitude: SystemsInteger, Signitude: SystemsInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

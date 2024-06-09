@@ -85,9 +85,11 @@ extension IntegerInvariants {
     
     public func protocols() where T: BinaryInteger {
         //=--------------------------------------=
-        let isEdgy = !T.isSigned || !T.size.isInfinite
+        let isEdgy   = !T.isSigned || !T.size.isInfinite
+        let isFinite =  T.isSigned || !T.size.isInfinite
         //=--------------------------------------=
         test.same(   isEdgy,   T.self is any     EdgyInteger.Type,     "EdgyInteger")
+        test.same(   isFinite, T.self is any   FiniteInteger.Type,   "FiniteInteger")
         test.same( T.isSigned, T.self is any   SignedInteger.Type,   "SignedInteger")
         test.same(!T.isSigned, T.self is any UnsignedInteger.Type, "UnsignedInteger")
     }

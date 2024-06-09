@@ -12,4 +12,4 @@
 //*============================================================================*
 
 /// A signed binary integer.
-public protocol SignedInteger: BinaryInteger where Element: SignedInteger, Signitude == Self, Mode == Signed { }
+public protocol SignedInteger: FiniteInteger where Element: SignedInteger, Signitude == Self, Mode == Signed { }
