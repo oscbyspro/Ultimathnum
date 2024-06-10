@@ -12,4 +12,33 @@
 //*============================================================================*
 
 /// A signed binary integer.
+///
+/// A signed binary integer represents a finite value. The appendix bit of
+/// a signed binary integer indicates whether it is natural (`0`) or negative (`1`).
+///
+///
+///                ┌───────────┬───────────┐
+///                │  Systems  │ Arbitrary |
+///     ┌──────────┼───────────┤───────────┤
+///     │   Signed │     X     │     X     │
+///     ├──────────┼───────────┤───────────┤
+///     │ Unsigned │           │           │
+///     └──────────┴───────────┴───────────┘
+///
+///
 public protocol SignedInteger: FiniteInteger where Element: SignedInteger, Signitude == Self, Mode == Signed { }
+
+//*============================================================================*
+// MARK: * Binary Integer x Signed x Metadata
+//*============================================================================*
+
+extension SignedInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Metadata
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static var mode: Signed {
+        Signed()
+    }
+}

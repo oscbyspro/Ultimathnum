@@ -12,4 +12,33 @@
 //*============================================================================*
 
 /// An unsigned binary integer.
+///
+/// An unsigned binary integer represents a nonnegative value. The appendix bit of
+/// an unsigned binary integer indicates whether it is finite (`0`) or infinite (`1`).
+///
+///
+///                ┌───────────┬───────────┐
+///                │  Systems  │ Arbitrary |
+///     ┌──────────┼───────────┤───────────┤
+///     │   Signed │           │           │
+///     ├──────────┼───────────┤───────────┤
+///     │ Unsigned │     X     │     X     │
+///     └──────────┴───────────┴───────────┘
+///
+///
 public protocol UnsignedInteger: EdgyInteger where Element: UnsignedInteger, Magnitude == Self, Mode == Unsigned { }
+
+//*============================================================================*
+// MARK: * Binary Integer x Unsigned x Metadata
+//*============================================================================*
+
+extension UnsignedInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Metadata
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static var mode: Unsigned {
+        Unsigned()
+    }
+}
