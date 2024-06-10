@@ -8,6 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import InfiniIntKit
 import TestKit
 
 //*============================================================================*
@@ -20,20 +21,17 @@ final class NaturalTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testForEachByteAsSystemsInteger() {
+    func testForEachByteEntropyExtension() {
         //=--------------------------------------=
         enum Bad: Error { case code123 }
         //=--------------------------------------=
-        func whereTheValueIs<Value>(_ type: Value.Type) where Value: SystemsInteger {
+        func whereTheValueIs<Value>(_ type: Value.Type) where Value: BinaryInteger {
             typealias T = Natural<Value>
             typealias S = Natural<Value.Signitude>
             typealias M = Natural<Value.Magnitude>
             
-            let min = Value.isSigned ? Value(I8.min) : Value(U8.min)
-            let max = Value.isSigned ? Value(I8.max) : Value(U8.max)
-            
-            for x in min ... max {
-                if !x.isNegative {
+            for x in (I8.min...I8.max).lazy.map(Value.init(load:)) {
+                if !x.isInfinite, !x.isNegative {
                     Test().same(T(x).magnitude().value, x.magnitude())
                     Test().same(T(x).value,  x)
                     Test().same(T(unchecked: x) .value, x)
@@ -49,5 +47,8 @@ final class NaturalTests: XCTestCase {
         for type in coreSystemsIntegers {
             whereTheValueIs(type)
         }
+        
+        whereTheValueIs(InfiniInt<I8>.self)
+        whereTheValueIs(InfiniInt<U8>.self)
     }
 }

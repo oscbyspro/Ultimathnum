@@ -8,6 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import InfiniIntKit
 import TestKit
 
 //*============================================================================*
@@ -20,27 +21,32 @@ final class FiniteTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testForEachByteAsSystemsInteger() {
+    func testForEachByteEntropyExtension() {
         //=--------------------------------------=
         enum Bad: Error { case code123 }
         //=--------------------------------------=
-        func whereTheValueIs<Value>(_ type: Value.Type) where Value: SystemsInteger {
+        func whereTheValueIs<Value>(_ type: Value.Type) where Value: BinaryInteger {
             typealias T = Finite<Value>
             
-            let min = Value.isSigned ? Value(I8.min) : Value(U8.min)
-            let max = Value.isSigned ? Value(I8.max) : Value(U8.max)
-            
-            for x in min ... max {
-                Test().same(T(x).magnitude().value, x.magnitude())
-                Test().same(T(x).value,  x)
-                Test().same(T(unchecked: x) .value, x)
-                Test().same(T(exactly:   x)!.value, x)
-                Test().success({ try T(x, prune: Bad.code123).value }, x)
+            for x in (I8.min...I8.max).lazy.map(Value.init(load:)) {
+                if !x.isInfinite {
+                    Test().same(T(x).magnitude().value, x.magnitude())
+                    Test().same(T(x).value,  x)
+                    Test().same(T(unchecked: x) .value, x)
+                    Test().same(T(exactly:   x)!.value, x)
+                    Test().success({ try T(x, prune: Bad.code123).value }, x)
+                }   else {
+                    Test().none(T(exactly: x))
+                    Test().failure({ try T(x, prune: Bad.code123).value }, Bad.code123)
+                }
             }
         }
         
         for type in coreSystemsIntegers {
             whereTheValueIs(type)
         }
+        
+        whereTheValueIs(InfiniInt<I8>.self)
+        whereTheValueIs(InfiniInt<U8>.self)
     }
 }
