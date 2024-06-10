@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Divisor
+// MARK: * Natural
 //*============================================================================*
 
-/// A nonzero value.
+/// A finite value.
 ///
 /// ### Trusted Input
 ///
@@ -24,18 +24,16 @@
 /// init(unchecked:) // error: unsafe (with debug assertions)
 /// ```
 ///
-@frozen public struct Divisor<Value>: BitCastable where Value: BinaryInteger {
+@frozen public struct Finite<Value> where Value: BinaryInteger {
     
     public typealias Value = Value
-    
-    public typealias BitPattern = Divisor<Value.Magnitude>
-    
+        
     //=------------------------------------------------------------------------=
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func predicate(_ value: borrowing Value) -> Bool {
-        value != Value.zero
+    @inlinable public static func predicate(_ value: /* borrowing */ Value) -> Bool {
+        !value.isInfinite // await borrowing fix
     }
     
     //=------------------------------------------------------------------------=
@@ -48,7 +46,9 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Creates a new instance and traps on failure in debug mode only.
+    /// Creates a new instance without precondition checks.
+    ///
+    /// - Requires: `!value.isInfinite`
     ///
     /// - Warning: Use this method only when you are 100% sure the input is valid.
     ///
@@ -58,42 +58,29 @@
         self.value = value
     }
     
-    /// Creates a new instance and traps on failure.
+    /// Creates a new instance by trapping on failure.
+    ///
+    /// - Requires: `!value.isInfinite`
+    ///
     @inlinable public init(_ value: consuming Value) {
         self.init(exactly: value)!
     }
     
+    /// Creates a new instance by returning `nil` on failure.
+    ///
+    /// - Requires: `!value.isInfinite`
+    ///
     @inlinable public init?(exactly value: consuming Value) {
         guard Self.predicate(value) else { return nil }
         self.value = value
     }
     
+    /// Creates a new instance by throwing the `error()` on failure.
+    ///
+    /// - Requires: `!value.isInfinite`
+    ///
     @inlinable public init<Failure>(_ value: consuming Value, prune error: @autoclosure () -> Failure) throws where Failure: Error {
         guard Self.predicate(value) else { throw error() }
         self.value = value
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializes
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(raw source: consuming BitPattern) {
-        self.init(unchecked: Value(raw: source.value))
-    }
-    
-    @inlinable public func load(as type: BitPattern.Type) -> BitPattern {
-        BitPattern(unchecked: Value.Magnitude(raw: self.value))
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func complement() -> Divisor<Value> {
-        Self(unchecked: self.value.complement())
-    }
-    
-    @inlinable public consuming func magnitude() -> Divisor<Value.Magnitude> {
-        Divisor<Value.Magnitude>(unchecked: self.value.magnitude())
     }
 }

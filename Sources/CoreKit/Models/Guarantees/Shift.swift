@@ -34,8 +34,8 @@
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func predicate(_ value: Value) -> Bool {
-        !Bool(value.appendix) && Value.Magnitude(raw: value) < Value.size
+    @inlinable public static func predicate(_ value: /* borrowing */ Value) -> Bool {
+        !Bool(value.appendix) && Value.Magnitude(raw: value) < Value.size // await borrowing fix
     }
     
     //=------------------------------------------------------------------------=
@@ -48,7 +48,9 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Creates a new instance and traps on failure in debug mode only.
+    /// Creates a new instance without precondition checks.
+    ///
+    /// - Requires: `values.appendix == 0 && value < Value.size`
     ///
     /// - Warning: Use this method only when you are 100% sure the input is valid.
     ///
@@ -58,30 +60,41 @@
         self.value = value
     }
     
-    /// Creates a new instance and traps on failure.
+    /// Creates a new instance by trapping on failure.
+    ///
+    /// - Requires: `values.appendix == 0 && value < Value.size`
+    ///
     @inlinable public init(_ value: consuming Value) {
         self.init(exactly: value)!
     }
     
+    /// Creates a new instance by returning `nil` on failure.
+    ///
+    /// - Requires: `values.appendix == 0 && value < Value.size`
+    ///
     @inlinable public init?(exactly value: consuming Value) {
         guard Self.predicate(value) else { return nil }
         self.value = value
     }
     
+    /// Creates a new instance by throwing the `error()` on failure.
+    ///
+    /// - Requires: `values.appendix == 0 && value < Value.size`
+    ///
     @inlinable public init<Failure>(_ value: consuming Value, prune error: @autoclosure () -> Failure) throws where Failure: Error {
         guard Self.predicate(value) else { throw error() }
         self.value = value
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializes
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
     @inlinable public init(raw source: consuming BitPattern) {
         self.init(unchecked: Value(raw: source.value))
     }
     
-    @inlinable public func load(as type: BitPattern.Type) -> BitPattern {
+    @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
         BitPattern(unchecked: Value.Magnitude(raw: self.value))
     }
     
