@@ -201,11 +201,18 @@ precision in generic code, and byte swapping for efficient endianness conversion
 
 > Trust me, I know what I'm doing...
 
-Once you start using primitive types to form more complex types, you notice that some semantics
-compose better than others. A trusted input delegates some precondition validation to the 
-programmer so that complex types can be built with less overhead. The type system will compel you 
-to approve each trusted input with one of the following methods. Your choice will either make your 
-code safer or easier to audit.
+| Type         | Guarantee        |
+|:-------------|:-----------------|
+| Divisor      | x ≠ 0            |
+| Finite       | x ∈ ℤ            |
+| Natural      | x ∈ ℕ            |
+| Shift        | x ∈ ℕ, x \< size |
+
+Once you start using primitive types to form more complex types, you notice that some behaviors
+compose better than others. A trusted input delegates precondition checks to the programmer 
+so that complex types can be built with less overhead. The type system will ask you to accept or 
+reject such inputs. Your validation strategy will either make your code safer or easier to audit.
+
 
 ```swift
 init(_:)         // error: traps

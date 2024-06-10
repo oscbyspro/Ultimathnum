@@ -60,7 +60,7 @@ let package = Package(
         ),
         .testTarget(
             name: "CoreKitTests",
-            dependencies: ["CoreKit", "DoubleIntKit", "InfiniIntKit", "TestKit"]
+            dependencies: ["CoreKit", "TestKit"]
         ),
         .target(
             name: "DoubleIntKit",

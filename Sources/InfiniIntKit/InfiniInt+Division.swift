@@ -76,20 +76,20 @@ extension InfiniInt where Source == Source.Magnitude {
     //=------------------------------------------------------------------------=
     
     @inline(never) @inlinable internal consuming func divisionAsFiniteByFiniteNonzeroDivisor(
-        _ other: consuming Self
+        _ divisor: consuming Self
     )   -> Division<Self, Self> {
         //=--------------------------------------=
-        Swift.assert(!self .isInfinite)
-        Swift.assert(!other.isInfinite)
-        Swift.assert((other) !=  .zero)
+        Swift.assert(!self   .isInfinite)
+        Swift.assert(!divisor.isInfinite)
+        Swift.assert((divisor) !=  .zero)
         //=--------------------------------------=
         // divisor is at most one element
         //=--------------------------------------=
-        if  other.storage.count <= 1 {
+        if  divisor.storage.count <= 1 {
             //=----------------------------------=
             // note: divisor != 0
             //=----------------------------------=
-            let divisor = other.storage.body.first! as Element.Magnitude
+            let divisor = divisor.storage.body.first! as Element.Magnitude
             let remainder = self.withUnsafeMutableBinaryIntegerBody {
                 $0.divisionSetQuotientGetRemainder(Divisor(unchecked: divisor))
             }
@@ -99,7 +99,7 @@ extension InfiniInt where Source == Source.Magnitude {
         //=--------------------------------------=
         // division: dividend <= divisor
         //=--------------------------------------=
-        switch self.compared(to: other) {
+        switch self.compared(to: divisor) {
         case Signum.more: break
         case Signum.same: return Division(quotient:  0001, remainder: .zero)
         case Signum.less: return Division(quotient: .zero, remainder:  self)
@@ -109,10 +109,10 @@ extension InfiniInt where Source == Source.Magnitude {
         //=--------------------------------------=
         self.storage.body.append(Element.zero)
         
-        let capacity = self.storage.count - other.storage.count
+        let capacity = self.storage.count - divisor.storage.count
         let quotient = Self.uninitialized(count: capacity, repeating: .zero) { quotient in
             self.withUnsafeMutableBinaryIntegerBody { lhs in
-                other.storage.withUnsafeMutableBinaryIntegerBody { rhs in
+                divisor.storage.withUnsafeMutableBinaryIntegerBody { rhs in
                     let shift  = IX(load: rhs[unchecked: rhs.count - 1].count(.appendix))
 
                     if  shift != .zero {

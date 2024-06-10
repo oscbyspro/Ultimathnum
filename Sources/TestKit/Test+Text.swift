@@ -34,7 +34,7 @@ extension Test {
         //=--------------------------------------=
         var expectation: (base: String, lowercase: String, uppercase: String)
         //=--------------------------------------=
-        let body/*----*/ = String(body.drop(while:{ $0 == ">" }))
+        let ((((body)))) = String(body.drop(while:{ $0 == ">" }))
         expectation.base = String(body.drop(while:{ $0 == "0" }))
         
         if  expectation.base.isEmpty {
