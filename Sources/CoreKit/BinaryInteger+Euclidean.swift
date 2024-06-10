@@ -11,7 +11,7 @@
 // MARK: + Binary Integer x Euclidean (GCD)
 //*============================================================================*
 
-extension BinaryInteger {
+extension FiniteInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -24,27 +24,8 @@ extension BinaryInteger {
     /// - Requires: `!self.isInfinite && !other.isInfinite`
     ///
     @inlinable public consuming func euclidean(_ other: consuming Self) -> Magnitude {
-        //=--------------------------------------=
-        precondition(!self .isInfinite, "GCD(inf, x) is bad")
-        precondition(!other.isInfinite, "GCD(x, inf) is bad")
-        //=--------------------------------------=
-        dividing: while other != .zero {
-            (self, other) = (copy other, self.remainder(Divisor(unchecked: other)))
-        }
-        
-        return self.magnitude() as Magnitude
+        Self.euclidean(Finite(unchecked: self), Finite(unchecked: other))
     }
-}
-
-//*============================================================================*
-// MARK: + Binary Integer x Euclidean (GCD) x Unsigned
-//*============================================================================*
-
-extension UnsignedInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
     
     /// Returns the greatest common divisor and `1` Bézout coefficient.
     ///
@@ -62,22 +43,8 @@ extension UnsignedInteger {
     ///
     /// - Note: This equation is mathematical and subject to overflow.
     ///
-    @inlinable public consuming func euclidean1(_ other: consuming Self) 
-    -> (divisor: Self, lhsCoefficient: Signitude) {
-        //=--------------------------------------=
-        precondition(!self .isInfinite, "GCD(inf, x) is bad")
-        precondition(!other.isInfinite, "GCD(x, inf) is bad")
-        //=--------------------------------------=
-        var x: (Signitude, Signitude) = (1, 0)
-        
-        // note that the bit cast may overflow in the final iteration
-        dividing: while other != .zero {
-            let division  = self.division(Divisor(unchecked: copy other)).unchecked()
-            (self, other) = (other, division.remainder)
-            x = (x.1, x.0 &- x.1 &* Signitude(raw: division.quotient))
-        }
-        
-        return (divisor: self, lhsCoefficient: x.0)
+    @inlinable public consuming func euclidean1(_ other: consuming Self) -> XGCD1 where Self: UnsignedInteger {
+        Self.euclidean1(Finite(unchecked: self), Finite(unchecked: other))
     }
     
     /// Returns the greatest common divisor and `2` Bézout coefficients.
@@ -96,23 +63,113 @@ extension UnsignedInteger {
     ///
     /// - Note: This equation is mathematical and subject to overflow.
     ///
-    @inlinable public consuming func euclidean2(_ other: consuming Self) 
-    -> (divisor: Self, lhsCoefficient: Signitude, rhsCoefficient: Signitude) {
-        //=--------------------------------------=
-        precondition(!self .isInfinite, "GCD(inf, x) is bad")
-        precondition(!other.isInfinite, "GCD(x, inf) is bad")
-        //=--------------------------------------=
+    @inlinable public consuming func euclidean2(_ other: consuming Self) -> XGCD2 where Self: UnsignedInteger {
+        Self.euclidean2(Finite(unchecked: self), Finite(unchecked: other))
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Algorithms
+//=----------------------------------------------------------------------------=
+
+extension BinaryInteger {
+    
+    /// A greatest common divisor and `1` Bézout coefficient.
+    public typealias XGCD1 = (divisor: Magnitude, lhsCoefficient: Signitude)
+    
+    /// A greatest common divisor and `2` Bézout coefficient.
+    public typealias XGCD2 = (divisor: Magnitude, lhsCoefficient: Signitude, rhsCoefficient: Signitude)
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    /// Returns the greatest common divisor.
+    ///
+    /// - Note: The greatest common divisor of `(0, 0)` is zero.
+    ///
+    @inlinable public static func euclidean(
+        _ lhs: consuming Finite<Self>, 
+        _ rhs: consuming Finite<Self>
+    )   -> Magnitude {
+        
+        var value = (consume lhs).value
+        var other = (consume rhs).value
+        
+        dividing: while other != .zero {
+            (value, other) = (copy other, value.remainder(Divisor(unchecked: other)))
+        }
+        
+        return value.magnitude() as Magnitude
+    }
+    
+    /// Returns the greatest common divisor and `1` Bézout coefficient.
+    ///
+    /// - Note: The greatest common divisor of `(0, 0)` is zero.
+    ///
+    /// - Note: The `XGCD` algorithm behaves well for all finite unsigned inputs.
+    ///
+    /// ### Bézout's identity
+    ///
+    /// ```swift
+    /// divisor == lhs * lhsCoefficient + rhs * rhsCoefficient
+    /// ```
+    ///
+    /// - Note: This equation is mathematical and subject to overflow.
+    ///
+    @inlinable public static func euclidean1(
+        _ lhs: consuming Finite<Self>,
+        _ rhs: consuming Finite<Self>
+    ) -> XGCD1 where Self: UnsignedInteger {
+        
+        var value = (consume lhs).value
+        var other = (consume rhs).value
+        
+        var x: (Signitude, Signitude) = (1, 0)
+        
+        // note that the bit cast may overflow in the final iteration
+        dividing: while other != .zero {
+            let (division) = (value).division(Divisor(unchecked: copy other)).unchecked()
+            (value, other) = (other, division.remainder)
+            x = (x.1, x.0 &- x.1 &* Signitude(raw: division.quotient))
+        }
+        
+        return (divisor: value, lhsCoefficient: x.0)
+    }
+    
+    /// Returns the greatest common divisor and `2` Bézout coefficients.
+    ///
+    /// - Note: The greatest common divisor of `(0, 0)` is zero.
+    ///
+    /// - Note: The `XGCD` algorithm behaves well for all finite unsigned inputs.
+    ///
+    /// ### Bézout's identity
+    ///
+    /// ```swift
+    /// divisor == lhs * lhsCoefficient + rhs * rhsCoefficient
+    /// ```
+    ///
+    /// - Note: This equation is mathematical and subject to overflow.
+    ///
+    @inlinable public static func euclidean2(
+        _ lhs: consuming Finite<Self>,
+        _ rhs: consuming Finite<Self>
+    ) -> XGCD2 where Self: UnsignedInteger {
+
+        var value = (consume lhs).value
+        var other = (consume rhs).value
+        
         var x: (Signitude, Signitude) = (1, 0)
         var y: (Signitude, Signitude) = (0, 1)
         
         // note that the bit cast may overflow in the final iteration
         dividing: while other != .zero {
-            let division  = self.division(Divisor(unchecked: copy other)).unchecked()
-            (self, other) = (other, division.remainder)
+            let (division) = (value).division(Divisor(unchecked: copy other)).unchecked()
+            (value, other) = (other, division.remainder)
             x = (x.1, x.0 &- x.1 &* Signitude(raw: division.quotient))
             y = (y.1, y.0 &- y.1 &* Signitude(raw: division.quotient))
         }
         
-        return (divisor: self, lhsCoefficient: x.0, rhsCoefficient: y.0)
+        return (divisor: value, lhsCoefficient: x.0, rhsCoefficient: y.0)
     }
 }

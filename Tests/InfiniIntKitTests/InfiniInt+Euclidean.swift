@@ -56,7 +56,31 @@ extension InfiniIntTests {
         #endif
     }
     
-    func testEuclideanInfiniteInputsTrap() throws {
-        throw XCTSkip("req. crash tests")
+    func testEuclideanInfiniteInputsAreInvalid() {
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            Test().euclidean(~1 as T, ~1 as T, T.isSigned ? 2 : nil)
+            Test().euclidean(~1 as T, ~0 as T, T.isSigned ? 1 : nil)
+            Test().euclidean(~1 as T,  0 as T, T.isSigned ? 2 : nil)
+            Test().euclidean(~1 as T,  1 as T, T.isSigned ? 1 : nil)
+            
+            Test().euclidean(~0 as T, ~1 as T, T.isSigned ? 1 : nil)
+            Test().euclidean(~0 as T, ~0 as T, T.isSigned ? 1 : nil)
+            Test().euclidean(~0 as T,  0 as T, T.isSigned ? 1 : nil)
+            Test().euclidean(~0 as T,  1 as T, T.isSigned ? 1 : nil)
+            
+            Test().euclidean( 0 as T, ~1 as T, T.isSigned ? 2 : nil)
+            Test().euclidean( 0 as T, ~0 as T, T.isSigned ? 1 : nil)
+            Test().euclidean( 0 as T,  0 as T, 0)
+            Test().euclidean( 0 as T,  1 as T, 1)
+            
+            Test().euclidean( 1 as T, ~1 as T, T.isSigned ? 1 : nil)
+            Test().euclidean( 1 as T, ~0 as T, T.isSigned ? 1 : nil)
+            Test().euclidean( 1 as T,  0 as T, 1)
+            Test().euclidean( 1 as T,  1 as T, 1)
+        }
+        
+        for type in Self.types {
+            whereIs(type)
+        }
     }
 }

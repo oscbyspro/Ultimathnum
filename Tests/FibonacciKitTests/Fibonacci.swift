@@ -139,7 +139,7 @@ extension FibonacciTests.Case {
     }
     
     func checkSequencePairIsCoprime() {
-        test.same(item.element.euclidean(item.next), 1)
+        test.same(Value.euclidean(Finite(item.element), Finite(item.next)), 1)
     }
     
     //=------------------------------------------------------------------------=

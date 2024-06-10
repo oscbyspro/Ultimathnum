@@ -29,6 +29,18 @@ public struct EdgyIntegerID {
     
 }
 
+public struct FiniteIntegerID {
+    
+    public init() { }
+    
+}
+
+public struct NaturalIntegerID {
+    
+    public init() { }
+    
+}
+
 public struct SignedIntegerID {
     
     public init() { }

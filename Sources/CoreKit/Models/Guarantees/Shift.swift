@@ -81,7 +81,10 @@
     ///
     /// - Requires: `values.appendix == 0 && value < Value.size`
     ///
-    @inlinable public init<Failure>(_ value: consuming Value, prune error: @autoclosure () -> Failure) throws where Failure: Error {
+    @inlinable public init<Failure>(
+        _ value: consuming Value,
+        prune error: @autoclosure () -> Failure
+    )   throws where Failure: Swift.Error {
         guard Self.predicate(value) else { throw error() }
         self.value = value
     }

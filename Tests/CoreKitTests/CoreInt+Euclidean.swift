@@ -177,4 +177,63 @@ extension CoreIntTests {
         whereIs(UX .self)
         #endif
     }
+   
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testGreatestCommonDivisorConveniencesForEachBytePairAsSigned() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger & SignedInteger {
+            //=----------------------------------=
+            var success = U32.zero
+            let values8 = T(I8.min) ... T(I8.max)
+            //=----------------------------------=
+            for lhs in values8 {
+                for rhs in values8 {          
+                    if  lhs.euclidean(rhs) == T.euclidean(Finite(lhs), Finite(rhs)) {
+                        success += 1
+                    }
+                }
+            }
+            
+            Test().same(success, 1 * 65536)
+        }
+        
+        whereIs(I8.self)
+        #if !DEBUG
+        whereIs(IX.self)
+        #endif
+    }
+    
+    func testGreatestCommonDivisorConveniencesForEachBytePairAsUnsigned() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
+            //=----------------------------------=
+            var success = U32.zero
+            let values8 = T(U8.min) ... T(U8.max)
+            //=----------------------------------=
+            for lhs in values8 {
+                for rhs in values8 {
+                    let exp = T.euclidean2(Finite(lhs), Finite(rhs))
+                    
+                    if  lhs.euclidean (rhs) == (exp.divisor) {
+                        success += 1
+                    }
+                    
+                    if  lhs.euclidean1(rhs) == (exp.divisor, exp.lhsCoefficient) {
+                        success += 1
+                    }
+                    if  lhs.euclidean2(rhs) == (exp.divisor, exp.lhsCoefficient, exp.rhsCoefficient) {
+                        success += 1
+                    }
+                }
+            }
+            
+            Test().same(success, 3 * 65536)
+        }
+        
+        whereIs(U8.self)
+        #if !DEBUG
+        whereIs(UX.self)
+        #endif
+    }
 }
