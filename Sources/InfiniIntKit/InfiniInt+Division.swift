@@ -116,14 +116,14 @@ extension InfiniInt where Source == Source.Magnitude {
                     let shift = IX(load: rhs[unchecked: rhs.count - 1].count(.appendix))
 
                     if !shift.isZero {
-                        lhs.upshift(environment: .zero, major: .zero, minor: shift)
-                        rhs.upshift(environment: .zero, major: .zero, minor: shift)
+                        lhs.upshift(major: .zero, minor: shift)
+                        rhs.upshift(major: .zero, minor: shift)
                     }
                     
                     quotient.divisionSetQuotientSetRemainderByLong2111MSB(dividing: lhs, by: DataInt.Body(rhs))
                     
                     if !shift.isZero {
-                        lhs.downshift(environment: .zero, major: .zero, minor: shift)
+                        lhs.downshift(major: .zero, minor: shift)
                     }
                 }
             }

@@ -20,25 +20,25 @@ extension MutableDataInt.Body {
     /// Performs an ascending shift.
     ///
     /// - Parameters:
-    ///   - environment: The element that fills the void.
     ///   - major: `0 <= major < self.count`
     ///   - minor: `0 <= minor < IX(size: Element.self)`
+    ///   - environment: The element that fills the void.
     ///
-    @inlinable public func upshift(environment: Element, major: IX, minor: IX) {
+    @inlinable public func upshift(major: IX, minor: IX, environment: Element = .zero) {
         if !minor.isZero {
-            self.upshift(environment: environment, major: major, minorAtLeastOne: minor)
+            self.upshift(major: major, minorAtLeastOne: minor, environment: environment)
         }   else if !major.isZero {
-            self.upshift(environment: environment, majorAtLeastOne: major, minor: Void())
+            self.upshift(majorAtLeastOne: major, minor: (( )), environment: environment)
         }
     }
     
     /// Performs an ascending shift.
     ///
     /// - Parameters:
-    ///   - environment: The element that fills the void.
     ///   - major: `1 <= major < self.count`
+    ///   - environment: The element that fills the void.
     ///
-    @inlinable public func upshift(environment: Element, majorAtLeastOne major: IX, minor: Void) {
+    @inline(never) @inlinable public func upshift(majorAtLeastOne major: IX, minor: Void, environment: Element = .zero) {
         //=--------------------------------------=
         var destination: IX = self.count
         var source = destination.plus(major.complement()).unchecked()
@@ -48,13 +48,13 @@ extension MutableDataInt.Body {
         Swift.assert(source < self.count, String.indexOutOfBounds())
         //=--------------------------------------=
         while UX(raw: destination) > .zero {
-            let element:  Element
+            let element: Element
             
             if  UX(raw: source) > .zero {
                 source  = source.decremented().unchecked()
                 element = self[unchecked: source]
             }   else {
-                element = environment
+                element = environment as Element
             }
             
             destination = destination.decremented().unchecked()            
@@ -62,14 +62,14 @@ extension MutableDataInt.Body {
         }
     }
     
-    /// Performs a ascending shift.
+    /// Performs an ascending shift.
     ///
     /// - Parameters:
-    ///   - environment: The element that fills the void.
     ///   - major: `0 <= major < self.count`
     ///   - minor: `1 <= minor < IX(size: Element.self)`
+    ///   - environment: The element that fills the void.
     ///
-    @inlinable public func upshift(environment: Element, major: IX, minorAtLeastOne minor: IX) {
+    @inline(never) @inlinable public func upshift(major: IX, minorAtLeastOne minor: IX, environment: Element = .zero) {
         //=--------------------------------------=
         Swift.assert(000001 <= minor, String.indexOutOfBounds())
         Swift.assert(minor  <  IX(size: Element.self), String.indexOutOfBounds())
@@ -92,7 +92,7 @@ extension MutableDataInt.Body {
                 source  = source.decremented().unchecked()
                 element = self[unchecked: source]
             }   else {
-                element = environment
+                element = environment as Element
             }
             
             let pulled: Element = element &>> pull
@@ -105,28 +105,28 @@ extension MutableDataInt.Body {
     // MARK: Transformations x Descending
     //=------------------------------------------------------------------------=
     
-    /// Performs an descending shift.
+    /// Performs a descending shift.
     ///
     /// - Parameters:
-    ///   - environment: The element that fills the void.
     ///   - major: `0 <= major < self.count`
     ///   - minor: `0 <= minor < IX(size: Element.self)`
+    ///   - environment: The element that fills the void.
     ///
-    @inlinable public func downshift(environment: Element, major: IX, minor: IX) {
+    @inlinable public func downshift(major: IX, minor: IX, environment: Element = .zero) {
         if !minor.isZero {
-            self.downshift(environment: environment, major: major, minorAtLeastOne: minor)
+            self.downshift(major: major, minorAtLeastOne: minor, environment: environment)
         }   else if !major.isZero {
-            self.downshift(environment: environment, majorAtLeastOne: major, minor: Void())
+            self.downshift(majorAtLeastOne: major, minor: (( )), environment: environment)
         }
     }
     
     /// Performs a descending shift.
     ///
     /// - Parameters:
-    ///   - environment: The element that fills the void.
     ///   - major: `1 <= major < self.count`
+    ///   - environment: The element that fills the void.
     ///
-    @inlinable public func downshift(environment: Element, majorAtLeastOne major: IX, minor: Void) {
+    @inline(never) @inlinable public func downshift(majorAtLeastOne major: IX, minor: Void, environment: Element = .zero) {
         //=--------------------------------------=
         var destination = IX.zero
         var source = destination.plus(major).unchecked()
@@ -152,11 +152,11 @@ extension MutableDataInt.Body {
     /// Performs a descending shift.
     ///
     /// - Parameters:
-    ///   - environment: The element that fills the void.
     ///   - major: `0 <= major < self.count`
     ///   - minor: `1 <= minor < IX(size: Element.self)`
+    ///   - environment: The element that fills the void.
     ///
-    @inlinable public func downshift(environment: Element, major: IX, minorAtLeastOne minor: IX) {
+    @inline(never) @inlinable public func downshift(major: IX, minorAtLeastOne minor: IX, environment: Element = .zero) {
         //=--------------------------------------=
         Swift.assert(00001 <= minor, String.indexOutOfBounds())
         Swift.assert(minor <  IX(size: Element.self), String.indexOutOfBounds())
@@ -176,7 +176,7 @@ extension MutableDataInt.Body {
         while UX(raw: destination) < UX(raw: self.count) {
             let pushed: Element = element &>> push
             
-            if  UX(raw: source) <  UX(raw: self.count) {
+            if  UX(raw: source) < UX(raw: self.count) {
                 element = self[unchecked: source]
                 source  = source.incremented().unchecked()
             }   else {

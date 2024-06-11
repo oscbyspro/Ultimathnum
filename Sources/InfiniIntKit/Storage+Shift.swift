@@ -38,7 +38,7 @@ extension InfiniIntStorage {
             self.resize(minCount: target)
             
             self.withUnsafeMutableBinaryIntegerBody {
-                $0.upshift(environment: Element.zero, major: major, minorAtLeastOne: minor)
+                $0.upshift(major: major, minorAtLeastOne: minor)
             }
         }
     }
@@ -62,7 +62,7 @@ extension InfiniIntStorage {
         }   else {
             let environment = Element(repeating: self.appendix)
             self.withUnsafeMutableBinaryIntegerBody {
-                $0.downshift(environment: environment, major: major, minorAtLeastOne: minor)
+                $0.downshift(major: major, minorAtLeastOne: minor, environment: environment)
             }
 
             self.resize(maxCount: self.count.minus(difference).unchecked())
