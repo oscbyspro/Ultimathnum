@@ -18,6 +18,9 @@ extension DataInt {
     //=------------------------------------------------------------------------=
     
     /// Removes descending `appendix` extensions from the `body`.
+    ///
+    /// - Invariant: `self.normalized().isNormal`
+    ///
     @inlinable public consuming func normalized() -> Self {
         let appendix = Element(repeating: self.appendix)
         var endIndex = self.body.count
@@ -55,6 +58,9 @@ extension MutableDataInt {
     //=------------------------------------------------------------------------=
     
     /// Removes descending `appendix` extensions from the `body`.
+    ///
+    /// - Invariant: `self.normalized().isNormal`
+    ///
     @inlinable public consuming func normalized() -> Self {
         Self(mutating: Immutable(self).normalized())
     }
@@ -83,7 +89,9 @@ extension DataInt.Body {
     
     /// Removes descending `appendix` extensions from `self`.
     ///
-    /// - Note: The `appendix` of a binary integer body is always `zero`.
+    /// - Invariant: `self.normalized().isNormal`
+    ///
+    /// - Note: The `appendix` of a binary integer `body` is always `zero`.
     ///
     @inlinable public consuming func normalized() -> Self {
         DataInt(self).normalized().body
@@ -163,7 +171,9 @@ extension MutableDataInt.Body {
     
     /// Removes descending `appendix` extensions from `self`.
     ///
-    /// - Note: The `appendix` of a binary integer body is always `zero`.
+    /// - Invariant: `self.normalized().isNormal`
+    ///
+    /// - Note: The `appendix` of a binary integer `body` is always `zero`.
     ///
     @inlinable public consuming func normalized() -> Self {
         Self(mutating: Immutable(self).normalized())

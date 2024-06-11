@@ -125,6 +125,22 @@ extension DataIntTests.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    func normalized(is expectation: [Element]) {
+        self.expect(expectation, read: {
+            let elements = Array($0.normalized().buffer())
+            test.same($0.isNormal, $0.count == IX(elements.count))
+            return elements
+        },  write: {
+            let elements = Array($0.normalized().buffer())
+            test.same($0.isNormal, $0.count == IX(elements.count))
+            return elements
+        })
+        
+        always: do {
+            Self(expectation, test: test).expect(true, read: \.isNormal, write: \.isNormal)
+        }
+    }
+    
     func split(clamping index: IX, low: [Element], high: [Element]) {
         self.split(unchecked: Swift.min(Swift.max(IX.zero, index), IX(self.body.count)), low: low, high: high)
     }
@@ -156,67 +172,50 @@ extension DataIntTests.Extension {
     
     func body(is expectation: [Element]) {
         self.expect(expectation, read: {
-            let count = $0.body.count
-            var elements = [Element]()
-            
-            while !$0.body.count.isZero {
-                elements.append($0.next())
-            }
-            
-            test.same(count, IX(elements.count), "count [0]")
+            let elements = [Element]($0.body.buffer())
+            test.same($0.body.count, IX(elements.count), "count [0]")
             return elements
         },  write: {
-            let count = $0.body.count
-            var elements = [Element]()
-            
-            while !$0.body.count.isZero {
-                elements.append($0.next())
-            }
-            
-            test.same(count, IX(elements.count), "count [1]")
+            let elements = [Element]($0.body.buffer())
+            test.same($0.body.count, IX(elements.count), "count [1]")
             return elements
         })
     }
     
     func normalized(is expectation: [Element]) {
         self.expect(expectation, read: {
-            var elements = [Element]()
-            $0 = $0.normalized()
-            
-            while !$0.body.count.isZero {
-                elements.append($0.next())
-            }
-            
+            let elements = [Element]($0.normalized().body.buffer())
+            test.same($0.isNormal, $0.body.count == IX(elements.count), "isNormal [0]")
             return elements
         },  write: {
-            var elements = [Element]()
-            $0 = $0.normalized()
-            
-            while !$0.body.count.isZero {
-                elements.append($0.next())
-            }
-            
+            let elements = [Element]($0.normalized().body.buffer())
+            test.same($0.isNormal, $0.body.count == IX(elements.count), "isNormal [1]")
             return elements
         })
+        
+        always: do {
+            Self(Item(expectation, item.appendix), test: test).expect(true, read: \.isNormal, write: \.isNormal)
+        }
+        
+        if  item.appendix == 0 {
+            DataIntTests.Body(item.body, test: test).normalized(is: expectation)
+        }
     }
     
     func prefix(_ count: UX, is expectation: [Element]) {
         self.expect(expectation, read: {
             var elements = [Element]()
-            
             for _ in 0 ..< count {
                 elements.append($0.next())
             }
+            return elements as [Element]
             
-            return elements
         },  write: {
             var elements = [Element]()
-            
             for _ in 0 ..< count {
                 elements.append($0.next())
             }
-            
-            return elements
+            return elements as [Element]
         })
     }
 }

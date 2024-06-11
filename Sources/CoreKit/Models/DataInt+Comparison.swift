@@ -21,6 +21,13 @@ extension DataInt {
     @inlinable public var isZero: Bool {
         self.body.isZero && !Bool(self.appendix)
     }
+    
+    /// Indicates whether the `body` is free of `appendix` extensions.
+    @inlinable public var isNormal: Bool {
+        if  self.body.count.isZero { return  true }
+        let element = (self).body[unchecked: self.body.count.decremented().unchecked()]
+        return element != Element(repeating: self.appendix)
+    }
 }
 
 //=----------------------------------------------------------------------------=
@@ -115,6 +122,14 @@ extension DataInt.Body {
         self.buffer().allSatisfy({ $0.isZero })
     }
     
+    /// Indicates whether the `body` is free of `appendix` extensions.
+    ///
+    /// - Note: The `appendix` of a binary integer `body` is always `zero`.
+    ///
+    @inlinable public var isNormal: Bool {
+        DataInt(self).isNormal
+    }
+    
     /// Performs a three-way comparison of `self` versus `zero`.
     @inlinable public func signum() -> Signum {
         Signum(Bit(!self.isZero))
@@ -148,6 +163,11 @@ extension MutableDataInt {
     @inlinable public var isZero: Bool {
         Immutable(self).isZero
     }
+    
+    /// Indicates whether the `body` is free of `appendix` extensions.
+    @inlinable public var isNormal: Bool {
+        Immutable(self).isNormal
+    }
 }
 
 //*============================================================================*
@@ -163,6 +183,14 @@ extension MutableDataInt.Body {
     /// Indicates whether this value is equal to zero.
     @inlinable public var isZero: Bool {
         Immutable(self).isZero
+    }
+    
+    /// Indicates whether the `body` is free of `appendix` extensions.
+    ///
+    /// - Note: The `appendix` of a binary integer `body` is always `zero`.
+    ///
+    @inlinable public var isNormal: Bool {
+        Immutable(self).isNormal
     }
     
     //=------------------------------------------------------------------------=

@@ -21,7 +21,7 @@
 /// init(_:)         // error: traps
 /// init(_:prune:)   // error: throws
 /// init(exactly:)   // error: nil
-/// init(unchecked:) // error: unsafe (with debug assertions)
+/// init(unchecked:) // error: unchecked
 /// ```
 ///
 @frozen public struct Divisor<Value>: BitCastable where Value: BinaryInteger {

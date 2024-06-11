@@ -108,7 +108,7 @@ extension TextInt {
     
     @usableFromInline package func encode(sign: Sign?, mask: Bit?, normalized body: consuming MutableDataInt<UX>.Body) -> String {
         //=--------------------------------------=
-        Swift.assert(body.count.isZero || !body[unchecked: body.count - 1].isZero)
+        Swift.assert(body.isNormal)
         //=--------------------------------------=
         // text: capacity upper bound
         //=--------------------------------------=
