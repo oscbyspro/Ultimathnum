@@ -81,7 +81,7 @@ extension InfiniInt where Source == Source.Magnitude {
         //=--------------------------------------=
         Swift.assert(!self   .isInfinite)
         Swift.assert(!divisor.isInfinite)
-        Swift.assert((divisor) !=  .zero)
+        Swift.assert(!divisor.isZero)
         //=--------------------------------------=
         // divisor is at most one element
         //=--------------------------------------=
@@ -113,16 +113,16 @@ extension InfiniInt where Source == Source.Magnitude {
         let quotient = Self.uninitialized(count: capacity, repeating: .zero) { quotient in
             self.withUnsafeMutableBinaryIntegerBody { lhs in
                 divisor.storage.withUnsafeMutableBinaryIntegerBody { rhs in
-                    let shift  = IX(load: rhs[unchecked: rhs.count - 1].count(.appendix))
+                    let shift = IX(load: rhs[unchecked: rhs.count - 1].count(.appendix))
 
-                    if  shift != .zero {
+                    if !shift.isZero {
                         lhs.upshift(environment: .zero, major: .zero, minor: shift)
                         rhs.upshift(environment: .zero, major: .zero, minor: shift)
                     }
                     
                     quotient.divisionSetQuotientSetRemainderByLong2111MSB(dividing: lhs, by: DataInt.Body(rhs))
                     
-                    if  shift != .zero {
+                    if !shift.isZero {
                         lhs.downshift(environment: .zero, major: .zero, minor: shift)
                     }
                 }

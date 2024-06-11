@@ -96,7 +96,7 @@ extension BinaryInteger {
         var value = (consume lhs).value
         var other = (consume rhs).value
         
-        dividing: while other != .zero {
+        dividing: while !other.isZero {
             (value, other) = (copy other, value.remainder(Divisor(unchecked: other)))
         }
         
@@ -128,7 +128,7 @@ extension BinaryInteger {
         var x: (Signitude, Signitude) = (1, 0)
         
         // note that the bit cast may overflow in the final iteration
-        dividing: while other != .zero {
+        dividing: while !other.isZero {
             let (division) = (value).division(Divisor(unchecked: copy other)).unchecked()
             (value, other) = (other, division.remainder)
             x = (x.1, x.0 &- x.1 &* Signitude(raw: division.quotient))
@@ -163,7 +163,7 @@ extension BinaryInteger {
         var y: (Signitude, Signitude) = (0, 1)
         
         // note that the bit cast may overflow in the final iteration
-        dividing: while other != .zero {
+        dividing: while !other.isZero {
             let (division) = (value).division(Divisor(unchecked: copy other)).unchecked()
             (value, other) = (other, division.remainder)
             x = (x.1, x.0 &- x.1 &* Signitude(raw: division.quotient))

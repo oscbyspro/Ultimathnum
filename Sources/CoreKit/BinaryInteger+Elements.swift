@@ -32,7 +32,7 @@ extension BinaryInteger {
         if  let size  = UX(size: Self.self) {
             let ratio = size / UX(size: U8.self)
             let suffix: DataInt<U8> = source[ratio...]
-            success = success & Bit(suffix.normalized().body.count == .zero)
+            success = success & Bit(suffix.normalized().body.count.isZero)
         }
         //=--------------------------------------=
         return instance.veto(!Bool(success))
@@ -57,7 +57,7 @@ extension BinaryInteger {
         if  let size  = UX(size: Self.self) {
             let ratio = size / UX(size: Element.Magnitude.self)
             let suffix: DataInt<Element.Magnitude> = source[ratio...]
-            success = success & Bit(suffix.normalized().body.count == .zero)
+            success = success & Bit(suffix.normalized().body.count.isZero)
         }
         //=--------------------------------------=
         return instance.veto(!Bool(success))

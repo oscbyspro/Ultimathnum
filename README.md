@@ -328,15 +328,17 @@ overview MutableDataInt.Body:
 ##### Comparison
 
 ```
-overview DataInt:
+overview [Mutable]DataInt:
 
-.signum (of:  Self,    isSigned: Bool) -> Signum
-.compare(lhs: Self, lhsIsSigned: Bool, rhs: Self, rhsIsSigned: Bool) -> Signum
+/isZero   ->  Bool
+DataInt.signum (of:  Self,    isSigned: Bool) -> Signum
+DataInt.compare(lhs: Self, lhsIsSigned: Bool, rhs: Self, rhsIsSigned: Bool) -> Signum
 ```
 
 ```
 overview [Mutable]DataInt.Body:
 
+/isZero   ->  Bool
 /signum() ->  Signum
 /compared(to: [Mutable]DataInt.Body) -> Signum
 ```

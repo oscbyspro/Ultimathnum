@@ -25,9 +25,9 @@ extension MutableDataInt.Body {
     ///   - minor: `0 <= minor < IX(size: Element.self)`
     ///
     @inlinable public func upshift(environment: Element, major: IX, minor: IX) {
-        if  minor != .zero {
+        if !minor.isZero {
             self.upshift(environment: environment, major: major, minorAtLeastOne: minor)
-        }   else if major != .zero {
+        }   else if !major.isZero {
             self.upshift(environment: environment, majorAtLeastOne: major, minor: Void())
         }
     }
@@ -85,7 +85,7 @@ extension MutableDataInt.Body {
         //=--------------------------------------=
         var element = self[unchecked: source] as Element
         
-        while UX(raw: destination) >  .zero {
+        while UX(raw: destination) > .zero {
             let pushed: Element = element &<< push
             
             if  UX(raw: source) > .zero {
@@ -113,9 +113,9 @@ extension MutableDataInt.Body {
     ///   - minor: `0 <= minor < IX(size: Element.self)`
     ///
     @inlinable public func downshift(environment: Element, major: IX, minor: IX) {
-        if  minor != .zero {
+        if !minor.isZero {
             self.downshift(environment: environment, major: major, minorAtLeastOne: minor)
-        }   else if major != .zero {
+        }   else if !major.isZero {
             self.downshift(environment: environment, majorAtLeastOne: major, minor: Void())
         }
     }
@@ -137,7 +137,7 @@ extension MutableDataInt.Body {
         while UX(raw: destination) < UX(raw: self.count)  {
             let element: Element
             
-            if  UX(raw: source) <  UX(raw: self.count) {
+            if  UX(raw: source) < UX(raw: self.count) {
                 element = self[unchecked: source]
                 source  = source.incremented().unchecked()
             }   else {

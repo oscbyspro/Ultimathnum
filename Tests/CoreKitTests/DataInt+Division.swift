@@ -45,7 +45,7 @@ extension DataIntTests {
     /// Checks that each 2-by-1 as U8 is equivalent to U16 by U16(U8).
     func testDivisionByElementForEach2By1AsU8() throws {
         #if DEBUG
-        throw XCTSkip("takes too much time in -Onone mode")
+        throw XCTSkip("req. release mode")
         #else
         var success = UX.zero
         var failure = UX.zero

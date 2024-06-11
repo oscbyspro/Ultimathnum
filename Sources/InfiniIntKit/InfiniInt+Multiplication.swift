@@ -34,7 +34,7 @@ extension InfiniInt {
         }
         //=--------------------------------------=
         let count2 = self.storage.count * 2
-        let zeros0 = self.storage.count(while:{ $0 == .zero })
+        let zeros0 = self.storage.count(while:{ $0.isZero })
         let zeros2 = zeros0.times(2).unchecked()
         //=--------------------------------------=
         // path: (0s, 1s) x (0s, 1s)
@@ -86,8 +86,8 @@ extension InfiniInt {
         }
         //=--------------------------------------=
         let count2 = self .storage.count + other.storage.count
-        let zeros0 = self .storage.count(while:{ $0 == .zero })
-        let zeros1 = other.storage.count(while:{ $0 == .zero })
+        let zeros0 = self .storage.count(while:{ $0.isZero })
+        let zeros1 = other.storage.count(while:{ $0.isZero })
         let zeros2 = zeros0.plus(zeros1).unchecked()
         //=--------------------------------------=
         // path: (0s, 1s) x (0s, 1s)

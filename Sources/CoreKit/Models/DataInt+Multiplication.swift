@@ -118,7 +118,7 @@ extension MutableDataInt.Body {
             pointer = pointer.successor()
         }
         
-        if  rhs.count != .zero {
+        if !rhs.count.isZero {
             pointer.initialize(to: carry)
             pointer = pointer.successor()
         }
@@ -256,7 +256,7 @@ extension MutableDataInt.Body {
             u[unchecked: axCount...].initialize(repeating: .zero)
             v[unchecked: ..<byCount].initialize(to: b, times:  y)
             v[unchecked: byCount...].initialize(repeating: .zero)
-            Swift.assert(v[unchecked: vjCount...].signum() == Signum.same)
+            Swift.assert(v[unchecked: vjCount...].isZero)
             //=----------------------------------=
             // set (a * x) and (b * y)
             //=----------------------------------=

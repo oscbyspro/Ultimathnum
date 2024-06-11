@@ -108,8 +108,8 @@ extension DoubleInt where Base == Base.Magnitude {
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
     @inlinable consuming func division2222(_ divisor: consuming Divisor<Self>, normalization: consuming Shift<Self>) -> Division<Self, Self> {
         //=--------------------------------------=
-        Swift.assert(divisor.value != .zero, "must not divide by zero")
-        Swift.assert(divisor.value.count(.appendix) == normalization.value, "save shift distance")
+        Swift.assert(!divisor .value.isZero, "must not divide by zero")
+        Swift.assert((divisor).value.count(.appendix) == normalization.value, "save shift distance")
         //=--------------------------------------=
         // divisor is greater than or equal
         //=--------------------------------------=

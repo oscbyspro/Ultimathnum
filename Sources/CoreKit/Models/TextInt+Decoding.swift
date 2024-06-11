@@ -31,7 +31,7 @@ extension TextInt {
         let numerals   = UnsafeBufferPointer(rebasing: components.body)
         var magnitude  = Fallible(T.Magnitude.zero, error: true)
         
-        if  self.exponentiation.power == .zero {
+        if  self.exponentiation.power.isZero {
             try self.words16(numerals: numerals) {
                 magnitude = T.Magnitude.exactly($0, mode: .unsigned)
             }
@@ -72,7 +72,7 @@ extension TextInt {
         numerals: consuming UnsafeBufferPointer<UInt8>, success: (DataInt<UX>) -> Void
     )   throws {
         //=--------------------------------------=
-        Swift.assert(self.exponentiation.power != .zero)
+        Swift.assert(!self.exponentiation.power.isZero)
         //=--------------------------------------=
         // text must contain at least one numeral
         //=--------------------------------------=
@@ -85,11 +85,11 @@ extension TextInt {
         // capacity is measured in radix powers
         //=--------------------------------------=
         let divisor  = Divisor(unchecked: self.exponentiation.exponent)
-        var stride   = IX(numerals.count).remainder(divisor)
+        var (stride) = IX(numerals.count).remainder(divisor)
         var capacity = IX(numerals.count).quotient (divisor).unchecked()
         
-        if  stride  == .zero {
-            stride   = self.exponentiation.exponent
+        if  (stride).isZero {
+            (stride) = self.exponentiation.exponent
         }   else {
             capacity = capacity.plus(1).unchecked()
         }
@@ -130,7 +130,7 @@ extension TextInt {
         numerals: consuming UnsafeBufferPointer<UInt8>, success: (DataInt<UX>) -> Void
     )   throws {
         //=--------------------------------------=
-        Swift.assert(self.exponentiation.power == .zero)
+        Swift.assert(self.exponentiation.power.isZero)
         Swift.assert(self.exponentiation.exponent.count(1) == 1)
         //=--------------------------------------=
         // text must contain at least one numeral
@@ -147,8 +147,8 @@ extension TextInt {
         var stride   = IX(numerals.count).remainder(divisor)
         var capacity = IX(numerals.count).quotient (divisor).unchecked()
         
-        if  stride  == .zero {
-            stride   = self.exponentiation.exponent
+        if  (stride).isZero {
+            (stride) = self.exponentiation.exponent
         }   else {
             capacity = capacity.plus(1).unchecked()
         }

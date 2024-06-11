@@ -24,8 +24,8 @@ extension InfiniIntStorage {
         Swift.assert(major >= 0000)
         Swift.assert(UX(raw: minor) < UX(size: Element.self))
         //=--------------------------------------=
-        if  minor == .zero {
-            if  major != .zero {
+        if  minor.isZero {
+            if !major.isZero {
                 let zeros = repeatElement(Element.zero, count: Int(major))
                 self.body.insert(contentsOf: zeros, at: Int.zero)
             }
@@ -56,7 +56,7 @@ extension InfiniIntStorage {
         if  difference >= self.count {
             self.body.removeAll(keepingCapacity: true)
 
-        }   else if minor == .zero {
+        }   else if minor.isZero {
             self.body.removeSubrange(..<Int(difference))
 
         }   else {

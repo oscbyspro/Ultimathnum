@@ -22,7 +22,7 @@ extension DataInt {
         let appendix = Element(repeating: self.appendix)
         var endIndex = self.body.count
         
-        while endIndex != .zero {
+        while !endIndex.isZero {
             let lastIndex = endIndex.decremented().unchecked()
             guard self.body[unchecked: lastIndex] == appendix else { break }
             endIndex = lastIndex

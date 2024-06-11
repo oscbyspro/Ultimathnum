@@ -159,7 +159,7 @@ extension DataIntTests.Extension {
             let count = $0.body.count
             var elements = [Element]()
             
-            while $0.body.count != .zero {
+            while !$0.body.count.isZero {
                 elements.append($0.next())
             }
             
@@ -169,7 +169,7 @@ extension DataIntTests.Extension {
             let count = $0.body.count
             var elements = [Element]()
             
-            while $0.body.count != .zero {
+            while !$0.body.count.isZero {
                 elements.append($0.next())
             }
             
@@ -183,7 +183,7 @@ extension DataIntTests.Extension {
             var elements = [Element]()
             $0 = $0.normalized()
             
-            while $0.body.count != .zero {
+            while !$0.body.count.isZero {
                 elements.append($0.next())
             }
             
@@ -192,7 +192,7 @@ extension DataIntTests.Extension {
             var elements = [Element]()
             $0 = $0.normalized()
             
-            while $0.body.count != .zero {
+            while !$0.body.count.isZero {
                 elements.append($0.next())
             }
             

@@ -86,7 +86,7 @@ extension SystemsInteger {
     ///
     @inlinable public static func upshift(_ instance: consuming Doublet<Self>, by distance: Shift<Self>) -> Doublet<Self> {
         //=--------------------------------------=
-        if  distance.value != .zero {
+        if !distance.value.isZero {
             instance.high  &<<= distance
             instance.high    |= Self(raw: instance.low &>> Shift<Magnitude>(raw: distance).nondistance())
             instance.low   &<<= Shift(unchecked: Magnitude(raw:  distance.value))
@@ -101,7 +101,7 @@ extension SystemsInteger {
     ///
     @inlinable public static func downshift(_ instance: consuming Doublet<Self>, by distance: Shift<Self>) -> Doublet<Self> {
         //=--------------------------------------=
-        if  distance.value != .zero {
+        if !distance.value.isZero {
             instance.low   &>>= Shift(unchecked: Magnitude(raw:  distance.value))
             instance.low     |= Magnitude(raw: instance.high &<< distance.nondistance())
             instance.high  &>>= distance

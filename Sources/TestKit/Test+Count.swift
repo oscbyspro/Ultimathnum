@@ -54,7 +54,7 @@ extension Test {
         same(instance.normal .count(.ascending( bit)), expectation.normal, "ascending [0]")
         same(instance.inverse.count(.ascending(~bit)), expectation.normal, "ascending [1]")
         
-        if  (expectation).normal != T.zero {
+        if !(expectation).normal.isZero {
             same(instance.normal .count(.ascending(~bit)), T.Magnitude(),  "ascending [2]")
             same(instance.inverse.count(.ascending( bit)), T.Magnitude(),  "ascending [3]")
         }
@@ -62,7 +62,7 @@ extension Test {
         same(instance.normal .count(.nonascending( bit)), expectation.inverse,  "nonascending [0]")
         same(instance.inverse.count(.nonascending(~bit)), expectation.inverse,  "nonascending [1]")
         
-        if  (expectation).normal != T.zero {
+        if !(expectation).normal.isZero {
             same(instance.normal .count(.nonascending(~bit)), T.Magnitude.size, "nonascending [2]")
             same(instance.inverse.count(.nonascending( bit)), T.Magnitude.size, "nonascending [3]")
         }
@@ -84,7 +84,7 @@ extension Test {
         same(instance.normal .count(.descending( bit)), expectation.normal, "descending [0]")
         same(instance.inverse.count(.descending(~bit)), expectation.normal, "descending [1]")
         
-        if  (expectation).normal != T.zero {
+        if !(expectation).normal.isZero {
             same(instance.normal .count(.descending(~bit)), T.Magnitude(),  "descending [2]")
             same(instance.inverse.count(.descending( bit)), T.Magnitude(),  "descending [3]")
         }
@@ -92,7 +92,7 @@ extension Test {
         same(instance.normal .count(.nondescending( bit)), expectation.inverse,  "nondescending [0]")
         same(instance.inverse.count(.nondescending(~bit)), expectation.inverse,  "nondescending [1]")
 
-        if  (expectation).normal != T.zero {
+        if !(expectation).normal.isZero {
             same(instance.normal .count(.nondescending(~bit)), T.Magnitude.size, "nondescending [2]")
             same(instance.inverse.count(.nondescending( bit)), T.Magnitude.size, "nondescending [3]")
         }

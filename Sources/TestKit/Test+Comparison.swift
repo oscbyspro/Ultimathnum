@@ -112,7 +112,7 @@ extension Test {
             _ expectation: Signum
         )   where A: BinaryInteger, B: BinaryInteger {
             //=----------------------------------=
-            let rhsIsZero = rhs.signum() == Signum.same
+            let rhsIsZero = rhs.isZero
             //=----------------------------------=
             signum: if rhsIsZero {
                 let result:  Signum = lhs.signum()
@@ -171,7 +171,17 @@ extension Test {
 
                     same(result, expectation, "elements.compared(to:)")
                 }
+                    
+                always: do {
+                    same(rhs.isZero, rhsIsZero, "elements.isZero [0]")
+                    same(DataInt(rhs).isZero, rhsIsZero, "elements.isZero [0]")
+                }
                 
+                if  rhs.appendix == 0 {
+                    same(rhs.body.isZero, rhsIsZero, "body.isZero [0]")
+                    same(DataInt.Body(rhs.body).isZero, rhsIsZero, "body.isZero [1]")
+                }
+                                
                 if  rhsIsZero {
                     same(DataInt.signum(of: DataInt(lhs), isSigned: A.isSigned), expectation, "elements.signum()")
                 }

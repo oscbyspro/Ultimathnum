@@ -17,6 +17,22 @@ extension DataInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// Indicates whether this value is equal to zero.
+    @inlinable public var isZero: Bool {
+        self.body.isZero && !Bool(self.appendix)
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Algorithms
+//=----------------------------------------------------------------------------=
+
+extension DataInt {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+        
     /// Performs a three-way comparson of `instance` versus `zero` where the mode
     /// of the `instance` is determined by `isSigned`.
     ///
@@ -83,6 +99,7 @@ extension DataInt {
     }
 }
 
+
 //*============================================================================*
 // MARK: * Data Int x Comparison x Read|Body
 //*============================================================================*
@@ -93,9 +110,14 @@ extension DataInt.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// Indicates whether this value is equal to zero.
+    @inlinable public var isZero: Bool {
+        self.buffer().allSatisfy({ $0.isZero })
+    }
+    
     /// Performs a three-way comparison of `self` versus `zero`.
     @inlinable public func signum() -> Signum {
-        Signum(Bit(!self.buffer().allSatisfy({ $0 == .zero })))
+        Signum(Bit(!self.isZero))
     }
     
     /// Performs a three-way comparison of `self` versus `other`.
@@ -116,7 +138,32 @@ extension DataInt.Body {
 // MARK: * Data Int x Comparison x Read|Write|Body
 //*============================================================================*
 
+extension MutableDataInt {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+        
+    /// Indicates whether this value is equal to zero.
+    @inlinable public var isZero: Bool {
+        Immutable(self).isZero
+    }
+}
+
+//*============================================================================*
+// MARK: * Data Int x Comparison x Read|Write|Body
+//*============================================================================*
+
 extension MutableDataInt.Body {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+        
+    /// Indicates whether this value is equal to zero.
+    @inlinable public var isZero: Bool {
+        Immutable(self).isZero
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

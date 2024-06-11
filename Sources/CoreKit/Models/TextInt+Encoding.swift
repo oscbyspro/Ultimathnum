@@ -48,7 +48,7 @@ extension TextInt {
     @inlinable public func encode<T: UnsignedInteger>(sign: Sign, magnitude: consuming T) -> String {
         let appendix = Bool(magnitude.appendix)
         
-        let sign = Bool(sign) && (magnitude != T.zero) ? sign : nil
+        let sign = Bool(sign) && !magnitude.isZero ? sign : nil
         let mask = appendix ? Bit.one : nil
         
         if  appendix {
@@ -108,14 +108,14 @@ extension TextInt {
     
     @usableFromInline package func encode(sign: Sign?, mask: Bit?, normalized body: consuming MutableDataInt<UX>.Body) -> String {
         //=--------------------------------------=
-        Swift.assert(body.count == .zero || body[unchecked: body.count - 1] != .zero)
+        Swift.assert(body.count.isZero || !body[unchecked: body.count - 1].isZero)
         //=--------------------------------------=
         // text: capacity upper bound
         //=--------------------------------------=
         var capacity: IX = body.count(.nonappendix)
         var speed = self.exponentiation.power.size() as UX
         
-        if  self.exponentiation.power != .zero {
+        if !self.exponentiation.power.isZero {
             speed = speed.decremented().minus(self.exponentiation.power.count(.appendix)).unchecked()
         }
         
@@ -140,13 +140,13 @@ extension TextInt {
             major: while true {
                 
                 if  let divisor = Divisor(exactly: self.exponentiation.power) {
-                    chunk = body.divisionSetQuotientGetRemainder(divisor)
-                    body  = body.normalized()
-                }   else if body.count != .zero {
-                    chunk = body[unchecked: (  )]
-                    body  = body[unchecked: 1...]
+                    chunk = (body).divisionSetQuotientGetRemainder(divisor)
+                    body  = (body).normalized()
+                }   else if !body .count.isZero {
+                    chunk = (body)[unchecked: (  )]
+                    body  = (body)[unchecked: 1...]
                 }   else {
-                    Swift.assert(chunk == .zero)
+                    Swift.assert(chunk.isZero)
                 }
                 
                 minor: repeat {
@@ -158,9 +158,9 @@ extension TextInt {
                     asciiIndex = ascii.index(before: asciiIndex)
                     ascii.initializeElement(at: asciiIndex, to: UInt8(element))
                     
-                } while chunk != .zero
+                } while !chunk.isZero
                 //=------------------------------=
-                if body.count == .zero { break }
+                if  body.count.isZero { break }
                 //=------------------------------=
                 // note preinitialization to 48s
                 //=------------------------------=

@@ -41,7 +41,7 @@ extension DataInt {
     /// option because it omits bounds checks in release mode.
     ///
     @inlinable public borrowing func load() -> Element {
-        if  self.body.count != .zero {
+        if !self.body.count.isZero {
             return self.body[unchecked: ()]
             
         }   else {
