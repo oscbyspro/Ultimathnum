@@ -53,6 +53,56 @@ extension DataIntTests {
             whereIs(type)
         }
     }
+    
+    func testComparisonIgnoresBodyAppendixExtensions() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
+            func result(
+                _ lhs: [T], _ lhsAppendix: Bit, _ lhsIsSigned: Bool,
+                _ rhs: [T], _ rhsAppendix: Bit, _ rhsIsSigned: Bool
+            )   -> Signum {
+                
+                lhs.withUnsafeBufferPointer { lhs in
+                    rhs.withUnsafeBufferPointer { rhs in
+                        DataInt.compare(
+                            lhs: DataInt(lhs, repeating: lhsAppendix)!, lhsIsSigned: lhsIsSigned,
+                            rhs: DataInt(rhs, repeating: rhsAppendix)!, rhsIsSigned: rhsIsSigned
+                        )
+                    }
+                }
+            }
+            
+            var base = [T]()
+            for _   in 0 ..< 4 {
+                for bit: Bit in [0, 1] {
+                    
+                    var lhs = base
+                    for _ in 0 ..< 4 {
+                        
+                        var rhs = base
+                        for _ in 0 ..< 4 {
+                            Test().same(result(lhs, bit, false, rhs,  bit, false),  0 as Signum) //...... same
+                            Test().same(result(lhs, bit, false, rhs,  bit, true ),  bit == 0 ? 0 :  1) // negative vs infinite
+                            Test().same(result(lhs, bit, true,  rhs,  bit, false),  bit == 0 ? 0 : -1) // negative vs infinite
+                            Test().same(result(lhs, bit, true,  rhs,  bit, true ),  0 as Signum) //...... same
+                            
+                            Test().same(result(lhs, bit, false, rhs, ~bit, false),  bit == 1 ? 1 : -1) // natural  vs infinite
+                            Test().same(result(lhs, bit, false, rhs, ~bit, true ),  1 as Signum) //...... negative vs infinite
+                            Test().same(result(lhs, bit, true,  rhs, ~bit, false), -1 as Signum) //...... negative vs infinite
+                            Test().same(result(lhs, bit, true,  rhs, ~bit, true ),  bit == 0 ? 1 : -1) // negative vs  natural
+                            
+                            rhs.append(T(repeating: bit))
+                        };  lhs.append(T(repeating: bit))
+                    }
+                }
+                
+                base.append(T(IX(base.count) + 1))
+            }
+        }
+        
+        for type in coreSystemsIntegersWhereIsUnsigned {
+            whereIs(type)
+        }
+    }
 }
 
 //*============================================================================*

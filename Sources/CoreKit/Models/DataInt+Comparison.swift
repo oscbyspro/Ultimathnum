@@ -48,7 +48,7 @@ extension DataInt {
         // comparison: appendix
         //=--------------------------------------=
         if  Bool(instance.appendix) {
-            return Signum.one(Sign(raw: isSigned))
+            return Signum.one(Sign(isSigned))
         }
         //=--------------------------------------=
         // comparison: body
@@ -67,7 +67,13 @@ extension DataInt {
         // comparison: appendix
         //=--------------------------------------=
         if  lhs.appendix != rhs.appendix {
-            return Signum.one(Sign(raw: Bool(lhs.appendix) ? lhsIsSigned : !rhsIsSigned))
+            return Signum.one(Sign(Bool(lhs.appendix) ? lhsIsSigned : !rhsIsSigned))
+        }
+        //=--------------------------------------=
+        // comparison: negative vs infinite
+        //=--------------------------------------=
+        if  lhsIsSigned != rhsIsSigned && Bool(lhs.appendix) {
+            return Signum.one(Sign(lhsIsSigned))
         }
         //=--------------------------------------=
         // normalization
@@ -78,31 +84,26 @@ extension DataInt {
         // comparison: size
         //=--------------------------------------=
         if  lhs.body.count != rhs.body.count {
-            return Signum.one(Sign(raw: lhs.appendix == Bit(lhs.body.count > rhs.body.count)))
+            return Signum.one(Sign(Bool(lhs.appendix) == (lhs.body.count > rhs.body.count)))
         }
         //=--------------------------------------=
         // comparison: body
         //=--------------------------------------=
-        var index = lhs.body.count; while index > IX.zero {
-            index = index - 1
+        var index = lhs.body.count as IX
+        backwards: while index > IX.zero {
+            index = index.decremented().unchecked()
             
             let lhsElement: Element = lhs.body[unchecked: index]
             let rhsElement: Element = rhs.body[unchecked: index]
             
             if  lhsElement != rhsElement {
-                return Signum.one(Sign(raw: lhsElement < rhsElement))
+                return Signum.one(Sign(lhsElement < rhsElement))
             }
-        }
-        //=--------------------------------------=
-        // comparison: negative vs infinite
-        //=--------------------------------------=
-        if  lhsIsSigned != rhsIsSigned && Bool(lhs.appendix) {
-            return Signum.one(Sign(lhsIsSigned))
         }
         //=--------------------------------------=
         // comparison: same
         //=--------------------------------------=
-        return Signum.same as Signum as Signum as Signum
+        return Signum.same as Signum as Signum
     }
 }
 
