@@ -11,7 +11,7 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Core Int x Euclidean (GCD)
+// MARK: * Core Int x Factorization
 //*============================================================================*
 
 extension CoreIntTests {
@@ -20,14 +20,14 @@ extension CoreIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testEuclideanSmallPowersOf2() {
+    func testGreatestCommonDivisorOfSmallPowersOf2() {
         Test().euclidean( 2 as IX, 16 as IX,  2 as UX)
         Test().euclidean( 4 as IX, 16 as IX,  4 as UX)
         Test().euclidean( 8 as IX, 16 as IX,  8 as UX)
         Test().euclidean(16 as IX, 16 as IX, 16 as UX)
     }
     
-    func testEuclideanSmallPrimeProducts() {
+    func testGreatestCommonDivisorOfSmallPrimeProducts() {
         // even x even
         Test().euclidean(2                  as IX, 2 * 5 * 11 as IX, 2          as UX)
         Test().euclidean(2 * 3              as IX, 2 * 5 * 11 as IX, 2          as UX)
@@ -91,10 +91,6 @@ extension CoreIntTests {
         }
     }
     
-    /// Checks that all signed inputs match their unsigned magnitudes.
-    ///
-    /// - Note: The extended algorithm is unsigned.
-    ///
     func testGreatestCommonDivisorForEachBytePairAsSigned() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & SignedInteger {
             //=----------------------------------=
@@ -103,13 +99,19 @@ extension CoreIntTests {
             //=----------------------------------=
             for lhs in values8 {
                 for rhs in values8 {
-                    let a = lhs.euclidean(rhs)
-                    let b = lhs.magnitude().euclidean(rhs.magnitude())
-                    success += U32(Bit(a == b))
+                    let euclidean = lhs.euclidean(rhs)
+
+                    if  euclidean == T.euclidean(Finite(lhs), Finite(rhs)) {
+                        success += 1
+                    }
+                    
+                    if  euclidean == lhs.magnitude().euclidean(rhs.magnitude()) {
+                        success += 1 // proxy validation through unsigned types
+                    }
                 }
             }
             
-            Test().same(success, 1 * 65536)
+            Test().same(success, 2 * 65536)
         }
         
         whereIs(I8 .self)
@@ -121,7 +123,6 @@ extension CoreIntTests {
         #endif
     }
     
-    /// Checks the result of 8-bit unsigned inputs.
     func testGreatestCommonDivisorForEachBytePairAsUnsigned() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
             //=----------------------------------=
@@ -131,37 +132,36 @@ extension CoreIntTests {
             //=----------------------------------=
             for lhs in values8 {
                 for rhs in values8 {
-                    let result  = lhs.euclidean (rhs)
-                    let result1 = lhs.euclidean1(rhs)
-                    let result2 = lhs.euclidean2(rhs)
+                    let bezout = lhs.bezout(rhs)
+                    let euclidean = lhs.euclidean(rhs)
                     
-                    if  result  == 1 {
+                    if  euclidean == 1 {
                         coprime += 1
                     }
                     
                     always: do {
-                        let a = I16(lhs) * I16(result2.lhsCoefficient)
-                        let b = I16(rhs) * I16(result2.rhsCoefficient)
-                        success += U32(Bit((a + b) == result2.divisor))
+                        let a = I16(lhs) * I16(bezout.lhsCoefficient)
+                        let b = I16(rhs) * I16(bezout.rhsCoefficient)
+                        success += U32(Bit((a + b) == bezout.divisor))
                     }
                     
-                    if  result  == result1.divisor {
+                    if  euclidean == bezout.divisor {
                         success += 1
                     }
                     
-                    if  result  == result2.divisor {
-                        success += 1
-                    }
-                    
-                    if  result1.lhsCoefficient == result2.lhsCoefficient {
-                        success += 1
-                    }
-                    
-                    if  lhs == 0, rhs == 0 {
-                        success += U32(Bit(result == 0))
+                    if  lhs.isZero, rhs.isZero {
+                        success += U32(Bit(euclidean == 0))
                     }   else {
-                        success += U32(Bit(result >= 1))
-                    }                    
+                        success += U32(Bit(euclidean >= 1))
+                    }
+                    
+                    if  bezout  == T.bezout(Finite(lhs), Finite(rhs)) {
+                        success += 1
+                    }
+                    
+                    if  euclidean == T.euclidean(Finite(lhs), Finite(rhs)) {
+                        success += 1
+                    }
                 }
             }
             
@@ -175,65 +175,6 @@ extension CoreIntTests {
         whereIs(U32.self)
         whereIs(U64.self)
         whereIs(UX .self)
-        #endif
-    }
-   
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    func testGreatestCommonDivisorConveniencesForEachBytePairAsSigned() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger & SignedInteger {
-            //=----------------------------------=
-            var success = U32.zero
-            let values8 = T(I8.min) ... T(I8.max)
-            //=----------------------------------=
-            for lhs in values8 {
-                for rhs in values8 {          
-                    if  lhs.euclidean(rhs) == T.euclidean(Finite(lhs), Finite(rhs)) {
-                        success += 1
-                    }
-                }
-            }
-            
-            Test().same(success, 1 * 65536)
-        }
-        
-        whereIs(I8.self)
-        #if !DEBUG
-        whereIs(IX.self)
-        #endif
-    }
-    
-    func testGreatestCommonDivisorConveniencesForEachBytePairAsUnsigned() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            //=----------------------------------=
-            var success = U32.zero
-            let values8 = T(U8.min) ... T(U8.max)
-            //=----------------------------------=
-            for lhs in values8 {
-                for rhs in values8 {
-                    let exp = T.euclidean2(Finite(lhs), Finite(rhs))
-                    
-                    if  lhs.euclidean (rhs) == (exp.divisor) {
-                        success += 1
-                    }
-                    
-                    if  lhs.euclidean1(rhs) == (exp.divisor, exp.lhsCoefficient) {
-                        success += 1
-                    }
-                    if  lhs.euclidean2(rhs) == (exp.divisor, exp.lhsCoefficient, exp.rhsCoefficient) {
-                        success += 1
-                    }
-                }
-            }
-            
-            Test().same(success, 3 * 65536)
-        }
-        
-        whereIs(U8.self)
-        #if !DEBUG
-        whereIs(UX.self)
         #endif
     }
 }

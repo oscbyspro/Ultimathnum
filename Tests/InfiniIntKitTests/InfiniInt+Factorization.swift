@@ -12,7 +12,7 @@ import InfiniIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Infini Int x Euclidean
+// MARK: * Infini Int x Factorization
 //*============================================================================*
 
 extension InfiniIntTests {
@@ -21,7 +21,7 @@ extension InfiniIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testEuclideanBySmallPrimeComposites() {
+    func testGreatestCommonDivisorOfSmallPrimeComposites() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             //=----------------------------------=
             let primes54 = primes54.map(T.init(_:))
@@ -56,7 +56,7 @@ extension InfiniIntTests {
         #endif
     }
     
-    func testEuclideanInfiniteInputsAreInvalid() {
+    func testGreatestCommonDivisorOfInfiniteInputsIsInvalid() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             Test().euclidean(~1 as T, ~1 as T, T.isSigned ? 2 : nil)
             Test().euclidean(~1 as T, ~0 as T, T.isSigned ? 1 : nil)

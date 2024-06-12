@@ -105,7 +105,7 @@
     /// You should not mark operations that return `Fallible<Value>` results as
     /// discardable. Instead, you should always use the most appropriate recovery
     /// mechanism. The `error` indicator has feelings and it would get very sad
-    /// if you were to forget about them.
+    /// if you were to forget about it.
     ///
     @inlinable public consuming func discard() {
         

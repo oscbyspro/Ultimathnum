@@ -12,7 +12,7 @@ import DoubleIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Double Int x Euclidean
+// MARK: * Double Int x Factorization
 //*============================================================================*
 
 extension DoubleIntTests {
@@ -21,7 +21,7 @@ extension DoubleIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testEuclideanBySmallPrimeComposites() {
+    func testGreatestCommonDivisorOfSmallPrimeComposites() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             //=----------------------------------=
             let primes54 = primes54.map(T.init(_:))

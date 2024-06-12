@@ -10,7 +10,7 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Test x Euclidean
+// MARK: * Test x Factorization
 //*============================================================================*
 
 extension Test {
@@ -19,49 +19,51 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func euclidean<T>(_ lhs: T, _ rhs: T, _ gcd: T.Magnitude?) where T: BinaryInteger {
+    public func euclidean<T>(_ lhs: T, _ rhs: T, _ expectation: T.Magnitude?) where T: BinaryInteger {
         //=--------------------------------------=
         typealias M = T.Magnitude
         //=--------------------------------------=
-        if  let gcd, !lhs.isInfinite, !rhs.isInfinite {
+        if  let expectation, !lhs.isInfinite, !rhs.isInfinite {
             let lhs = Finite(lhs)
             let rhs = Finite(rhs)
             
             let lhsMagnitude = lhs.magnitude()
             let rhsMagnitude = rhs.magnitude()
             
-            let result  = T.euclidean (lhs, rhs)
-            let result1 = M.euclidean1(lhsMagnitude, rhsMagnitude)
-            let result2 = M.euclidean2(lhsMagnitude, rhsMagnitude)
+            let euclidean = T.euclidean(lhs, rhs)
+            let bezout = M.bezout(lhsMagnitude, rhsMagnitude)
             
-            same(result, gcd, "euclidean [0]")
-            same(result, result1.divisor, "euclidean [1]")
-            same(result, result2.divisor, "euclidean [2]")
-            same(result1.lhsCoefficient, result2.lhsCoefficient, "euclidean [3]")
+            same(euclidean, expectation,    "euclidean [0]")
+            same(euclidean, bezout.divisor, "euclidean [1]")
             
             if  T.isSigned {
                 let lhsComplement = Finite(lhs.value.complement())
                 let rhsComplement = Finite(rhs.value.complement())
                 
-                same(result, T.euclidean(lhs, rhsComplement), "euclidean [4]")
-                same(result, T.euclidean(lhsComplement, rhs), "euclidean [5]")
-                same(result, T.euclidean(lhsComplement, rhsComplement), "euclidean [6]")
+                same(euclidean, T.euclidean(lhs, rhsComplement), "euclidean [2]")
+                same(euclidean, T.euclidean(lhsComplement, rhs), "euclidean [3]")
+                same(euclidean, T.euclidean(lhsComplement, rhsComplement), "euclidean [4]")
             }
             
             if  IX.size > T.size {
-                let a = IX(lhs.value) * IX(result2.lhsCoefficient)
-                let b = IX(rhs.value) * IX(result2.rhsCoefficient)
-                same(result, T.Magnitude(a + b), "bézout")
+                let a = IX(lhs.value) * IX(bezout.lhsCoefficient)
+                let b = IX(rhs.value) * IX(bezout.rhsCoefficient)
+                same(euclidean, T.Magnitude(a + b), "bézout identity")
             }
             
             always: do {
-                let a = lhsMagnitude.value &* M(raw: result2.lhsCoefficient)
-                let b = rhsMagnitude.value &* M(raw: result2.rhsCoefficient)
-                same(result, a &+ b, "wrapping bézout")
+                let a = lhsMagnitude.value &* M(raw: bezout.lhsCoefficient)
+                let b = rhsMagnitude.value &* M(raw: bezout.rhsCoefficient)
+                same(euclidean, a &+ b, "wrapping bézout identity")
             }
-            
+                
+            if !expectation.isZero {
+                same(lhsMagnitude.value % expectation, M.zero, "a % GCD(a, b) == 0")
+                same(rhsMagnitude.value % expectation, M.zero, "b % GCD(a, b) == 0")
+            }
+                        
         }   else {
-            none(gcd, "GCD(inf, x) and GCD(x, inf) are bad")
+            none(expectation, "GCD(inf, x) and GCD(x, inf) are bad")
         }
     }
 }
