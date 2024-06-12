@@ -452,9 +452,9 @@ overview [Mutable]DataInt.Body:
 ```
 overview MutableDataInt.Body:
 
-/[up|down]shift(environment: Element, major: IX, minor: IX)
-/[up|down]shift(environment: Element, majorAtLeastOne: IX, minor: Void)
-/[up|down]shift(environment: Element, major: IX, minorAtLeastOne: IX)
+/[up|down]shift(major: IX,           minor:   IX, environment: Element)
+/[up|down]shift(majorAtLeastOne: IX, minor: Void, environment: Element)
+/[up|down]shift(major: IX, minorAtLeastOne:   IX, environment: Element)
 ```
 
 <a name="corekit-upsize"/>

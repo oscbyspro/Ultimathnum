@@ -71,8 +71,7 @@ extension DataIntTests {
                 }
             }
             
-            var base = [T]()
-            for _   in 0 ..< 4 {
+            for base: [T] in (T.zero ..< 4).lazy.map({ Array(0 ..< $0) }) {
                 for bit: Bit in [0, 1] {
                     
                     var lhs = base
@@ -80,22 +79,20 @@ extension DataIntTests {
                         
                         var rhs = base
                         for _ in 0 ..< 4 {
-                            Test().same(result(lhs, bit, false, rhs,  bit, false),  0 as Signum) //...... same
-                            Test().same(result(lhs, bit, false, rhs,  bit, true ),  bit == 0 ? 0 :  1) // negative vs infinite
-                            Test().same(result(lhs, bit, true,  rhs,  bit, false),  bit == 0 ? 0 : -1) // negative vs infinite
-                            Test().same(result(lhs, bit, true,  rhs,  bit, true ),  0 as Signum) //...... same
+                            Test().same(result(lhs, bit, false, rhs,  bit, false), !Bool(bit) ?  0 :  0) // ℕ vs ℕ | ∞ vs ∞
+                            Test().same(result(lhs, bit, false, rhs,  bit, true ), !Bool(bit) ?  0 :  1) // ℕ vs ℕ | ∞ vs -
+                            Test().same(result(lhs, bit, true,  rhs,  bit, false), !Bool(bit) ?  0 : -1) // ℕ vs ℕ | - vs ∞
+                            Test().same(result(lhs, bit, true,  rhs,  bit, true ), !Bool(bit) ?  0 :  0) // ℕ vs ℕ | - vs -
                             
-                            Test().same(result(lhs, bit, false, rhs, ~bit, false),  bit == 1 ? 1 : -1) // natural  vs infinite
-                            Test().same(result(lhs, bit, false, rhs, ~bit, true ),  1 as Signum) //...... negative vs infinite
-                            Test().same(result(lhs, bit, true,  rhs, ~bit, false), -1 as Signum) //...... negative vs infinite
-                            Test().same(result(lhs, bit, true,  rhs, ~bit, true ),  bit == 0 ? 1 : -1) // negative vs  natural
+                            Test().same(result(lhs, bit, false, rhs, ~bit, false), !Bool(bit) ? -1 :  1) // ℕ vs ∞ | ∞ vs ℕ
+                            Test().same(result(lhs, bit, false, rhs, ~bit, true ), !Bool(bit) ?  1 :  1) // ℕ vs - | ∞ vs ℕ
+                            Test().same(result(lhs, bit, true,  rhs, ~bit, false), !Bool(bit) ? -1 : -1) // ℕ vs ∞ | - vs ℕ
+                            Test().same(result(lhs, bit, true,  rhs, ~bit, true ), !Bool(bit) ?  1 : -1) // ℕ vs - | - vs ℕ
                             
                             rhs.append(T(repeating: bit))
                         };  lhs.append(T(repeating: bit))
                     }
                 }
-                
-                base.append(T(IX(base.count) + 1))
             }
         }
         
@@ -105,9 +102,34 @@ extension DataIntTests {
     }
 }
 
-//*============================================================================*
-// MARK: * Data Int x Addition x Assertions
-//*============================================================================*
+//=----------------------------------------------------------------------------=
+// MARK: + Assertions x Body
+//=----------------------------------------------------------------------------=
+
+extension DataIntTests.Body {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    func signum(is  expectation: Signum) {
+        self.expect(expectation) {
+            $0.signum()
+        }   write: {
+            $0.signum()
+        }
+        
+        self.expect(expectation == Signum.same) {
+            $0.isZero
+        }   write: {
+            $0.isZero
+        }
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Assertions x Extension
+//=----------------------------------------------------------------------------=
 
 extension DataIntTests.Extension {
     
@@ -131,27 +153,6 @@ extension DataIntTests.Extension {
         if !isSigned, item.appendix == 0 {
             let other = DataIntTests.Body(item.body, test: test)
             other.signum(is: expectation)
-        }
-    }
-}
-
-extension DataIntTests.Body {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    func signum(is  expectation: Signum) {
-        self.expect(expectation) {
-            $0.signum()
-        }   write: {
-            $0.signum()
-        }
-        
-        self.expect(expectation == Signum.same) {
-            $0.isZero
-        }   write: {
-            $0.isZero
         }
     }
 }

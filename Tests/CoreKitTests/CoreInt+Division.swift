@@ -100,7 +100,7 @@ extension CoreIntTests {
     
     func testDivision2111I8() throws {
         #if DEBUG
-        throw XCTSkip("too slow without compiler optimization")
+        throw XCTSkip("req. release mode")
         #else
         var success: UX = 0
         var failure: UX = 0
@@ -124,7 +124,7 @@ extension CoreIntTests {
     
     func testDivision2111U8() throws {
         #if DEBUG
-        throw XCTSkip("takes too much time in -Onone mode")
+        throw XCTSkip("req. release mode")
         #else
         var success: UX = 0
         var failure: UX = 0

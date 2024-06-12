@@ -22,6 +22,9 @@ extension CoreIntTests {
     
     func testBitwise() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            IntegerInvariants(T.self).bitwiseInitBitOrRepeatingBit()
+            IntegerInvariants(T.self).bitwiseLogicOfAlternatingBitEsque()
+            IntegerInvariants(T.self).bitwiseLeastSignificantBitEqualsIsOdd()
             IntegerInvariants(T.self).endianness()
         }
         
@@ -34,12 +37,23 @@ extension CoreIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testInitBit() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            Test().same(T(0 as Bit),             0 as T)
-            Test().same(T(1 as Bit),             1 as T)
-            Test().same(T(repeating: 0 as Bit),  0 as T)
-            Test().same(T(repeating: 1 as Bit), ~0 as T)
+    func testComplement() {
+        func whereIs<T>(_ base: T.Type) where T: SystemsInteger {
+            Test().complement(~2 as T, false, Fallible( 2 as T, error:  false))
+            Test().complement(~1 as T, false, Fallible( 1 as T, error:  false))
+            Test().complement(~0 as T, false, Fallible( 0 as T, error:  false))
+            Test().complement( 0 as T, false, Fallible(~0 as T, error:  false))
+            Test().complement( 1 as T, false, Fallible(~1 as T, error:  false))
+            Test().complement( 2 as T, false, Fallible(~2 as T, error:  false))
+            Test().complement( T .msb, false, Fallible(~T .msb, error:  false))
+
+            Test().complement(~2 as T, true,  Fallible( 3 as T, error:  false))
+            Test().complement(~1 as T, true,  Fallible( 2 as T, error:  false))
+            Test().complement(~0 as T, true,  Fallible( 1 as T, error:  false))
+            Test().complement( 0 as T, true,  Fallible( 0 as T, error: !T.isSigned))
+            Test().complement( 1 as T, true,  Fallible(~0 as T, error:  false))
+            Test().complement( 2 as T, true,  Fallible(~1 as T, error:  false))
+            Test().complement( T .msb, true,  Fallible( T .msb, error:  T.isSigned))
         }
         
         for type in coreSystemsIntegers {
@@ -48,7 +62,7 @@ extension CoreIntTests {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests
+    // MARK: Tests x Logic
     //=------------------------------------------------------------------------=
     
     func testLogicalNot() {
@@ -139,27 +153,6 @@ extension CoreIntTests {
             Test().xor( 1 as T, ~0 as T, ~1 as T)
             Test().xor( 1 as T,  0 as T,  1 as T)
             Test().xor( 1 as T,  1 as T,  0 as T)
-        }
-        
-        for type in coreSystemsIntegers {
-            whereIs(type)
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    func testLeastSignificantBit() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            Test().same(( T .min).leastSignificantBit, 0 as Bit)
-            Test().same(( T .max).leastSignificantBit, 1 as Bit)
-            Test().same((~1 as T).leastSignificantBit, 0 as Bit)
-            Test().same((~0 as T).leastSignificantBit, 1 as Bit)
-            Test().same(( 0 as T).leastSignificantBit, 0 as Bit)
-            Test().same(( 1 as T).leastSignificantBit, 1 as Bit)
-            Test().same(( 2 as T).leastSignificantBit, 0 as Bit)
-            Test().same(( 3 as T).leastSignificantBit, 1 as Bit)
         }
         
         for type in coreSystemsIntegers {
