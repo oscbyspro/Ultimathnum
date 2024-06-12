@@ -96,7 +96,7 @@ extension BinaryInteger {
 extension SystemsInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
     /// Returns an instance with this value on an `endianness` system.

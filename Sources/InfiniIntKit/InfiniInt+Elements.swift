@@ -49,7 +49,7 @@ extension InfiniInt {
         
         self.init(unchecked: storage)
     }
-        
+    
     @inlinable public init(load source: consuming Element.Magnitude) {
         var storage = Storage([], repeating: source.appendix)
         
@@ -64,7 +64,7 @@ extension InfiniInt {
         if  let element = self.storage.body.first {
             return element.load(as: Element.BitPattern.self)
         }   else {
-            return Element(repeating: self.appendix).load(as: Element.BitPattern.self)
+            return Element.Magnitude(repeating: self.appendix).load(as: Element.BitPattern.self)
         }
     }
     

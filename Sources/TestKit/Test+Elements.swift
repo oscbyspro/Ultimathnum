@@ -49,7 +49,34 @@ extension Test {
         _ appendix: Bit
     )   where Integer: BinaryInteger {
         //=--------------------------------------=
+        typealias Element = Integer.Element
+        //=--------------------------------------=
         let expectation = Fallible(integer)
+        //=--------------------------------------=
+        if  body.count <= 1 {
+            let comparand = !body.isEmpty ? body : [Element.Magnitude(repeating: appendix)]
+            same([Element.Magnitude(raw: integer.load(as: Element.Signitude.self))], comparand, "load(as:) [0]")
+            same([Element.Magnitude(raw: integer.load(as: Element.Magnitude.self))], comparand, "load(as:) [1]")
+        }
+        
+        if  body.count <= 1 {
+            let element = integer.load(as: Element.Signitude.self)
+            if  element.appendix == appendix {
+                same(Integer(load:  element), expectation.value, "init(load:) [0]")
+            }   else {
+                let mask: Integer = Integer(repeating: 1) << Integer(Integer.Element.size)
+                same(Integer(load:  element) ^ mask, expectation.value, "init(load:) [1]")
+            }
+        }
+        
+        if  body.count <= 1 {
+            let element = integer.load(as: Element.Magnitude.self)
+            if  element.appendix == appendix {
+                same(Integer(load:  element), expectation.value, "init(load:) [2]")
+            }   else {
+                same(Integer(load:  element.toggled()).toggled(), expectation.value, "init(load:) [3]")
+            }
+        }
         //=--------------------------------------=
         integer.withUnsafeBinaryIntegerElements {
             same(Array($0.body.buffer()), body, "body [0]")
@@ -66,7 +93,7 @@ extension Test {
             mutableInteger.withUnsafeMutableBinaryIntegerElements {
                 same(Array($0.body.buffer()), body, "body [2]")
                 same(appendix, $0.appendix, "appendix [2]")
-                $0.body.initialize(repeating: Integer.Element.Magnitude(repeating: $0.appendix))
+                $0.body.initialize(repeating: Element.Magnitude(repeating: $0.appendix))
             }
             
             same(mutableInteger, Integer(repeating: appendix), "override body [2]")
