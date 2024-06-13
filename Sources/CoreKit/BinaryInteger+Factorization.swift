@@ -48,7 +48,7 @@ extension FiniteInteger {
     @inlinable public consuming func bezout(
         _ other: consuming Self
     )   -> (
-        divisor: Magnitude,
+        divisor:        Magnitude,
         lhsCoefficient: Signitude,
         rhsCoefficient: Signitude
     )   where Self: UnsignedInteger {
@@ -109,7 +109,7 @@ extension BinaryInteger {
         _ lhs: consuming Finite<Self>,
         _ rhs: consuming Finite<Self>
     )   -> (
-        divisor: Magnitude,
+        divisor:        Magnitude,
         lhsCoefficient: Signitude,
         rhsCoefficient: Signitude
     )   where Self: UnsignedInteger {
