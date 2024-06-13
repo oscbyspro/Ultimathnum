@@ -27,6 +27,8 @@ extension FiniteInteger {
     /// gcd(a, b) * lcm(a, b) == |a| * |b|
     /// ```
     ///
+    /// - Note: This equation is mathematical and subject to overflow.
+    ///
     @inlinable public consuming func euclidean(_ other: consuming Self) -> Magnitude {
         Self.euclidean(Finite(unchecked: self), Finite(unchecked: other))
     }
@@ -75,6 +77,8 @@ extension BinaryInteger {
     /// ```swift
     /// gcd(a, b) * lcm(a, b) == |a| * |b|
     /// ```
+    ///
+    /// - Note: This equation is mathematical and subject to overflow.
     ///
     @inlinable public static func euclidean(
         _ lhs: consuming Finite<Self>, 

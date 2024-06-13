@@ -47,15 +47,15 @@ extension DoubleIntTests {
             typealias T = DoubleInt<B>
             typealias M = DoubleInt<B>.Magnitude
             
-            Test().same(( 0 as T).load(as: IX.self), IX(load:  0 as T))
-            Test().same((~0 as T).load(as: IX.self), IX(load: ~0 as T))
-            Test().same(( 0 as M).load(as: IX.self), IX(load:  0 as M))
-            Test().same((~0 as M).load(as: IX.self), IX(load: ~0 as M))
+            Test().same(IX(load:  0 as T), IX(load:  0 as T))
+            Test().same(IX(load: ~0 as T), IX(load: ~0 as T))
+            Test().same(IX(load:  0 as M), IX(load:  0 as M))
+            Test().same(IX(load: ~0 as M), IX(load: ~0 as M))
             
-            Test().same(( 0 as T).load(as: UX.self), UX(load:  0 as T))
-            Test().same((~0 as T).load(as: UX.self), UX(load: ~0 as T))
-            Test().same(( 0 as M).load(as: UX.self), UX(load:  0 as M))
-            Test().same((~0 as M).load(as: UX.self), UX(load: ~0 as M))
+            Test().same(UX(load:  0 as T), UX(load:  0 as T))
+            Test().same(UX(load: ~0 as T), UX(load: ~0 as T))
+            Test().same(UX(load:  0 as M), UX(load:  0 as M))
+            Test().same(UX(load: ~0 as M), UX(load: ~0 as M))
         }
         
         for base in Self.bases where base.isSigned {

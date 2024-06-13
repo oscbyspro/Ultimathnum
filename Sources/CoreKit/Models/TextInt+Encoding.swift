@@ -29,16 +29,15 @@ extension TextInt {
             integer = integer.complement(T.isSigned).value
         }
         
-        if  let size = UX(size: T.self), size <= UX.size {
-            // this reinterprets the integer as unsigned
-            var fast = T.Magnitude(raw: integer).load(as: UX.self)
-            let count: IX = (fast == 0) ? 0 : 1
-            return fast.withUnsafeMutableBinaryIntegerBody {
+        //  both paths reinterpret the integer as unsigned
+        if  let size  = UX(size: T.self), size <= UX.size {
+            var small = UX(load: T.Magnitude(raw: integer))
+            let count = IX(Bit(!small.isZero))
+            return small.withUnsafeMutableBinaryIntegerBody {
                 self.encode(sign: sign, mask: mask, normalized: $0[unchecked: ..<count])
             }
             
         }   else {
-            // this reinterprets the integer as unsigned
             return integer.withUnsafeBinaryIntegerBody(as: U8.self) {
                 self.encode(sign: sign, mask: mask, body: $0)
             }
@@ -55,10 +54,10 @@ extension TextInt {
             magnitude.toggle()
         }
         
-        if  let size = UX(size: T.self), size <= UX.size {
-            var fast = magnitude.load(as: UX.self)
-            let count: IX = (fast == 0) ? 0 : 1
-            return fast.withUnsafeMutableBinaryIntegerBody {
+        if  let size  = UX(size: T.self), size <= UX.size {
+            var small = UX(load: magnitude)
+            let count = IX(Bit(!small.isZero))
+            return small.withUnsafeMutableBinaryIntegerBody {
                 self.encode(sign: sign, mask: mask, normalized: $0[unchecked: ..<count])
             }
             

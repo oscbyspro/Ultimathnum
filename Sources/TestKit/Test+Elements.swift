@@ -24,9 +24,8 @@ extension Test {
         _ integer: Integer
     )   where Integer: BinaryInteger, Element: SystemsInteger<Integer.Element.BitPattern> {
         //=--------------------------------------=
-        same(Integer(load: element), integer)
-        same(Integer(load: element), integer)
-        same(Integer(load: element).load(as: Element.self), element)
+        same(Integer(load: element),     integer)
+        same(Element(load: Integer(load: element)), element)
     }
     
     public func load<Integer, Element>(
@@ -34,9 +33,8 @@ extension Test {
         _ element: Element
     )   where Integer: BinaryInteger, Element: SystemsInteger<Integer.Element.BitPattern> {
         //=--------------------------------------=
-        same(integer.load(as: Element.self), element)
-        same(integer.load(as: Element.self), Element(load: integer))
-        same(Integer(load: element).load(as: Element.self), element)
+        same(Element(load: integer),     element)
+        same(Element(load: Integer(load: element)), element)
     }
     
     //=------------------------------------------------------------------------=
@@ -51,61 +49,101 @@ extension Test {
         //=--------------------------------------=
         typealias Element = Integer.Element
         //=--------------------------------------=
-        let expectation = Fallible(integer)
+        let bodyAsBytes: [U8] = body.withUnsafeBytes {
+            $0.map(U8.init(_:))
+        }
+        //=--------------------------------------=
+        // section: init(load: Element) stuff
         //=--------------------------------------=
         if  body.count <= 1 {
             let comparand = !body.isEmpty ? body : [Element.Magnitude(repeating: appendix)]
-            same([Element.Magnitude(raw: integer.load(as: Element.Signitude.self))], comparand, "load(as:) [0]")
-            same([Element.Magnitude(raw: integer.load(as: Element.Magnitude.self))], comparand, "load(as:) [1]")
+            same([Element.Magnitude(load: Element.Signitude(load: integer))], comparand, "load(as:) [0]")
+            same([Element.Magnitude(load: Element.Magnitude(load: integer))], comparand, "load(as:) [1]")
         }
         
         if  body.count <= 1 {
-            let element = integer.load(as: Element.Signitude.self)
+            let element = Element.Signitude(load: integer)
             if  element.appendix == appendix {
-                same(Integer(load:  element), expectation.value, "init(load:) [0]")
+                same(Integer(load:  element), integer, "init(load:) [0]")
             }   else {
                 let mask: Integer = Integer(repeating: 1) << Integer(Integer.Element.size)
-                same(Integer(load:  element) ^ mask, expectation.value, "init(load:) [1]")
+                same(Integer(load:  element) ^ mask, integer, "init(load:) [1]")
             }
         }
         
         if  body.count <= 1 {
-            let element = integer.load(as: Element.Magnitude.self)
+            let element = Element.Magnitude(load: integer)
             if  element.appendix == appendix {
-                same(Integer(load:  element), expectation.value, "init(load:) [2]")
+                same(Integer(load:  element), integer, "init(load:) [2]")
             }   else {
-                same(Integer(load:  element.toggled()).toggled(), expectation.value, "init(load:) [3]")
+                same(Integer(load:  element.toggled()).toggled(), integer, "init(load:) [3]")
             }
         }
         //=--------------------------------------=
-        integer.withUnsafeBinaryIntegerElements {
-            same(Array($0.body.buffer()), body, "body [0]")
-            same(appendix, $0.appendix, "appendix [0]")
-            same(Integer.exactly($0, mode: Integer.mode), expectation, "rountrip [0]")
+        // section: binary integer body
+        //=--------------------------------------=
+        integer.withUnsafeBinaryIntegerBody {
+            yay ($0.buffer().elementsEqual(body), "body")
+            same($0.appendix, Bit.zero, "body appendix is always zero")
         }
         
-        integer.withUnsafeBinaryIntegerElements(as: U8.self) {
-            same(appendix, $0.appendix, "appendix [1]")
-            same(Integer.exactly($0, mode: Integer.mode), expectation, "rountrip [1]")
+        integer.withUnsafeBinaryIntegerBody(as: U8.self) {
+            yay ($0.buffer().elementsEqual(bodyAsBytes), "body-as-bytes")
+            same($0.appendix, Bit.zero, "body-as-bytes appendix is always zero")
         }
-        //=--------------------------------------=
+        
         if  var mutableInteger = Optional.some(integer) {
-            mutableInteger.withUnsafeMutableBinaryIntegerElements {
-                same(Array($0.body.buffer()), body, "body [2]")
-                same(appendix, $0.appendix, "appendix [2]")
-                $0.body.initialize(repeating: Element.Magnitude(repeating: $0.appendix))
+            mutableInteger.withUnsafeMutableBinaryIntegerBody {
+                yay ($0.buffer().elementsEqual(body), "mutable body")
+                same($0.appendix, Bit.zero, "mutable body appendix is always zero")
+                $0.initialize(repeating: Element.Magnitude(repeating: appendix))
             }
             
-            same(mutableInteger, Integer(repeating: appendix), "override body [2]")
+            same(mutableInteger, Integer(repeating: appendix), "override mutable body")
+        }
+        
+        if  var mutableInteger = Optional.some(integer) {
+            mutableInteger.withUnsafeMutableBinaryIntegerBody(as: U8.self) {
+                yay ($0.buffer().elementsEqual(bodyAsBytes), "mutable body-as-bytes")
+                same($0.appendix, Bit.zero, "mutable body-as-bytes appendix is always zero")
+                $0.initialize(repeating: U8(repeating: appendix))
+            }
+            
+            same(mutableInteger, Integer(repeating: appendix), "override mutable body-as-bytes")
+        }
+        //=--------------------------------------=
+        // section: binary integer elements
+        //=--------------------------------------=
+        (copy integer).withUnsafeBinaryIntegerElements {
+            yay ($0.body.buffer().elementsEqual(body), "elements body")
+            same($0.appendix, appendix, "elements appendix")
+            same(Integer($0, mode: Integer.mode), integer, "exactly elements")
+        }
+        
+        (copy integer).withUnsafeBinaryIntegerElements(as: U8.self) {
+            yay ($0.body.buffer().elementsEqual(bodyAsBytes), "elements-as-bytes body")
+            same($0.appendix, appendix, "elements-as-bytes appendix")
+            same(Integer($0, mode: Integer.mode), integer, "exactly elements-as-bytes")
+        }
+        
+        if  var mutableInteger = Optional.some(integer) {
+            mutableInteger.withUnsafeMutableBinaryIntegerElements {
+                yay ($0.body.buffer().elementsEqual(body), "mutable elements body")
+                same($0.appendix, appendix, "mutable elements appendix")
+                $0.body.initialize(repeating: Element.Magnitude(repeating: appendix))
+            }
+            
+            same(mutableInteger, Integer(repeating: appendix), "override mutable elements body")
         }
         
         if  var mutableInteger = Optional.some(integer) {
             mutableInteger.withUnsafeMutableBinaryIntegerElements(as: U8.self) {
-                same(appendix, $0.appendix, "appendix [3]")
-                $0.body.initialize(repeating: U8(repeating: $0.appendix))
+                yay ($0.body.buffer().elementsEqual(bodyAsBytes), "mutable elements-as-bytes body")
+                same($0.appendix, appendix, "mutable elements-as-bytes appendix")
+                $0.body.initialize(repeating: U8(repeating: appendix))
             }
             
-            same(mutableInteger, Integer(repeating: appendix), "override body [3]")
+            same(mutableInteger, Integer(repeating: appendix), "override mutable elements-as-bytes body")
         }
     }
     
@@ -142,11 +180,11 @@ extension Test {
                     let word = $0.load(as: UX.self)
                     
                     if  Integer.isSigned {
-                        same(Integer(load:  ix(word)), expectation.value, "T.init(load:) - IX")
-                        same(IX(raw: word), expectation.value.load(as: IX.self), "T/load(as:) - IX")
+                        same(Integer(load:  ix(word)), expectation.value,   "T.init(load:) - IX")
+                        same(IX(raw: word), IX(load:   expectation.value), "IX.init(load:) - T" )
                     }   else {
-                        same(Integer(load:  ux(word)), expectation.value, "T.init(load:) - UX")
-                        same(UX(raw: word), expectation.value.load(as: UX.self), "T/load(as:) - UX")
+                        same(Integer(load:  ux(word)), expectation.value,   "T.init(load:) - UX")
+                        same(UX(raw: word), UX(load:   expectation.value), "UX.init(load:) - T" )
                     }
                 }
             }

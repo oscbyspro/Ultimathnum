@@ -92,7 +92,7 @@ extension SystemsInteger where BitPattern == UX.BitPattern {
     /// - Important: A binary integer's size is measured in bits.
     ///
     @inlinable public init<T>(size type: T.Type) where T: SystemsInteger {
-        self = T.size.load(as: Self.self)
+        self.init(raw: T.size.load(as: BitPattern.self))
     }
     
     /// Returns the size of the given type as a machine word, if possible.
@@ -105,7 +105,7 @@ extension SystemsInteger where BitPattern == UX.BitPattern {
         if  T.size.isInfinite {
             return nil
         }   else {
-            self = T.size.load(as: Self.self)
+            self.init(raw: T.size.load(as: BitPattern.self))
         }
     }
 }

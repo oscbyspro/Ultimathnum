@@ -130,7 +130,7 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         // division: 2121
         //=--------------------------------------=
-        if  normalization.value.load(as: UX.self) >= UX(size: Base.self) {
+        if  UX(load: normalization.value) >= UX(size: Base.self) {
             Swift.assert(divisor.value.high == 0, "divisor must fit in one half")
             let result: Division<Self, Base> = self.division2121(unchecked: Divisor(unchecked: divisor.value.low))
             return Division(quotient: result.quotient, remainder: Self(low: result.remainder, high: 0))
@@ -183,7 +183,7 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         // division: 3121
         //=--------------------------------------=
-        if  normalization.value.load(as: UX.self) >= UX(size: Base.self) {
+        if  UX(load: normalization.value) >= UX(size: Base.self) {
             Swift.assert(rhs.value.high == 0,  "divisor must fit in one half")
             Swift.assert(lhs.high .high == 0, "quotient must fit in two halves")
             let result = TripleInt(low: lhs.low.storage, high: lhs.high.low).division3121(unchecked: Divisor(unchecked: rhs.value.low))

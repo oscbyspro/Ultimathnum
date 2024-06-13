@@ -14,149 +14,112 @@
 extension BinaryInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: Initializers x DataInt
     //=------------------------------------------------------------------------=
-    
-    /// Creates a validated instance from the given `source` and `mode`.
-    @inlinable public static func exactly(
-        _ source: DataInt<U8>, mode: some Signedness
-    )   -> Fallible<Self> {
-        //=--------------------------------------=
-        let instance = Self(load: source)
-        var success  = Bit(instance.appendix == source.appendix)
-        //=--------------------------------------=
-        if !Self.mode.matches(signedness: mode) {
-            success &= source.appendix.toggled()
-        }
-        
-        if  let size  = UX(size: Self.self) {
-            let ratio = size / UX(size: U8.self)
-            let suffix: DataInt<U8> = source[ratio...]
-            success = success & Bit(suffix.normalized().body.count.isZero)
-        }
-        //=--------------------------------------=
-        return instance.veto(!Bool(success))
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    /// Creates a validated instance from the given `source` and `mode`.
-    @inlinable public static func exactly(
-        _ source: DataInt<Element.Magnitude>, mode: some Signedness
-    )   -> Fallible<Self> {
-        //=--------------------------------------=
-        let instance = Self(load: source)
-        var success  = Bit(instance.appendix == source.appendix)
-        //=--------------------------------------=
-        if !Self.mode.matches(signedness: mode) {
-            success &= source.appendix.toggled()
-        }
-        
-        if  let size  = UX(size: Self.self) {
-            let ratio = size / UX(size: Element.Magnitude.self)
-            let suffix: DataInt<Element.Magnitude> = source[ratio...]
-            success = success & Bit(suffix.normalized().body.count.isZero)
-        }
-        //=--------------------------------------=
-        return instance.veto(!Bool(success))
-    }
-    
-    /// Creates a validated instance from the given `source` and `mode`.
-    @inlinable public static func exactly<OtherElement>(
-        _ source: DataInt<OtherElement>, mode: some Signedness
-    )   -> Fallible<Self> {
-                
-        if  UX(size: OtherElement.self) >= UX(size: Self.Element.Magnitude.self) {
-            return source.reinterpret(as: Self.Element.Magnitude.self) {
-                return Self.exactly($0, mode: mode)
-            }
-            
-        }   else {
-            return source.reinterpret(as: U8.self) {
-                return Self.exactly($0, mode: mode)
-            }
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    /// Creates a new instance from the given `source` and `mode` by trapping on failure.
-    @inlinable public init<OtherElement>(_ source: DataInt<OtherElement>, mode: some Signedness) {
-        self = Self.exactly(source, mode: mode).unwrap()
-    }
     
     /// Creates a new instance from the bit pattern of `source` that fits.
     @inlinable public init<OtherElement>(load source: DataInt<OtherElement>) {
-        if  UX(size: OtherElement.self) >= UX(size: Self.Element.Magnitude.self) {
+        if  UX(size: Self.Element.Magnitude.self) <= UX(size: OtherElement.self) {
             self = source.reinterpret(as: Self.Element.Magnitude.self, perform: Self.init(load:))
         }   else {
             self = source.reinterpret(as: U8.self, perform: Self.init(load:))
         }
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
+    /// Creates a new instance from the given `source` and `mode` by trapping on failure.
+    @inlinable public init<OtherElement>(_ source: DataInt<OtherElement>, mode: some Signedness) {
+        self = Self.exactly(source, mode: mode).unwrap()
+    }
     
-    /// Creates a new instance from the bit pattern of `source` that fits.
-    @inlinable public init<T>(load source: consuming T) where T: SystemsInteger<UX.BitPattern> {
-        if  T.isSigned {
-            self.init(load: UX.Signitude(raw: source))
+    /// Creates a validated instance from the given `source` and `mode`.
+    @inlinable public static func exactly<OtherElement>(_ source: DataInt<OtherElement>, mode: some Signedness) -> Fallible<Self> {
+        if  UX(size: Self.Element.Magnitude.self) <= UX(size: OtherElement.self) {
+            return source.reinterpret(as: Self.Element.Magnitude.self) {
+                Self.exactly($0, mode: mode)
+            }
+            
         }   else {
-            self.init(load: UX.Magnitude(raw: source))
+            return source.reinterpret(as: U8.self) {
+                Self.exactly($0, mode: mode)
+            }
         }
     }
     
-    /// Returns instance of `type` from the bit pattern of `self` that fits.
-    @inlinable public borrowing func load<T>(as type: T.Type) -> T where T: SystemsInteger<UX.BitPattern> {
-        T(raw: self.load(as: UX.BitPattern.self))
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    /// Creates a new instance from the bit pattern of `source` that fits.
-    @inlinable public init<T>(load source: consuming T) where T: SystemsInteger<Element.BitPattern> {
-        if  T.isSigned {
-            self.init(load: Element.Signitude(raw: source))
-        }   else {
-            self.init(load: Element.Magnitude(raw: source))
+    /// Creates a validated instance from the given `source` and `mode`.
+    @inlinable public static func exactly(_ source: DataInt<U8>, mode: some Signedness) -> Fallible<Self> {
+        //=--------------------------------------=
+        let instance = Self(load: source)
+        let appendix = instance.appendix
+        var success  = appendix == source.appendix
+        //=--------------------------------------=
+        if  success, !Self.mode.matches(signedness: mode) {
+            success  = appendix == Bit.zero
         }
+        
+        if  success, let size = UX(size: Self.self) {
+            let end  =   size / UX(size:   U8.self)
+            success  = source[end...].normalized().body.count.isZero
+        }
+        //=--------------------------------------=
+        return instance.veto(!Bool(success))
     }
     
-    /// Returns instance of `type` from the bit pattern of `self` that fits.
-    @inlinable public borrowing func load<T>(as type: T.Type) -> T where T: SystemsInteger<Element.BitPattern> {
-        T(raw: self.load(as: Element.BitPattern.self))
+    /// Creates a validated instance from the given `source` and `mode`.
+    @inlinable public static func exactly(_ source: DataInt<Element.Magnitude>, mode: some Signedness) -> Fallible<Self> {
+        //=--------------------------------------=
+        let instance = Self(load: source)
+        let appendix = instance.appendix
+        var success  = appendix == source.appendix
+        //=--------------------------------------=
+        if  success, !Self.mode.matches(signedness: mode) {
+            success  = appendix == Bit.zero
+        }
+        
+        if  success, let size = UX(size: Self.self) {
+            let end  =   size / UX(size: Element.Magnitude.self)
+            success  = source[end...].normalized().body.count.isZero
+        }
+        //=--------------------------------------=
+        return instance.veto(!Bool(success))
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializeres
+    // MARK: Initializers x BinaryInteger
     //=------------------------------------------------------------------------=
     
     /// Creates a new instance from the bit pattern of `source` that fits.
     @inlinable public init<Other>(load source: borrowing Other) where Other: BinaryInteger {
-        let lhsIsSmall = UX(size: Self .self).map({ $0 <= UX.size }) == true
-        let rhsIsSmall = UX(size: Other.self).map({ $0 <= UX.size }) == true
-        
-        if  lhsIsSmall || rhsIsSmall {
-            if  Other.isSigned  {
+        //=--------------------------------------=
+        let lhsSize = UX(size: Self .self)
+        let rhsSize = UX(size: Other.self)
+        //=--------------------------------------=
+        // path: Other <= min(Element, UX)
+        //=--------------------------------------=
+        if  let rhsSize, rhsSize <= Swift.min(UX(size: Element.self), UX.size) {
+            if  Other.isSigned {
+                self.init(load: Element.Signitude(load: IX(load: source)))
+            }   else {
+                self.init(load: Element.Magnitude(load: UX(load: source)))
+            }
+        //=--------------------------------------=
+        // path: Self <= UX || Other <= UX
+        //=--------------------------------------=
+        }   else if lhsSize.map({ $0 <= UX.size }) == true || rhsSize.map({ $0 <= UX.size }) == true {
+            if  Other.isSigned {
                 self.init(load: IX(load: source))
             }   else {
                 self.init(load: UX(load: source))
             }
-
+        //=--------------------------------------=
+        // path: Self >  UX && Other >  UX
+        //=--------------------------------------=
         }   else {
             self = source.withUnsafeBinaryIntegerElements(Self.init(load:))
         }
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Utilities x Elements
     //=------------------------------------------------------------------------=
     //=------------------------------------------------------------------------=
     // TODO: await appendix { borrowing get } fixes then make these borrowing
@@ -188,7 +151,7 @@ extension BinaryInteger {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Utilities x Elements x Downsized
     //=------------------------------------------------------------------------=
     
     /// Performs the `action` on the `body` of `self` and temporarily 
@@ -212,7 +175,7 @@ extension BinaryInteger {
         }
     }
     
-    /// Performs the `action` on the mutable `body` of `self` and temporarily 
+    /// Performs the `action` on the mutable `body` of `self` and temporarily
     /// rebinds each element to the given `type`.
     ///
     /// Any attempt to rebind the elements of `self` to a larger element `type`
@@ -287,12 +250,20 @@ extension SystemsInteger {
     //=------------------------------------------------------------------------=
     
     /// Creates a new instance from the bit pattern of `source` that fits.
-    @inlinable public init<T>(load source: borrowing T) where T: BinaryInteger, BitPattern == UX.BitPattern {
-        self = source.load(as: Self.self)
+    ///
+    /// - Note: This is the generic version of `BinaryInteger/load(as:)`.
+    ///
+    @inlinable public init<Other>(load source: borrowing Other)
+    where Other: BinaryInteger, BitPattern == UX.BitPattern {
+        self.init(raw: source.load(as: BitPattern.self))
     }
     
     /// Creates a new instance from the bit pattern of `source` that fits.
-    @inlinable public init<T>(load source: borrowing T) where T: BinaryInteger, BitPattern == T.Element.BitPattern {
-        self = source.load(as: Self.self)
+    ///
+    /// - Note: This is the generic version of `BinaryInteger/load(as:)`.
+    ///
+    @inlinable public init<Other>(load source: borrowing Other)
+    where Other: BinaryInteger, BitPattern == Other.Element.BitPattern {
+        self.init(raw: source.load(as: BitPattern.self))
     }
 }
