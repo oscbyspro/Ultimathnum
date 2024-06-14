@@ -65,15 +65,15 @@ extension CoreIntTests {
             Test().comparison( 3 as T,  2 as T,  1 as Signum)
         }
         
-        for type in coreSystemsIntegers {
+        for type in Self.types {
             whereIs(type)
         }
         
-        for type in coreSystemsIntegersWhereIsSigned {
+        for type in Self.typesWhereIsSigned {
             whereIsSigned(type)
         }
         
-        for type in coreSystemsIntegersWhereIsUnsigned {
+        for type in Self.typesWhereIsUnsigned {
             whereIsUnsigned(type)
         }
     }

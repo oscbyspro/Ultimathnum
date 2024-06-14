@@ -37,7 +37,7 @@ extension DoubleIntTests {
             Test().same(T(low: ~1, high: ~2).multiplication(~3 as B), P(low:  8, mid:  6, high: ~5))
         }
         
-        for base in coreSystemsIntegersWhereIsUnsigned {
+        for base in Self.basesWhereIsUnsigned {
             whereTheBaseIs(base)
         }
     }

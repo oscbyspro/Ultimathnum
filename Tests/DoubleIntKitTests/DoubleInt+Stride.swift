@@ -57,6 +57,10 @@ extension DoubleIntTests {
         }
         
         for type in Self.types {
+            for distance in Self.typesWhereIsSigned {
+                whereIs(type, distance)
+            }
+            
             for distance in coreSystemsIntegersWhereIsSigned {
                 whereIs(type, distance)
             }

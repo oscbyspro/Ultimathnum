@@ -26,7 +26,7 @@ extension CoreIntTests {
             IntegerInvariants(T.self).additionOfRepeatingBit(BinaryIntegerID())
         }
         
-        for type in coreSystemsIntegers {
+        for type in Self.types {
             whereIs(type)
         }
     }
@@ -38,7 +38,7 @@ extension CoreIntTests {
             IntegerInvariants(T.self).subtractionOfRepeatingBit(BinaryIntegerID())
         }
         
-        for type in coreSystemsIntegers {
+        for type in Self.types {
             whereIs(type)
         }
     }

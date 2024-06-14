@@ -54,28 +54,28 @@ extension InfiniIntTests {
             Test().comparison(M(load: IX.max),  S(load: IX.max),  0 as Signum)
             Test().comparison(M(load: IX.max),  M(load: IX.max),  0 as Signum)
             
+            let ixs: [IX] = [~2, ~1, ~0, 0, 1, 2]
+            for lhs: (IX) in ixs {
+                for rhs: (IX) in ixs {
+                    Test().comparison(S(load: lhs),         rhs,  IX(load: lhs).compared(to: IX(load: rhs)))
+                    Test().comparison(S(load: lhs), S(load: rhs), IX(load: lhs).compared(to: IX(load: rhs)))
+                    Test().comparison(S(load: lhs), M(load: rhs), IX(load: lhs).compared(to: UX(load: rhs)))
+                    Test().comparison(M(load: lhs),         rhs,  UX(load: lhs).compared(to: IX(load: rhs)))
+                    Test().comparison(M(load: lhs), S(load: rhs), UX(load: lhs).compared(to: IX(load: rhs)))
+                    Test().comparison(M(load: lhs), M(load: rhs), UX(load: lhs).compared(to: UX(load: rhs)))
+                }
+            }
+            
             let uxs: [UX] = [~2, ~1, ~0, 0, 1, 2]
             for lhs: (UX) in uxs {
                 for rhs: (UX) in uxs {
                     let expectation: Signum = lhs.compared(to: rhs)
                     Test().comparison(S(load: lhs),         rhs,  expectation)
-                    Test().comparison(M(load: lhs),         rhs,  expectation)
                     Test().comparison(S(load: lhs), S(load: rhs), expectation)
                     Test().comparison(S(load: lhs), M(load: rhs), expectation)
+                    Test().comparison(M(load: lhs),         rhs,  expectation)
                     Test().comparison(M(load: lhs), S(load: rhs), expectation)
                     Test().comparison(M(load: lhs), M(load: rhs), expectation)
-                }
-            }
-            
-            let ixs: [IX] = [~2, ~1, ~0, 0, 1, 2]
-            for lhs: (IX) in ixs {
-                for rhs: (IX) in ixs {
-                    Test().comparison(S(load: lhs),         rhs,  IX(load: lhs).compared(to: IX(load: rhs)))
-                    Test().comparison(M(load: lhs),         rhs,  UX(load: lhs).compared(to: IX(load: rhs)))
-                    Test().comparison(S(load: lhs), S(load: rhs), IX(load: lhs).compared(to: IX(load: rhs)))
-                    Test().comparison(S(load: lhs), M(load: rhs), IX(load: lhs).compared(to: UX(load: rhs)))
-                    Test().comparison(M(load: lhs), S(load: rhs), UX(load: lhs).compared(to: IX(load: rhs)))
-                    Test().comparison(M(load: lhs), M(load: rhs), UX(load: lhs).compared(to: UX(load: rhs)))
                 }
             }
         }

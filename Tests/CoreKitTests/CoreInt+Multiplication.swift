@@ -68,15 +68,15 @@ extension CoreIntTests {
             Test().multiplication( 3 as T,  3 as T, F(X(low:  9 as M, high:  0 as T)))
         }
         
-        for type in coreSystemsIntegers {
+        for type in Self.types {
             whereIs(type)
         }
         
-        for type in coreSystemsIntegersWhereIsSigned {
+        for type in Self.typesWhereIsSigned {
             whereIsSigned(type)
         }
         
-        for type in coreSystemsIntegersWhereIsUnsigned {
+        for type in Self.typesWhereIsUnsigned {
             whereIsUnsigned(type)
         }
     }

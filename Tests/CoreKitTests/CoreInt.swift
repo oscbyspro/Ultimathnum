@@ -17,6 +17,22 @@ import TestKit
 final class CoreIntTests: XCTestCase {
     
     //=------------------------------------------------------------------------=
+    // MARK: Metadata
+    //=------------------------------------------------------------------------=
+        
+    static var types: [any SystemsInteger.Type] {
+        coreSystemsIntegers
+    }
+            
+    static var typesWhereIsSigned: [any (SystemsInteger & SignedInteger).Type] {
+        coreSystemsIntegersWhereIsSigned
+    }
+    
+    static var typesWhereIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] {
+        coreSystemsIntegersWhereIsUnsigned
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
@@ -27,7 +43,7 @@ final class CoreIntTests: XCTestCase {
             IntegerInvariants(T.self).protocols()
         }
         
-        for type in coreSystemsIntegers {
+        for type in Self.types {
             whereIs(type)
         }
     }

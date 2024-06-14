@@ -28,7 +28,7 @@ extension CoreIntTests {
             }
         }
         
-        for type in coreSystemsIntegers {
+        for type in Self.types {
             whereIs(type)
         }
     }
@@ -40,7 +40,7 @@ extension CoreIntTests {
             }
         }
         
-        for type in coreSystemsIntegers {
+        for type in Self.types {
             whereIs(type)
         }
     }
@@ -52,7 +52,7 @@ extension CoreIntTests {
             }
         }
         
-        for type in coreSystemsIntegers {
+        for type in Self.types {
             whereIs(type)
         }
     }

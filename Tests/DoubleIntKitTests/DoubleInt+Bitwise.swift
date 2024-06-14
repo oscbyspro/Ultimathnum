@@ -55,7 +55,7 @@ extension DoubleIntTests {
     //=------------------------------------------------------------------------=
     
     func testComplement() {
-        func whereTheBaseTypeIs<B>(_ base: B.Type) where B: SystemsInteger {
+        func whereTheBaseIs<B>(_ base: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
             typealias F = Fallible<T>
             
@@ -70,8 +70,8 @@ extension DoubleIntTests {
             Test().complement(T(low:  0, high:  B.msb), true,   F(T(low:  0, high:  B.msb), error:  B.isSigned))
         }
         
-        for base in coreSystemsIntegers {
-            whereTheBaseTypeIs(base)
+        for base in Self.bases {
+            whereTheBaseIs(base)
         }
     }
     

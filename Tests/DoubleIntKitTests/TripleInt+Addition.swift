@@ -22,7 +22,7 @@ extension TripleIntTests {
     //=------------------------------------------------------------------------=
     
     func testAddition32B() {
-        func whereTheBaseIsSigned<B>(_ type: B.Type) where B: SystemsInteger {
+        func whereTheBaseIsSigned<B>(_ type: B.Type) where B: SystemsInteger & SignedInteger {
             typealias X = DoubleInt<B>.Magnitude
             typealias Y = TripleInt<B>
             typealias F = Fallible<TripleInt<B>>
@@ -40,7 +40,7 @@ extension TripleIntTests {
             Test().same(Y(low: ~3, mid: ~5, high: ~x).plus(X(low:  4, high:  5)), F(Y(low:  0, mid:  0, high:  x), error: true))
         }
         
-        func whereTheBaseIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger {
+        func whereTheBaseIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger & UnsignedInteger {
             typealias X = DoubleInt<B>.Magnitude
             typealias Y = TripleInt<B>
             typealias F = Fallible<TripleInt<B>>
@@ -56,13 +56,17 @@ extension TripleIntTests {
             Test().same(Y(low: ~3, mid: ~5, high: ~0).plus(X(low:  4, high:  5)), F(Y(low:  0, mid:  0, high:  0), error: true))
         }
         
-        for base in coreSystemsIntegers {
-            base.isSigned ? whereTheBaseIsSigned(base) : whereTheBaseIsUnsigned(base)
+        for base in Self.basesWhereIsSigned {
+            whereTheBaseIsSigned(base)
+        }
+        
+        for base in Self.basesWhereIsUnsigned {
+            whereTheBaseIsUnsigned(base)
         }
     }
     
     func testAddition33B() {
-        func whereTheBaseIsSigned<B>(_ type: B.Type) where B: SystemsInteger {
+        func whereTheBaseIsSigned<B>(_ type: B.Type) where B: SystemsInteger & SignedInteger {
             typealias X = DoubleInt<B>
             typealias Y = TripleInt<B>
             typealias F = Fallible<TripleInt<B>>
@@ -80,7 +84,7 @@ extension TripleIntTests {
             Test().same(Y(low: ~3, mid: ~5, high: ~x - 6).plus(Y(low:  4, mid:  5, high:  6)), F(Y(low:  0, mid:  0, high:  x), error: true))
         }
         
-        func whereTheBaseIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger {
+        func whereTheBaseIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger & UnsignedInteger {
             typealias X = DoubleInt<B>
             typealias Y = TripleInt<B>
             typealias F = Fallible<TripleInt<B>>
@@ -96,8 +100,12 @@ extension TripleIntTests {
             Test().same(Y(low: ~3, mid: ~5, high: ~6).plus(Y(low:  4, mid:  5, high:  6)), F(Y(low:  0, mid:  0, high:  0), error: true))
         }
         
-        for base in coreSystemsIntegers {
-            base.isSigned ? whereTheBaseIsSigned(base) : whereTheBaseIsUnsigned(base)
+        for base in Self.basesWhereIsSigned {
+            whereTheBaseIsSigned(base)
+        }
+        
+        for base in Self.basesWhereIsUnsigned {
+            whereTheBaseIsUnsigned(base)
         }
     }
 }

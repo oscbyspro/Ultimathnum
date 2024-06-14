@@ -26,7 +26,7 @@ extension CoreIntTests {
             IntegerInvariants(T.self).edgesMinMax()
         }
         
-        for type in coreSystemsIntegers {
+        for type in Self.types {
             whereIs(type)
         }
     }

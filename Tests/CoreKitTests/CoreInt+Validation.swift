@@ -27,7 +27,7 @@ extension CoreIntTests {
             IntegerInvariants(T.self).clampingCoreSystemsIntegers()
         }
         
-        for type in coreSystemsIntegers {
+        for type in Self.types {
             whereIs(type)
         }
     }
@@ -78,8 +78,12 @@ extension CoreIntTests {
             Test().same(T.exactly(magnitude:  M.max), F(T.max))
         }
         
-        for type in coreSystemsIntegers {
-            type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
+        for type in Self.typesWhereIsSigned {
+            whereIsSigned(type)
+        }
+        
+        for type in Self.typesWhereIsUnsigned {
+            whereIsUnsigned(type)
         }
     }
     
@@ -100,8 +104,12 @@ extension CoreIntTests {
             Test().same(( 1 as T).magnitude(), 1 as M)
         }
         
-        for type in coreSystemsIntegers {
-            type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
+        for type in Self.typesWhereIsSigned {
+            whereIsSigned(type)
+        }
+        
+        for type in Self.typesWhereIsUnsigned {
+            whereIsUnsigned(type)
         }
     }
 }

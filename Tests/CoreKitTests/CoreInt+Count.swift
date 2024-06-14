@@ -25,7 +25,7 @@ extension CoreIntTests {
             IntegerInvariants(T.self).count()
         }
         
-        for type in coreSystemsIntegers {
+        for type in Self.types {
             whereIs(type)
         }
     }

@@ -49,7 +49,7 @@ extension DoubleIntTests {
     //=------------------------------------------------------------------------=
     
     func testAddition21() {
-        func whereTheBaseIsSigned<B>(_ type: B.Type) where B: SystemsInteger {
+        func whereTheBaseIsSigned<B>(_ type: B.Type) where B: SystemsInteger & SignedInteger {
             typealias T = DoubleInt<B>
             typealias F = Fallible<T>
             //=----------------------------------=
@@ -66,7 +66,7 @@ extension DoubleIntTests {
             Test().same(T(low: ~2, high: ~x).plus(B.Magnitude( 3)), F(T(low:  0, high:  x), error: true))
         }
         
-        func whereTheBaseIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger {
+        func whereTheBaseIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger & UnsignedInteger {
             typealias T = DoubleInt<B>
             typealias F = Fallible<T>
 
@@ -81,13 +81,17 @@ extension DoubleIntTests {
             Test().same(T(low: ~2, high: ~0).plus(B.Magnitude( 3)), F(T(low:  0, high:  0), error: true))
         }
         
-        for base in coreSystemsIntegers {
-            base.isSigned ? whereTheBaseIsSigned(base) : whereTheBaseIsUnsigned(base)
+        for base in Self.basesWhereIsSigned {
+            whereTheBaseIsSigned(base)
+        }
+        
+        for base in Self.basesWhereIsUnsigned {
+            whereTheBaseIsUnsigned(base)
         }
     }
     
     func testSubtraction21() {
-        func whereTheBaseIsSigned<B>(_ type: B.Type) where B: SystemsInteger {
+        func whereTheBaseIsSigned<B>(_ type: B.Type) where B: SystemsInteger & SignedInteger {
             typealias T = DoubleInt<B>
             typealias F = Fallible<DoubleInt<B>>
             //=----------------------------------=
@@ -104,7 +108,7 @@ extension DoubleIntTests {
             Test().same(T(low:  2, high:  x).minus(B.Magnitude( 3)), F(T(low: ~0, high: ~x), error: true))
         }
         
-        func whereTheBaseIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger {
+        func whereTheBaseIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger & UnsignedInteger {
             typealias T = DoubleInt<B>
             typealias F = Fallible<DoubleInt<B>>
             
@@ -119,8 +123,12 @@ extension DoubleIntTests {
             Test().same(T(low:  2, high:  0).minus(B.Magnitude( 3)), F(T(low: ~0, high: ~0), error: true))
         }
         
-        for base in coreSystemsIntegers {
-            base.isSigned ? whereTheBaseIsSigned(base) : whereTheBaseIsUnsigned(base)
+        for base in Self.basesWhereIsSigned {
+            whereTheBaseIsSigned(base)
+        }
+        
+        for base in Self.basesWhereIsUnsigned {
+            whereTheBaseIsUnsigned(base)
         }
     }
     
@@ -129,7 +137,7 @@ extension DoubleIntTests {
     //=------------------------------------------------------------------------=
     
     func testAddition22() {
-        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+        func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
             typealias F = Fallible<T>
             
@@ -149,7 +157,7 @@ extension DoubleIntTests {
             }
         }
         
-        func whereTheBaseTypeIsSigned<B>(_ type: B.Type) where B: SystemsInteger {
+        func whereTheBaseIsSigned<B>(_ type: B.Type) where B: SystemsInteger & SignedInteger {
             typealias T = DoubleInt<B>
             typealias F = Fallible<T>
             
@@ -164,7 +172,7 @@ extension DoubleIntTests {
             Test().same(T(low: ~2, high: ~B.msb - 4).plus(T(low:  3, high:  4)), F(T(low:  0, high:  B.msb), error: true))
         }
         
-        func whereTheBaseTypeIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger {
+        func whereTheBaseIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger & UnsignedInteger {
             typealias T = DoubleInt<B>
             typealias F = Fallible<T>
 
@@ -180,20 +188,20 @@ extension DoubleIntTests {
         }
         
         for base in Self.bases {
-            whereTheBaseTypeIs(base)
+            whereTheBaseIs(base)
         }
         
         for base in Self.basesWhereIsSigned {
-            whereTheBaseTypeIsSigned(base)
+            whereTheBaseIsSigned(base)
         }
         
         for base in Self.basesWhereIsUnsigned {
-            whereTheBaseTypeIsUnsigned(base)
+            whereTheBaseIsUnsigned(base)
         }
     }
     
     func testSubtraction22() {
-        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
+        func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
             typealias F = Fallible<T>
             
@@ -213,7 +221,7 @@ extension DoubleIntTests {
             }
         }
         
-        func whereTheBaseTypeIsSigned<B>(_ type: B.Type) where B: SystemsInteger {
+        func whereTheBaseIsSigned<B>(_ type: B.Type) where B: SystemsInteger & SignedInteger {
             typealias T = DoubleInt<B>
             typealias F = Fallible<DoubleInt<B>>
                         
@@ -228,7 +236,7 @@ extension DoubleIntTests {
             Test().same(T(low:  2, high:  B.msb + 4).minus(T(low:  3, high:  4)), F(T(low: ~0, high: ~B.msb), error: true))
         }
         
-        func whereTheBaseTypeIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger {
+        func whereTheBaseIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger & UnsignedInteger {
             typealias T = DoubleInt<B>
             typealias F = Fallible<DoubleInt<B>>
             
@@ -244,15 +252,15 @@ extension DoubleIntTests {
         }
         
         for base in Self.bases {
-            whereTheBaseTypeIs(base)
+            whereTheBaseIs(base)
         }
         
         for base in Self.basesWhereIsSigned {
-            whereTheBaseTypeIsSigned(base)
+            whereTheBaseIsSigned(base)
         }
         
         for base in Self.basesWhereIsUnsigned {
-            whereTheBaseTypeIsUnsigned(base)
+            whereTheBaseIsUnsigned(base)
         }
     }
 }

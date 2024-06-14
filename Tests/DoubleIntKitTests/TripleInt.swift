@@ -34,15 +34,13 @@ final class TripleIntTests: XCTestCase {
         basesWhereIsUnsigned
     }()
     
-    static let basesWhereIsSigned: [any (SystemsInteger & SignedInteger).Type] = [
-        I8x3.High.self,
-        IXx3.High.self,
-    ]
+    static let basesWhereIsSigned: [any (SystemsInteger & SignedInteger).Type] = {
+        coreSystemsIntegersWhereIsSigned
+    }()
     
-    static let basesWhereIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = [
-        U8x3.High.self,
-        UXx3.High.self,
-    ]
+    static let basesWhereIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = {
+        coreSystemsIntegersWhereIsUnsigned
+    }()
     
     //=------------------------------------------------------------------------=
     // MARK: Tests

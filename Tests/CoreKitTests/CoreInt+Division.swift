@@ -31,11 +31,11 @@ extension CoreIntTests {
             IntegerInvariants(T.self).divisionLongCodeCoverage(SystemsIntegerID())
         }
         
-        for type in coreSystemsIntegers {
+        for type in Self.types {
             whereIs(type)
         }
         
-        for type in coreSystemsIntegersWhereIsUnsigned {
+        for type in Self.typesWhereIsUnsigned {
             whereIsUnsigned(type)
         }        
     }
@@ -89,8 +89,12 @@ extension CoreIntTests {
             Test().division(X(low:  0 as M, high: ~0 as T),  8 as T, F(D(quotient: ~0 << T(raw: T.size - 3), remainder: 0), error: true))
         }
         
-        for type in coreSystemsIntegers {
-            type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
+        for type in Self.typesWhereIsSigned {
+            whereIsSigned(type)
+        }
+        
+        for type in Self.typesWhereIsUnsigned {
+            whereIsUnsigned(type)
         }
     }
     

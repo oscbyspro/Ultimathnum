@@ -22,7 +22,7 @@ extension TripleIntTests {
     //=------------------------------------------------------------------------=
     
     func testComplement() {
-        func whereTheBaseTypeIs<B>(_ base: B.Type) where B: SystemsInteger {
+        func whereTheBaseIs<B>(_ base: B.Type) where B: SystemsInteger {
             typealias T = TripleInt<B>
             typealias F = Fallible<T>
             
@@ -37,8 +37,8 @@ extension TripleIntTests {
             Case(T(low:  0, mid:  0, high:  B.msb)).complement(true,  is: F(T(low:  0, mid:  0, high:  B.msb), error:  B.isSigned))
         }
         
-        for base in coreSystemsIntegers {
-            whereTheBaseTypeIs(base)
+        for base in Self.bases {
+            whereTheBaseIs(base)
         }
     }
 }
