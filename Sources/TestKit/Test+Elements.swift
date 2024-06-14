@@ -26,6 +26,16 @@ extension Test {
         //=--------------------------------------=
         same(Integer(load: element),     integer)
         same(Element(load: Integer(load: element)), element)
+        //=--------------------------------------=
+        if  Element.isSigned, Element.size <= UX.size || Element.size < UX.size {
+            same(Integer(load: IX(load: element)),    integer)
+            same(Element(load: Integer(load: IX(load: element))), element)
+        }
+        
+        if !Element.isSigned, Element.size <= UX.size {
+            same(Integer(load: UX(load: element)),    integer)
+            same(Element(load: Integer(load: UX(load: element))), element)
+        }
     }
     
     public func load<Integer, Element>(
@@ -35,6 +45,16 @@ extension Test {
         //=--------------------------------------=
         same(Element(load: integer),     element)
         same(Element(load: Integer(load: element)), element)
+        //=--------------------------------------=
+        if  Element.isSigned, Element.size <= UX.size || Element.size < UX.size {
+            same(Element(load: IX(load: integer)),     element)
+            same(Element(load: Integer(load: IX(load: integer))), element)
+        }
+        
+        if !Element.isSigned, Element.size <= UX.size {
+            same(Element(load: UX(load: integer)),     element)
+            same(Element(load: Integer(load: UX(load: integer))), element)
+        }
     }
     
     //=------------------------------------------------------------------------=

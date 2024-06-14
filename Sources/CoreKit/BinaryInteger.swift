@@ -13,10 +13,6 @@
 
 /// A binary integer.
 ///
-/// ### Stride
-///
-/// Its stride is Swift.Int which is used to step through Swift's ranges.
-///
 /// ### Infinity
 ///
 /// The binary integer domain now includes infinite values! This lets you
@@ -37,6 +33,10 @@
 /// ```
 /// 
 /// - Important: Infinite values take on the order of their host type.
+///
+/// ### Stride
+///
+/// Its stride type is Swift.Int so that you may use Swift's range models.
 ///
 /// ### Requirements
 ///
@@ -67,7 +67,7 @@ where
     Stride == Swift.Int
 {
     
-    /// The two's complement signedness of this type.
+    /// The 2's complement signedness of this type.
     associatedtype Mode: Signedness
     
     /// The stuff this binary integer type is made of.
@@ -86,7 +86,7 @@ where
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    /// Indicates whether this type uses the signed two's complement format.
+    /// Indicates whether this type uses the signed 2's complement format.
     ///
     /// ```
     /// ┌──────┬──────────┬──────┬──────┐
@@ -162,7 +162,7 @@ where
     ///
     /// - Note: The 2's complement is defined as `self.toggled() &+ 1`.
     ///
-    /// - Note: The overflow of addition is stored in the `error` field.
+    /// - Note: The overflow of addition is stored in the `error`.
     ///
     /// ### Well-behaved arbitrary unsigned integers
     ///
@@ -201,10 +201,10 @@ where
     /// Returns the validated result of `self + increment`.
     @inlinable consuming func plus (_ increment:  borrowing Self) -> Fallible<Self>
     
-    /// Returns the validated result of `self - increment`.
+    /// Returns the validated result of `self - decrement`.
     @inlinable consuming func minus(_ decrement:  borrowing Self) -> Fallible<Self>
     
-    /// Returns the validated result of `self * increment`.
+    /// Returns the validated result of `self * multiplier`.
     @inlinable borrowing func times(_ multiplier: borrowing Self) -> Fallible<Self>
     
     /// Returns the validated result of `self ^ 2`.

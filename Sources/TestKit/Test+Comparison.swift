@@ -191,9 +191,9 @@ extension Test {
                 }
                 
                 if  lhs.appendix == 0, rhs.appendix == 0 {
-                    same((lhs.body).compared(to: (rhs.body)), expectation, "body.compared(to:) [0]")
+                    same((lhs.body).compared(to: rhs.body), expectation, "body.compared(to:) [0]")
                     same((lhs.body).compared(to: DataInt.Body(rhs.body)), expectation, "body.compared(to:) [1]")
-                    same(DataInt.Body(lhs.body).compared(to: (rhs.body)), expectation, "body.compared(to:) [2]")
+                    same(DataInt.Body(lhs.body).compared(to:  rhs.body ), expectation, "body.compared(to:) [2]")
                     same(DataInt.Body(lhs.body).compared(to: DataInt.Body(rhs.body)), expectation, "body.compared(to:) [3]")
                 }
             }

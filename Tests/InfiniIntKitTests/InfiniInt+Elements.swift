@@ -23,6 +23,7 @@ extension InfiniIntTests {
     
     func testInitBody() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            IntegerInvariants(T.self).elements()
             IntegerInvariants(T.self).exactlyArrayBodyMode()
         }
         

@@ -19,58 +19,102 @@ extension IntegerInvariants {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    public func elements() {
+        //=--------------------------------------=
+        typealias X = T.Element.Magnitude
+        //=--------------------------------------=
+        if  let size = IX(size: T.self) { let count = Int(size / IX(size: X.self))
+            
+            test.elements(~1 as T, [X(load: ~1 as T)] + [X](repeating: ~0, count: count - 1), Bit(T.isSigned))
+            test.elements(~0 as T, [X(load: ~0 as T)] + [X](repeating: ~0, count: count - 1), Bit(T.isSigned))
+            test.elements( 0 as T, [X(load:  0 as T)] + [X](repeating:  0, count: count - 1), 000000000000000)
+            test.elements( 1 as T, [X(load:  1 as T)] + [X](repeating:  0, count: count - 1), 000000000000000)
+        }
+        
+        element: do { let mask = T(1) << T(load: X.size) &- 1
+            
+            var x = ~9 as T
+            var y = ~9 as X.Signitude
+            var z = ~9 as X.Magnitude
+            
+            for _ in 0 ..< 20 {
+                test.load(y,  x)
+                test.load(z,  x & mask)
+                
+                test.load(x,  y)
+                test.load(x & mask,  y)
+                
+                x &+= 1
+                y &+= 1
+                z &+= 1
+            }
+        }
+        
+        sequences: do { let size = UX(1 + Self.shlEsque)
+            
+            for offset: UX in (1 ... 12).lazy.map({ $0 &* size >> 3 }) {
+                var element = X.zero
+                var integer = T.zero
+                var elements: [X] = []
+                
+                for x in (1 ... size >> 3).lazy.map({ $0  &+ offset }) {
+                    integer <<= 8
+                    element <<= 8
+                    integer  |= T(load: x & 0xFF)
+                    element  |= X(load: x & 0xFF)
+                    
+                    if  x % UX(size: X.self) >> 3 == 0 {
+                        elements.insert(element, at: 0)
+                    }
+                }
+                
+                test.elements(integer,           elements,        Bit(!T.size.isInfinite && T.isSigned && elements.last! >= .msb))
+                test.elements(integer.toggled(), elements.map(~), Bit( T.size.isInfinite || T.isSigned && elements.last! <  .msb))
+            }
+        }
+    }
+    
     public func exactlyArrayBodyMode() where T: BinaryInteger {
-        test.exactly([T.Element.Magnitude](),   .signed, F(T.zero))
-        test.exactly([T.Element.Magnitude](), .unsigned, F(T.zero))
         //=--------------------------------------=
-        var count = Int(T.size.isInfinite ? 12 : IX(load: T.size) / IX(size: T.Element.self))
+        typealias X = T.Element.Magnitude
         //=--------------------------------------=
-        func check(_ body: Array<T.Element.Magnitude>, mode: some Signedness, error: Bool = false) {
+        test.exactly([X](),   .signed, F(T.zero))
+        test.exactly([X](), .unsigned, F(T.zero))
+        //=--------------------------------------=
+        func check(_ body: Array<X>, mode: some Signedness, error: Bool = false) {
             var value = T(repeating: Bit(mode.matchesSignedTwosComplementFormat && (body.last ?? 0) >= .msb))
             
             for element in body.reversed() {
-                value <<= T(T.Element.Magnitude.size)
+                value <<= T(load: X.size)
                 value  |= T(load: element)
             }
             
             test.exactly(body, mode, Fallible(value, error: error))
         }
         //=--------------------------------------=
-        check(Array(repeating:  0, count: count), mode:   .signed)
-        check(Array(repeating:  1, count: count), mode:   .signed)
-        check(Array(repeating: ~1, count: count), mode:   .signed, error: !T.isSigned)
-        check(Array(repeating: ~0, count: count), mode:   .signed, error: !T.isSigned)
-        
-        check(Array(repeating:  0, count: count), mode: .unsigned)
-        check(Array(repeating:  1, count: count), mode: .unsigned)
-        check(Array(repeating: ~1, count: count), mode: .unsigned, error:  T.isSigned && !T.size.isInfinite)
-        check(Array(repeating: ~0, count: count), mode: .unsigned, error:  T.isSigned && !T.size.isInfinite)
-        
-        count += 1
-        
-        check(Array(repeating:  0, count: count), mode:   .signed)
-        check(Array(repeating:  1, count: count), mode:   .signed, error: !T.size.isInfinite)
-        check(Array(repeating: ~1, count: count), mode:   .signed, error: !T.isSigned || !T.size.isInfinite)
-        check(Array(repeating: ~0, count: count), mode:   .signed, error: !T.isSigned)
-
-        check(Array(repeating:  0, count: count), mode: .unsigned)
-        check(Array(repeating:  1, count: count), mode: .unsigned, error: !T.size.isInfinite)
-        check(Array(repeating: ~1, count: count), mode: .unsigned, error: !T.size.isInfinite)
-        check(Array(repeating: ~0, count: count), mode: .unsigned, error: !T.size.isInfinite)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    public func elements() where T: SystemsInteger {
-        typealias X = T.Element.Magnitude
-        //=--------------------------------------=
-        let count = IX(size: T.self) / IX(size: X.self)
-        //=--------------------------------------=
-        test.elements(~1 as T, [X(load: ~1 as T)] + [X](repeating: ~0, count: Int(count - 1)), Bit(T.isSigned))
-        test.elements(~0 as T, [X(load: ~0 as T)] + [X](repeating: ~0, count: Int(count - 1)), Bit(T.isSigned))
-        test.elements( 0 as T, [X(load:  0 as T)] + [X](repeating:  0, count: Int(count - 1)), Bit.zero)
-        test.elements( 1 as T, [X(load:  1 as T)] + [X](repeating:  0, count: Int(count - 1)), Bit.zero)
+        always: do { var count = Int(T.size.isInfinite ? 12 : IX(load: T.size) / IX(size: X.self))
+            
+            check(Array(repeating:  0, count: count), mode:   .signed)
+            check(Array(repeating:  1, count: count), mode:   .signed)
+            check(Array(repeating: ~1, count: count), mode:   .signed, error: !T.isSigned)
+            check(Array(repeating: ~0, count: count), mode:   .signed, error: !T.isSigned)
+            
+            check(Array(repeating:  0, count: count), mode: .unsigned)
+            check(Array(repeating:  1, count: count), mode: .unsigned)
+            check(Array(repeating: ~1, count: count), mode: .unsigned, error:  T.isSigned && !T.size.isInfinite)
+            check(Array(repeating: ~0, count: count), mode: .unsigned, error:  T.isSigned && !T.size.isInfinite)
+            
+            count += 1
+            
+            check(Array(repeating:  0, count: count), mode:   .signed)
+            check(Array(repeating:  1, count: count), mode:   .signed, error: !T.size.isInfinite)
+            check(Array(repeating: ~1, count: count), mode:   .signed, error: !T.isSigned || !T.size.isInfinite)
+            check(Array(repeating: ~0, count: count), mode:   .signed, error: !T.isSigned)
+            
+            check(Array(repeating:  0, count: count), mode: .unsigned)
+            check(Array(repeating:  1, count: count), mode: .unsigned, error: !T.size.isInfinite)
+            check(Array(repeating: ~1, count: count), mode: .unsigned, error: !T.size.isInfinite)
+            check(Array(repeating: ~0, count: count), mode: .unsigned, error: !T.size.isInfinite)
+        }
     }
 }

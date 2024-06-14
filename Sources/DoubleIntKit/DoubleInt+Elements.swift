@@ -34,7 +34,7 @@ extension DoubleInt {
     @inlinable public borrowing func load(as type: UX.BitPattern.Type) -> UX.BitPattern {
         let low  = UX(load: self.storage.low )
         let high = UX(load: self.storage.high) << UX(size: Low.self)
-        return UX.BitPattern.init(raw: low | high)
+        return UX.BitPattern(raw: low  | high)
     }
     
     //=------------------------------------------------------------------------=

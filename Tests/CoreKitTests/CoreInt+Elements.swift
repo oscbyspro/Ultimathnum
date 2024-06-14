@@ -20,21 +20,12 @@ extension CoreIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testInitBody() {
+    func testElements() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            IntegerInvariants(T.self).elements()
             IntegerInvariants(T.self).exactlyArrayBodyMode()
         }
         
-        for type in coreSystemsIntegers {
-            whereIs(type)
-        }
-    }
-    
-    func testMakeBody() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self).elements()
-        }
-
         for type in coreSystemsIntegers {
             whereIs(type)
         }
