@@ -87,9 +87,8 @@ import CoreKit
         
         self.init()
         
-        try index.withUnsafeBinaryIntegerBody(as: U8.self) {
-            let x = $0.count(.nonappendix)
-            for i in (0 ..< x).reversed() {
+        try index.withUnsafeBinaryIntegerBody(as:  U8.self) {
+            for i in (0 ..< $0.nondescending(0)).reversed() {
                 try self.double()
                 
                 if  $0[unchecked: i &>> 3] &>> U8(load: i) & 1 != 0 {

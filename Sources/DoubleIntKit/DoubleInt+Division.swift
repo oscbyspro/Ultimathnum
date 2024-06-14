@@ -102,14 +102,14 @@ extension DoubleInt where Base == Base.Magnitude {
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
     @inlinable consuming func division2222(_ divisor: consuming Divisor<Self>) -> Division<Self, Self> {
-        self.division2222(divisor, normalization: Shift(unchecked: divisor.value.count(.appendix)))
+        self.division2222(divisor, normalization: Shift(unchecked: divisor.value.descending(0)))
     }
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
     @inlinable consuming func division2222(_ divisor: consuming Divisor<Self>, normalization: consuming Shift<Self>) -> Division<Self, Self> {
         //=--------------------------------------=
         Swift.assert(!divisor .value.isZero, "must not divide by zero")
-        Swift.assert((divisor).value.count(.appendix) == normalization.value, "save shift distance")
+        Swift.assert((divisor).value.descending(0) == normalization.value, "save shift distance")
         //=--------------------------------------=
         // divisor is greater than or equal
         //=--------------------------------------=
@@ -155,7 +155,7 @@ extension DoubleInt where Base == Base.Magnitude {
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
     @inlinable static func division4222(_ lhs: consuming Doublet<Self>, by rhs: Divisor<Self>) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
-        let normalization = Shift(unchecked: rhs.value.count(.appendix))
+        let normalization = Shift(unchecked: rhs.value.descending(0))
         //=--------------------------------------=
         var overflow = false
         //=--------------------------------------=
@@ -172,7 +172,7 @@ extension DoubleInt where Base == Base.Magnitude {
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
     @inlinable static func division4222(_ lhs: consuming Doublet<Self>, by rhs: Divisor<Self>, normalization: Shift<Self>) -> Division<Self, Self> {
         Swift.assert(rhs.value > lhs.high, "quotient must fit in two halves")
-        Swift.assert(rhs.value.count(.descending(.zero)) == normalization.value, "save shift distance")
+        Swift.assert(rhs.value.descending(0) == normalization.value, "save shift distance")
         //=--------------------------------------=
         // division: 2222
         //=--------------------------------------=

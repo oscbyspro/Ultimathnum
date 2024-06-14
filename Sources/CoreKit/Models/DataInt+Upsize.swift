@@ -106,7 +106,7 @@ extension DataInt<U8>.Body {
         
         var count = UX(raw: self.count)
         count   &+= UX(raw: MemoryLayout<Destination>.stride).minus(1).unchecked()
-        count  &>>= UX(raw: MemoryLayout<Destination>.stride).count(.ascending(0))
+        count  &>>= UX(raw: MemoryLayout<Destination>.stride).ascending(000000000)
         return IX(raw: count)
     }
 }

@@ -111,11 +111,11 @@ extension TextInt {
         //=--------------------------------------=
         // text: capacity upper bound
         //=--------------------------------------=
-        var capacity: IX = body.count(.nonappendix)
+        var capacity: IX = body.nondescending(0)
         var speed = self.exponentiation.power.size() as UX
         
         if !self.exponentiation.power.isZero {
-            speed = speed.decremented().minus(self.exponentiation.power.count(.appendix)).unchecked()
+            speed = speed.decremented().minus(self.exponentiation.power.descending(0)).unchecked()
         }
         
         capacity /= IX(raw: speed)

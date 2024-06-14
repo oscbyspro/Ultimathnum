@@ -196,7 +196,7 @@ extension Test {
             elements.reinterpret(as: U8.self) {
                 same(Integer.exactly($0, mode: mode), expectation, "T.exactly(_:mode:) - DataInt<U8>")
                 
-                if !expectation.error, $0.count(.entropy) <= UX.size {
+                if !expectation.error, $0.entropy() <= UX.size {
                     let word = $0.load(as: UX.self)
                     
                     if  Integer.isSigned {

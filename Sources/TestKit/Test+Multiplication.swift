@@ -104,8 +104,8 @@ extension Test {
         }
         
         shift: if !expectation.error {
-            guard let zeros0 = lhs.count(.ascending(0)).veto(\.isInfinite).optional() else { break shift }
-            guard let zeros1 = rhs.count(.ascending(0)).veto(\.isInfinite).optional() else { break shift }
+            guard let zeros0 = lhs.ascending(0).veto(\.isInfinite).optional() else { break shift }
+            guard let zeros1 = rhs.ascending(0).veto(\.isInfinite).optional() else { break shift }
             
             let a = T(zeros0), lhsX = (lhs >> a)
             let b = T(zeros1), rhsX = (rhs >> b)

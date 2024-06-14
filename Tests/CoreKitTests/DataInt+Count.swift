@@ -59,29 +59,29 @@ extension DataIntTests {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
             typealias C = DataIntTests.Body<T>
             
-            C([          ]).count(.ascending(0), is: 0 as IX)
-            C([11        ]).count(.ascending(0), is: 0 as IX)
-            C([11, 22    ]).count(.ascending(0), is: 0 as IX)
-            C([11, 22, 33]).count(.ascending(0), is: 0 as IX)
+            C([          ]).ascending(0, is: 0 as IX)
+            C([11        ]).ascending(0, is: 0 as IX)
+            C([11, 22    ]).ascending(0, is: 0 as IX)
+            C([11, 22, 33]).ascending(0, is: 0 as IX)
             
-            C([          ]).count(.ascending(1), is: 0 as IX)
-            C([11        ]).count(.ascending(1), is: 2 as IX)
-            C([11, 22    ]).count(.ascending(1), is: 2 as IX)
-            C([11, 22, 33]).count(.ascending(1), is: 2 as IX)
+            C([          ]).ascending(1, is: 0 as IX)
+            C([11        ]).ascending(1, is: 2 as IX)
+            C([11, 22    ]).ascending(1, is: 2 as IX)
+            C([11, 22, 33]).ascending(1, is: 2 as IX)
             
             for bit: Bit in [0, 1] {
                 let a = T(repeating: bit)
                 let b = T(repeating: bit) ^ T(11).toggled()
                 
-                C([b      ]).count(.ascending( bit), is: 0 * IX(size: T.self) + 2 as IX)
-                C([a, b   ]).count(.ascending( bit), is: 1 * IX(size: T.self) + 2 as IX)
-                C([a, a, b]).count(.ascending( bit), is: 2 * IX(size: T.self) + 2 as IX)
-                C([a, a, a]).count(.ascending( bit), is: 3 * IX(size: T.self) + 0 as IX)
+                C([b      ]).ascending( bit, is: 0 * IX(size: T.self) + 2 as IX)
+                C([a, b   ]).ascending( bit, is: 1 * IX(size: T.self) + 2 as IX)
+                C([a, a, b]).ascending( bit, is: 2 * IX(size: T.self) + 2 as IX)
+                C([a, a, a]).ascending( bit, is: 3 * IX(size: T.self) + 0 as IX)
                 
-                C([b      ]).count(.ascending(~bit), is: 0 * IX(size: T.self) + 0 as IX)
-                C([a, b   ]).count(.ascending(~bit), is: 0 * IX(size: T.self) + 0 as IX)
-                C([a, a, b]).count(.ascending(~bit), is: 0 * IX(size: T.self) + 0 as IX)
-                C([a, a, a]).count(.ascending(~bit), is: 0 * IX(size: T.self) + 0 as IX)
+                C([b      ]).ascending(~bit, is: 0 * IX(size: T.self) + 0 as IX)
+                C([a, b   ]).ascending(~bit, is: 0 * IX(size: T.self) + 0 as IX)
+                C([a, a, b]).ascending(~bit, is: 0 * IX(size: T.self) + 0 as IX)
+                C([a, a, a]).ascending(~bit, is: 0 * IX(size: T.self) + 0 as IX)
             }
         }
         
@@ -94,29 +94,29 @@ extension DataIntTests {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
             typealias C = DataIntTests.Body<T>
             
-            C([          ]).count(.descending(0), is: 0 * IX(size: T.self) - 0 as IX)
-            C([11        ]).count(.descending(0), is: 1 * IX(size: T.self) - 4 as IX)
-            C([11, 22    ]).count(.descending(0), is: 1 * IX(size: T.self) - 5 as IX)
-            C([11, 22, 33]).count(.descending(0), is: 1 * IX(size: T.self) - 6 as IX)
+            C([          ]).descending(0, is: 0 * IX(size: T.self) - 0 as IX)
+            C([11        ]).descending(0, is: 1 * IX(size: T.self) - 4 as IX)
+            C([11, 22    ]).descending(0, is: 1 * IX(size: T.self) - 5 as IX)
+            C([11, 22, 33]).descending(0, is: 1 * IX(size: T.self) - 6 as IX)
             
-            C([          ]).count(.descending(1), is: 0 * IX(size: T.self) - 0 as IX)
-            C([11        ]).count(.descending(1), is: 0 * IX(size: T.self) - 0 as IX)
-            C([11, 22    ]).count(.descending(1), is: 0 * IX(size: T.self) - 0 as IX)
-            C([11, 22, 33]).count(.descending(1), is: 0 * IX(size: T.self) - 0 as IX)
+            C([          ]).descending(1, is: 0 * IX(size: T.self) - 0 as IX)
+            C([11        ]).descending(1, is: 0 * IX(size: T.self) - 0 as IX)
+            C([11, 22    ]).descending(1, is: 0 * IX(size: T.self) - 0 as IX)
+            C([11, 22, 33]).descending(1, is: 0 * IX(size: T.self) - 0 as IX)
             
             for bit: Bit in [0, 1] {
                 let a = T(repeating: bit)
                 let b = T(repeating: bit) ^ T(13).toggled() << T(raw: T.size - 4)
                 
-                C([b      ]).count(.descending( bit), is: 0 * IX(size: T.self) + 2 as IX)
-                C([b, a   ]).count(.descending( bit), is: 1 * IX(size: T.self) + 2 as IX)
-                C([b, a, a]).count(.descending( bit), is: 2 * IX(size: T.self) + 2 as IX)
-                C([a, a, a]).count(.descending( bit), is: 3 * IX(size: T.self) + 0 as IX)
+                C([b      ]).descending( bit, is: 0 * IX(size: T.self) + 2 as IX)
+                C([b, a   ]).descending( bit, is: 1 * IX(size: T.self) + 2 as IX)
+                C([b, a, a]).descending( bit, is: 2 * IX(size: T.self) + 2 as IX)
+                C([a, a, a]).descending( bit, is: 3 * IX(size: T.self) + 0 as IX)
                 
-                C([b      ]).count(.descending(~bit), is: 0 * IX(size: T.self) - 0 as IX)
-                C([b, a   ]).count(.descending(~bit), is: 0 * IX(size: T.self) - 0 as IX)
-                C([b, a, a]).count(.descending(~bit), is: 0 * IX(size: T.self) - 0 as IX)
-                C([a, a, a]).count(.descending(~bit), is: 0 * IX(size: T.self) + 0 as IX)
+                C([b      ]).descending(~bit, is: 0 * IX(size: T.self) - 0 as IX)
+                C([b, a   ]).descending(~bit, is: 0 * IX(size: T.self) - 0 as IX)
+                C([b, a, a]).descending(~bit, is: 0 * IX(size: T.self) - 0 as IX)
+                C([a, a, a]).descending(~bit, is: 0 * IX(size: T.self) + 0 as IX)
             }
         }
         
@@ -140,39 +140,36 @@ extension DataIntTests.Body {
         self.expect(expectation, read:{ $0.size() }, write:{ $0.size() })
     }    
     
-    func count(_ selection: Bit, is expectation: IX) {
-        let inverse = selection.toggled()
+    func count(_ bit: Bit, is expectation: IX) {
         let size = IX(self.body.count) * IX(size: Element.self)
         
-        self.expect(       expectation, read:{ $0.count(selection) }, write:{ $0.count(selection) })
-        self.expect(size - expectation, read:{ $0.count((inverse)) }, write:{ $0.count((inverse)) })
+        self.size(is: size)
+        self.expect(       expectation, read:{ $0.count( bit) }, write:{ $0.count( bit) })
+        self.expect(size - expectation, read:{ $0.count(~bit) }, write:{ $0.count(~bit) })
     }
     
-    func count(_ selection: Bit.Ascending, is expectation: IX) {
-        let inverse = Bit.Nonascending(selection.bit)
+    func ascending(_ bit: Bit, is expectation: IX) {
         let size = IX(self.body.count) * IX(size: Element.self)
         
-        self.expect(       expectation, read:{ $0.count(selection) }, write:{ $0.count(selection) })
-        self.expect(size - expectation, read:{ $0.count((inverse)) }, write:{ $0.count((inverse)) })
+        self.size(is: size)
+        self.expect(       expectation, read:{ $0   .ascending(bit) }, write:{ $0   .ascending(bit) })
+        self.expect(size - expectation, read:{ $0.nonascending(bit) }, write:{ $0.nonascending(bit) })
     }
     
-    func count(_ selection: Bit.Descending, is expectation: IX) {
-        let inverse = Bit.Nondescending(selection.bit)
+    func descending(_ bit: Bit, is expectation: IX) {
         let size = IX(self.body.count) * IX(size: Element.self)
         
-        self.expect(       expectation, read:{ $0.count(selection) }, write:{ $0.count(selection) })
-        self.expect(size - expectation, read:{ $0.count((inverse)) }, write:{ $0.count((inverse)) })
+        self.size(is: size)
+        self.expect(       expectation, read:{ $0   .descending(bit) }, write:{ $0   .descending(bit) })
+        self.expect(size - expectation, read:{ $0.nondescending(bit) }, write:{ $0.nondescending(bit) })
         
-        if  selection.bit == 0 {
-            self.expect(           expectation, read:{ $0.count(   .appendix) }, write:{ $0.count(   .appendix) })
-            self.expect(    size - expectation, read:{ $0.count(.nonappendix) }, write:{ $0.count(.nonappendix) })
-            self.expect(1 + size - expectation, read:{ $0.count(    .entropy) }, write:{ $0.count(    .entropy) })
+        if  bit == 0 {
+            self .expect(1 + size - expectation, read:{ $0.entropy() }, write:{ $0.entropy() })
         }
         
         always: do {
-            let other = DataIntTests.Extension((self.body, selection.bit), test: self.test)
-            other.expect(    size - expectation, read:{ $0.count(.nonappendix) }, write:{ $0.count(.nonappendix) })
-            other.expect(1 + size - expectation, read:{ $0.count(    .entropy) }, write:{ $0.count(    .entropy) })
+            let other = DataIntTests.Extension((self.body, bit), test: self.test)
+            other.expect(1 + size - expectation, read:{ $0.entropy() }, write:{ $0.entropy() })
         }
     }
 }

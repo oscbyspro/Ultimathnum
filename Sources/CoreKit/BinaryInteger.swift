@@ -381,16 +381,16 @@ where
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// The number of bits in `self` that match the `selection`.
+    /// The `bit` count in `self`.
     ///
     /// ```swift
     /// I8(11).count(0) // 5
     /// I8(11).count(1) // 3
     /// ```
     ///
-    @inlinable borrowing func count(_ selection: Bit) -> Magnitude
+    @inlinable borrowing func count(_ bit: Bit) -> Magnitude
     
-    /// The number of bits in `self` that match the `selection`.
+    /// The ascending `bit` count in `self`.
     ///
     /// ```swift
     /// I8(11).count(.ascending(0)) // 0
@@ -399,9 +399,9 @@ where
     /// I8(22).count(.ascending(1)) // 0
     /// ```
     ///
-    @inlinable borrowing func count(_ selection: Bit.Ascending) -> Magnitude
+    @inlinable borrowing func ascending(_ bit: Bit) -> Magnitude
     
-    /// The number of bits in `self` that match the `selection`.
+    /// The descending `bit` count in `self`.
     ///
     /// ```swift
     /// I8(11).count(.descending(0)) // 4
@@ -410,7 +410,7 @@ where
     /// I8(22).count(.descending(1)) // 0
     /// ```
     ///
-    @inlinable borrowing func count(_ selection: Bit.Descending) -> Magnitude
+    @inlinable borrowing func descending(_ bit: Bit) -> Magnitude
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

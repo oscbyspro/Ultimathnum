@@ -38,12 +38,7 @@ extension InfiniInt {
             return instance
         }
         //=--------------------------------------=
-        // path: distance is >= body per protocol
-        //=--------------------------------------=
-        let shift = IX.exactly(Magnitude(raw: distance.value)).unwrap("BinaryInteger/body/0...IX.max")
-        //=--------------------------------------=
-        // path: success or allocation is too big
-        //=--------------------------------------=
+        let shift = IX.exactly(distance.value).unwrap("BinaryInteger/entropy/0...IX.max")
         let split = shift.division(Divisor(unchecked: IX(size: Element.self))).unchecked()
         instance.storage.resizeByLenientUpshift(major: split.quotient, minor: split.remainder)
         Swift.assert(instance.storage.isNormal)

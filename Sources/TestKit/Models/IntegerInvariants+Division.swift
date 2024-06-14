@@ -45,7 +45,7 @@ extension IntegerInvariants {
             
             test.division(msb, ~3 as T, F(D(quotient: (msb >> 2).complement(), remainder: 0)))
             test.division(msb, ~1 as T, F(D(quotient: (msb >> 1).complement(), remainder: 0)))
-            test.division(msb, ~0 as T, F(D(quotient: (msb >> 0).complement(), remainder: 0), error: msb.count(.ascending(0)) == T.size - 1))
+            test.division(msb, ~0 as T, F(D(quotient: (msb >> 0).complement(), remainder: 0), error: msb.ascending(0) == T.size - 1))
             test.division(msb,  0 as T, nil)
             test.division(msb,  1 as T, F(D(quotient: msb,          remainder: 0)))
             test.division(msb,  2 as T, F(D(quotient: msb >> 1,     remainder: 0)))

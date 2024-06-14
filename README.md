@@ -348,24 +348,12 @@ overview [Mutable]DataInt.Body:
 ##### Count
 
 ```
-overview [Mutable]DataInt:
+overview [Mutable]DataInt[.Body]:
 
-/count(Bit.Entropy)     -> IX
-/count(Bit.Nonappendix) -> IX
-```
-
-```
-overview [Mutable]DataInt.Body:
-
-/size()                   -> IX
-/count(Bit)               -> IX
-/count(Bit.Entropy)       -> IX
-/count(Bit.Appendix)      -> IX
-/count(Bit.Nonappendix)   -> IX
-/count(Bit.Ascending)     -> IX
-/count(Bit.Nonascending)  -> IX
-/count(Bit.Descending)    -> IX
-/count(Bit.Nondescending) -> IX
+Body/size()     -> IX
+Self/entropy()  -> IX
+Body/count(Bit) -> IX
+Body/[non][a|de]scending(Bit) -> IX
 ```
 
 ##### Division

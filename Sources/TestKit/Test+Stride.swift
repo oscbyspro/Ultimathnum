@@ -36,8 +36,9 @@ extension Test {
         if !lossy {
             same(advanced, end.veto(expectation.error), "advanced(by:) [0]")
         }   else {
-            yay (expectation.error,      "advanced(by:) [1]")
-            nonsame(advanced.value, end, "advanced(by:) [2]")
+            yay(T.size >=  D.size, "advanced(by:) [1] - size" )
+            yay(expectation.error, "advanced(by:) [1] - error")
+            nonsame(advanced.value, end, "advanced(by:) [1] - value")
         }
     }
 }

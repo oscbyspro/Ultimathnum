@@ -17,45 +17,26 @@ extension RootInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// The number of bits needed to represent `self`.
+    /// The number of bits needed to *arbitrarily* represent `self`.
     ///
     /// ```
     /// ┌──────┬──────────── → ────────┐
     /// │ self │ bit pattern │ entropy │
     /// ├──────┼──────────── → ────────┤
-    /// │ -4   │ 00........1 │ 3       │
-    /// │ -3   │ 10........1 │ 3       │
-    /// │ -2   │ 0.........1 │ 2       │
-    /// │ -1   │ ..........1 │ 1       │
-    /// │  0   │ ..........0 │ 1       │
-    /// │  1   │ 1.........0 │ 2       │
-    /// │  2   │ 01........0 │ 3       │
-    /// │  3   │ 11........0 │ 3       │
+    /// │   -4 │ 00........1 │ 3       │
+    /// │   -2 │ 10........1 │ 3       │
+    /// │   -3 │ 0.........1 │ 2       │
+    /// │   -1 │ ..........1 │ 1       │
+    /// │    0 │ ..........0 │ 1       │
+    /// │    1 │ 1.........0 │ 2       │
+    /// │    2 │ 01........0 │ 3       │
+    /// │    3 │ 11........0 │ 3       │
     /// └──────┴──────────── → ────────┘
     /// ```
     ///
-    @inlinable public func count(_ selection: Bit.Entropy) -> UX {
-        UX(IX(self.base.bitWidth))
-    }
-    
-    /// The number of bits in `self` minus the repeating `appendix` sequence.
+    /// - Note: A binary integer's `entropy` must fit in a signed machine word.
     ///
-    /// ```
-    /// ┌──────┬──────────── → ────────────┐
-    /// │ self │ bit pattern │ nonappendix │
-    /// ├──────┼──────────── → ────────────┤
-    /// │ -4   │ 00........1 │ 2           │
-    /// │ -3   │ 10........1 │ 2           │
-    /// │ -2   │ 0.........1 │ 1           │
-    /// │ -1   │ ..........1 │ 0           │
-    /// │  0   │ ..........0 │ 0           │
-    /// │  1   │ 1.........0 │ 1           │
-    /// │  2   │ 01........0 │ 2           │
-    /// │  3   │ 11........0 │ 2           │
-    /// └──────┴──────────── → ────────────┘
-    /// ```
-    ///
-    @inlinable public func count(_ selection: Bit.Nonappendix) -> UX {
-        self.count(.entropy).decremented().unchecked("entropy >= 1")
+    @inlinable public func entropy() -> IX {
+        IX(self.base.bitWidth)
     }
 }

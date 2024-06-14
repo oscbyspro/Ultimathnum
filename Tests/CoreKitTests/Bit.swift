@@ -51,10 +51,10 @@ final class BitTests: XCTestCase {
     }
     
     func testComparison() {
-        checkComparison( 0 as T,  0 as T,  0 as Signum)
-        checkComparison( 0 as T,  1 as T, -1 as Signum)
-        checkComparison( 1 as T,  0 as T,  1 as Signum)
-        checkComparison( 1 as T,  1 as T,  0 as Signum)
+        comparison( 0 as T,  0 as T,  0 as Signum)
+        comparison( 0 as T,  1 as T, -1 as Signum)
+        comparison( 1 as T,  0 as T,  1 as Signum)
+        comparison( 1 as T,  1 as T,  0 as Signum)
     }
     
     //=------------------------------------------------------------------------=
@@ -91,7 +91,7 @@ final class BitTests: XCTestCase {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    func checkComparison(_ lhs: T, _ rhs: T, _ expectation: Signum, _ check: Test = .init()) {
+    func comparison(_ lhs: T, _ rhs: T, _ expectation: Signum, _ check: Test = .init()) {
         for (x, y, z) in [(lhs, rhs, expectation), (rhs, lhs, expectation.negated())] {
             check.same(x.compared(to: y), ((z)))
             check.same(x <  y, z == Signum.less)

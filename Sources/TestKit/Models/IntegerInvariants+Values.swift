@@ -34,14 +34,14 @@ extension IntegerInvariants {
         //=--------------------------------------=
         test.comparison(T.lsb, T.msb, T.isSigned ? Signum.more : Signum.less)
         //=--------------------------------------=
-        test.count(T.lsb,  .ascending(0), 0)
-        test.count(T.lsb,  .ascending(1), 1)
-        test.count(T.lsb, .descending(0), T.size - 1)
-        test.count(T.lsb, .descending(1), 0)
+        test .ascending(T.lsb, 0 as Bit, 0)
+        test .ascending(T.lsb, 1 as Bit, 1)
+        test.descending(T.lsb, 0 as Bit, T.size - 1)
+        test.descending(T.lsb, 1 as Bit, 0)
         
-        test.count(T.msb,  .ascending(0), T.size - 1)
-        test.count(T.msb,  .ascending(1), 0)
-        test.count(T.msb, .descending(0), 0)
-        test.count(T.msb, .descending(1), 1)
+        test .ascending(T.msb, 0 as Bit, T.size - 1)
+        test .ascending(T.msb, 1 as Bit, 0)
+        test.descending(T.msb, 0 as Bit, 0)
+        test.descending(T.msb, 1 as Bit, 1)
     }
 }

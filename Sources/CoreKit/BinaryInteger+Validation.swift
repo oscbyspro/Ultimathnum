@@ -94,7 +94,7 @@ extension BinaryInteger {
                 
             }   else {
                 let bit   = Bit(Self.isSigned) & Bit(source.isNegative)
-                let count = rhsSize.minus(UX(load: source.count(.descending(bit)))).unchecked()
+                let count = rhsSize.minus(UX(load: source.descending(bit))).unchecked()
                 let limit = lhsSize.minus(UX(Bit(Self.isSigned))).unchecked()
                 return Self(load: source).veto(limit < count)
             }

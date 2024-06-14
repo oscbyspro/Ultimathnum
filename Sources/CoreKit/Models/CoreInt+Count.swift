@@ -17,22 +17,22 @@ extension CoreInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func count(_ selection: Bit) -> Magnitude {
-        switch Bool(selection) {
+    @inlinable public func count(_ bit: Bit) -> Magnitude {
+        switch Bool(bit) {
         case true:  Magnitude(Stdlib.Magnitude(truncatingIfNeeded: ( self).base.nonzeroBitCount))
         case false: Magnitude(Stdlib.Magnitude(truncatingIfNeeded: (~self).base.nonzeroBitCount))
         }
     }
     
-    @inlinable public func count(_ selection: Bit.Ascending) -> Magnitude {
-        switch Bool(selection.bit) {
+    @inlinable public func ascending(_ bit: Bit) -> Magnitude {
+        switch Bool(bit) {
         case true:  Magnitude(Stdlib.Magnitude(truncatingIfNeeded: (~self).base.trailingZeroBitCount))
         case false: Magnitude(Stdlib.Magnitude(truncatingIfNeeded: ( self).base.trailingZeroBitCount))
         }
     }
     
-    @inlinable public func count(_ selection: Bit.Descending) -> Magnitude {
-        switch Bool(selection.bit) {
+    @inlinable public func descending(_ bit: Bit) -> Magnitude {
+        switch Bool(bit) {
         case true:  Magnitude(Stdlib.Magnitude(truncatingIfNeeded: (~self).base.leadingZeroBitCount))
         case false: Magnitude(Stdlib.Magnitude(truncatingIfNeeded: ( self).base.leadingZeroBitCount))
         }

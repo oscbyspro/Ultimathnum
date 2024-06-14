@@ -36,59 +36,29 @@ extension BinaryInteger {
         Self.size
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    /// The number of bits in `self` that match the `selection`.
+    /// The inverse ascending `bit` count in `self`.
     ///
     /// ```swift
-    /// I8(-2).count(.appendix) // 7
-    /// I8(-1).count(.appendix) // 8
-    /// I8( 0).count(.appendix) // 8
-    /// I8( 1).count(.appendix) // 7
+    /// I8(11).nonascending(0) // 8
+    /// I8(11).nonascending(1) // 6
+    /// I8(22).nonascending(0) // 7
+    /// I8(22).nonascending(1) // 8
     /// ```
     ///
-    @inlinable public func count(_ selection: Bit.Appendix) -> Magnitude {
-        self.count(.descending(self.appendix)) // await borrowing fix
+    @inlinable borrowing public func nonascending(_ bit: Bit) -> Magnitude {
+        self.size().minus(self.ascending(bit)).unchecked("inverse bit count")
     }
     
-    /// The number of bits in `self` that match the `selection`.
+    /// The inverse descending `bit` count in `self`.
     ///
     /// ```swift
-    /// I8(-2).count(.nonappendix) // 1
-    /// I8(-1).count(.nonappendix) // 0
-    /// I8( 0).count(.nonappendix) // 0
-    /// I8( 1).count(.nonappendix) // 1
+    /// I8(11).nondescending(0) // 4
+    /// I8(11).nondescending(1) // 8
+    /// I8(22).nondescending(0) // 5
+    /// I8(22).nondescending(1) // 8
     /// ```
     ///
-    @inlinable borrowing public func count(_ selection: Bit.Nonappendix) -> Magnitude {
-        self.size().minus(self.count(.appendix)).unchecked("inverse bit count")
-    }
-    
-    /// The number of bits in `self` that match the `selection`.
-    ///
-    /// ```swift
-    /// I8(11).count(.nonascending(0)) // 8
-    /// I8(11).count(.nonascending(1)) // 6
-    /// I8(22).count(.nonascending(0)) // 7
-    /// I8(22).count(.nonascending(1)) // 8
-    /// ```
-    ///
-    @inlinable borrowing public func count(_ selection: Bit.Nonascending) -> Magnitude {
-        self.size().minus(self.count( .ascending(selection.bit))).unchecked("inverse bit count")
-    }
-    
-    /// The number of bits in `self` that match the `selection`.
-    ///
-    /// ```swift
-    /// I8(11).count(.nondescending(0)) // 4
-    /// I8(11).count(.nondescending(1)) // 8
-    /// I8(22).count(.nondescending(0)) // 5
-    /// I8(22).count(.nondescending(1)) // 8
-    /// ```
-    ///
-    @inlinable borrowing public func count(_ selection: Bit.Nondescending) -> Magnitude {
-        self.size().minus(self.count(.descending(selection.bit))).unchecked("inverse bit count")
+    @inlinable borrowing public func nondescending(_ bit: Bit) -> Magnitude {
+        self.size().minus(self.descending(bit)).unchecked("inverse bit count")
     }
 }
