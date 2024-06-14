@@ -22,8 +22,8 @@ extension CoreIntTests {
     
     func testStride() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            var lhsLength = 000 as Int
-            var rhsLength = 255 as Int
+            var lhsLength = 000 as Swift.Int
+            var rhsLength = 255 as Swift.Int
             
             let lowerBound: T = T.isSigned ? -128 : 000
             let upperBound: T = T.isSigned ?  127 : 255
@@ -73,7 +73,7 @@ extension CoreIntTests {
             Test().same(T.max.advanced(by:  2 as U), F(T.max &+ 2, error: true))
             Test().same(T.max.advanced(by:  3 as U), F(T.max &+ 3, error: true))
             
-            if  UX(size: T.self) < UX(size: U.self) {
+            if  T.size < U.size {
                 Test().same(T(~0).advanced(by: U.min), F(~0 as T, error: true))
                 Test().same(T(~1).advanced(by: U.min), F(~1 as T, error: true))
                 Test().same(T( 0).advanced(by: U.min), F( 0 as T, error: true))
@@ -98,21 +98,21 @@ extension CoreIntTests {
             typealias F = Fallible
             
             always: do {
-                Test().same(T.min.distance(to: T.min.advanced(by:    126)), F(I8 .max - 1))
-                Test().same(T.min.distance(to: T.min.advanced(by:    127)), F(I8 .max))
-                Test().same(T.min.distance(to: T.min.advanced(by:    128)), F(I8 .min, error: true))
+                Test().distance(T.min, T.min.advanced(by:    126), F(I8 .max - 1))
+                Test().distance(T.min, T.min.advanced(by:    127), F(I8 .max))
+                Test().distance(T.min, T.min.advanced(by:    128), F(I8 .min, error: true), lossy: T.size > 08)
                 
-                Test().same(T.max.distance(to: T.max.advanced(by:   -129)), F(I8 .max, error: true))
-                Test().same(T.max.distance(to: T.max.advanced(by:   -128)), F(I8 .min))
-                Test().same(T.max.distance(to: T.max.advanced(by:   -127)), F(I8 .min + 1))
+                Test().distance(T.max, T.max.advanced(by:   -129), F(I8 .max, error: true), lossy: T.size > 08)
+                Test().distance(T.max, T.max.advanced(by:   -128), F(I8 .min))
+                Test().distance(T.max, T.max.advanced(by:   -127), F(I8 .min + 1))
             };  if T.size >= 16 {
-                Test().same(T.min.distance(to: T.min.advanced(by:  32766)), F(I16.max - 1))
-                Test().same(T.min.distance(to: T.min.advanced(by:  32767)), F(I16.max))
-                Test().same(T.min.distance(to: T.min.advanced(by:  32768)), F(I16.min, error: true))
+                Test().distance(T.min, T.min.advanced(by:  32766), F(I16.max - 1))
+                Test().distance(T.min, T.min.advanced(by:  32767), F(I16.max))
+                Test().distance(T.min, T.min.advanced(by:  32768), F(I16.min, error: true), lossy: T.size > 16)
                 
-                Test().same(T.max.distance(to: T.max.advanced(by: -32769)), F(I16.max, error: true))
-                Test().same(T.max.distance(to: T.max.advanced(by: -32768)), F(I16.min))
-                Test().same(T.max.distance(to: T.max.advanced(by: -32767)), F(I16.min + 1))
+                Test().distance(T.max, T.max.advanced(by: -32769), F(I16.max, error: true), lossy: T.size > 16)
+                Test().distance(T.max, T.max.advanced(by: -32768), F(I16.min))
+                Test().distance(T.max, T.max.advanced(by: -32767), F(I16.min + 1))
             }
         }
         
@@ -146,7 +146,7 @@ final class CoreIntTestsOnStrideOpenSourceIssues: XCTestCase {
     /// - Note: Checks two unnecessary traps in Swift 5.9.
     ///
     func testGitHubAppleSwiftPull71387() {
-        Test().same(UX.max.distance(to: UX.max/2), Int.min)
-        Test().same(IX.max.distance(to: -1 as IX), Int.min)
+        Test().same(UX.max.distance(to: UX.max/2), Swift.Int.min)
+        Test().same(IX.max.distance(to: -1 as IX), Swift.Int.min)
     }
 }
