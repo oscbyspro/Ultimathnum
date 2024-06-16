@@ -24,7 +24,7 @@
 /// init(unchecked:) // error: unchecked
 /// ```
 ///
-@frozen public struct Divisor<Value>: BitCastable where Value: BinaryInteger {
+@frozen public struct Divisor<Value>: BitCastable, Equatable where Value: BinaryInteger {
     
     public typealias Value = Value
     

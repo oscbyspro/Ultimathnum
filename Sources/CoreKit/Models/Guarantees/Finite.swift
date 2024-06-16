@@ -24,7 +24,7 @@
 /// init(unchecked:) // error: unchecked
 /// ```
 ///
-@frozen public struct Finite<Value> where Value: BinaryInteger {
+@frozen public struct Finite<Value>: Equatable where Value: BinaryInteger {
     
     public typealias Value = Value
         
