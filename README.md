@@ -52,8 +52,7 @@
 
 In programming, complexity is sand, and simplicity is a rock. The former is 
 a sum of parts. This project unifies abstractions and streamlines models to
-keep the parts few and similar to each other. In this way, downstream projects 
-can be built free from the scattered mess of ideas that numbers usually are.
+keep the parts few and similar to each other.
 
 <a name="introduction-stdlib"/>
 

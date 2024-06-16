@@ -39,7 +39,7 @@ extension InfiniInt {
         }
         //=--------------------------------------=
         let shift = IX.exactly(distance.value).unwrap("BinaryInteger/entropy/0...IX.max")
-        let split = shift.division(Divisor(unchecked: IX(size: Element.self))).unchecked()
+        let split = shift.division(Divisor(size: Element.self)).unchecked()
         instance.storage.resizeByLenientUpshift(major: split.quotient, minor: split.remainder)
         Swift.assert(instance.storage.isNormal)
         return instance as Self as Self as Self
@@ -58,7 +58,7 @@ extension InfiniInt {
         Swift.assert(!distance.value.isInfinite)
         Swift.assert(!distance.value.isNegative)
         //=--------------------------------------=
-        let shift = IX.exactly(Magnitude(raw: distance.value))
+        let shift = IX.exactly(distance.value)
         //=--------------------------------------=
         // path: distance is >= body per protocol
         //=--------------------------------------=
@@ -68,7 +68,7 @@ extension InfiniInt {
         //=--------------------------------------=
         // path: success
         //=--------------------------------------=
-        let split = shift.value.division(Divisor(unchecked: IX(size: Element.self))).unchecked()
+        let split = shift.value.division(Divisor(size: Element.self)).unchecked()
         instance.storage.resizeByLenientDownshift(major: split.quotient, minor: split.remainder)
         Swift.assert(instance.storage.isNormal)
         return instance as Self as Self as Self

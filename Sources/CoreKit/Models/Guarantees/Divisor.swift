@@ -113,3 +113,22 @@
         Divisor<Value.Magnitude>(unchecked: self.value.magnitude())
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Conveniences
+//=----------------------------------------------------------------------------=
+
+extension Divisor where Value: SystemsInteger<UX.BitPattern> {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    /// Creates a new instance equal to `T.size`.
+    ///
+    /// - Note: A systems integer's size is never zero.
+    ///
+    @inlinable public init<T>(size source: T.Type) where T: SystemsInteger {
+        self.init(unchecked: Value.init(size: T.self))
+    }
+}
