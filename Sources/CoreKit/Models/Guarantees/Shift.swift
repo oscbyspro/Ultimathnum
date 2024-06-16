@@ -11,7 +11,7 @@
 // MARK: * Shift
 //*============================================================================*
 
-/// A finite value from zero to the wrapped type's bit width.
+/// A finite value from zero up to the wrapped type's size.
 ///
 /// ### Trusted Input
 ///
@@ -24,7 +24,7 @@
 /// init(unchecked:) // error: unchecked
 /// ```
 ///
-@frozen public struct Shift<Value>: BitCastable where Value: BinaryInteger {
+@frozen public struct Shift<Value>: BitCastable, Equatable where Value: BinaryInteger {
     
     public typealias Value = Value
     
@@ -50,7 +50,7 @@
     
     /// Creates a new instance without precondition checks.
     ///
-    /// - Requires: `values.appendix == 0 && value < Value.size`
+    /// - Requires: `value.appendix == 0 && value < Value.size`
     ///
     /// - Warning: Use this method only when you are 100% sure the input is valid.
     ///
@@ -62,7 +62,7 @@
     
     /// Creates a new instance by trapping on failure.
     ///
-    /// - Requires: `values.appendix == 0 && value < Value.size`
+    /// - Requires: `value.appendix == 0 && value < Value.size`
     ///
     @inlinable public init(_ value: consuming Value) {
         self.init(exactly: value)!
@@ -70,7 +70,7 @@
     
     /// Creates a new instance by returning `nil` on failure.
     ///
-    /// - Requires: `values.appendix == 0 && value < Value.size`
+    /// - Requires: `value.appendix == 0 && value < Value.size`
     ///
     @inlinable public init?(exactly value: consuming Value) {
         guard Self.predicate(value) else { return nil }
@@ -79,7 +79,7 @@
     
     /// Creates a new instance by throwing the `error()` on failure.
     ///
-    /// - Requires: `values.appendix == 0 && value < Value.size`
+    /// - Requires: `value.appendix == 0 && value < Value.size`
     ///
     @inlinable public init<Failure>(
         _ value: consuming Value,
@@ -100,12 +100,38 @@
     @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
         BitPattern(unchecked: Value.Magnitude(raw: self.value))
     }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Conveniences
+//=----------------------------------------------------------------------------=
+
+extension Shift where Value: SystemsInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func nondistance() -> Self where Value: SystemsInteger {
-        Self(unchecked: Value(raw: Value.size).minus(self.value).unchecked())
+    /// Returns the inverse of `self` unless `self` is zero.
+    ///
+    /// ```swift
+    /// Shift(0 as I8).inverse() // nil
+    /// Shift(1 as I8).inverse() // 7
+    /// Shift(2 as I8).inverse() // 6
+    /// Shift(3 as I8).inverse() // 5
+    /// Shift(4 as I8).inverse() // 4
+    /// Shift(5 as I8).inverse() // 3
+    /// Shift(6 as I8).inverse() // 2
+    /// Shift(7 as I8).inverse() // 1
+    /// ```
+    ///
+    @inlinable public borrowing func inverse() -> Optional<Self> {
+        if  self.value.isZero {
+            return nil
+            
+        }   else {
+            let difference = Value(raw: Value.size).minus(self.value)
+            return Self(unchecked: difference.unchecked())
+        }
     }
 }

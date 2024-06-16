@@ -82,3 +82,33 @@ final class ShiftTests: XCTestCase {
         }
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Edge Cases
+//=----------------------------------------------------------------------------=
+
+extension ShiftTests {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    /// 2024-06-15: Checks that the inverse of zero is nil.
+    func testZeroInvarseIsInvalid() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            Test().nay (Shift.predicate(T.size))
+            Test().same(Shift(0 as T).inverse(), nil)
+            Test().same(Shift(1 as T).inverse(), Shift(T(T.size - 1)))
+            Test().same(Shift(2 as T).inverse(), Shift(T(T.size - 2)))
+            Test().same(Shift(3 as T).inverse(), Shift(T(T.size - 3)))
+            Test().same(Shift(4 as T).inverse(), Shift(T(T.size - 4)))
+            Test().same(Shift(5 as T).inverse(), Shift(T(T.size - 5)))
+            Test().same(Shift(6 as T).inverse(), Shift(T(T.size - 6)))
+            Test().same(Shift(7 as T).inverse(), Shift(T(T.size - 7)))
+        }
+        
+        for type in coreSystemsIntegers {
+            whereIs(type)
+        }
+    }
+}

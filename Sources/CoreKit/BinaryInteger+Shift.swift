@@ -17,7 +17,7 @@ extension BinaryInteger {
     // MARK: Transformations x Inout
     //=------------------------------------------------------------------------=
 
-    /// Forms the result that fits of a so-called smart left shift.
+    /// Performs an ascending smart shift.
     ///
     ///  - Note: The `0` bit fills the void.
     ///
@@ -25,7 +25,7 @@ extension BinaryInteger {
         instance = instance  << distance
     }
     
-    /// Forms the result that fits of a so-called exact left shift.
+    /// Performs an ascending exact shift.
     ///
     ///  - Note: The `0` bit fills the void.
     ///
@@ -33,7 +33,7 @@ extension BinaryInteger {
         instance = instance &<< distance
     }
     
-    /// Forms the result that fits of a so-called un/signed smart right shift.
+    /// Performs a descending smart shift.
     ///
     /// - Note: The `appendix` fills the void.
     ///
@@ -41,7 +41,7 @@ extension BinaryInteger {
         instance = instance  >> distance
     }
 
-    /// Forms the result that fits of a so-called un/signed exact right shift.
+    /// Performs a descending exact shift.
     ///
     /// - Note: The `appendix` fills the void.
     ///
@@ -60,7 +60,7 @@ extension SystemsInteger {
     // MARK: Transformations x Inout
     //=------------------------------------------------------------------------=
     
-    /// Forms the result that fits of a so-called masked left shift.
+    /// Performs an ascending masked shift.
     ///
     ///  - Note: The `0` bit fills the void.
     ///
@@ -68,7 +68,7 @@ extension SystemsInteger {
         instance = instance &<< shift
     }
     
-    /// Forms the result that fits of a so-called un/signed masked right shift.
+    /// Performs a descending masked shift.
     ///
     /// - Note: The `appendix` fills the void.
     ///
@@ -80,33 +80,31 @@ extension SystemsInteger {
     // MARK: Transformations x 2 by 1 as 2
     //=------------------------------------------------------------------------=
 
-    /// Returns the result that fits of a so-called left shift.
+    /// Performs an ascending shift.
     ///
     ///  - Note: The `0` bit fills the void.
     ///
     @inlinable public static func upshift(_ instance: consuming Doublet<Self>, by distance: Shift<Self>) -> Doublet<Self> {
-        //=--------------------------------------=
-        if !distance.value.isZero {
-            instance.high  &<<= distance
-            instance.high    |= Self(raw: instance.low &>> Shift<Magnitude>(raw: distance).nondistance())
-            instance.low   &<<= Shift(unchecked: Magnitude(raw:  distance.value))
+        if  let nondistance  = distance.inverse() {
+            instance.high &<<= distance
+            instance.high   |= Self(raw: instance.low &>> Shift<Magnitude>(raw: nondistance))
+            instance.low  &<<= Shift<Magnitude>(raw: distance)
         }
-        //=--------------------------------------=
+        
         return instance as Doublet<Self> as Doublet<Self>
     }
     
-    /// Returns the result that fits of a so-called un/signed right shift.
+    /// Performs a descending shift.
     ///
     /// - Note: The `appendix` fills the void.
     ///
     @inlinable public static func downshift(_ instance: consuming Doublet<Self>, by distance: Shift<Self>) -> Doublet<Self> {
-        //=--------------------------------------=
-        if !distance.value.isZero {
-            instance.low   &>>= Shift(unchecked: Magnitude(raw:  distance.value))
-            instance.low     |= Magnitude(raw: instance.high &<< distance.nondistance())
-            instance.high  &>>= distance
+        if  let nondistance  = distance.inverse() {
+            instance.low  &>>= Shift<Magnitude>(raw: distance)
+            instance.low    |= Magnitude(raw: instance.high &<< nondistance)
+            instance.high &>>= distance
         }
-        //=--------------------------------------=
+        
         return instance as Doublet<Self> as Doublet<Self>
     }
 }

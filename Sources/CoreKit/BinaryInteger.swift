@@ -346,25 +346,25 @@ where
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Returns the result that fits of a so-called smart left shift.
+    /// Performs an ascending smart shift.
     ///
     ///  - Note: The `0` bit fills the void.
     ///
     @inlinable static func  <<(instance: consuming Self, distance: borrowing Self) -> Self
     
-    /// Returns the result that fits of a so-called exact left shift.
+    /// Performs an ascending exact shift.
     ///
     ///  - Note: The `0` bit fills the void.
     ///
     @inlinable static func &<<(instance: consuming Self, distance: borrowing Shift<Self>) -> Self
     
-    /// Returns the result that fits of a so-called un/signed smart right shift.
+    /// Performs a decending smart shift.
     ///
     /// - Note: The `appendix` fills the void.
     ///
     @inlinable static func  >>(instance: consuming Self, distance: borrowing Self) -> Self
     
-    /// Returns the result that fits of a so-called un/signed exact right shift.
+    /// Performs a decending exact shift.
     ///
     /// - Note: The `appendix` fills the void.
     ///
