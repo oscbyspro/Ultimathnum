@@ -23,8 +23,9 @@ extension InfiniIntTests {
     
     func testComparison() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            IntegerInvariants(T.self).comparisonAgainstOneByte()
-            IntegerInvariants(T.self).comparisonOfRepeatingBit()
+            IntegerInvariants(T.self).comparisonOfGenericLowEntropies()
+            IntegerInvariants(T.self).comparisonOfGenericMinMaxEsque()
+            IntegerInvariants(T.self).comparisonOfGenericRepeatingBit()
         }
         
         for type in Self.types {

@@ -22,11 +22,20 @@ extension DoubleIntTests {
     //=------------------------------------------------------------------------=
     
     func testComparison() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            IntegerInvariants(T.self).comparisonOfGenericLowEntropies()
+            IntegerInvariants(T.self).comparisonOfGenericMinMaxEsque()
+            IntegerInvariants(T.self).comparisonOfGenericRepeatingBit()
+        }
+        
+        for type in Self.types {
+            whereIs(type)
+        }
+    }
+    
+    func testComparisonOfLowHighPairs() {
         func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
-            //=----------------------------------=
-            IntegerInvariants(T.self).comparisonAgainstOneByte()
-            IntegerInvariants(T.self).comparisonOfRepeatingBit()
             //=----------------------------------=
             Test().comparison(T(low:  0, high:  0), T(low:  1, high:  1), -1 as Signum)
             Test().comparison(T(low:  1, high:  0), T(low:  1, high:  1), -1 as Signum)

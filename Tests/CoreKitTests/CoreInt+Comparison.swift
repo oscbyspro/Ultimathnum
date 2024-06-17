@@ -22,59 +22,32 @@ extension CoreIntTests {
     
     func testComparison() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self).comparisonAgainstOneByte()
-            IntegerInvariants(T.self).comparisonOfRepeatingBit()
-        }
-        
-        func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test().comparison( 0 as T,  0 as T,  0 as Signum)
-            Test().comparison(-1 as T,  0 as T, -1 as Signum)
-            Test().comparison( 0 as T, -1 as T,  1 as Signum)
-            Test().comparison(-1 as T, -1 as T,  0 as Signum)
-            
-            Test().comparison( 0 as T,  0 as T,  0 as Signum)
-            Test().comparison(-0 as T,  0 as T,  0 as Signum)
-            Test().comparison( 0 as T, -0 as T,  0 as Signum)
-            Test().comparison(-0 as T, -0 as T,  0 as Signum)
-            
-            Test().comparison( 1 as T,  1 as T,  0 as Signum)
-            Test().comparison(-1 as T,  1 as T, -1 as Signum)
-            Test().comparison( 1 as T, -1 as T,  1 as Signum)
-            Test().comparison(-1 as T, -1 as T,  0 as Signum)
-            
-            Test().comparison( 2 as T,  3 as T, -1 as Signum)
-            Test().comparison(-2 as T,  3 as T, -1 as Signum)
-            Test().comparison( 2 as T, -3 as T,  1 as Signum)
-            Test().comparison(-2 as T, -3 as T,  1 as Signum)
-            
-            Test().comparison( 3 as T,  2 as T,  1 as Signum)
-            Test().comparison(-3 as T,  2 as T, -1 as Signum)
-            Test().comparison( 3 as T, -2 as T,  1 as Signum)
-            Test().comparison(-3 as T, -2 as T, -1 as Signum)
-        }
-        
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
-            Test().comparison( 0 as T,  0 as T,  0 as Signum)
-            Test().comparison( 1 as T,  0 as T,  1 as Signum)
-            Test().comparison( 0 as T,  1 as T, -1 as Signum)
-            Test().comparison( 1 as T,  1 as T,  0 as Signum)
-            
-            Test().comparison( 0 as T,  0 as T,  0 as Signum)
-            Test().comparison( 1 as T,  1 as T,  0 as Signum)
-            Test().comparison( 2 as T,  3 as T, -1 as Signum)
-            Test().comparison( 3 as T,  2 as T,  1 as Signum)
+            IntegerInvariants(T.self).comparisonOfGenericLowEntropies()
+            IntegerInvariants(T.self).comparisonOfGenericMinMaxEsque()
+            IntegerInvariants(T.self).comparisonOfGenericRepeatingBit()
         }
         
         for type in Self.types {
             whereIs(type)
         }
-        
-        for type in Self.typesWhereIsSigned {
-            whereIsSigned(type)
-        }
-        
-        for type in Self.typesWhereIsUnsigned {
-            whereIsUnsigned(type)
-        }
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Edge Cases
+//=----------------------------------------------------------------------------=
+
+extension CoreIntTests {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    /// 2024-06-16: Checks the use of `init(load:)` or similar.
+    func testComparisonDoesNotReinterpretNegativeValuesAsUnsigned() {
+        Test().comparison(-1 as I32, 0 as U8,  -1 as Signum) // OK
+        Test().comparison(-1 as I32, 0 as U16, -1 as Signum) // OK
+        Test().comparison(-1 as I32, 0 as U32, -1 as Signum) // OK
+        Test().comparison(-1 as I32, 0 as U64, -1 as Signum) // :(
     }
 }
