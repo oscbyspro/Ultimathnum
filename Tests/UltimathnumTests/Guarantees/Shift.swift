@@ -8,6 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import DoubleIntKit
 import InfiniIntKit
 import TestKit
 
@@ -31,12 +32,15 @@ final class ShiftTests: XCTestCase {
             Test().same(T(raw: S(2)).value, 2 as Value)
         }
         
-        whereTheValueIs(IXL.self)
-        whereTheValueIs(UXL.self)
-        
         for type in coreSystemsIntegers {
             whereTheValueIs(type)
         }
+        
+        whereTheValueIs(DoubleInt<I8>.self)
+        whereTheValueIs(DoubleInt<U8>.self)
+        
+        whereTheValueIs(InfiniInt<I8>.self)
+        whereTheValueIs(InfiniInt<U8>.self)
     }
     
     func testInitExactly() {
@@ -58,12 +62,15 @@ final class ShiftTests: XCTestCase {
             }
         }
         
-        whereTheValueIs(IXL.self)
-        whereTheValueIs(UXL.self)
-        
         for type in coreSystemsIntegers {
             whereTheValueIs(type)
         }
+        
+        whereTheValueIs(DoubleInt<I8>.self)
+        whereTheValueIs(DoubleInt<U8>.self)
+        
+        whereTheValueIs(InfiniInt<I8>.self)
+        whereTheValueIs(InfiniInt<U8>.self)
     }
     
     func testInitPrune() {
@@ -88,12 +95,15 @@ final class ShiftTests: XCTestCase {
             }
         }
         
-        whereTheValueIs(IXL.self)
-        whereTheValueIs(UXL.self)
-        
         for type in coreSystemsIntegers {
             whereTheValueIs(type)
         }
+        
+        whereTheValueIs(DoubleInt<I8>.self)
+        whereTheValueIs(DoubleInt<U8>.self)
+        
+        whereTheValueIs(InfiniInt<I8>.self)
+        whereTheValueIs(InfiniInt<U8>.self)
     }
 }
 
@@ -109,20 +119,23 @@ extension ShiftTests {
     
     /// 2024-06-15: Checks that the inverse of zero is nil.
     func testZeroInvarseIsInvalid() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            Test().nay (Shift.predicate(T.size))
-            Test().same(Shift(0 as T).inverse(), nil)
-            Test().same(Shift(1 as T).inverse(), Shift(T(T.size - 1)))
-            Test().same(Shift(2 as T).inverse(), Shift(T(T.size - 2)))
-            Test().same(Shift(3 as T).inverse(), Shift(T(T.size - 3)))
-            Test().same(Shift(4 as T).inverse(), Shift(T(T.size - 4)))
-            Test().same(Shift(5 as T).inverse(), Shift(T(T.size - 5)))
-            Test().same(Shift(6 as T).inverse(), Shift(T(T.size - 6)))
-            Test().same(Shift(7 as T).inverse(), Shift(T(T.size - 7)))
+        func whereTheValueIs<Value>(_ type: Value.Type) where Value: SystemsInteger {
+            Test().nay (Shift.predicate(Value.size))
+            Test().same(Shift(0 as Value).inverse(), nil)
+            Test().same(Shift(1 as Value).inverse(), Shift(Value(Value.size - 1)))
+            Test().same(Shift(2 as Value).inverse(), Shift(Value(Value.size - 2)))
+            Test().same(Shift(3 as Value).inverse(), Shift(Value(Value.size - 3)))
+            Test().same(Shift(4 as Value).inverse(), Shift(Value(Value.size - 4)))
+            Test().same(Shift(5 as Value).inverse(), Shift(Value(Value.size - 5)))
+            Test().same(Shift(6 as Value).inverse(), Shift(Value(Value.size - 6)))
+            Test().same(Shift(7 as Value).inverse(), Shift(Value(Value.size - 7)))
         }
         
         for type in coreSystemsIntegers {
-            whereIs(type)
+            whereTheValueIs(type)
         }
+        
+        whereTheValueIs(DoubleInt<I8>.self)
+        whereTheValueIs(DoubleInt<U8>.self)
     }
 }

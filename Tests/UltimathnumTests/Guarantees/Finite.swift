@@ -8,6 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import DoubleIntKit
 import InfiniIntKit
 import TestKit
 
@@ -45,6 +46,9 @@ final class FiniteTests: XCTestCase {
         for type in coreSystemsIntegers {
             whereTheValueIs(type)
         }
+        
+        whereTheValueIs(DoubleInt<I8>.self)
+        whereTheValueIs(DoubleInt<U8>.self)
         
         whereTheValueIs(InfiniInt<I8>.self)
         whereTheValueIs(InfiniInt<U8>.self)
