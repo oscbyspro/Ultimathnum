@@ -33,6 +33,32 @@ extension InfiniIntTests {
         }
     }
     
+    /// - Note: Generic tests may depend on these results.
+    func testComparisonOfSize() {
+        for size: UXL in [IXL.size, UXL.size] {
+            Test().comparison(size, U8 .size, 1 as Signum)
+            Test().comparison(size, U16.size, 1 as Signum)
+            Test().comparison(size, U32.size, 1 as Signum)
+            Test().comparison(size, U64.size, 1 as Signum)
+        }
+        
+        func whereIsArbitrary<A, B>(_ lhs: A.Type, _ rhs: B.Type) where A: BinaryInteger, B: BinaryInteger {
+            Test().yay(A.size.isInfinite)
+            Test().yay(B.size.isInfinite)
+            Test().comparison(A.size, B.size, Signum.same)
+        }
+        
+        for lhs in Self.types {
+            for rhs in Self.types {
+                whereIsArbitrary(lhs, rhs)
+            }
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
     func testComparisonVersusToken() {
         func whereIs<S, M>(_ signed: S.Type, _ unsigned: M.Type) where S: SignedInteger, M: UnsignedInteger {
             Test().comparison(S(load: IX.min), IX(load: IX.min),  0 as Signum)
