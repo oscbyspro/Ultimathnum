@@ -23,9 +23,6 @@ final class FiniteTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testForEachByteEntropyExtension() {
-        //=--------------------------------------=
-        enum Bad: Error { case code123 }
-        //=--------------------------------------=
         func whereTheValueIs<Value>(_ type: Value.Type) where Value: BinaryInteger {
             typealias T = Finite<Value>
             

@@ -19,7 +19,7 @@ extension IntegerInvariants {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func comparisonOfGenericLowEntropies() {
+    public func comparisonOfGenericLowEntropy() {
         func versus<U>(_ other: U.Type) where U: BinaryInteger {
             switch (T.isSigned, U.isSigned) {
             case (true, true):

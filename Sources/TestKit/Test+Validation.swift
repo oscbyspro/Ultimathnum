@@ -45,6 +45,15 @@ extension Test {
                 same(Output(sign: sign, magnitude: magnitude), expectation.value,  "T.init(sign:magnitude:)")
             }
         }
+        
+        if  input >= Input.zero {
+            let magnitude = Input.Magnitude(input)
+            same(Output.exactly(magnitude: magnitude), expectation, "T.exactly(magnitude:)")
+            
+            if !expectation.error {
+                same(Output(magnitude: magnitude), expectation.value,  "T.init(magnitude:)")
+            }
+        }
         //=--------------------------------------=
         // path: elements
         //=--------------------------------------=

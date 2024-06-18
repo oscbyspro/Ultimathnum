@@ -23,9 +23,6 @@ final class NaturalTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testForEachByteEntropyExtension() {
-        //=--------------------------------------=
-        enum Bad: Error { case code123 }
-        //=--------------------------------------=
         func whereTheValueIs<Value>(_ type: Value.Type) where Value: BinaryInteger {
             typealias T = Natural<Value>
             typealias S = Natural<Value.Signitude>

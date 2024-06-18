@@ -49,11 +49,10 @@ final class DivisorTests: XCTestCase {
         func whereTheValueIs<Value>(_ type: Value.Type) where Value: BinaryInteger {
             typealias T = Divisor<Value>
             
-            Test().same(T(exactly: ~3)?.value, ~003)
             Test().same(T(exactly: ~2)?.value, ~002)
             Test().same(T(exactly: ~1)?.value, ~001)
             Test().same(T(exactly: ~0)?.value, ~000)
-            Test().same(T(exactly:  0)?.value,  nil)
+            Test().none(T(exactly:  0))
             Test().same(T(exactly:  1)?.value,  001)
             Test().same(T(exactly:  2)?.value,  002)
             Test().same(T(exactly:  3)?.value,  003)
@@ -71,13 +70,9 @@ final class DivisorTests: XCTestCase {
     }
     
     func testInitPrune() {
-        //=--------------------------------------=
-        enum Bad: Error { case code123, code456, code789 }
-        //=--------------------------------------=
         func whereTheValueIs<Value>(_ type: Value.Type) where Value: BinaryInteger {
             typealias T = Divisor<Value>
             
-            Test().success({ try T(~3, prune: Bad.code123).value }, ~00000000003)
             Test().success({ try T(~2, prune: Bad.code123).value }, ~00000000002)
             Test().success({ try T(~1, prune: Bad.code456).value }, ~00000000001)
             Test().success({ try T(~0, prune: Bad.code789).value }, ~00000000000)

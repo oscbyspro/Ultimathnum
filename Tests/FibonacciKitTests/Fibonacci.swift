@@ -18,26 +18,11 @@ import TestKit
 final class FibonacciTests: XCTestCase {
     
     //*========================================================================*
-    // MARK: * Failure
-    //*========================================================================*
-    
-    enum Failure: Error {
-        case any
-        case addition
-        case division
-        case divisor
-        case multiplication
-        case subtraction
-    }
-    
-    //*========================================================================*
     // MARK: * Case
     //*========================================================================*
     
     struct Case<Value: BinaryInteger> {
-        
-        typealias Bad  = FibonacciTests.Failure
-        
+                
         typealias Item = Fibonacci<Value>
         
         //=--------------------------------------------------------------------=

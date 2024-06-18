@@ -21,9 +21,6 @@ extension FallibleTests {
     //=------------------------------------------------------------------------=
     
     func testGet() {
-        //=--------------------------------------=
-        enum Bad: Error { case code123, code456 }
-        //=--------------------------------------=
         Case(Fallible<IX>(0, error: false)).prune(Bad.code123, is: .success(00000000000))
         Case(Fallible<IX>(0, error: true )).prune(Bad.code123, is: .failure(Bad.code123))
         Case(Fallible<IX>(0, error: false)).prune(Bad.code456, is: .success(00000000000))
