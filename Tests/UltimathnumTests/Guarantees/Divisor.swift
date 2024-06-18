@@ -21,7 +21,7 @@ final class DivisorTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testBitCast() {
-        func whereValueIs<Value>(_ type: Value.Type) where Value: SystemsInteger {
+        func whereTheValueIs<Value>(_ type: Value.Type) where Value: SystemsInteger {
             typealias T = Divisor<Value>
             typealias S = Divisor<Value.Signitude>
             typealias M = Divisor<Value.Magnitude>
@@ -31,12 +31,12 @@ final class DivisorTests: XCTestCase {
         }
         
         for type in coreSystemsIntegers {
-            whereValueIs(type)
+            whereTheValueIs(type)
         }
     }
     
     func testInitExactly() {
-        func whereValueIs<Value>(_ type: Value.Type) where Value: SystemsInteger {
+        func whereTheValueIs<Value>(_ type: Value.Type) where Value: SystemsInteger {
             typealias T = Divisor<Value>
             
             Test().same(T(exactly: 0)?.value, nil)
@@ -46,7 +46,7 @@ final class DivisorTests: XCTestCase {
         }
         
         for type in coreSystemsIntegers {
-            whereValueIs(type)
+            whereTheValueIs(type)
         }
     }
     
@@ -54,7 +54,7 @@ final class DivisorTests: XCTestCase {
         //=--------------------------------------=
         enum Bad: Error { case code123, code456, code789 }
         //=--------------------------------------=
-        func whereValueIs<Value>(_ type: Value.Type) where Value: SystemsInteger {
+        func whereTheValueIs<Value>(_ type: Value.Type) where Value: SystemsInteger {
             typealias T = Divisor<Value>
             
             Test().failure({ try T(0, prune: Bad.code123).value }, Bad.code123)
@@ -66,7 +66,7 @@ final class DivisorTests: XCTestCase {
         }
         
         for type in coreSystemsIntegers {
-            whereValueIs(type)
+            whereTheValueIs(type)
         }
     }
 }

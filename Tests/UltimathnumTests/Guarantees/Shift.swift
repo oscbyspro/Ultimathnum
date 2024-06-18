@@ -8,6 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import InfiniIntKit
 import TestKit
 
 //*============================================================================*
@@ -21,39 +22,47 @@ final class ShiftTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testBitCast() {
-        func whereValueIs<Value>(_ type: Value.Type) where Value: SystemsInteger {
+        func whereTheValueIs<Value>(_ type: Value.Type) where Value: BinaryInteger {
             typealias T = Shift<Value>
             typealias S = Shift<Value.Signitude>
             typealias M = Shift<Value.Magnitude>
             
-            Test().same(T(raw: M(1)).value, 1 as T.Value)
-            Test().same(T(raw: S(2)).value, 2 as T.Value)
+            Test().same(T(raw: M(1)).value, 1 as Value)
+            Test().same(T(raw: S(2)).value, 2 as Value)
         }
         
+        whereTheValueIs(IXL.self)
+        whereTheValueIs(UXL.self)
+        
         for type in coreSystemsIntegers {
-            whereValueIs(type)
+            whereTheValueIs(type)
         }
     }
     
     func testInitExactly() {
-        func whereValueIs<Value>(_ type: Value.Type) where Value: SystemsInteger {
+        func whereTheValueIs<Value>(_ type: Value.Type) where Value: BinaryInteger {
             typealias T = Shift<Value>
-            //=----------------------------------=
-            let size = Value(raw: Value.size)
-            //=----------------------------------=
+            
             Test().same(T(exactly: ~0000002)?.value, nil)
             Test().same(T(exactly: ~0000001)?.value, nil)
             Test().same(T(exactly: ~0000000)?.value, nil)
             Test().same(T(exactly: 00000000)?.value, 000)
             Test().same(T(exactly: 00000001)?.value, 001)
             Test().same(T(exactly: 00000002)?.value, 002)
-            Test().same(T(exactly: size - 1)?.value, size - 1)
-            Test().same(T(exactly: size    )?.value, nil)
-            Test().same(T(exactly: size + 1)?.value, nil)
+            
+            if !Value.size.isInfinite {
+                let size = Value(raw: Value.size)
+                Test().same(T(exactly: size - 1)?.value, size - 1)
+                Test().same(T(exactly: size    )?.value, nil)
+                Test().same(T(exactly: size + 1)?.value, nil)
+            }
         }
         
+        whereTheValueIs(IXL.self)
+        whereTheValueIs(UXL.self)
+        
         for type in coreSystemsIntegers {
-            whereValueIs(type)
+            whereTheValueIs(type)
         }
     }
     
@@ -61,24 +70,29 @@ final class ShiftTests: XCTestCase {
         //=--------------------------------------=
         enum Bad: Error { case code123, code456, code789 }
         //=--------------------------------------=
-        func whereValueIs<Value>(_ type: Value.Type) where Value: SystemsInteger {
+        func whereTheValueIs<Value>(_ type: Value.Type) where Value: BinaryInteger {
             typealias T = Shift<Value>
-            //=----------------------------------=
-            let size = Value(raw: Value.size)
-            //=----------------------------------=
+            
             Test().failure({ try T(~0000001, prune: Bad.code123).value }, Bad.code123)
             Test().failure({ try T(~0000000, prune: Bad.code456).value }, Bad.code456)
             Test().failure({ try T(~0000000, prune: Bad.code789).value }, Bad.code789)
             Test().success({ try T(00000001, prune: Bad.code123).value }, 00000000001)
             Test().success({ try T(00000002, prune: Bad.code456).value }, 00000000002)
             Test().success({ try T(00000003, prune: Bad.code789).value }, 00000000003)
-            Test().success({ try T(size - 1, prune: Bad.code123).value }, size - 0001)
-            Test().failure({ try T(size,     prune: Bad.code456).value }, Bad.code456)
-            Test().failure({ try T(size + 1, prune: Bad.code789).value }, Bad.code789)
+            
+            if !Value.size.isInfinite {
+                let size = Value(raw: Value.size)
+                Test().success({ try T(size - 1, prune: Bad.code123).value }, size - 0001)
+                Test().failure({ try T(size,     prune: Bad.code456).value }, Bad.code456)
+                Test().failure({ try T(size + 1, prune: Bad.code789).value }, Bad.code789)
+            }
         }
         
+        whereTheValueIs(IXL.self)
+        whereTheValueIs(UXL.self)
+        
         for type in coreSystemsIntegers {
-            whereValueIs(type)
+            whereTheValueIs(type)
         }
     }
 }

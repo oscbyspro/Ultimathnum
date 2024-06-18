@@ -346,29 +346,17 @@ where
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Performs an ascending smart shift.
+    /// Performs an ascending shift.
     ///
-    ///  - Note: The `0` bit fills the void.
+    /// - Note: The `0` bit fills the void.
     ///
-    @inlinable static func  <<(instance: consuming Self, distance: borrowing Self) -> Self
+    @inlinable consuming func upshift(_ distance: Shift<Self>) -> Self
     
-    /// Performs an ascending exact shift.
-    ///
-    ///  - Note: The `0` bit fills the void.
-    ///
-    @inlinable static func &<<(instance: consuming Self, distance: borrowing Shift<Self>) -> Self
-    
-    /// Performs a decending smart shift.
+    /// Performs a decending shift.
     ///
     /// - Note: The `appendix` fills the void.
     ///
-    @inlinable static func  >>(instance: consuming Self, distance: borrowing Self) -> Self
-    
-    /// Performs a decending exact shift.
-    ///
-    /// - Note: The `appendix` fills the void.
-    ///
-    @inlinable static func &>>(instance: consuming Self, distance: borrowing Shift<Self>) -> Self
+    @inlinable consuming func downshift(_ distance: Shift<Self>) -> Self
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

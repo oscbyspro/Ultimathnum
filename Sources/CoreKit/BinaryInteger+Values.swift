@@ -48,11 +48,15 @@ extension EdgyInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static var min: Self {
-        isSigned ? Self(raw: 1 as Magnitude &<< Shift(unchecked: size &- 1)) : Self()
+        if  isSigned {
+            return Self(raw: (1 as Magnitude).upshift(Shift(unchecked: size &- 1)))
+        }   else {
+            return Self()
+        }
     }
     
     @inlinable public static var max: Self {
-        ~(min)
+        min.toggled()
     }
 }
 
@@ -67,11 +71,11 @@ extension SystemsInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static var lsb: Self {
-        Self(raw: 1 as Magnitude)
+        Self(raw: (1 as Magnitude))
     }
     
     @inlinable public static var msb: Self {
-        Self(raw: 1 as Magnitude &<< (size &- 1))
+        Self(raw: (1 as Magnitude).upshift(Shift(unchecked: size &- 1)))
     }
 }
 

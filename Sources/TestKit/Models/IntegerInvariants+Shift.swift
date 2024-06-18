@@ -20,52 +20,52 @@ extension IntegerInvariants {
     //=------------------------------------------------------------------------=
     
     public func upshiftRepeatingBit() {
-        test.shift(T(repeating: 0), ~1, T(repeating: 0), .left, .smart)
-        test.shift(T(repeating: 0), ~0, T(repeating: 0), .left, .smart)
-        test.shift(T(repeating: 0),  0, T(repeating: 0), .left, .smart)
-        test.shift(T(repeating: 0),  1, T(repeating: 0), .left, .smart)
-        test.shift(T(repeating: 0),  2, T(repeating: 0), .left, .smart)
+        test.shift(T(repeating: 0), ~1, T(repeating: 0), .up, .smart)
+        test.shift(T(repeating: 0), ~0, T(repeating: 0), .up, .smart)
+        test.shift(T(repeating: 0),  0, T(repeating: 0), .up, .smart)
+        test.shift(T(repeating: 0),  1, T(repeating: 0), .up, .smart)
+        test.shift(T(repeating: 0),  2, T(repeating: 0), .up, .smart)
         
         if  T.isSigned {
-            test.shift(T(repeating: 1), ~1, T(repeating: 1),     .left, .smart)
-            test.shift(T(repeating: 1), ~0, T(repeating: 1),     .left, .smart)
-            test.shift(T(repeating: 1),  0, T(repeating: 1),     .left, .smart)
-            test.shift(T(repeating: 1),  1, T(repeating: 1) * 2, .left, .smart)
-            test.shift(T(repeating: 1),  2, T(repeating: 1) * 4, .left, .smart)
+            test.shift(T(repeating: 1), ~1, T(repeating: 1),     .up, .smart)
+            test.shift(T(repeating: 1), ~0, T(repeating: 1),     .up, .smart)
+            test.shift(T(repeating: 1),  0, T(repeating: 1),     .up, .smart)
+            test.shift(T(repeating: 1),  1, T(repeating: 1) * 2, .up, .smart)
+            test.shift(T(repeating: 1),  2, T(repeating: 1) * 4, .up, .smart)
         }   else {
-            test.shift(T(repeating: 1), ~1, T(repeating: 0),     .left, .smart)
-            test.shift(T(repeating: 1), ~0, T(repeating: 0),     .left, .smart)
-            test.shift(T(repeating: 1),  0, T(repeating: 1),     .left, .smart)
-            test.shift(T(repeating: 1),  1, T(repeating: 1) - 1, .left, .smart)
-            test.shift(T(repeating: 1),  2, T(repeating: 1) - 3, .left, .smart)
+            test.shift(T(repeating: 1), ~1, T(repeating: 0),     .up, .smart)
+            test.shift(T(repeating: 1), ~0, T(repeating: 0),     .up, .smart)
+            test.shift(T(repeating: 1),  0, T(repeating: 1),     .up, .smart)
+            test.shift(T(repeating: 1),  1, T(repeating: 1) - 1, .up, .smart)
+            test.shift(T(repeating: 1),  2, T(repeating: 1) - 3, .up, .smart)
         }
     }
     
     public func downshiftRepeatingBit() {
-        test.shift(T(repeating: 0), ~1, T(repeating: 0), .right, .smart)
-        test.shift(T(repeating: 0), ~0, T(repeating: 0), .right, .smart)
-        test.shift(T(repeating: 0),  0, T(repeating: 0), .right, .smart)
-        test.shift(T(repeating: 0),  1, T(repeating: 0), .right, .smart)
-        test.shift(T(repeating: 0),  2, T(repeating: 0), .right, .smart)
+        test.shift(T(repeating: 0), ~1, T(repeating: 0), .down, .smart)
+        test.shift(T(repeating: 0), ~0, T(repeating: 0), .down, .smart)
+        test.shift(T(repeating: 0),  0, T(repeating: 0), .down, .smart)
+        test.shift(T(repeating: 0),  1, T(repeating: 0), .down, .smart)
+        test.shift(T(repeating: 0),  2, T(repeating: 0), .down, .smart)
         
         if  T.isSigned {
-            test.shift(T(repeating: 1), ~1, T(repeating: 1) * 4, .right, .smart)
-            test.shift(T(repeating: 1), ~0, T(repeating: 1) * 2, .right, .smart)
-            test.shift(T(repeating: 1),  0, T(repeating: 1),     .right, .smart)
-            test.shift(T(repeating: 1),  1, T(repeating: 1),     .right, .smart)
-            test.shift(T(repeating: 1),  2, T(repeating: 1),     .right, .smart)
+            test.shift(T(repeating: 1), ~1, T(repeating: 1) * 4, .down, .smart)
+            test.shift(T(repeating: 1), ~0, T(repeating: 1) * 2, .down, .smart)
+            test.shift(T(repeating: 1),  0, T(repeating: 1),     .down, .smart)
+            test.shift(T(repeating: 1),  1, T(repeating: 1),     .down, .smart)
+            test.shift(T(repeating: 1),  2, T(repeating: 1),     .down, .smart)
         }   else if T.size.isInfinite {
-            test.shift(T(repeating: 1), ~1, T(repeating: 1),     .right, .smart)
-            test.shift(T(repeating: 1), ~0, T(repeating: 1),     .right, .smart)
-            test.shift(T(repeating: 1),  0, T(repeating: 1),     .right, .smart)
-            test.shift(T(repeating: 1),  1, T(repeating: 1),     .right, .smart)
-            test.shift(T(repeating: 1),  2, T(repeating: 1),     .right, .smart)
+            test.shift(T(repeating: 1), ~1, T(repeating: 1),     .down, .smart)
+            test.shift(T(repeating: 1), ~0, T(repeating: 1),     .down, .smart)
+            test.shift(T(repeating: 1),  0, T(repeating: 1),     .down, .smart)
+            test.shift(T(repeating: 1),  1, T(repeating: 1),     .down, .smart)
+            test.shift(T(repeating: 1),  2, T(repeating: 1),     .down, .smart)
         }   else {
-            test.shift(T(repeating: 1), ~1, T(repeating: 0),     .right, .smart)
-            test.shift(T(repeating: 1), ~0, T(repeating: 0),     .right, .smart)
-            test.shift(T(repeating: 1),  0, T(repeating: 1),     .right, .smart)
-            test.shift(T(repeating: 1),  1, T(repeating: 1) / 2, .right, .smart)
-            test.shift(T(repeating: 1),  2, T(repeating: 1) / 4, .right, .smart)
+            test.shift(T(repeating: 1), ~1, T(repeating: 0),     .down, .smart)
+            test.shift(T(repeating: 1), ~0, T(repeating: 0),     .down, .smart)
+            test.shift(T(repeating: 1),  0, T(repeating: 1),     .down, .smart)
+            test.shift(T(repeating: 1),  1, T(repeating: 1) / 2, .down, .smart)
+            test.shift(T(repeating: 1),  2, T(repeating: 1) / 4, .down, .smart)
         }
     }
 }

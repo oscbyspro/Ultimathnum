@@ -45,7 +45,7 @@ extension InfiniIntTests {
             //=----------------------------------=
             for value in [large, ~large] {
                 let appendix  = T(repeating: value.appendix)
-                let direction = Test.ShiftDirection.left
+                let direction = Test.ShiftDirection.up
                 let semantics = Test.ShiftSemantics.smart
                 
                 Test().shift(value, 000, T(0x0000FFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0) ^ appendix & ~T(0x0000), direction, semantics)
@@ -100,7 +100,7 @@ extension InfiniIntTests {
             //=----------------------------------=
             for value in [large, ~large] {
                 let appendix  = T(repeating: value.appendix)
-                let direction = Test.ShiftDirection.right
+                let direction = Test.ShiftDirection.down
                 let semantics = Test.ShiftSemantics.smart
                 
                 Test().shift(value, 00000, T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0) ^ appendix, direction, semantics)
@@ -149,23 +149,23 @@ extension InfiniIntTests {
     func testUpshiftAtEdgeOfElement() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             compact: do {
-                Test().shift( T(IX.max >> 5), 4 as T,  T(IX.max >> 5)  * 16, .left, .smart)
-                Test().shift( T(IX.max >> 5), 5 as T,  T(IX.max >> 5)  * 32, .left, .smart)
-                Test().shift( T(IX.max >> 5), 6 as T,  T(IX.max >> 5)  * 64, .left, .smart)
+                Test().shift( T(IX.max >> 5), 4 as T,  T(IX.max >> 5)  * 16, .up, .smart)
+                Test().shift( T(IX.max >> 5), 5 as T,  T(IX.max >> 5)  * 32, .up, .smart)
+                Test().shift( T(IX.max >> 5), 6 as T,  T(IX.max >> 5)  * 64, .up, .smart)
 
-                Test().shift(~T(IX.max >> 5), 4 as T, ~T(IX.max >> 5) &* 16, .left, .smart)
-                Test().shift(~T(IX.max >> 5), 5 as T, ~T(IX.max >> 5) &* 32, .left, .smart)
-                Test().shift(~T(IX.max >> 5), 6 as T, ~T(IX.max >> 5) &* 64, .left, .smart)
+                Test().shift(~T(IX.max >> 5), 4 as T, ~T(IX.max >> 5) &* 16, .up, .smart)
+                Test().shift(~T(IX.max >> 5), 5 as T, ~T(IX.max >> 5) &* 32, .up, .smart)
+                Test().shift(~T(IX.max >> 5), 6 as T, ~T(IX.max >> 5) &* 64, .up, .smart)
             }
             
             extended: do {
-                Test().shift( T(UX.max >> 5), 4 as T,  T(UX.max >> 5)  * 16, .left, .smart)
-                Test().shift( T(UX.max >> 5), 5 as T,  T(UX.max >> 5)  * 32, .left, .smart)
-                Test().shift( T(UX.max >> 5), 6 as T,  T(UX.max >> 5)  * 64, .left, .smart)
+                Test().shift( T(UX.max >> 5), 4 as T,  T(UX.max >> 5)  * 16, .up, .smart)
+                Test().shift( T(UX.max >> 5), 5 as T,  T(UX.max >> 5)  * 32, .up, .smart)
+                Test().shift( T(UX.max >> 5), 6 as T,  T(UX.max >> 5)  * 64, .up, .smart)
 
-                Test().shift(~T(UX.max >> 5), 4 as T, ~T(UX.max >> 5) &* 16, .left, .smart)
-                Test().shift(~T(UX.max >> 5), 5 as T, ~T(UX.max >> 5) &* 32, .left, .smart)
-                Test().shift(~T(UX.max >> 5), 6 as T, ~T(UX.max >> 5) &* 64, .left, .smart)
+                Test().shift(~T(UX.max >> 5), 4 as T, ~T(UX.max >> 5) &* 16, .up, .smart)
+                Test().shift(~T(UX.max >> 5), 5 as T, ~T(UX.max >> 5) &* 32, .up, .smart)
+                Test().shift(~T(UX.max >> 5), 6 as T, ~T(UX.max >> 5) &* 64, .up, .smart)
             }
         }
     
@@ -176,37 +176,37 @@ extension InfiniIntTests {
     
     func testDownshiftByNonappendix() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            Test().shift( T(I8 .max),  6 as T,  1 as T, .right, .smart)
-            Test().shift( T(I8 .max),  7 as T,  0 as T, .right, .smart)
-            Test().shift( T(I8 .max),  8 as T,  0 as T, .right, .smart)
+            Test().shift( T(I8 .max),  6 as T,  1 as T, .down, .smart)
+            Test().shift( T(I8 .max),  7 as T,  0 as T, .down, .smart)
+            Test().shift( T(I8 .max),  8 as T,  0 as T, .down, .smart)
 
-            Test().shift(~T(I8 .max),  6 as T, ~1 as T, .right, .smart)
-            Test().shift(~T(I8 .max),  7 as T, ~0 as T, .right, .smart)
-            Test().shift(~T(I8 .max),  8 as T, ~0 as T, .right, .smart)
+            Test().shift(~T(I8 .max),  6 as T, ~1 as T, .down, .smart)
+            Test().shift(~T(I8 .max),  7 as T, ~0 as T, .down, .smart)
+            Test().shift(~T(I8 .max),  8 as T, ~0 as T, .down, .smart)
         
-            Test().shift( T(U8 .msb),  7 as T,  1 as T, .right, .smart)
-            Test().shift( T(U8 .msb),  8 as T,  0 as T, .right, .smart)
-            Test().shift( T(U8 .msb),  9 as T,  0 as T, .right, .smart)
+            Test().shift( T(U8 .msb),  7 as T,  1 as T, .down, .smart)
+            Test().shift( T(U8 .msb),  8 as T,  0 as T, .down, .smart)
+            Test().shift( T(U8 .msb),  9 as T,  0 as T, .down, .smart)
 
-            Test().shift(~T(U8 .msb),  7 as T, ~1 as T, .right, .smart)
-            Test().shift(~T(U8 .msb),  8 as T, ~0 as T, .right, .smart)
-            Test().shift(~T(U8 .msb),  9 as T, ~0 as T, .right, .smart)
+            Test().shift(~T(U8 .msb),  7 as T, ~1 as T, .down, .smart)
+            Test().shift(~T(U8 .msb),  8 as T, ~0 as T, .down, .smart)
+            Test().shift(~T(U8 .msb),  9 as T, ~0 as T, .down, .smart)
             
-            Test().shift( T(I64.max), 62 as T,  1 as T, .right, .smart)
-            Test().shift( T(I64.max), 63 as T,  0 as T, .right, .smart)
-            Test().shift( T(I64.max), 64 as T,  0 as T, .right, .smart)
+            Test().shift( T(I64.max), 62 as T,  1 as T, .down, .smart)
+            Test().shift( T(I64.max), 63 as T,  0 as T, .down, .smart)
+            Test().shift( T(I64.max), 64 as T,  0 as T, .down, .smart)
 
-            Test().shift(~T(I64.max), 62 as T, ~1 as T, .right, .smart)
-            Test().shift(~T(I64.max), 63 as T, ~0 as T, .right, .smart)
-            Test().shift(~T(I64.max), 64 as T, ~0 as T, .right, .smart)
+            Test().shift(~T(I64.max), 62 as T, ~1 as T, .down, .smart)
+            Test().shift(~T(I64.max), 63 as T, ~0 as T, .down, .smart)
+            Test().shift(~T(I64.max), 64 as T, ~0 as T, .down, .smart)
             
-            Test().shift( T(U64.msb), 63 as T,  1 as T, .right, .smart)
-            Test().shift( T(U64.msb), 64 as T,  0 as T, .right, .smart)
-            Test().shift( T(U64.msb), 65 as T,  0 as T, .right, .smart)
+            Test().shift( T(U64.msb), 63 as T,  1 as T, .down, .smart)
+            Test().shift( T(U64.msb), 64 as T,  0 as T, .down, .smart)
+            Test().shift( T(U64.msb), 65 as T,  0 as T, .down, .smart)
 
-            Test().shift(~T(U64.msb), 63 as T, ~1 as T, .right, .smart)
-            Test().shift(~T(U64.msb), 64 as T, ~0 as T, .right, .smart)
-            Test().shift(~T(U64.msb), 65 as T, ~0 as T, .right, .smart)
+            Test().shift(~T(U64.msb), 63 as T, ~1 as T, .down, .smart)
+            Test().shift(~T(U64.msb), 64 as T, ~0 as T, .down, .smart)
+            Test().shift(~T(U64.msb), 65 as T, ~0 as T, .down, .smart)
         }
     
         for type in Self.types {

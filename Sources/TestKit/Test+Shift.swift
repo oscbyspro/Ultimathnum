@@ -16,9 +16,17 @@ import XCTest
 
 extension Test {
     
-    public enum ShiftDirection: Equatable { case left,  right  }
+    /// An ascending or descending shift direction.
+    public enum ShiftDirection: Equatable {
+        case up
+        case down
+    }
     
-    public enum ShiftSemantics: Equatable { case smart, masked }
+    /// - Note: The `masked` shift case is from the `exact` shift case.
+    public enum ShiftSemantics: Equatable {
+        case smart
+        case exact
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -35,35 +43,25 @@ extension Test {
         self.shift(instance, distance, expectation, direction, semantics, BinaryIntegerID())
         //=--------------------------------------=
         switch (direction, semantics) {
-        case (.left,  .smart):
+        case (.up, .smart):
             break
             
-        case (.right, .smart):
+        case (.down, .smart):
             break
             
-        case (.left,  .masked):
-            func with(_ distance: T) {
+        case (.up, .exact):
+            for multiplier:  T in [~2, ~1, ~0, 0, 1, 2] {
+                let distance = distance &+ T(T.size) &* multiplier
                 same({         instance    &<<  distance           }(), expectation)
                 same({ var x = instance; x &<<= distance; return x }(), expectation)
             }
-
-            with(distance)
-            with(distance &+ T(T.size))
-            with(distance &+ T(T.size) &+ T(T.size))
-            with(distance &- T(T.size))
-            with(distance &- T(T.size) &- T(T.size))
             
-        case (.right, .masked):
-            func with(_ distance: T) {
+        case (.down, .exact):
+            for multiplier:  T in [~2, ~1, ~0, 0, 1, 2] {
+                let distance = distance &+ T(T.size) &* multiplier
                 same({         instance    &>>  distance           }(), expectation)
                 same({ var x = instance; x &>>= distance; return x }(), expectation)
             }
-
-            with(distance)
-            with(distance &+ T(T.size))
-            with(distance &+ T(T.size) &+ T(T.size))
-            with(distance &- T(T.size))
-            with(distance &- T(T.size) &- T(T.size))
         }
     }
     
@@ -75,48 +73,47 @@ extension Test {
         _ semantics: ShiftSemantics,
         _ id: BinaryIntegerID = .init()
     )   where T: BinaryInteger {
+        
         switch (direction, semantics) {
-        case (.left, .smart):
-            
+        case (.up, .smart):
             always: do {
-                same({         instance    <<  distance           }(), expectation, "<<")
-                same({ var x = instance; x <<= distance; return x }(), expectation, "<<=")
+                same({         instance    <<  distance           }(), expectation,  "<< [L]")
+                same({ var x = instance; x <<= distance; return x }(), expectation, "<<= [L]")
             }
             
             if  let distance = distance.negated().optional() {
-                same({         instance    >>  distance           }(), expectation, ">>")
-                same({ var x = instance; x >>= distance; return x }(), expectation, ">>=")
+                same({         instance    >>  distance           }(), expectation,  ">> [L]")
+                same({ var x = instance; x >>= distance; return x }(), expectation, ">>= [L]")
             }
             
             if  Shift.predicate(distance) {
-                shift(instance, distance, expectation, .left, .masked)
+                shift(instance, distance, expectation, .up, .exact)
             }
             
-        case (.right, .smart):
-            
+        case (.down, .smart):
             always: do {
-                same({         instance    >>  distance           }(), expectation, ">>")
-                same({ var x = instance; x >>= distance; return x }(), expectation, ">>=")
+                same({         instance    >>  distance           }(), expectation,  ">> [R]")
+                same({ var x = instance; x >>= distance; return x }(), expectation, ">>= [R]")
             }
             
             if  let distance = distance.negated().optional() {
-                same({         instance    <<  distance           }(), expectation, "<<")
-                same({ var x = instance; x <<= distance; return x }(), expectation, "<<=")
+                same({         instance    <<  distance           }(), expectation,  "<< [R]")
+                same({ var x = instance; x <<= distance; return x }(), expectation, "<<= [R]")
             }
             
             if  Shift.predicate(distance) {
-                shift(instance, distance, expectation, .right, .masked)
+                shift(instance, distance, expectation, .down, .exact)
             }
             
-        case (.left, .masked):
-            guard let distance = some(Shift(distance)) else { return }
-            same({         instance    &<<  distance           }(), expectation, "&<<")
-            same({ var x = instance; x &<<= distance; return x }(), expectation, "&<<=")
+        case (.up, .exact):
+            if  let distance = some(Shift(exactly: distance)) {
+                same(instance.upshift(distance), expectation, "up")
+            }
             
-        case (.right, .masked):
-            guard let distance = some(Shift(distance)) else { return }
-            same({         instance    &>>  distance           }(), expectation, "&>>")
-            same({ var x = instance; x &>>= distance; return x }(), expectation, "&>>=")
+        case (.down, .exact):
+            if  let distance = some(Shift(exactly: distance)) {
+                same(instance.downshift(distance), expectation, "down")
+            }
         }
     }
 }

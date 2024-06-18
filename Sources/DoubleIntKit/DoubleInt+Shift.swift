@@ -19,90 +19,51 @@ extension DoubleInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func <<(instance: consuming Self, distance: Self) -> Self {
-        if  distance.isNegative {
-            return instance >> distance.magnitude()
+    @inlinable public consuming func upshift(_ distance: Shift<Self>) -> Self {
+        //=--------------------------------------=
+        // note: even a 2-bit shift fits in 1 bit
+        //=--------------------------------------=
+        if  UX(load: distance.value.low) >= UX(size: Base.self) {
+            let distance = Shift(unchecked: distance.value.low.minus(Base.size).unchecked())
+            self.high = Base(raw: self.low.upshift(distance))
+            self.low  = Base.Magnitude(repeating: Bit(false))
         }   else {
-            return instance << Magnitude(raw: distance)
+            self.storage = Base.upshift(self.storage, by: Shift(unchecked: Base(raw: distance.value.low)))
         }
+
+        return self as Self as Self as Self as Self
     }
+    
+    @inlinable public consuming func downshift(_ distance: Shift<Self>) -> Self {
+        //=--------------------------------------=
+        // note: even a 2-bit shift fits in 1 bit
+        //=--------------------------------------=
+        if  UX(load: distance.value.low) >= UX(size: Base.self) {
+            let distance  = Shift(unchecked: Base(raw: distance.value.low.minus(Base.size).unchecked()))
+            self.low  = Base.Magnitude(raw: self.high.downshift(distance))
+            self.high = Base(repeating: Bit(self.high.isNegative))
+        }   else {
+            self.storage = Base.downshift(self.storage, by: Shift(unchecked: Base(raw: distance.value.low)))
+        }
+        
+        return self as Self as Self as Self as Self
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Systems Integer
+    //=------------------------------------------------------------------------=
     
     @inlinable public static func &<<(instance: consuming Self, distance: Self) -> Self {
         //=--------------------------------------=
         // note: even a 2-bit shift fits in 1 bit
         //=--------------------------------------=
-        instance &<< Shift(unchecked: Self(low: Base.Magnitude(raw: distance.low) & (Base.size &<< 1 &- 1)))
-    }
-    
-    @inlinable public static func &<<(instance: consuming Self, distance: Shift<Self>) -> Self {
-        //=--------------------------------------=
-        // note: even a 2-bit shift fits in 1 bit
-        //=--------------------------------------=
-        if  UX(load: distance.value.low) >= UX(size: Base.self) {
-            let distance  = Shift(unchecked: distance.value.low.minus(Base.size).unchecked())
-            instance.high = Base(raw: instance.low &<< distance)
-            instance.low  = Base.Magnitude(repeating: Bit(false))
-        }   else {
-            instance.storage = Base.upshift(instance.storage, by: Shift(unchecked: Base(raw: distance.value.low)))
-        }
-
-        return instance as Self as Self as Self as Self
-    }
-    
-    @inlinable public static func >>(instance: consuming Self, distance: Self) -> Self {
-        if  distance.isNegative {
-            return instance << distance.magnitude()
-        }   else {
-            return instance >> Magnitude(raw: distance)
-        }
+        instance.upshift(Shift(unchecked: Self(low: Base.Magnitude(raw: distance.low) & (Base.size &<< 1 &- 1))))
     }
     
     @inlinable public static func &>>(instance: consuming Self, distance: Self) -> Self {
         //=--------------------------------------=
         // note: even a 2-bit shift fits in 1 bit
         //=--------------------------------------=
-        instance &>> Shift(unchecked: Self(low: Base.Magnitude(raw: distance.low) & (Base.size &<< 1 &- 1)))
-    }
-    
-    @inlinable public static func &>>(instance: consuming Self, distance: Shift<Self>) -> Self {
-        //=--------------------------------------=
-        // note: even a 2-bit shift fits in 1 bit
-        //=--------------------------------------=
-        if  UX(load: distance.value.low) >= UX(size: Base.self) {
-            let distance  = Shift(unchecked: Base(raw: distance.value.low.minus(Base.size).unchecked()))
-            instance.low  = Base.Magnitude(raw: instance.high &>> distance)
-            instance.high = Base(repeating: Bit(instance.high.isNegative ))
-        }   else {
-            instance.storage = Base.downshift(instance.storage, by: Shift(unchecked: Base(raw: distance.value.low)))
-        }
-        
-        return instance as Self as Self as Self
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Algorithms
-//=----------------------------------------------------------------------------=
-
-extension DoubleInt {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable internal static func <<(instance: consuming Self, distance: Magnitude) -> Self {
-        if  distance >= Self.size {
-            return Self(repeating: Bit.zero)
-        }   else {
-            return instance &<< Shift(unchecked: Self(raw: distance))
-        }
-    }
-    
-    @inlinable internal static func >>(instance: consuming Self, distance: Magnitude) -> Self {
-        if  distance >= Self.size {
-            return Self(repeating: instance.appendix)
-        }   else {
-            return instance &>> Shift(unchecked: Self(raw: distance))
-        }
+        instance.downshift(Shift(unchecked: Self(low: Base.Magnitude(raw: distance.low) & (Base.size &<< 1 &- 1))))
     }
 }

@@ -35,7 +35,13 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public static func predicate(_ value: /* borrowing */ Value) -> Bool {
-        !Bool(value.appendix) && Value.Magnitude(raw: value) < Value.size // await borrowing fix
+        let valueIsNatural = !Bool(value.appendix)
+        
+        if  Value.size.isInfinite {
+            return valueIsNatural
+        }   else {
+            return valueIsNatural && Value.Magnitude(raw: value) < Value.size
+        }
     }
     
     //=------------------------------------------------------------------------=
@@ -133,5 +139,13 @@ extension Shift where Value: SystemsInteger {
             let difference = Value(raw: Value.size).minus(self.value)
             return Self(unchecked: difference.unchecked())
         }
+    }
+    
+    /// Returns the magnitude of `self`.
+    ///
+    /// - Note: This is a bit cast because `self ∈ ℕ → unsigned`.
+    ///
+    @inlinable public consuming func magnitude() -> Shift<Value.Magnitude> {
+        Shift<Value.Magnitude>.init(raw: self)
     }
 }
