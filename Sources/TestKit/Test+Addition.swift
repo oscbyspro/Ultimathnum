@@ -65,6 +65,11 @@ extension Test {
             same(lhs.plus(true),    expectation)
             same(lhs.incremented(), expectation)
         }
+        
+        comparison: if let exp = expectation.optional() {
+            self.comparison(lhs, exp, rhs.isZero ? Signum.same : Signum.one(Sign(!rhs.isNegative)))
+            self.comparison(rhs, exp, lhs.isZero ? Signum.same : Signum.one(Sign(!lhs.isNegative)))
+        }
     }
     
     public func subtraction<T>(
@@ -133,6 +138,11 @@ extension Test {
             let abc: T = rhs.minus(lhs).value
             let xyz: T = lhs.minus(rhs).value.negated().value
             same(abc, xyz, "binary integer subtraction must be reversible [1]")
+        }
+            
+        comparison: if let exp = expectation.optional() {
+            self.comparison(lhs, exp, rhs.isZero ? Signum.same : Signum.one(Sign(rhs.isNegative)))
+            self.comparison(lhs, rhs, exp.isZero ? Signum.same : Signum.one(Sign(exp.isNegative)))
         }
     }
 }
