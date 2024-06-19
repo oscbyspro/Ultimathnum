@@ -34,6 +34,7 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// Returns the `value` and `error` as a tuple.
     @inlinable public consuming func components() -> (value: Value, error: Bool) {
         (value: self.value, error: self.error)
     }

@@ -32,6 +32,6 @@ extension CoreInteger {
     
     @inlinable public func multiplication(_  multiplier: Self) -> Doublet<Self> {
         let result = self.base.multipliedFullWidth(by: multiplier.base)
-        return Doublet(high: Self(result.high), low: Magnitude(result.low))
+        return Doublet(low: Magnitude(result.low), high: Self(result.high))
     }
 }

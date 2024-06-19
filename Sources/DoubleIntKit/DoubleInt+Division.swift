@@ -19,7 +19,7 @@ extension DoubleInt {
     // MARK: Transformations x 2 by 2
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func quotient (_ divisor: Divisor<Self>) -> Fallible<Self> {
+    @inlinable public consuming func quotient(_  divisor: Divisor<Self>) -> Fallible<Self> {
         self.division(divisor).map({ $0.quotient  })
     }
     
@@ -27,7 +27,7 @@ extension DoubleInt {
         self.division(divisor).value.remainder
     }
     
-    @inlinable public consuming func division(_ divisor: Divisor<Self>) -> Fallible<Division<Self, Self>> {
+    @inlinable public consuming func division(_  divisor: Divisor<Self>) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
         let lhsIsNegative = /*-----*/self.isNegative
         let rhsIsNegative = divisor.value.isNegative
@@ -187,7 +187,7 @@ extension DoubleInt where Base == Base.Magnitude {
             Swift.assert(rhs.value.high == 0,  "divisor must fit in one half")
             Swift.assert(lhs.high .high == 0, "quotient must fit in two halves")
             let result = TripleInt(low: lhs.low.storage, high: lhs.high.low).division3121(unchecked: Divisor(unchecked: rhs.value.low))
-            return Division(quotient: Self(result.quotient), remainder: Self(low: result.remainder))
+            return Division(quotient: Self(result.quotient), remainder: Self(low: result.remainder, high: 0))
         }
         //=--------------------------------------=
         // normalization
@@ -202,7 +202,7 @@ extension DoubleInt where Base == Base.Magnitude {
             Swift.assert(rhs.value.high >= Base.msb, "divisor must be normalized")
             Swift.assert(rhs.value > Self(low: lhs.low.high, high: lhs.high.low), "quotient must fit in one half")
             let result = TripleInt(low: lhs.low.storage, high: lhs.high.low).division3212(normalized: rhs)
-            return Division(quotient: Self(low: result.quotient), remainder: Self(result.remainder).down(normalization))
+            return Division(quotient: Self(low: result.quotient, high: 0), remainder: Self(result.remainder).down(normalization))
         }
         //=--------------------------------------=
         // division: 4222 (normalized)

@@ -67,28 +67,12 @@ import CoreKit
         self.init(Storage(low: low, mid: mid, high: high))
     }
     
-    @inlinable public init(high: consuming Base, mid: consuming Base.Magnitude, low: consuming Base.Magnitude) {
-        self.init(Storage(high: high, mid: mid, low: low))
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
     @inlinable public init(low: consuming Base.Magnitude, high: consuming Doublet<Base>) {
         self.init(Storage(low: low, high: high))
     }
     
     @inlinable public init(low: consuming Doublet<Base.Magnitude>, high: consuming Base) {
         self.init(Storage(low: low, high: high))
-    }
-    
-    @inlinable public init(high: consuming Doublet<Base>, low: consuming Base.Magnitude) {
-        self.init(Storage(high: high, low: low))
-    }
-    
-    @inlinable public init(high: consuming Base, low: consuming Doublet<Base.Magnitude>) {
-        self.init(Storage(high: high, low: low))
     }
     
     //=------------------------------------------------------------------------=
@@ -141,11 +125,8 @@ import CoreKit
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func ascending() -> (low: Low, mid: Mid, high: High) {
-        self.storage.ascending()
-    }
-    
-    @inlinable public consuming func descending() -> (high: High, mid: Mid, low: Low) {
-        self.storage.descending()
+    /// Returns its components in ascending order.
+    @inlinable public consuming func components() -> (low: Low, mid: Mid, high: High) {
+        self.storage.components()
     }
 }

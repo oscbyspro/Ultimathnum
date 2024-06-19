@@ -78,12 +78,8 @@ import CoreKit
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(low: consuming Low, high: consuming High = 0) {
+    @inlinable public init(low: consuming Low, high: consuming High) {
         self.init(Doublet(low: low, high: high))
-    }
-    
-    @inlinable public init(high: consuming High, low: consuming Low = 0) {
-        self.init(Doublet(high: high, low: low))
     }
     
     //=------------------------------------------------------------------------=
@@ -126,12 +122,9 @@ import CoreKit
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func ascending() -> (low: Low, high: High) {
-        self.storage.ascending()
-    }
-    
-    @inlinable public consuming func descending() -> (high: High, low: Low) {
-        self.storage.descending()
+    /// Returns its components in ascending order.
+    @inlinable public consuming func components() -> (low: Low, high: High) {
+        self.storage.components()
     }
 }
 

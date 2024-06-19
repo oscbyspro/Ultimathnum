@@ -58,6 +58,7 @@ Recoverable where Quotient: BinaryInteger, Remainder: BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// Returns the `quotient` and `remainder` as a tuple.
     @inlinable public consuming func components() -> (quotient: Quotient, remainder: Remainder) {
         (quotient: self.quotient, remainder: self.remainder)
     }

@@ -37,7 +37,7 @@ extension DoubleIntTests {
             typealias M = DoubleInt<B>.Magnitude
             //=----------------------------------=
             let full = M.size
-            let half = M(low: B.size)
+            let half = M(low: B.size, high: 0)
             let none = M.zero
             //=----------------------------------=
             Test()     .count(T(low:  00, high: 00), 0 as Bit, full)

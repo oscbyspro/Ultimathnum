@@ -34,7 +34,7 @@ extension MutableDataInt.Body {
         
         while UX(raw: self.count) > .zero {
             (self[unchecked: ()], increment) =
-            (self[unchecked: ()]).multiplication(multiplier, plus: increment).ascending()
+            (self[unchecked: ()]).multiplication(multiplier, plus: increment).components()
             (self) = (consume self)[unchecked: 1...]
         }
         

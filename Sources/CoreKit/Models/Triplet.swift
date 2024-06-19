@@ -50,32 +50,10 @@
         self.high = high
     }
     
-    @inlinable public init(high: consuming Base, mid: consuming Base.Magnitude, low: consuming Base.Magnitude) {
-        self.high = high
-        self.mid  = mid
-        self.low  = low
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
     @inlinable public init(low: consuming Base.Magnitude, high: consuming Doublet<Base>) {
         self.low  = low
         self.mid  = high.low
         self.high = high.high
-    }
-    
-    @inlinable public init(high: consuming Doublet<Base>, low: consuming Base.Magnitude) {
-        self.high = high.high
-        self.mid  = high.low
-        self.low  = low
-    }
-    
-    @inlinable public init(high: consuming Base, low: consuming Doublet<Base.Magnitude>) {
-        self.high = high
-        self.mid  = low.high
-        self.low  = low.low
     }
     
     @inlinable public init(low: consuming Doublet<Base.Magnitude>, high: consuming Base) {
@@ -108,11 +86,8 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func ascending() -> (low: Low, mid: Mid, high: High) {
+    /// Returns its components in ascending order.
+    @inlinable public consuming func components() -> (low: Low, mid: Mid, high: High) {
         (low: self.low, mid: self.mid, high: self.high)
-    }
-    
-    @inlinable public consuming func descending() -> (high: High, mid: Mid, low: Low) {
-        (high: self.high, mid: self.mid, low: self.low)
     }
 }

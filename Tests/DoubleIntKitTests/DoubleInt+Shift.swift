@@ -25,7 +25,7 @@ extension DoubleIntTests {
         func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
             let low = T.zero
-            let mid = T(low: B.size)
+            let mid = T(low: B.size, high: 0)
             let top = T(raw: T.size)
             //=----------------------------------=
             IntegerInvariants(T.self)  .upshiftRepeatingBit()

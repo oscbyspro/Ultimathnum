@@ -45,11 +45,6 @@
         self.high = high
     }
     
-    @inlinable public init(high: consuming Base, low: consuming Base.Magnitude) {
-        self.high = high
-        self.low  = low
-    }
-    
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
@@ -72,11 +67,8 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func ascending() -> (low: Low, high: High) {
+    /// Returns its components in ascending order.
+    @inlinable public consuming func components() -> (low: Low, high: High) {
         (low: self.low, high: self.high)
-    }
-    
-    @inlinable public consuming func descending() -> (high: High, low: Low) {
-        (high: self.high, low: self.low)
     }
 }

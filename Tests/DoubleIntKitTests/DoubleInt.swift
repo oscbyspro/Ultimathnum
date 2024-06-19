@@ -96,9 +96,6 @@ final class DoubleIntTests: XCTestCase {
             Test().same(T(low: 1, high: 2).low,  1 as B.Magnitude)
             Test().same(T(low: 1, high: 2).high, 2 as B)
             
-            Test().same(T(high: 1, low: 2).low,  2 as B.Magnitude)
-            Test().same(T(high: 1, low: 2).high, 1 as B)
-            
             setters: do {
                 let rhs  = T(low: 1, high: 2)
                 var lhs  = T(low: 0, high: 0)
@@ -109,14 +106,8 @@ final class DoubleIntTests: XCTestCase {
                 Test().same(lhs, rhs)
             }
             
-            ascending: do {
-                let (low, high) = T(low: 1, high: 2).ascending()
-                Test().same(low,  1 as B.Magnitude)
-                Test().same(high, 2 as B)
-            }
-            
-            descending: do {
-                let (high, low) = T(low: 1, high: 2).descending()
+            components: do {
+                let (low, high) = T(low: 1, high: 2).components()
                 Test().same(low,  1 as B.Magnitude)
                 Test().same(high, 2 as B)
             }

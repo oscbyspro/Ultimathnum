@@ -68,26 +68,14 @@ final class TripleIntTests: XCTestCase {
             Test().same(T(low: 1, mid: 2, high: 3).mid,  2 as B.Magnitude)
             Test().same(T(low: 1, mid: 2, high: 3).high, 3 as B)
             
-            Test().same(T(high: 1, mid: 2, low: 3).low,  3 as B.Magnitude)
-            Test().same(T(high: 1, mid: 2, low: 3).mid,  2 as B.Magnitude)
-            Test().same(T(high: 1, mid: 2, low: 3).high, 1 as B)
+            Test().same(T(low: 1, high: Doublet(low: 2, high: 3)).low,  1 as B.Magnitude)
+            Test().same(T(low: 1, high: Doublet(low: 2, high: 3)).mid,  2 as B.Magnitude)
+            Test().same(T(low: 1, high: Doublet(low: 2, high: 3)).high, 3 as B)
             
-            Test().same(T(low:  1, high: Doublet(low:  2, high: 3)).low,   1 as B.Magnitude)
-            Test().same(T(low:  1, high: Doublet(low:  2, high: 3)).mid,   2 as B.Magnitude)
-            Test().same(T(low:  1, high: Doublet(low:  2, high: 3)).high,  3 as B)
+            Test().same(T(low: Doublet(low: 1, high: 2), high: 3).low,  1 as B.Magnitude)
+            Test().same(T(low: Doublet(low: 1, high: 2), high: 3).mid,  2 as B.Magnitude)
+            Test().same(T(low: Doublet(low: 1, high: 2), high: 3).high, 3 as B)
             
-            Test().same(T(high: 1, low: Doublet(high:  2,  low:  3)).low,  3 as B.Magnitude)
-            Test().same(T(high: 1, low: Doublet(high:  2,  low:  3)).mid,  2 as B.Magnitude)
-            Test().same(T(high: 1, low: Doublet(high:  2,  low:  3)).high, 1 as B)
-            
-            Test().same(T(low:  Doublet(low:  1, high: 2), high: 3 ).low,  1 as B.Magnitude)
-            Test().same(T(low:  Doublet(low:  1, high: 2), high: 3 ).mid,  2 as B.Magnitude)
-            Test().same(T(low:  Doublet(low:  1, high: 2), high: 3 ).high, 3 as B)
-            
-            Test().same(T(high: Doublet(high: 1, low:  2), low:  3 ).low,  3 as B.Magnitude)
-            Test().same(T(high: Doublet(high: 1, low:  2), low:  3 ).mid,  2 as B.Magnitude)
-            Test().same(T(high: Doublet(high: 1, low:  2), low:  3 ).high, 1 as B)
-                
             setters: do {
                 let rhs  = T(low: 1, mid: 2, high: 3)
                 var lhs  = T(low: 0, mid: 0, high: 0)
@@ -99,15 +87,8 @@ final class TripleIntTests: XCTestCase {
                 Test().same(lhs, rhs)
             }
             
-            ascending: do {
-                let (low, mid, high) = T(low: 1, mid: 2, high: 3).ascending()
-                Test().same(low,  1 as B.Magnitude)
-                Test().same(mid,  2 as B.Magnitude)
-                Test().same(high, 3 as B)
-            }
-            
-            descending: do {
-                let (high, mid, low) = T(low: 1, mid: 2, high: 3).descending()
+            components: do {
+                let (low, mid, high) = T(low: 1, mid: 2, high: 3).components()
                 Test().same(low,  1 as B.Magnitude)
                 Test().same(mid,  2 as B.Magnitude)
                 Test().same(high, 3 as B)

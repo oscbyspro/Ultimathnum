@@ -112,7 +112,7 @@ extension CoreIntTests {
         for divisor     in I8.min...I8.max {
             for high    in I8.min...I8.max {
                 for low in U8.min...U8.max {
-                    if  let divisor = Divisor(exactly: divisor), !I8.division(Doublet(high: high, low: low), by: divisor).error {
+                    if  let divisor = Divisor(exactly: divisor), !I8.division(Doublet(low: low, high: high), by: divisor).error {
                         success += 1
                     }   else {
                         failure += 1
@@ -136,7 +136,7 @@ extension CoreIntTests {
         for divisor     in U8.min...U8.max {
             for high    in U8.min...U8.max {
                 for low in U8.min...U8.max {
-                    if  let divisor = Divisor(exactly: divisor), !U8.division(Doublet(high: high, low: low), by: divisor).error {
+                    if  let divisor = Divisor(exactly: divisor), !U8.division(Doublet(low: low, high: high), by: divisor).error {
                         success += 1
                     }   else {
                         failure += 1
