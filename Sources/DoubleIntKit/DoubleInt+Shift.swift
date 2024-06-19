@@ -39,7 +39,7 @@ extension DoubleInt {
         // note: even a 2-bit shift fits in 1 bit
         //=--------------------------------------=
         if  UX(load: distance.value.low) >= UX(size: Base.self) {
-            let distance  = Shift(unchecked: Base(raw: distance.value.low.minus(Base.size).unchecked()))
+            let distance = Shift(unchecked: Base(raw: distance.value.low.minus(Base.size).unchecked()))
             self.low  = Base.Magnitude(raw: self.high.down(distance))
             self.high = Base(repeating: Bit(self.high.isNegative))
         }   else {
@@ -56,16 +56,18 @@ extension DoubleInt {
     @inlinable public static func &<<(instance: consuming Self, distance: Self) -> Self {
         //=--------------------------------------=
         // note: even a 2-bit shift fits in 1 bit
-        //=--------------------------------------=
-        let low = Base.Magnitude(raw: distance.low) & (Base.size &<< 1 &- 1)
-        return instance.up(Shift(unchecked: Self(low: low, high: 0)))
+        //=--------------------------------------
+        let masked = distance.low & (Base.size << 1 &- 1)
+        //=--------------------------------------
+        return instance.up(Shift(unchecked: Self(low: masked, high: 0)))
     }
     
     @inlinable public static func &>>(instance: consuming Self, distance: Self) -> Self {
         //=--------------------------------------=
         // note: even a 2-bit shift fits in 1 bit
         //=--------------------------------------=
-        let low = Base.Magnitude(raw: distance.low) & (Base.size &<< 1 &- 1)
-        return instance.down(Shift(unchecked: Self(low: low, high: 0)))
+        let masked = distance.low & (Base.size << 1 &- 1)
+        //=--------------------------------------
+        return instance.down(Shift(unchecked: Self(low: masked, high: 0)))
     }
 }
