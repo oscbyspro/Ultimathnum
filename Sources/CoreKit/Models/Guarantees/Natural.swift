@@ -28,8 +28,8 @@
 ///
 /// You may always bit cast a signed natural value to its unsigned magnitude.
 /// The most convenient way is by calling `magnitude()`. Please keep in mind,
-/// however, that the inverse case is not as simple. `U8.max` is natural, for
-/// example, but it becomes negative when reinterpreted as an `I8` value.
+/// however, that the inverse case is not as simple. `U8(255)` is natural, 
+/// for example, but it becomes negative when you reinterpret it as `I8(-1)`.
 ///
 @frozen public struct Natural<Value>: Equatable where Value: BinaryInteger {
     

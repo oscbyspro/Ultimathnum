@@ -41,7 +41,7 @@ extension Doublet {
     ///
     @inlinable public consuming func down(_ distance: Shift<Base>) -> Self {
         if  let nondistance = distance.inverse() {
-            self.low   = self .low.down(distance.magnitude())
+            self.low   = self.low .down(distance.magnitude())
             self.low  |= Low(raw: self.high.up(nondistance))
             self.high  = self.high.down(distance)
         }

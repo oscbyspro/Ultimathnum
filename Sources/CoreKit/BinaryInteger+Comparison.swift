@@ -146,26 +146,23 @@ extension BinaryInteger {
                 }
             }
             
-        }   else {
-            //  note that the elements must be rebindable one way or the other
-            if  UX(size: Self.Element.Magnitude.self) <= UX(size: Other.Element.Magnitude.self) {
-                return self.withUnsafeBinaryIntegerElements { lhs in
-                    (other).withUnsafeBinaryIntegerElements(as: Self.Element.Magnitude.self) { rhs in
-                        DataInt.compare(
-                            lhs: lhs, lhsIsSigned: Self .isSigned,
-                            rhs: rhs, rhsIsSigned: Other.isSigned
-                        )
-                    }
+        }   else if UX(size: Self.Element.Magnitude.self) <= UX(size: Other.Element.Magnitude.self) {
+            return self.withUnsafeBinaryIntegerElements { lhs in
+                (other).withUnsafeBinaryIntegerElements(as: Self.Element.Magnitude.self) { rhs in
+                    DataInt.compare(
+                        lhs: lhs, lhsIsSigned: Self .isSigned,
+                        rhs: rhs, rhsIsSigned: Other.isSigned
+                    )
                 }
-                
-            }   else {
-                return self.withUnsafeBinaryIntegerElements(as: Other.Element.Magnitude.self) { lhs in
-                    (other).withUnsafeBinaryIntegerElements { rhs in
-                        DataInt.compare(
-                            lhs: lhs, lhsIsSigned: Self .isSigned,
-                            rhs: rhs, rhsIsSigned: Other.isSigned
-                        )
-                    }
+            }
+            
+        }   else {
+            return self.withUnsafeBinaryIntegerElements(as: Other.Element.Magnitude.self) { lhs in
+                (other).withUnsafeBinaryIntegerElements { rhs in
+                    DataInt.compare(
+                        lhs: lhs, lhsIsSigned: Self .isSigned,
+                        rhs: rhs, rhsIsSigned: Other.isSigned
+                    )
                 }
             }
         }
