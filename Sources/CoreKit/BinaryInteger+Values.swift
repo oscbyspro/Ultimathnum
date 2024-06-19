@@ -49,7 +49,7 @@ extension EdgyInteger {
     
     @inlinable public static var min: Self {
         if  isSigned {
-            return Self(raw: (1 as Magnitude).upshift(Shift(unchecked: size &- 1)))
+            return Self(raw: (1 as Magnitude).up(Shift(unchecked: size &- 1)))
         }   else {
             return Self()
         }
@@ -75,7 +75,7 @@ extension SystemsInteger {
     }
     
     @inlinable public static var msb: Self {
-        Self(raw: (1 as Magnitude).upshift(Shift(unchecked: size &- 1)))
+        Self(raw: (1 as Magnitude).up(Shift(unchecked: size &- 1)))
     }
 }
 

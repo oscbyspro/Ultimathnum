@@ -348,15 +348,19 @@ where
     
     /// Performs an ascending shift.
     ///
+    /// - Parameter distance: A shift in the range of `0 ..< Self.size`.
+    ///
     /// - Note: The `0` bit fills the void.
     ///
-    @inlinable consuming func upshift(_ distance: Shift<Self>) -> Self
+    @inlinable consuming func up(_ distance: Shift<Self>) -> Self
     
     /// Performs a decending shift.
     ///
+    /// - Parameter distance: A shift in the range of `0 ..< Self.size`.
+    ///
     /// - Note: The `appendix` fills the void.
     ///
-    @inlinable consuming func downshift(_ distance: Shift<Self>) -> Self
+    @inlinable consuming func down(_ distance: Shift<Self>) -> Self
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

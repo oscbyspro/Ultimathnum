@@ -19,7 +19,7 @@ extension InfiniInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inline(never) @inlinable public consuming func upshift(_ distance: Shift<Self>) -> Self {
+    @inline(never) @inlinable public consuming func up(_ distance: Shift<Self>) -> Self {
         //=--------------------------------------=
         Swift.assert(!distance.value.isInfinite)
         Swift.assert(!distance.value.isNegative)
@@ -37,7 +37,7 @@ extension InfiniInt {
         return self as Self as Self as Self
     }
     
-    @inline(never) @inlinable public consuming func downshift(_ distance: Shift<Self>) -> Self {
+    @inline(never) @inlinable public consuming func down(_ distance: Shift<Self>) -> Self {
         //=--------------------------------------=
         Swift.assert(!distance.value.isInfinite)
         Swift.assert(!distance.value.isNegative)

@@ -35,18 +35,18 @@ extension BinaryInteger {
     /// Performs an ascending smart shift.
     @inlinable public static func <<(instance: consuming Self, distance: Self) -> Self {
         if !distance.isNegative {
-            return instance  .upshift(Magnitude(raw: distance))
+            return instance  .up(Magnitude(raw: distance))
         }   else {
-            return instance.downshift(Magnitude(raw: distance.complement()))
+            return instance.down(Magnitude(raw: distance.complement()))
         }
     }
     
     /// Performs a descending smart shift.
     @inlinable public static func >>(instance: consuming Self, distance: Self) -> Self {
         if !distance.isNegative {
-            return instance.downshift(Magnitude(raw: distance))
+            return instance.down(Magnitude(raw: distance))
         }   else {
-            return instance  .upshift(Magnitude(raw: distance.complement()))
+            return instance  .up(Magnitude(raw: distance.complement()))
         }
     }
 }
@@ -65,9 +65,9 @@ extension BinaryInteger {
     ///
     /// - Note: The `0` bit fills the void.
     ///
-    @inlinable internal consuming func upshift(_ distance: Magnitude) -> Self {
+    @inlinable internal consuming func up(_ distance: Magnitude) -> Self {
         if  Shift.predicate(distance) {
-            return self.upshift(Shift(unchecked: Self(raw: distance)))
+            return self.up(Shift(unchecked: Self(raw: distance)))
         }   else {
             return Self(repeating: Bit.zero)
         }
@@ -77,9 +77,9 @@ extension BinaryInteger {
     ///
     /// - Note: The `appendix` fills the void.
     ///
-    @inlinable internal consuming func downshift(_ distance: Magnitude) -> Self {
-        if  Shift.predicate(Magnitude(raw: distance)) {
-            return self.downshift(Shift(unchecked: Self(raw: distance)))
+    @inlinable internal consuming func down(_ distance: Magnitude) -> Self {
+        if  Shift.predicate(distance) {
+            return self.down(Shift(unchecked: Self(raw: distance)))
         }   else {
             return Self(repeating: self.appendix)
         }
@@ -110,37 +110,5 @@ extension SystemsInteger {
     ///
     @inlinable public static func &>>=(instance: inout Self, shift: borrowing Self) {
         instance = instance &>> shift
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x 2 by 1 as 2
-    //=------------------------------------------------------------------------=
-
-    /// Performs an ascending shift.
-    ///
-    ///  - Note: The `0` bit fills the void.
-    ///
-    @inlinable public static func upshift(_ instance: consuming Doublet<Self>, by distance: Shift<Self>) -> Doublet<Self> {
-        if  let nondistance = distance.inverse() {
-            instance.high   = instance.high.upshift(distance)
-            instance.high  |= Self(raw: instance.low.downshift(nondistance.magnitude()))
-            instance.low    = instance.low .upshift(distance.magnitude())
-        }
-        
-        return instance as Doublet<Self> as Doublet<Self>
-    }
-    
-    /// Performs a descending shift.
-    ///
-    /// - Note: The `appendix` fills the void.
-    ///
-    @inlinable public static func downshift(_ instance: consuming Doublet<Self>, by distance: Shift<Self>) -> Doublet<Self> {
-        if  let nondistance = distance.inverse() {
-            instance.low    = instance .low.downshift(distance.magnitude())
-            instance.low   |= Magnitude(raw: instance.high.upshift(nondistance))
-            instance.high   = instance.high.downshift(distance)
-        }
-        
-        return instance as Doublet<Self> as Doublet<Self>
     }
 }

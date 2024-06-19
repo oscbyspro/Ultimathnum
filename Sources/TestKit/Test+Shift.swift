@@ -107,12 +107,12 @@ extension Test {
             
         case (.up, .exact):
             if  let distance = some(Shift(exactly: distance)) {
-                same(instance.upshift(distance), expectation, "up")
+                same(instance.up(distance), expectation, "up")
             }
             
         case (.down, .exact):
             if  let distance = some(Shift(exactly: distance)) {
-                same(instance.downshift(distance), expectation, "down")
+                same(instance.down(distance), expectation, "down")
             }
         }
     }
