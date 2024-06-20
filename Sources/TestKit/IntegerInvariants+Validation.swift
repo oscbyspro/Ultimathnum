@@ -46,8 +46,8 @@ extension IntegerInvariants {
         }
     }
     
-    public func exactlyCoreSystemsIntegers() {
-        func whereOtherIs<U>(_  type:  U.Type) where U: SystemsInteger {
+    public func exactlyCoreSystemsInteger() {
+        func whereTheSourceIs<U>(_  type:  U.Type) where U: SystemsInteger {
             //=----------------------------------=
             // path: about T.max as U
             //=----------------------------------=
@@ -65,7 +65,7 @@ extension IntegerInvariants {
             }
         }
         
-        func whereOtherIsSigned<U>(_  type:  U.Type) where U: SystemsInteger & SignedInteger {
+        func whereTheSourceIsIsSigned<U>(_  type:  U.Type) where U: SystemsInteger & SignedInteger {
             let size = T(load: UX(size: U.self))
             //=----------------------------------=
             // path: about U.zero
@@ -111,7 +111,7 @@ extension IntegerInvariants {
             }
         }
         
-        func whereOtherIsUnsigned<U>(_ type: U.Type) where U: SystemsInteger & UnsignedInteger {
+        func whereTheSourceIsUnsigned<U>(_ type: U.Type) where U: SystemsInteger & UnsignedInteger {
             let size = T(load: UX(size: U.self))
             //=----------------------------------=
             // path: about U.min
@@ -145,15 +145,67 @@ extension IntegerInvariants {
         }
         
         for type in coreSystemsIntegers {
-            whereOtherIs(type)
+            whereTheSourceIs(type)
         }
         
         for type in coreSystemsIntegersWhereIsSigned {
-            whereOtherIsSigned(type)
+            whereTheSourceIsIsSigned(type)
         }
         
         for type in coreSystemsIntegersWhereIsUnsigned {
-            whereOtherIsUnsigned(type)
+            whereTheSourceIsUnsigned(type)
         }
+    }
+    
+    /// Tests binary integer conversions for various slices of 1s.
+    ///
+    /// ```
+    /// 1111000000000000000000000000000000
+    /// 0111100000000000000000000000000000
+    /// 0011110000000000000000000000000000
+    /// ..................................
+    /// 0000000000000000000000000000111100
+    /// 0000000000000000000000000000011110
+    /// 0000000000000000000000000000001111
+    /// ```
+    ///
+    public func exactlyCoreSystemsIntegerSlicesOfOnes() {
+        func whereTheSourceIs<U>(_  type:  U.Type) where U: SystemsInteger {
+            always: do {
+                let patterns: [UX] = [1, 3, 7, 15]
+                let mask = T(load: U.Magnitude(repeating: 1))
+                
+                for ones in 1 ... IX(patterns.count) {
+                    var zeros =   IX.zero
+                    var lhs = U(load: patterns[Int(ones - 1)])
+                    var rhs = T(load: patterns[Int(ones - 1)])
+                    
+                    forwards: while zeros + ones < IX(size: U.self) {
+                        test.exactly(lhs, Fallible(rhs & (mask), error: T.isSigned ? T.size <= zeros + ones : T.size < zeros + ones))
+                        zeros += 1
+                        lhs  <<= 1
+                        rhs  <<= 1
+                    }
+                    
+                    test.same(IX(size: U.self), zeros + ones)
+                    test.same(IX(lhs.descending(.one)), ones)
+                
+                    last: if U.isSigned {
+                        test.exactly(lhs, Fallible(rhs ^ ~mask,  error: T.isSigned ? T.size <  zeros + ones : true))
+                    }   else {
+                        test.exactly(lhs, Fallible(rhs & (mask), error: T.isSigned ? T.size <= zeros + ones : T.size < zeros + ones))
+                    }
+                }
+            }
+        }
+        
+        #if DEBUG
+        whereTheSourceIs(I32.self)
+        whereTheSourceIs(U32.self)
+        #else
+        for type in coreSystemsIntegers {
+            whereTheSourceIs(type)
+        }
+        #endif
     }
 }

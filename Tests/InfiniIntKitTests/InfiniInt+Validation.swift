@@ -23,7 +23,8 @@ extension InfiniIntTests {
     
     func testValidation() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            IntegerInvariants(T.self).exactlyCoreSystemsIntegers()
+            IntegerInvariants(T.self).exactlyCoreSystemsInteger()
+            IntegerInvariants(T.self).exactlyCoreSystemsIntegerSlicesOfOnes()
         }
         
         for type in Self.types {

@@ -20,9 +20,10 @@ extension CoreIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testIntegers() {
+    func testIntegers() {        
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self).exactlyCoreSystemsIntegers()
+            IntegerInvariants(T.self).exactlyCoreSystemsInteger()
+            IntegerInvariants(T.self).exactlyCoreSystemsIntegerSlicesOfOnes()
             IntegerInvariants(T.self).exactlySameSizeSystemsIntegers()
         }
         
