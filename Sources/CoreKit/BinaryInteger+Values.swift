@@ -17,6 +17,7 @@ extension BinaryInteger {
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
+    /// Returns the additive identity element: `zero`.
     @inline(__always) // performance: please fold it like a paper airplane
     @inlinable public static var zero: Self {
         Self()
@@ -26,14 +27,10 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Returns the additive identity element: `zero`.
     @inline(__always) // performance: please fold it like a paper airplane
     @inlinable public init() {
         self = 0
-    }
-    
-    @inline(__always) // performance: please fold it like a paper airplane
-    @inlinable public init(_ source: consuming Self) {
-        self = source
     }
 }
 

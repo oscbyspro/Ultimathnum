@@ -145,7 +145,7 @@ extension DoubleInt where Base == Base.Magnitude {
         // division: 3212 (normalized)
         //=--------------------------------------=
         let result: Division<Base, Self> = TripleInt(low: lhs.storage, high: top).division3212(normalized: rhs)
-        return Division(quotient: Self(low: result.quotient, high: 0), remainder: Self(result.remainder).down(normalization))
+        return Division(quotient: Self(low: result.quotient, high: 0), remainder: result.remainder.down(normalization))
     }
     
     //=------------------------------------------------------------------------=
@@ -202,7 +202,7 @@ extension DoubleInt where Base == Base.Magnitude {
             Swift.assert(rhs.value.high >= Base.msb, "divisor must be normalized")
             Swift.assert(rhs.value > Self(low: lhs.low.high, high: lhs.high.low), "quotient must fit in one half")
             let result = TripleInt(low: lhs.low.storage, high: lhs.high.low).division3212(normalized: rhs)
-            return Division(quotient: Self(low: result.quotient, high: 0), remainder: Self(result.remainder).down(normalization))
+            return Division(quotient: Self(low: result.quotient, high: 0), remainder: result.remainder.down(normalization))
         }
         //=--------------------------------------=
         // division: 4222 (normalized)
@@ -210,6 +210,6 @@ extension DoubleInt where Base == Base.Magnitude {
         Swift.assert(rhs.value.high >= Base.msb, "divisor must be normalized")
         let high = TripleInt(low: lhs.low.high, high: lhs.high.storage).division3212(normalized: rhs)
         let low  = TripleInt(low: lhs.low.low,  high: high.remainder.storage).division3212(normalized: rhs)
-        return Division(quotient: Self(low: low.quotient, high: high.quotient), remainder: Self(low.remainder).down(normalization))
+        return Division(quotient: Self(low: low.quotient, high: high.quotient), remainder: low.remainder.down(normalization))
     }
 }

@@ -20,6 +20,19 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a new instance from the given `source`.
+    ///
+    /// - Note: This method does not need to perform any validation.
+    ///
+    @inline(__always) // performance: please fold it like a paper airplane
+    @inlinable public init(_ source: consuming Self) {
+        self = source
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
     /// Creates a validated instance from the given `source`.
     @inlinable public static func exactly(_ source: consuming RootInt) -> Fallible<Self> {
         source.withUnsafeBinaryIntegerElements {
