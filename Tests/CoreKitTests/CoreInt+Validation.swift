@@ -32,6 +32,10 @@ extension CoreIntTests {
         }
     }
     
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
     func testIntegerLiterals() {
         Test().same(I16.exactly(-0000032769 as RootInt), Fallible(I16.max, error: true))
         Test().same(I16.exactly(-0000032768 as RootInt), Fallible(I16.min))

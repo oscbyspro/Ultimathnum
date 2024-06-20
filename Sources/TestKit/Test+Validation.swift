@@ -58,7 +58,7 @@ extension Test {
             }
         }
         
-        if  input >= Input.zero {
+        if !input.isNegative {
             let magnitude = Input.Magnitude(input)
             same(Output.exactly(magnitude: magnitude), expectation, "T.exactly(magnitude:)")
             
