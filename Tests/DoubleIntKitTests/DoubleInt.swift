@@ -93,6 +93,14 @@ final class DoubleIntTests: XCTestCase {
         func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
             
+            Test().same(T(               ).low,  0 as B.Magnitude)
+            Test().same(T(               ).high, 0 as B)
+            Test().same(T(low: 0         ).low,  0 as B.Magnitude)
+            Test().same(T(low: 0         ).high, 0 as B)
+            Test().same(T(low: 1         ).low,  1 as B.Magnitude)
+            Test().same(T(low: 1         ).high, 0 as B)
+            Test().same(T(low: 0, high: 0).low,  0 as B.Magnitude)
+            Test().same(T(low: 0, high: 0).high, 0 as B)
             Test().same(T(low: 1, high: 2).low,  1 as B.Magnitude)
             Test().same(T(low: 1, high: 2).high, 2 as B)
             
@@ -107,7 +115,14 @@ final class DoubleIntTests: XCTestCase {
             }
             
             components: do {
-                let (low, high) = T(low: 1, high: 2).components()
+                var low:  B.Magnitude
+                var high: B
+                
+                (low, high) = T(low: 0, high: 0).components()
+                Test().same(low,  0 as B.Magnitude)
+                Test().same(high, 0 as B)
+                
+                (low, high) = T(low: 1, high: 2).components()
                 Test().same(low,  1 as B.Magnitude)
                 Test().same(high, 2 as B)
             }

@@ -63,14 +63,41 @@ import CoreKit
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a new instance from the given components.
+    @inlinable public init() {
+        self.init(Storage())
+    }
+    
+    /// Creates a new instance from the given components.
+    @inlinable public init(low: consuming Base.Magnitude) {
+        self.init(Storage(low: low))
+    }
+    
+    /// Creates a new instance from the given components.
+    @inlinable public init(low: consuming Base.Magnitude, mid: consuming Base.Magnitude) {
+        self.init(Storage(low: low, mid: mid))
+    }
+    
+    /// Creates a new instance from the given components.
     @inlinable public init(low: consuming Base.Magnitude, mid: consuming Base.Magnitude, high: consuming Base) {
         self.init(Storage(low: low, mid: mid, high: high))
     }
     
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    /// Creates a new instance from the given components.
     @inlinable public init(low: consuming Base.Magnitude, high: consuming Doublet<Base>) {
         self.init(Storage(low: low, high: high))
     }
     
+    /// Creates a new instance from the given components.
+    @inlinable public init(low: consuming Doublet<Base.Magnitude>) {
+        self.init(Storage(low: low))
+    }
+    
+    /// Creates a new instance from the given components.
     @inlinable public init(low: consuming Doublet<Base.Magnitude>, high: consuming Base) {
         self.init(Storage(low: low, high: high))
     }

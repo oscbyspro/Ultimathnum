@@ -64,14 +64,47 @@ final class TripleIntTests: XCTestCase {
         func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = TripleInt<B>
             
+            Test().same(T(                       ).low,  0 as B.Magnitude)
+            Test().same(T(                       ).mid,  0 as B.Magnitude)
+            Test().same(T(                       ).high, 0 as B)
+            Test().same(T(                       ).low,  0 as B.Magnitude)
+            Test().same(T(                       ).mid,  0 as B.Magnitude)
+            Test().same(T(                       ).high, 0 as B)
+            Test().same(T(low: 0                 ).low,  0 as B.Magnitude)
+            Test().same(T(low: 0                 ).mid,  0 as B.Magnitude)
+            Test().same(T(low: 0                 ).high, 0 as B)
+            Test().same(T(low: 1                 ).low,  1 as B.Magnitude)
+            Test().same(T(low: 1                 ).mid,  0 as B.Magnitude)
+            Test().same(T(low: 1                 ).high, 0 as B)
+            Test().same(T(low: 0, mid: 0         ).low,  0 as B.Magnitude)
+            Test().same(T(low: 0, mid: 0         ).mid,  0 as B.Magnitude)
+            Test().same(T(low: 0, mid: 0         ).high, 0 as B)
+            Test().same(T(low: 1, mid: 2         ).low,  1 as B.Magnitude)
+            Test().same(T(low: 1, mid: 2         ).mid,  2 as B.Magnitude)
+            Test().same(T(low: 1, mid: 2         ).high, 0 as B)
+            Test().same(T(low: 0, mid: 0, high: 0).low,  0 as B.Magnitude)
+            Test().same(T(low: 0, mid: 0, high: 0).mid,  0 as B.Magnitude)
+            Test().same(T(low: 0, mid: 0, high: 0).high, 0 as B)
             Test().same(T(low: 1, mid: 2, high: 3).low,  1 as B.Magnitude)
             Test().same(T(low: 1, mid: 2, high: 3).mid,  2 as B.Magnitude)
             Test().same(T(low: 1, mid: 2, high: 3).high, 3 as B)
             
+            Test().same(T(low: 0, high: Doublet(low: 0, high: 0)).low,  0 as B.Magnitude)
+            Test().same(T(low: 0, high: Doublet(low: 0, high: 0)).mid,  0 as B.Magnitude)
+            Test().same(T(low: 0, high: Doublet(low: 0, high: 0)).high, 0 as B)
             Test().same(T(low: 1, high: Doublet(low: 2, high: 3)).low,  1 as B.Magnitude)
             Test().same(T(low: 1, high: Doublet(low: 2, high: 3)).mid,  2 as B.Magnitude)
             Test().same(T(low: 1, high: Doublet(low: 2, high: 3)).high, 3 as B)
             
+            Test().same(T(low: Doublet(low: 0, high: 0)         ).low,  0 as B.Magnitude)
+            Test().same(T(low: Doublet(low: 0, high: 0)         ).mid,  0 as B.Magnitude)
+            Test().same(T(low: Doublet(low: 0, high: 0)         ).high, 0 as B)
+            Test().same(T(low: Doublet(low: 1, high: 2)         ).low,  1 as B.Magnitude)
+            Test().same(T(low: Doublet(low: 1, high: 2)         ).mid,  2 as B.Magnitude)
+            Test().same(T(low: Doublet(low: 1, high: 2)         ).high, 0 as B)
+            Test().same(T(low: Doublet(low: 0, high: 0), high: 0).low,  0 as B.Magnitude)
+            Test().same(T(low: Doublet(low: 0, high: 0), high: 0).mid,  0 as B.Magnitude)
+            Test().same(T(low: Doublet(low: 0, high: 0), high: 0).high, 0 as B)
             Test().same(T(low: Doublet(low: 1, high: 2), high: 3).low,  1 as B.Magnitude)
             Test().same(T(low: Doublet(low: 1, high: 2), high: 3).mid,  2 as B.Magnitude)
             Test().same(T(low: Doublet(low: 1, high: 2), high: 3).high, 3 as B)
@@ -88,7 +121,16 @@ final class TripleIntTests: XCTestCase {
             }
             
             components: do {
-                let (low, mid, high) = T(low: 1, mid: 2, high: 3).components()
+                var low:  B.Magnitude
+                var mid:  B.Magnitude
+                var high: B
+                
+                (low, mid, high)  = T(low: 0, mid: 0, high: 0).components()
+                Test().same(low,  0 as B.Magnitude)
+                Test().same(mid,  0 as B.Magnitude)
+                Test().same(high, 0 as B)
+                
+                (low, mid, high)  = T(low: 1, mid: 2, high: 3).components()
                 Test().same(low,  1 as B.Magnitude)
                 Test().same(mid,  2 as B.Magnitude)
                 Test().same(high, 3 as B)

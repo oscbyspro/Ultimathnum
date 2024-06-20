@@ -78,8 +78,19 @@ import CoreKit
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a new instance from the given components.
+    @inlinable public init() {
+        self.init(Storage())
+    }
+    
+    /// Creates a new instance from the given components.
+    @inlinable public init(low: consuming Low) {
+        self.init(Storage(low: low))
+    }
+    
+    /// Creates a new instance from the given components.
     @inlinable public init(low: consuming Low, high: consuming High) {
-        self.init(Doublet(low: low, high: high))
+        self.init(Storage(low: low, high: high))
     }
     
     //=------------------------------------------------------------------------=

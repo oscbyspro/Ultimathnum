@@ -44,24 +44,59 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a new instance from the given components.
+    @inlinable public init() {
+        self.low  = Low .zero
+        self.mid  = Mid .zero
+        self.high = High.zero
+    }
+    
+    /// Creates a new instance from the given components.
+    @inlinable public init(low: consuming Base.Magnitude) {
+        self.low  = low
+        self.mid  = Mid .zero
+        self.high = High.zero
+    }
+    
+    /// Creates a new instance from the given components.
+    @inlinable public init(low: consuming Base.Magnitude, mid: consuming Base.Magnitude) {
+        self.low  = low
+        self.mid  = mid
+        self.high = High.zero
+    }
+    
+    /// Creates a new instance from the given components.
     @inlinable public init(low: consuming Base.Magnitude, mid: consuming Base.Magnitude, high: consuming Base) {
         self.low  = low
         self.mid  = mid
         self.high = high
     }
     
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    /// Creates a new instance from the given components.
     @inlinable public init(low: consuming Base.Magnitude, high: consuming Doublet<Base>) {
         self.low  = low
         self.mid  = high.low
         self.high = high.high
     }
     
+        /// Creates a new instance from the given components.
+    @inlinable public init(low: consuming Doublet<Base.Magnitude>) {
+        self.low  = low.low
+        self.mid  = low.high
+        self.high = High.zero
+    }
+    
+    /// Creates a new instance from the given components.
     @inlinable public init(low: consuming Doublet<Base.Magnitude>, high: consuming Base) {
         self.low  = low.low
         self.mid  = low.high
         self.high = high
     }
-    
+
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=

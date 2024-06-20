@@ -59,7 +59,7 @@ extension DoubleInt {
         //=--------------------------------------
         let masked = distance.low & (Base.size << 1 &- 1)
         //=--------------------------------------
-        return instance.up(Shift(unchecked: Self(low: masked, high: 0)))
+        return instance.up(Shift(unchecked: Self(low: masked)))
     }
     
     @inlinable public static func &>>(instance: consuming Self, distance: Self) -> Self {
@@ -68,6 +68,6 @@ extension DoubleInt {
         //=--------------------------------------=
         let masked = distance.low & (Base.size << 1 &- 1)
         //=--------------------------------------
-        return instance.down(Shift(unchecked: Self(low: masked, high: 0)))
+        return instance.down(Shift(unchecked: Self(low: masked)))
     }
 }

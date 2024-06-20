@@ -40,6 +40,19 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a new instance from the given components.
+    @inlinable public init() {
+        self.low  = Low .zero
+        self.high = High.zero
+    }
+    
+    /// Creates a new instance from the given components.
+    @inlinable public init(low: consuming Base.Magnitude) {
+        self.low  = low
+        self.high = High.zero
+    }
+    
+    /// Creates a new instance from the given components.
     @inlinable public init(low: consuming Base.Magnitude, high: consuming Base) {
         self.low  = low
         self.high = high
