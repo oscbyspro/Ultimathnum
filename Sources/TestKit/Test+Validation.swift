@@ -27,11 +27,23 @@ extension Test {
         // path: binary integer
         //=--------------------------------------=
         always: do {
-            same(Output.exactly(input), expectation, "T.exactly(some BinaryInteger)")
+            same(Output.exactly(input), expectation, "T.exactly(_:)")
 
             if !expectation.error {
-                same(Output(input), expectation.value,  "T.init(some BinaryInteger)")
+                same(Output(input), expectation.value, "T.init(_:)")
             }
+        }
+            
+        clamping: if let clamped = Output(clamping: input) {
+            if !expectation.error {
+                same(clamped, expectation.value, "T.init(clamping:)")
+            }   else if input.isNegative {
+                yay(clamped.decremented().error, "T.init(clamping:) - min")
+            }   else {
+                yay(clamped.incremented().error, "T.init(clamping:) - max")
+            }
+        }   else {
+            yay(Output.isSigned && input.isInfinite, "arbitrary signed integers cannot clamp infinite values")
         }
         //=--------------------------------------=
         // path: sign and magnitude

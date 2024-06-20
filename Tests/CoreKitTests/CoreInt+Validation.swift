@@ -22,7 +22,6 @@ extension CoreIntTests {
     
     func testIntegers() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self).clampingCoreSystemsIntegers()
             IntegerInvariants(T.self).exactlyCoreSystemsIntegers()
             IntegerInvariants(T.self).exactlySameSizeSystemsIntegers()
         }

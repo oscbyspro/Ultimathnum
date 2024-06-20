@@ -118,27 +118,56 @@ extension BinaryInteger {
             }
         }
     }
-}
-
-//*============================================================================*
-// MARK: * Binary Integer x Validation x Edgy
-//*============================================================================*
-//=----------------------------------------------------------------------------=
-// MARK: + Integers
-//=----------------------------------------------------------------------------=
-
-extension EdgyInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: Initializers x Clamping
     //=------------------------------------------------------------------------=
     
     /// Creates a new instance by clamping the given `source`.
-    @inlinable public init(clamping source: some BinaryInteger) {
-        if  let instance = Self.exactly(source).optional() {
+    @inlinable public init(clamping source: some FiniteInteger) {
+        self.init(clamping: source)!
+    }
+    
+    /// Creates a new instance by clamping the given `source`.
+    @_disfavoredOverload // req. because of EdgyInteger.init(clamping: some FiniteInteger)
+    @inlinable public init(clamping source: some BinaryInteger) where Self: EdgyInteger {
+        self.init(clamping: source)!
+    }
+    
+    /// Creates a new instance by clamping the given `source`.
+    ///
+    /// The following illustration shows when clamping is possible:
+    ///
+    ///                ┌────────────┬────────────┐
+    ///                │ Systems    │ Arbitrary  |
+    ///     ┌──────────┼────────────┤────────────┤
+    ///     │   Signed │ OK         │ source ∈ ℕ │
+    ///     ├──────────┼────────────┤────────────┤
+    ///     │ Unsigned │ OK         │ OK         │
+    ///     └──────────┴────────────┴────────────┘
+    ///
+    ///
+    /// - Note: This is the most generic version of `init(clamping:)`.
+    ///
+    @inlinable public init?(clamping source: some BinaryInteger) {
+        if  Self.isSigned, source.isInfinite {
+            return nil
+            
+        }   else if !Self.isSigned, source.isNegative {
+            self.init()
+            
+        }   else if Self.size.isInfinite {
+            self.init(load: source)
+            
+        }   else if let instance = Self.exactly(source).optional() {
             self = instance
-        }   else {
-            self = source.isNegative ? Self.min : Self.max
+            
+        }   else if Self.isSigned {
+            let msb = (1 as Magnitude).up(Shift(Self.size - 1))
+            self.init(raw: source.isNegative ? msb : msb.toggled())
+            
+        }   else/* if !Self.isSigned */ {
+            self.init(repeating: Bit.one)
         }
     }
 }

@@ -20,23 +20,23 @@ extension IntegerInvariants {
     //=------------------------------------------------------------------------=
     
     public func exactlySameSizeSystemsIntegers() where T: SystemsInteger {
-        test.exactly( S.min, F( T(raw: S.min), error: T.isSigned == false))
+        test.exactly( S.min, F( T(raw: S.min), error: !T.isSigned))
         test.exactly( S.lsb, F( T(raw: S.lsb)))
-        test.exactly( S.msb, F( T(raw: S.msb), error: T.isSigned == false))
+        test.exactly( S.msb, F( T(raw: S.msb), error: !T.isSigned))
         test.exactly( S.max, F( T(raw: S.max)))
         
         test.exactly(~S.min, F(~T(raw: S.min)))
-        test.exactly(~S.lsb, F(~T(raw: S.lsb), error: T.isSigned == false))
+        test.exactly(~S.lsb, F(~T(raw: S.lsb), error: !T.isSigned))
         test.exactly(~S.msb, F(~T(raw: S.msb)))
-        test.exactly(~S.max, F(~T(raw: S.max), error: T.isSigned == false))
+        test.exactly(~S.max, F(~T(raw: S.max), error: !T.isSigned))
         
         test.exactly( M.min, F( T(raw: M.min)))
         test.exactly( M.lsb, F( T(raw: M.lsb)))
-        test.exactly( M.msb, F( T(raw: M.msb), error: T.isSigned == true ))
-        test.exactly( M.max, F( T(raw: M.max), error: T.isSigned == true ))
+        test.exactly( M.msb, F( T(raw: M.msb), error:  T.isSigned))
+        test.exactly( M.max, F( T(raw: M.max), error:  T.isSigned))
         
-        test.exactly(~M.min, F(~T(raw: M.min), error: T.isSigned == true))
-        test.exactly(~M.lsb, F(~T(raw: M.lsb), error: T.isSigned == true))
+        test.exactly(~M.min, F(~T(raw: M.min), error:  T.isSigned))
+        test.exactly(~M.lsb, F(~T(raw: M.lsb), error:  T.isSigned))
         test.exactly(~M.msb, F(~T(raw: M.msb)))
         test.exactly(~M.max, F(~T(raw: M.max)))
         
@@ -47,72 +47,113 @@ extension IntegerInvariants {
     }
     
     public func exactlyCoreSystemsIntegers() {
-        func whereOtherIs<Other>(_ other: Other.Type) where Other: SystemsInteger {
-            typealias I = Other.Signitude
-            typealias U = Other.Magnitude
-            
-            test.exactly( I.min, F( T(load:  I.min), error: T.size < I.size || (T.isSigned == false)))
-            test.exactly( I.lsb, F( T(load:  I.lsb)))
-            test.exactly( I.msb, F( T(load:  I.msb), error: T.size < I.size || (T.isSigned == false)))
-            test.exactly( I.max, F( T(load:  I.max), error: T.size < I.size))
-            
-            test.exactly(~I.min, F(~T(load:  I.min), error: T.size < I.size))
-            test.exactly(~I.lsb, F(~T(load:  I.lsb), error: T.isSigned == false))
-            test.exactly(~I.msb, F(~T(load:  I.msb), error: T.size < I.size))
-            test.exactly(~I.max, F(~T(load:  I.max), error: T.size < I.size || (T.isSigned == false)))
-            
-            test.exactly( U.min, F( T(load:  U.min)))
-            test.exactly( U.lsb, F( T(load:  U.lsb)))
-            test.exactly( U.msb, F( T(load:  U.msb), error: T.size < U.size || (T.isSigned && T.size == U.size)))
-            test.exactly( U.max, F( T(load:  U.max), error: T.size < U.size || (T.isSigned && T.size == U.size)))
-            
-            test.exactly(~U.min, F( T(load: ~U.min), error: T.size < U.size || (T.isSigned && T.size == U.size)))
-            test.exactly(~U.lsb, F( T(load: ~U.lsb), error: T.size < U.size || (T.isSigned && T.size == U.size)))
-            test.exactly(~U.msb, F( T(load: ~U.msb), error: T.size < U.size))
-            test.exactly(~U.max, F( T(load: ~U.max)))
-        }
-        
-        for other in coreSystemsIntegers {
-            whereOtherIs(other)
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    public func clampingCoreSystemsIntegers() where T: EdgyInteger {
-        func whereOtherIs<Other>(_ other: Other.Type) where Other: SystemsInteger {
-            typealias I = Other.Signitude
-            typealias U = Other.Magnitude
-            
-            branch: if !T.isSigned {
-                test.same(T(clamping:  1 as Other), 1 as T, " 1 -> unsigned")
-                test.same(T(clamping:  0 as Other), T.zero, " 0 -> unsigned")
+        func whereOtherIs<U>(_  type:  U.Type) where U: SystemsInteger {
+            //=----------------------------------=
+            // path: about T.max as U
+            //=----------------------------------=
+            if  T.size < U.size || (T.size == U.size && (T.isSigned, U.isSigned) != (false, true)) {
+                let max: T = Self.maxEsque
+                let maxAsOther: U = U(repeating: 1) << U(load: UX(size: T.self)! - UX(Bit(T.isSigned))) ^ U(repeating: 1)
                 
-                guard Other.isSigned else { break branch }
-                
-                test.same(T(clamping: -1 as Other), T.zero, "-1 -> unsigned")
-                test.same(T.exactly(  -1 as Other), T.max.veto(true))
-            }
-            
-            if  T.size < Other.size {
-                test.same(T(clamping: Other(T.max) - 1), T.max - 1, "max - 1")
-                test.same(T(clamping: Other(T.max)),     T.max,     "max")
-                test.same(T(clamping: Other(T.max) + 1), T.max,     "max + 1")
-                test.same(T.exactly(  Other(T.max) + 1), T.min.veto(true))
-            }
-            
-            if  T.isSigned, Other.isSigned, T.size < Other.size {
-                test.same(T.exactly(  Other(T.min) - 1), T.max.veto(true))
-                test.same(T(clamping: Other(T.min) - 1), T.min,     "min - 1")
-                test.same(T(clamping: Other(T.min)),     T.min,     "min")
-                test.same(T(clamping: Other(T.min) + 1), T.min + 1, "min + 1")
+                test.exactly(maxAsOther &- 2, F(max &- 2))
+                test.exactly(maxAsOther &- 1, F(max &- 1))
+                test.exactly(maxAsOther,      F(max     ))
+                test.exactly(maxAsOther &+ 1, F(max &+ 1, error: T.size < U.size || (T.isSigned != U.isSigned)))
+                test.exactly(maxAsOther &+ 2, F(max &+ 2, error: T.size < U.size || (T.isSigned != U.isSigned)))
+            }   else {
+                test.exactly(Self.maxEsque, Fallible(U(repeating: 1), error: true))
             }
         }
         
-        for other in coreSystemsIntegers {
-            whereOtherIs(other)
+        func whereOtherIsSigned<U>(_  type:  U.Type) where U: SystemsInteger & SignedInteger {
+            let size = T(load: UX(size: U.self))
+            //=----------------------------------=
+            // path: about U.zero
+            //=----------------------------------=
+            always: do {
+                let load = T.zero
+                test.exactly(U(repeating: 0) - 2, F(load &- 2, error: !T.isSigned))
+                test.exactly(U(repeating: 0) - 1, F(load &- 1, error: !T.isSigned))
+                test.exactly(U(repeating: 0),     F(load     ))
+                test.exactly(U(repeating: 0) + 1, F(load &+ 1))
+                test.exactly(U(repeating: 0) + 2, F(load &+ 2))
+            }
+            //=----------------------------------=
+            // path: about U.min
+            //=----------------------------------=
+            always: do {
+                let load = T(repeating: 1) << (size - 1)
+                test.exactly(U.min,      F(load,      error: T.size < U.size || !T.isSigned))
+                test.exactly(U.min &+ 1, F(load &+ 1, error: T.size < U.size || !T.isSigned))
+                test.exactly(U.min &+ 2, F(load &+ 2, error: T.size < U.size || !T.isSigned))
+            }
+            //=----------------------------------=
+            // path: about U.max
+            //=----------------------------------=
+            always: do {
+                let load = T(repeating: 1) << (size - 1) ^ T(repeating: 1)
+                test.exactly(U.max,      F(load,      error: T.size < U.size))
+                test.exactly(U.max &- 1, F(load &- 1, error: T.size < U.size))
+                test.exactly(U.max &- 2, F(load &- 2, error: T.size < U.size))
+            }
+            //=----------------------------------=
+            // path: about T.min as U
+            //=----------------------------------=
+            if  T.isSigned, T.size <= U.size {
+                let min: T = Self.minEsque
+                let minAsOther: U = U(repeating: 1) << U(load: UX(size: T.self)! - 1)
+                
+                test.exactly(minAsOther &- 2, F(min &- 2, error: T.size < U.size))
+                test.exactly(minAsOther &- 1, F(min &- 1, error: T.size < U.size))
+                test.exactly(minAsOther,      F(min     ))
+                test.exactly(minAsOther &+ 1, F(min &+ 1))
+                test.exactly(minAsOther &+ 2, F(min &+ 2))
+            }
+        }
+        
+        func whereOtherIsUnsigned<U>(_ type: U.Type) where U: SystemsInteger & UnsignedInteger {
+            let size = T(load: UX(size: U.self))
+            //=----------------------------------=
+            // path: about U.min
+            //=----------------------------------=
+            always: do {
+                let load = T.zero
+                test.exactly(U(repeating: 0),     F(load    ))
+                test.exactly(U(repeating: 0) + 1, F(load + 1))
+                test.exactly(U(repeating: 0) + 2, F(load + 2))
+            }
+            //=----------------------------------=
+            // path: about U.max
+            //=----------------------------------=
+            always: do {
+                let load = T(repeating: 1) << size ^ T(repeating: 1)
+                test.exactly(U(repeating: 1) - 2, F(load - 2, error: T.size < U.size || (T.isSigned && T.size == U.size)))
+                test.exactly(U(repeating: 1) - 1, F(load - 1, error: T.size < U.size || (T.isSigned && T.size == U.size)))
+                test.exactly(U(repeating: 1),     F(load,     error: T.size < U.size || (T.isSigned && T.size == U.size)))
+            }
+            //=----------------------------------=
+            // path: about U.msb
+            //=----------------------------------=
+            always: do {
+                let load = T(1) << (size - 1)
+                test.exactly(U.msb - 2, F(load &- 2, error: T.size < U.size))
+                test.exactly(U.msb - 1, F(load &- 1, error: T.size < U.size))
+                test.exactly(U.msb,     F(load,      error: T.size < U.size || (T.isSigned && T.size == U.size)))
+                test.exactly(U.msb + 1, F(load &+ 1, error: T.size < U.size || (T.isSigned && T.size == U.size)))
+                test.exactly(U.msb + 2, F(load &+ 2, error: T.size < U.size || (T.isSigned && T.size == U.size)))
+            }
+        }
+        
+        for type in coreSystemsIntegers {
+            whereOtherIs(type)
+        }
+        
+        for type in coreSystemsIntegersWhereIsSigned {
+            whereOtherIsSigned(type)
+        }
+        
+        for type in coreSystemsIntegersWhereIsUnsigned {
+            whereOtherIsUnsigned(type)
         }
     }
 }
