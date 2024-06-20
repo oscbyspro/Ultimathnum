@@ -26,10 +26,6 @@ public let coreSystemsIntegersWhereIsUnsigned: [any (SystemsInteger & UnsignedIn
     UX.self, U8.self, U16.self, U32.self, U64.self,
 ]
 
-//=----------------------------------------------------------------------------=
-// MARK: + Values
-//=----------------------------------------------------------------------------=
-
 /// A collection of all primes that fit in one byte.
 ///
 /// - Note: It contains `54` elements.

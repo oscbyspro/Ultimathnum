@@ -43,7 +43,9 @@ extension Test {
                 yay(clamped.incremented().error, "T.init(clamping:) - max")
             }
         }   else {
-            yay(Output.isSigned && input.isInfinite, "arbitrary signed integers cannot clamp infinite values")
+            yay(Output.isSigned,        "init(clamping:) [nil][0]")
+            yay(Output.size.isInfinite, "init(clamping:) [nil][1]")
+            yay((((input))).isInfinite, "init(clamping:) [nil][2]")
         }
         //=--------------------------------------=
         // path: sign and magnitude

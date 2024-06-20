@@ -129,7 +129,7 @@ extension BinaryInteger {
     }
     
     /// Creates a new instance by clamping the given `source`.
-    @_disfavoredOverload // req. because of EdgyInteger.init(clamping: some FiniteInteger)
+    @_disfavoredOverload // BinaryInteger.init(clamping: some FiniteInteger)
     @inlinable public init(clamping source: some BinaryInteger) where Self: EdgyInteger {
         self.init(clamping: source)!
     }
@@ -149,25 +149,31 @@ extension BinaryInteger {
     ///
     /// - Note: This is the most generic version of `init(clamping:)`.
     ///
+    @_disfavoredOverload // BinaryInteger.init(clamping: some FiniteInteger)
     @inlinable public init?(clamping source: some BinaryInteger) {
-        if  Self.isSigned, source.isInfinite {
+        let size: Magnitude = Self.size
+        if !size.isInfinite {
+            
+            if  let  instance = Self.exactly(source).optional() {
+                self = instance
+                
+            }   else if Self.isSigned {
+                let distance = (size).decremented().unchecked()
+                let msb = (1 as Magnitude).up(Shift(unchecked: distance))
+                self.init(raw: source.isNegative ? msb : msb.toggled())
+                
+            }   else {
+                self.init(repeating: Bit(!source.isNegative))
+            }
+        
+        }   else if Self.isSigned, source.isInfinite {
             return nil
             
         }   else if !Self.isSigned, source.isNegative {
             self.init()
             
-        }   else if Self.size.isInfinite {
+        }   else {
             self.init(load: source)
-            
-        }   else if let instance = Self.exactly(source).optional() {
-            self = instance
-            
-        }   else if Self.isSigned {
-            let msb = (1 as Magnitude).up(Shift(Self.size - 1))
-            self.init(raw: source.isNegative ? msb : msb.toggled())
-            
-        }   else/* if !Self.isSigned */ {
-            self.init(repeating: Bit.one)
         }
     }
 }
