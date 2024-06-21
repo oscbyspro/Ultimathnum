@@ -157,56 +157,6 @@ extension IntegerInvariants {
         }
     }
     
-    /// Tests binary integer conversions for sequences of descending 1s.
-    ///
-    ///     00000000000000000000000000000001 != 0s
-    ///     00000000000000000000000000000011
-    ///     00000000000000000000000000000111
-    ///     ................................
-    ///     00111111111111111111111111111111
-    ///     01111111111111111111111111111111
-    ///     11111111111111111111111111111111
-    ///
-    public func exactlyCoreSystemsIntegerRainOfOnes() {
-        /// Tests the sequence in reverse order because it's easier.
-        func whereTheSourceIs<U>(_ type: U.Type) where U: SystemsInteger {
-            var mask = T(repeating: 1)
-            
-            if !U.isSigned {
-                mask <<= T(load: UX(size: U.self))
-                mask.toggle()
-            }
-            
-            always: do {
-                var lhs = U(repeating: 1)
-                var rhs = T(repeating: 1)
-                
-                for zeros in 0 ..< IX(size: U.self) {
-                    let error: Bool = switch (T.isSigned, U.isSigned) {
-                    case (true,  true ): T.size <=  zeros
-                    case (true,  false): T.size <= U.size
-                    case (false, true ): true
-                    case (false, false): T.size <  U.size
-                    }
-                    
-                    test.ascending(lhs, 0, U.Magnitude(zeros))
-                    test.exactly(lhs, Fallible(rhs & mask, error: error))
-                    lhs <<= 1
-                    rhs <<= 1
-                }
-            }
-        }
-        
-        #if DEBUG
-        whereTheSourceIs(I32.self)
-        whereTheSourceIs(U32.self)
-        #else
-        for type in coreSystemsIntegers {
-            whereTheSourceIs(type)
-        }
-        #endif
-    }
-    
     /// Tests binary integer conversions for sequences of descending 0s.
     ///
     ///     11111111111111111111111111111110 != 1s
@@ -217,7 +167,7 @@ extension IntegerInvariants {
     ///     10000000000000000000000000000000
     ///     00000000000000000000000000000000
     ///
-    public func exactlyCoreSystemsIntegerRainOfZeros() {
+    public func exactlyCoreSystemsIntegerRainOf0s() {
         /// Tests the sequence in reverse order because it's easier.
         func whereTheSourceIs<U>(_ type: U.Type) where U: SystemsInteger {
             var lhs = U.zero
@@ -244,6 +194,121 @@ extension IntegerInvariants {
         #endif
     }
     
+    
+    /// Tests binary integer conversions for sequences of descending 1s.
+    ///
+    ///     00000000000000000000000000000001 != 0s
+    ///     00000000000000000000000000000011
+    ///     00000000000000000000000000000111
+    ///     ................................
+    ///     00111111111111111111111111111111
+    ///     01111111111111111111111111111111
+    ///     11111111111111111111111111111111
+    ///
+    public func exactlyCoreSystemsIntegerRainOf1s() {
+        /// Tests the sequence in reverse order because it's easier.
+        func whereTheSourceIs<U>(_ type: U.Type) where U: SystemsInteger {
+            var mask = T(repeating: 1)
+            
+            if !U.isSigned {
+                mask <<= T(load: UX(size: U.self))
+                mask.toggle()
+            }
+            
+            always: do {
+                var lhs = U(repeating: 1)
+                var rhs = T(repeating: 1)
+                
+                for zeros in 0 ..< IX(size: U.self) {
+                    let error = switch (T.isSigned, U.isSigned) {
+                    case (true,  true ): T.size <=  zeros
+                    case (true,  false): T.size <= U.size
+                    case (false, true ): ((((((true))))))
+                    case (false, false): T.size <  U.size
+                    }
+                    
+                    test.ascending(lhs, 0, U.Magnitude(zeros))
+                    test.exactly(lhs, Fallible(rhs & mask, error: error))
+                    lhs <<= 1
+                    rhs <<= 1
+                }
+            }
+        }
+        
+        #if DEBUG
+        whereTheSourceIs(I32.self)
+        whereTheSourceIs(U32.self)
+        #else
+        for type in coreSystemsIntegers {
+            whereTheSourceIs(type)
+        }
+        #endif
+    }
+    
+    /// Tests binary integer conversions for various slices of 0s.
+    ///
+    ///     00001111111111111111111111111111
+    ///     10000111111111111111111111111111
+    ///     11000011111111111111111111111111
+    ///     ................................
+    ///     11111111111111111111111111000011
+    ///     11111111111111111111111111100001
+    ///     11111111111111111111111111110000
+    ///
+    public func exactlyCoreSystemsIntegerSlicesOf0s() {
+        func whereTheSourceIs<U>(_  type:  U.Type) where U: SystemsInteger {
+            always: do {
+                let patterns: [IX] = [~1, ~3, ~7, ~15]
+                var mask = T(repeating: 1)
+                
+                if !U.isSigned {
+                    mask <<= T(load: UX(size: U.self))
+                    mask.toggle()
+                }
+                
+                for zeros in 1 ... IX(patterns.count) {
+                    var ones: IX = 0
+                    var lhs = U(load: patterns[Int(zeros - 1)])
+                    var rhs = T(load: patterns[Int(zeros - 1)])
+                    
+                    forwards: while ones + zeros < IX(size: U.self) {
+                        let error = switch (T.isSigned, U.isSigned) {
+                        case (true,  true ): T.size <= ones + zeros
+                        case (true,  false): T.size <= U.size
+                        case (false, true ): ((((((true))))))
+                        case (false, false): T.size <  U.size
+                        }
+                        
+                        test.exactly(lhs, Fallible(rhs & mask, error: error))
+                        ones += 1
+                        lhs <<= 1
+                        lhs  |= 1
+                        rhs <<= 1
+                        rhs  |= 1
+                    }
+                    
+                    test.same(IX(size: U.self), ones +  zeros)
+                    test.descending(lhs, 0, U.Magnitude(zeros))
+                    
+                    last: do {
+                        let value = rhs & T(load: U.Magnitude(repeating: 1))
+                        let error = T.isSigned ? T.size <= ones : T.size < ones
+                        test.exactly(lhs, Fallible(value, error: error))
+                    }
+                }
+            }
+        }
+        
+        #if DEBUG
+        whereTheSourceIs(I32.self)
+        whereTheSourceIs(U32.self)
+        #else
+        for type in coreSystemsIntegers {
+            whereTheSourceIs(type)
+        }
+        #endif
+    }
+    
     /// Tests binary integer conversions for various slices of 1s.
     ///
     ///     11110000000000000000000000000000
@@ -254,19 +319,19 @@ extension IntegerInvariants {
     ///     00000000000000000000000000011110
     ///     00000000000000000000000000001111
     ///
-    public func exactlyCoreSystemsIntegerSlicesOfOnes() {
+    public func exactlyCoreSystemsIntegerSlicesOf1s() {
         func whereTheSourceIs<U>(_  type:  U.Type) where U: SystemsInteger {
             always: do {
                 let patterns: [UX] = [1, 3, 7, 15]
                 let mask = T(load: U.Magnitude(repeating: 1))
                 
                 for ones in 1 ... IX(patterns.count) {
-                    var zeros =   IX.zero
+                    var zeros = IX()
                     var lhs = U(load: patterns[Int(ones - 1)])
                     var rhs = T(load: patterns[Int(ones - 1)])
                     
                     forwards: while zeros + ones < IX(size: U.self) {
-                        test.exactly(lhs, Fallible(rhs & (mask), error: T.isSigned ? T.size <= zeros + ones : T.size < zeros + ones))
+                        test.exactly(lhs, Fallible(rhs & mask, error: T.isSigned ? T.size <= zeros + ones : T.size < zeros + ones))
                         zeros += 1
                         lhs  <<= 1
                         rhs  <<= 1
@@ -274,11 +339,17 @@ extension IntegerInvariants {
                     
                     test.same(IX(size: U.self), zeros + ones)
                     test.descending(lhs, 1, U.Magnitude(ones))
-                
-                    last: if U.isSigned {
-                        test.exactly(lhs, Fallible(rhs ^ ~mask,  error: T.isSigned ? T.size <  zeros + ones : true))
-                    }   else {
-                        test.exactly(lhs, Fallible(rhs & (mask), error: T.isSigned ? T.size <= zeros + ones : T.size < zeros + ones))
+                    
+                    last: do {
+                        let value = U.isSigned ? rhs ^ mask.toggled() : rhs & mask
+                        let error = switch (T.isSigned, U.isSigned) {
+                        case (true,  true ): T.size <  zeros + ones
+                        case (true,  false): T.size <= zeros + ones
+                        case (false, true ): (((((((((true)))))))))
+                        case (false, false): T.size <  zeros + ones
+                        }
+                        
+                        test.exactly(lhs, Fallible(value, error: error))
                     }
                 }
             }

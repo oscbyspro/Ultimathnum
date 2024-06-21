@@ -24,9 +24,10 @@ extension DoubleIntTests {
     func testValidation() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             IntegerInvariants(T.self).exactlyCoreSystemsInteger()
-            IntegerInvariants(T.self).exactlyCoreSystemsIntegerRainOfOnes()
-            IntegerInvariants(T.self).exactlyCoreSystemsIntegerRainOfZeros()
-            IntegerInvariants(T.self).exactlyCoreSystemsIntegerSlicesOfOnes()
+            IntegerInvariants(T.self).exactlyCoreSystemsIntegerRainOf0s()
+            IntegerInvariants(T.self).exactlyCoreSystemsIntegerRainOf1s()
+            IntegerInvariants(T.self).exactlyCoreSystemsIntegerSlicesOf0s()
+            IntegerInvariants(T.self).exactlyCoreSystemsIntegerSlicesOf1s()
             IntegerInvariants(T.self).exactlySameSizeSystemsIntegers()
         }
         
