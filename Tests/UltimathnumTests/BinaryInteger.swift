@@ -37,11 +37,16 @@ final class BinaryIntegerTests: XCTestCase {
         arbitraryIntegersWhereIsUnsigned
     }()
     
+    static let arbitraryIntegers: [any BinaryInteger.Type] = {
+        arbitraryIntegersWhereIsSigned +
+        arbitraryIntegersWhereIsUnsigned
+    }()
+    
     static let arbitraryIntegersWhereIsSigned: [any SignedInteger.Type] = [
         InfiniInt<I8>.self,
         InfiniInt<IX>.self,
     ]
-            
+    
     static let arbitraryIntegersWhereIsUnsigned: [any UnsignedInteger.Type] = [
         InfiniInt<U8>.self,
         InfiniInt<UX>.self,

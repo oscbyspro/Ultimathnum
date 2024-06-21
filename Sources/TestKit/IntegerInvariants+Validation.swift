@@ -157,6 +157,93 @@ extension IntegerInvariants {
         }
     }
     
+    /// Tests binary integer conversions for sequences of descending 1s.
+    ///
+    ///     00000000000000000000000000000001 != 0s
+    ///     00000000000000000000000000000011
+    ///     00000000000000000000000000000111
+    ///     ................................
+    ///     00111111111111111111111111111111
+    ///     01111111111111111111111111111111
+    ///     11111111111111111111111111111111
+    ///
+    public func exactlyCoreSystemsIntegerRainOfOnes() {
+        /// Tests the sequence in reverse order because it's easier.
+        func whereTheSourceIs<U>(_ type: U.Type) where U: SystemsInteger {
+            var mask = T(repeating: 1)
+            
+            if !U.isSigned {
+                mask <<= T(load: UX(size: U.self))
+                mask.toggle()
+            }
+            
+            always: do {
+                var lhs = U(repeating: 1)
+                var rhs = T(repeating: 1)
+                
+                for zeros in 0 ..< IX(size: U.self) {
+                    let error: Bool = switch (T.isSigned, U.isSigned) {
+                    case (true,  true ): T.size <=  zeros
+                    case (true,  false): T.size <= U.size
+                    case (false, true ): true
+                    case (false, false): T.size <  U.size
+                    }
+                    
+                    test.ascending(lhs, 0, U.Magnitude(zeros))
+                    test.exactly(lhs, Fallible(rhs & mask, error: error))
+                    lhs <<= 1
+                    rhs <<= 1
+                }
+            }
+        }
+        
+        #if DEBUG
+        whereTheSourceIs(I32.self)
+        whereTheSourceIs(U32.self)
+        #else
+        for type in coreSystemsIntegers {
+            whereTheSourceIs(type)
+        }
+        #endif
+    }
+    
+    /// Tests binary integer conversions for sequences of descending 0s.
+    ///
+    ///     11111111111111111111111111111110 != 1s
+    ///     11111111111111111111111111111100
+    ///     11111111111111111111111111111000
+    ///     ................................
+    ///     11000000000000000000000000000000
+    ///     10000000000000000000000000000000
+    ///     00000000000000000000000000000000
+    ///
+    public func exactlyCoreSystemsIntegerRainOfZeros() {
+        /// Tests the sequence in reverse order because it's easier.
+        func whereTheSourceIs<U>(_ type: U.Type) where U: SystemsInteger {
+            var lhs = U.zero
+            var rhs = T.zero
+            
+            for ones in 0 ..< IX(size: U.self) {
+                test.ascending(lhs, 1, U.Magnitude(ones))
+                test.exactly(lhs, Fallible(rhs, error: T.isSigned ? T.size <= ones : T.size < ones))
+                
+                lhs <<= 1
+                lhs  |= 1
+                rhs <<= 1
+                rhs  |= 1
+            }
+        }
+        
+        #if DEBUG
+        whereTheSourceIs(I32.self)
+        whereTheSourceIs(U32.self)
+        #else
+        for type in coreSystemsIntegers {
+            whereTheSourceIs(type)
+        }
+        #endif
+    }
+    
     /// Tests binary integer conversions for various slices of 1s.
     ///
     ///     11110000000000000000000000000000
@@ -186,7 +273,7 @@ extension IntegerInvariants {
                     }
                     
                     test.same(IX(size: U.self), zeros + ones)
-                    test.same(IX(lhs.descending(.one)), ones)
+                    test.descending(lhs, 1, U.Magnitude(ones))
                 
                     last: if U.isSigned {
                         test.exactly(lhs, Fallible(rhs ^ ~mask,  error: T.isSigned ? T.size <  zeros + ones : true))

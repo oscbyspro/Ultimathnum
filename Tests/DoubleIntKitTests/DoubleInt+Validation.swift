@@ -21,9 +21,11 @@ extension DoubleIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testIntegers() {
+    func testValidation() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             IntegerInvariants(T.self).exactlyCoreSystemsInteger()
+            IntegerInvariants(T.self).exactlyCoreSystemsIntegerRainOfOnes()
+            IntegerInvariants(T.self).exactlyCoreSystemsIntegerRainOfZeros()
             IntegerInvariants(T.self).exactlyCoreSystemsIntegerSlicesOfOnes()
             IntegerInvariants(T.self).exactlySameSizeSystemsIntegers()
         }
@@ -32,6 +34,10 @@ extension DoubleIntTests {
             whereIs(type)
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
     
     func testIntegerLiterals() {
         Test().same(I8x2.exactly(-0000032769 as RootInt), Fallible(I8x2.max, error: true))

@@ -24,6 +24,8 @@ extension InfiniIntTests {
     func testValidation() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             IntegerInvariants(T.self).exactlyCoreSystemsInteger()
+            IntegerInvariants(T.self).exactlyCoreSystemsIntegerRainOfOnes()
+            IntegerInvariants(T.self).exactlyCoreSystemsIntegerRainOfZeros()
             IntegerInvariants(T.self).exactlyCoreSystemsIntegerSlicesOfOnes()
         }
         
