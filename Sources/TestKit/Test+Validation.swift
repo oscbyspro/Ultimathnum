@@ -27,20 +27,22 @@ extension Test {
         // path: binary integer
         //=--------------------------------------=
         always: do {
-            same(Output.exactly(input), expectation, "T.exactly(_:)")
+            same(Input .exactly(input), Fallible(input), "T.exactly(_:) [0]")
+            same(Output.exactly(input), ((expectation)), "T.exactly(_:) [1]")
 
             if !expectation.error {
-                same(Output(input), expectation.value, "T.init(_:)")
+                same(Input(expectation.value),  input, "T.init(_:) [0]")
+                same(Output(input), expectation.value, "T.init(_:) [1]")
             }
         }
-            
+        
         clamping: if let clamped = Output(clamping: input) {
             if !expectation.error {
                 same(clamped, expectation.value, "T.init(clamping:)")
             }   else if input.isNegative {
-                yay(clamped.decremented().error, "T.init(clamping:) - min")
+                yay(clamped.decremented().error, "T.init(clamping:) [min]")
             }   else {
-                yay(clamped.incremented().error, "T.init(clamping:) - max")
+                yay(clamped.incremented().error, "T.init(clamping:) [max]")
             }
         }   else {
             yay(Output.isSigned,        "init(clamping:) [nil][0]")
