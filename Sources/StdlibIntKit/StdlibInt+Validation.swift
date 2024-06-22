@@ -32,8 +32,8 @@ extension StdlibInt {
         self.init(truncatingIfNeeded: source)
     }
     
-    @inlinable public init(truncatingIfNeeded source: some Swift.BinaryInteger) {
-        let appendix = Bit(source < .zero)
+    @inlinable public init<T>(truncatingIfNeeded source: T) where T: Swift.BinaryInteger {
+        let appendix = Bit(T.isSigned && source < T.zero)
         let body = source.words.lazy.map(UX.init(raw:))
         self.init(Base(consume body, repeating: appendix))
     }

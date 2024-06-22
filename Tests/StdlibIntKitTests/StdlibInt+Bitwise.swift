@@ -22,17 +22,20 @@ extension StdlibIntTests {
     //=------------------------------------------------------------------------=
     
     func testBitwiseNot() {
-        func check(_ test: Test, _ instance: T, _ expectation: T) {
-            test.same(~instance, expectation)
-            test.same(~expectation, instance)
-        }
+        let values: [T] = [
+            0x00000000000000000000000000000000,
+            0x00000000000000000000000000000001,
+            0x0f0e0d0c0b0a09080706050403020100,
+            0xf0f1f2f3f4f5f6f7f8f9fafbfcfdfeff,
+            0xfffffffffffffffffffffffffffffffe,
+            0xffffffffffffffffffffffffffffffff,
+        ]
         
-        check(Test(), 0x00000000000000000000000000000000 as T,   -0x00000000000000000000000000000001 as T)
-        check(Test(), 0x00000000000000000000000000000001 as T,   -0x00000000000000000000000000000002 as T)
-        check(Test(), 0x0f0e0d0c0b0a09080706050403020100 as T,   -0x0f0e0d0c0b0a09080706050403020101 as T)
-        check(Test(), 0xf0f1f2f3f4f5f6f7f8f9fafbfcfdfeff as T,   -0xf0f1f2f3f4f5f6f7f8f9fafbfcfdff00 as T)
-        check(Test(), 0xfffffffffffffffffffffffffffffffe as T,   -0xffffffffffffffffffffffffffffffff as T)
-        check(Test(), 0xffffffffffffffffffffffffffffffff as T, -0x0100000000000000000000000000000000 as T)
+        for value in values  {
+            let expectation: T = -1 - value
+            Test().same(~value, expectation)
+            Test().same(~expectation, value)
+        }
     }
     
     func testBitwiseAnd() {

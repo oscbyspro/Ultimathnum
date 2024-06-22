@@ -20,15 +20,25 @@ extension StdlibInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public var bitWidth: Int {
+    @inlinable public var bitWidth: Swift.Int {
         borrowing get {
-            Int(self.base.withUnsafeBinaryIntegerElements({ $0.entropy() }))
+            self.base.withUnsafeBinaryIntegerElements {
+                Swift.Int($0.entropy())
+            }
         }
     }
     
-    @inlinable public var trailingZeroBitCount: Int {
+    @inlinable public var trailingZeroBitCount: Swift.Int {
         borrowing get {
-            Int(self.base.withUnsafeBinaryIntegerElements({ $0.isZero ? 1 : $0.body.ascending(0) }))
+            self.base.withUnsafeBinaryIntegerElements {
+                Swift.assert($0.isNormal, "InfiniInt<IX>/elements")
+                
+                if  $0.body.count.isZero {
+                    return Swift.Int(IX($0.appendix.toggled()))
+                }   else {
+                    return Swift.Int($0.body.ascending(000000))
+                }
+            }
         }
     }
 }

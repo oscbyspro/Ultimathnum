@@ -20,19 +20,19 @@ extension StdlibInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static prefix func ~(instance: Self) -> Self {
+    @inlinable public static prefix func ~(instance: consuming Self) -> Self {
         Self(~instance.base)
     }
     
-    @inlinable public static func ^=(lhs: inout Self, rhs: Self) {
+    @inlinable public static func ^=(lhs: inout Self, rhs: borrowing Self) {
         lhs.base ^= rhs.base
     }
     
-    @inlinable public static func |=(lhs: inout Self, rhs: Self) {
+    @inlinable public static func |=(lhs: inout Self, rhs: borrowing Self) {
         lhs.base |= rhs.base
     }
     
-    @inlinable public static func &=(lhs: inout Self, rhs: Self) {
+    @inlinable public static func &=(lhs: inout Self, rhs: borrowing Self) {
         lhs.base &= rhs.base
     }
     
@@ -41,6 +41,8 @@ extension StdlibInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public var magnitude: Self {
-        Self(Base(raw: self.base.magnitude()))
+        consuming get {
+            Self(Base(raw: self.base.magnitude()))
+        }
     }
 }
