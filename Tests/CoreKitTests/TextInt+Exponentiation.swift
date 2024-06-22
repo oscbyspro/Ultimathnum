@@ -22,7 +22,6 @@ extension TextIntTests {
     
     func testExponentiation() {
         //=--------------------------------------=
-        self.continueAfterFailure = false
         let perfect256: [UX] = [2, 4, 16, 256]
         //=--------------------------------------=
         // test: the minimum radix is 2

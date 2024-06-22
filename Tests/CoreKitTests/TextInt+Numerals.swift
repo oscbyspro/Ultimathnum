@@ -22,8 +22,6 @@ extension TextIntTests {
     
     func testNumerals() {
         //=--------------------------------------=
-        self.continueAfterFailure = false
-        //=--------------------------------------=
         // test: the maximum radix is 36
         //=--------------------------------------=
         Test().failure({ try T.Numerals(37, letters: .lowercase) }, E.invalid)
