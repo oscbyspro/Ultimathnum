@@ -33,7 +33,7 @@ extension StdlibInt {
             self.base.withUnsafeBinaryIntegerElements {
                 Swift.assert($0.isNormal, "InfiniInt<IX>/elements")
                 
-                if  $0.body.count.isZero {
+                if  $0.body.isEmpty {
                     return Swift.Int(IX($0.appendix.toggled()))
                 }   else {
                     return Swift.Int($0.body.ascending(000000))

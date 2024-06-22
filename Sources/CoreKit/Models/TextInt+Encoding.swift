@@ -141,7 +141,7 @@ extension TextInt {
                 if  let divisor = Divisor(exactly: self.exponentiation.power) {
                     chunk = (body).divisionSetQuotientGetRemainder(divisor)
                     body  = (body).normalized()
-                }   else if !body .count.isZero {
+                }   else if !body .isEmpty {
                     chunk = (body)[unchecked: (  )]
                     body  = (body)[unchecked: 1...]
                 }   else {
@@ -159,7 +159,7 @@ extension TextInt {
                     
                 } while !chunk.isZero
                 //=------------------------------=
-                if  body.count.isZero { break }
+                if body.isEmpty { break }
                 //=------------------------------=
                 // note preinitialization to 48s
                 //=------------------------------=

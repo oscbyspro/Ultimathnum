@@ -27,7 +27,7 @@ extension DataInt {
     
     /// Indicates whether the `body` is free of `appendix` extensions.
     @inlinable public var isNormal: Bool {
-        if  self.body.count.isZero { return  true }
+        if  self.body.isEmpty { return true }
         let element = (self).body[unchecked: self.body.count.decremented().unchecked()]
         return element != Element(repeating: self.appendix)
     }
@@ -137,6 +137,16 @@ extension DataInt.Body {
         DataInt(self).isNormal
     }
     
+    /// Indicates whether this buffer is empty.
+    ///
+    /// An empty buffer lacks valid subscript arguments.
+    ///
+    /// - Invariant: `self.isEmpty == self.count.isZero`
+    ///
+    @inlinable public var isEmpty: Bool {
+        self.count.isZero
+    }
+    
     /// Performs a three-way comparison of `self` versus `zero`.
     @inlinable public func signum() -> Signum {
         Signum(Bit(!self.isZero))
@@ -165,7 +175,7 @@ extension MutableDataInt {
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
-        
+    
     /// Indicates whether this value is equal to zero.
     @inlinable public var isZero: Bool {
         Immutable(self).isZero
@@ -198,6 +208,16 @@ extension MutableDataInt.Body {
     ///
     @inlinable public var isNormal: Bool {
         Immutable(self).isNormal
+    }
+    
+    /// Indicates whether this buffer is empty.
+    ///
+    /// An empty buffer lacks valid subscript arguments.
+    ///
+    /// - Invariant: `self.isEmpty == self.count.isZero`
+    ///
+    @inlinable public var isEmpty: Bool {
+        Immutable(self).isEmpty
     }
     
     //=------------------------------------------------------------------------=

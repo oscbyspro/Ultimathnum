@@ -64,6 +64,7 @@ extension DataIntTests {
                         let body = DataInt.Body(start, count: count)
                         Test().same(body.start, start)
                         Test().same(body.count, count)
+                        Test().same(body.count.isZero, body.isEmpty)
                         Test().same(body.appendix, Bit.zero)
                         Test().same(Array(body.buffer()), Array($0.prefix(Int(count))))
                     }
@@ -72,6 +73,7 @@ extension DataIntTests {
                         let body = MutableDataInt.Body(start, count: count)
                         Test().same(body.start, start)
                         Test().same(body.count, count)
+                        Test().same(body.count.isZero, body.isEmpty)
                         Test().same(body.appendix, Bit.zero)
                         Test().same(Array(body.buffer()), Array($0.prefix(Int(count))))
                     }

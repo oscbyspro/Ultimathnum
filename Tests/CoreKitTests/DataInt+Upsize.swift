@@ -173,7 +173,7 @@ extension DataIntTests.Extension where Element == U8 {
             let count = $0.body.count(as: T.self)
             var elements = [T]()
             
-            while !$0.body.count.isZero {
+            while !$0.body.isEmpty {
                 elements.append($0.next(as: T.self))
             }
             
@@ -183,7 +183,7 @@ extension DataIntTests.Extension where Element == U8 {
             let count = $0.body.count(as: T.self)
             var elements = [T]()
             
-            while !$0.body.count.isZero {
+            while !$0.body.isEmpty {
                 elements.append($0.next(as: T.self))
             }
             
@@ -197,7 +197,7 @@ extension DataIntTests.Extension where Element == U8 {
             var elements = [T]()
             $0 = $0.normalized()
             
-            while !$0.body.count.isZero {
+            while !$0.body.isEmpty {
                 elements.append($0.next(as: T.self))
             }
             
@@ -206,7 +206,7 @@ extension DataIntTests.Extension where Element == U8 {
             var elements = [T]()
             $0 = $0.normalized()
             
-            while !$0.body.count.isZero {
+            while !$0.body.isEmpty {
                 elements.append($0.next(as: T.self))
             }
             

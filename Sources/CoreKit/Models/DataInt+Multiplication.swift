@@ -118,7 +118,7 @@ extension MutableDataInt.Body {
             pointer = pointer.successor()
         }
         
-        if !rhs.count.isZero {
+        if !rhs.isEmpty {
             pointer.initialize(to: carry)
             pointer = pointer.successor()
         }

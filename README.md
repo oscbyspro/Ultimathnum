@@ -342,6 +342,7 @@ overview [Mutable]DataInt.Body:
 
 /isZero   ->  Bool
 /isNormal ->  Bool
+/isEmpty  ->  Bool
 /signum() ->  Signum
 /compared(to: [Mutable]DataInt.Body) -> Signum
 ```

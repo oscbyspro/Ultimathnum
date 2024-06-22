@@ -58,7 +58,7 @@ extension BinaryInteger {
         
         if  success, let size = UX(size: Self.self) {
             let end  =   size / UX(size:   U8.self)
-            success  = source[end...].normalized().body.count.isZero
+            success  = source[end...].normalized().body.isEmpty
         }
         //=--------------------------------------=
         return instance.veto(!Bool(success))
@@ -77,7 +77,7 @@ extension BinaryInteger {
         
         if  success, let size = UX(size: Self.self) {
             let end  =   size / UX(size: Element.Magnitude.self)
-            success  = source[end...].normalized().body.count.isZero
+            success  = source[end...].normalized().body.isEmpty
         }
         //=--------------------------------------=
         return instance.veto(!Bool(success))
