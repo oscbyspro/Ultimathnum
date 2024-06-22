@@ -573,27 +573,14 @@ static func ^=(lhs: inout Self, rhs: Self)
 
 This project introduces various additional types. Some are more important than other,
 so here's a rundown of the three most prominent ones: Bit, Sign and Signum. Bit and 
-Sign are a lot like Bool, but with bitwise operations and no short-circuits. Signum comes 
-up a lot because it's the return type of the compared(to:) method. It also offers various 
-conveniences for common transformations.
+Sign are a lot like Bool, but with bitwise operations and no short-circuits. Signum is
+most notably the return type of the compared(to:) methods.
 
 | Type   | Values         |
 |:-------|---------------:|
 | Bit    |       `0`, `1` |
 | Sign   |       `+`, `-` |
 | Signum | `-1`, `0`, `1` |
-
-<details>
-<summary>
-Here's the some of the most common signum operations...
-</summary>
-
-```swift    
-init(_ source: Bit) //....................  0 or 1
-static func one(_ sign: Sign) -> Signum // -1 or 1
-func negated() -> Self //................. toggles -1 and 1
-```
-</details>
 
 <a name="doubleintkit"/>
 
