@@ -18,8 +18,11 @@ extension DataInt {
     //=------------------------------------------------------------------------=
     
     /// Indicates whether this value is equal to zero.
+    ///
+    /// - Note: This comparison is performed backwards.
+    ///
     @inlinable public var isZero: Bool {
-        self.body.isZero && !Bool(self.appendix)
+        !Bool(self.appendix) && self.body.isZero
     }
     
     /// Indicates whether the `body` is free of `appendix` extensions.
@@ -119,8 +122,11 @@ extension DataInt.Body {
     //=------------------------------------------------------------------------=
     
     /// Indicates whether this value is equal to zero.
+    ///
+    /// - Note: This comparison is performed backwards.
+    ///
     @inlinable public var isZero: Bool {
-        self.buffer().allSatisfy({ $0.isZero })
+        self.buffer().reversed().allSatisfy({ $0.isZero })
     }
     
     /// Indicates whether the `body` is free of `appendix` extensions.
