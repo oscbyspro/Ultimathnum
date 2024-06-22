@@ -7,12 +7,24 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+import InfiniIntKit
+
 //*============================================================================*
-// MARK: * Exports
+// MARK: * Stdlib Int x Comparison
 //*============================================================================*
 
-@_exported import CoreKit
-@_exported import DoubleIntKit
-@_exported import FibonacciKit
-@_exported import InfiniIntKit
-@_exported import StdlibIntKit
+extension StdlibInt {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        lhs.base == rhs.base
+    }
+    
+    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
+        lhs.base <  rhs.base
+    }
+}

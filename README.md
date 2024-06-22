@@ -34,6 +34,8 @@
   - [Recoverable infinite addition (+/-)](#infiniintkit-addition)
   - [Recoverable infinite multiplication](#infiniintkit-multiplication)
   - [Recoverable infinite division](#infiniintkit-division)
+* [StdlibIntKit](#stdlibintkit)
+  - [A signed big integer in Swift proper with StdlibInt](#stdlibintkit-bigint)
 * [FibonacciKit](#fibonaccikit)
   - [The Fibonacci\<Value\> sequence](#fibonaccikit-sequence)
   - [Fast sequence addition (+/-)](#fibonaccikit-addition)
@@ -705,6 +707,30 @@ as an error unless the divisor is one. This yields results similar to signed div
 dividend == divisor &* quotient &+ remainder // for all binary integers
 ```
 
+<a name="stdlibintkit"/>
+
+## StdlibIntKit
+
+```      
+           Ultimathnum.BinaryInteger                  Swift.BinaryInteger
+           ┌───────────┬───────────┐            ┌───────────┬───────────┐
+           │  Systems  │ Arbitrary |            │  Systems  │ Arbitrary |
+┌──────────┼───────────┤───────────┤ ┌──────────┼───────────┤───────────┤
+│   Signed │     X     │     X     │ │   Signed │     X     │     X     │
+├──────────┼───────────┤───────────┤ ├──────────┼───────────┤───────────┤
+│ Unsigned │     X     │     X     │ │ Unsigned │     X     │           │
+└──────────┴───────────┴───────────┘ └──────────┴───────────┴───────────┘
+```
+
+<a name="stdlibintkit-bigint"/>
+
+#### A signed big integer in Swift proper with StdlibInt
+
+StdlibInt is super simple. It wraps InfiniInt\<IX\> and conforms to Swift.BinaryInteger
+by forwarding all relevant function calls. The latter is approximately a trapping 
+Ultimathnum.FiniteInteger plus/minus some miscellaneous stuff. StdlibInt is also its own 
+magnitude type since Swift.BinaryInteger does not support the notion of infinity.
+
 <a name="fibonaccikit"/>
 
 ## FibonacciKit
@@ -817,6 +843,7 @@ Choose target dependencies from this list of products.
 .product(name: "Ultimathnum",  package: "Ultimathnum"), // umbrella
 .product(name: "CoreKit",      package: "Ultimathnum"),
 .product(name: "DoubleIntKit", package: "Ultimathnum"),
-.product(name: "InfiniIntKit", package: "Ultimathnum"),
 .product(name: "FibonacciKit", package: "Ultimathnum"),
+.product(name: "InfiniIntKit", package: "Ultimathnum"),
+.product(name: "StdlibIntKit", package: "Ultimathnum"),
 ```

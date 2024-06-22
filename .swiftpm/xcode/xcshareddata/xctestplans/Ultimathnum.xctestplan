@@ -28,7 +28,7 @@
     },
     {
       "skippedTests" : [
-        "FibonacciBenchmarks",
+        "FibonacciBenchmarks"
       ],
       "target" : {
         "containerPath" : "container:",
@@ -48,6 +48,13 @@
         "containerPath" : "container:",
         "identifier" : "FibonacciKitTests",
         "name" : "FibonacciKitTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "StdlibIntKitTests",
+        "name" : "StdlibIntKitTests"
       }
     }
   ],

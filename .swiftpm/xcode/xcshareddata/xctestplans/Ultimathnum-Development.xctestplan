@@ -30,6 +30,11 @@
           "containerPath" : "container:",
           "identifier" : "InfiniIntKit",
           "name" : "InfiniIntKit"
+        },
+        {
+          "containerPath" : "container:",
+          "identifier" : "StdlibIntKit",
+          "name" : "StdlibIntKit"
         }
       ]
     }
@@ -75,6 +80,13 @@
         "containerPath" : "container:",
         "identifier" : "FibonacciKitTests",
         "name" : "FibonacciKitTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "StdlibIntKitTests",
+        "name" : "StdlibIntKitTests"
       }
     }
   ],

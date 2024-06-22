@@ -44,11 +44,15 @@ let package = Package(
             name: "InfiniIntKit",
             targets: ["InfiniIntKit"]
         ),
+        .library(
+            name: "StdlibIntKit",
+            targets: ["StdlibIntKit"]
+        ),
     ],
     targets: [
         .target(
             name: "Ultimathnum",
-            dependencies: ["CoreKit", "DoubleIntKit", "FibonacciKit", "InfiniIntKit"]
+            dependencies: ["CoreKit", "DoubleIntKit", "FibonacciKit", "InfiniIntKit", "StdlibIntKit"]
         ),
         .testTarget(
             name: "UltimathnumTests",
@@ -85,6 +89,14 @@ let package = Package(
         .testTarget(
             name: "InfiniIntKitTests",
             dependencies: ["InfiniIntKit", "TestKit"]
+        ),
+        .target(
+            name: "StdlibIntKit",
+            dependencies: ["CoreKit", "InfiniIntKit"]
+        ),
+        .testTarget(
+            name: "StdlibIntKitTests",
+            dependencies: ["StdlibIntKit", "TestKit"]
         ),
         .target(
             name: "TestKit",
