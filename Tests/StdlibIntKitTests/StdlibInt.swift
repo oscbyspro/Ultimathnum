@@ -30,6 +30,7 @@ final class StdlibIntTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testMetadata() {
-        Test().yay(T.isSigned)
+        Test().yay(StdlibInt.isSigned)
+        Test().yay(StdlibInt.Magnitude.isSigned)
     }
 }
