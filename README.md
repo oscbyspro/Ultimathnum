@@ -390,8 +390,11 @@ overview [Mutable]DataInt.Body:
 /count    -> IX
 /indices  -> Range<IX>
 /start    -> Unsafe[Mutable]Pointer
-/subscript(unchecked: Void) -> Element
+/first    -> Optional<Element>
+/last     -> Optional<Element>
+/subscript(optional:  IX)   -> Optional<Element>
 /subscript(unchecked: IX)   -> Element
+/subscript(unchecked: Void) -> Element
 /reinterpret(as:perform:)
 ```
 

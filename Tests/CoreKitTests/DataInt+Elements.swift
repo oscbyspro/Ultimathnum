@@ -130,7 +130,23 @@ extension DataIntTests.Extension {
             $0[index...].load()
         })
         
-        if let index = IX.exactly(index).optional(), index < IX(self.item.body.count) {
+        if  index.isZero {
+            DataIntTests.Body(self.item.body, test: self.test).expect(expectation, read: {
+                $0.first
+            },  write: {
+                $0.first
+            })
+        }
+        
+        if  index == IX(self.item.body.count) - 1 {
+            DataIntTests.Body(self.item.body, test: self.test).expect(expectation, read: {
+                $0.last
+            },  write: {
+                $0.last
+            })
+        }
+        
+        if  let index = IX.exactly(index).optional(), index < IX(self.item.body.count) {
             DataIntTests.Body(self.item.body, test: self.test).expect(expectation, read: {
                 $0[unchecked: index]
             },  write: {
@@ -141,6 +157,19 @@ extension DataIntTests.Extension {
                 $0[unchecked: index...][unchecked: ()]
             },  write: {
                 $0[unchecked: index...][unchecked: ()]
+            })
+            
+            DataIntTests.Body(self.item.body, test: self.test).expect(expectation, read: {
+                $0[optional: index]
+            },  write: {
+                $0[optional: index]
+            })
+            
+        }   else {
+            DataIntTests.Body(self.item.body, test: self.test).expect(((((nil)))), read: {
+                $0[optional: IX(raw: index)]
+            },  write: {
+                $0[optional: IX(raw: index)]
             })
         }
     }

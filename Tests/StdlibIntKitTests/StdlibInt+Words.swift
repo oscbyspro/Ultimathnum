@@ -43,6 +43,31 @@ extension StdlibIntTests {
         }
     }
     
+    func testWordsSubscriptIsLenient() {
+        let x0 = T( 1).words
+        let x1 = T(-2).words
+            
+        always: do {
+            Test().same(x0[0],  1 as UInt)
+            Test().same(x1[0], ~1 as UInt)
+        }
+        
+        for i: Swift.Int in 1 ... 12 {
+            Test().same(x0[i],  0 as UInt)
+            Test().same(x1[i], ~0 as UInt)
+        }
+        
+        always: do {
+            let i = Int.max
+            Test().same(x0[i],  0 as UInt)
+            Test().same(x1[i], ~0 as UInt)
+        }
+    }
+    
+    func testWordsSubscriptTrapsNegativeIndices() throws {
+        throw XCTSkip("req. crash tests")
+    }
+    
     func testWordsTextIsArray() {
         let arguments: [(words: [UInt], description: String)] = [
             ([1            ], "[1]"            ),

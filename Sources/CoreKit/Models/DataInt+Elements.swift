@@ -170,6 +170,16 @@ extension DataInt.Body {
         Range(uncheckedBounds:(0, self.count))
     }
     
+    /// Returns the `first` element, if it exists.
+    @inlinable public var first: Optional<Element> {
+        self.isEmpty ? nil : self[unchecked: ()]
+    }
+    
+    /// Returns the `last` element, if it exists.
+    @inlinable public var last: Optional<Element> {
+        self[optional: self.count.decremented().unchecked()]
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
@@ -177,9 +187,9 @@ extension DataInt.Body {
     /// - Requires: `self.count >= 1`
     @inlinable public subscript(unchecked index: Void) -> Element {
         //=----------------------------------=
-        Swift.assert(00000 <  self.count, String.indexOutOfBounds())
+        Swift.assert(!self.isEmpty, String.indexOutOfBounds())
         //=----------------------------------=
-        return self.start.pointee
+        return self.start.pointee as Element
     }
     
     /// - Requires: `self.count >= index + 1`
@@ -189,6 +199,15 @@ extension DataInt.Body {
         Swift.assert(index <  self.count, String.indexOutOfBounds())
         //=--------------------------------------=
         return self.start.advanced(by: Int(index)).pointee
+    }
+    
+    /// Return the element at the given `index`, or nil if the `index` is out of bounds.
+    @inlinable public subscript(optional index: IX) -> Optional<Element> {
+        if  UX(raw: index) < UX(raw: self.count) {
+            return self[unchecked: index]
+        }   else {
+            return nil
+        }
     }
     
     //=------------------------------------------------------------------------=
@@ -284,6 +303,16 @@ extension MutableDataInt.Body {
         Immutable(self).indices
     }
     
+    /// Returns the `first` element, if it exists.
+    @inlinable public var first: Optional<Element> {
+        Immutable(self).first
+    }
+    
+    /// Returns the `last` element, if it exists.
+    @inlinable public var last: Optional<Element> {
+        Immutable(self).last
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
@@ -296,7 +325,7 @@ extension MutableDataInt.Body {
         
         nonmutating set {
             //=----------------------------------=
-            Swift.assert(00000 <  self.count, String.indexOutOfBounds())
+            Swift.assert(!self.isEmpty, String.indexOutOfBounds())
             //=----------------------------------=
             // note that the pointee is trivial
             //=----------------------------------=
@@ -318,6 +347,13 @@ extension MutableDataInt.Body {
             // note that the pointee is trivial
             //=----------------------------------=
             return self.start.advanced(by: Int(index)).initialize(to: newValue)
+        }
+    }
+    
+    /// Return the element at the given `index`, or nil if the `index` is out of bounds.
+    @inlinable public subscript(optional index: IX) -> Optional<Element> {
+        nonmutating get {
+            Immutable(self)[optional: index]
         }
     }
     
