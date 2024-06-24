@@ -30,7 +30,7 @@ extension StdlibInt {
     // MARK: * Words
     //*========================================================================*
     
-    @frozen public struct Words: Swift.RandomAccessCollection {
+    @frozen public struct Words: Swift.CustomStringConvertible, Swift.RandomAccessCollection {
         
         //=--------------------------------------------------------------------=
         // MARK: State
@@ -64,6 +64,14 @@ extension StdlibInt {
         
         @inlinable public subscript(index: Swift.Int) -> Swift.UInt {
             Swift.UInt(self.base.withUnsafeBinaryIntegerElements({ $0[UX(IX(index))] }))
+        }
+        
+        //=------------------------------------------------------------------------=
+        // MARK: Utilities
+        //=------------------------------------------------------------------------=
+        
+        public var description: String {
+            "[\(self.lazy.map(String.init(describing:)).joined(separator: ", "))]"
         }
     }
 }

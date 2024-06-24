@@ -42,4 +42,26 @@ extension StdlibIntTests {
             throw XCTSkip()
         }
     }
+    
+    func testWordsTextIsArray() {
+        let arguments: [(words: [UInt], description: String)] = [
+            ([1            ], "[1]"            ),
+            ([1, 3         ], "[1, 3]"         ),
+            ([1, 3, 5      ], "[1, 3, 5]"      ),
+            ([1, 3, 5, 7   ], "[1, 3, 5, 7]"   ),
+            ([1, 3, 5, 7, 9], "[1, 3, 5, 7, 9]"),
+        ]
+        
+        for (words, description) in arguments {
+            var value = T.zero
+            
+            for word in words.reversed() {
+                value <<= UInt.bitWidth
+                value  |= T(word)
+            }
+            
+            Test().same(Array(value.words), Array(words))
+            Test().same(String(describing:  value.words), description)
+        }
+    }
 }
