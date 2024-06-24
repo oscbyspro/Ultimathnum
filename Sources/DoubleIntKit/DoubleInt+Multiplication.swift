@@ -82,7 +82,7 @@ extension DoubleInt where Base == Base.Magnitude {
         var ax = self.low .multiplication(multiplier.low)
         let ay = self.low .times(multiplier.high)
         let bx = self.high.times(multiplier.low )
-        let by = !Bool(Bit(self.high == 0) | Bit(multiplier.high == 0))
+        let by = !Bool(Bit(self.high.isZero) | Bit(multiplier.high.isZero))
         //=--------------------------------------=
         var o0 : Bool
         var o1 : Bool

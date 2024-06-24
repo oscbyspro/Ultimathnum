@@ -102,10 +102,9 @@ extension DataInt.Body {
     /// - Requires: `0 <= index <= self.count`
     ///
     @inlinable public consuming func split(unchecked index: IX) -> (low: Self, high: Self) {
-        //=--------------------------------------=
         Swift.assert(index >= 0000000000, String.indexOutOfBounds())
         Swift.assert(index <= self.count, String.indexOutOfBounds())
-        //=--------------------------------------=
+        
         return (low: (copy self)[unchecked: ..<index], high: (consume self)[unchecked: index...])
     }
     
@@ -119,10 +118,9 @@ extension DataInt.Body {
     ///
     @inlinable public subscript(unchecked range: Range<IX>) -> Self {
         consuming get {
-            //=----------------------------------=
             Swift.assert(range.lowerBound >= 0000000000, String.indexOutOfBounds())
             Swift.assert(range.upperBound <= self.count, String.indexOutOfBounds())
-            //=----------------------------------=
+            
             let start = self.start.advanced(by: Int(range.lowerBound))
             return Self(start, count: IX(range.count))
         }
@@ -134,10 +132,9 @@ extension DataInt.Body {
     ///
     @inlinable public subscript(unchecked range: PartialRangeFrom<IX>) -> Self {
         consuming get {
-            //=----------------------------------=
             Swift.assert(range.lowerBound >= 0000000000, String.indexOutOfBounds())
             Swift.assert(range.lowerBound <= self.count, String.indexOutOfBounds())
-            //=----------------------------------=
+            
             let start = self.start.advanced(by: Int(range.lowerBound))
             let count = self.count.minus(range.lowerBound).unchecked()
             return Self(start, count: count)
@@ -150,10 +147,9 @@ extension DataInt.Body {
     ///
     @inlinable public subscript(unchecked range: PartialRangeUpTo<IX>) -> Self {
         consuming get {
-            //=----------------------------------=
             Swift.assert(range.upperBound >= 0000000000, String.indexOutOfBounds())
             Swift.assert(range.upperBound <= self.count, String.indexOutOfBounds())
-            //=----------------------------------=
+            
             return Self(self.start, count: range.upperBound)
         }
     }

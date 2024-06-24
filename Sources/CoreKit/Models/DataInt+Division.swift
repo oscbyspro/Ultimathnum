@@ -89,7 +89,6 @@ extension MutableDataInt.Body {
     /// [algorithm]: https://en.wikipedia.org/wiki/long_division
     ///
     @inlinable public func divisionSetQuotientSetRemainderByLong2111MSB(dividing dividend: Self, by divisor: Immutable) {
-        //=--------------------------------------=
         Swift.assert(
             self.count >= 1 && self.count == dividend.count - divisor.count,
             "the dividend must be wider than the divisor"
@@ -98,9 +97,9 @@ extension MutableDataInt.Body {
             dividend[unchecked: self.count...].compared(to: divisor) == Signum.less,
             "the quotient must fit in dividend.count - divisor.count elements"
         )
-        //=--------------------------------------=
+        
         for index in self.indices.reversed() {
-            let subsequence = dividend[unchecked: index  ..< index &+ divisor.count &+ 1]
+            let subsequence = dividend[unchecked: index ..< index &+ divisor.count &+ 1]
             let element = subsequence.divisionGetQuotientSetRemainderByLong2111MSBIteration(divisor)
             self[unchecked: index] = element
         }
@@ -118,44 +117,46 @@ extension MutableDataInt.Body {
     ///   not exceed the real `quotient` by more than 2.
     ///
     @inlinable public func divisionGetQuotientSetRemainderByLong2111MSBIteration(_ divisor: Immutable) -> Element {
-        //=--------------------------------------=
         Swift.assert(
-            divisor[unchecked: divisor.count - 1] >= Element.msb,
+            divisor.last! >= Element.msb,
             "the divisor must be normalized"
         )
         Swift.assert(
             self.count == divisor.count + 1,
-            "the dividend must be exactly one element wider than the divisor"
+            "the dividend must be one element wider than the divisor"
         )
         Swift.assert(
             self[unchecked: 1...].compared(to: divisor) == Signum.less,
             "the quotient of each iteration must fit in one element"
         )
-        //=--------------------------------------=
+        
         let numerator = Doublet(
-            low:  self[unchecked: self.count - 2],
-            high: self[unchecked: self.count - 1]
+            low:  self[unchecked: self.count &- 2],
+            high: self[unchecked: self.count &- 1]
         )
+        
         let denominator = Divisor(
-            unchecked: divisor[unchecked: divisor.count - 1]
+            unchecked: divisor[unchecked: divisor.count &- 1]
         )
-        //=--------------------------------------=
-        var quotient: Element = if denominator.value == numerator.high {
-            Element.max // the quotient must fit in one element
+        
+        var quotient = if numerator.high == denominator.value {
+            Element.max
         }   else {
             Element.division(numerator, by: denominator).unchecked().quotient
         }
-        //=--------------------------------------=
-        if  quotient == 0 { return quotient }
-        //=--------------------------------------=
+        
+        if  quotient.isZero { 
+            return quotient
+        }
+        
         var overflow = self.decrementSubSequence(by: divisor, times: quotient).error
         
         decrementQuotientAtMostTwice: while overflow {
-            quotient = quotient.minus(1).unchecked()
+            quotient = quotient.decremented().unchecked()
             overflow = !self.increment(by: divisor).error
         }
         
         Swift.assert(self.compared(to: divisor) == Signum.less)
-        return quotient as Element
+        return quotient
     }
 }

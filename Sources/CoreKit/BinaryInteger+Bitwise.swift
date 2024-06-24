@@ -85,7 +85,7 @@ extension BinaryInteger {
     /// - Note: This accessor tests only the least significant element.
     ///
     @inlinable public var leastSignificantBit: Bit {
-        Bit(Element(load: self) & Element.lsb != 0)
+        Bit(Element(load: self) & Element.lsb != Element.zero)
     }
 }
 

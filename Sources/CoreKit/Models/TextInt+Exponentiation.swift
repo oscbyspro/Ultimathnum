@@ -37,12 +37,12 @@ extension TextInt {
             while true {
                 let next = power.multiplication(radix)
                 
-                if  next.high == 0 || (next.high == 1 && next.low == 0) {
+                if  next.high.isZero || (next.high == 1 && next.low.isZero) {
                     power = next.low
                     exponent &+= 1
                 }
                 
-                guard next.high == 0 else { break }
+                guard next.high.isZero else { break }
             }
             
             self.power    = power

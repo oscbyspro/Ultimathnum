@@ -160,16 +160,16 @@ extension DataIntTests.Extension {
             })
             
             DataIntTests.Body(self.item.body, test: self.test).expect(expectation, read: {
-                $0[optional: index]
+                $0[exactly: index]
             },  write: {
-                $0[optional: index]
+                $0[exactly: index]
             })
             
         }   else {
             DataIntTests.Body(self.item.body, test: self.test).expect(((((nil)))), read: {
-                $0[optional: IX(raw: index)]
+                $0[exactly: IX(raw: index)]
             },  write: {
-                $0[optional: IX(raw: index)]
+                $0[exactly: IX(raw: index)]
             })
         }
     }

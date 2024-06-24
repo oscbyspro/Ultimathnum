@@ -37,7 +37,6 @@ extension StdlibInt {
         //=--------------------------------------------------------------------=
         
         @usableFromInline let base: Base
-        public let count: Swift.Int
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers
@@ -45,14 +44,19 @@ extension StdlibInt {
         
         /// - Note: Swift.BinaryInteger.Words includes the appendix bit.
         @inlinable internal init(_ base: consuming Base) {
-            self.base   = consume  base
-            let entropy = self.base.withUnsafeBinaryIntegerElements({ $0.entropy() })
-            self.count  = Swift.Int(entropy.division(Divisor(size: UX.self)).ceil().unchecked())
+            self.base = base
         }
         
         //=--------------------------------------------------------------------=
         // MARK: Utilities
         //=--------------------------------------------------------------------=
+        
+        @inlinable public var count: Swift.Int {
+            self.base.withUnsafeBinaryIntegerElements {
+                let isExtended = $0.body.last.map({ $0 >= .msb }) != Bool($0.appendix)
+                return Swift.Int($0.body.count + IX(Bit(isExtended)))
+            }
+        }
         
         @inlinable public var startIndex: Swift.Int {
             Swift.Int.zero

@@ -50,7 +50,7 @@ extension TripleInt where Base == Base.Magnitude {
             product  = product .minus(divisor.value).unchecked()
         };  ((self)) = ((self)).minus(product).unchecked()
         
-        Swift.assert(self.high == 0, "remainder must fit in two halves")
+        Swift.assert(self.high.isZero, "remainder must fit in two halves")
         Swift.assert(DoubleInt(low: self.low, high: self.mid) < divisor.value, "remainder must be less than divisor")
         return Division(quotient: quotient, remainder: DoubleInt(low: self.low, high: self.mid))
     }

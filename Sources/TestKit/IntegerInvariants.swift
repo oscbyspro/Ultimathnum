@@ -38,7 +38,7 @@ public struct IntegerInvariants<T> where T: BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static var shlEsque: T {
-        (T.size.isInfinite ? 127 : T(raw: T.size - 1))
+        (T.size.isInfinite ? 255 : T(raw: T.size - 1))
     }
     
     @inlinable public static var minEsque: T {

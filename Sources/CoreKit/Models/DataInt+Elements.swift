@@ -52,6 +52,7 @@ extension DataInt {
     @inlinable public subscript(index: UX) -> Element {
         if  index < UX(raw: self.body.count) {
             return self.body[unchecked: IX(raw: index)]
+            
         }   else {
             return Element(repeating: self.appendix)
         }
@@ -171,13 +172,21 @@ extension DataInt.Body {
     }
     
     /// Returns the `first` element, if it exists.
+    ///
+    /// - Note: This operation does not perform any pointer arithmetic.
+    ///
     @inlinable public var first: Optional<Element> {
-        self.isEmpty ? nil : self[unchecked: ()]
+        if  self.isEmpty {
+            return nil
+            
+        }   else {
+            return self[unchecked: ()]
+        }
     }
     
     /// Returns the `last` element, if it exists.
     @inlinable public var last: Optional<Element> {
-        self[optional: self.count.decremented().unchecked()]
+        self[exactly: self.count.decremented().unchecked()]
     }
     
     //=------------------------------------------------------------------------=
@@ -186,23 +195,21 @@ extension DataInt.Body {
     
     /// - Requires: `self.count >= 1`
     @inlinable public subscript(unchecked index: Void) -> Element {
-        //=----------------------------------=
         Swift.assert(!self.isEmpty, String.indexOutOfBounds())
-        //=----------------------------------=
-        return self.start.pointee as Element
+        
+        return self.start.pointee
     }
     
     /// - Requires: `self.count >= index + 1`
     @inlinable public subscript(unchecked index: IX) -> Element {
-        //=--------------------------------------=
         Swift.assert(index >= 0000000000, String.indexOutOfBounds())
         Swift.assert(index <  self.count, String.indexOutOfBounds())
-        //=--------------------------------------=
+        
         return self.start.advanced(by: Int(index)).pointee
     }
     
     /// Return the element at the given `index`, or nil if the `index` is out of bounds.
-    @inlinable public subscript(optional index: IX) -> Optional<Element> {
+    @inlinable public subscript(exactly index: IX) -> Optional<Element> {
         if  UX(raw: index) < UX(raw: self.count) {
             return self[unchecked: index]
         }   else {
@@ -229,11 +236,11 @@ extension DataInt.Body {
         as type: Destination.Type,
         perform action: (DataInt<Destination>.Body) throws -> Value
     )   rethrows -> Value {
-        //=--------------------------------------=
+        
         precondition(MemoryLayout<Element>.size      % MemoryLayout<Destination>.size      == 0)
         precondition(MemoryLayout<Element>.stride    % MemoryLayout<Destination>.stride    == 0)
         precondition(MemoryLayout<Element>.alignment % MemoryLayout<Destination>.alignment == 0)
-        //=--------------------------------------=
+        
         let ratio = IX(size: Element.self) / IX(size: Destination.self)
         let count = self.count * ratio
         return try (self.start).withMemoryRebound(to: Destination.self, capacity: Int(count)) {
@@ -262,11 +269,10 @@ extension MutableDataInt.Body {
     /// - Requires: `self.count == source.count`
     ///
     @inlinable public borrowing func initialize(to source: Immutable) {
-        //=--------------------------------------=
         if  self.count != source.count {
             Swift.assertionFailure(String.indexOutOfBounds())
         }
-        //=--------------------------------------=
+        
         self.start.initialize(from: source.start, count: Int(source.count))
     }
     
@@ -277,11 +283,10 @@ extension MutableDataInt.Body {
     /// - Requires: `self.count >= source.count`
     ///
     @inlinable public borrowing func initialize(load source: Immutable) {
-        //=--------------------------------------=
         if  self.count < source.count {
             Swift.assertionFailure(String.indexOutOfBounds())
         }
-        //=--------------------------------------=
+        
         self.start.initialize(from: source.start, count: Int(source.count))
         self.start.advanced(by: Int(source.count)).initialize(repeating: .zero, count: Int(self.count - source.count))
     }
@@ -304,6 +309,9 @@ extension MutableDataInt.Body {
     }
     
     /// Returns the `first` element, if it exists.
+    ///
+    /// - Note: This operation does not perform any pointer arithmetic.
+    ///
     @inlinable public var first: Optional<Element> {
         Immutable(self).first
     }
@@ -324,7 +332,6 @@ extension MutableDataInt.Body {
         }
         
         nonmutating set {
-            //=----------------------------------=
             Swift.assert(!self.isEmpty, String.indexOutOfBounds())
             //=----------------------------------=
             // note that the pointee is trivial
@@ -340,7 +347,6 @@ extension MutableDataInt.Body {
         }
         
         nonmutating set {
-            //=----------------------------------=
             Swift.assert(index >= 0000000000, String.indexOutOfBounds())
             Swift.assert(index <  self.count, String.indexOutOfBounds())
             //=----------------------------------=
@@ -351,9 +357,9 @@ extension MutableDataInt.Body {
     }
     
     /// Return the element at the given `index`, or nil if the `index` is out of bounds.
-    @inlinable public subscript(optional index: IX) -> Optional<Element> {
+    @inlinable public subscript(exactly index: IX) -> Optional<Element> {
         nonmutating get {
-            Immutable(self)[optional: index]
+            Immutable(self)[exactly: index]
         }
     }
     
