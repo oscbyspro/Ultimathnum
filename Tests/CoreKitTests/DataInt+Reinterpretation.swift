@@ -11,7 +11,7 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Data Int x Upsize
+// MARK: * Data Int x Reinterpretation
 //*============================================================================*
 
 extension DataIntTests {

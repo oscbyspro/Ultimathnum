@@ -57,31 +57,6 @@ extension DataInt {
             return Element(repeating: self.appendix)
         }
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    /// Temporarily rebinds its elements to the given `type` and performs
-    /// the `action` on the reinterpreted instance.
-    ///
-    /// Any attempt to rebind the elements of `self` to a larger element `type`
-    /// triggers a precondition failure. In other words, you may only downsize
-    /// elements with this method.
-    ///
-    /// - Requires: `Element.size >= Destination.size`
-    ///
-    /// - Note: You may always reinterpret its elements as bytes (`U8`).
-    ///
-    @inlinable public func reinterpret<Destination, Value>(
-        as type: Destination.Type,
-        perform action: (DataInt<Destination>) throws -> Value
-    )   rethrows -> Value {
-        
-        try self.body.reinterpret(as: Destination.self) {
-            try action(.init($0, repeating: self.appendix))
-        }
-    }
 }
 
 //*============================================================================*
@@ -125,31 +100,6 @@ extension MutableDataInt {
     
     @inlinable public subscript(index: UX) -> Element {
         Immutable(self)[index]
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    /// Temporarily rebinds its elements to the given `type` and performs
-    /// the `action` on the reinterpreted instance.
-    ///
-    /// Any attempt to rebind the elements of `self` to a larger element `type`
-    /// triggers a precondition failure. In other words, you may only downsize
-    /// elements with this method.
-    ///
-    /// - Requires: `Element.size >= Destination.size`
-    ///
-    /// - Note: You may always reinterpret its elements as bytes (`U8`).
-    ///
-    @inlinable public func reinterpret<Destination, Value>(
-        as type: Destination.Type,
-        perform action: (MutableDataInt<Destination>) throws -> Value
-    )   rethrows -> Value {
-        
-        try self.body.reinterpret(as: Destination.self) {
-            try action(.init($0, repeating: self.appendix))
-        }
     }
 }
 
@@ -214,37 +164,6 @@ extension DataInt.Body {
             return self[unchecked: index]
         }   else {
             return nil
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    /// Temporarily rebinds its elements to the given `type` and performs
-    /// the `action` on the reinterpreted instance.
-    ///
-    /// Any attempt to rebind the elements of `self` to a larger element `type`
-    /// triggers a precondition failure. In other words, you may only downsize
-    /// elements with this method.
-    ///
-    /// - Requires: `Element.size >= Destination.size`
-    ///
-    /// - Note: You may always reinterpret its elements as bytes (`U8`).
-    ///
-    @inlinable public borrowing func reinterpret<Destination, Value>(
-        as type: Destination.Type,
-        perform action: (DataInt<Destination>.Body) throws -> Value
-    )   rethrows -> Value {
-        
-        precondition(MemoryLayout<Element>.size      % MemoryLayout<Destination>.size      == 0)
-        precondition(MemoryLayout<Element>.stride    % MemoryLayout<Destination>.stride    == 0)
-        precondition(MemoryLayout<Element>.alignment % MemoryLayout<Destination>.alignment == 0)
-        
-        let ratio = IX(size: Element.self) / IX(size: Destination.self)
-        let count = self.count * ratio
-        return try (self.start).withMemoryRebound(to: Destination.self, capacity: Int(count)) {
-            try action(DataInt<Destination>.Body.init($0, count: count))
         }
     }
 }
@@ -360,31 +279,6 @@ extension MutableDataInt.Body {
     @inlinable public subscript(exactly index: IX) -> Optional<Element> {
         nonmutating get {
             Immutable(self)[exactly: index]
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    /// Temporarily rebinds its elements to the given `type` and performs
-    /// the `action` on the reinterpreted instance.
-    ///
-    /// Any attempt to rebind the elements of `self` to a larger element `type`
-    /// triggers a precondition failure. In other words, you may only downsize 
-    /// elements with this method.
-    ///
-    /// - Requires: `Element.size >= Destination.size`
-    ///
-    /// - Note: You may always reinterpret its elements as bytes (`U8`).
-    ///
-    @inlinable public borrowing func reinterpret<Destination, Value>(
-        as type: Destination.Type,
-        perform action: (MutableDataInt<Destination>.Body) throws -> Value
-    )   rethrows -> Value {
-        
-        try Immutable(self).reinterpret(as: Destination.self) {
-            try action(MutableDataInt<Destination>.Body(mutating: $0))
         }
     }
 }
