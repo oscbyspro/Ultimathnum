@@ -230,7 +230,7 @@ extension DataIntTests {
                 let b = Array(repeating: T(load: 0x5555555555555555 as U64), count: count)
                 //=------------------------------=
                 for distance in 0 ..< IX(size: T.self) * IX(count) {
-                    let even = !Bool(distance.leastSignificantBit)
+                    let even = !Bool(distance.lsb)
                     C(a).upshift  (distance, environment: a.first!, is: even ? a : b)
                     C(a).downshift(distance, environment: a.first!, is: even ? a : b)
                     C(b).upshift  (distance, environment: b.first!, is: even ? b : a)

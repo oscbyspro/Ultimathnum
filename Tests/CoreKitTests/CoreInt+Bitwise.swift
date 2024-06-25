@@ -24,8 +24,9 @@ extension CoreIntTests {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             IntegerInvariants(T.self).bitwiseInitBitOrRepeatingBit()
             IntegerInvariants(T.self).bitwiseLogicOfAlternatingBitEsque()
-            IntegerInvariants(T.self).bitwiseLeastSignificantBitEqualsIsOdd()
-            IntegerInvariants(T.self).endianness()
+            IntegerInvariants(T.self).bitwiseLsbEqualsIsOdd()
+            IntegerInvariants(T.self).bitwiseMsbEqualsSignitudeIsNegative()
+            IntegerInvariants(T.self).endianness(SystemsIntegerID())
         }
         
         for type in Self.types {

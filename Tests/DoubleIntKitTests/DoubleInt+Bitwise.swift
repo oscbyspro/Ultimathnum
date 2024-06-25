@@ -25,8 +25,9 @@ extension DoubleIntTests {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             IntegerInvariants(T.self).bitwiseInitBitOrRepeatingBit()
             IntegerInvariants(T.self).bitwiseLogicOfAlternatingBitEsque()
-            IntegerInvariants(T.self).bitwiseLeastSignificantBitEqualsIsOdd()
-            IntegerInvariants(T.self).endianness()
+            IntegerInvariants(T.self).bitwiseLsbEqualsIsOdd()
+            IntegerInvariants(T.self).bitwiseMsbEqualsSignitudeIsNegative()
+            IntegerInvariants(T.self).endianness(SystemsIntegerID())
         }
         
         for type in Self.types {
@@ -39,10 +40,10 @@ extension DoubleIntTests {
             typealias T = DoubleInt<B>
             typealias M = DoubleInt<B>.Magnitude
             
-            Test().same(T(low:  0, high:  0).leastSignificantBit, 0 as Bit)
-            Test().same(T(low:  0, high: ~0).leastSignificantBit, 0 as Bit)
-            Test().same(T(low: ~0, high:  0).leastSignificantBit, 1 as Bit)
-            Test().same(T(low: ~0, high: ~0).leastSignificantBit, 1 as Bit)
+            Test().same(T(low:  0, high:  0).lsb, 0 as Bit)
+            Test().same(T(low:  0, high: ~0).lsb, 0 as Bit)
+            Test().same(T(low: ~0, high:  0).lsb, 1 as Bit)
+            Test().same(T(low: ~0, high: ~0).lsb, 1 as Bit)
         }
         
         for base in Self.bases {
@@ -83,10 +84,10 @@ extension DoubleIntTests {
         func whereTheBaseTypeIs<B>(_ base: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
             typealias M = DoubleInt<B.Magnitude>
-            typealias U = DoubleInt<T>
+            typealias U = DoubleInt<T> // x4
             //=----------------------------------=
-            IntegerInvariants(T.self).endianness()
-            IntegerInvariants(U.self).endianness()
+            IntegerInvariants(T.self).endianness(SystemsIntegerID())
+            IntegerInvariants(U.self).endianness(SystemsIntegerID())
             //=----------------------------------=
             let b1 = B.Magnitude(1).endianness(.big), l1 = B.Magnitude(1).endianness(.little)
             let b2 = B.Magnitude(2).endianness(.big), l2 = B.Magnitude(2).endianness(.little)

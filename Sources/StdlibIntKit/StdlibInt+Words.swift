@@ -53,8 +53,7 @@ extension StdlibInt {
         
         @inlinable public var count: Swift.Int {
             self.base.withUnsafeBinaryIntegerElements {
-                let isExtended = $0.body.last.map({ $0 >= .msb }) != Bool($0.appendix)
-                return Swift.Int($0.body.count + IX(Bit(isExtended)))
+                Swift.Int($0.body.count + IX(Bit($0.body.last?.msb != $0.appendix)))
             }
         }
         

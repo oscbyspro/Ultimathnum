@@ -176,7 +176,7 @@ import CoreKit
         var b0 = b.plus(a).times(x.a).value
         var b1 = b.times(x.b).value
         
-        if  Bool(x.i.leastSignificantBit) {
+        if  Bool(x.i.lsb) {
             Swift.swap(&a0, &a1)
             Swift.swap(&b0, &b1)
         }

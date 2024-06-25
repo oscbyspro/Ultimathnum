@@ -25,7 +25,8 @@ extension InfiniIntTests {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             IntegerInvariants(T.self).bitwiseInitBitOrRepeatingBit()
             IntegerInvariants(T.self).bitwiseLogicOfAlternatingBitEsque()
-            IntegerInvariants(T.self).bitwiseLeastSignificantBitEqualsIsOdd()
+            IntegerInvariants(T.self).bitwiseLsbEqualsIsOdd()
+            IntegerInvariants(T.self).bitwiseMsbEqualsSignitudeIsNegative()
         }
         
         for type in Self.types {

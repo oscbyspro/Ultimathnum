@@ -17,7 +17,17 @@ extension BinaryInteger {
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    /// Returns the additive identity element: `zero`.
+    /// A value with its least significant bit set to `1`
+    ///
+    /// - Note: This value equals `1` for all valid binary integer types.
+    ///
+    /// - Note: A 1-bit signed integer type cannot represent `1`.
+    ///
+    @inlinable public static var lsb: Self {
+        Self(raw: 1 as Magnitude)
+    }
+    
+    /// The additive identity element: `zero`.
     @inline(__always) // performance: please fold it like a paper airplane
     @inlinable public static var zero: Self {
         Self()
@@ -46,7 +56,7 @@ extension EdgyInteger {
     
     @inlinable public static var min: Self {
         if  isSigned {
-            return Self(raw: (1 as Magnitude).up(Shift(unchecked: size &- 1)))
+            return Self(raw: Magnitude.lsb.up(Shift(unchecked: size.decremented().unchecked())))
         }   else {
             return Self()
         }
@@ -67,12 +77,9 @@ extension SystemsInteger {
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    @inlinable public static var lsb: Self {
-        Self(raw: (1 as Magnitude))
-    }
-    
+    /// A value with its most significant bit set to `1`
     @inlinable public static var msb: Self {
-        Self(raw: (1 as Magnitude).up(Shift(unchecked: size &- 1)))
+        Self(raw: Magnitude.lsb.up(Shift(unchecked: size.decremented().unchecked())))
     }
 }
 

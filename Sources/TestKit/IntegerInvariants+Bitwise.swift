@@ -65,22 +65,45 @@ extension IntegerInvariants {
         test.xor(~b, ~b,  x)
     }
     
-    public func bitwiseLeastSignificantBitEqualsIsOdd() {
+    public func bitwiseLsbEqualsIsOdd() {
         var isOdd =  false
         for small in I8.min ... I8.max {
-            test.same(T(load: small).leastSignificantBit, Bit(isOdd))
+            test.same(T(load: small).lsb, Bit(isOdd))
             isOdd.toggle()
         }
         
-        test.same(Self.minEsque.leastSignificantBit, 0 as Bit)
-        test.same(Self.maxEsque.leastSignificantBit, 1 as Bit)
+        test.same((Self.minEsque    ).lsb, 0 as Bit)
+        test.same((Self.minEsque + 1).lsb, 1 as Bit)
+        test.same((Self.minEsque + 2).lsb, 0 as Bit)
+        test.same((Self.minEsque + 3).lsb, 1 as Bit)
+        
+        test.same((Self.maxEsque - 3).lsb, 0 as Bit)
+        test.same((Self.maxEsque - 2).lsb, 1 as Bit)
+        test.same((Self.maxEsque - 1).lsb, 0 as Bit)
+        test.same((Self.maxEsque    ).lsb, 1 as Bit)
+    }
+    
+    public func bitwiseMsbEqualsSignitudeIsNegative() {
+        for small in I8.min ... I8.max {
+            test.same(T(load: small).msb, Bit(small.isNegative))
+        }
+        
+        test.same((Self.minEsque    ).msb, Bit( T.isSigned))
+        test.same((Self.minEsque + 1).msb, Bit( T.isSigned))
+        test.same((Self.minEsque + 2).msb, Bit( T.isSigned))
+        test.same((Self.minEsque + 3).msb, Bit( T.isSigned))
+        
+        test.same((Self.maxEsque - 3).msb, Bit(!T.isSigned))
+        test.same((Self.maxEsque - 2).msb, Bit(!T.isSigned))
+        test.same((Self.maxEsque - 1).msb, Bit(!T.isSigned))
+        test.same((Self.maxEsque    ).msb, Bit(!T.isSigned))
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func endianness() where T: SystemsInteger {
+    public func endianness(_ id: SystemsIntegerID) where T: SystemsInteger {
         test.same(T(repeating: 0).endianness(.big   ), T(repeating: 0))
         test.same(T(repeating: 0).endianness(.little), T(repeating: 0))
         test.same(T(repeating: 1).endianness(.big   ), T(repeating: 1))

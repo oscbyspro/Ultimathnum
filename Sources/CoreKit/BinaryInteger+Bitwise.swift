@@ -78,14 +78,32 @@ extension BinaryInteger {
         Magnitude(raw: self.isNegative ? self.complement() : self)
     }
     
-    /// The least significant bit in its bit pattern.
+    /// Returns the least significant bit in its `body`, or the `appendix`.
     ///
-    /// It returns `0` when this value is even, and `1` when it is odd.
+    /// - Returns: The bit at index: `0`.
     ///
-    /// - Note: This accessor tests only the least significant element.
+    /// - Note: A systems integer's `body` is never empty.
     ///
-    @inlinable public var leastSignificantBit: Bit {
+    /// - Note: It is `0` when `self` is even, and `1` when `self` is odd.
+    ///
+    @inlinable public var lsb: Bit {
         Bit(Element(load: self) & Element.lsb != Element.zero)
+    }
+    
+    /// Returns the most significant bit in its `body`, or the `appendix`.
+    ///
+    /// - Returns: The bit at index: `log2(Magnitude.max + 1) - 1`.
+    ///
+    /// - Note: A systems integer's `body` is never empty.
+    ///
+    /// - Note: A signed integer's `msb` and `appendix` are always equal.
+    ///
+    @inlinable public var msb: Bit {
+        if !Self.size.isInfinite {
+            return Bit(self.withUnsafeBinaryIntegerBody({ $0.last! >= Element.Magnitude.msb }))
+        }   else {
+            return self.appendix
+        }
     }
 }
 
