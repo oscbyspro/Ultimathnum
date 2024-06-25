@@ -74,7 +74,7 @@ extension StdlibInt {
         //=------------------------------------------------------------------------=
         
         public var description: String {
-            "[\(self.lazy.map(String.init(describing:)).joined(separator: ", "))]"
+            "[\(self.lazy.map({ $0.description }).joined(separator: ", "))]"
         }
     }
 }

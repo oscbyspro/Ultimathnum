@@ -385,10 +385,10 @@ where
     /// The ascending `bit` count in `self`.
     ///
     /// ```swift
-    /// I8(11).count(.ascending(0)) // 0
-    /// I8(11).count(.ascending(1)) // 2
-    /// I8(22).count(.ascending(0)) // 1
-    /// I8(22).count(.ascending(1)) // 0
+    /// I8(11).ascending(0) // 0
+    /// I8(11).ascending(1) // 2
+    /// I8(22).ascending(0) // 1
+    /// I8(22).ascending(1) // 0
     /// ```
     ///
     @inlinable borrowing func ascending(_ bit: Bit) -> Magnitude
@@ -396,10 +396,10 @@ where
     /// The descending `bit` count in `self`.
     ///
     /// ```swift
-    /// I8(11).count(.descending(0)) // 4
-    /// I8(11).count(.descending(1)) // 0
-    /// I8(22).count(.descending(0)) // 3
-    /// I8(22).count(.descending(1)) // 0
+    /// I8(11).descending(0) // 4
+    /// I8(11).descending(1) // 0
+    /// I8(22).descending(0) // 3
+    /// I8(22).descending(1) // 0
     /// ```
     ///
     @inlinable borrowing func descending(_ bit: Bit) -> Magnitude
@@ -414,9 +414,9 @@ where
     ///            ┌───────────────┬───────────────┐
     ///            │ appendix == 0 │ appendix == 1 |
     /// ┌──────────┼───────────────┤───────────────┤
-    /// │   SIGNED │ self >= 0     │ self <  0     │
+    /// │   Signed │ self >= 0     │ self <  0     │
     /// ├──────────┼───────────────┤───────────────┤
-    /// │ UNSIGNED │ self <  ∞     │ self >= ∞     │
+    /// │ Unsigned │ self <  ∞     │ self >= ∞     │
     /// └──────────┴───────────────┴───────────────┘
     /// ```
     ///

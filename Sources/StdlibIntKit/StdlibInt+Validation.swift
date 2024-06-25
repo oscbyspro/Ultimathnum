@@ -60,7 +60,7 @@ extension StdlibInt {
             
             self = Self(1) << exponent | fraction << (exponent - T.significandBitCount)
             
-            if  source >= T.zero {
+            if  source.sign == .plus {
                 Swift.assert(source.floatingPointClass == .positiveNormal)
             }   else {
                 self.negate()
