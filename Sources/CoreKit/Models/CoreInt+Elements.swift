@@ -18,7 +18,7 @@ extension CoreInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(load source: DataInt<Element.Magnitude>) {
-        self.init(raw: source.load())
+        self.init(raw: source.first)
     }
     
     //=------------------------------------------------------------------------=

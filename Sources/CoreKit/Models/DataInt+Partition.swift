@@ -22,7 +22,7 @@ extension DataInt {
     /// - Invariant: `self.normalized().isNormal`
     ///
     @inlinable public consuming func normalized() -> Self {
-        let appendix = Element(repeating: self.appendix)
+        let appendix = self.last
         var endIndex = self.body.count
         
         while !endIndex.isZero {

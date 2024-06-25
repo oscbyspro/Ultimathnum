@@ -14,47 +14,50 @@
 extension DataInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    /// Returns the least significant bit pattern that fits in an element, then
-    /// rebases `self` such that it starts at the end of this bit pattern.
-    @inlinable public mutating func next() -> Element {
-        defer {
-            self = self[1...]
-        }
-        
-        return self.load()
-    }
-    
-    //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// Returns the least significant bit pattern that fits in an element.
+    /// Returns the `first` element.
     ///
-    /// ### Load vs Subscript
+    /// - Note: This operation does not perform any pointer arithmetic.
     ///
-    /// A load may be more efficient than a safe subscript access but this is
-    /// only because it does not need to perform any pointer arithmetic. Note,
-    /// however, that calling `body[unchecked: ()]` is still the most performant
-    /// option because it omits bounds checks in release mode.
-    ///
-    @inlinable public borrowing func load() -> Element {
-        if !self.body.isEmpty {
-            return self.body[unchecked: ()]
+    @inlinable public var first: Element {
+        if  let element = self.body.first {
+            return element
             
         }   else {
-            return Element(repeating: self.appendix)
+            return self.last
         }
     }
     
+    /// Returns the `last` element.
+    ///
+    /// - Returns: `Element(repeating: appendix)`
+    ///
+    /// - Note: This operation does not perform any pointer arithmetic.
+    ///
+    @inlinable public var last: Element {
+        Element(repeating: self.appendix)
+    }
+    
+    /// Returns the element at the given `index`.
     @inlinable public subscript(index: UX) -> Element {
-        if  index < UX(raw: self.body.count) {
-            return self.body[unchecked: IX(raw: index)]
+        if  let element = self.body[exactly: IX(raw: index)] {
+            return element
             
         }   else {
-            return Element(repeating: self.appendix)
+            return self.last
+        }
+    }
+    
+    /// Returns the `first` element then drops it.
+    @inlinable public mutating func next() -> Element {
+        if  let element = self.body.first {
+            self = Self(self.body[unchecked: 1...], repeating: self.appendix)
+            return element
+            
+        }   else {
+            return self.last
         }
     }
 }
@@ -66,40 +69,41 @@ extension DataInt {
 extension MutableDataInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
-
-    /// Returns the least significant bit pattern that fits in an element, then
-    /// rebases `self` such that it starts at the end of this bit pattern.
+    
+    /// Returns the `first` element.
+    ///
+    /// - Note: This operation does not perform any pointer arithmetic.
+    ///
+    @inlinable public var first: Element {
+        Immutable(self).first
+    }
+    
+    /// Returns the `last` element.
+    ///
+    /// - Returns: `Element(repeating: appendix)`
+    ///
+    /// - Note: This operation does not perform any pointer arithmetic.
+    ///
+    @inlinable public var last: Element {
+        Immutable(self).last
+    }
+    
+    /// Returns the element at the given `index`.
+    @inlinable public subscript(index: UX) -> Element {
+        Immutable(self)[index]
+    }
+    
+    /// Returns the `first` element then drops it.
     @inlinable public mutating func next() -> Element {
-        var immutable = Immutable.init(self)
+        var immutable = Immutable(self)
 
         defer {
             self = Self(mutating: immutable)
         }
         
         return immutable.next() as Element
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    /// Returns the least significant bit pattern that fits in an element.
-    ///
-    /// ### Load vs Subscript
-    ///
-    /// A load may be more efficient than a safe subscript access but this is
-    /// only because it does not need to perform any pointer arithmetic. Note,
-    /// however, that calling `body[unchecked: ()]` is still the most performant
-    /// option because it omits bounds checks in release mode.
-    ///
-    @inlinable public borrowing func load() -> Element {
-        Immutable(self).load()
-    }
-    
-    @inlinable public subscript(index: UX) -> Element {
-        Immutable(self)[index]
     }
 }
 
@@ -139,18 +143,22 @@ extension DataInt.Body {
         self[exactly: self.count.decremented().unchecked()]
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
+    /// Returns the element at `IX.zero`.
+    ///
     /// - Requires: `self.count >= 1`
+    ///
+    /// - Note: This operation does not perform any pointer arithmetic.
+    ///
     @inlinable public subscript(unchecked index: Void) -> Element {
         Swift.assert(!self.isEmpty, String.indexOutOfBounds())
         
         return self.start.pointee
     }
     
+    /// Returns the element at the given `index`.
+    ///
     /// - Requires: `self.count >= index + 1`
+    ///
     @inlinable public subscript(unchecked index: IX) -> Element {
         Swift.assert(index >= 0000000000, String.indexOutOfBounds())
         Swift.assert(index <  self.count, String.indexOutOfBounds())
@@ -158,7 +166,7 @@ extension DataInt.Body {
         return self.start.advanced(by: Int(index)).pointee
     }
     
-    /// Return the element at the given `index`, or nil if the `index` is out of bounds.
+    /// Return the element at the given `index`, if it exists.
     @inlinable public subscript(exactly index: IX) -> Optional<Element> {
         if  UX(raw: index) < UX(raw: self.count) {
             return self[unchecked: index]
@@ -244,7 +252,12 @@ extension MutableDataInt.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// Returns the element at `IX.zero`.
+    ///
     /// - Requires: `self.count >= 1`
+    ///
+    /// - Note: This operation does not perform any pointer arithmetic.
+    ///
     @inlinable public subscript(unchecked index: Void) -> Element {
         nonmutating get {
             Immutable(self)[unchecked: index]
@@ -259,7 +272,10 @@ extension MutableDataInt.Body {
         }
     }
     
+    /// Returns the element at the given `index`.
+    ///
     /// - Requires: `self.count >= index + 1`
+    ///
     @inlinable public subscript(unchecked index: IX) -> Element {
         nonmutating get {
             Immutable(self)[unchecked: index]
@@ -275,7 +291,7 @@ extension MutableDataInt.Body {
         }
     }
     
-    /// Return the element at the given `index`, or nil if the `index` is out of bounds.
+    /// Return the element at the given `index`, if it exists.
     @inlinable public subscript(exactly index: IX) -> Optional<Element> {
         nonmutating get {
             Immutable(self)[exactly: index]

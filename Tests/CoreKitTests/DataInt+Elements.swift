@@ -125,10 +125,18 @@ extension DataIntTests.Extension {
         })
         
         self.expect(expectation, read: {
-            $0[index...].load()
+            $0[index...].first
         },  write: {
-            $0[index...].load()
+            $0[index...].first
         })
+        
+        if  index > IX(self.item.body.count) {
+            self.expect(expectation, read: {
+                $0[index...].last
+            },  write: {
+                $0[index...].last
+            })
+        }
         
         if  index.isZero {
             DataIntTests.Body(self.item.body, test: self.test).expect(expectation, read: {

@@ -27,7 +27,7 @@ extension DataInt {
     
     /// Indicates whether the `body` is free of `appendix` extensions.
     @inlinable public var isNormal: Bool {
-        self.body.last != Element(repeating: self.appendix)
+        self.body.last != self.last
     }
 }
 
