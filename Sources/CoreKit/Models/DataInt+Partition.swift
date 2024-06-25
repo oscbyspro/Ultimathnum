@@ -102,10 +102,7 @@ extension DataInt.Body {
     /// - Requires: `0 <= index <= self.count`
     ///
     @inlinable public consuming func split(unchecked index: IX) -> (low: Self, high: Self) {
-        Swift.assert(index >= 0000000000, String.indexOutOfBounds())
-        Swift.assert(index <= self.count, String.indexOutOfBounds())
-        
-        return (low: (copy self)[unchecked: ..<index], high: (consume self)[unchecked: index...])
+        (low: (copy self)[unchecked: ..<index], high: (consume self)[unchecked: index...])
     }
     
     //=------------------------------------------------------------------------=

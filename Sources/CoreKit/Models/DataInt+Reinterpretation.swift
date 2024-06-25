@@ -49,10 +49,9 @@ extension DataInt where Element == U8 {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// Returns the least significant bit pattern that fits in the given type,
-    /// then rebases `self` such that it starts at the end of this bit pattern.
+    /// Returns the first element of the given `type` then drops it.
     @inlinable public mutating func next<Destination>(
-        as destination: Destination.Type
+        as type: Destination.Type
     )   -> Destination where Destination: SystemsInteger & UnsignedInteger {
         
         defer {
@@ -62,9 +61,9 @@ extension DataInt where Element == U8 {
         return self.load(as: Destination.self)
     }
     
-    /// Returns the least significant bit pattern that fits in the given type.
+    /// Returns the first element of the given `type`.
     @inlinable public borrowing func load<Destination>(
-        as destination: Destination.Type
+        as type: Destination.Type
     )   -> Destination where Destination: SystemsInteger & UnsignedInteger {
         
         if  IX(MemoryLayout<Destination>.size) <= self.body.count {
@@ -130,8 +129,7 @@ extension MutableDataInt where Element == U8 {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// Returns the least significant bit pattern that fits in the given type,
-    /// then rebases `self` such that it starts at the end of this bit pattern.
+    /// Returns the first element of the given `type` then drops it.
     @inlinable public mutating func next<Destination>(
         as destination: Destination.Type
     )   -> Destination where Destination: SystemsInteger & UnsignedInteger {
@@ -145,7 +143,7 @@ extension MutableDataInt where Element == U8 {
         return immutable.next(as: Destination.self)
     }
     
-    /// Returns the least significant bit pattern that fits in the given type.
+    /// Returns the first element of the given `type`.
     @inlinable public borrowing func load<Destination>(
         as destination: Destination.Type
     )   -> Destination where Destination: SystemsInteger & UnsignedInteger {

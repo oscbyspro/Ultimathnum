@@ -191,6 +191,17 @@ extension MutableDataInt.Body {
         self.start.deinitialize(count: Int(self.count))
     }
     
+    /// Initializes the elements of `self` to the bit pattern of `source`.
+    ///
+    /// All elements in `self[source.count...]` are initialized to zero.
+    ///
+    /// - Requires: `self.count >= source.count`
+    ///
+    @inlinable public borrowing func initialize(load source: Immutable) {
+        (copy self)[unchecked: ..<source.count].initialize(to: source)
+        (copy self)[unchecked: source.count...].initialize(repeating: .zero)
+    }
+    
     /// Initializes the elements of `self` to the elements of `source`.
     ///
     /// - Requires: `self.count == source.count`
@@ -201,21 +212,6 @@ extension MutableDataInt.Body {
         }
         
         self.start.initialize(from: source.start, count: Int(source.count))
-    }
-    
-    /// Initializes the elements of `self` to the bit pattern of `source`.
-    ///
-    /// All elements in `self[source.count...]` are initialized to zero.
-    ///
-    /// - Requires: `self.count >= source.count`
-    ///
-    @inlinable public borrowing func initialize(load source: Immutable) {
-        if  self.count < source.count {
-            Swift.assertionFailure(String.indexOutOfBounds())
-        }
-        
-        self.start.initialize(from: source.start, count: Int(source.count))
-        self.start.advanced(by: Int(source.count)).initialize(repeating: .zero, count: Int(self.count - source.count))
     }
     
     /// Initializes each element in `self` to `element`.
