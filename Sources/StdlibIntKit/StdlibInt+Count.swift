@@ -31,7 +31,7 @@ extension StdlibInt {
     @inlinable public var trailingZeroBitCount: Swift.Int {
         borrowing get {
             self.base.withUnsafeBinaryIntegerElements {
-                Swift.assert($0.isNormal, "InfiniInt<IX>/elements")
+                Swift.assert($0.isNormal, "IXL")
                 
                 if  $0.body.isEmpty {
                     return Swift.Int(IX($0.appendix.toggled()))

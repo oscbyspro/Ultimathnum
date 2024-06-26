@@ -158,8 +158,8 @@ extension BinaryInteger {
                 self = instance
                 
             }   else if Self.isSigned {
-                let distance = (size).decremented().unchecked()
-                let msb = Magnitude.lsb.up(Shift(unchecked: distance))
+                let distance = size.decremented().unchecked()
+                let msb = Magnitude.lsb .up(Shift(unchecked: distance))
                 self.init(raw: source.isNegative ? msb : msb.toggled())
                 
             }   else {

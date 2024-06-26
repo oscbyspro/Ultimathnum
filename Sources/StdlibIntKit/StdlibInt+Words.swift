@@ -42,7 +42,6 @@ extension StdlibInt {
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
-        /// - Note: Swift.BinaryInteger.Words includes the appendix bit.
         @inlinable internal init(_ base: consuming Base) {
             self.base = base
         }

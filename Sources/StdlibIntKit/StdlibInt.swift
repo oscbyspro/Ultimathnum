@@ -16,9 +16,9 @@ import InfiniIntKit
 
 /// An arbitrary `Swift.SignedInteger` value type.
 @frozen public struct StdlibInt: BitCastable, Swift.LosslessStringConvertible, Swift.Sendable, Swift.SignedInteger {
-        
-    @usableFromInline typealias Base = InfiniInt<IX>
-        
+    
+    @usableFromInline typealias Base = IXL
+    
     //=------------------------------------------------------------------------=
     // MARK: Metadata
     //=------------------------------------------------------------------------=
@@ -37,7 +37,7 @@ import InfiniIntKit
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ base: consuming InfiniInt<IX>) {
+    @inlinable public init(_ base: consuming IXL) {
         self.base = base
     }
     
@@ -49,12 +49,12 @@ import InfiniIntKit
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(raw source: consuming InfiniInt<IX>.BitPattern) {
+    @inlinable public init(raw source: consuming IXL.BitPattern) {
         self.init(Base(raw: source))
     }
     
-    @inlinable public consuming func load(as type: InfiniInt<IX>.BitPattern.Type) -> InfiniInt<IX>.BitPattern {
-        self.base.load(as: InfiniInt<IX>.BitPattern.self)
+    @inlinable public consuming func load(as type: IXL.BitPattern.Type) -> IXL.BitPattern {
+        self.base.load(as: IXL.BitPattern.self)
     }
 }
 
@@ -62,7 +62,7 @@ import InfiniIntKit
 // MARK: + Conversions
 //=----------------------------------------------------------------------------=
 
-extension InfiniInt<IX> {
+extension IXL {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers

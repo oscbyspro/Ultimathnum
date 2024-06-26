@@ -285,7 +285,7 @@ static func &+(lhs: consuming Self, borrowing Self) -> Self // wrapping
 
 > *We don't know where it comes from, only that it exists.*
 
-You may create integers our of thin air with RootInt, which is a wrapper around Swift's 
+You may create integers our of thin air with RootInt, which is a wrapper around Swift's
 StaticBigInt model. It comes with some additional bells and whistles. You may, for example,
 use it to query whether a type can represent an integer literal in generic code.
 
@@ -297,11 +297,12 @@ static func exactly(_ source: RootInt) -> Fallible<Self>
 
 #### Access binary integer data with DataInt\<Element\>
 
-Each data integer operates on the contiguous in-memory representation of binary integers without 
-taking ownership of them. The [Mutable]DataInt.Body type is fundamentally a buffer pointer. The 
-[Mutable]DataInt type extends the bit pattern of its body with a repeating appendix bit. You may 
-perform various buffer and arithmetic operations on these types, but remember that their operations 
-are finite, unsigned, and unchecked by default.
+Each data integer operates on the contiguous in-memory representation of binary integers without
+taking ownership of them. The [Mutable]DataInt.Body type is fundamentally a buffer pointer. The
+[Mutable]DataInt type extends the bit pattern of its body with a repeating appendix bit. You may
+perform various buffer and arithmetic operations on these types, but remember that their operations
+are finite, unsigned, and unchecked by default. Additionally, a data integer subsequence is usually
+represented by a rebased instance of the same type.
 
 <a name="corekit-upsize"/>
 

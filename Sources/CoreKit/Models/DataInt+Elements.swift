@@ -150,9 +150,8 @@ extension DataInt.Body {
     /// - Note: This operation does not perform any pointer arithmetic.
     ///
     @inlinable public subscript(unchecked index: Void) -> Element {
-        Swift.assert(!self.isEmpty, String.indexOutOfBounds())
-        
-        return self.start.pointee
+        Swift.assert(!self.isEmpty,  String.indexOutOfBounds())
+        return self.start.pointee as Element
     }
     
     /// Returns the element at the given `index`.
@@ -162,7 +161,6 @@ extension DataInt.Body {
     @inlinable public subscript(unchecked index: IX) -> Element {
         Swift.assert(index >= 0000000000, String.indexOutOfBounds())
         Swift.assert(index <  self.count, String.indexOutOfBounds())
-        
         return self.start.advanced(by: Int(index)).pointee
     }
     

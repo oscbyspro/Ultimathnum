@@ -68,7 +68,7 @@ extension BinaryInteger {
     
     /// Returns the result of `0 - self` that fits.
     @inlinable public consuming func negated() -> Fallible<Self> {
-        let result: Fallible<Self> =  self.complement(true)
+        let result: Fallible<Self> = self.complement(true)
         return result.value.veto(result.error == Self.isSigned)
     }
     
@@ -86,14 +86,14 @@ extension BinaryInteger {
     @inlinable public consuming func plus(_ increment: Bool) -> Fallible<Self> {
         switch Self.isSigned {
         case true : self.minus(Self(repeating: Bit(increment)))
-        case false: self.plus (Self(/*------*/ Bit(increment)))
+        case false: self.plus (Self(           Bit(increment)))
         }
     }
     /// Returns the result of `self - increment`.
     @inlinable public consuming func minus(_ decrement: Bool) -> Fallible<Self> {
         switch Self.isSigned {
         case true : self.plus (Self(repeating: Bit(decrement)))
-        case false: self.minus(Self(/*------*/ Bit(decrement)))
+        case false: self.minus(Self(           Bit(decrement)))
         }
     }
 }

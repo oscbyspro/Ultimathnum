@@ -56,7 +56,7 @@ extension StdlibInt {
         }   else {
             let exponent = Swift.Int(source.exponent)
             let fraction = Self(source.significandBitPattern)
-            Swift.assert(exponent >= Swift.Int.zero)
+            Swift.assert(exponent >= .zero)
             
             self = Self(1) << exponent | fraction << (exponent - T.significandBitCount)
             

@@ -61,12 +61,14 @@
     
     /// A binary integer `body` view.
     ///
-    /// - Important: Its operations are finite, unsigned, and unchecked by default.
+    /// - Important: Its operations are finite, unsigned, and unchecked.
+    ///
+    /// - Important: Its subsequences are rebased instances of this type.
     ///
     @frozen public struct Body: Recoverable {
-                
+        
         public typealias Element = DataInt.Element
-                
+        
         public typealias Mutable = MutableDataInt<Element>.Body
         
         //=--------------------------------------------------------------------=
@@ -169,7 +171,9 @@
     
     /// A mutable binary integer `body` view.
     ///
-    /// - Important: Its operations are finite, unsigned, and unchecked by default.
+    /// - Important: Its operations are finite, unsigned, and unchecked.
+    ///
+    /// - Important: Its subsequences are rebased instances of this type.
     ///
     /// ### Updates go through initialization APIs
     ///
@@ -180,9 +184,9 @@
     /// In this case, the latter is always true.
     ///
     @frozen public struct Body: Recoverable {
-                        
+        
         public typealias Element = MutableDataInt.Element
-                
+        
         public typealias Immutable = DataInt<Element>.Body
         
         //=--------------------------------------------------------------------=

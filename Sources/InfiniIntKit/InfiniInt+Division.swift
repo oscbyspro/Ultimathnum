@@ -39,6 +39,7 @@ extension InfiniInt {
             case Signum.same: return Fallible(Division(quotient:  0001, remainder: .zero))
             case Signum.more: return Fallible(Division(quotient:  0001, remainder:  self - divisor.value))
             }
+            
         }   else if !Self.isSigned, lhsAppendixIsSet {
             overflow = !(divisor.value.storage.count == 1 && divisor.value.storage.body[.zero] == 1)
         }
