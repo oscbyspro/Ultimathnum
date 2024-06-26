@@ -131,7 +131,7 @@ extension MutableDataInt where Element == U8 {
     
     /// Returns the first element of the given `type` then drops it.
     @inlinable public mutating func next<Destination>(
-        as destination: Destination.Type
+        as type: Destination.Type
     )   -> Destination where Destination: SystemsInteger & UnsignedInteger {
         
         var immutable = Immutable.init(self)
@@ -145,7 +145,7 @@ extension MutableDataInt where Element == U8 {
     
     /// Returns the first element of the given `type`.
     @inlinable public borrowing func load<Destination>(
-        as destination: Destination.Type
+        as type: Destination.Type
     )   -> Destination where Destination: SystemsInteger & UnsignedInteger {
         
         Immutable(self).load(as: Destination.self)

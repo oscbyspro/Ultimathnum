@@ -21,14 +21,26 @@ extension StdlibInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public static prefix func -(instance: consuming Self) -> Self {
-        Self(instance.base.complement())
+        Self(-instance.base)
+    }
+        
+    @inlinable public mutating func negate() {
+        self = -self
     }
     
     @inlinable public static func +(lhs: consuming Self, rhs: borrowing Self) -> Self {
         Self(lhs.base + rhs.base)
     }
     
+    @inlinable public static func +=(lhs: inout Self, rhs: borrowing Self) {
+        lhs = lhs + rhs
+    }
+    
     @inlinable public static func -(lhs: consuming Self, rhs: borrowing Self) -> Self {
         Self(lhs.base - rhs.base)
+    }
+    
+    @inlinable public static func -=(lhs: inout Self, rhs: borrowing Self) {
+        lhs = lhs - rhs
     }
 }

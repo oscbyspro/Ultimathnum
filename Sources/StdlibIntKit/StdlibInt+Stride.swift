@@ -11,28 +11,20 @@ import CoreKit
 import InfiniIntKit
 
 //*============================================================================*
-// MARK: * Stdlib Int x Shift
+// MARK: * Stdlib Int x Stride
 //*============================================================================*
 
 extension StdlibInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func <<(instance: consuming Self, distance: some Swift.BinaryInteger) -> Self {
-        Self(instance.base << Base(load: IX(Swift.Int(clamping: distance))))
+    @inlinable public func advanced(by distance: Swift.Int) -> Self {
+        Self(self.base.advanced(by: distance))
     }
     
-    @inlinable public static func <<=(instance: inout Self, distance: some Swift.BinaryInteger) {
-        instance = instance << distance
-    }
-    
-    @inlinable public static func >>(instance: consuming Self, distance: some Swift.BinaryInteger) -> Self {
-        Self(instance.base >> Base(load: IX(Swift.Int(clamping: distance))))
-    }
-    
-    @inlinable public static func >>=(instance: inout Self, distance: some Swift.BinaryInteger) {
-        instance = instance >> distance
+    @inlinable public func distance(to other: Self) -> Swift.Int {
+        self.base.distance(to: other.base)
     }
 }

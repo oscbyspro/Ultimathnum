@@ -24,16 +24,28 @@ extension StdlibInt {
         Self(~instance.base)
     }
     
-    @inlinable public static func ^=(lhs: inout Self, rhs: borrowing Self) {
-        lhs.base ^= rhs.base
-    }
-    
-    @inlinable public static func |=(lhs: inout Self, rhs: borrowing Self) {
-        lhs.base |= rhs.base
+    @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        Self(lhs.base & rhs.base)
     }
     
     @inlinable public static func &=(lhs: inout Self, rhs: borrowing Self) {
-        lhs.base &= rhs.base
+        lhs = lhs & rhs
+    }
+    
+    @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        Self(lhs.base | rhs.base)
+    }
+    
+    @inlinable public static func |=(lhs: inout Self, rhs: borrowing Self) {
+        lhs = lhs | rhs
+    }
+    
+    @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
+        Self(lhs.base ^ rhs.base)
+    }
+    
+    @inlinable public static func ^=(lhs: inout Self, rhs: borrowing Self) {
+        lhs = lhs ^ rhs
     }
     
     //=------------------------------------------------------------------------=
@@ -42,7 +54,7 @@ extension StdlibInt {
     
     @inlinable public var magnitude: Self {
         consuming get {
-            Self(Base(raw: self.base.magnitude()))
+            Self(raw: self.base.magnitude())            
         }
     }
 }

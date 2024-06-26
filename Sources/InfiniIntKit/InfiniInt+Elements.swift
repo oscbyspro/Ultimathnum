@@ -61,10 +61,8 @@ extension InfiniInt {
     }
     
     @inlinable public borrowing func load(as type: Element.BitPattern.Type) -> Element.BitPattern {
-        if  let element = self.storage.body.first {
-            return element.load(as: Element.BitPattern.self)
-        }   else {
-            return Element.Magnitude(repeating: self.appendix).load(as: Element.BitPattern.self)
+        self.withUnsafeBinaryIntegerElements {
+            $0.first.load(as: Element.BitPattern.self)
         }
     }
     

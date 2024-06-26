@@ -15,10 +15,10 @@ import InfiniIntKit
 //*============================================================================*
 
 /// An arbitrary `Swift.SignedInteger` value type.
-@frozen public struct StdlibInt: Swift.LosslessStringConvertible, Swift.Sendable, Swift.SignedInteger {
+@frozen public struct StdlibInt: BitCastable, Swift.LosslessStringConvertible, Swift.Sendable, Swift.SignedInteger {
         
     @usableFromInline typealias Base = InfiniInt<IX>
-    
+        
     //=------------------------------------------------------------------------=
     // MARK: Metadata
     //=------------------------------------------------------------------------=
@@ -43,6 +43,18 @@ import InfiniIntKit
     
     @inlinable public init(integerLiteral: Swift.StaticBigInt) {
         self.base = Base(integerLiteral: integerLiteral)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(raw source: consuming InfiniInt<IX>.BitPattern) {
+        self.init(Base(raw: source))
+    }
+    
+    @inlinable public consuming func load(as type: InfiniInt<IX>.BitPattern.Type) -> InfiniInt<IX>.BitPattern {
+        self.base.load(as: InfiniInt<IX>.BitPattern.self)
     }
 }
 
