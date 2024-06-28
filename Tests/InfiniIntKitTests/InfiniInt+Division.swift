@@ -21,30 +21,6 @@ extension InfiniIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testBinaryIntegerDocumentationExamples() {
-        typealias D = Division
-        typealias F = Fallible
-        
-        Test().division( 7 as IXL,  3 as IXL, F(D(quotient:  2 as IXL, remainder:  1 as IXL)))
-        Test().division( 7 as IXL, -3 as IXL, F(D(quotient: -2 as IXL, remainder:  1 as IXL)))
-        Test().division(-7 as IXL,  3 as IXL, F(D(quotient: -2 as IXL, remainder: -1 as IXL)))
-        Test().division(-7 as IXL, -3 as IXL, F(D(quotient:  2 as IXL, remainder: -1 as IXL)))
-        
-        Test().division(~2 as UXL, ~0 as UXL, F(D(quotient:  0 as UXL, remainder: ~2 as UXL)))
-        Test().division(~2 as UXL, ~1 as UXL, F(D(quotient:  0 as UXL, remainder: ~2 as UXL)))
-        Test().division(~2 as UXL, ~2 as UXL, F(D(quotient:  1 as UXL, remainder:  0 as UXL)))
-        Test().division(~2 as UXL, ~3 as UXL, F(D(quotient:  1 as UXL, remainder:  1 as UXL)))
-        
-        Test().division(~2 as UXL,  1 as UXL, F(D(quotient: ~2 as UXL, remainder:  0 as UXL)))
-        Test().division(~2 as UXL,  2 as UXL, F(D(quotient: ~0 as UXL, remainder: ~0 as UXL), error: true))
-        Test().division(~2 as UXL,  3 as UXL, F(D(quotient: ~0 as UXL, remainder:  0 as UXL), error: true))
-        Test().division(~2 as UXL,  4 as UXL, F(D(quotient:  0 as UXL, remainder: ~2 as UXL), error: true))
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
     func testDivision() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             IntegerInvariants(T.self).divisionOfMsbEsque()
@@ -173,5 +149,36 @@ extension InfiniIntTests {
                 whereTheBaseTypeIs(element, source)
             }
         }
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Division
+//=----------------------------------------------------------------------------=
+
+extension InfiniIntTests {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testBinaryIntegerDocumentationExamples() {
+        typealias D = Division
+        typealias F = Fallible
+        
+        Test().division( 7 as IXL,  3 as IXL, F(D(quotient:  2 as IXL, remainder:  1 as IXL)))
+        Test().division( 7 as IXL, -3 as IXL, F(D(quotient: -2 as IXL, remainder:  1 as IXL)))
+        Test().division(-7 as IXL,  3 as IXL, F(D(quotient: -2 as IXL, remainder: -1 as IXL)))
+        Test().division(-7 as IXL, -3 as IXL, F(D(quotient:  2 as IXL, remainder: -1 as IXL)))
+        
+        Test().division(~2 as UXL, ~0 as UXL, F(D(quotient:  0 as UXL, remainder: ~2 as UXL)))
+        Test().division(~2 as UXL, ~1 as UXL, F(D(quotient:  0 as UXL, remainder: ~2 as UXL)))
+        Test().division(~2 as UXL, ~2 as UXL, F(D(quotient:  1 as UXL, remainder:  0 as UXL)))
+        Test().division(~2 as UXL, ~3 as UXL, F(D(quotient:  1 as UXL, remainder:  1 as UXL)))
+        
+        Test().division(~2 as UXL,  0 as UXL, nil)
+        Test().division(~2 as UXL,  1 as UXL, F(D(quotient: ~2 as UXL, remainder:  0 as UXL), error: true))
+        Test().division(~2 as UXL,  2 as UXL, F(D(quotient: ~0 as UXL, remainder: ~0 as UXL), error: true))
+        Test().division(~2 as UXL,  3 as UXL, F(D(quotient: ~0 as UXL, remainder:  0 as UXL), error: true))
     }
 }

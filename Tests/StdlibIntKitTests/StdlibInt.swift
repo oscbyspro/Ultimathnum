@@ -46,8 +46,8 @@ final class StdlibIntTests: XCTestCase {
     
     func testBitCast() {
         for x: StdlibInt in [0, 1, -1, Self.min128, Self.max128, Self.min256, Self.max256] {
-            Test().same(StdlibInt(raw: InfiniInt<IX>(raw: x)), x)
-            Test().same(StdlibInt(raw: InfiniInt<UX>(raw: x)), x)
+            Test().same(StdlibInt(raw: IXL(raw: x)), x)
+            Test().same(StdlibInt(raw: UXL(raw: x)), x)
         }
     }
 }

@@ -546,7 +546,7 @@ Since you know finite-by-finite division, I'm sure you intuit that finite-by-inf
 division is trivial and that infinite-by-infinite division is at most one subtraction.
 The only weird case is infinite-by-finite division because the proper computation
 requires infinite memory. So, in this case, we just let the algorithm run and mark it 
-as an error unless the divisor is one. This yields results similar to signed division.
+as an error. This yields results similar to signed division.
 
 ```swift
 dividend == divisor &* quotient &+ remainder // for all binary integers
