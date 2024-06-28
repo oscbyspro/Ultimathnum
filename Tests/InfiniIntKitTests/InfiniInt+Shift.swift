@@ -37,54 +37,50 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testUpshift() {
-        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias E = B.Element
-            typealias T = InfiniInt<E>
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             //=----------------------------------=
             let large = T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0)
             //=----------------------------------=
             for value in [large, ~large] {
-                let appendix  = T(repeating: value.appendix)
-                let direction = Test.ShiftDirection.up
-                let semantics = Test.ShiftSemantics.smart
+                let appendix = T(repeating: value.appendix)
                 
-                Test().shift(value, 000, T(0x0000FFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0) ^ appendix & ~T(0x0000), direction, semantics)
-                Test().shift(value, 001, T(0x0001FFFDFBF9F7F5F3F1EFEDEBE9E7E5E3E0) ^ appendix & ~T(0x0001), direction, semantics)
-                Test().shift(value, 002, T(0x0003FFFBF7F3EFEBE7E3DFDBD7D3CFCBC7C0) ^ appendix & ~T(0x0003), direction, semantics)
-                Test().shift(value, 003, T(0x0007FFF7EFE7DFD7CFC7BFB7AFA79F978F80) ^ appendix & ~T(0x0007), direction, semantics)
-                Test().shift(value, 004, T(0x000FFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F00) ^ appendix & ~T(0x000F), direction, semantics)
-                Test().shift(value, 005, T(0x001FFFDFBF9F7F5F3F1EFEDEBE9E7E5E3E00) ^ appendix & ~T(0x001F), direction, semantics)
-                Test().shift(value, 006, T(0x003FFFBF7F3EFEBE7E3DFDBD7D3CFCBC7C00) ^ appendix & ~T(0x003F), direction, semantics)
-                Test().shift(value, 007, T(0x007FFF7EFE7DFD7CFC7BFB7AFA79F978F800) ^ appendix & ~T(0x007F), direction, semantics)
-                Test().shift(value, 008, T(0x00FFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F000) ^ appendix & ~T(0x00FF), direction, semantics)
-                Test().shift(value, 009, T(0x01FFFDFBF9F7F5F3F1EFEDEBE9E7E5E3E000) ^ appendix & ~T(0x01FF), direction, semantics)
-                Test().shift(value, 010, T(0x03FFFBF7F3EFEBE7E3DFDBD7D3CFCBC7C000) ^ appendix & ~T(0x03FF), direction, semantics)
-                Test().shift(value, 011, T(0x07FFF7EFE7DFD7CFC7BFB7AFA79F978F8000) ^ appendix & ~T(0x07FF), direction, semantics)
-                Test().shift(value, 012, T(0x0FFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0000) ^ appendix & ~T(0x0FFF), direction, semantics)
-                Test().shift(value, 013, T(0x1FFFDFBF9F7F5F3F1EFEDEBE9E7E5E3E0000) ^ appendix & ~T(0x1FFF), direction, semantics)
-                Test().shift(value, 014, T(0x3FFFBF7F3EFEBE7E3DFDBD7D3CFCBC7C0000) ^ appendix & ~T(0x3FFF), direction, semantics)
-                Test().shift(value, 015, T(0x7FFF7EFE7DFD7CFC7BFB7AFA79F978F80000) ^ appendix & ~T(0x7FFF), direction, semantics)
-                Test().shift(value, 016, T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F00000) ^ appendix & ~T(0xFFFF), direction, semantics)
+                Test().upshift(value, 000, T(0x0000FFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0) ^ appendix & ~T(0x0000))
+                Test().upshift(value, 001, T(0x0001FFFDFBF9F7F5F3F1EFEDEBE9E7E5E3E0) ^ appendix & ~T(0x0001))
+                Test().upshift(value, 002, T(0x0003FFFBF7F3EFEBE7E3DFDBD7D3CFCBC7C0) ^ appendix & ~T(0x0003))
+                Test().upshift(value, 003, T(0x0007FFF7EFE7DFD7CFC7BFB7AFA79F978F80) ^ appendix & ~T(0x0007))
+                Test().upshift(value, 004, T(0x000FFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F00) ^ appendix & ~T(0x000F))
+                Test().upshift(value, 005, T(0x001FFFDFBF9F7F5F3F1EFEDEBE9E7E5E3E00) ^ appendix & ~T(0x001F))
+                Test().upshift(value, 006, T(0x003FFFBF7F3EFEBE7E3DFDBD7D3CFCBC7C00) ^ appendix & ~T(0x003F))
+                Test().upshift(value, 007, T(0x007FFF7EFE7DFD7CFC7BFB7AFA79F978F800) ^ appendix & ~T(0x007F))
+                Test().upshift(value, 008, T(0x00FFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F000) ^ appendix & ~T(0x00FF))
+                Test().upshift(value, 009, T(0x01FFFDFBF9F7F5F3F1EFEDEBE9E7E5E3E000) ^ appendix & ~T(0x01FF))
+                Test().upshift(value, 010, T(0x03FFFBF7F3EFEBE7E3DFDBD7D3CFCBC7C000) ^ appendix & ~T(0x03FF))
+                Test().upshift(value, 011, T(0x07FFF7EFE7DFD7CFC7BFB7AFA79F978F8000) ^ appendix & ~T(0x07FF))
+                Test().upshift(value, 012, T(0x0FFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0000) ^ appendix & ~T(0x0FFF))
+                Test().upshift(value, 013, T(0x1FFFDFBF9F7F5F3F1EFEDEBE9E7E5E3E0000) ^ appendix & ~T(0x1FFF))
+                Test().upshift(value, 014, T(0x3FFFBF7F3EFEBE7E3DFDBD7D3CFCBC7C0000) ^ appendix & ~T(0x3FFF))
+                Test().upshift(value, 015, T(0x7FFF7EFE7DFD7CFC7BFB7AFA79F978F80000) ^ appendix & ~T(0x7FFF))
+                Test().upshift(value, 016, T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F00000) ^ appendix & ~T(0xFFFF))
                 
                 infinite: if !T.isSigned {
                     for distance: T in (0...9).lazy.map(~) {
-                        Test().shift(value, distance, 00000000, direction, semantics)
+                        Test().upshift(value, distance, T.zero)
                     }
                 }
             }
         }
                 
-        for element in Self.elements {
-            whereTheBaseTypeIs(element)
+        for type in Self.types {
+            whereIs(type)
         }
     }
     
     func testUpshiftByDistanceTooLargeToAllocateAsIXL() throws {
-        throw XCTSkip("Test(\"one bit more than max body size per protocol\").crash(IXL(1) << IXL(IX.max))")
+        throw XCTSkip("req. crash tests")
     }
     
     func testUpshiftByDistanceTooLargeToAllocateAsUXL() throws {
-        throw XCTSkip("Test(\"one bit more than max body size per protocol\").crash(UXL(1) << UXL(IX.max))")
+        throw XCTSkip("req. crash tests")
     }
     
     //=------------------------------------------------------------------------=
@@ -92,80 +88,83 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testDownshift() {
-        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias E = B.Element
-            typealias T = InfiniInt<E>
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             //=----------------------------------=
             let large = T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0)
             //=----------------------------------=
             for value in [large, ~large] {
-                let appendix  = T(repeating: value.appendix)
-                let direction = Test.ShiftDirection.down
-                let semantics = Test.ShiftSemantics.smart
+                let appendix = T(repeating: value.appendix)
                 
-                Test().shift(value, 00000, T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0) ^ appendix, direction, semantics)
-                Test().shift(value, 00001, T(0x7FFF7EFE7DFD7CFC7BFB7AFA79F978F8) ^ appendix, direction, semantics)
-                Test().shift(value, 00002, T(0x3FFFBF7F3EFEBE7E3DFDBD7D3CFCBC7C) ^ appendix, direction, semantics)
-                Test().shift(value, 00003, T(0x1FFFDFBF9F7F5F3F1EFEDEBE9E7E5E3E) ^ appendix, direction, semantics)
-                Test().shift(value, 00004, T(0x0FFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F) ^ appendix, direction, semantics)
-                Test().shift(value, 00005, T(0x07FFF7EFE7DFD7CFC7BFB7AFA79F978F) ^ appendix, direction, semantics)
-                Test().shift(value, 00006, T(0x03FFFBF7F3EFEBE7E3DFDBD7D3CFCBC7) ^ appendix, direction, semantics)
-                Test().shift(value, 00007, T(0x01FFFDFBF9F7F5F3F1EFEDEBE9E7E5E3) ^ appendix, direction, semantics)
-                Test().shift(value, 00008, T(0x00FFFEFDFCFBFAF9F8F7F6F5F4F3F2F1) ^ appendix, direction, semantics)
-                Test().shift(value, 00009, T(0x007FFF7EFE7DFD7CFC7BFB7AFA79F978) ^ appendix, direction, semantics)
-                Test().shift(value, 00010, T(0x003FFFBF7F3EFEBE7E3DFDBD7D3CFCBC) ^ appendix, direction, semantics)
-                Test().shift(value, 00011, T(0x001FFFDFBF9F7F5F3F1EFEDEBE9E7E5E) ^ appendix, direction, semantics)
-                Test().shift(value, 00012, T(0x000FFFEFDFCFBFAF9F8F7F6F5F4F3F2F) ^ appendix, direction, semantics)
-                Test().shift(value, 00013, T(0x0007FFF7EFE7DFD7CFC7BFB7AFA79F97) ^ appendix, direction, semantics)
-                Test().shift(value, 00014, T(0x0003FFFBF7F3EFEBE7E3DFDBD7D3CFCB) ^ appendix, direction, semantics)
-                Test().shift(value, 00015, T(0x0001FFFDFBF9F7F5F3F1EFEDEBE9E7E5) ^ appendix, direction, semantics)
-                Test().shift(value, 00016, T(0x0000FFFEFDFCFBFAF9F8F7F6F5F4F3F2) ^ appendix, direction, semantics)
+                Test().downshift(value, 00000, T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0) ^ appendix)
+                Test().downshift(value, 00001, T(0x7FFF7EFE7DFD7CFC7BFB7AFA79F978F8) ^ appendix)
+                Test().downshift(value, 00002, T(0x3FFFBF7F3EFEBE7E3DFDBD7D3CFCBC7C) ^ appendix)
+                Test().downshift(value, 00003, T(0x1FFFDFBF9F7F5F3F1EFEDEBE9E7E5E3E) ^ appendix)
+                Test().downshift(value, 00004, T(0x0FFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F) ^ appendix)
+                Test().downshift(value, 00005, T(0x07FFF7EFE7DFD7CFC7BFB7AFA79F978F) ^ appendix)
+                Test().downshift(value, 00006, T(0x03FFFBF7F3EFEBE7E3DFDBD7D3CFCBC7) ^ appendix)
+                Test().downshift(value, 00007, T(0x01FFFDFBF9F7F5F3F1EFEDEBE9E7E5E3) ^ appendix)
+                Test().downshift(value, 00008, T(0x00FFFEFDFCFBFAF9F8F7F6F5F4F3F2F1) ^ appendix)
+                Test().downshift(value, 00009, T(0x007FFF7EFE7DFD7CFC7BFB7AFA79F978) ^ appendix)
+                Test().downshift(value, 00010, T(0x003FFFBF7F3EFEBE7E3DFDBD7D3CFCBC) ^ appendix)
+                Test().downshift(value, 00011, T(0x001FFFDFBF9F7F5F3F1EFEDEBE9E7E5E) ^ appendix)
+                Test().downshift(value, 00012, T(0x000FFFEFDFCFBFAF9F8F7F6F5F4F3F2F) ^ appendix)
+                Test().downshift(value, 00013, T(0x0007FFF7EFE7DFD7CFC7BFB7AFA79F97) ^ appendix)
+                Test().downshift(value, 00014, T(0x0003FFFBF7F3EFEBE7E3DFDBD7D3CFCB) ^ appendix)
+                Test().downshift(value, 00015, T(0x0001FFFDFBF9F7F5F3F1EFEDEBE9E7E5) ^ appendix)
+                Test().downshift(value, 00016, T(0x0000FFFEFDFCFBFAF9F8F7F6F5F4F3F2) ^ appendix)
                 
-                Test().shift(value, 00126, T(0x00000000000000000000000000000003) ^ appendix, direction, semantics)
-                Test().shift(value, 00127, T(0x00000000000000000000000000000001) ^ appendix, direction, semantics)
-                Test().shift(value, 00128, T(0x00000000000000000000000000000000) ^ appendix, direction, semantics)
-                Test().shift(value, 00129, T(0x00000000000000000000000000000000) ^ appendix, direction, semantics)
+                Test().downshift(value, 00126, T(0x00000000000000000000000000000003) ^ appendix)
+                Test().downshift(value, 00127, T(0x00000000000000000000000000000001) ^ appendix)
+                Test().downshift(value, 00128, T(0x00000000000000000000000000000000) ^ appendix)
+                Test().downshift(value, 00129, T(0x00000000000000000000000000000000) ^ appendix)
                 
-                Test().shift(value, 99999, T(0x00000000000000000000000000000000) ^ appendix, direction, semantics)
-                Test().shift(value, large, T(0x00000000000000000000000000000000) ^ appendix, direction, semantics)
+                Test().downshift(value, 99999, T(0x00000000000000000000000000000000) ^ appendix)
+                Test().downshift(value, large, T(0x00000000000000000000000000000000) ^ appendix)
                 
                 infinite: if !T.isSigned {
                     for distance: T in (0...9).lazy.map(~) {
-                        Test().shift(value, distance, appendix, direction, semantics)
+                        Test().downshift(value, distance, appendix)
                     }
                 }
             }
         }
                 
-        for element in Self.elements {
-            whereTheBaseTypeIs(element)
+        for types in Self.types {
+            whereIs(types)
         }
     }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Edge Cases
+//=----------------------------------------------------------------------------=
+
+extension InfiniIntTests {
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests x Edge Cases
+    // MARK: Tests
     //=------------------------------------------------------------------------=
     
     func testUpshiftAtEdgeOfElement() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             compact: do {
-                Test().shift( T(IX.max >> 5), 4 as T,  T(IX.max >> 5)  * 16, .up, .smart)
-                Test().shift( T(IX.max >> 5), 5 as T,  T(IX.max >> 5)  * 32, .up, .smart)
-                Test().shift( T(IX.max >> 5), 6 as T,  T(IX.max >> 5)  * 64, .up, .smart)
+                Test().upshift( T(IX.max >> 5), 4 as T,  T(IX.max >> 5)  * 16)
+                Test().upshift( T(IX.max >> 5), 5 as T,  T(IX.max >> 5)  * 32)
+                Test().upshift( T(IX.max >> 5), 6 as T,  T(IX.max >> 5)  * 64)
 
-                Test().shift(~T(IX.max >> 5), 4 as T, ~T(IX.max >> 5) &* 16, .up, .smart)
-                Test().shift(~T(IX.max >> 5), 5 as T, ~T(IX.max >> 5) &* 32, .up, .smart)
-                Test().shift(~T(IX.max >> 5), 6 as T, ~T(IX.max >> 5) &* 64, .up, .smart)
+                Test().upshift(~T(IX.max >> 5), 4 as T, ~T(IX.max >> 5) &* 16)
+                Test().upshift(~T(IX.max >> 5), 5 as T, ~T(IX.max >> 5) &* 32)
+                Test().upshift(~T(IX.max >> 5), 6 as T, ~T(IX.max >> 5) &* 64)
             }
             
             extended: do {
-                Test().shift( T(UX.max >> 5), 4 as T,  T(UX.max >> 5)  * 16, .up, .smart)
-                Test().shift( T(UX.max >> 5), 5 as T,  T(UX.max >> 5)  * 32, .up, .smart)
-                Test().shift( T(UX.max >> 5), 6 as T,  T(UX.max >> 5)  * 64, .up, .smart)
+                Test().upshift( T(UX.max >> 5), 4 as T,  T(UX.max >> 5)  * 16)
+                Test().upshift( T(UX.max >> 5), 5 as T,  T(UX.max >> 5)  * 32)
+                Test().upshift( T(UX.max >> 5), 6 as T,  T(UX.max >> 5)  * 64)
 
-                Test().shift(~T(UX.max >> 5), 4 as T, ~T(UX.max >> 5) &* 16, .up, .smart)
-                Test().shift(~T(UX.max >> 5), 5 as T, ~T(UX.max >> 5) &* 32, .up, .smart)
-                Test().shift(~T(UX.max >> 5), 6 as T, ~T(UX.max >> 5) &* 64, .up, .smart)
+                Test().upshift(~T(UX.max >> 5), 4 as T, ~T(UX.max >> 5) &* 16)
+                Test().upshift(~T(UX.max >> 5), 5 as T, ~T(UX.max >> 5) &* 32)
+                Test().upshift(~T(UX.max >> 5), 6 as T, ~T(UX.max >> 5) &* 64)
             }
         }
     
@@ -176,37 +175,37 @@ extension InfiniIntTests {
     
     func testDownshiftByNonappendix() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            Test().shift( T(I8 .max),  6 as T,  1 as T, .down, .smart)
-            Test().shift( T(I8 .max),  7 as T,  0 as T, .down, .smart)
-            Test().shift( T(I8 .max),  8 as T,  0 as T, .down, .smart)
+            Test().downshift( T(I8 .max),  6 as T,  1 as T)
+            Test().downshift( T(I8 .max),  7 as T,  0 as T)
+            Test().downshift( T(I8 .max),  8 as T,  0 as T)
 
-            Test().shift(~T(I8 .max),  6 as T, ~1 as T, .down, .smart)
-            Test().shift(~T(I8 .max),  7 as T, ~0 as T, .down, .smart)
-            Test().shift(~T(I8 .max),  8 as T, ~0 as T, .down, .smart)
+            Test().downshift(~T(I8 .max),  6 as T, ~1 as T)
+            Test().downshift(~T(I8 .max),  7 as T, ~0 as T)
+            Test().downshift(~T(I8 .max),  8 as T, ~0 as T)
         
-            Test().shift( T(U8 .msb),  7 as T,  1 as T, .down, .smart)
-            Test().shift( T(U8 .msb),  8 as T,  0 as T, .down, .smart)
-            Test().shift( T(U8 .msb),  9 as T,  0 as T, .down, .smart)
+            Test().downshift( T(U8 .msb),  7 as T,  1 as T)
+            Test().downshift( T(U8 .msb),  8 as T,  0 as T)
+            Test().downshift( T(U8 .msb),  9 as T,  0 as T)
 
-            Test().shift(~T(U8 .msb),  7 as T, ~1 as T, .down, .smart)
-            Test().shift(~T(U8 .msb),  8 as T, ~0 as T, .down, .smart)
-            Test().shift(~T(U8 .msb),  9 as T, ~0 as T, .down, .smart)
+            Test().downshift(~T(U8 .msb),  7 as T, ~1 as T)
+            Test().downshift(~T(U8 .msb),  8 as T, ~0 as T)
+            Test().downshift(~T(U8 .msb),  9 as T, ~0 as T)
             
-            Test().shift( T(I64.max), 62 as T,  1 as T, .down, .smart)
-            Test().shift( T(I64.max), 63 as T,  0 as T, .down, .smart)
-            Test().shift( T(I64.max), 64 as T,  0 as T, .down, .smart)
+            Test().downshift( T(I64.max), 62 as T,  1 as T)
+            Test().downshift( T(I64.max), 63 as T,  0 as T)
+            Test().downshift( T(I64.max), 64 as T,  0 as T)
 
-            Test().shift(~T(I64.max), 62 as T, ~1 as T, .down, .smart)
-            Test().shift(~T(I64.max), 63 as T, ~0 as T, .down, .smart)
-            Test().shift(~T(I64.max), 64 as T, ~0 as T, .down, .smart)
+            Test().downshift(~T(I64.max), 62 as T, ~1 as T)
+            Test().downshift(~T(I64.max), 63 as T, ~0 as T)
+            Test().downshift(~T(I64.max), 64 as T, ~0 as T)
             
-            Test().shift( T(U64.msb), 63 as T,  1 as T, .down, .smart)
-            Test().shift( T(U64.msb), 64 as T,  0 as T, .down, .smart)
-            Test().shift( T(U64.msb), 65 as T,  0 as T, .down, .smart)
+            Test().downshift( T(U64.msb), 63 as T,  1 as T)
+            Test().downshift( T(U64.msb), 64 as T,  0 as T)
+            Test().downshift( T(U64.msb), 65 as T,  0 as T)
 
-            Test().shift(~T(U64.msb), 63 as T, ~1 as T, .down, .smart)
-            Test().shift(~T(U64.msb), 64 as T, ~0 as T, .down, .smart)
-            Test().shift(~T(U64.msb), 65 as T, ~0 as T, .down, .smart)
+            Test().downshift(~T(U64.msb), 63 as T, ~1 as T)
+            Test().downshift(~T(U64.msb), 64 as T, ~0 as T)
+            Test().downshift(~T(U64.msb), 65 as T, ~0 as T)
         }
     
         for type in Self.types {

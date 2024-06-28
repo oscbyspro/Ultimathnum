@@ -16,104 +16,143 @@ import XCTest
 
 extension Test {
     
-    /// An ascending or descending shift direction.
-    public enum ShiftDirection: Equatable {
-        case up
-        case down
-    }
-    
-    /// - Note: The `masked` shift case is from the `exact` shift case.
-    public enum ShiftSemantics: Equatable {
-        case smart
-        case exact
-    }
-    
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Tests x Ascending
     //=------------------------------------------------------------------------=
     
-    public func shift<T>(
+    public func upshift<T>(
         _ instance: T,
         _ distance: T,
-        _ expectation: T,
-        _ direction: ShiftDirection,
-        _ semantics: ShiftSemantics
+        _ expectation: T
     )   where T: SystemsInteger {
-        //=--------------------------------------=
-        self.shift(instance, distance, expectation, direction, semantics, BinaryIntegerID())
-        //=--------------------------------------=
-        switch (direction, semantics) {
-        case (.up, .smart):
-            break
-            
-        case (.down, .smart):
-            break
-            
-        case (.up, .exact):
-            for multiplier:  T in [~2, ~1, ~0, 0, 1, 2] {
+        
+        always: do {
+            upshift(instance, distance, expectation, id: BinaryIntegerID())
+        }
+        
+        if  distance >= .zero, distance < T.size {
+            for multiplier: T in [~2, ~1, ~0, 0, 1, 2] {
                 let distance = distance &+ T(T.size) &* multiplier
-                same({         instance    &<<  distance           }(), expectation)
-                same({ var x = instance; x &<<= distance; return x }(), expectation)
-            }
-            
-        case (.down, .exact):
-            for multiplier:  T in [~2, ~1, ~0, 0, 1, 2] {
-                let distance = distance &+ T(T.size) &* multiplier
-                same({         instance    &>>  distance           }(), expectation)
-                same({ var x = instance; x &>>= distance; return x }(), expectation)
+                same({         instance    &<<  distance           }(), expectation,  "&<<")
+                same({ var x = instance; x &<<= distance; return x }(), expectation, "&<<=")
             }
         }
     }
     
-    public func shift<T>(
-        _ instance: T, 
+    public func upshift<T>(
+        _ instance: T,
         _ distance: T,
         _ expectation: T,
-        _ direction: ShiftDirection,
-        _ semantics: ShiftSemantics,
-        _ id: BinaryIntegerID = .init()
+        id: BinaryIntegerID = .init()
     )   where T: BinaryInteger {
         
-        switch (direction, semantics) {
-        case (.up, .smart):
-            always: do {
-                same({         instance    <<  distance           }(), expectation,  "<< [L]")
-                same({ var x = instance; x <<= distance; return x }(), expectation, "<<= [L]")
+        always: do {
+            upshiftOneWaySmart(instance, distance, expectation)
+        }
+        
+        if  let negated = distance.negated().optional() {
+            downshiftOneWaySmart(instance, negated, expectation)
+        }
+        
+        if  let size = T.exactly(T.size).optional() {
+            if  distance.isNegative {
+                if let full = distance.minus(size).optional() {
+                    self  .upshiftOneWaySmart(instance, full, T(repeating: instance.appendix))
+                    self.downshiftOneWaySmart(instance, full, T(repeating: Bit.zero))
+                }
+                
+            }   else {
+                if let full = distance.plus (size).optional() {
+                    self  .upshiftOneWaySmart(instance, full, T(repeating: Bit.zero))
+                    self.downshiftOneWaySmart(instance, full, T(repeating: instance.appendix))
+                }
             }
-            
-            if  let distance = distance.negated().optional() {
-                same({         instance    >>  distance           }(), expectation,  ">> [L]")
-                same({ var x = instance; x >>= distance; return x }(), expectation, ">>= [L]")
+        }
+    }
+    
+    public func upshiftOneWaySmart<T>(
+        _ instance: T,
+        _ distance: T,
+        _ expectation: T
+    )   where T: BinaryInteger {
+        
+        if  let distance = Shift<T>(exactly: distance) {
+            same(instance.up(distance), expectation, "up")
+        }
+        
+        always: do {
+            same({         instance    <<  distance           }(), expectation,  "<<")
+            same({ var x = instance; x <<= distance; return x }(), expectation, "<<=")
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities x Descending
+    //=------------------------------------------------------------------------=
+    
+    public func downshift<T>(
+        _ instance: T,
+        _ distance: T,
+        _ expectation: T
+    )   where T: SystemsInteger {
+        
+        always: do {
+            downshift(instance, distance, expectation, id: BinaryIntegerID())
+        }
+        
+        if  distance >= .zero, distance < T.size {
+            for multiplier: T in [~2, ~1, ~0, 0, 1, 2] {
+                let distance = distance &+ T(T.size) &* multiplier
+                same({         instance    &>>  distance           }(), expectation,  "&>>")
+                same({ var x = instance; x &>>= distance; return x }(), expectation, "&>>=")
             }
-            
-            if  Shift.predicate(distance) {
-                shift(instance, distance, expectation, .up, .exact)
+        }
+    }
+    
+    public func downshift<T>(
+        _ instance: T,
+        _ distance: T,
+        _ expectation: T,
+        id: BinaryIntegerID = .init()
+    )   where T: BinaryInteger {
+        
+        always: do {
+            downshiftOneWaySmart(instance, distance, expectation)
+        }
+        
+        if  let negated = distance.negated().optional() {
+            upshiftOneWaySmart(instance, negated, expectation)
+        }
+        
+        if  let size = T.exactly(T.size).optional() {
+            if  distance.isNegative {
+                if let full = distance.minus(size).optional() {
+                    self  .upshiftOneWaySmart(instance, full, T(repeating: instance.appendix))
+                    self.downshiftOneWaySmart(instance, full, T(repeating: Bit.zero))
+                }
+                
+            }   else {
+                if let full = distance.plus (size).optional() {
+                    self  .upshiftOneWaySmart(instance, full, T(repeating: Bit.zero))
+                    self.downshiftOneWaySmart(instance, full, T(repeating: instance.appendix))
+                }
             }
-            
-        case (.down, .smart):
-            always: do {
-                same({         instance    >>  distance           }(), expectation,  ">> [R]")
-                same({ var x = instance; x >>= distance; return x }(), expectation, ">>= [R]")
-            }
-            
-            if  let distance = distance.negated().optional() {
-                same({         instance    <<  distance           }(), expectation,  "<< [R]")
-                same({ var x = instance; x <<= distance; return x }(), expectation, "<<= [R]")
-            }
-            
-            if  Shift.predicate(distance) {
-                shift(instance, distance, expectation, .down, .exact)
-            }
-            
-        case (.up, .exact):
-            if  let distance = some(Shift(exactly: distance)) {
-                same(instance.up(distance), expectation, "up")
-            }
-            
-        case (.down, .exact):
-            if  let distance = some(Shift(exactly: distance)) {
-                same(instance.down(distance), expectation, "down")
-            }
+        }
+    }
+    
+    public func downshiftOneWaySmart<T>(
+        _ instance: T,
+        _ distance: T,
+        _ expectation: T
+    )   where T: BinaryInteger {
+        
+        if  let distance = Shift<T>(exactly: distance) {
+            same(instance.down(distance), expectation, "down")
+        }
+        
+        always: do {
+            same({         instance    >>  distance           }(), expectation,  ">>")
+            same({ var x = instance; x >>= distance; return x }(), expectation, ">>=")
         }
     }
 }

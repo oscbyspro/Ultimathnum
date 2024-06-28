@@ -179,19 +179,19 @@ extension InfiniIntTests {
             //=----------------------------------=
             typealias T = InfiniInt<E>
             //=----------------------------------=
-            Test().shift(T(U8 .max), 01, T([U8 .max << 01, U8 .max >> 07]), .up, .smart)
-            Test().shift(T(U32.max), 16, T([U32.max << 16, U32.max >> 16]), .up, .smart)
+            Test().upshift(T(U8 .max), 01, T([U8 .max << 01, U8 .max >> 07]))
+            Test().upshift(T(U32.max), 16, T([U32.max << 16, U32.max >> 16]))
             //=----------------------------------=
             for distance in U64.zero ... 128 {
-                Test().shift(~0 as T, T(distance), ~0 as T, .down, .smart)
+                Test().downshift(~0 as T, T(distance), ~0 as T)
             }
             
             for distance in U64.zero ..< 064 {
-                Test().shift( 1 as T, T(distance), T(U64(1) << distance),   .up, .smart)
+                Test()  .upshift( 1 as T, T(distance), T(U64(1) << distance))
             }
             
             for distance in U64.zero ... 064 {
-                Test().shift( 1 as T, T(distance), T(U64(1) >> distance), .down, .smart)
+                Test().downshift( 1 as T, T(distance), T(U64(1) >> distance))
             }
         }
         
