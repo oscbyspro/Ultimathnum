@@ -343,26 +343,6 @@ where
     @inlinable consuming func division(_ divisor: borrowing Divisor<Self>) -> Fallible<Division<Self, Self>>
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    /// Performs an ascending shift.
-    ///
-    /// - Parameter distance: A shift in the range of `0 ..< Self.size`.
-    ///
-    /// - Note: The `0` bit fills the void.
-    ///
-    @inlinable consuming func up(_ distance: Shift<Self>) -> Self
-    
-    /// Performs a decending shift.
-    ///
-    /// - Parameter distance: A shift in the range of `0 ..< Self.size`.
-    ///
-    /// - Note: The `appendix` fills the void.
-    ///
-    @inlinable consuming func down(_ distance: Shift<Self>) -> Self
-    
-    //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
@@ -403,6 +383,26 @@ where
     /// ```
     ///
     @inlinable borrowing func descending(_ bit: Bit) -> Magnitude
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// Performs an ascending shift.
+    ///
+    /// - Parameter distance: A shift in the range of `0 ..< Self.size`.
+    ///
+    /// - Note: The `0` bit fills the void.
+    ///
+    @inlinable consuming func up(_ distance: Shift<Self>) -> Self
+    
+    /// Performs a decending shift.
+    ///
+    /// - Parameter distance: A shift in the range of `0 ..< Self.size`.
+    ///
+    /// - Note: The `appendix` fills the void.
+    ///
+    @inlinable consuming func down(_ distance: Shift<Self>) -> Self
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

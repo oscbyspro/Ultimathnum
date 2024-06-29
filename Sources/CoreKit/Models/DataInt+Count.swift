@@ -140,10 +140,10 @@ extension DataInt.Body {
     /// The ascending `bit` count in `self`.
     ///
     /// ```swift
-    /// I8(11).count(.ascending(0)) // 0
-    /// I8(11).count(.ascending(1)) // 2
-    /// I8(22).count(.ascending(0)) // 1
-    /// I8(22).count(.ascending(1)) // 0
+    /// I8(11).ascending(0) // 0
+    /// I8(11).ascending(1) // 2
+    /// I8(22).ascending(0) // 1
+    /// I8(22).ascending(1) // 0
     /// ```
     ///
     @inlinable borrowing public func ascending(_ bit: Bit) -> IX {
@@ -174,10 +174,10 @@ extension DataInt.Body {
     /// The descending `bit` count in `self`.
     ///
     /// ```swift
-    /// I8(11).count(.descending(0)) // 4
-    /// I8(11).count(.descending(1)) // 0
-    /// I8(22).count(.descending(0)) // 3
-    /// I8(22).count(.descending(1)) // 0
+    /// I8(11).descending(0) // 4
+    /// I8(11).descending(1) // 0
+    /// I8(22).descending(0) // 3
+    /// I8(22).descending(1) // 0
     /// ```
     ///
     @inlinable borrowing public func descending(_ bit: Bit) -> IX {
@@ -262,10 +262,10 @@ extension MutableDataInt.Body {
     /// The ascending `bit` count in `self`.
     ///
     /// ```swift
-    /// I8(11).count(.ascending(0)) // 0
-    /// I8(11).count(.ascending(1)) // 2
-    /// I8(22).count(.ascending(0)) // 1
-    /// I8(22).count(.ascending(1)) // 0
+    /// I8(11).ascending(0) // 0
+    /// I8(11).ascending(1) // 2
+    /// I8(22).ascending(0) // 1
+    /// I8(22).ascending(1) // 0
     /// ```
     ///
     @inlinable borrowing public func ascending(_ bit: Bit) -> IX {
@@ -288,10 +288,10 @@ extension MutableDataInt.Body {
     /// The descending `bit` count in `self`.
     ///
     /// ```swift
-    /// I8(11).count(.descending(0)) // 4
-    /// I8(11).count(.descending(1)) // 0
-    /// I8(22).count(.descending(0)) // 3
-    /// I8(22).count(.descending(1)) // 0
+    /// I8(11).descending(0) // 4
+    /// I8(11).descending(1) // 0
+    /// I8(22).descending(0) // 3
+    /// I8(22).descending(1) // 0
     /// ```
     ///
     @inlinable borrowing public func descending(_ bit: Bit) -> IX {

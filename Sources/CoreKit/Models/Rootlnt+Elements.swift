@@ -42,8 +42,8 @@ extension RootInt {
     }
     
     @inlinable public func withUnsafeBinaryIntegerBody<T>(_ action: (DataInt<UX>.Body) throws -> T) rethrows -> T {
-        let count = Int(self.entropy().division(Divisor(IX(UX.size))).ceil().unchecked())
-        return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: count) { buffer in
+        let count = Swift.Int(self.entropy().division(Divisor(size: UX.self)).ceil().unchecked())
+        return  try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: count) { buffer in
             //=----------------------------------=
             // pointee: initialization
             //=----------------------------------=
