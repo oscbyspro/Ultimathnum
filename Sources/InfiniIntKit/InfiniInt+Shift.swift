@@ -24,15 +24,14 @@ extension InfiniInt {
         Swift.assert(!distance.value.isInfinite)
         Swift.assert(!distance.value.isNegative)
         //=--------------------------------------=
-        // path: zero would otherwise denormalize
+        // path: flush >= IX.max as per protocol
         //=--------------------------------------=
-        if  self.isZero {
-            return self
+        guard let distance = IX.exactly(distance.value).optional() else {
+            return Self.zero
         }
         //=--------------------------------------=
-        let shift = IX.exactly(distance.value).unwrap("BinaryInteger/entropy/0...IX.max")
-        let split = shift.division(Divisor(size: Element.self)).unchecked()
-        self.storage.resizeByLenientUpshift(major: split.quotient, minor: split.remainder)
+        let division = distance.division(Divisor(size: Element.self)).unchecked()
+        self.storage.upshift(major: division.quotient, minor: division.remainder)
         Swift.assert(self.storage.isNormal)
         return self as Self as Self as Self
     }
@@ -42,18 +41,16 @@ extension InfiniInt {
         Swift.assert(!distance.value.isInfinite)
         Swift.assert(!distance.value.isNegative)
         //=--------------------------------------=
-        let shift = IX.exactly(distance.value)
+        // path: flush >= IX.max as per protocol
         //=--------------------------------------=
-        // path: distance is >= body per protocol
-        //=--------------------------------------=
-        if  shift.error {
+        guard let distance = IX.exactly(distance.value).optional() else {
             return Self(repeating: self.appendix)
         }
         //=--------------------------------------=
         // path: success
         //=--------------------------------------=
-        let split = shift.value.division(Divisor(size: Element.self)).unchecked()
-        self.storage.resizeByLenientDownshift(major: split.quotient, minor: split.remainder)
+        let division = distance.division(Divisor(size: Element.self)).unchecked()
+        self.storage.downshift(major: division.quotient, minor: division.remainder)
         Swift.assert(self.storage.isNormal)
         return self as Self as Self as Self
     }

@@ -75,12 +75,33 @@ extension InfiniIntTests {
         }
     }
     
-    func testUpshiftByDistanceTooLargeToAllocateAsIXL() throws {
-        throw XCTSkip("req. crash tests")
-    }
-    
-    func testUpshiftByDistanceTooLargeToAllocateAsUXL() throws {
-        throw XCTSkip("req. crash tests")
+    func testDownshiftByMoreThanMaxSignedWordIsUpflush() {
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            //=----------------------------------=
+            let large = T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0)
+            //=----------------------------------=
+            for value: T in [~2, ~1, ~0, 0, 1, 2, large, ~large] {
+                Test().upshift(value, large,         T.zero)
+                Test().upshift(value, T(IX.max) + 1, T.zero)
+                Test().upshift(value, T(IX.max) + 2, T.zero)
+                Test().upshift(value, T(IX.max) + 3, T.zero)
+                Test().upshift(value, T(IX.max) + 4, T.zero)
+                
+                if  T.isSigned {
+                    Test().downshift(value, T(IX.min),     T.zero)
+                    Test().downshift(value, T(IX.min) - 1, T.zero)
+                    Test().downshift(value, T(IX.min) - 2, T.zero)
+                    Test().downshift(value, T(IX.min) - 3, T.zero)
+                }   else {
+                    Test().upshift(value, large.toggled(),    T.zero)
+                    Test().upshift(value, large.complement(), T.zero)
+                }
+            }
+        }
+                
+        for type in Self.types {
+            whereIs(type)
+        }
     }
     
     //=------------------------------------------------------------------------=
@@ -131,6 +152,37 @@ extension InfiniIntTests {
                 
         for types in Self.types {
             whereIs(types)
+        }
+    }
+    
+    func testDownshiftByMoreThanMaxSignedWordIsDownflush() {
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            //=----------------------------------=
+            let large = T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0)
+            //=----------------------------------=
+            for value: T in [~2, ~1, ~0, 0, 1, 2, large, ~large] {
+                let appendix = T(repeating: value.appendix)
+                
+                Test().downshift(value, large,         appendix)
+                Test().downshift(value, T(IX.max) + 1, appendix)
+                Test().downshift(value, T(IX.max) + 2, appendix)
+                Test().downshift(value, T(IX.max) + 3, appendix)
+                Test().downshift(value, T(IX.max) + 4, appendix)
+                
+                if  T.isSigned {
+                    Test().upshift(value, T(IX.min),     appendix)
+                    Test().upshift(value, T(IX.min) - 1, appendix)
+                    Test().upshift(value, T(IX.min) - 2, appendix)
+                    Test().upshift(value, T(IX.min) - 3, appendix)
+                }   else {
+                    Test().downshift(value, large.toggled(),    appendix)
+                    Test().downshift(value, large.complement(), appendix)
+                }
+            }
+        }
+                
+        for type in Self.types {
+            whereIs(type)
         }
     }
 }

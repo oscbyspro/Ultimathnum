@@ -18,21 +18,31 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     /// Performs an ascending smart shift.
+    ///
+    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
+    ///
+    /// - Note: A `distance` greater than `IX.max` is a directional flush.
+    ///
     @inlinable public static func <<=(instance: inout Self, distance: Self) {
         instance = instance << distance
     }
     
-    
     /// Performs a descending smart shift.
+    ///
+    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
+    ///
+    /// - Note: A `distance` greater than `IX.max` is a directional flush.
+    ///
     @inlinable public static func >>=(instance: inout Self, distance: Self) {
         instance = instance >> distance
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
     /// Performs an ascending smart shift.
+    ///
+    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
+    ///
+    /// - Note: A `distance` greater than `IX.max` is a directional flush.
+    ///
     @inlinable public static func <<(instance: consuming Self, distance: Self) -> Self {
         if !distance.isNegative {
             return instance  .up(Magnitude(raw: distance))
@@ -42,6 +52,11 @@ extension BinaryInteger {
     }
     
     /// Performs a descending smart shift.
+    ///
+    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
+    ///
+    /// - Note: A `distance` greater than `IX.max` is a directional flush.
+    ///
     @inlinable public static func >>(instance: consuming Self, distance: Self) -> Self {
         if !distance.isNegative {
             return instance.down(Magnitude(raw: distance))
@@ -63,7 +78,9 @@ extension BinaryInteger {
     
     /// Performs an ascending smart shift.
     ///
-    /// - Note: The `0` bit fills the void.
+    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
+    ///
+    /// - Note: A `distance` greater than `IX.max` is a directional flush.
     ///
     @inlinable internal consuming func up(_ distance: Magnitude) -> Self {
         if  Shift.predicate(distance) {
@@ -75,7 +92,9 @@ extension BinaryInteger {
     
     /// Performs a descending smart shift.
     ///
-    /// - Note: The `appendix` fills the void.
+    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
+    ///
+    /// - Note: A `distance` greater than `IX.max` is a directional flush.
     ///
     @inlinable internal consuming func down(_ distance: Magnitude) -> Self {
         if  Shift.predicate(distance) {
@@ -93,12 +112,12 @@ extension BinaryInteger {
 extension SystemsInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Inout
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     /// Performs an ascending masked shift.
     ///
-    ///  - Note: The `0` bit fills the void.
+    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
     ///
     @inlinable public static func &<<=(instance: inout Self, shift: borrowing Self) {
         instance = instance &<< shift
@@ -106,7 +125,7 @@ extension SystemsInteger {
     
     /// Performs a descending masked shift.
     ///
-    /// - Note: The `appendix` fills the void.
+    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
     ///
     @inlinable public static func &>>=(instance: inout Self, shift: borrowing Self) {
         instance = instance &>> shift

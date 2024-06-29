@@ -19,12 +19,18 @@ extension InfiniIntStorage {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable internal mutating func resizeByLenientUpshift(major: IX, minor: IX) {
+    /// - Note: The result is normalized.
+    @inlinable internal mutating func upshift(major: IX, minor: IX) {
+        defer {
+            Swift.assert(self.isNormal)
+        }
         //=--------------------------------------=
         Swift.assert(major >= 0000)
         Swift.assert(UX(raw: minor) < UX(size: Element.self))
         //=--------------------------------------=
-        if  minor.isZero {
+        if !Bool(self.appendix), self.body.isEmpty {
+            
+        }   else if minor.isZero {
             if !major.isZero {
                 let zeros = repeatElement(Element.zero, count: Int(major))
                 self.body.insert(contentsOf: zeros, at: Int.zero)
@@ -41,9 +47,12 @@ extension InfiniIntStorage {
                 $0.upshift(major: major, minorAtLeastOne: minor)
             }
         }
+        
+        Swift.assert(self.isNormal)
     }
     
-    @inlinable internal mutating func resizeByLenientDownshift(major: IX, minor: IX) {
+    /// - Note: The result is normalized.
+    @inlinable internal mutating func downshift(major: IX, minor: IX) {
         //=--------------------------------------=
         Swift.assert(major >= 0000)
         Swift.assert(UX(raw: minor) < UX(size: Element.self))

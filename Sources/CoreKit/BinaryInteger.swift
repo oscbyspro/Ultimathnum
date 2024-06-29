@@ -392,7 +392,9 @@ where
     ///
     /// - Parameter distance: A shift in the range of `0 ..< Self.size`.
     ///
-    /// - Note: The `0` bit fills the void.
+    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
+    ///
+    /// - Note: A `distance` greater than `IX.max` is a directional flush.
     ///
     @inlinable consuming func up(_ distance: Shift<Self>) -> Self
     
@@ -400,7 +402,9 @@ where
     ///
     /// - Parameter distance: A shift in the range of `0 ..< Self.size`.
     ///
-    /// - Note: The `appendix` fills the void.
+    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
+    ///
+    /// - Note: A `distance` greater than `IX.max` is a directional flush.
     ///
     @inlinable consuming func down(_ distance: Shift<Self>) -> Self
     
