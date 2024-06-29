@@ -24,16 +24,4 @@ extension CoreInteger {
     @inlinable public consuming func down(_ distance: Shift<Self>) -> Self {
         Self(self.base &>> distance.value.base) // no unchecked shifts in Swift
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Systems Integer
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static func &<<(instance: Self, distance: Self) -> Self {
-        Self(instance.base &<< distance.base)
-    }
-    
-    @inlinable public static func &>>(instance: Self, distance: Self) -> Self {
-        Self(instance.base &>> distance.base)
-    }
 }

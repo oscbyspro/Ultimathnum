@@ -27,16 +27,6 @@ extension BinaryInteger {
         instance = instance << distance
     }
     
-    /// Performs a descending smart shift.
-    ///
-    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
-    ///
-    /// - Note: A `distance` greater than `IX.max` is a directional flush.
-    ///
-    @inlinable public static func >>=(instance: inout Self, distance: Self) {
-        instance = instance >> distance
-    }
-    
     /// Performs an ascending smart shift.
     ///
     /// - Note: The filler bit is either `0` (up) or `appendix` (down).
@@ -49,6 +39,16 @@ extension BinaryInteger {
         }   else {
             return instance.down(Magnitude(raw: distance.complement()))
         }
+    }
+    
+    /// Performs a descending smart shift.
+    ///
+    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
+    ///
+    /// - Note: A `distance` greater than `IX.max` is a directional flush.
+    ///
+    @inlinable public static func >>=(instance: inout Self, distance: Self) {
+        instance = instance >> distance
     }
     
     /// Performs a descending smart shift.
@@ -119,15 +119,30 @@ extension SystemsInteger {
     ///
     /// - Note: The filler bit is either `0` (up) or `appendix` (down).
     ///
-    @inlinable public static func &<<=(instance: inout Self, shift: borrowing Self) {
-        instance = instance &<< shift
+    @inlinable public static func &<<=(instance: inout Self, distance: Self) {
+        instance = instance &<< distance
+    }
+    
+    /// Performs an ascending masked shift.
+    ///
+    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
+    ///
+    @inlinable public static func &<<(instance: consuming Self, distance: Self) -> Self {
+        instance.up(Shift(unchecked: distance & Self(raw: Self.size.decremented().unchecked())))
     }
     
     /// Performs a descending masked shift.
     ///
     /// - Note: The filler bit is either `0` (up) or `appendix` (down).
     ///
-    @inlinable public static func &>>=(instance: inout Self, shift: borrowing Self) {
-        instance = instance &>> shift
+    @inlinable public static func &>>=(instance: inout Self, distance: Self) {
+        instance = instance &>> distance
+    }
+    /// Performs a descending masked shift.
+    ///
+    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
+    ///
+    @inlinable public static func &>>(instance: consuming Self, distance: Self) -> Self {
+        instance.down(Shift(unchecked: distance & Self(raw: Self.size.decremented().unchecked())))
     }
 }

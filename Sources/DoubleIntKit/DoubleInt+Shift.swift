@@ -48,26 +48,4 @@ extension DoubleInt {
         
         return self // as Self as Self as Self
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Systems Integer
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static func &<<(instance: consuming Self, distance: Self) -> Self {
-        //=--------------------------------------=
-        // note: even a 2-bit shift fits in 1 bit
-        //=--------------------------------------
-        let masked = distance.low & (Base.size << 1 &- 1)
-        //=--------------------------------------
-        return instance.up(Shift(unchecked: Self(low: masked)))
-    }
-    
-    @inlinable public static func &>>(instance: consuming Self, distance: Self) -> Self {
-        //=--------------------------------------=
-        // note: even a 2-bit shift fits in 1 bit
-        //=--------------------------------------=
-        let masked = distance.low & (Base.size << 1 &- 1)
-        //=--------------------------------------
-        return instance.down(Shift(unchecked: Self(low: masked)))
-    }
 }
