@@ -96,6 +96,7 @@ extension InfiniInt {
         if !(copy increment) {
             self.storage.appendix.toggle()
             self.storage.normalize()
+            
         }   else if Bool(self.appendix) {
             increment.toggle()
             self.storage.body.append(1)

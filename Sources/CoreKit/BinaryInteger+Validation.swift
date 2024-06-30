@@ -77,6 +77,7 @@ extension BinaryInteger {
         sign: consuming Sign = .plus,
         magnitude: consuming Other
     )   where Other: UnsignedInteger  {
+        
         self = Self.exactly(sign: sign, magnitude: magnitude).unwrap()
     }
 
@@ -94,8 +95,10 @@ extension BinaryInteger {
     /// Creates a validated instance from the given `source`.
     @inlinable public static func exactly<Other>(_ source: consuming Other) -> Fallible<Self> where Other: BinaryInteger {
         if  let lhsSize = UX(size: Self.self), let rhsSize = UX(size: Other.self) {
-            if (lhsSize >  rhsSize && (Self.isSigned))
-            || (lhsSize >= rhsSize && (Self.isSigned == Other.isSigned)) {
+            if  lhsSize > rhsSize, Self.isSigned {
+                return Fallible(Self(load: source))
+                
+            }   else if lhsSize >= rhsSize, Self.isSigned == Other.isSigned {
                 return Fallible(Self(load: source))
                 
             }   else if lhsSize >= rhsSize {
@@ -106,9 +109,10 @@ extension BinaryInteger {
                 return result.veto(lhsIsNegative != rhsIsNegative)
                 
             }   else {
-                let bit   = Bit(Self.isSigned) & Bit(source.isNegative)
-                let count = rhsSize.minus(UX(load: source.descending(bit))).unchecked()
-                let limit = lhsSize.minus(UX(Bit(Self.isSigned))).unchecked()
+                Swift.assert(lhsSize < rhsSize)
+                let bit = Bit(Self.isSigned && source.isNegative)
+                let count = source.nondescending(bit)
+                let limit = lhsSize.minus(Self.isSigned).unchecked()
                 return Self(load: source).veto(limit < count)
             }
             
