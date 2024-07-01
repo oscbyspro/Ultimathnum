@@ -8,53 +8,57 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Signedness
+// MARK: * Order
 //*============================================================================*
 
-/// An `unsigned` (0) or a `signed` (1) mode of operation.
-@frozen public enum Signedness: BitCastable, Hashable, Sendable {
+/// An `ascending` (0) or a `descending` (1) mode of operation.
+@frozen public enum Order: BitCastable, Hashable, Sendable {
     
     public typealias BitPattern = Bit.BitPattern
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Metadata
+    //=------------------------------------------------------------------------=
+    
+    /// The system byte order.
+    @inlinable public static var endianess: Self {
+        #if _endian(little)
+        return Self.ascending
+        #elseif _endian(big)
+        return Self.descending
+        #else
+        #error("unknown or invalid system byte order")
+        #endif
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    /// An `unsigned` (0) mode of operation.
-    ///
-    /// - Note: The `appendix` of a `unsigned` integer signals infinity.
-    ///
-    case unsigned
+    /// An `ascending` (0) mode of operation.
+    case ascending
     
-    /// A `signed` (1) mode of operations.
-    ///
-    /// - Note: The `appendix` of a `signed` integer signals negativity.
-    ///
-    case signed
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    /// Creates a new instance form the given indicator.
-    @inlinable public init(isSigned: Bool) {
-        self = isSigned ? Self.signed : Self.unsigned
-    }
-    
-    /// Indicates whether `self` matches the `signed` case.
-    @inlinable public var isSigned: Bool {
-        self == Self.signed
-    }
+    /// A `descending` (1) mode of operations.
+    case descending
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
     @inlinable public init(raw source: BitPattern) {
-        self.init(isSigned: source)
+        self = source ? Self.descending : Self.ascending
     }
 
     @inlinable public func load(as type: BitPattern.Type) -> BitPattern {
-        self.isSigned
+        self == Self.descending
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// Returns the other direction.
+    @inlinable public func reversed() -> Self {
+        self == Self.descending ? Self.ascending : Self.descending
     }
 }

@@ -121,9 +121,10 @@ extension SystemsInteger {
     ///
     /// - Note: This operation is equivalent to a conditional byte swap.
     ///
-    @inlinable public consuming func endianness(_ endianness: some Endianness) -> Self {
-        if  endianness.matches(endianness: .system) {
+    @inlinable public consuming func endianness(_ endianness: Order) -> Self {
+        if  endianness == Order.endianess {
             return self
+            
         }   else {
             return self.reversed(U8.self)
         }

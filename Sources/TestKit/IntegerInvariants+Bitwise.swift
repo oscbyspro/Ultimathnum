@@ -104,15 +104,16 @@ extension IntegerInvariants {
     //=------------------------------------------------------------------------=
     
     public func endianness(_ id: SystemsIntegerID) where T: SystemsInteger {
-        test.same(T(repeating: 0).endianness(.big   ), T(repeating: 0))
-        test.same(T(repeating: 0).endianness(.little), T(repeating: 0))
-        test.same(T(repeating: 1).endianness(.big   ), T(repeating: 1))
-        test.same(T(repeating: 1).endianness(.little), T(repeating: 1))
+        test.same(T(repeating: 0).endianness( .ascending), T(repeating: 0))
+        test.same(T(repeating: 0).endianness(.descending), T(repeating: 0))
+        test.same(T(repeating: 1).endianness( .ascending), T(repeating: 1))
+        test.same(T(repeating: 1).endianness(.descending), T(repeating: 1))
         
-        test.same(T(1).endianness(.system),                     T(1))
-        test.same(T(2).endianness(.big   ).endianness(.big   ), T(2))
-        test.same(T(3).endianness(.big   ).endianness(.little), T(3) << T(raw: T.size - 8))
-        test.same(T(4).endianness(.little).endianness(.big   ), T(4) << T(raw: T.size - 8))
-        test.same(T(5).endianness(.little).endianness(.little), T(5))
+        test.same(T(1).endianness( .endianess),                         T(1))
+        test.same(T(1).endianness( .endianess.reversed()),              T(1) << T(raw: T.size - 8))
+        test.same(T(5).endianness( .ascending).endianness( .ascending), T(5))
+        test.same(T(4).endianness( .ascending).endianness(.descending), T(4) << T(raw: T.size - 8))
+        test.same(T(3).endianness(.descending).endianness( .ascending), T(3) << T(raw: T.size - 8))
+        test.same(T(2).endianness(.descending).endianness(.descending), T(2))
     }
 }

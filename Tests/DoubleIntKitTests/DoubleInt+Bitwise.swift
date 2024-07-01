@@ -89,13 +89,18 @@ extension DoubleIntTests {
             IntegerInvariants(T.self).endianness(SystemsIntegerID())
             IntegerInvariants(U.self).endianness(SystemsIntegerID())
             //=----------------------------------=
-            let b1 = B.Magnitude(1).endianness(.big), l1 = B.Magnitude(1).endianness(.little)
-            let b2 = B.Magnitude(2).endianness(.big), l2 = B.Magnitude(2).endianness(.little)
-            let b3 = B.Magnitude(3).endianness(.big), l3 = B.Magnitude(3).endianness(.little)
-            let b4 = B.Magnitude(4).endianness(.big), l4 = B.Magnitude(4).endianness(.little)
+            let l1 = B.Magnitude(1).endianness( .ascending)
+            let l2 = B.Magnitude(2).endianness( .ascending)
+            let l3 = B.Magnitude(3).endianness( .ascending)
+            let l4 = B.Magnitude(4).endianness( .ascending)
+            
+            let b1 = B.Magnitude(1).endianness(.descending)
+            let b2 = B.Magnitude(2).endianness(.descending)
+            let b3 = B.Magnitude(3).endianness(.descending)
+            let b4 = B.Magnitude(4).endianness(.descending)
             
             Test().same(
-                U(low: M(low: 01, high: 02), high: T(low: 03, high: 0000000004)).endianness(.system),
+                U(low: M(low: 01, high: 02), high: T(low: 03, high: 0000000004)).endianness(.endianess),
                 U(low: M(low: 01, high: 02), high: T(low: 03, high: 0000000004))
             )
             
@@ -105,8 +110,18 @@ extension DoubleIntTests {
             )
             
             Test().same(
+                U(low: M(low: l1, high: l2), high: T(low: l3, high: B(raw: l4))).endianness(.endianess.reversed()),
+                U(low: M(low: b4, high: b3), high: T(low: b2, high: B(raw: b1)))
+            )
+            
+            Test().same(
                 U(low: M(low: l1, high: l2), high: T(low: l3, high: B(raw: l4))),
                 U(low: M(low: b4, high: b3), high: T(low: b2, high: B(raw: b1))).reversed(U8.self)
+            )
+            
+            Test().same(
+                U(low: M(low: l1, high: l2), high: T(low: l3, high: B(raw: l4))),
+                U(low: M(low: b4, high: b3), high: T(low: b2, high: B(raw: b1))).endianness(.endianess.reversed())
             )
         }
         

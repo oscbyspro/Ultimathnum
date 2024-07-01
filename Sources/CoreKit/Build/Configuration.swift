@@ -15,12 +15,11 @@
 //=----------------------------------------------------------------------------=
 
 #if _endian(little)
-public typealias MachineByteOrder = Ascending
+
 #elseif _endian(big)
-public typealias MachineByteOrder = Descending
-#error("Ultimathnum does not yet support big endian platforms.")
+#error("unsupported system byte order")
 #else
-public typealias MachineByteOrder = Never
+#error("unknown or invalid system byte order")
 #endif
 
 //=----------------------------------------------------------------------------=
