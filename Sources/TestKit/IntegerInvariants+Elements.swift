@@ -84,7 +84,7 @@ extension IntegerInvariants {
         test.exactly([X](), .unsigned, F(T.zero))
         //=--------------------------------------=
         func check(_ body: Array<X>, mode: Signedness, error: Bool = false) {
-            var value = T(repeating: Bit(mode.isSigned && (body.last ?? 0) >= .msb))
+            var value = T(repeating: Bit(mode == .signed && (body.last ?? 0) >= .msb))
             
             for element in body.reversed() {
                 value <<= T(load: X.size)

@@ -45,6 +45,26 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a new instance form the given indicator.
+    ///
+    /// The `descending` indicator naturally translates to `Bool`.
+    ///
+    ///             ┌────────────┬────────────┐
+    ///             │   bit == 0 │   bit == 1 |
+    ///     ┌───────┼────────────┤────────────┤
+    ///     │  Bool │      false │       true │
+    ///     ├───────┼────────────┤────────────┤
+    ///     │ Order │  ascending │ descending │
+    ///     └───────┴────────────┴────────────┘
+    ///
+    @inlinable public init(descending: Bool) {
+        self = descending ? Self.descending : Self.ascending
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
     @inlinable public init(raw source: BitPattern) {
         self = source ? Self.descending : Self.ascending
     }
@@ -57,7 +77,7 @@
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Returns the other direction.
+    /// Returns the opposite direction.
     @inlinable public func reversed() -> Self {
         self == Self.descending ? Self.ascending : Self.descending
     }

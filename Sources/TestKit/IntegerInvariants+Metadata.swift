@@ -20,7 +20,7 @@ extension IntegerInvariants {
     //=------------------------------------------------------------------------=
     
     public func mode(_ id: BinaryIntegerID) where T: BinaryInteger {
-        test.same( T.isSigned, T.mode.isSigned)
+        test.same( T.isSigned, T.mode == .signed)
         test.same( T.isSigned, T.self is any   SignedInteger.Type)
         test.same(!T.isSigned, T.self is any UnsignedInteger.Type)
     }

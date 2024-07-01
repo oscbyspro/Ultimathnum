@@ -22,6 +22,11 @@ final class OrderTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
+    func testInit() {
+        Test().same(T(descending: false), T .ascending)
+        Test().same(T(descending:  true), T.descending)
+    }
+    
     func testBitCast() {
         Test().same(Bit(raw: T .ascending), 0 as Bit)
         Test().same(Bit(raw: T.descending), 1 as Bit)

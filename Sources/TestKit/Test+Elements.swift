@@ -182,7 +182,7 @@ extension Test {
         //=--------------------------------------=
         body.withUnsafeBufferPointer {
             //=----------------------------------=
-            let appendix = Bit(signedness.isSigned && ($0.last ?? 0) >= Element.msb)
+            let appendix = Bit(signedness == .signed && ($0.last ?? 0) >= Element.msb)
             let elements = DataInt($0, repeating: appendix)!
             //=----------------------------------=
             if !expectation.error {

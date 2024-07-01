@@ -37,13 +37,19 @@
     //=------------------------------------------------------------------------=
     
     /// Creates a new instance form the given indicator.
-    @inlinable public init(isSigned: Bool) {
-        self = isSigned ? Self.signed : Self.unsigned
-    }
-    
-    /// Indicates whether `self` matches the `signed` case.
-    @inlinable public var isSigned: Bool {
-        self == Self.signed
+    ///
+    /// The `signed` indicator naturally translates to `Bool`.
+    ///
+    ///                  ┌──────────┬──────────┐
+    ///                  │ bit == 0 │ bit == 1 |
+    ///     ┌────────────┼──────────┤──────────┤
+    ///     │       Bool │    false │     true │
+    ///     ├────────────┼──────────┤──────────┤
+    ///     │ Signedness │ unsigned │   signed │
+    ///     └────────────┴──────────┴──────────┘
+    ///
+    @inlinable public init(signed: Bool) {
+        self = signed ? Self.signed : Self.unsigned
     }
     
     //=------------------------------------------------------------------------=
@@ -51,10 +57,10 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public init(raw source: BitPattern) {
-        self.init(isSigned: source)
+        self.init(signed: source)
     }
 
     @inlinable public func load(as type: BitPattern.Type) -> BitPattern {
-        self.isSigned
+        self == Self.signed
     }
 }
