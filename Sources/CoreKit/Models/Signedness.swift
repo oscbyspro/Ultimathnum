@@ -8,44 +8,53 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Root Int
+// MARK: * Signedness
 //*============================================================================*
 
-/// An immutable arbitrary-precision signed integer.
-///
-/// Use this type to spawn integers or other, similar, objects.
-///
-/// - Note: *We don't know where it comes from, only that it exists.*
-///
-@frozen public struct RootInt: ExpressibleByIntegerLiteral, Sendable {
+/// A `unsigned` (0) or `signed` (1) mode of operation.
+@frozen public enum Signedness: BitCastable, Hashable, Sendable {
     
-    //=------------------------------------------------------------------------=
-    // MARK: Metadata
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static var mode: Signedness {
-        Signedness.signed
-    }
-    
-    @inlinable public static var isSigned: Bool {
-        Self.mode.isSigned
-    }
+    public typealias BitPattern = Bit.BitPattern
     
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    @usableFromInline let base: Swift.StaticBigInt
+    /// An `unsigned` (0) mode of operation.
+    ///
+    /// - Note: The `appendix` of a `unsigned` integer signals infinity.
+    ///
+    case unsigned
+    
+    /// A `signed` (1) mode of operations.
+    ///
+    /// - Note: The `appendix` of a `signed` integer signals negativity.
+    ///
+    case signed
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ base: Swift.StaticBigInt) {
-        self.base = base
+    /// Creates a new instance form the given indicator.
+    @inlinable public init(isSigned: Bool) {
+        self = isSigned ? Self.signed : Self.unsigned
     }
     
-    @inlinable public init(integerLiteral: Swift.StaticBigInt) {
-        self.init(integerLiteral)
+    /// Indicates whether `self` matches the `signed` case.
+    @inlinable public var isSigned: Bool {
+        self == Self.signed
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(raw source: BitPattern) {
+        self.init(isSigned: source)
+    }
+
+    @inlinable public func load(as type: BitPattern.Type) -> BitPattern {
+        self.isSigned
     }
 }

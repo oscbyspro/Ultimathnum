@@ -57,7 +57,6 @@ public protocol BinaryInteger<BitPattern>:
     Strideable,
     MaybeLosslessStringConvertible
 where
-    Element.Mode == Mode,
     Magnitude.BitPattern == BitPattern,
     Magnitude.Element    == Element.Magnitude,
     Magnitude.Signitude  == Signitude,
@@ -66,9 +65,6 @@ where
     Signitude.Magnitude  == Magnitude,
     Stride == Swift.Int
 {
-    
-    /// The 2's complement signedness of this type.
-    associatedtype Mode: Signedness
     
     /// The stuff this binary integer type is made of.
     ///
@@ -86,18 +82,19 @@ where
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    /// Indicates whether this type uses the signed 2's complement format.
+    /// Indicates the role of the `appendix` bit.
     ///
     /// ```
-    /// ┌──────┬──────────┬──────┬──────┐
-    /// │ type │     mode │  min │  max │
-    /// ├──────┼──────────┼──────┼──────┤
-    /// │ I8   │   signed │ -128 │  127 │
-    /// │ U8   │ unsigned │    0 │  255 │
-    /// └──────┴──────────┴──────┴──────┘
+    ///            ┌───────────────┬───────────────┐
+    ///            │ appendix == 0 │ appendix == 1 |
+    /// ┌──────────┼───────────────┤───────────────┤
+    /// │   Signed │     self >= 0 │     self <  0 │
+    /// ├──────────┼───────────────┤───────────────┤
+    /// │ Unsigned │     self <  ∞ │     self >= ∞ │
+    /// └──────────┴───────────────┴───────────────┘
     /// ```
     ///
-    @inlinable static var mode: Mode { get }
+    @inlinable static var mode: Signedness { get }
     
     /// The number of bits that fit in the `body` of this binary integer type.
     ///
@@ -412,15 +409,15 @@ where
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// The bit that extends the integer's `body`.
+    /// The bit that extends this binary integer's `body`.
     ///
     /// ```
     ///            ┌───────────────┬───────────────┐
     ///            │ appendix == 0 │ appendix == 1 |
     /// ┌──────────┼───────────────┤───────────────┤
-    /// │   Signed │ self >= 0     │ self <  0     │
+    /// │   Signed │     self >= 0 │     self <  0 │
     /// ├──────────┼───────────────┤───────────────┤
-    /// │ Unsigned │ self <  ∞     │ self >= ∞     │
+    /// │ Unsigned │     self <  ∞ │     self >= ∞ │
     /// └──────────┴───────────────┴───────────────┘
     /// ```
     ///

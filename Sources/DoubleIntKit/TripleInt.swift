@@ -37,7 +37,7 @@ import CoreKit
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    @inlinable public static var mode: Base.Mode {
+    @inlinable public static var mode: Signedness {
         Base.mode
     }
     

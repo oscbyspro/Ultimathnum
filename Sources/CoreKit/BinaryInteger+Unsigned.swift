@@ -26,10 +26,10 @@
 ///     └──────────┴───────────┴───────────┘
 ///
 ///
-public protocol UnsignedInteger: EdgyInteger where Element: UnsignedInteger, Magnitude == Self, Mode == Unsigned { }
+public protocol UnsignedInteger: EdgyInteger where Element: UnsignedInteger, Magnitude == Self { }
 
 //*============================================================================*
-// MARK: * Binary Integer x Unsigned x Metadata
+// MARK: * Binary Integer x Unsigned
 //*============================================================================*
 
 extension UnsignedInteger {
@@ -38,7 +38,7 @@ extension UnsignedInteger {
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    @inlinable public static var mode: Unsigned {
-        Unsigned()
+    @inlinable public static var mode: Signedness {
+        Signedness.unsigned
     }
 }

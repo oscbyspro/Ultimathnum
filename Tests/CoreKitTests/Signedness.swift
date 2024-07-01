@@ -7,26 +7,30 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+import TestKit
+
 //*============================================================================*
-// MARK: * Signed
+// MARK: * Signedness
 //*============================================================================*
 
-/// A signed mode of operation.
-@frozen public struct Signed: Signedness {
+final class SignednessTests: XCTestCase {
+    
+    typealias T = Signedness
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: Tests
     //=------------------------------------------------------------------------=
-        
-    @inlinable public init() {
-        
+    
+    func testIsSigned() {
+        Test().same(T  .signed   .isSigned,  true)
+        Test().same(T  .signed, T(isSigned:  true))
+        Test().same(T.unsigned   .isSigned, false)
+        Test().same(T.unsigned, T(isSigned: false))
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public var matchesSignedTwosComplementFormat: Bool {
-        true
+    func testBitCast() {
+        Test().same(Bit(raw: T  .signed), 1 as Bit)
+        Test().same(Bit(raw: T.unsigned), 0 as Bit)
     }
 }

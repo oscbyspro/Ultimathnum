@@ -17,19 +17,20 @@ extension BinaryInteger {
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    /// Indicates whether this type can represent negative values.
+    /// Indicates the role of the `appendix` bit.
     ///
     /// ```
-    /// ┌──────┬──────────┬──────┬──────┐
-    /// │ type │ isSigned │  min │  max │
-    /// ├──────┼──────────┼──────┼──────┤
-    /// │ I8   │ true     │ -128 │  127 │
-    /// │ U8   │ false    │    0 │  255 │
-    /// └──────┴──────────┴──────┴──────┘
+    ///            ┌───────────────┬───────────────┐
+    ///            │ appendix == 0 │ appendix == 1 |
+    /// ┌──────────┼───────────────┤───────────────┤
+    /// │   Signed │     self >= 0 │     self <  0 │
+    /// ├──────────┼───────────────┤───────────────┤
+    /// │ Unsigned │     self <  ∞ │     self >= ∞ │
+    /// └──────────┴───────────────┴───────────────┘
     /// ```
     ///
     @inlinable public static var isSigned: Bool {
-        Self.mode.matches(signedness: .signed)
+        Self.mode.isSigned
     }
     
     //=------------------------------------------------------------------------=

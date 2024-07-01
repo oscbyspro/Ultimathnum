@@ -31,7 +31,8 @@ extension IntegerInvariants {
             test.elements( 1 as T, [X(load:  1 as T)] + [X](repeating:  0, count: count - 1), 000000000000000)
         }
         
-        element: do { let mask = T(1) << T(load: X.size) &- 1
+        element: do { 
+            let mask = T(1) << T(load: X.size) &- 1
             
             var x = ~9 as T
             var y = ~9 as X.Signitude
@@ -50,7 +51,8 @@ extension IntegerInvariants {
             }
         }
         
-        sequences: do { let size = UX(1 + Self.shlEsque)
+        sequences: do { 
+            let size = UX(1 + Self.shlEsque)
             
             for offset: UX in (1 ... 12).lazy.map({ $0 &* size >> 3 }) {
                 var element = X.zero
@@ -81,8 +83,8 @@ extension IntegerInvariants {
         test.exactly([X](),   .signed, F(T.zero))
         test.exactly([X](), .unsigned, F(T.zero))
         //=--------------------------------------=
-        func check(_ body: Array<X>, mode: some Signedness, error: Bool = false) {
-            var value = T(repeating: Bit(mode.matchesSignedTwosComplementFormat && (body.last ?? 0) >= .msb))
+        func check(_ body: Array<X>, mode: Signedness, error: Bool = false) {
+            var value = T(repeating: Bit(mode.isSigned && (body.last ?? 0) >= .msb))
             
             for element in body.reversed() {
                 value <<= T(load: X.size)
@@ -92,7 +94,8 @@ extension IntegerInvariants {
             test.exactly(body, mode, Fallible(value, error: error))
         }
         //=--------------------------------------=
-        always: do { var count = Int(T.size.isInfinite ? 12 : IX(load: T.size) / IX(size: X.self))
+        always: do { 
+            var count = Int(T.size.isInfinite ? 12 : IX(load: T.size) / IX(size: X.self))
             
             check(Array(repeating:  0, count: count), mode:   .signed)
             check(Array(repeating:  1, count: count), mode:   .signed)

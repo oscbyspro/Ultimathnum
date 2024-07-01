@@ -26,7 +26,7 @@
 ///     └──────────┴───────────┴───────────┘
 ///
 ///
-public protocol SignedInteger: FiniteInteger where Element: SignedInteger, Signitude == Self, Mode == Signed { }
+public protocol SignedInteger: FiniteInteger where Element: SignedInteger, Signitude == Self { }
 
 //*============================================================================*
 // MARK: * Binary Integer x Signed x Metadata
@@ -38,7 +38,7 @@ extension SignedInteger {
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    @inlinable public static var mode: Signed {
-        Signed()
+    @inlinable public static var mode: Signedness {
+        Signedness.signed
     }
 }

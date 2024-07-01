@@ -26,60 +26,58 @@ extension BinaryInteger {
         }
     }
     
-    /// Creates a new instance from the given `source` and `mode` by trapping on failure.
-    @inlinable public init<OtherElement>(_ source: DataInt<OtherElement>, mode: some Signedness) {
-        self = Self.exactly(source, mode: mode).unwrap()
+    /// Creates a new instance from the given `source` and `signedness` by trapping on failure.
+    @inlinable public init<OtherElement>(_ source: DataInt<OtherElement>, mode signedness: Signedness) {
+        self = Self.exactly(source, mode: signedness).unwrap()
     }
     
-    /// Creates a validated instance from the given `source` and `mode`.
-    @inlinable public static func exactly<OtherElement>(_ source: DataInt<OtherElement>, mode: some Signedness) -> Fallible<Self> {
+    /// Creates a validated instance from the given `source` and `signedness`.
+    @inlinable public static func exactly<OtherElement>(_ source: DataInt<OtherElement>, mode signedness: Signedness) -> Fallible<Self> {
         if  UX(size: Self.Element.Magnitude.self) <= UX(size: OtherElement.self) {
             return source.reinterpret(as: Self.Element.Magnitude.self) {
-                Self.exactly($0, mode: mode)
+                Self.exactly($0, mode: signedness)
             }
             
         }   else {
             return source.reinterpret(as: U8.self) {
-                Self.exactly($0, mode: mode)
+                Self.exactly($0, mode: signedness)
             }
         }
     }
     
-    /// Creates a validated instance from the given `source` and `mode`.
-    @inlinable public static func exactly(_ source: DataInt<U8>, mode: some Signedness) -> Fallible<Self> {
-        //=--------------------------------------=
+    /// Creates a validated instance from the given `source` and `signedness`.
+    @inlinable public static func exactly(_ source: DataInt<U8>, mode signedness: Signedness) -> Fallible<Self> {
         let instance = Self(load: source)
         let appendix = instance.appendix
         var success  = appendix == source.appendix
-        //=--------------------------------------=
-        if  success, !Self.mode.matches(signedness: mode) {
-            success  = appendix == Bit.zero
+        
+        if  success, signedness != Self.mode {
+            success  = appendix == Bit .zero
         }
         
         if  success, let size = UX(size: Self.self) {
             let end  =   size / UX(size:   U8.self)
             success  = source[end...].normalized().body.isEmpty
         }
-        //=--------------------------------------=
+        
         return instance.veto(!Bool(success))
     }
     
-    /// Creates a validated instance from the given `source` and `mode`.
-    @inlinable public static func exactly(_ source: DataInt<Element.Magnitude>, mode: some Signedness) -> Fallible<Self> {
-        //=--------------------------------------=
+    /// Creates a validated instance from the given `source` and `signedness`.
+    @inlinable public static func exactly(_ source: DataInt<Element.Magnitude>, mode signedness: Signedness) -> Fallible<Self> {
         let instance = Self(load: source)
         let appendix = instance.appendix
         var success  = appendix == source.appendix
-        //=--------------------------------------=
-        if  success, !Self.mode.matches(signedness: mode) {
-            success  = appendix == Bit.zero
+        
+        if  success, signedness != Self.mode {
+            success  = appendix == Bit .zero
         }
         
         if  success, let size = UX(size: Self.self) {
             let end  =   size / UX(size: Element.Magnitude.self)
             success  = source[end...].normalized().body.isEmpty
         }
-        //=--------------------------------------=
+        
         return instance.veto(!Bool(success))
     }
     

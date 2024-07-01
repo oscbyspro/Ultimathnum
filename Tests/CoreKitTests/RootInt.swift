@@ -24,6 +24,6 @@ final class RootIntTests: XCTestCase {
     
     func testMode() {
         Test().yay(T.isSigned)
-        Test().yay(T.mode.matchesSignedTwosComplementFormat)
+        Test().yay(T.mode.isSigned)
     }
 }

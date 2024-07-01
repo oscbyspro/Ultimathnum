@@ -173,7 +173,7 @@ extension Test {
     
     public func exactly<Integer, Element>(
         _ body: [Element],
-        _ mode: some Signedness,
+        _ signedness:  Signedness,
         _ expectation: Fallible<Integer>
     )   where Integer: BinaryInteger, Element: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
@@ -182,7 +182,7 @@ extension Test {
         //=--------------------------------------=
         body.withUnsafeBufferPointer {
             //=----------------------------------=
-            let appendix = Bit(mode.matchesSignedTwosComplementFormat && ($0.last ?? 0) >= Element.msb)
+            let appendix = Bit(signedness.isSigned && ($0.last ?? 0) >= Element.msb)
             let elements = DataInt($0, repeating: appendix)!
             //=----------------------------------=
             if !expectation.error {
@@ -190,11 +190,11 @@ extension Test {
             }
             
             always: do {
-                same(Integer.exactly(elements, mode: mode), expectation, "T.exactly(_:mode:) - DataInt")
+                same(Integer.exactly(elements, mode: signedness), expectation, "T.exactly(_:mode:) - DataInt")
             }
             
             elements.reinterpret(as: U8.self) {
-                same(Integer.exactly($0, mode: mode), expectation, "T.exactly(_:mode:) - DataInt<U8>")
+                same(Integer.exactly($0, mode: signedness), expectation, "T.exactly(_:mode:) - DataInt<U8>")
                 
                 if !expectation.error, $0.entropy() <= UX.size {
                     let word = $0.load(as: UX.self)
