@@ -24,12 +24,10 @@
 /// init(unchecked:) // error: unchecked
 /// ```
 ///
-@frozen public struct Shift<Value>: BitCastable, Equatable where Value: BinaryInteger {
+@frozen public struct Shift<Value>: Equatable where Value: UnsignedInteger {
     
     public typealias Value = Value
-    
-    public typealias BitPattern = Shift<Value.Magnitude>
-    
+        
     //=------------------------------------------------------------------------=
     // MARK: Metadata
     //=------------------------------------------------------------------------=
@@ -40,7 +38,7 @@
         if  Value.size.isInfinite {
             return valueIsNatural
         }   else {
-            return valueIsNatural && Value.Magnitude(raw: value) < Value.size
+            return valueIsNatural && value < Value.size
         }
     }
     
@@ -94,18 +92,6 @@
         guard Self.predicate(value) else { throw error() }
         self.value = value
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(raw source: consuming BitPattern) {
-        self.init(unchecked: Value(raw: source.value))
-    }
-    
-    @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
-        BitPattern(unchecked: Value.Magnitude(raw: self.value))
-    }
 }
 
 //=----------------------------------------------------------------------------=
@@ -136,16 +122,8 @@ extension Shift where Value: SystemsInteger {
             return nil
             
         }   else {
-            let difference = Value(raw: Value.size).minus(self.value)
+            let difference = Value.size.minus(self.value)
             return Self(unchecked: difference.unchecked())
         }
-    }
-    
-    /// Returns the magnitude of `self`.
-    ///
-    /// - Note: This is a bit cast because `self ∈ ℕ → unsigned`.
-    ///
-    @inlinable public consuming func magnitude() -> Shift<Value.Magnitude> {
-        Shift<Value.Magnitude>.init(raw: self)
     }
 }

@@ -83,8 +83,8 @@ extension BinaryInteger {
     /// - Note: A `distance` greater than `IX.max` is a directional flush.
     ///
     @inlinable internal consuming func up(_ distance: Magnitude) -> Self {
-        if  Shift.predicate(distance) {
-            return self.up(Shift(unchecked: Self(raw: distance)))
+        if  let distance = Shift(exactly: distance) {
+            return self.up(distance)
         }   else {
             return Self(repeating: Bit.zero)
         }
@@ -97,8 +97,8 @@ extension BinaryInteger {
     /// - Note: A `distance` greater than `IX.max` is a directional flush.
     ///
     @inlinable internal consuming func down(_ distance: Magnitude) -> Self {
-        if  Shift.predicate(distance) {
-            return self.down(Shift(unchecked: Self(raw: distance)))
+        if  let distance = Shift(exactly: distance) {
+            return self.down(distance)
         }   else {
             return Self(repeating: self.appendix)
         }
@@ -128,7 +128,7 @@ extension SystemsInteger {
     /// - Note: The filler bit is either `0` (up) or `appendix` (down).
     ///
     @inlinable public static func &<<(instance: consuming Self, distance: Self) -> Self {
-        instance.up(Shift(unchecked: distance & Self(raw: Self.size.decremented().unchecked())))
+        instance.up(Shift(unchecked: Magnitude(raw: distance) & Self.size.decremented().unchecked()))
     }
     
     /// Performs a descending masked shift.
@@ -143,6 +143,6 @@ extension SystemsInteger {
     /// - Note: The filler bit is either `0` (up) or `appendix` (down).
     ///
     @inlinable public static func &>>(instance: consuming Self, distance: Self) -> Self {
-        instance.down(Shift(unchecked: distance & Self(raw: Self.size.decremented().unchecked())))
+        instance.down(Shift(unchecked: Magnitude(raw: distance) & Self.size.decremented().unchecked()))
     }
 }

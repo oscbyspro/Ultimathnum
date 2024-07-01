@@ -22,33 +22,8 @@ final class ShiftTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testBitCast() {
-        func whereTheValueIs<Value>(_ type: Value.Type) where Value: BinaryInteger {
-            typealias T = Shift<Value>
-            typealias S = Shift<Value.Signitude>
-            typealias M = Shift<Value.Magnitude>
-            
-            Test().same(T(raw: S( 0)).value, 0 as T.Value)
-            Test().same(T(raw: M( 0)).value, 0 as T.Value)
-            Test().same(T(raw: S( 1)).value, 1 as T.Value)
-            Test().same(T(raw: M( 1)).value, 1 as T.Value)
-            Test().same(T(raw: S( 2)).value, 2 as T.Value)
-            Test().same(T(raw: M( 2)).value, 2 as T.Value)
-        }
-        
-        for type in coreSystemsIntegers {
-            whereTheValueIs(type)
-        }
-        
-        whereTheValueIs(DoubleInt<I8>.self)
-        whereTheValueIs(DoubleInt<U8>.self)
-        
-        whereTheValueIs(InfiniInt<I8>.self)
-        whereTheValueIs(InfiniInt<U8>.self)
-    }
-    
     func testInitExactly() {
-        func whereTheValueIs<Value>(_ type: Value.Type) where Value: BinaryInteger {
+        func whereTheValueIs<Value>(_ type: Value.Type) where Value: UnsignedInteger {
             typealias T = Shift<Value>
             
             Test().none(T(exactly: ~2))
@@ -66,19 +41,19 @@ final class ShiftTests: XCTestCase {
             }
         }
         
-        for type in coreSystemsIntegers {
+        for type in coreSystemsIntegersWhereIsUnsigned {
             whereTheValueIs(type)
         }
         
-        whereTheValueIs(DoubleInt<I8>.self)
         whereTheValueIs(DoubleInt<U8>.self)
+        whereTheValueIs(DoubleInt<UX>.self)
         
-        whereTheValueIs(InfiniInt<I8>.self)
         whereTheValueIs(InfiniInt<U8>.self)
+        whereTheValueIs(InfiniInt<UX>.self)
     }
     
     func testInitPrune() {
-        func whereTheValueIs<Value>(_ type: Value.Type) where Value: BinaryInteger {
+        func whereTheValueIs<Value>(_ type: Value.Type) where Value: UnsignedInteger {
             typealias T = Shift<Value>
             
             Test().failure({ try T(~1, prune: Bad.code123)       }, Bad.code123)
@@ -96,15 +71,15 @@ final class ShiftTests: XCTestCase {
             }
         }
         
-        for type in coreSystemsIntegers {
+        for type in coreSystemsIntegersWhereIsUnsigned {
             whereTheValueIs(type)
         }
         
-        whereTheValueIs(DoubleInt<I8>.self)
         whereTheValueIs(DoubleInt<U8>.self)
+        whereTheValueIs(DoubleInt<UX>.self)
         
-        whereTheValueIs(InfiniInt<I8>.self)
         whereTheValueIs(InfiniInt<U8>.self)
+        whereTheValueIs(InfiniInt<UX>.self)
     }
 }
 
@@ -120,23 +95,23 @@ extension ShiftTests {
     
     /// 2024-06-15: Checks that the inverse of zero is nil.
     func testZeroInvarseIsInvalid() {
-        func whereTheValueIs<Value>(_ type: Value.Type) where Value: SystemsInteger {
+        func whereTheValueIs<Value>(_ type: Value.Type) where Value: SystemsInteger & UnsignedInteger {
             Test().nay (Shift.predicate(Value.size))
             Test().none(Shift(0 as Value).inverse())
-            Test().same(Shift(1 as Value).inverse(), Shift(Value(Value.size - 1)))
-            Test().same(Shift(2 as Value).inverse(), Shift(Value(Value.size - 2)))
-            Test().same(Shift(3 as Value).inverse(), Shift(Value(Value.size - 3)))
-            Test().same(Shift(4 as Value).inverse(), Shift(Value(Value.size - 4)))
-            Test().same(Shift(5 as Value).inverse(), Shift(Value(Value.size - 5)))
-            Test().same(Shift(6 as Value).inverse(), Shift(Value(Value.size - 6)))
-            Test().same(Shift(7 as Value).inverse(), Shift(Value(Value.size - 7)))
+            Test().same(Shift(1 as Value).inverse(), Shift(Value.size - 1))
+            Test().same(Shift(2 as Value).inverse(), Shift(Value.size - 2))
+            Test().same(Shift(3 as Value).inverse(), Shift(Value.size - 3))
+            Test().same(Shift(4 as Value).inverse(), Shift(Value.size - 4))
+            Test().same(Shift(5 as Value).inverse(), Shift(Value.size - 5))
+            Test().same(Shift(6 as Value).inverse(), Shift(Value.size - 6))
+            Test().same(Shift(7 as Value).inverse(), Shift(Value.size - 7))
         }
         
-        for type in coreSystemsIntegers {
+        for type in coreSystemsIntegersWhereIsUnsigned {
             whereTheValueIs(type)
         }
         
-        whereTheValueIs(DoubleInt<I8>.self)
         whereTheValueIs(DoubleInt<U8>.self)
+        whereTheValueIs(DoubleInt<UX>.self)
     }
 }

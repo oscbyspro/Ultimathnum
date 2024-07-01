@@ -76,7 +76,7 @@ extension Test {
         _ expectation: T
     )   where T: BinaryInteger {
         
-        if  let distance = Shift<T>(exactly: distance) {
+        if  let distance = Shift<T.Magnitude>(exactly: T.Magnitude(raw: distance)) {
             same(instance.up(distance), expectation, "up")
         }
         
@@ -146,7 +146,7 @@ extension Test {
         _ expectation: T
     )   where T: BinaryInteger {
         
-        if  let distance = Shift<T>(exactly: distance) {
+        if  let distance = Shift<T.Magnitude>(exactly: T.Magnitude(raw: distance)) {
             same(instance.down(distance), expectation, "down")
         }
         

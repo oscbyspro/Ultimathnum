@@ -17,11 +17,11 @@ extension CoreInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func up(_ distance: Shift<Self>) -> Self {
-        Self(self.base &<< distance.value.base) // no unchecked shifts in Swift
+    @inlinable public consuming func up(_ distance: Shift<Magnitude>) -> Self {
+        Self(self.base &<< distance.value.base)
     }
     
-    @inlinable public consuming func down(_ distance: Shift<Self>) -> Self {
-        Self(self.base &>> distance.value.base) // no unchecked shifts in Swift
+    @inlinable public consuming func down(_ distance: Shift<Magnitude>) -> Self {
+        Self(self.base &>> distance.value.base)
     }
 }

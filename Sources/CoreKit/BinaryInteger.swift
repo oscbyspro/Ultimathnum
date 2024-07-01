@@ -393,7 +393,7 @@ where
     ///
     /// - Note: A `distance` greater than `IX.max` is a directional flush.
     ///
-    @inlinable consuming func up(_ distance: Shift<Self>) -> Self
+    @inlinable consuming func up(_ distance: Shift<Magnitude>) -> Self
     
     /// Performs a decending shift.
     ///
@@ -403,7 +403,7 @@ where
     ///
     /// - Note: A `distance` greater than `IX.max` is a directional flush.
     ///
-    @inlinable consuming func down(_ distance: Shift<Self>) -> Self
+    @inlinable consuming func down(_ distance: Shift<Magnitude>) -> Self
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
