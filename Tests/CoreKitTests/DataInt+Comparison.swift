@@ -26,25 +26,25 @@ extension DataIntTests {
             typealias F = Fallible<[T]>
             
             for appendix: Bit in [0, 1] {
-                for isSigned: Bool in [false, true] {
-                    let expectation = (appendix == 0) ? Signum.same : Signum.one(Sign(isSigned))
-                    C([       ] as [T], repeating: appendix).signum(is: expectation, isSigned: isSigned)
-                    C([0      ] as [T], repeating: appendix).signum(is: expectation, isSigned: isSigned)
-                    C([0, 0   ] as [T], repeating: appendix).signum(is: expectation, isSigned: isSigned)
-                    C([0, 0, 0] as [T], repeating: appendix).signum(is: expectation, isSigned: isSigned)
+                for signedness: Signedness in [.unsigned, .signed] {
+                    let expectation = (appendix == 0) ? Signum.same : Signum.one(Sign(raw: signedness))
+                    C([       ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
+                    C([0      ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
+                    C([0, 0   ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
+                    C([0, 0, 0] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
                 }
                 
-                for isSigned: Bool in [false, true] {
-                    let expectation = (appendix == 0) ? Signum.more : Signum.one(Sign(isSigned))
-                    C([1      ] as [T], repeating: appendix).signum(is: expectation, isSigned: isSigned)
-                    C([1, 2   ] as [T], repeating: appendix).signum(is: expectation, isSigned: isSigned)
-                    C([1, 2, 3] as [T], repeating: appendix).signum(is: expectation, isSigned: isSigned)
-                    C([1      ] as [T], repeating: appendix).signum(is: expectation, isSigned: isSigned)
-                    C([0, 2   ] as [T], repeating: appendix).signum(is: expectation, isSigned: isSigned)
-                    C([0, 0, 3] as [T], repeating: appendix).signum(is: expectation, isSigned: isSigned)
-                    C([1      ] as [T], repeating: appendix).signum(is: expectation, isSigned: isSigned)
-                    C([2, 0   ] as [T], repeating: appendix).signum(is: expectation, isSigned: isSigned)
-                    C([3, 0, 0] as [T], repeating: appendix).signum(is: expectation, isSigned: isSigned)
+                for signedness: Signedness in [.unsigned, .signed] {
+                    let expectation = (appendix == 0) ? Signum.more : Signum.one(Sign(raw: signedness))
+                    C([1      ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
+                    C([1, 2   ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
+                    C([1, 2, 3] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
+                    C([1      ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
+                    C([0, 2   ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
+                    C([0, 0, 3] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
+                    C([1      ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
+                    C([2, 0   ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
+                    C([3, 0, 0] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
                 }
             }
         }
@@ -57,15 +57,15 @@ extension DataIntTests {
     func testComparisonIgnoresBodyAppendixExtensions() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
             func result(
-                _ lhs: [T], _ lhsAppendix: Bit, _ lhsIsSigned: Bool,
-                _ rhs: [T], _ rhsAppendix: Bit, _ rhsIsSigned: Bool
+                _ lhs: [T], _ lhsAppendix: Bit, _ lhsSignedness: Signedness,
+                _ rhs: [T], _ rhsAppendix: Bit, _ rhsSignedness: Signedness
             )   -> Signum {
                 
                 lhs.withUnsafeBufferPointer { lhs in
                     rhs.withUnsafeBufferPointer { rhs in
                         DataInt.compare(
-                            lhs: DataInt(lhs, repeating: lhsAppendix)!, lhsIsSigned: lhsIsSigned,
-                            rhs: DataInt(rhs, repeating: rhsAppendix)!, rhsIsSigned: rhsIsSigned
+                            lhs: DataInt(lhs, repeating: lhsAppendix)!, mode: lhsSignedness,
+                            rhs: DataInt(rhs, repeating: rhsAppendix)!, mode: rhsSignedness
                         )
                     }
                 }
@@ -79,15 +79,15 @@ extension DataIntTests {
                         
                         var rhs = base
                         for _ in 0 ..< 4 {
-                            Test().same(result(lhs, bit, false, rhs,  bit, false), !Bool(bit) ?  0 :  0) // ℕ vs ℕ | ∞ vs ∞
-                            Test().same(result(lhs, bit, false, rhs,  bit, true ), !Bool(bit) ?  0 :  1) // ℕ vs ℕ | ∞ vs -
-                            Test().same(result(lhs, bit, true,  rhs,  bit, false), !Bool(bit) ?  0 : -1) // ℕ vs ℕ | - vs ∞
-                            Test().same(result(lhs, bit, true,  rhs,  bit, true ), !Bool(bit) ?  0 :  0) // ℕ vs ℕ | - vs -
+                            Test().same(result(lhs, bit, .unsigned, rhs,  bit, .unsigned), !Bool(bit) ?  0 :  0) // ℕ vs ℕ | ∞ vs ∞
+                            Test().same(result(lhs, bit, .unsigned, rhs,  bit,   .signed), !Bool(bit) ?  0 :  1) // ℕ vs ℕ | ∞ vs -
+                            Test().same(result(lhs, bit,   .signed, rhs,  bit, .unsigned), !Bool(bit) ?  0 : -1) // ℕ vs ℕ | - vs ∞
+                            Test().same(result(lhs, bit,   .signed, rhs,  bit,   .signed), !Bool(bit) ?  0 :  0) // ℕ vs ℕ | - vs -
                             
-                            Test().same(result(lhs, bit, false, rhs, ~bit, false), !Bool(bit) ? -1 :  1) // ℕ vs ∞ | ∞ vs ℕ
-                            Test().same(result(lhs, bit, false, rhs, ~bit, true ), !Bool(bit) ?  1 :  1) // ℕ vs - | ∞ vs ℕ
-                            Test().same(result(lhs, bit, true,  rhs, ~bit, false), !Bool(bit) ? -1 : -1) // ℕ vs ∞ | - vs ℕ
-                            Test().same(result(lhs, bit, true,  rhs, ~bit, true ), !Bool(bit) ?  1 : -1) // ℕ vs - | - vs ℕ
+                            Test().same(result(lhs, bit, .unsigned, rhs, ~bit, .unsigned), !Bool(bit) ? -1 :  1) // ℕ vs ∞ | ∞ vs ℕ
+                            Test().same(result(lhs, bit, .unsigned, rhs, ~bit,   .signed), !Bool(bit) ?  1 :  1) // ℕ vs - | ∞ vs ℕ
+                            Test().same(result(lhs, bit,   .signed, rhs, ~bit, .unsigned), !Bool(bit) ? -1 : -1) // ℕ vs ∞ | - vs ℕ
+                            Test().same(result(lhs, bit,   .signed, rhs, ~bit,   .signed), !Bool(bit) ?  1 : -1) // ℕ vs - | - vs ℕ
                             
                             rhs.append(T(repeating: bit))
                         };  lhs.append(T(repeating: bit))
@@ -137,11 +137,11 @@ extension DataIntTests.Extension {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    func signum(is  expectation: Signum, isSigned: Bool) {
+    func signum(mode signedness: Signedness, is expectation: Signum) {
         self.expect(expectation) {
-            DataInt.signum(of: $0, isSigned: isSigned)
+            DataInt.signum(of: $0, mode: signedness)
         }   write: {
-            DataInt.signum(of: DataInt($0), isSigned: isSigned)
+            DataInt.signum(of: DataInt($0), mode: signedness)
         }
         
         self.expect(expectation == Signum.same) {
@@ -150,7 +150,7 @@ extension DataIntTests.Extension {
             $0.isZero
         }
         
-        if !isSigned, item.appendix == 0 {
+        if  item.appendix == 0 {
             let other = DataIntTests.Body(item.body, test: test)
             other.signum(is: expectation)
         }

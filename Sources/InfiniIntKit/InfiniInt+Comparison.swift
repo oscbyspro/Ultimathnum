@@ -31,8 +31,8 @@ extension InfiniInt {
         self.withUnsafeBinaryIntegerElements { lhs in
             other.withUnsafeBinaryIntegerElements { rhs in
                 DataInt.compare(
-                    lhs: lhs, lhsIsSigned: Self.isSigned,
-                    rhs: rhs, rhsIsSigned: Self.isSigned
+                    lhs: lhs, mode: Self.mode,
+                    rhs: rhs, mode: Self.mode
                 )
             }
         }

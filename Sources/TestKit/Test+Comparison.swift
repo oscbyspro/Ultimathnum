@@ -165,8 +165,8 @@ extension Test {
             func elements<E>(_ lhs: MutableDataInt<E>, _ rhs: MutableDataInt<E>) {
                 always: do {
                     let result = DataInt.compare(
-                        lhs: DataInt(lhs), lhsIsSigned: A.isSigned,
-                        rhs: DataInt(rhs), rhsIsSigned: B.isSigned
+                        lhs: DataInt(lhs), mode: A.mode,
+                        rhs: DataInt(rhs), mode: B.mode
                     )
 
                     same(result, expectation, "elements.compared(to:)")
@@ -183,7 +183,7 @@ extension Test {
                 }
                                 
                 if  rhsIsZero {
-                    same(DataInt.signum(of: DataInt(lhs), isSigned: A.isSigned), expectation, "elements.signum()")
+                    same(DataInt.signum(of: DataInt(lhs), mode: A.mode), expectation, "elements.signum()")
                 }
                                 
                 if  rhsIsZero, lhs.appendix == 0, rhs.appendix == 0 {

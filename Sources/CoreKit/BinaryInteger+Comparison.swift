@@ -78,7 +78,7 @@ extension BinaryInteger {
             
         }   else {
             return self.withUnsafeBinaryIntegerElements {
-                DataInt.signum(of: $0, isSigned: Self.isSigned)
+                DataInt.signum(of: $0, mode: Self.mode)
             }
         }
     }
@@ -151,8 +151,8 @@ extension BinaryInteger {
             return self.withUnsafeBinaryIntegerElements { lhs in
                 (other).withUnsafeBinaryIntegerElements(as: Self.Element.Magnitude.self) { rhs in
                     DataInt.compare(
-                        lhs: lhs, lhsIsSigned: Self .isSigned,
-                        rhs: rhs, rhsIsSigned: Other.isSigned
+                        lhs: lhs, mode: Self .mode,
+                        rhs: rhs, mode: Other.mode
                     )
                 }
             }
@@ -161,8 +161,8 @@ extension BinaryInteger {
             return self.withUnsafeBinaryIntegerElements(as: Other.Element.Magnitude.self) { lhs in
                 (other).withUnsafeBinaryIntegerElements { rhs in
                     DataInt.compare(
-                        lhs: lhs, lhsIsSigned: Self .isSigned,
-                        rhs: rhs, rhsIsSigned: Other.isSigned
+                        lhs: lhs, mode: Self .mode,
+                        rhs: rhs, mode: Other.mode
                     )
                 }
             }

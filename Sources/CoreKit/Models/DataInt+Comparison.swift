@@ -44,12 +44,14 @@ extension DataInt {
     /// Performs a three-way comparson of `instance` versus `zero` where the mode
     /// of the `instance` is determined by `isSigned`.
     ///
-    @inline(never) @inlinable public static func signum(of instance: Self, isSigned: Bool) -> Signum {
+    @inline(never) @inlinable public static func signum(
+        of instance: Self, mode signedness: Signedness
+    )   -> Signum {
         //=--------------------------------------=
         // comparison: appendix
         //=--------------------------------------=
         if  Bool(instance.appendix) {
-            return Signum.one(Sign(isSigned))
+            return Signum.one(Sign(raw: signedness))
         }
         //=--------------------------------------=
         // comparison: body
@@ -58,23 +60,26 @@ extension DataInt {
     }
     
     /// Performs a three-way comparson of `lhs` versus `rhs` where the mode
-    /// of each instance is determined by `lhsIsSigned` and `rhsIsSigned`.
+    /// of each instance is determined by `lhsSignedness` and `rhsSignedness`.
     ///
     @inline(never) @inlinable public static func compare(
-        lhs: consuming Self, lhsIsSigned: Bool,
-        rhs: consuming Self, rhsIsSigned: Bool
+        lhs: consuming Self, mode lhsSignedness: Signedness,
+        rhs: consuming Self, mode rhsSignedness: Signedness
     )   -> Signum {
         //=--------------------------------------=
         // comparison: appendix
         //=--------------------------------------=
         if  lhs.appendix != rhs.appendix {
-            return Signum.one(Sign(Bool(lhs.appendix) ? lhsIsSigned : !rhsIsSigned))
+            let sign = Bool(lhs.appendix)
+            ? lhsSignedness ==   .signed
+            : rhsSignedness == .unsigned
+            return Signum.one(Sign(sign))
         }
         //=--------------------------------------=
         // comparison: negative vs infinite
         //=--------------------------------------=
-        if  lhsIsSigned != rhsIsSigned && Bool(lhs.appendix) {
-            return Signum.one(Sign(lhsIsSigned))
+        if  lhsSignedness != rhsSignedness && Bool(lhs.appendix) {
+            return Signum.one(Sign(raw: lhsSignedness))
         }
         //=--------------------------------------=
         // normalization
@@ -85,13 +90,15 @@ extension DataInt {
         // comparison: size
         //=--------------------------------------=
         if  lhs.body.count != rhs.body.count {
-            return Signum.one(Sign(Bool(lhs.appendix) == (lhs.body.count > rhs.body.count)))
+            let appendix = Bool(lhs.appendix)
+            let order = lhs.body.count > rhs.body.count
+            return Signum.one(Sign(appendix == order))
         }
         //=--------------------------------------=
         // comparison: body
         //=--------------------------------------=
-        var index = lhs.body.count as IX
-        backwards: while index > IX.zero {
+        var index = lhs.body.count
+        while index > .zero {
             index = index.decremented().unchecked()
             
             let lhsElement: Element = lhs.body[unchecked: index]
@@ -104,10 +111,9 @@ extension DataInt {
         //=--------------------------------------=
         // comparison: same
         //=--------------------------------------=
-        return Signum.same as Signum as Signum
+        return Signum.same // as Signum as Signum
     }
 }
-
 
 //*============================================================================*
 // MARK: * Data Int x Comparison x Read|Body
@@ -153,8 +159,8 @@ extension DataInt.Body {
     /// Performs a three-way comparison of `self` versus `other`.
     @inlinable public func compared(to other: Self) -> Signum {
         DataInt.compare(
-            lhs: DataInt(self ), lhsIsSigned: false,
-            rhs: DataInt(other), rhsIsSigned: false
+            lhs: DataInt(self ), mode: .unsigned,
+            rhs: DataInt(other), mode: .unsigned
         )
     }
     
