@@ -51,7 +51,7 @@ extension DataInt {
         // comparison: appendix
         //=--------------------------------------=
         if  Bool(instance.appendix) {
-            return Signum.one(Sign(raw: signedness))
+            return Signum.one(Sign(raw: signedness)) // - < 0, ∞ > 0
         }
         //=--------------------------------------=
         // comparison: body
@@ -71,15 +71,17 @@ extension DataInt {
         //=--------------------------------------=
         if  lhs.appendix != rhs.appendix {
             let sign = Bool(lhs.appendix)
-            ? lhsSignedness ==   .signed
-            : rhsSignedness == .unsigned
+            ? lhsSignedness ==   .signed // - < ℕ or ∞ > ℕ
+            : rhsSignedness == .unsigned // ℕ < ∞ or ℕ > -
             return Signum.one(Sign(sign))
         }
         //=--------------------------------------=
         // comparison: negative vs infinite
         //=--------------------------------------=
-        if  lhsSignedness != rhsSignedness && Bool(lhs.appendix) {
-            return Signum.one(Sign(raw: lhsSignedness))
+        if  lhsSignedness != rhsSignedness {
+            if  Bool(lhs.appendix) {
+                return Signum.one(Sign(raw: lhsSignedness)) // - < ∞ or ∞ > -
+            }
         }
         //=--------------------------------------=
         // normalization
@@ -90,6 +92,10 @@ extension DataInt {
         // comparison: size
         //=--------------------------------------=
         if  lhs.body.count != rhs.body.count {
+            //
+            //  0|0... is less than 1|0... because (0s)...
+            //  0|1... is less than 1|1... because ...(1s)
+            //
             let appendix = Bool(lhs.appendix)
             let order = lhs.body.count > rhs.body.count
             return Signum.one(Sign(appendix == order))
@@ -103,7 +109,10 @@ extension DataInt {
             
             let lhsElement: Element = lhs.body[unchecked: index]
             let rhsElement: Element = rhs.body[unchecked: index]
-            
+            //
+            //  0|0... is less than 1|0... because (0s)...
+            //  0|1... is less than 1|1... because ...(1s)
+            //
             if  lhsElement != rhsElement {
                 return Signum.one(Sign(lhsElement < rhsElement))
             }

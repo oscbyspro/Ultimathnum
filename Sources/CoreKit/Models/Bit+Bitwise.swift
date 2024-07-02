@@ -26,7 +26,7 @@ extension Bit {
     }
     
     @inlinable public static func |(lhs: Self, rhs: Self) -> Self {
-        Self(raw: lhs.base == rhs.base ? lhs.base : true )
+        Self(raw: lhs.base == rhs.base ? lhs.base : true)
     }
     
     @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {

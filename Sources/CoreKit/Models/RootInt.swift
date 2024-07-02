@@ -28,7 +28,7 @@
     }
     
     @inlinable public static var isSigned: Bool {
-        Self.mode == .signed
+        true
     }
     
     //=------------------------------------------------------------------------=

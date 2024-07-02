@@ -285,9 +285,9 @@ static func &+(lhs: consuming Self, borrowing Self) -> Self // wrapping
 
 > *We don't know where it comes from, only that it exists.*
 
-You may create integers our of thin air with RootInt, which is a wrapper around Swift's
-StaticBigInt model. It comes with some additional bells and whistles. You may, for example,
-use it to query whether a type can represent an integer literal in generic code.
+You may create integers out of thin air with RootInt, a wrapper around Swift.StaticBigInt. It comes 
+with some additional bells and whistles. You may, for example, query whether a generic type can represent 
+an integer literal or load the extended bit pattern that fits.
 
 ```swift
 static func exactly(_ source: RootInt) -> Fallible<Self>
