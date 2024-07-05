@@ -19,48 +19,21 @@ extension InfiniInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inline(never) @inlinable public func count(_ selection: Bit) -> Magnitude {
-        var count = Magnitude()
-        let contrast = self.appendix.toggled()
-        
-        self.withUnsafeBinaryIntegerBody {
-            var small: IX = $0.count(contrast)
-            
-            if  contrast != selection {
-                small.toggle()
-            }
-            
-            count = Magnitude(load: small as IX)
+    @inlinable public func count(_ bit: Bit) -> Count<IX> {
+        self.withUnsafeBinaryIntegerElements {
+            $0.count(bit)
         }
-        
-        return count as Magnitude
     }
     
-    @inline(never) @inlinable public func ascending(_ bit: Bit) -> Magnitude {
-        let match = self.appendix == bit
-        var count = Magnitude.size
-        
-        self.withUnsafeBinaryIntegerBody {
-            let ascending = $0.ascending(bit)
-            let maximum = match && ascending == $0.size()
-            if !maximum {
-                count = Magnitude(load: ascending)
-            }
+    @inlinable public func ascending(_ bit: Bit) -> Count<IX> {
+        self.withUnsafeBinaryIntegerElements {
+            $0.ascending(bit)
         }
-        
-        return count as Magnitude
     }
     
-    @inline(never) @inlinable public func descending(_ bit: Bit) -> Magnitude {
-        let match = self.appendix == bit
-        var count = Magnitude(repeating: Bit(match))
-                
-        if  match {
-            self.withUnsafeBinaryIntegerBody {
-                count = count.minus(Magnitude(load: $0.nondescending(bit))).unchecked()
-            }
+    @inlinable public func descending(_ bit: Bit) -> Count<IX> {
+        self.withUnsafeBinaryIntegerElements {
+            $0.descending(bit)
         }
-        
-        return count as Magnitude
     }
 }

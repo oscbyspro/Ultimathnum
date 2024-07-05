@@ -14,7 +14,7 @@
 extension BinaryInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Inout
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     /// Performs an ascending smart shift.
@@ -23,7 +23,7 @@ extension BinaryInteger {
     ///
     /// - Note: A `distance` greater than `IX.max` is a directional flush.
     ///
-    @inlinable public static func <<=(instance: inout Self, distance: Self) {
+    @inlinable public static func <<=(instance: inout Self, distance: some BinaryInteger) {
         instance = instance << distance
     }
     
@@ -33,11 +33,32 @@ extension BinaryInteger {
     ///
     /// - Note: A `distance` greater than `IX.max` is a directional flush.
     ///
-    @inlinable public static func <<(instance: consuming Self, distance: Self) -> Self {
-        if !distance.isNegative {
-            return instance  .up(Magnitude(raw: distance))
+    @inlinable public static func <<(instance: consuming Self, distance: some BinaryInteger) -> Self {
+        //=--------------------------------------=
+        if  distance.isInfinite {
+            return instance.up(Count.infinity)
+        }
+        //=--------------------------------------=
+        let max = Self.size.isInfinite ? IX.max : IX(raw: Shift<Magnitude>.max.value)
+        //=--------------------------------------=
+        if  distance.isNegative {
+            
+            if  distance >= max.complement() {
+                return instance.down(Shift(unchecked: Count(unchecked: IX(load: distance).complement())))
+                
+            }   else {
+                return instance.down(Count.infinity) // flush >= IX.max as per protocol
+            }
+            
         }   else {
-            return instance.down(Magnitude(raw: distance.complement()))
+
+            if  distance <= UX(raw: max) {
+                return instance.up(Shift(unchecked: Count(unchecked: IX(load: distance))))
+                
+            }   else {
+                return instance.up(Count.infinity) //.. flush >= IX.max as per protocol
+            }
+            
         }
     }
     
@@ -47,7 +68,7 @@ extension BinaryInteger {
     ///
     /// - Note: A `distance` greater than `IX.max` is a directional flush.
     ///
-    @inlinable public static func >>=(instance: inout Self, distance: Self) {
+    @inlinable public static func >>=(instance: inout Self, distance: some BinaryInteger) {
         instance = instance >> distance
     }
     
@@ -57,12 +78,83 @@ extension BinaryInteger {
     ///
     /// - Note: A `distance` greater than `IX.max` is a directional flush.
     ///
-    @inlinable public static func >>(instance: consuming Self, distance: Self) -> Self {
-        if !distance.isNegative {
-            return instance.down(Magnitude(raw: distance))
-        }   else {
-            return instance  .up(Magnitude(raw: distance.complement()))
+    @inlinable public static func >>(instance: consuming Self, distance: some BinaryInteger) -> Self {
+        //=--------------------------------------=
+        if  distance.isInfinite {
+            return instance.down(Count.infinity)
         }
+        //=--------------------------------------=
+        let max = Self.size.isInfinite ? IX.max : IX(raw: Shift<Magnitude>.max.value)
+        //=--------------------------------------=
+        if  distance.isNegative {
+            
+            if  distance >= max.complement() {
+                return instance.up(Shift(unchecked: Count(unchecked: IX(load: distance).complement())))
+                
+            }   else {
+                return instance.up(Count.infinity) //.. flush >= IX.max as per protocol
+            }
+            
+        }   else {
+
+            if  distance <= UX(raw: max) {
+                return instance.down(Shift(unchecked: Count(unchecked: IX(load: distance))))
+                
+            }   else {
+                return instance.down(Count.infinity) // flush >= IX.max as per protocol
+            }
+            
+        }
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Disambiguation
+//=----------------------------------------------------------------------------=
+
+extension BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// Performs an ascending smart shift.
+    ///
+    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
+    ///
+    /// - Note: The default integer literal is `Swift.Int`.
+    ///
+    @inlinable public static func <<=(instance: inout Self, distance: Swift.Int) {
+        instance <<= IX(distance)
+    }
+    
+    /// Performs an ascending smart shift.
+    ///
+    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
+    ///
+    /// - Note: The default integer literal is `Swift.Int`.
+    ///
+    @inlinable public static func <<(instance: consuming Self, distance: Swift.Int) -> Self {
+        instance <<  IX(distance)
+    }
+    
+    /// Performs a descending smart shift.
+    ///
+    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
+    ///
+    /// - Note: The default integer literal is `Swift.Int`.
+    ///
+    @inlinable public static func >>=(instance: inout Self, distance: Swift.Int) {
+        instance >>= IX(distance)
+    }
+    /// Performs a descending smart shift.
+    ///
+    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
+    ///
+    /// - Note: The default integer literal is `Swift.Int`.
+    ///
+    @inlinable public static func >>(instance: consuming Self, distance: Swift.Int) -> Self {
+        instance >>  IX(distance)
     }
 }
 
@@ -82,8 +174,10 @@ extension BinaryInteger {
     ///
     /// - Note: A `distance` greater than `IX.max` is a directional flush.
     ///
-    @inlinable internal consuming func up(_ distance: Magnitude) -> Self {
-        if  let distance = Shift(exactly: distance) {
+    /// - Note: This method improves `Count<IX>` ergonomics.
+    ///
+    @inlinable public consuming func up(_ distance: Count<IX>) -> Self {
+        if  let distance = Shift<Magnitude>(exactly: distance) {
             return self.up(distance)
         }   else {
             return Self(repeating: Bit.zero)
@@ -96,8 +190,10 @@ extension BinaryInteger {
     ///
     /// - Note: A `distance` greater than `IX.max` is a directional flush.
     ///
-    @inlinable internal consuming func down(_ distance: Magnitude) -> Self {
-        if  let distance = Shift(exactly: distance) {
+    /// - Note: This method improves `Count<IX>` ergonomics.
+    ///
+    @inlinable public consuming func down(_ distance: Count<IX>) -> Self {
+        if  let distance = Shift<Magnitude>(exactly: distance) {
             return self.down(distance)
         }   else {
             return Self(repeating: self.appendix)
@@ -119,7 +215,7 @@ extension SystemsInteger {
     ///
     /// - Note: The filler bit is either `0` (up) or `appendix` (down).
     ///
-    @inlinable public static func &<<=(instance: inout Self, distance: Self) {
+    @inlinable public static func &<<=(instance: inout Self, distance: some BinaryInteger) {
         instance = instance &<< distance
     }
     
@@ -127,22 +223,72 @@ extension SystemsInteger {
     ///
     /// - Note: The filler bit is either `0` (up) or `appendix` (down).
     ///
-    @inlinable public static func &<<(instance: consuming Self, distance: Self) -> Self {
-        instance.up(Shift(unchecked: Magnitude(raw: distance) & Self.size.decremented().unchecked()))
+    @inlinable public static func &<<(instance: consuming Self, distance: some BinaryInteger) -> Self {
+        instance.up(Shift(masking: distance))
     }
     
     /// Performs a descending masked shift.
     ///
     /// - Note: The filler bit is either `0` (up) or `appendix` (down).
     ///
-    @inlinable public static func &>>=(instance: inout Self, distance: Self) {
+    @inlinable public static func &>>=(instance: inout Self, distance: some BinaryInteger) {
         instance = instance &>> distance
     }
     /// Performs a descending masked shift.
     ///
     /// - Note: The filler bit is either `0` (up) or `appendix` (down).
     ///
-    @inlinable public static func &>>(instance: consuming Self, distance: Self) -> Self {
-        instance.down(Shift(unchecked: Magnitude(raw: distance) & Self.size.decremented().unchecked()))
+    @inlinable public static func &>>(instance: consuming Self, distance: some BinaryInteger) -> Self {
+        instance.down(Shift(masking: distance))
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Disambiguation
+//=----------------------------------------------------------------------------=
+
+extension SystemsInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// Performs an ascending masked shift.
+    ///
+    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
+    ///
+    /// - Note: The default integer literal is `Swift.Int`.
+    ///
+    @inlinable public static func &<<=(instance: inout Self, distance: Swift.Int) {
+        instance &<<= IX(distance)
+    }
+    
+    /// Performs an ascending masked shift.
+    ///
+    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
+    ///
+    /// - Note: The default integer literal is `Swift.Int`.
+    ///
+    @inlinable public static func &<<(instance: consuming Self, distance: Swift.Int) -> Self {
+        instance &<<  IX(distance)
+    }
+    
+    /// Performs a descending masked shift.
+    ///
+    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
+    ///
+    /// - Note: The default integer literal is `Swift.Int`.
+    ///
+    @inlinable public static func &>>=(instance: inout Self, distance: Swift.Int) {
+        instance &>>= IX(distance)
+    }
+    /// Performs a descending masked shift.
+    ///
+    /// - Note: The filler bit is either `0` (up) or `appendix` (down).
+    ///
+    /// - Note: The default integer literal is `Swift.Int`.
+    ///
+    @inlinable public static func &>>(instance: consuming Self, distance: Swift.Int) -> Self {
+        instance &>>  IX(distance)
     }
 }

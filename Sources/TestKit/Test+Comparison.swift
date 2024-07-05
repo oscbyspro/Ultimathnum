@@ -200,7 +200,7 @@ extension Test {
             
             elements: do { var lhs = lhs, rhs = rhs
 
-                if  UX(size: B.Element.Magnitude.self) >= UX(size: A.Element.Magnitude.self) {
+                if  A.Element.Magnitude.size <= B.Element.Magnitude.size {
                     lhs.withUnsafeMutableBinaryIntegerElements { lhs in
                         rhs.withUnsafeMutableBinaryIntegerElements(as: A.Element.Magnitude.self) { rhs in
                             elements(lhs, rhs)

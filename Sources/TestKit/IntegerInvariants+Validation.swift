@@ -174,8 +174,8 @@ extension IntegerInvariants {
             var rhs = T.zero
             
             for ones in 0 ..< IX(size: U.self) {
-                test.ascending(lhs, 1, U.Magnitude(ones))
-                test.exactly(lhs, Fallible(rhs, error: T.isSigned ? T.size <= ones : T.size < ones))
+                test.ascending(lhs, 1, Count(ones))
+                test.exactly(lhs, Fallible(rhs, error: T.isSigned ? T.size <= Count(ones) : T.size < Count(ones)))
                 
                 lhs <<= 1
                 lhs  |= 1
@@ -221,13 +221,13 @@ extension IntegerInvariants {
                 
                 for zeros in 0 ..< IX(size: U.self) {
                     let error = switch (T.isSigned, U.isSigned) {
-                    case (true,  true ): T.size <=  zeros
+                    case (true,  true ): T.size <= Count(zeros)
                     case (true,  false): T.size <= U.size
                     case (false, true ): ((((((true))))))
                     case (false, false): T.size <  U.size
                     }
                     
-                    test.ascending(lhs, 0, U.Magnitude(zeros))
+                    test.ascending(lhs, 0, Count(zeros))
                     test.exactly(lhs, Fallible(rhs & mask, error: error))
                     lhs <<= 1
                     rhs <<= 1
@@ -273,9 +273,9 @@ extension IntegerInvariants {
                     
                     forwards: while ones + zeros < IX(size: U.self) {
                         let error = switch (T.isSigned, U.isSigned) {
-                        case (true,  true ): T.size <= ones + zeros
+                        case (true,  true ): T.size <= Count(ones + zeros)
                         case (true,  false): T.size <= U.size
-                        case (false, true ): ((((((true))))))
+                        case (false, true ):   true
                         case (false, false): T.size <  U.size
                         }
                         
@@ -287,12 +287,12 @@ extension IntegerInvariants {
                         rhs  |= 1
                     }
                     
-                    test.same(IX(size: U.self), ones +  zeros)
-                    test.descending(lhs, 0, U.Magnitude(zeros))
+                    test.same(IX(size: U.self), ones + zeros)
+                    test.descending(lhs, 0, Count(zeros))
                     
                     last: do {
                         let value = rhs & T(load: U.Magnitude(repeating: 1))
-                        let error = T.isSigned ? T.size <= ones : T.size < ones
+                        let error = T.isSigned ? T.size <= Count(ones) : T.size < Count(ones)
                         test.exactly(lhs, Fallible(value, error: error))
                     }
                 }
@@ -331,22 +331,23 @@ extension IntegerInvariants {
                     var rhs = T(load: patterns[Int(ones - 1)])
                     
                     forwards: while zeros + ones < IX(size: U.self) {
-                        test.exactly(lhs, Fallible(rhs & mask, error: T.isSigned ? T.size <= zeros + ones : T.size < zeros + ones))
+                        let sum = Count(zeros + ones)
+                        test.exactly(lhs, Fallible(rhs & mask, error: T.isSigned ? T.size <= sum : T.size < sum))
                         zeros += 1
                         lhs  <<= 1
                         rhs  <<= 1
                     }
                     
                     test.same(IX(size: U.self), zeros + ones)
-                    test.descending(lhs, 1, U.Magnitude(ones))
+                    test.descending(lhs, 1, Count(ones))
                     
                     last: do {
                         let value = U.isSigned ? rhs ^ mask.toggled() : rhs & mask
                         let error = switch (T.isSigned, U.isSigned) {
-                        case (true,  true ): T.size <  zeros + ones
-                        case (true,  false): T.size <= zeros + ones
-                        case (false, true ): (((((((((true)))))))))
-                        case (false, false): T.size <  zeros + ones
+                        case (true,  true ): T.size <  Count(zeros + ones)
+                        case (true,  false): T.size <= Count(zeros + ones)
+                        case (false, true ):   true
+                        case (false, false): T.size <  Count(zeros + ones)
                         }
                         
                         test.exactly(lhs, Fallible(value, error: error))

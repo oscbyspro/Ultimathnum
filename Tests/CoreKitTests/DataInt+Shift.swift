@@ -25,13 +25,14 @@ extension DataIntTests {
             typealias C = DataIntTests.Body<T>
             typealias F = Fallible<[T]>
             //=----------------------------------=
+            let size = IX(size: T.self)
             let base = [01, 02, 03, 04] as [T]
             //=----------------------------------=
             for x: T in [0, 1, ~1, ~0] {
-                C(base).upshift(0, environment: x, is: [(x >> (T.size - 0)) | 1,  2,  3,  4] as [T])
-                C(base).upshift(1, environment: x, is: [(x >> (T.size - 1)) | 2,  4,  6,  8] as [T])
-                C(base).upshift(2, environment: x, is: [(x >> (T.size - 2)) | 4,  8, 12, 16] as [T])
-                C(base).upshift(3, environment: x, is: [(x >> (T.size - 3)) | 8, 16, 24, 32] as [T])
+                C(base).upshift(0, environment: x, is: [(x >> (size - 0)) | 1,  2,  3,  4] as [T])
+                C(base).upshift(1, environment: x, is: [(x >> (size - 1)) | 2,  4,  6,  8] as [T])
+                C(base).upshift(2, environment: x, is: [(x >> (size - 2)) | 4,  8, 12, 16] as [T])
+                C(base).upshift(3, environment: x, is: [(x >> (size - 3)) | 8, 16, 24, 32] as [T])
             }
         }
         
@@ -96,7 +97,7 @@ extension DataIntTests {
             for x: T in [0, 1, ~1, ~0] {
                 
                 let a: T = (x &<< 1) | (x &>> ~0)
-                let b: T = (x  >> (T.size - 0001))
+                let b: T = (x  >> (size - 1))
                 
                 C([~0,  0,  0,  0] as [T]).upshift(0 * size + 1, environment: x, is: [b | ~1,  1,  0,  0] as [T])
                 C([ 0, ~0,  0,  0] as [T]).upshift(0 * size + 1, environment: x, is: [b |  0, ~1,  1,  0] as [T])
@@ -124,13 +125,14 @@ extension DataIntTests {
             typealias C = DataIntTests.Body<T>
             typealias F = Fallible<[T]>
             //=----------------------------------=
+            let size = IX(size: T.self)
             let base = [08, 16, 24, 32] as [T]
             //=----------------------------------=
             for x: T in [0, 1, ~1, ~0] {
-                C(base).downshift(0, environment: x, is: [ 8, 16, 24, 32 | (x << (T.size - 0))] as [T])
-                C(base).downshift(1, environment: x, is: [ 4,  8, 12, 16 | (x << (T.size - 1))] as [T])
-                C(base).downshift(2, environment: x, is: [ 2,  4,  6,  8 | (x << (T.size - 2))] as [T])
-                C(base).downshift(3, environment: x, is: [ 1,  2,  3,  4 | (x << (T.size - 3))] as [T])
+                C(base).downshift(0, environment: x, is: [ 8, 16, 24, 32 | (x << (size - 0))] as [T])
+                C(base).downshift(1, environment: x, is: [ 4,  8, 12, 16 | (x << (size - 1))] as [T])
+                C(base).downshift(2, environment: x, is: [ 2,  4,  6,  8 | (x << (size - 2))] as [T])
+                C(base).downshift(3, environment: x, is: [ 1,  2,  3,  4 | (x << (size - 3))] as [T])
             }
         }
         
@@ -195,8 +197,8 @@ extension DataIntTests {
             for x: T in [0, 1, ~1, ~0] {
                 
                 let a: T = (x &>> 1) | (x &<< ~0)
-                let b: T = (x  << (T.size - 0001))
-                let c: T = (1  << (T.size - 0001))
+                let b: T = (x  << (size - 1))
+                let c: T = (1  << (size - 1))
                 
                 C([0,  0,  0,  7] as [T]).downshift(0 * size + 1, environment: x, is: [ 0, 0, c, 3 | b] as [T])
                 C([0,  0,  7,  0] as [T]).downshift(0 * size + 1, environment: x, is: [ 0, c, 3, 0 | b] as [T])

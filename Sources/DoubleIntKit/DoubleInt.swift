@@ -52,8 +52,8 @@ import CoreKit
         Base.mode
     }
     
-    @inlinable public static var size: Magnitude {
-        Magnitude(Base.size.multiplication(2))
+    @inlinable public static var size: Count<IX> {
+        Count(unchecked: 2 * IX(size: Base.self))
     }
     
     //=------------------------------------------------------------------------=

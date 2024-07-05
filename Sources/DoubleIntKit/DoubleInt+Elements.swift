@@ -21,19 +21,19 @@ extension DoubleInt {
     
     @inlinable public init(load source: IX) {
         let low  = Low (load: source)
-        let high = High(load: source >> IX(size: Low.self))
+        let high = High(load: source.down(Low.size))
         self.init(low: low, high: high)
     }
     
     @inlinable public init(load source: UX) {
         let low  = Low (load: source)
-        let high = High(load: source >> UX(size: Low.self))
+        let high = High(load: source.down(Low.size))
         self.init(low: low, high: high)
     }
     
     @inlinable public borrowing func load(as type: UX.BitPattern.Type) -> UX.BitPattern {
         let low  = UX(load: self.storage.low )
-        let high = UX(load: self.storage.high) << UX(size: Low.self)
+        let high = UX(load: self.storage.high).up(Low.size)
         return UX.BitPattern(raw: low  | high)
     }
     

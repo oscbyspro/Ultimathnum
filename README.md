@@ -202,12 +202,12 @@ precision in generic code, and byte swapping for efficient endianness conversion
 
 > Trust me, I know what I'm doing...
 
-| Type         | Guarantee        |
-|:-------------|:-----------------|
-| Divisor      | x ≠ 0            |
-| Finite       | x ∈ ℤ            |
-| Natural      | x ∈ ℕ            |
-| Shift        | x ∈ ℕ, x \< size |
+| Type         | Guarantee |
+|:-------------|:----------|
+| Divisor      | x ≠ 0     |
+| Finite       | x ∈ ℤ     |
+| Natural      | x ∈ ℕ     |
+| Shift        | x \< size |
 
 Once you start using primitive types to form more complex types, you notice that some behaviors
 compose better than others. A trusted input delegates precondition checks to the programmer 

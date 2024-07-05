@@ -77,7 +77,6 @@ extension BinaryInteger {
         sign: consuming Sign = .plus,
         magnitude: consuming Other
     )   where Other: UnsignedInteger  {
-        
         self = Self.exactly(sign: sign, magnitude: magnitude).unwrap()
     }
 
@@ -94,14 +93,14 @@ extension BinaryInteger {
     
     /// Creates a validated instance from the given `source`.
     @inlinable public static func exactly<Other>(_ source: consuming Other) -> Fallible<Self> where Other: BinaryInteger {
-        if  let lhsSize = UX(size: Self.self), let rhsSize = UX(size: Other.self) {
-            if  lhsSize > rhsSize, Self.isSigned {
+        if  let size = IX(size: Self.self), !Other.size.isInfinite {
+            if  Self.size > Other.size, Self.isSigned {
                 return Fallible(Self(load: source))
                 
-            }   else if lhsSize >= rhsSize, Self.isSigned == Other.isSigned {
+            }   else if Self.size >= Other.size, Self.isSigned == Other.isSigned {
                 return Fallible(Self(load: source))
                 
-            }   else if lhsSize >= rhsSize {
+            }   else if Self.size >= Other.size {
                 Swift.assert(Self.isSigned != Other.isSigned)
                 let rhsIsNegative = source.isNegative
                 let result = Self(load: source)
@@ -109,10 +108,9 @@ extension BinaryInteger {
                 return result.veto(lhsIsNegative != rhsIsNegative)
                 
             }   else {
-                Swift.assert(lhsSize < rhsSize)
-                let bit = Bit(Self.isSigned && source.isNegative)
-                let count = source.nondescending(bit)
-                let limit = lhsSize.minus(Self.isSigned).unchecked()
+                Swift.assert(Self.size < Other.size)
+                let limit = Count(unchecked: size.minus(Self.isSigned).unchecked())
+                let count = source.nondescending(Bit(Self.isSigned && source.isNegative))
                 return Self(load: source).veto(limit < count)
             }
             
@@ -155,15 +153,13 @@ extension BinaryInteger {
     ///
     @_disfavoredOverload // BinaryInteger.init(clamping: some FiniteInteger)
     @inlinable public init?(clamping source: some BinaryInteger) {
-        let size: Magnitude = Self.size
-        if !size.isInfinite {
+        if !Self.size.isInfinite {
             
             if  let  instance = Self.exactly(source).optional() {
                 self = instance
                 
             }   else if Self.isSigned {
-                let distance = size.decremented().unchecked()
-                let msb = Magnitude.lsb .up(Shift(unchecked: distance))
+                let msb = Self.lsb.up(Shift.max)
                 self.init(raw: source.isNegative ? msb : msb.toggled())
                 
             }   else {

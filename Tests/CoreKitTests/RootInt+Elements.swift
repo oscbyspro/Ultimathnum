@@ -49,7 +49,7 @@ extension RootIntTests {
         Test().same(T( 000)[UX.max],  000 as UX)
         Test().same(T( 123)[UX.max],  000 as UX)
         
-        Test().same(T(-0x80000000000000000000000000000000)[127 / UX.size],  (UX.max << min(127, UX.size - 1)))
-        Test().same(T( 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)[127 / UX.size], ~(UX.max << min(127, UX.size - 1)))
+        Test().same(T(-0x80000000000000000000000000000000)[127 / UX(size: UX.self)],  (UX.max << min(127, UX(size: UX.self) - 1)))
+        Test().same(T( 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)[127 / UX(size: UX.self)], ~(UX.max << min(127, UX(size: UX.self) - 1)))
     }
 }

@@ -20,32 +20,24 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func up(_ distance: Shift<Magnitude>) -> Self {
-        //=--------------------------------------=
-        // note: even a 2-bit shift fits in 1 bit
-        //=--------------------------------------=
-        if  UX(load: distance.value.low) >= UX(size: Base.self) {
-            let distance = Shift(unchecked: distance.value.low.minus(Base.size).unchecked())
-            self.high = Base(raw: self.low.up(distance))
-            self.low  = Base.Magnitude(repeating: Bit(false))
+        let difference = UX(raw: distance.value).minus(UX(raw: Base.size))
+        if  difference.error {
+            return Self(self.storage.up(Shift(unchecked: distance.value)))
+            
         }   else {
-            self.storage = self.storage.up(Shift(unchecked: distance.value.low))
+            let shift = Shift<Low>(unchecked: Count(unchecked: IX(raw: difference.value)))
+            return Self(low: Low.zero, high: High(raw: self.low.up(shift)))
         }
-
-        return self // as Self as Self as Self
     }
     
     @inlinable public consuming func down(_ distance: Shift<Magnitude>) -> Self {
-        //=--------------------------------------=
-        // note: even a 2-bit shift fits in 1 bit
-        //=--------------------------------------=
-        if  UX(load: distance.value.low) >= UX(size: Base.self) {
-            let distance = Shift(unchecked: distance.value.low.minus(Base.size).unchecked())
-            self.low  = Base.Magnitude(raw: self.high.down(distance))
-            self.high = Base(repeating: Bit(self.high.isNegative))
+        let difference = UX(raw: distance.value).minus(UX(raw: Base.size))
+        if  difference.error {
+            return Self(self.storage.down(Shift(unchecked: distance.value)))
+            
         }   else {
-            self.storage = self.storage.down(Shift(unchecked: distance.value.low))
+            let shift = Shift<Low>(unchecked: Count(unchecked: IX(raw: difference.value)))
+            return Self(low: Low(raw: self.high.down(shift)), high: High(repeating: self.high.appendix))
         }
-        
-        return self // as Self as Self as Self
     }
 }

@@ -179,8 +179,8 @@ extension InfiniIntTests {
             //=----------------------------------=
             typealias T = InfiniInt<E>
             //=----------------------------------=
-            Test().upshift(T(U8 .max), 01, T([U8 .max << 01, U8 .max >> 07]))
-            Test().upshift(T(U32.max), 16, T([U32.max << 16, U32.max >> 16]))
+            Test().upshift(T(U8 .max), 01 as IX, T([U8 .max << 01, U8 .max >> 07]))
+            Test().upshift(T(U32.max), 16 as IX, T([U32.max << 16, U32.max >> 16]))
             //=----------------------------------=
             for distance in U64.zero ... 128 {
                 Test().downshift(~0 as T, T(distance), ~0 as T)

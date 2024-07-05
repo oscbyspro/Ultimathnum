@@ -19,36 +19,36 @@ extension DoubleInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func count(_ bit: Bit) -> Magnitude {
-        var count: UX
+    @inlinable public borrowing func count(_ bit: Bit) -> Count<IX> {
+        var count: IX
 
-        count  = UX(load: self.storage.low .count(bit))
-        count += UX(load: self.storage.high.count(bit))
+        count   = IX(raw: self.storage.low .count(bit))
+        count &+= IX(raw: self.storage.high.count(bit))
         
-        return Magnitude(load: count)
+        return Count(unchecked: count)
     }
     
-    @inlinable public borrowing func ascending(_ bit: Bit) -> Magnitude {
-        var count: UX
+    @inlinable public borrowing func ascending(_ bit: Bit) -> Count<IX> {
+        var count: IX
 
-        always: do {
-            count  = UX(load: self.storage.low .ascending(bit))
-            guard count == UX(size: Base.self) else { break always }
-            count += UX(load: self.storage.high.ascending(bit))
+        scope: do {
+            count   = IX(raw: self.storage.low .ascending(bit))
+            guard count == IX(size: Base.self) else { break scope }
+            count &+= IX(raw: self.storage.high.ascending(bit))
         }
         
-        return Magnitude(load: count)
+        return Count(unchecked: count)
     }
     
-    @inlinable public borrowing func descending(_ bit: Bit) -> Magnitude {
-        var count: UX
+    @inlinable public borrowing func descending(_ bit: Bit) -> Count<IX> {
+        var count: IX
 
-        always: do {
-            count  = UX(load: self.storage.high.descending(bit))
-            guard count == UX(size: Base.self) else { break always }
-            count += UX(load: self.storage.low .descending(bit))
+        scope: do {
+            count   = IX(raw: self.storage.high.descending(bit))
+            guard count == IX(size: Base.self) else { break scope }
+            count &+= IX(raw: self.storage.low .descending(bit))
         }
         
-        return Magnitude(load: count)
+        return Count(unchecked: count)
     }
 }

@@ -12,11 +12,23 @@
 //*============================================================================*
 
 /// A binary integer `body` and `appendix` view.
-@frozen public struct DataInt<Element>: Recoverable where Element: SystemsInteger & UnsignedInteger {
+@frozen public struct DataInt<Element>: BitCountable, Recoverable where Element: SystemsInteger & UnsignedInteger {
         
     public typealias Element = Element
         
     public typealias Mutable = MutableDataInt<Element>
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Metadata
+    //=------------------------------------------------------------------------=
+    
+    /// The maximum number of elements in its `body`.
+    ///
+    /// - Note: Its `entropy` must not exceed `IX.max`.
+    ///
+    @inlinable public static var capacity: IX {
+        IX.max.decremented().quotient(Divisor(size: Element.self)).unchecked()
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -65,11 +77,23 @@
     ///
     /// - Important: Its subsequences are rebased instances of this type.
     ///
-    @frozen public struct Body: Recoverable {
+    @frozen public struct Body: BitCountable, Recoverable {
         
         public typealias Element = DataInt.Element
         
         public typealias Mutable = MutableDataInt<Element>.Body
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Metadata
+        //=--------------------------------------------------------------------=
+
+        /// The maximum number of elements in its `body`.
+        ///
+        /// - Note: Its `entropy` must not exceed `IX.max`.
+        ///
+        @inlinable public static var capacity: IX {
+            DataInt<Element>.capacity
+        }
         
         //=--------------------------------------------------------------------=
         // MARK: State
@@ -88,7 +112,9 @@
         }
         
         @inlinable public init(_ start: UnsafePointer<Element>, count: IX) {
-            Swift.assert(count >= .zero, String.brokenInvariant())
+            Swift.assert(count >= IX.zero, String.brokenInvariant())
+            Swift.assert(count <= DataInt<Element>.capacity, String.brokenInvariant())
+            
             self.start = start
             self.count = count
         }
@@ -125,11 +151,23 @@
 /// destination memory is uninitialized or that the pointee is a trivial type.
 /// In this case, the latter is always true.
 ///
-@frozen public struct MutableDataInt<Element>: Recoverable where Element: SystemsInteger & UnsignedInteger {
+@frozen public struct MutableDataInt<Element>: BitCountable, Recoverable where Element: SystemsInteger & UnsignedInteger {
         
     public typealias Element = Element
-        
+    
     public typealias Immutable = DataInt<Element>
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Metadata
+    //=------------------------------------------------------------------------=
+
+    /// The maximum number of elements in its `body`.
+    ///
+    /// - Note: Its `entropy` must not exceed `IX.max`.
+    ///
+    @inlinable public static var capacity: IX {
+        Immutable.capacity
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -183,11 +221,23 @@
     /// destination memory is uninitialized or that the pointee is a trivial type.
     /// In this case, the latter is always true.
     ///
-    @frozen public struct Body: Recoverable {
+    @frozen public struct Body: BitCountable, Recoverable {
         
         public typealias Element = MutableDataInt.Element
         
         public typealias Immutable = DataInt<Element>.Body
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Metadata
+        //=--------------------------------------------------------------------=
+
+        /// The maximum number of elements in its `body`.
+        ///
+        /// - Note: Its `entropy` must not exceed `IX.max`.
+        ///
+        @inlinable public static var capacity: IX {
+            Immutable.capacity
+        }
         
         //=--------------------------------------------------------------------=
         // MARK: State
@@ -206,7 +256,9 @@
         }
         
         @inlinable public init(_ start: UnsafeMutablePointer<Element>, count: IX) {
-            Swift.assert(count >= .zero, String.brokenInvariant())
+            Swift.assert(count >= IX.zero, String.brokenInvariant())
+            Swift.assert(count <= DataInt<Element>.capacity, String.brokenInvariant())
+            
             self.start = start
             self.count = count
         }

@@ -20,38 +20,26 @@ extension InfiniInt {
     //=------------------------------------------------------------------------=
     
     @inline(never) @inlinable public consuming func up(_ distance: Shift<Magnitude>) -> Self {
-        //=--------------------------------------=
-        Swift.assert(!distance.value.isInfinite)
-        Swift.assert(!distance.value.isNegative)
-        //=--------------------------------------=
-        // path: flush >= IX.max as per protocol
-        //=--------------------------------------=
-        guard let distance = IX.exactly(distance.value).optional() else {
-            return Self.zero
+        if  let distance = distance.value.natural().optional() {
+            let division = distance.division(Divisor(size: Element.self)).unchecked()
+            self.storage.upshift(major: division.quotient, minor: division.remainder)
+            Swift.assert(self.storage.isNormal)
+            return self as Self as Self as Self
+            
+        }   else {
+            return Self.zero // flush >= IX.max as per protocol
         }
-        //=--------------------------------------=
-        let division = distance.division(Divisor(size: Element.self)).unchecked()
-        self.storage.upshift(major: division.quotient, minor: division.remainder)
-        Swift.assert(self.storage.isNormal)
-        return self as Self as Self as Self
     }
     
     @inline(never) @inlinable public consuming func down(_ distance: Shift<Magnitude>) -> Self {
-        //=--------------------------------------=
-        Swift.assert(!distance.value.isInfinite)
-        Swift.assert(!distance.value.isNegative)
-        //=--------------------------------------=
-        // path: flush >= IX.max as per protocol
-        //=--------------------------------------=
-        guard let distance = IX.exactly(distance.value).optional() else {
-            return Self(repeating: self.appendix)
+        if  let distance = distance.value.natural().optional() {
+            let division = distance.division(Divisor(size: Element.self)).unchecked()
+            self.storage.downshift(major: division.quotient, minor: division.remainder)
+            Swift.assert(self.storage.isNormal)
+            return self as Self as Self as Self
+            
+        }   else {
+            return Self(repeating: self.appendix) // flush >= IX.max as per protocol
         }
-        //=--------------------------------------=
-        // path: success
-        //=--------------------------------------=
-        let division = distance.division(Divisor(size: Element.self)).unchecked()
-        self.storage.downshift(major: division.quotient, minor: division.remainder)
-        Swift.assert(self.storage.isNormal)
-        return self as Self as Self as Self
     }
 }

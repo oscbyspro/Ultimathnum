@@ -17,6 +17,12 @@ public struct BinaryIntegerID {
     
 }
 
+public struct BitCountableID {
+    
+    public init() { }
+    
+}
+
 public struct ComparableID {
     
     public init() { }

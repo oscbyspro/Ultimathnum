@@ -30,11 +30,11 @@ extension TextInt {
         }
         
         //  both paths reinterpret the integer as unsigned
-        if  let size  = UX(size: T.self), size <= UX.size {
+        if  T.size <= UX.size {
             var small = UX(load: T.Magnitude(raw: integer))
-            let count = IX(Bit(!small.isZero))
+            let range = PartialRangeUpTo(IX(Bit(!small.isZero)))
             return small.withUnsafeMutableBinaryIntegerBody {
-                self.encode(sign: sign, mask: mask, normalized: $0[unchecked: ..<count])
+                self.encode(sign: sign, mask: mask, normalized: $0[unchecked: range])
             }
             
         }   else {
@@ -54,11 +54,11 @@ extension TextInt {
             magnitude.toggle()
         }
         
-        if  let size  = UX(size: T.self), size <= UX.size {
+        if  T.size <= UX.size {
             var small = UX(load: magnitude)
-            let count = IX(Bit(!small.isZero))
+            let range = PartialRangeUpTo(IX(Bit(!small.isZero)))
             return small.withUnsafeMutableBinaryIntegerBody {
-                self.encode(sign: sign, mask: mask, normalized: $0[unchecked: ..<count])
+                self.encode(sign: sign, mask: mask, normalized: $0[unchecked: range])
             }
             
         }   else {
@@ -111,14 +111,14 @@ extension TextInt {
         //=--------------------------------------=
         // text: capacity upper bound
         //=--------------------------------------=
-        var capacity: IX = body.nondescending(0)
-        var speed = self.exponentiation.power.size() as UX
-        
-        if !self.exponentiation.power.isZero {
-            speed = speed.decremented().minus(self.exponentiation.power.descending(0)).unchecked()
+        var capacity = IX(raw: body.nondescending(0))
+        let speed = if self.exponentiation.power.isZero {
+            IX(raw: self.exponentiation.power.size())
+        }   else  {
+            IX(raw: self.exponentiation.power.nondescending(0)).decremented().unchecked()
         }
         
-        capacity /= IX(raw: speed)
+        capacity /= speed
         capacity += 1
         capacity *= self.exponentiation.exponent
         capacity += IX(Bit(sign != nil))

@@ -88,45 +88,24 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// Returns the `relative` value of `self`.
+    /// Returns the relative `value` of `self` and an `error` indicator.
+    /// The `error` indicator is set when `self` is infinite.
     ///
     /// ```
-    /// ┌───────────────────────┬──────────┐
-    /// │ self                  │ relative │
-    /// ├───────────────────────┼──────────┤
-    /// │ 0                     │  0       │
-    /// │ 1                     │  1       │
-    /// │ 2                     │  2       │
-    /// ├───────────────────────┼──────────┤
-    /// │ log2(UXL.max + 1) - 2 │ -3       │
-    /// │ log2(UXL.max + 1) - 1 │ -2       │
-    /// │ log2(UXL.max + 1)     │ -1       │
-    /// └───────────────────────┴──────────┘
-    /// ```
-    ///
-    @inlinable public func relative() -> Layout {
-        self.base
-    }
-    
-    /// Returns the `relative` value of `self` and an `error` indicator. The `error`
-    /// indicator is set when `self` is infinite. In that case, the `relative` value
-    /// is also negative.
-    ///
-    /// ```
-    /// ┌───────────────────────┬──────────────────┐
-    /// │ self                  │ relative │ error │
-    /// ├───────────────────────┼──────────┼───────┤
-    /// │ 0                     │  0       │ false │
-    /// │ 1                     │  1       │ false │
-    /// │ 2                     │  2       │ false │
-    /// ├───────────────────────┼──────────┼───────┤
-    /// │ log2(UXL.max + 1) - 2 │ -3       │ true  │
-    /// │ log2(UXL.max + 1) - 1 │ -2       │ true  │
-    /// │ log2(UXL.max + 1)     │ -1       │ true  │
-    /// └───────────────────────┴──────────┴───────┘
+    /// ┌───────────────────────┬───────────────┐
+    /// │ self                  │ value │ error │
+    /// ├───────────────────────┼───────┼───────┤
+    /// │ 0                     │  0    │ false │
+    /// │ 1                     │  1    │ false │
+    /// │ 2                     │  2    │ false │
+    /// ├───────────────────────┼───────┼───────┤
+    /// │ log2(UXL.max + 1) - 2 │ -3    │ true  │
+    /// │ log2(UXL.max + 1) - 1 │ -2    │ true  │
+    /// │ log2(UXL.max + 1)     │ -1    │ true  │
+    /// └───────────────────────┴───────┴───────┘
     /// ```
     ///
     @inlinable public func natural() -> Fallible<Layout> {
-        Fallible(self.relative(), error: self.isInfinite)
+        Fallible(self.base, error: self.isInfinite)
     }
 }

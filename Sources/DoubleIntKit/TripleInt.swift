@@ -22,7 +22,7 @@ import CoreKit
     public typealias Mid  = Base.Magnitude
     
     public typealias Low  = Base.Magnitude
-            
+    
     public typealias BitPattern = Storage.BitPattern
     
     public typealias Element = Base.Element
@@ -41,8 +41,8 @@ import CoreKit
         Base.mode
     }
     
-    @inlinable public static var size: Magnitude {
-        Magnitude(low: Base.size.multiplication(3), high: Base.Magnitude())
+    @inlinable public static var size: Count<IX> {
+        Count(unchecked: 3 * IX(size: Base.self))
     }
     
     //=------------------------------------------------------------------------=

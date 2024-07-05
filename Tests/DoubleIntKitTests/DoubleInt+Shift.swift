@@ -21,24 +21,13 @@ extension DoubleIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testShift() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self)  .upshiftRepeatingBit()
-            IntegerInvariants(T.self).downshiftRepeatingBit()
-        }
-        
-        for type in Self.types {
-            whereIs(type)
-        }
-    }
-    
     func testUpshift() {
         func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
             //=----------------------------------=
             let low = T.zero
-            let mid = T(low: B.size)
-            let top = T(raw: T.size)
+            let mid = T(IX(size: B.self))
+            let top = T(IX(size: T.self))
             //=----------------------------------=
             Test().upshift(T(low: 1, high:  2), low + 0 as T, T(low:  1, high:  2))
             Test().upshift(T(low: 1, high:  2), low + 1 as T, T(low:  2, high:  4))
@@ -69,8 +58,8 @@ extension DoubleIntTests {
             typealias T = DoubleInt<B>
             //=----------------------------------=
             let low = T.zero
-            let mid = T(low: B.size)
-            let top = T(raw: T.size)
+            let mid = T(IX(size: B.self))
+            let top = T(IX(size: T.self))
             //=----------------------------------=
             Test().downshift(T(low: 8, high: 16), low + 0 as T, T(low:  8, high: 16))
             Test().downshift(T(low: 8, high: 16), low + 1 as T, T(low:  4, high:  8))

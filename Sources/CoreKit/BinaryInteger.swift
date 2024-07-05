@@ -22,16 +22,6 @@
 /// UXL(repeating: 0).toggled() == UXL(repeating: 1)
 /// ```
 ///
-/// Keep in mind that infinite values take on the order of their host type.
-/// You may intuit that the size of an infinite integer is smaller than its
-/// upper bound. If you are interested in infinite values then you need to
-/// track where they came from. In most cases, however, it is enough to view
-/// infinite values as well-behaved bit patterns.
-///
-/// ```swift
-/// IXL.size // log2(UXL.max + 1) gets promoted to UXL.max
-/// ```
-/// 
 /// - Important: Infinite values take on the order of their host type.
 ///
 /// ### Stride
@@ -48,6 +38,7 @@
 ///
 public protocol BinaryInteger<BitPattern>:
     BitCastable,
+    BitCountable,
     BitOperable,
     Comparable,
     ExpressibleByIntegerLiteral,
@@ -96,22 +87,20 @@ where
     ///
     @inlinable static var mode: Signedness { get }
     
-    /// The number of bits that fit in the `body` of this binary integer type.
+    /// The number of bits in the abstract `body` of this type.
     ///
     /// ```
     /// ┌──────┬───────────────────┐
     /// │ type │ size              │
     /// ├──────┼───────────────────┤
     /// │ I64  │ 64                │
-    /// │ IXL  │ UXL(repeating: 1) │
+    /// │ IXL  │ log2(UXL.max + 1) │ == Count.infinity
     /// └──────┴───────────────────┘
     /// ```
     ///
-    /// - Note: `log2(UXL.max + 1)` gets promoted to `UXL.max`.
+    /// - Invariant: `count(x) + noncount(x) == size()`
     ///
-    /// - Invariant: `Self.size == self.count(0) + self.count(1)`.
-    ///
-    @inlinable static var size: Magnitude { get }
+    @inlinable static var size: Count<IX> { get }
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -347,41 +336,6 @@ where
     @inlinable borrowing func compared(to other: borrowing Self) -> Signum
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    /// The `bit` count in `self`.
-    ///
-    /// ```swift
-    /// I8(11).count(0) // 5
-    /// I8(11).count(1) // 3
-    /// ```
-    ///
-    @inlinable borrowing func count(_ bit: Bit) -> Magnitude
-    
-    /// The ascending `bit` count in `self`.
-    ///
-    /// ```swift
-    /// I8(11).ascending(0) // 0
-    /// I8(11).ascending(1) // 2
-    /// I8(22).ascending(0) // 1
-    /// I8(22).ascending(1) // 0
-    /// ```
-    ///
-    @inlinable borrowing func ascending(_ bit: Bit) -> Magnitude
-    
-    /// The descending `bit` count in `self`.
-    ///
-    /// ```swift
-    /// I8(11).descending(0) // 4
-    /// I8(11).descending(1) // 0
-    /// I8(22).descending(0) // 3
-    /// I8(22).descending(1) // 0
-    /// ```
-    ///
-    @inlinable borrowing func descending(_ bit: Bit) -> Magnitude
-    
-    //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
@@ -408,20 +362,6 @@ where
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
-    
-    /// The bit that extends this binary integer's `body`.
-    ///
-    /// ```
-    ///            ┌───────────────┬───────────────┐
-    ///            │ appendix == 0 │ appendix == 1 |
-    /// ┌──────────┼───────────────┤───────────────┤
-    /// │   Signed │     self >= 0 │     self <  0 │
-    /// ├──────────┼───────────────┤───────────────┤
-    /// │ Unsigned │     self <  ∞ │     self >= ∞ │
-    /// └──────────┴───────────────┴───────────────┘
-    /// ```
-    ///
-    @inlinable var appendix: Bit { borrowing get }
     
     /// Performs the `action` on the `body` of `self`.
     ///

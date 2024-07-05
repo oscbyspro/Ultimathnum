@@ -47,6 +47,8 @@ extension CoreIntTests {
             typealias F = Fallible<D>
             typealias X = Doublet<T>
             //=----------------------------------=
+            let size = IX(size: T.self)
+            //=----------------------------------=
             Test().division(X(low:  1 as M, high:  T .max >> 1    ), T.max, F(D(quotient: T.max, remainder:         0)))
             Test().division(X(low: ~M .msb, high:  T .max >> 1    ), T.max, F(D(quotient: T.max, remainder: T.max - 1)))
             Test().division(X(low:  M .msb, high:  T .max >> 1    ), T.max, F(D(quotient: T.min, remainder:         0), error: true))
@@ -62,10 +64,10 @@ extension CoreIntTests {
             Test().division(X(low:  M .msb, high: -1 as T), -1 as T, F(D(quotient:  T.min, remainder:  0), error: true))
             //=----------------------------------=
             Test().division(X(low:  0 as M, high: ~0 as T),  0 as T, nil)
-            Test().division(X(low:  0 as M, high: ~0 as T),  1 as T, F(D(quotient: ~0 << T(raw: T.size - 0), remainder: 0), error: true))
-            Test().division(X(low:  0 as M, high: ~0 as T),  2 as T, F(D(quotient: ~0 << T(raw: T.size - 1), remainder: 0)))
-            Test().division(X(low:  0 as M, high: ~0 as T),  4 as T, F(D(quotient: ~0 << T(raw: T.size - 2), remainder: 0)))
-            Test().division(X(low:  0 as M, high: ~0 as T),  8 as T, F(D(quotient: ~0 << T(raw: T.size - 3), remainder: 0)))
+            Test().division(X(low:  0 as M, high: ~0 as T),  1 as T, F(D(quotient: (~0 as T) << (size - 0), remainder: 0), error: true))
+            Test().division(X(low:  0 as M, high: ~0 as T),  2 as T, F(D(quotient: (~0 as T) << (size - 1), remainder: 0)))
+            Test().division(X(low:  0 as M, high: ~0 as T),  4 as T, F(D(quotient: (~0 as T) << (size - 2), remainder: 0)))
+            Test().division(X(low:  0 as M, high: ~0 as T),  8 as T, F(D(quotient: (~0 as T) << (size - 3), remainder: 0)))
         }
         
         func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger {
@@ -74,19 +76,21 @@ extension CoreIntTests {
             typealias F = Fallible<D>
             typealias X = Doublet<T>
             //=----------------------------------=
-            Test().division(X(low:  1 as M, high: ~1 as T), ~0 as T, F(D(quotient: ~0, remainder:  0)))
-            Test().division(X(low: ~0 as M, high: ~1 as T), ~0 as T, F(D(quotient: ~0, remainder: ~1)))
+            let size = IX(size: T.self)
+            //=----------------------------------=
+            Test().division(X(low:  1 as M, high: ~1 as T), ~0 as T, F(D(quotient: (~0 as T), remainder: ( 0 as T))))
+            Test().division(X(low: ~0 as M, high: ~1 as T), ~0 as T, F(D(quotient: (~0 as T), remainder: (~1 as T))))
             //=----------------------------------=
             Test().division(X(low:  7 as M, high:  0 as T),  0 as T, nil)
             Test().division(X(low:  7 as M, high: ~0 as T),  0 as T, nil)
-            Test().division(X(low:  0 as M, high: ~0 as T), ~0 as T, F(D(quotient:  0, remainder:  0), error: true))
-            Test().division(X(low: ~0 as M, high: ~1 as T), ~0 as T, F(D(quotient: ~0, remainder: ~1)))
+            Test().division(X(low:  0 as M, high: ~0 as T), ~0 as T, F(D(quotient: ( 0 as T), remainder: ( 0 as T)), error: true))
+            Test().division(X(low: ~0 as M, high: ~1 as T), ~0 as T, F(D(quotient: (~0 as T), remainder: (~1 as T))))
             //=----------------------------------=
             Test().division(X(low:  0 as M, high: ~0 as T),  0 as T, nil)
-            Test().division(X(low:  0 as M, high: ~0 as T),  1 as T, F(D(quotient: ~0 << T(raw: T.size - 0), remainder: 0), error: true))
-            Test().division(X(low:  0 as M, high: ~0 as T),  2 as T, F(D(quotient: ~0 << T(raw: T.size - 1), remainder: 0), error: true))
-            Test().division(X(low:  0 as M, high: ~0 as T),  4 as T, F(D(quotient: ~0 << T(raw: T.size - 2), remainder: 0), error: true))
-            Test().division(X(low:  0 as M, high: ~0 as T),  8 as T, F(D(quotient: ~0 << T(raw: T.size - 3), remainder: 0), error: true))
+            Test().division(X(low:  0 as M, high: ~0 as T),  1 as T, F(D(quotient: (~0 as T) << (size - 0), remainder: 0), error: true))
+            Test().division(X(low:  0 as M, high: ~0 as T),  2 as T, F(D(quotient: (~0 as T) << (size - 1), remainder: 0), error: true))
+            Test().division(X(low:  0 as M, high: ~0 as T),  4 as T, F(D(quotient: (~0 as T) << (size - 2), remainder: 0), error: true))
+            Test().division(X(low:  0 as M, high: ~0 as T),  8 as T, F(D(quotient: (~0 as T) << (size - 3), remainder: 0), error: true))
         }
         
         for type in Self.typesWhereIsSigned {

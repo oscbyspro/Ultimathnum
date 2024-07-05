@@ -25,14 +25,20 @@ extension Count {
         Layout.Magnitude(raw: lhs.base) < Layout.Magnitude(raw: rhs.base)
     }
     
+    @inlinable public borrowing func compared(to other: Self) -> Signum {
+        Layout.Magnitude(raw: self.base).compared(to: Layout.Magnitude(raw: other.base))
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// Indicates whether this value is zero.
     @inlinable public var isZero: Bool {
         self.base.isZero
     }
     
+    /// Indicates whether this value is infinite.
     @inlinable public var isInfinite: Bool {
         Bool(self.base.appendix)
     }

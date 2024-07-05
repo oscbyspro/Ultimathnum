@@ -75,17 +75,19 @@ extension DoubleIntTests {
             always: do {
                 Test().distance(T.min, T.min.advanced(by:    126), F(I8 .max - 1))
                 Test().distance(T.min, T.min.advanced(by:    127), F(I8 .max))
-                Test().distance(T.min, T.min.advanced(by:    128), F(I8 .min, error: true), lossy: T.size > 08)
+                Test().distance(T.min, T.min.advanced(by:    128), F(I8 .min, error: true), lossy: T.size > Count(08))
                 
-                Test().distance(T.max, T.max.advanced(by:   -129), F(I8 .max, error: true), lossy: T.size > 08)
+                Test().distance(T.max, T.max.advanced(by:   -129), F(I8 .max, error: true), lossy: T.size > Count(08))
                 Test().distance(T.max, T.max.advanced(by:   -128), F(I8 .min))
                 Test().distance(T.max, T.max.advanced(by:   -127), F(I8 .min + 1))
-            };  if T.size >= 16 {
+            }
+            
+            if  T.size >= Count(16) {
                 Test().distance(T.min, T.min.advanced(by:  32766), F(I16.max - 1))
                 Test().distance(T.min, T.min.advanced(by:  32767), F(I16.max))
-                Test().distance(T.min, T.min.advanced(by:  32768), F(I16.min, error: true), lossy: T.size > 16)
+                Test().distance(T.min, T.min.advanced(by:  32768), F(I16.min, error: true), lossy: T.size > Count(16))
                 
-                Test().distance(T.max, T.max.advanced(by: -32769), F(I16.max, error: true), lossy: T.size > 16)
+                Test().distance(T.max, T.max.advanced(by: -32769), F(I16.max, error: true), lossy: T.size > Count(16))
                 Test().distance(T.max, T.max.advanced(by: -32768), F(I16.min))
                 Test().distance(T.max, T.max.advanced(by: -32767), F(I16.min + 1))
             }

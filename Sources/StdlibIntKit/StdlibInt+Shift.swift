@@ -20,19 +20,19 @@ extension StdlibInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func <<(instance: consuming Self, distance: some Swift.BinaryInteger) -> Self {
-        Self(instance.base << Base(load: IX(Swift.Int(clamping: distance))))
-    }
-    
     @inlinable public static func <<=(instance: inout Self, distance: some Swift.BinaryInteger) {
         instance = instance << distance
     }
     
-    @inlinable public static func >>(instance: consuming Self, distance: some Swift.BinaryInteger) -> Self {
-        Self(instance.base >> Base(load: IX(Swift.Int(clamping: distance))))
+    @inlinable public static func <<(instance: consuming Self, distance: some Swift.BinaryInteger) -> Self {
+        Self(instance.base << IX(Swift.Int(clamping: distance)))
     }
     
     @inlinable public static func >>=(instance: inout Self, distance: some Swift.BinaryInteger) {
         instance = instance >> distance
+    }
+    
+    @inlinable public static func >>(instance: consuming Self, distance: some Swift.BinaryInteger) -> Self {
+        Self(instance.base >> IX(Swift.Int(clamping: distance)))
     }
 }

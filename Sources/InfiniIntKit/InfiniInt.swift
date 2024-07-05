@@ -28,6 +28,8 @@ import CoreKit
 ///
 /// - TODO: Make it generic over its `Element` type.
 ///
+/// - TODO: Precondition resizing `DataInt<Element>.capacity`.
+///
 @frozen public struct InfiniInt<Source>: BinaryInteger where Source: SystemsInteger {
     
     public typealias Element = Source.Element
@@ -41,7 +43,7 @@ import CoreKit
     public typealias Signitude  = InfiniInt<Source.Signitude>
     
     @usableFromInline typealias Storage = InfiniIntStorage<Element.Magnitude>
-        
+    
     //=------------------------------------------------------------------------=
     // MARK: Metadata
     //=------------------------------------------------------------------------=
@@ -50,8 +52,8 @@ import CoreKit
         Source.mode
     }
     
-    @inlinable public static var size: Magnitude {
-        Magnitude(unchecked: Storage([], repeating: 1))
+    @inlinable public static var size: Count<IX> {
+        Count.infinity
     }
     
     //=------------------------------------------------------------------------=

@@ -16,99 +16,222 @@ import CoreKit
 extension Test {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Utilities x Binary Integer
     //=------------------------------------------------------------------------=
     
-    /// - Note: Each call checks both `instance` and `instance.toggled()`.
+    /// - Note: it tests `bit` and `bit.toggled()`.
+    ///
+    /// - Note: It tests `instance` and `instance.toggled()`.
+    ///
     public func count<T>(
         _ instance: T,
         _ bit: Bit,
-        _ expectation: T.Magnitude
+        _ expectation: Count<IX>
     )   where T: BinaryInteger {
-        //=--------------------------------------=
-        guard let expectationInverse = some(T.size.minus(expectation).optional(), "inverse") else { return }
-        //=--------------------------------------=
-        let instance    = (normal: instance,    inverse: instance.toggled())
-        let expectation = (normal: expectation, inverse: expectationInverse)
-        //=--------------------------------------=
-        // path: count
-        //=--------------------------------------=
-        same(instance.normal .count( bit), expectation.normal,  "count [0]")
-        same(instance.normal .count(~bit), expectation.inverse, "count [1]")
-        same(instance.inverse.count( bit), expectation.inverse, "count [2]")
-        same(instance.inverse.count(~bit), expectation.normal,  "count [3]")
+        
+        let nonexpectation = Count<IX>(raw: IX(raw: instance.size()) - IX(raw: expectation))
+        for var x: (instance: T, expectation: Count<IX>) in [(instance, expectation), (instance.toggled(), nonexpectation)] {
+            self.count(x.instance, bit, x.expectation, id: BitCountableID())
+            
+            if !T.size.isInfinite {
+                x.instance.withUnsafeBinaryIntegerBody {
+                    self.count($0, bit, x.expectation, id: BitCountableID())
+                }
+                
+                x.instance.withUnsafeMutableBinaryIntegerBody {
+                    self.count($0, bit, x.expectation, id: BitCountableID())
+                }
+                
+            }   else {
+                x.instance.withUnsafeBinaryIntegerElements {
+                    self.count($0, bit, x.expectation, id: BitCountableID())
+                }
+                
+                x.instance.withUnsafeMutableBinaryIntegerElements {
+                    self.count($0, bit, x.expectation, id: BitCountableID())
+                }
+            }
+        }
     }
     
-    /// - Note: Each call checks both `instance` and `instance.toggled()`.
+    /// - Note: it tests `bit` and `bit.toggled()`.
+    ///
+    /// - Note: It tests `instance` and `instance.toggled()`.
+    ///
     public func ascending<T>(
         _ instance: T,
         _ bit: Bit,
-        _ expectation: T.Magnitude
+        _ expectation: Count<IX>
     )   where T: BinaryInteger {
+        
+        for var x: (instance: T, bit: Bit) in [(instance, bit), (instance.toggled(), bit.toggled())] {
+            self.ascending(x.instance, x.bit, expectation, id: BitCountableID())
+            
+            if !T.size.isInfinite {
+                x.instance.withUnsafeBinaryIntegerBody {
+                    self.ascending($0, x.bit, expectation, id: BitCountableID())
+                }
+                
+                x.instance.withUnsafeMutableBinaryIntegerBody {
+                    self.ascending($0, x.bit, expectation, id: BitCountableID())
+                }
+                
+            }   else {
+                x.instance.withUnsafeBinaryIntegerElements {
+                    self.ascending($0, x.bit, expectation, id: BitCountableID())
+                }
+                
+                x.instance.withUnsafeMutableBinaryIntegerElements {
+                    self.ascending($0, x.bit, expectation, id: BitCountableID())
+                }
+            }
+        }
+    }
+    
+    /// - Note: it tests `bit` and `bit.toggled()`.
+    ///
+    /// - Note: It tests `instance` and `instance.toggled()`.
+    ///
+    public func descending<T>(
+        _ instance: T,
+        _ bit: Bit,
+        _ expectation: Count<IX>
+    )   where T: BinaryInteger {
+        
+        for var x: (instance: T, bit: Bit) in [(instance, bit), (instance.toggled(), bit.toggled())] {
+            self.descending(x.instance, x.bit, expectation, id: BitCountableID())
+            
+            if !T.size.isInfinite {
+                x.instance.withUnsafeBinaryIntegerBody {
+                    self.descending($0, x.bit, expectation, id: BitCountableID())
+                }
+                
+                x.instance.withUnsafeMutableBinaryIntegerBody {
+                    self.descending($0, x.bit, expectation, id: BitCountableID())
+                }
+                
+            }   else {
+                x.instance.withUnsafeBinaryIntegerElements {
+                    self.descending($0, x.bit, expectation, id: BitCountableID())
+                }
+                
+                x.instance.withUnsafeMutableBinaryIntegerElements {
+                    self.descending($0, x.bit, expectation, id: BitCountableID())
+                }
+            }
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities x Bit Countable
+    //=------------------------------------------------------------------------=
+    
+    /// - Note: It tests `bit` and `bit.toggled()`.
+    public func count<T>(
+        _ instance: T,
+        _ bit: Bit,
+        _ expectation: Count<IX>,
+        id: BitCountableID = .init()
+    )   where T: BitCountable {
         //=--------------------------------------=
-        guard let expectationInverse = some(T.size.minus(expectation).optional(), "inverse") else { return }
+        let nonexpectation = Count<IX>(raw: IX(raw: instance.size()) - IX(raw: expectation))
         //=--------------------------------------=
-        let instance    = (normal: instance,    inverse: instance.toggled())
-        let expectation = (normal: expectation, inverse: expectationInverse)
+        // path: count plus noncount is size
+        //=--------------------------------------=
+        always: do {
+            let x0 = IX(raw: instance.count( bit))
+            let x1 = IX(raw: instance.count(~bit))
+            same(Count.init(raw: x0 + x1), instance.size(), "count(x) + noncount(x) == size()")
+        }
+        //=--------------------------------------=
+        // path: count
+        //=--------------------------------------=
+        same(instance.count( bit),    expectation, "count [0]")
+        same(instance.count(~bit), nonexpectation, "count [1]")
+    }
+    
+    /// - Note: It tests `bit` and `bit.toggled()`.
+    public func ascending<T>(
+        _ instance: T,
+        _ bit: Bit,
+        _ expectation: Count<IX>,
+        id: BitCountableID = .init()
+    )   where T: BitCountable {
+        //=--------------------------------------=
+        let nonexpectation = Count<IX>(raw: IX(raw: instance.size()) - IX(raw: expectation))
+        //=--------------------------------------=
+        // path: count plus noncount is size
+        //=--------------------------------------=
+        for bit: Bit in [0, 1] {
+            let x0 = IX(raw: instance   .ascending(bit))
+            let x1 = IX(raw: instance.nonascending(bit))
+            same(Count.init(raw: x0 + x1), instance.size(), "count(x) + noncount(x) == size()")
+        }
         //=--------------------------------------=
         // path: ascending
         //=--------------------------------------=
-        same(instance.normal .ascending( bit), expectation.normal, "ascending [0]")
-        same(instance.inverse.ascending(~bit), expectation.normal, "ascending [1]")
+        always: do {
+            same(instance.ascending( bit), expectation, "ascending [0]")
+    }
         
-        if !(expectation).normal.isZero {
-            same(instance.normal .ascending(~bit), T.Magnitude(),  "ascending [2]")
-            same(instance.inverse.ascending( bit), T.Magnitude(),  "ascending [3]")
+        if !(expectation).isZero {
+            same(instance.ascending(~bit), Count<IX>.zero, "ascending [1]")
         }
         //=--------------------------------------=
         // path: nonascending
         //=--------------------------------------=
-        same(instance.normal .nonascending( bit), expectation.inverse,  "nonascending [0]")
-        same(instance.inverse.nonascending(~bit), expectation.inverse,  "nonascending [1]")
+        always: do {
+            same(instance.nonascending( bit), nonexpectation, "nonascending [0]")
+        }
         
-        if !(expectation).normal.isZero {
-            same(instance.normal .nonascending(~bit), T.Magnitude.size, "nonascending [2]")
-            same(instance.inverse.nonascending( bit), T.Magnitude.size, "nonascending [3]")
+        if !(expectation).isZero {
+            same(instance.nonascending(~bit), instance.size(), "nonascending [1]")
         }
     }
     
-    /// - Note: Each call checks both `instance` and `instance.toggled()`.
+    /// - Note: It tests `bit` and `bit.toggled()`.
     public func descending<T>(
         _ instance: T,
         _ bit: Bit,
-        _ expectation: T.Magnitude
-    )   where T: BinaryInteger {
+        _ expectation: Count<IX>,
+        id: BitCountableID = .init()
+    )   where T: BitCountable {
         //=--------------------------------------=
-        guard let expectationInverse = some(T.size.minus(expectation).optional(), "inverse") else { return }
+        let nonexpectation = Count<IX>(raw: IX(raw: instance.size()) - IX(raw: expectation))
         //=--------------------------------------=
-        let instance    = (normal: instance,    inverse: instance.toggled())
-        let expectation = (normal: expectation, inverse: expectationInverse)
+        // path: count plus noncount is size
+        //=--------------------------------------=
+        for bit: Bit in [0, 1] {
+            let x0 = IX(raw: instance   .descending(bit))
+            let x1 = IX(raw: instance.nondescending(bit))
+            same(Count.init(raw: x0 + x1), instance.size(), "count(x) + noncount(x) == size()")
+        }
         //=--------------------------------------=
         // path: descending
         //=--------------------------------------=
-        same(instance.normal .descending( bit), expectation.normal, "descending [0]")
-        same(instance.inverse.descending(~bit), expectation.normal, "descending [1]")
+        always: do {
+            same(instance.descending( bit), expectation, "descending [0]")
+        }
         
-        if !(expectation).normal.isZero {
-            same(instance.normal .descending(~bit), T.Magnitude(),  "descending [2]")
-            same(instance.inverse.descending( bit), T.Magnitude(),  "descending [3]")
+        if !(expectation).isZero {
+            same(instance.descending(~bit), Count<IX>.zero, "descending [1]")
         }
         //=--------------------------------------=
         // path: nondescending
         //=--------------------------------------=
-        same(instance.normal .nondescending( bit), expectation.inverse,  "nondescending [0]")
-        same(instance.inverse.nondescending(~bit), expectation.inverse,  "nondescending [1]")
+        always: do {
+            same(instance.nondescending( bit), nonexpectation, "nondescending [0]")
+        }
 
-        if !(expectation).normal.isZero {
-            same(instance.normal .nondescending(~bit), T.Magnitude.size, "nondescending [2]")
-            same(instance.inverse.nondescending( bit), T.Magnitude.size, "nondescending [3]")
+        if !(expectation).isZero {
+            same(instance.nondescending(~bit), instance.size(), "nondescending [2]")
         }
         //=--------------------------------------=
         // path: entropy
         //=--------------------------------------=
-        for var x in [instance.normal, instance.inverse] {
-            same(x.nondescending(x.appendix), T.Magnitude(x.withUnsafeBinaryIntegerElements({        $0.entropy() }) - 1), "elements.entropy() [0]")
-            same(x.nondescending(x.appendix), T.Magnitude(x.withUnsafeMutableBinaryIntegerElements({ $0.entropy() }) - 1), "elements.entropy() [1]")
+        always: do {
+            let expectation = IX(raw: instance.nondescending(instance.appendix)).incremented().unwrap()
+            same(instance.entropy(), Count(raw: expectation), "entropy")
         }
     }
 }

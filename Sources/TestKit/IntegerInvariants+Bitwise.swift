@@ -104,16 +104,19 @@ extension IntegerInvariants {
     //=------------------------------------------------------------------------=
     
     public func endianness(_ id: SystemsIntegerID) where T: SystemsInteger {
+        //=--------------------------------------=
+        let size = IX(size: T.self)
+        //=--------------------------------------=
         test.same(T(repeating: 0).endianness( .ascending), T(repeating: 0))
         test.same(T(repeating: 0).endianness(.descending), T(repeating: 0))
         test.same(T(repeating: 1).endianness( .ascending), T(repeating: 1))
         test.same(T(repeating: 1).endianness(.descending), T(repeating: 1))
         
         test.same(T(1).endianness( .endianess),                         T(1))
-        test.same(T(1).endianness( .endianess.reversed()),              T(1) << T(raw: T.size - 8))
+        test.same(T(1).endianness( .endianess.reversed()),              T(1) << (size - 8))
         test.same(T(5).endianness( .ascending).endianness( .ascending), T(5))
-        test.same(T(4).endianness( .ascending).endianness(.descending), T(4) << T(raw: T.size - 8))
-        test.same(T(3).endianness(.descending).endianness( .ascending), T(3) << T(raw: T.size - 8))
+        test.same(T(4).endianness( .ascending).endianness(.descending), T(4) << (size - 8))
+        test.same(T(3).endianness(.descending).endianness( .ascending), T(3) << (size - 8))
         test.same(T(2).endianness(.descending).endianness(.descending), T(2))
     }
 }

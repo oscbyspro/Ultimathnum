@@ -124,30 +124,30 @@ extension BinaryInteger {
     
     /// Performs a three-way comparison of `self` versus `other`.
     @inlinable public func compared<Other>(to other: Other) -> Signum where Other: BinaryInteger {
-        if  let lhsSize = UX(size: Self.self), let rhsSize = UX(size: Other.self) {
+        if !Self.size.isInfinite, !Other.size.isInfinite {
             if  Self.isSigned == Other.isSigned {
-                if  lhsSize < rhsSize {
+                if  Self.size < Other.size {
                     return Other(load: self).compared(to: other)
                 }   else {
                     return self.compared(to: Self(load: other))
                 }
                 
             }   else if Self.isSigned {
-                if  lhsSize > rhsSize {
+                if  Self.size > Other.size {
                     return self.compared(to: Self(load: other))
                 }   else {
                     return self.isNegative ? Signum.less : Other(load: self).compared(to: other)
                 }
                 
             }   else /* if Other.isSigned */ {
-                if  lhsSize < rhsSize {
+                if  Self.size < Other.size {
                     return Other(load: self).compared(to: other)
                 }   else {
                     return other.isNegative ? Signum.more : self.compared(to: Self(load: other))
                 }
             }
             
-        }   else if UX(size: Self.Element.Magnitude.self) <= UX(size: Other.Element.Magnitude.self) {
+        }   else if Self.Element.Magnitude.size <= Other.Element.Magnitude.size {
             return self.withUnsafeBinaryIntegerElements { lhs in
                 (other).withUnsafeBinaryIntegerElements(as: Self.Element.Magnitude.self) { rhs in
                     DataInt.compare(

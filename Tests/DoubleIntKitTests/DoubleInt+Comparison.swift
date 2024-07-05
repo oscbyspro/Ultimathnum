@@ -35,14 +35,14 @@ extension DoubleIntTests {
     
     /// - Note: Generic tests may depend on these results.
     func testComparisonOfSize() {
-        for size: U8x2 in [I8x2.size, U8x2.size] {
-            Test().comparison(size, U8  .size,  1 as Signum)
-            Test().comparison(size, U16 .size,  0 as Signum)
-            Test().comparison(size, U32 .size, -1 as Signum)
-            Test().comparison(size, U64 .size, -1 as Signum)
+        for size: Count<IX> in [I8x2.size, U8x2.size] {
+            Test().comparison(size, U8  .size,  1 as Signum, id: ComparableID())
+            Test().comparison(size, U16 .size,  0 as Signum, id: ComparableID())
+            Test().comparison(size, U32 .size, -1 as Signum, id: ComparableID())
+            Test().comparison(size, U64 .size, -1 as Signum, id: ComparableID())
             
-            Test().comparison(size, I8x2.size,  0 as Signum)
-            Test().comparison(size, U8x2.size,  0 as Signum)
+            Test().comparison(size, I8x2.size,  0 as Signum, id: ComparableID())
+            Test().comparison(size, U8x2.size,  0 as Signum, id: ComparableID())
         }
     }
     

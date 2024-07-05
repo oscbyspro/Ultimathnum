@@ -35,17 +35,17 @@ extension InfiniIntTests {
     
     /// - Note: Generic tests may depend on these results.
     func testComparisonOfSize() {
-        for size: UXL in [IXL.size, UXL.size] {
-            Test().comparison(size, U8 .size, 1 as Signum)
-            Test().comparison(size, U16.size, 1 as Signum)
-            Test().comparison(size, U32.size, 1 as Signum)
-            Test().comparison(size, U64.size, 1 as Signum)
+        for size: Count<IX> in [IXL.size, UXL.size] {
+            Test().comparison(size, U8 .size, 1 as Signum, id: ComparableID())
+            Test().comparison(size, U16.size, 1 as Signum, id: ComparableID())
+            Test().comparison(size, U32.size, 1 as Signum, id: ComparableID())
+            Test().comparison(size, U64.size, 1 as Signum, id: ComparableID())
         }
         
         func whereIsArbitrary<A, B>(_ lhs: A.Type, _ rhs: B.Type) where A: BinaryInteger, B: BinaryInteger {
             Test().yay(A.size.isInfinite)
             Test().yay(B.size.isInfinite)
-            Test().comparison(A.size, B.size, Signum.same)
+            Test().comparison(A.size, B.size, Signum.same, id: ComparableID())
         }
         
         for lhs in Self.types {

@@ -24,9 +24,8 @@ final class CountTests: XCTestCase {
         func whereTheLayoutIs<Layout>(_ layout: Layout.Type) where Layout: SystemsInteger & SignedInteger {
             typealias T = Count<Layout>
             
-            Test().same(T.zero, T(raw:              0 as Layout))
-            Test().same(T.zero .natural(), Fallible(0 as Layout))
-            Test().same(T.zero.relative(),         (0 as Layout))
+            Test().same(T.zero,           T(raw:   0 as Layout))
+            Test().same(T.zero.natural(), Fallible(0 as Layout))
         }
         
         for layout in coreSystemsIntegersWhereIsSigned {
@@ -38,9 +37,8 @@ final class CountTests: XCTestCase {
         func whereTheLayoutIs<Layout>(_ layout: Layout.Type) where Layout: SystemsInteger & SignedInteger {
             typealias T = Count<Layout>
             
-            Test().same(T.infinity, T(raw:              -1 as Layout))
-            Test().same(T.infinity .natural(), Fallible(-1 as Layout, error: true))
-            Test().same(T.infinity.relative(),         (-1 as Layout))
+            Test().same(T.infinity,           T(raw:   -1 as Layout))
+            Test().same(T.infinity.natural(), Fallible(-1 as Layout, error: true))
         }
         
         for layout in coreSystemsIntegersWhereIsSigned {

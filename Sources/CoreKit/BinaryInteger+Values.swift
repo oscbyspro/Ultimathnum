@@ -56,7 +56,7 @@ extension EdgyInteger {
     
     @inlinable public static var min: Self {
         if  isSigned {
-            return Self(raw: Magnitude.lsb.up(Shift(unchecked: size.decremented().unchecked())))
+            return Self(raw: Magnitude.lsb.up(Shift.max))
         }   else {
             return Self()
         }
@@ -79,7 +79,7 @@ extension SystemsInteger {
     
     /// A value with its most significant bit set to `1`
     @inlinable public static var msb: Self {
-        Self(raw: Magnitude.lsb.up(Shift(unchecked: size.decremented().unchecked())))
+        Self(raw: Magnitude.lsb.up(Shift.max))
     }
 }
 
@@ -90,30 +90,30 @@ extension SystemsInteger {
 extension SystemsInteger where BitPattern == UX.BitPattern {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: Initializers x Size
     //=------------------------------------------------------------------------=
     
-    /// Returns the size of the given type as a machine word.
+    /// Returns the `size` of the given type as a machine word.
     ///
-    /// - Note: A finite integer size must fit in this type per protocol.
+    /// - Note: A finite integer `size` must fit in this type per protocol.
     ///
-    /// - Important: A binary integer's size is measured in bits.
+    /// - Important: A binary integer's `size` is measured in bits.
     ///
     @inlinable public init<Other>(size type: Other.Type) where Other: SystemsInteger {
-        self.init(load: Other.size)
+        self.init(load: UX(raw: Other.size))
     }
     
-    /// Returns the size of the given type as a machine word, if possible.
+    /// Returns the `size` of the given type as a machine word, if possible.
     ///
-    /// - Note: A finite integer size must fit in this type per protocol.
+    /// - Note: A finite integer `size` must fit in this type per protocol.
     ///
-    /// - Important: A binary integer's size is measured in bits.
+    /// - Important: A binary integer's `size` is measured in bits.
     ///
     @inlinable public init?<Other>(size type: Other.Type) where Other: BinaryInteger {
         if  Other.size.isInfinite {
             return nil
         }   else {
-            self.init(load: Other.size)
+            self.init(load: UX(raw: Other.size))
         }
     }
 }

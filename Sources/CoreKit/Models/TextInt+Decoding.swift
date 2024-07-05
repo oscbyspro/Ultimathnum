@@ -93,7 +93,7 @@ extension TextInt {
         }   else {
             capacity = capacity.plus(1).unchecked()
         }
-        //=--------------------------------------=        
+        //=--------------------------------------=
         return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
             let words = MutableDataInt<UX>.Body(consume $0)![unchecked: ..<capacity]
             var index = IX.zero
@@ -131,7 +131,7 @@ extension TextInt {
     )   throws {
         //=--------------------------------------=
         Swift.assert(self.exponentiation.power.isZero)
-        Swift.assert(self.exponentiation.exponent.count(1) == 1)
+        Swift.assert(self.exponentiation.exponent.count(1) == Count(1))
         //=--------------------------------------=
         // text must contain at least one numeral
         //=--------------------------------------=

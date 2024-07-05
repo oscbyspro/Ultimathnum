@@ -18,10 +18,10 @@ extension CoreInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func up(_ distance: Shift<Magnitude>) -> Self {
-        Self(self.base &<< distance.value.base)
+        Self(self.base &<< distance.value.base.base)
     }
     
     @inlinable public consuming func down(_ distance: Shift<Magnitude>) -> Self {
-        Self(self.base &>> distance.value.base)
+        Self(self.base &>> distance.value.base.base)
     }
 }

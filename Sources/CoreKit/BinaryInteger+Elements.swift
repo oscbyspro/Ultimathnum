@@ -19,7 +19,7 @@ extension BinaryInteger {
     
     /// Creates a new instance from the bit pattern of `source` that fits.
     @inlinable public init<OtherElement>(load source: DataInt<OtherElement>) {
-        if  UX(size: Self.Element.Magnitude.self) <= UX(size: OtherElement.self) {
+        if  Self.Element.Magnitude.size <= OtherElement.size {
             self = source.reinterpret(as: Self.Element.Magnitude.self, perform: Self.init(load:))
         }   else {
             self = source.reinterpret(as: U8.self, perform: Self.init(load:))
@@ -33,7 +33,7 @@ extension BinaryInteger {
     
     /// Creates a validated instance from the given `source` and `signedness`.
     @inlinable public static func exactly<OtherElement>(_ source: DataInt<OtherElement>, mode signedness: Signedness) -> Fallible<Self> {
-        if  UX(size: Self.Element.Magnitude.self) <= UX(size: OtherElement.self) {
+        if  Self.Element.Magnitude.size <= OtherElement.size {
             return source.reinterpret(as: Self.Element.Magnitude.self) {
                 Self.exactly($0, mode: signedness)
             }
@@ -87,30 +87,20 @@ extension BinaryInteger {
     
     /// Creates a new instance from the bit pattern of `source` that fits.
     @inlinable public init<Other>(load source: borrowing Other) where Other: BinaryInteger {
-        //=--------------------------------------=
-        let lhsSize = UX(size: Self .self)
-        let rhsSize = UX(size: Other.self)
-        //=--------------------------------------=
-        // path: Other <= min(Element, UX)
-        //=--------------------------------------=
-        if  let rhsSize, rhsSize <= Swift.min(UX(size: Element.self), UX.size) {
+        if  Other.size <= Swift.min(Element.size, UX.size) {
             if  Other.isSigned {
                 self.init(load: Element.Signitude(load: IX(load: source)))
             }   else {
                 self.init(load: Element.Magnitude(load: UX(load: source)))
             }
-        //=--------------------------------------=
-        // path: Self <= UX || Other <= UX
-        //=--------------------------------------=
-        }   else if lhsSize.map({ $0 <= UX.size }) == true || rhsSize.map({ $0 <= UX.size }) == true {
+            
+        }   else if Self.size <= UX.size || Other.size <= UX.size {
             if  Other.isSigned {
                 self.init(load: IX(load: source))
             }   else {
                 self.init(load: UX(load: source))
             }
-        //=--------------------------------------=
-        // path: Self >  UX && Other >  UX
-        //=--------------------------------------=
+            
         }   else {
             self = source.withUnsafeBinaryIntegerElements(Self.init(load:))
         }

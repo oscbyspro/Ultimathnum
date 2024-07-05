@@ -211,7 +211,7 @@ extension InfiniIntTests {
             //=----------------------------------=
             lhs = T((0 as S ..< 16).map({ $0 }))
             rhs = T([S](repeating: S.min, count: 16) + [1] as [S])
-            pro = lhs << T(S.size * 16)
+            pro = lhs << (16 * IX(size: S.self))
             
             Test().same(lhs.times(rhs), Fallible(pro))
             Test().same(rhs.times(lhs), Fallible(pro))

@@ -106,7 +106,7 @@ extension DoubleInt where Base == Base.Magnitude {
     }
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
-    @inlinable internal consuming func division2222(_ divisor: consuming Divisor<Self>, normalization: consuming Shift<Self>) -> Division<Self, Self> {
+    @inlinable internal consuming func division2222(_ divisor: consuming Divisor<Self>, normalization: Shift<Self>) -> Division<Self, Self> {
         //=--------------------------------------=
         Swift.assert(!divisor .value.isZero, "must not divide by zero")
         Swift.assert((divisor).value.descending(Bit.zero) == normalization.value, "save shift distance")
@@ -130,7 +130,7 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         // division: 2121
         //=--------------------------------------=
-        if  UX(load: normalization.value) >= UX(size: Base.self) {
+        if  normalization.value >= Base.size {
             Swift.assert(divisor.value.high.isZero, "divisor must fit in one half")
             let result: Division<Self, Base> = self.division2121(unchecked: Divisor(unchecked: divisor.value.low))
             return Division(quotient: result.quotient, remainder: Self(low: result.remainder))
@@ -138,7 +138,7 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         // normalization
         //=--------------------------------------=
-        let top = normalization.value.low.isZero ? High.zero : self.high &>> normalization.value.low.complement()
+        let top = normalization.isZero ? High.zero : self.high &>> normalization.natural().complement()
         let lhs = self.up(normalization)
         let rhs = Divisor(unchecked: divisor.value.up(normalization))
         //=--------------------------------------=
@@ -156,7 +156,7 @@ extension DoubleInt where Base == Base.Magnitude {
     @inlinable internal static func division4222(_ lhs: consuming Doublet<Self>, by rhs: Divisor<Self>) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
         var overflow = false
-        let normalization = Shift(unchecked: rhs.value.descending(Bit.zero))
+        let normalization = Shift<Self>(unchecked: rhs.value.descending(Bit.zero))
         //=--------------------------------------=
         // if quotient does not fit in two halves
         //=--------------------------------------=
@@ -183,7 +183,7 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         // division: 3121
         //=--------------------------------------=
-        if  UX(load: normalization.value) >= UX(size: Base.self) {
+        if  normalization.value >= Base.size {
             Swift.assert(rhs.value.high.isZero,  "divisor must fit in one half")
             Swift.assert(lhs.high .high.isZero, "quotient must fit in two halves")
             let result = TripleInt(low: lhs.low.storage, high: lhs.high.low).division3121(unchecked: Divisor(unchecked: rhs.value.low))

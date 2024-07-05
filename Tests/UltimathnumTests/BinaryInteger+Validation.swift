@@ -19,8 +19,8 @@ import TestKit
 // MARK: + Edge Cases
 //=----------------------------------------------------------------------------=
 
-extension BinaryIntegerTests {
-    
+final class BinaryIntegerTestsAboutValidation: XCTestCase {
+
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
@@ -33,8 +33,8 @@ extension BinaryIntegerTests {
             Test().same(B(clamping: A.max - 1), B.max)
         }
         
-        for source in Self.arbitraryIntegersWhereIsUnsigned {
-            for destinaiton in Self.systemsIntegers {
+        for source in arbitraryIntegersWhereIsUnsigned {
+            for destinaiton in systemsIntegers {
                 whereIs(source, destinaiton)
             }
         }

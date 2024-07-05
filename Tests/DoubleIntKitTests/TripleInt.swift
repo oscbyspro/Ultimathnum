@@ -52,7 +52,7 @@ final class TripleIntTests: XCTestCase {
             typealias M = TripleInt<B>.Magnitude
             
             Test().same(T.mode, B.mode)
-            Test().same(T.size, M(low: 3 * B.size, mid: 0, high: 0))
+            Test().same(T.size, Count(3 * IX(size: B.self)))
         }
         
         for base in Self.bases {

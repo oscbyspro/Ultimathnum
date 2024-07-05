@@ -38,7 +38,7 @@ extension InfiniIntStorage {
             
         }   else {
             let edge = self.body.last ?? Element(repeating: .zero)
-            let margin = IX(load: edge.descending(self.appendix))
+            let margin = IX(raw: edge.descending(self.appendix))
             let target = self.count + major + IX(Bit(margin < minor))
             
             self.resize(minCount: target)
@@ -59,7 +59,7 @@ extension InfiniIntStorage {
         //=--------------------------------------=
         guard let edge = self.body.last else { return }
         //=--------------------------------------=
-        let margin = IX(load: edge.nondescending(self.appendix))
+        let margin = IX(raw: edge.nondescending(self.appendix))
         let difference = major + IX(Bit(margin <= minor))
         //=--------------------------------------=
         if  difference >= self.count {

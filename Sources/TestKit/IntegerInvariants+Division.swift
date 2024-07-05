@@ -23,6 +23,8 @@ extension IntegerInvariants {
         typealias D = Division<T, T>
         typealias F = Fallible<D>
         //=--------------------------------------=
+        let size = IX(raw: T.size)
+        //=--------------------------------------=
         let msb: T = Self.msbEsque
         let bot: T = Self.botEsque
         //=--------------------------------------=
@@ -45,7 +47,7 @@ extension IntegerInvariants {
             
             test.division(msb, ~3 as T, F(D(quotient: (msb >> 2).complement(), remainder: 0)))
             test.division(msb, ~1 as T, F(D(quotient: (msb >> 1).complement(), remainder: 0)))
-            test.division(msb, ~0 as T, F(D(quotient: (msb >> 0).complement(), remainder: 0), error: msb.ascending(0) == T.size - 1))
+            test.division(msb, ~0 as T, F(D(quotient: (msb >> 0).complement(), remainder: 0), error: msb.ascending(0) == Count(raw: size - 1)))
             test.division(msb,  0 as T, nil)
             test.division(msb,  1 as T, F(D(quotient: msb,          remainder: 0)))
             test.division(msb,  2 as T, F(D(quotient: msb >> 1,     remainder: 0)))
@@ -117,7 +119,7 @@ extension IntegerInvariants {
             test.division(value, T.zero, nil)
         }
         
-        if  T.size > 128 || (T.size == 128 && !T.isSigned)  {
+        if  T.size > Count(128) || (T.size == Count(128) && !T.isSigned)  {
             let  small = T(0x0000000000000000000000000000007F)
             let xsmall = small.complement()
             let  large = T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0)
@@ -153,7 +155,7 @@ extension IntegerInvariants where T: UnsignedInteger {
         // dividend: [ 0,  0,  0,  0,  0, ~0, ~0, ~0]
         // divisor:  [~0, ~0, ~0, ~0,  0,  0,  0,  0]
         //=----------------------------------=
-        dividend.high  = T.max << T(raw: T.size >> 2)
+        dividend.high  = T.max << T(load: UX(size: T.self) >> 2)
         dividend.low   = M.min
         divisor        = T.max
         quotient       = dividend.high

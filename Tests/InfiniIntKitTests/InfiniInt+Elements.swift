@@ -46,7 +46,7 @@ extension InfiniIntTests {
                 var body = Array<E>()
                 
                 for element: E in (0 ..< 12).lazy.map(~) {
-                    instance <<= T(load: E.size)
+                    instance <<= T(load: IX(size: E.self))
                     instance  |= T(load: element)
                     body.insert(element, at: Int.zero)
                     Test().elements(instance, body, 0)
@@ -58,7 +58,7 @@ extension InfiniIntTests {
                 var body = Array<E>()
                 
                 for element: E in (0 ..< 12) {
-                    instance <<= T(load: E.size)
+                    instance <<= T(load: IX(size: E.self))
                     instance  |= T(load: element)
                     body.insert(element, at: Int.zero)
                     Test().elements(instance, body, 1)

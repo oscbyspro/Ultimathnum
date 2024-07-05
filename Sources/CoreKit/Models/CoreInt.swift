@@ -76,14 +76,6 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
     public typealias Magnitude = UX
     
     //=------------------------------------------------------------------------=
-    // MARK: Metadata
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static var size: Magnitude {
-        Magnitude(Magnitude.Stdlib(bitPattern: Stdlib.bitWidth))
-    }
-    
-    //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
@@ -122,12 +114,6 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
     public typealias Signitude = Self
     
     public typealias Magnitude = U8
-        
-    //=------------------------------------------------------------------------=
-    // MARK: Metadata
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static var size: Magnitude { 8 }
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -168,12 +154,6 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
     public typealias Signitude = Self
     
     public typealias Magnitude = U16
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Metadata
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static var size: Magnitude { 16 }
             
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -214,12 +194,6 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
     public typealias Signitude = Self
     
     public typealias Magnitude = U32
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Metadata
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static var size: Magnitude { 32 }
             
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -260,12 +234,6 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
     public typealias Signitude = Self
     
     public typealias Magnitude = U64
-        
-    //=------------------------------------------------------------------------=
-    // MARK: Metadata
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static var size: Magnitude { 64 }
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -308,14 +276,6 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
     public typealias Magnitude = Self
     
     //=------------------------------------------------------------------------=
-    // MARK: Metadata
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static var size: Magnitude {
-        Magnitude(Magnitude.Stdlib(bitPattern: Stdlib.bitWidth))
-    }
-        
-    //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
@@ -354,12 +314,6 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
     public typealias Signitude = I8
     
     public typealias Magnitude = Self
-            
-    //=------------------------------------------------------------------------=
-    // MARK: Metadata
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static var size: Magnitude { 8 }
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -400,12 +354,6 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
     public typealias Signitude = I16
     
     public typealias Magnitude = Self
-        
-    //=------------------------------------------------------------------------=
-    // MARK: Metadata
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static var size: Magnitude { 16 }
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -448,12 +396,6 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
     public typealias Magnitude = Self
     
     //=------------------------------------------------------------------------=
-    // MARK: Metadata
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static var size: Magnitude { 32 }
-        
-    //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
@@ -493,12 +435,6 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
     
     public typealias Magnitude = Self
     
-    //=------------------------------------------------------------------------=
-    // MARK: Metadata
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static var size: Magnitude { 64 }
-        
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=

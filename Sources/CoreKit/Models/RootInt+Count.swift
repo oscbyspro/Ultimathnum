@@ -23,10 +23,10 @@ extension RootInt {
     /// ┌──────┬──────────── → ────────┐
     /// │ self │ bit pattern │ entropy │
     /// ├──────┼──────────── → ────────┤
-    /// │   -4 │ 00........1 │ 3       │
-    /// │   -2 │ 10........1 │ 3       │
-    /// │   -3 │ 0.........1 │ 2       │
-    /// │   -1 │ ..........1 │ 1       │
+    /// │   ~3 │ 00........1 │ 3       │
+    /// │   ~2 │ 10........1 │ 3       │
+    /// │   ~1 │ 0.........1 │ 2       │
+    /// │   ~0 │ ..........1 │ 1       │
     /// │    0 │ ..........0 │ 1       │
     /// │    1 │ 1.........0 │ 2       │
     /// │    2 │ 01........0 │ 3       │
@@ -34,7 +34,7 @@ extension RootInt {
     /// └──────┴──────────── → ────────┘
     /// ```
     ///
-    /// - Note: A binary integer's `entropy` must fit in a signed machine word.
+    /// - Note: An in-memory `entropy` must fit in `[0, IX.max]`.
     ///
     @inlinable public func entropy() -> IX {
         IX(self.base.bitWidth)

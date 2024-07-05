@@ -21,7 +21,7 @@ extension IntegerInvariants {
     
     public func edgesMinMax() where T: EdgyInteger {
         //=--------------------------------------=
-        let min = T.isSigned ? 1 << T(raw: T.size - 1) : T.zero
+        let min = T.isSigned ? 1 << T(T.size.natural().unwrap() - 1) : T.zero
         let max = min.toggled()
         //=--------------------------------------=
         test.comparison(T.min, T.max, Signum.less)
@@ -32,16 +32,18 @@ extension IntegerInvariants {
     
     public func edgesLsbMsb() where T: SystemsInteger {
         //=--------------------------------------=
+        let size = T.size.natural().unwrap()
+        //=--------------------------------------=
         test.comparison(T.lsb, T.msb, T.isSigned ? Signum.more : Signum.less)
         //=--------------------------------------=
-        test .ascending(T.lsb, 0 as Bit, 0)
-        test .ascending(T.lsb, 1 as Bit, 1)
-        test.descending(T.lsb, 0 as Bit, T.size - 1)
-        test.descending(T.lsb, 1 as Bit, 0)
+        test .ascending(T.lsb, 0 as Bit, Count(0))
+        test .ascending(T.lsb, 1 as Bit, Count(1))
+        test.descending(T.lsb, 0 as Bit, Count(size - 1))
+        test.descending(T.lsb, 1 as Bit, Count(0))
         
-        test .ascending(T.msb, 0 as Bit, T.size - 1)
-        test .ascending(T.msb, 1 as Bit, 0)
-        test.descending(T.msb, 0 as Bit, 0)
-        test.descending(T.msb, 1 as Bit, 1)
+        test .ascending(T.msb, 0 as Bit, Count(size - 1))
+        test .ascending(T.msb, 1 as Bit, Count(0))
+        test.descending(T.msb, 0 as Bit, Count(0))
+        test.descending(T.msb, 1 as Bit, Count(1))
     }
 }

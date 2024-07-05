@@ -106,7 +106,7 @@ extension DataIntTests {
             
             for bit: Bit in [0, 1] {
                 let a = T(repeating: bit)
-                let b = T(repeating: bit) ^ T(13).toggled() << T(raw: T.size - 4)
+                let b = T(repeating: bit) ^ T(13).toggled() << IX(size: T.self).minus(4).unwrap()
                 
                 C([b      ]).descending( bit, is: 0 * IX(size: T.self) + 2 as IX)
                 C([b, a   ]).descending( bit, is: 1 * IX(size: T.self) + 2 as IX)
@@ -137,39 +137,42 @@ extension DataIntTests.Body {
     //=------------------------------------------------------------------------=
     
     func size(is expectation: IX) {
-        self.expect(expectation, read:{ $0.size() }, write:{ $0.size() })
-    }    
+        self.expect(Count(expectation), read:{ $0.size() }, write:{ $0.size() })
+    }
     
     func count(_ bit: Bit, is expectation: IX) {
         let size = IX(self.body.count) * IX(size: Element.self)
-        
+        //=--------------------------------------=
         self.size(is: size)
-        self.expect(       expectation, read:{ $0.count( bit) }, write:{ $0.count( bit) })
-        self.expect(size - expectation, read:{ $0.count(~bit) }, write:{ $0.count(~bit) })
+        //=--------------------------------------=
+        self.expect(Count(       expectation), read:{ $0.count( bit) }, write:{ $0.count( bit) })
+        self.expect(Count(size - expectation), read:{ $0.count(~bit) }, write:{ $0.count(~bit) })
     }
     
     func ascending(_ bit: Bit, is expectation: IX) {
         let size = IX(self.body.count) * IX(size: Element.self)
-        
+        //=--------------------------------------=
         self.size(is: size)
-        self.expect(       expectation, read:{ $0   .ascending(bit) }, write:{ $0   .ascending(bit) })
-        self.expect(size - expectation, read:{ $0.nonascending(bit) }, write:{ $0.nonascending(bit) })
+        //=--------------------------------------=
+        self.expect(Count(       expectation), read:{ $0   .ascending(bit) }, write:{ $0   .ascending(bit) })
+        self.expect(Count(size - expectation), read:{ $0.nonascending(bit) }, write:{ $0.nonascending(bit) })
     }
     
     func descending(_ bit: Bit, is expectation: IX) {
         let size = IX(self.body.count) * IX(size: Element.self)
-        
+        //=--------------------------------------=
         self.size(is: size)
-        self.expect(       expectation, read:{ $0   .descending(bit) }, write:{ $0   .descending(bit) })
-        self.expect(size - expectation, read:{ $0.nondescending(bit) }, write:{ $0.nondescending(bit) })
+        //=--------------------------------------=
+        self.expect(Count(       expectation), read:{ $0   .descending(bit) }, write:{ $0   .descending(bit) })
+        self.expect(Count(size - expectation), read:{ $0.nondescending(bit) }, write:{ $0.nondescending(bit) })
         
         if  bit == 0 {
-            self .expect(1 + size - expectation, read:{ $0.entropy() }, write:{ $0.entropy() })
+            self .expect(Count(1 + size - expectation), read:{ $0.entropy() }, write:{ $0.entropy() })
         }
         
         always: do {
             let other = DataIntTests.Extension((self.body, bit), test: self.test)
-            other.expect(1 + size - expectation, read:{ $0.entropy() }, write:{ $0.entropy() })
+            other.expect(Count(1 + size - expectation), read:{ $0.entropy() }, write:{ $0.entropy() })
         }
     }
 }

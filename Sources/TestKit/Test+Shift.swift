@@ -20,69 +20,84 @@ extension Test {
     // MARK: Tests x Ascending
     //=------------------------------------------------------------------------=
     
-    public func upshift<T>(
+    public func upshift<T, U>(
         _ instance: T,
-        _ distance: T,
+        _ distance: U,
         _ expectation: T
-    )   where T: SystemsInteger {
-        
+    )   where T: SystemsInteger, U: BinaryInteger {
+        //=----------------------------------=
+        let size = IX(size: T.self)
+        //=----------------------------------=
         always: do {
             upshift(instance, distance, expectation, id: BinaryIntegerID())
         }
         
-        if  distance >= .zero, distance < T.size {
-            for multiplier: T in [~2, ~1, ~0, 0, 1, 2] {
-                let distance = distance &+ T(T.size) &* multiplier
+        if  distance >= U.zero, distance < size {
+            always: do {
                 same({         instance    &<<  distance           }(), expectation,  "&<<")
                 same({ var x = instance; x &<<= distance; return x }(), expectation, "&<<=")
             }
-        }
-    }
-    
-    public func upshift<T>(
-        _ instance: T,
-        _ distance: T,
-        _ expectation: T,
-        id: BinaryIntegerID = .init()
-    )   where T: BinaryInteger {
-        
-        always: do {
-            upshiftOneWaySmart(instance, distance, expectation)
-        }
-        
-        if  let negated = distance.negated().optional() {
-            downshiftOneWaySmart(instance, negated, expectation)
-        }
-        
-        if  let size = T.exactly(T.size).optional() {
-            if  distance.isNegative {
-                if let full = distance.minus(size).optional() {
-                    self  .upshiftOneWaySmart(instance, full, T(repeating: instance.appendix))
-                    self.downshiftOneWaySmart(instance, full, T(repeating: Bit.zero))
-                }
+            
+            if  let small = IX.exactly(distance).optional() {
+                same({         instance    &<<  small           }(), expectation,  "&<< [IX]")
+                same({ var x = instance; x &<<= small; return x }(), expectation, "&<<= [IX]")
                 
-            }   else {
-                if let full = distance.plus (size).optional() {
-                    self  .upshiftOneWaySmart(instance, full, T(repeating: Bit.zero))
-                    self.downshiftOneWaySmart(instance, full, T(repeating: instance.appendix))
+                same({         instance    &<<  Swift.Int(small)           }(), expectation,  "&<< [Swift.Int]")
+                same({ var x = instance; x &<<= Swift.Int(small); return x }(), expectation, "&<<= [Swift.Int]")
+            }
+            
+            if  let size = U.exactly(IX(size: T.self)).optional() {
+                for multiplier: U in [~2, ~1, ~0, 1, 2, 3] {
+                    let distance = distance &+ size &* multiplier
+                    
+                    same({         instance    &<<  distance           }(), expectation,  "&<< [\(multiplier)]")
+                    same({ var x = instance; x &<<= distance; return x }(), expectation, "&<<= [\(multiplier)]")
                 }
             }
         }
     }
     
-    public func upshiftOneWaySmart<T>(
+    public func upshift<T, U>(
         _ instance: T,
-        _ distance: T,
-        _ expectation: T
-    )   where T: BinaryInteger {
-        
-        if  let distance = Shift<T.Magnitude>(exactly: T.Magnitude(raw: distance)) {
-            same(instance.up(distance), expectation, "up")
-        }
-        
+        _ distance: U,
+        _ expectation: T,
+        id: BinaryIntegerID = .init()
+    )   where T: BinaryInteger, U: BinaryInteger {
+            
         always: do {
             same({         instance    <<  distance           }(), expectation,  "<<")
             same({ var x = instance; x <<= distance; return x }(), expectation, "<<=")
+        }
+        
+        if  let negated = distance.negated().optional() {
+            same({         instance    >>  negated            }(), expectation,  ">> [-]")
+            same({ var x = instance; x >>= negated;  return x }(), expectation, ">>= [-]")
+        }
+        
+        if  let small = IX.exactly(distance).optional() {
+            same({         instance    <<  Swift.Int(small)           }(), expectation,  "<< [Swift.Int]")
+            same({ var x = instance; x <<= Swift.Int(small); return x }(), expectation, "<<= [Swift.Int]")
+            
+            if  let count = Count(exactly: small) {
+                same(instance.up(count), expectation, "BinaryInteger/up(Count)")
+                
+                if  let shift = Shift<T.Magnitude>(exactly: count) {
+                    same(instance.up(shift), expectation, "BinaryInteger/up(Shift)")
+                }
+                
+            }   else if let count = Count(exactly: small.complement()) {
+                same(instance.down(count), expectation, "BinaryInteger/down(Count)")
+                
+                if  let shift = Shift<T.Magnitude>(exactly: count) {
+                    same(instance.down(shift), expectation, "BinaryInteger/down(Shift)")
+                }
+            }
+            
+        }   else if distance.isNegative {
+            same(instance.down(Count.infinity), expectation, "BinaryInteger/down(Count.infinity)")
+                
+        }   else {
+            same(instance.up(Count.infinity), expectation, "BinaryInteger/up(Count.infinity)")
         }
     }
     
@@ -90,69 +105,84 @@ extension Test {
     // MARK: Utilities x Descending
     //=------------------------------------------------------------------------=
     
-    public func downshift<T>(
+    public func downshift<T, U>(
         _ instance: T,
-        _ distance: T,
+        _ distance: U,
         _ expectation: T
-    )   where T: SystemsInteger {
-        
+    )   where T: SystemsInteger, U: BinaryInteger {
+        //=----------------------------------=
+        let size = IX(size: T.self)
+        //=----------------------------------=
         always: do {
             downshift(instance, distance, expectation, id: BinaryIntegerID())
         }
         
-        if  distance >= .zero, distance < T.size {
-            for multiplier: T in [~2, ~1, ~0, 0, 1, 2] {
-                let distance = distance &+ T(T.size) &* multiplier
+        if  distance >= U.zero, distance < size {
+            always: do {
                 same({         instance    &>>  distance           }(), expectation,  "&>>")
                 same({ var x = instance; x &>>= distance; return x }(), expectation, "&>>=")
             }
-        }
-    }
-    
-    public func downshift<T>(
-        _ instance: T,
-        _ distance: T,
-        _ expectation: T,
-        id: BinaryIntegerID = .init()
-    )   where T: BinaryInteger {
-        
-        always: do {
-            downshiftOneWaySmart(instance, distance, expectation)
-        }
-        
-        if  let negated = distance.negated().optional() {
-            upshiftOneWaySmart(instance, negated, expectation)
-        }
-        
-        if  let size = T.exactly(T.size).optional() {
-            if  distance.isNegative {
-                if let full = distance.minus(size).optional() {
-                    self  .upshiftOneWaySmart(instance, full, T(repeating: instance.appendix))
-                    self.downshiftOneWaySmart(instance, full, T(repeating: Bit.zero))
-                }
+            
+            if  let small = IX.exactly(distance).optional() {
+                same({         instance    &>>  small           }(), expectation,  "&>> [IX]")
+                same({ var x = instance; x &>>= small; return x }(), expectation, "&>>= [IX]")
                 
-            }   else {
-                if let full = distance.plus (size).optional() {
-                    self  .upshiftOneWaySmart(instance, full, T(repeating: Bit.zero))
-                    self.downshiftOneWaySmart(instance, full, T(repeating: instance.appendix))
+                same({         instance    &>>  Swift.Int(small)           }(), expectation,  "&>> [Swift.Int]")
+                same({ var x = instance; x &>>= Swift.Int(small); return x }(), expectation, "&>>= [Swift.Int]")
+            }
+            
+            if  let size = U.exactly(IX(size: T.self)).optional() {
+                for multiplier: U in [~2, ~1, ~0, 1, 2, 3] {
+                    let distance = distance &+ size &* multiplier
+                    
+                    same({         instance    &>>  distance           }(), expectation,  "&>> [\(multiplier)]")
+                    same({ var x = instance; x &>>= distance; return x }(), expectation, "&>>= [\(multiplier)]")
                 }
             }
         }
     }
     
-    public func downshiftOneWaySmart<T>(
+    public func downshift<T, U>(
         _ instance: T,
-        _ distance: T,
-        _ expectation: T
-    )   where T: BinaryInteger {
-        
-        if  let distance = Shift<T.Magnitude>(exactly: T.Magnitude(raw: distance)) {
-            same(instance.down(distance), expectation, "down")
-        }
-        
+        _ distance: U,
+        _ expectation: T,
+        id: BinaryIntegerID = .init()
+    )   where T: BinaryInteger, U: BinaryInteger {
+            
         always: do {
             same({         instance    >>  distance           }(), expectation,  ">>")
             same({ var x = instance; x >>= distance; return x }(), expectation, ">>=")
+        }
+        
+        if  let negated = distance.negated().optional() {
+            same({         instance    <<  negated            }(), expectation,  "<< [-]")
+            same({ var x = instance; x <<= negated;  return x }(), expectation, "<<= [-]")
+        }
+        
+        if  let small = IX.exactly(distance).optional() {
+            same({         instance    >>  Swift.Int(small)           }(), expectation,  ">> [Swift.Int]")
+            same({ var x = instance; x >>= Swift.Int(small); return x }(), expectation, ">>= [Swift.Int]")
+            
+            if  let count = Count(exactly: small) {
+                same(instance.down(count), expectation, "BinaryInteger/down(Count)")
+                
+                if  let shift = Shift<T.Magnitude>(exactly: count) {
+                    same(instance.down(shift), expectation, "BinaryInteger/down(Shift)")
+                }
+                
+            }   else if let count = Count(exactly: small.complement()) {
+                same(instance.up(count), expectation, "BinaryInteger/up(Count)")
+                
+                if  let shift = Shift<T.Magnitude>(exactly: count) {
+                    same(instance.up(shift), expectation, "BinaryInteger/up(Shift)")
+                }
+            }
+            
+        }   else if distance.isNegative {
+            same(instance.up(Count.infinity), expectation, "BinaryInteger/up(Count.infinity)")
+                
+        }   else {
+            same(instance.down(Count.infinity), expectation, "BinaryInteger/down(Count.infinity)")
         }
     }
 }

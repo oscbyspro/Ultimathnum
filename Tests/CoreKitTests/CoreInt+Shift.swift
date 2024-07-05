@@ -20,17 +20,6 @@ extension CoreIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testShift() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self)  .upshiftRepeatingBit()
-            IntegerInvariants(T.self).downshiftRepeatingBit()
-        }
-        
-        for type in Self.types {
-            whereIs(type)
-        }
-    }
-    
     func testUpshift() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
             Test().upshift( 1 as T,  0 as T,  1 as T)

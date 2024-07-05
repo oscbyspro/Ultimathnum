@@ -23,7 +23,8 @@ extension IntegerInvariants {
         //=--------------------------------------=
         typealias X = T.Element.Magnitude
         //=--------------------------------------=
-        if  let size = IX(size: T.self) { let count = Int(size / IX(size: X.self))
+        if  let size  = IX(size: T.self) {
+            let count = Swift.Int(size / IX(size: X.self))
             
             test.elements(~1 as T, [X(load: ~1 as T)] + [X](repeating: ~0, count: count - 1), Bit(T.isSigned))
             test.elements(~0 as T, [X(load: ~0 as T)] + [X](repeating: ~0, count: count - 1), Bit(T.isSigned))
@@ -31,8 +32,8 @@ extension IntegerInvariants {
             test.elements( 1 as T, [X(load:  1 as T)] + [X](repeating:  0, count: count - 1), 000000000000000)
         }
         
-        element: do { 
-            let mask = T(1) << T(load: X.size) &- 1
+        element: do {
+            let mask = T(load: X.max)
             
             var x = ~9 as T
             var y = ~9 as X.Signitude
@@ -87,7 +88,7 @@ extension IntegerInvariants {
             var value = T(repeating: Bit(mode == .signed && (body.last ?? 0) >= .msb))
             
             for element in body.reversed() {
-                value <<= T(load: X.size)
+                value <<= T(load: IX(size: X.self))
                 value  |= T(load: element)
             }
             
@@ -95,7 +96,7 @@ extension IntegerInvariants {
         }
         //=--------------------------------------=
         always: do { 
-            var count = Int(T.size.isInfinite ? 12 : IX(load: T.size) / IX(size: X.self))
+            var count = Int(T.size.isInfinite ? 12 : IX(size: T.self)! / IX(size: X.self))
             
             check(Array(repeating:  0, count: count), mode:   .signed)
             check(Array(repeating:  1, count: count), mode:   .signed)

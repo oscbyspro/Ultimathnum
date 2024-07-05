@@ -34,13 +34,13 @@ extension IntegerInvariants {
         self.size(BinaryIntegerID())
         //=--------------------------------------=
         test.same(
-            T.size.count(1),
-            T.Magnitude (1),
+            IX(size: T.self).count(1),
+            Count(1),
             "\(T.self).size must be a power of 2"
         )
         
         test.same(
-            IX(T.size),
+            IX(size: T.self),
             IX(MemoryLayout<T>.size) * 8,
             "\(T.self).size must match memory layout"
         )
@@ -73,13 +73,15 @@ extension IntegerInvariants {
         test.same(T.size, S.size, "Self.size == Self.Signitude.size")
         //=--------------------------------------=
         for value: T in [~3, ~2, ~1, ~0, 0, 1, 2, 3] {
-            test.same(value.count(0).plus(value.count(1)), Fallible(T.size), "size == 0s + 1s")
+            let x0 = IX(raw: value.count(0))
+            let x1 = IX(raw: value.count(1))
+            test.same(Count(raw: x0 + x1), T.size, "size == 0s + 1s [\(value), \(x0), \(x1)]")
         }
         //=--------------------------------------=
-        if  T.size.isInfinite {
-            test.same(T.size, M(repeating: 1), "log2(max+1) size should be promoted to max infinite value")
+        if !T.size.isInfinite {
+            test.expect(T.size <= Count(IX.max), "the maximum finite size is IX.max")
         }   else {
-            test.expect(T.size <= IX.max, "the maximum finite size is IX.max")
+            test.same(T.size, Count.infinity, "any infinite size must be log2(UXL.max + 1)")
         }
     }
     
