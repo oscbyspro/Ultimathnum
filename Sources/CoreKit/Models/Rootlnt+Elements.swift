@@ -42,19 +42,21 @@ extension RootInt {
     }
     
     @inlinable public func withUnsafeBinaryIntegerBody<T>(_ action: (DataInt<UX>.Body) throws -> T) rethrows -> T {
-        let count = Swift.Int(self.entropy().division(Divisor(size: UX.self)).ceil().unchecked())
-        return  try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: count) { buffer in
+        let entropy = self.entropy().natural().unchecked()
+        let count = Swift.Int(entropy.division(Divisor(size:  UX.self)).ceil().unchecked())
+        return try  Swift.withUnsafeTemporaryAllocation(of:   UX.self, capacity: count) {
+            let buffer = UnsafeMutableBufferPointer(rebasing: $0[..<count])
             //=----------------------------------=
             // pointee: initialization
             //=----------------------------------=
-            for index in Int.zero ..< count {
+            for index in buffer.indices {
                 buffer.initializeElement(at: index, to: self[UX(raw: index)])
             }
             //=----------------------------------=
             // pointee: deferred deinitialization
             //=----------------------------------=
             defer {
-                buffer[..<count].deinitialize()
+                buffer.deinitialize()
             }
             //=----------------------------------=
             return try action(DataInt.Body(UnsafeBufferPointer(buffer))!)

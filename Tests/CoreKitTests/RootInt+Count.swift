@@ -21,20 +21,20 @@ extension RootIntTests {
     //=------------------------------------------------------------------------=
     
     func testEntropy() {
-        Test().same(T(-6).entropy(), 4 as IX, "010....1")
-        Test().same(T(-5).entropy(), 4 as IX, "110....1")
-        Test().same(T(-4).entropy(), 3 as IX, "00.....1")
-        Test().same(T(-3).entropy(), 3 as IX, "10.....1")
-        Test().same(T(-2).entropy(), 2 as IX, "0......1")
-        Test().same(T(-1).entropy(), 1 as IX, ".......1")
-        Test().same(T( 0).entropy(), 1 as IX, ".......0")
-        Test().same(T( 1).entropy(), 2 as IX, "1......0")
-        Test().same(T( 2).entropy(), 3 as IX, "01.....0")
-        Test().same(T( 3).entropy(), 3 as IX, "11.....0")
-        Test().same(T( 4).entropy(), 4 as IX, "001....0")
-        Test().same(T( 5).entropy(), 4 as IX, "101....0")
+        Test().same(T(-6).entropy(), Count(4 as IX), "010....1")
+        Test().same(T(-5).entropy(), Count(4 as IX), "110....1")
+        Test().same(T(-4).entropy(), Count(3 as IX), "00.....1")
+        Test().same(T(-3).entropy(), Count(3 as IX), "10.....1")
+        Test().same(T(-2).entropy(), Count(2 as IX), "0......1")
+        Test().same(T(-1).entropy(), Count(1 as IX), ".......1")
+        Test().same(T( 0).entropy(), Count(1 as IX), ".......0")
+        Test().same(T( 1).entropy(), Count(2 as IX), "1......0")
+        Test().same(T( 2).entropy(), Count(3 as IX), "01.....0")
+        Test().same(T( 3).entropy(), Count(3 as IX), "11.....0")
+        Test().same(T( 4).entropy(), Count(4 as IX), "001....0")
+        Test().same(T( 5).entropy(), Count(4 as IX), "101....0")
         
-        Test().same(T(-0x80000000000000000000000000000000).entropy(), 128 as IX)
-        Test().same(T( 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF).entropy(), 128 as IX)
+        Test().same(T(-0x80000000000000000000000000000000).entropy(), Count(128 as IX))
+        Test().same(T( 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF).entropy(), Count(128 as IX))
     }
 }

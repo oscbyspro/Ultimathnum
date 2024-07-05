@@ -36,7 +36,7 @@ extension RootInt {
     ///
     /// - Note: An in-memory `entropy` must fit in `[0, IX.max]`.
     ///
-    @inlinable public func entropy() -> IX {
-        IX(self.base.bitWidth)
+    @inlinable public func entropy() -> Count<IX> {
+        Count(unchecked: IX(self.base.bitWidth))
     }
 }
