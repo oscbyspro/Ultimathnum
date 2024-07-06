@@ -60,6 +60,7 @@
     },
     {
       "skippedTests" : [
+        "BenchmarksAboutDoubleInt",
         "FibonacciBenchmarks"
       ],
       "target" : {

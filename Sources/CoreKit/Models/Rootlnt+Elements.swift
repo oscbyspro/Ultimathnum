@@ -25,7 +25,7 @@ extension RootInt {
     /// The word at `index`, ordered from least significant to most significant.
     @inlinable public subscript(index: UX) -> UX {
         if  let index = IX.exactly(index).optional() {
-            return UX(raw: self.base[Int(index)])
+            return UX(self.base[Int(index)])
         }   else {
             return UX(repeating: self.appendix)
         }
