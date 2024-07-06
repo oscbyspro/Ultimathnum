@@ -147,6 +147,7 @@ extension BinaryInteger {
     @inlinable public static func >>=(instance: inout Self, distance: Swift.Int) {
         instance >>= IX(distance)
     }
+    
     /// Performs a descending smart shift.
     ///
     /// - Note: The filler bit is either `0` (up) or `appendix` (down).
@@ -234,6 +235,7 @@ extension SystemsInteger {
     @inlinable public static func &>>=(instance: inout Self, distance: some BinaryInteger) {
         instance = instance &>> distance
     }
+    
     /// Performs a descending masked shift.
     ///
     /// - Note: The filler bit is either `0` (up) or `appendix` (down).
@@ -282,6 +284,7 @@ extension SystemsInteger {
     @inlinable public static func &>>=(instance: inout Self, distance: Swift.Int) {
         instance &>>= IX(distance)
     }
+    
     /// Performs a descending masked shift.
     ///
     /// - Note: The filler bit is either `0` (up) or `appendix` (down).

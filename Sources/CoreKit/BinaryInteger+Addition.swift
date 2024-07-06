@@ -89,6 +89,7 @@ extension BinaryInteger {
         case false: self.plus (Self(           Bit(increment)))
         }
     }
+    
     /// Returns the result of `self - increment`.
     @inlinable public consuming func minus(_ decrement: Bool) -> Fallible<Self> {
         switch Self.isSigned {

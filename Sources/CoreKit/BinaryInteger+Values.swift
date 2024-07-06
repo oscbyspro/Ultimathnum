@@ -55,15 +55,15 @@ extension EdgyInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static var min: Self {
-        if  isSigned {
-            return Self(raw: Magnitude.lsb.up(Shift.max))
+        if  Self.isSigned {
+            return Self.lsb.up(Shift.max)
         }   else {
             return Self()
         }
     }
     
     @inlinable public static var max: Self {
-        min.toggled()
+        Self.min.toggled()
     }
 }
 
@@ -79,7 +79,7 @@ extension SystemsInteger {
     
     /// A value with its most significant bit set to `1`
     @inlinable public static var msb: Self {
-        Self(raw: Magnitude.lsb.up(Shift.max))
+        Self.lsb.up(Shift.max)
     }
 }
 
