@@ -25,7 +25,7 @@ final class DoubleIntBenchmarks: XCTestCase {
     ///
     /// - `1.67 seconds`
     /// - `0.88 seconds` with pointer-bit shifts
-    /// - `0.31 seconds` with pointer-bit shifts and literals
+    /// - `0.30 seconds` with pointer-bit shifts and literals
     ///
     func testGreatestCommonDivisorOfFibonacciSequencePair369() throws {
         #if DEBUG

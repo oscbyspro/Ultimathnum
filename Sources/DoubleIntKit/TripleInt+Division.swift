@@ -21,8 +21,8 @@ extension TripleInt where Base == Base.Magnitude {
     
     @inlinable package consuming func division3121(unchecked divisor: Divisor<Base>) -> Division<DoubleInt<Base>, Base> {
         Swift.assert(divisor.value > self.high, "quotient must fit in two halves")
-        let high = Base.division( Doublet(low: self.mid, high: self.high     ), by: divisor).unchecked()
-        let low  = Base.division( Doublet(low: self.low, high: high.remainder), by: divisor).unchecked()
+        let high = Base.division( Doublet(low: self.mid, high: self.high     ), by:  divisor).unchecked()
+        let low  = Base.division( Doublet(low: self.low, high: high.remainder), by:  divisor).unchecked()
         return Division(quotient: DoubleInt(low: low.quotient, high: high.quotient), remainder: low.remainder)
     }
     

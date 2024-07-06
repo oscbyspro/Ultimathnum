@@ -130,7 +130,7 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         // division: 2121
         //=--------------------------------------=
-        if  normalization.value >= Base.size {
+        guard let normalization = Shift<Base>(exactly: normalization.value) else {
             Swift.assert(divisor.value.high.isZero, "divisor must fit in one half")
             let result: Division<Self, Base> = self.division2121(unchecked: Divisor(unchecked: divisor.value.low))
             return Division(quotient: result.quotient, remainder: Self(low: result.remainder))
@@ -138,13 +138,13 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         // normalization
         //=--------------------------------------=
-        let top = normalization.isZero ? High.zero : self.high &>> normalization.natural().complement()
-        let lhs = self.up(normalization)
+        let top = normalization.inverse().map({ self.high.down($0) }) ?? Base.zero
+        let lhs = TripleInt(low: self.up(normalization).storage, high: consume top)
         let rhs = Divisor(unchecked: divisor.value.up(normalization))
         //=--------------------------------------=
         // division: 3212 (normalized)
         //=--------------------------------------=
-        let result: Division<Base, Self> = TripleInt(low: lhs.storage, high: top).division3212(normalized: rhs)
+        let result: Division<Base, Self> =  lhs.division3212(normalized: rhs)
         return Division(quotient: Self(low: result.quotient), remainder: result.remainder.down(normalization))
     }
     
@@ -155,21 +155,20 @@ extension DoubleInt where Base == Base.Magnitude {
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
     @inlinable internal static func division4222(_ lhs: consuming Doublet<Self>, by rhs: Divisor<Self>) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
-        var overflow = false
         let normalization = Shift<Self>(unchecked: rhs.value.descending(Bit.zero))
         //=--------------------------------------=
         // if quotient does not fit in two halves
         //=--------------------------------------=
-        if  lhs.high >= rhs.value {
-            overflow  = true
-            lhs.high  = Self(lhs.high.division2222(rhs, normalization: normalization).remainder)
+        let overflow = lhs.high >= rhs.value
+        if  overflow {
+            lhs.high = Self(lhs.high.division2222( rhs, normalization: normalization).remainder)
         }
         //=--------------------------------------=
         return Fallible(Self.division4222(lhs, by: rhs, normalization: normalization), error: overflow)
     }
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
-    @inlinable internal static func division4222(_ lhs: consuming Doublet<Self>, by rhs: Divisor<Self>, normalization: Shift<Self>) -> Division<Self, Self> {
+    @inlinable internal static func division4222(_ lhs: consuming Doublet<Self>, by rhs: consuming Divisor<Self>, normalization: Shift<Self>) -> Division<Self, Self> {
         //=--------------------------------------=
         Swift.assert(rhs.value > lhs.high, "quotient must fit in two halves")
         Swift.assert(rhs.value.descending(Bit.zero) == normalization.value, "save shift distance")
@@ -183,7 +182,7 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         // division: 3121
         //=--------------------------------------=
-        if  normalization.value >= Base.size {
+        guard let normalization = Shift<Base>(exactly: normalization.value) else {
             Swift.assert(rhs.value.high.isZero,  "divisor must fit in one half")
             Swift.assert(lhs.high .high.isZero, "quotient must fit in two halves")
             let result = TripleInt(low: lhs.low.storage, high: lhs.high.low).division3121(unchecked: Divisor(unchecked: rhs.value.low))
@@ -192,7 +191,7 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         // normalization
         //=--------------------------------------=
-        let lhs = lhs.up(normalization)
+        let lhs = lhs .up(Shift(unchecked:  normalization.value))
         let rhs = Divisor(unchecked: rhs.value.up(normalization))
         //=--------------------------------------=
         // division: 3212 (normalized)
