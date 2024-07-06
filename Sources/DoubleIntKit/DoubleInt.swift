@@ -42,7 +42,7 @@ import CoreKit
     
     public typealias Signitude = DoubleInt<Base.Signitude>
     
-    public typealias IntegerLiteralType = StaticBigInt
+    public typealias IntegerLiteralType = Element.IntegerLiteralType
     
     //=------------------------------------------------------------------------=
     // MARK: Metadata
@@ -70,8 +70,8 @@ import CoreKit
         self.storage = storage
     }
     
-    @inlinable public init(integerLiteral: RootInt.IntegerLiteralType) {
-        self = Self.exactly(RootInt(integerLiteral: integerLiteral)).unwrap()
+    @inlinable public init(integerLiteral: IntegerLiteralType) {
+        self.init(load: Element(integerLiteral: integerLiteral))
     }
     
     //=------------------------------------------------------------------------=

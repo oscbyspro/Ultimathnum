@@ -51,8 +51,8 @@ extension FibonacciTests {
             Case(item).checkSequencePairIsCoprime()
             Case(item).same(
                 index:   22,
-                element: 17711,
-                next:    28657
+                element: .init("17711")!,
+                next:    .init("28657")!
             )
         }
         
@@ -63,8 +63,8 @@ extension FibonacciTests {
             Case(item).checkSequencePairIsCoprime()
             Case(item).same(
                 index:   45,
-                element: 1134903170,
-                next:    1836311903
+                element: .init("1134903170")!,
+                next:    .init("1836311903")!
             )
         }
         
@@ -75,8 +75,8 @@ extension FibonacciTests {
             Case(item).checkSequencePairIsCoprime()
             Case(item).same(
                 index:   91,
-                element: 04660046610375530309,
-                next:    07540113804746346429
+                element: .init("04660046610375530309")!,
+                next:    .init("07540113804746346429")!
             )
         }
         
@@ -87,8 +87,8 @@ extension FibonacciTests {
             Case(item).checkSequencePairIsCoprime()
             Case(item).same(
                 index:   23,
-                element: 28657,
-                next:    46368
+                element: .init("28657")!,
+                next:    .init("46368")!
             )
         }
         
@@ -99,8 +99,8 @@ extension FibonacciTests {
             Case(item).checkSequencePairIsCoprime()
             Case(item).same(
                 index:   46,
-                element: 1836311903,
-                next:    2971215073
+                element: .init("1836311903")!,
+                next:    .init("2971215073")!
             )
         }
         
@@ -111,8 +111,8 @@ extension FibonacciTests {
             Case(item).checkSequencePairIsCoprime()
             Case(item).same(
                 index:   92,
-                element: 07540113804746346429,
-                next:    12200160415121876738
+                element: .init("07540113804746346429")!,
+                next:    .init("12200160415121876738")!
             )
         }
     }
