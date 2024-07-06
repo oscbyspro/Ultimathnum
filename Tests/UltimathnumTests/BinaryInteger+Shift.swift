@@ -16,7 +16,7 @@ import TestKit
 // MARK: * Binary Integer x Shift
 //*============================================================================*
 
-final class BinaryIntegerTestsAboutShifts: XCTestCase {
+final class BinaryIntegerTestsOnShifts: XCTestCase {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests x Repeating Bit

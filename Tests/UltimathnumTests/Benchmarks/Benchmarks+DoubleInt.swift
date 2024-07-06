@@ -15,7 +15,7 @@ import TestKit
 // MARK: * Double Int
 //*============================================================================*
 
-final class BenchmarksAboutDoubleInt: XCTestCase {
+final class DoubleIntBenchmarks: XCTestCase {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests

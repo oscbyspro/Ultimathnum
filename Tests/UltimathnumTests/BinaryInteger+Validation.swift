@@ -19,7 +19,7 @@ import TestKit
 // MARK: + Edge Cases
 //=----------------------------------------------------------------------------=
 
-final class BinaryIntegerTestsAboutValidation: XCTestCase {
+final class BinaryIntegerTestsOnValidation: XCTestCase {
 
     //=------------------------------------------------------------------------=
     // MARK: Tests

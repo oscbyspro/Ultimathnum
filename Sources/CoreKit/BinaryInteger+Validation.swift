@@ -33,17 +33,6 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Creates a validated instance from the given `source`.
-    @inlinable public static func exactly(_ source: consuming RootInt) -> Fallible<Self> {
-        source.withUnsafeBinaryIntegerElements {
-            Self.exactly($0, mode: .signed)
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
     /// Creates a validated instance from the given `sign` and `magnitude`.
     @inlinable public static func exactly(
         sign: consuming Sign = .plus,
