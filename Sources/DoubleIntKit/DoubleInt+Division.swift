@@ -32,22 +32,31 @@ extension DoubleInt {
         let lhsIsNegative = /*-----*/self.isNegative
         let rhsIsNegative = divisor.value.isNegative
         //=--------------------------------------=
+        // error: quotient > U.max
+        // error: quotient < U.max.times(-1)
+        //=--------------------------------------=
         var division = Division<Self, Self>(
             raw: self.magnitude().division2222(divisor.magnitude())
         )
-        
-        var suboverflow = Bit(division.quotient.high.isNegative)
-        if  lhsIsNegative != rhsIsNegative {
-            let complement = division.quotient.complement(true)
-            suboverflow &= Bit(!complement.error)
-            division.quotient = complement.value
+        //=--------------------------------------=
+        // suberror: quotient > S.max or
+        // suberror: quotient < S.min
+        // negative: quotient > S.max or
+        // negative: quotient < S.max.times(-1)
+        // negative: case is S.min.division(±1)
+        //=--------------------------------------=
+        var suberror = lhsIsNegative == rhsIsNegative
+        if  suberror {
+            suberror = (division).quotient.isNegative
+        }   else {
+            division.quotient = division.quotient.complement()
         }
         
         if  lhsIsNegative {
             division.remainder = division.remainder.complement()
         }
         
-        return division.veto(Bool(suboverflow))
+        return division.veto(suberror)
     }
     
     //=------------------------------------------------------------------------=
@@ -59,16 +68,24 @@ extension DoubleInt {
         let lhsIsNegative = dividend.high.isNegative
         let rhsIsNegative = divisor.value.isNegative
         //=--------------------------------------=
+        // error: quotient > U.max or
+        // error: quotient < U.max.times(-1)
+        //=--------------------------------------=
         var division = Fallible<Division<Self, Self>>(
             raw: Magnitude.division4222(
                 dividend.magnitude(), by: divisor.magnitude()
             )
         )
-        
-        var suboverflow = Bit(division.value.quotient.high.isNegative)
+        //=--------------------------------------=
+        // suberror: quotient > S.max or
+        // suberror: quotient < S.min
+        // negative: quotient > S.max or
+        // negative: quotient < S.max.times(-1)
+        //=--------------------------------------=
+        var suberror = division.value.quotient.isNegative
         if  lhsIsNegative != rhsIsNegative {
             let complement = division.value.quotient.complement(true)
-            suboverflow &= Bit(!complement.error)
+            suberror = !complement.error && suberror
             division.value.quotient = complement.value
         }
         
@@ -76,7 +93,7 @@ extension DoubleInt {
             division.value.remainder = division.value.remainder.complement()
         }
         
-        return division.veto(Bool(suboverflow))
+        return division.veto(suberror)
     }
 }
 

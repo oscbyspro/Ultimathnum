@@ -25,12 +25,40 @@ extension Test {
         _ divisor:   T,
         _ quotient:  T,
         _ remainder: T,
+        _ error: Bool = false
+    )   where T: SystemsInteger {
+        
+        let expectation = Division(quotient: quotient, remainder: remainder)
+        self.division(dividend, divisor, expectation.veto(error))
+    }
+    
+    public func division<T>(
+        _ dividend:  T,
+        _ divisor:   T,
+        _ quotient:  T,
+        _ remainder: T,
         _ error: Bool = false,
         _ id: BinaryIntegerID = .init()
     )   where T: BinaryInteger {
         
-        let division = Division(quotient: quotient, remainder: remainder)
-        self.division(dividend, divisor,  division.veto(error))
+        let expectation = Division(quotient: quotient, remainder: remainder)
+        self.division(dividend, divisor, expectation.veto(error))
+    }
+    
+    public func division<T>(
+        _ dividend: T,
+        _ divisor:  T,
+        _ expectation: Fallible<Division<T, T>>?
+    )   where T: SystemsInteger {
+
+        always: do {
+            self.division(dividend, divisor, expectation, BinaryIntegerID())
+        }
+        
+        always: do {
+            let low = T.Magnitude(raw: dividend), high = T(repeating: dividend.appendix)
+            self.division(Doublet(low: low, high: high), divisor, expectation)
+        }
     }
     
     public func division<T>(
@@ -95,10 +123,21 @@ extension Test {
     //=------------------------------------------------------------------------=
     
     public func division<T>(
+        _ dividend: Doublet<T>,
+        _ divisor: T,
+        _ quotient:  T,
+        _ remainder: T,
+        _ error: Bool = false
+    )   where T: SystemsInteger {
+        
+        let expectation = Division(quotient: quotient, remainder: remainder)
+        self.division(dividend, divisor, expectation.veto(error))
+    }
+    
+    public func division<T>(
         _ dividend: Doublet<T>, 
         _ divisor: T,
-        _ expectation: Fallible<Division<T, T>>?,
-        _ id: BinaryIntegerID = .init()
+        _ expectation: Fallible<Division<T, T>>?
     )   where T: SystemsInteger {
         //=--------------------------------------=
         guard let expectation else {

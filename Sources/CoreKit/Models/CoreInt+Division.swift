@@ -50,14 +50,24 @@ extension CoreIntegerWhereIsSigned {
         let lhsIsNegative = dividend.high.isNegative
         let rhsIsNegative = divisor.value.isNegative
         //=--------------------------------------=
+        // error: quotient > U.max or
+        // error: quotient < U.max.times(-1)
+        //=--------------------------------------=
         var division = Fallible<Division<Self, Self>>(
-            raw: Magnitude.division(dividend.magnitude(), by: divisor.magnitude())
+            raw: Magnitude.division(
+                dividend.magnitude(), by: divisor.magnitude()
+            )
         )
-        
-        var suboverflow = Bit(division.value.quotient.isNegative)
+        //=--------------------------------------=
+        // suberror: quotient > S.max or
+        // suberror: quotient < S.min
+        // negative: quotient > S.max or
+        // negative: quotient < S.max.times(-1)
+        //=--------------------------------------=
+        var suberror = division.value.quotient.isNegative
         if  lhsIsNegative != rhsIsNegative {
             let complement = division.value.quotient.complement(true)
-            suboverflow &= Bit(!complement.error)
+            suberror = !complement.error && suberror
             division.value.quotient = complement.value
         }
         
@@ -65,7 +75,7 @@ extension CoreIntegerWhereIsSigned {
             division.value.remainder = division.value.remainder.complement()
         }
         
-        return division.veto(Bool(suboverflow))
+        return division.veto(suberror)
     }
 }
 
@@ -81,11 +91,10 @@ extension CoreIntegerWhereIsUnsigned {
     
     @inlinable public static func division(_ dividend: Doublet<Self>, by divisor: Divisor<Self>) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
-        var overflow = false
-        var dividend = dividend // await consuming fix
+        var dividend = dividend // consuming fix
         //=--------------------------------------=
-        if  divisor.value <= dividend.high {
-            overflow = true
+        let overflow = dividend.high >= divisor.value
+        if  overflow {
             dividend.high = dividend.high.remainder(divisor)
         }
         //=--------------------------------------=
