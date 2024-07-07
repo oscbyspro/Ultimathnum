@@ -43,76 +43,182 @@ extension FibonacciTests {
         }
     }
     
-    func testDoubleIntLimit() {
-        if  let (item) = Test().some(try? Fibonacci<DoubleInt<I8>>(22)) {
+    /// - Note: `I8x01` and `U8x01` divide-and-conquer a lot.
+    func testDoubleIntLimit8x01() {
+        typealias I8x01 = I8
+        typealias U8x01 = U8
+        
+        if  let (item) = Test().some(try? Fibonacci(I8x01("10")!)) {
             Case(item).checkIsLastIndex()
             Case(item).checkMathInvariants()
             Case(item).checkTextInvariants()
             Case(item).checkSequencePairIsCoprime()
             Case(item).same(
-                index:   22,
-                element: .init("17711")!,
-                next:    .init("28657")!
+                index:   I8x01("10")!,
+                element: I8x01("55")!,
+                next:    I8x01("89")!
             )
         }
         
-        if  let (item) = Test().some(try? Fibonacci<DoubleInt<DoubleInt<I8>>>(45)) {
+        if  let (item) = Test().some(try? Fibonacci(U8x01("12")!)) {
             Case(item).checkIsLastIndex()
             Case(item).checkMathInvariants()
             Case(item).checkTextInvariants()
             Case(item).checkSequencePairIsCoprime()
             Case(item).same(
-                index:   45,
-                element: .init("1134903170")!,
-                next:    .init("1836311903")!
+                index:   U8x01("12")!,
+                element: U8x01("144")!,
+                next:    U8x01("233")!
+            )
+        }
+    }
+    
+    /// - Note: `I8x02` and `U8x02` divide-and-conquer a lot.
+    func testDoubleIntLimit8x02() {
+        typealias I8x02 = DoubleInt<I8>
+        typealias U8x02 = DoubleInt<U8>
+        
+        if  let (item) = Test().some(try? Fibonacci(I8x02("22")!)) {
+            Case(item).checkIsLastIndex()
+            Case(item).checkMathInvariants()
+            Case(item).checkTextInvariants()
+            Case(item).checkSequencePairIsCoprime()
+            Case(item).same(
+                index:   I8x02("22")!,
+                element: I8x02("17711")!,
+                next:    I8x02("28657")!
             )
         }
         
-        if  let (item) = Test().some(try? Fibonacci<DoubleInt<DoubleInt<DoubleInt<I8>>>>(91)) {
+        if  let (item) = Test().some(try? Fibonacci(U8x02("23")!)) {
             Case(item).checkIsLastIndex()
             Case(item).checkMathInvariants()
             Case(item).checkTextInvariants()
             Case(item).checkSequencePairIsCoprime()
             Case(item).same(
-                index:   91,
-                element: .init("04660046610375530309")!,
-                next:    .init("07540113804746346429")!
+                index:   U8x02("23")!,
+                element: U8x02("28657")!,
+                next:    U8x02("46368")!
+            )
+        }
+    }
+    
+    /// - Note: `I8x04` and `U8x04` divide-and-conquer a lot.
+    func testDoubleIntLimit8x04() {
+        typealias I8x04 = DoubleInt<DoubleInt<I8>>
+        typealias U8x04 = DoubleInt<DoubleInt<U8>>
+        
+        if  let (item) = Test().some(try? Fibonacci(I8x04("45")!)) {
+            Case(item).checkIsLastIndex()
+            Case(item).checkMathInvariants()
+            Case(item).checkTextInvariants()
+            Case(item).checkSequencePairIsCoprime()
+            Case(item).same(
+                index:   I8x04("45")!,
+                element: I8x04("1134903170")!,
+                next:    I8x04("1836311903")!
             )
         }
         
-        if  let (item) = Test().some(try? Fibonacci<DoubleInt<U8>>(23)) {
+        if  let (item) = Test().some(try? Fibonacci(U8x04("46")!)) {
             Case(item).checkIsLastIndex()
             Case(item).checkMathInvariants()
             Case(item).checkTextInvariants()
             Case(item).checkSequencePairIsCoprime()
             Case(item).same(
-                index:   23,
-                element: .init("28657")!,
-                next:    .init("46368")!
+                index:   U8x04("46")!,
+                element: U8x04("1836311903")!,
+                next:    U8x04("2971215073")!
+            )
+        }
+    }
+    
+    /// - Note: `I8x08` and `U8x08` divide-and-conquer a lot.
+    func testDoubleIntLimit8x08() {
+        typealias I8x08 = DoubleInt<DoubleInt<DoubleInt<I8>>>
+        typealias U8x08 = DoubleInt<DoubleInt<DoubleInt<U8>>>
+        
+        if  let (item) = Test().some(try? Fibonacci(I8x08("91")!)) {
+            Case(item).checkIsLastIndex()
+            Case(item).checkMathInvariants()
+            Case(item).checkTextInvariants()
+            Case(item).checkSequencePairIsCoprime()
+            Case(item).same(
+                index:   I8x08("91")!,
+                element: I8x08("04660046610375530309")!,
+                next:    I8x08("07540113804746346429")!
             )
         }
         
-        if  let (item) = Test().some(try? Fibonacci<DoubleInt<DoubleInt<U8>>>(46)) {
+        if  let (item) = Test().some(try? Fibonacci(U8x08("92")!)) {
             Case(item).checkIsLastIndex()
             Case(item).checkMathInvariants()
             Case(item).checkTextInvariants()
             Case(item).checkSequencePairIsCoprime()
             Case(item).same(
-                index:   46,
-                element: .init("1836311903")!,
-                next:    .init("2971215073")!
+                index:   U8x08("92")!,
+                element: U8x08("07540113804746346429")!,
+                next:    U8x08("12200160415121876738")!
+            )
+        }
+    }
+    
+    /// - Note: `I8x16` and `U8x16` divide-and-conquer a lot.
+    func testDoubleIntLimit8x16() {
+        typealias I8x16 = DoubleInt<DoubleInt<DoubleInt<DoubleInt<I8>>>>
+        typealias U8x16 = DoubleInt<DoubleInt<DoubleInt<DoubleInt<U8>>>>
+        
+        if  let (item) = Test().some(try? Fibonacci(I8x16("183")!)) {
+            Case(item).checkIsLastIndex()
+            Case(item).checkMathInvariants()
+            Case(item).checkTextInvariants()
+            Case(item).checkSequencePairIsCoprime()
+            Case(item).same(
+                index:   I8x16("183")!,
+                element: I8x16("078569350599398894027251472817058687522")!,
+                next:    I8x16("127127879743834334146972278486287885163")!
             )
         }
         
-        if  let (item) = Test().some(try? Fibonacci<DoubleInt<DoubleInt<DoubleInt<U8>>>>(92)) {
+        if  let (item) = Test().some(try? Fibonacci(U8x16("185")!)) {
             Case(item).checkIsLastIndex()
             Case(item).checkMathInvariants()
             Case(item).checkTextInvariants()
             Case(item).checkSequencePairIsCoprime()
             Case(item).same(
-                index:   92,
-                element: .init("07540113804746346429")!,
-                next:    .init("12200160415121876738")!
+                index:   U8x16("185")!,
+                element: U8x16("205697230343233228174223751303346572685")!,
+                next:    U8x16("332825110087067562321196029789634457848")!
+            )
+        }
+    }
+    
+    /// - Note: `I8x32` and `U8x32` divide-and-conquer a lot.
+    func testDoubleIntLimit8x32() throws {
+        typealias I8x32 = DoubleInt<DoubleInt<DoubleInt<DoubleInt<DoubleInt<I8>>>>>
+        typealias U8x32 = DoubleInt<DoubleInt<DoubleInt<DoubleInt<DoubleInt<U8>>>>>
+        
+        if  let (item) = Test().some(try? Fibonacci(I8x32("367")!)) {
+            Case(item).checkIsLastIndex()
+            Case(item).checkMathInvariants()
+            Case(item).checkTextInvariants()
+            Case(item).checkSequencePairIsCoprime()
+            Case(item).same(
+                index:   I8x32("367")!,
+                element: I8x32("22334640661774067356412331900038009953045351020683823507202893507476314037053")!,
+                next:    I8x32("36138207717265885328441519836863123286695915870773021050058862406562749608741")!
+            )
+        }
+        
+        if  let (item) = Test().some(try? Fibonacci(U8x32("369")!)) {
+            Case(item).checkIsLastIndex()
+            Case(item).checkMathInvariants()
+            Case(item).checkTextInvariants()
+            Case(item).checkSequencePairIsCoprime()
+            Case(item).same(
+                index:   U8x32("369")!,
+                element: U8x32("58472848379039952684853851736901133239741266891456844557261755914039063645794")!,
+                next:    U8x32("94611056096305838013295371573764256526437182762229865607320618320601813254535")!
             )
         }
     }
