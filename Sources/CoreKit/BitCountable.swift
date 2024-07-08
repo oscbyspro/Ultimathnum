@@ -61,7 +61,7 @@ public protocol BitCountable {
     ///
     /// - Invariant: `count(x) + noncount(x) == size()`
     ///
-    @inlinable func size() -> Count<IX>
+    @inlinable borrowing func size() -> Count<IX>
     
     /// The `bit` count in `self`.
     ///

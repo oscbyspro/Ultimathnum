@@ -25,6 +25,7 @@
   - [Upsize binary integer elements with DataInt\<U8\>](#corekit-upsize)
   - [Lightweight text decoding and encoding with TextInt](#corekit-text-int)
   - [Type-safe bit casts with BitCastable\<BitPattern\>](#corekit-bit-cast)
+  - [Bit counting with Count\<Layout\> and BitCountable](#corekit-bit-count)
   - [Generic logic gates with BitOperable](#corekit-bitwise-logic)
   - [More ones and zeros with Bit, Sign and Signum](#corekit-bit-sign-signum)
 * [DoubleIntKit](#doubleintkit)
@@ -393,6 +394,25 @@ unsigned case you find that the difference is reinterpreted as a same-size signe
 via the init(raw:) bulk operation. Note that such type relationships are generically available 
 to all binary integers. Also, note that this method is both fully generic and fully recoverable.
 The init(load:) method is similar, but it returns the bit pattern that fits.
+
+<a name="corekit-bit-count"/>
+
+#### Bit counting with Count\<Layout\> and BitCountable
+
+> Please roll a **D20** arcana check.
+
+An arbitrary binary integer's bit pattern extends infinitely, yet its bit pattern has an end.
+Count\<IX\> is a pointer-bit model that can count the bits of any binary integer stored in memory.
+It does this by reinterpreting the last bit as logarithmically infinite.
+
+```
+min ..< msb: [0,  IX.max + 0]
+msb ... max: [∞ - IX.max,  ∞] ≤ log2(UXL.max + 1)
+```
+
+All binary integer types and all data integer types let you perform bit-counting operations; 
+the BitCountable protocol unifies them. Their common protocol requires methods like *size()* 
+and *ascending(\_:)* then derives methods like *entropy()* and *nonascending(\_:)* for them.
 
 <a name="corekit-bitwise-logic"/>
 
