@@ -398,10 +398,9 @@ The init(load:) method is similar, but it returns the bit pattern that fits.
 
 #### Generic logic gates with BitOperable
 
-Many types in this project let you perform bitwise logic through the common AND, OR, XOR, 
-and NOT operations. This capability extends to generic code when a type conforms to BitOperable.
-Note that all binary integers conform to this protocol and that their transformations are always 
-sound now that unsigned integers may end in infinitely repeating ones.
+Types that let you perform bitwise logic, such as AND, OR, XOR, and NOT, conform to BitOperable. 
+It powers logic gates in generic code, and all binary integer types conform to it. Arbitrary unsigned 
+integers also perform these operations losslessly thanks to the notion of infinite binary integers.
 
 ```swift
 static prefix func ~(instance: consuming Self) -> Self
@@ -409,21 +408,6 @@ static func &(lhs: consuming Self, rhs: borrowing Self) -> Self
 static func |(lhs: consuming Self, rhs: borrowing Self) -> Self
 static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self
 ```
-
-<details>
-<summary>
-Here are the derived operations that are available in the core module...
-</summary>
-
-```swift
-mutating  func toggle()
-consuming func toggled() -> Self
-
-static func &=(lhs: inout Self, rhs: Self)
-static func |=(lhs: inout Self, rhs: Self)
-static func ^=(lhs: inout Self, rhs: Self)
-```
-</details>
 
 <a name="corekit-bit-sign-signum"/>
 
