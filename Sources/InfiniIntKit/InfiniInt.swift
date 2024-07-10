@@ -30,7 +30,7 @@ import CoreKit
 ///
 /// - TODO: Precondition resizing `DataInt<Element>.capacity`.
 ///
-@frozen public struct InfiniInt<Source>: BinaryInteger where Source: SystemsInteger {
+@frozen public struct InfiniInt<Source>: ArbitraryInteger where Source: SystemsInteger {
     
     public typealias Element = Source.Element
     

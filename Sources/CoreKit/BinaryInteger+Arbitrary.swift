@@ -8,37 +8,25 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Binary Integer x Unsigned
+// MARK: * Binary Integer x Arbitrary
 //*============================================================================*
 
-/// An unsigned binary integer.
+/// An arbitrary binary integer.
 ///
-/// An unsigned binary integer represents a nonnegative value. The appendix bit of
-/// an unsigned binary integer indicates whether it is finite (`0`) or infinite (`1`).
-///
+/// An arbitrary binary integer is more lenient than systems integer types.
+/// Its `size` is infinite, and its `body` and `appendix` are only bounded by
+/// the `entropy` limit of `IX.max` bits.
 ///
 ///                ┌───────────┬───────────┐
 ///                │  Systems  │ Arbitrary │
 ///     ┌──────────┼───────────┤───────────┤
-///     │   Signed │           │           │
+///     │   Signed │           │     X     │
 ///     ├──────────┼───────────┤───────────┤
-///     │ Unsigned │     X     │     X     │
+///     │ Unsigned │           │     X     │
 ///     └──────────┴───────────┴───────────┘
 ///
+/// - Note: The `size` of an arbitrary binary integer is infinite.
 ///
-public protocol UnsignedInteger: EdgyInteger where Element: UnsignedInteger, Magnitude == Self { }
-
-//*============================================================================*
-// MARK: * Binary Integer x Unsigned
-//*============================================================================*
-
-extension UnsignedInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Metadata
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static var mode: Signedness {
-        Signedness.unsigned
-    }
-}
+/// - Note: An arbitrary binary integer is typically heap-allocated.
+///
+public protocol ArbitraryInteger: BinaryInteger { }

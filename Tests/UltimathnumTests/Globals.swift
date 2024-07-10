@@ -31,17 +31,17 @@ let binaryIntegerssWhereIsUnsigned: [any UnsignedInteger.Type] = {
     arbitraryIntegersWhereIsUnsigned
 }()
 
-let arbitraryIntegers: [any BinaryInteger.Type] = {
+let arbitraryIntegers: [any ArbitraryInteger.Type] = {
     arbitraryIntegersWhereIsSigned +
     arbitraryIntegersWhereIsUnsigned
 }()
 
-let arbitraryIntegersWhereIsSigned: [any SignedInteger.Type] = [
+let arbitraryIntegersWhereIsSigned: [any (ArbitraryInteger & SignedInteger).Type] = [
     InfiniInt<I8>.self,
     InfiniInt<IX>.self,
 ]
 
-let arbitraryIntegersWhereIsUnsigned: [any UnsignedInteger.Type] = [
+let arbitraryIntegersWhereIsUnsigned: [any (ArbitraryInteger & UnsignedInteger).Type] = [
     InfiniInt<U8>.self,
     InfiniInt<UX>.self,
 ]

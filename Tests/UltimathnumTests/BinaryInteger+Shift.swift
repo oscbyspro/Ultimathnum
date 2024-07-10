@@ -23,7 +23,7 @@ final class BinaryIntegerTestsOnShifts: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testUpshiftRepeatingBitByGenericDistancesAsArbitrayInteger() {
-        func whereIs<A, B>(value: A.Type, distance: B.Type) where A: BinaryInteger, B: BinaryInteger {
+        func whereIs<A, B>(value: A.Type, distance: B.Type) where A: ArbitraryInteger, B: BinaryInteger {
             //=----------------------------------=
             let a0 = A(repeating: 0)
             let a1 = A(repeating: 1)
@@ -118,7 +118,7 @@ final class BinaryIntegerTestsOnShifts: XCTestCase {
     }
     
     func testDownshiftRepeatingBitByGenericDistancesAsArbitraryInteger() {
-        func whereIs<A, B>(value: A.Type, distance: B.Type) where A: BinaryInteger, B: BinaryInteger {
+        func whereIs<A, B>(value: A.Type, distance: B.Type) where A: ArbitraryInteger, B: BinaryInteger {
             //=----------------------------------=
             let a0 = A(repeating: 0)
             let a1 = A(repeating: 1)
@@ -217,7 +217,7 @@ final class BinaryIntegerTestsOnShifts: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testSmartShiftByMoreThanSizeIsFlush() {
-        func whereIs<A, B>(value: A.Type, distance: B.Type) where A: SystemsInteger, B: BinaryInteger {
+        func whereIs<A, B>(value: A.Type, distance: B.Type) where A: SystemsInteger, B: ArbitraryInteger {
             for base: A in (-4 as IX ..< 4).lazy.map(A.init(load:)) {
                 for increment: B in 1 ..< 4 {
                     let distance = B(IX(size: A.self)) + increment
@@ -243,7 +243,7 @@ final class BinaryIntegerTestsOnShifts: XCTestCase {
     }
     
     func testSmartShiftByMoreThanMaxSignedWordIsFlush() {
-        func whereIs<A, B>(value: A.Type, distance: B.Type) where A: BinaryInteger, B: BinaryInteger {
+        func whereIs<A, B>(value: A.Type, distance: B.Type) where A: BinaryInteger, B: ArbitraryInteger {
             for base: A in (-4 as IX ..< 4).lazy.map(A.init(load:)) {
                 for increment: B in 1 ..< 4 {
                     let distance = B(IX.max) + increment

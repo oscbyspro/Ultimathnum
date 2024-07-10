@@ -27,8 +27,7 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
     
     /// 2024-06-20: Signed systems integers should successfully clamp `∞`.
     func testSystemsIntegersCanClampInfiniteValues() {
-        func whereIs<A, B>(_ source: A.Type, _ destinaiton: B.Type) where A: UnsignedInteger, B: SystemsInteger {
-            precondition(A.size.isInfinite)
+        func whereIs<A, B>(_ source: A.Type, _ destination: B.Type) where A: ArbitraryInteger & UnsignedInteger, B: SystemsInteger {
             Test().same(B(clamping: A.max    ), B.max)
             Test().same(B(clamping: A.max - 1), B.max)
         }
