@@ -24,18 +24,14 @@ final class TextIntBenchmarksOnRadix16: XCTestCase {
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    #if !DEBUG
     static let formatter = blackHoleIdentity(TextInt.hexadecimal)
-    #endif
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
     override static func setUp() {
-        #if !DEBUG
         blackHole(formatter)
-        #endif
     }
     
     //=------------------------------------------------------------------------=
@@ -43,27 +39,19 @@ final class TextIntBenchmarksOnRadix16: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testDecodingOneMillionTimesBinaryIntegerAsUX() throws {
-        #if DEBUG
-        throw XCTSkip("benchmark")
-        #else
         let encoded = blackHoleIdentity(Self.formatter.encode(UX.max))
         
         for _ in 0 as UX ..<  1_000_000 {
             precondition((try? Self.formatter.decode(encoded) as UX) != nil)
         }
-        #endif
     }
     
     func testDecodingOneMillionTimesBinaryIntegerAsUXL() throws {
-        #if DEBUG
-        throw XCTSkip("benchmark")
-        #else
         let encoded = blackHoleIdentity(Self.formatter.encode(UX.max))
         
         for _ in 0 as UX ..<  1_000_000 {
             precondition((try? Self.formatter.decode(encoded) as UXL) != nil)
         }
-        #endif
     }
     
     //=------------------------------------------------------------------------=
@@ -71,9 +59,6 @@ final class TextIntBenchmarksOnRadix16: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testEncodingFirstOneMillionBinaryIntegerAsUX() throws {
-        #if DEBUG
-        throw XCTSkip("benchmark")
-        #else
         var counter = UX.zero
         
         for value in 0 as UX ..< 1_000_000 {
@@ -81,13 +66,9 @@ final class TextIntBenchmarksOnRadix16: XCTestCase {
         }
         
         Test().same(counter, 1_000_000)
-        #endif
     }
     
     func testEncodingFirstOneMillionBinaryIntegerAsUXL() throws {
-        #if DEBUG
-        throw XCTSkip("benchmark")
-        #else
         var counter = UX.zero, value = UXL(0), increment = UXL(1)
         
         for _ in 0 as UX ..< 1_000_000 {
@@ -96,13 +77,9 @@ final class TextIntBenchmarksOnRadix16: XCTestCase {
         }
         
         Test().same(counter, 1_000_000)
-        #endif
     }
     
     func testEncodingFirstOneMillionSignMagnitudeAsUX() throws {
-        #if DEBUG
-        throw XCTSkip("benchmark")
-        #else
         var counter = UX.zero
         
         for value in 0 as UX ..< 1_000_000 {
@@ -110,13 +87,9 @@ final class TextIntBenchmarksOnRadix16: XCTestCase {
         }
         
         Test().same(counter, 1_000_000)
-        #endif
     }
     
     func testEncodingFirstOneMillionSignMagnitudeAsUXL() throws {
-        #if DEBUG
-        throw XCTSkip("benchmark")
-        #else
         var counter = UX.zero, value = UXL(0), increment = UXL(1)
         
         for _ in 0 as UX ..< 1_000_000 {
@@ -125,6 +98,5 @@ final class TextIntBenchmarksOnRadix16: XCTestCase {
         }
         
         Test().same(counter, 1_000_000)
-        #endif
     }
 }
