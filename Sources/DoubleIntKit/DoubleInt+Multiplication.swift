@@ -24,16 +24,21 @@ extension DoubleInt {
     }
     
     @inlinable public consuming func times(_ multiplier: Self) -> Fallible<Self> {
-        var minus  = self.high.isNegative != multiplier.high.isNegative
+        //=--------------------------------------=
+        // error...: result ∉ [-U.max, U.max]
+        // suberror: result ∉ [ S.min, S.max]
+        // negative: result ∉ [-S.max, S.max]
+        //=--------------------------------------=
+        var minus  = self.isNegative != multiplier.isNegative
         var result = Fallible<Self>(raw: self.magnitude().times(multiplier.magnitude()))
-        
-        var suboverflow = result.value.high.isNegative
+
+        var suberror = result.value.isNegative
         if  minus {
             (result.value, minus) = result.value.complement(true).components()
-            suboverflow = Bool(Bit(suboverflow) & Bit(!minus))
+            suberror = !minus && (suberror) // because S.min is not a suberror
         }
         
-        return result.veto(suboverflow)
+        return result.veto(suberror)
     }
     
     //=------------------------------------------------------------------------=
@@ -41,7 +46,7 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
 
     @inlinable package func multiplication(_ multiplier: Base) -> TripleInt<Base> {
-        let minus  = self.high.isNegative != multiplier.isNegative
+        let minus  = self.isNegative != multiplier.isNegative
         let result = TripleInt<Base>(raw: self.magnitude().multiplication(multiplier.magnitude()))
         return minus ? result.complement() : result
     }
@@ -51,7 +56,7 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public func multiplication(_ multiplier: Self) -> Doublet<Self> {
-        let minus  = self.high.isNegative != multiplier.high.isNegative
+        let minus  = self.isNegative  != multiplier.isNegative
         let result: Doublet<Magnitude> = self.magnitude().multiplication(multiplier.magnitude())
         return Doublet(raw: minus ? result.complement() : result)
     }

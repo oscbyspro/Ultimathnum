@@ -47,23 +47,19 @@ extension CoreIntegerWhereIsSigned {
     
     @inlinable public static func division(_ dividend: Doublet<Self>, by divisor: Divisor<Self>) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
+        // error...: quotient ∉ [-U.max, U.max]
+        // suberror: quotient ∉ [ S.min, S.max]
+        // negative: quotient ∉ [-S.max, S.max]
+        //=--------------------------------------=
         let lhsIsNegative = dividend.high.isNegative
         let rhsIsNegative = divisor.value.isNegative
-        //=--------------------------------------=
-        // error: quotient > U.max or
-        // error: quotient < U.max.times(-1)
-        //=--------------------------------------=
+        
         var division = Fallible<Division<Self, Self>>(
             raw: Magnitude.division(
                 dividend.magnitude(), by: divisor.magnitude()
             )
         )
-        //=--------------------------------------=
-        // suberror: quotient > S.max or
-        // suberror: quotient < S.min
-        // negative: quotient > S.max or
-        // negative: quotient < S.max.times(-1)
-        //=--------------------------------------=
+        
         var suberror = division.value.quotient.isNegative
         if  lhsIsNegative != rhsIsNegative {
             let complement = division.value.quotient.complement(true)
