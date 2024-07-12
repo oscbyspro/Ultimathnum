@@ -202,6 +202,23 @@ extension InfiniIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
+    ///  https://www.wolframalpha.com/input?i=y%3Dx%5E144%2C+x%3Dproduct+prime%28i%29%2C+i%3D1..54
+    func testMultiplicationByBytePrimeComposite() throws {
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
+            let small: T = primes54.lazy.map(T.init).reduce(1, *)
+            let large: T = Array.init(repeating: small, count: 143).reduce(small, &*)
+            Test().same(small,  Array(repeating: small, count: 143).reduce(large, /))
+            Test().same(large,  Array(repeating: small.complement(), count: 144).reduce(1, &*))
+        }
+        
+        #if DEBUG
+        throw XCTSkip("req. release mode")
+        #else
+        whereIs(InfiniInt<IX>.self)
+        whereIs(InfiniInt<UX>.self)
+        #endif
+    }
+    
     func testMultiplicationLikeBigShift() {
         func whereTheBaseTypeIs<B, S>(_ type: B.Type, _ source: S.Type) 
         where B: SystemsInteger, S: SystemsInteger & UnsignedInteger {
