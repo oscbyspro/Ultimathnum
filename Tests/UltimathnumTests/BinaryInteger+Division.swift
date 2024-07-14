@@ -19,6 +19,121 @@ import TestKit
 final class BinaryIntegerTestsOnDivision: XCTestCase {
     
     //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testDivisionOfMinMaxEsque() {
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            //=----------------------------------=
+            let size = IX(raw: T.size)
+            let msb: T = Esque<T>.msb
+            let bot: T = Esque<T>.bot
+            //=----------------------------------=
+            if  T.isSigned {
+                Test().division(msb, msb >> 1,  2 as T, 0 as T)
+                Test().division(bot, msb >> 1, -1 as T, (msb >> 1 + 1).complement())
+            }   else {
+                Test().division(msb, msb >> 1,  2 as T, 0 as T)
+                Test().division(bot, msb >> 1,  1 as T, (msb >> 1 - 1))
+            }
+            
+            if  T.isSigned {
+                Test().division(bot, ~3 as T, (msb >> 2) + 1, 3 as T)
+                Test().division(bot, ~1 as T, (msb >> 1) + 1, 1 as T)
+                Test().division(bot, ~0 as T, (msb >> 0) + 1, 0 as T)
+                Test().division(bot,  0 as T, (nil))
+                Test().division(bot,  1 as T, (bot),          0 as T)
+                Test().division(bot,  2 as T, (bot >> 1),     1 as T)
+                Test().division(bot,  4 as T, (bot >> 2),     3 as T)
+                
+                Test().division(msb, ~3 as T, (msb >> 2).complement(), 0 as T)
+                Test().division(msb, ~1 as T, (msb >> 1).complement(), 0 as T)
+                Test().division(msb, ~0 as T, (msb >> 0).complement(), 0 as T, msb.ascending(0) == Count(raw: size - 1))
+                Test().division(msb,  0 as T, (nil))
+                Test().division(msb,  1 as T, (msb),          0 as T)
+                Test().division(msb,  2 as T, (msb >> 1),     0 as T)
+                Test().division(msb,  4 as T, (msb >> 2),     0 as T)
+            }   else {
+                Test().division(bot, ~3 as T, (000 as T),     bot)
+                Test().division(bot, ~1 as T, (000 as T),     bot)
+                Test().division(bot, ~0 as T, (000 as T),     bot)
+                Test().division(bot,  0 as T, (nil))
+                Test().division(bot,  1 as T, (bot),          0 as T)
+                Test().division(bot,  2 as T, (bot >> 1),     1 as T)
+                
+                Test().division(msb, ~1 as T, (000 as T),     msb)
+                Test().division(msb, ~0 as T, (000 as T),     msb)
+                Test().division(msb,  0 as T, (nil))
+                Test().division(msb,  1 as T, (msb),          0 as T)
+                Test().division(msb,  2 as T, (msb >> 1),     0 as T)
+                Test().division(msb,  4 as T, (msb >> 2),     0 as T)
+            }
+        }
+        
+        for type in binaryIntegers {
+            whereIs(type)
+        }
+    }
+    
+    func testDivisionOfSmallBySmall() {
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            //=----------------------------------=
+            let x0 = 0 as T
+            let x7 = 7 as T
+            //=----------------------------------=
+            for divisor: T in [4, 3, 2, 1, ~0, ~1, ~2, ~3, ~4] as [T] {
+                Test().division( x0, divisor, x0, x0)
+            }
+            
+            if  T.isSigned {
+                Test().division( x7,  3 as T,  2 as T,  1 as T)
+                Test().division( x7, -3 as T, -2 as T,  1 as T)
+                Test().division(-x7,  3 as T, -2 as T, -1 as T)
+                Test().division(-x7, -3 as T,  2 as T, -1 as T)
+            }   else {
+                Test().division( x7,  1 as T,  7 as T,  0 as T)
+                Test().division( x7,  2 as T,  3 as T,  1 as T)
+                Test().division( x7,  3 as T,  2 as T,  1 as T)
+                Test().division( x7,  4 as T,  1 as T,  3 as T)
+            }
+        }
+        
+        for type in binaryIntegers {
+            whereIs(type)
+        }
+    }
+    
+    func testDivisionByZero() {
+        func whereIsBinaryInteger<T>(_ type: T.Type) where T: BinaryInteger {
+            var values: [T] = [4, 3, 2, 1, 0, ~0, ~1, ~2, ~3, ~4]
+            values.append(T.exactly(0x0000000000000000000000000000007F).value)
+            values.append(T.exactly(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0).value)
+            
+            for value in values {
+                Test().division(value, T.zero, nil)
+            }
+        }
+        
+        func whereIsSystemsInteger<T>(_ type: T.Type) where T: SystemsInteger {
+            let values: [T] = [4, 3, 2, 1, 0, ~0, ~1, ~2, ~3, ~4]
+
+            for high: T in values {
+                for low: T.Magnitude in values.lazy.map(T.Magnitude.init(raw:)) {
+                    Test().division(Doublet(low: low, high: high), T.zero, nil)
+                }
+            }
+        }
+        
+        for type in binaryIntegers {
+            whereIsBinaryInteger(type)
+        }
+        
+        for type in systemsIntegers {
+            whereIsSystemsInteger(type)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Tests x Signed
     //=------------------------------------------------------------------------=
     
@@ -34,10 +149,10 @@ final class BinaryIntegerTestsOnDivision: XCTestCase {
             Test().division(T.min + 2,  1 as T,  (T.min     + 2),  0 as T)
             Test().division(T.min + 3,  1 as T,  (T.min     + 3),  0 as T)
             
-            Test().division(T.min,      0 as T, nil)
-            Test().division(T.min + 1,  0 as T, nil)
-            Test().division(T.min + 2,  0 as T, nil)
-            Test().division(T.min + 3,  0 as T, nil)
+            Test().division(T.min,      0 as T,  nil)
+            Test().division(T.min + 1,  0 as T,  nil)
+            Test().division(T.min + 2,  0 as T,  nil)
+            Test().division(T.min + 3,  0 as T,  nil)
 
             Test().division(T.min,     -1 as T,  (T.min        ),  0 as T, true)
             Test().division(T.min + 1, -1 as T,  (T.max        ),  0 as T)
@@ -67,10 +182,10 @@ final class BinaryIntegerTestsOnDivision: XCTestCase {
             Test().division(T.max - 2,  1 as T,  (T.max     - 2),  0 as T)
             Test().division(T.max - 3,  1 as T,  (T.max     - 3),  0 as T)
             
-            Test().division(T.max,      0 as T, nil)
-            Test().division(T.max - 1,  0 as T, nil)
-            Test().division(T.max - 2,  0 as T, nil)
-            Test().division(T.max - 3,  0 as T, nil)
+            Test().division(T.max,      0 as T,  nil)
+            Test().division(T.max - 1,  0 as T,  nil)
+            Test().division(T.max - 2,  0 as T,  nil)
+            Test().division(T.max - 3,  0 as T,  nil)
             
             Test().division(T.max,     -1 as T, -(T.max        ),  0 as T)
             Test().division(T.max - 1, -1 as T, -(T.max     - 1),  0 as T)
@@ -158,50 +273,50 @@ final class BinaryIntegerTestsOnDivision: XCTestCase {
             typealias M = T.Magnitude
             typealias D = Doublet<T>
             
-            Test().division(D(low: M.msb + 3, high: -1 as T),  2,  T.min / 2 + 2, -1 as T)
-            Test().division(D(low: M.msb + 2, high: -1 as T),  2,  T.min / 2 + 1,  0 as T)
-            Test().division(D(low: M.msb + 1, high: -1 as T),  2,  T.min / 2 + 1, -1 as T)
-            Test().division(D(low: M.msb + 0, high: -1 as T),  2,  T.min / 2,      0 as T)
-            Test().division(D(low: M.msb - 1, high: -1 as T),  2,  T.min / 2,     -1 as T)
-            Test().division(D(low: M.msb - 2, high: -1 as T),  2,  T.min / 2 - 1,  0 as T)
-            Test().division(D(low: M.msb - 3, high: -1 as T),  2,  T.min / 2 - 1, -1 as T)
-            Test().division(D(low: M.msb - 4, high: -1 as T),  2,  T.min / 2 - 2,  0 as T)
+            Test().division(D(low: M.msb + 3, high: -1 as T),  2 as T,  T.min / 2 + 2, -1 as T)
+            Test().division(D(low: M.msb + 2, high: -1 as T),  2 as T,  T.min / 2 + 1,  0 as T)
+            Test().division(D(low: M.msb + 1, high: -1 as T),  2 as T,  T.min / 2 + 1, -1 as T)
+            Test().division(D(low: M.msb + 0, high: -1 as T),  2 as T,  T.min / 2,      0 as T)
+            Test().division(D(low: M.msb - 1, high: -1 as T),  2 as T,  T.min / 2,     -1 as T)
+            Test().division(D(low: M.msb - 2, high: -1 as T),  2 as T,  T.min / 2 - 1,  0 as T)
+            Test().division(D(low: M.msb - 3, high: -1 as T),  2 as T,  T.min / 2 - 1, -1 as T)
+            Test().division(D(low: M.msb - 4, high: -1 as T),  2 as T,  T.min / 2 - 2,  0 as T)
             
-            Test().division(D(low: M.msb + 3, high: -1 as T),  1,  T.min     + 3,  0 as T)
-            Test().division(D(low: M.msb + 2, high: -1 as T),  1,  T.min     + 2,  0 as T)
-            Test().division(D(low: M.msb + 1, high: -1 as T),  1,  T.min     + 1,  0 as T)
-            Test().division(D(low: M.msb + 0, high: -1 as T),  1,  T.min,          0 as T)
-            Test().division(D(low: M.msb - 1, high: -1 as T),  1,  T.max,          0 as T, true)
-            Test().division(D(low: M.msb - 2, high: -1 as T),  1,  T.max     - 1,  0 as T, true)
-            Test().division(D(low: M.msb - 3, high: -1 as T),  1,  T.max     - 2,  0 as T, true)
-            Test().division(D(low: M.msb - 4, high: -1 as T),  1,  T.max     - 3,  0 as T, true)
+            Test().division(D(low: M.msb + 3, high: -1 as T),  1 as T,  T.min     + 3,  0 as T)
+            Test().division(D(low: M.msb + 2, high: -1 as T),  1 as T,  T.min     + 2,  0 as T)
+            Test().division(D(low: M.msb + 1, high: -1 as T),  1 as T,  T.min     + 1,  0 as T)
+            Test().division(D(low: M.msb + 0, high: -1 as T),  1 as T,  T.min,          0 as T)
+            Test().division(D(low: M.msb - 1, high: -1 as T),  1 as T,  T.max,          0 as T, true)
+            Test().division(D(low: M.msb - 2, high: -1 as T),  1 as T,  T.max     - 1,  0 as T, true)
+            Test().division(D(low: M.msb - 3, high: -1 as T),  1 as T,  T.max     - 2,  0 as T, true)
+            Test().division(D(low: M.msb - 4, high: -1 as T),  1 as T,  T.max     - 3,  0 as T, true)
             
-            Test().division(D(low: M.msb + 3, high: -1 as T),  0,  nil)
-            Test().division(D(low: M.msb + 2, high: -1 as T),  0,  nil)
-            Test().division(D(low: M.msb + 1, high: -1 as T),  0,  nil)
-            Test().division(D(low: M.msb + 0, high: -1 as T),  0,  nil)
-            Test().division(D(low: M.msb - 1, high: -1 as T),  0,  nil)
-            Test().division(D(low: M.msb - 2, high: -1 as T),  0,  nil)
-            Test().division(D(low: M.msb - 3, high: -1 as T),  0,  nil)
-            Test().division(D(low: M.msb - 4, high: -1 as T),  0,  nil)
+            Test().division(D(low: M.msb + 3, high: -1 as T),  0 as T,  nil)
+            Test().division(D(low: M.msb + 2, high: -1 as T),  0 as T,  nil)
+            Test().division(D(low: M.msb + 1, high: -1 as T),  0 as T,  nil)
+            Test().division(D(low: M.msb + 0, high: -1 as T),  0 as T,  nil)
+            Test().division(D(low: M.msb - 1, high: -1 as T),  0 as T,  nil)
+            Test().division(D(low: M.msb - 2, high: -1 as T),  0 as T,  nil)
+            Test().division(D(low: M.msb - 3, high: -1 as T),  0 as T,  nil)
+            Test().division(D(low: M.msb - 4, high: -1 as T),  0 as T,  nil)
             
-            Test().division(D(low: M.msb + 3, high: -1 as T), -1,  T.max     - 2,  0 as T)
-            Test().division(D(low: M.msb + 2, high: -1 as T), -1,  T.max     - 1,  0 as T)
-            Test().division(D(low: M.msb + 1, high: -1 as T), -1,  T.max,          0 as T)
-            Test().division(D(low: M.msb + 0, high: -1 as T), -1,  T.min,          0 as T, true)
-            Test().division(D(low: M.msb - 1, high: -1 as T), -1,  T.min     + 1,  0 as T, true)
-            Test().division(D(low: M.msb - 2, high: -1 as T), -1,  T.min     + 2,  0 as T, true)
-            Test().division(D(low: M.msb - 3, high: -1 as T), -1,  T.min     + 3,  0 as T, true)
-            Test().division(D(low: M.msb - 4, high: -1 as T), -1,  T.min     + 4,  0 as T, true)
+            Test().division(D(low: M.msb + 3, high: -1 as T), -1 as T,  T.max     - 2,  0 as T)
+            Test().division(D(low: M.msb + 2, high: -1 as T), -1 as T,  T.max     - 1,  0 as T)
+            Test().division(D(low: M.msb + 1, high: -1 as T), -1 as T,  T.max,          0 as T)
+            Test().division(D(low: M.msb + 0, high: -1 as T), -1 as T,  T.min,          0 as T, true)
+            Test().division(D(low: M.msb - 1, high: -1 as T), -1 as T,  T.min     + 1,  0 as T, true)
+            Test().division(D(low: M.msb - 2, high: -1 as T), -1 as T,  T.min     + 2,  0 as T, true)
+            Test().division(D(low: M.msb - 3, high: -1 as T), -1 as T,  T.min     + 3,  0 as T, true)
+            Test().division(D(low: M.msb - 4, high: -1 as T), -1 as T,  T.min     + 4,  0 as T, true)
             
-            Test().division(D(low: M.msb + 3, high: -1 as T), -2,  T.max / 2 - 1, -1 as T)
-            Test().division(D(low: M.msb + 2, high: -1 as T), -2,  T.max / 2,      0 as T)
-            Test().division(D(low: M.msb + 1, high: -1 as T), -2,  T.max / 2,     -1 as T)
-            Test().division(D(low: M.msb + 0, high: -1 as T), -2,  T.max / 2 + 1,  0 as T)
-            Test().division(D(low: M.msb - 1, high: -1 as T), -2,  T.max / 2 + 1, -1 as T)
-            Test().division(D(low: M.msb - 2, high: -1 as T), -2,  T.max / 2 + 2,  0 as T)
-            Test().division(D(low: M.msb - 3, high: -1 as T), -2,  T.max / 2 + 2, -1 as T)
-            Test().division(D(low: M.msb - 4, high: -1 as T), -2,  T.max / 2 + 3,  0 as T)
+            Test().division(D(low: M.msb + 3, high: -1 as T), -2 as T,  T.max / 2 - 1, -1 as T)
+            Test().division(D(low: M.msb + 2, high: -1 as T), -2 as T,  T.max / 2,      0 as T)
+            Test().division(D(low: M.msb + 1, high: -1 as T), -2 as T,  T.max / 2,     -1 as T)
+            Test().division(D(low: M.msb + 0, high: -1 as T), -2 as T,  T.max / 2 + 1,  0 as T)
+            Test().division(D(low: M.msb - 1, high: -1 as T), -2 as T,  T.max / 2 + 1, -1 as T)
+            Test().division(D(low: M.msb - 2, high: -1 as T), -2 as T,  T.max / 2 + 2,  0 as T)
+            Test().division(D(low: M.msb - 3, high: -1 as T), -2 as T,  T.max / 2 + 2, -1 as T)
+            Test().division(D(low: M.msb - 4, high: -1 as T), -2 as T,  T.max / 2 + 3,  0 as T)
         }
                 
         for type in systemsIntegersWhereIsSigned {
@@ -214,50 +329,50 @@ final class BinaryIntegerTestsOnDivision: XCTestCase {
             typealias M = T.Magnitude
             typealias D = Doublet<T>
             
-            Test().division(D(low: M.min + 3, high: -1 as T),  2,  T.min + 2, -1 as T)
-            Test().division(D(low: M.min + 2, high: -1 as T),  2,  T.min + 1,  0 as T)
-            Test().division(D(low: M.min + 1, high: -1 as T),  2,  T.min + 1, -1 as T)
-            Test().division(D(low: M.min,     high: -1 as T),  2,  T.min,      0 as T)
-            Test().division(D(low: M.max,     high: -2 as T),  2,  T.min,     -1 as T)
-            Test().division(D(low: M.max - 1, high: -2 as T),  2,  T.max,      0 as T, true)
-            Test().division(D(low: M.max - 2, high: -2 as T),  2,  T.max,     -1 as T, true)
-            Test().division(D(low: M.max - 3, high: -2 as T),  2,  T.max - 1,  0 as T, true)
+            Test().division(D(low: M.min + 3, high: -1 as T),  2 as T,  T.min + 2, -1 as T)
+            Test().division(D(low: M.min + 2, high: -1 as T),  2 as T,  T.min + 1,  0 as T)
+            Test().division(D(low: M.min + 1, high: -1 as T),  2 as T,  T.min + 1, -1 as T)
+            Test().division(D(low: M.min,     high: -1 as T),  2 as T,  T.min,      0 as T)
+            Test().division(D(low: M.max,     high: -2 as T),  2 as T,  T.min,     -1 as T)
+            Test().division(D(low: M.max - 1, high: -2 as T),  2 as T,  T.max,      0 as T, true)
+            Test().division(D(low: M.max - 2, high: -2 as T),  2 as T,  T.max,     -1 as T, true)
+            Test().division(D(low: M.max - 3, high: -2 as T),  2 as T,  T.max - 1,  0 as T, true)
             
-            Test().division(D(low: M.min + 3, high: -1 as T),  1,  00003,      0 as T, true)
-            Test().division(D(low: M.min + 2, high: -1 as T),  1,  00002,      0 as T, true)
-            Test().division(D(low: M.min + 1, high: -1 as T),  1,  00001,      0 as T, true)
-            Test().division(D(low: M.min,     high: -1 as T),  1,  00000,      0 as T, true)
-            Test().division(D(low: M.max,     high: -2 as T),  1, -00001,      0 as T, true)
-            Test().division(D(low: M.max - 1, high: -2 as T),  1, -00002,      0 as T, true)
-            Test().division(D(low: M.max - 2, high: -2 as T),  1, -00003,      0 as T, true)
-            Test().division(D(low: M.max - 3, high: -2 as T),  1, -00004,      0 as T, true)
+            Test().division(D(low: M.min + 3, high: -1 as T),  1 as T,  3 as T,     0 as T, true)
+            Test().division(D(low: M.min + 2, high: -1 as T),  1 as T,  2 as T,     0 as T, true)
+            Test().division(D(low: M.min + 1, high: -1 as T),  1 as T,  1 as T,     0 as T, true)
+            Test().division(D(low: M.min,     high: -1 as T),  1 as T,  0 as T,     0 as T, true)
+            Test().division(D(low: M.max,     high: -2 as T),  1 as T, -1 as T,     0 as T, true)
+            Test().division(D(low: M.max - 1, high: -2 as T),  1 as T, -2 as T,     0 as T, true)
+            Test().division(D(low: M.max - 2, high: -2 as T),  1 as T, -3 as T,     0 as T, true)
+            Test().division(D(low: M.max - 3, high: -2 as T),  1 as T, -4 as T,     0 as T, true)
             
-            Test().division(D(low: M.min + 3, high: -1 as T),  0, nil)
-            Test().division(D(low: M.min + 2, high: -1 as T),  0, nil)
-            Test().division(D(low: M.min + 1, high: -1 as T),  0, nil)
-            Test().division(D(low: M.min,     high: -1 as T),  0, nil)
-            Test().division(D(low: M.max,     high: -2 as T),  0, nil)
-            Test().division(D(low: M.max - 1, high: -2 as T),  0, nil)
-            Test().division(D(low: M.max - 2, high: -2 as T),  0, nil)
-            Test().division(D(low: M.max - 3, high: -2 as T),  0, nil)
+            Test().division(D(low: M.min + 3, high: -1 as T),  0 as T,  nil)
+            Test().division(D(low: M.min + 2, high: -1 as T),  0 as T,  nil)
+            Test().division(D(low: M.min + 1, high: -1 as T),  0 as T,  nil)
+            Test().division(D(low: M.min,     high: -1 as T),  0 as T,  nil)
+            Test().division(D(low: M.max,     high: -2 as T),  0 as T,  nil)
+            Test().division(D(low: M.max - 1, high: -2 as T),  0 as T,  nil)
+            Test().division(D(low: M.max - 2, high: -2 as T),  0 as T,  nil)
+            Test().division(D(low: M.max - 3, high: -2 as T),  0 as T,  nil)
             
-            Test().division(D(low: M.min + 3, high: -1 as T), -1, -00003,      0 as T, true)
-            Test().division(D(low: M.min + 2, high: -1 as T), -1, -00002,      0 as T, true)
-            Test().division(D(low: M.min + 1, high: -1 as T), -1, -00001,      0 as T, true)
-            Test().division(D(low: M.min,     high: -1 as T), -1,  00000,      0 as T, true)
-            Test().division(D(low: M.max,     high: -2 as T), -1,  00001,      0 as T, true)
-            Test().division(D(low: M.max - 1, high: -2 as T), -1,  00002,      0 as T, true)
-            Test().division(D(low: M.max - 2, high: -2 as T), -1,  00003,      0 as T, true)
-            Test().division(D(low: M.max - 3, high: -2 as T), -1,  00004,      0 as T, true)
+            Test().division(D(low: M.min + 3, high: -1 as T), -1 as T, -3 as T,     0 as T, true)
+            Test().division(D(low: M.min + 2, high: -1 as T), -1 as T, -2 as T,     0 as T, true)
+            Test().division(D(low: M.min + 1, high: -1 as T), -1 as T, -1 as T,     0 as T, true)
+            Test().division(D(low: M.min,     high: -1 as T), -1 as T,  0 as T,     0 as T, true)
+            Test().division(D(low: M.max,     high: -2 as T), -1 as T,  1 as T,     0 as T, true)
+            Test().division(D(low: M.max - 1, high: -2 as T), -1 as T,  2 as T,     0 as T, true)
+            Test().division(D(low: M.max - 2, high: -2 as T), -1 as T,  3 as T,     0 as T, true)
+            Test().division(D(low: M.max - 3, high: -2 as T), -1 as T,  4 as T,     0 as T, true)
             
-            Test().division(D(low: M.min + 3, high: -1 as T), -2,  T.max - 1, -1 as T)
-            Test().division(D(low: M.min + 2, high: -1 as T), -2,  T.max,      0 as T)
-            Test().division(D(low: M.min + 1, high: -1 as T), -2,  T.max,     -1 as T)
-            Test().division(D(low: M.min,     high: -1 as T), -2,  T.min,      0 as T, true)
-            Test().division(D(low: M.max,     high: -2 as T), -2,  T.min,     -1 as T, true)
-            Test().division(D(low: M.max - 1, high: -2 as T), -2,  T.min + 1,  0 as T, true)
-            Test().division(D(low: M.max - 2, high: -2 as T), -2,  T.min + 1, -1 as T, true)
-            Test().division(D(low: M.max - 3, high: -2 as T), -2,  T.min + 2,  0 as T, true)
+            Test().division(D(low: M.min + 3, high: -1 as T), -2 as T,  T.max - 1, -1 as T)
+            Test().division(D(low: M.min + 2, high: -1 as T), -2 as T,  T.max,      0 as T)
+            Test().division(D(low: M.min + 1, high: -1 as T), -2 as T,  T.max,     -1 as T)
+            Test().division(D(low: M.min,     high: -1 as T), -2 as T,  T.min,      0 as T, true)
+            Test().division(D(low: M.max,     high: -2 as T), -2 as T,  T.min,     -1 as T, true)
+            Test().division(D(low: M.max - 1, high: -2 as T), -2 as T,  T.min + 1,  0 as T, true)
+            Test().division(D(low: M.max - 2, high: -2 as T), -2 as T,  T.min + 1, -1 as T, true)
+            Test().division(D(low: M.max - 3, high: -2 as T), -2 as T,  T.min + 2,  0 as T, true)
         }
         
         for type in systemsIntegersWhereIsSigned {
@@ -374,6 +489,86 @@ final class BinaryIntegerTestsOnDivision: XCTestCase {
         
         for type in systemsIntegersWhereIsSigned {
             whereIsSigned(type)
+        }
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Code Coverage
+//=----------------------------------------------------------------------------=
+
+extension BinaryIntegerTestsOnDivision {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testDivisionLongCodeCoverageAsUnsignedInteger() {
+        func whereIsBinaryInteger<T>(_ type: T.Type) where T: UnsignedInteger {
+            //=----------------------------------=
+            let size = (Esque<T>.shl + 1)
+            let ones = (T(repeating: 001) << size).toggled()
+            //=----------------------------------=
+            var dividend: T, divisor: T, quotient: T, remainder: T
+            //=----------------------------------=
+            dividend   = (ones     << ((size *  5) >> 3)) & ones // [ 0,  0,  0,  0,  0, ~0, ~0, ~0]
+            divisor    = (ones     >> ((size >> 1))) //............ [~0, ~0, ~0, ~0,  0,  0,  0,  0]
+            quotient   = (dividend >> ((size >> 1))) //............ [ 0, ~0, ~0, ~0,  0,  0,  0,  0]
+            remainder  = (quotient)   //........................... [ 0, ~0, ~0, ~0,  0,  0,  0,  0]
+                    
+            Test().division(dividend, divisor, quotient, remainder)
+            
+            dividend  += divisor
+            quotient  += 1
+            
+            Test().division(dividend, divisor, quotient, remainder)
+
+            dividend  += 1
+            remainder += 1
+            
+            if  T.size == U8.size {
+                Test().same(remainder, divisor)
+                quotient  += 1
+                remainder  = 0
+            }
+            
+            Test().division(dividend, divisor, quotient, remainder)
+        }
+        
+        func whereIsSystemsInteger<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
+            //=----------------------------------=
+            var dividend = Doublet<T>(low: 0, high: 0)
+            var divisor: T, quotient: T, remainder: T
+            //=----------------------------------=
+            // dividend: [ 0,  0,  0,  0,  0, ~0, ~0, ~0]
+            // divisor:  [~0, ~0, ~0, ~0,  0,  0,  0,  0]
+            //=----------------------------------=
+            dividend.high  = T.max << (UX(size: T.self) >> 2)
+            dividend.low   = T.Magnitude.min
+            divisor        = T.max
+            quotient       = dividend.high
+            remainder      = dividend.high
+            
+            Test().division(dividend, divisor, quotient, remainder)
+            
+            dividend.low   = T.Magnitude.max
+            quotient      += 1
+            
+            Test().division(dividend, divisor, quotient, remainder)
+            
+            dividend.low   = T.Magnitude.min
+            dividend.high += 1
+            remainder     += 1
+            
+            Test().division(dividend, divisor, quotient, remainder)
+        }
+        
+        for type in binaryIntegersWhereIsUnsigned {
+            whereIsBinaryInteger(type)
+        }
+        
+        for type in systemsIntegersWhereIsUnsigned {
+            whereIsSystemsInteger(type)
         }
     }
 }

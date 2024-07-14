@@ -21,20 +21,6 @@ extension InfiniIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testValidation() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            IntegerInvariants(T.self).exactlyCoreSystemsInteger()
-            IntegerInvariants(T.self).exactlyCoreSystemsIntegerRainOf0s()
-            IntegerInvariants(T.self).exactlyCoreSystemsIntegerRainOf1s()
-            IntegerInvariants(T.self).exactlyCoreSystemsIntegerSlicesOf0s()
-            IntegerInvariants(T.self).exactlyCoreSystemsIntegerSlicesOf1s()
-        }
-        
-        for type in Self.types {
-            whereIs(type)
-        }
-    }
-    
     func testValidationAsExactlyArbitraryAppendixValues() {
         func whereIs<A, B>(_ source: A.Type, _ destination: B.Type) where A: BinaryInteger, B: BinaryInteger {
             Test().exactly(A.zero &- 2, Fallible(B.zero &- 2, error: A.isSigned != B.isSigned))

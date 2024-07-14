@@ -21,17 +21,6 @@ extension InfiniIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testInitBody() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            IntegerInvariants(T.self).elements()
-            IntegerInvariants(T.self).exactlyArrayBodyMode()
-        }
-        
-        for type in Self.types {
-            whereIs(type)
-        }
-    }
-    
     func testMakeBody() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             typealias E = T.Element.Magnitude

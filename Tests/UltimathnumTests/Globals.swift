@@ -18,7 +18,7 @@ import TestKit
 
 let binaryIntegers: [any BinaryInteger.Type] = {
     binaryIntegersWhereIsSigned +
-    binaryIntegerssWhereIsUnsigned
+    binaryIntegersWhereIsUnsigned
 }()
         
 let binaryIntegersWhereIsSigned: [any SignedInteger.Type] = {
@@ -26,7 +26,7 @@ let binaryIntegersWhereIsSigned: [any SignedInteger.Type] = {
     arbitraryIntegersWhereIsSigned
 }()
         
-let binaryIntegerssWhereIsUnsigned: [any UnsignedInteger.Type] = {
+let binaryIntegersWhereIsUnsigned: [any UnsignedInteger.Type] = {
     systemsIntegersWhereIsUnsigned +
     arbitraryIntegersWhereIsUnsigned
 }()

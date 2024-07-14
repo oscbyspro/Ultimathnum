@@ -20,26 +20,6 @@ extension CoreIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testDivision() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self).divisionOfMsbEsque()
-            IntegerInvariants(T.self).divisionOfSmallBySmall()
-            IntegerInvariants(T.self).divisionByZero(SystemsIntegerID())
-        }
-        
-        func whereIsUnsigned<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            IntegerInvariants(T.self).divisionLongCodeCoverage(SystemsIntegerID())
-        }
-        
-        for type in Self.types {
-            whereIs(type)
-        }
-        
-        for type in Self.typesWhereIsUnsigned {
-            whereIsUnsigned(type)
-        }        
-    }
-    
     func testDivision2111() {
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude

@@ -20,24 +20,6 @@ extension CoreIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testBitwise() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self).bitwiseInitBitOrRepeatingBit()
-            IntegerInvariants(T.self).bitwiseLogicOfAlternatingBitEsque()
-            IntegerInvariants(T.self).bitwiseLsbEqualsIsOdd()
-            IntegerInvariants(T.self).bitwiseMsbEqualsSignitudeIsNegative()
-            IntegerInvariants(T.self).endianness(SystemsIntegerID())
-        }
-        
-        for type in Self.types {
-            whereIs(type)
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
     func testComplement() {
         func whereIs<T>(_ base: T.Type) where T: SystemsInteger {
             Test().complement(~2 as T, false, Fallible( 2 as T, error:  false))

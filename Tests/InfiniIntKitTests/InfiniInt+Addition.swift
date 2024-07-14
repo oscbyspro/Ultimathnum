@@ -18,33 +18,6 @@ import TestKit
 extension InfiniIntTests {
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    func testAddition() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            IntegerInvariants(T.self).additionOfMinMaxEsque()
-            IntegerInvariants(T.self).additionOfRepeatingBit(BinaryIntegerID())
-        }
-        
-        for type in Self.types {
-            whereIs(type)
-        }
-    }
-    
-    func testSubtraction() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            IntegerInvariants(T.self).negation()
-            IntegerInvariants(T.self).subtractionOfMinMaxEsque()
-            IntegerInvariants(T.self).subtractionOfRepeatingBit(BinaryIntegerID())
-        }
-        
-        for type in Self.types {
-            whereIs(type)
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
     // MARK: Tests x Many + Bit
     //=------------------------------------------------------------------------=
     

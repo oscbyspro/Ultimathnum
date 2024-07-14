@@ -77,18 +77,6 @@ final class DoubleIntTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testInvariants() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self).mode(BinaryIntegerID())
-            IntegerInvariants(T.self).size(SystemsIntegerID())
-            IntegerInvariants(T.self).protocols()
-        }
-        
-        for type in Self.types {
-            whereIs(type)
-        }
-    }
-    
     func testComponents() {
         func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>

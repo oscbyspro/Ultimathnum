@@ -21,20 +21,6 @@ extension DoubleIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testBitwise() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self).bitwiseInitBitOrRepeatingBit()
-            IntegerInvariants(T.self).bitwiseLogicOfAlternatingBitEsque()
-            IntegerInvariants(T.self).bitwiseLsbEqualsIsOdd()
-            IntegerInvariants(T.self).bitwiseMsbEqualsSignitudeIsNegative()
-            IntegerInvariants(T.self).endianness(SystemsIntegerID())
-        }
-        
-        for type in Self.types {
-            whereIs(type)
-        }
-    }
-    
     func testLeastSignificantBit() {
         func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
@@ -85,10 +71,7 @@ extension DoubleIntTests {
             typealias T = DoubleInt<B>
             typealias M = DoubleInt<B.Magnitude>
             typealias U = DoubleInt<T> // x4
-            //=----------------------------------=
-            IntegerInvariants(T.self).endianness(SystemsIntegerID())
-            IntegerInvariants(U.self).endianness(SystemsIntegerID())
-            //=----------------------------------=
+            
             let l1 = B.Magnitude(1).endianness( .ascending)
             let l2 = B.Magnitude(2).endianness( .ascending)
             let l3 = B.Magnitude(3).endianness( .ascending)

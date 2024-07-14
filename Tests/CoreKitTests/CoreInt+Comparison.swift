@@ -20,18 +20,6 @@ extension CoreIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testComparison() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self).comparisonOfGenericLowEntropy()
-            IntegerInvariants(T.self).comparisonOfGenericMinMaxEsque()
-            IntegerInvariants(T.self).comparisonOfGenericRepeatingBit()
-        }
-        
-        for type in Self.types {
-            whereIs(type)
-        }
-    }
-    
     /// - Note: Generic tests may depend on these results.
     func testComparisonOfSize() {
         for size: Count<IX> in [I8 .size, U8 .size] {

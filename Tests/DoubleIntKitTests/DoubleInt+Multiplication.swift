@@ -47,13 +47,6 @@ extension DoubleIntTests {
     //=------------------------------------------------------------------------=
     
     func testMultiplication() {
-        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias T = DoubleInt<B>
-            
-            IntegerInvariants(T.self).multiplicationOfMsb(SystemsIntegerID())
-            IntegerInvariants(T.self).multiplicationOfRepeatingBit(SystemsIntegerID())
-        }
-        
         func whereTheBaseTypeIsSigned<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
             typealias M = DoubleInt<B>.Magnitude
@@ -76,10 +69,6 @@ extension DoubleIntTests {
             Test().multiplication(T(low:  1, high:  2), T(low: ~3, high: ~4), F(P(low: M(low: ~3, high: ~12), high: T(low: ~7, high:  1)), error: true))
             Test().multiplication(T(low: ~1, high: ~2), T(low:  3, high:  4), F(P(low: M(low: ~5, high: ~14), high: T(low: ~5, high:  3)), error: true))
             Test().multiplication(T(low: ~1, high: ~2), T(low: ~3, high: ~4), F(P(low: M(low:  8, high:  16), high: T(low:  2, high: ~5)), error: true))
-        }
-        
-        for base in Self.bases {
-            whereTheBaseTypeIs(base)
         }
         
         for base in Self.basesWhereIsSigned {

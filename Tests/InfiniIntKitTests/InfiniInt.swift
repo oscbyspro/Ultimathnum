@@ -50,20 +50,4 @@ final class InfiniIntTests: XCTestCase {
         UX.self,
         U8.self,
     ]
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    func testInvariants() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            IntegerInvariants(T.self).mode(BinaryIntegerID())
-            IntegerInvariants(T.self).size(BinaryIntegerID())
-            IntegerInvariants(T.self).protocols()
-        }
-        
-        for type in Self.types {
-            whereIs(type)
-        }
-    }
 }

@@ -128,7 +128,7 @@ final class BinaryIntegerTestsOnLiteral: XCTestCase {
                 whereIsSigned(integer, values: values)
             }
             
-            for integer in binaryIntegerssWhereIsUnsigned {
+            for integer in binaryIntegersWhereIsUnsigned {
                 whereIsUnsigned(integer, values: values)
             }
         }

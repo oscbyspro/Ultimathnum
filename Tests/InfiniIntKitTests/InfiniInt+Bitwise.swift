@@ -21,23 +21,6 @@ extension InfiniIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testBitwise() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            IntegerInvariants(T.self).bitwiseInitBitOrRepeatingBit()
-            IntegerInvariants(T.self).bitwiseLogicOfAlternatingBitEsque()
-            IntegerInvariants(T.self).bitwiseLsbEqualsIsOdd()
-            IntegerInvariants(T.self).bitwiseMsbEqualsSignitudeIsNegative()
-        }
-        
-        for type in Self.types {
-            whereIs(type)
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
     func testComplement() {
         func whereTheElementIs<E>(_ type: E.Type) where E: SystemsInteger {
             typealias T = InfiniInt<E>

@@ -21,11 +21,6 @@ extension CoreIntTests {
     //=------------------------------------------------------------------------=
     
     func testMultiplication() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self).multiplicationOfMsb(SystemsIntegerID())
-            IntegerInvariants(T.self).multiplicationOfRepeatingBit(SystemsIntegerID())
-        }
-        
         func whereIsSigned<T>(_ type: T.Type) where T: SystemsInteger {
             typealias M = T.Magnitude
             typealias X = Doublet<T>
@@ -66,10 +61,6 @@ extension CoreIntTests {
             Test().multiplication( 3 as T,  1 as T, F(X(low:  3 as M, high:  0 as T)))
             Test().multiplication( 3 as T,  2 as T, F(X(low:  6 as M, high:  0 as T)))
             Test().multiplication( 3 as T,  3 as T, F(X(low:  9 as M, high:  0 as T)))
-        }
-        
-        for type in Self.types {
-            whereIs(type)
         }
         
         for type in Self.typesWhereIsSigned {

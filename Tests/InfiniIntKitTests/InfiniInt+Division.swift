@@ -21,26 +21,6 @@ extension InfiniIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testDivision() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            IntegerInvariants(T.self).divisionOfMsbEsque()
-            IntegerInvariants(T.self).divisionOfSmallBySmall()
-            IntegerInvariants(T.self).divisionByZero(BinaryIntegerID())
-        }
-        
-        func whereIsUnsigned<T>(_ type: T.Type) where T: UnsignedInteger {
-            IntegerInvariants(T.self).divisionLongCodeCoverage(BinaryIntegerID())
-        }
-        
-        for type in Self.types {
-            whereIs(type)
-        }
-        
-        for type in Self.typesWhereIsUnsigned {
-            whereIsUnsigned(type)
-        }
-    }
-    
     func testDivisionByNegative() {
         func whereIs<T>(_ type: T.Type) where T: SignedInteger {
             typealias D = Division<T, T>

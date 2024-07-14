@@ -21,16 +21,6 @@ extension InfiniIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testCount() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            IntegerInvariants(T.self).bitCountForEachBitSelection()
-        }
-        
-        for type in Self.types {
-            whereIs(type)
-        }
-    }
-    
     func testBitSelection() {
         func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = InfiniInt<B>

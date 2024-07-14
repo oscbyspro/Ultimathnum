@@ -20,25 +20,6 @@ extension CoreIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testValidation() {        
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            IntegerInvariants(T.self).exactlyCoreSystemsInteger()
-            IntegerInvariants(T.self).exactlyCoreSystemsIntegerRainOf0s()
-            IntegerInvariants(T.self).exactlyCoreSystemsIntegerRainOf1s()
-            IntegerInvariants(T.self).exactlyCoreSystemsIntegerSlicesOf0s()
-            IntegerInvariants(T.self).exactlyCoreSystemsIntegerSlicesOf1s()
-            IntegerInvariants(T.self).exactlySameSizeSystemsIntegers()
-        }
-        
-        for type in Self.types {
-            whereIs(type)
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
     func testIntegerLiterals() {
         Test().same(I16.exactly(-0000032769 as RootInt), Fallible(I16.max, error: true))
         Test().same(I16.exactly(-0000032768 as RootInt), Fallible(I16.min))

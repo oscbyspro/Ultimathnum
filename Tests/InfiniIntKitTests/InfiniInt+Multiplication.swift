@@ -21,17 +21,6 @@ extension InfiniIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testMultiplication() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            IntegerInvariants(T.self).multiplicationOfMsbEsque()
-            IntegerInvariants(T.self).multiplicationOfRepeatingBit(BinaryIntegerID())
-        }
-        
-        for type in Self.types {
-            whereIs(type)
-        }
-    }
-    
     func testMultiplicationOfSmallBySmall() {
         func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = InfiniInt<B>
