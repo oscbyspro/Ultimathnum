@@ -13,7 +13,7 @@ import CoreKit
 // MARK: * Esque
 //*============================================================================*
 
-/// A source of common values or values with known behaviors.
+/// A source of common values or values with common behaviors.
 public struct Esque<T> { }
 
 //=----------------------------------------------------------------------------=
@@ -26,28 +26,55 @@ extension Esque where T: BinaryInteger {
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
+    /// An ascending shift distance.
+    ///
     /// - Note: The infinite case must be greater than all finite cases.
+    ///
     @inlinable public static var shl: T {
-        (T.size.isInfinite ? 511 : T(IX(size: T.self)! - 1))
+        if  T.size.isInfinite {
+            return 511
+            
+        }   else {
+            return T(IX(size: T.self)! - 1)
+        }
     }
     
     @inlinable public static var min: T {
-        (T.isSigned ? T(repeating: 1) << shl : T.zero)
+        if  T.isSigned {
+            return T(repeating: 1) << shl
+            
+        }   else {
+            return T(repeating: 0)
+        }
     }
     
     @inlinable public static var max: T {
-        (T.isSigned ? min.toggled() : T(repeating: 1))
+        always: do {
+            return min.toggled()
+        }
     }
     
     @inlinable public static var lsb: T {
-        (T.lsb)
+        always: do {
+            return T.lsb
+        }
     }
     
     @inlinable public static var msb: T {
-        (T.isSigned ? T(repeating: 1) : 1) << shl
+        if  T.isSigned {
+            return min
+            
+        }   else {
+            return lsb << shl
+        }
     }
     
     @inlinable public static var bot: T {
-        (T.isSigned ? msb.toggled() : msb - 1)
+        if  T.isSigned {
+            return msb.toggled()
+            
+        }   else {
+            return msb - 1
+        }
     }
 }

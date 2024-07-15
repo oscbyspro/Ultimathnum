@@ -98,7 +98,7 @@ extension BinaryInteger {
         lhs.compared(to: rhs) == Signum.same
     }
     
-    @inlinable public static func !=<Other>(lhs: Self, rhs: Other) -> Bool where Other: BinaryInteger  {
+    @inlinable public static func !=<Other>(lhs: Self, rhs: Other) -> Bool where Other: BinaryInteger {
         lhs.compared(to: rhs) != Signum.same
     }
     
@@ -106,15 +106,15 @@ extension BinaryInteger {
         lhs.compared(to: rhs) == Signum.less
     }
     
-    @inlinable public static func >=<Other>(lhs: Self, rhs: Other) -> Bool where Other: BinaryInteger  {
+    @inlinable public static func >=<Other>(lhs: Self, rhs: Other) -> Bool where Other: BinaryInteger {
         lhs.compared(to: rhs) != Signum.less
     }
     
-    @inlinable public static func > <Other>(lhs: Self, rhs: Other) -> Bool where Other: BinaryInteger  {
+    @inlinable public static func > <Other>(lhs: Self, rhs: Other) -> Bool where Other: BinaryInteger {
         lhs.compared(to: rhs) == Signum.more
     }
     
-    @inlinable public static func <=<Other>(lhs: Self, rhs: Other) -> Bool where Other: BinaryInteger  {
+    @inlinable public static func <=<Other>(lhs: Self, rhs: Other) -> Bool where Other: BinaryInteger {
         lhs.compared(to: rhs) != Signum.more
     }
     

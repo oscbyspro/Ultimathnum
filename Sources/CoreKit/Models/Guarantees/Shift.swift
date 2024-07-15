@@ -216,7 +216,8 @@ extension Shift where Target: SystemsInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(masking value: some BinaryInteger) {
-        self.init(unchecked: Count(raw: IX(load: value) & IX(size: Target.self).decremented().unchecked()))
+        let mask = IX(size: Target.self).decremented().unchecked()
+        self.init(unchecked: Count(raw: IX(load: value) & mask))
     }
     
     //=------------------------------------------------------------------------=

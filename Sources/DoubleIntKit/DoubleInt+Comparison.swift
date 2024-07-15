@@ -31,10 +31,6 @@ extension DoubleInt {
         self.storage.compared(to: other.storage)
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
     @inlinable public borrowing func hash(into hasher: inout Hasher) {
         hasher.combine(self.storage.low )
         hasher.combine(self.storage.high)
