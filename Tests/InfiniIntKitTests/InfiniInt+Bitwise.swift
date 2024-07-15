@@ -22,41 +22,41 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testComplement() {
-        func whereTheElementIs<E>(_ type: E.Type) where E: SystemsInteger {
-            typealias T = InfiniInt<E>
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
+            typealias F = Fallible<T>
             //=----------------------------------=
             let x = UX.msb
             //=----------------------------------=
-            Test().complement(T([ 0,  0] as [UX], repeating: 0), false, Fallible(T([~0, ~0    ] as [UX], repeating: 1)))
-            Test().complement(T([ 0,  0] as [UX], repeating: 0), true , Fallible(T([ 0,  0    ] as [UX], repeating: 0), error: !T.isSigned))
-            Test().complement(T([ 0,  0] as [UX], repeating: 1), false, Fallible(T([~0, ~0    ] as [UX], repeating: 0)))
-            Test().complement(T([ 0,  0] as [UX], repeating: 1), true , Fallible(T([ 0,  0,  1] as [UX], repeating: 0)))
-            Test().complement(T([~0, ~0] as [UX], repeating: 0), false, Fallible(T([ 0,  0    ] as [UX], repeating: 1)))
-            Test().complement(T([~0, ~0] as [UX], repeating: 0), true , Fallible(T([ 1,  0    ] as [UX], repeating: 1)))
-            Test().complement(T([~0, ~0] as [UX], repeating: 1), false, Fallible(T([ 0,  0    ] as [UX], repeating: 0)))
-            Test().complement(T([~0, ~0] as [UX], repeating: 1), true , Fallible(T([ 1,  0    ] as [UX], repeating: 0)))
+            Test().complement(T([ 0,  0] as [UX], repeating: 0), false, F(T([~0, ~0    ] as [UX], repeating: 1)))
+            Test().complement(T([ 0,  0] as [UX], repeating: 0), true , F(T([ 0,  0    ] as [UX], repeating: 0), error: !T.isSigned))
+            Test().complement(T([ 0,  0] as [UX], repeating: 1), false, F(T([~0, ~0    ] as [UX], repeating: 0)))
+            Test().complement(T([ 0,  0] as [UX], repeating: 1), true , F(T([ 0,  0,  1] as [UX], repeating: 0)))
+            Test().complement(T([~0, ~0] as [UX], repeating: 0), false, F(T([ 0,  0    ] as [UX], repeating: 1)))
+            Test().complement(T([~0, ~0] as [UX], repeating: 0), true , F(T([ 1,  0    ] as [UX], repeating: 1)))
+            Test().complement(T([~0, ~0] as [UX], repeating: 1), false, F(T([ 0,  0    ] as [UX], repeating: 0)))
+            Test().complement(T([~0, ~0] as [UX], repeating: 1), true , F(T([ 1,  0    ] as [UX], repeating: 0)))
             
-            Test().complement(T([ 0,  x] as [UX], repeating: 0), false, Fallible(T([~0, ~x    ] as [UX], repeating: 1)))
-            Test().complement(T([ 0,  x] as [UX], repeating: 0), true , Fallible(T([ 0,  x    ] as [UX], repeating: 1)))
-            Test().complement(T([ 0,  x] as [UX], repeating: 1), false, Fallible(T([~0, ~x    ] as [UX], repeating: 0)))
-            Test().complement(T([ 0,  x] as [UX], repeating: 1), true , Fallible(T([ 0,  x    ] as [UX], repeating: 0)))
-            Test().complement(T([~0, ~x] as [UX], repeating: 0), false, Fallible(T([ 0,  x    ] as [UX], repeating: 1)))
-            Test().complement(T([~0, ~x] as [UX], repeating: 0), true , Fallible(T([ 1,  x    ] as [UX], repeating: 1)))
-            Test().complement(T([~0, ~x] as [UX], repeating: 1), false, Fallible(T([ 0,  x    ] as [UX], repeating: 0)))
-            Test().complement(T([~0, ~x] as [UX], repeating: 1), true , Fallible(T([ 1,  x    ] as [UX], repeating: 0)))
+            Test().complement(T([ 0,  x] as [UX], repeating: 0), false, F(T([~0, ~x    ] as [UX], repeating: 1)))
+            Test().complement(T([ 0,  x] as [UX], repeating: 0), true , F(T([ 0,  x    ] as [UX], repeating: 1)))
+            Test().complement(T([ 0,  x] as [UX], repeating: 1), false, F(T([~0, ~x    ] as [UX], repeating: 0)))
+            Test().complement(T([ 0,  x] as [UX], repeating: 1), true , F(T([ 0,  x    ] as [UX], repeating: 0)))
+            Test().complement(T([~0, ~x] as [UX], repeating: 0), false, F(T([ 0,  x    ] as [UX], repeating: 1)))
+            Test().complement(T([~0, ~x] as [UX], repeating: 0), true , F(T([ 1,  x    ] as [UX], repeating: 1)))
+            Test().complement(T([~0, ~x] as [UX], repeating: 1), false, F(T([ 0,  x    ] as [UX], repeating: 0)))
+            Test().complement(T([~0, ~x] as [UX], repeating: 1), true , F(T([ 1,  x    ] as [UX], repeating: 0)))
             
-            Test().complement(T([ 1,  2] as [UX], repeating: 0), false, Fallible(T([~1, ~2    ] as [UX], repeating: 1)))
-            Test().complement(T([ 1,  2] as [UX], repeating: 0), true , Fallible(T([~0, ~2    ] as [UX], repeating: 1)))
-            Test().complement(T([ 1,  2] as [UX], repeating: 1), false, Fallible(T([~1, ~2    ] as [UX], repeating: 0)))
-            Test().complement(T([ 1,  2] as [UX], repeating: 1), true , Fallible(T([~0, ~2    ] as [UX], repeating: 0)))
-            Test().complement(T([~1, ~2] as [UX], repeating: 0), false, Fallible(T([ 1,  2    ] as [UX], repeating: 1)))
-            Test().complement(T([~1, ~2] as [UX], repeating: 0), true , Fallible(T([ 2,  2    ] as [UX], repeating: 1)))
-            Test().complement(T([~1, ~2] as [UX], repeating: 1), false, Fallible(T([ 1,  2    ] as [UX], repeating: 0)))
-            Test().complement(T([~1, ~2] as [UX], repeating: 1), true , Fallible(T([ 2,  2    ] as [UX], repeating: 0)))
+            Test().complement(T([ 1,  2] as [UX], repeating: 0), false, F(T([~1, ~2    ] as [UX], repeating: 1)))
+            Test().complement(T([ 1,  2] as [UX], repeating: 0), true , F(T([~0, ~2    ] as [UX], repeating: 1)))
+            Test().complement(T([ 1,  2] as [UX], repeating: 1), false, F(T([~1, ~2    ] as [UX], repeating: 0)))
+            Test().complement(T([ 1,  2] as [UX], repeating: 1), true , F(T([~0, ~2    ] as [UX], repeating: 0)))
+            Test().complement(T([~1, ~2] as [UX], repeating: 0), false, F(T([ 1,  2    ] as [UX], repeating: 1)))
+            Test().complement(T([~1, ~2] as [UX], repeating: 0), true , F(T([ 2,  2    ] as [UX], repeating: 1)))
+            Test().complement(T([~1, ~2] as [UX], repeating: 1), false, F(T([ 1,  2    ] as [UX], repeating: 0)))
+            Test().complement(T([~1, ~2] as [UX], repeating: 1), true , F(T([ 2,  2    ] as [UX], repeating: 0)))
         }
                 
-        for element in Self.elements {
-            whereTheElementIs(element)
+        for type in Self.types {
+            whereIs(type)
         }
     }
     
@@ -65,25 +65,20 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testLogicalNot() {
-        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias T = InfiniInt<B>
-            typealias F = Fallible<T>
-            //=----------------------------------=
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             Test().not(T([ 1,  2,  3,  4] as [UX], repeating: 0), T([~1, ~2, ~3, ~4] as [UX], repeating: 1))
             Test().not(T([ 1,  2,  3,  4] as [UX], repeating: 1), T([~1, ~2, ~3, ~4] as [UX], repeating: 0))
             Test().not(T([~1, ~2, ~3, ~4] as [UX], repeating: 0), T([ 1,  2,  3,  4] as [UX], repeating: 1))
             Test().not(T([~1, ~2, ~3, ~4] as [UX], repeating: 1), T([ 1,  2,  3,  4] as [UX], repeating: 0))
         }
         
-        for element in Self.elements {
-            whereTheBaseTypeIs(element)
+        for type in Self.types {
+            whereIs(type)
         }
     }
     
     func testLogicalAnd() {
-        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias T = InfiniInt<B>
-            typealias F = Fallible<T>
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             //=----------------------------------=
             let a = T([3 << 0, 3 << 1, 3 << 2        ] as [UX])
             let b = T([3 << 1, 3 << 2, 3 << 3, 3 << 4] as [UX])
@@ -101,15 +96,13 @@ extension InfiniIntTests {
             }
         }
         
-        for element in Self.elements {
-            whereTheBaseTypeIs(element)
+        for type in Self.types {
+            whereIs(type)
         }
     }
     
     func testLogicalOr() {
-        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias T = InfiniInt<B>
-            typealias F = Fallible<T>
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             //=----------------------------------=
             let a = T([3 << 0, 3 << 1, 3 << 2        ] as [UX])
             let b = T([3 << 1, 3 << 2, 3 << 3, 3 << 4] as [UX])
@@ -127,15 +120,13 @@ extension InfiniIntTests {
             }
         }
         
-        for element in Self.elements {
-            whereTheBaseTypeIs(element)
+        for types in Self.types {
+            whereIs(types)
         }
     }
     
     func testLogicalXor() {
-        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias T = InfiniInt<B>
-            typealias F = Fallible<T>
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             //=----------------------------------=
             let a = T([3 << 0, 3 << 1, 3 << 2        ] as [UX])
             let b = T([3 << 1, 3 << 2, 3 << 3, 3 << 4] as [UX])
@@ -153,8 +144,8 @@ extension InfiniIntTests {
             }
         }
                 
-        for element in Self.elements {
-            whereTheBaseTypeIs(element)
+        for type in Self.types {
+            whereIs(type)
         }
     }
 }
@@ -170,8 +161,7 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testComplementDocumentationExamples() {
-        func whereTheElementIs<E>(_ type: E.Type) where E: SystemsInteger {
-            typealias T = InfiniInt<E>
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             
             /// ```swift
             /// UXL(repeating: 0) //  x
@@ -210,8 +200,8 @@ extension InfiniIntTests {
             Test().complement(T([ 0,  1] as [UX], repeating: 0), true,  Fallible(T([ 0    ] as [UX], repeating: 1)))
         }
                 
-        for element in Self.elements {
-            whereTheElementIs(element)
+        for type in Self.types {
+            whereIs(type)
         }
     }
 }

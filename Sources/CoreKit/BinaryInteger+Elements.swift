@@ -248,6 +248,8 @@ extension ArbitraryInteger {
             Self(load: DataInt($0, repeating: appendix)!)
         }
         
+        // TODO: improve the slow path with Self.uninitialized(...) or similar
+        
         if  let    instance {
             self = instance
         }   else {

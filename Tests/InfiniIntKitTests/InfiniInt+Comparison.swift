@@ -30,15 +30,13 @@ extension InfiniIntTests {
             Test().comparison(size, U64.size, 1 as Signum, id: ComparableID())
         }
         
-        func whereIsArbitrary<A, B>(_ lhs: A.Type, _ rhs: B.Type) where A: BinaryInteger, B: BinaryInteger {
-            Test().yay(A.size.isInfinite)
-            Test().yay(B.size.isInfinite)
+        func whereIs<A, B>(_ lhs: A.Type, _ rhs: B.Type) where A: ArbitraryInteger, B: ArbitraryInteger {
             Test().comparison(A.size, B.size, Signum.same, id: ComparableID())
         }
         
         for lhs in Self.types {
             for rhs in Self.types {
-                whereIsArbitrary(lhs, rhs)
+                whereIs(lhs, rhs)
             }
         }
     }
@@ -48,7 +46,7 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testComparisonVersusToken() {
-        func whereIs<S, M>(_ signed: S.Type, _ unsigned: M.Type) where S: SignedInteger, M: UnsignedInteger {
+        func whereIs<S, M>(_ signed: S.Type, _ unsigned: M.Type) where S: ArbitraryInteger & SignedInteger, M: ArbitraryInteger & UnsignedInteger {
             Test().comparison(S(load: IX.min), IX(load: IX.min),  0 as Signum)
             Test().comparison(S(load: IX.min), UX(load: IX.min), -1 as Signum)
             Test().comparison(M(load: IX.min), IX(load: IX.min),  1 as Signum)
@@ -103,14 +101,10 @@ extension InfiniIntTests {
     }
     
     func testComparisonVersusAnyButDifferentAppendix() {
-        func whereTheElementIs<SE, ME>(_ signed: SE.Type, _ unsigned: ME.Type) where
-        SE: SystemsInteger & SignedInteger, ME: SystemsInteger & UnsignedInteger {
-            
-            typealias S = InfiniInt<SE>
-            typealias M = InfiniInt<ME>
-                        
-            for x: UX in [~2, ~1,  1, 2] {
-                for y: UX in [~2, ~1, 1, 2] {
+        func whereIs<S, M>(_ signed: S.Type, _ unsigned: M.Type) where
+        S: ArbitraryInteger & SignedInteger, M: ArbitraryInteger & UnsignedInteger {
+            for x: UX in [~2, ~1,  1, 2] as [UX] {
+                for y: UX in [~2, ~1, 1, 2] as [UX] {
                     for z: Bit in [0, 1] {
                         Test().comparison(S([x, x] as [UX], repeating: z), S([          ] as [UX], repeating: ~z),  Signum.one(Sign(z == 1)))
                         Test().comparison(S([x, x] as [UX], repeating: z), S([y         ] as [UX], repeating: ~z),  Signum.one(Sign(z == 1)))
@@ -140,22 +134,19 @@ extension InfiniIntTests {
             }
         }
         
-        for signed in Self.elementsWhereIsSigned {
-            for unsigned in Self.elementsWhereIsUnsigned {
-                whereTheElementIs(signed, unsigned)
+        for signed in Self.typesWhereIsSigned {
+            for unsigned in Self.typesWhereIsUnsigned {
+                whereIs(signed, unsigned)
             }
         }
     }
     
     func testComparisonVersusAnySameSignednessSameAppendixButDifferentSize() {
-        func whereTheElementIs<AE, BE>(_ first: AE.Type, _ second: BE.Type) where AE: SystemsInteger, BE: SystemsInteger {
-            precondition(AE.isSigned == BE.isSigned)
+        func whereIs<T, U>(_ first: T.Type, _ second: U.Type) where T: ArbitraryInteger, U: ArbitraryInteger {
+            precondition(T.isSigned == U.isSigned)
             
-            typealias T = InfiniInt<AE>
-            typealias U = InfiniInt<AE>
-            
-            for x: UX in [~2, ~1,  1, 2] {
-                for y: UX in [~2, ~1, 1, 2] {
+            for x: UX in [~2, ~1,  1, 2] as [UX] {
+                for y: UX in [~2, ~1, 1, 2] as [UX] {
                     for z: Bit in [0, 1] {
                         Test().comparison(T([x, x] as [UX], repeating: z), U([          ] as [UX], repeating: z), Signum.one(Sign( z == 1)))
                         Test().comparison(T([x, x] as [UX], repeating: z), U([y         ] as [UX], repeating: z), Signum.one(Sign( z == 1)))
@@ -167,21 +158,18 @@ extension InfiniIntTests {
             }
         }
         
-        for first in Self.elements {
-            for second in Self.elements {
+        for first in Self.types {
+            for second in Self.types {
                 if  first.isSigned == second.isSigned {
-                    whereTheElementIs(first, second)
+                    whereIs(first, second)
                 }
             }
         }
     }
     
     func testComparisonVersusAnySameSignednessSameAppendixSameSizeButDifferentBody() {
-        func whereTheElementIs<AE, BE>(_ first: AE.Type, _ second: BE.Type) where AE: SystemsInteger, BE: SystemsInteger {
-            precondition(AE.isSigned == BE.isSigned)
-            
-            typealias T = InfiniInt<AE>
-            typealias U = InfiniInt<AE>
+        func whereIs<T, U>(_ first: T.Type, _ second: U.Type) where T: ArbitraryInteger, U: ArbitraryInteger {
+            precondition(T.isSigned == U.isSigned)
             
             for z: Bit in [0, 1] {
                 Test().comparison(T([1, 2] as [UX], repeating: z), U([0, 1] as [UX], repeating: z),  1 as Signum)
@@ -196,10 +184,10 @@ extension InfiniIntTests {
             }
         }
         
-        for first in Self.elements {
-            for second in Self.elements {
+        for first in Self.types {
+            for second in Self.types {
                 if  first.isSigned == second.isSigned {
-                    whereTheElementIs(first, second)
+                    whereIs(first, second)
                 }
             }
         }

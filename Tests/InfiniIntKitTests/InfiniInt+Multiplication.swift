@@ -22,8 +22,7 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testMultiplicationOfSmallBySmall() {
-        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias T = InfiniInt<B>
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             typealias F = Fallible<T>
             //=----------------------------------=
             Test().multiplication(~2 as T, ~2 as T, F( 9 as T, error: !T.isSigned))
@@ -83,14 +82,13 @@ extension InfiniIntTests {
             Test().multiplication( 3 as T,  3 as T, F( 9 as T))
         }
         
-        for element in Self.elements {
-            whereTheBaseTypeIs(element)
+        for type in Self.types {
+            whereIs(type)
         }
     }
     
     func testMultiplicationOfLargeBySmall() {
-        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias T = InfiniInt<B>
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             typealias F = Fallible<T>
             //=----------------------------------=
             let a1234 = T([1, 2, 3, 4] as [UX], repeating: 0)
@@ -126,14 +124,13 @@ extension InfiniIntTests {
             }
         }
         
-        for element in Self.elements {
-            whereTheBaseTypeIs(element)
+        for type in Self.types {
+            whereIs(type)
         }
     }
     
     func testMultiplicationOfLargeByLarge() {
-        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias T = InfiniInt<B>
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             typealias F = Fallible<T>
             //=----------------------------------=
             let a1234 = T([1, 2, 3, 4] as [UX], repeating: 0)
@@ -175,8 +172,8 @@ extension InfiniIntTests {
             Test().multiplication(~x0000, ~x0000, F(T([ 000,  000,  000,  000,  000,  000,  000,  000] as [UX] + [ 1] as [UX], repeating: 0), error: !T.isSigned))
         }
         
-        for element in Self.elements {
-            whereTheBaseTypeIs(element)
+        for type in Self.types {
+            whereIs(type)
         }
     }
 }
@@ -209,9 +206,7 @@ extension InfiniIntTests {
     }
     
     func testMultiplicationLikeBigShift() {
-        func whereTheBaseTypeIs<B, S>(_ type: B.Type, _ source: S.Type) 
-        where B: SystemsInteger, S: SystemsInteger & UnsignedInteger {
-            typealias T = InfiniInt<B>
+        func whereIs<T, S>(_ type: T.Type, _ source: S.Type) where T: ArbitraryInteger, S: SystemsInteger & UnsignedInteger {
             //=----------------------------------=
             var lhs: T, rhs: T, pro: T
             //=----------------------------------=
@@ -226,17 +221,15 @@ extension InfiniIntTests {
             #endif
         }
         
-        for element in Self.elements {
+        for type in Self.types {
             for source in coreSystemsIntegersWhereIsUnsigned {
-                whereTheBaseTypeIs(element, source)
+                whereIs(type, source)
             }
         }
     }
     
     func testMultiplicationLikeBigSystemsInteger() {
-        func whereTheBaseTypeIs<B, S>(_ type: B.Type, _ source: S.Type)
-        where B: SystemsInteger, S: SystemsInteger & UnsignedInteger {
-            typealias T = InfiniInt<B>
+        func whereIs<T, S>(_ type: T.Type, _ source: S.Type) where T: ArbitraryInteger, S: SystemsInteger & UnsignedInteger {
             //=----------------------------------=
             var lhs: T, rhs: T, pro: T, array = [S]()
             //=----------------------------------=
@@ -302,9 +295,9 @@ extension InfiniIntTests {
             #endif
         }
         
-        for element in Self.elements {
+        for type in Self.types {
             for source in coreSystemsIntegersWhereIsUnsigned {
-                whereTheBaseTypeIs(element, source)
+                whereIs(type, source)
             }
         }
     }
@@ -386,7 +379,7 @@ extension InfiniIntTests {
     
     /// - 2024-05-22: Checks the small-storage multiplication path.
     func testMultiplicationBySmallStorageWhereBodyIsZerosAndAppendixIsOne() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger, T.Element.BitPattern == U8.BitPattern {
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger, T.Element.BitPattern == U8.BitPattern {
             compact: do {
                 Test().multiplication(~T(I8.max),  000, Fallible( 00000))
                 Test().multiplication(~T(I8.max),  100, Fallible(~12799, error: !T.isSigned))
@@ -410,7 +403,7 @@ extension InfiniIntTests {
     
     /// - 2024-05-31: Checks the large-storage multiplication path.
     func testMultiplicationByLargeStorageWhereBodyIsZerosAndAppendixIsOne() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger, T.Element.BitPattern == U8.BitPattern {
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger, T.Element.BitPattern == U8.BitPattern {
             compact: do {
                 let x16 = T(repeating: 1)  << 15
                 Test().multiplication(x16, x16 - 1, Fallible((1 << 30) &- x16, error: !T.isSigned))
@@ -432,8 +425,7 @@ extension InfiniIntTests {
     
     /// - Note: The algorithms may special-case ascending zeros like an upshift.
     func testMultiplicationByAscendingZeros() {
-        func whereTheElementIs<E>(_ type: E.Type) where E: SystemsInteger {
-            typealias T = InfiniInt<E>
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             typealias F = Fallible<T>
             //=----------------------------------=
             let zeros: [[UX]] = (0 ..< 3).map({
@@ -474,8 +466,8 @@ extension InfiniIntTests {
             }
         }
         
-        for element in Self.elements {
-            whereTheElementIs(element)
+        for type in Self.types {
+            whereIs(type)
         }
     }
 }

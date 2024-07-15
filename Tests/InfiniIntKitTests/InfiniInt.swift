@@ -21,17 +21,17 @@ final class InfiniIntTests: XCTestCase {
     // MARK: Metadata
     //=------------------------------------------------------------------------=
         
-    static let types: [any BinaryInteger.Type] = {
+    static let types: [any ArbitraryInteger.Type] = {
         typesWhereIsSigned +
         typesWhereIsUnsigned
     }()
             
-    static let typesWhereIsSigned: [any SignedInteger.Type] = [
+    static let typesWhereIsSigned: [any (ArbitraryInteger & SignedInteger).Type] = [
         InfiniInt<IX>.self,
         InfiniInt<I8>.self,
     ]
             
-    static let typesWhereIsUnsigned: [any UnsignedInteger.Type] = [
+    static let typesWhereIsUnsigned: [any (ArbitraryInteger & UnsignedInteger).Type] = [
         InfiniInt<UX>.self,
         InfiniInt<U8>.self,
     ]

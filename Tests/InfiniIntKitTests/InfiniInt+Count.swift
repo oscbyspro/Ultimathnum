@@ -22,10 +22,7 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testBitSelection() {
-        func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias T = InfiniInt<B>
-            typealias M = T.Magnitude
-            
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             Test()     .count(T(0x00000000000000000000000000000000), 0 as Bit, Count(raw: ~000 as IX))
             Test()     .count(T(0x0F0E0D0C0B0A09080706050403020100), 0 as Bit, Count(raw: ~032 as IX))
             Test()     .count(T(0x87868584838281807F7E7D7C7B7A7978), 0 as Bit, Count(raw: ~064 as IX))
@@ -63,8 +60,8 @@ extension InfiniIntTests {
             Test().descending(T(0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF), 1 as Bit, Count(raw: 0000 as IX))
         }
         
-        for element in Self.elements {
-            whereTheBaseTypeIs(element)
+        for type in Self.types {
+            whereIs(type)
         }
     }
 }

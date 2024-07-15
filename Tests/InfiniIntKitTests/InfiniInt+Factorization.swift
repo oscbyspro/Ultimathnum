@@ -22,7 +22,7 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testGreatestCommonDivisorOfSmallPrimeComposites() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             //=----------------------------------=
             let primes54 = primes54.map(T.init(_:))
             let result54 = primes54.reduce(1, *)
@@ -57,7 +57,7 @@ extension InfiniIntTests {
     }
     
     func testGreatestCommonDivisorOfInfiniteInputsIsInvalid() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             Test().euclidean(~1 as T, ~1 as T, T.isSigned ? 2 : nil)
             Test().euclidean(~1 as T, ~0 as T, T.isSigned ? 1 : nil)
             Test().euclidean(~1 as T,  0 as T, T.isSigned ? 2 : nil)

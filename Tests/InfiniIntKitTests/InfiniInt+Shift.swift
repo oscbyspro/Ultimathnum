@@ -22,7 +22,7 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testUpshift() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             //=----------------------------------=
             let large = T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0)
             //=----------------------------------=
@@ -61,7 +61,7 @@ extension InfiniIntTests {
     }
     
     func testDownshiftByMoreThanMaxSignedWordIsUpflush() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             //=----------------------------------=
             let large = T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0)
             //=----------------------------------=
@@ -90,7 +90,7 @@ extension InfiniIntTests {
     }
     
     func testDownshift() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             //=----------------------------------=
             let large = T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0)
             //=----------------------------------=
@@ -137,7 +137,7 @@ extension InfiniIntTests {
     }
     
     func testDownshiftByMoreThanMaxSignedWordIsDownflush() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             //=----------------------------------=
             let large = T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0)
             //=----------------------------------=
@@ -179,7 +179,7 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testUpshiftAtEdgeOfElement() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             compact: do {
                 Test().upshift( T(IX.max >> 5), 4 as T,  T(IX.max >> 5)  * 16)
                 Test().upshift( T(IX.max >> 5), 5 as T,  T(IX.max >> 5)  * 32)
@@ -207,7 +207,7 @@ extension InfiniIntTests {
     }
     
     func testDownshiftByNonappendix() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             Test().downshift( T(I8 .max),  6 as T,  1 as T)
             Test().downshift( T(I8 .max),  7 as T,  0 as T)
             Test().downshift( T(I8 .max),  8 as T,  0 as T)

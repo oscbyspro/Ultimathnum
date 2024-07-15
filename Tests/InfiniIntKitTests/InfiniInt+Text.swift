@@ -22,7 +22,7 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testTextForEachRadixWhereIs1s0s() {
-        func whereIsSigned<T>(_ type: T.Type) where T: BinaryInteger {
+        func whereIsSigned<T>(_ type: T.Type) where T: SignedInteger {
             for radix: UX in 2 ... 36 {
                 Test().description(~0 as T, radix: radix, body: "-1")
                 Test().description( 0 as T, radix: radix, body:  "0")
@@ -30,7 +30,7 @@ extension InfiniIntTests {
             }
         }
         
-        func whereIsUnsigned<T>(_ type: T.Type) where T: BinaryInteger {
+        func whereIsUnsigned<T>(_ type: T.Type) where T: UnsignedInteger {
             for radix: UX in 2 ... 36 {
                 Test().description(~1 as T, radix: radix, body: "&1")
                 Test().description(~0 as T, radix: radix, body: "&0")
@@ -38,9 +38,13 @@ extension InfiniIntTests {
                 Test().description( 1 as T, radix: radix, body:  "1")
             }
         }
-                
-        for type in Self.types {
-            type.isSigned ? whereIsSigned(type) : whereIsUnsigned(type)
+         
+        for type in Self.typesWhereIsSigned {
+            whereIsSigned(type)
+        }
+         
+        for type in Self.typesWhereIsUnsigned {
+            whereIsUnsigned(type)
         }
     }
     

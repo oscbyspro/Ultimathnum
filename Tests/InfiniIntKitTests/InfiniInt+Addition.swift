@@ -22,8 +22,7 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testAdditionOfManyByBit() {
-        func whereTheElementTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias T = InfiniInt<B>
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             typealias F = Fallible<T>
             //=----------------------------------=
             let x: (UX) = UX.msb
@@ -55,14 +54,13 @@ extension InfiniIntTests {
             Test().addition(T(e, repeating: 1), 1, F(T(f, repeating: 1)))
         }
         
-        for element in Self.elements {
-            whereTheElementTypeIs(element)
+        for type in Self.types {
+            whereIs(type)
         }
     }
     
     func testSubtractionOfManyByBit() {
-        func whereTheElementTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias T = InfiniInt<B>
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             typealias F = Fallible<T>
             //=----------------------------------=
             let x: (UX) = UX.msb
@@ -94,8 +92,8 @@ extension InfiniIntTests {
             Test().subtraction(T(e, repeating: 1), 1, F(T(d, repeating: 1)))
         }
         
-        for element in Self.elements {
-            whereTheElementTypeIs(element)
+        for types in Self.types {
+            whereIs(types)
         }
     }
     
@@ -104,8 +102,7 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testAdditionOfManyByMany() {
-        func whereTheElementTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias T = InfiniInt<B>
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             typealias F = Fallible<T>
             //=----------------------------------=
             let x: (UX) = UX.msb
@@ -156,14 +153,13 @@ extension InfiniIntTests {
             Test().addition(T(e, repeating: 1), T(e, repeating: 1), F(T(a + [~0] as [UX], repeating: 1), error: !T.isSigned))
         }
         
-        for element in Self.elements {
-            whereTheElementTypeIs(element)
+        for type in Self.types {
+            whereIs(type)
         }
     }
     
     func testSubtractionOfManyByMany() {
-        func whereTheElementTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias T = InfiniInt<B>
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             typealias F = Fallible<T>
             //=----------------------------------=
             let x: (UX) = UX.msb
@@ -214,8 +210,8 @@ extension InfiniIntTests {
             Test().subtraction(T(e, repeating: 1), T(e, repeating: 1), F(T(a + [ 0] as [UX], repeating: 0)))
         }
         
-        for element in Self.elements {
-            whereTheElementTypeIs(element)
+        for type in Self.types {
+            whereIs(type)
         }
     }
 }

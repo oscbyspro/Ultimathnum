@@ -22,20 +22,18 @@ extension InfiniIntTests {
     //=------------------------------------------------------------------------=
     
     func testMakeBody() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            typealias E = T.Element.Magnitude
-            
-            Test().elements(~1 as T, [~1] as [E], 1 as Bit)
-            Test().elements(~0 as T, [  ] as [E], 1 as Bit)
-            Test().elements( 0 as T, [  ] as [E], 0 as Bit)
-            Test().elements( 1 as T, [ 1] as [E], 0 as Bit)
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
+            Test().elements(~1 as T, [~1] as [T.Element.Magnitude], 1 as Bit)
+            Test().elements(~0 as T, [  ] as [T.Element.Magnitude], 1 as Bit)
+            Test().elements( 0 as T, [  ] as [T.Element.Magnitude], 0 as Bit)
+            Test().elements( 1 as T, [ 1] as [T.Element.Magnitude], 0 as Bit)
             
             always: do {
                 var instance = T(repeating: 0)
-                var body = Array<E>()
+                var body = Array<T.Element.Magnitude>()
                 
-                for element: E in (0 ..< 12).lazy.map(~) {
-                    instance <<= T(load: IX(size: E.self))
+                for element: T.Element.Magnitude in (0 ..< 12).lazy.map(~) {
+                    instance <<= T(load: IX(size: T.Element.Magnitude.self))
                     instance  |= T(load: element)
                     body.insert(element, at: Int.zero)
                     Test().elements(instance, body, 0)
@@ -44,10 +42,10 @@ extension InfiniIntTests {
 
             always: do {
                 var instance = T(repeating: 1)
-                var body = Array<E>()
+                var body = Array<T.Element.Magnitude>()
                 
-                for element: E in (0 ..< 12) {
-                    instance <<= T(load: IX(size: E.self))
+                for element: T.Element.Magnitude in (0 ..< 12) {
+                    instance <<= T(load: IX(size: T.Element.Magnitude.self))
                     instance  |= T(load: element)
                     body.insert(element, at: Int.zero)
                     Test().elements(instance, body, 1)
@@ -66,8 +64,7 @@ extension InfiniIntTests {
     
     /// The initializer takes any sequence, but it's almost always an array.
     func testInitNonContiguousBody() {
-        func whereTheElementTypeIs<E>(_ element: E.Type) where E: SystemsInteger {
-            typealias T = InfiniInt<E>
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             //=----------------------------------=
             let body: Range<U8> = 1 ..< 5
             //=----------------------------------=
@@ -90,8 +87,8 @@ extension InfiniIntTests {
             Test().same(T(body.dropFirst(4), repeating: 1), ~T(0x00000000))
         }
         
-        for element in Self.elements {
-            whereTheElementTypeIs(element)
+        for type in Self.types {
+            whereIs(type)
         }
     }
 }
