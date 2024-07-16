@@ -19,15 +19,15 @@ extension InfiniInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
+    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         lhs.compared(to: rhs) == Signum.same
     }
     
-    @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
+    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         lhs.compared(to: rhs) == Signum.less
     }
     
-    @inlinable public func compared(to other: Self) -> Signum {
+    @inlinable public borrowing func compared(to other: borrowing Self) -> Signum {
         self.withUnsafeBinaryIntegerElements { lhs in
             other.withUnsafeBinaryIntegerElements { rhs in
                 DataInt.compare(
@@ -35,6 +35,13 @@ extension InfiniInt {
                     rhs: rhs, mode: Self.mode
                 )
             }
+        }
+    }
+    
+    @inlinable public borrowing func hash(into hasher: inout Hasher) {
+        self.withUnsafeBinaryIntegerElements {
+            hasher.combine(bytes: UnsafeRawBufferPointer($0.body.buffer()))
+            hasher.combine($0.appendix)
         }
     }
 }
