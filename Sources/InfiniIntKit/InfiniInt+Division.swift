@@ -87,8 +87,8 @@ extension InfiniInt where Source == Source.Magnitude {
             //=----------------------------------=
             // note: divisor != 0
             //=----------------------------------=
-            let divisor = divisor.storage.body.first! as Element.Magnitude
-            let remainder = self.withUnsafeMutableBinaryIntegerBody {
+            let divisor:   Element = divisor.storage.body.first!
+            let remainder: Element = self.withUnsafeMutableBinaryIntegerBody {
                 $0.divisionSetQuotientGetRemainder(Divisor(unchecked: divisor))
             }
             
@@ -112,16 +112,17 @@ extension InfiniInt where Source == Source.Magnitude {
             self.withUnsafeMutableBinaryIntegerBody { lhs in
                 divisor.storage.withUnsafeMutableBinaryIntegerBody { rhs in
                     let shift = IX(raw: rhs[unchecked: rhs.count - 1].descending(0))
+                    Swift.assert(Count(raw: shift) < Element.size)
                     
                     if !shift.isZero {
-                        lhs.upshift(major: .zero, minor: shift)
-                        rhs.upshift(major: .zero, minor: shift)
+                        lhs.upshift(major: .zero, minorAtLeastOne: shift)
+                        rhs.upshift(major: .zero, minorAtLeastOne: shift)
                     }
                     
                     quotient.divisionSetQuotientSetRemainderByLong2111MSB(dividing: lhs, by: DataInt.Body(rhs))
                     
                     if !shift.isZero {
-                        lhs.downshift(major: .zero, minor: shift)
+                        lhs.downshift(major: .zero, minorAtLeastOne: shift)
                     }
                 }
             }
