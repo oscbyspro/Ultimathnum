@@ -108,7 +108,7 @@ extension InfiniInt where Source == Source.Magnitude {
         self.storage.body.append(Element.zero)
         
         let capacity = self.storage.count - divisor.storage.count
-        let quotient = Self.uninitialized(count: capacity, repeating: .zero) { quotient in
+        let quotient = Self.arbitrary(uninitialized: capacity, repeating: .zero) { quotient -> Void in
             self.withUnsafeMutableBinaryIntegerBody { lhs in
                 divisor.storage.withUnsafeMutableBinaryIntegerBody { rhs in
                     let shift = IX(raw: rhs[unchecked: rhs.count - 1].descending(0))
@@ -126,7 +126,7 @@ extension InfiniInt where Source == Source.Magnitude {
                     }
                 }
             }
-        }
+        }!
         
         Swift.assert(((self)).storage.isNormal)
         Swift.assert(quotient.storage.isNormal)

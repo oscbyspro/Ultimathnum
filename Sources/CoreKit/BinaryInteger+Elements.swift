@@ -14,6 +14,38 @@
 extension BinaryInteger {
     
     //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    /// Creates a new instance by manually initializing memory, but only if
+    /// this is an arbitrary integer type and the given arguments are valid.
+    ///
+    /// - Parameter count: The number of uninitialized elements that will be
+    ///   passed to the `delegate`. It must not be negative or exceed the entropy
+    ///   limit.
+    ///
+    /// - Parameter appendix: The bit that extends the bit pattern initialized
+    ///   by the `delegate`. Its significance depends on the signedness of this
+    ///   binary integer type.
+    ///
+    /// - Parameter delegate: A process that manually initializes a prefix in
+    ///   the buffer passed to it. It must return the initialized prefix length
+    ///   at the end of its execution. Note that `Void` is automatically
+    ///   reinterpreted as the given `count` by a convenient function overload.
+    ///
+    @inlinable public static func arbitrary(
+        uninitialized  count:  IX,
+        repeating   appendix:  Bit,
+        initializer delegate: (MutableDataInt<Element.Magnitude>.Body) -> Void
+    )   -> Optional<Self> {
+        
+        self.arbitrary(uninitialized: count, repeating: appendix) {
+            delegate($0)
+            return count
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Initializers x DataInt
     //=------------------------------------------------------------------------=
     
@@ -247,9 +279,7 @@ extension ArbitraryInteger {
         let instance = body.withContiguousStorageIfAvailable {
             Self(load: DataInt($0, repeating: appendix)!)
         }
-        
-        // TODO: improve the slow path with Self.uninitialized(...) or similar
-        
+                
         if  let    instance {
             self = instance
         }   else {
@@ -265,6 +295,19 @@ extension ArbitraryInteger {
 //*============================================================================*
 
 extension SystemsInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func arbitrary(
+        uninitialized  count:  IX,
+        repeating   appendix:  Bit,
+        initializer delegate: (MutableDataInt<Element.Magnitude>.Body) -> IX
+    )   -> Optional<Self> {
+        
+        nil // SystemsInteger != ArbitraryInteger
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers

@@ -44,7 +44,7 @@ extension InfiniInt {
             return Fallible(Self(unchecked: Storage(1, at: count2, repeating: .zero)), error: !Self.isSigned)
         }
         //=--------------------------------------=
-        let result = Self.uninitialized(count: count2, repeating: .zero) { result in
+        let result = Self.arbitrary(uninitialized: count2, repeating: .zero) { result -> Void in
             self.storage.withUnsafeBinaryIntegerElements(unchecked: zeros0...) {
                 //=------------------------------=
                 result[unchecked: ..<zeros2].initialize(repeating: 000000000000000)
@@ -56,7 +56,7 @@ extension InfiniInt {
                     resultSuffix.incrementSubSequence(toggling: $0.body, plus: true).discard()
                 }
             }
-        }
+        }!
         //=--------------------------------------=
         return Fallible(result, error: !Self.isSigned && Bool(self.appendix))
     }
@@ -98,7 +98,7 @@ extension InfiniInt {
             return Fallible(Self(unchecked: Storage(1, at: count2, repeating: .zero)), error: !Self.isSigned)
         }
         //=--------------------------------------=
-        let result = Self.uninitialized(count: count2, repeating: self.appendix ^ other.appendix) { result in
+        let result = Self.arbitrary(uninitialized: count2, repeating: self.appendix ^ other.appendix) { result -> Void in
             self.storage.withUnsafeBinaryIntegerElements(unchecked: zeros0...) { lhs in
                 other.storage.withUnsafeBinaryIntegerElements(unchecked: zeros1...) { rhs in
                     //=--------------------------=
@@ -114,7 +114,7 @@ extension InfiniInt {
                     }
                 }
             }
-        }
+        }!
         //=--------------------------------------=
         return Fallible(result, error: !Self.isSigned && Bool(self.appendix | other.appendix))
     }

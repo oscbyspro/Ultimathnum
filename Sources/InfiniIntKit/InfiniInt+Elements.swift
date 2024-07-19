@@ -92,6 +92,18 @@ extension InfiniInt {
         self.init(unchecked: Storage(body, repeating: source.appendix))
     }
     
+    @inlinable public static func arbitrary(
+        uninitialized  count:  IX,
+        repeating   appendix:  Bit,
+        initializer delegate: (MutableDataInt<Element.Magnitude>.Body) -> IX
+    )   -> Optional<Self> {
+        
+        guard UX(raw: count) <= UX(raw: DataInt<Element.Magnitude>.capacity) else { return nil }
+        var storage = Storage.uninitialized(unchecked: count, repeating: appendix, initializer: delegate)
+        storage.normalize()
+        return Self(unchecked: storage)
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=

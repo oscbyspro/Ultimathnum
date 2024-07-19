@@ -16,6 +16,23 @@ import CoreKit
 extension InfiniIntStorage {
     
     //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable internal static func uninitialized(
+        unchecked   count:     IX,
+        repeating   appendix:  Bit,
+        initializer delegate: (MutableDataInt<Element.Magnitude>.Body) -> IX
+    )   -> Self {
+        
+        let body = Body(unsafeUninitializedCapacity: Int(count)) {
+            $1 = Int(delegate(MutableDataInt.Body($0.baseAddress!, count: count)))
+        }
+        
+        return Self(consume body, repeating: appendix)
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     

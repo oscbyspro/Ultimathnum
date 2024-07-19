@@ -59,7 +59,7 @@ where
     
     /// The stuff this binary integer type is made of.
     ///
-    /// - Important: `Self`'s body must be properly aligned for accessing `Element`.
+    /// - Important: `Self`'s body must be aligned for accessing `Element`.
     ///
     associatedtype Element: SystemsInteger where Element.Element == Element
     
@@ -137,6 +137,28 @@ where
     
     /// Creates a new instance from the bit pattern of `source` that fits.
     @inlinable init(load source: DataInt<Element.Magnitude>)
+    
+    /// Creates a new instance by manually initializing memory, but only if
+    /// this is an arbitrary integer type and the given arguments are valid.
+    ///
+    /// - Parameter count: The number of uninitialized elements that will be
+    ///   passed to the `delegate`. It must not be negative or exceed the entropy
+    ///   limit.
+    ///
+    /// - Parameter appendix: The bit that extends the bit pattern initialized
+    ///   by the `delegate`. Its significance depends on the signedness of this
+    ///   binary integer type.
+    ///
+    /// - Parameter delegate: A process that manually initializes a prefix in
+    ///   the buffer passed to it. It must return the initialized prefix length
+    ///   at the end of its execution. Note that `Void` is automatically
+    ///   reinterpreted as the given `count` by a convenient function overload.
+    ///
+    @inlinable static func arbitrary(
+        uninitialized  count:  IX,
+        repeating   appendix:  Bit,
+        initializer delegate: (MutableDataInt<Element.Magnitude>.Body) -> IX
+    )   -> Optional<Self>
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

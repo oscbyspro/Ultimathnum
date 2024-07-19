@@ -130,4 +130,75 @@ final class BinaryIntegerTestsOnElements: XCTestCase {
             whereIs(type)
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testInitArbitraryIsLikeInitDataIntOrNil() {
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            var source = Array<T.Element.Magnitude>(repeating: 0, count: 3)
+            let elements = (IX(-2) ... IX(2)).map(T.Element.Magnitude.init(load:))
+            
+            for c: T.Element.Magnitude in elements {
+                for b: T.Element.Magnitude in elements {
+                    for a: T.Element.Magnitude in elements {
+                        
+                        source[0] = a
+                        source[1] = b
+                        source[2] = c
+                        
+                        for count: Int in Int.zero ... source.count {
+                            for appendix: Bit in [0, 1] {
+                                
+                                let expectation = source[..<count].withUnsafeBufferPointer {
+                                    !T.size.isInfinite ? nil : T(load: DataInt($0, repeating: appendix)!)
+                                }
+                                
+                                let resultIX = T.arbitrary(uninitialized: 3, repeating: appendix) {
+                                    for index in Int.zero ..< count {
+                                        $0[unchecked: IX(index)] = source[index]
+                                    }
+                                    
+                                    return IX(count)
+                                }
+                                
+                                let resultVoid = T.arbitrary(uninitialized: IX(count), repeating: appendix) {
+                                    for index in Int.zero ..< count {
+                                        $0[unchecked: IX(index)] = source[index]
+                                    }
+                                    
+                                    return (((( ))))
+                                }
+                                
+                                Test().same(resultIX,   expectation, "body: \(source[..<count]), appendix: \(appendix) [IX]")
+                                Test().same(resultVoid, expectation, "body: \(source[..<count]), appendix: \(appendix) [Void]")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        for type in binaryIntegers {
+            whereIs(type)
+        }
+    }
+    
+    func testInitArbitraryWhereCountIsInvalidIsNil() {
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            Test().comparison(T.Element.size, Count(1), Signum.more, id: ComparableID())
+            
+            for count: IX in [IX.min, IX.min + 1, -1, IX.max - 1, IX.max] as [IX] {
+                for appendix: Bit in [0, 1] {
+                    Test().none(T.arbitrary(uninitialized: count, repeating: appendix) { _ -> IX   in 0 })
+                    Test().none(T.arbitrary(uninitialized: count, repeating: appendix) { _ -> Void in   })
+                }
+            }
+        }
+        
+        for type in binaryIntegers {
+            whereIs(type)
+        }
+    }
 }
