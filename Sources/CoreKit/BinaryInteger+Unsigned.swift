@@ -27,18 +27,3 @@
 ///
 ///
 public protocol UnsignedInteger: EdgyInteger where Element: UnsignedInteger, Magnitude == Self { }
-
-//*============================================================================*
-// MARK: * Binary Integer x Unsigned
-//*============================================================================*
-
-extension UnsignedInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Metadata
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static var mode: Signedness {
-        Signedness.unsigned
-    }
-}

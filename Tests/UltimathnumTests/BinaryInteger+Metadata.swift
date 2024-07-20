@@ -24,16 +24,14 @@ final class BinaryIntegerTestsOnMetadata: XCTestCase {
     
     func testProtocols() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            //=----------------------------------=
-            let isArbitrary = T.size.isInfinite
-            let isEdgy   = !T.isSigned || !isArbitrary
-            let isFinite =  T.isSigned || !isArbitrary
-            //=----------------------------------=
-            Test().same(isArbitrary, T.self is any ArbitraryInteger.Type, "ArbitraryInteger")
-            Test().same(   isEdgy,   T.self is any      EdgyInteger.Type,      "EdgyInteger")
-            Test().same(   isFinite, T.self is any    FiniteInteger.Type,    "FiniteInteger")
-            Test().same( T.isSigned, T.self is any    SignedInteger.Type,    "SignedInteger")
-            Test().same(!T.isSigned, T.self is any  UnsignedInteger.Type,  "UnsignedInteger")
+            Test().same( T.isArbitrary, T.self is any  ArbitraryInteger.Type, "ArbitraryInteger")
+            Test().same(!T.isArbitrary, T.self is any    SystemsInteger.Type,   "SystemsInteger")
+            Test().same( T.isEdgy,      T.self is any       EdgyInteger.Type,      "EdgyInteger")
+            Test().same(!T.isEdgy,      T.self is any (ArbitraryInteger &   SignedInteger).Type, "non-EdgyInteger")
+            Test().same( T.isFinite,    T.self is any     FiniteInteger.Type,    "FiniteInteger")
+            Test().same(!T.isFinite,    T.self is any (ArbitraryInteger & UnsignedInteger).Type, "non-FiniteInteger")
+            Test().same( T.isSigned,    T.self is any     SignedInteger.Type,    "SignedInteger")
+            Test().same(!T.isSigned,    T.self is any   UnsignedInteger.Type,  "UnsignedInteger")
         }
         
         for type in binaryIntegers {
