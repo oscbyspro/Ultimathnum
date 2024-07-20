@@ -26,12 +26,12 @@ final class BinaryIntegerTestsOnLiteral: XCTestCase {
         struct Values {
             let size:  Count<IX>
             let base:  IXL
-            let minM1: RootInt
-            let min:   RootInt
-            let minP1: RootInt
-            let maxM1: RootInt
-            let max:   RootInt
-            let maxP1: RootInt
+            let minM1: LiteralInt
+            let min:   LiteralInt
+            let minP1: LiteralInt
+            let maxM1: LiteralInt
+            let max:   LiteralInt
+            let maxP1: LiteralInt
         }
         
         let arguments: [Values] = [

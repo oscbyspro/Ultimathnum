@@ -75,8 +75,8 @@ import CoreKit
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(integerLiteral: RootInt.IntegerLiteralType) {
-        self = Self.exactly(RootInt(integerLiteral: integerLiteral)).unwrap()
+    @inlinable public init(integerLiteral: LiteralInt.IntegerLiteralType) {
+        self = Self.exactly(LiteralInt(integerLiteral: integerLiteral)).unwrap()
     }
     
     //=------------------------------------------------------------------------=

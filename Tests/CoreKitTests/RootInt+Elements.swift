@@ -11,10 +11,10 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Root Int x Elements
+// MARK: * Literal Int x Elements
 //*============================================================================*
 
-extension RootIntTests {
+extension LiteralIntTests {
         
     //=------------------------------------------------------------------------=
     // MARK: Tests

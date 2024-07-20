@@ -18,7 +18,7 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     /// Creates a validated instance from the given `source`.
-    @inlinable public static func exactly(_ source: borrowing RootInt) -> Fallible<Self> {
+    @inlinable public static func exactly(_ source: borrowing LiteralInt) -> Fallible<Self> {
         //=--------------------------------------=
         // 2024-07-05: StaticBigInt performance
         //=--------------------------------------=

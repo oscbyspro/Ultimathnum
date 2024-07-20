@@ -20,7 +20,7 @@
   - [What is an unchecked operation?](#nomenclature-unchecked-value)
 * [CoreKit](#corekit)
   - [Validation and recovery with Fallible\<Value\>](#corekit-validation)
-  - [Let there be binary integers with RootInt](#corekit-rootint)
+  - [Let there be binary integers with LiteralInt](#corekit-literalint)
   - [Access binary integer data with DataInt\<Element\>](#corekit-dataint)
   - [Upsize binary integer elements with DataInt\<U8\>](#corekit-upsize)
   - [Lightweight text decoding and encoding with TextInt](#corekit-text-int)
@@ -280,18 +280,18 @@ static func  +(lhs: consuming Self, borrowing Self) -> Self // trapping
 static func &+(lhs: consuming Self, borrowing Self) -> Self // wrapping
 ```
 
-<a name="corekit-rootint"/>
+<a name="corekit-literalint"/>
 
-#### Let there be binary integers with RootInt
+#### Let there be binary integers with LiteralInt
 
 > *We don't know where it comes from, only that it exists.*
 
-You may create integers out of thin air with RootInt, a wrapper around Swift.StaticBigInt. It comes 
+You may create integers out of thin air with LiteralInt, a wrapper around Swift.StaticBigInt. It comes 
 with some additional bells and whistles. You may, for example, query whether a generic type can represent 
 an integer literal or load the extended bit pattern that fits.
 
 ```swift
-static func exactly(_ source: RootInt) -> Fallible<Self>
+static func exactly(_ source: LiteralInt) -> Fallible<Self>
 ```
 
 <a name="corekit-dataint"/>

@@ -8,7 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Root Int
+// MARK: * Literal Int
 //*============================================================================*
 
 /// An immutable arbitrary-precision signed integer.
@@ -17,7 +17,7 @@
 ///
 /// - Note: *We don't know where it comes from, only that it exists.*
 ///
-@frozen public struct RootInt: ExpressibleByIntegerLiteral, Sendable {
+@frozen public struct LiteralInt: ExpressibleByIntegerLiteral, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: Metadata

@@ -11,12 +11,12 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Root Int
+// MARK: * Literal Int
 //*============================================================================*
 
-final class RootIntTests: XCTestCase {
+final class LiteralIntTests: XCTestCase {
     
-    typealias T = RootInt
+    typealias T = LiteralInt
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
