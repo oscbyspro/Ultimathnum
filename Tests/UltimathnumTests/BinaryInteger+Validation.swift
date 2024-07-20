@@ -39,15 +39,15 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
             
             Test().exactly( Esque<M>.min, Fallible( T(raw: Esque<M>.min)))
             Test().exactly( Esque<M>.lsb, Fallible( T(raw: Esque<M>.lsb)))
-            Test().exactly( Esque<M>.msb, Fallible( T(raw: Esque<M>.msb), error:  T.isSigned && !T.size.isInfinite))
+            Test().exactly( Esque<M>.msb, Fallible( T(raw: Esque<M>.msb), error:  T.isSigned && !T.isArbitrary))
             Test().exactly( Esque<M>.max, Fallible( T(raw: Esque<M>.max), error:  T.isSigned))
             
             Test().exactly(~Esque<M>.min, Fallible(~T(raw: Esque<M>.min), error:  T.isSigned))
             Test().exactly(~Esque<M>.lsb, Fallible(~T(raw: Esque<M>.lsb), error:  T.isSigned))
-            Test().exactly(~Esque<M>.msb, Fallible(~T(raw: Esque<M>.msb), error:  T.isSigned &&  T.size.isInfinite))
+            Test().exactly(~Esque<M>.msb, Fallible(~T(raw: Esque<M>.msb), error: !T.isEdgy))
             Test().exactly(~Esque<M>.max, Fallible(~T(raw: Esque<M>.max)))
             
-            if  T.isSigned, !T.size.isInfinite {
+            if  T.isSigned, !T.isArbitrary {
                 Test().exactly(Esque<M>.msb,     Fallible(Esque<T>.msb,     error: true))
                 Test().exactly(Esque<M>.msb + 1, Fallible(Esque<T>.msb + 1, error: true))
             }

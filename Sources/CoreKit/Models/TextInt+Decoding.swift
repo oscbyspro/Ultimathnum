@@ -47,7 +47,7 @@ extension TextInt {
         }
         
         if  components.mask == Bit.one {
-            if  T.size.isInfinite {
+            if  T.isArbitrary {
                 magnitude.value.toggle()
             }   else {
                 throw Failure.overflow

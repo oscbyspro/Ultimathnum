@@ -116,7 +116,7 @@ extension Test {
             }
             
         }   catch {
-            nay(T.size.isInfinite, "infinite integers should not overflow in this test")
+            nay(T.isArbitrary, "arbitrary integers should not overflow in this test")
         }
     }
     
@@ -146,7 +146,7 @@ extension Test {
             }
             
         }   catch {
-            nay(T.size.isInfinite, "infinite integers should not overflow in this test")
+            nay(T.isArbitrary, "arbitrary integers should not overflow in this test")
         }
     }
     
@@ -182,7 +182,7 @@ extension Test {
             }
             
         }   catch {
-            nay(T.size.isInfinite, "infinite integers should not overflow in this test")
+            nay(T.isArbitrary, "arbitrary integers should not overflow in this test")
         }
     }
 }

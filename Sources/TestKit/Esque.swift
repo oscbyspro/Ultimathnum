@@ -28,10 +28,10 @@ extension Esque where T: BinaryInteger {
     
     /// An ascending shift distance.
     ///
-    /// - Note: The infinite case must be greater than all finite cases.
+    /// - Note: The arbitrary case must be greater than all systems cases.
     ///
     @inlinable public static var shl: T {
-        if  T.size.isInfinite {
+        if  T.isArbitrary {
             return 511
             
         }   else {

@@ -33,7 +33,7 @@ extension Test {
         for var x: (instance: T, expectation: Count<IX>) in [(instance, expectation), (instance.toggled(), nonexpectation)] {
             self.count(x.instance, bit, x.expectation, id: BitCountableID())
             
-            if !T.size.isInfinite {
+            if !T.isArbitrary {
                 x.instance.withUnsafeBinaryIntegerBody {
                     self.count($0, bit, x.expectation, id: BitCountableID())
                 }
@@ -67,7 +67,7 @@ extension Test {
         for var x: (instance: T, bit: Bit) in [(instance, bit), (instance.toggled(), bit.toggled())] {
             self.ascending(x.instance, x.bit, expectation, id: BitCountableID())
             
-            if !T.size.isInfinite {
+            if !T.isArbitrary {
                 x.instance.withUnsafeBinaryIntegerBody {
                     self.ascending($0, x.bit, expectation, id: BitCountableID())
                 }
@@ -101,7 +101,7 @@ extension Test {
         for var x: (instance: T, bit: Bit) in [(instance, bit), (instance.toggled(), bit.toggled())] {
             self.descending(x.instance, x.bit, expectation, id: BitCountableID())
             
-            if !T.size.isInfinite {
+            if !T.isArbitrary {
                 x.instance.withUnsafeBinaryIntegerBody {
                     self.descending($0, x.bit, expectation, id: BitCountableID())
                 }

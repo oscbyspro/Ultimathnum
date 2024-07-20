@@ -72,8 +72,8 @@ final class BinaryIntegerTestsOnElements: XCTestCase {
                         }
                     }
                     
-                    Test().elements(integer,           elements,        Bit(!T.size.isInfinite && T.isSigned && elements.last! >= .msb))
-                    Test().elements(integer.toggled(), elements.map(~), Bit( T.size.isInfinite || T.isSigned && elements.last! <  .msb))
+                    Test().elements(integer,           elements,        Bit(!T.isArbitrary && (T.isSigned && elements.last! >= .msb)))
+                    Test().elements(integer.toggled(), elements.map(~), Bit( T.isArbitrary || (T.isSigned && elements.last! <  .msb)))
                 }
             }
         }
@@ -100,7 +100,7 @@ final class BinaryIntegerTestsOnElements: XCTestCase {
             }
             
             always: do {
-                var count = Int(T.size.isInfinite ? 12 : IX(size: T.self)! / IX(size: T.Element.Magnitude.self))
+                var count = Int(T.isArbitrary ? 12 : IX(size: T.self)! / IX(size: T.Element.Magnitude.self))
                 
                 check(Array(repeating:  0, count: count), mode:   .signed)
                 check(Array(repeating:  1, count: count), mode:   .signed)
@@ -109,20 +109,20 @@ final class BinaryIntegerTestsOnElements: XCTestCase {
                 
                 check(Array(repeating:  0, count: count), mode: .unsigned)
                 check(Array(repeating:  1, count: count), mode: .unsigned)
-                check(Array(repeating: ~1, count: count), mode: .unsigned, error:  T.isSigned && !T.size.isInfinite)
-                check(Array(repeating: ~0, count: count), mode: .unsigned, error:  T.isSigned && !T.size.isInfinite)
+                check(Array(repeating: ~1, count: count), mode: .unsigned, error:  T.isSigned && !T.isArbitrary)
+                check(Array(repeating: ~0, count: count), mode: .unsigned, error:  T.isSigned && !T.isArbitrary)
                 
                 count += 1
                 
                 check(Array(repeating:  0, count: count), mode:   .signed)
-                check(Array(repeating:  1, count: count), mode:   .signed, error: !T.size.isInfinite)
-                check(Array(repeating: ~1, count: count), mode:   .signed, error: !T.isSigned || !T.size.isInfinite)
+                check(Array(repeating:  1, count: count), mode:   .signed, error: !T.isArbitrary)
+                check(Array(repeating: ~1, count: count), mode:   .signed, error:  T.isEdgy)
                 check(Array(repeating: ~0, count: count), mode:   .signed, error: !T.isSigned)
                 
                 check(Array(repeating:  0, count: count), mode: .unsigned)
-                check(Array(repeating:  1, count: count), mode: .unsigned, error: !T.size.isInfinite)
-                check(Array(repeating: ~1, count: count), mode: .unsigned, error: !T.size.isInfinite)
-                check(Array(repeating: ~0, count: count), mode: .unsigned, error: !T.size.isInfinite)
+                check(Array(repeating:  1, count: count), mode: .unsigned, error: !T.isArbitrary)
+                check(Array(repeating: ~1, count: count), mode: .unsigned, error: !T.isArbitrary)
+                check(Array(repeating: ~0, count: count), mode: .unsigned, error: !T.isArbitrary)
             }
         }
         
@@ -152,7 +152,7 @@ final class BinaryIntegerTestsOnElements: XCTestCase {
                             for appendix: Bit in [0, 1] {
                                 
                                 let expectation = source[..<count].withUnsafeBufferPointer {
-                                    !T.size.isInfinite ? nil : T(load: DataInt($0, repeating: appendix)!)
+                                    !T.isArbitrary ? nil : T(load: DataInt($0, repeating: appendix)!)
                                 }
                                 
                                 let resultIX = T.arbitrary(uninitialized: 3, repeating: appendix) {

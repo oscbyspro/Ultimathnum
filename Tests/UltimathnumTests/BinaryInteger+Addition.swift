@@ -30,9 +30,9 @@ final class BinaryIntegerTestsOnAddition: XCTestCase {
             let msb: T = Esque<T>.msb
             let bot: T = Esque<T>.bot
             //=----------------------------------=
-            Test().subtraction(T.zero, min, Fallible(min.complement(), error:  T.isSigned && !T.size.isInfinite))
+            Test().subtraction(T.zero, min, Fallible(min.complement(), error:  T.isSigned && !T.isArbitrary))
             Test().subtraction(T.zero, max, Fallible(max.complement(), error: !T.isSigned))
-            Test().subtraction(T.zero, msb, Fallible(msb.complement(), error: !T.isSigned || !T.size.isInfinite))
+            Test().subtraction(T.zero, msb, Fallible(msb.complement(), error:  T.isEdgy))
             Test().subtraction(T.zero, bot, Fallible(bot.complement(), error: !T.isSigned))
             //=----------------------------------=
             Test().subtraction(T.zero, ~1 as T, Fallible( 2 as T, error: !T.isSigned))
@@ -53,17 +53,17 @@ final class BinaryIntegerTestsOnAddition: XCTestCase {
             let min: T = Esque<T>.min
             let max: T = Esque<T>.max
             //=----------------------------------=
-            Test().addition(min,  min, Fallible( min << 001,      error:  (T.isSigned && !T.size.isInfinite)))
+            Test().addition(min,  min, Fallible( min << 001,      error:  T.isSigned && !T.isArbitrary))
             Test().addition(min,  max, Fallible(~000))
             Test().addition(max,  min, Fallible(~000))
-            Test().addition(max,  max, Fallible( max << 001,      error: !(T.isSigned &&  T.size.isInfinite)))
+            Test().addition(max,  max, Fallible( max << 001,      error:  T.isEdgy))
 
-            Test().addition(min, ~000, Fallible( max |  min << 1, error:  (T.isSigned && !T.size.isInfinite)))
+            Test().addition(min, ~000, Fallible( max |  min << 1, error:  T.isSigned && !T.isArbitrary))
             Test().addition(min,  000, Fallible( min))
             Test().addition(min,  001, Fallible( min |  001))
-            Test().addition(max, ~000, Fallible( max ^  001,      error: !(T.isSigned)))
+            Test().addition(max, ~000, Fallible( max ^  001,      error: !T.isSigned))
             Test().addition(max,  000, Fallible( max))
-            Test().addition(max,  001, Fallible( min ^  min << 1, error: !(T.isSigned && T.size.isInfinite)))
+            Test().addition(max,  001, Fallible( min ^  min << 1, error:  T.isEdgy))
         }
         
         for type in binaryIntegers {
@@ -78,14 +78,14 @@ final class BinaryIntegerTestsOnAddition: XCTestCase {
             let max: T = Esque<T>.max
             //=----------------------------------=
             Test().subtraction(min,  min, Fallible(000))
-            Test().subtraction(min,  max, Fallible(001 | min << 1, error: !(T.isSigned &&  T.size.isInfinite)))
-            Test().subtraction(max,  min, Fallible(001 | max << 1, error:  (T.isSigned && !T.size.isInfinite)))
+            Test().subtraction(min,  max, Fallible(001 | min << 1, error:  T.isEdgy))
+            Test().subtraction(max,  min, Fallible(001 | max << 1, error:  T.isSigned && !T.isArbitrary))
             Test().subtraction(max,  max, Fallible(000))
             
-            Test().subtraction(min, ~000, Fallible(min | 001,      error: !(T.isSigned)))
+            Test().subtraction(min, ~000, Fallible(min | 001,      error: !T.isSigned))
             Test().subtraction(min,  000, Fallible(min))
-            Test().subtraction(min,  001, Fallible(max | min << 1, error: !(T.isSigned &&  T.size.isInfinite)))
-            Test().subtraction(max, ~000, Fallible(min ^ min << 1, error:  (T.isSigned && !T.size.isInfinite)))
+            Test().subtraction(min,  001, Fallible(max | min << 1, error:  T.isEdgy))
+            Test().subtraction(max, ~000, Fallible(min ^ min << 1, error:  T.isSigned && !T.isArbitrary))
             Test().subtraction(max,  000, Fallible(max))
             Test().subtraction(max,  001, Fallible(max ^ 001))
         }
