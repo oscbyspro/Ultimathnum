@@ -45,6 +45,10 @@ let package = Package(
             targets: ["InfiniIntKit"]
         ),
         .library(
+            name: "RandomIntKit",
+            targets: ["RandomIntKit"]
+        ),
+        .library(
             name: "StdlibIntKit",
             targets: ["StdlibIntKit"]
         ),
@@ -52,7 +56,7 @@ let package = Package(
     targets: [
         .target(
             name: "Ultimathnum",
-            dependencies: ["CoreKit", "DoubleIntKit", "FibonacciKit", "InfiniIntKit", "StdlibIntKit"]
+            dependencies: ["CoreKit", "DoubleIntKit", "FibonacciKit", "InfiniIntKit", "RandomIntKit", "StdlibIntKit"]
         ),
         .testTarget(
             name: "UltimathnumTests",
@@ -91,6 +95,14 @@ let package = Package(
             dependencies: ["InfiniIntKit", "TestKit"]
         ),
         .target(
+            name: "RandomIntKit",
+            dependencies: ["CoreKit"]
+        ),
+        .testTarget(
+            name: "RandomIntKitTests",
+            dependencies: ["RandomIntKit", "TestKit"]
+        ),
+        .target(
             name: "StdlibIntKit",
             dependencies: ["CoreKit", "InfiniIntKit"]
         ),
@@ -100,7 +112,7 @@ let package = Package(
         ),
         .target(
             name: "TestKit",
-            dependencies: ["CoreKit"]
+            dependencies: ["CoreKit", "RandomIntKit"]
         ),
         .testTarget(
             name: "Benchmarks",

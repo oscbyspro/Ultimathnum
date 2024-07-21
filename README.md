@@ -37,6 +37,9 @@
   - [Recoverable infinite division](#infiniintkit-division)
 * [StdlibIntKit](#stdlibintkit)
   - [A signed big integer in Swift proper with StdlibInt](#stdlibintkit-bigint)
+* [RandomIntKit](#randomintkit)
+  - [Seeded randomness with FuzzerInt](#randomintkit-fuzzer)
+  - [System randomness with RandomInt](#randomintkit-random)
 * [FibonacciKit](#fibonaccikit)
   - [The Fibonacci\<Value\> sequence](#fibonaccikit-sequence)
   - [Fast sequence addition (+/-)](#fibonaccikit-addition)
@@ -555,6 +558,21 @@ as an error. This yields results similar to signed division.
 ```swift
 dividend == divisor &* quotient &+ remainder // for all binary integers
 ```
+<a name="randomintkit"/>
+
+## RandomIntKit
+
+<a name="randomintkit-fuzzer"/>
+
+### Seeded randomness with FuzzerInt
+
+> Todo...
+
+<a name="randomintkit-random"/>
+
+### System randomness with RandomInt
+
+> Todo...
 
 <a name="stdlibintkit"/>
 

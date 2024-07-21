@@ -63,6 +63,14 @@
         "identifier" : "StdlibIntKitTests",
         "name" : "StdlibIntKitTests"
       }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "RandomIntKitTests",
+        "name" : "RandomIntKitTests"
+      }
     }
   ],
   "version" : 1

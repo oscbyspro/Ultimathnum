@@ -8,6 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import RandomIntKit
 
 //*============================================================================*
 // MARK: * Globals
@@ -25,6 +26,27 @@ public let coreSystemsIntegersWhereIsSigned: [any (SystemsInteger & SignedIntege
 public let coreSystemsIntegersWhereIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = [
     UX.self, U8.self, U16.self, U32.self, U64.self,
 ]
+
+//=----------------------------------------------------------------------------=
+// MARK: + Randomness
+//=----------------------------------------------------------------------------=
+
+public var random = RandomInt()
+
+public let fuzzers: [FuzzerInt] = [
+    FuzzerInt(seed: random.next()),
+    FuzzerInt(seed: random.next()),
+    FuzzerInt(seed: random.next()),
+    FuzzerInt(seed: random.next()),
+    FuzzerInt(seed: random.next()),
+    FuzzerInt(seed: random.next()),
+    FuzzerInt(seed: random.next()),
+    FuzzerInt(seed: random.next()),
+]
+
+//=------------------------------------------------------------------------=
+// MARK: + Values
+//=------------------------------------------------------------------------=
 
 /// A collection of all primes that fit in one byte.
 ///

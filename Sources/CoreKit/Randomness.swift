@@ -8,12 +8,20 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Exports
+// MARK: * Randomenss
 //*============================================================================*
 
-@_exported import CoreKit
-@_exported import DoubleIntKit
-@_exported import FibonacciKit
-@_exported import InfiniIntKit
-@_exported import RandomIntKit
-@_exported import StdlibIntKit
+public protocol Randomness {
+    
+    associatedtype Element: SystemsInteger & UnsignedInteger
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    /// Generates more randomness.
+    @inlinable mutating func next() -> Element
+    
+    /// Generates enough randomness to fill the given `buffer`.
+    @inlinable mutating func fill(_ buffer: UnsafeMutableRawBufferPointer)
+}
