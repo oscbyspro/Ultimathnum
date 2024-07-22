@@ -56,26 +56,30 @@ extension DataIntTests {
             Test().none(MutableDataInt<T>(UnsafeMutableBufferPointer(start: nil, count: 0)))
             Test().none(MutableDataInt<T>.Body(UnsafeMutableBufferPointer(start: nil, count: 0)))
             
-            var body = Array(repeating: T.zero, count: 3)
+            var body: [T] = [1, 2, 3, 4]
             body.withUnsafeMutableBufferPointer {
                 let start =  $0.baseAddress!
                 for count in IX.zero ..< IX($0.count) {
+                    let prefix = UnsafeBufferPointer(rebasing: $0.prefix(Int(count)))
+                    
                     always: do {
                         let body = DataInt.Body(start, count: count)
                         Test().same(body.start, start)
                         Test().same(body.count, count)
                         Test().same(body.count.isZero, body.isEmpty)
                         Test().same(body.appendix, Bit.zero)
-                        Test().same(Array(body.buffer()), Array($0.prefix(Int(count))))
+                        Test().same(Array(body.buffer()), Array(prefix))
+                        Test().same(Array(body.bytes ()), Array(UnsafeRawBufferPointer(prefix)))
                     }
-                        
+                    
                     always: do {
                         let body = MutableDataInt.Body(start, count: count)
                         Test().same(body.start, start)
                         Test().same(body.count, count)
                         Test().same(body.count.isZero, body.isEmpty)
                         Test().same(body.appendix, Bit.zero)
-                        Test().same(Array(body.buffer()), Array($0.prefix(Int(count))))
+                        Test().same(Array(body.buffer()), Array(prefix))
+                        Test().same(Array(body.bytes ()), Array(UnsafeRawBufferPointer(prefix)))
                     }
                     
                     for bit: Bit in [0, 1] {

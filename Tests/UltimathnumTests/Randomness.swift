@@ -66,7 +66,7 @@ final class RandomnessTests: XCTestCase {
                 var rhs = T.zero
                 
                 rhs.withUnsafeMutableBinaryIntegerBody {
-                    b.fill(UnsafeMutableRawBufferPointer($0.buffer()))
+                    b.fill($0.bytes())
                 }
                 
                 Test().same(lhs, rhs)

@@ -50,7 +50,7 @@ extension BinaryInteger {
             }   else {
                 instance = Self.zero
                 instance.withUnsafeMutableBinaryIntegerBody { body -> Void in
-                    randomness.fill(UnsafeMutableRawBufferPointer(body.buffer()))
+                    randomness.fill(body.bytes())
                 }
             }
             
@@ -77,7 +77,7 @@ extension BinaryInteger {
             return Self.arbitrary(uninitialized: capacity, repeating: appendix) { body -> Void in
                 guard !capacity.isZero else { return }
                 let lastIndex = capacity.decremented().unchecked()
-                randomness.fill(UnsafeMutableRawBufferPointer(body[unchecked: ..<lastIndex].buffer()))
+                randomness.fill(body[unchecked: ..<lastIndex].bytes())
                 body[unchecked: lastIndex] = last
             }!
         }

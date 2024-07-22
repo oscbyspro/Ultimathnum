@@ -131,6 +131,10 @@
         // MARK: Utilities
         //=--------------------------------------------------------------------=
         
+        @inlinable public consuming func bytes() -> UnsafeRawBufferPointer {
+            UnsafeRawBufferPointer(self.buffer())
+        }
+        
         @inlinable public consuming func buffer() -> UnsafeBufferPointer<Element> {
             UnsafeBufferPointer(start: self.start, count: Int(self.count))
         }
@@ -174,7 +178,6 @@
     //=------------------------------------------------------------------------=
    
     public let body: Body
-    
     public let appendix: Bit
     
     //=------------------------------------------------------------------------=
@@ -274,6 +277,10 @@
         //=--------------------------------------------------------------------=
         // MARK: Utilities
         //=--------------------------------------------------------------------=
+        
+        @inlinable public consuming func bytes() -> UnsafeMutableRawBufferPointer {
+            UnsafeMutableRawBufferPointer(self.buffer())
+        }
         
         @inlinable public consuming func buffer() -> UnsafeMutableBufferPointer<Element> {
             UnsafeMutableBufferPointer(start: self.start, count: Int(self.count))
