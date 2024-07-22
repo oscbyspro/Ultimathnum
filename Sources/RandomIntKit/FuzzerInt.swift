@@ -13,7 +13,7 @@ import CoreKit
 // MARK: * Fuzzer Int
 //*============================================================================*
 
-/// A deterministic source or pseudo random data.
+/// A deterministic source of pseudo random data.
 ///
 /// - Important: This model is most suitable for fuzzing.
 ///

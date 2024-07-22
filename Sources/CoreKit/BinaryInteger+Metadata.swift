@@ -20,7 +20,7 @@ extension BinaryInteger {
     /// Indicates whether this is an arbitrary integer type.
     ///
     ///                ┌───────────┬───────────┐
-    ///                │  Systems  │ Arbitrary |
+    ///                │  Systems  │ Arbitrary │
     ///     ┌──────────┼───────────┤───────────┤
     ///     │   Signed │           │     X     │
     ///     ├──────────┼───────────┤───────────┤
@@ -34,7 +34,7 @@ extension BinaryInteger {
     /// Indicates whether this is an edgy integer type.
     ///
     ///                ┌───────────┬───────────┐
-    ///                │  Systems  │ Arbitrary |
+    ///                │  Systems  │ Arbitrary │
     ///     ┌──────────┼───────────┤───────────┤
     ///     │   Signed │     X     │           │
     ///     ├──────────┼───────────┤───────────┤
@@ -48,7 +48,7 @@ extension BinaryInteger {
     /// Indicates whether this is a finite integer type.
     ///
     ///                ┌───────────┬───────────┐
-    ///                │  Systems  │ Arbitrary |
+    ///                │  Systems  │ Arbitrary │
     ///     ┌──────────┼───────────┤───────────┤
     ///     │   Signed │     X     │     X     │
     ///     ├──────────┼───────────┤───────────┤
@@ -63,7 +63,7 @@ extension BinaryInteger {
     ///
     /// ```
     ///            ┌───────────────┬───────────────┐
-    ///            │ appendix == 0 │ appendix == 1 |
+    ///            │ appendix == 0 │ appendix == 1 │
     /// ┌──────────┼───────────────┤───────────────┤
     /// │   Signed │     self >= 0 │     self <  0 │
     /// ├──────────┼───────────────┤───────────────┤

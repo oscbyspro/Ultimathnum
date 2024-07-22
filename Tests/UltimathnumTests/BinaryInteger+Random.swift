@@ -24,22 +24,26 @@ final class BinaryIntegerTestsOnRandom: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testRandomThroughBitIndex() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+        func whereIs<T>(_ type: T.Type, randomness: consuming FuzzerInt) where T: BinaryInteger {
             for index in 0 ..< (T.isArbitrary ? 128 : IX(size: T.self)!) {
                 let index = Shift<T.Magnitude>(Count(index))
                 let limit = IX(raw: index.value) + (T.isSigned ? 1 : 2)
                 
-                for var randomness: any Randomness in fuzzers {
-                    let random = T.random(through: index, using: &randomness)
-                    Test().yay(random.entropy() >= Count(00001))
-                    Test().yay(random.entropy() <= Count(limit))
-                    Test().nay(random.isInfinite)
+                for _ in 0 ..< 04 {
+                    let r0 = T.random(through: index)
+                    let r1 = T.random(through: index, using: &randomness)
+                    
+                    for random in [r0, r1] {
+                        Test().yay(random.entropy() >= Count(00001))
+                        Test().yay(random.entropy() <= Count(limit))
+                        Test().nay(random.isInfinite)
+                    }
                 }
             }
         }
         
         for type in binaryIntegers {
-            whereIs(type)
+            whereIs(type, randomness: fuzzer)
         }
     }
 }

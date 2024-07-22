@@ -35,11 +35,11 @@
   - [Recoverable infinite addition (+/-)](#infiniintkit-addition)
   - [Recoverable infinite multiplication](#infiniintkit-multiplication)
   - [Recoverable infinite division](#infiniintkit-division)
-* [StdlibIntKit](#stdlibintkit)
-  - [A signed big integer in Swift proper with StdlibInt](#stdlibintkit-bigint)
 * [RandomIntKit](#randomintkit)
   - [Seeded randomness with FuzzerInt](#randomintkit-fuzzer)
   - [System randomness with RandomInt](#randomintkit-random)
+* [StdlibIntKit](#stdlibintkit)
+  - [A signed big integer in Swift proper with StdlibInt](#stdlibintkit-bigint)
 * [FibonacciKit](#fibonaccikit)
   - [The Fibonacci\<Value\> sequence](#fibonaccikit-sequence)
   - [Fast sequence addition (+/-)](#fibonaccikit-addition)
@@ -712,5 +712,6 @@ Choose target dependencies from this list of products.
 .product(name: "DoubleIntKit", package: "Ultimathnum"),
 .product(name: "FibonacciKit", package: "Ultimathnum"),
 .product(name: "InfiniIntKit", package: "Ultimathnum"),
+.product(name: "RandomIntKit", package: "Ultimathnum"),
 .product(name: "StdlibIntKit", package: "Ultimathnum"),
 ```

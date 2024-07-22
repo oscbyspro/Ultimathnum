@@ -23,29 +23,29 @@ final class RandomnessTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testRandomUpToSmallLimit() {
-        func whereIs<T, R>(_ type: T.Type, using randomness: inout R) where T: SystemsInteger & UnsignedInteger, R: Randomness {
+    func testUpToSmallLimit() {
+        func whereIs<T>(_ type: T.Type, using randomness: inout some Randomness) where T: SystemsInteger & UnsignedInteger {
             for limit: T in 1 ... 16 {
                 Test().yay(randomness.next(upTo: Divisor(limit)) < limit)
             }
         }
         
         for type in systemsIntegersWhereIsUnsigned {
-            for var randomness in fuzzers {
+            for var randomness in randomnesses {
                 whereIs(type, using: &randomness)
             }
         }
     }
     
-    func testRandomThroughSmallLimit() {
-        func whereIs<T, R>(_ type: T.Type, using randomness: inout R) where T: SystemsInteger & UnsignedInteger, R: Randomness {
+    func testThroughSmallLimit() {
+        func whereIs<T>(_ type: T.Type, using randomness: inout some Randomness) where T: SystemsInteger & UnsignedInteger {
             for limit: T in 0 ..< 16 {
                 Test().yay(randomness.next(through: limit) <= limit)
             }
         }
         
         for type in systemsIntegersWhereIsUnsigned {
-            for var randomness in fuzzers {
+            for var randomness in randomnesses {
                 whereIs(type, using: &randomness)
             }
         }
@@ -55,7 +55,7 @@ final class RandomnessTests: XCTestCase {
     // MARK: Tests x Req. Determinism
     //=------------------------------------------------------------------------=
     
-    func testRandomNextIsSimilarToFill() {
+    func testNextIsSimilarToFill() {
         func whereIs<T>(_ type: T.Type, using randomness: FuzzerInt) where T: SystemsInteger & UnsignedInteger {
             
             var a = randomness
@@ -74,13 +74,11 @@ final class RandomnessTests: XCTestCase {
         }
         
         for type in systemsIntegersWhereIsUnsigned {
-            for randomness in fuzzers {
-                whereIs(type, using: randomness)
-            }
+            whereIs(type, using: fuzzer)
         }
     }
     
-    func testRandomUpToIsSimilarToRandomThrough() {
+    func testUpToIsSimilarToThrough() {
         func whereIs<T>(_ type: T.Type, using randomness: FuzzerInt) where T: SystemsInteger & UnsignedInteger {
             
             var a = randomness
@@ -94,9 +92,7 @@ final class RandomnessTests: XCTestCase {
         }
         
         for type in systemsIntegersWhereIsUnsigned {
-            for randomness in fuzzers {
-                whereIs(type, using: randomness)
-            }
+            whereIs(type, using: fuzzer)
         }
     }
 }

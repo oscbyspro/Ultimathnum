@@ -33,16 +33,11 @@ public let coreSystemsIntegersWhereIsUnsigned: [any (SystemsInteger & UnsignedIn
 
 public var random = RandomInt()
 
-public let fuzzers: [FuzzerInt] = [
-    FuzzerInt(seed: random.next()),
-    FuzzerInt(seed: random.next()),
-    FuzzerInt(seed: random.next()),
-    FuzzerInt(seed: random.next()),
-    FuzzerInt(seed: random.next()),
-    FuzzerInt(seed: random.next()),
-    FuzzerInt(seed: random.next()),
-    FuzzerInt(seed: random.next()),
-]
+public let seed = random.next(as: U64.self)
+
+public let fuzzer = FuzzerInt(seed: seed)
+
+public let randomnesses: [any Randomness] = [random, fuzzer]
 
 //=------------------------------------------------------------------------=
 // MARK: + Values

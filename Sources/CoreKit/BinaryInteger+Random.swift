@@ -33,6 +33,8 @@ extension BinaryInteger {
     ///
     /// - Note: The result is always finite.
     ///
+    /// - Note: The default randomness is `RandomInt`.
+    ///
     /// - Requires: The request must not exceed the entropy limit.
     ///
     @inlinable public static func random(through index: Shift<Magnitude>, using randomness: inout some Randomness) -> Self {
@@ -43,7 +45,7 @@ extension BinaryInteger {
         if  let size = IX(size: Self.self) {
             var instance: Self
             //  fast path
-            if  Self.size == Element.size {
+            if  size == IX(size: Element.self) {
                 instance = Self(load: randomness.next(as: Element.Magnitude.self))
             }   else {
                 instance = Self.zero
@@ -51,7 +53,7 @@ extension BinaryInteger {
                     randomness.fill(UnsafeMutableRawBufferPointer(body.buffer()))
                 }
             }
-                        
+            
             let mask = size.decremented().unchecked()
             let down = Count(unchecked: mask & index.toggled())
             return instance.down(Shift(unchecked: down))
@@ -67,18 +69,14 @@ extension BinaryInteger {
             }
             
             let down = Shift<Element.Magnitude>(masking: division.remainder.complement())
-            var last = randomness.next(as: Element.Magnitude.self)
-            if  Self.isSigned {
-                last = Element.Magnitude(raw: Element.Signitude(raw: last).down(down))
-            }   else {
-                last = last.down(down)
-            }
+            let last = Element.Magnitude(raw: Element(raw: randomness.next(as: Element.Magnitude.self)).down(down))
+
+            let capacity = division.ceil().unchecked()
+            let appendix = Element(raw: last).appendix
             
-            let count: IX = division.ceil().unchecked()
-            let appendix: Bit = Self.isSigned ?  last.msb : .zero
-            return Self.arbitrary(uninitialized: count, repeating: appendix) { body -> Void in
-                guard !count.isZero else { return }
-                let lastIndex = count.decremented().unchecked()
+            return Self.arbitrary(uninitialized: capacity, repeating: appendix) { body -> Void in
+                guard !capacity.isZero else { return }
+                let lastIndex = capacity.decremented().unchecked()
                 randomness.fill(UnsafeMutableRawBufferPointer(body[unchecked: ..<lastIndex].buffer()))
                 body[unchecked: lastIndex] = last
             }!

@@ -17,7 +17,7 @@ extension Randomness {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// Returns a random value in the given `range`.
+    /// Returns a random from zero through the given `limit`.
     ///
     /// ### Algorithm
     ///
@@ -37,7 +37,7 @@ extension Randomness {
         }
     }
     
-    /// Returns a random value in the given `range`.
+    /// Returns a random from zero up to the given `limit`.
     ///
     /// ### Algorithm
     ///
@@ -48,18 +48,14 @@ extension Randomness {
     @inlinable public mutating func next<T>(
         upTo limit: Divisor<T>
     ) -> T where T: SystemsInteger & UnsignedInteger {
-        
-        var random: T = self.next()
-        var product = random.multiplication(limit.value)
-        // product.low  == product % (2 ^ T.size)
-        // product.high == product / (2 ^ T.size)
+        //  product.low  = product % (2 ** T.size)
+        //  product.high = product / (2 ** T.size)
+        var product = limit.value.multiplication(self.next())
         if  product.low < limit.value {
-            //  magic = 2 ^ T.size % limit
+            //  magic = (2 ** T.size) % limit
             let magic = limit.value.complement().remainder(limit)
-            
             while product.low < magic {
-                random  = self.next()
-                product = random.multiplication(limit.value)
+                product = limit.value.multiplication(self.next())
             }
         }
         
