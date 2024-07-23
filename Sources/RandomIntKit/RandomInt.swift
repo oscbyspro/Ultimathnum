@@ -45,7 +45,7 @@ import CoreKit
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Default
+// MARK: + Binary Integer
 //=----------------------------------------------------------------------------=
 
 extension BinaryInteger {
@@ -70,12 +70,33 @@ extension BinaryInteger {
     ///
     /// - Note: The result is always finite.
     ///
-    /// - Note: The default randomness is `RandomInt`.
-    ///
     /// - Requires: The request must not exceed the entropy limit.
     ///
     @inlinable public static func random(through index: Shift<Magnitude>) -> Self {
         var randomness = RandomInt()
         return Self.random(through: index, using: &randomness)
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Systems Integer
+//=----------------------------------------------------------------------------=
+
+extension SystemsInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    /// Generates a random value in the given `range` from the given source of `randomness`.
+    @inlinable public static func random(in range: Range<Self>) -> Optional<Self> {
+        var randomness = RandomInt()
+        return Self.random(in: range, using: &randomness)
+    }
+    
+    /// Generates a random value in the given `range` from the given source of `randomness`.
+    @inlinable public static func random(in range: ClosedRange<Self>) -> Self {
+        var randomness = RandomInt()
+        return Self.random(in: range, using: &randomness)
     }
 }

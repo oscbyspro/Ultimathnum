@@ -14,7 +14,7 @@
 extension BinaryInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
     /// Generates random bits through the given `index`.
@@ -33,12 +33,10 @@ extension BinaryInteger {
     ///
     /// - Note: The result is always finite.
     ///
-    /// - Note: The default randomness is `RandomInt`.
-    ///
     /// - Requires: The request must not exceed the entropy limit.
     ///
     @inlinable public static func random(through index: Shift<Magnitude>, using randomness: inout some Randomness) -> Self {
-        guard let index = index.natural().optional() else {
+        guard let index: IX = index.natural().optional() else {
             Swift.preconditionFailure(String.indexOutOfBounds())
         }
         
@@ -59,18 +57,19 @@ extension BinaryInteger {
             return instance.down(Shift(unchecked: down))
             
         }   else {
-            var division = index.division(Divisor(size: Element.self)).unchecked()
+            let divisor =  Divisor<IX>(size: Element.self)
+            var division = index.division(divisor).unchecked()
             //  finite unsigned behavior
             increment: if !Self.isSigned {
                 division.remainder &+= 1
-                guard division.remainder == IX(size: Element.self) else { break increment }
+                guard division.remainder == divisor.value else { break increment }
                 division.quotient  &+= 1
                 division.remainder   = 0
             }
             
             let down = Shift<Element.Magnitude>(masking: division.remainder.complement())
             let last = Element.Magnitude(raw: Element(raw: randomness.next(as: Element.Magnitude.self)).down(down))
-
+            
             let capacity = division.ceil().unchecked()
             let appendix = Element(raw: last).appendix
             
@@ -81,5 +80,31 @@ extension BinaryInteger {
                 body[unchecked: lastIndex] = last
             }!
         }
+    }
+}
+
+//*============================================================================*
+// MARK: * Binary Integer x Random x Systems
+//*============================================================================*
+// TODO: - Hoist these methods to Binary Integer
+//=----------------------------------------------------------------------------=
+
+extension SystemsInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    /// Generates a random value in the given `range` from the given source of `randomness`.
+    @inlinable public static func random(in range: Range<Self>, using randomness: inout some Randomness) -> Optional<Self> {
+        let distance = Magnitude(raw: range.upperBound &- range.lowerBound)
+        guard let distance = Divisor(exactly: distance) else { return nil }
+        return range.lowerBound &+ Self(raw: randomness.next(upTo: distance))
+    }
+    
+    /// Generates a random value in the given `range` from the given source of `randomness`.
+    @inlinable public static func random(in range: ClosedRange<Self>, using randomness: inout some Randomness) -> Self {
+        let distance = Magnitude(raw: range.upperBound &- range.lowerBound)
+        return range.lowerBound &+ Self(raw: randomness.next(through: distance))
     }
 }

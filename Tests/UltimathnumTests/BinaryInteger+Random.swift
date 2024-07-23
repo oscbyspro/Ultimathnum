@@ -29,7 +29,7 @@ final class BinaryIntegerTestsOnRandom: XCTestCase {
                 let index = Shift<T.Magnitude>(Count(index))
                 let limit = IX(raw: index.value) + (T.isSigned ? 1 : 2)
                 
-                for _ in 0 ..< 04 {
+                for _ in 0 ..< 4 {
                     let r0 = T.random(through: index)
                     let r1 = T.random(through: index, using: &randomness)
                     
@@ -43,6 +43,72 @@ final class BinaryIntegerTestsOnRandom: XCTestCase {
         }
         
         for type in binaryIntegers {
+            whereIs(type, randomness: fuzzer)
+        }
+    }
+    
+    //=----------------------------------------------------------------------------=
+    // MARK: Tests x Systems Integer
+    //=----------------------------------------------------------------------------=
+    
+    func testRandomInRange() {
+        func whereIs<T>(_ type: T.Type, randomness: consuming FuzzerInt) where T: SystemsInteger {
+            let eigth: T = T(T.Magnitude.max/8 + 1)
+            let small: Range<T> = (T.isSigned ? -4 ..< 3 : 0 ..< 8)
+            let large: Range<T> = (T.min + eigth)..<(T.max - eigth)
+            
+            func check(_ range: Range<T>) {
+                let r0 = T.random(in: range)
+                let r1 = T.random(in: range, using: &randomness)
+                
+                for random: Optional<T> in [r0, r1] {
+                    Test().yay(random == nil ? range.isEmpty : range.contains(random!))
+                }
+            }
+            
+            for _ in IX.zero ..< 32 {
+                check(large)
+            }
+            
+            for min: T in small {
+                for max: T in min ..< small.upperBound {
+                    check(min ..< max)
+                }
+            }
+        }
+        
+        for type in systemsIntegers {
+            whereIs(type, randomness: fuzzer)
+        }
+    }
+    
+    func testRandomInClosedRange() {
+        func whereIs<T>(_ type: T.Type, randomness: consuming FuzzerInt) where T: SystemsInteger {
+            let eigth: T = T(T.Magnitude.max/8 + 1)
+            let small: ClosedRange<T> = (T.isSigned ? -4 ... 3 : 0 ... 8)
+            let large: ClosedRange<T> = (T.min + eigth)...(T.max - eigth)
+            
+            func check(_ range: ClosedRange<T>) {
+                let r0 = T.random(in: range)
+                let r1 = T.random(in: range, using: &randomness)
+                
+                for random: T in [r0, r1] {
+                    Test().yay(range.contains(random))
+                }
+            }
+            
+            for _ in IX.zero ..< 32 {
+                check(large)
+            }
+            
+            for min: T in small {
+                for max: T in min ... small.upperBound {
+                    check(min ... max)
+                }
+            }
+        }
+        
+        for type in systemsIntegers {
             whereIs(type, randomness: fuzzer)
         }
     }
