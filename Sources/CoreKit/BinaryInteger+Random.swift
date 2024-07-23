@@ -41,15 +41,10 @@ extension BinaryInteger {
         }
         
         if  let size = IX(size: Self.self) {
-            var instance: Self
-            //  fast path
-            if  size == IX(size: Element.self) {
-                instance = Self(load: randomness.next(as: Element.Magnitude.self))
+            let instance = if size == IX(size: Element.self) {
+                Self(load: randomness.next(as: Element.Magnitude.self))
             }   else {
-                instance = Self.zero
-                instance.withUnsafeMutableBinaryIntegerBody { body -> Void in
-                    randomness.fill(body.bytes())
-                }
+                Self.systems { randomness.fill($0.bytes()) }!
             }
             
             let mask = size.decremented().unchecked()
@@ -57,7 +52,7 @@ extension BinaryInteger {
             return instance.down(Shift(unchecked: down))
             
         }   else {
-            let divisor =  Divisor<IX>(size: Element.self)
+            let divisor  = Divisor<IX>(size: Element.self)
             var division = index.division(divisor).unchecked()
             //  finite unsigned behavior
             increment: if !Self.isSigned {
@@ -68,16 +63,12 @@ extension BinaryInteger {
             }
             
             let down = Shift<Element.Magnitude>(masking: division.remainder.complement())
-            let last = Element.Magnitude(raw: Element(raw: randomness.next(as: Element.Magnitude.self)).down(down))
-            
-            let capacity = division.ceil().unchecked()
-            let appendix = Element(raw: last).appendix
-            
-            return Self.arbitrary(uninitialized: capacity, repeating: appendix) { body -> Void in
-                guard !capacity.isZero else { return }
-                let lastIndex = capacity.decremented().unchecked()
-                randomness.fill(body[unchecked: ..<lastIndex].bytes())
-                body[unchecked: lastIndex] = last
+            let last = Element(raw:  randomness.next(as: Element.Magnitude.self)).down(down)
+            return Self.arbitrary(uninitialized: division.ceil().unchecked(), repeating: last.appendix) {
+                guard !$0.isEmpty else { return }
+                let lastIndex: IX = $0.count.decremented().unchecked()
+                randomness.fill($0[unchecked:   ..<lastIndex].bytes())
+                $0[unchecked: lastIndex] = Element.Magnitude(raw: last)
             }!
         }
     }
@@ -86,7 +77,8 @@ extension BinaryInteger {
 //*============================================================================*
 // MARK: * Binary Integer x Random x Systems
 //*============================================================================*
-// TODO: - Hoist these methods to Binary Integer
+//=----------------------------------------------------------------------------=
+// TODO: + Hoist to Binary Integer
 //=----------------------------------------------------------------------------=
 
 extension SystemsInteger {

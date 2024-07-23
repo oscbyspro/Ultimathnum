@@ -10,6 +10,7 @@
 import CoreKit
 import DoubleIntKit
 import InfiniIntKit
+import RandomIntKit
 import TestKit
 
 //*============================================================================*
@@ -135,47 +136,14 @@ final class BinaryIntegerTestsOnElements: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testInitArbitraryIsLikeInitDataIntOrNil() {
+    func testInitArbitraryWhereCountIsInvalidIsNil() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            var source = Array<T.Element.Magnitude>(repeating: 0, count: 3)
-            let elements = (IX(-2) ... IX(2)).map(T.Element.Magnitude.init(load:))
+            Test().comparison(T.Element.size, Count(1), Signum.more, id: ComparableID())
             
-            for c: T.Element.Magnitude in elements {
-                for b: T.Element.Magnitude in elements {
-                    for a: T.Element.Magnitude in elements {
-                        
-                        source[0] = a
-                        source[1] = b
-                        source[2] = c
-                        
-                        for count: Int in Int.zero ... source.count {
-                            for appendix: Bit in [0, 1] {
-                                
-                                let expectation = source[..<count].withUnsafeBufferPointer {
-                                    !T.isArbitrary ? nil : T(load: DataInt($0, repeating: appendix)!)
-                                }
-                                
-                                let resultIX = T.arbitrary(uninitialized: 3, repeating: appendix) {
-                                    for index in Int.zero ..< count {
-                                        $0[unchecked: IX(index)] = source[index]
-                                    }
-                                    
-                                    return IX(count)
-                                }
-                                
-                                let resultVoid = T.arbitrary(uninitialized: IX(count), repeating: appendix) {
-                                    for index in Int.zero ..< count {
-                                        $0[unchecked: IX(index)] = source[index]
-                                    }
-                                    
-                                    return (((( ))))
-                                }
-                                
-                                Test().same(resultIX,   expectation, "body: \(source[..<count]), appendix: \(appendix) [IX]")
-                                Test().same(resultVoid, expectation, "body: \(source[..<count]), appendix: \(appendix) [Void]")
-                            }
-                        }
-                    }
+            for count: IX in [IX.min, IX.min + 1, -1, IX.max - 1, IX.max] as [IX] {
+                for appendix: Bit in [0, 1] {
+                    Test().none(T.arbitrary(uninitialized: count, repeating: appendix) { _ in 000000 })
+                    Test().none(T.arbitrary(uninitialized: count, repeating: appendix) { _ in Void() })
                 }
             }
         }
@@ -185,20 +153,74 @@ final class BinaryIntegerTestsOnElements: XCTestCase {
         }
     }
     
-    func testInitArbitraryWhereCountIsInvalidIsNil() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            Test().comparison(T.Element.size, Count(1), Signum.more, id: ComparableID())
+    func testInitArbitraryIsLikeInitDataIntOrNil() {
+        func whereIs<T>(_ type: T.Type, randomness: consuming FuzzerInt) where T: BinaryInteger {
+            var source = Array(repeating: T.Element.Magnitude.zero, count: 4)
             
-            for count: IX in [IX.min, IX.min + 1, -1, IX.max - 1, IX.max] as [IX] {
-                for appendix: Bit in [0, 1] {
-                    Test().none(T.arbitrary(uninitialized: count, repeating: appendix) { _ -> IX   in 0 })
-                    Test().none(T.arbitrary(uninitialized: count, repeating: appendix) { _ -> Void in   })
+            for _ in 0 ..< 16 {
+                source.withUnsafeMutableBytes {
+                    randomness.fill($0)
+                }
+                
+                for end: Int in Int.zero ... source.count {
+                    for bit: Bit in [0, 1] {
+                        
+                        let expectation = source[..<end].withUnsafeBufferPointer {
+                            T.isArbitrary ? T(load: DataInt($0, repeating: bit)!) : nil
+                        }
+                        
+                        let result0 = T.arbitrary(uninitialized: IX(source.count), repeating: bit) { body in
+                            for index in Int.zero ..< end {
+                                body[unchecked: IX(index)] = source[index]
+                            }
+                            
+                            return IX(end)
+                        }
+                        
+                        let result1 = T.arbitrary(uninitialized: IX(end), repeating: bit) { body -> Void in
+                            for index in Int.zero ..< end {
+                                body[unchecked: IX(index)] = source[index]
+                            }
+                        }
+                        
+                        Test().same(result0, expectation, "body: \(source[..<end]), appendix: \(bit) [0]")
+                        Test().same(result1, expectation, "body: \(source[..<end]), appendix: \(bit) [1]")
+                    }
                 }
             }
         }
         
         for type in binaryIntegers {
-            whereIs(type)
+            whereIs(type, randomness: fuzzer)
+        }
+    }
+    
+    func testInitSystemsIsLikeInitDataIntOrNil() {
+        func whereIs<T>(_ type: T.Type, randomness: consuming FuzzerInt) where T: BinaryInteger {
+            let count  = T.isArbitrary ?  IX.zero : IX(size: T.self)! / IX(size: T.Element.self)
+            var source = Array(repeating: T.Element.Magnitude.zero, count: Swift.Int(count))
+            
+            for _ in 0 ..< 16 {
+                source.withUnsafeMutableBytes {
+                    randomness.fill($0)
+                }
+                
+                let expectation = source.withUnsafeBufferPointer {
+                    T.isArbitrary ? nil : T(load: DataInt($0)!)
+                }
+                
+                let result = T.systems {
+                    for index in $0.indices {
+                        $0[unchecked: index] = source[Int(index)]
+                    }
+                }
+                
+                Test().same(result, expectation, "body: \(source)")
+            }
+        }
+        
+        for type in binaryIntegers {
+            whereIs(type, randomness: fuzzer)
         }
     }
 }

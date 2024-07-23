@@ -45,6 +45,23 @@ extension BinaryInteger {
         }
     }
     
+    /// Creates a new instance by manually initializing memory, but only if
+    /// this is an systems integer type.
+    ///
+    /// - Parameter delegate: A process that manually initializes each element
+    ///   passed to it. It is always given the maximum number of elements that
+    ///   fit in the body of this binary integer type.
+    ///
+    @inlinable public static func systems(
+        initializer delegate: (MutableDataInt<Element.Magnitude>.Body) -> Void
+    )   -> Optional<Self> {
+        
+        guard !Self.isArbitrary else { return nil }
+        var instance = Self()
+        instance.withUnsafeMutableBinaryIntegerBody(delegate)
+        return instance
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Initializers x DataInt
     //=------------------------------------------------------------------------=
