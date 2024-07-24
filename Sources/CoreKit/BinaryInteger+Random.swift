@@ -87,16 +87,21 @@ extension SystemsInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Generates a random value in the given `range` from the given source of `randomness`.
-    @inlinable public static func random(in range: Range<Self>, using randomness: inout some Randomness) -> Optional<Self> {
-        let distance = Magnitude(raw: range.upperBound &- range.lowerBound)
-        guard let distance = Divisor(exactly: distance) else { return nil }
-        return range.lowerBound &+ Self(raw: randomness.next(upTo: distance))
+    /// Generates a random value from the given source of `randomness`.
+    @inlinable public static func random(using randomness: inout some Randomness) -> Self {
+        Self(raw: randomness.next(as: Magnitude.self))
     }
     
     /// Generates a random value in the given `range` from the given source of `randomness`.
     @inlinable public static func random(in range: ClosedRange<Self>, using randomness: inout some Randomness) -> Self {
         let distance = Magnitude(raw: range.upperBound &- range.lowerBound)
         return range.lowerBound &+ Self(raw: randomness.next(through: distance))
+    }
+    
+    /// Generates a random value in the given `range` from the given source of `randomness`.
+    @inlinable public static func random(in range: Range<Self>, using randomness: inout some Randomness) -> Optional<Self> {
+        let distance = Magnitude(raw: range.upperBound &- range.lowerBound)
+        guard let distance = Divisor(exactly: distance) else { return nil }
+        return range.lowerBound &+ Self(raw: randomness.next(upTo: distance))
     }
 }

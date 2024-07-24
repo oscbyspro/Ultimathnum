@@ -51,7 +51,33 @@ final class BinaryIntegerTestsOnRandom: XCTestCase {
     // MARK: Tests x Systems Integer
     //=----------------------------------------------------------------------------=
     
-    func testRandomInRange() {
+    func testRandomSystemsInteger() {
+        func whereIs<T>(_ type: T.Type, randomness: consuming FuzzerInt) where T: SystemsInteger {
+            func collect(unique: Int, next: () -> T) {
+                var elements = Set<T>()
+                
+                loop: while elements.count < unique {
+                    elements.insert(next())
+                }
+                
+                Test().same(elements.count, (unique))
+            }
+                        
+            collect(unique: 256) {
+                T.random()
+            }
+            
+            collect(unique: 256) {
+                T.random(using: &randomness)
+            }
+        }
+        
+        for type in systemsIntegers {
+            whereIs(type, randomness: fuzzer)
+        }
+    }
+    
+    func testRandomSystemsIntegerInRange() {
         func whereIs<T>(_ type: T.Type, randomness: consuming FuzzerInt) where T: SystemsInteger {
             let eigth: T = T(T.Magnitude.max/8 + 1)
             let small: Range<T> = (T.isSigned ? -4 ..< 3 : 0 ..< 8)
@@ -82,7 +108,7 @@ final class BinaryIntegerTestsOnRandom: XCTestCase {
         }
     }
     
-    func testRandomInClosedRange() {
+    func testRandomSystemsIntegerInClosedRange() {
         func whereIs<T>(_ type: T.Type, randomness: consuming FuzzerInt) where T: SystemsInteger {
             let eigth: T = T(T.Magnitude.max/8 + 1)
             let small: ClosedRange<T> = (T.isSigned ? -4 ... 3 : 0 ... 8)
