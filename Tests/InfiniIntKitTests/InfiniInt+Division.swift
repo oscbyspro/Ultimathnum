@@ -9,6 +9,7 @@
 
 import CoreKit
 import InfiniIntKit
+import RandomIntKit
 import TestKit
 
 //*============================================================================*
@@ -124,10 +125,57 @@ extension InfiniIntTests {
             }
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Random
+    //=------------------------------------------------------------------------=
+    
+    func testDivisionByFuzzing() {
+        func whereIs<T>(_ type: T.Type, size: IX, randomness: consuming FuzzerInt) where T: ArbitraryInteger {
+            //  TODO: randomize the remainder
+            func combine(_ lhs: T,  _ rhs: T) {
+                var dividend  = lhs * rhs
+                var remainder = T(max(1, min(lhs.magnitude(), rhs.magnitude())) - 1)
+                if  dividend.isNegative {
+                    remainder = remainder.complement()
+                };  dividend += remainder
+                
+                if  let divisor  = Divisor(exactly: lhs) {
+                    let division = dividend.division(divisor).unwrap()
+                    Test().same(division.quotient,  rhs)
+                    Test().same(division.remainder, remainder)
+                }
+                
+                if  let divisor  = Divisor(exactly: rhs) {
+                    let division = dividend.division(divisor).unwrap()
+                    Test().same(division.quotient,  lhs)
+                    Test().same(division.remainder, remainder)
+                }
+            }
+            
+            for index: IX in  0 ..< size {
+                let (base) =  T.random(through: Shift(Count(index)), using: &randomness)
+                combine(base, T.random(through: Shift(Count(index)), using: &randomness))
+                combine(base, T.random(through: Shift(Count(00007)), using: &randomness))
+                combine(base, T.random(through: Shift(Count(00015)), using: &randomness))
+                combine(base, T.random(through: Shift(Count(00031)), using: &randomness))
+            }
+        }
+        
+        #if DEBUG
+        // note the 8-bit elements
+        whereIs(InfiniInt<I8>.self, size: 0064, randomness: fuzzer)
+        whereIs(InfiniInt<U8>.self, size: 0064, randomness: fuzzer)
+        #else
+        // note the 8-bit elements
+        whereIs(InfiniInt<I8>.self, size: 1024, randomness: fuzzer)
+        whereIs(InfiniInt<U8>.self, size: 1024, randomness: fuzzer)
+        #endif
+    }
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Division
+// MARK: + Documentation
 //=----------------------------------------------------------------------------=
 
 extension InfiniIntTests {
