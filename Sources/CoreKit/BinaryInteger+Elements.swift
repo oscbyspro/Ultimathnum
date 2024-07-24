@@ -33,13 +33,41 @@ extension BinaryInteger {
     ///   at the end of its execution. Note that `Void` is automatically
     ///   reinterpreted as the given `count` by a convenient function overload.
     ///
+    /// ### Development
+    ///
+    /// - Note: Protocol requirements can't declare default values yet...
+    ///
     @inlinable public static func arbitrary(
         uninitialized  count:  IX,
-        repeating   appendix:  Bit,
+        initializer delegate: (MutableDataInt<Element.Magnitude>.Body) -> IX
+    )   -> Optional<Self> {
+        
+        Self.arbitrary(uninitialized: count, repeating: .zero, initializer: delegate)
+    }
+    
+    /// Creates a new instance by manually initializing memory, but only if
+    /// this is an arbitrary integer type and the given arguments are valid.
+    ///
+    /// - Parameter count: The number of uninitialized elements that will be
+    ///   passed to the `delegate`. It must not be negative or exceed the entropy
+    ///   limit.
+    ///
+    /// - Parameter appendix: The bit that extends the bit pattern initialized
+    ///   by the `delegate`. Its significance depends on the signedness of this
+    ///   binary integer type.
+    ///
+    /// - Parameter delegate: A process that manually initializes a prefix in
+    ///   the buffer passed to it. It must return the initialized prefix length
+    ///   at the end of its execution. Note that `Void` is automatically
+    ///   reinterpreted as the given `count` by a convenient function overload.
+    ///
+    @inlinable public static func arbitrary(
+        uninitialized  count:  IX,
+        repeating   appendix:  Bit = .zero,
         initializer delegate: (MutableDataInt<Element.Magnitude>.Body) -> Void
     )   -> Optional<Self> {
         
-        self.arbitrary(uninitialized: count, repeating: appendix) {
+        Self.arbitrary(uninitialized: count, repeating: appendix) {
             delegate($0)
             return count
         }

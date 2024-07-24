@@ -141,6 +141,11 @@ final class BinaryIntegerTestsOnElements: XCTestCase {
             Test().comparison(T.Element.size, Count(1), Signum.more, id: ComparableID())
             
             for count: IX in [IX.min, IX.min + 1, -1, IX.max - 1, IX.max] as [IX] {
+                always: do {
+                    Test().none(T.arbitrary(uninitialized: count) { _ in 000000 })
+                    Test().none(T.arbitrary(uninitialized: count) { _ in Void() })
+                }
+                
                 for appendix: Bit in [0, 1] {
                     Test().none(T.arbitrary(uninitialized: count, repeating: appendix) { _ in 000000 })
                     Test().none(T.arbitrary(uninitialized: count, repeating: appendix) { _ in Void() })
@@ -163,8 +168,30 @@ final class BinaryIntegerTestsOnElements: XCTestCase {
                 }
                 
                 for end: Int in Int.zero ... source.count {
-                    for bit: Bit in [0, 1] {
+                    always: do {
+                        let expectation = source[..<end].withUnsafeBufferPointer {
+                            T.isArbitrary ? T(load: DataInt($0)!) : nil
+                        }
                         
+                        let result0 = T.arbitrary(uninitialized: IX(source.count)) { body in
+                            for index in Int.zero ..< end {
+                                body[unchecked: IX(index)] = source[index]
+                            }
+                            
+                            return IX(end)
+                        }
+                        
+                        let result1 = T.arbitrary(uninitialized: IX(end)) { body -> Void in
+                            for index in Int.zero ..< end {
+                                body[unchecked: IX(index)] = source[index]
+                            }
+                        }
+                        
+                        Test().same(result0, expectation, "body: \(source[..<end]), bit: default [0]")
+                        Test().same(result1, expectation, "body: \(source[..<end]), bit: default [1]")
+                    }
+                    
+                    for bit: Bit in [0, 1] {
                         let expectation = source[..<end].withUnsafeBufferPointer {
                             T.isArbitrary ? T(load: DataInt($0, repeating: bit)!) : nil
                         }
