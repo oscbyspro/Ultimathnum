@@ -29,4 +29,4 @@
 ///
 /// - Note: An arbitrary binary integer is typically heap-allocated.
 ///
-public protocol ArbitraryInteger: BinaryInteger { }
+public protocol ArbitraryInteger: BinaryInteger where Magnitude: ArbitraryInteger, Signitude: ArbitraryInteger { }
