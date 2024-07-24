@@ -562,17 +562,28 @@ dividend == divisor &* quotient &+ remainder // for all binary integers
 
 ## RandomIntKit
 
+RandomIntKit adds various PRNGs and makes RandomInt the default source of randomness.
+
 <a name="randomintkit-fuzzer"/>
 
 ### Seeded randomness with FuzzerInt
 
-> Todo...
+> Order from chaos, and vice versa!
+
+FuzzerInt deterministically transforms an internal state to form a pseudo-random
+sequence. Given the same seed, you get the same sequence. This property is 
+most useful for fuzzing purposes, hence the name. Keep in mind that its algorithm
+may change between versions of this project.
 
 <a name="randomintkit-random"/>
 
 ### System randomness with RandomInt
 
-> Todo...
+> With a pinch of spontaneity, a story becomes an adventure.
+
+RandomInt wraps Swift's SystemRandomNumberGenerator. It's that simple. It is,
+therefore, mostly what you'd think of when you think of randomness. Each call
+to it can be considered independent of every other call.
 
 <a name="stdlibintkit"/>
 

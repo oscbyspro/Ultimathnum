@@ -88,19 +88,19 @@ extension SystemsInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Generates a random value from the given source of `randomness`.
+    /// Generates a random value.
     @inlinable public static func random() -> Self {
         var randomness = RandomInt()
         return Self.random(using: &randomness)
     }
     
-    /// Generates a random value in the given `range` from the given source of `randomness`.
+    /// Generates a random value in the given `range`.
     @inlinable public static func random(in range: ClosedRange<Self>) -> Self {
         var randomness = RandomInt()
         return Self.random(in: range, using: &randomness)
     }
     
-    /// Generates a random value in the given `range` from the given source of `randomness`.
+    /// Generates a random value in the given `range`.
     @inlinable public static func random(in range: Range<Self>) -> Optional<Self> {
         var randomness = RandomInt()
         return Self.random(in: range, using: &randomness)
