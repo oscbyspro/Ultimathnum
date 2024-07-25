@@ -9,6 +9,7 @@
 
 import CoreKit
 import InfiniIntKit
+import RandomIntKit
 import TestKit
 
 //*============================================================================*
@@ -213,5 +214,51 @@ extension InfiniIntTests {
         for type in Self.types {
             whereIs(type)
         }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Random
+    //=------------------------------------------------------------------------=
+    
+    func testAdditionByFuzzing() {
+        func whereIs<T>(_ type: T.Type, size: IX, randomness: consuming FuzzerInt) where T: ArbitraryInteger {
+            func combine(_ base: T, _ increment: T) {
+                var result: T  = base
+                let cycles: IX = 0004
+                var values: Array<T> = []
+                
+                for multiplier: IX in (0 ... cycles) {
+                    values.append(T(multiplier) &* increment &+ base)
+                }
+                
+                for multiplier: IX in (1 ... cycles) {
+                    result &+= increment
+                    Test().same(result, values[Int(multiplier)])
+                }
+                
+                for multiplier: IX in (0 ..< cycles).reversed() {
+                    result &-= increment
+                    Test().same(result, values[Int(multiplier)])
+                }
+            }
+            
+            for index: IX in  0 ..< size {
+                let (base) =  T.random(through: Shift(Count(index)), using: &randomness)
+                combine(base, T.random(through: Shift(Count(index)), using: &randomness))
+                combine(base, T.random(through: Shift(Count(00007)), using: &randomness))
+                combine(base, T.random(through: Shift(Count(00031)), using: &randomness))
+                combine(base, T.random(through: Shift(Count(00255)), using: &randomness))
+            }
+        }
+        
+        #if DEBUG
+        // note the 8-bit elements
+        whereIs(InfiniInt<I8>.self, size: 0032, randomness: fuzzer)
+        whereIs(InfiniInt<U8>.self, size: 0032, randomness: fuzzer)
+        #else
+        // note the 8-bit elements
+        whereIs(InfiniInt<I8>.self, size: 1024, randomness: fuzzer)
+        whereIs(InfiniInt<U8>.self, size: 1024, randomness: fuzzer)
+        #endif
     }
 }
