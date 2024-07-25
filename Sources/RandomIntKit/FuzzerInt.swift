@@ -23,7 +23,7 @@ import CoreKit
 ///
 /// - Important: It may use a different algorithm in the future.
 ///
-@frozen public struct FuzzerInt: Randomness {
+@frozen public struct FuzzerInt: Randomness, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: State

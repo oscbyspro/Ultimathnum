@@ -19,7 +19,7 @@ import CoreKit
 ///
 /// It uses Swift's `SystemRandomNumberGenerator`.
 ///
-@frozen public struct RandomInt: Randomness {
+@frozen public struct RandomInt: Randomness, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: State
