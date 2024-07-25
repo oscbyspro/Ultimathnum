@@ -75,6 +75,39 @@ extension BinaryInteger {
 }
 
 //*============================================================================*
+// MARK: * Binary Integer x Random x Arbitrary
+//*============================================================================*
+//=----------------------------------------------------------------------------=
+// TODO: + Hoist to Binary Integer
+//=----------------------------------------------------------------------------=
+
+extension ArbitraryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    /// Generates a random value in the given `range` from the given source of `randomness`.
+    ///
+    /// - Requires: The `range` must be finite.
+    ///
+    @inlinable public static func random(in range: ClosedRange<Self>, using randomness: inout some Randomness) -> Self {
+        let distance = Magnitude(raw: range.upperBound &- range.lowerBound)
+        return Self(raw:randomness.next(through: distance)).plus(range.lowerBound).unchecked()
+    }
+    
+    /// Generates a random value in the given `range` from the given source of `randomness`.
+    ///
+    /// - Requires: The `range` must be finite.
+    ///
+    @inlinable public static func random(in range: Range<Self>, using randomness: inout some Randomness) -> Optional<Self> {
+        let distance = Magnitude(raw: range.upperBound &- range.lowerBound)
+        guard let distance = Divisor(exactly: distance) else { return nil }
+        return Self(raw:randomness.next(upTo: distance)).plus(range.lowerBound).unchecked()
+    }
+}
+
+//*============================================================================*
 // MARK: * Binary Integer x Random x Systems
 //*============================================================================*
 //=----------------------------------------------------------------------------=

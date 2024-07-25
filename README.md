@@ -562,8 +562,6 @@ dividend == divisor &* quotient &+ remainder // for all binary integers
 
 ## RandomIntKit
 
-RandomIntKit adds various PRNGs and makes RandomInt the default source of randomness.
-
 <a name="randomintkit-fuzzer"/>
 
 ### Seeded randomness with FuzzerInt

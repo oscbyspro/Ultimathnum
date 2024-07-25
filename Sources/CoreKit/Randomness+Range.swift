@@ -10,8 +10,78 @@
 //*============================================================================*
 // MARK: * Randomness x Range
 //*============================================================================*
+//=----------------------------------------------------------------------------=
+// TODO: + Hoist to Binary Integer
+//=----------------------------------------------------------------------------=
 
 extension Randomness {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    /// Returns a random from zero through the given `limit`.
+    ///
+    /// - Requires: The `limit` must not be infinite.
+    ///
+    @inlinable public mutating func next<T>(
+        through limit: borrowing T
+    ) -> T where T: ArbitraryInteger & UnsignedInteger {
+        self.next(upTo: Signum.more, relativeTo: limit)
+    }
+    
+    /// Returns a random from zero up to the given `limit`.
+    ///
+    /// - Requires: The `limit` must not be infinite.
+    ///
+    @inlinable public mutating func next<T>(
+        upTo limit: borrowing Divisor<T>
+    ) -> T where T: ArbitraryInteger & UnsignedInteger {
+        self.next(upTo: Signum.same, relativeTo: limit.value)
+    }
+    
+    /// A common arbitrary binary integer algorithm.
+    ///
+    /// - Requires: The `comparison` must terminate.
+    ///
+    /// - Requires: The `limit` must not be infinite.
+    ///
+    @inline(never) @inlinable internal mutating func next<T>(
+        upTo  comparison: Signum,
+        relativeTo limit: /* borrowing */ T
+    ) -> T where T: ArbitraryInteger & UnsignedInteger {
+        //=--------------------------------------=
+        if  limit.isInfinite {
+            Swift.preconditionFailure(String.overflow())
+        }
+        
+        if  comparison == Signum.less {
+            Swift.assertionFailure(String.brokenInvariant())
+        }
+        
+        if  comparison == Signum.same {
+            Swift.assert(!limit.isZero)
+        }
+        //=--------------------------------------=
+        return (limit).withUnsafeBinaryIntegerBody {
+            let limit = (consume $0).normalized()
+            //  TODO: req. normalized body, maybe?
+            return T.arbitrary(uninitialized: limit.count, repeating: .zero) { body in
+                guard !body.isEmpty else { return }
+                
+                let lastIndex = body.count.decremented().unchecked()
+                let last = body[unchecked: lastIndex...].start
+                let down = IX(raw: limit[unchecked: lastIndex].descending(Bit.zero))
+                
+                probabilistic: repeat {
+                    
+                    self.fill(body.bytes())
+                    last.pointee &>>= down
+                    
+                } while body.compared(to: limit) >= comparison
+            }!
+        }
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

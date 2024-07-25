@@ -48,6 +48,84 @@ final class BinaryIntegerTestsOnRandom: XCTestCase {
     }
     
     //=----------------------------------------------------------------------------=
+    // MARK: Tests x Arbitrary Integer
+    //=----------------------------------------------------------------------------=
+    
+    /// - Note: The bounds may be infinite, but not their distance.
+    func testRandomArbitraryIntegerInRange() {
+        func whereIs<T>(_ type: T.Type, randomness: consuming FuzzerInt) where T: ArbitraryInteger {
+            let min = T.isSigned ? T(I256.min) : T(U256.min)
+            let max = T.isSigned ? T(I256.max) : T(U256.max)
+            
+            let eigth: T = T(U256.max / 8 + 1)
+            let small: Range<T> = (T.isSigned ? -4..<3 : 0..<8)
+            let large: Range<T> = (min + eigth)..<(max - eigth)
+            
+            func check(_ range: Range<T>) {
+                let r0 = T.random(in: range)
+                let r1 = T.random(in: range, using: &randomness)
+                
+                for random: Optional<T> in [r0, r1] {
+                    Test().yay(random == nil ? range.isEmpty : range.contains(random!))
+                }                
+            }
+            
+            for min: T in small {
+                for max: T in (min) ..< (small).upperBound {
+                    check((    min) ..< ( max))
+                    check((   ~max) ..< (~min))
+                }
+            }
+            
+            for _ in IX.zero ..< 16 {
+                check(( large.lowerBound) ..< ( large.upperBound))
+                check((~large.upperBound) ..< (~large.lowerBound))
+            }
+        }
+        
+        for type in arbitraryIntegers {
+            whereIs(type, randomness: fuzzer)
+        }
+    }
+    
+    /// - Note: The bounds may be infinite, but not their distance.
+    func testRandomArbitraryIntegerInClosedRange() {
+        func whereIs<T>(_ type: T.Type, randomness: consuming FuzzerInt) where T: ArbitraryInteger {
+            let min = T.isSigned ? T(I256.min) : T(U256.min)
+            let max = T.isSigned ? T(I256.max) : T(U256.max)
+            
+            let eigth: T = T(U256.max / 8 + 1)
+            let small: ClosedRange<T> = (T.isSigned ? -4...3 : 0...8)
+            let large: ClosedRange<T> = (min + eigth)...(max - eigth)
+            
+            func check(_ range: ClosedRange<T>) {
+                let r0 = T.random(in: range)
+                let r1 = T.random(in: range, using: &randomness)
+                
+                for random: T in [r0, r1] {
+                    Test().yay(range.contains(random))
+                }
+            }
+            
+            for min: T in small {
+                for max: T in (min) ... (small).upperBound {
+                    check((    min) ... ( max))
+                    check((   ~max) ... (~min))
+                }
+            }
+            
+            for _ in IX.zero ..< 16 {
+                check(( large.lowerBound) ... ( large.upperBound))
+                check((~large.upperBound) ... (~large.lowerBound))
+            }
+        }
+        
+        for type in arbitraryIntegers {
+            whereIs(type, randomness: fuzzer)
+        }
+    }
+    
+    //=----------------------------------------------------------------------------=
     // MARK: Tests x Systems Integer
     //=----------------------------------------------------------------------------=
     
@@ -92,14 +170,14 @@ final class BinaryIntegerTestsOnRandom: XCTestCase {
                 }
             }
             
-            for _ in IX.zero ..< 32 {
-                check(large)
-            }
-            
             for min: T in small {
                 for max: T in min ..< small.upperBound {
                     check(min ..< max)
                 }
+            }
+            
+            for _ in IX.zero ..< 32 {
+                check(large)
             }
         }
         
@@ -123,14 +201,14 @@ final class BinaryIntegerTestsOnRandom: XCTestCase {
                 }
             }
             
-            for _ in IX.zero ..< 32 {
-                check(large)
-            }
-            
             for min: T in small {
                 for max: T in min ... small.upperBound {
                     check(min ... max)
                 }
+            }
+            
+            for _ in IX.zero ..< 32 {
+                check(large)
             }
         }
         

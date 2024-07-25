@@ -132,10 +132,9 @@ extension InfiniIntTests {
     
     func testDivisionByFuzzing() {
         func whereIs<T>(_ type: T.Type, size: IX, randomness: consuming FuzzerInt) where T: ArbitraryInteger {
-            //  TODO: randomize the remainder
             func combine(_ lhs: T,  _ rhs: T) {
                 var dividend  = lhs * rhs
-                var remainder = T(max(1, min(lhs.magnitude(), rhs.magnitude())) - 1)
+                var remainder = T.random(in: 0 ..< T(max(1, min(lhs.magnitude(), rhs.magnitude()))), using: &randomness)!
                 if  dividend.isNegative {
                     remainder = remainder.complement()
                 };  dividend += remainder
