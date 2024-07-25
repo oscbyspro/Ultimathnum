@@ -33,15 +33,13 @@ public let coreSystemsIntegersWhereIsUnsigned: [any (SystemsInteger & UnsignedIn
 
 public var random = RandomInt()
 
-public let seed = random.next(as: U64.self)
-
-public let fuzzer = FuzzerInt(seed: seed)
+public let fuzzer = FuzzerInt(seed: random.next()) // TODO: info dump on failure
 
 public let randomnesses: [any Randomness] = [random, fuzzer]
 
-//=------------------------------------------------------------------------=
+//=----------------------------------------------------------------------------=
 // MARK: + Values
-//=------------------------------------------------------------------------=
+//=----------------------------------------------------------------------------=
 
 /// A collection of all primes that fit in one byte.
 ///
