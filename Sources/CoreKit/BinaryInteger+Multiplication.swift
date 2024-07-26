@@ -18,12 +18,12 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     /// Returns the trapping result of `self * increment`.
-    @inlinable public static func *(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func *(lhs: borrowing Self, rhs: borrowing Self) -> Self {
         lhs.times(rhs).unwrap()
     }
     
     /// Returns the wrapping result of `self * increment`.
-    @inlinable public static func &*(lhs: consuming Self, rhs: borrowing Self) -> Self {
+    @inlinable public static func &*(lhs: borrowing Self, rhs: borrowing Self) -> Self {
         lhs.times(rhs).value
     }
     
