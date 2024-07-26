@@ -17,6 +17,29 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Generates a random value in the given `range` from the given source of `randomness`.
+    ///
+    /// - Requires: The `range` must be finite.
+    ///
+    @inlinable public static func random(in range: ClosedRange<Self>, using randomness: inout some Randomness) -> Self {
+        let distance = Magnitude.init(raw: range.upperBound.minus(range.lowerBound).value)
+        return Self(raw: randomness.next(through: distance)).plus(range.lowerBound).value
+    }
+    
+    /// Generates a random value in the given `range` from the given source of `randomness`.
+    ///
+    /// - Requires: The `range` must be finite.
+    ///
+    @inlinable public static func random(in range: Range<Self>, using randomness: inout some Randomness) -> Optional<Self> {
+        let distance = Magnitude.init(raw: range.upperBound.minus(range.lowerBound).value)
+        guard let distance =  Divisor(exactly:    distance) else { return nil }
+        return Self(raw: randomness.next(upTo:    distance)).plus(range.lowerBound).value
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
     /// Generates random bits through the given `index`.
     ///
     /// Signed integers are extended by the most significant bit wheras unsigned
@@ -75,44 +98,8 @@ extension BinaryInteger {
 }
 
 //*============================================================================*
-// MARK: * Binary Integer x Random x Arbitrary
-//*============================================================================*
-//=----------------------------------------------------------------------------=
-// TODO: + Hoist to Binary Integer
-//=----------------------------------------------------------------------------=
-
-extension ArbitraryInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    /// Generates a random value in the given `range` from the given source of `randomness`.
-    ///
-    /// - Requires: The `range` must be finite.
-    ///
-    @inlinable public static func random(in range: ClosedRange<Self>, using randomness: inout some Randomness) -> Self {
-        let distance = Magnitude(raw: range.upperBound &- range.lowerBound)
-        return Self(raw:randomness.next(through: distance)).plus(range.lowerBound).unchecked()
-    }
-    
-    /// Generates a random value in the given `range` from the given source of `randomness`.
-    ///
-    /// - Requires: The `range` must be finite.
-    ///
-    @inlinable public static func random(in range: Range<Self>, using randomness: inout some Randomness) -> Optional<Self> {
-        let distance = Magnitude(raw: range.upperBound &- range.lowerBound)
-        guard let distance = Divisor(exactly: distance) else { return nil }
-        return Self(raw:randomness.next(upTo: distance)).plus(range.lowerBound).unchecked()
-    }
-}
-
-//*============================================================================*
 // MARK: * Binary Integer x Random x Systems
 //*============================================================================*
-//=----------------------------------------------------------------------------=
-// TODO: + Hoist to Binary Integer
-//=----------------------------------------------------------------------------=
 
 extension SystemsInteger {
     
@@ -123,18 +110,5 @@ extension SystemsInteger {
     /// Generates a random value from the given source of `randomness`.
     @inlinable public static func random(using randomness: inout some Randomness) -> Self {
         Self(raw: randomness.next(as: Magnitude.self))
-    }
-    
-    /// Generates a random value in the given `range` from the given source of `randomness`.
-    @inlinable public static func random(in range: ClosedRange<Self>, using randomness: inout some Randomness) -> Self {
-        let distance = Magnitude(raw: range.upperBound &- range.lowerBound)
-        return range.lowerBound &+ Self(raw: randomness.next(through: distance))
-    }
-    
-    /// Generates a random value in the given `range` from the given source of `randomness`.
-    @inlinable public static func random(in range: Range<Self>, using randomness: inout some Randomness) -> Optional<Self> {
-        let distance = Magnitude(raw: range.upperBound &- range.lowerBound)
-        guard let distance = Divisor(exactly: distance) else { return nil }
-        return range.lowerBound &+ Self(raw: randomness.next(upTo: distance))
     }
 }

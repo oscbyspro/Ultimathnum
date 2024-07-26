@@ -51,7 +51,29 @@ import CoreKit
 extension BinaryInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    /// Generates a random value in the given `range`.
+    ///
+    /// - Requires: The `range` must be finite.
+    ///
+    @inlinable public static func random(in range: ClosedRange<Self>) -> Self {
+        var randomness = RandomInt()
+        return Self.random(in: range, using: &randomness)
+    }
+    
+    /// Generates a random value in the given `range`.
+    ///
+    /// - Requires: The `range` must be finite.
+    ///
+    @inlinable public static func random(in range: Range<Self>) -> Optional<Self> {
+        var randomness = RandomInt()
+        return Self.random(in: range, using: &randomness)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
     /// Generates random bits through the given `index`.
@@ -79,35 +101,6 @@ extension BinaryInteger {
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Arbitrary Integer
-//=----------------------------------------------------------------------------=
-
-extension ArbitraryInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    /// Generates a random value in the given `range`.
-    ///
-    /// - Requires: The `range` must be finite.
-    ///
-    @inlinable public static func random(in range: ClosedRange<Self>) -> Self {
-        var randomness = RandomInt()
-        return Self.random(in: range, using: &randomness)
-    }
-    
-    /// Generates a random value in the given `range`.
-    ///
-    /// - Requires: The `range` must be finite.
-    ///
-    @inlinable public static func random(in range: Range<Self>) -> Optional<Self> {
-        var randomness = RandomInt()
-        return Self.random(in: range, using: &randomness)
-    }
-}
-
-//=----------------------------------------------------------------------------=
 // MARK: + Systems Integer
 //=----------------------------------------------------------------------------=
 
@@ -121,17 +114,5 @@ extension SystemsInteger {
     @inlinable public static func random() -> Self {
         var randomness = RandomInt()
         return Self.random(using: &randomness)
-    }
-    
-    /// Generates a random value in the given `range`.
-    @inlinable public static func random(in range: ClosedRange<Self>) -> Self {
-        var randomness = RandomInt()
-        return Self.random(in: range, using: &randomness)
-    }
-    
-    /// Generates a random value in the given `range`.
-    @inlinable public static func random(in range: Range<Self>) -> Optional<Self> {
-        var randomness = RandomInt()
-        return Self.random(in: range, using: &randomness)
     }
 }
