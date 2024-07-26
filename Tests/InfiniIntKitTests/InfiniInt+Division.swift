@@ -183,7 +183,7 @@ extension InfiniIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testBinaryIntegerDocumentationExamples() {
+    func testBinaryIntegerDivisionDocumentationExamples() {
         Test().division( 7 as IXL,  3 as IXL,  2 as IXL,  1 as IXL)
         Test().division( 7 as IXL, -3 as IXL, -2 as IXL,  1 as IXL)
         Test().division(-7 as IXL,  3 as IXL, -2 as IXL, -1 as IXL)

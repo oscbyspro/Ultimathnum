@@ -197,8 +197,7 @@ integer's size is a power of two in 8 through IX.max.
 |  64-bit | I64    | U64      |
 
 Systems integers are intentionally simple so that the things you build with them may be simple. 
-The only protocol requirements are multiplication and division algorithms for working with full 
-precision in generic code, and byte swapping for efficient endianness conversions.
+The protocol only requires efficient byte-swapping and 2-by-1 division algorithms.
 
 <a name="nomenclature-trusted-input"/>
 
@@ -535,13 +534,14 @@ UXL.max.incremented() // value: min, error: true
 
 #### Recoverable infinite multiplication
 
-Multiplication is also unchanged. All of the complicated stuff forms at one bit
-past the appendix bit. Imagine a really big integer and a product of twice that 
-size with truncating behavior. It just works.
+Multiplication at and around infinity just works.
 
 ```swift
 U32.max.times(U32.max) // value: 1, error: true
 UXL.max.times(UXL.max) // value: 1, error: true
+
+U32.max.multiplication(U32.max) // (low: 1, high: ~1)
+UXL.max.multiplication(UXL.max) // (low: 1, high: ~1)
 ```
 
 <a name="infiniintkit-division"/>

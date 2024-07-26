@@ -471,3 +471,19 @@ extension InfiniIntTests {
         }
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Documentation
+//=----------------------------------------------------------------------------=
+
+extension InfiniIntTests {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testReadmeMultiplicationDocumentationExamples() {
+        Test().multiplication(U32.max, U32.max, Fallible(Doublet(low: 1, high: ~1), error: true))
+        Test().multiplication(UXL.max, UXL.max, Fallible(Doublet(low: 1, high: ~1), error: true))
+    }
+}
