@@ -20,7 +20,7 @@ import TestKit
 final class BinaryIntegerTestsOnRandom: XCTestCase {
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests
+    // MARK: Tests x Range
     //=------------------------------------------------------------------------=
     
     /// - Note: The bounds may be infinite, but not their distance.
@@ -60,6 +60,41 @@ final class BinaryIntegerTestsOnRandom: XCTestCase {
         }
     }
     
+    func testRandomInRangeHasKnownBounds() {
+        func whereIs<T>(_ type: T.Type, randomness: consuming FuzzerInt) where T: BinaryInteger {
+            func check(_ expectation: Range<T>) {
+                guard !expectation.isEmpty else { return }
+                let last: T = expectation.upperBound - 1
+                
+                var min = false
+                var max = false
+                
+                while !(min && max) {
+                    let random = T.random(in: expectation, using: &randomness)!
+                    guard expectation.contains(random) else {  break }
+                    if random == expectation.lowerBound { min = true }
+                    if random == (((((((((last))))))))) { max = true }
+                }
+                
+                Test().yay(min && max)
+            }
+            
+            for index: IX in 0 ... 7 {
+                let min = T.random(through: Shift(Count(index)), using: &randomness)
+                let max = T.random(through: Shift(Count(index)), using: &randomness)
+                check(min <= max ? min..<max : max..<min)
+            }
+        }
+        
+        for type in binaryIntegers {
+            whereIs(type, randomness: fuzzer)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Closed Range
+    //=------------------------------------------------------------------------=
+    
     /// - Note: The bounds may be infinite, but not their distance.
     func testRandomInClosedRange() {
         func whereIs<T>(_ type: T.Type, randomness: consuming FuzzerInt) where T: BinaryInteger {
@@ -96,6 +131,38 @@ final class BinaryIntegerTestsOnRandom: XCTestCase {
             whereIs(type, randomness: fuzzer)
         }
     }
+    
+    func testRandomInClosedRangeHasKnownBounds() {
+        func whereIs<T>(_ type: T.Type, randomness: consuming FuzzerInt) where T: BinaryInteger {
+            func check(_ expectation: ClosedRange<T>) {
+                var min = false
+                var max = false
+                
+                while !(min && max) {
+                    let random = T.random(in: expectation, using: &randomness)
+                    guard expectation.contains(random) else {  break }
+                    if random == expectation.lowerBound { min = true }
+                    if random == expectation.upperBound { max = true }
+                }
+                
+                Test().yay(min && max)
+            }
+            
+            for index: IX in 0 ... 7 {
+                let min = T.random(through: Shift(Count(index)), using: &randomness)
+                let max = T.random(through: Shift(Count(index)), using: &randomness)
+                check(min <= max ? min...max : max...min)
+            }
+        }
+        
+        for type in binaryIntegers {
+            whereIs(type, randomness: fuzzer)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Bit Index
+    //=------------------------------------------------------------------------=
     
     func testRandomThroughBitIndex() {
         func whereIs<T>(_ type: T.Type, randomness: consuming FuzzerInt) where T: BinaryInteger {
