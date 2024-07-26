@@ -47,3 +47,35 @@ extension Randomness {
         return random
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Algorithms
+//=----------------------------------------------------------------------------=
+
+extension Randomness {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    /// Generates more randomness.
+    @inlinable internal mutating func systems<T>(as type: T.Type = T.self) -> T where T: UnsignedInteger {
+        guard let size = IX(size: T.self) else {
+            Swift.preconditionFailure(String.pleaseDoNotGenerateCodeForThisPath())
+        }
+        
+        if  T.size <= Element.size {
+            return T(load: self.next())
+        }
+        
+        Swift.assert(size % IX(size: Element.self) == IX.zero)
+        let ratio  = size.down(Shift(unchecked: UX(size: Element.self).ascending(Bit.zero)))
+        var random = T()
+        
+        for index  in Range(uncheckedBounds: (IX.zero, ratio)) {
+            random |= T(load: self.next()).up(Shift(unchecked: Count(unchecked: IX(size: Element.self) &* index)))
+        }
+        
+        return random
+    }
+}

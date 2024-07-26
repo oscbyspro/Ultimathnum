@@ -10,9 +10,6 @@
 //*============================================================================*
 // MARK: * Randomness x Range
 //*============================================================================*
-//=----------------------------------------------------------------------------=
-// TODO: + Hoist to Binary Integer
-//=----------------------------------------------------------------------------=
 
 extension Randomness {
     
@@ -24,20 +21,102 @@ extension Randomness {
     ///
     /// - Requires: The `limit` must not be infinite.
     ///
-    @inlinable public mutating func next<T>(
-        through limit: borrowing T
-    ) -> T where T: ArbitraryInteger & UnsignedInteger {
-        self.next(upTo: Signum.more, relativeTo: limit)
+    /// ### Algorithm
+    ///
+    /// Systems integers use an adaptation of "Fast Random Integer Generation in
+    /// an Interval" by Daniel Lemire, which is also used in Swift's standard library
+    /// at the time of writing. [Learn more](https://arxiv.org/abs/1805.10941)\.
+    ///
+    /// Arbitrary integers accept-reject random bit patterns.
+    ///
+    @inlinable public mutating func next<T>(through limit: borrowing T) -> T where T: UnsignedInteger {
+        if !T.isArbitrary {
+            return self.systems(through: limit)
+            
+        }   else {
+            return self.arbitrary(upTo: Signum.more, relativeTo: limit)
+        }
     }
     
     /// Returns a random from zero up to the given `limit`.
     ///
     /// - Requires: The `limit` must not be infinite.
     ///
-    @inlinable public mutating func next<T>(
-        upTo limit: borrowing Divisor<T>
-    ) -> T where T: ArbitraryInteger & UnsignedInteger {
-        self.next(upTo: Signum.same, relativeTo: limit.value)
+    /// ### Algorithm
+    ///
+    /// Systems integers use an adaptation of "Fast Random Integer Generation in
+    /// an Interval" by Daniel Lemire, which is also used in Swift's standard library
+    /// at the time of writing. [Learn more](https://arxiv.org/abs/1805.10941)\.
+    ///
+    /// Arbitrary integers accept-reject random bit patterns.
+    ///
+    @inlinable public mutating func next<T>(upTo limit: borrowing Divisor<T>) -> T where T: UnsignedInteger {
+        if !T.isArbitrary {
+            return self.systems(upTo: limit)
+            
+        }   else {
+            return self.arbitrary(upTo: Signum.same, relativeTo: limit.value)
+        }
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Algorithms
+//=----------------------------------------------------------------------------=
+
+extension Randomness {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    /// Returns a random from zero through the given `limit`.
+    ///
+    /// ### Algorithm
+    ///
+    /// Systems integers use an adaptation of "Fast Random Integer Generation in
+    /// an Interval" by Daniel Lemire, which is also used in Swift's standard library
+    /// at the time of writing. [Learn more](https://arxiv.org/abs/1805.10941)\.
+    ///
+    /// Arbitrary integers accept-reject random bit patterns.
+    ///
+    @inlinable internal mutating func systems<T>(
+        through limit: T
+    ) -> T where T: UnsignedInteger {
+
+        if  let end = limit.incremented().optional() {
+            return self.systems(upTo: Divisor(unchecked: end))
+            
+        }   else {
+            return self.systems()
+        }
+    }
+    
+    /// Returns a random from zero up to the given `limit`.
+    ///
+    /// ### Algorithm
+    ///
+    /// Systems integers use an adaptation of "Fast Random Integer Generation in
+    /// an Interval" by Daniel Lemire, which is also used in Swift's standard library
+    /// at the time of writing. [Learn more](https://arxiv.org/abs/1805.10941)\.
+    ///
+    /// Arbitrary integers accept-reject random bit patterns.
+    ///
+    @inlinable internal mutating func systems<T>(
+        upTo limit: Divisor<T>
+    ) -> T where T: UnsignedInteger {
+        //  product.low  = product % (2 ** T.size)
+        //  product.high = product / (2 ** T.size)
+        var product = limit.value.multiplication(self.systems())
+        if  product.low < limit.value {
+            //  magic = (2 ** T.size) % limit
+            let magic = limit.value.complement().remainder(limit)
+            while product.low < magic {
+                product = limit.value.multiplication(self.systems())
+            }
+        }
+        
+        return product.high
     }
     
     /// A common arbitrary binary integer algorithm.
@@ -46,10 +125,18 @@ extension Randomness {
     ///
     /// - Requires: The `limit` must not be infinite.
     ///
-    @inline(never) @inlinable internal mutating func next<T>(
-        upTo  comparison: Signum,
-        relativeTo limit: /* borrowing */ T
-    ) -> T where T: ArbitraryInteger & UnsignedInteger {
+    /// ### Algorithm
+    ///
+    /// Systems integers use an adaptation of "Fast Random Integer Generation in
+    /// an Interval" by Daniel Lemire, which is also used in Swift's standard library
+    /// at the time of writing. [Learn more](https://arxiv.org/abs/1805.10941)\.
+    ///
+    /// Arbitrary integers accept-reject random bit patterns.
+    ///
+    ///
+    @inline(never) @inlinable internal mutating func arbitrary<T>(upTo comparison: Signum, relativeTo limit: /* borrowing */ T) -> T where T: UnsignedInteger {
+        //=--------------------------------------=
+        precondition(T.isArbitrary, String.pleaseDoNotGenerateCodeForThisPath())
         //=--------------------------------------=
         if  limit.isInfinite {
             Swift.preconditionFailure(String.overflow())
@@ -62,7 +149,7 @@ extension Randomness {
         if  comparison == Signum.same {
             Swift.assert(!limit.isZero)
         }
-        //=--------------------------------------=
+        
         return (limit).withUnsafeBinaryIntegerBody {
             let limit = (consume $0).normalized()
             //  TODO: req. normalized body, maybe?
@@ -81,54 +168,5 @@ extension Randomness {
                 } while body.compared(to: limit) >= comparison
             }!
         }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    /// Returns a random from zero through the given `limit`.
-    ///
-    /// ### Algorithm
-    ///
-    /// This method uses an adaptation of "Fast Random Integer Generation in an
-    /// Interval" by Daniel Lemire, which is also used in Swift's standard library
-    /// at the time of writing. [Learn more](https://arxiv.org/abs/1805.10941)\.
-    ///
-    @inlinable public mutating func next<T>(
-        through limit: T
-    ) -> T where T: SystemsInteger & UnsignedInteger {
-                
-        if  let end = limit.incremented().optional() {
-            return self.next(upTo: Divisor(unchecked: end))
-            
-        }   else {
-            return self.next()
-        }
-    }
-    
-    /// Returns a random from zero up to the given `limit`.
-    ///
-    /// ### Algorithm
-    ///
-    /// This method uses an adaptation of "Fast Random Integer Generation in an
-    /// Interval" by Daniel Lemire, which is also used in Swift's standard library
-    /// at the time of writing. [Learn more](https://arxiv.org/abs/1805.10941)\.
-    ///
-    @inlinable public mutating func next<T>(
-        upTo limit: Divisor<T>
-    ) -> T where T: SystemsInteger & UnsignedInteger {
-        //  product.low  = product % (2 ** T.size)
-        //  product.high = product / (2 ** T.size)
-        var product = limit.value.multiplication(self.next())
-        if  product.low < limit.value {
-            //  magic = (2 ** T.size) % limit
-            let magic = limit.value.complement().remainder(limit)
-            while product.low < magic {
-                product = limit.value.multiplication(self.next())
-            }
-        }
-        
-        return product.high
     }
 }
