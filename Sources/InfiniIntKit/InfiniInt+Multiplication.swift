@@ -118,4 +118,30 @@ extension InfiniInt {
         //=--------------------------------------=
         return Fallible(result, error: !Self.isSigned && Bool(self.appendix | other.appendix))
     }
+    
+    //=----------------------------------------------------------------------------=
+    // MARK: Transformations x 1 by 1 as 2
+    //=----------------------------------------------------------------------------=
+    
+    @inlinable public borrowing func multiplication(_ other: borrowing Self) -> Doublet<Self> {
+        if  Self.isSigned {
+            let low  = Magnitude(raw: self &* other)
+            let high = Self(repeating: low.appendix)
+            return Doublet(low: low, high: high)
+            
+        }   else if self.isZero || other.isZero {
+            return Doublet()
+
+        }   else {
+            let low  = Magnitude(raw: self &* other)
+            let high = switch (Bool(self.appendix), Bool(other.appendix)) {
+            case (false, false): (0 as Self )
+            case (true,  false): (copy other).decremented().unchecked()
+            case (false, true ): (copy self ).decremented().unchecked()
+            case (true,  true ): (copy self ) &+ other
+            }
+            
+            return Doublet(low: low, high: high)
+        }
+    }
 }

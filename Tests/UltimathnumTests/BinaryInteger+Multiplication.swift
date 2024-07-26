@@ -214,6 +214,103 @@ final class BinaryIntegerTestsOnMultiplication: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
+    func testMultiplication112OfLowEntropies() {
+        func whereIsSigned<T>(_ type: T.Type) where T: SignedInteger {
+            Test().multiplication(~2 as T, ~2 as T, Fallible(Doublet(low:  9, high:  0)))
+            Test().multiplication(~2 as T, ~1 as T, Fallible(Doublet(low:  6, high:  0)))
+            Test().multiplication(~2 as T, ~0 as T, Fallible(Doublet(low:  3, high:  0)))
+            Test().multiplication(~2 as T,  0 as T, Fallible(Doublet(low:  0, high:  0)))
+            Test().multiplication(~2 as T,  1 as T, Fallible(Doublet(low: ~2, high: ~0)))
+            Test().multiplication(~2 as T,  2 as T, Fallible(Doublet(low: ~5, high: ~0)))
+            
+            Test().multiplication(~1 as T, ~2 as T, Fallible(Doublet(low:  6, high:  0)))
+            Test().multiplication(~1 as T, ~1 as T, Fallible(Doublet(low:  4, high:  0)))
+            Test().multiplication(~1 as T, ~0 as T, Fallible(Doublet(low:  2, high:  0)))
+            Test().multiplication(~1 as T,  0 as T, Fallible(Doublet(low:  0, high:  0)))
+            Test().multiplication(~1 as T,  1 as T, Fallible(Doublet(low: ~1, high: ~0)))
+            Test().multiplication(~1 as T,  2 as T, Fallible(Doublet(low: ~3, high: ~0)))
+            
+            Test().multiplication(~0 as T, ~2 as T, Fallible(Doublet(low:  3, high:  0)))
+            Test().multiplication(~0 as T, ~1 as T, Fallible(Doublet(low:  2, high:  0)))
+            Test().multiplication(~0 as T, ~0 as T, Fallible(Doublet(low:  1, high:  0)))
+            Test().multiplication(~0 as T,  0 as T, Fallible(Doublet(low:  0, high:  0)))
+            Test().multiplication(~0 as T,  1 as T, Fallible(Doublet(low: ~0, high: ~0)))
+            Test().multiplication(~0 as T,  2 as T, Fallible(Doublet(low: ~1, high: ~0)))
+            
+            Test().multiplication( 0 as T, ~2 as T, Fallible(Doublet(low:  0, high:  0)))
+            Test().multiplication( 0 as T, ~1 as T, Fallible(Doublet(low:  0, high:  0)))
+            Test().multiplication( 0 as T, ~0 as T, Fallible(Doublet(low:  0, high:  0)))
+            Test().multiplication( 0 as T,  0 as T, Fallible(Doublet(low:  0, high:  0)))
+            Test().multiplication( 0 as T,  1 as T, Fallible(Doublet(low:  0, high:  0)))
+            Test().multiplication( 0 as T,  2 as T, Fallible(Doublet(low:  0, high:  0)))
+            
+            Test().multiplication( 1 as T, ~2 as T, Fallible(Doublet(low: ~2, high: ~0)))
+            Test().multiplication( 1 as T, ~1 as T, Fallible(Doublet(low: ~1, high: ~0)))
+            Test().multiplication( 1 as T, ~0 as T, Fallible(Doublet(low: ~0, high: ~0)))
+            Test().multiplication( 1 as T,  0 as T, Fallible(Doublet(low:  0, high:  0)))
+            Test().multiplication( 1 as T,  1 as T, Fallible(Doublet(low:  1, high:  0)))
+            Test().multiplication( 1 as T,  2 as T, Fallible(Doublet(low:  2, high:  0)))
+            
+            Test().multiplication( 2 as T, ~2 as T, Fallible(Doublet(low: ~5, high: ~0)))
+            Test().multiplication( 2 as T, ~1 as T, Fallible(Doublet(low: ~3, high: ~0)))
+            Test().multiplication( 2 as T, ~0 as T, Fallible(Doublet(low: ~1, high: ~0)))
+            Test().multiplication( 2 as T,  0 as T, Fallible(Doublet(low:  0, high:  0)))
+            Test().multiplication( 2 as T,  1 as T, Fallible(Doublet(low:  2, high:  0)))
+            Test().multiplication( 2 as T,  2 as T, Fallible(Doublet(low:  4, high:  0)))
+        }
+        
+        func whereIsUnsigned<T>(_ type: T.Type) where T: UnsignedInteger {
+            Test().multiplication(~5 as T, ~5 as T, Fallible(Doublet(low:  36, high: ~11), error: true))
+            Test().multiplication(~5 as T, ~4 as T, Fallible(Doublet(low:  30, high: ~10), error: true))
+            Test().multiplication(~5 as T, ~3 as T, Fallible(Doublet(low:  24, high:  ~9), error: true))
+            Test().multiplication(~5 as T, ~2 as T, Fallible(Doublet(low:  18, high:  ~8), error: true))
+            Test().multiplication(~5 as T, ~1 as T, Fallible(Doublet(low:  12, high:  ~7), error: true))
+            Test().multiplication(~5 as T, ~0 as T, Fallible(Doublet(low:   6, high:  ~6), error: true))
+            Test().multiplication(~5 as T,  0 as T, Fallible(Doublet(low:   0, high:   0)))
+            Test().multiplication(~5 as T,  1 as T, Fallible(Doublet(low:  ~5, high:   0)))
+            Test().multiplication(~5 as T,  2 as T, Fallible(Doublet(low: ~11, high:   1), error: true))
+            Test().multiplication(~5 as T,  3 as T, Fallible(Doublet(low: ~17, high:   2), error: true))
+            Test().multiplication(~5 as T,  4 as T, Fallible(Doublet(low: ~23, high:   3), error: true))
+            Test().multiplication(~5 as T,  5 as T, Fallible(Doublet(low: ~29, high:   4), error: true))
+            
+            Test().multiplication( 0 as T, ~5 as T, Fallible(Doublet(low:   0, high:   0)))
+            Test().multiplication( 0 as T, ~3 as T, Fallible(Doublet(low:   0, high:   0)))
+            Test().multiplication( 0 as T, ~2 as T, Fallible(Doublet(low:   0, high:   0)))
+            Test().multiplication( 0 as T, ~1 as T, Fallible(Doublet(low:   0, high:   0)))
+            Test().multiplication( 0 as T, ~0 as T, Fallible(Doublet(low:   0, high:   0)))
+            Test().multiplication( 0 as T,  0 as T, Fallible(Doublet(low:   0, high:   0)))
+            Test().multiplication( 0 as T,  1 as T, Fallible(Doublet(low:   0, high:   0)))
+            Test().multiplication( 0 as T,  2 as T, Fallible(Doublet(low:   0, high:   0)))
+            Test().multiplication( 0 as T,  4 as T, Fallible(Doublet(low:   0, high:   0)))
+            Test().multiplication( 0 as T,  5 as T, Fallible(Doublet(low:   0, high:   0)))
+            
+            Test().multiplication( 5 as T, ~5 as T, Fallible(Doublet(low: ~29, high:   4), error: true))
+            Test().multiplication( 5 as T, ~4 as T, Fallible(Doublet(low: ~24, high:   4), error: true))
+            Test().multiplication( 5 as T, ~3 as T, Fallible(Doublet(low: ~19, high:   4), error: true))
+            Test().multiplication( 5 as T, ~2 as T, Fallible(Doublet(low: ~14, high:   4), error: true))
+            Test().multiplication( 5 as T, ~1 as T, Fallible(Doublet(low:  ~9, high:   4), error: true))
+            Test().multiplication( 5 as T, ~0 as T, Fallible(Doublet(low:  ~4, high:   4), error: true))
+            Test().multiplication( 5 as T,  0 as T, Fallible(Doublet(low:   0, high:   0)))
+            Test().multiplication( 5 as T,  1 as T, Fallible(Doublet(low:   5, high:   0)))
+            Test().multiplication( 5 as T,  2 as T, Fallible(Doublet(low:  10, high:   0)))
+            Test().multiplication( 5 as T,  3 as T, Fallible(Doublet(low:  15, high:   0)))
+            Test().multiplication( 5 as T,  4 as T, Fallible(Doublet(low:  20, high:   0)))
+            Test().multiplication( 5 as T,  5 as T, Fallible(Doublet(low:  25, high:   0)))
+        }
+        
+        for type in binaryIntegersWhereIsSigned {
+            whereIsSigned(type)
+        }
+
+        for type in binaryIntegersWhereIsUnsigned {
+            whereIsUnsigned(type)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
     func testMultiplication112As08Is111As16() throws {
         func whereIs<A, B>(x08: A.Type, x16: B.Type) where A: SystemsInteger, B: SystemsInteger {
             precondition(A.size == Count(08))

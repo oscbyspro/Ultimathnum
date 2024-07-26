@@ -23,45 +23,42 @@ extension Test {
     public func multiplication<T>(
         _ lhs: T, 
         _ rhs: T,
-        _ expectation: Fallible<Doublet<T>>,
-        id: SystemsIntegerID = .init()
-    )   where T: SystemsInteger {
+        _ expectation: Fallible<Doublet<T>>
+    )   where T: BinaryInteger {
         //=--------------------------------------=
         same(lhs.multiplication(rhs), expectation.value)
         //=--------------------------------------=
         self.multiplication(
             lhs,
             rhs,
-            expectation.map(\.low).map(T.init(raw:)),
-            id: BinaryIntegerID()
+            expectation.map(\.low).map(T.init(raw:))
         )
     }
     
     public func multiplication<T>(
         _ lhs: T, 
         _ rhs: T, 
-        _ expectation: Fallible<T>,
-        id: BinaryIntegerID = .init()
+        _ expectation: Fallible<T>
     )   where T: BinaryInteger {
         
         always: do {
-            same(lhs &* rhs, expectation.value)
-            same(rhs &* lhs, expectation.value)
-        };  
+            same(lhs &* rhs, expectation.value, "&* [0]")
+            same(rhs &* lhs, expectation.value, "&* [1]")
+        };
         
         if !expectation.error {
-            same(lhs  * rhs, expectation.value)
-            same(rhs  * lhs, expectation.value)
+            same(lhs  * rhs, expectation.value,  "* [0]")
+            same(rhs  * lhs, expectation.value,  "* [1]")
         }
         
         always: do {
-            same({ var x = lhs; x &*= rhs; return x }(), expectation.value)
-            same({ var x = rhs; x &*= lhs; return x }(), expectation.value)
+            same({ var x = lhs; x &*= rhs; return x }(), expectation.value, "&*= [0]")
+            same({ var x = rhs; x &*= lhs; return x }(), expectation.value, "&*= [1]")
         }
         
         if !expectation.error {
-            same({ var x = lhs; x  *= rhs; return x }(), expectation.value)
-            same({ var x = rhs; x  *= lhs; return x }(), expectation.value)
+            same({ var x = lhs; x  *= rhs; return x }(), expectation.value,  "*= [0]")
+            same({ var x = rhs; x  *= lhs; return x }(), expectation.value,  "*= [1]")
         }
         
         always: do {

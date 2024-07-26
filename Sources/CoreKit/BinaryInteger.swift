@@ -218,6 +218,9 @@ where
     /// Returns the validated result of `self ^ 2`.
     @inlinable borrowing func squared() -> Fallible<Self>
     
+    /// Returns the `low` and `high` product of `self` times `multiplier`.
+    @inlinable borrowing func multiplication(_ multiplier: borrowing Self) -> Doublet<Self>
+    
     /// Returns the `quotient` and `error` of dividing `self` by the `divisor`.
     ///
     /// ### Rules
