@@ -125,6 +125,8 @@ extension Randomness {
     ///
     /// - Requires: The `limit` must not be infinite.
     ///
+    /// - Requires: The given `type` must be a arbitrary integer.
+    ///
     /// ### Algorithm
     ///
     /// Systems integers use an adaptation of "Fast Random Integer Generation in
@@ -133,11 +135,7 @@ extension Randomness {
     ///
     /// Arbitrary integers accept-reject random bit patterns.
     ///
-    ///
     @inline(never) @inlinable internal mutating func arbitrary<T>(upTo comparison: Signum, relativeTo limit: /* borrowing */ T) -> T where T: UnsignedInteger {
-        //=--------------------------------------=
-        precondition(T.isArbitrary, String.pleaseDoNotGenerateCodeForThisPath())
-        //=--------------------------------------=
         if  limit.isInfinite {
             Swift.preconditionFailure(String.overflow())
         }

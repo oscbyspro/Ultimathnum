@@ -19,19 +19,19 @@ extension InfiniInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func count(_ bit: Bit) -> Count<IX> {
+    @inlinable public borrowing func count(_ bit: Bit) -> Count<IX> {
         self.withUnsafeBinaryIntegerElements {
             $0.count(bit)
         }
     }
     
-    @inlinable public func ascending(_ bit: Bit) -> Count<IX> {
+    @inlinable public borrowing func ascending(_ bit: Bit) -> Count<IX> {
         self.withUnsafeBinaryIntegerElements {
             $0.ascending(bit)
         }
     }
     
-    @inlinable public func descending(_ bit: Bit) -> Count<IX> {
+    @inlinable public borrowing func descending(_ bit: Bit) -> Count<IX> {
         self.withUnsafeBinaryIntegerElements {
             $0.descending(bit)
         }

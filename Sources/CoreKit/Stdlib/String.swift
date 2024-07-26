@@ -46,13 +46,4 @@ extension String {
     )   -> String {
         "overflow in \(function) at \(file):\(line)"
     }
-    
-    /// A message describing the location of an unreachable error.
-    @inlinable package static func pleaseDoNotGenerateCodeForThisPath(
-        function: StaticString = #function,
-        file: StaticString = #file,
-        line: UInt = #line
-    )   -> String {
-        "unreachable path taken in \(function) at \(file):\(line)"
-    }
 }

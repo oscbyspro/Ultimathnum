@@ -59,17 +59,16 @@ extension Randomness {
     //=------------------------------------------------------------------------=
     
     /// Generates more randomness.
-    @inlinable internal mutating func systems<T>(as type: T.Type = T.self) -> T where T: UnsignedInteger {
-        guard let size = IX(size: T.self) else {
-            Swift.preconditionFailure(String.pleaseDoNotGenerateCodeForThisPath())
-        }
-        
+    ///
+    /// - Requires: The given `type` must be a systems integer.
+    ///
+    @inlinable internal mutating func systems<T>(as type: T.Type = T.self) -> T where T: UnsignedInteger {        
         if  T.size <= Element.size {
             return T(load: self.next())
         }
         
-        Swift.assert(size % IX(size: Element.self) == IX.zero)
-        let ratio  = size.down(Shift(unchecked: UX(size: Element.self).ascending(Bit.zero)))
+        Swift.assert(IX(size: T.self)! % IX(size: Element.self) == IX.zero)
+        let ratio  = IX(size: T.self)!.down(Shift(unchecked: UX(size: Element.self).ascending(Bit.zero)))
         var random = T()
         
         for index  in Range(uncheckedBounds: (IX.zero, ratio)) {

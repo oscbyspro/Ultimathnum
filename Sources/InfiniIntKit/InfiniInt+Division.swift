@@ -19,15 +19,15 @@ extension InfiniInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable consuming public func quotient (_ divisor: consuming Divisor<Self>) -> Fallible<Self> {
+    @inlinable public consuming func quotient (_ divisor: consuming Divisor<Self>) -> Fallible<Self> {
         self.division(divisor).map({ $0.quotient })
     }
     
-    @inlinable consuming public func remainder(_ divisor: consuming Divisor<Self>) -> Self {
+    @inlinable public consuming func remainder(_ divisor: consuming Divisor<Self>) -> Self {
         self.division(divisor).value.remainder
     }
     
-    @inline(never) @inlinable consuming public func division(_ divisor: consuming Divisor<Self>) -> Fallible<Division<Self, Self>> {
+    @inline(never) @inlinable public consuming func division(_ divisor: consuming Divisor<Self>) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
         let rhsAppendixIsSet = Bool(divisor.value.appendix)
         //=--------------------------------------=

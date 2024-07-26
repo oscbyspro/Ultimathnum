@@ -16,7 +16,7 @@ import CoreKit
 extension InfiniInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Transformations x 1 by 1 as 1
     //=------------------------------------------------------------------------=
     
     @inline(never) @inlinable public borrowing func squared() -> Fallible<Self> {
@@ -123,7 +123,7 @@ extension InfiniInt {
     // MARK: Transformations x 1 by 1 as 2
     //=----------------------------------------------------------------------------=
     
-    @inlinable public borrowing func multiplication(_ other: borrowing Self) -> Doublet<Self> {
+    @inline(never) @inlinable public borrowing func multiplication(_ other: borrowing Self) -> Doublet<Self> {
         if  Self.isSigned {
             let low  = Magnitude(raw: self &* other)
             let high = Self(repeating: low.appendix)

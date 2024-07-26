@@ -77,16 +77,16 @@ extension BinaryInteger {
         }   else {
             let divisor  = Divisor<IX>(size: Element.self)
             var division = index.division(divisor).unchecked()
-            //  finite unsigned behavior
-            increment: if !Self.isSigned {
+            
+            increment: do {
                 division.remainder &+= 1
                 guard division.remainder == divisor.value else { break increment }
                 division.quotient  &+= 1
                 division.remainder   = 0
             }
             
-            let down = Shift<Element.Magnitude>(masking: division.remainder.complement())
-            let last = Element(raw:  randomness.next(as: Element.Magnitude.self)).down(down)
+            let down = division.remainder.complement()
+            let last = Element(raw: randomness.next(as: Element.Magnitude.self)) &>> (((((((down)))))))
             return Self.arbitrary(uninitialized: division.ceil().unchecked(), repeating: last.appendix) {
                 guard !$0.isEmpty else { return }
                 let lastIndex: IX = $0.count.decremented().unchecked()

@@ -19,9 +19,9 @@ import TestKit
 
 final class BinaryIntegerTestsOnRandom: XCTestCase {
     
-    //=----------------------------------------------------------------------------=
+    //=------------------------------------------------------------------------=
     // MARK: Tests
-    //=----------------------------------------------------------------------------=
+    //=------------------------------------------------------------------------=
     
     /// - Note: The bounds may be infinite, but not their distance.
     func testRandomInRange() {
@@ -103,17 +103,59 @@ final class BinaryIntegerTestsOnRandom: XCTestCase {
                 let index = Shift<T.Magnitude>(Count(index))
                 let limit = IX(raw: index.value) + (T.isSigned ? 1 : 2)
                 
-                for _ in 0 ..< 4 {
-                    let r0 = T.random(through: index)
-                    let r1 = T.random(through: index, using: &randomness)
-                    
-                    for random in [r0, r1] {
-                        Test().yay(random.entropy() >= Count(00001))
-                        Test().yay(random.entropy() <= Count(limit))
-                        Test().nay(random.isInfinite)
-                    }
+                while true {
+                    let random  = T.random(through: index)
+                    let entropy = random.entropy()
+                    Test().yay(entropy >= Count(00001))
+                    Test().yay(entropy <= Count(limit))
+                    Test().nay(random.isInfinite)
+                    guard entropy != Count(limit) else { break }
+                }
+                
+                while true {
+                    let random  = T.random(through: index, using: &randomness)
+                    let entropy = random.entropy()
+                    Test().yay(entropy >= Count(00001))
+                    Test().yay(entropy <= Count(limit))
+                    Test().nay(random.isInfinite)
+                    guard entropy != Count(limit) else { break }
                 }
             }
+        }
+        
+        for type in binaryIntegers {
+            whereIs(type, randomness: fuzzer)
+        }
+    }
+    
+    func testRandomThroughBitIndexHasKnownBounds() {
+        func whereIs<T>(_ type: T.Type, randomness: consuming FuzzerInt) where T: BinaryInteger {
+            func check(_ index: Shift<T.Magnitude>, _ expectation: ClosedRange<T>) {
+                let middle = T.isSigned ? T.zero : ((expectation.upperBound / 2) + 1)
+                
+                var min = false
+                var mid = false
+                var max = false
+                
+                while !(min && mid && max) {
+                    let random = T.random(through: index, using: &randomness)
+                    guard expectation.contains(random) else {  break }
+                    if random == expectation.lowerBound { min = true }
+                    if random == ((((((((middle)))))))) { mid = true }
+                    if random == expectation.upperBound { max = true }
+                }
+                
+                Test().yay(min && mid && max)
+            }
+            
+            check(Shift(Count(0)), T.isSigned ? -001 ... 000 : 000 ... 001)
+            check(Shift(Count(1)), T.isSigned ? -002 ... 001 : 000 ... 003)
+            check(Shift(Count(2)), T.isSigned ? -004 ... 003 : 000 ... 007)
+            check(Shift(Count(3)), T.isSigned ? -008 ... 007 : 000 ... 015)
+            check(Shift(Count(4)), T.isSigned ? -016 ... 015 : 000 ... 031)
+            check(Shift(Count(5)), T.isSigned ? -032 ... 031 : 000 ... 063)
+            check(Shift(Count(6)), T.isSigned ? -064 ... 063 : 000 ... 127)
+            check(Shift(Count(7)), T.isSigned ? -128 ... 127 : 000 ... 255)
         }
         
         for type in binaryIntegers {

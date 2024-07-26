@@ -40,7 +40,7 @@ extension InfiniInt {
     
     @inlinable public borrowing func hash(into hasher: inout Hasher) {
         self.withUnsafeBinaryIntegerElements {
-            hasher.combine(bytes: UnsafeRawBufferPointer($0.body.buffer()))
+            hasher.combine(bytes: $0.body.bytes())
             hasher.combine($0.appendix)
         }
     }
