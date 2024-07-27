@@ -78,8 +78,8 @@ extension BinaryInteger {
     
     /// Generates random bits through the given `index`.
     ///
-    /// Signed integers are extended by the most significant bit wheras unsigned
-    /// integer are extended by zero. You may bit cast a different type to adopt
+    /// Signed integers are extended by the most significant bit whereas unsigned
+    /// integers are extended by zero. You may bit-cast a different type to adopt
     /// its behavior.
     ///
     ///                ┌──────────┬──────────┬──────────┐
