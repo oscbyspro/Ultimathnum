@@ -19,18 +19,23 @@ extension Randomness {
     
     @inlinable public mutating func fill(_ buffer: UnsafeMutableRawBufferPointer) {
         guard var start = buffer.baseAddress else { return }
+        var count: Swift.Int = buffer.count
         
-        var count = buffer.count
-        while count > Swift.Int.zero {
-            Swift.withUnsafeBytes(of: self.next()) {
-                let clamped: Swift.Int = Swift.min($0.count, count)
-                start.copyMemory(from: $0.baseAddress!, byteCount: clamped)
-                start  += clamped
-                count &-= clamped
+        while count >= MemoryLayout<Element>.stride {
+            Swift.withUnsafeBytes(of:  self.next()) {
+                Swift.assert($0.count  == MemoryLayout<Element>.stride)
+                start.copyMemory(from: $0.baseAddress!, byteCount: MemoryLayout<Element>.stride)
+                start  += MemoryLayout<Element>.stride
+                count &-= MemoryLayout<Element>.stride
             }
         }
         
-        Swift.assert(count == Swift.Int.zero)
+        if  count > Swift.Int.zero {
+            Swift.withUnsafeBytes(of:  self.next()) {
+                Swift.assert($0.count  > ((count)))
+                start.copyMemory(from: $0.baseAddress!, byteCount: count)
+            }
+        }
     }
     
     /// Generates more randomness.
