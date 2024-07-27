@@ -540,8 +540,8 @@ Multiplication at and around infinity just works.
 U32.max.times(U32.max) // value: 1, error: true
 UXL.max.times(UXL.max) // value: 1, error: true
 
-U32.max.multiplication(U32.max) // (low: 1, high: ~1)
-UXL.max.multiplication(UXL.max) // (low: 1, high: ~1)
+U32.max.multiplication(U32.max) // low: 1, high: ~1
+UXL.max.multiplication(UXL.max) // low: 1, high: ~1
 ```
 
 <a name="infiniintkit-division"/>
