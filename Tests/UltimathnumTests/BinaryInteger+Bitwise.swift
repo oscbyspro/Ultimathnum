@@ -10,6 +10,7 @@
 import CoreKit
 import DoubleIntKit
 import InfiniIntKit
+import RandomIntKit
 import TestKit
 
 //*============================================================================*
@@ -150,6 +151,57 @@ final class BinaryIntegerTestsOnBitwise: XCTestCase {
         
         for type in systemsIntegers {
             whereIs(type)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Random
+    //=------------------------------------------------------------------------=
+    
+    func testOperationsByFuzzing() {
+        func whereIs<T>(_ type: T.Type, randomness: consuming FuzzerInt) where T: BinaryInteger {
+            let index = T.isArbitrary ? Shift(Count(255)) : Shift<T.Magnitude>.max
+            
+            for _ in 0 ..< 16 {
+                let a0 = T.random(through: index, using: &randomness)
+                let a1 = a0.toggled()
+                let b0 = T.random(through: index, using: &randomness)
+                let b1 = b0.toggled()
+                
+                always: do {
+                    Test().same(a0, a1.toggled())
+                    Test().same(b0, b1.toggled())
+                }
+
+                always: do {
+                    let c0 = a0 ^ b0
+                    let c1 = c0.toggled()
+                    
+                    Test().same((c0 ^ a0), (b0))
+                    Test().same((c0 ^ b0), (a0))
+                    Test().same((c0 ^ a1), (b1))
+                    Test().same((c0 ^ b1), (a1))
+                    
+                    Test().same((a0 ^ b0), (c0))
+                    Test().same((a0 ^ b1), (c1))
+                    Test().same((a1 ^ b0), (c1))
+                    Test().same((a1 ^ b1), (c0))
+                }
+                
+                always: do {
+                    let c0 = a0 | b0
+                    let c1 = c0.toggled()
+                    
+                    Test().same((c0 ^ a0), (b0 & a1))
+                    Test().same((c0 ^ b0), (a0 & b1))
+                    Test().same((c1 ^ a0), (b0 & a1).toggled())
+                    Test().same((c1 ^ b0), (a0 & b1).toggled())
+                }
+            }
+        }
+        
+        for type in binaryIntegers {
+            whereIs(type, randomness: fuzzer)
         }
     }
 }
