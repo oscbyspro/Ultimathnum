@@ -11,6 +11,7 @@
 // MARK: * Randomenss
 //*============================================================================*
 
+/// A source of uniformly distributed random data.
 public protocol Randomness {
     
     associatedtype Element: SystemsInteger & UnsignedInteger
@@ -19,9 +20,9 @@ public protocol Randomness {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// Generates more randomness.
+    /// Generates more random data.
     @inlinable mutating func next() -> Element
     
-    /// Generates enough randomness to fill the given `buffer`.
+    /// Generates enough random data to fill the given `buffer`.
     @inlinable mutating func fill(_ buffer: UnsafeMutableRawBufferPointer)
 }

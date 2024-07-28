@@ -32,15 +32,13 @@ public protocol BitCountable {
     ///
     /// Its significance depends on signedness:
     ///
-    /// ```
-    ///            ┌───────────────┬───────────────┐
-    ///            │ appendix == 0 │ appendix == 1 |
-    /// ┌──────────┼───────────────┤───────────────┤
-    /// │   Signed │     self >= 0 │     self <  0 │
-    /// ├──────────┼───────────────┤───────────────┤
-    /// │ Unsigned │     self <  ∞ │     self >= ∞ │
-    /// └──────────┴───────────────┴───────────────┘
-    /// ```
+    ///                ┌───────────────┬───────────────┐
+    ///                │ appendix == 0 │ appendix == 1 |
+    ///     ┌──────────┼───────────────┤───────────────┤
+    ///     │   Signed │     self >= 0 │     self <  0 │
+    ///     ├──────────┼───────────────┤───────────────┤
+    ///     │ Unsigned │     self <  ∞ │     self >= ∞ │
+    ///     └──────────┴───────────────┴───────────────┘
     ///
     @inlinable var appendix: Bit { borrowing get }
     
@@ -50,14 +48,12 @@ public protocol BitCountable {
     
     /// The number of bits in the abstract `body` of this type.
     ///
-    /// ```
-    /// ┌──────┬───────────────────┐
-    /// │ type │ size              │
-    /// ├──────┼───────────────────┤
-    /// │ I64  │ 64                │
-    /// │ IXL  │ log2(UXL.max + 1) │ == Count.infinity
-    /// └──────┴───────────────────┘
-    /// ```
+    ///     ┌──────┬───────────────────┐
+    ///     │ type │ size              │
+    ///     ├──────┼───────────────────┤
+    ///     │ I64  │ 64                │
+    ///     │ IXL  │ log2(UXL.max + 1) │ == Count.infinity
+    ///     └──────┴───────────────────┘
     ///
     /// - Invariant: `count(x) + noncount(x) == size()`
     ///

@@ -86,7 +86,6 @@
     /// case Result<IX, Oops>.success(value): // ...
     /// case Result<IX, Oops>.failure(error): // ...
     /// }
-    ///
     /// ```
     ///
     @inlinable public consuming func result<Failure>(_ failure: @autoclosure () -> Failure) -> Result<Value, Failure> {

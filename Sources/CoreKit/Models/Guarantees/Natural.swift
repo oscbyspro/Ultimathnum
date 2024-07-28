@@ -17,7 +17,7 @@
 ///
 /// This is a trusted input type. Validate inputs with these methods:
 ///
-/// ```
+/// ```swift
 /// init(_:)         // error: traps
 /// init(_:prune:)   // error: throws
 /// init(exactly:)   // error: nil

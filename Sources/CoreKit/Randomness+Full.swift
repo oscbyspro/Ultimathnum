@@ -38,7 +38,7 @@ extension Randomness {
         }
     }
     
-    /// Generates more randomness.
+    /// Generates more random data.
     @inlinable public mutating func next<T>(as type: T.Type = T.self) -> T where T: SystemsInteger & UnsignedInteger {
         self.systems(as: T.self)
     }
@@ -54,7 +54,7 @@ extension Randomness {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// Generates more randomness.
+    /// Generates more random data.
     ///
     /// - Requires: The given `type` must be a systems integer.
     ///

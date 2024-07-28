@@ -23,11 +23,11 @@ import TestKit
 ///
 /// - Note: StdlibInt uses two's complement.
 ///
-/// - Note: Apple's BigInt prototype use sign and magnitude.
+/// - Note: Swift's BigInt prototype uses sign and magnitude.
 ///
 /// - Note: StdlibInt is not a generic type.
 ///
-/// - Note: Apple's BigInt prototype is a generic type.
+/// - Note: Swift's BigInt prototype is a generic type.
 ///
 /// - Note: Some tests don't have 1:1 translations.
 ///
@@ -38,8 +38,8 @@ final class StdlibIntTestsLikeOpenSourceTestsBySwift: XCTestCase {
     //=------------------------------------------------------------------------=
     
     /// See also: `BigInt.init(randomBits:)` and `randomBitLength()`.
-    func makeRandomBigInt(maxBitWidth: Swift.Int = .random(in: 2...1000)) -> StdlibInt {
-        StdlibInt(IXL.random(through: Shift(Count(IX(maxBitWidth) - 1))))
+    func makeRandomStdlibInt(maxBitWidth: Swift.Int = .random(in: 2...1000)) -> StdlibInt {
+        StdlibInt(IXL.random(through: Shift(Count(IX(maxBitWidth).decremented().unwrap()))))
     }
     
     //=------------------------------------------------------------------------=
@@ -184,7 +184,7 @@ final class StdlibIntTestsLikeOpenSourceTestsBySwift: XCTestCase {
     
     /// See also: `BigIntTests.test("Huge")`.
     func testHuge() {
-        let a = makeRandomBigInt(maxBitWidth: 1_000_000)
+        let a = makeRandomStdlibInt(maxBitWidth: 1_000_000)
         let b = -a
 
         Test().comparison(a, a - 1, 1 as Signum, id: ComparableID())
@@ -255,8 +255,8 @@ final class StdlibIntTestsLikeOpenSourceTestsBySwift: XCTestCase {
     
     /// See also: `BigIntTests.test("Randomized arithmetic")`.
     func testRandomizedArithmetic() {
-        let a = makeRandomBigInt()
-        let b = makeRandomBigInt()
+        let a = makeRandomStdlibInt()
+        let b = makeRandomStdlibInt()
         
         if  b != (0) {
           let (q, r) = a.quotientAndRemainder(dividingBy: b)
@@ -264,10 +264,10 @@ final class StdlibIntTestsLikeOpenSourceTestsBySwift: XCTestCase {
           Test().same(q * b,  a - r)
         }
 
-        let c = makeRandomBigInt()
-        let d = makeRandomBigInt()
-        let e = makeRandomBigInt()
-        let f = makeRandomBigInt()
+        let c = makeRandomStdlibInt()
+        let d = makeRandomStdlibInt()
+        let e = makeRandomStdlibInt()
+        let f = makeRandomStdlibInt()
         
         Test().same((c + d) * (e + f), (c * e) + (c * f) + (d * e) + (d * f))
     }

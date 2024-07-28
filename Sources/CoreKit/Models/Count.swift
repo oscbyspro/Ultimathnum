@@ -91,19 +91,17 @@
     /// Returns the relative `value` of `self` and an `error` indicator.
     /// The `error` indicator is set when `self` is infinite.
     ///
-    /// ```
-    /// ┌───────────────────────┬───────────────┐
-    /// │ self                  │ value │ error │
-    /// ├───────────────────────┼───────┼───────┤
-    /// │ 0                     │  0    │ false │
-    /// │ 1                     │  1    │ false │
-    /// │ 2                     │  2    │ false │
-    /// ├───────────────────────┼───────┼───────┤
-    /// │ log2(UXL.max + 1) - 2 │ -3    │ true  │
-    /// │ log2(UXL.max + 1) - 1 │ -2    │ true  │
-    /// │ log2(UXL.max + 1)     │ -1    │ true  │
-    /// └───────────────────────┴───────┴───────┘
-    /// ```
+    ///     ┌───────────────────────┬───────────────┐
+    ///     │ self                  │ value │ error │
+    ///     ├───────────────────────┼───────┼───────┤
+    ///     │ 0                     │  0    │ false │
+    ///     │ 1                     │  1    │ false │
+    ///     │ 2                     │  2    │ false │
+    ///     ├───────────────────────┼───────┼───────┤
+    ///     │ log2(UXL.max + 1) - 2 │ -3    │ true  │
+    ///     │ log2(UXL.max + 1) - 1 │ -2    │ true  │
+    ///     │ log2(UXL.max + 1)     │ -1    │ true  │
+    ///     └───────────────────────┴───────┴───────┘
     ///
     @inlinable public func natural() -> Fallible<Layout> {
         Fallible(self.base, error: self.isInfinite)

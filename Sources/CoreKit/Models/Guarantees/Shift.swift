@@ -17,7 +17,7 @@
 ///
 /// This is a trusted input type. Validate inputs with these methods:
 ///
-/// ```
+/// ```swift
 /// init(_:)         // error: traps
 /// init(_:prune:)   // error: throws
 /// init(exactly:)   // error: nil
@@ -52,14 +52,12 @@
     
     /// The maximum bit index of the target binary integer type.
     ///
-    /// ```
-    /// ┌──────┬───────────────────────┐
-    /// │ type │ Shift.max             │
-    /// ├──────┼───────────────────────┤
-    /// │ I64  │ 63                    │
-    /// │ IXL  │ log2(UXL.max + 1) - 1 │
-    /// └──────┴───────────────────────┘
-    /// ```
+    ///     ┌──────┬───────────────────────┐
+    ///     │ type │ Shift.max             │
+    ///     ├──────┼───────────────────────┤
+    ///     │ I64  │ 63                    │
+    ///     │ IXL  │ log2(UXL.max + 1) - 1 │
+    ///     └──────┴───────────────────────┘
     ///
     /// - Returns: A value in `0 ..< log2(UXL.max + 1)`.
     ///
@@ -164,19 +162,17 @@
     /// Returns the relative `value` of `self` and an `error` indicator.
     /// The `error` indicator is set when `self` is infinite.
     ///
-    /// ```
-    /// ┌───────────────────────┬───────────────┐
-    /// │ self                  │ value │ error │
-    /// ├───────────────────────┼───────┼───────┤
-    /// │ 0                     │  0    │ false │
-    /// │ 1                     │  1    │ false │
-    /// │ 2                     │  2    │ false │
-    /// ├───────────────────────┼───────┼───────┤
-    /// │ log2(UXL.max + 1) - 2 │ -3    │ true  │
-    /// │ log2(UXL.max + 1) - 1 │ -2    │ true  │
-    /// │ log2(UXL.max + 1)     │ -1    │ true  │
-    /// └───────────────────────┴───────┴───────┘
-    /// ```
+    ///     ┌───────────────────────┬───────────────┐
+    ///     │ self                  │ value │ error │
+    ///     ├───────────────────────┼───────┼───────┤
+    ///     │ 0                     │  0    │ false │
+    ///     │ 1                     │  1    │ false │
+    ///     │ 2                     │  2    │ false │
+    ///     ├───────────────────────┼───────┼───────┤
+    ///     │ log2(UXL.max + 1) - 2 │ -3    │ true  │
+    ///     │ log2(UXL.max + 1) - 1 │ -2    │ true  │
+    ///     │ log2(UXL.max + 1)     │ -1    │ true  │
+    ///     └───────────────────────┴───────┴───────┘
     ///
     @inlinable public func natural() -> Fallible<IX> {
         Fallible(IX(raw: self.value), error: self.isInfinite)
@@ -184,14 +180,12 @@
     
     /// Returns the wrapped value or its infinite promotion.
     ///
-    /// ```
-    /// ┌───────────────────────┬─────────┐
-    /// │ self                  │ UXL     │
-    /// ├───────────────────────┼─────────┤
-    /// │ 123                   │ 123     │
-    /// │ log2(UXL.max + 1) - 1 │ UXL.max │
-    /// └───────────────────────┴─────────┘
-    /// ```
+    ///     ┌───────────────────────┬─────────┐
+    ///     │ self                  │ UXL     │
+    ///     ├───────────────────────┼─────────┤
+    ///     │ 123                   │ 123     │
+    ///     │ log2(UXL.max + 1) - 1 │ UXL.max │
+    ///     └───────────────────────┴─────────┘
     ///
     /// - Note: `Count<T>` uses one's complement to represent infinity.
     ///
@@ -226,19 +220,17 @@ extension Shift where Target: SystemsInteger {
     
     /// Returns the `value` of `self`.
     ///
-    /// ```
-    /// ┌───────────────────────┬───────────────┐
-    /// │ self                  │ value │ error │
-    /// ├───────────────────────┼───────┼───────┤
-    /// │ 0                     │  0    │ false │
-    /// │ 1                     │  1    │ false │
-    /// │ 2                     │  2    │ false │
-    /// ├───────────────────────┼───────┼───────┤
-    /// │ log2(UXL.max + 1) - 2 │ -3    │ true  │
-    /// │ log2(UXL.max + 1) - 1 │ -2    │ true  │
-    /// │ log2(UXL.max + 1)     │ %%%%% │ %%%%% │
-    /// └───────────────────────┴───────┴───────┘
-    /// ```
+    ///     ┌───────────────────────┬───────────────┐
+    ///     │ self                  │ value │ error │
+    ///     ├───────────────────────┼───────┼───────┤
+    ///     │ 0                     │  0    │ false │
+    ///     │ 1                     │  1    │ false │
+    ///     │ 2                     │  2    │ false │
+    ///     ├───────────────────────┼───────┼───────┤
+    ///     │ log2(UXL.max + 1) - 2 │ -3    │ true  │
+    ///     │ log2(UXL.max + 1) - 1 │ -2    │ true  │
+    ///     │ log2(UXL.max + 1)     │ %%%%% │ %%%%% │
+    ///     └───────────────────────┴───────┴───────┘
     ///
     /// - Note: All systems integer `Shift(s)` are natural.
     ///

@@ -17,7 +17,7 @@ extension Randomness {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// Returns a random from zero through the given `limit`.
+    /// Returns a random value from zero through the given `limit`.
     ///
     /// - Requires: The `limit` must not be infinite.
     ///
@@ -38,7 +38,7 @@ extension Randomness {
         }
     }
     
-    /// Returns a random from zero up to the given `limit`.
+    /// Returns a random value from zero up to the given `limit`.
     ///
     /// - Requires: The `limit` must not be infinite.
     ///
@@ -70,7 +70,7 @@ extension Randomness {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// Returns a random from zero through the given `limit`.
+    /// Returns a random value from zero through the given `limit`.
     ///
     /// ### Algorithm
     ///
@@ -92,7 +92,7 @@ extension Randomness {
         }
     }
     
-    /// Returns a random from zero up to the given `limit`.
+    /// Returns a random value from zero up to the given `limit`.
     ///
     /// ### Algorithm
     ///
