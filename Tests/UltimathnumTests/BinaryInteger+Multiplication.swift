@@ -10,6 +10,7 @@
 import CoreKit
 import DoubleIntKit
 import InfiniIntKit
+import RandomIntKit
 import TestKit
 
 //*============================================================================*
@@ -343,5 +344,35 @@ final class BinaryIntegerTestsOnMultiplication: XCTestCase {
         whereIs(x08: U8.self, x16: U16.self)
         whereIs(x08: U8.self, x16: DoubleInt<U8>.self)
         #endif
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Random
+    //=------------------------------------------------------------------------=
+    
+    func testMultiplicationByFuzzing() {
+        func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
+            func random() -> T {
+                T.random(through: Shift(Count(IX.random(in: 2 ..< size, using: &randomness)!)))
+            }
+            
+            for _  in 0 ..< rounds {
+                let a = random()
+                let b = random()
+                let c = random()
+                let d = random()
+                let e = (a &+ b) &* (c &+ d)
+                let f = (a &* c) &+ (a &* d) &+ (b &* c) &+ (b &* d)
+                Test().same(e, f)
+            }
+        }
+        
+        for type in binaryIntegers {
+            #if DEBUG
+            whereIs(type, size: IX(size: type) ?? 0256, rounds: 16, randomness: fuzzer)
+            #else
+            whereIs(type, size: IX(size: type) ?? 4096, rounds: 16, randomness: fuzzer)
+            #endif
+        }
     }
 }
