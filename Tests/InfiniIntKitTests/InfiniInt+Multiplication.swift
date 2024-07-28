@@ -9,6 +9,7 @@
 
 import CoreKit
 import InfiniIntKit
+import RandomIntKit
 import TestKit
 
 //*============================================================================*
@@ -469,6 +470,38 @@ extension InfiniIntTests {
         for type in Self.types {
             whereIs(type)
         }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Random
+    //=------------------------------------------------------------------------=
+    
+    func testMultiplicationByFuzzing() {
+        func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
+            func random() -> T {
+                T.random(through: Shift(Count(IX.random(in: 2 ..< size, using: &randomness)!)))
+            }
+            
+            for _  in 0 ..< rounds {
+                let a = random()
+                let b = random()
+                let c = random()
+                let d = random()
+                let e = (a + b) * (c + d)
+                let f = (a * c) + (a * d) + (b * c) + (b * d)
+                Test().same(e, f)
+            }
+        }
+        
+        #if DEBUG
+        // note the 8-bit elements
+        whereIs(InfiniInt<I8>.self, size: 0256, rounds: 0016, randomness: fuzzer)
+        whereIs(InfiniInt<U8>.self, size: 0256, rounds: 0016, randomness: fuzzer)
+        #else
+        // note the 8-bit elements
+        whereIs(InfiniInt<I8>.self, size: 4096, rounds: 0256, randomness: fuzzer)
+        whereIs(InfiniInt<U8>.self, size: 4096, rounds: 0256, randomness: fuzzer)
+        #endif
     }
 }
 
