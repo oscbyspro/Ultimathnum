@@ -10,6 +10,7 @@
 import CoreKit
 import DoubleIntKit
 import InfiniIntKit
+import RandomIntKit
 import TestKit
 
 //*============================================================================*
@@ -489,6 +490,42 @@ final class BinaryIntegerTestsOnDivision: XCTestCase {
         
         for type in systemsIntegersWhereIsSigned {
             whereIsSigned(type)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Random
+    //=------------------------------------------------------------------------=
+    
+    func testDivisionByFuzzing() {
+        func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
+            func random() -> T {
+                let index = IX.random(in: 000000002 ..< size, using: &randomness)!
+                return T.random(through: Shift(Count(index)), using: &randomness)
+            }
+            
+            for _  in 0 ..< rounds {
+                let a = random()
+                let b = random()
+                
+                if  let b = Divisor(exactly: b) {
+                    let c = a.division(b).value
+                    Test().same(a, c.quotient &* b.value &+ c.remainder)
+                }
+                
+                if  let a = Divisor(exactly: a) {
+                    let c = b.division(a).value
+                    Test().same(b, c.quotient &* a.value &+ c.remainder)
+                }
+            }
+        }
+        
+        for type in binaryIntegers {
+            #if DEBUG
+            whereIs(type, size: IX(size: type) ?? 1024, rounds: 16, randomness: fuzzer)
+            #else
+            whereIs(type, size: IX(size: type) ?? 8192, rounds: 16, randomness: fuzzer)
+            #endif
         }
     }
 }
