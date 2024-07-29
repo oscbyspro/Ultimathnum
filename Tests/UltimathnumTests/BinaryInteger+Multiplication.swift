@@ -353,7 +353,8 @@ final class BinaryIntegerTestsOnMultiplication: XCTestCase {
     func testMultiplicationByFuzzing() {
         func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
             func random() -> T {
-                T.random(through: Shift(Count(IX.random(in: 2 ..< size, using: &randomness)!)))
+                let index = IX.random(in: 000000002 ..< size, using: &randomness)!
+                return T.random(through: Shift(Count(index)), using: &randomness)
             }
             
             for _  in 0 ..< rounds {
@@ -363,7 +364,7 @@ final class BinaryIntegerTestsOnMultiplication: XCTestCase {
                 let d = random()
                 let e = (a &+ b) &* (c &+ d)
                 let f = (a &* c) &+ (a &* d) &+ (b &* c) &+ (b &* d)
-                Test().same(e, f)
+                Test().same(e,f)
             }
         }
         

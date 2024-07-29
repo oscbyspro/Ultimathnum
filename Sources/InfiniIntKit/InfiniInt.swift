@@ -13,7 +13,7 @@ import CoreKit
 // MARK: * Infini Int
 //*============================================================================*
 
-/// An infinite un/signed binary integer type.
+/// An arbitrary un/signed binary integer type.
 ///
 ///      InfiniInt<IX>            InfiniInt<UX>
 ///     ┌───────────────────────┐┌───────────────────────┐
@@ -31,8 +31,6 @@ import CoreKit
 @frozen public struct InfiniInt<Source>: ArbitraryInteger where Source: SystemsInteger {
     
     public typealias Element = Source.Element
-    
-    public typealias IntegerLiteralType = StaticBigInt
     
     public typealias BitPattern = InfiniInt<Source.Magnitude>
     
@@ -103,8 +101,8 @@ extension InfiniInt: UnsignedInteger where Source: UnsignedInteger { }
 // MARK: + Aliases
 //=----------------------------------------------------------------------------=
 
-/// An infinite signed binary integer type.
+/// An arbitrary signed binary integer type.
 public typealias IXL = InfiniInt<IX>
 
-/// An infinite unsigned binary integer type.
+/// An arbitrary unsigned binary integer type.
 public typealias UXL = InfiniInt<UX>

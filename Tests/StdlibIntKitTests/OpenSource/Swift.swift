@@ -129,7 +129,7 @@ final class StdlibIntTestsLikeOpenSourceTestsBySwift: XCTestCase {
     
     /// See also: `BigIntTests.test("Conformances")`.
     func testConformances() {
-        let a = StdlibInt(Int.max)
+        let a = StdlibInt(Swift.Int.max)
         let b = (a * a * a * a * a)
         Test().comparison(b, b + 1, -1 as Signum, id: ComparableID())
         Test().comparison(b, b - 1,  1 as Signum, id: ComparableID())
@@ -240,10 +240,10 @@ final class StdlibIntTestsLikeOpenSourceTestsBySwift: XCTestCase {
     /// See also: `BigIntTests.test("Strings")`.
     func testStrings() {
         let a = try! StdlibInt("-3UNIZHA6PAL30Y", as: .radix(36))
-        Test().same(a.description(as: .radix(02).uppercased()), "-1000111001110110011101001110000001011001110110011011110011000010010010")
-        Test().same(a.description(as: .radix(10).uppercased()), "-656993338084259999890")
-        Test().same(a.description(as: .radix(16).uppercased()), "-239D9D3816766F3092")
-        Test().same(a.description(as: .radix(36).uppercased()), "-3UNIZHA6PAL30Y")
+        Test().same(String(a, radix: 02, uppercase: true), "-1000111001110110011101001110000001011001110110011011110011000010010010")
+        Test().same(String(a, radix: 10, uppercase: true), "-656993338084259999890")
+        Test().same(String(a, radix: 16, uppercase: true), "-239D9D3816766F3092")
+        Test().same(String(a, radix: 36, uppercase: true), "-3UNIZHA6PAL30Y")
 
         Test().yay(StdlibInt( "12345") ==  12345)
         Test().yay(StdlibInt("-12345") == -12345)
@@ -285,24 +285,24 @@ final class StdlibIntTestsLikeOpenSourceTestsBySwift: XCTestCase {
     /// See also: `BigInt8Tests.test("Bitshift")`.
     func testBitshift() {
         Test().same(StdlibInt(255) << 1, 510)
-        Test().yay (StdlibInt(UInt32.max) << 16 == UInt(UInt32.max) << 16)
+        Test().yay (StdlibInt(Swift.UInt32.max) << 16 == Swift.UInt(Swift.UInt32.max) << 16)
         
         let a = StdlibInt(1)
-        let b = UInt(1)
+        let b = Swift.UInt(1)
         
         for i in 0 ..< 64 {
           Test().yay((a << i) == (b << i))
         }
 
-        let c = StdlibInt(UInt.max)
-        let d = UInt.max
+        let c = StdlibInt(Swift.UInt.max)
+        let d = Swift.UInt.max
         
         for i in 0 ... 64 {
           Test().yay((c >> i) == (d >> i))
         }
 
         let e = StdlibInt(-1)
-        let f = Int(-1)
+        let f = Swift.Int(-1)
         
         for i in 0 ..< 64 {
           Test().yay((e << i) == (f << i))
@@ -312,10 +312,10 @@ final class StdlibIntTestsLikeOpenSourceTestsBySwift: XCTestCase {
     /// See also: `BigInt8Tests.test("Bitwise")`.
     func testBitwise() {
         let bases: [StdlibInt] = [
-            StdlibInt(Int.max - 2),
+            StdlibInt(Swift.Int.max - 2),
             StdlibInt(255),
             StdlibInt(256),
-            StdlibInt(UInt32.max),
+            StdlibInt(Swift.UInt32.max),
         ]
         
         for base: StdlibInt in bases {
@@ -325,8 +325,8 @@ final class StdlibIntTestsLikeOpenSourceTestsBySwift: XCTestCase {
                 Test().yay( value & ~0 ==  value)
                 Test().yay( value ^  0 ==  value)
                 Test().yay( value ^ ~0 == ~value)
-                Test().yay( value      == StdlibInt( Int(truncatingIfNeeded: value)))
-                Test().yay(~value      == StdlibInt(~Int(truncatingIfNeeded: value)))
+                Test().yay( value      == StdlibInt( Swift.Int(truncatingIfNeeded: value)))
+                Test().yay(~value      == StdlibInt(~Swift.Int(truncatingIfNeeded: value)))
             }
         }
     }
