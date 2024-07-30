@@ -500,7 +500,7 @@ final class BinaryIntegerTestsOnDivision: XCTestCase {
     func testDivisionByFuzzing() {
         func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
             func random() -> T {
-                let index = IX.random(in: 000000002 ..< size, using: &randomness)!
+                let index = IX.random(in: 000000000 ..< size, using: &randomness)!
                 return T.random(through: Shift(Count(index)), using: &randomness)
             }
             

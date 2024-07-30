@@ -159,13 +159,16 @@ final class BinaryIntegerTestsOnBitwise: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testOperationsByFuzzing() {
-        func whereIs<T>(_ type: T.Type, randomness: consuming FuzzerInt) where T: BinaryInteger {
-            let index = T.isArbitrary ? Shift(Count(255)) : Shift<T.Magnitude>.max
+        func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
+            func random() -> T {
+                let index = IX.random(in: 000000000 ..< size, using: &randomness)!
+                return T.random(through: Shift(Count(index)), using: &randomness)
+            }
             
-            for _ in 0 ..< 16 {
-                let a0 = T.random(through: index, using: &randomness)
+            for _ in 0 ..< rounds {
+                let a0 = random()
                 let a1 = a0.toggled()
-                let b0 = T.random(through: index, using: &randomness)
+                let b0 = random()
                 let b1 = b0.toggled()
                 
                 always: do {
@@ -201,7 +204,7 @@ final class BinaryIntegerTestsOnBitwise: XCTestCase {
         }
         
         for type in binaryIntegers {
-            whereIs(type, randomness: fuzzer)
+            whereIs(type, size: IX(size: type) ?? 256, rounds: 32, randomness: fuzzer)
         }
     }
 }

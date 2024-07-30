@@ -516,7 +516,7 @@ cut infinity in half. Likewise, the log2(max+1) size must be promoted. To
 work with infinite numerical values, you must track where your values come 
 from. Keep in mind that recovery from failure is the main purpose of infinity.
 
-> ![NOTE]
+> [!NOTE]
 > The introduction of infinity is what permits \~(\~(x)) == x for all x.
 
 <a name="infiniintkit-addition"/>
