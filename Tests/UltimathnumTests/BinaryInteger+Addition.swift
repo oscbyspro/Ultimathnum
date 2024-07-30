@@ -10,6 +10,7 @@
 import CoreKit
 import DoubleIntKit
 import InfiniIntKit
+import RandomIntKit
 import TestKit
 
 //*============================================================================*
@@ -136,6 +137,49 @@ final class BinaryIntegerTestsOnAddition: XCTestCase {
         
         for type in binaryIntegers {
             whereIs(type)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Random
+    //=------------------------------------------------------------------------=
+    
+    func testAdditionByFuzzing() {
+        func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
+            func random() -> T {
+                let index = IX.random(in: 00000 ..< size, using: &randomness)!
+                let pattern = T.Signitude.random(through: Shift(Count(index)), using: &randomness)
+                return T(raw: pattern) // do not forget about infinite values!
+            }
+            
+            var values = Array(repeating: T.zero, count: 16)
+            for _ in 0 ..< rounds {
+                let base = random()
+                let increment = random()
+                var result: T = base
+                
+                for multiplier in values.indices {
+                    values[multiplier] = T(IX(multiplier)) &* increment &+ base
+                }
+                
+                for multiplier in values.indices {
+                    Test().same(result, values[multiplier])
+                    result &+= increment
+                }
+                
+                for multiplier in values.indices.reversed() {
+                    result &-= increment
+                    Test().same(result, values[multiplier])
+                }
+            }
+        }
+        
+        for type in binaryIntegers {
+            #if DEBUG
+            whereIs(type, size: IX(size: type) ?? 0256, rounds: 16, randomness: fuzzer)
+            #else
+            whereIs(type, size: IX(size: type) ?? 4096, rounds: 64, randomness: fuzzer)
+            #endif
         }
     }
 }
