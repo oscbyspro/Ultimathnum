@@ -376,4 +376,29 @@ final class BinaryIntegerTestsOnMultiplication: XCTestCase {
             #endif
         }
     }
+    
+    func testMultiplicationSquareProductByFuzzing() {
+        func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
+            func random() -> T {
+                let index = IX.random(in: 000000000 ..< size, using: &randomness)!
+                return T.random(through: Shift(Count(index)), using: &randomness)
+            }
+            
+            for _  in 0 ..< rounds {
+                let a = random()
+                let b = random()
+                let c = a.plus(b).squared().value
+                let d = a.squared().plus(a.times(b).times(2)).plus(b.squared()).value
+                Test().same(c,d)
+            }
+        }
+        
+        for type in binaryIntegers {
+            #if DEBUG
+            whereIs(type, size: IX(size: type) ?? 0256, rounds: 16, randomness: fuzzer)
+            #else
+            whereIs(type, size: IX(size: type) ?? 4096, rounds: 16, randomness: fuzzer)
+            #endif
+        }
+    }
 }
