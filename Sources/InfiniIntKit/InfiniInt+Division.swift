@@ -67,7 +67,7 @@ extension InfiniInt {
 // MARK: * Infini Int x Division x Unsigned
 //*============================================================================*
 
-extension InfiniInt where Source == Source.Magnitude {
+extension InfiniInt where Self: UnsignedInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

@@ -30,7 +30,7 @@ import CoreKit
 /// This means `Int64` for `I256` and `UInt64` for `U256`. `Swift.StaticBigInt` is a
 /// more appropriate integer literal type, but it is also more expensive as of `Swift 5.9`.
 ///
-@frozen public struct DoubleInt<Base: SystemsInteger>: SystemsInteger {
+@frozen public struct DoubleInt<Base: SystemsInteger>: SystemsInteger, Namespace.Foo, Namespace.Bar {
     
     public typealias Storage = Doublet<Base>
     

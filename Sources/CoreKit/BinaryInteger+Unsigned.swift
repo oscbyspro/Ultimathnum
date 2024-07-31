@@ -26,4 +26,4 @@
 ///     └──────────┴───────────┴───────────┘
 ///
 ///
-public protocol UnsignedInteger: EdgyInteger where Element: UnsignedInteger, Magnitude == Self { }
+public protocol UnsignedInteger: EdgyInteger, Namespace.Foo, Namespace.Bar where Element: UnsignedInteger, Magnitude == Self { }

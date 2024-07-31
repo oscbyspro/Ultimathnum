@@ -24,19 +24,16 @@ import CoreKit
 ///
 /// ### Development
 ///
-/// - TODO: Make it generic over its `Element` type.
-///
 /// - TODO: Precondition resizing `DataInt<Element>.capacity`.
 ///
-@frozen public struct InfiniInt<Source>: ArbitraryInteger where Source: SystemsInteger {
+@frozen public struct InfiniInt<Element>: ArbitraryInteger, Namespace.Foo, Namespace.Bar 
+where Element: SystemsInteger, Element.Element == Element {
+        
+    public typealias BitPattern = InfiniInt<Element.Magnitude>
     
-    public typealias Element = Source.Element
+    public typealias Magnitude  = InfiniInt<Element.Magnitude>
     
-    public typealias BitPattern = InfiniInt<Source.Magnitude>
-    
-    public typealias Magnitude  = InfiniInt<Source.Magnitude>
-    
-    public typealias Signitude  = InfiniInt<Source.Signitude>
+    public typealias Signitude  = InfiniInt<Element.Signitude>
     
     @usableFromInline typealias Storage = InfiniIntStorage<Element.Magnitude>
     
@@ -45,7 +42,7 @@ import CoreKit
     //=------------------------------------------------------------------------=
     
     @inlinable public static var mode: Signedness {
-        Source.mode
+        Element.mode
     }
     
     @inlinable public static var size: Count<IX> {
@@ -92,10 +89,10 @@ import CoreKit
 // MARK: + Un/signed
 //=----------------------------------------------------------------------------=
 
-extension InfiniInt:     EdgyInteger where Source: UnsignedInteger { }
-extension InfiniInt:   FiniteInteger where Source:   SignedInteger { }
-extension InfiniInt:   SignedInteger where Source:   SignedInteger { }
-extension InfiniInt: UnsignedInteger where Source: UnsignedInteger { }
+extension InfiniInt:     EdgyInteger where Element: UnsignedInteger { }
+extension InfiniInt:   FiniteInteger where Element:   SignedInteger { }
+extension InfiniInt:   SignedInteger where Element:   SignedInteger { }
+extension InfiniInt: UnsignedInteger where Element: UnsignedInteger { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Aliases

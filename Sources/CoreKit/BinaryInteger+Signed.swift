@@ -26,4 +26,4 @@
 ///     └──────────┴───────────┴───────────┘
 ///
 ///
-public protocol SignedInteger: FiniteInteger where Element: SignedInteger, Signitude == Self { }
+public protocol SignedInteger: FiniteInteger, Namespace.Foo, Namespace.Bar where Element: SignedInteger, Signitude == Self { }
