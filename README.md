@@ -98,6 +98,23 @@ to you are ever-present in generic code as well.
 > Binary integers are dead.\
 > Long live binary integers!
 
+```
+           ┌───────────┬───────────┐
+           │  Systems  │ Arbitrary │
+┌──────────┼───────────┤───────────┤
+│   Signed │ B,E,F,S,X │  A,B,F,X  │
+├──────────┼───────────┤───────────┤
+│ Unsigned │ B,E,F,S,Y │  A,B,E,Y  │
+└──────────┴───────────┴───────────┘
+ A) ArbitraryInteger: B
+ B)    BinaryInteger: -
+ E)      EdgyInteger: B
+ F)    FiniteInteger: B
+ S)   SystemsInteger: E, F
+ X)    SignedInteger: F
+ Y)  UnsignedInteger: E
+```
+
 This project presents a novel binary integer abstraction that unifies the different
 sizes. It views all binary integers as infinite bit sequences with various modes 
 of operation. It extends the maximum unsigned value to infinity and lets you recover 

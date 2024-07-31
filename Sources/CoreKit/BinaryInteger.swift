@@ -13,6 +13,21 @@
 
 /// A binary integer.
 ///
+///                ┌───────────┬───────────┐
+///                │  Systems  │ Arbitrary │
+///     ┌──────────┼───────────┤───────────┤
+///     │   Signed │ B,E,F,S,X │  A,B,F,X  │
+///     ├──────────┼───────────┤───────────┤
+///     │ Unsigned │ B,E,F,S,Y │  A,B,E,Y  │
+///     └──────────┴───────────┴───────────┘
+///      A) ArbitraryInteger: B
+///      B)    BinaryInteger: -
+///      E)      EdgyInteger: B
+///      F)    FiniteInteger: B
+///      S)   SystemsInteger: E, F
+///      X)    SignedInteger: F
+///      Y)  UnsignedInteger: E
+///
 /// ### Infinity
 ///
 /// The binary integer domain now includes infinite values! This lets you
