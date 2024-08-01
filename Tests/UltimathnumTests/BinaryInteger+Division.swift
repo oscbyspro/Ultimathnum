@@ -610,3 +610,61 @@ extension BinaryIntegerTestsOnDivision {
         }
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Recoverable
+//=----------------------------------------------------------------------------=
+
+extension BinaryIntegerTestsOnDivision {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testErrorPropagationMechanism() {
+        func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
+            func random() -> T {
+                let index = IX.random(in: 00000 ..< size, using: &randomness)!
+                let pattern = T.Signitude.random(through: Shift(Count(index)), using: &randomness)
+                return T(raw: pattern) // do not forget about infinite values!
+            }
+            
+            var success: IX = 0
+            var (index): IX = 0
+            
+            while (index)  < rounds {
+                let lhs: T = random()
+                let rhs: T = random()
+                
+                guard let rhs = Divisor(exactly: rhs) else { continue }
+                (index) += 1
+                
+                let division: Fallible<Division<T, T>> = lhs.division(rhs)
+                success &+= IX(Bit(lhs.veto(false).division(rhs) == division))
+                success &+= IX(Bit(lhs.veto(true ).division(rhs) == division.veto()))
+                
+                let quotient: Fallible<T> = lhs.quotient(rhs)
+                success &+= IX(Bit(lhs.veto(false).quotient(rhs) == quotient))
+                success &+= IX(Bit(lhs.veto(true ).quotient(rhs) == quotient.veto()))
+                
+                let remainder: Fallible<T> = Fallible(lhs.remainder(rhs))
+                success &+= IX(Bit(lhs.veto(false).remainder(rhs) == remainder))
+                success &+= IX(Bit(lhs.veto(true ).remainder(rhs) == remainder.veto()))
+                
+                let ceil: Fallible<T> = division.ceil()
+                success &+= IX(Bit(division.veto(false).ceil() == ceil))
+                success &+= IX(Bit(division.veto(true ).ceil() == ceil.veto()))
+                
+                let floor: Fallible<T> = division.floor()
+                success &+= IX(Bit(division.veto(false).floor() == floor))
+                success &+= IX(Bit(division.veto(true ).floor() == floor.veto()))
+            }
+            
+            Test().same(success, rounds &* 10)
+        }
+        
+        for type in binaryIntegers {
+            whereIs(type, size: IX(size: type) ?? 256, rounds: 8, randomness: fuzzer)
+        }
+    }
+}

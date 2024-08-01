@@ -143,6 +143,70 @@ final class BinaryIntegerTestsOnExponentiation: XCTestCase {
 }
 
 //=----------------------------------------------------------------------------=
+// MARK: + Recoverable
+//=----------------------------------------------------------------------------=
+
+extension BinaryIntegerTestsOnExponentiation {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testErrorPropagationMechanism() {
+        func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
+            func random() -> T {
+                let index = IX.random(in: 00000 ..< size, using: &randomness)!
+                let pattern = T.Signitude.random(through: Shift(Count(index)), using: &randomness)
+                return T(raw: pattern) // do not forget about infinite values!
+            }
+            
+            var success: IX = 0
+            let max: T = T.isArbitrary ? 16 : Esque<T>.max
+            
+            for _ in 0 ..< rounds {
+                let base: T  = random()
+                let exponent = Natural(T.random(in: 0...max))
+                let expectation: Fallible<T> = base.power(exponent)
+                success &+= IX(Bit(base            .power(exponent) == expectation))
+                success &+= IX(Bit(base.veto(false).power(exponent) == expectation))
+                success &+= IX(Bit(base.veto(true ).power(exponent) == expectation.veto()))
+            }
+            
+            Test().same(success, rounds &* 3)
+        }
+        
+        func whereIsUnsigned<T>(_ type: T.Type, rounds: IX, randomness: consuming FuzzerInt) where T: SystemsInteger & UnsignedInteger {
+            var success: IX = 0
+            
+            for _ in 0 ..< rounds {
+                let base: T  = T.random()
+                let exponent = T.random()
+                let expectation: Fallible<T> = base.power(exponent)
+                success &+= IX(Bit(base            .power(exponent)             == expectation))
+                success &+= IX(Bit(base            .power(exponent.veto(false)) == expectation))
+                success &+= IX(Bit(base            .power(exponent.veto(true )) == expectation.veto()))
+                success &+= IX(Bit(base.veto(false).power(exponent)             == expectation))
+                success &+= IX(Bit(base.veto(false).power(exponent.veto(false)) == expectation))
+                success &+= IX(Bit(base.veto(false).power(exponent.veto(true )) == expectation.veto()))
+                success &+= IX(Bit(base.veto(true ).power(exponent)             == expectation.veto()))
+                success &+= IX(Bit(base.veto(true ).power(exponent.veto(false)) == expectation.veto()))
+                success &+= IX(Bit(base.veto(true ).power(exponent.veto(true )) == expectation.veto()))
+            }
+            
+            Test().same(success, rounds &* 9)
+        }
+        
+        for type in binaryIntegers {
+            whereIs(type, size: IX(size: type) ?? 32, rounds: 4, randomness: fuzzer)
+        }
+        
+        for type in systemsIntegersWhereIsUnsigned {
+            whereIs(type, size: IX(size: type), rounds: 4, randomness: fuzzer)
+        }
+    }
+}
+
+//=----------------------------------------------------------------------------=
 // MARK: + Documentation
 //=----------------------------------------------------------------------------=
 
@@ -157,6 +221,6 @@ extension BinaryIntegerTestsOnExponentiation {
         Test().same(U8(2).power(Natural(3)), Fallible(008))
         Test().same(U8(3).power(Natural(5)), Fallible(243))
         Test().same(U8(5).power(Natural(7)), Fallible(045, error: true))
-        Test().same(U8.exactly(00000078125), Fallible(045, error: true))
+        Test().same(U8.exactly((000078125)), Fallible(045, error: true))
     }
 }

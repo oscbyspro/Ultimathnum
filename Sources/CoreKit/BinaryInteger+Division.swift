@@ -27,10 +27,6 @@ extension BinaryInteger {
         lhs.remainder(Divisor(rhs))
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Inout
-    //=------------------------------------------------------------------------=
-
     /// Forms the trapping `quotient` of `lhs` divided by `rhs`.
     @inlinable public static func /=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs / rhs
@@ -39,5 +35,28 @@ extension BinaryInteger {
     /// Forms the trapping `remainder` of `lhs` divided by `rhs`.
     @inlinable public static func %=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs % rhs
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Recoverable
+//=----------------------------------------------------------------------------=
+
+extension Fallible where Value: BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func quotient (_ divisor: borrowing Divisor<Value>) -> Fallible<Value> {
+        self.value.quotient (divisor).veto(self.error)
+    }
+    
+    @inlinable public consuming func remainder(_ divisor: borrowing Divisor<Value>) -> Fallible<Value> {
+        self.value.remainder(divisor).veto(self.error)
+    }
+    
+    @inlinable public consuming func division (_ divisor: borrowing Divisor<Value>) -> Fallible<Division<Value, Value>> {
+        self.value.division (divisor).veto(self.error)
     }
 }

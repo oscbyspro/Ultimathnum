@@ -404,3 +404,55 @@ final class BinaryIntegerTestsOnMultiplication: XCTestCase {
         }
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Recoverable
+//=----------------------------------------------------------------------------=
+
+extension BinaryIntegerTestsOnMultiplication {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testErrorPropagationMechanism() {
+        func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
+            var success: IX = 0
+            
+            func random() -> T {
+                let index = IX.random(in: 00000 ..< size, using: &randomness)!
+                let pattern = T.Signitude.random(through: Shift(Count(index)), using: &randomness)
+                return T(raw: pattern) // do not forget about infinite values!
+            }
+            
+            for _ in 0 ..< rounds {
+                let instance: T = random()
+                let expectation: Fallible<T> = instance.squared()
+                success &+= IX(Bit(instance            .squared() == expectation))
+                success &+= IX(Bit(instance.veto(false).squared() == expectation))
+                success &+= IX(Bit(instance.veto(true ).squared() == expectation.veto()))
+            }
+            
+            for _ in 0 ..< rounds {
+                let lhs: T = random()
+                let rhs: T = random()
+                let expectation: Fallible<T> = lhs.times(rhs)
+                success &+= IX(Bit(lhs            .times(rhs)             == expectation))
+                success &+= IX(Bit(lhs            .times(rhs.veto(false)) == expectation))
+                success &+= IX(Bit(lhs            .times(rhs.veto(true )) == expectation.veto()))
+                success &+= IX(Bit(lhs.veto(false).times(rhs)             == expectation))
+                success &+= IX(Bit(lhs.veto(false).times(rhs.veto(false)) == expectation))
+                success &+= IX(Bit(lhs.veto(false).times(rhs.veto(true )) == expectation.veto()))
+                success &+= IX(Bit(lhs.veto(true ).times(rhs)             == expectation.veto()))
+                success &+= IX(Bit(lhs.veto(true ).times(rhs.veto(false)) == expectation.veto()))
+                success &+= IX(Bit(lhs.veto(true ).times(rhs.veto(true )) == expectation.veto()))
+            }
+            
+            Test().same(success, rounds &* 12)
+        }
+        
+        for type in binaryIntegers {
+            whereIs(type, size: IX(size: type) ?? 256, rounds: 8, randomness: fuzzer)
+        }
+    }
+}

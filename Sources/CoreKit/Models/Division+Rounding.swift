@@ -31,3 +31,22 @@ extension Division where Quotient: BinaryInteger, Remainder: BinaryInteger {
         return instance.quotient.minus(increment)
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Recoverable
+//=----------------------------------------------------------------------------=
+
+extension Fallible {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func ceil<Quotient, Remainder>() -> Fallible<Quotient> where Value == Division<Quotient, Remainder> {
+        self.value.ceil().veto(self.error)
+    }
+    
+    @inlinable public consuming func floor<Quotient, Remainder>() -> Fallible<Quotient> where Value == Division<Quotient, Remainder> {
+        self.value.floor().veto(self.error)
+    }
+}

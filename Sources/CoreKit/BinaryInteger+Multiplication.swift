@@ -27,10 +27,6 @@ extension BinaryInteger {
         lhs.times(rhs).value
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Inout
-    //=------------------------------------------------------------------------=
-
     /// Forms the trapping result of `self * increment`.
     @inlinable public static func *=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs * rhs
@@ -43,7 +39,7 @@ extension BinaryInteger {
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Result
+// MARK: + Recoverable
 //=----------------------------------------------------------------------------=
 
 extension BinaryInteger {
@@ -54,6 +50,29 @@ extension BinaryInteger {
     
     @inlinable public consuming func times(_ result: borrowing Fallible<Self>) -> Fallible<Self> {
         self.times(result.value).veto(result.error)
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Recoverable
+//=----------------------------------------------------------------------------=
+
+extension Fallible where Value: BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func squared() -> Self {
+        self.value.squared().veto(self.error)
+    }
+    
+    @inlinable public consuming func times(_ other: borrowing Value) -> Self {
+        self.value.times(other).veto(self.error)
+    }
+    
+    @inlinable public consuming func times(_ other: borrowing Fallible<Value>) -> Self {
+        self.value.times(other).veto(self.error)
     }
 }
 
