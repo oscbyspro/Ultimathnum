@@ -72,30 +72,14 @@ extension BinaryInteger {
         return result.value.veto(result.error == Self.isSigned)
     }
     
-    /// Returns the result of `self + increment`.
-    @inlinable public consuming func plus(_ increment: Bool) -> Fallible<Self> {
-        switch Self.isSigned {
-        case true : self.minus(Self(repeating: Bit(increment)))
-        case false: self.plus (Self(           Bit(increment)))
-        }
-    }
-    
-    /// Returns the result of `self - increment`.
-    @inlinable public consuming func minus(_ decrement: Bool) -> Fallible<Self> {
-        switch Self.isSigned {
-        case true : self.plus (Self(repeating: Bit(decrement)))
-        case false: self.minus(Self(           Bit(decrement)))
-        }
+    /// The next value in arithmetic progression.
+    @inlinable public consuming func incremented(_ condition: Bool = true) -> Fallible<Self> {
+        self.plus(Self(Bit(condition)))  // size >= 8
     }
     
     /// The next value in arithmetic progression.
-    @inlinable public consuming func incremented() -> Fallible<Self> {
-        self.plus(true)
-    }
-    
-    /// The next value in arithmetic progression.
-    @inlinable public consuming func decremented() -> Fallible<Self> {
-        self.minus(true)
+    @inlinable public consuming func decremented(_ condition: Bool = true) -> Fallible<Self> {
+        self.minus(Self(Bit(condition))) // size >= 8
     }
 }
 
@@ -155,24 +139,14 @@ extension Fallible where Value: BinaryInteger {
         self.value.minus(other).veto(self.error)
     }
     
-    /// Returns the result of `self + other`.
-    @inlinable public consuming func plus(_ other: Bool) -> Fallible<Value> {
-        self.value.plus(other).veto(self.error)
-    }
-    
-    /// Returns the result of `self - other`.
-    @inlinable public consuming func minus(_ other: Bool) -> Fallible<Value> {
-        self.value.minus(other).veto(self.error)
-    }
-    
     /// Returns the next value in arithmetic progression.
-    @inlinable public consuming func incremented() -> Fallible<Value> {
-        self.plus(true)
+    @inlinable public consuming func incremented(_ condition: Bool = true) -> Fallible<Value> {
+        self.value.incremented(condition).veto(self.error)
     }
     
     /// Returns the previous value in arithmetic progression.
-    @inlinable public consuming func decremented() -> Fallible<Value> {
-        self.minus(true)
+    @inlinable public consuming func decremented(_ condition: Bool = true) -> Fallible<Value> {
+        self.value.decremented(condition).veto(self.error)
     }
 }
 
@@ -189,20 +163,16 @@ extension SystemsInteger {
     /// Returns the result of `self` + (`other` + `bit`).
     @inlinable public consuming func plus(_ other: borrowing Self, plus bit: Bool) -> Fallible<Self> {
         let a: Bool, b: Bool
-        
         (self, a) = self.plus(other).components()
-        (self, b) = self.plus((bit)).components()
-        
+        (self, b) = self.incremented(bit).components()
         return self.veto(a != b)
     }
     
     /// Returns the result of `self` - (`other` + `bit`).
     @inlinable public consuming func minus(_ other: borrowing Self, plus bit: Bool) -> Fallible<Self> {
         let a: Bool, b: Bool
-        
         (self, a) = self.minus(other).components()
-        (self, b) = self.minus((bit)).components()
-        
+        (self, b) = self.decremented(bit).components()
         return self.veto(a != b)
     }
 }

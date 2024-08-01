@@ -58,12 +58,12 @@ extension Test {
         }
         
         increment: if rhs == 0 {
-            same(lhs.plus(false),   expectation)
+            same(lhs.incremented(false), expectation)
         }
         
         increment: if rhs == 1 {
-            same(lhs.plus(true),    expectation)
-            same(lhs.incremented(), expectation)
+            same(lhs.incremented(true),  expectation)
+            same(lhs.incremented(    ),  expectation)
         }
         
         comparison: if let exp = expectation.optional() {
@@ -113,12 +113,12 @@ extension Test {
         }
         
         decrement: if rhs == 0 {
-            same(lhs.minus(false),  expectation)
+            same(lhs.decremented(false), expectation)
         }
         
         decrement: if rhs == 1 {
-            same(lhs.minus(true),   expectation)
-            same(lhs.decremented(), expectation)
+            same(lhs.decremented(true),  expectation)
+            same(lhs.decremented(    ),  expectation)
         }
         
         negate: if lhs == 0 {

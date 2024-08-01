@@ -22,7 +22,7 @@ extension TripleInt {
     @inlinable package consuming func minus(_ decrement: borrowing DoubleInt<Base.Magnitude>) -> Fallible<Self> {
         let low  = self.storage.low .minus(decrement.storage.low)
         let mid  = self.storage.mid .minus(Mid(raw: decrement.storage.high), plus: low.error)
-        let high = self.storage.high.minus(mid.error)
+        let high = self.storage.high.decremented((mid.error))
         return Fallible(Self(low: low.value, mid: mid.value, high: high.value), error: high.error)
     }
     

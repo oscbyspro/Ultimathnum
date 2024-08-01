@@ -196,14 +196,17 @@ extension BinaryIntegerTestsOnAddition {
     
     func testErrorPropagationMechanism() {
         func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
+            //=----------------------------------=
             var success: IX = 0
-            
+            //=----------------------------------=
             func random() -> T {
                 let index = IX.random(in: 00000 ..< size, using: &randomness)!
                 let pattern = T.Signitude.random(through: Shift(Count(index)), using: &randomness)
                 return T(raw: pattern) // do not forget about infinite values!
             }
-            
+            //=----------------------------------=
+            // MARK: BinaryInteger/negated()
+            //=----------------------------------=
             for _ in 0 ..< rounds {
                 let instance = random()
                 let expectation: Fallible<T> = instance.negated()
@@ -211,73 +214,9 @@ extension BinaryIntegerTestsOnAddition {
                 success &+= IX(Bit(instance.veto(false).negated() == expectation))
                 success &+= IX(Bit(instance.veto(true ).negated() == expectation.veto()))
             }
-            
-            always: do {
-                let instance = Esque<T>.max
-                let expectation: Fallible<T> = instance.incremented()
-                success &+= IX(Bit(instance            .incremented() == expectation))
-                success &+= IX(Bit(instance.veto(false).incremented() == expectation))
-                success &+= IX(Bit(instance.veto(true ).incremented() == expectation.veto()))
-            }
-            
-            for _ in 0 ..< rounds {
-                let instance = random()
-                let expectation: Fallible<T> = instance.incremented()
-                success &+= IX(Bit(instance            .incremented() == expectation))
-                success &+= IX(Bit(instance.veto(false).incremented() == expectation))
-                success &+= IX(Bit(instance.veto(true ).incremented() == expectation.veto()))
-            }
-            
-            always: do {
-                let instance = Esque<T>.min
-                let expectation: Fallible<T> = instance.decremented()
-                success &+= IX(Bit(instance            .decremented() == expectation))
-                success &+= IX(Bit(instance.veto(false).decremented() == expectation))
-                success &+= IX(Bit(instance.veto(true ).decremented() == expectation.veto()))
-            }
-            
-            for _ in 0 ..< rounds {
-                let instance = random()
-                let expectation: Fallible<T> = instance.decremented()
-                success &+= IX(Bit(instance            .decremented() == expectation))
-                success &+= IX(Bit(instance.veto(false).decremented() == expectation))
-                success &+= IX(Bit(instance.veto(true ).decremented() == expectation.veto()))
-            }
-            
-            for bit in [true, false] {
-                let instance = Esque<T>.max
-                let expectation: Fallible<T> = instance.plus(bit)
-                success &+= IX(Bit(instance            .plus(bit) == expectation))
-                success &+= IX(Bit(instance.veto(false).plus(bit) == expectation))
-                success &+= IX(Bit(instance.veto(true ).plus(bit) == expectation.veto()))
-            }
-            
-            for _ in 0 ..< rounds {
-                let lhs = random()
-                let rhs = Bool(random().lsb)
-                let expectation: Fallible<T> = lhs.plus(rhs)
-                success &+= IX(Bit(lhs            .plus(rhs) == expectation))
-                success &+= IX(Bit(lhs.veto(false).plus(rhs) == expectation))
-                success &+= IX(Bit(lhs.veto(true ).plus(rhs) == expectation.veto()))
-            }
-            
-            for bit in [true, false] {
-                let instance = Esque<T>.min
-                let expectation: Fallible<T> = instance.minus(bit)
-                success &+= IX(Bit(instance            .minus(bit) == expectation))
-                success &+= IX(Bit(instance.veto(false).minus(bit) == expectation))
-                success &+= IX(Bit(instance.veto(true ).minus(bit) == expectation.veto()))
-            }
-            
-            for _ in 0 ..< rounds {
-                let lhs = random()
-                let rhs = Bool(random().lsb)
-                let expectation: Fallible<T> = lhs.minus(rhs)
-                success &+= IX(Bit(lhs            .minus(rhs) == expectation))
-                success &+= IX(Bit(lhs.veto(false).minus(rhs) == expectation))
-                success &+= IX(Bit(lhs.veto(true ).minus(rhs) == expectation.veto()))
-            }
-            
+            //=----------------------------------=
+            // MARK: BinaryInteger/plus()
+            //=----------------------------------=
             for _ in 0 ..< rounds {
                 let lhs = random()
                 let rhs = random()
@@ -292,7 +231,9 @@ extension BinaryIntegerTestsOnAddition {
                 success &+= IX(Bit(lhs.veto(true ).plus(rhs.veto(false)) == expectation.veto()))
                 success &+= IX(Bit(lhs.veto(true ).plus(rhs.veto(true )) == expectation.veto()))
             }
-            
+            //=----------------------------------=
+            // MARK: BinaryInteger/minus()
+            //=----------------------------------=
             for _ in 0 ..< rounds {
                 let lhs = random()
                 let rhs = random()
@@ -307,8 +248,88 @@ extension BinaryIntegerTestsOnAddition {
                 success &+= IX(Bit(lhs.veto(true ).minus(rhs.veto(false)) == expectation.veto()))
                 success &+= IX(Bit(lhs.veto(true ).minus(rhs.veto(true )) == expectation.veto()))
             }
+            //=----------------------------------=
+            // MARK: BinaryInteger/incremented()
+            //=----------------------------------=
+            unconditional: do {
+                always: do {
+                    let instance = Esque<T>.max
+                    let expectation: Fallible<T> = instance.incremented()
+                    success &+= IX(Bit(instance            .incremented() == expectation))
+                    success &+= IX(Bit(instance.veto(false).incremented() == expectation))
+                    success &+= IX(Bit(instance.veto(true ).incremented() == expectation.veto()))
+                    Test().same(expectation.error, T.isEdgy)
+                }
+                
+                for _ in 0 ..< rounds {
+                    let instance = random()
+                    let expectation: Fallible<T> = instance.incremented()
+                    success &+= IX(Bit(instance            .incremented() == expectation))
+                    success &+= IX(Bit(instance.veto(false).incremented() == expectation))
+                    success &+= IX(Bit(instance.veto(true ).incremented() == expectation.veto()))
+                }
+            }
             
-            Test().same(success, rounds &* 33 &+ 18)
+            for condition in [true, false] {
+                always: do {
+                    let instance = Esque<T>.max
+                    let expectation: Fallible<T> = instance.incremented(condition)
+                    success &+= IX(Bit(instance            .incremented(condition) == expectation))
+                    success &+= IX(Bit(instance.veto(false).incremented(condition) == expectation))
+                    success &+= IX(Bit(instance.veto(true ).incremented(condition) == expectation.veto()))
+                    Test().same(expectation.error, T.isEdgy && condition)
+                }
+                
+                for _ in 0 ..< rounds {
+                    let instance  = random()
+                    let expectation: Fallible<T> = instance.incremented(condition)
+                    success &+= IX(Bit(instance            .incremented(condition) == expectation))
+                    success &+= IX(Bit(instance.veto(false).incremented(condition) == expectation))
+                    success &+= IX(Bit(instance.veto(true ).incremented(condition) == expectation.veto()))
+                }
+            }
+            //=----------------------------------=
+            // MARK: BinaryInteger/decremented()
+            //=----------------------------------=
+            unconditional: do {
+                always: do {
+                    let instance = Esque<T>.min
+                    let expectation: Fallible<T> = instance.decremented()
+                    success &+= IX(Bit(instance            .decremented() == expectation))
+                    success &+= IX(Bit(instance.veto(false).decremented() == expectation))
+                    success &+= IX(Bit(instance.veto(true ).decremented() == expectation.veto()))
+                    Test().same(expectation.error, T.isEdgy)
+                }
+                
+                for _ in 0 ..< rounds {
+                    let instance = random()
+                    let expectation: Fallible<T> = instance.decremented()
+                    success &+= IX(Bit(instance            .decremented() == expectation))
+                    success &+= IX(Bit(instance.veto(false).decremented() == expectation))
+                    success &+= IX(Bit(instance.veto(true ).decremented() == expectation.veto()))
+                }
+            }
+            
+            for condition in [true, false] {
+                always: do {
+                    let instance = Esque<T>.min
+                    let expectation: Fallible<T> = instance.decremented(condition)
+                    success &+= IX(Bit(instance            .decremented(condition) == expectation))
+                    success &+= IX(Bit(instance.veto(false).decremented(condition) == expectation))
+                    success &+= IX(Bit(instance.veto(true ).decremented(condition) == expectation.veto()))
+                    Test().same(expectation.error, T.isEdgy && condition)
+                }
+                
+                for _ in 0 ..< rounds {
+                    let instance = random()
+                    let expectation: Fallible<T> = instance.decremented(condition)
+                    success &+= IX(Bit(instance            .decremented(condition) == expectation))
+                    success &+= IX(Bit(instance.veto(false).decremented(condition) == expectation))
+                    success &+= IX(Bit(instance.veto(true ).decremented(condition) == expectation.veto()))
+                }
+            }
+            //=----------------------------------=
+            Test().same(success, rounds &* 39 &+ 18)
         }
         
         for type in binaryIntegers {
