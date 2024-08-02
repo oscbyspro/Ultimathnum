@@ -102,7 +102,7 @@ extension DoubleInt where Base == Base.Magnitude {
     //=------------------------------------------------------------------------=
     
     @inlinable internal consuming func division2121(unchecked divisor: Divisor<Base>) -> Division<Self, Base> {
-        let high = self.high.division(divisor).unchecked()
+        let high = self.high.division(divisor)  as Division<Base, Base>
         let low  = Base.division(Doublet(low:   self.low, high: high.remainder), by: divisor).unchecked()
         return Division(quotient: Self(low: low.quotient, high: high.quotient), remainder: low.remainder)
     }
@@ -135,7 +135,7 @@ extension DoubleInt where Base == Base.Magnitude {
         if  self.high.isZero {
             Swift.assert(self.high.isZero, "dividend must fit in one half")
             Swift.assert(divisor.value.high.isZero, "divisor must fit in one half")
-            let result: Division<Base, Base> = self.low.division(Divisor(unchecked: divisor.value.low)).unchecked()
+            let result: Division<Base, Base> = self.low.division(Divisor(unchecked:   divisor.value.low))
             return Division(quotient: Self(low: result.quotient), remainder: Self(low: result.remainder))
         }
         //=--------------------------------------=
