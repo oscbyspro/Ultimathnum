@@ -623,14 +623,14 @@ extension BinaryIntegerTestsOnDivision {
     
     func testErrorPropagationMechanism() {
         func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
+            var success: IX = 0
+            var (index): IX = 0
+            
             func random() -> T {
                 let index = IX.random(in: 00000 ..< size, using: &randomness)!
                 let pattern = T.Signitude.random(through: Shift(Count(index)), using: &randomness)
                 return T(raw: pattern) // do not forget about infinite values!
             }
-            
-            var success: IX = 0
-            var (index): IX = 0
             
             while (index)  < rounds {
                 let lhs: T = random()
@@ -663,8 +663,35 @@ extension BinaryIntegerTestsOnDivision {
             Test().same(success, rounds &* 10)
         }
         
+        func whereIsUnsignedSystemsInteger<T>(_ type: T.Type, rounds: IX, randomness: consuming FuzzerInt) where T: SystemsInteger & UnsignedInteger {
+            var success: IX = 0
+            var (index): IX = 0
+            
+            while (index)  < rounds {
+                let lhs: T = T.random()
+                let rhs: T = T.random()
+                
+                guard let rhs = Divisor(exactly: rhs) else { continue }
+                (index) += 1
+                
+                let division: Fallible<Division<T, T>> = lhs.division(rhs)
+                success &+= IX(Bit(division.error == false))
+                success &+= IX(Bit(lhs.division(rhs) == division.value))
+                
+                let quotient: Fallible<T> = lhs.quotient(rhs)
+                success &+= IX(Bit(quotient.error == false))
+                success &+= IX(Bit(lhs.quotient(rhs) == quotient.value))
+            }
+            
+            Test().same(success, rounds &* 4)
+        }
+        
         for type in binaryIntegers {
-            whereIs(type, size: IX(size: type) ?? 256, rounds: 8, randomness: fuzzer)
+            whereIs(type, size: IX(size: type) ?? 256, rounds: 08, randomness: fuzzer)
+        }
+        
+        for type in systemsIntegersWhereIsUnsigned {
+            whereIsUnsignedSystemsInteger((((type))),  rounds: 32, randomness: fuzzer)
         }
     }
 }

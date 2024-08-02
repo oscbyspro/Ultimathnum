@@ -60,3 +60,22 @@ extension Fallible where Value: BinaryInteger {
         self.value.division (divisor).veto(self.error)
     }
 }
+
+//*============================================================================*
+// MARK: * Binary Integer x Division x Systems x Unsigned
+//*============================================================================*
+
+extension BinaryInteger where Self: SystemsInteger & UnsignedInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func quotient (_ divisor: borrowing Divisor<Self>) -> Self {
+        self.quotient(divisor).unchecked("SystemsInteger & UnsignedInteger")
+    }
+    
+    @inlinable public consuming func division (_ divisor: borrowing Divisor<Self>) -> Division<Self, Self> {
+        self.division(divisor).unchecked("SystemsInteger & UnsignedInteger")
+    }
+}
