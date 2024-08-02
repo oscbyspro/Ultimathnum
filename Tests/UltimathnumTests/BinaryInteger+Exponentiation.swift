@@ -25,13 +25,13 @@ final class BinaryIntegerTestsOnExponentiation: XCTestCase {
     
     func testRaiseTrivialCases() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            let small: ClosedRange<T> = 0 ... 11
-            let large: ClosedRange<T> = Esque<T>.bot.minus(3).unwrap() ... Esque<T>.bot
+            let small = ( 0 as T.Magnitude) ... 11
+            let large = (~4 as T.Magnitude) ... T.Magnitude.max
             
-            for exponent: T in [small, large].joined() {
-                Test().same(( 0 as T).power(Natural(exponent)), Fallible(exponent.isZero ? 00001 : 0))
-                Test().same(( 1 as T).power(Natural(exponent)), Fallible(1))
-                Test().same((~0 as T).power(Natural(exponent)), Fallible(Bool(exponent.lsb) ? ~0 : 1, error: !T.isSigned && exponent >= 2))
+            for exponent: T.Magnitude in [small, large].joined() {
+                Test().same(( 0 as T).power(exponent), Fallible(exponent.isZero ? 00001 : 0))
+                Test().same(( 1 as T).power(exponent), Fallible(1))
+                Test().same((~0 as T).power(exponent), Fallible(Bool(exponent.lsb) ? ~0 : 1, error: !T.isSigned && exponent >= 2))
             }
         }
         
@@ -63,8 +63,8 @@ final class BinaryIntegerTestsOnExponentiation: XCTestCase {
         """)!
         
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            if  let exponent = T.exactly(2239).optional()  {
-                Test().same(T(3).power(Natural(exponent)), T.exactly(expectation))
+            if  let exponent = T.Magnitude.exactly(2239).optional() {
+                Test().same(T(3).power(exponent), T.exactly(expectation))
             }
         }
         
@@ -76,20 +76,6 @@ final class BinaryIntegerTestsOnExponentiation: XCTestCase {
     //=------------------------------------------------------------------------=
     // MARK: Tests x Random
     //=------------------------------------------------------------------------=
-    
-    func testRaiseConvenienceForNaturalTypes() {
-        func whereIs<T>(_ type: T.Type, randomness: consuming FuzzerInt) where T: SystemsInteger & UnsignedInteger {
-            for _  in 0 ..< 4 {
-                let a = T.random()
-                let b = T.random()
-                Test().same(a.power(b), a.power(Natural(b)))
-            }
-        }
-        
-        for type in systemsIntegersWhereIsUnsigned {
-            whereIs(type, randomness: fuzzer)
-        }
-    }
     
     func testRaiseRandomByKnownExponent() {
         func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
@@ -103,12 +89,11 @@ final class BinaryIntegerTestsOnExponentiation: XCTestCase {
                 let base  = random()
                 var power = Fallible(1 as T)
                 
-                for exponent: T in 0 ..< 8 {
-                    Test().same(base.power(Natural(exponent)), power)
+                for exponent: T.Magnitude in 0 ..< 8 {
+                    Test().same(base.power(exponent), power)
                     power = power.times(base)
                 }
             }
-
         }
         
         for type in binaryIntegers {
@@ -122,16 +107,12 @@ final class BinaryIntegerTestsOnExponentiation: XCTestCase {
     
     func testRaiseByFuzzing() {
         func whereIs<T>(_ type: T.Type, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
-            let max: T = switch true {
-            case T.isArbitrary: 255
-            case T.isSigned: T.lsb.up(Shift.max).toggled()
-            default: T.zero.toggled()
-            }
+            let max = T.isArbitrary ? 255 : T.Magnitude.max
             
             for _  in 0 ..< rounds {
-                let x = Natural(T.random(in: T.zero ... max, using: &randomness))
+                let x = T.Magnitude.random(in: 0 ... max, using: &randomness)
                 let a = T(3).times(T(5)).power(x)
-                let b = T(3).power(x).times(T(05).power(x))
+                let b = T(3).power(x).times(T( 5).power(x))
                 Test().same(a, b)
             }
         }
@@ -165,26 +146,11 @@ extension BinaryIntegerTestsOnExponentiation {
             }
             
             var success: IX = 0
-            let max: T = T.isArbitrary ? 16 : Esque<T>.max
+            let max = T.isArbitrary ? 16 : T.Magnitude.max
             
             for _ in 0 ..< rounds {
                 let base: T  = random()
-                let exponent = Natural(T.random(in: 0...max))
-                let expectation: Fallible<T> = base.power(exponent)
-                success &+= IX(Bit(base            .power(exponent) == expectation))
-                success &+= IX(Bit(base.veto(false).power(exponent) == expectation))
-                success &+= IX(Bit(base.veto(true ).power(exponent) == expectation.veto()))
-            }
-            
-            Test().same(success, rounds &* 3)
-        }
-        
-        func whereIsUnsigned<T>(_ type: T.Type, rounds: IX, randomness: consuming FuzzerInt) where T: SystemsInteger & UnsignedInteger {
-            var success: IX = 0
-            
-            for _ in 0 ..< rounds {
-                let base: T  = T.random()
-                let exponent = T.random()
+                let exponent = T.Magnitude.random(in: 0...max, using: &randomness)
                 let expectation: Fallible<T> = base.power(exponent)
                 success &+= IX(Bit(base            .power(exponent)             == expectation))
                 success &+= IX(Bit(base            .power(exponent.veto(false)) == expectation))
@@ -203,10 +169,6 @@ extension BinaryIntegerTestsOnExponentiation {
         for type in binaryIntegers {
             whereIs(type, size: IX(size: type) ?? 32, rounds: 4, randomness: fuzzer)
         }
-        
-        for type in systemsIntegersWhereIsUnsigned {
-            whereIs(type, size: IX(size: type), rounds: 4, randomness: fuzzer)
-        }
     }
 }
 
@@ -221,10 +183,9 @@ extension BinaryIntegerTestsOnExponentiation {
     //=------------------------------------------------------------------------=
     
     func testBinaryIntegerDocumentation() {
-        Test().same(U8(1).power(Natural(2)), Fallible(001))
-        Test().same(U8(2).power(Natural(3)), Fallible(008))
-        Test().same(U8(3).power(Natural(5)), Fallible(243))
-        Test().same(U8(5).power(Natural(7)), Fallible(045, error: true))
-        Test().same(U8.exactly((000078125)), Fallible(045, error: true))
+        Test().same(U8(1).power(2), Fallible(001))
+        Test().same(U8(2).power(3), Fallible(008))
+        Test().same(U8(3).power(5), Fallible(243))
+        Test().same(U8(5).power(7), Fallible(045, error: true))
     }
 }
