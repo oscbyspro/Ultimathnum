@@ -19,7 +19,7 @@
     
     /// A protocol used to manipulate the reduction order.
     ///
-    /// See also: Slava Pestov's forum [post][1].
+    /// See also: Slava Pestov's forum [comment][1].
     ///
     /// [1]: https://forums.swift.org/t/fixedwidth-cannot-build-rewrite-system-for-protocol/64285/7
     ///
@@ -27,7 +27,7 @@
     
     /// A protocol used to manipulate the reduction order.
     ///
-    /// See also: Slava Pestov's forum [post][1].
+    /// See also: Slava Pestov's forum [comment][1].
     ///
     /// [1]: https://forums.swift.org/t/fixedwidth-cannot-build-rewrite-system-for-protocol/64285/7
     ///
