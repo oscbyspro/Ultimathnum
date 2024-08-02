@@ -25,9 +25,13 @@ final class BinaryIntegerTestsOnExponentiation: XCTestCase {
     
     func testRaiseTrivialCases() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            for exponent: T in 0 ..< 16 {
-                Test().same(T(0).power(Natural(exponent)), Fallible(exponent.isZero ? 1 : 0))
-                Test().same(T(1).power(Natural(exponent)), Fallible(1))
+            let small: ClosedRange<T> = 0 ... 11
+            let large: ClosedRange<T> = Esque<T>.bot.minus(3).unwrap() ... Esque<T>.bot
+            
+            for exponent: T in [small, large].joined() {
+                Test().same(( 0 as T).power(Natural(exponent)), Fallible(exponent.isZero ? 00001 : 0))
+                Test().same(( 1 as T).power(Natural(exponent)), Fallible(1))
+                Test().same((~0 as T).power(Natural(exponent)), Fallible(Bool(exponent.lsb) ? ~0 : 1, error: !T.isSigned && exponent >= 2))
             }
         }
         
