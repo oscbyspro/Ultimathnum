@@ -18,11 +18,13 @@ extension CoreInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public func quotient (_ divisor: Divisor<Self>) -> Fallible<Self> {
+        Swift.assert(!divisor.value.isZero, String.brokenInvariant())
         let result = self.base.dividedReportingOverflow(by: divisor.value.base)
-        return Self(result.partialValue).veto(result.overflow)
+        return Self(result.partialValue).veto(Self.isSigned && result.overflow)
     }
     
     @inlinable public func remainder(_ divisor: Divisor<Self>) -> Self {
+        Swift.assert(!divisor.value.isZero, String.brokenInvariant())
         let result = self.base.remainderReportingOverflow(dividingBy: divisor.value.base)
         return Self(result.partialValue)
     }
@@ -42,7 +44,7 @@ extension CoreInteger {
 extension CoreIntegerWhereIsSigned {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Composition
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     @inlinable public static func division(_ dividend: Doublet<Self>, by divisor: Divisor<Self>) -> Fallible<Division<Self, Self>> {
@@ -82,7 +84,7 @@ extension CoreIntegerWhereIsSigned {
 extension CoreIntegerWhereIsUnsigned {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Composition
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     @inlinable public static func division(_ dividend: Doublet<Self>, by divisor: Divisor<Self>) -> Fallible<Division<Self, Self>> {
