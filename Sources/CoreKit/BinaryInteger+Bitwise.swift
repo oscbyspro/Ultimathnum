@@ -129,4 +129,36 @@ extension SystemsInteger {
             return self.reversed(U8.self)
         }
     }
+    
+    /// Accesses the bit at the given `index`.
+    @inlinable public subscript(index: Shift<Magnitude>) -> Bit {
+        borrowing get {
+            if  Self.size == Element.size {
+                return (copy self).down(index).lsb
+
+            }   else {
+                return self.withUnsafeBinaryIntegerBody {
+                    typealias DX = Division<UX, UX>
+                    let division = UX(raw: index.value).division(Divisor(size: Element.self)) as DX
+                    let subindex = Shift<Element.Magnitude>(unchecked: Count(raw: division.remainder))
+                    return $0[unchecked: IX(raw: division.quotient)][subindex]
+                }
+            }
+        }
+        
+        mutating set {
+            if  Self.size == Element.size {
+                self &= Self.lsb.up(index).toggled()
+                self |= Self(((newValue))).up(index)
+                
+            }   else {
+                self.withUnsafeMutableBinaryIntegerBody {
+                    typealias DX = Division<UX, UX>
+                    let division = UX(raw: index.value).division(Divisor(size: Element.self)) as DX
+                    let subindex = Shift<Element.Magnitude>(unchecked: Count(raw: division.remainder))
+                    $0[unchecked:  IX(raw: division.quotient)][subindex] = newValue
+                }
+            }
+        }
+    }
 }

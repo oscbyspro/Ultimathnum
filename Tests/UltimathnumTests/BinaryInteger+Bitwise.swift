@@ -154,6 +154,54 @@ final class BinaryIntegerTestsOnBitwise: XCTestCase {
         }
     }
     
+    func testGetSetBitAtIndex() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            var result: T   = T.zero
+            var expectation = T.Magnitude.zero
+            let range = 0 ..< IX(size: T.self)
+            
+            Test().same(result, T(repeating: 0))
+            
+            for index: IX in range {
+                expectation <<= T.Magnitude.lsb
+                expectation  |= T.Magnitude.lsb
+                result[Shift(Count(index))].toggle()
+                Test().same(result, T(raw: expectation))
+            }
+            
+            Test().same(result, T(repeating: 1))
+            
+            for index: IX in range {
+                expectation <<= T.Magnitude.lsb
+                result[Shift(Count(index))].toggle()
+                Test().same(result, T(raw: expectation))
+            }
+            
+            Test().same(result, T(repeating: 0))
+            
+            for index: IX in range.reversed() {
+                expectation >>= T.Magnitude.lsb
+                expectation  |= T.Magnitude.msb
+                result[Shift(Count(index))].toggle()
+                Test().same(result, T(raw: expectation))
+            }
+            
+            Test().same(result, T(repeating: 1))
+            
+            for index: IX in range.reversed() {
+                expectation >>= T.Magnitude.lsb
+                result[Shift(Count(index))].toggle()
+                Test().same(result, T(raw: expectation))
+            }
+            
+            Test().same(result, T(repeating: 0))
+        }
+        
+        for type in systemsIntegers {
+            whereIs(type)
+        }
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Tests x Random
     //=------------------------------------------------------------------------=

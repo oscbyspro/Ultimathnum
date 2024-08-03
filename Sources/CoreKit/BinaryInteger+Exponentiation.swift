@@ -65,9 +65,8 @@ extension BinaryInteger {
             return Self.raise(self, to: Natural(unchecked: exponent))
             
         }   else {
-            var magic = UX(clamping:exponent) // the allocation limit is IX.max
-            ((((magic)))) &= UX(01).toggled() // preserves the lsb to toggle ~0
-            ((((magic)))) |= UX(exponent.lsb) // preserves the lsb to toggle ~0
+            var magic = UX(clamping: (((exponent)))) // the allocation limit is IX.max
+            ((((magic))))[Shift.min] =  exponent.lsb // preserves the lsb to toggle ~0
             return Self.raise(self, to: Natural(unchecked: magic))
         }
     }
