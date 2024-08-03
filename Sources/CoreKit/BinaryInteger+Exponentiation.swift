@@ -35,16 +35,17 @@ extension BinaryInteger {
         
         exponentiation: while true {
             if  Bool(exponent.lsb) {
-                power = power.times(multiplier)
+                power = power.times(multiplier.value)
             }
             
             exponent = exponent.down(Shift(unchecked: Count(unchecked: 1)))
-            if exponent.isZero { break }
+            
+            if  exponent.isZero {
+                return (power).veto(multiplier.error)
+            }
             
             multiplier = multiplier.squared()
         }
-        
-        return power // as Fallible<Self>
     }
     
     //=------------------------------------------------------------------------=
