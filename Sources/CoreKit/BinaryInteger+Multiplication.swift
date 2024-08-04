@@ -87,7 +87,7 @@ extension SystemsInteger {
     //=------------------------------------------------------------------------=
     
     /// Returns the full result of `self * multiplier + increment`.
-    @inlinable public consuming func multiplication(_ multiplier: Self, plus increment: Magnitude) -> Doublet<Self> {
+    @inlinable public borrowing func multiplication(_ multiplier: Self, plus increment: Magnitude) -> Doublet<Self> {
         let bit: Bool; var   product = self.multiplication(multiplier)
         (product.low, bit) = product.low .plus(increment).components()
         (product.high)     = product.high.incremented(bit).unchecked()
