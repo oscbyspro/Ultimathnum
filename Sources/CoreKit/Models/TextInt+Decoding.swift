@@ -84,7 +84,7 @@ extension TextInt {
         //=--------------------------------------=
         // capacity is measured in radix powers
         //=--------------------------------------=
-        let divisor  = Divisor(unchecked: self.exponentiation.exponent)
+        let divisor  = Nonzero(unchecked: self.exponentiation.exponent)
         var (stride) = IX(numerals.count).remainder(divisor)
         var capacity = IX(numerals.count).quotient (divisor).unchecked()
         
@@ -143,7 +143,7 @@ extension TextInt {
         //=--------------------------------------=
         // capacity is measured in radix powers
         //=--------------------------------------=
-        let divisor  = Divisor(unchecked: self.exponentiation.exponent)
+        let divisor  = Nonzero(unchecked: self.exponentiation.exponent)
         var stride   = IX(numerals.count).remainder(divisor)
         var capacity = IX(numerals.count).quotient (divisor).unchecked()
         

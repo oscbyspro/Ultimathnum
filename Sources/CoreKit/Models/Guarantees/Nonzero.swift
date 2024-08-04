@@ -8,7 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Divisor
+// MARK: * Nonzero
 //*============================================================================*
 
 /// A nonzero value.
@@ -24,11 +24,11 @@
 /// init(unchecked:) // error: unchecked
 /// ```
 ///
-@frozen public struct Divisor<Value>: BitCastable, Equatable where Value: BinaryInteger {
+@frozen public struct Nonzero<Value>: BitCastable, Equatable where Value: BinaryInteger {
     
     public typealias Value = Value
     
-    public typealias BitPattern = Divisor<Value.Magnitude>
+    public typealias BitPattern = Nonzero<Value.Magnitude>
     
     //=------------------------------------------------------------------------=
     // MARK: Metadata
@@ -105,12 +105,12 @@
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func complement() -> Divisor<Value> {
+    @inlinable public consuming func complement() -> Nonzero<Value> {
         Self(unchecked: self.value.complement())
     }
     
-    @inlinable public consuming func magnitude() -> Divisor<Value.Magnitude> {
-        Divisor<Value.Magnitude>(unchecked: self.value.magnitude())
+    @inlinable public consuming func magnitude() -> Nonzero<Value.Magnitude> {
+        Nonzero<Value.Magnitude>(unchecked: self.value.magnitude())
     }
 }
 
@@ -118,7 +118,7 @@
 // MARK: + Conveniences
 //=----------------------------------------------------------------------------=
 
-extension Divisor where Value: SystemsInteger<UX.BitPattern> {
+extension Nonzero where Value: SystemsInteger<UX.BitPattern> {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers

@@ -89,7 +89,7 @@ extension BinaryInteger {
         var other = (consume rhs).value
         
         dividing: while !other.isZero {
-            (value, other) = (copy other, value.remainder(Divisor(unchecked: other)))
+            (value, other) = (copy other, value.remainder(Nonzero(unchecked: other)))
         }
         
         return value.magnitude() as Magnitude
@@ -126,7 +126,7 @@ extension BinaryInteger {
         
         // note that the bit cast may overflow in the final iteration
         dividing: while !other.isZero {
-            let (division) = (value).division(Divisor(unchecked: copy other)).unchecked()
+            let (division) = (value).division(Nonzero(unchecked: copy other)).unchecked()
             (value, other) = (other, division.remainder)
             x = (x.1, x.0 &- x.1 &* Signitude(raw: division.quotient))
             y = (y.1, y.0 &- y.1 &* Signitude(raw: division.quotient))

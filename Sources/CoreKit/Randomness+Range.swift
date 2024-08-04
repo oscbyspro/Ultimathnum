@@ -50,7 +50,7 @@ extension Randomness {
     ///
     /// Arbitrary integers accept-reject random bit patterns.
     ///
-    @inlinable public mutating func next<T>(upTo limit: borrowing Divisor<T>) -> T where T: UnsignedInteger {
+    @inlinable public mutating func next<T>(upTo limit: borrowing Nonzero<T>) -> T where T: UnsignedInteger {
         if !T.isArbitrary {
             return self.systems(upTo: limit)
             
@@ -85,7 +85,7 @@ extension Randomness {
     ) -> T where T: UnsignedInteger {
 
         if  let end = limit.incremented().optional() {
-            return self.systems(upTo: Divisor(unchecked: end))
+            return self.systems(upTo: Nonzero(unchecked: end))
             
         }   else {
             return self.systems()
@@ -103,7 +103,7 @@ extension Randomness {
     /// Arbitrary integers accept-reject random bit patterns.
     ///
     @inlinable internal mutating func systems<T>(
-        upTo limit: Divisor<T>
+        upTo limit: Nonzero<T>
     ) -> T where T: UnsignedInteger {
         //  product.low  = product % (2 ** T.size)
         //  product.high = product / (2 ** T.size)

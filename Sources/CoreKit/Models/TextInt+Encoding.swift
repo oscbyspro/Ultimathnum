@@ -138,7 +138,7 @@ extension TextInt {
             //=----------------------------------=
             major: while true {
                 
-                if  let divisor = Divisor(exactly: self.exponentiation.power) {
+                if  let divisor = Nonzero(exactly: self.exponentiation.power) {
                     chunk = (body).divisionSetQuotientGetRemainder(divisor)
                     body  = (body).normalized()
                 }   else if !body .isEmpty {
@@ -151,7 +151,7 @@ extension TextInt {
                 minor: repeat {
                 
                     let lowest: UX
-                    (chunk, lowest) = chunk.division(Divisor(unchecked: self.radix)).components()
+                    (chunk, lowest) = chunk.division(Nonzero(unchecked: self.radix)).components()
                     let element = try! self.numerals.encode(U8(load: lowest))
                     precondition(asciiIndex > ascii .startIndex)
                     asciiIndex = ascii.index(before: asciiIndex)

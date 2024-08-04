@@ -39,5 +39,5 @@ public protocol SystemsInteger<BitPattern>: EdgyInteger, FiniteInteger where Mag
     @inlinable consuming func reversed(_ type: U8.Type) -> Self
     
     /// Returns the result of dividing the `dividend` by the `divisor`.
-    @inlinable static func division(_ dividend: consuming Doublet<Self>, by divisor: borrowing Divisor<Self>) -> Fallible<Division<Self, Self>>
+    @inlinable static func division(_ dividend: consuming Doublet<Self>, by divisor: borrowing Nonzero<Self>) -> Fallible<Division<Self, Self>>
 }

@@ -27,7 +27,7 @@
     /// - Note: Its `entropy` must not exceed `IX.max`.
     ///
     @inlinable public static var capacity: IX {
-        IX.max.decremented().quotient(Divisor(size: Element.self)).unchecked()
+        IX.max.decremented().quotient(Nonzero(size: Element.self)).unchecked()
     }
     
     //=------------------------------------------------------------------------=

@@ -139,7 +139,7 @@ extension SystemsInteger {
             }   else {
                 return self.withUnsafeBinaryIntegerBody {
                     typealias DX = Division<UX, UX>
-                    let division = UX(raw: index.value).division(Divisor(size: Element.self)) as DX
+                    let division = UX(raw: index.value).division(Nonzero(size: Element.self)) as DX
                     let subindex = Shift<Element.Magnitude>(unchecked: Count(raw: division.remainder))
                     return $0[unchecked: IX(raw: division.quotient)][subindex]
                 }
@@ -154,7 +154,7 @@ extension SystemsInteger {
             }   else {
                 self.withUnsafeMutableBinaryIntegerBody {
                     typealias DX = Division<UX, UX>
-                    let division = UX(raw: index.value).division(Divisor(size: Element.self)) as DX
+                    let division = UX(raw: index.value).division(Nonzero(size: Element.self)) as DX
                     let subindex = Shift<Element.Magnitude>(unchecked: Count(raw: division.remainder))
                     $0[unchecked:  IX(raw: division.quotient)][subindex] = newValue
                 }

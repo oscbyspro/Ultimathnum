@@ -268,7 +268,7 @@ where
     ///
     ///     dividend == divisor &* quotient &+ remainder
     ///
-    @inlinable consuming func quotient(_ divisor: borrowing Divisor<Self>) -> Fallible<Self>
+    @inlinable consuming func quotient(_ divisor: borrowing Nonzero<Self>) -> Fallible<Self>
     
     /// Returns the `remainder` of dividing `self` by the `divisor`.
     ///
@@ -306,7 +306,7 @@ where
     ///
     ///     dividend == divisor &* quotient &+ remainder
     ///
-    @inlinable consuming func remainder(_ divisor: borrowing Divisor<Self>) -> Self
+    @inlinable consuming func remainder(_ divisor: borrowing Nonzero<Self>) -> Self
     
     /// Returns the result of dividing `self` by the `divisor`.
     ///
@@ -344,7 +344,7 @@ where
     ///
     ///     dividend == divisor &* quotient &+ remainder
     ///
-    @inlinable consuming func division(_ divisor: borrowing Divisor<Self>) -> Fallible<Division<Self, Self>>
+    @inlinable consuming func division(_ divisor: borrowing Nonzero<Self>) -> Fallible<Division<Self, Self>>
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

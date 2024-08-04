@@ -13,10 +13,10 @@ import InfiniIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Divisor
+// MARK: * Nonzero
 //*============================================================================*
 
-final class DivisorTests: XCTestCase {
+final class NonzeroTests: XCTestCase {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -24,9 +24,9 @@ final class DivisorTests: XCTestCase {
     
     func testBitCast() {
         func whereTheValueIs<Value>(_ type: Value.Type) where Value: BinaryInteger {
-            typealias T = Divisor<Value>
-            typealias S = Divisor<Value.Signitude>
-            typealias M = Divisor<Value.Magnitude>
+            typealias T = Nonzero<Value>
+            typealias S = Nonzero<Value.Signitude>
+            typealias M = Nonzero<Value.Magnitude>
             
             Test().same(T(raw: M(~2)).value, ~2 as T.Value)
             Test().same(T(raw: S(-2)).value, ~1 as T.Value)
@@ -47,7 +47,7 @@ final class DivisorTests: XCTestCase {
     
     func testInitExactly() {
         func whereTheValueIs<Value>(_ type: Value.Type) where Value: BinaryInteger {
-            typealias T = Divisor<Value>
+            typealias T = Nonzero<Value>
             
             Test().same(T(exactly: ~2)?.value, ~002)
             Test().same(T(exactly: ~1)?.value, ~001)
@@ -71,7 +71,7 @@ final class DivisorTests: XCTestCase {
     
     func testInitPrune() {
         func whereTheValueIs<Value>(_ type: Value.Type) where Value: BinaryInteger {
-            typealias T = Divisor<Value>
+            typealias T = Nonzero<Value>
             
             Test().success({ try T(~2, prune: Bad.code123).value }, ~00000000002)
             Test().success({ try T(~1, prune: Bad.code456).value }, ~00000000001)

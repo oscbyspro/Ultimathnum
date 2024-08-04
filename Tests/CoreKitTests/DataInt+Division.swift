@@ -24,17 +24,17 @@ extension DataIntTests {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
             typealias C = DataIntTests.Body<T>
             
-            C([ ] as [T]).division(Divisor(1), quotient:[ ] as [T], remainder: 0)
-            C([ ] as [T]).division(Divisor(2), quotient:[ ] as [T], remainder: 0)
-            C([0] as [T]).division(Divisor(1), quotient:[0] as [T], remainder: 0)
-            C([0] as [T]).division(Divisor(2), quotient:[0] as [T], remainder: 0)
-            C([7] as [T]).division(Divisor(1), quotient:[7] as [T], remainder: 0)
-            C([7] as [T]).division(Divisor(2), quotient:[3] as [T], remainder: 1)
+            C([ ] as [T]).division(Nonzero(1), quotient:[ ] as [T], remainder: 0)
+            C([ ] as [T]).division(Nonzero(2), quotient:[ ] as [T], remainder: 0)
+            C([0] as [T]).division(Nonzero(1), quotient:[0] as [T], remainder: 0)
+            C([0] as [T]).division(Nonzero(2), quotient:[0] as [T], remainder: 0)
+            C([7] as [T]).division(Nonzero(1), quotient:[7] as [T], remainder: 0)
+            C([7] as [T]).division(Nonzero(2), quotient:[3] as [T], remainder: 1)
             
-            C([~2,  ~4,  ~6,  9] as [T]).division(Divisor(2), quotient:[~1, ~2, ~3, 4] as [T], remainder: 1)
-            C([~3,  ~6,  ~9, 14] as [T]).division(Divisor(3), quotient:[~1, ~2, ~3, 4] as [T], remainder: 2)
-            C([~4,  ~8, ~12, 19] as [T]).division(Divisor(4), quotient:[~1, ~2, ~3, 4] as [T], remainder: 3)
-            C([~5, ~10, ~15, 24] as [T]).division(Divisor(5), quotient:[~1, ~2, ~3, 4] as [T], remainder: 4)
+            C([~2,  ~4,  ~6,  9] as [T]).division(Nonzero(2), quotient:[~1, ~2, ~3, 4] as [T], remainder: 1)
+            C([~3,  ~6,  ~9, 14] as [T]).division(Nonzero(3), quotient:[~1, ~2, ~3, 4] as [T], remainder: 2)
+            C([~4,  ~8, ~12, 19] as [T]).division(Nonzero(4), quotient:[~1, ~2, ~3, 4] as [T], remainder: 3)
+            C([~5, ~10, ~15, 24] as [T]).division(Nonzero(5), quotient:[~1, ~2, ~3, 4] as [T], remainder: 4)
         }
         
         for type in coreSystemsIntegersWhereIsUnsigned {
@@ -61,12 +61,12 @@ extension DataIntTests {
                     
                     let dividend: U16 = DataInt(body).load(as: U16.self)
                     for divisor:  U8 in 1 ... U8.max {
-                        let expectation = dividend.division(Divisor(U16(divisor))).unwrap()
+                        let expectation = dividend.division(Nonzero(U16(divisor))).unwrap()
                         
                         body[unchecked: 0] = low
                         body[unchecked: 1] = high
                         
-                        let remainder: U8 = body.divisionSetQuotientGetRemainder(Divisor(divisor))
+                        let remainder: U8 = body.divisionSetQuotientGetRemainder(Nonzero(divisor))
                         let quotient: U16 = DataInt(body).load(as: U16.self)
                         
                         if  Division(quotient: quotient, remainder: U16(remainder)) == expectation {
@@ -95,7 +95,7 @@ extension DataIntTests.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    func division(_ divisor: Divisor<Element>, quotient: [Element], remainder: Element) {
+    func division(_ divisor: Nonzero<Element>, quotient: [Element], remainder: Element) {
         //=--------------------------------------=
         // division: remainder
         //=--------------------------------------=

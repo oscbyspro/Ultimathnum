@@ -94,11 +94,11 @@ extension FibonacciTests.Case {
     /// - BinaryInteger/division(\_:)
     ///
     func checkMathInvariants() {
-        for divisor: Divisor<Value> in [2, 3, 5, 7, 11].map(Divisor.init) {
+        for divisor: Nonzero<Value> in [2, 3, 5, 7, 11].map(Nonzero.init) {
             always: do {
                 var a = self.item as Fibonacci<Value>
                 let b = try Fibonacci(a.index.quotient(divisor).prune(Bad.division))
-                let c = try a.next.division(Divisor(b.next, prune: Bad.divisor)).prune(Bad.division)
+                let c = try a.next.division(Nonzero(b.next, prune: Bad.divisor)).prune(Bad.division)
                 
                 try a.decrement(by: b)
                 

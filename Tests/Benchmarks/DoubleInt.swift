@@ -38,7 +38,7 @@ final class DoubleIntBenchmarks: XCTestCase {
             
             dividing: while !rhs.isZero {
                 counter += 1
-                (lhs, rhs) = (rhs, lhs.remainder(Divisor(unchecked: rhs)))
+                (lhs, rhs) = (rhs, lhs.remainder(Nonzero(unchecked: rhs)))
             }
             
             precondition(lhs == 1)

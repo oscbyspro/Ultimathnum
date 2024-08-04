@@ -224,9 +224,9 @@ The protocol only requires efficient byte-swapping and 2-by-1 division algorithm
 
 | Type         | Guarantee          |
 |:-------------|:-------------------|
-| Divisor      | x ≠ 0              |
 | Finite       | x ∈ ℤ              |
 | Natural      | x ∈ ℕ              |
+| Nonzero      | x ≠ 0              |
 | Shift        | x ∈ 0 up to T.size |
 
 Once you start using primitive types to form more complex types, you notice that some behaviors

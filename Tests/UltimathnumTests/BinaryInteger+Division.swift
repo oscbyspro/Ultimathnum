@@ -216,7 +216,7 @@ final class BinaryIntegerTestsOnDivision: XCTestCase {
             for divisor:  T in (T.min...T.max) where !divisor.isZero {
                 for high: T in (T.min...T.max) {
                     for low: T.Magnitude in (T.Magnitude.min...T.Magnitude.max) {
-                        counter += U32(Bit(!T.division(Doublet(low: low, high: high), by: Divisor(divisor)).error))
+                        counter += U32(Bit(!T.division(Doublet(low: low, high: high), by: Nonzero(divisor)).error))
                     }
                 }
             }
@@ -243,8 +243,8 @@ final class BinaryIntegerTestsOnDivision: XCTestCase {
             for divisor:  A in (A.min...A.max) where !divisor.isZero {
                 for high: A in (A.min...A.max) {
                     for low: A.Magnitude in (A.Magnitude.min...A.Magnitude.max) {
-                        let result = A.division(Doublet(low: low, high: high), by: Divisor(divisor))
-                        let expectation = (B(low) | B(high).up(A.size)).division(Divisor(B(divisor)))
+                        let result = A.division(Doublet(low: low, high: high), by: Nonzero(divisor))
+                        let expectation = (B(low) | B(high).up(A.size)).division(Nonzero(B(divisor)))
                         guard result.map(\.quotient) == expectation.map(\.quotient).map(A.exactly) else { break }
                         guard result.value.remainder == A.exactly(expectation.value.remainder).optional() else { break }
                         success += 1
@@ -509,12 +509,12 @@ final class BinaryIntegerTestsOnDivision: XCTestCase {
                 let a = random()
                 let b = random()
                 
-                if  let b = Divisor(exactly: b) {
+                if  let b = Nonzero(exactly: b) {
                     let c = a.division(b).value
                     Test().same(a, c.quotient &* b.value &+ c.remainder)
                 }
                 
-                if  let a = Divisor(exactly: a) {
+                if  let a = Nonzero(exactly: a) {
                     let c = b.division(a).value
                     Test().same(b, c.quotient &* a.value &+ c.remainder)
                 }
@@ -636,7 +636,7 @@ extension BinaryIntegerTestsOnDivision {
                 let lhs: T = random()
                 let rhs: T = random()
                 
-                guard let rhs = Divisor(exactly: rhs) else { continue }
+                guard let rhs = Nonzero(exactly: rhs) else { continue }
                 (index) += 1
                 
                 let division: Fallible<Division<T, T>> = lhs.division(rhs)
@@ -671,7 +671,7 @@ extension BinaryIntegerTestsOnDivision {
                 let lhs: T = T.random()
                 let rhs: T = T.random()
                 
-                guard let rhs = Divisor(exactly: rhs) else { continue }
+                guard let rhs = Nonzero(exactly: rhs) else { continue }
                 (index) += 1
                 
                 let division: Fallible<Division<T, T>> = lhs.division(rhs)

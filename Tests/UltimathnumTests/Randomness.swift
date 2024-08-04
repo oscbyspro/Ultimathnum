@@ -26,7 +26,7 @@ final class RandomnessTests: XCTestCase {
     func testUpToSmallLimit() {
         func whereIs<T>(_ type: T.Type, using randomness: inout some Randomness) where T: SystemsInteger & UnsignedInteger {
             for limit: T in 1 ... 16 {
-                Test().yay(randomness.next(upTo: Divisor(limit)) < limit)
+                Test().yay(randomness.next(upTo: Nonzero(limit)) < limit)
             }
         }
         
@@ -86,7 +86,7 @@ final class RandomnessTests: XCTestCase {
             
             for limit: T in 0 ..< 16 {
                 let lhs = a.next(through: limit)
-                let rhs = b.next(upTo: Divisor(limit + 1))
+                let rhs = b.next(upTo: Nonzero(limit + 1))
                 Test().same(lhs, rhs)
             }
         }

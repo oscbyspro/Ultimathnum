@@ -19,15 +19,15 @@ extension DoubleInt {
     // MARK: Transformations x 2 by 2
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func quotient(_  divisor: Divisor<Self>) -> Fallible<Self> {
+    @inlinable public consuming func quotient(_  divisor: Nonzero<Self>) -> Fallible<Self> {
         self.division(divisor).map({ $0.quotient })
     }
     
-    @inlinable public consuming func remainder(_ divisor: Divisor<Self>) -> Self {
+    @inlinable public consuming func remainder(_ divisor: Nonzero<Self>) -> Self {
         self.division(divisor).value.remainder
     }
     
-    @inlinable public consuming func division(_  divisor: Divisor<Self>) -> Fallible<Division<Self, Self>> {
+    @inlinable public consuming func division(_  divisor: Nonzero<Self>) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
         // error...: quotient ∉ [-U.max, U.max]
         // suberror: quotient ∉ [ S.min, S.max]
@@ -61,7 +61,7 @@ extension DoubleInt {
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func division(_ dividend: consuming Doublet<Self>, by divisor: Divisor<Self>) -> Fallible<Division<Self, Self>> {
+    @inlinable public static func division(_ dividend: consuming Doublet<Self>, by divisor: Nonzero<Self>) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
         // error...: quotient ∉ [-U.max, U.max]
         // suberror: quotient ∉ [ S.min, S.max]
@@ -101,7 +101,7 @@ extension DoubleInt where Base == Base.Magnitude {
     // MARK: Transformations x 2 by 1
     //=------------------------------------------------------------------------=
     
-    @inlinable internal consuming func division2121(unchecked divisor: Divisor<Base>) -> Division<Self, Base> {
+    @inlinable internal consuming func division2121(unchecked divisor: Nonzero<Base>) -> Division<Self, Base> {
         let high = self.high.division(divisor)  as Division<Base, Base>
         let low  = Base.division(Doublet(low:   self.low, high: high.remainder), by: divisor).unchecked()
         return Division(quotient: Self(low: low.quotient, high: high.quotient), remainder: low.remainder)
@@ -112,12 +112,12 @@ extension DoubleInt where Base == Base.Magnitude {
     //=------------------------------------------------------------------------=
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
-    @inlinable internal consuming func division2222(_ divisor: consuming Divisor<Self>) -> Division<Self, Self> {
+    @inlinable internal consuming func division2222(_ divisor: consuming Nonzero<Self>) -> Division<Self, Self> {
         self.division2222(divisor, normalization: Shift(unchecked: divisor.value.descending(Bit.zero)))
     }
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
-    @inlinable internal consuming func division2222(_ divisor: consuming Divisor<Self>, normalization: Shift<Self>) -> Division<Self, Self> {
+    @inlinable internal consuming func division2222(_ divisor: consuming Nonzero<Self>, normalization: Shift<Self>) -> Division<Self, Self> {
         //=--------------------------------------=
         Swift.assert(!divisor .value.isZero, "must not divide by zero")
         Swift.assert((divisor).value.descending(Bit.zero) == normalization.value, "save shift distance")
@@ -135,7 +135,7 @@ extension DoubleInt where Base == Base.Magnitude {
         if  self.high.isZero {
             Swift.assert(self.high.isZero, "dividend must fit in one half")
             Swift.assert(divisor.value.high.isZero, "divisor must fit in one half")
-            let result: Division<Base, Base> = self.low.division(Divisor(unchecked:   divisor.value.low))
+            let result: Division<Base, Base> = self.low.division(Nonzero(unchecked:   divisor.value.low))
             return Division(quotient: Self(low: result.quotient), remainder: Self(low: result.remainder))
         }
         //=--------------------------------------=
@@ -143,7 +143,7 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         guard let normalization = Shift<Base>(exactly: normalization.value) else {
             Swift.assert(divisor.value.high.isZero, "divisor must fit in one half")
-            let result: Division<Self, Base> = self.division2121(unchecked: Divisor(unchecked: divisor.value.low))
+            let result: Division<Self, Base> = self.division2121(unchecked: Nonzero(unchecked: divisor.value.low))
             return Division(quotient: result.quotient, remainder: Self(low: result.remainder))
         }
         //=--------------------------------------=
@@ -151,7 +151,7 @@ extension DoubleInt where Base == Base.Magnitude {
         //=--------------------------------------=
         let top = normalization.inverse().map({ self.high.down($0) }) ?? Base.zero
         let lhs = TripleInt(low: self.up(normalization).storage, high: consume top)
-        let rhs = Divisor(unchecked: divisor.value.up(normalization))
+        let rhs = Nonzero(unchecked: divisor.value.up(normalization))
         //=--------------------------------------=
         // division: 3212 (normalized)
         //=--------------------------------------=
@@ -164,7 +164,7 @@ extension DoubleInt where Base == Base.Magnitude {
     //=------------------------------------------------------------------------=
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
-    @inlinable internal static func division4222(_ lhs: consuming Doublet<Self>, by rhs: Divisor<Self>) -> Fallible<Division<Self, Self>> {
+    @inlinable internal static func division4222(_ lhs: consuming Doublet<Self>, by rhs: Nonzero<Self>) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
         let normalization = Shift<Self>(unchecked: rhs.value.descending(Bit.zero))
         //=--------------------------------------=
@@ -179,7 +179,7 @@ extension DoubleInt where Base == Base.Magnitude {
     }
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
-    @inlinable internal static func division4222(_ lhs: consuming Doublet<Self>, by rhs: consuming Divisor<Self>, normalization: Shift<Self>) -> Division<Self, Self> {
+    @inlinable internal static func division4222(_ lhs: consuming Doublet<Self>, by rhs: consuming Nonzero<Self>, normalization: Shift<Self>) -> Division<Self, Self> {
         //=--------------------------------------=
         Swift.assert(rhs.value > lhs.high, "quotient must fit in two halves")
         Swift.assert(rhs.value.descending(Bit.zero) == normalization.value, "save shift distance")
@@ -196,14 +196,14 @@ extension DoubleInt where Base == Base.Magnitude {
         guard let normalization = Shift<Base>(exactly: normalization.value) else {
             Swift.assert(rhs.value.high.isZero,  "divisor must fit in one half")
             Swift.assert(lhs.high .high.isZero, "quotient must fit in two halves")
-            let result = TripleInt(low: lhs.low.storage, high: lhs.high.low).division3121(unchecked: Divisor(unchecked: rhs.value.low))
+            let result = TripleInt(low: lhs.low.storage, high: lhs.high.low).division3121(unchecked: Nonzero(unchecked: rhs.value.low))
             return Division(quotient: Self(result.quotient), remainder: Self(low: result.remainder))
         }
         //=--------------------------------------=
         // normalization
         //=--------------------------------------=
         let lhs = lhs .up(Shift(unchecked:  normalization.value))
-        let rhs = Divisor(unchecked: rhs.value.up(normalization))
+        let rhs = Nonzero(unchecked: rhs.value.up(normalization))
         //=--------------------------------------=
         // division: 3212 (normalized)
         //=--------------------------------------=

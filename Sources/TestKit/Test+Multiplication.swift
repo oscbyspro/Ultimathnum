@@ -87,13 +87,13 @@ extension Test {
         }
         
         division: if !expectation.error {
-            if  let divisor  = Divisor(exactly: rhs) {
+            if  let divisor  = Nonzero(exactly: rhs) {
                 let division = expectation.value.division(divisor)
                 same(division.value.quotient,  lhs, "product / rhs == lhs")
                 same(division.value.remainder, 000, "product % rhs == 000")
             }
             
-            if  let divisor  = Divisor(exactly: lhs) {
+            if  let divisor  = Nonzero(exactly: lhs) {
                 let division = expectation.value.division(divisor)
                 same(division.value.quotient,  rhs, "product / lhs == rhs")
                 same(division.value.remainder, 000, "product % lhs == 000")

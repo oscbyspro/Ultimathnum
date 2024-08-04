@@ -17,19 +17,19 @@ extension CoreInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func quotient (_ divisor: Divisor<Self>) -> Fallible<Self> {
+    @inlinable public func quotient (_ divisor: Nonzero<Self>) -> Fallible<Self> {
         Swift.assert(!divisor.value.isZero, String.brokenInvariant())
         let result = self.base.dividedReportingOverflow(by: divisor.value.base)
         return Self(result.partialValue).veto(Self.isSigned && result.overflow)
     }
     
-    @inlinable public func remainder(_ divisor: Divisor<Self>) -> Self {
+    @inlinable public func remainder(_ divisor: Nonzero<Self>) -> Self {
         Swift.assert(!divisor.value.isZero, String.brokenInvariant())
         let result = self.base.remainderReportingOverflow(dividingBy: divisor.value.base)
         return Self(result.partialValue)
     }
     
-    @inlinable public func division (_ divisor: Divisor<Self>) -> Fallible<Division<Self, Self>> {
+    @inlinable public func division (_ divisor: Nonzero<Self>) -> Fallible<Division<Self, Self>> {
         let quotient  = self.quotient (divisor)
         let remainder = self.remainder(divisor)
         let division  = Division(quotient: quotient.value, remainder: remainder)
@@ -47,7 +47,7 @@ extension CoreIntegerWhereIsSigned {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func division(_ dividend: Doublet<Self>, by divisor: Divisor<Self>) -> Fallible<Division<Self, Self>> {
+    @inlinable public static func division(_ dividend: Doublet<Self>, by divisor: Nonzero<Self>) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
         // error...: quotient ∉ [-U.max, U.max]
         // suberror: quotient ∉ [ S.min, S.max]
@@ -87,7 +87,7 @@ extension CoreIntegerWhereIsUnsigned {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func division(_ dividend: Doublet<Self>, by divisor: Divisor<Self>) -> Fallible<Division<Self, Self>> {
+    @inlinable public static func division(_ dividend: Doublet<Self>, by divisor: Nonzero<Self>) -> Fallible<Division<Self, Self>> {
         //=--------------------------------------=
         var dividend = dividend // consuming fix
         //=--------------------------------------=

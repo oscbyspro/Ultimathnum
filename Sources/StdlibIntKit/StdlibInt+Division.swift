@@ -37,7 +37,7 @@ extension StdlibInt {
     }
     
     @inlinable public consuming func quotientAndRemainder(dividingBy divisor: borrowing Self) -> (quotient: Self, remainder: Self) {
-        let result = self.base.division(Divisor(divisor.base)).unchecked("IXL")
+        let result = self.base.division(Nonzero(divisor.base)).unchecked("IXL")
         return (quotient: Self(result.quotient), remainder: Self(result.remainder))
     }
 }

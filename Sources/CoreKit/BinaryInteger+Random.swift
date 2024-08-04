@@ -32,7 +32,7 @@ extension BinaryInteger {
     ///
     @inlinable public static func random(in range: Range<Self>, using randomness: inout some Randomness) -> Optional<Self> {
         let distance = Magnitude.init(raw: range.upperBound.minus(range.lowerBound).value)
-        guard let distance =  Divisor(exactly:    distance) else { return nil }
+        guard let distance =  Nonzero(exactly:    distance) else { return nil }
         return Self(raw: randomness.next(upTo:    distance)).plus(range.lowerBound).value
     }
     
@@ -75,7 +75,7 @@ extension BinaryInteger {
             return instance.down(Shift(unchecked: down))
             
         }   else {
-            let divisor  = Divisor<IX>(size: Element.self)
+            let divisor  = Nonzero<IX>(size: Element.self)
             var division = index.division(divisor).unchecked()
             
             increment: do {

@@ -259,7 +259,7 @@ extension DataIntTests.Body {
     
     func upshift(_ distance: IX, environment: Element, is expectation: [Element]) {
         //=------------------------------------------=
-        let (major, minor) = distance.division(Divisor(IX(size: Element.self))).unwrap().components()
+        let (major, minor) = distance.division(Nonzero(IX(size: Element.self))).unwrap().components()
         //=------------------------------------------=
         always: do {
             var value = self.body
@@ -330,7 +330,7 @@ extension DataIntTests.Body {
 
     func downshift(_ distance: IX, environment: Element, is expectation: [Element]) {
         //=------------------------------------------=
-        let (major, minor) = distance.division(Divisor(IX(size: Element.self))).unwrap().components()
+        let (major, minor) = distance.division(Nonzero(IX(size: Element.self))).unwrap().components()
         //=------------------------------------------=
         always: do {
             var value = self.body
