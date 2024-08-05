@@ -28,6 +28,7 @@
   - [Bit counting with Count\<Layout\> and BitCountable](#corekit-bit-count)
   - [Generic logic gates with BitOperable](#corekit-bitwise-logic)
   - [More ones and zeros with Bit, Sign and Signum](#corekit-bit-sign-signum)
+  - [Division by multiplication with Divider\<Value\>](#corekit-divider)
 * [DoubleIntKit](#doubleintkit)
   - [A big systems integer](#doubleintkit-systems-integer)
   - [A non-recursive model](#doubleintkit-non-recursive-model)
@@ -462,6 +463,22 @@ most notably the return type of the compared(to:) methods.
 | Bit    |       `0`, `1` |
 | Sign   |       `+`, `-` |
 | Signum | `-1`, `0`, `1` |
+
+<a name="corekit-divider"/>
+
+#### Division by multiplication with Divider\<Value\>
+
+```swift
+let random  = U8.random()
+let divider = Divider(U8.random(in:    1...255))
+let normal  = random .division(divider .divisor) // division
+let magical = divider.division(dividing: random) // mul-add-shr
+precondition(magical == normal.unwrap())
+```
+
+You know how the compiler sometimes replaces division with multiplication? Well,
+now you can be a wizard too! Divider\<T\> finds same-size magic constants and replaces
+division with a mul-add-shr operation. The same algorithm works for powers of two too!
 
 <a name="doubleintkit"/>
 

@@ -157,3 +157,22 @@ final class DividerTests: XCTestCase {
         }
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Documentation
+//=----------------------------------------------------------------------------=
+
+extension DividerTests {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testReadmeCodeSnippet() {
+        let random  = U8.random()
+        let divider = Divider(U8.random(in:    1...255))
+        let normal  = random .division(divider .divisor) // division
+        let magical = divider.division(dividing: random) // mul-add-shr
+        precondition(magical == normal.unwrap())
+    }
+}
