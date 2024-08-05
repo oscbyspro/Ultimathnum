@@ -27,7 +27,7 @@
   - [Type-safe bit casts with BitCastable\<BitPattern\>](#corekit-bit-cast)
   - [Bit counting with Count\<Layout\> and BitCountable](#corekit-bit-count)
   - [Generic logic gates with BitOperable](#corekit-bitwise-logic)
-  - [More ones and zeros with Bit, Sign and Signum](#corekit-bit-sign-signum)
+  - [Three-way comparisons return Signum](#corekit-signum)
   - [Division by multiplication with Divider\<Value\>](#corekit-divider)
 * [DoubleIntKit](#doubleintkit)
   - [A big systems integer](#doubleintkit-systems-integer)
@@ -441,6 +441,7 @@ and *ascending(\_:)* then derives methods like *entropy()* and *nonascending(\_:
 Types that let you perform bitwise logic, such as AND, OR, XOR, and NOT, conform to BitOperable. 
 It powers logic gates in generic code, and all binary integer types conform to it. Arbitrary unsigned 
 integers also perform these operations losslessly thanks to the notion of infinite binary integers.
+Bit and Sign are other types that conform to BitOperable.
 
 ```swift
 static prefix func ~(instance: consuming Self) -> Self
@@ -449,20 +450,14 @@ static func |(lhs: consuming Self, rhs: borrowing Self) -> Self
 static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self
 ```
 
-<a name="corekit-bit-sign-signum"/>
+<a name="corekit-signum"/>
 
-#### More ones and zeros with Bit, Sign and Signum
+#### Three-way comparisons return Signum
 
-This project introduces various additional types. Some are more important than other,
-so here's a rundown of the three most prominent ones: Bit, Sign and Signum. Bit and 
-Sign are a lot like Bool, but with bitwise operations and no short-circuits. Signum is
-most notably the return type of the compared(to:) methods.
-
-| Type   | Values         |
-|:-------|---------------:|
-| Bit    |       `0`, `1` |
-| Sign   |       `+`, `-` |
-| Signum | `-1`, `0`, `1` |
+Most comparable types provide a three-way *compared(to:)* method indicating whether the caller 
+is less than, equal to, or greater than the argument. This is especially useful in the case of 
+arbitrary integers, since it requires little more work than regular two-way comparisons. The 
+return type is an enum called Signum. You may switch over it or use its [-1, 0, 1] semantics.
 
 <a name="corekit-divider"/>
 
