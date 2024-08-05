@@ -51,29 +51,26 @@
     
     @inlinable public init(_ source: consuming Nonzero<Value>) {
         self.divisor = consume source
+        self.shift = Shift(unchecked: self.divisor.log2())
+        let subpower = Value.lsb.up(((self.shift)))
         
-        if  self.divisor.value.count(Bit.one) == Count(1) {
+        if  self.divisor.value == subpower {
             // x × max + max: high == x
             self.multiplier = Value.max
             self.increment  = Value.max
-            self.shift = Shift(unchecked: self.divisor.value.ascending(Bit.zero))
         
         }   else {
-            //  distance == floor(log2(divisor))
-            let distance = IX(raw: self.divisor.value.nondescending(Bit.zero)).decremented()
-            self.shift = Shift(unchecked: Count(unchecked: distance.unchecked()))
-            let power  = Doublet(low: 000000000, high: Value.lsb.up(self.shift))
-            let division = Value.division(power, by:   self.divisor).unchecked()
-            Swift.assert(!division.remainder.isZero)
+            let power =  Doublet(low: Value.min, high: subpower)
+            let division = Value.division(power, by: self.divisor).unchecked()
             //  ⌊a÷b⌋ == ⌊(a+0)×⌈power÷b⌉÷power⌋
-            //  where rounding error < power.high
-            if  self.divisor.value.minus(division.remainder).unchecked() < power.high {
+            //  where rounding error < subpower
+            if  self.divisor.value.minus(division.remainder).unchecked() < subpower {
                 self.multiplier = division.quotient.incremented().unchecked()
-                self.increment  = Value.zero
-            //  ⌊a÷b⌋ == ⌊(a+1)×⌊power÷b⌋÷power⌋
-            //  where rounding error ≤ power.high
+                self.increment  = Value.min
+                //  ⌊a÷b⌋ == ⌊(a+1)×⌊power÷b⌋÷power⌋
+                //  where rounding error ≤ subpower
             }   else {
-                precondition(division.remainder <= power.high)
+                precondition(division.remainder <= subpower)
                 self.multiplier = division.quotient
                 self.increment  = division.quotient
             }
