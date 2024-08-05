@@ -36,19 +36,15 @@ final class DividerTests: XCTestCase {
             check(U64.lsb << distance, mul: U64.max, add: U64.max, shr: U64(distance))
         }
         
-        decimal: do {
-            check(07 as U8,  mul: 00000000000000000146, add: 00000000000000000146, shr: 2)
-            check(07 as U16, mul: 00000000000000037449, add: 00000000000000037449, shr: 2)
-            check(07 as U32, mul: 00000000002454267026, add: 00000000002454267026, shr: 2)
-            check(07 as U64, mul: 10540996613548315209, add: 10540996613548315209, shr: 2)
-        }
-        
-        decimal: do {
-            check(10 as U8,  mul: 00000000000000000205, add: 00000000000000000000, shr: 3)
-            check(10 as U16, mul: 00000000000000052429, add: 00000000000000000000, shr: 3)
-            check(10 as U32, mul: 00000000003435973837, add: 00000000000000000000, shr: 3)
-            check(10 as U64, mul: 14757395258967641293, add: 00000000000000000000, shr: 3)
-        }
+        check(07 as U8,  mul: 00000000000000000146, add: 00000000000000000146, shr: 2)
+        check(07 as U16, mul: 00000000000000037449, add: 00000000000000037449, shr: 2)
+        check(07 as U32, mul: 00000000002454267026, add: 00000000002454267026, shr: 2)
+        check(07 as U64, mul: 10540996613548315209, add: 10540996613548315209, shr: 2)
+    
+        check(10 as U8,  mul: 00000000000000000205, add: 00000000000000000000, shr: 3)
+        check(10 as U16, mul: 00000000000000052429, add: 00000000000000000000, shr: 3)
+        check(10 as U32, mul: 00000000003435973837, add: 00000000000000000000, shr: 3)
+        check(10 as U64, mul: 14757395258967641293, add: 00000000000000000000, shr: 3)
     }
     
     func testInitForEachByteEntropyExtension() {

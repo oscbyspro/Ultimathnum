@@ -51,7 +51,7 @@
     
     @inlinable public init(_ source: consuming Nonzero<Value>) {
         self.divisor = consume source
-        self.shift = Shift(unchecked: self.divisor.log2())
+        self.shift = Shift(unchecked: self.divisor.ilog2())
         let subpower = Value.lsb.up(((self.shift)))
         
         if  self.divisor.value == subpower {
@@ -67,8 +67,8 @@
             if  self.divisor.value.minus(division.remainder).unchecked() < subpower {
                 self.multiplier = division.quotient.incremented().unchecked()
                 self.increment  = Value.min
-                //  ⌊a÷b⌋ == ⌊(a+1)×⌊power÷b⌋÷power⌋
-                //  where rounding error ≤ subpower
+            //  ⌊a÷b⌋ == ⌊(a+1)×⌊power÷b⌋÷power⌋
+            //  where rounding error ≤ subpower
             }   else {
                 precondition(division.remainder <= subpower)
                 self.multiplier = division.quotient
