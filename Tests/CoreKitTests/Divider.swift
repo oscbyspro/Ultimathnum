@@ -170,8 +170,8 @@ extension DividerTests {
     
     func testReadmeCodeSnippet() {
         let random  = U8.random()
-        let divider = Divider(U8.random(in:    1...255))
-        let normal  = random .division(divider .divisor) // division
+        let divider = Divider(U8.random(in:  1 ... 255))
+        let normal  = random .division(divider .divisor) // div
         let magical = divider.division(dividing: random) // mul-add-shr
         precondition(magical == normal.unwrap())
     }

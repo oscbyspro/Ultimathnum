@@ -465,8 +465,8 @@ return type is an enum called Signum. You may switch over it or use its [-1, 0, 
 
 ```swift
 let random  = U8.random()
-let divider = Divider(U8.random(in:    1...255))
-let normal  = random .division(divider .divisor) // division
+let divider = Divider(U8.random(in:  1 ... 255))
+let normal  = random .division(divider .divisor) // div
 let magical = divider.division(dividing: random) // mul-add-shr
 precondition(magical == normal.unwrap())
 ```
@@ -546,7 +546,7 @@ work with infinite numerical values, you must track where your values come
 from. Keep in mind that recovery from failure is the main purpose of infinity.
 
 > [!NOTE]
-> The introduction of infinity is what permits \~(\~(x)) == x for all x.
+> The notion of infinity ensures that \~(\~(x)) == x for all x.
 
 <a name="infiniintkit-addition"/>
 
