@@ -17,7 +17,7 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// The real binary logarithm of `self` rounded towards zero.
+    /// The binary logarithm of `self` rounded towards zero.
     ///
     /// ```swift
     /// I8( 4).ilog2() // 2
@@ -25,18 +25,18 @@ extension BinaryInteger {
     /// I8( 2).ilog2() // 1
     /// I8( 1).ilog2() // 0
     /// I8( 0).ilog2() // nil
-    /// I8(-1).ilog2() // 0
-    /// I8(-2).ilog2() // 1
-    /// I8(-3).ilog2() // 1
-    /// I8(-4).ilog2() // 2
+    /// I8(-1).ilog2() // nil
+    /// I8(-2).ilog2() // nil
+    /// I8(-3).ilog2() // nil
+    /// I8(-4).ilog2() // nil
     /// ```
     ///
-    /// - Note: You may use `Nonzero<T>` for nonoptional results.
-    ///
-    /// - Note: Signed integers do not need to call `magnitude()`.
+    /// - Note: `Nonzero<T.Magnitude>` returns nonoptional results.
     ///
     @inlinable public borrowing func ilog2() -> Optional<Count<IX>> {
-        Nonzero(exactly: copy self)?.ilog2()
+        // TODO: consider BinaryInteger/isPositive
+        guard  self.signum() == Signum.more else { return nil }
+        return Nonzero(unchecked: Magnitude(raw: copy self)).ilog2()
     }
 }
 
@@ -50,7 +50,7 @@ extension Nonzero where Value: BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// The real binary logarithm of `self` rounded towards zero.
+    /// The binary logarithm of `self` rounded towards zero.
     ///
     /// ```swift
     /// I8( 4).ilog2() // 2
@@ -58,27 +58,50 @@ extension Nonzero where Value: BinaryInteger {
     /// I8( 2).ilog2() // 1
     /// I8( 1).ilog2() // 0
     /// I8( 0).ilog2() // nil
-    /// I8(-1).ilog2() // 0
-    /// I8(-2).ilog2() // 1
-    /// I8(-3).ilog2() // 1
-    /// I8(-4).ilog2() // 2
+    /// I8(-1).ilog2() // nil
+    /// I8(-2).ilog2() // nil
+    /// I8(-3).ilog2() // nil
+    /// I8(-4).ilog2() // nil
     /// ```
     ///
-    /// - Note: You may use `Nonzero<T>` for nonoptional results.
+    /// - Note: `Nonzero<T.Magnitude>` returns nonoptional results.
     ///
-    /// - Note: Signed integers do not need to call `magnitude()`.
+    @inlinable public borrowing func ilog2() -> Optional<Count<IX>> {
+        guard !self.value.isNegative else { return nil }
+        let magnitude = Nonzero<Value.Magnitude>(unchecked: Value.Magnitude(raw: self.value))
+        return magnitude.ilog2() as Count<IX>
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Guarantees x Unsigned
+//=----------------------------------------------------------------------------=
+
+extension Nonzero where Value: UnsignedInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    /// The binary logarithm of `self` rounded towards zero.
+    ///
+    /// ```swift
+    /// I8( 4).ilog2() // 2
+    /// I8( 3).ilog2() // 1
+    /// I8( 2).ilog2() // 1
+    /// I8( 1).ilog2() // 0
+    /// I8( 0).ilog2() // nil
+    /// I8(-1).ilog2() // nil
+    /// I8(-2).ilog2() // nil
+    /// I8(-3).ilog2() // nil
+    /// I8(-4).ilog2() // nil
+    /// ```
+    ///
+    /// - Note: `Nonzero<T.Magnitude>` returns nonoptional results.
     ///
     @inlinable public borrowing func ilog2() -> Count<IX> {
-        if  self.value.isNegative {
-            let size = UX(raw: Value.size)
-            let dobc = UX(raw: self.value.descending(1 as Bit))
-            let azbc = UX(raw: self.value.ascending (0 as Bit))
-            return Count.init(raw: size.minus(dobc).decremented(azbc &+ dobc != size).unchecked())
-            
-        }   else {
-            let mask = UX(raw: Value.size).minus(1).unchecked()
-            let dzbc = UX(raw: self.value.descending(0 as Bit))
-            return Count.init(raw: mask.minus(dzbc).unchecked())
-        }
+        let mask = UX(raw: Value.size).minus(1).unchecked()
+        let dzbc = UX(raw: self.value.descending(0 as Bit))
+        return Count.init(raw: mask.minus(dzbc).unchecked())
     }
 }

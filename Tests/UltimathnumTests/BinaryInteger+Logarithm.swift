@@ -38,16 +38,16 @@ final class BinaryIntegerTestsOnLogarithm: XCTestCase {
             Test().same(( 8 as T).ilog2(), Count(3))
             Test().same(( 9 as T).ilog2(), Count(3))
             
-            Test().same((~9 as T).ilog2(), T.isSigned ? Count(3) : max)
-            Test().same((~8 as T).ilog2(), T.isSigned ? Count(3) : max)
-            Test().same((~7 as T).ilog2(), T.isSigned ? Count(3) : max)
-            Test().same((~6 as T).ilog2(), T.isSigned ? Count(2) : max)
-            Test().same((~5 as T).ilog2(), T.isSigned ? Count(2) : max)
-            Test().same((~4 as T).ilog2(), T.isSigned ? Count(2) : max)
-            Test().same((~3 as T).ilog2(), T.isSigned ? Count(2) : max)
-            Test().same((~2 as T).ilog2(), T.isSigned ? Count(1) : max)
-            Test().same((~1 as T).ilog2(), T.isSigned ? Count(1) : max)
-            Test().same((~0 as T).ilog2(), T.isSigned ? Count(0) : max)
+            Test().same((~9 as T).ilog2(), T.isSigned ? nil : max)
+            Test().same((~8 as T).ilog2(), T.isSigned ? nil : max)
+            Test().same((~7 as T).ilog2(), T.isSigned ? nil : max)
+            Test().same((~6 as T).ilog2(), T.isSigned ? nil : max)
+            Test().same((~5 as T).ilog2(), T.isSigned ? nil : max)
+            Test().same((~4 as T).ilog2(), T.isSigned ? nil : max)
+            Test().same((~3 as T).ilog2(), T.isSigned ? nil : max)
+            Test().same((~2 as T).ilog2(), T.isSigned ? nil : max)
+            Test().same((~1 as T).ilog2(), T.isSigned ? nil : max)
+            Test().same((~0 as T).ilog2(), T.isSigned ? nil : max)
         }
         
         for type in binaryIntegers {
