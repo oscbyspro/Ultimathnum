@@ -27,27 +27,32 @@ final class BinaryIntegerTestsOnLogarithm: XCTestCase {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             let max = Count<IX>(raw: IX(raw: T.size) - 1)
             
-            Test().none(( 0 as T).ilog2())
-            Test().same(( 1 as T).ilog2(), Count(0))
-            Test().same(( 2 as T).ilog2(), Count(1))
-            Test().same(( 3 as T).ilog2(), Count(1))
-            Test().same(( 4 as T).ilog2(), Count(2))
-            Test().same(( 5 as T).ilog2(), Count(2))
-            Test().same(( 6 as T).ilog2(), Count(2))
-            Test().same(( 7 as T).ilog2(), Count(2))
-            Test().same(( 8 as T).ilog2(), Count(3))
-            Test().same(( 9 as T).ilog2(), Count(3))
+            func check(_ value: T, _ expectation: Count<IX>?) {
+                Test().same(value.ilog2(), expectation)
+                Test().same(Nonzero(exactly: value)?.ilog2(), expectation)
+            }
             
-            Test().same((~9 as T).ilog2(), T.isSigned ? nil : max)
-            Test().same((~8 as T).ilog2(), T.isSigned ? nil : max)
-            Test().same((~7 as T).ilog2(), T.isSigned ? nil : max)
-            Test().same((~6 as T).ilog2(), T.isSigned ? nil : max)
-            Test().same((~5 as T).ilog2(), T.isSigned ? nil : max)
-            Test().same((~4 as T).ilog2(), T.isSigned ? nil : max)
-            Test().same((~3 as T).ilog2(), T.isSigned ? nil : max)
-            Test().same((~2 as T).ilog2(), T.isSigned ? nil : max)
-            Test().same((~1 as T).ilog2(), T.isSigned ? nil : max)
-            Test().same((~0 as T).ilog2(), T.isSigned ? nil : max)
+            check( 0 as T, nil)
+            check( 1 as T, Count(0))
+            check( 2 as T, Count(1))
+            check( 3 as T, Count(1))
+            check( 4 as T, Count(2))
+            check( 5 as T, Count(2))
+            check( 6 as T, Count(2))
+            check( 7 as T, Count(2))
+            check( 8 as T, Count(3))
+            check( 9 as T, Count(3))
+            
+            check(~9 as T, T.isSigned ? nil : max)
+            check(~8 as T, T.isSigned ? nil : max)
+            check(~7 as T, T.isSigned ? nil : max)
+            check(~6 as T, T.isSigned ? nil : max)
+            check(~5 as T, T.isSigned ? nil : max)
+            check(~4 as T, T.isSigned ? nil : max)
+            check(~3 as T, T.isSigned ? nil : max)
+            check(~2 as T, T.isSigned ? nil : max)
+            check(~1 as T, T.isSigned ? nil : max)
+            check(~0 as T, T.isSigned ? nil : max)
         }
         
         for type in binaryIntegers {
