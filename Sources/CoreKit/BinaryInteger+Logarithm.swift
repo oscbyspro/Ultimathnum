@@ -33,9 +33,8 @@ extension BinaryInteger {
     ///
     /// - Note: `Nonzero<T.Magnitude>` returns nonoptional results.
     ///
-    @inlinable public borrowing func ilog2() -> Optional<Count<IX>> {
-        // TODO: consider BinaryInteger/isPositive
-        guard  self.signum() == Signum.more else { return nil }
+    @inlinable public /* borrowing */ func ilog2() -> Optional<Count<IX>> {
+        guard  self.isPositive else { return nil }
         return Nonzero(unchecked: Magnitude(raw: copy self)).ilog2()
     }
 }

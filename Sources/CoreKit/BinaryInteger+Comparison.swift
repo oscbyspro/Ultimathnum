@@ -29,8 +29,28 @@ extension BinaryInteger {
     ///
     /// - Note: It checks `isSigned` first, which is preferred in inlinable generic code.
     ///
+    /// - Note: Big integers evaluate it in place, cf. `compared(to: 0)`.
+    ///
     @inlinable public var isNegative: Bool {
         Self.isSigned && Bool(self.appendix)
+    }
+    
+    /// Indicates whether this value is greater than zero.
+    ///
+    /// - Note: Big integers evaluate it in place, cf. `compared(to: 0)`.
+    ///
+    @inlinable public var isPositive: Bool {
+        if !Self.isArbitrary {
+            return self > Self.zero
+            
+        }   else if Bool(self.appendix) {
+            return !Self.isSigned
+            
+        }   else {
+            return self.withUnsafeBinaryIntegerBody {
+                !$0.isZero
+            }
+        }
     }
     
     /// Indicates whether this value is equal to zero.
@@ -38,7 +58,7 @@ extension BinaryInteger {
     /// - Note: Big integers evaluate it in place, cf. `compared(to: 0)`.
     ///
     @inlinable public var isZero: Bool {
-        if !Self.size.isInfinite {
+        if !Self.isArbitrary {
             return self == Self.zero
             
         }   else {
@@ -53,7 +73,7 @@ extension BinaryInteger {
     /// - Note: Big integers evaluate it in place, cf. `compared(to: 0)`.
     ///
     @inlinable public borrowing func signum() -> Signum {
-        if !Self.size.isInfinite {
+        if !Self.isArbitrary {
             return self.compared(to: Self.zero)
             
         }   else {

@@ -22,6 +22,29 @@ final class BinaryIntegerTestsOnComparison: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
+    func testSignum() {
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            Test().signum( 0 as T, 0 as Signum)
+            Test().signum( 1 as T, 1 as Signum)
+            Test().signum( 2 as T, 1 as Signum)
+            Test().signum( 3 as T, 1 as Signum)
+            
+            Test().signum(~3 as T, Signum.one(Sign(T.isSigned)))
+            Test().signum(~2 as T, Signum.one(Sign(T.isSigned)))
+            Test().signum(~1 as T, Signum.one(Sign(T.isSigned)))
+            Test().signum(~0 as T, Signum.one(Sign(T.isSigned)))
+            
+            Test().signum(Esque<T>.min, T.isSigned ? -1 : 0 as Signum)
+            Test().signum(Esque<T>.bot, 1 as Signum)
+            Test().signum(Esque<T>.msb, T.isSigned ? -1 : 1 as Signum)
+            Test().signum(Esque<T>.max, 1 as Signum)
+        }
+        
+        for type in binaryIntegers {
+            whereIs(type)
+        }
+    }
+    
     func testGenericComparisonOfLowEntropies() {
         func whereIs<T, U>(_ lhs: T.Type, _ rhs: U.Type) where T: BinaryInteger, U: BinaryInteger {            
             switch (T.isSigned, U.isSigned) {

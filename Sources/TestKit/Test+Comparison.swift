@@ -100,6 +100,38 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    public func signum<T>(
+        _ instance: consuming T,
+        _ expectation: Signum
+    )   where T: BinaryInteger {
+        
+        same(instance.isNegative, expectation == Signum.less, "BinaryInteger.isNegative")
+        same(instance.isZero,     expectation == Signum.same, "BinaryInteger.isZero")
+        same(instance.isPositive, expectation == Signum.more, "BinaryInteger.isPositive")
+        
+        if  instance.isInfinite {
+            same(expectation, Signum.more, "BinaryInteger.isInfinite")
+        }
+        
+        always: do {
+            same(instance.signum(), expectation, "BinaryInteger/signum()")
+        }
+        
+        instance.withUnsafeBinaryIntegerElements {
+            same(DataInt.signum(of: $0, mode: T.mode), expectation, "DataInt.signum(of:mode:)")
+            
+            if !T.isSigned, !T.isArbitrary {
+                same($0.body.signum(), expectation, "DataInt.Body/signum()")
+            }
+        }
+        
+        instance.withUnsafeMutableBinaryIntegerElements {
+            if !T.isSigned, !T.isArbitrary {
+                same($0.body.signum(), expectation, "MutableDataInt.Body/signum()")
+            }
+        }
+    }
+    
     public func comparison<T, U>(
         _ lhs: T,
         _ rhs: U, 
