@@ -465,11 +465,11 @@ The return type is an enum called Signum. You may switch over it or use its -1-0
 
 ```swift
 let random  = U8.random()
-let divisor = U8.random(in: 1 ... 255)
-let divider = Divider(divisor)
-let normal  = random .division(Nonzero(divisor))
-let magical = divider.division(dividing: random)
-precondition(magical == normal.unwrap())
+let divisor = Nonzero(U8.random(in: 1...255))
+let divider = Divider(divisor.value)
+let typical = random.division(divisor) as Division<U8, U8> // div
+let magical = random.division(divider) as Division<U8, U8> // mul-add-shr
+precondition(typical == magical) // quotient and remainder
 ```
 
 You know how the compiler sometimes replaces division with multiplication? Well,

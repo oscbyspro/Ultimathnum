@@ -90,11 +90,13 @@ final class DividerTests: XCTestCase {
     func testDivisionByFuzzingValues() {
         func whereIs<T>(_ type: T.Type, rounds: IX, randomness: consuming FuzzerInt) where T: SystemsInteger & UnsignedInteger {
             for _ in 0 ..< rounds {
-                let divider = Divider(Nonzero(T.random(in: 1...T.max, using: &randomness)))
+                let divider = Divider(T.random(in: 1...T.max, using: &randomness))
                 let dividend: T = T.random(using: &randomness)
                 let expectation = dividend.division(Nonzero(divider.divisor)).unwrap()
-                Test().same(divider.quotient(dividing: dividend), expectation.quotient)
-                Test().same(divider.division(dividing: dividend), expectation)
+                Test().same(dividend.division(divider),             expectation)
+                Test().same(divider .division(dividing:  dividend), expectation)
+                Test().same(dividend.quotient(divider),             expectation.quotient)
+                Test().same(divider .quotient(dividing:  dividend), expectation.quotient)
             }
         }
         
@@ -116,11 +118,13 @@ final class DividerTests: XCTestCase {
             }
             
             for _ in 0 ..< rounds {
-                guard let divider = Divider(exactly: random()) else { continue }
+                let divider = Divider(Swift.max(1, random()))
                 let dividend: T = random()
                 let expectation = dividend.division(Nonzero(divider.divisor)).unwrap()
-                Test().same(divider.quotient(dividing: dividend), expectation.quotient)
-                Test().same(divider.division(dividing: dividend), expectation)
+                Test().same(dividend.division(divider),             expectation)
+                Test().same(divider .division(dividing:  dividend), expectation)
+                Test().same(dividend.quotient(divider),             expectation.quotient)
+                Test().same(divider .quotient(dividing:  dividend), expectation.quotient)
             }
         }
         
@@ -140,7 +144,7 @@ final class DividerTests: XCTestCase {
             }
             
             for _ in 0 ..< rounds {
-                guard let divider = Divider(exactly: T.lsb.up(random())) else { continue }
+                let divider = Divider(T.lsb.up(random()))
                 let dividend: T = T(raw: T.Signitude.random(through: random(), using: &randomness))
                 let expectation = dividend.division(Nonzero(divider.divisor)).unwrap()
                 Test().same(divider.quotient(dividing: dividend), expectation.quotient)
@@ -170,10 +174,10 @@ extension DividerTests {
     
     func testReadmeCodeSnippet() {
         let random  = U8.random()
-        let divisor = U8.random(in: 1 ... 255)
-        let divider = Divider(divisor)
-        let normal  = random .division(Nonzero(divisor))
-        let magical = divider.division(dividing: random)
-        precondition(magical == normal.unwrap())
+        let divisor = Nonzero(U8.random(in: 1...255))
+        let divider = Divider(divisor.value)
+        let typical = random.division(divisor) as Division<U8, U8> // div
+        let magical = random.division(divider) as Division<U8, U8> // mul-add-shr
+        precondition(typical == magical) // quotient and remainder
     }
 }
