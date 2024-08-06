@@ -26,38 +26,38 @@ final class DividerTests: XCTestCase {
             let divider = Divider(exactly: divisor)!
             Test().same(divider.multiplier, mul)
             Test().same(divider.increment,  add)
-            Test().same(divider.shift.promoted(), shr)
+            Test().same(divider.shift,      shr)
         }
         
         for distance: IX in 0 ..< 8 {
-            check(U8 .lsb << distance, mul: U8 .max, add: U8 .max, shr: U8 (distance))
-            check(U16.lsb << distance, mul: U16.max, add: U16.max, shr: U16(distance))
-            check(U32.lsb << distance, mul: U32.max, add: U32.max, shr: U32(distance))
-            check(U64.lsb << distance, mul: U64.max, add: U64.max, shr: U64(distance))
+            check(U8 .lsb << distance, mul: U8 .max, add: U8 .max, shr: 08 + U8 (distance))
+            check(U16.lsb << distance, mul: U16.max, add: U16.max, shr: 16 + U16(distance))
+            check(U32.lsb << distance, mul: U32.max, add: U32.max, shr: 32 + U32(distance))
+            check(U64.lsb << distance, mul: U64.max, add: U64.max, shr: 64 + U64(distance))
         }
         
-        check(07 as U8,  mul: 00000000000000000146, add: 00000000000000000146, shr: 2)
-        check(07 as U16, mul: 00000000000000037449, add: 00000000000000037449, shr: 2)
-        check(07 as U32, mul: 00000000002454267026, add: 00000000002454267026, shr: 2)
-        check(07 as U64, mul: 10540996613548315209, add: 10540996613548315209, shr: 2)
+        check(07 as U8,  mul: 00000000000000000146, add: 00000000000000000146, shr: 08 + 2) // shr: 10
+        check(07 as U16, mul: 00000000000000037449, add: 00000000000000037449, shr: 16 + 2) // shr: 18
+        check(07 as U32, mul: 00000000002454267026, add: 00000000002454267026, shr: 32 + 2) // shr: 34
+        check(07 as U64, mul: 10540996613548315209, add: 10540996613548315209, shr: 64 + 2) // shr: 66
     
-        check(10 as U8,  mul: 00000000000000000205, add: 00000000000000000000, shr: 3)
-        check(10 as U16, mul: 00000000000000052429, add: 00000000000000000000, shr: 3)
-        check(10 as U32, mul: 00000000003435973837, add: 00000000000000000000, shr: 3)
-        check(10 as U64, mul: 14757395258967641293, add: 00000000000000000000, shr: 3)
+        check(10 as U8,  mul: 00000000000000000205, add: 00000000000000000000, shr: 08 + 3) // shr: 11
+        check(10 as U16, mul: 00000000000000052429, add: 00000000000000000000, shr: 16 + 3) // shr: 19
+        check(10 as U32, mul: 00000000003435973837, add: 00000000000000000000, shr: 32 + 3) // shr: 35
+        check(10 as U64, mul: 14757395258967641293, add: 00000000000000000000, shr: 64 + 3) // shr: 67
     }
     
     func testInitForEachByteEntropyExtension() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
             for divisor in (I8.min...I8.max).lazy.map(T.init(load:)) {
                 if !divisor.isZero {
-                    Test().same(Divider(divisor).divisor.value, divisor)
-                    Test().same(Divider(unchecked: divisor) .divisor.value, divisor)
-                    Test().same(Divider(exactly:   divisor)!.divisor.value, divisor)
-                    Test().success({ try Divider(divisor, prune: Bad.any).divisor.value }, divisor)
+                    Test().same(Divider(divisor           ) .divisor, divisor)
+                    Test().same(Divider(unchecked: divisor) .divisor, divisor)
+                    Test().same(Divider(exactly:   divisor)!.divisor, divisor)
+                    Test().success({ try Divider(divisor, prune: Bad.any).divisor }, divisor)
                 }   else {
                     Test().none(Divider(exactly: divisor))
-                    Test().failure({ try Divider(divisor, prune: Bad.any).divisor.value }, Bad.any)
+                    Test().failure({ try Divider(divisor, prune: Bad.any).divisor }, Bad.any)
                 }
             }
         }
@@ -77,7 +77,7 @@ final class DividerTests: XCTestCase {
         for dividend in U8.min ... U8.max {
             for divisor in U8.min ... U8.max {
                 if  let divider = Divider(exactly: divisor) {
-                    let expectation = dividend.division(divider.divisor).unwrap()
+                    let expectation = dividend.division(Nonzero(divider.divisor)).unwrap()
                     success &+= IX(Bit(divider.quotient(dividing: dividend) == expectation.quotient))
                     success &+= IX(Bit(divider.division(dividing: dividend) == expectation))
                 }
@@ -92,7 +92,7 @@ final class DividerTests: XCTestCase {
             for _ in 0 ..< rounds {
                 let divider = Divider(Nonzero(T.random(in: 1...T.max, using: &randomness)))
                 let dividend: T = T.random(using: &randomness)
-                let expectation = dividend.division(divider.divisor).unwrap()
+                let expectation = dividend.division(Nonzero(divider.divisor)).unwrap()
                 Test().same(divider.quotient(dividing: dividend), expectation.quotient)
                 Test().same(divider.division(dividing: dividend), expectation)
             }
@@ -118,7 +118,7 @@ final class DividerTests: XCTestCase {
             for _ in 0 ..< rounds {
                 guard let divider = Divider(exactly: random()) else { continue }
                 let dividend: T = random()
-                let expectation = dividend.division(divider.divisor).unwrap()
+                let expectation = dividend.division(Nonzero(divider.divisor)).unwrap()
                 Test().same(divider.quotient(dividing: dividend), expectation.quotient)
                 Test().same(divider.division(dividing: dividend), expectation)
             }
@@ -142,7 +142,7 @@ final class DividerTests: XCTestCase {
             for _ in 0 ..< rounds {
                 guard let divider = Divider(exactly: T.lsb.up(random())) else { continue }
                 let dividend: T = T(raw: T.Signitude.random(through: random(), using: &randomness))
-                let expectation = dividend.division(divider.divisor).unwrap()
+                let expectation = dividend.division(Nonzero(divider.divisor)).unwrap()
                 Test().same(divider.quotient(dividing: dividend), expectation.quotient)
                 Test().same(divider.division(dividing: dividend), expectation)
             }
@@ -170,9 +170,10 @@ extension DividerTests {
     
     func testReadmeCodeSnippet() {
         let random  = U8.random()
-        let divider = Divider(U8.random(in:  1 ... 255))
-        let normal  = random .division(divider .divisor) // div
-        let magical = divider.division(dividing: random) // mul-add-shr
+        let divisor = U8.random(in: 1 ... 255)
+        let divider = Divider(divisor)
+        let normal  = random .division(Nonzero(divisor))
+        let magical = divider.division(dividing: random)
         precondition(magical == normal.unwrap())
     }
 }

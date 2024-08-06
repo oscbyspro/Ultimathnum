@@ -456,8 +456,8 @@ static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self
 
 Most comparable types provide a three-way *compared(to:)* method indicating whether the caller 
 is less than, equal to, or greater than the argument. This is especially useful in the case of 
-arbitrary integers, since it requires little more work than regular two-way comparisons. The 
-return type is an enum called Signum. You may switch over it or use its [-1, 0, 1] semantics.
+arbitrary integers, since it only requires a little more work than regular two-way comparisons. 
+The return type is an enum called Signum. You may switch over it or use its -1-0-1 semantics.
 
 <a name="corekit-divider"/>
 
@@ -465,15 +465,16 @@ return type is an enum called Signum. You may switch over it or use its [-1, 0, 
 
 ```swift
 let random  = U8.random()
-let divider = Divider(U8.random(in:  1 ... 255))
-let normal  = random .division(divider .divisor) // div
-let magical = divider.division(dividing: random) // mul-add-shr
+let divisor = U8.random(in: 1 ... 255)
+let divider = Divider(divisor)
+let normal  = random .division(Nonzero(divisor))
+let magical = divider.division(dividing: random)
 precondition(magical == normal.unwrap())
 ```
 
 You know how the compiler sometimes replaces division with multiplication? Well,
 now you can be a wizard too! Divider\<T\> finds same-size magic constants and replaces
-division with a mul-add-shr operation. The same algorithm works for powers of two too!
+division with: multiplication, addition, and shifts.
 
 <a name="doubleintkit"/>
 
