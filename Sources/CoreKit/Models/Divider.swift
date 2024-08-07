@@ -79,15 +79,17 @@
         }   else {
             let power =  Doublet(low: Value.min, high: subpower)
             let division = Value.division(power, by: divisor).unchecked()
-            //  ⌊a÷b⌋ == ⌊(a+0)×⌈power÷b⌉÷power⌋
-            //  where rounding error < subpower
-            if  divisor.value.minus(division.remainder).unchecked() < subpower {
+            // subpower < divisor < 2 × subpower
+            Swift.assert(subpower < divisor.value)
+            Swift.assert(subpower > divisor.value.down(Count(1)))
+            //  ⌊a÷b⌋ == ⌊(a+1)×⌊power÷b⌋÷power⌋ where error < subpower
+            //  ⌊a÷b⌋ == ⌊(a+0)×⌈power÷b⌉÷power⌋ where error ≤ subpower
+            if  division.remainder >= subpower {
+                Swift.assert(divisor.value - division.remainder < subpower)
                 self.multiplier = division.quotient.incremented().unchecked()
                 self.increment  = Value.min
-            //  ⌊a÷b⌋ == ⌊(a+1)×⌊power÷b⌋÷power⌋
-            //  where rounding error ≤ subpower
             }   else {
-                precondition(division.remainder <= subpower)
+                Swift.assert(division.remainder <= subpower)
                 self.multiplier = division.quotient
                 self.increment  = division.quotient
             }
