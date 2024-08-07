@@ -31,12 +31,18 @@
 /// however, that the inverse case is not as simple. `U8(255)` is natural, 
 /// for example, but it becomes negative when you reinterpret it as `I8(-1)`.
 ///
-@frozen public struct Natural<Value>: Equatable, Guarantee where Value: BinaryInteger {
+@frozen public struct Natural<Value>: Equatable where Value: BinaryInteger {
+    
+    public typealias Value = Value
     
     //=------------------------------------------------------------------------=
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
+    /// Indicates whether the given `value` can be trusted.
+    ///
+    /// - Returns: `value ∈ ℕ`
+    ///
     @inlinable public static func predicate(_ value: /* borrowing */ Value) -> Bool {
         !Bool(value.appendix) // await borrowing fix
     }
@@ -51,9 +57,45 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @_disfavoredOverload // enables: elements.map(Self.init)
+    /// Creates a new instance without validation in release mode.
+    ///
+    /// - Requires: `value ∈ ℕ`
+    ///
+    /// - Warning: Only use this method when you know the `value` is valid.
+    ///
+    @_disfavoredOverload // collection.map(Self.init)
     @inlinable public init(unchecked value: consuming Value) {
         Swift.assert(Self.predicate(value), String.brokenInvariant())
+        self.value = value
+    }
+    
+    /// Creates a new instance by trapping on failure.
+    ///
+    /// - Requires: `value ∈ ℕ`
+    ///
+    @inlinable public init(_ value: consuming Value) {
+        precondition(Self.predicate(value), String.brokenInvariant())
+        self.value = value
+    }
+    
+    /// Creates a new instance by returning `nil` on failure.
+    ///
+    /// - Requires: `value ∈ ℕ`
+    ///
+    @inlinable public init?(exactly value: consuming Value) {
+        guard Self.predicate(value) else { return nil }
+        self.value = value
+    }
+    
+    /// Creates a new instance by throwing the `error()` on failure.
+    ///
+    /// - Requires: `value ∈ ℕ`
+    ///
+    @inlinable public init<Failure>(
+        _ value: consuming Value,
+        prune error: @autoclosure () -> Failure
+    )   throws where Failure: Swift.Error {
+        guard Self.predicate(value) else { throw error() }
         self.value = value
     }
     
@@ -61,7 +103,7 @@
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// The magnitude of this value.
+    /// The `magnitude` of `self`.
     ///
     /// - Note: This is a bit cast because `self ∈ ℕ → unsigned`.
     ///

@@ -24,7 +24,7 @@
 /// init(unchecked:) // error: unchecked
 /// ```
 ///
-@frozen public struct Shift<Target>: Equatable, Guarantee where Target: UnsignedInteger {
+@frozen public struct Shift<Target>: Equatable where Target: UnsignedInteger {
     
     public typealias Target = Target
     
@@ -34,6 +34,10 @@
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
+    /// Indicates whether the given `value` can be trusted.
+    ///
+    /// - Returns: `value ∈ 0 up to Value.size`
+    ///
     @inlinable public static func predicate(_ value: borrowing Value) -> Bool {
         value < Target.size
     }
@@ -77,9 +81,45 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a new instance without validation in release mode.
+    ///
+    /// - Requires: `value ∈ 0 up to Value.size`
+    ///
+    /// - Warning: Only use this method when you know the `value` is valid.
+    ///
     @_disfavoredOverload // collection.map(Self.init)
     @inlinable public init(unchecked value: consuming Value) {
         Swift.assert(Self.predicate(value), String.brokenInvariant())
+        self.value = value
+    }
+    
+    /// Creates a new instance by trapping on failure.
+    ///
+    /// - Requires: `value ∈ 0 up to Value.size`
+    ///
+    @inlinable public init(_ value: consuming Value) {
+        precondition(Self.predicate(value), String.brokenInvariant())
+        self.value = value
+    }
+    
+    /// Creates a new instance by returning `nil` on failure.
+    ///
+    /// - Requires: `value ∈ 0 up to Value.size`
+    ///
+    @inlinable public init?(exactly value: consuming Value) {
+        guard Self.predicate(value) else { return nil }
+        self.value = value
+    }
+    
+    /// Creates a new instance by throwing the `error()` on failure.
+    ///
+    /// - Requires: `value ∈ 0 up to Value.size`
+    ///
+    @inlinable public init<Failure>(
+        _ value: consuming Value,
+        prune error: @autoclosure () -> Failure
+    )   throws where Failure: Swift.Error {
+        guard Self.predicate(value) else { throw error() }
         self.value = value
     }
     
