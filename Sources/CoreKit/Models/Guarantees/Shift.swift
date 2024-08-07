@@ -36,7 +36,7 @@
     
     /// Indicates whether the given `value` can be trusted.
     ///
-    /// - Returns: `value ∈ 0 up to Value.size`
+    /// - Returns: `value ∈ 0 up to Target.size`
     ///
     @inlinable public static func predicate(_ value: borrowing Value) -> Bool {
         value < Target.size
@@ -83,7 +83,7 @@
     
     /// Creates a new instance without validation in release mode.
     ///
-    /// - Requires: `value ∈ 0 up to Value.size`
+    /// - Requires: `value ∈ 0 up to Target.size`
     ///
     /// - Warning: Only use this method when you know the `value` is valid.
     ///
@@ -95,7 +95,7 @@
     
     /// Creates a new instance by trapping on failure.
     ///
-    /// - Requires: `value ∈ 0 up to Value.size`
+    /// - Requires: `value ∈ 0 up to Target.size`
     ///
     @inlinable public init(_ value: consuming Value) {
         precondition(Self.predicate(value), String.brokenInvariant())
@@ -104,7 +104,7 @@
     
     /// Creates a new instance by returning `nil` on failure.
     ///
-    /// - Requires: `value ∈ 0 up to Value.size`
+    /// - Requires: `value ∈ 0 up to Target.size`
     ///
     @inlinable public init?(exactly value: consuming Value) {
         guard Self.predicate(value) else { return nil }
@@ -113,7 +113,7 @@
     
     /// Creates a new instance by throwing the `error()` on failure.
     ///
-    /// - Requires: `value ∈ 0 up to Value.size`
+    /// - Requires: `value ∈ 0 up to Target.size`
     ///
     @inlinable public init<Failure>(
         _ value: consuming Value,
