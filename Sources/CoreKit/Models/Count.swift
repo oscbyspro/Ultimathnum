@@ -59,12 +59,8 @@
     }
     
     @inlinable public init?(exactly source: consuming Layout) {
-        if  source.isNegative {
-            return nil
-            
-        }   else {
-            self.init(unchecked: source)
-        }
+        guard !source.isNegative else { return nil }
+        self.init(unchecked: source)
     }
     
     @inlinable public init(unchecked source: consuming Layout) {
