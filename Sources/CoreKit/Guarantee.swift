@@ -8,53 +8,38 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Natural
+// MARK: * Guarantee
 //*============================================================================*
 
-/// A finite value.
-///
-/// ### Trusted Input
-///
-/// This is a trusted input type. Validate inputs with these methods:
-///
-/// ```swift
-/// init(_:)         // error: traps
-/// init(_:prune:)   // error: throws
-/// init(exactly:)   // error: nil
-/// init(unchecked:) // error: unchecked
-/// ```
-///
-@frozen public struct Finite<Value>: Equatable, Guarantee where Value: BinaryInteger {
+/// A *trusted input* type.
+public protocol Guarantee<Value> {
+    
+    associatedtype Value
     
     //=------------------------------------------------------------------------=
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func predicate(_ value: /* borrowing */ Value) -> Bool {
-        !value.isInfinite // await borrowing fix
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: State
-    //=------------------------------------------------------------------------=
-    
-    public let value: Value
+    /// Indicates whether the given `value` can be trusted.
+    @inlinable static func predicate(_ value: borrowing Value) -> Bool
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a new instance without validation in release mode.
+    ///
+    /// - Requires: `Self.predicate(value)` must be `true` to succeed.
+    ///
+    /// - Warning: Only use this method when you know the `value` is valid.
+    ///
     @_disfavoredOverload // collection.map(Self.init)
-    @inlinable public init(unchecked value: consuming Value) {
-        Swift.assert(Self.predicate(value), String.brokenInvariant())
-        self.value = value
-    }
+    @inlinable init(unchecked value: consuming Value)
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func magnitude() -> Finite<Value.Magnitude> {
-        Finite<Value.Magnitude>(unchecked: self.value.magnitude())
-    }
+    /// The value of this trusted input.
+    @inlinable var value: Value { get }
 }

@@ -24,12 +24,12 @@
 /// init(unchecked:) // error: unchecked
 /// ```
 ///
-@frozen public struct Shift<Target>: Equatable where Target: UnsignedInteger {
+@frozen public struct Shift<Target>: Equatable, Guarantee where Target: UnsignedInteger {
     
     public typealias Target = Target
     
     public typealias Value = Count<IX>
-        
+    
     //=------------------------------------------------------------------------=
     // MARK: Metadata
     //=------------------------------------------------------------------------=
@@ -77,44 +77,9 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Creates a new instance without precondition checks.
-    ///
-    /// - Requires: `value < Target.size`
-    ///
-    /// - Warning: Use this method only when you are 100% sure the input is valid.
-    ///
-    @_disfavoredOverload // enables: elements.map(Self.init)
+    @_disfavoredOverload // collection.map(Self.init)
     @inlinable public init(unchecked value: consuming Value) {
         Swift.assert(Self.predicate(value), String.brokenInvariant())
-        self.value = value
-    }
-    
-    /// Creates a new instance by trapping on failure.
-    ///
-    /// - Requires: `value < Target.size`
-    ///
-    @inlinable public init(_ value: consuming Value) {
-        self.init(exactly: value)!
-    }
-    
-    /// Creates a new instance by returning `nil` on failure.
-    ///
-    /// - Requires: `value < Target.size`
-    ///
-    @inlinable public init?(exactly value: consuming Value) {
-        guard Self.predicate(value) else { return nil }
-        self.value = value
-    }
-    
-    /// Creates a new instance by throwing the `error()` on failure.
-    ///
-    /// - Requires: `value < Target.size`
-    ///
-    @inlinable public init<Failure>(
-        _ value: consuming Value,
-        prune error: @autoclosure () -> Failure
-    )   throws where Failure: Swift.Error {
-        guard Self.predicate(value) else { throw error() }
         self.value = value
     }
     

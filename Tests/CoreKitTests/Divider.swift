@@ -22,11 +22,11 @@ final class DividerTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testInstances() {
-        func check<T>(_ divisor: T, mul: T, add: T, shr: T) where T: SystemsInteger & UnsignedInteger {
+        func check<T>(_ divisor: T, mul: T, add: T, shr: T, line: UInt = #line) where T: SystemsInteger & UnsignedInteger {
             let divider = Divider(exactly: divisor)!
-            Test().same(divider.multiplier, mul)
-            Test().same(divider.increment,  add)
-            Test().same(divider.shift,      shr)
+            Test(line: line).same(divider.multiplier, mul)
+            Test(line: line).same(divider.increment,  add)
+            Test(line: line).same(divider.shift,      shr)
         }
         
         for distance: IX in 0 ..< 8 {
@@ -40,7 +40,7 @@ final class DividerTests: XCTestCase {
         check(07 as U16, mul: 00000000000000037449, add: 00000000000000037449, shr: 16 + 2) // shr: 18
         check(07 as U32, mul: 00000000002454267026, add: 00000000002454267026, shr: 32 + 2) // shr: 34
         check(07 as U64, mul: 10540996613548315209, add: 10540996613548315209, shr: 64 + 2) // shr: 66
-    
+        
         check(10 as U8,  mul: 00000000000000000205, add: 00000000000000000000, shr: 08 + 3) // shr: 11
         check(10 as U16, mul: 00000000000000052429, add: 00000000000000000000, shr: 16 + 3) // shr: 19
         check(10 as U32, mul: 00000000003435973837, add: 00000000000000000000, shr: 32 + 3) // shr: 35
@@ -118,9 +118,9 @@ final class DividerTests: XCTestCase {
             }
             
             for _ in 0 ..< rounds {
-                let divider = Divider(Swift.max(1, random()))
+                guard let divider = Divider(exactly: random()) else { continue }
                 let dividend: T = random()
-                let expectation = dividend.division(Nonzero(divider.divisor)).unwrap()
+                let expectation = dividend.division(Nonzero(divider.divisor)) as Division
                 Test().same(dividend.division(divider),             expectation)
                 Test().same(divider .division(dividing:  dividend), expectation)
                 Test().same(dividend.quotient(divider),             expectation.quotient)
