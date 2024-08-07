@@ -82,16 +82,17 @@
             // subpower < divisor < 2 × subpower
             Swift.assert(subpower < divisor.value)
             Swift.assert(subpower > divisor.value.down(Count(1)))
-            //  ⌊a÷b⌋ == ⌊(a+1)×⌊power÷b⌋÷power⌋ where error < subpower
-            //  ⌊a÷b⌋ == ⌊(a+0)×⌈power÷b⌉÷power⌋ where error ≤ subpower
-            if  division.remainder >= subpower {
-                Swift.assert(divisor.value - division.remainder < subpower)
-                self.multiplier = division.quotient.incremented().unchecked()
-                self.increment  = Value.min
-            }   else {
-                Swift.assert(division.remainder <= subpower)
+            //  ⌊a÷b⌋ == ⌊(a+1)×⌊power÷b⌋÷power⌋ when error <= subpower
+            //  ⌊a÷b⌋ == ⌊(a+0)×⌈power÷b⌉÷power⌋ when error <= subpower
+            //  takes the path with no increment when error == subpower
+            if  division.remainder < subpower {
+                Swift.assert(subpower >= division.remainder)
                 self.multiplier = division.quotient
                 self.increment  = division.quotient
+            }   else {
+                Swift.assert(subpower >= divisor.value - division.remainder)
+                self.multiplier = division.quotient.incremented().unchecked()
+                self.increment  = Value.min
             }
         }
         
