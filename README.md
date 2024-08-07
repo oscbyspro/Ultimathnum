@@ -472,9 +472,9 @@ let magical = random.division(divider) as Division<U8, U8> // mul-add-shr
 precondition(typical == magical) // quotient and remainder
 ```
 
-You know how the compiler sometimes replaces division with multiplication? Well,
-now you can be a wizard too! Divider\<T\> finds same-size magic constants and replaces
-division with: multiplication, addition, and shifts.
+You know how the compiler sometimes replaces division with multiplication? 
+Well, now you can be a wizard too! Divider\<Value\> finds same-size magic
+constants and replaces division with: multiplication, addition, and shifts.
 
 <a name="doubleintkit"/>
 

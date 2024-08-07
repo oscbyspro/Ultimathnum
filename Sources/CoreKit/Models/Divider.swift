@@ -13,7 +13,7 @@
 
 /// An integer divider.
 ///
-/// It finds magic constants such that `(A)` and `(B)` are equivalent double-size
+/// It finds magic constants such that `A` and `B` are equivalent double-size
 /// expressions for all same-size dividends:
 ///
 ///     A) (dividend / divisor)
