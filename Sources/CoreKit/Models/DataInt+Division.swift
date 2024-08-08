@@ -25,7 +25,7 @@ extension MutableDataInt.Body {
     ///
     /// - Note: This operation does not need `write` access.
     ///
-    /// - Important: This is `unsigned` and `finite`.
+    /// - Important: This operation is `unsigned` and `finite`.
     ///
     @inlinable public func remainder(_ divisor: borrowing Nonzero<Element>) -> Element {
         var remainder = Element()
@@ -43,9 +43,9 @@ extension MutableDataInt.Body {
     /// - Requires: The `divisor` must be nonzero.
     ///
     /// - Returns: The `quotient` is stored in `self` and the `remainder` is returned.
-    ///   Note that the value of the `remainder` is less than the `divisor`.
+    ///   Note that a valid `remainder` is always less than the `divisor`.
     ///
-    /// - Important: This is `unsigned` and `finite`.
+    /// - Important: This operation is `unsigned` and `finite`.
     ///
     @inlinable public func divisionSetQuotientGetRemainder(_ divisor: borrowing Nonzero<Element>) -> Element {
         var remainder = Element()
@@ -53,6 +53,28 @@ extension MutableDataInt.Body {
         for index: IX in self.indices.reversed() {
             let dividend = Doublet(low: self[unchecked: index], high: remainder)
             let division = Element.division(dividend, by: divisor).unchecked()
+            self[unchecked: index] = division.quotient
+            ((((((remainder )))))) = division.remainder
+        }
+        
+        return remainder as Element
+    }
+    
+    /// Returns the `quotient` and `remainder` of dividing `self` by the `divisor`.
+    ///
+    /// - Requires: The `divisor` must be nonzero.
+    ///
+    /// - Returns: The `quotient` is stored in `self` and the `remainder` is returned.
+    ///   Note that a valid `remainder` is always less than the `divisor`.
+    ///
+    /// - Important: This operation is `unsigned` and `finite`.
+    ///
+    @inlinable public func divisionSetQuotientGetRemainder(_ divider: borrowing Divider21<Element>) -> Element {
+        var remainder = Element()
+        
+        for index: IX in self.indices.reversed() {
+            let dividend = Doublet(low: self[unchecked: index], high: remainder)
+            let division = divider.division(dividing: dividend).unchecked()
             self[unchecked: index] = division.quotient
             ((((((remainder )))))) = division.remainder
         }
