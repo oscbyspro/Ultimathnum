@@ -79,6 +79,7 @@
             // subpower < divisor < 2 × subpower
             Swift.assert(subpower < divisor.value)
             Swift.assert(subpower > divisor.value.down(Count(1)))
+            Swift.assert(00000000 < division.remainder)
             //  ⌊a÷b⌋ == ⌊(a+1)×⌊power÷b⌋÷power⌋ when error <= subpower
             //  ⌊a÷b⌋ == ⌊(a+0)×⌈power÷b⌉÷power⌋ when error <= subpower
             //  takes the path with no increment when error == subpower
@@ -86,6 +87,7 @@
                 Swift.assert(subpower >= division.remainder)
                 self.multiplier = division.quotient
                 self.increment  = division.quotient
+                
             }   else {
                 Swift.assert(subpower >= divisor.value - division.remainder)
                 self.multiplier = division.quotient.incremented().unchecked()
@@ -174,6 +176,7 @@
             // subpower < divisor < 2 × subpower
             Swift.assert(subpower < divisor.value)
             Swift.assert(subpower > divisor.value.down(Count(1)))
+            Swift.assert(00000000 < remainder)
             //  ⌊a÷b⌋ == ⌊(a+1)×⌊power÷b⌋÷power⌋ when error <= subpower
             //  ⌊a÷b⌋ == ⌊(a+0)×⌈power÷b⌉÷power⌋ when error <= subpower
             //  takes the path with no increment when error == subpower
@@ -181,13 +184,14 @@
                 Swift.assert(subpower >= remainder)
                 self.multiplier = quotient
                 self.increment  = quotient
+                
             }   else {
                 Swift.assert(subpower >= divisor.value - remainder)
-                
+
                 var bit: Bool
                 (quotient.low, bit) = quotient.low.incremented().components()
                 (quotient.high) = quotient.high.incremented(bit).unchecked ()
-
+                
                 self.multiplier = quotient
                 self.increment  = Doublet()
             }
