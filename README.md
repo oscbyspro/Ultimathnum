@@ -372,7 +372,7 @@ for numbers intended to be read by humans.
 ```swift
 let fib1e6 = try! Fibonacci<UXL>(1_000_000)
 
-let fib1e6r10 = fib1e6.element.description(as:     .decimal) // 0.924s (208988 digits)
+let fib1e6r10 = fib1e6.element.description(as:     .decimal) // 0.297s (208988 digits)
 let fib1e6r16 = fib1e6.element.description(as: .hexadecimal) // 0.002s (173561 digits)
 
 try! UXL(fib1e6r10, as:     .decimal) // 0.040s (208988 digits)

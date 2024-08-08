@@ -167,7 +167,6 @@
         let subshift = UX(raw: divisor.ilog2())
         let subpower = Value.lsb &<< subshift
         
-        
         if  divisor.value == subpower {
             // x × max + max: high == x
             self.multiplier = Doublet(low: .max, high: .max)
@@ -175,7 +174,7 @@
             
         }   else {
             var remainder = subpower
-            var quotient  = Doublet(low: Value.min, high: Value.min)
+            var quotient  = Doublet<Value>()
             (quotient.high, remainder) = Value.division(Doublet(low: quotient.high, high: remainder), by: divisor).unchecked().components()
             (quotient.low,  remainder) = Value.division(Doublet(low: quotient.low,  high: remainder), by: divisor).unchecked().components()
             // subpower < divisor < 2 × subpower
@@ -191,12 +190,12 @@
             }   else {
                 Swift.assert(subpower >= divisor.value - remainder)
                 
-                var carry: Bool
-                (quotient.low, carry) = quotient.low.incremented().components()
-                (quotient.high) = quotient.high.incremented(carry).unchecked()
-                
+                var bit: Bool
+                (quotient.low, bit) = quotient.low.incremented().components()
+                (quotient.high) = quotient.high.incremented(bit).unchecked ()
+
                 self.multiplier = quotient
-                self.increment  = Doublet(low: .min, high: .min)
+                self.increment  = Doublet()
             }
         }
         

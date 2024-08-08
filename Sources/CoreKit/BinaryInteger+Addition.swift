@@ -162,17 +162,17 @@ extension SystemsInteger {
     
     /// Returns the result of `self` + (`other` + `bit`).
     @inlinable public consuming func plus(_ other: borrowing Self, plus bit: Bool) -> Fallible<Self> {
-        let a: Bool, b: Bool
-        (self, a) = self.plus(other).components()
-        (self, b) = self.incremented(bit).components()
-        return self.veto(a != b)
+        //  TODO: await consuming fixes
+        let (a, x) = self.plus((other)).components()
+        let (b, y) = a.incremented(bit).components()
+        return b.veto(x != y)
     }
     
     /// Returns the result of `self` - (`other` + `bit`).
     @inlinable public consuming func minus(_ other: borrowing Self, plus bit: Bool) -> Fallible<Self> {
-        let a: Bool, b: Bool
-        (self, a) = self.minus(other).components()
-        (self, b) = self.decremented(bit).components()
-        return self.veto(a != b)
+        //  TODO: await consuming fixes
+        let (a, x) = self .minus(other).components()
+        let (b, y) = a.decremented(bit).components()
+        return b.veto(x != y)
     }
 }

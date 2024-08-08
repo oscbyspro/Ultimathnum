@@ -58,6 +58,11 @@ final class FibonacciBenchmarks: XCTestCase {
     // MARK: Tests x UXL x Text Encoding
     //=------------------------------------------------------------------------=
     
+    /// ###### 2024-08-08 (MacBook Pro, 13-inch, M1, 2020):
+    ///
+    /// - `0.99 seconds`
+    /// - `0.30 seconds` with `Divider21`
+    ///
     func testFibonacciUXL1e6ToTextAsDecimal() throws {
         blackHole(blackHoleIdentity(Self.fib1e6.element).description(as: blackHoleIdentity(.decimal)))
     }

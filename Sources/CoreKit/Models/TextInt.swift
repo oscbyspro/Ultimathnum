@@ -19,10 +19,6 @@
 /// with non-generic and non-inlinable algorithms. This design favors code
 /// size over performance.
 ///
-/// ### Development
-///
-/// - TODO: Consider adding a `<= UX.size` fast path.
-///
 @frozen public struct TextInt: Equatable {
     
     //=------------------------------------------------------------------------=
@@ -51,9 +47,25 @@
     // MARK: State
     //=------------------------------------------------------------------------=
     
+    /// A numeral map.
+    ///
+    /// - Note: Decoding is case insensitive.
+    ///
+    /// - Note: Encoding is case sensitive.
+    ///
     @usableFromInline var numerals: Numerals
     
-    @usableFromInline var exponentiation: Exponentiation
+    /// The number of elements per chunk.
+    ///
+    /// - Note: It equals the number of numerals in a `power` chunk.
+    ///
+    @usableFromInline var exponent: IX
+    
+    /// A 2-by-1 `power` divider.
+    ///
+    /// - Note: The `divisor` is set to `1` when the real `power` is `max+1`.
+    ///
+    @usableFromInline let power: Divider21<UX>
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -65,7 +77,9 @@
     
     @inlinable public init(radix: UX, letters: Letters) throws {
         self.numerals = try Numerals(radix, letters: letters)
-        self.exponentiation = try Exponentiation(radix)
+        let exponentiation = try Exponentiation(radix)
+        self.exponent = exponentiation.exponent as IX
+        self.power = Divider21(Swift.max(1, exponentiation.power))
     }
     
     //=------------------------------------------------------------------------=
@@ -101,7 +115,7 @@
     /// - Returns: A value in the closed range from `2` through `36`.
     ///
     @inlinable public var radix: UX {
-        UX(load: self.numerals.radix as U8)
+        UX(load: self.numerals.radix)
     }
     
     //=------------------------------------------------------------------------=

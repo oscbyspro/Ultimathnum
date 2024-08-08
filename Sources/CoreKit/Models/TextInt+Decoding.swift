@@ -31,7 +31,7 @@ extension TextInt {
         let numerals   = UnsafeBufferPointer(rebasing: components.body)
         var magnitude  = Fallible(T.Magnitude.zero, error: true)
         
-        if  self.exponentiation.power.isZero {
+        if  self.power.divisor == 1 {
             try self.words16(numerals: numerals) {
                 magnitude = T.Magnitude.exactly($0, mode: .unsigned)
             }
@@ -72,7 +72,7 @@ extension TextInt {
         numerals: consuming UnsafeBufferPointer<UInt8>, success: (DataInt<UX>) -> Void
     )   throws {
         //=--------------------------------------=
-        Swift.assert(!self.exponentiation.power.isZero)
+        Swift.assert(self.power.divisor != 1)
         //=--------------------------------------=
         // text must contain at least one numeral
         //=--------------------------------------=
@@ -84,12 +84,12 @@ extension TextInt {
         //=--------------------------------------=
         // capacity is measured in radix powers
         //=--------------------------------------=
-        let divisor  = Nonzero(unchecked: self.exponentiation.exponent)
+        let divisor  = Nonzero(unchecked: self.exponent)
         var (stride) = IX(numerals.count).remainder(divisor)
         var capacity = IX(numerals.count).quotient (divisor).unchecked()
         
         if  (stride).isZero {
-            (stride) = self.exponentiation.exponent
+            (stride) = self.exponent
         }   else {
             capacity = capacity.plus(1).unchecked()
         }
@@ -113,8 +113,8 @@ extension TextInt {
                 numerals = UnsafeBufferPointer(rebasing: numerals[Int(stride)...])
                 let element = try self.numerals.load(part, as: UX.self)
                 // note that the index advances faster than the product
-                words[unchecked: index] = words[unchecked: ..<index].multiply(by: self.exponentiation.power, add: element)
-                stride = self.exponentiation.exponent // in case it was misaligned
+                words[unchecked: index] = words[unchecked: ..<index].multiply(by: self.power.divisor, add: element)
+                stride = self.exponent
                 index  = index.incremented().unchecked()
             }
             //=----------------------------------=
@@ -130,8 +130,8 @@ extension TextInt {
         numerals: consuming UnsafeBufferPointer<UInt8>, success: (DataInt<UX>) -> Void
     )   throws {
         //=--------------------------------------=
-        Swift.assert(self.exponentiation.power.isZero)
-        Swift.assert(self.exponentiation.exponent.count(1) == Count(1))
+        Swift.assert(self.power.divisor ==  01)
+        Swift.assert(self.exponent.count(1) == Count(1))
         //=--------------------------------------=
         // text must contain at least one numeral
         //=--------------------------------------=
@@ -143,12 +143,12 @@ extension TextInt {
         //=--------------------------------------=
         // capacity is measured in radix powers
         //=--------------------------------------=
-        let divisor  = Nonzero(unchecked: self.exponentiation.exponent)
+        let divisor  = Nonzero(unchecked: self.exponent)
         var stride   = IX(numerals.count).remainder(divisor)
         var capacity = IX(numerals.count).quotient (divisor).unchecked()
         
         if  (stride).isZero {
-            (stride) = self.exponentiation.exponent
+            (stride) = self.exponent
         }   else {
             capacity = capacity.plus(1).unchecked()
         }
@@ -172,7 +172,7 @@ extension TextInt {
                 numerals = UnsafeBufferPointer(rebasing: numerals[Int(stride)...])
                 index  = index.decremented().unchecked()
                 words[unchecked: index] = try self.numerals.load(part, as: UX.self)
-                stride = self.exponentiation.exponent // in case it was misaligned
+                stride = self.exponent
             }
             //=----------------------------------=
             // path: success

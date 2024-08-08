@@ -112,15 +112,15 @@ extension TextInt {
         // text: capacity upper bound
         //=--------------------------------------=
         var capacity = IX(raw: body.nondescending(0))
-        let speed = if self.exponentiation.power.isZero {
-            IX(raw: self.exponentiation.power.size())
+        let speed = if self.power.divisor == 1 {
+            IX(raw: self.power.divisor.size())
         }   else  {
-            IX(raw: self.exponentiation.power.nondescending(0)).decremented().unchecked()
+            IX(raw: self.power.divisor.nondescending(0)).decremented().unchecked()
         }
         
         capacity /= speed
         capacity += 1
-        capacity *= self.exponentiation.exponent
+        capacity *= self.exponent
         capacity += IX(Bit(sign != nil))
         capacity += IX(Bit(mask != nil))
         //=--------------------------------------=
@@ -138,8 +138,8 @@ extension TextInt {
             //=----------------------------------=
             major: while true {
                 
-                if  let divisor = Nonzero(exactly: self.exponentiation.power) {
-                    chunk = (body).divisionSetQuotientGetRemainder(divisor)
+                if  self.power.divisor != 1 {
+                    chunk = (body).divisionSetQuotientGetRemainder(self.power)
                     body  = (body).normalized()
                 }   else if !body .isEmpty {
                     chunk = (body)[unchecked: (  )]
@@ -151,7 +151,7 @@ extension TextInt {
                 minor: repeat {
                 
                     let lowest: UX
-                    (chunk, lowest) = chunk.division(Nonzero(unchecked: self.radix)).components()
+                    (chunk, lowest) =  chunk.division(Nonzero(unchecked: self.radix)).components()
                     let element = try! self.numerals.encode(U8(load: lowest))
                     precondition(asciiIndex > ascii .startIndex)
                     asciiIndex = ascii.index(before: asciiIndex)
@@ -163,7 +163,7 @@ extension TextInt {
                 //=------------------------------=
                 // note preinitialization to 48s
                 //=------------------------------=
-                chunkIndex = chunkIndex - Int(self.exponentiation.exponent)
+                chunkIndex = chunkIndex - Int(self.exponent)
                 asciiIndex = chunkIndex
             }
             //=----------------------------------=
