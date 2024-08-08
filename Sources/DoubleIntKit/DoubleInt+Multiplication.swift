@@ -89,14 +89,13 @@ extension DoubleInt where Base == Base.Magnitude {
         let bx = self.high.times(multiplier.low )
         let by = !Bool(Bit(self.high.isZero) | Bit(multiplier.high.isZero))
         //=--------------------------------------=
-        var o0 : Bool
-        var o1 : Bool
+        var overflow: (Bool, Bool)
         //=--------------------------------------=
-        (ax.high, o0) = ax.high.plus(ay.value).components()
-        (ax.high, o1) = ax.high.plus(bx.value).components()
+        (ax.high, overflow.0) = ax.high.plus(ay.value).components()
+        (ax.high, overflow.1) = ax.high.plus(bx.value).components()
         //=--------------------------------------=
-        let error = Bit(by) | Bit(ay.error) | Bit(bx.error) | Bit(o0) | Bit(o1)
-        return Fallible(Self(raw: ax), error: Bool(error))
+        let error = Bit(by) | Bit(ay.error) | Bit(bx.error) | Bit(overflow.0) | Bit(overflow.1)
+        return Self(raw: ax).veto(Bool(error))
     }
     
     //=------------------------------------------------------------------------=
@@ -110,19 +109,17 @@ extension DoubleInt where Base == Base.Magnitude {
         let bx = Self(self.high.multiplication(multiplier.low ))
         var by = Self(self.high.multiplication(multiplier.high))
         //=--------------------------------------=
-        var o0 : Bool
-        var o1 : Bool
+        var overflow: (Bool, Bool)
         //=--------------------------------------=
-        (ax.high, o0) = ax.high.plus(ay.low ).components()
-        (ax.high, o1) = ax.high.plus(bx.low ).components()
-        let az = Low(Bit(o0)) &+ Low(Bit(o1))
+        (ax.high, overflow.0) = ax.high.plus(ay.low ).components()
+        (ax.high, overflow.1) = ax.high.plus(bx.low ).components()
+        let az =  Low(Bit(overflow.0)) &+ Low(Bit(overflow.1))
         //=--------------------------------------=
-        (by.low,  o0) = by.low .plus(ay.high).components()
-        (by.low,  o1) = by.low .plus(bx.high).components()
-        let bz = Low(Bit(o0)) &+ Low(Bit(o1))
+        (by.low,  overflow.0) = by.low .plus(ay.high).components()
+        (by.low,  overflow.1) = by.low .plus(bx.high).components()
+        let bz =  Low(Bit(overflow.0)) &+ Low(Bit(overflow.1))
         //=--------------------------------------=
-        by = by.plus(Self(low: az, high: bz)).unchecked()
-        //=--------------------------------------=
+        (by) = by.plus(Self(low: az, high: bz)).unchecked()
         return Doublet(low: Magnitude(ax), high: Magnitude(by))
     }
 }
