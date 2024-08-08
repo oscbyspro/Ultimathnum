@@ -67,6 +67,26 @@ final class DividerTests: XCTestCase {
         }
     }
     
+    func testInitForEachByteEntropyExtension21() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
+            for divisor in (I8.min...I8.max).lazy.map(T.init(load:)) {
+                if !divisor.isZero {
+                    Test().same(Divider21(divisor           ) .divisor, divisor)
+                    Test().same(Divider21(unchecked: divisor) .divisor, divisor)
+                    Test().same(Divider21(exactly:   divisor)!.divisor, divisor)
+                    Test().success({ try Divider21(divisor, prune: Bad.any).divisor }, divisor)
+                }   else {
+                    Test().none(Divider21(exactly: divisor))
+                    Test().failure({ try Divider21(divisor, prune: Bad.any).divisor }, Bad.any)
+                }
+            }
+        }
+        
+        for type in coreSystemsIntegersWhereIsUnsigned {
+            whereIs(type)
+        }
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Tests x Division
     //=------------------------------------------------------------------------=

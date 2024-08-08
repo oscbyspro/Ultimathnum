@@ -87,7 +87,7 @@ extension Divider21 {
     /// Returns the `quotient` and `remainder` of dividing the `dividend` by the `divisor`.
     @inlinable public borrowing func division(dividing dividend: consuming Doublet<Value>) -> Fallible<Division<Value, Value>> {
         let quotient  = self.quotient(dividing: dividend)
-        let remainder = dividend.low.minus(quotient.value.times(self.divisor).value) .value
-        return Division(quotient: quotient.value, remainder: remainder).veto(quotient.error)
+        let remainder = dividend.low.minus(quotient.value.times(self.divisor).value).value
+        return Division(quotient: quotient.value,remainder: remainder).veto(quotient.error)
     }
 }

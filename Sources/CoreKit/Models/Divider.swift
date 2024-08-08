@@ -47,10 +47,7 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<Failure>(
-        _   divisor: consuming Value,
-        prune error: @autoclosure () -> Failure
-    )   throws where Failure: Swift.Error {
+    @inlinable public init<Failure>(_ divisor: consuming Value, prune error: @autoclosure () -> Failure) throws where Failure: Swift.Error {
         self.init(try Nonzero(divisor, prune: error()))
     }
     
@@ -143,27 +140,24 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<Failure>(
-        _   divisor: /*consuming*/ Value,
-        prune error: @autoclosure () -> Failure
-    )   throws where Failure: Swift.Error {
+    @inlinable public init<Failure>(_ divisor: consuming Value, prune error: @autoclosure () -> Failure) throws where Failure: Swift.Error {
         self.init(try Nonzero(divisor, prune: error()))
     }
     
-    @inlinable public init?(exactly divisor: /*consuming*/ Value) {
+    @inlinable public init?(exactly divisor: consuming Value) {
         guard let divisor = Nonzero(exactly: divisor) else { return nil }
         self.init(divisor)
     }
     
-    @inlinable public init(unchecked divisor: /*consuming*/ Value) {
+    @inlinable public init(unchecked divisor: consuming Value) {
         self.init(Nonzero(unchecked: divisor))
     }
     
-    @inlinable public init(_ divisor: /*consuming*/ Value) {
+    @inlinable public init(_ divisor: consuming Value) {
         self.init(Nonzero(divisor))
     }
     
-    @inlinable public init(_ divisor: /*consuming*/ Nonzero<Value>) {
+    @inlinable public init(_ divisor: consuming Nonzero<Value>) {
         let subshift = UX(raw: divisor.ilog2())
         let subpower = Value.lsb &<< subshift
         
@@ -199,7 +193,7 @@
             }
         }
         
-        self.divisor = divisor.value
+        self.divisor = (consume  divisor).value
         self.shift = Value(load: UX(size: Value.self).times(2).plus(subshift).unchecked())
     }
 }
