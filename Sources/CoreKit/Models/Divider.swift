@@ -100,3 +100,107 @@
         self.shift = Value(load: UX(size: Value.self).plus(subshift).unchecked())
     }
 }
+
+//*============================================================================*
+// MARK: * Divider x 2 by 1
+//*============================================================================*
+
+/// A 2-by-1 integer divider.
+///
+/// It finds magic constants such that `A` and `B` are equivalent quadruple-size
+/// expressions for all double-size dividends:
+///
+///     A) (dividend / divisor)
+///     B) (dividend * multiplier + increment) >> shift
+///
+/// - Note: It performs division by multiplication, addition, and shifts.
+///
+/// ### Development
+///
+/// - TODO: Consider a DoubleableInteger constraint.
+///
+@frozen public struct Divider21<Value> where Value: SystemsInteger & UnsignedInteger {
+
+    public typealias Value = Value
+    
+    //=------------------------------------------------------------------------=
+    // MARK: State
+    //=------------------------------------------------------------------------=
+    
+    /// The divisor of this divider.
+    public let divisor: Value
+    
+    /// The multiplier of this divider.
+    public let multiplier: Doublet<Value>
+    
+    /// The increment of this divider.
+    public let increment: Doublet<Value>
+    
+    /// The shift of this divider.
+    public let shift: Value
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init<Failure>(
+        _   divisor: /*consuming*/ Value,
+        prune error: @autoclosure () -> Failure
+    )   throws where Failure: Swift.Error {
+        self.init(try Nonzero(divisor, prune: error()))
+    }
+    
+    @inlinable public init?(exactly divisor: /*consuming*/ Value) {
+        guard let divisor = Nonzero(exactly: divisor) else { return nil }
+        self.init(divisor)
+    }
+    
+    @inlinable public init(unchecked divisor: /*consuming*/ Value) {
+        self.init(Nonzero(unchecked: divisor))
+    }
+    
+    @inlinable public init(_ divisor: /*consuming*/ Value) {
+        self.init(Nonzero(divisor))
+    }
+    
+    @inlinable public init(_ divisor: /*consuming*/ Nonzero<Value>) {
+        let subshift = UX(raw: divisor.ilog2())
+        let subpower = Value.lsb &<< subshift
+        
+        
+        if  divisor.value == subpower {
+            // x × max + max: high == x
+            self.multiplier = Doublet(low: .max, high: .max)
+            self.increment  = Doublet(low: .max, high: .max)
+            
+        }   else {
+            var remainder = subpower
+            var quotient  = Doublet(low: Value.min, high: Value.min)
+            (quotient.high, remainder) = Value.division(Doublet(low: quotient.high, high: remainder), by: divisor).unchecked().components()
+            (quotient.low,  remainder) = Value.division(Doublet(low: quotient.low,  high: remainder), by: divisor).unchecked().components()
+            // subpower < divisor < 2 × subpower
+            Swift.assert(subpower < divisor.value)
+            Swift.assert(subpower > divisor.value.down(Count(1)))
+            //  ⌊a÷b⌋ == ⌊(a+1)×⌊power÷b⌋÷power⌋ when error <= subpower
+            //  ⌊a÷b⌋ == ⌊(a+0)×⌈power÷b⌉÷power⌋ when error <= subpower
+            //  takes the path with no increment when error == subpower
+            if  remainder < subpower {
+                Swift.assert(subpower >= remainder)
+                self.multiplier = quotient
+                self.increment  = quotient
+            }   else {
+                Swift.assert(subpower >= divisor.value - remainder)
+                
+                var carry: Bool
+                (quotient.low, carry) = quotient.low.incremented().components()
+                (quotient.high) = quotient.high.incremented(carry).unchecked()
+                
+                self.multiplier = quotient
+                self.increment  = Doublet(low: .min, high: .min)
+            }
+        }
+        
+        self.divisor = divisor.value
+        self.shift = Value(load: UX(size: Value.self).times(2).plus(subshift).unchecked())
+    }
+}

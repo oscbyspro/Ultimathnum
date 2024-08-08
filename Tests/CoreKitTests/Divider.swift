@@ -78,8 +78,8 @@ final class DividerTests: XCTestCase {
             for divisor in U8.min ... U8.max {
                 if  let divider = Divider(exactly: divisor) {
                     let expectation = dividend.division(Nonzero(divider.divisor)).unwrap()
-                    success &+= IX(Bit(divider.quotient(dividing: dividend) == expectation.quotient))
                     success &+= IX(Bit(divider.division(dividing: dividend) == expectation))
+                    success &+= IX(Bit(divider.quotient(dividing: dividend) == expectation.quotient))
                 }
             }
         }
@@ -97,6 +97,28 @@ final class DividerTests: XCTestCase {
                 Test().same(divider .division(dividing:  dividend), expectation)
                 Test().same(dividend.quotient(divider),             expectation.quotient)
                 Test().same(divider .quotient(dividing:  dividend), expectation.quotient)
+            }
+        }
+        
+        for type in coreSystemsIntegersWhereIsUnsigned {
+            #if DEBUG
+            whereIs(type, rounds: 1024, randomness: fuzzer)
+            #else
+            whereIs(type, rounds: 8192, randomness: fuzzer)
+            #endif
+        }
+    }
+    
+    func testDivisionByFuzzingValues21() {
+        func whereIs<T>(_ type: T.Type, rounds: IX, randomness: consuming FuzzerInt) where T: SystemsInteger & UnsignedInteger {
+            for _ in 0 ..< rounds {
+                let divider = Divider21(T.random(in: 1...T.max, using: &randomness))
+                let low:  T = T.random(using: &randomness)
+                let high: T = T.random(using: &randomness)
+                let dividend = Doublet(low: low, high: high)
+                let expectation = T.division(dividend, by: Nonzero(divider.divisor))
+                Test().same(divider .division(dividing: dividend), expectation)
+                Test().same(divider .quotient(dividing: dividend), expectation.map(\.quotient))
             }
         }
         
@@ -137,6 +159,34 @@ final class DividerTests: XCTestCase {
         }
     }
     
+    func testDivisionByFuzzingEntropies21() {
+        func whereIs<T>(_ type: T.Type, rounds: IX, randomness: consuming FuzzerInt) where T: SystemsInteger & UnsignedInteger {
+            func random() -> T {
+                let index = IX.random(in: 0 ..< IX(size: T.self), using: &randomness)!
+                let pattern = T.Signitude.random(through: Shift(Count(index)), using: &randomness)
+                return T(raw: pattern)
+            }
+            
+            for _ in 0 ..< rounds {
+                guard let divider = Divider21(exactly: random()) else { continue }
+                let low:  T = random()
+                let high: T = random()
+                let dividend = Doublet(low: low, high: high)
+                let expectation = T.division(dividend, by: Nonzero(divider.divisor))
+                Test().same(divider.division(dividing: dividend), expectation)
+                Test().same(divider.quotient(dividing: dividend), expectation.map(\.quotient))
+            }
+        }
+        
+        for type in coreSystemsIntegersWhereIsUnsigned {
+            #if DEBUG
+            whereIs(type, rounds: 1024, randomness: fuzzer)
+            #else
+            whereIs(type, rounds: 8192, randomness: fuzzer)
+            #endif
+        }
+    }
+    
     func testDivisionByFuzzingPowerOf2Divisors() {
         func whereIs<T>(_ type: T.Type, rounds: IX, randomness: consuming FuzzerInt) where T: SystemsInteger & UnsignedInteger {
             func random() -> Shift<T.Magnitude> {
@@ -147,8 +197,34 @@ final class DividerTests: XCTestCase {
                 let divider = Divider(T.lsb.up(random()))
                 let dividend: T = T(raw: T.Signitude.random(through: random(), using: &randomness))
                 let expectation = dividend.division(Nonzero(divider.divisor)).unwrap()
-                Test().same(divider.quotient(dividing: dividend), expectation.quotient)
                 Test().same(divider.division(dividing: dividend), expectation)
+                Test().same(divider.quotient(dividing: dividend), expectation.quotient)
+            }
+        }
+        
+        for type in coreSystemsIntegersWhereIsUnsigned {
+            #if DEBUG
+            whereIs(type, rounds: 1024, randomness: fuzzer)
+            #else
+            whereIs(type, rounds: 8192, randomness: fuzzer)
+            #endif
+        }
+    }
+    
+    func testDivisionByFuzzingPowerOf2Divisors21() {
+        func whereIs<T>(_ type: T.Type, rounds: IX, randomness: consuming FuzzerInt) where T: SystemsInteger & UnsignedInteger {
+            func random() -> Shift<T.Magnitude> {
+                Shift(Count(IX.random(in: 0 ..< IX(size: T.self), using: &randomness)!))
+            }
+            
+            for _ in 0 ..< rounds {
+                let divider  = Divider21(T.lsb.up(random()))
+                let low:  T  = T(raw: T.Signitude.random(through: random(), using: &randomness))
+                let high: T  = T(raw: T.Signitude.random(through: random(), using: &randomness))
+                let dividend = Doublet(low: low, high: high)
+                let expectation = T.division(dividend, by: Nonzero(divider.divisor))
+                Test().same(divider.division(dividing: dividend), expectation)
+                Test().same(divider.quotient(dividing: dividend), expectation.map(\.quotient))
             }
         }
         
