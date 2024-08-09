@@ -251,3 +251,29 @@ final class BinaryIntegerTestsOnElements: XCTestCase {
         }
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Disambiguation
+//=----------------------------------------------------------------------------=
+
+extension BinaryIntegerTestsOnElements {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testDisambiguateTokenInitLoadBinaryIntegerWhereElementIsToken() {
+        let ix = IX.random()
+        let ux = UX.random()
+        
+        Test().same(IX(load: InfiniInt<IX>(load: ix)), ix)
+        Test().same(IX(load: InfiniInt<UX>(load: ix)), ix)
+        Test().same(UX(load: InfiniInt<IX>(load: ux)), ux)
+        Test().same(UX(load: InfiniInt<UX>(load: ux)), ux)
+        
+        Test().same(IX(load: DoubleInt<IX>(load: ix)), ix)
+        Test().same(IX(load: DoubleInt<UX>(load: ix)), ix)
+        Test().same(UX(load: DoubleInt<IX>(load: ux)), ux)
+        Test().same(UX(load: DoubleInt<UX>(load: ux)), ux)
+    }
+}

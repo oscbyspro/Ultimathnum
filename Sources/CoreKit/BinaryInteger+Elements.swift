@@ -91,7 +91,7 @@ extension BinaryInteger {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers x DataInt
+    // MARK: Initializers x Data Int
     //=------------------------------------------------------------------------=
     
     /// Creates a new instance from the bit pattern of `source` that fits.
@@ -159,7 +159,7 @@ extension BinaryInteger {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers x BinaryInteger
+    // MARK: Initializers x Binary Integer
     //=------------------------------------------------------------------------=
     
     /// Creates a new instance from the bit pattern of `source` that fits.
@@ -371,6 +371,15 @@ extension SystemsInteger {
     /// - Note: This is the generic version of `BinaryInteger/load(as:)`.
     ///
     @inlinable public init<Other>(load source: borrowing Other) where Other: BinaryInteger, BitPattern == Other.Element.BitPattern {
+        self.init(raw: source.load(as: BitPattern.self))
+    }
+    
+    /// Creates a new instance from the bit pattern of `source` that fits.
+    ///
+    /// - Note: This is the generic version of `BinaryInteger/load(as:)`.
+    ///
+    @inlinable public init<Other>(load source: borrowing Other) where Other: BinaryInteger, BitPattern == Other.Element.BitPattern, BitPattern == UX.BitPattern {
+        let source: some BinaryInteger = copy source
         self.init(raw: source.load(as: BitPattern.self))
     }
 }

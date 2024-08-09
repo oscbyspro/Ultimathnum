@@ -19,18 +19,21 @@ extension DoubleInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    @_disfavoredOverload // this is needed when Element is UX or IX
     @inlinable public init(load source: IX) {
         let low  = Low (load: source)
         let high = High(load: source.down(Low.size))
         self.init(low: low, high: high)
     }
     
+    @_disfavoredOverload // this is needed when Element is UX or IX
     @inlinable public init(load source: UX) {
         let low  = Low (load: source)
         let high = High(load: source.down(Low.size))
         self.init(low: low, high: high)
     }
     
+    @_disfavoredOverload // this is needed when Element is UX or IX
     @inlinable public borrowing func load(as type: UX.BitPattern.Type) -> UX.BitPattern {
         let low  = UX(load: self.storage.low )
         let high = UX(load: self.storage.high).up(Low.size)
