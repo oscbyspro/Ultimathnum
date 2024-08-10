@@ -42,7 +42,7 @@ extension TextInt {
                 self.i00x10 = 10
                 self.i10x36 = U8(load: radix).minus(10).unchecked()
             }   else {
-                throw TextInt.Failure.invalid
+                throw TextInt.Error.invalid
             }
             
             self.o00x10 = 48
@@ -88,13 +88,13 @@ extension TextInt {
             text &-= 48; if text < self.i00x10 { return text }
             text &-= 17; if text < self.i10x36 { return text &+ 10 }
             text &-= 32; if text < self.i10x36 { return text &+ 10 }
-            throw TextInt.Failure.invalid
+            throw TextInt.Error.invalid
         }
         
         @inlinable public func encode(_ data: consuming U8) throws -> U8 {
             ((((( ))))); if data < self.i00x10 { return data &+ self.o00x10 }
             data &-= 10; if data < self.i10x36 { return data &+ self.o10x36 }
-            throw TextInt.Failure.invalid
+            throw TextInt.Error.invalid
         }
         
         //=--------------------------------------------------------------------=

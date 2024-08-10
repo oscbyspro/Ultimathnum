@@ -8,12 +8,12 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Text Int x Failure
+// MARK: * Text Int x Error
 //*============================================================================*
 
 extension TextInt {
     
-    @frozen public enum Failure: Error, Equatable {
+    @frozen public enum Error: Swift.Error, Equatable {
         
         case invalid
         

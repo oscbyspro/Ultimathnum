@@ -82,7 +82,7 @@ import CoreKit
     /// Creates the sequence pair at the given `index`.
     @inlinable public init(_ index: Value) throws {
         if  Bool(index.appendix) {
-            throw Value.isSigned ? Failure.indexOutOfBounds : Failure.overflow
+            throw Value.isSigned ? Error.indexOutOfBounds : Error.overflow
         }
         
         self.init()
@@ -123,8 +123,8 @@ import CoreKit
     
     /// Forms the sequence pair at `index + 1`.
     @inlinable public mutating func increment() throws {
-        let ix = try i.plus(1).prune(Failure.overflow)
-        let bx = try a.plus(b).prune(Failure.overflow)
+        let ix = try i.plus(1).prune(Error.overflow)
+        let bx = try a.plus(b).prune(Error.overflow)
         
         self.i = consume ix
         self.a = b
@@ -133,8 +133,8 @@ import CoreKit
     
     /// Forms the sequence pair at `index - 1`.
     @inlinable public mutating func decrement() throws {
-        let ix = try i.minus(1).veto({ $0.isNegative }).prune(Failure.indexOutOfBounds)
-        let ax = try b.minus(a).prune(Failure.overflow)
+        let ix = try i.minus(1).veto({$0.isNegative}).prune(Error.indexOutOfBounds)
+        let ax = try b.minus(a).prune(Error.overflow)
         
         self.i = consume ix
         self.b = a
@@ -147,9 +147,9 @@ import CoreKit
     
     /// Forms the sequence pair at `index * 2`.
     @inlinable public mutating func double() throws {
-        let ix = try i.times(2).prune(Failure.overflow)
-        let ax = try b.times(2).minus(a).times (a).prune(Failure.overflow)
-        let bx = try b.squared().plus(a.squared()).prune(Failure.overflow)
+        let ix = try i.times(2).prune(Error.overflow)
+        let ax = try b.times(2).minus(a).times (a).prune(Error.overflow)
+        let bx = try b.squared().plus(a.squared()).prune(Error.overflow)
 
         self.i = consume ix
         self.a = consume ax
@@ -158,9 +158,9 @@ import CoreKit
     
     /// Forms the sequence pair at `index + x.index`.
     @inlinable public mutating func increment(by x: borrowing Self) throws {
-        let ix = try i.plus (x.i).prune(Failure.overflow)
-        let ax = try a.times(x.b).plus(b.minus(a).times(x.a)).prune(Failure.overflow)
-        let bx = try b.times(x.b).plus(       (a).times(x.a)).prune(Failure.overflow)
+        let ix = try i.plus (x.i).prune(Error.overflow)
+        let ax = try a.times(x.b).plus(b.minus(a).times(x.a)).prune(Error.overflow)
+        let bx = try b.times(x.b).plus(       (a).times(x.a)).prune(Error.overflow)
 
         self.i = consume ix
         self.a = consume ax
@@ -169,7 +169,7 @@ import CoreKit
     
     /// Forms the sequence pair at `index - x.index`.
     @inlinable public mutating func decrement(by x: borrowing Self) throws {
-        let ix = try i.minus(x.i).veto({ $0.isNegative }).prune(Failure.indexOutOfBounds)
+        let ix = try i.minus(x.i).veto({ $0.isNegative }).prune(Error.indexOutOfBounds)
         
         var a0 = b.times(x.a).value
         var a1 = a.times(x.b).value
@@ -187,10 +187,10 @@ import CoreKit
     }
     
     //*========================================================================*
-    // MARK: * Failure
+    // MARK: * Error
     //*========================================================================*
     
-    public enum Failure: Error {
+    public enum Error: Swift.Error {
         
         /// Tried to form a sequence pair that cannot be represented.
         case overflow

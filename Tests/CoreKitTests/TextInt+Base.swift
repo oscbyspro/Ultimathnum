@@ -22,7 +22,7 @@ extension TextIntTests {
     
     func testDecodeAsAnyBaseIsValid() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias R = Result<T, TextInt.Failure>
+            typealias R = Result<T, TextInt.Error>
             //=----------------------------------=
             let negative = T.isSigned ? R.success(-1) : R.failure(.overflow)
             //=----------------------------------=
@@ -79,7 +79,7 @@ extension TextIntTests {
     
     func testDecodingAsAnyBaseIsInvalid() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias R = Result<T, TextInt.Failure>
+            typealias R = Result<T, TextInt.Error>
 
             Case(TextInt.radix(02)).decode("2", R.failure(.invalid))
             Case(TextInt.radix(10)).decode("a", R.failure(.invalid))

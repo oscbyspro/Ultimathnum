@@ -71,7 +71,7 @@
     /// }
     /// ```
     ///
-    @inlinable public consuming func prune<Failure>(_ failure: @autoclosure () -> Failure) throws -> Value where Failure: Error {
+    @inlinable public consuming func prune<Error>(_ failure: @autoclosure () -> Error) throws -> Value where Error: Swift.Error {
         if  self.error {
             throw  failure()
         }   else {
@@ -88,7 +88,7 @@
     /// }
     /// ```
     ///
-    @inlinable public consuming func result<Failure>(_ failure: @autoclosure () -> Failure) -> Result<Value, Failure> {
+    @inlinable public consuming func result<Error>(_ failure: @autoclosure () -> Error) -> Result<Value, Error> {
         if  self.error {
             return Result.failure(failure())
         }   else {

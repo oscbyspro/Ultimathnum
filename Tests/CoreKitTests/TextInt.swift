@@ -17,7 +17,7 @@ import TestKit
 final class TextIntTests: XCTestCase {
     
     typealias T = TextInt
-    typealias E = TextInt.Failure
+    typealias E = TextInt.Error
     
     //=------------------------------------------------------------------------=
     // MARK: Metadata

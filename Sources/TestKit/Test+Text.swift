@@ -109,7 +109,7 @@ extension Test {
         always: do {
             
             for _ in 0 ..< limit {
-                decoded = try decoded.times(multiplier).prune(TextInt.Failure.overflow)
+                decoded = try decoded.times(multiplier).prune(TextInt.Error.overflow)
                 encoded.append("0")
                 
                 self.description(decoded, radix: radix, body: encoded)
@@ -138,8 +138,8 @@ extension Test {
         always: do {
             
             for index in (0 ..< limit).lazy.map({ ($0 &+ 1) % radix }) {
-                decoded = try decoded.times(T(radix)).prune(TextInt.Failure.overflow)
-                decoded = try decoded.plus (T(index)).prune(TextInt.Failure.overflow)
+                decoded = try decoded.times(T(radix)).prune(TextInt.Error.overflow)
+                decoded = try decoded.plus (T(index)).prune(TextInt.Error.overflow)
                 encoded.append(String(UnicodeScalar(UInt8(try! encoder.encode(U8(load: index))))))
 
                 self.description(decoded, radix: radix, body: encoded)
@@ -174,8 +174,8 @@ extension Test {
         always: do {
             
             for _ in 0 ..< limit {
-                decoded = try decoded.times(values.radix).prune(TextInt.Failure.overflow)
-                decoded = try decoded.plus (values.index).prune(TextInt.Failure.overflow)
+                decoded = try decoded.times(values.radix).prune(TextInt.Error.overflow)
+                decoded = try decoded.plus (values.index).prune(TextInt.Error.overflow)
                 encoded.append(values.numeral)
                 
                 self.description(decoded, radix: radix, body: encoded)

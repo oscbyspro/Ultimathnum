@@ -21,7 +21,7 @@ extension TextIntTests {
     //=------------------------------------------------------------------------=
     
     func testDecodingEdges08AsBase16() {
-        typealias R<T> = Result<T, TextInt.Failure>
+        typealias R<T> = Result<T, TextInt.Error>
         
         let (item) = TextInt.radix(16)
         Case(item).decode("-081", R<I8>.failure(.overflow))
@@ -35,7 +35,7 @@ extension TextIntTests {
     }
     
     func testDecodingEdges16AsBase16() {
-        typealias R<T> = Result<T, TextInt.Failure>
+        typealias R<T> = Result<T, TextInt.Error>
         
         let (item) = TextInt.radix(16)
         Case(item).decode("-08001", R<I16>.failure(.overflow))
@@ -49,7 +49,7 @@ extension TextIntTests {
     }
     
     func testDecodingEdges32AsBase16() {
-        typealias R<T> = Result<T, TextInt.Failure>
+        typealias R<T> = Result<T, TextInt.Error>
         
         let (item) = TextInt.radix(16)
         Case(item).decode("-080000001", R<I32>.failure(.overflow))
@@ -63,7 +63,7 @@ extension TextIntTests {
     }
     
     func testDecodingEdges64AsBase16() {
-        typealias R<T> = Result<T, TextInt.Failure>
+        typealias R<T> = Result<T, TextInt.Error>
         
         let (item) = TextInt.radix(16)
         Case(item).decode("-08000000000000001", R<I64>.failure(.overflow))

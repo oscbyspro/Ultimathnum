@@ -115,10 +115,7 @@
     ///
     /// - Requires: `value ∈ 0 up to Target.size`
     ///
-    @inlinable public init<Failure>(
-        _ value: consuming Value,
-        prune error: @autoclosure () -> Failure
-    )   throws where Failure: Swift.Error {
+    @inlinable public init<Error>(_ value: consuming Value, prune error: @autoclosure () -> Error) throws where Error: Swift.Error {
         guard Self.predicate(value) else { throw error() }
         self.value = value
     }

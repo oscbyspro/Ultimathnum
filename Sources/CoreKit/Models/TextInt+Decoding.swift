@@ -43,18 +43,18 @@ extension TextInt {
         }
         
         if  magnitude.error {
-            throw Failure.overflow
+            throw Error.overflow
         }
         
         if  components.mask == Bit.one {
             if  T.isArbitrary {
                 magnitude.value.toggle()
             }   else {
-                throw Failure.overflow
+                throw Error.overflow
             }
         }
         
-        return try T.exactly(sign: components.sign, magnitude: magnitude.value).prune(Failure.overflow)
+        return try T.exactly(sign: components.sign, magnitude: magnitude.value).prune(Error.overflow)
     }
 }
 
@@ -77,7 +77,7 @@ extension TextInt {
         // text must contain at least one numeral
         //=--------------------------------------=
         if  numerals.isEmpty {
-            throw Failure.invalid
+            throw Error.invalid
         }   else {
             numerals = UnsafeBufferPointer(rebasing: numerals.drop(while:{ $0 == 48 }))
         }
@@ -136,7 +136,7 @@ extension TextInt {
         // text must contain at least one numeral
         //=--------------------------------------=
         if  numerals.isEmpty {
-            throw Failure.invalid
+            throw Error.invalid
         }   else {
             numerals = UnsafeBufferPointer(rebasing: numerals.drop(while:{ $0 == 48 }))
         }

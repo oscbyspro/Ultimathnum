@@ -139,17 +139,17 @@ extension FibonacciTests.Case {
         copy.same(index: item.index, element: item.element, next: item.next)
         
         copy = self
-        copy.test.failure({ try copy.item.decrement() }, Item.Failure.indexOutOfBounds)
+        copy.test.failure({ try copy.item.decrement() }, Item.Error.indexOutOfBounds)
         copy.same(index: item.index, element: item.element, next: item.next)
     }
     
     func checkIsLastIndex() {
         var copy = copy self
-        copy.test.failure({ try copy.item.double() }, Item.Failure.overflow)
+        copy.test.failure({ try copy.item.double() }, Item.Error.overflow)
         copy.same(index: item.index, element: item.element, next: item.next)
         
         copy = self
-        copy.test.failure({ try copy.item.increment() }, Item.Failure.overflow)
+        copy.test.failure({ try copy.item.increment() }, Item.Error.overflow)
         copy.same(index: item.index, element: item.element, next: item.next)
     }
     
@@ -159,7 +159,7 @@ extension FibonacciTests.Case {
         }
         
         beyond: do {
-            let error: Item.Failure = Value.isSigned ? .indexOutOfBounds : .overflow
+            let error: Item.Error = Value.isSigned ? .indexOutOfBounds : .overflow
             test.failure({ try Item(~0) }, error)
             test.failure({ try Item(~1) }, error)
             test.failure({ try Item(~2) }, error)
@@ -264,7 +264,7 @@ extension FibonacciTests.Case {
             rhs.same(index: 00, element: 00, next: 01)
             test.success({ try lhs.item.decrement(by: rhs.item) })
             lhs.same(index: 01, element: 01, next: 01)
-            test.failure({ try rhs.item.decrement(by: lhs.item) }, Item.Failure.indexOutOfBounds)
+            test.failure({ try rhs.item.decrement(by: lhs.item) }, Item.Error.indexOutOfBounds)
             rhs.same(index: 00, element: 00, next: 01)
         }
     }

@@ -47,7 +47,7 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<Failure>(_ divisor: consuming Value, prune error: @autoclosure () -> Failure) throws where Failure: Swift.Error {
+    @inlinable public init<Error>(_ divisor: consuming Value, prune error: @autoclosure () -> Error) throws where Error: Swift.Error {
         self.init(try Nonzero(divisor, prune: error()))
     }
     
@@ -142,7 +142,7 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<Failure>(_ divisor: consuming Value, prune error: @autoclosure () -> Failure) throws where Failure: Swift.Error {
+    @inlinable public init<Error>(_ divisor: consuming Value, prune error: @autoclosure () -> Error) throws where Error: Swift.Error {
         self.init(try Nonzero(divisor, prune: error()))
     }
     

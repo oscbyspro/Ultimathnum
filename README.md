@@ -279,10 +279,10 @@ Here's a real example from the generic Fibonacci\<Value\> sequence:
 ```swift
 /// Forms the sequence pair at `index + x.index`.
 @inlinable public mutating func increment(by x: Self) throws {
-    let ix = try i.plus (x.i).prune(Failure.overflow)
-    let ax = try a.times(x.b).plus(b.minus(a).times(x.a)).prune(Failure.overflow)
-    let bx = try b.times(x.b).plus(       (a).times(x.a)).prune(Failure.overflow)
-
+    let ix = try i.plus (x.i).prune(Error.overflow)
+    let ax = try a.times(x.b).plus(b.minus(a).times(x.a)).prune(Error.overflow)
+    let bx = try b.times(x.b).plus(       (a).times(x.a)).prune(Error.overflow)
+    
     self.i = consume ix
     self.a = consume ax
     self.b = consume bx
