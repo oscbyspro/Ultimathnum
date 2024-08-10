@@ -26,6 +26,7 @@ extension TextInt {
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
+        /// - Requires: `radix >= 2`
         @inlinable public init(_ radix: UX) throws {
             if  radix < 2 {
                 throw Error.invalid

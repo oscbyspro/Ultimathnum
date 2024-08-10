@@ -34,6 +34,7 @@ extension TextInt {
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
+        /// - Requires: `radix <= 36`
         @inlinable public init(_ radix: UX, letters: Letters) throws {
             if  radix <= 10 {
                 self.i00x10 = U8(load: radix)

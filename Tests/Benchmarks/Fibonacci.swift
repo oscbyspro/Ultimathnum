@@ -54,10 +54,6 @@ final class FibonacciBenchmarks: XCTestCase {
         blackHole(try! Fibonacci<UXL>(blackHoleIdentity(10_000_000)))
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Tests x UXL x Text Encoding
-    //=------------------------------------------------------------------------=
-    
     /// ###### 2024-08-08 (MacBook Pro, 13-inch, M1, 2020):
     ///
     /// - `0.99 seconds`
@@ -70,10 +66,6 @@ final class FibonacciBenchmarks: XCTestCase {
     func testFibonacciUXL1e6ToTextAsHexadecimal() throws {
         blackHole(blackHoleIdentity(Self.fib1e6.element).description(as: blackHoleIdentity(.hexadecimal)))
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests x UXL x Text Decoding
-    //=------------------------------------------------------------------------=
     
     func testFibonacciUXL1e6FromTextAsDecimal() throws {
         blackHole(try! UXL(blackHoleIdentity(Self.fib1e6r10), as: blackHoleIdentity(.decimal)))

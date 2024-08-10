@@ -47,6 +47,32 @@ final class DividerTests: XCTestCase {
         check(10 as U64, mul: 14757395258967641293, add: 00000000000000000000, shr: 64 + 3) // shr: 67
     }
     
+    func testInstances21() {
+        func check<T>(_ divisor: T, mul: Doublet<T>, add: Doublet<T>, shr: T, line: UInt = #line) where T: SystemsInteger & UnsignedInteger {
+            let divider = Divider21(exactly: divisor)!
+            Test(line: line).same(divider.multiplier, mul)
+            Test(line: line).same(divider.increment,  add)
+            Test(line: line).same(divider.shift,      shr)
+        }
+        
+        for distance: IX in 0 ..< 8 {
+            check(U8 .lsb << distance, mul: Doublet(low: U8 .max, high: U8 .max), add: Doublet(low: U8 .max, high: U8 .max), shr: 2 * 08 + U8 (distance))
+            check(U16.lsb << distance, mul: Doublet(low: U16.max, high: U16.max), add: Doublet(low: U16.max, high: U16.max), shr: 2 * 16 + U16(distance))
+            check(U32.lsb << distance, mul: Doublet(low: U32.max, high: U32.max), add: Doublet(low: U32.max, high: U32.max), shr: 2 * 32 + U32(distance))
+            check(U64.lsb << distance, mul: Doublet(low: U64.max, high: U64.max), add: Doublet(low: U64.max, high: U64.max), shr: 2 * 64 + U64(distance))
+        }
+        
+        check(07 as U8,  mul: Doublet(low: 00000000000000000073, high: 00000000000000000146), add: Doublet(low: 00000000000000000073, high: 00000000000000000146), shr: 2 * 08 + 2) // shr:  18
+        check(07 as U16, mul: Doublet(low: 00000000000000009362, high: 00000000000000037449), add: Doublet(low: 00000000000000009362, high: 00000000000000037449), shr: 2 * 16 + 2) // shr:  34
+        check(07 as U32, mul: Doublet(low: 00000000001227133513, high: 00000000002454267026), add: Doublet(low: 00000000001227133513, high: 00000000002454267026), shr: 2 * 32 + 2) // shr:  66
+        check(07 as U64, mul: Doublet(low: 02635249153387078802, high: 10540996613548315209), add: Doublet(low: 02635249153387078802, high: 10540996613548315209), shr: 2 * 64 + 2) // shr: 130
+        
+        check(10 as U8,  mul: Doublet(low: 00000000000000000205, high: 00000000000000000204), add: Doublet(low: 00000000000000000000, high: 00000000000000000000), shr: 2 * 08 + 3) // shr:  21
+        check(10 as U16, mul: Doublet(low: 00000000000000052429, high: 00000000000000052428), add: Doublet(low: 00000000000000000000, high: 00000000000000000000), shr: 2 * 16 + 3) // shr:  35
+        check(10 as U32, mul: Doublet(low: 00000000003435973837, high: 00000000003435973836), add: Doublet(low: 00000000000000000000, high: 00000000000000000000), shr: 2 * 32 + 3) // shr:  67
+        check(10 as U64, mul: Doublet(low: 14757395258967641293, high: 14757395258967641292), add: Doublet(low: 00000000000000000000, high: 00000000000000000000), shr: 2 * 64 + 3) // shr: 131
+    }
+    
     func testInitForEachByteEntropyExtension() {
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
             for divisor in (I8.min...I8.max).lazy.map(T.init(load:)) {
