@@ -56,7 +56,7 @@ extension CoreInteger {
 // MARK: + where Self is not IX or UX
 //=----------------------------------------------------------------------------=
 
-extension CoreIntegerWhereIsNotWord {
+extension CoreIntegerWhereIsNotToken {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
