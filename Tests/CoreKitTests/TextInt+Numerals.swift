@@ -14,61 +14,91 @@ import TestKit
 // MARK: * Text Int x Numerals
 //*============================================================================*
 
-extension TextIntTests {
-
+final class TextIntTestsOnNumerals: XCTestCase {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Metadata
+    //=------------------------------------------------------------------------=
+    
+    static let radices: Range<UX> = 0..<37
+    
+    static let letters: [TextInt.Letters] = [.uppercase, .lowercase]
+    
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testNumerals() {
-        //=--------------------------------------=
-        // test: the maximum radix is 36
-        //=--------------------------------------=
-        Test().failure({ try T.Numerals(37, letters: .lowercase) }, E.invalid)
-        Test().failure({ try T.Numerals(37, letters: .uppercase) }, E.invalid)
-        //=--------------------------------------=
-        // test: for each radix in 0 through 36
-        //=--------------------------------------=
-        for radix: UX in 0 ... 36  {
-            guard let lowercase = Test().success({ try T.Numerals(radix, letters: .lowercase) }) else { break }
-            guard let uppercase = Test().success({ try T.Numerals(radix, letters: .uppercase) }) else { break }
-            //=----------------------------------=
-            Test().same(lowercase.radix,   U8(load: radix))
-            Test().same(lowercase.letters, TextInt.Letters.lowercase)
-            Test().same(uppercase.radix,   U8(load: radix))
-            Test().same(uppercase.letters, TextInt.Letters.uppercase)
-            //=----------------------------------=
-            // test: decoding
-            //=----------------------------------=
-            for coder in [lowercase, uppercase] {
-                for byte in Self.numerals.invalid {
-                    Test().failure({ try coder.decode(U8(byte)) }, E.invalid)
-                }
+    func testInitialization() throws {
+        for radix in Self.radices {
+            for letters in Self.letters {
+                let numerals = try TextInt.Numerals(radix, letters: letters)
+                Test().same(numerals.radix, U8(radix))
+                Test().same(numerals.letters, letters)
+            }
+        }
+        
+        for radix in Self.radices.upperBound...255 {
+            for letters in Self.letters {
+                Test().failure({ try TextInt.Numerals(radix, letters: letters) }, TextInt.Error.invalid)
+            }
+        }
+    }
+    
+    func testDecodingEachByte() throws {
+        var expectation: [U8: U8] = [:]
                 
-                for source in [Self.numerals.lowercase, Self.numerals.uppercase] {
-                    for index in source.indices {
-                        let text = U8(source[  index])
-                        let data = U8(load: IX(index))
-                        if  data < radix {
-                            Test().success({ try coder.decode(text) }, data)
-                        }   else {
-                            Test().failure({ try coder.decode(U8(source[index])) }, E.invalid)
-                        }
+        Test().same(UInt8(ascii: "0"), 048)
+        Test().same(UInt8(ascii: "9"), 057)
+
+        for key: U8 in 048...057 {
+            expectation[key] = key - 48
+        }
+        
+        Test().same(UInt8(ascii: "A"), 065)
+        Test().same(UInt8(ascii: "Z"), 090)
+        
+        for key: U8 in 065...090 {
+            expectation[key] = key - 55
+        }
+        
+        Test().same(UInt8(ascii: "a"), 097)
+        Test().same(UInt8(ascii: "z"), 122)
+        
+        for key: U8 in 097...122 {
+            expectation[key] = key - 87
+        }
+        
+        for radix in Self.radices {
+            for letters in Self.letters {
+                let numerals = try TextInt.Numerals(radix, letters: letters)
+                
+                for key in U8.min...U8.max {
+                    if  let value = expectation[key], value < radix {
+                        Test().success({ try numerals.decode(key) }, value)
+                    }   else {
+                        Test().failure({ try numerals.decode(key) }, TextInt.Error.invalid)
                     }
                 }
             }
-            //=----------------------------------=
-            // test: encoding
-            //=----------------------------------=
-            for value in U8.min ..< U8(load: radix) {
-                Test().success({ try lowercase.encode(value) }, U8(Self.numerals.lowercase[Int(IX(load: value))]))
-                Test().success({ try uppercase.encode(value) }, U8(Self.numerals.uppercase[Int(IX(load: value))]))
-            }
-            
-            for value in U8(load: radix) ... U8.max {
-                Test().failure({ try lowercase.encode(value) }, E.invalid)
-                Test().failure({ try uppercase.encode(value) }, E.invalid)
+        }
+    }
+    
+    func testEncodingEachByte() throws {
+        func whereIs(letters: TextInt.Letters, expectation: [U8]) throws {
+            for radix in Self.radices {
+                let numerals = try TextInt.Numerals(radix, letters: letters)
+                
+                for data in U8.min..<U8(radix) {
+                    Test().success({ try numerals.encode(data) }, expectation[Int(IX(data))])
+                }
+                
+                for data in U8(radix)..<U8.max {
+                    Test().failure({ try numerals.encode(data) }, TextInt.Error.invalid)
+                }
             }
         }
+        
+        try whereIs(letters: .uppercase, expectation: [48...57, 65...090].flatMap({ $0 }))
+        try whereIs(letters: .lowercase, expectation: [48...57, 97...122].flatMap({ $0 }))
     }
 }

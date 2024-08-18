@@ -31,12 +31,6 @@ final class TextIntTests: XCTestCase {
     
     static let masks: [(data: Bit?,  text: String)] = [(nil, ""), (Bit .zero, "#"), (Bit .one,   "&")]
     
-    static let numerals: (lowercase: [UInt8], uppercase: [UInt8], invalid: [UInt8]) = (
-        [48...57, 97...122].flatMap({ $0 }),
-        [48...57, 65...090].flatMap({ $0 }),
-        [00...47, 58...64, 91...96, 123...255].flatMap({ $0 })
-    )
-    
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=

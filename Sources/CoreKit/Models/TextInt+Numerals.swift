@@ -85,16 +85,33 @@ extension TextInt {
         // MARK: Utilities
         //=--------------------------------------------------------------------=
         
-        @inlinable public func decode(_ text: consuming U8) throws -> U8 {
-            text &-= 48; if text < self.i00x10 { return text }
-            text &-= 17; if text < self.i10x36 { return text &+ 10 }
-            text &-= 32; if text < self.i10x36 { return text &+ 10 }
+        @inlinable public func decode(_ data: U8) throws -> U8 {
+            var next = data &- 48
+            
+            if  next < self.i00x10 {
+                return next
+            }
+            
+            next = (data | 32) &- 97
+            
+            if  next < self.i10x36 {
+                return next &+ 10
+            }
+            
             throw TextInt.Error.invalid
         }
         
-        @inlinable public func encode(_ data: consuming U8) throws -> U8 {
-            ((((( ))))); if data < self.i00x10 { return data &+ self.o00x10 }
-            data &-= 10; if data < self.i10x36 { return data &+ self.o10x36 }
+        @inlinable public func encode(_ data: U8) throws -> U8 {
+            if  data < self.i00x10 {
+                return data &+ self.o00x10
+            }
+            
+            let next = data &- 10
+            
+            if  next < self.i10x36 {
+                return next &+ self.o10x36
+            }
+            
             throw TextInt.Error.invalid
         }
         

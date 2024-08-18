@@ -41,7 +41,7 @@ final class TextIntBenchmarksOnRadix10: XCTestCase {
     func testDecodingOneMillionTimesBinaryIntegerAsUX() throws {
         let encoded = blackHoleIdentity(Self.formatter.encode(UX.max))
         
-        for _ in 0 as UX ..<  1_000_000 {
+        for _ in 0 as UX ..< 1_000_000 {
             precondition((try? Self.formatter.decode(encoded) as UX) != nil)
         }
     }
@@ -49,7 +49,7 @@ final class TextIntBenchmarksOnRadix10: XCTestCase {
     func testDecodingOneMillionTimesBinaryIntegerAsUXL() throws {
         let encoded = blackHoleIdentity(Self.formatter.encode(UX.max))
         
-        for _ in 0 as UX ..<  1_000_000 {
+        for _ in 0 as UX ..< 1_000_000 {
             precondition((try? Self.formatter.decode(encoded) as UXL) != nil)
         }
     }
