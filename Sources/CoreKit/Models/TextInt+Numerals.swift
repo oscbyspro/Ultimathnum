@@ -17,18 +17,38 @@ extension TextInt {
     // MARK: * Numerals
     //*========================================================================*
     
-    /// Codes values in `0` to `36` to and from ASCII.
+    /// An ASCII numeral coder.
     @frozen @usableFromInline package struct Numerals: Equatable {
         
         //=--------------------------------------------------------------------=
         // MARK: State
         //=--------------------------------------------------------------------=
         
-        @usableFromInline let i00x10: U8
-        @usableFromInline let o00x10: U8
-
-        @usableFromInline let i10x36: U8
-        @usableFromInline var o10x36: U8
+        /// The number of numerals in the range `0..<10`.
+        ///
+        /// - Note: It equals `min(10, radix)`.
+        ///
+        @usableFromInline let i0010: U8
+        
+        /// The number of numerals in the range `10..<36`.
+        ///
+        /// - Note: It equals `max(0, radix - 10)`.
+        ///
+        @usableFromInline let i1036: U8
+        
+        /// The start for numerals in the range `0..<10`
+        ///
+        /// - Note: The `decimal` start is `48`.
+        ///
+        @usableFromInline let o0010: U8
+        
+        /// The start for numerals in the range `10..<36`
+        ///
+        /// - Note: The uppercase start is `65`.
+        ///
+        /// - Note: The lowercase start is `97`.
+        ///
+        @usableFromInline var o1036: U8
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers
@@ -37,30 +57,32 @@ extension TextInt {
         /// - Requires: `radix <= 36`
         @inlinable public init(_ radix: UX, letters: Letters) throws {
             if  radix <= 10 {
-                self.i00x10 = U8(load: radix)
-                self.i10x36 = 00
+                self.i0010 = U8(load: radix)
+                self.i1036 = 00
             }   else if radix <= 36 {
-                self.i00x10 = 10
-                self.i10x36 = U8(load: radix).minus(10).unchecked()
+                self.i0010 = 10
+                self.i1036 = U8(load: radix).minus(10).unchecked()
             }   else {
                 throw TextInt.Error.invalid
             }
             
-            self.o00x10 = 48
-            self.o10x36 = letters.start
+            self.o0010 = 48
+            self.o1036 = letters.start
         }
         
         //=--------------------------------------------------------------------=
         // MARK: Transformations
         //=--------------------------------------------------------------------=
         
+        /// Returns an similar instance that encodes lowercased letters.
         @inlinable public consuming func lowercased() -> Self {
-            self.o10x36 = Letters.lowercase.start
+            self.o1036 = Letters.lowercase.start
             return self
         }
         
+        /// Returns an similar instance that encodes uppercased letters.
         @inlinable public consuming func uppercased() -> Self {
-            self.o10x36 = Letters.uppercase.start
+            self.o1036 = Letters.uppercase.start
             return self
         }
         
@@ -68,15 +90,20 @@ extension TextInt {
         // MARK: Utilities
         //=--------------------------------------------------------------------=
         
+        /// The radix of its number system.
+        ///
+        /// - Returns: A integer in `2...36`.
+        ///
         @inlinable public var radix: U8 {
-            self.i00x10 &+ self.i10x36
+            self.i0010 &+ self.i1036
         }
         
+        /// The kind of letters produced by its encoding methods.
         @inlinable public var letters: Letters {
-            if  self.o10x36 == Letters.uppercase.start {
+            if  self.o1036 == Letters.uppercase.start {
                 return Letters.uppercase
             }   else {
-                Swift.assert(self.o10x36 == Letters.lowercase.start)
+                Swift.assert(self.o1036 == Letters.lowercase.start)
                 return Letters.lowercase
             }
         }
@@ -85,31 +112,47 @@ extension TextInt {
         // MARK: Utilities
         //=--------------------------------------------------------------------=
         
+        /// An ASCII numeral to integer conversion.
+        ///
+        /// - Returns: A integer in `0..<radix`.
+        ///
+        /// - Note: This conversion is case-insensitive.
+        ///
         @inlinable public func decode(_ data: U8) throws -> U8 {
             var next = data &- 48
             
-            if  next < self.i00x10 {
+            if  next < self.i0010 {
                 return next
             }
             
             next = (data | 32) &- 97
             
-            if  next < self.i10x36 {
+            if  next < self.i1036 {
                 return next &+ 10
             }
             
             throw TextInt.Error.invalid
         }
         
+        /// An integer to ASCII numeral conversion.
+        ///
+        /// - The `decimal` range is: `48...57`.
+        ///
+        /// - The `uppercase` range is: `65...90`.
+        ///
+        /// - The `lowercase` range is: `97...122`.
+        ///
+        /// - Note: This conversion is case-sensitive.
+        ///
         @inlinable public func encode(_ data: U8) throws -> U8 {
-            if  data < self.i00x10 {
-                return data &+ self.o00x10
+            if  data < self.i0010 {
+                return data &+ self.o0010
             }
             
             let next = data &- 10
             
-            if  next < self.i10x36 {
-                return next &+ self.o10x36
+            if  next < self.i1036 {
+                return next &+ self.o1036
             }
             
             throw TextInt.Error.invalid
