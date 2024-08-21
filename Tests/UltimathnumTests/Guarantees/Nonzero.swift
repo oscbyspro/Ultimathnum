@@ -73,15 +73,15 @@ final class NonzeroTests: XCTestCase {
         func whereTheValueIs<Value>(_ type: Value.Type) where Value: BinaryInteger {
             typealias T = Nonzero<Value>
             
-            Test().success({ try T(~2, prune: Bad.code123).value }, ~00000000002)
-            Test().success({ try T(~1, prune: Bad.code456).value }, ~00000000001)
-            Test().success({ try T(~0, prune: Bad.code789).value }, ~00000000000)
-            Test().failure({ try T( 0, prune: Bad.code123).value },  Bad.code123)
-            Test().failure({ try T( 0, prune: Bad.code456).value },  Bad.code456)
-            Test().failure({ try T( 0, prune: Bad.code789).value },  Bad.code789)
-            Test().success({ try T( 1, prune: Bad.code123).value },  00000000001)
-            Test().success({ try T( 2, prune: Bad.code456).value },  00000000002)
-            Test().success({ try T( 3, prune: Bad.code789).value },  00000000003)
+            Test().success(try T(~2, prune: Bad.code123).value, ~00000000002)
+            Test().success(try T(~1, prune: Bad.code456).value, ~00000000001)
+            Test().success(try T(~0, prune: Bad.code789).value, ~00000000000)
+            Test().failure(try T( 0, prune: Bad.code123).value,  Bad.code123)
+            Test().failure(try T( 0, prune: Bad.code456).value,  Bad.code456)
+            Test().failure(try T( 0, prune: Bad.code789).value,  Bad.code789)
+            Test().success(try T( 1, prune: Bad.code123).value,  00000000001)
+            Test().success(try T( 2, prune: Bad.code456).value,  00000000002)
+            Test().success(try T( 3, prune: Bad.code789).value,  00000000003)
         }
         
         for type in coreSystemsIntegers {

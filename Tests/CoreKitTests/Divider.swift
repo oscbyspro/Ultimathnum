@@ -80,10 +80,10 @@ final class DividerTests: XCTestCase {
                     Test().same(Divider(divisor           ) .divisor, divisor)
                     Test().same(Divider(unchecked: divisor) .divisor, divisor)
                     Test().same(Divider(exactly:   divisor)!.divisor, divisor)
-                    Test().success({ try Divider(divisor, prune: Bad.any).divisor }, divisor)
+                    Test().success(try Divider(divisor, prune: Bad.any).divisor, divisor)
                 }   else {
                     Test().none(Divider(exactly: divisor))
-                    Test().failure({ try Divider(divisor, prune: Bad.any).divisor }, Bad.any)
+                    Test().failure(try Divider(divisor, prune: Bad.any).divisor, Bad.any)
                 }
             }
         }
@@ -100,10 +100,10 @@ final class DividerTests: XCTestCase {
                     Test().same(Divider21(divisor           ) .divisor, divisor)
                     Test().same(Divider21(unchecked: divisor) .divisor, divisor)
                     Test().same(Divider21(exactly:   divisor)!.divisor, divisor)
-                    Test().success({ try Divider21(divisor, prune: Bad.any).divisor }, divisor)
+                    Test().success(try Divider21(divisor, prune: Bad.any).divisor, divisor)
                 }   else {
                     Test().none(Divider21(exactly: divisor))
-                    Test().failure({ try Divider21(divisor, prune: Bad.any).divisor }, Bad.any)
+                    Test().failure(try Divider21(divisor, prune: Bad.any).divisor, Bad.any)
                 }
             }
         }

@@ -41,8 +41,8 @@ final class TextIntTests: XCTestCase {
         Test().same(TextInt.radix(16), TextInt.hexadecimal)
         
         for radix: UX in Self.radices {
-            guard let lowercase = Test().success({ try TextInt(radix: radix, letters: .lowercase) }) else { return }
-            guard let uppercase = Test().success({ try TextInt(radix: radix, letters: .uppercase) }) else { return }
+            guard let lowercase = Test().success(try TextInt(radix: radix, letters: .lowercase)) else { return }
+            guard let uppercase = Test().success(try TextInt(radix: radix, letters: .uppercase)) else { return }
             
             let standard = TextInt.radix(radix)
             Test().same(standard .radix, radix)

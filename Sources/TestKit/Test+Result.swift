@@ -37,12 +37,8 @@ extension Test {
         return result
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
     @discardableResult public func success<T>(
-        _ value: () throws -> T,
+        _ value: @autoclosure () throws -> T,
         _ message:  @autoclosure () -> String = String()
     )   -> Optional<T> {
         
@@ -57,7 +53,7 @@ extension Test {
     }
     
     @discardableResult public func success<T: Equatable>(
-        _ value: () throws -> T,
+        _ value: @autoclosure () throws -> T,
         _ expectation: T,
         _ message:  @autoclosure () -> String = String()
     )   -> Optional<T> {
@@ -75,14 +71,14 @@ extension Test {
     }
     
     public func failure<T>(
-        _ value: () throws -> T,
+        _ value: @autoclosure () throws -> T,
         _ message:  @autoclosure () -> String = String()
     ) {
         XCTAssertThrowsError(try value(), message(), file: file, line: line)
     }
     
     public func failure<T, E: Error & Equatable>(
-        _ value: () throws -> T,
+        _ value: @autoclosure () throws -> T,
         _ expectation: E,
         _ message:  @autoclosure () -> String = String()
     ) {

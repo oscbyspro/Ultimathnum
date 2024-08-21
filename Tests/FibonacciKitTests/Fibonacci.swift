@@ -135,21 +135,21 @@ extension FibonacciTests.Case {
         test.same(item.index, Value.zero)
         
         var copy = self
-        copy.test.success({ try copy.item.double() })
+        copy.test.success(try copy.item.double())
         copy.same(index: item.index, element: item.element, next: item.next)
         
         copy = self
-        copy.test.failure({ try copy.item.decrement() }, Item.Error.indexOutOfBounds)
+        copy.test.failure(try copy.item.decrement(), Item.Error.indexOutOfBounds)
         copy.same(index: item.index, element: item.element, next: item.next)
     }
     
     func checkIsLastIndex() {
         var copy = copy self
-        copy.test.failure({ try copy.item.double() }, Item.Error.overflow)
+        copy.test.failure(try copy.item.double(), Item.Error.overflow)
         copy.same(index: item.index, element: item.element, next: item.next)
         
         copy = self
-        copy.test.failure({ try copy.item.increment() }, Item.Error.overflow)
+        copy.test.failure(try copy.item.increment(), Item.Error.overflow)
         copy.same(index: item.index, element: item.element, next: item.next)
     }
     
@@ -160,11 +160,11 @@ extension FibonacciTests.Case {
         
         beyond: do {
             let error: Item.Error = Value.isSigned ? .indexOutOfBounds : .overflow
-            test.failure({ try Item(~0) }, error)
-            test.failure({ try Item(~1) }, error)
-            test.failure({ try Item(~2) }, error)
-            test.failure({ try Item(~3) }, error)
-            test.failure({ try Item(~4) }, error)
+            test.failure(try Item(~0), error)
+            test.failure(try Item(~1), error)
+            test.failure(try Item(~2), error)
+            test.failure(try Item(~3), error)
+            test.failure(try Item(~4), error)
         }
         
         zero: do {
@@ -190,15 +190,15 @@ extension FibonacciTests.Case {
             var instance = make(item)
             
             instance.same(index: 0, element: 0, next: 1)
-            instance.test.success({ try instance.item.increment() })
+            instance.test.success(try instance.item.increment())
             instance.same(index: 1, element: 1, next: 1)
-            instance.test.success({ try instance.item.increment() })
+            instance.test.success(try instance.item.increment())
             instance.same(index: 2, element: 1, next: 2)
-            instance.test.success({ try instance.item.increment() })
+            instance.test.success(try instance.item.increment())
             instance.same(index: 3, element: 2, next: 3)
-            instance.test.success({ try instance.item.increment() })
+            instance.test.success(try instance.item.increment())
             instance.same(index: 4, element: 3, next: 5)
-            instance.test.success({ try instance.item.increment() })
+            instance.test.success(try instance.item.increment())
             instance.same(index: 5, element: 5, next: 8)
         }
         
@@ -206,15 +206,15 @@ extension FibonacciTests.Case {
             var instance = make(item)
             
             instance.same(index: 5, element: 5, next: 8)
-            instance.test.success({ try instance.item.decrement() })
+            instance.test.success(try instance.item.decrement())
             instance.same(index: 4, element: 3, next: 5)
-            instance.test.success({ try instance.item.decrement() })
+            instance.test.success(try instance.item.decrement())
             instance.same(index: 3, element: 2, next: 3)
-            instance.test.success({ try instance.item.decrement() })
+            instance.test.success(try instance.item.decrement())
             instance.same(index: 2, element: 1, next: 2)
-            instance.test.success({ try instance.item.decrement() })
+            instance.test.success(try instance.item.decrement())
             instance.same(index: 1, element: 1, next: 1)
-            instance.test.success({ try instance.item.decrement() })
+            instance.test.success(try instance.item.decrement())
             instance.same(index: 0, element: 0, next: 1)
         }
         
@@ -222,9 +222,9 @@ extension FibonacciTests.Case {
             var instance = make(item)
             
             instance.same(index: 1, element: 1, next: 1)
-            instance.test.success({ try instance.item.double() })
+            instance.test.success(try instance.item.double())
             instance.same(index: 2, element: 1, next: 2)
-            instance.test.success({ try instance.item.double() })
+            instance.test.success(try instance.item.double())
             instance.same(index: 4, element: 3, next: 5)
         }
         
@@ -235,13 +235,13 @@ extension FibonacciTests.Case {
             lhs.same(index: 01, element: 01, next: 01)
             rhs.same(index: 01, element: 01, next: 01)
             
-            test.success({ try lhs.item.increment(by: rhs.item) })
+            test.success(try lhs.item.increment(by: rhs.item))
             lhs.same(index: 02, element: 01, next: 02)
-            test.success({ try rhs.item.increment(by: lhs.item) })
+            test.success(try rhs.item.increment(by: lhs.item))
             rhs.same(index: 03, element: 02, next: 03)
-            test.success({ try lhs.item.increment(by: rhs.item) })
+            test.success(try lhs.item.increment(by: rhs.item))
             lhs.same(index: 05, element: 05, next: 08)
-            test.success({ try rhs.item.increment(by: lhs.item) })
+            test.success(try rhs.item.increment(by: lhs.item))
             rhs.same(index: 08, element: 21, next: 34)
         }
         
@@ -252,19 +252,19 @@ extension FibonacciTests.Case {
             lhs.same(index: 05, element: 05, next: 08)
             rhs.same(index: 08, element: 21, next: 34)
             
-            test.success({ try rhs.item.decrement(by: lhs.item) })
+            test.success(try rhs.item.decrement(by: lhs.item))
             rhs.same(index: 03, element: 02, next: 03)
-            test.success({ try lhs.item.decrement(by: rhs.item) })
+            test.success(try lhs.item.decrement(by: rhs.item))
             lhs.same(index: 02, element: 01, next: 02)
-            test.success({ try rhs.item.decrement(by: lhs.item) })
+            test.success(try rhs.item.decrement(by: lhs.item))
             rhs.same(index: 01, element: 01, next: 01)
-            test.success({ try lhs.item.decrement(by: rhs.item) })
+            test.success(try lhs.item.decrement(by: rhs.item))
             lhs.same(index: 01, element: 01, next: 01)
-            test.success({ try rhs.item.decrement(by: lhs.item) })
+            test.success(try rhs.item.decrement(by: lhs.item))
             rhs.same(index: 00, element: 00, next: 01)
-            test.success({ try lhs.item.decrement(by: rhs.item) })
+            test.success(try lhs.item.decrement(by: rhs.item))
             lhs.same(index: 01, element: 01, next: 01)
-            test.failure({ try rhs.item.decrement(by: lhs.item) }, Item.Error.indexOutOfBounds)
+            test.failure(try rhs.item.decrement(by: lhs.item), Item.Error.indexOutOfBounds)
             rhs.same(index: 00, element: 00, next: 01)
         }
     }

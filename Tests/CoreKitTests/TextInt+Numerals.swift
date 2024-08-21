@@ -39,12 +39,12 @@ final class TextIntTestsOnNumerals: XCTestCase {
         
         for radix in Self.radices.upperBound...255 {
             for letters in Self.letters {
-                Test().failure({ try TextInt.Numerals(radix, letters: letters) }, TextInt.Error.invalid)
+                Test().failure(try TextInt.Numerals(radix, letters: letters), TextInt.Error.invalid)
             }
         }
     }
     
-    func testDecodingEachByte() throws {
+    func testDecodingEachByteForEachRadix() throws {
         var expectation: [U8: U8] = [:]
                 
         Test().same(UInt8(ascii: "0"), 048)
@@ -74,26 +74,26 @@ final class TextIntTestsOnNumerals: XCTestCase {
                 
                 for key in U8.min...U8.max {
                     if  let value = expectation[key], value < radix {
-                        Test().success({ try numerals.decode(key) }, value)
+                        Test().success(try numerals.decode(key), value)
                     }   else {
-                        Test().failure({ try numerals.decode(key) }, TextInt.Error.invalid)
+                        Test().failure(try numerals.decode(key), TextInt.Error.invalid)
                     }
                 }
             }
         }
     }
     
-    func testEncodingEachByte() throws {
+    func testEncodingEachByteForEachRadix() throws {
         func whereIs(letters: TextInt.Letters, expectation: [U8]) throws {
             for radix in Self.radices {
                 let numerals = try TextInt.Numerals(radix, letters: letters)
                 
                 for data in U8.min..<U8(radix) {
-                    Test().success({ try numerals.encode(data) }, expectation[Int(IX(data))])
+                    Test().success(try numerals.encode(data), expectation[Int(IX(data))])
                 }
                 
                 for data in U8(radix)..<U8.max {
-                    Test().failure({ try numerals.encode(data) }, TextInt.Error.invalid)
+                    Test().failure(try numerals.encode(data), TextInt.Error.invalid)
                 }
             }
         }

@@ -34,10 +34,10 @@ final class NaturalTests: XCTestCase {
                     Test().same(T(x).value,  x)
                     Test().same(T(unchecked: x) .value, x)
                     Test().same(T(exactly:   x)!.value, x)
-                    Test().success({ try T(x, prune: Bad.code123).value }, x)
+                    Test().success(try T(x, prune: Bad.code123).value, x)
                 }   else {
                     Test().none(T(exactly: x))
-                    Test().failure({ try T(x, prune: Bad.code123).value }, Bad.code123)
+                    Test().failure(try T(x, prune: Bad.code123).value, Bad.code123)
                 }
             }
         }

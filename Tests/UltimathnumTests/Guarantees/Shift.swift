@@ -65,25 +65,25 @@ final class ShiftTests: XCTestCase {
             typealias T = Shift<Value>
             
             always: do {
-                Test().success({ try T(Count(raw:  0 as IX), prune: Bad.code123).value }, Count(0 as IX))
-                Test().success({ try T(Count(raw:  1 as IX), prune: Bad.code456).value }, Count(1 as IX))
-                Test().success({ try T(Count(raw:  2 as IX), prune: Bad.code789).value }, Count(2 as IX))
+                Test().success(try T(Count(raw:  0 as IX), prune: Bad.code123).value, Count(0 as IX))
+                Test().success(try T(Count(raw:  1 as IX), prune: Bad.code456).value, Count(1 as IX))
+                Test().success(try T(Count(raw:  2 as IX), prune: Bad.code789).value, Count(2 as IX))
             }
             
             if !Value.size.isInfinite {
-                Test().failure({ try T(Count(raw: ~2 as IX), prune: Bad.code123)       }, Bad.code123)
-                Test().failure({ try T(Count(raw: ~1 as IX), prune: Bad.code456)       }, Bad.code456)
-                Test().failure({ try T(Count(raw: ~0 as IX), prune: Bad.code789)       }, Bad.code789)
+                Test().failure(try T(Count(raw: ~2 as IX), prune: Bad.code123), Bad.code123)
+                Test().failure(try T(Count(raw: ~1 as IX), prune: Bad.code456), Bad.code456)
+                Test().failure(try T(Count(raw: ~0 as IX), prune: Bad.code789), Bad.code789)
             }   else {
-                Test().success({ try T(Count(raw: ~2 as IX), prune: Bad.code123).value }, Count(raw: ~2 as IX))
-                Test().success({ try T(Count(raw: ~1 as IX), prune: Bad.code456).value }, Count(raw: ~1 as IX))
-                Test().failure({ try T(Count(raw: ~0 as IX), prune: Bad.code789)       }, Bad.code789)
+                Test().success(try T(Count(raw: ~2 as IX), prune: Bad.code123).value, Count(raw: ~2 as IX))
+                Test().success(try T(Count(raw: ~1 as IX), prune: Bad.code456).value, Count(raw: ~1 as IX))
+                Test().failure(try T(Count(raw: ~0 as IX), prune: Bad.code789), Bad.code789)
             }
             
             if  let size: IX = Value.size.natural().optional() {
-                Test().success({ try T(Count(size - 1), prune: Bad.code123).value }, Count(size - 1))
-                Test().failure({ try T(Count(size    ), prune: Bad.code456)       }, Bad.code456)
-                Test().failure({ try T(Count(size + 1), prune: Bad.code789)       }, Bad.code789)
+                Test().success(try T(Count(size - 1), prune: Bad.code123).value, Count(size - 1))
+                Test().failure(try T(Count(size    ), prune: Bad.code456), Bad.code456)
+                Test().failure(try T(Count(size + 1), prune: Bad.code789), Bad.code789)
             }
         }
         

@@ -50,7 +50,7 @@ extension FibonacciTests {
     
     ///  https://www.wolframalpha.com/input?i2d=true&i=fibonnaci+28751
     func testInfiniIntIXLPrime3131() {
-        guard let item = Test().success({ try Fibonacci<IXL>(28751) }) else { return }
+        guard let item = Test().success(try Fibonacci<IXL>(28751)) else { return }
         #if !DEBUG
         Case(item).checkMathInvariants()
         Case(item).checkTextInvariants()
@@ -156,7 +156,7 @@ extension FibonacciTests {
     
     ///  https://www.wolframalpha.com/input?i2d=true&i=fibonnaci+28751
     func testInfiniIntUXLPrime3131() {
-        guard let item = Test().success({ try Fibonacci<UXL>(28751) }) else { return }
+        guard let item = Test().success(try Fibonacci<UXL>(28751)) else { return }
         #if !DEBUG
         Case(item).checkMathInvariants()
         Case(item).checkTextInvariants()
@@ -268,7 +268,7 @@ extension FibonacciTests {
         #if DEBUG
         throw XCTSkip("req. release mode")
         #else
-        guard let item = Test().success({ try Fibonacci<IXL>(1000000) }) else { return }
+        guard let item = Test().success(try Fibonacci<IXL>(1000000)) else { return }
         
         always: do {
             Test().same(item.index, 1000000)

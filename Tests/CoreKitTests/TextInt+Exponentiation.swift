@@ -26,11 +26,11 @@ extension TextIntTests {
         //=--------------------------------------=
         // test: the minimum radix is 2
         //=--------------------------------------=
-        Test().failure({ try T.Exponentiation(0) }, E.invalid)
-        Test().failure({ try T.Exponentiation(1) }, E.invalid)
+        Test().failure(try T.Exponentiation(0), E.invalid)
+        Test().failure(try T.Exponentiation(1), E.invalid)
         //=--------------------------------------=
         for radix: UX in 2 ... 256 {
-            guard let solution = Test().success({ try T.Exponentiation(radix) }) else { break }
+            guard let solution = Test().success(try T.Exponentiation(radix)) else { break }
             //=----------------------------------=
             Test().more(solution.exponent, 1 as IX)
             //=----------------------------------=

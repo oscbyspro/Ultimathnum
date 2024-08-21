@@ -122,8 +122,8 @@ extension TextIntTests {
     
     func testEncodingAsAnyBaseIsValid() {
         for radix in Self.radices {
-            guard let lowercase = Test().success({ try TextInt(radix: radix, letters: .lowercase) }) else { break }
-            guard let uppercase = Test().success({ try TextInt(radix: radix, letters: .uppercase) }) else { break }
+            guard let lowercase = Test().success(try TextInt(radix: radix, letters: .lowercase)) else { break }
+            guard let uppercase = Test().success(try TextInt(radix: radix, letters: .uppercase)) else { break }
             //=----------------------------------=
             // test: no elements in body is zero
             //=----------------------------------=

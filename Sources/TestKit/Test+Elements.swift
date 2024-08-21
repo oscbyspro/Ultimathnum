@@ -86,7 +86,7 @@ extension Test {
             if  element.appendix == appendix {
                 same(Integer(load:  element), integer, "init(load:) [0]")
             }   else {
-                let mask: Integer = Integer(repeating: 1) << Integer(IX(size: Integer.Element.self))
+                let mask: Integer = Integer(repeating: 1) << IX(size: Integer.Element.self)
                 same(Integer(load:  element) ^ mask, integer, "init(load:) [1]")
             }
         }
@@ -182,7 +182,7 @@ extension Test {
         //=--------------------------------------=
         body.withUnsafeBufferPointer {
             //=----------------------------------=
-            let appendix = Bit(signedness == .signed && ($0.last ?? 0) >= Element.msb)
+            let appendix = Bit(signedness == .signed && $0.last?.msb == Bit.one)
             let elements = DataInt($0, repeating: appendix)!
             //=----------------------------------=
             if !expectation.error {
