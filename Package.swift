@@ -95,6 +95,14 @@ let package = Package(
             dependencies: ["InfiniIntKit", "TestKit"]
         ),
         .target(
+            name: "PrototypeKit",
+            dependencies: ["CoreKit"]
+        ),
+        .testTarget(
+            name: "PrototypeKitTests",
+            dependencies: ["PrototypeKit", "TestKit"]
+        ),
+        .target(
             name: "RandomIntKit",
             dependencies: ["CoreKit"]
         ),

@@ -52,10 +52,6 @@
   "testTargets" : [
     {
       "parallelizable" : true,
-      "skippedTests" : [
-        "CoreIntTests\/testDivision2111I8()",
-        "CoreIntTests\/testDivision2111U8()"
-      ],
       "target" : {
         "containerPath" : "container:",
         "identifier" : "CoreKitTests",
@@ -72,14 +68,10 @@
     },
     {
       "parallelizable" : true,
-      "skippedTests" : [
-        "BenchmarksAboutDoubleInt",
-        "FibonacciBenchmarks"
-      ],
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "UltimathnumTests",
-        "name" : "UltimathnumTests"
+        "identifier" : "FibonacciKitTests",
+        "name" : "FibonacciKitTests"
       }
     },
     {
@@ -94,8 +86,8 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "FibonacciKitTests",
-        "name" : "FibonacciKitTests"
+        "identifier" : "RandomIntKitTests",
+        "name" : "RandomIntKitTests"
       }
     },
     {
@@ -110,8 +102,8 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "RandomIntKitTests",
-        "name" : "RandomIntKitTests"
+        "identifier" : "UltimathnumTests",
+        "name" : "UltimathnumTests"
       }
     }
   ],
