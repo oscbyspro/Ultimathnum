@@ -28,7 +28,8 @@
 ///
 /// - Note: Please roll a `D20` arcana check.
 ///
-@frozen public struct Count<Layout>: BitCastable, Comparable where Layout: SignedInteger & SystemsInteger {
+@frozen public struct Count<Layout>: BitCastable, Comparable, Recoverable, 
+Sendable where Layout: SignedInteger & SystemsInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Metadata
