@@ -17,14 +17,14 @@ extension Division where Quotient: BinaryInteger, Remainder: BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Increments the `quotient` if the `remainder` is positive.
+    /// Increments the `quotient` when the `remainder` is positive.
     @inlinable public consuming func ceil() -> Fallible<Quotient> {
         let instance: Self = consume self
         let increment: Quotient = instance.remainder > 0 ? 1 : 0
         return instance.quotient.plus(increment)
     }
     
-    /// Decrements the `quotient` if the `remainder` is negative.
+    /// Decrements the `quotient` when the `remainder` is negative.
     @inlinable public consuming func floor() -> Fallible<Quotient> {
         let instance: Self = consume self
         let increment: Quotient = instance.remainder.isNegative ? 1 : 0
@@ -42,10 +42,12 @@ extension Fallible {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Increments the `quotient` when the `remainder` is positive.
     @inlinable public consuming func ceil<Quotient, Remainder>() -> Fallible<Quotient> where Value == Division<Quotient, Remainder> {
         self.value.ceil().veto(self.error)
     }
     
+    /// Decrements the `quotient` when the `remainder` is negative.
     @inlinable public consuming func floor<Quotient, Remainder>() -> Fallible<Quotient> where Value == Division<Quotient, Remainder> {
         self.value.floor().veto(self.error)
     }

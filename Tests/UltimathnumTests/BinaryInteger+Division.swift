@@ -658,9 +658,13 @@ extension BinaryIntegerTestsOnDivision {
                 let floor: Fallible<T> = division.floor()
                 success &+= IX(Bit(division.veto(false).floor() == floor))
                 success &+= IX(Bit(division.veto(true ).floor() == floor.veto()))
+                
+                let exactly: Fallible<T> = division.exactly()
+                success &+= IX(Bit(division.veto(false).exactly() == exactly))
+                success &+= IX(Bit(division.veto(true ).exactly() == exactly.veto()))
             }
             
-            Test().same(success, rounds &* 10)
+            Test().same(success, rounds &* 12)
         }
         
         func whereIsUnsignedSystemsInteger<T>(_ type: T.Type, rounds: IX, randomness: consuming FuzzerInt) where T: SystemsInteger & UnsignedInteger {
