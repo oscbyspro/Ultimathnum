@@ -18,7 +18,7 @@ extension TextInt {
     //*========================================================================*
     
     /// An ASCII numeral coder.
-    @frozen @usableFromInline package struct Numerals: Equatable {
+    @frozen @usableFromInline package struct Numerals: Equatable, Sendable {
         
         //=--------------------------------------------------------------------=
         // MARK: State

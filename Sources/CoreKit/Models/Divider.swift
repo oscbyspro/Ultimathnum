@@ -23,7 +23,7 @@
 ///
 /// - Note: Its constants are all same-size integers (mul-add-shr).
 ///
-@frozen public struct Divider<Value> where Value: SystemsInteger & UnsignedInteger {
+@frozen public struct Divider<Value>: Sendable where Value: SystemsInteger & UnsignedInteger {
 
     public typealias Value = Value
     
@@ -118,7 +118,7 @@
 ///
 /// - TODO: Consider a DoubleableInteger constraint.
 ///
-@frozen public struct Divider21<Value> where Value: SystemsInteger & UnsignedInteger {
+@frozen public struct Divider21<Value>: Sendable where Value: SystemsInteger & UnsignedInteger {
 
     public typealias Value = Value
     

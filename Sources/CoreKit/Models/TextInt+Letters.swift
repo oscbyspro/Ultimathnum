@@ -14,7 +14,7 @@
 extension TextInt {
     
     /// A `lowercase` or `uppercase` indicator.
-    @frozen public enum Letters: Equatable {
+    @frozen public enum Letters: Equatable, Sendable {
         
         case uppercase
         

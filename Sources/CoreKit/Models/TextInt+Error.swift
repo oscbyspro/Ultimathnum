@@ -13,7 +13,7 @@
 
 extension TextInt {
     
-    @frozen public enum Error: Swift.Error, Equatable {
+    @frozen public enum Error: Swift.Error, Equatable, Sendable {
         
         case invalid
         

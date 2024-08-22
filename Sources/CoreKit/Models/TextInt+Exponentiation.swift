@@ -13,7 +13,7 @@
 
 extension TextInt {
     
-    @frozen @usableFromInline package struct Exponentiation {
+    @frozen @usableFromInline package struct Exponentiation: Sendable {
         
         //=--------------------------------------------------------------------=
         // MARK: State

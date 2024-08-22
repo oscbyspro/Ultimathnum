@@ -12,7 +12,7 @@
 //*============================================================================*
 
 /// An integer split into 3 parts.
-@frozen public struct Triplet<Base>: BitCastable, Comparable where Base: SystemsInteger {
+@frozen public struct Triplet<Base>: BitCastable, Comparable, Sendable where Base: SystemsInteger {
     
     public typealias High = Base
     

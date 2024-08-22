@@ -11,7 +11,7 @@
 // MARK: * Bit
 //*============================================================================*
 
-@frozen public struct Bit: BitCastable, BitOperable, Comparable, Hashable, ExpressibleByIntegerLiteral {
+@frozen public struct Bit: BitCastable, BitOperable, Comparable, Hashable, ExpressibleByIntegerLiteral, Sendable {
     
     public typealias BitPattern = Bool
     

@@ -19,7 +19,7 @@
 /// with non-generic and non-inlinable algorithms. This design favors code
 /// size over performance.
 ///
-@frozen public struct TextInt: Equatable {
+@frozen public struct TextInt: Equatable, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: Metadata

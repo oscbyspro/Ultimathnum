@@ -156,3 +156,9 @@ extension Fallible: BitCastable where Value: BitCastable {
         Fallible<Value.BitPattern>(Value.BitPattern(raw: self.value), error: self.error)
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + where Value is Sendable
+//=----------------------------------------------------------------------------=
+
+extension Fallible: Sendable where Value: Sendable { }
