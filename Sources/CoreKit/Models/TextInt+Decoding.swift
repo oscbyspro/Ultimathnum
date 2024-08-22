@@ -18,12 +18,16 @@ extension TextInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public func decode<T: BinaryInteger>(_ description: StaticString) -> T {
-        description.withUTF8Buffer({ try! self.decode($0) })
+        description.withUTF8Buffer {
+            try! self.decode($0)
+        }
     }
     
     @inlinable public func decode<T: BinaryInteger>(_ description: some StringProtocol) throws -> T {
         var description = String(description)
-        return try description.withUTF8(self.decode)
+        return try description.withUTF8 {
+            try self.decode($0)
+        }
     }
     
     @inlinable public func decode<T: BinaryInteger>(_ description: UnsafeBufferPointer<UInt8>) throws -> T {
