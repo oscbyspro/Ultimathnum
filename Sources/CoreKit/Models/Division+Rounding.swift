@@ -11,7 +11,7 @@
 // MARK: * Division x Rounding
 //*============================================================================*
 
-extension Division where Quotient: BinaryInteger, Remainder: BinaryInteger {
+extension Division {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -19,16 +19,12 @@ extension Division where Quotient: BinaryInteger, Remainder: BinaryInteger {
     
     /// Increments the `quotient` when the `remainder` is positive.
     @inlinable public consuming func ceil() -> Fallible<Quotient> {
-        let instance: Self = consume self
-        let increment: Quotient = instance.remainder > 0 ? 1 : 0
-        return instance.quotient.plus(increment)
+        self.quotient.plus(self.remainder.isPositive ? 1 : 0)
     }
     
     /// Decrements the `quotient` when the `remainder` is negative.
     @inlinable public consuming func floor() -> Fallible<Quotient> {
-        let instance: Self = consume self
-        let increment: Quotient = instance.remainder.isNegative ? 1 : 0
-        return instance.quotient.minus(increment)
+        self.quotient.minus(self.remainder.isNegative ? 1 : 0)
     }
 }
 

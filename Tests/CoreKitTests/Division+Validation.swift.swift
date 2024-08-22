@@ -14,8 +14,8 @@ import TestKit
 // MARK: * Division x Validation
 //*============================================================================*
 
-extension DivisionTests {
-    
+final class DivisionTestsOnValidation: XCTestCase {
+
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
