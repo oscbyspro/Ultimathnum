@@ -64,14 +64,11 @@ extension BinaryInteger {
     ///
     /// - Returns: `pow(self, exponent) * coefficient`
     ///
-    /// ```swift
-    /// U8(0).power(0, coefficient:  0) // value:   0, error: false
-    /// U8(0).power(0, coefficient:  1) // value:   1, error: false
-    /// U8(0).power(1, coefficient:  2) // value:   0, error: false
-    /// U8(1).power(2, coefficient:  3) // value:   3, error: false
-    /// U8(2).power(3, coefficient:  5) // value:  40, error: false
-    /// U8(3).power(5, coefficient:  7) // value: 165, error: true
-    /// U8(5).power(7, coefficient: 11) // value: 239, error: true
+    /// ```swift    
+    /// I8(0).power(U8(1), coefficient: I8(2)) // I8.exactly(   0)
+    /// I8(1).power(U8(2), coefficient: I8(3)) // I8.exactly(   3)
+    /// I8(2).power(U8(3), coefficient: I8(5)) // I8.exactly(  40)
+    /// I8(3).power(U8(5), coefficient: I8(7)) // I8.exactly(1701)
     /// ```
     ///
     /// - Note: The default `coefficient` is `1`.
@@ -103,13 +100,10 @@ extension BinaryInteger {
     /// - Returns: `pow(self, exponent) * coefficient`
     ///
     /// ```swift
-    /// U8(0).power(0, coefficient:  0) // value:   0, error: false
-    /// U8(0).power(0, coefficient:  1) // value:   1, error: false
-    /// U8(0).power(1, coefficient:  2) // value:   0, error: false
-    /// U8(1).power(2, coefficient:  3) // value:   3, error: false
-    /// U8(2).power(3, coefficient:  5) // value:  40, error: false
-    /// U8(3).power(5, coefficient:  7) // value: 165, error: true
-    /// U8(5).power(7, coefficient: 11) // value: 239, error: true
+    /// I8(0).power(U8(1), coefficient: I8(2)) // I8.exactly(   0)
+    /// I8(1).power(U8(2), coefficient: I8(3)) // I8.exactly(   3)
+    /// I8(2).power(U8(3), coefficient: I8(5)) // I8.exactly(  40)
+    /// I8(3).power(U8(5), coefficient: I8(7)) // I8.exactly(1701)
     /// ```
     ///
     /// - Note: The default `coefficient` is `1`.
@@ -131,13 +125,10 @@ extension BinaryInteger {
     /// - Returns: `pow(self, exponent) * coefficient`
     ///
     /// ```swift
-    /// U8(0).power(0, coefficient:  0) // value:   0, error: false
-    /// U8(0).power(0, coefficient:  1) // value:   1, error: false
-    /// U8(0).power(1, coefficient:  2) // value:   0, error: false
-    /// U8(1).power(2, coefficient:  3) // value:   3, error: false
-    /// U8(2).power(3, coefficient:  5) // value:  40, error: false
-    /// U8(3).power(5, coefficient:  7) // value: 165, error: true
-    /// U8(5).power(7, coefficient: 11) // value: 239, error: true
+    /// I8(0).power(U8(1), coefficient: I8(2)) // I8.exactly(   0)
+    /// I8(1).power(U8(2), coefficient: I8(3)) // I8.exactly(   3)
+    /// I8(2).power(U8(3), coefficient: I8(5)) // I8.exactly(  40)
+    /// I8(3).power(U8(5), coefficient: I8(7)) // I8.exactly(1701)
     /// ```
     ///
     /// - Note: The default `coefficient` is `1`.
@@ -154,13 +145,10 @@ extension BinaryInteger {
     /// - Returns: `pow(self, exponent) * coefficient`
     ///
     /// ```swift
-    /// U8(0).power(0, coefficient:  0) // value:   0, error: false
-    /// U8(0).power(0, coefficient:  1) // value:   1, error: false
-    /// U8(0).power(1, coefficient:  2) // value:   0, error: false
-    /// U8(1).power(2, coefficient:  3) // value:   3, error: false
-    /// U8(2).power(3, coefficient:  5) // value:  40, error: false
-    /// U8(3).power(5, coefficient:  7) // value: 165, error: true
-    /// U8(5).power(7, coefficient: 11) // value: 239, error: true
+    /// I8(0).power(U8(1), coefficient: I8(2)) // I8.exactly(   0)
+    /// I8(1).power(U8(2), coefficient: I8(3)) // I8.exactly(   3)
+    /// I8(2).power(U8(3), coefficient: I8(5)) // I8.exactly(  40)
+    /// I8(3).power(U8(5), coefficient: I8(7)) // I8.exactly(1701)
     /// ```
     ///
     /// - Note: The default `coefficient` is `1`.
@@ -188,13 +176,10 @@ extension Fallible where Value: BinaryInteger {
     /// - Returns: `pow(self, exponent) * coefficient`
     ///
     /// ```swift
-    /// U8(0).power(0, coefficient:  0) // value:   0, error: false
-    /// U8(0).power(0, coefficient:  1) // value:   1, error: false
-    /// U8(0).power(1, coefficient:  2) // value:   0, error: false
-    /// U8(1).power(2, coefficient:  3) // value:   3, error: false
-    /// U8(2).power(3, coefficient:  5) // value:  40, error: false
-    /// U8(3).power(5, coefficient:  7) // value: 165, error: true
-    /// U8(5).power(7, coefficient: 11) // value: 239, error: true
+    /// I8(0).power(U8(1), coefficient: I8(2)) // I8.exactly(   0)
+    /// I8(1).power(U8(2), coefficient: I8(3)) // I8.exactly(   3)
+    /// I8(2).power(U8(3), coefficient: I8(5)) // I8.exactly(  40)
+    /// I8(3).power(U8(5), coefficient: I8(7)) // I8.exactly(1701)
     /// ```
     ///
     /// - Note: The default `coefficient` is `1`.
@@ -211,13 +196,10 @@ extension Fallible where Value: BinaryInteger {
     /// - Returns: `pow(self, exponent) * coefficient`
     ///
     /// ```swift
-    /// U8(0).power(0, coefficient:  0) // value:   0, error: false
-    /// U8(0).power(0, coefficient:  1) // value:   1, error: false
-    /// U8(0).power(1, coefficient:  2) // value:   0, error: false
-    /// U8(1).power(2, coefficient:  3) // value:   3, error: false
-    /// U8(2).power(3, coefficient:  5) // value:  40, error: false
-    /// U8(3).power(5, coefficient:  7) // value: 165, error: true
-    /// U8(5).power(7, coefficient: 11) // value: 239, error: true
+    /// I8(0).power(U8(1), coefficient: I8(2)) // I8.exactly(   0)
+    /// I8(1).power(U8(2), coefficient: I8(3)) // I8.exactly(   3)
+    /// I8(2).power(U8(3), coefficient: I8(5)) // I8.exactly(  40)
+    /// I8(3).power(U8(5), coefficient: I8(7)) // I8.exactly(1701)
     /// ```
     ///
     /// - Note: The default `coefficient` is `1`.
@@ -234,13 +216,10 @@ extension Fallible where Value: BinaryInteger {
     /// - Returns: `pow(self, exponent) * coefficient`
     ///
     /// ```swift
-    /// U8(0).power(0, coefficient:  0) // value:   0, error: false
-    /// U8(0).power(0, coefficient:  1) // value:   1, error: false
-    /// U8(0).power(1, coefficient:  2) // value:   0, error: false
-    /// U8(1).power(2, coefficient:  3) // value:   3, error: false
-    /// U8(2).power(3, coefficient:  5) // value:  40, error: false
-    /// U8(3).power(5, coefficient:  7) // value: 165, error: true
-    /// U8(5).power(7, coefficient: 11) // value: 239, error: true
+    /// I8(0).power(U8(1), coefficient: I8(2)) // I8.exactly(   0)
+    /// I8(1).power(U8(2), coefficient: I8(3)) // I8.exactly(   3)
+    /// I8(2).power(U8(3), coefficient: I8(5)) // I8.exactly(  40)
+    /// I8(3).power(U8(5), coefficient: I8(7)) // I8.exactly(1701)
     /// ```
     ///
     /// - Note: The default `coefficient` is `1`.
@@ -257,13 +236,10 @@ extension Fallible where Value: BinaryInteger {
     /// - Returns: `pow(self, exponent) * coefficient`
     ///
     /// ```swift
-    /// U8(0).power(0, coefficient:  0) // value:   0, error: false
-    /// U8(0).power(0, coefficient:  1) // value:   1, error: false
-    /// U8(0).power(1, coefficient:  2) // value:   0, error: false
-    /// U8(1).power(2, coefficient:  3) // value:   3, error: false
-    /// U8(2).power(3, coefficient:  5) // value:  40, error: false
-    /// U8(3).power(5, coefficient:  7) // value: 165, error: true
-    /// U8(5).power(7, coefficient: 11) // value: 239, error: true
+    /// I8(0).power(U8(1), coefficient: I8(2)) // I8.exactly(   0)
+    /// I8(1).power(U8(2), coefficient: I8(3)) // I8.exactly(   3)
+    /// I8(2).power(U8(3), coefficient: I8(5)) // I8.exactly(  40)
+    /// I8(3).power(U8(5), coefficient: I8(7)) // I8.exactly(1701)
     /// ```
     ///
     /// - Note: The default `coefficient` is `1`.

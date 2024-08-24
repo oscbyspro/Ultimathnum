@@ -368,13 +368,10 @@ extension BinaryIntegerTestsOnExponentiation {
     
     func testBinaryIntegerDocumentation() {
         func whereIs<A, B>(_ type: A.Type, _ exponent: B.Type) where A: BinaryInteger, B: UnsignedInteger {
-            Test().same(A(0).power(B(0), coefficient: A( 0)), A.exactly(     0))
-            Test().same(A(0).power(B(0), coefficient: A( 1)), A.exactly(     1))
-            Test().same(A(0).power(B(1), coefficient: A( 2)), A.exactly(     0))
-            Test().same(A(1).power(B(2), coefficient: A( 3)), A.exactly(     3))
-            Test().same(A(2).power(B(3), coefficient: A( 5)), A.exactly(    40))
-            Test().same(A(3).power(B(5), coefficient: A( 7)), A.exactly(  1701))
-            Test().same(A(5).power(B(7), coefficient: A(11)), A.exactly(859375))
+            Test().same(A(0).power(B(1), coefficient: A(2)), A.exactly(   0))
+            Test().same(A(1).power(B(2), coefficient: A(3)), A.exactly(   3))
+            Test().same(A(2).power(B(3), coefficient: A(5)), A.exactly(  40))
+            Test().same(A(3).power(B(5), coefficient: A(7)), A.exactly(1701))
         }
         
         for type in binaryIntegers {

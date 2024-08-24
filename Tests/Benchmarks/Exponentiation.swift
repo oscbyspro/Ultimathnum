@@ -28,7 +28,7 @@ final class ExponentiationBenchmarks: XCTestCase {
         
         for base: UX in 0..<128 {
             for exponent: UX in 0..<1000 {
-                blackHole(T(load: base).power(T(load: exponent)))
+                blackHole(T(load: base).power(exponent))
             }
         }
     }
@@ -38,7 +38,7 @@ final class ExponentiationBenchmarks: XCTestCase {
         
         for base: UX in 0..<128 {
             for exponent: UX in 0..<1000 {
-                blackHole(T(load: base).power(T(load: exponent)))
+                blackHole(T(load: base).power(exponent))
             }
         }
     }
@@ -48,7 +48,7 @@ final class ExponentiationBenchmarks: XCTestCase {
         
         for base: UX in 0..<128 {
             for exponent: UX in 0..<1000 {
-                blackHole(T(load: base).power(T(load: exponent)))
+                blackHole(T(load: base).power(exponent))
             }
         }
     }
