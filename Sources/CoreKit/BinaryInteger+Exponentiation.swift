@@ -46,7 +46,7 @@ extension BinaryInteger {
                 power = power.times(multiplier.value)
             }
             
-            exponent = exponent.down(Shift(unchecked: Count(unchecked: 1)))
+            exponent = exponent.down(Shift.one)
             
             if  exponent.isZero {
                 return (power).veto(multiplier.error)

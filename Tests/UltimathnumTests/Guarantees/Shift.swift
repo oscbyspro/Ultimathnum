@@ -22,6 +22,26 @@ final class ShiftTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
+    func testStaticInstances() {
+        func whereTheValueIs<Value>(_ type: Value.Type) where Value: UnsignedInteger {
+            typealias T = Shift<Value>
+            
+            Test().same(T.min, T(Count(raw: 0 as IX)))
+            Test().same(T.one, T(Count(raw: 1 as IX)))
+            Test().same(T.max, T(Count(raw: IX(raw: Value.size) - 1)))
+        }
+        
+        for type in coreSystemsIntegersWhereIsUnsigned {
+            whereTheValueIs(type)
+        }
+        
+        whereTheValueIs(DoubleInt<U8>.self)
+        whereTheValueIs(DoubleInt<UX>.self)
+        
+        whereTheValueIs(InfiniInt<U8>.self)
+        whereTheValueIs(InfiniInt<UX>.self)
+    }
+    
     func testInitExactly() {
         func whereTheValueIs<Value>(_ type: Value.Type) where Value: UnsignedInteger {
             typealias T = Shift<Value>
@@ -159,7 +179,6 @@ final class ShiftTests: XCTestCase {
             //=----------------------------------=
             let size = IX(raw: Value.size)
             //=----------------------------------=
-            Test().none(T.min.inverse())
             Test().none(T(Count(0 as IX)).inverse())
             Test().same(T(Count(1 as IX)).inverse(), Shift(Count(raw: size - 1)))
             Test().same(T(Count(2 as IX)).inverse(), Shift(Count(raw: size - 2)))
@@ -171,7 +190,6 @@ final class ShiftTests: XCTestCase {
             
             Test().nay (T.predicate(Value.size))
             Test().none(T(exactly:  Value.size))
-            Test().same(T.max.inverse(), Shift(Count(1)))
             Test().same(T(Count(raw: size - 1)).inverse(), Shift(Count(1 as IX)))
             Test().same(T(Count(raw: size - 2)).inverse(), Shift(Count(2 as IX)))
             Test().same(T(Count(raw: size - 3)).inverse(), Shift(Count(3 as IX)))
@@ -205,7 +223,6 @@ final class ShiftTests: XCTestCase {
             //=----------------------------------=
             let size = IX(raw: Value.size)
             //=----------------------------------=
-            Test().same(T.min.natural(),             Fallible(0 as IX))
             Test().same(T(Count(0 as IX)).natural(), Fallible(0 as IX))
             Test().same(T(Count(1 as IX)).natural(), Fallible(1 as IX))
             Test().same(T(Count(2 as IX)).natural(), Fallible(2 as IX))
@@ -217,7 +234,6 @@ final class ShiftTests: XCTestCase {
             
             Test().nay (T.predicate(Value.size))
             Test().none(T(exactly:  Value.size))
-            Test().same(T.max.natural(),                   Fallible(size - 1, error: Value.size.isInfinite))
             Test().same(T(Count(raw: size - 1)).natural(), Fallible(size - 1, error: Value.size.isInfinite))
             Test().same(T(Count(raw: size - 2)).natural(), Fallible(size - 2, error: Value.size.isInfinite))
             Test().same(T(Count(raw: size - 3)).natural(), Fallible(size - 3, error: Value.size.isInfinite))
@@ -256,7 +272,6 @@ final class ShiftTests: XCTestCase {
             }
             
             if  Value.size.isInfinite {
-                Test().same(T.max.promoted(),                   Value.max)
                 Test().same(T(Count(raw: ~1 as IX)).promoted(), Value.max)
                 Test().same(T(Count(raw: ~2 as IX)).promoted(), Value.max - 1)
                 Test().same(T(Count(raw: ~3 as IX)).promoted(), Value.max - 2)

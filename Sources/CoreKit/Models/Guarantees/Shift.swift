@@ -54,6 +54,14 @@
         Self(unchecked: Count.zero)
     }
     
+    /// A bit index of `1`.
+    ///
+    /// - Note: Shifting by `1` is common and the minimum binary integer size is `8`.
+    ///
+    @inlinable public static var one: Self {
+        Self(unchecked: Count(unchecked: 1))
+    }
+    
     /// The maximum bit index of the target binary integer type.
     ///
     ///     ┌──────┬───────────────────────┐
