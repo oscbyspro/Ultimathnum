@@ -23,7 +23,7 @@ import CoreKit
 ///
 /// - Important: It may use a different algorithm in the future.
 ///
-@frozen public struct FuzzerInt: Randomness, Sendable {
+@frozen public struct FuzzerInt: Equatable, Interoperable, Randomness, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -39,6 +39,14 @@ import CoreKit
         self.state = (seed)
     }
     
+    @inlinable public init(_ source: consuming Stdlib) {
+        self = source.base
+    }
+    
+    @inlinable public consuming func stdlib() -> Stdlib {
+        Stdlib(self)
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
@@ -49,5 +57,34 @@ import CoreKit
         next = (next ^ (next &>> 30)) &* 0xbf58476d1ce4e5b9
         next = (next ^ (next &>> 27)) &* 0x94d049bb133111eb
         return (next ^ (next &>> 31))
+    }
+    
+    //*========================================================================*
+    // MARK: * Stdlib
+    //*========================================================================*
+    
+    @frozen public struct Stdlib: Swift.RandomNumberGenerator {
+        
+        //=--------------------------------------------------------------------=
+        // MARK: State
+        //=--------------------------------------------------------------------=
+        
+        @usableFromInline var base: FuzzerInt
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Initializers
+        //=--------------------------------------------------------------------=
+        
+        @inlinable init(_ base: consuming FuzzerInt) {
+            self.base = base
+        }
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Utilities
+        //=--------------------------------------------------------------------=
+        
+        @inlinable public mutating func next() -> Swift.UInt64 {
+            Swift.UInt64(self.base.next(as: U64.self))
+        }
     }
 }

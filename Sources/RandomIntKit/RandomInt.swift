@@ -19,20 +19,30 @@ import CoreKit
 ///
 /// It uses Swift's `SystemRandomNumberGenerator`.
 ///
-@frozen public struct RandomInt: Randomness, Sendable {
+@frozen public struct RandomInt: Interoperable, Randomness, Sendable {
     
+    public typealias Stdlib = Swift.SystemRandomNumberGenerator
+            
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    @usableFromInline var base: SystemRandomNumberGenerator
+    @usableFromInline var base: Stdlib
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
     @inlinable public init() {
-        self.base = SystemRandomNumberGenerator()
+        self.base = Stdlib()
+    }
+    
+    @inlinable public init(_ source: consuming Stdlib) {
+        self.base = source
+    }
+    
+    @inlinable public consuming func stdlib() -> Stdlib {
+        self.base
     }
     
     //=------------------------------------------------------------------------=

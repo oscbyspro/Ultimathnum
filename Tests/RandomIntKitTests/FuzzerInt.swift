@@ -21,32 +21,50 @@ final class FuzzerIntTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
+    func testMetadata() {
+        Test().yay(FuzzerInt.self as Any is any Randomness.Type)
+        Test().yay(FuzzerInt.Stdlib.self as Any is any Swift.RandomNumberGenerator.Type)
+    }
+    
     func testSeeds() {
-        var randomness: FuzzerInt
+        var randomness = FuzzerInt(seed: 0)
+        
+        func expect(_ expectation: U64, line: UInt = #line) {
+            var copy    = randomness
+            var stdlibX = randomness.stdlib
+            var stdlibY = randomness.stdlib()
+            
+            Test(line: line).same(randomness, copy)
+            Test(line: line).same(randomness .next(),       (expectation), "normal")
+            Test(line: line).same(copy.stdlib.next(), UInt64(expectation), "stdlib modify")
+            Test(line: line).same(((stdlibX)).next(), UInt64(expectation), "stdlib mutating read")
+            Test(line: line).same(((stdlibY)).next(), UInt64(expectation), "stdlib consuming get")
+            Test(line: line).same(randomness, copy)
+        }
         
         randomness = .init(seed:  0)
-        Test().same(randomness.next(), 16294208416658607535)
-        Test().same(randomness.next(), 07960286522194355700)
-        Test().same(randomness.next(), 00487617019471545679)
-        Test().same(randomness.next(), 17909611376780542444)
+        expect(16294208416658607535)
+        expect(07960286522194355700)
+        expect(00487617019471545679)
+        expect(17909611376780542444)
         
         randomness = .init(seed:  1)
-        Test().same(randomness.next(), 10451216379200822465)
-        Test().same(randomness.next(), 13757245211066428519)
-        Test().same(randomness.next(), 17911839290282890590)
-        Test().same(randomness.next(), 08196980753821780235)
+        expect(10451216379200822465)
+        expect(13757245211066428519)
+        expect(17911839290282890590)
+        expect(08196980753821780235)
         
         randomness = .init(seed: ~1)
-        Test().same(randomness.next(), 17519071339639777313)
-        Test().same(randomness.next(), 13427082724269423081)
-        Test().same(randomness.next(), 15047954047655532813)
-        Test().same(randomness.next(), 02229658653670313015)
+        expect(17519071339639777313)
+        expect(13427082724269423081)
+        expect(15047954047655532813)
+        expect(02229658653670313015)
         
         randomness = .init(seed: ~0)
-        Test().same(randomness.next(), 16490336266968443936)
-        Test().same(randomness.next(), 16834447057089888969)
-        Test().same(randomness.next(), 04048727598324417001)
-        Test().same(randomness.next(), 07862637804313477842)
+        expect(16490336266968443936)
+        expect(16834447057089888969)
+        expect(04048727598324417001)
+        expect(07862637804313477842)
         
         randomness = .init(seed:  0)
         var unique = Set<U64>()
