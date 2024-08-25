@@ -28,7 +28,7 @@ extension BinaryInteger {
     /// - Note: The nonzero `coefficient` simplifies `error` reporting.
     ///
     @inlinable internal static func resolve(
-        base: borrowing Self,
+        _ base: borrowing Self,
         power exponent: consuming  Natural<some UnsignedInteger>,
         coefficient: /*borrowing*/ Nonzero<Self>
     ) -> Fallible<Self> {
@@ -80,18 +80,18 @@ extension BinaryInteger {
         
         if !Magnitude.isArbitrary {
             var (magic, error) = Magnitude.exactly(exponent).components()
-            if  (error) {                
+            if  (error) {
                 switch Bool(self.lsb) {
-                case  true: error = self.magnitude() > 1 //........ cycle
+                case  true: error = self.magnitude() != 1 //....... cycle
                 case false: return  Self.zero.veto(!self.isZero) // zeros
                 }
             }
             
-            return Self.resolve(base: self, power: Natural(unchecked: magic), coefficient: coefficient).veto(error)
+            return Self.resolve(self, power: Natural(unchecked: magic), coefficient: coefficient).veto(error)
         }   else {
             var (magic) = UX(clamping:(((exponent)))) // the allocation limit is IX.max
             (((((magic)))))[Shift.min] = exponent.lsb // preserves the lsb to toggle ~0
-            return Self.resolve(base: self, power: Natural(unchecked: magic), coefficient: coefficient)
+            return Self.resolve(self, power: Natural(unchecked: magic), coefficient: coefficient)
         }
     }
     
