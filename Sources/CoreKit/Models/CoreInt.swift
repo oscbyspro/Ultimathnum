@@ -30,21 +30,20 @@
 /// - `U32`
 /// - `U64`
 ///
-@usableFromInline protocol CoreInteger: SystemsInteger where
-BitPattern == Stdlib.BitPattern, Element == Self, Signitude: CoreInteger,
-Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
-    
-    associatedtype Stdlib: Swift.FixedWidthInteger & BitCastable & Sendable
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable init(_ source: Stdlib)
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
+@usableFromInline protocol CoreInteger: 
+    Interoperable,
+    SystemsInteger
+where 
+    BitPattern == Stdlib.BitPattern,
+    Element == Self,
+    IntegerLiteralType == Stdlib,
+    Signitude: CoreInteger,
+    Stdlib: BitCastable,
+    Stdlib: Swift.FixedWidthInteger,
+    Stdlib: Swift.Sendable,
+    Magnitude: CoreInteger,
+    Magnitude.Stdlib == Stdlib.Magnitude
+{
     
     @inlinable var base: Stdlib { get }
 }
@@ -65,9 +64,9 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
 /// A pointer-bit signed binary integer.
 @frozen public struct IX: CoreIntegerWhereIsSigned, CoreIntegerWhereIsNotByte {
     
-    @usableFromInline typealias Stdlib = Swift.Int
+    public typealias Stdlib = Swift.Int
     
-    public typealias BitPattern = Swift.Int.BitPattern
+    public typealias BitPattern = Stdlib.BitPattern
     
     public typealias Element = Self
         
@@ -85,16 +84,20 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ source: Swift.Int) {
+    @inlinable public init(_ source: Stdlib) {
         self.base = source
     }
     
-    @inlinable public init(raw source: Swift.Int.BitPattern) {
+    @inlinable public init(raw source: BitPattern) {
         self.base = Stdlib(bitPattern: source)
     }
     
-    @inlinable public init(integerLiteral source: Swift.Int) {
+    @inlinable public init(integerLiteral source: Stdlib) {
         self.base = source
+    }
+    
+    @inlinable public consuming func stdlib() -> Stdlib {
+        self.base
     }
 }
 
@@ -105,9 +108,9 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
 /// An 8-bit signed binary integer.
 @frozen public struct I8: CoreIntegerWhereIsSigned, CoreIntegerWhereIsNotToken {
     
-    @usableFromInline typealias Stdlib = Swift.Int8
+    public typealias Stdlib = Swift.Int8
     
-    public typealias BitPattern = Swift.Int8.BitPattern
+    public typealias BitPattern = Stdlib.BitPattern
     
     public typealias Element = Self
     
@@ -125,16 +128,20 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ source: Swift.Int8) {
+    @inlinable public init(_ source: Stdlib) {
         self.base = source
     }
     
-    @inlinable public init(raw source: Swift.Int8.BitPattern) {
+    @inlinable public init(raw source: BitPattern) {
         self.base = Stdlib(bitPattern: source)
     }
     
-    @inlinable public init(integerLiteral source: Swift.Int8) {
+    @inlinable public init(integerLiteral source: Stdlib) {
         self.base = source
+    }
+    
+    @inlinable public consuming func stdlib() -> Stdlib {
+        self.base
     }
 }
 
@@ -145,9 +152,9 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
 /// A 16-bit signed binary integer.
 @frozen public struct I16: CoreIntegerWhereIsSigned, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
     
-    @usableFromInline typealias Stdlib = Swift.Int16
+    public typealias Stdlib = Swift.Int16
     
-    public typealias BitPattern = Swift.Int16.BitPattern
+    public typealias BitPattern = Stdlib.BitPattern
     
     public typealias Element   = Self
     
@@ -165,16 +172,20 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ source: Swift.Int16) {
+    @inlinable public init(_ source: Stdlib) {
         self.base = source
     }
     
-    @inlinable public init(raw source: Swift.Int16.BitPattern) {
+    @inlinable public init(raw source: BitPattern) {
         self.base = Stdlib(bitPattern: source)
     }
     
-    @inlinable public init(integerLiteral source: Swift.Int16) {
+    @inlinable public init(integerLiteral source: Stdlib) {
         self.base = source
+    }
+    
+    @inlinable public consuming func stdlib() -> Stdlib {
+        self.base
     }
 }
 
@@ -185,9 +196,9 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
 /// A 32-bit signed binary integer.
 @frozen public struct I32: CoreIntegerWhereIsSigned, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
     
-    @usableFromInline typealias Stdlib = Swift.Int32
+    public typealias Stdlib = Swift.Int32
     
-    public typealias BitPattern = Swift.Int32.BitPattern
+    public typealias BitPattern = Stdlib.BitPattern
     
     public typealias Element = Self
         
@@ -205,16 +216,20 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ source: Swift.Int32) {
+    @inlinable public init(_ source: Stdlib) {
         self.base = source
     }
     
-    @inlinable public init(raw source: Swift.Int32.BitPattern) {
+    @inlinable public init(raw source: BitPattern) {
         self.base = Stdlib(bitPattern: source)
     }
     
-    @inlinable public init(integerLiteral source: Swift.Int32) {
+    @inlinable public init(integerLiteral source: Stdlib) {
         self.base = source
+    }
+    
+    @inlinable public consuming func stdlib() -> Stdlib {
+        self.base
     }
 }
 
@@ -225,9 +240,9 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
 /// A 64-bit signed binary integer.
 @frozen public struct I64: CoreIntegerWhereIsSigned, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
     
-    @usableFromInline typealias Stdlib = Swift.Int64
+    public typealias Stdlib = Swift.Int64
     
-    public typealias BitPattern = Swift.Int64.BitPattern
+    public typealias BitPattern = Stdlib.BitPattern
     
     public typealias Element = Self
         
@@ -245,16 +260,20 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ source: Swift.Int64) {
+    @inlinable public init(_ source: Stdlib) {
         self.base = source
     }
     
-    @inlinable public init(raw source: Swift.Int64.BitPattern) {
+    @inlinable public init(raw source: BitPattern) {
         self.base = Stdlib(bitPattern: source)
     }
     
-    @inlinable public init(integerLiteral source: Swift.Int64) {
+    @inlinable public init(integerLiteral source: Stdlib) {
         self.base = source
+    }
+    
+    @inlinable public consuming func stdlib() -> Stdlib {
+        self.base
     }
 }
 
@@ -265,9 +284,9 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
 /// A pointer-bit unsigned binary integer.
 @frozen public struct UX: CoreIntegerWhereIsUnsigned, CoreIntegerWhereIsNotByte {
     
-    @usableFromInline typealias Stdlib = Swift.UInt
+    public typealias Stdlib = Swift.UInt
     
-    public typealias BitPattern = Swift.UInt.BitPattern
+    public typealias BitPattern = Stdlib.BitPattern
     
     public typealias Element = Self
     
@@ -285,16 +304,20 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ source: Swift.UInt) {
+    @inlinable public init(_ source: Stdlib) {
         self.base = source
     }
     
-    @inlinable public init(raw source: Swift.UInt.BitPattern) {
+    @inlinable public init(raw source: BitPattern) {
         self.base = source
     }
     
-    @inlinable public init(integerLiteral source: Swift.UInt) {
+    @inlinable public init(integerLiteral source: Stdlib) {
         self.base = source
+    }
+    
+    @inlinable public consuming func stdlib() -> Stdlib {
+        self.base
     }
 }
 
@@ -305,9 +328,9 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
 /// An 8-bit unsigned binary integer.
 @frozen public struct U8: CoreIntegerWhereIsUnsigned, CoreIntegerWhereIsNotToken {
     
-    @usableFromInline typealias Stdlib = Swift.UInt8
+    public typealias Stdlib = Swift.UInt8
     
-    public typealias BitPattern = Swift.UInt8.BitPattern
+    public typealias BitPattern = Stdlib.BitPattern
     
     public typealias Element = Self
 
@@ -325,16 +348,20 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ source: Swift.UInt8) {
+    @inlinable public init(_ source: Stdlib) {
         self.base = source
     }
     
-    @inlinable public init(raw source: Swift.UInt8.BitPattern) {
+    @inlinable public init(raw source: BitPattern) {
         self.base = source
     }
     
-    @inlinable public init(integerLiteral source: Swift.UInt8) {
+    @inlinable public init(integerLiteral source: Stdlib) {
         self.base = source
+    }
+    
+    @inlinable public consuming func stdlib() -> Stdlib {
+        self.base
     }
 }
 
@@ -345,9 +372,9 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
 /// A 16-bit unsigned binary integer.
 @frozen public struct U16: CoreIntegerWhereIsUnsigned, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
     
-    @usableFromInline typealias Stdlib = Swift.UInt16
+    public typealias Stdlib = Swift.UInt16
     
-    public typealias BitPattern = Swift.UInt16.BitPattern
+    public typealias BitPattern = Stdlib.BitPattern
     
     public typealias Element = Self
             
@@ -365,16 +392,20 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ source: Swift.UInt16) {
+    @inlinable public init(_ source: Stdlib) {
         self.base = source
     }
     
-    @inlinable public init(raw source: Swift.UInt16.BitPattern) {
+    @inlinable public init(raw source: BitPattern) {
         self.base = source
     }
     
-    @inlinable public init(integerLiteral source: Swift.UInt16) {
+    @inlinable public init(integerLiteral source: Stdlib) {
         self.base = source
+    }
+    
+    @inlinable public consuming func stdlib() -> Stdlib {
+        self.base
     }
 }
 
@@ -385,9 +416,9 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
 /// A 32-bit unsigned binary integer.
 @frozen public struct U32: CoreIntegerWhereIsUnsigned, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
     
-    @usableFromInline typealias Stdlib = Swift.UInt32
+    public typealias Stdlib = Swift.UInt32
     
-    public typealias BitPattern = Swift.UInt32.BitPattern
+    public typealias BitPattern = Stdlib.BitPattern
     
     public typealias Element = Self
             
@@ -405,16 +436,20 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ source: Swift.UInt32) {
+    @inlinable public init(_ source: Stdlib) {
         self.base = source
     }
     
-    @inlinable public init(raw source: Swift.UInt32.BitPattern) {
+    @inlinable public init(raw source: BitPattern) {
         self.base = source
     }
     
-    @inlinable public init(integerLiteral source: Swift.UInt32) {
+    @inlinable public init(integerLiteral source: Stdlib) {
         self.base = source
+    }
+    
+    @inlinable public consuming func stdlib() -> Stdlib {
+        self.base
     }
 }
 
@@ -425,9 +460,9 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
 /// A 64-bit unsigned binary integer.
 @frozen public struct U64: CoreIntegerWhereIsUnsigned, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
     
-    @usableFromInline typealias Stdlib = Swift.UInt64
+    public typealias Stdlib = Swift.UInt64
     
-    public typealias BitPattern = Swift.UInt64.BitPattern
+    public typealias BitPattern = Stdlib.BitPattern
     
     public typealias Element = Self
             
@@ -445,15 +480,19 @@ Magnitude: CoreInteger, Magnitude.Stdlib == Stdlib.Magnitude {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ source: Swift.UInt64) {
+    @inlinable public init(_ source: Stdlib) {
         self.base = source
     }
     
-    @inlinable public init(raw source: Swift.UInt64.BitPattern) {
+    @inlinable public init(raw source: BitPattern) {
         self.base = source
     }
     
-    @inlinable public init(integerLiteral source: Swift.UInt64) {
+    @inlinable public init(integerLiteral source: Stdlib) {
         self.base = source
+    }
+    
+    @inlinable public consuming func stdlib() -> Stdlib {
+        self.base
     }
 }
