@@ -14,7 +14,7 @@
 /// A type with a standard-library-compatible representation.
 public protocol Interoperable {
     
-    /// The standard-library-compatible representation of `Self`.
+    /// A standard-library-compatible representation of `Self`.
     associatedtype Stdlib
     
     //=------------------------------------------------------------------------=
@@ -24,6 +24,6 @@ public protocol Interoperable {
     /// Reinterprets the given `source` as this type.
     @inlinable init(_ source: consuming Stdlib)
     
-    /// Reiinterprets `self` as a standard-library-compatible type.
+    /// Reinterprets `self` as a standard-library-compatible type.
     @inlinable consuming func stdlib() -> Stdlib
 }

@@ -15,11 +15,9 @@ import CoreKit
 
 /// A deterministic source of random data.
 ///
-/// - Important: This model is most suitable for fuzzing.
-///
 /// ### Algorithm
 ///
-/// It uses `SplitMix64` because it's simple and light-weight.
+/// It adapts `SplitMix64` because it's simple and light-weight.
 ///
 /// - Important: It may use a different algorithm in the future.
 ///

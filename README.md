@@ -29,6 +29,7 @@
   - [Generic logic gates with BitOperable](#corekit-bitwise-logic)
   - [Three-way comparisons return Signum](#corekit-signum)
   - [Division by multiplication with Divider\<Value\>](#corekit-divider)
+  - [Call standard library code with Interoperable](#corekit-interoperable)
 * [DoubleIntKit](#doubleintkit)
   - [A big systems integer](#doubleintkit-systems-integer)
   - [A non-recursive model](#doubleintkit-non-recursive-model)
@@ -475,6 +476,21 @@ precondition(typical == magical) // quotient and remainder
 You know how the compiler sometimes replaces division with multiplication? 
 Well, now you can be a wizard too! Divider\<Value\> finds same-size magic
 constants and replaces division with: multiplication, addition, and shifts.
+
+<a name="corekit-interoperable"/>
+
+#### Call standard library code with Interoperable
+
+Types conforming to Interoperable have a standard-library-compatible representation, 
+which is determined by their associated Stdlib type. I32 yields Int32 and U64 yields UInt64,
+for example. Interoperable requires bidirectional consuming conversions: *init(\_:)* 
+and *stdlib()*. It then derives mutating read and modify accessors available through 
+*stdlib*. You may use these operations to call standard library code, as seen below:
+
+```swift
+var randomness = RandomInt() // from RandomIntKit
+let random = Bool.random(using: &randomness.stdlib)
+```
 
 <a name="doubleintkit"/>
 

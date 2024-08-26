@@ -17,7 +17,7 @@ extension Interoperable {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Yields its `stdlib` representation.
+    /// Yields a standard-library-compatible representation.
     ///
     /// - Note: Use the `stdlib()` method to transfer ownership.
     ///
