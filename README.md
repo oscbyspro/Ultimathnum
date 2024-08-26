@@ -481,8 +481,8 @@ constants and replaces division with: multiplication, addition, and shifts.
 
 #### Call standard library code with Interoperable
 
-Types conforming to Interoperable have a standard-library-compatible representation, 
-which is determined by their associated Stdlib type. I32 yields Int32 and U64 yields UInt64,
+Types conforming to Interoperable have a standard-library-compatible representation
+determined by their associated Stdlib type. I32 yields Int32, and U64 yields UInt64,
 for example. Interoperable requires bidirectional consuming conversions: *init(\_:)* 
 and *stdlib()*. It then derives mutating read and modify accessors available through 
 *stdlib*. You may use these operations to call standard library code, as seen below:
