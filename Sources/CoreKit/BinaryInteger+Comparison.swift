@@ -94,28 +94,28 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func ==<Other>(lhs: Self, rhs: Other) -> Bool where Other: BinaryInteger {
-        lhs.compared(to: rhs) == Signum.same
+    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing some BinaryInteger) -> Bool {
+        Namespace.compare(lhs, to: rhs, using: Namespace.IsSame())
     }
     
-    @inlinable public static func !=<Other>(lhs: Self, rhs: Other) -> Bool where Other: BinaryInteger {
-        lhs.compared(to: rhs) != Signum.same
+    @inlinable public static func !=(lhs: borrowing Self, rhs: borrowing some BinaryInteger) -> Bool {
+        !(lhs == rhs)
     }
     
-    @inlinable public static func < <Other>(lhs: Self, rhs: Other) -> Bool where Other: BinaryInteger {
-        lhs.compared(to: rhs) == Signum.less
+    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing some BinaryInteger) -> Bool {
+        Namespace.compare(lhs, to: rhs, using: Namespace.IsLess())
     }
     
-    @inlinable public static func >=<Other>(lhs: Self, rhs: Other) -> Bool where Other: BinaryInteger {
-        lhs.compared(to: rhs) != Signum.less
+    @inlinable public static func >=(lhs: borrowing Self, rhs: borrowing some BinaryInteger) -> Bool {
+        !(lhs <  rhs)
     }
     
-    @inlinable public static func > <Other>(lhs: Self, rhs: Other) -> Bool where Other: BinaryInteger {
-        lhs.compared(to: rhs) == Signum.more
+    @inlinable public static func > (lhs: borrowing Self, rhs: borrowing some BinaryInteger) -> Bool {
+        ((rhs <  lhs))
     }
     
-    @inlinable public static func <=<Other>(lhs: Self, rhs: Other) -> Bool where Other: BinaryInteger {
-        lhs.compared(to: rhs) != Signum.more
+    @inlinable public static func <=(lhs: borrowing Self, rhs: borrowing some BinaryInteger) -> Bool {
+        !(lhs >  rhs)
     }
     
     //=------------------------------------------------------------------------=
@@ -123,47 +123,78 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     /// Performs a three-way comparison of `self` versus `other`.
-    @inlinable public func compared<Other>(to other: Other) -> Signum where Other: BinaryInteger {
-        if !Self.size.isInfinite, !Other.size.isInfinite {
-            if  Self.isSigned == Other.isSigned {
-                if  Self.size < Other.size {
-                    return Other(load: self).compared(to: other)
+    @inlinable public borrowing func compared(to other: borrowing some BinaryInteger) -> Signum {
+        Namespace.compare(self, to: other, using: Namespace.Compare())
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Generic x Code Block
+//=----------------------------------------------------------------------------=
+
+extension Namespace {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    /// ### Development
+    ///
+    /// Each specialization can be reduced to `1` or `2` of its many branches.
+    ///
+    @inline(__always) @inlinable internal static func compare<LHS, RHS, Algorithm>(
+        _  lhs: /*borrowing*/ LHS,
+        to rhs: /*borrowing*/ RHS,
+        using comparator: Algorithm
+    ) -> Algorithm.Result where LHS: BinaryInteger, RHS: BinaryInteger, Algorithm: Comparator {
+        
+        if !LHS.isArbitrary, !RHS.isArbitrary {
+            switch LHS.mode {
+            case   RHS.mode:
+                
+                if  LHS.size < RHS.size {
+                    comparator.compare(RHS(load: lhs), to: rhs)
+                    
                 }   else {
-                    return self.compared(to: Self(load: other))
+                    comparator.compare(lhs, to: LHS(load: rhs))
                 }
                 
-            }   else if Self.isSigned {
-                if  Self.size > Other.size {
-                    return self.compared(to: Self(load: other))
+            case Signedness.signed:
+                
+                if  LHS.size > RHS.size {
+                    comparator.compare(lhs, to: LHS(load: rhs))
+                    
+                }   else if lhs.isNegative {
+                    comparator.resolve(Signum.less)
+                    
                 }   else {
-                    return self.isNegative ? Signum.less : Other(load: self).compared(to: other)
+                    comparator.compare(RHS(load: lhs), to: rhs)
                 }
                 
-            }   else /* if Other.isSigned */ {
-                if  Self.size < Other.size {
-                    return Other(load: self).compared(to: other)
+            case Signedness.unsigned:
+                
+                if  LHS.size < RHS.size {
+                    comparator.compare(RHS(load: lhs), to: rhs)
+                    
+                }   else if rhs.isNegative {
+                    comparator.resolve(Signum.more)
+                    
                 }   else {
-                    return other.isNegative ? Signum.more : self.compared(to: Self(load: other))
+                    comparator.compare(lhs, to: LHS(load: rhs))
                 }
             }
             
-        }   else if Self.Element.Magnitude.size <= Other.Element.Magnitude.size {
-            return self.withUnsafeBinaryIntegerElements { lhs in
-                (other).withUnsafeBinaryIntegerElements(as: Self.Element.Magnitude.self) { rhs in
-                    DataInt.compare(
-                        lhs: lhs, mode: Self .mode,
-                        rhs: rhs, mode: Other.mode
-                    )
+        }   else if LHS.Element.Magnitude.size <= RHS.Element.Magnitude.size {
+            lhs.withUnsafeBinaryIntegerElements { lhs in
+                rhs.withUnsafeBinaryIntegerElements(as: LHS.Element.Magnitude.self) { rhs in
+                    comparator.resolve(DataInt.compare(lhs: lhs, mode: LHS.mode, rhs: rhs, mode: RHS.mode))
                 }
             }
             
         }   else {
-            return self.withUnsafeBinaryIntegerElements(as: Other.Element.Magnitude.self) { lhs in
-                (other).withUnsafeBinaryIntegerElements { rhs in
-                    DataInt.compare(
-                        lhs: lhs, mode: Self .mode,
-                        rhs: rhs, mode: Other.mode
-                    )
+            lhs.withUnsafeBinaryIntegerElements(as: RHS.Element.Magnitude.self) { lhs in
+                rhs.withUnsafeBinaryIntegerElements { rhs in
+                    comparator.resolve(DataInt.compare(lhs: lhs, mode: LHS.mode, rhs: rhs, mode: RHS.mode))
                 }
             }
         }
