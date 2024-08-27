@@ -84,6 +84,20 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "RandomIntKit"
+               BuildableName = "RandomIntKit"
+               BlueprintName = "RandomIntKit"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "StdlibIntKit"
                BuildableName = "StdlibIntKit"
                BlueprintName = "StdlibIntKit"
