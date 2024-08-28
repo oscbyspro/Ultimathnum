@@ -57,6 +57,9 @@ final class SignTests: XCTestCase {
         Test().same(T(raw: FloatingPointSign.plus ), T.plus )
         Test().same(T(raw: FloatingPointSign.minus), T.minus)
         
+        Test().same(T.plus .stdlib(), FloatingPointSign.plus )
+        Test().same(T.minus.stdlib(), FloatingPointSign.minus)
+        
         Test().same(FloatingPointSign(T.plus ), FloatingPointSign.plus )
         Test().same(FloatingPointSign(T.minus), FloatingPointSign.minus)
         

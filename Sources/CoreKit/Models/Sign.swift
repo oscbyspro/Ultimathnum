@@ -11,7 +11,7 @@
 // MARK: * Sign
 //*============================================================================*
 
-@frozen public enum Sign: BitCastable, BitOperable, Hashable, Sendable {
+@frozen public enum Sign: BitCastable, BitOperable, Hashable, Interoperable, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -34,6 +34,10 @@
     
     @inlinable public init(_ source: FloatingPointSign) {
         self.init(raw: source)
+    }
+    
+    @inlinable public func stdlib() -> FloatingPointSign {
+        FloatingPointSign(self)
     }
     
     //=------------------------------------------------------------------------=
