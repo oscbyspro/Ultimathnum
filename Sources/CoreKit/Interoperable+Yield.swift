@@ -17,7 +17,7 @@ extension Interoperable {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Yields a standard-library-compatible representation.
+    /// Yields a standard-library-compatible representation of `self`.
     ///
     /// - Note: Use the `stdlib()` method to transfer ownership.
     ///

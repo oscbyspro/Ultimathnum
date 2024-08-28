@@ -61,7 +61,7 @@ import CoreKit
     // MARK: * Stdlib
     //*========================================================================*
     
-    @frozen public struct Stdlib: Swift.RandomNumberGenerator {
+    @frozen public struct Stdlib: Equatable, RandomNumberGenerator, Sendable {
         
         //=--------------------------------------------------------------------=
         // MARK: State

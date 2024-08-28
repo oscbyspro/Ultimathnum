@@ -35,11 +35,15 @@ final class FuzzerIntTests: XCTestCase {
             var stdlibY = randomness.stdlib()
             
             Test(line: line).same(randomness, copy)
+            Test(line: line).same(stdlibX, stdlibY)
+            
             Test(line: line).same(randomness .next(),       (expectation), "normal")
             Test(line: line).same(copy.stdlib.next(), UInt64(expectation), "stdlib modify")
             Test(line: line).same(((stdlibX)).next(), UInt64(expectation), "stdlib mutating read")
             Test(line: line).same(((stdlibY)).next(), UInt64(expectation), "stdlib consuming get")
+            
             Test(line: line).same(randomness, copy)
+            Test(line: line).same(stdlibX, stdlibY)
         }
         
         randomness = .init(seed:  0)
@@ -73,6 +77,6 @@ final class FuzzerIntTests: XCTestCase {
             unique.insert(randomness.next())
         }
         
-        Test().same(unique.count, 0000000000000000000010000)
+        Test().same(unique.count, 10000)
     }
 }

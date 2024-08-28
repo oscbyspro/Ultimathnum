@@ -22,7 +22,7 @@ import CoreKit
 @frozen public struct RandomInt: Interoperable, Randomness, Sendable {
     
     public typealias Stdlib = Swift.SystemRandomNumberGenerator
-            
+    
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=

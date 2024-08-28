@@ -33,10 +33,6 @@ extension BinaryInteger {
         coefficient: /*borrowing*/ Nonzero<Self>
     ) -> Fallible<Self> {
         
-        Swift.assert(!exponent.value.isNegative)
-        Swift.assert(!exponent.value.isInfinite)
-        Swift.assert(!coefficient.value.isZero)
-        
         var power = Fallible((copy coefficient).value)
         var multiplier = Fallible(copy base)
         var exponent = exponent.value
@@ -134,7 +130,7 @@ extension BinaryInteger {
     /// - Note: The default `coefficient` is `1`.
     ///
     @inlinable public borrowing func power(
-        _ exponent:  borrowing Fallible<some UnsignedInteger>,
+        _  exponent: borrowing Fallible<some UnsignedInteger>,
         coefficient: borrowing Nonzero<Self>
     ) -> Fallible<Self> {
         self.power(exponent.value, coefficient: coefficient).veto(exponent.error)
