@@ -13,11 +13,11 @@ import InfiniIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Exponentiation
+// MARK: * Binary Integer x Exponentiation
 //*============================================================================*
 
 /// - Important: Please disable code coverage because it is always on by default.
-final class ExponentiationBenchmarks: XCTestCase {
+final class BinaryIntegerBenchmarksOnExponentiation: XCTestCase {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
