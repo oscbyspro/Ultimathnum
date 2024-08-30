@@ -31,13 +31,19 @@ extension BinaryInteger {
     /// I8(-4).isqrt() // nil
     /// ```
     ///
-    /// - Note: `Natural<T>` returns nonoptional results.
+    /// - Note: `Natural<T>` guarantees nonoptional results.
     ///
     /// ```swift
     /// UXL(repeating: 1).isqrt() // nil
     /// ```
     ///
     /// - Note: Infinite square roots are `nil` on finite machines.
+    ///
+    /// ### Algorithm
+    ///
+    /// - Seealso: https://en.wikipedia.org/wiki/newton's_method
+    ///
+    /// - Seealso: https://en.wikipedia.org/wiki/integer_square_root
     ///
     @inlinable public func isqrt() -> Optional<Self> {
         Natural(exactly: self)?.isqrt()
@@ -49,10 +55,6 @@ extension BinaryInteger {
 //=----------------------------------------------------------------------------=
 
 extension Natural {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
     
     /// Returns the integer square root of `self`.
     ///
@@ -68,7 +70,7 @@ extension Natural {
     /// I8(-4).isqrt() // nil
     /// ```
     ///
-    /// - Note: `Natural<T>` returns nonoptional results.
+    /// - Note: `Natural<T>` guarantees nonoptional results.
     ///
     /// ```swift
     /// UXL(repeating: 1).isqrt() // nil
@@ -76,47 +78,24 @@ extension Natural {
     ///
     /// - Note: Infinite square roots are `nil` on finite machines.
     ///
-    @inlinable public func isqrt() -> Value {
-        guard let instance = Nonzero(exactly: self.value) else {
-            return Value.zero
-        }
-        
-        let magnitude = Value.Magnitude.isqrt(natural: Nonzero(raw: instance))
-        return Value.init(raw: magnitude.value)
-    }
-}
-
-//*============================================================================*
-// MARK: * Binary Integer x Geometry x Unsigned
-//*============================================================================*
-
-extension UnsignedInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    /// Returns the integer square root.
-    ///
-    /// - Requires: `instance ∈ ℕ `
-    /// - Requires: `instance ≠ 0 `
-    ///
     /// ### Algorithm
     ///
     /// - Seealso: https://en.wikipedia.org/wiki/newton's_method
     ///
     /// - Seealso: https://en.wikipedia.org/wiki/integer_square_root
     ///
-    @inlinable internal static func isqrt(
-        natural instance: Nonzero<Self>
-    )   -> Nonzero<Self> {
+    @inlinable public func isqrt() -> Value {
+        guard !Value.isSigned else {
+            return Value(raw: self.magnitude().isqrt())
+        }
         
-        Swift.assert(!instance.value.isInfinite)
-        Swift.assert(!instance.value.isNegative)
+        guard let instance = Nonzero(exactly: self.magnitude().value) else {
+            return Value.zero
+        }
         
-        var guess: Nonzero<Self> // must be overestimated initially
-        let offset = UX(raw: instance.ilog2()).down(Shift.one) &+ 1
-        var revision = Self.lsb.up(Shift(unchecked: Count(raw: offset)))
+        var guess: Nonzero<Value.Magnitude> // initial guess must be overestimated
+        let offset = UX(raw: instance.ilog2()).down(Shift.one).incremented().unchecked()
+        var revision = Value.Magnitude.lsb.up(Shift(unchecked: Count(raw: offset)))
         
         repeat {
             
@@ -125,13 +104,13 @@ extension UnsignedInteger {
             revision = (consume revision).plus(guess.value).unchecked()
             revision = (consume revision).down(Shift.one)
             
-        }   while revision < guess.value
-        return ((((((consume guess))))))
+        } while revision < guess.value
+        return Value(raw:  guess.value)
     }
 }
 
 //*============================================================================*
-// MARK: * Binary Integer x Geometry x Unsigned x Systems
+// MARK: * Binary Integer x Geometry x Natural
 //*============================================================================*
 
 extension BinaryInteger where Self: UnsignedInteger & SystemsInteger {
@@ -154,7 +133,7 @@ extension BinaryInteger where Self: UnsignedInteger & SystemsInteger {
     /// I8(-4).isqrt() // nil
     /// ```
     ///
-    /// - Note: `Natural<T>` returns nonoptional results.
+    /// - Note: `Natural<T>` guarantees nonoptional results.
     ///
     /// ```swift
     /// UXL(repeating: 1).isqrt() // nil
@@ -162,8 +141,14 @@ extension BinaryInteger where Self: UnsignedInteger & SystemsInteger {
     ///
     /// - Note: Infinite square roots are `nil` on finite machines.
     ///
+    /// ### Algorithm
+    ///
+    /// - Seealso: https://en.wikipedia.org/wiki/newton's_method
+    ///
+    /// - Seealso: https://en.wikipedia.org/wiki/integer_square_root
+    ///
     @inlinable public func isqrt() -> Self {
-        Nonzero(exactly: self)?.isqrt() ?? Self.zero
+        Natural(unchecked: self).isqrt()
     }
 }
 
@@ -191,52 +176,21 @@ extension Fallible where Value: UnsignedInteger & SystemsInteger {
     /// I8(-4).isqrt() // nil
     /// ```
     ///
-    /// - Note: `Natural<T>` returns nonoptional results.
+    /// - Note: `Natural<T>` guarantees nonoptional results.
     ///
     /// ```swift
     /// UXL(repeating: 1).isqrt() // nil
     /// ```
     ///
     /// - Note: Infinite square roots are `nil` on finite machines.
+    ///
+    /// ### Algorithm
+    ///
+    /// - Seealso: https://en.wikipedia.org/wiki/newton's_method
+    ///
+    /// - Seealso: https://en.wikipedia.org/wiki/integer_square_root
     ///
     @inlinable public func isqrt() -> Self {
         self.value.isqrt().veto(self.error)
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Guarantees
-//=----------------------------------------------------------------------------=
-
-extension Nonzero where Value: UnsignedInteger & SystemsInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    /// Returns the integer square root of `self`.
-    ///
-    /// ```swift
-    /// I8( 4).isqrt() // 2
-    /// I8( 3).isqrt() // 1
-    /// I8( 2).isqrt() // 1
-    /// I8( 1).isqrt() // 1
-    /// I8( 0).isqrt() // 0
-    /// I8(-1).isqrt() // nil
-    /// I8(-2).isqrt() // nil
-    /// I8(-3).isqrt() // nil
-    /// I8(-4).isqrt() // nil
-    /// ```
-    ///
-    /// - Note: `Natural<T>` returns nonoptional results.
-    ///
-    /// ```swift
-    /// UXL(repeating: 1).isqrt() // nil
-    /// ```
-    ///
-    /// - Note: Infinite square roots are `nil` on finite machines.
-    ///
-    @inlinable public func isqrt() -> Value {
-        Value.isqrt(natural: self).value
     }
 }
