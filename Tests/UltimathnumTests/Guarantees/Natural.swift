@@ -23,33 +23,29 @@ final class NaturalTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testForEachByteEntropyExtension() {
-        func whereTheValueIs<Value>(_ type: Value.Type) where Value: BinaryInteger {
-            typealias T = Natural<Value>
-            typealias S = Natural<Value.Signitude>
-            typealias M = Natural<Value.Magnitude>
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            typealias G = Natural<T>
             
-            for x in (I8.min...I8.max).lazy.map(Value.init(load:)) {
-                if !x.isInfinite, !x.isNegative {
-                    Test().same(T(x).magnitude().value, x.magnitude())
-                    Test().same(T(x).value,  x)
-                    Test().same(T(unchecked: x) .value, x)
-                    Test().same(T(exactly:   x)!.value, x)
-                    Test().success(try T(x, prune: Bad.code123).value, x)
-                }   else {
-                    Test().none(T(exactly: x))
-                    Test().failure(try T(x, prune: Bad.code123).value, Bad.code123)
+            for pattern in I8.min...I8.max {
+                let value = T(load: pattern)
+                
+                Test().same(G.predicate(value), !value.isInfinite && !value.isNegative)
+                
+                if  let guarantee = G(exactly: value) {
+                    Test().same(guarantee.value, value)
+                    Test().same(guarantee.magnitude().value, value.magnitude())
                 }
             }
         }
         
         for type in coreSystemsIntegers {
-            whereTheValueIs(type)
+            whereIs(type)
         }
         
-        whereTheValueIs(DoubleInt<I8>.self)
-        whereTheValueIs(DoubleInt<U8>.self)
+        whereIs(DoubleInt<I8>.self)
+        whereIs(DoubleInt<U8>.self)
         
-        whereTheValueIs(InfiniInt<I8>.self)
-        whereTheValueIs(InfiniInt<U8>.self)
+        whereIs(InfiniInt<I8>.self)
+        whereIs(InfiniInt<U8>.self)
     }
 }

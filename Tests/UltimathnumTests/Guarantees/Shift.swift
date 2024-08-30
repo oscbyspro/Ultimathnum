@@ -22,7 +22,7 @@ final class ShiftTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testStaticInstances() {
+    func testInstances() {
         func whereTheValueIs<Value>(_ type: Value.Type) where Value: UnsignedInteger {
             typealias T = Shift<Value>
             
@@ -42,80 +42,42 @@ final class ShiftTests: XCTestCase {
         whereTheValueIs(InfiniInt<UX>.self)
     }
     
-    func testInitExactly() {
-        func whereTheValueIs<Value>(_ type: Value.Type) where Value: UnsignedInteger {
-            typealias T = Shift<Value>
+    func testPredicate() {
+        func whereIs<T>(_ type: T.Type) where T: UnsignedInteger {
+            typealias G = Shift<T>
             
             always: do {
-                Test().same(T(exactly: Count(raw:  0 as IX))?.value, Count(0))
-                Test().same(T(exactly: Count(raw:  1 as IX))?.value, Count(1))
-                Test().same(T(exactly: Count(raw:  2 as IX))?.value, Count(2))
+                Test().yay(G.predicate(Count(raw:  0 as IX)))
+                Test().yay(G.predicate(Count(raw:  1 as IX)))
+                Test().yay(G.predicate(Count(raw:  2 as IX)))
             }
             
-            if !Value.size.isInfinite {
-                Test().none(T(exactly: Count(raw: ~2 as IX)))
-                Test().none(T(exactly: Count(raw: ~1 as IX)))
-                Test().none(T(exactly: Count(raw: ~0 as IX)))
+            if !T.size.isInfinite {
+                Test().nay(G.predicate(Count(raw: ~2 as IX)))
+                Test().nay(G.predicate(Count(raw: ~1 as IX)))
+                Test().nay(G.predicate(Count(raw: ~0 as IX)))
             }   else {
-                Test().same(T(exactly: Count(raw: ~2 as IX))?.value, Count(raw: ~2 as IX))
-                Test().same(T(exactly: Count(raw: ~1 as IX))?.value, Count(raw: ~1 as IX))
-                Test().none(T(exactly: Count(raw: ~0 as IX)))
+                Test().yay(G.predicate(Count(raw: ~2 as IX)))
+                Test().yay(G.predicate(Count(raw: ~1 as IX)))
+                Test().nay(G.predicate(Count(raw: ~0 as IX)))
             }
             
-            if  let size: IX = Value.size.natural().optional() {
-                Test().same(T(exactly: Count(size - 1))?.value, Count(size - 1))
-                Test().none(T(exactly: Count(size    )))
-                Test().none(T(exactly: Count(size + 1)))
+            if  let size: IX = T.size.natural().optional() {
+                Test().yay(G.predicate(Count(size - 1)))
+                Test().nay(G.predicate(Count(size    )))
+                Test().nay(G.predicate(Count(size + 1)))
             }
         }
         
         for type in coreSystemsIntegersWhereIsUnsigned {
-            whereTheValueIs(type)
+            whereIs(type)
         }
         
-        whereTheValueIs(DoubleInt<U8>.self)
-        whereTheValueIs(DoubleInt<UX>.self)
+        whereIs(DoubleInt<U8>.self)
+        whereIs(DoubleInt<UX>.self)
         
-        whereTheValueIs(InfiniInt<U8>.self)
-        whereTheValueIs(InfiniInt<UX>.self)
-    }
-    
-    func testInitPrune() {
-        func whereTheValueIs<Value>(_ type: Value.Type) where Value: UnsignedInteger {
-            typealias T = Shift<Value>
-            
-            always: do {
-                Test().success(try T(Count(raw:  0 as IX), prune: Bad.code123).value, Count(0 as IX))
-                Test().success(try T(Count(raw:  1 as IX), prune: Bad.code456).value, Count(1 as IX))
-                Test().success(try T(Count(raw:  2 as IX), prune: Bad.code789).value, Count(2 as IX))
-            }
-            
-            if !Value.size.isInfinite {
-                Test().failure(try T(Count(raw: ~2 as IX), prune: Bad.code123), Bad.code123)
-                Test().failure(try T(Count(raw: ~1 as IX), prune: Bad.code456), Bad.code456)
-                Test().failure(try T(Count(raw: ~0 as IX), prune: Bad.code789), Bad.code789)
-            }   else {
-                Test().success(try T(Count(raw: ~2 as IX), prune: Bad.code123).value, Count(raw: ~2 as IX))
-                Test().success(try T(Count(raw: ~1 as IX), prune: Bad.code456).value, Count(raw: ~1 as IX))
-                Test().failure(try T(Count(raw: ~0 as IX), prune: Bad.code789), Bad.code789)
-            }
-            
-            if  let size: IX = Value.size.natural().optional() {
-                Test().success(try T(Count(size - 1), prune: Bad.code123).value, Count(size - 1))
-                Test().failure(try T(Count(size    ), prune: Bad.code456), Bad.code456)
-                Test().failure(try T(Count(size + 1), prune: Bad.code789), Bad.code789)
-            }
-        }
-        
-        for type in coreSystemsIntegersWhereIsUnsigned {
-            whereTheValueIs(type)
-        }
-        
-        whereTheValueIs(DoubleInt<U8>.self)
-        whereTheValueIs(DoubleInt<UX>.self)
-        
-        whereTheValueIs(InfiniInt<U8>.self)
-        whereTheValueIs(InfiniInt<UX>.self)
+        whereIs(InfiniInt<U8>.self)
+        whereIs(InfiniInt<UX>.self)
     }
     
     //=------------------------------------------------------------------------=

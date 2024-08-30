@@ -8,10 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Finite
+// MARK: * Guarantee
 //*============================================================================*
 
-/// A finite value.
+/// A trusted input type.
 ///
 /// ### Trusted Input
 ///
@@ -25,40 +25,27 @@
 /// init(unsafe:)    // error: %%%%%%
 /// ```
 ///
-@frozen public struct Finite<Value>: Equatable, Guarantee where Value: BinaryInteger {
-        
+public protocol Guarantee<Value> {
+    
+    associatedtype Value
+    
     //=------------------------------------------------------------------------=
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func predicate(_ value: /* borrowing */ Value) -> Bool {
-        !value.isInfinite // await borrowing fix
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: State
-    //=------------------------------------------------------------------------=
-    
-    public let value: Value
+    /// Indicates whether the given `value` satisfies its `predicate`.
+    @inlinable static func predicate(_ value: borrowing Value) -> Bool
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(unsafe value: consuming Value) {
-        self.value = value
-    }
+    /// Creates a new instance without validation.
+    ///
+    /// - Requires: The given `value` must satisfy the `predicate` of this type.
+    ///
+    @inlinable init(unsafe value: consuming Value)
     
-    @inlinable public consuming func payload() -> Value {
-        self.value
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-        
-    /// The `magnitude` of `self`.
-    @inlinable public consuming func magnitude() -> Finite<Value.Magnitude> {
-        Finite<Value.Magnitude>(unchecked: self.value.magnitude())
-    }
+    /// Consumes `self` and returns its `value`.
+    @inlinable consuming func payload() ->  Value
 }

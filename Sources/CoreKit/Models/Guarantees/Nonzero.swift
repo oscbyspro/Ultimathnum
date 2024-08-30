@@ -18,26 +18,21 @@
 /// This is a trusted input type. Validate inputs with these methods:
 ///
 /// ```swift
-/// init(_:)         // error: traps
 /// init(_:prune:)   // error: throws
 /// init(exactly:)   // error: nil
-/// init(unchecked:) // error: unchecked
+/// init(_:)         // error: precondition
+/// init(unchecked:) // error: assert
+/// init(unsafe:)    // error: %%%%%%
 /// ```
 ///
-@frozen public struct Nonzero<Value>: BitCastable, Equatable where Value: BinaryInteger {
-    
-    public typealias Value = Value
-    
+@frozen public struct Nonzero<Value>: BitCastable, Equatable, Guarantee where Value: BinaryInteger {
+        
     public typealias BitPattern = Nonzero<Value.Magnitude>
     
     //=------------------------------------------------------------------------=
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    /// Indicates whether the given `value` can be trusted.
-    ///
-    /// - Returns: `value ≠ 0`
-    ///
     @inlinable public static func predicate(_ value: /* borrowing */ Value) -> Bool {
         !value.isZero // await borrowing fix
     }
@@ -52,43 +47,12 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Creates a new instance without validation in release mode.
-    ///
-    /// - Requires: `value ≠ 0`
-    ///
-    /// - Warning: Only use this method when you know the `value` is valid.
-    ///
-    @_disfavoredOverload // collection.map(Self.init)
-    @inlinable public init(unchecked value: consuming Value) {
-        Swift.assert(Self.predicate(value), String.brokenInvariant())
+    @inlinable public init(unsafe value: consuming Value) {
         self.value = value
     }
     
-    /// Creates a new instance by trapping on failure.
-    ///
-    /// - Requires: `value ≠ 0`
-    ///
-    @inlinable public init(_ value: consuming Value) {
-        precondition(Self.predicate(value), String.brokenInvariant())
-        self.value = value
-    }
-    
-    /// Creates a new instance by returning `nil` on failure.
-    ///
-    /// - Requires: `value ≠ 0`
-    ///
-    @inlinable public init?(exactly value: consuming Value) {
-        guard Self.predicate(value) else { return nil }
-        self.value = value
-    }
-    
-    /// Creates a new instance by throwing the `error()` on failure.
-    ///
-    /// - Requires: `value ≠ 0`
-    ///
-    @inlinable public init<Error>(_ value: consuming Value, prune error: @autoclosure () -> Error) throws where Error: Swift.Error {
-        guard Self.predicate(value) else { throw error() }
-        self.value = value
+    @inlinable public consuming func payload() -> Value {
+        self.value
     }
     
     //=------------------------------------------------------------------------=

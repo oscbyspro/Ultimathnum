@@ -236,12 +236,12 @@ compose better than others. A trusted input delegates precondition checks to the
 so that complex types can be built with less overhead. The type system will ask you to accept or 
 reject such inputs. Your validation strategy will either make your code safer or easier to audit.
 
-
 ```swift
-init(_:)         // error: traps
 init(_:prune:)   // error: throws
 init(exactly:)   // error: nil
-init(unchecked:) // error: unchecked
+init(_:)         // error: precondition
+init(unchecked:) // error: assert
+init(unsafe:)    // error: %%%%%%
 ```
 
 <a name="nomenclature-unchecked-value"/>
