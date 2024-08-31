@@ -73,7 +73,8 @@ extension Natural {
     /// - Seealso: https://en.wikipedia.org/wiki/integer_square_root
     ///
     @inlinable public func isqrt() -> Value {
-        guard !Value.isSigned else {
+        if  Value.isSigned {
+            // we only need an unsigned implementation
             return Value(raw: self.magnitude().isqrt())
         }
         

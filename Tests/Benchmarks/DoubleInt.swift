@@ -27,7 +27,7 @@ final class DoubleIntBenchmarks: XCTestCase {
     /// - `0.88 seconds` with pointer-bit shifts
     /// - `0.30 seconds` with pointer-bit shifts and literals
     ///
-    func testGreatestCommonDivisorOfFibonacciSequencePair369() throws {
+    func testGreatestCommonDivisorOfFibonacciSequencePair369() {
         let fib369 = U256("58472848379039952684853851736901133239741266891456844557261755914039063645794")!
         let fib370 = U256("94611056096305838013295371573764256526437182762229865607320618320601813254535")!
         

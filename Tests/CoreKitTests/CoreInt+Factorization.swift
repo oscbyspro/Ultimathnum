@@ -99,19 +99,14 @@ extension CoreIntTests {
             //=----------------------------------=
             for lhs in values8 {
                 for rhs in values8 {
-                    let euclidean = lhs.euclidean(rhs)
-
-                    if  euclidean == T.euclidean(Finite(lhs), Finite(rhs)) {
-                        success += 1
-                    }
-                    
+                    let euclidean =  lhs.euclidean(rhs)
                     if  euclidean == lhs.magnitude().euclidean(rhs.magnitude()) {
                         success += 1 // proxy validation through unsigned types
                     }
                 }
             }
             
-            Test().same(success, 2 * 65536)
+            Test().same(success, 65536)
         }
         
         whereIs(I8 .self)
@@ -155,11 +150,11 @@ extension CoreIntTests {
                         success += U32(Bit(euclidean >= 1))
                     }
                     
-                    if  bezout  == T.bezout(Finite(lhs), Finite(rhs)) {
+                    if  bezout  == lhs.bezout(rhs) {
                         success += 1
                     }
                     
-                    if  euclidean == T.euclidean(Finite(lhs), Finite(rhs)) {
+                    if  euclidean == lhs.euclidean(rhs) {
                         success += 1
                     }
                 }

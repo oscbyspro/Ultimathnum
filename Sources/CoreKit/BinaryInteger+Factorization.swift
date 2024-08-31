@@ -11,15 +11,72 @@
 // MARK: + Binary Integer x Factorization
 //*============================================================================*
 
+extension BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tranformations
+    //=------------------------------------------------------------------------=
+    
+    /// The greatest common divisor.
+    ///
+    /// - Note: The greatest common divisor of `(0, 0)` is zero.
+    ///
+    /// - Note: `Finite<T>` guarantees nonoptional results.
+    ///
+    /// ### Gretest Common Divisor to Least Common Multiple
+    ///
+    ///     gcd(a, b) * lcm(a, b) == |a| * |b|
+    ///
+    /// - Note: This equation is mathematical and subject to overflow.
+    ///
+    @inlinable public consuming func euclidean(_ other: consuming Self) -> Magnitude? {
+        guard
+        let value = Finite(exactly: self ),
+        let other = Finite(exactly: other)
+        else { return nil }
+        return value.euclidean(other)
+    }
+    
+    /// The greatest common divisor and `2` Bézout coefficients.
+    ///
+    /// - Note: The greatest common divisor of `(0, 0)` is zero.
+    ///
+    /// - Note: The `XGCD` algorithm behaves well for all finite unsigned inputs.
+    ///
+    /// - Note: `Finite<T>` guarantees nonoptional results.
+    ///
+    /// ### Bézout's identity
+    ///
+    /// ```swift
+    /// divisor == lhs * lhsCoefficient + rhs * rhsCoefficient
+    /// ```
+    ///
+    /// - Note: This equation is mathematical and subject to overflow.
+    ///
+    @inlinable public func bezout(_ other: consuming Self) -> Bezout<Magnitude>? {
+        guard
+        let value = Finite(exactly: self ),
+        let other = Finite(exactly: other)
+        else { return nil }
+        return value.bezout(other)
+    }
+}
+
+//*============================================================================*
+// MARK: + Binary Integer x Factorization x Finite
+//*============================================================================*
+
 extension FiniteInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Tranformations
     //=------------------------------------------------------------------------=
     
-    /// Returns the greatest common divisor.
+    /// The greatest common divisor.
     ///
     /// - Note: The greatest common divisor of `(0, 0)` is zero.
+    ///
+    /// - Note: `Finite<T>` guarantees nonoptional results.
     ///
     /// ### Gretest Common Divisor to Least Common Multiple
     ///
@@ -28,14 +85,18 @@ extension FiniteInteger {
     /// - Note: This equation is mathematical and subject to overflow.
     ///
     @inlinable public consuming func euclidean(_ other: consuming Self) -> Magnitude {
-        Self.euclidean(Finite(unchecked: self), Finite(unchecked: other))
+        let value = Finite(unchecked: self )
+        let other = Finite(unchecked: other)
+        return value.euclidean(other)
     }
     
-    /// Returns the greatest common divisor and `2` Bézout coefficients.
+    /// The greatest common divisor and `2` Bézout coefficients.
     ///
     /// - Note: The greatest common divisor of `(0, 0)` is zero.
     ///
     /// - Note: The `XGCD` algorithm behaves well for all finite unsigned inputs.
+    ///
+    /// - Note: `Finite<T>` guarantees nonoptional results.
     ///
     /// ### Bézout's identity
     ///
@@ -45,30 +106,28 @@ extension FiniteInteger {
     ///
     /// - Note: This equation is mathematical and subject to overflow.
     ///
-    @inlinable public consuming func bezout(
-        _ other: consuming Self
-    )   -> (
-        divisor:        Magnitude,
-        lhsCoefficient: Signitude,
-        rhsCoefficient: Signitude
-    )   where Self: UnsignedInteger {
-        Self.bezout(Finite(unchecked: self), Finite(unchecked: other))
+    @inlinable public func bezout(_ other: consuming Self) -> Bezout<Magnitude> {
+        let value = Finite(unchecked: self )
+        let other = Finite(unchecked: other)
+        return value.bezout(other)
     }
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Algorithms
+// MARK: + Guarantees
 //=----------------------------------------------------------------------------=
 
-extension BinaryInteger {
+extension Finite where Value: BinaryInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Tranformations
     //=------------------------------------------------------------------------=
     
-    /// Returns the greatest common divisor.
+    /// The greatest common divisor.
     ///
     /// - Note: The greatest common divisor of `(0, 0)` is zero.
+    ///
+    /// - Note: `Finite<T>` guarantees nonoptional results.
     ///
     /// ### Gretest Common Divisor to Least Common Multiple
     ///
@@ -76,26 +135,30 @@ extension BinaryInteger {
     ///
     /// - Note: This equation is mathematical and subject to overflow.
     ///
-    @inlinable public static func euclidean(
-        _ lhs: consuming Finite<Self>, 
-        _ rhs: consuming Finite<Self>
-    )   -> Magnitude {
-        
-        var value = (consume lhs).value
-        var other = (consume rhs).value
-        
-        dividing: while !other.isZero {
-            (value, other) = (copy other, value.remainder(Nonzero(unchecked: other)))
+    @inlinable public consuming func euclidean(_ other: consuming Self) -> Value.Magnitude {
+        if  Value.isSigned {
+            // we only need an unsigned implementation
+            return self.magnitude().euclidean(other.magnitude())
         }
         
-        return value.magnitude() as Magnitude
+        var value = (consume self ).magnitude().value
+        var other = (consume other).magnitude().value
+        
+        dividing: while let divisor = Nonzero(exactly: consume other) {
+            other = (consume value).remainder(divisor)
+            value = (consume divisor).value
+        }
+        
+        return value // as Value.Magnitude as Value.Magnitude
     }
     
-    /// Returns the greatest common divisor and `2` Bézout coefficients.
+    /// The greatest common divisor and `2` Bézout coefficients.
     ///
     /// - Note: The greatest common divisor of `(0, 0)` is zero.
     ///
     /// - Note: The `XGCD` algorithm behaves well for all finite unsigned inputs.
+    ///
+    /// - Note: `Finite<T>` guarantees nonoptional results.
     ///
     /// ### Bézout's identity
     ///
@@ -105,29 +168,7 @@ extension BinaryInteger {
     ///
     /// - Note: This equation is mathematical and subject to overflow.
     ///
-    @inlinable public static func bezout(
-        _ lhs: consuming Finite<Self>,
-        _ rhs: consuming Finite<Self>
-    )   -> (
-        divisor:        Magnitude,
-        lhsCoefficient: Signitude,
-        rhsCoefficient: Signitude
-    )   where Self: UnsignedInteger {
-
-        var value = (consume lhs).value
-        var other = (consume rhs).value
-        
-        var x: (Signitude, Signitude) = (1, 0)
-        var y: (Signitude, Signitude) = (0, 1)
-        
-        // note that the bit cast may overflow in the final iteration
-        dividing: while !other.isZero {
-            let (division) = (value).division(Nonzero(unchecked: copy other)).unchecked()
-            (value, other) = (other, division.remainder)
-            x = (x.1, x.0 &- x.1 &* Signitude(raw: division.quotient))
-            y = (y.1, y.0 &- y.1 &* Signitude(raw: division.quotient))
-        }
-        
-        return (divisor: value, lhsCoefficient: x.0, rhsCoefficient: y.0)
+    @inlinable public func bezout(_ other: consuming Self) -> Bezout<Value.Magnitude> {
+        Bezout(self.magnitude(), other.magnitude())
     }
 }
