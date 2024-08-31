@@ -31,7 +31,7 @@ extension BinaryInteger {
     /// I8(-4).ilog2() // nil
     /// ```
     ///
-    /// - Note: `Nonzero<T.Magnitude>` returns nonoptional results.
+    /// - Note: `Nonzero<T.Magnitude>` guarantees nonoptional results.
     ///
     @inlinable public /* borrowing */ func ilog2() -> Optional<Count<IX>> {
         guard self.isPositive else { return nil }
@@ -64,7 +64,7 @@ extension Nonzero where Value: BinaryInteger {
     /// I8(-4).ilog2() // nil
     /// ```
     ///
-    /// - Note: `Nonzero<T.Magnitude>` returns nonoptional results.
+    /// - Note: `Nonzero<T.Magnitude>` guarantees nonoptional results.
     ///
     @inlinable public borrowing func ilog2() -> Optional<Count<IX>> {
         guard !self.value.isNegative else { return nil }
@@ -97,7 +97,7 @@ extension Nonzero where Value: UnsignedInteger {
     /// I8(-4).ilog2() // nil
     /// ```
     ///
-    /// - Note: `Nonzero<T.Magnitude>` returns nonoptional results.
+    /// - Note: `Nonzero<T.Magnitude>` guarantees nonoptional results.
     ///
     @inlinable public borrowing func ilog2() -> Count<IX> {
         let mask = UX(raw: Value.size).minus(1).unchecked()

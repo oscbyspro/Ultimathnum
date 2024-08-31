@@ -23,8 +23,8 @@ final class BinaryIntegerBenchmarksOnExponentiation: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testExponentiationAsUX() throws {
-        typealias T = UX
+    func testExponentiationAsU64() throws {
+        typealias T = U64
         
         for base: UX in 0..<128 {
             for exponent: UX in 0..<1000 {

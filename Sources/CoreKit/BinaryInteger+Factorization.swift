@@ -23,9 +23,7 @@ extension FiniteInteger {
     ///
     /// ### Gretest Common Divisor to Least Common Multiple
     ///
-    /// ```swift
-    /// gcd(a, b) * lcm(a, b) == |a| * |b|
-    /// ```
+    ///     gcd(a, b) * lcm(a, b) == |a| * |b|
     ///
     /// - Note: This equation is mathematical and subject to overflow.
     ///
@@ -74,9 +72,7 @@ extension BinaryInteger {
     ///
     /// ### Gretest Common Divisor to Least Common Multiple
     ///
-    /// ```swift
-    /// gcd(a, b) * lcm(a, b) == |a| * |b|
-    /// ```
+    ///     gcd(a, b) * lcm(a, b) == |a| * |b|
     ///
     /// - Note: This equation is mathematical and subject to overflow.
     ///

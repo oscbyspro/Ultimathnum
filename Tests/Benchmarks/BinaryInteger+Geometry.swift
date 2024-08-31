@@ -23,8 +23,8 @@ final class BinaryIntegerBenchmarksOnGeometry: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testSquareRootsAsUX() {
-        typealias T = UX
+    func testSquareRootsAsU64() {
+        typealias T = U64
                 
         for power: UX in 0 ..< 1_000_000 {
             blackHole(T(load: power).isqrt())

@@ -35,11 +35,10 @@ extension BinaryInteger {
     ///                ┌────────────┬────────────┐
     ///                │ Systems    │ Arbitrary  |
     ///     ┌──────────┼────────────┤────────────┤
-    ///     │   Signed │ OK         │ source ∈ ℕ │
+    ///     │   Signed │ any        │ source ∈ ℤ │
     ///     ├──────────┼────────────┤────────────┤
-    ///     │ Unsigned │ OK         │ OK         │
+    ///     │ Unsigned │ any        │ any        │
     ///     └──────────┴────────────┴────────────┘
-    ///
     ///
     /// - Note: This is the most generic version of `init(clamping:)`.
     ///

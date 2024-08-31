@@ -33,12 +33,6 @@ extension BinaryInteger {
     ///
     /// - Note: `Natural<T>` guarantees nonoptional results.
     ///
-    /// ```swift
-    /// UXL(repeating: 1).isqrt() // nil
-    /// ```
-    ///
-    /// - Note: Infinite square roots are `nil` on finite machines.
-    ///
     /// ### Algorithm
     ///
     /// - Seealso: https://en.wikipedia.org/wiki/newton's_method
@@ -71,12 +65,6 @@ extension Natural {
     /// ```
     ///
     /// - Note: `Natural<T>` guarantees nonoptional results.
-    ///
-    /// ```swift
-    /// UXL(repeating: 1).isqrt() // nil
-    /// ```
-    ///
-    /// - Note: Infinite square roots are `nil` on finite machines.
     ///
     /// ### Algorithm
     ///
@@ -135,12 +123,6 @@ extension BinaryInteger where Self: UnsignedInteger & SystemsInteger {
     ///
     /// - Note: `Natural<T>` guarantees nonoptional results.
     ///
-    /// ```swift
-    /// UXL(repeating: 1).isqrt() // nil
-    /// ```
-    ///
-    /// - Note: Infinite square roots are `nil` on finite machines.
-    ///
     /// ### Algorithm
     ///
     /// - Seealso: https://en.wikipedia.org/wiki/newton's_method
@@ -177,12 +159,6 @@ extension Fallible where Value: UnsignedInteger & SystemsInteger {
     /// ```
     ///
     /// - Note: `Natural<T>` guarantees nonoptional results.
-    ///
-    /// ```swift
-    /// UXL(repeating: 1).isqrt() // nil
-    /// ```
-    ///
-    /// - Note: Infinite square roots are `nil` on finite machines.
     ///
     /// ### Algorithm
     ///
