@@ -45,51 +45,20 @@
         var lhs = (consume lhs).value
         var rhs = (consume rhs).value
         
-        var lhsCoefficient = Extension(x: 1, y: 0)
-        var rhsCoefficient = Extension(x: 0, y: 1)
+        var lhsCoefficient = (Layout.Signitude.lsb,  Layout.Signitude.zero)
+        var rhsCoefficient = (Layout.Signitude.zero, Layout.Signitude.lsb )
         
         // note that the bit cast may overflow in the final iteration
         while let divisor = Nonzero(exactly: consume rhs) {
             (lhs, rhs) = (consume lhs).division(divisor).unchecked().components()
             let quotient = Layout.Signitude(raw: consume lhs)
             (lhs) = (consume divisor).value
-            (lhsCoefficient).update(quotient)
-            (rhsCoefficient).update(quotient)
+            (lhsCoefficient) = (lhsCoefficient.1, lhsCoefficient.0 &- lhsCoefficient.1 &* quotient)
+            (rhsCoefficient) = (rhsCoefficient.1, rhsCoefficient.0 &- rhsCoefficient.1 &* quotient)
         }
         
-        self.divisor        = (consume lhs)
-        self.lhsCoefficient = (consume lhsCoefficient).x
-        self.rhsCoefficient = (consume rhsCoefficient).x
-    }
-    
-    //*========================================================================*
-    // MARK: * Extension
-    //*========================================================================*
-    
-    @frozen @usableFromInline struct Extension {
-        
-        //=--------------------------------------------------------------------=
-        // MARK: State
-        //=--------------------------------------------------------------------=
-        
-        @usableFromInline var x: Layout.Signitude
-        @usableFromInline var y: Layout.Signitude
-        
-        //=--------------------------------------------------------------------=
-        // MARK: Initializers
-        //=--------------------------------------------------------------------=
-        
-        @inlinable init(x: consuming Layout.Signitude, y: consuming Layout.Signitude) {
-            self.x = x
-            self.y = y
-        }
-        
-        //=--------------------------------------------------------------------=
-        // MARK: Transformations
-        //=--------------------------------------------------------------------=
-        
-        @inlinable mutating func update(_ quotient: borrowing Layout.Signitude) {
-            (self.x, self.y) = (self.y, self.x &- self.y &* quotient)
-        }
+        self.divisor = (consume lhs)
+        self.lhsCoefficient = lhsCoefficient.0
+        self.rhsCoefficient = rhsCoefficient.0
     }
 }
