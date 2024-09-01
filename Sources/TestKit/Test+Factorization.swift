@@ -19,40 +19,44 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    public func euclidean<T>(_ lhs: T, _ rhs: T, _ expectation: T.Magnitude?) where T: BinaryInteger {        
-        let lhsMagnitude = lhs.magnitude()
-        let rhsMagnitude = rhs.magnitude()
+    /// - Note: It checks each complement when `T.isSigned`.
+    public func euclidean<T>(_ lhs: T, _ rhs: T, _ expectation: T.Magnitude?) where T: BinaryInteger {
+        func check(_ lhs: T, _ rhs: T) {
+            let euclidean = lhs.euclidean(rhs)
+            let bezout = lhs.bezout(rhs)
+            
+            same(euclidean, expectation,     "euclidean [0]")
+            same(euclidean, bezout?.divisor, "euclidean [1]")
+            
+            if  let bezout, IX.size > T.size {
+                let a = IX(lhs) * IX(bezout.lhsCoefficient)
+                let b = IX(rhs) * IX(bezout.rhsCoefficient)
+                same(euclidean, T.Magnitude(a + b), "bézout identity")
+            }
+            
+            if  let bezout {
+                let a = T.Magnitude(raw: lhs) &* T.Magnitude(raw: bezout.lhsCoefficient)
+                let b = T.Magnitude(raw: rhs) &* T.Magnitude(raw: bezout.rhsCoefficient)
+                same(euclidean, a &+ b, "wrapping bézout identity")
+            }
+                
+            if  let expectation, !expectation.isZero {
+                same(lhs.magnitude() % expectation, T.Magnitude.zero, "a % GCD(a, b) == 0")
+                same(rhs.magnitude() % expectation, T.Magnitude.zero, "b % GCD(a, b) == 0")
+            }
+        }
         
-        let euclidean = lhs.euclidean(rhs)
-        let bezout = lhsMagnitude.bezout(rhsMagnitude)
+        always: do {
+            check(lhs, rhs)
+        }
         
-        same(euclidean, expectation,     "euclidean [0]")
-        same(euclidean, bezout?.divisor, "euclidean [1]")
-        
-        if  T.isSigned {
+        if T.isSigned {
             let lhsComplement = lhs.complement()
             let rhsComplement = rhs.complement()
             
-            same(euclidean, lhs.euclidean(rhsComplement), "euclidean [2]")
-            same(euclidean, lhsComplement.euclidean(rhs), "euclidean [3]")
-            same(euclidean, lhsComplement.euclidean(rhsComplement), "euclidean [4]")
-        }
-        
-        if  let bezout, IX.size > T.size {
-            let a = IX(lhs) * IX(bezout.lhsCoefficient)
-            let b = IX(rhs) * IX(bezout.rhsCoefficient)
-            same(euclidean, T.Magnitude(a + b), "bézout identity")
-        }
-        
-        if  let bezout {
-            let a = lhsMagnitude &* T.Magnitude(raw: bezout.lhsCoefficient)
-            let b = rhsMagnitude &* T.Magnitude(raw: bezout.rhsCoefficient)
-            same(euclidean, a &+ b, "wrapping bézout identity")
-        }
-            
-        if  let expectation, !expectation.isZero {
-            same(lhsMagnitude % expectation, T.Magnitude.zero, "a % GCD(a, b) == 0")
-            same(rhsMagnitude % expectation, T.Magnitude.zero, "b % GCD(a, b) == 0")
+            check(lhs, rhsComplement)
+            check(lhsComplement, rhs)
+            check(lhsComplement, rhsComplement)
         }
     }
 }

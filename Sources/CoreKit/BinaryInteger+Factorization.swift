@@ -169,6 +169,6 @@ extension Finite where Value: BinaryInteger {
     /// - Note: This equation is mathematical and subject to overflow.
     ///
     @inlinable public func bezout(_ other: consuming Self) -> Bezout<Value.Magnitude> {
-        Bezout(self.magnitude(), other.magnitude())
+        Bezout(self, other)
     }
 }
