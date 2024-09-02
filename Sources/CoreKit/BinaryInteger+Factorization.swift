@@ -19,15 +19,20 @@ extension BinaryInteger {
     
     /// The greatest common divisor.
     ///
-    /// - Note: The greatest common divisor of `(0, 0)` is zero.
-    ///
     /// - Note: `Finite<T>` guarantees nonoptional results.
+    ///
+    /// ### Greatest common divisor
+    ///
+    ///     1. gcd(a, 0) == abs( a)
+    ///     2. gcd(a, b) == gcd(±a, ±b)
+    ///     3. gcd(a, b) == gcd( a,  b % a)
+    ///     4. gcd(a, b) == gcd( b,  a)
     ///
     /// ### Gretest Common Divisor to Least Common Multiple
     ///
     ///     gcd(a, b) * lcm(a, b) == |a| * |b|
     ///
-    /// - Note: This equation is mathematical and subject to overflow.
+    /// - Note: This equation is subject to overflow.
     ///
     @inlinable public consuming func euclidean(_ other: consuming Self) -> Magnitude? {
         guard
@@ -39,19 +44,20 @@ extension BinaryInteger {
     
     /// The greatest common divisor and `2` Bézout coefficients.
     ///
-    /// - Note: The greatest common divisor of `(0, 0)` is zero.
-    ///
-    /// - Note: The `XGCD` algorithm behaves well for all finite unsigned inputs.
-    ///
     /// - Note: `Finite<T>` guarantees nonoptional results.
+    ///
+    /// ### Greatest common divisor
+    ///
+    ///     1. gcd(a, 0) == abs( a)
+    ///     2. gcd(a, b) == gcd(±a, ±b)
+    ///     3. gcd(a, b) == gcd( a,  b % a)
+    ///     4. gcd(a, b) == gcd( b,  a)
     ///
     /// ### Bézout's identity
     ///
-    /// ```swift
-    /// divisor == lhs * lhsCoefficient + rhs * rhsCoefficient
-    /// ```
+    ///     divisor == lhs * lhsCoefficient + rhs * rhsCoefficient
     ///
-    /// - Note: This equation is mathematical and subject to overflow.
+    /// - Note: This equation is subject to overflow.
     ///
     @inlinable public func bezout(_ other: consuming Self) -> Bezout<Magnitude>? {
         guard
@@ -74,15 +80,20 @@ extension FiniteInteger {
     
     /// The greatest common divisor.
     ///
-    /// - Note: The greatest common divisor of `(0, 0)` is zero.
-    ///
     /// - Note: `Finite<T>` guarantees nonoptional results.
+    ///
+    /// ### Greatest common divisor
+    ///
+    ///     1. gcd(a, 0) == abs( a)
+    ///     2. gcd(a, b) == gcd(±a, ±b)
+    ///     3. gcd(a, b) == gcd( a,  b % a)
+    ///     4. gcd(a, b) == gcd( b,  a)
     ///
     /// ### Gretest Common Divisor to Least Common Multiple
     ///
     ///     gcd(a, b) * lcm(a, b) == |a| * |b|
     ///
-    /// - Note: This equation is mathematical and subject to overflow.
+    /// - Note: This equation is subject to overflow.
     ///
     @inlinable public consuming func euclidean(_ other: consuming Self) -> Magnitude {
         let value = Finite(unchecked: self )
@@ -92,19 +103,20 @@ extension FiniteInteger {
     
     /// The greatest common divisor and `2` Bézout coefficients.
     ///
-    /// - Note: The greatest common divisor of `(0, 0)` is zero.
-    ///
-    /// - Note: The `XGCD` algorithm behaves well for all finite unsigned inputs.
-    ///
     /// - Note: `Finite<T>` guarantees nonoptional results.
+    ///
+    /// ### Greatest common divisor
+    ///
+    ///     1. gcd(a, 0) == abs( a)
+    ///     2. gcd(a, b) == gcd(±a, ±b)
+    ///     3. gcd(a, b) == gcd( a,  b % a)
+    ///     4. gcd(a, b) == gcd( b,  a)
     ///
     /// ### Bézout's identity
     ///
-    /// ```swift
-    /// divisor == lhs * lhsCoefficient + rhs * rhsCoefficient
-    /// ```
+    ///     divisor == lhs * lhsCoefficient + rhs * rhsCoefficient
     ///
-    /// - Note: This equation is mathematical and subject to overflow.
+    /// - Note: This equation is subject to overflow.
     ///
     @inlinable public func bezout(_ other: consuming Self) -> Bezout<Magnitude> {
         let value = Finite(unchecked: self )
@@ -125,15 +137,20 @@ extension Finite where Value: BinaryInteger {
     
     /// The greatest common divisor.
     ///
-    /// - Note: The greatest common divisor of `(0, 0)` is zero.
-    ///
     /// - Note: `Finite<T>` guarantees nonoptional results.
+    ///
+    /// ### Greatest common divisor
+    ///
+    ///     1. gcd(a, 0) == abs( a)
+    ///     2. gcd(a, b) == gcd(±a, ±b)
+    ///     3. gcd(a, b) == gcd( a,  b % a)
+    ///     4. gcd(a, b) == gcd( b,  a)
     ///
     /// ### Gretest Common Divisor to Least Common Multiple
     ///
     ///     gcd(a, b) * lcm(a, b) == |a| * |b|
     ///
-    /// - Note: This equation is mathematical and subject to overflow.
+    /// - Note: This equation is subject to overflow.
     ///
     @inlinable public consuming func euclidean(_ other: consuming Self) -> Value.Magnitude {
         if  Value.isSigned {
@@ -154,19 +171,20 @@ extension Finite where Value: BinaryInteger {
     
     /// The greatest common divisor and `2` Bézout coefficients.
     ///
-    /// - Note: The greatest common divisor of `(0, 0)` is zero.
-    ///
-    /// - Note: The `XGCD` algorithm behaves well for all finite unsigned inputs.
-    ///
     /// - Note: `Finite<T>` guarantees nonoptional results.
+    ///
+    /// ### Greatest common divisor
+    ///
+    ///     1. gcd(a, 0) == abs( a)
+    ///     2. gcd(a, b) == gcd(±a, ±b)
+    ///     3. gcd(a, b) == gcd( a,  b % a)
+    ///     4. gcd(a, b) == gcd( b,  a)
     ///
     /// ### Bézout's identity
     ///
-    /// ```swift
-    /// divisor == lhs * lhsCoefficient + rhs * rhsCoefficient
-    /// ```
+    ///     divisor == lhs * lhsCoefficient + rhs * rhsCoefficient
     ///
-    /// - Note: This equation is mathematical and subject to overflow.
+    /// - Note: This equation is subject to overflow.
     ///
     @inlinable public func bezout(_ other: consuming Self) -> Bezout<Value.Magnitude> {
         Bezout(self, other)

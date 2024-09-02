@@ -19,7 +19,7 @@ extension Test {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// - Note: It checks each complement when `T.isSigned`.
+    /// - Note: It also checks each complement combination when `T.isSigned`.
     public func euclidean<T>(_ lhs: T, _ rhs: T, _ expectation: T.Magnitude?) where T: BinaryInteger {
         func check(_ lhs: T, _ rhs: T) {
             let euclidean = lhs.euclidean(rhs)
@@ -50,7 +50,7 @@ extension Test {
             check(lhs, rhs)
         }
         
-        if T.isSigned {
+        if  T.isSigned {
             let lhsComplement = lhs.complement()
             let rhsComplement = rhs.complement()
             
