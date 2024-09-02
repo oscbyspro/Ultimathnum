@@ -59,10 +59,13 @@
         
         var lhsCoefficient = Extension(x: 1, y: 0)
         var rhsCoefficient = Extension(x: 0, y: 1)
-        
-        // the bit cast may overflow in the final iteration
-        while let divisor = Nonzero(exactly: consume rhs) {
-            (lhs, rhs) = (consume lhs).division(divisor).unchecked().components()
+        //=--------------------------------------=
+        // micro: T.predicate(x) then T(unsafe: x)
+        //=--------------------------------------=
+        dividing: while    Nonzero.predicate(rhs) {
+            let divisor  = Nonzero(unsafe:   rhs)
+            (lhs,   rhs) = (consume lhs).division(divisor).unchecked().components()
+            // bit cast may overflow in the final iteration
             let quotient = Layout.Signitude(raw: consume lhs)
             (lhs) = (consume divisor).value
             (lhsCoefficient).update(quotient)

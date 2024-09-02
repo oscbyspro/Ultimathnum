@@ -32,18 +32,9 @@ final class DoubleIntBenchmarks: XCTestCase {
         let fib370 = U256("94611056096305838013295371573764256526437182762229865607320618320601813254535")!
         
         for _ in 0 ..< 369 * 100 {
-            var lhs = blackHoleIdentity(fib369)
-            var rhs = blackHoleIdentity(fib370)
-            var counter = 0
-            
-            dividing: while !rhs.isZero {
-                counter += 1
-                (lhs, rhs) = (rhs, lhs.remainder(Nonzero(unchecked: rhs)))
-            }
-            
-            precondition(lhs == 1)
-            precondition(rhs == 0)
-            precondition(counter == 369)
+            let lhs = blackHoleIdentity(fib369)
+            let rhs = blackHoleIdentity(fib370)
+            blackHole(lhs.euclidean(rhs))
         }
     }
 }

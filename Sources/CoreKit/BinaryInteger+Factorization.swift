@@ -35,11 +35,12 @@ extension BinaryInteger {
     /// - Note: This equation is subject to overflow.
     ///
     @inlinable public consuming func euclidean(_ other: consuming Self) -> Magnitude? {
-        guard
-        let value = Finite(exactly: self ),
-        let other = Finite(exactly: other)
-        else { return nil }
-        return value.euclidean(other)
+        //=--------------------------------------=
+        // micro: T.predicate(x) then T(unsafe: x)
+        //=--------------------------------------=
+        guard  Finite.predicate(self ) else { return nil }
+        guard  Finite.predicate(other) else { return nil }
+        return Finite(unsafe: self).euclidean(Finite(unsafe: other))
     }
     
     /// The greatest common divisor and `2` Bézout coefficients.
@@ -60,11 +61,12 @@ extension BinaryInteger {
     /// - Note: This equation is subject to overflow.
     ///
     @inlinable public func bezout(_ other: consuming Self) -> Bezout<Magnitude>? {
-        guard
-        let value = Finite(exactly: self ),
-        let other = Finite(exactly: other)
-        else { return nil }
-        return value.bezout(other)
+        //=--------------------------------------=
+        // micro: T.predicate(x) then T(unsafe: x)
+        //=--------------------------------------=
+        guard  Finite.predicate(self ) else { return nil }
+        guard  Finite.predicate(other) else { return nil }
+        return Finite(unsafe: self).bezout(Finite(unsafe: other))
     }
 }
 
@@ -160,8 +162,11 @@ extension Finite where Value: BinaryInteger {
         
         var value = (consume self ).magnitude().value
         var other = (consume other).magnitude().value
-        
-        dividing: while let divisor = Nonzero(exactly: consume other) {
+        //=--------------------------------------=
+        // micro: T.predicate(x) then T(unsafe: x)
+        //=--------------------------------------=
+        dividing: while   Nonzero.predicate(other) {
+            let divisor = Nonzero(unsafe:   other)
             other = (consume value).remainder(divisor)
             value = (consume divisor).value
         }
