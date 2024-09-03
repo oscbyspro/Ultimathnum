@@ -17,7 +17,7 @@ extension BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Returns the trapping result of `0 - instance`.
+    /// Returns the additive inverse of `instance` by trapping on `error`.
     @inlinable public static prefix func -(instance: consuming Self) -> Self {
         instance.negated().unwrap()
     }
@@ -66,7 +66,14 @@ extension BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Returns the result of `0 - self` that fits.
+    /// Forms the additive inverse of `self` and an `error` indicator.
+    @inlinable public mutating func negate() -> Fallible<Void> {
+        let error: Bool
+        (self, error) = self.negated().components()
+        return Fallible(Void(), error: error)
+    }
+    
+    /// Returns the additive inverse of `self` and an `error` indicator.
     @inlinable public consuming func negated() -> Fallible<Self> {
         let result: Fallible<Self> = self.complement(true)
         return result.value.veto(result.error == Self.isSigned)
@@ -114,7 +121,7 @@ extension Fallible where Value: BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Returns the result of `0 - self`.
+    /// Returns the additive inverse of `self` and an `error` indicator.
     @inlinable public consuming func negated() -> Self {
         self.value.negated().veto(self.error)
     }

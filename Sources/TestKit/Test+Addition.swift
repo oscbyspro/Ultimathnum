@@ -123,6 +123,7 @@ extension Test {
         
         negate: if lhs == 0 {
             same(rhs.negated(), expectation)
+            same({ var i = rhs; let o = i.negate(); return i.veto(o.error) }(), expectation)
         }
         
         negate: if lhs == 0, !expectation.error {

@@ -213,6 +213,7 @@ extension BinaryIntegerTestsOnAddition {
                 success &+= IX(Bit(instance            .negated() == expectation))
                 success &+= IX(Bit(instance.veto(false).negated() == expectation))
                 success &+= IX(Bit(instance.veto(true ).negated() == expectation.veto()))
+                success &+= IX(Bit({ var i = instance; let o = i.negate(); return i.veto(o.error) }() == expectation))
             }
             //=----------------------------------=
             // MARK: BinaryInteger/plus()
@@ -329,7 +330,7 @@ extension BinaryIntegerTestsOnAddition {
                 }
             }
             //=----------------------------------=
-            Test().same(success, rounds &* 39 &+ 18)
+            Test().same(success, rounds &* 40 &+ 18)
         }
         
         for type in binaryIntegers {
