@@ -90,13 +90,13 @@
             lhs.magnitude(),
             rhs.magnitude()
         )
-
+        
         if  lhsIsNegative {
-            self.storage.lhsCoefficient = self.storage.lhsCoefficient.negated().unchecked()
+            self.storage.lhsCoefficient.negate().unchecked()
         }
-
+        
         if  rhsIsNegative {
-            self.storage.rhsCoefficient = self.storage.rhsCoefficient.negated().unchecked()
+            self.storage.rhsCoefficient.negate().unchecked()
         }
     }
     
