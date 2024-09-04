@@ -109,7 +109,7 @@ extension Test {
         always: do {
             
             for _ in 0 ..< limit {
-                decoded = try decoded.times(multiplier).prune(TextInt.Error.overflow)
+                decoded = try decoded.times(multiplier).prune(TextInt.Error.lossy)
                 encoded.append("0")
                 
                 self.description(decoded, radix: radix, body: encoded)
@@ -131,15 +131,15 @@ extension Test {
     ///     .....
     ///
     public func descriptionByEachNumeralPyramid<T>(_ type: T.Type, radix: UX, limit: UX = .max) where T: BinaryInteger {
-        let encoder = try! TextInt.Numerals(36, letters: .lowercase)
+        let encoder = try! TextInt.Numerals(radix: 36, letters: .lowercase)
         var decoded = T.zero
         var encoded = String()
         
         always: do {
             
             for index in (0 ..< limit).lazy.map({ ($0 &+ 1) % radix }) {
-                decoded = try decoded.times(T(radix)).prune(TextInt.Error.overflow)
-                decoded = try decoded.plus (T(index)).prune(TextInt.Error.overflow)
+                decoded = try decoded.times(T(radix)).prune(TextInt.Error.lossy)
+                decoded = try decoded.plus (T(index)).prune(TextInt.Error.lossy)
                 encoded.append(String(UnicodeScalar(UInt8(try! encoder.encode(U8(load: index))))))
 
                 self.description(decoded, radix: radix, body: encoded)
@@ -161,7 +161,7 @@ extension Test {
     ///     .....
     ///
     public func descriptionByHighNumeralPyramid<T>(_ type: T.Type, radix: UX, limit: UX = .max) where T: BinaryInteger {
-        let encoder = try! TextInt.Numerals(36, letters: .lowercase)
+        let encoder = try! TextInt.Numerals(radix: 36, letters: .lowercase)
         var decoded = T.zero
         var encoded = String()
         
@@ -174,8 +174,8 @@ extension Test {
         always: do {
             
             for _ in 0 ..< limit {
-                decoded = try decoded.times(values.radix).prune(TextInt.Error.overflow)
-                decoded = try decoded.plus (values.index).prune(TextInt.Error.overflow)
+                decoded = try decoded.times(values.radix).prune(TextInt.Error.lossy)
+                decoded = try decoded.plus (values.index).prune(TextInt.Error.lossy)
                 encoded.append(values.numeral)
                 
                 self.description(decoded, radix: radix, body: encoded)

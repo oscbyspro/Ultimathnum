@@ -17,6 +17,6 @@ extension TextInt {
         
         case invalid
         
-        case overflow
+        case lossy
     }
 }

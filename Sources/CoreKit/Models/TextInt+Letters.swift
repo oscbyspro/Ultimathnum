@@ -16,26 +16,31 @@ extension TextInt {
     /// A `lowercase` or `uppercase` indicator.
     @frozen public enum Letters: Equatable, Sendable {
         
+        case lowercase
+        
         case uppercase
         
-        case lowercase
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Details
-//=----------------------------------------------------------------------------=
-
-extension TextInt.Letters {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable var start: U8 {
-        switch self {
-        case .uppercase: return 65
-        case .lowercase: return 97
+        //=--------------------------------------------------------------------=
+        // MARK: Initializers
+        //=--------------------------------------------------------------------=
+        
+        @inlinable public init(uppercase: Bool) {
+            self = switch uppercase {
+            case  true: Self.uppercase
+            case false: Self.lowercase
+            }
+        }
+        
+        //=------------------------------------------------------------------------=
+        // MARK: Utilities
+        //=------------------------------------------------------------------------=
+        
+        /// The ASCII value of `"A"` or `"a"`.
+        @inlinable package var start: U8 {
+            switch self {
+            case Self.lowercase: return 97
+            case Self.uppercase: return 65
+            }
         }
     }
 }

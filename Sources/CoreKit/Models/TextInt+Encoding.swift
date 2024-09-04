@@ -133,6 +133,7 @@ extension TextInt {
             var chunk: UX = 000 // must be zero
             var asciiIndex: Int = ascii.endIndex
             var chunkIndex: Int = ascii.endIndex
+            let radix = Nonzero(unchecked: UX(load: self.radix as U8))
             //=----------------------------------=
             // text: set numerals
             //=----------------------------------=
@@ -151,7 +152,7 @@ extension TextInt {
                 minor: repeat {
                 
                     let lowest: UX
-                    (chunk, lowest) =  chunk.division(Nonzero(unchecked: self.radix)).components()
+                    (chunk, lowest) =  chunk.division(radix).components()
                     let element = try! self.numerals.encode(U8(load: lowest))
                     precondition(asciiIndex > ascii .startIndex)
                     asciiIndex = ascii.index(before: asciiIndex)

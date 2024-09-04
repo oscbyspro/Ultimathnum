@@ -71,12 +71,53 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func radix(_ radix: UX) -> Self {
-        try! Self(radix: radix, letters: .lowercase)
+    /// Creates a new instance using the given `radix` and `letters`.
+    ///
+    /// - Requires: `2 ≤ radix ≤ 36`
+    ///
+    /// - Note: Use `init(radix:letters:)` to recover from invalid radices.
+    ///
+    @inlinable public static func radix(_ radix: some BinaryInteger) -> Self {
+        Self.radix(UX(radix))
     }
     
-    @inlinable public init(radix: UX, letters: Letters) throws {
-        self.numerals = try Numerals(radix, letters: letters)
+    /// Creates a new instance using the given `radix` and `letters`.
+    ///
+    /// - Requires: `2 ≤ radix ≤ 36`
+    ///
+    /// - Note: Use `init(radix:letters:)` to recover from invalid radices.
+    ///
+    @inlinable public static func radix(_ radix: UX) -> Self {
+        try! Self(radix: radix)
+    }
+    
+    /// Creates a new instance using the given `radix` and `letters`.
+    ///
+    /// - Requires: `2 ≤ radix ≤ 36`
+    ///
+    /// - Throws: `TextInt.Error.invalid` if the `radix` is invalid.
+    ///
+    @inlinable public init(
+        radix: some BinaryInteger,
+        letters: Letters = .lowercase
+    )   throws {
+        try self.init(
+            radix: try UX.exactly(radix).prune(Error.invalid),
+            letters: letters
+        )
+    }
+    
+    /// Creates a new instance using the given `radix` and `letters`.
+    ///
+    /// - Requires: `2 ≤ radix ≤ 36`
+    ///
+    /// - Throws: `TextInt.Error.invalid` if the `radix` is invalid.
+    ///
+    @inlinable public init(
+        radix: UX,
+        letters: Letters = .lowercase
+    )   throws {
+        self.numerals = try Numerals(radix: radix, letters: letters)
         let exponentiation = try Exponentiation(radix)
         self.exponent = exponentiation.exponent as IX
         self.power = Divider21(Swift.max(1, exponentiation.power))
@@ -87,14 +128,18 @@
     //=------------------------------------------------------------------------=
     
     /// Returns a similar instance that encodes `lowercase` numerals.
-    @inlinable public consuming func  lowercased() -> Self {
-        self.numerals = self.numerals.lowercased()
-        return self
+    @inlinable public consuming func lowercased() -> Self {
+        self.letters(Letters.lowercase)
     }
     
     /// Returns a similar instance that encodes `uppercase` numerals.
-    @inlinable public consuming func  uppercased() -> Self {
-        self.numerals = self.numerals.uppercased()
+    @inlinable public consuming func uppercased() -> Self {
+        self.letters(Letters.uppercase)
+    }
+    
+    /// Returns an similar instance that encodes the given `letters`.
+    @inlinable public consuming func letters(_ letters: Letters) -> Self {
+        self.numerals = self.numerals.letters(letters)
         return self
     }
     
@@ -110,17 +155,15 @@
         self.numerals.letters
     }
     
-    /// The `radix` of the number system that is used by this instance.
+    /// The `radix` of its number system.
     ///
     /// - Returns: A value in the closed range from `2` through `36`.
     ///
-    @inlinable public var radix: UX {
-        UX(load: self.numerals.radix)
+    /// - Note: The return type is `U8` to minimize size-related validation.
+    ///
+    @inlinable public var radix: U8 {
+        self.numerals.radix
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
     
     @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         lhs.numerals == rhs.numerals

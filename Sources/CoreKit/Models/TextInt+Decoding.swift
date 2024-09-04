@@ -47,18 +47,18 @@ extension TextInt {
         }
         
         if  magnitude.error {
-            throw Error.overflow
+            throw Error.lossy
         }
         
         if  components.mask == Bit.one {
             if  T.isArbitrary {
                 magnitude.value.toggle()
             }   else {
-                throw Error.overflow
+                throw Error.lossy
             }
         }
         
-        return try T.exactly(sign: components.sign, magnitude: magnitude.value).prune(Error.overflow)
+        return try T.exactly(sign: components.sign, magnitude: magnitude.value).prune(Error.lossy)
     }
 }
 

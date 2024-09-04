@@ -21,59 +21,51 @@ extension TextIntTests {
     //=------------------------------------------------------------------------=
     
     func testDecodingEdges08AsBase16() {
-        typealias R<T> = Result<T, TextInt.Error>
-        
         let (item) = TextInt.radix(16)
-        Case(item).decode("-081", R<I8>.failure(.overflow))
+        Case(item).decode("-081", R<I8>.failure(.lossy))
         Case(item).decode("-080", R<I8>.success(.min))
         Case(item).decode("+07f", R<I8>.success(.max))
-        Case(item).decode("+080", R<I8>.failure(.overflow))
-        Case(item).decode("-001", R<U8>.failure(.overflow))
+        Case(item).decode("+080", R<I8>.failure(.lossy))
+        Case(item).decode("-001", R<U8>.failure(.lossy))
         Case(item).decode("-000", R<U8>.success(.min))
         Case(item).decode("+0ff", R<U8>.success(.max))
-        Case(item).decode("+100", R<U8>.failure(.overflow))
+        Case(item).decode("+100", R<U8>.failure(.lossy))
     }
     
     func testDecodingEdges16AsBase16() {
-        typealias R<T> = Result<T, TextInt.Error>
-        
         let (item) = TextInt.radix(16)
-        Case(item).decode("-08001", R<I16>.failure(.overflow))
+        Case(item).decode("-08001", R<I16>.failure(.lossy))
         Case(item).decode("-08000", R<I16>.success(.min))
         Case(item).decode("+07fff", R<I16>.success(.max))
-        Case(item).decode("+08000", R<I16>.failure(.overflow))
-        Case(item).decode("-00001", R<U16>.failure(.overflow))
+        Case(item).decode("+08000", R<I16>.failure(.lossy))
+        Case(item).decode("-00001", R<U16>.failure(.lossy))
         Case(item).decode("-00000", R<U16>.success(.min))
         Case(item).decode("+0ffff", R<U16>.success(.max))
-        Case(item).decode("+10000", R<U16>.failure(.overflow))
+        Case(item).decode("+10000", R<U16>.failure(.lossy))
     }
     
     func testDecodingEdges32AsBase16() {
-        typealias R<T> = Result<T, TextInt.Error>
-        
         let (item) = TextInt.radix(16)
-        Case(item).decode("-080000001", R<I32>.failure(.overflow))
+        Case(item).decode("-080000001", R<I32>.failure(.lossy))
         Case(item).decode("-080000000", R<I32>.success(.min))
         Case(item).decode("+07fffffff", R<I32>.success(.max))
-        Case(item).decode("+080000000", R<I32>.failure(.overflow))
-        Case(item).decode("-000000001", R<U32>.failure(.overflow))
+        Case(item).decode("+080000000", R<I32>.failure(.lossy))
+        Case(item).decode("-000000001", R<U32>.failure(.lossy))
         Case(item).decode("-000000000", R<U32>.success(.min))
         Case(item).decode("+0ffffffff", R<U32>.success(.max))
-        Case(item).decode("+100000000", R<U32>.failure(.overflow))
+        Case(item).decode("+100000000", R<U32>.failure(.lossy))
     }
     
     func testDecodingEdges64AsBase16() {
-        typealias R<T> = Result<T, TextInt.Error>
-        
         let (item) = TextInt.radix(16)
-        Case(item).decode("-08000000000000001", R<I64>.failure(.overflow))
+        Case(item).decode("-08000000000000001", R<I64>.failure(.lossy))
         Case(item).decode("-08000000000000000", R<I64>.success(.min))
         Case(item).decode("+07fffffffffffffff", R<I64>.success(.max))
-        Case(item).decode("+08000000000000000", R<I64>.failure(.overflow))
-        Case(item).decode("-00000000000000001", R<U64>.failure(.overflow))
+        Case(item).decode("+08000000000000000", R<I64>.failure(.lossy))
+        Case(item).decode("-00000000000000001", R<U64>.failure(.lossy))
         Case(item).decode("-00000000000000000", R<U64>.success(.min))
         Case(item).decode("+0ffffffffffffffff", R<U64>.success(.max))
-        Case(item).decode("+10000000000000000", R<U64>.failure(.overflow))
+        Case(item).decode("+10000000000000000", R<U64>.failure(.lossy))
     }
     
     //=------------------------------------------------------------------------=
@@ -81,7 +73,7 @@ extension TextIntTests {
     //=------------------------------------------------------------------------=
     
     func testEncodingAsBase16() {
-        func whereTypeIs<T>(_ type: T.Type) where T: BinaryInteger {
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             let (item) = TextInt.radix(16)
 
             guard T.size >= U8.size else { return }
@@ -158,7 +150,7 @@ extension TextIntTests {
         }
         
         for type in coreSystemsIntegers {
-            whereTypeIs(type)
+            whereIs(type)
         }
     }
 }

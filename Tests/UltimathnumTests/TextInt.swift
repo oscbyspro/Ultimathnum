@@ -8,7 +8,13 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import InfiniIntKit
 import TestKit
+
+//*============================================================================*
+// MARK: * Text Int
+//*============================================================================*
+
 
 //*============================================================================*
 // MARK: * Text Int
@@ -17,15 +23,20 @@ import TestKit
 final class TextIntTests: XCTestCase {
     
     typealias T = TextInt
+    
     typealias E = TextInt.Error
+    
+    typealias R<Value> = Result<Value, TextInt.Error>
     
     //=------------------------------------------------------------------------=
     // MARK: Metadata
     //=------------------------------------------------------------------------=
-            
+        
     static let regex36: Regex = #/^(\+|-)?(#|&)?([0-9A-Za-z]+)$/#
     
-    static let radices: Range<UX> = 2 ..< 37
+    static let radices: Range<U8> = 2 ..< 37
+    
+    static let letters: [TextInt.Letters] = [.lowercase, .uppercase]
     
     static let signs: [(data: Sign?, text: String)] = [(nil, ""), (Sign.plus, "+"), (Sign.minus, "-")]
     
@@ -40,21 +51,61 @@ final class TextIntTests: XCTestCase {
         Test().same(TextInt.radix(10), TextInt.decimal)
         Test().same(TextInt.radix(16), TextInt.hexadecimal)
         
-        for radix: UX in Self.radices {
+        for radix: U8 in Self.radices {
             guard let lowercase = Test().success(try TextInt(radix: radix, letters: .lowercase)) else { return }
             guard let uppercase = Test().success(try TextInt(radix: radix, letters: .uppercase)) else { return }
             
-            let standard = TextInt.radix(radix)
-            Test().same(standard .radix, radix)
-            Test().same(standard .letters, .lowercase)
+            Test().same(lowercase, TextInt.radix(U8(radix)))
+            Test().same(lowercase, TextInt.radix(UX(radix)))
             
-            Test().same(lowercase.letters, .lowercase)
-            Test().same(lowercase.lowercased().letters, .lowercase)
-            Test().same(lowercase.uppercased().letters, .uppercase)
+            Test().same(lowercase.letters, TextInt.Letters.lowercase)
+            Test().same(uppercase.letters, TextInt.Letters.uppercase)
             
-            Test().same(uppercase.letters, .uppercase)
-            Test().same(uppercase.lowercased().letters, .lowercase)
-            Test().same(uppercase.uppercased().letters, .uppercase)
+            for coder in [lowercase, uppercase] {
+                Test().same(coder.radix, radix)
+                Test().same(coder.lowercased().letters,        TextInt.Letters.lowercase)
+                Test().same(coder.uppercased().letters,        TextInt.Letters.uppercase)
+                Test().same(coder.letters(.lowercase).letters, TextInt.Letters.lowercase)
+                Test().same(coder.letters(.uppercase).letters, TextInt.Letters.uppercase)
+            }
+        }
+    }
+    
+    func testInitNegativeRadixIsInvalid() {
+        for letters in Self.letters {
+            Test().failure(try TextInt(radix: -1 as IXL, letters: letters), TextInt.Error.invalid)
+            Test().failure(try TextInt(radix: -2 as IXL, letters: letters), TextInt.Error.invalid)
+            Test().failure(try TextInt(radix: -3 as IXL, letters: letters), TextInt.Error.invalid)
+        }
+    }
+    
+    func testInitInfiniteRadixIsInvalid() {
+        for letters in Self.letters {
+            Test().failure(try TextInt(radix: ~0 as UXL, letters: letters), TextInt.Error.invalid)
+            Test().failure(try TextInt(radix: ~1 as UXL, letters: letters), TextInt.Error.invalid)
+            Test().failure(try TextInt(radix: ~2 as UXL, letters: letters), TextInt.Error.invalid)
+        }
+    }
+    
+    func testInitSuperBigRadixIsInvalid() {
+        for letters in Self.letters {
+            Test().failure(try TextInt(radix: UXL(UX.max) - 1, letters: letters), TextInt.Error.invalid)
+            Test().failure(try TextInt(radix: UXL(UX.max),     letters: letters), TextInt.Error.invalid)
+            Test().failure(try TextInt(radix: UXL(UX.max) + 1, letters: letters), TextInt.Error.invalid)
+        }
+    }
+    
+    func testInitDefaultLettersIsLowercase() throws {
+        for radix: U8 in Self.radices {
+            let numerals = try TextInt(radix: radix)
+            Test().same(numerals.radix,   U8(radix))
+            Test().same(numerals.letters, TextInt.Letters.lowercase)
+        }
+        
+        for radix: UX in Self.radices.lazy.map(UX.init) {
+            let numerals = try TextInt(radix: radix)
+            Test().same(numerals.radix,   U8(radix))
+            Test().same(numerals.letters, TextInt.Letters.lowercase)
         }
     }
     
@@ -105,11 +156,11 @@ extension TextIntTests.Case {
         }
         
         description.withUTF8Buffer {
-            self.decode(normal: String(decoding: $0, as: UTF8.self), expectation)
+            self.decode(dynamic: String(decoding: $0, as: UTF8.self), expectation)
         }
     }
     
-    func decode<I: BinaryInteger>(normal description: String, _ expectation: Result<I, E>) {
+    func decode<I: BinaryInteger>(dynamic description: String, _ expectation: Result<I, E>) {
         let matches36 = description.matches(of: TextIntTests.regex36)
         if  matches36.count != 1 {
             test.same(matches36.count, 0 as Int)
@@ -142,11 +193,10 @@ extension TextIntTests.Case {
     //=------------------------------------------------------------------------=
     
     func encode<I: BinaryInteger>(_ integer: I, _ expectation: String) {
-        //=--------------------------------------=
         decoding: do {
-            self.decode(normal: expectation, .success(integer))
+            self.decode(dynamic: expectation, .success(integer))
         }
-        //=--------------------------------------=
+        
         encoding: do {
             let result = self.item.encode(integer)
             test.same(result, expectation, "integer")

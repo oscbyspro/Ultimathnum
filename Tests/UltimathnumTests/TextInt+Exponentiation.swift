@@ -14,32 +14,31 @@ import TestKit
 // MARK: * Text Int x Exponentiation
 //*============================================================================*
 
-extension TextIntTests {
+final class TextIntTestsOnExponentiation: XCTestCase {
 
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testExponentiation() {
-        //=--------------------------------------=
+    func testEachRadixThrough1024() throws {
         let perfect256: [UX] = [2, 4, 16, 256]
         //=--------------------------------------=
         // test: the minimum radix is 2
         //=--------------------------------------=
-        Test().failure(try T.Exponentiation(0), E.invalid)
-        Test().failure(try T.Exponentiation(1), E.invalid)
+        Test().failure(try TextInt.Exponentiation(0), TextInt.Error.invalid)
+        Test().failure(try TextInt.Exponentiation(1), TextInt.Error.invalid)
         //=--------------------------------------=
-        for radix: UX in 2 ... 256 {
-            guard let solution = Test().success(try T.Exponentiation(radix)) else { break }
-            //=----------------------------------=
-            Test().more(solution.exponent, 1 as IX)
+        for radix: UX in 2...1024 {
+            let exponentiation = try TextInt.Exponentiation(radix)
+            Test().more(exponentiation.exponent, 1 as IX)
             //=----------------------------------=
             // test: perfect or imperfect
             //=----------------------------------=
-            if  perfect256.contains(radix) {
-                Test().same   (solution.power, UX.zero)
+            if  let radixLog2Log2 = perfect256.firstIndex(of: radix) {
+                Test().same(exponentiation.power,    UX.zero)
+                Test().same(exponentiation.exponent, IX(size: UX.self) >> IX(radixLog2Log2))
             }   else {
-                Test().nonsame(solution.power, UX.zero)
+                Test().nonsame(exponentiation.power, UX.zero)
             }
         }
     }
