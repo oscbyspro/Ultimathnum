@@ -48,7 +48,7 @@ extension TripleIntTests {
 // MARK: + Assertions
 //=----------------------------------------------------------------------------=
 
-extension Test {
+private extension Test {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

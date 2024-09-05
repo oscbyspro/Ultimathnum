@@ -26,15 +26,15 @@ extension TripleIntTests {
             typealias T = TripleInt<B>
             typealias F = Fallible<T>
             
-            Case(T(low:  0, mid:  0, high:  00000)).complement(false, is: F(T(low: ~0, mid: ~0, high: ~00000)))
-            Case(T(low:  0, mid:  0, high:  00000)).complement(true,  is: F(T(low:  0, mid:  0, high:  00000), error: !B.isSigned))
-            Case(T(low:  1, mid:  2, high:  00003)).complement(false, is: F(T(low: ~1, mid: ~2, high: ~00003)))
-            Case(T(low:  1, mid:  2, high:  00003)).complement(true,  is: F(T(low: ~0, mid: ~2, high: ~00003)))
+            Test().complement(T(low:  0, mid:  0, high:  00000), false, F(T(low: ~0, mid: ~0, high: ~00000)))
+            Test().complement(T(low:  0, mid:  0, high:  00000), true,  F(T(low:  0, mid:  0, high:  00000), error: !B.isSigned))
+            Test().complement(T(low:  1, mid:  2, high:  00003), false, F(T(low: ~1, mid: ~2, high: ~00003)))
+            Test().complement(T(low:  1, mid:  2, high:  00003), true,  F(T(low: ~0, mid: ~2, high: ~00003)))
             
-            Case(T(low: ~0, mid: ~0, high: ~B.msb)).complement(false, is: F(T(low:  0, mid:  0, high:  B.msb)))
-            Case(T(low: ~0, mid: ~0, high: ~B.msb)).complement(true,  is: F(T(low:  1, mid:  0, high:  B.msb)))
-            Case(T(low:  0, mid:  0, high:  B.msb)).complement(false, is: F(T(low: ~0, mid: ~0, high: ~B.msb)))
-            Case(T(low:  0, mid:  0, high:  B.msb)).complement(true,  is: F(T(low:  0, mid:  0, high:  B.msb), error:  B.isSigned))
+            Test().complement(T(low: ~0, mid: ~0, high: ~B.msb), false, F(T(low:  0, mid:  0, high:  B.msb)))
+            Test().complement(T(low: ~0, mid: ~0, high: ~B.msb), true,  F(T(low:  1, mid:  0, high:  B.msb)))
+            Test().complement(T(low:  0, mid:  0, high:  B.msb), false, F(T(low: ~0, mid: ~0, high: ~B.msb)))
+            Test().complement(T(low:  0, mid:  0, high:  B.msb), true,  F(T(low:  0, mid:  0, high:  B.msb), error:  B.isSigned))
         }
         
         for base in Self.bases {
@@ -47,28 +47,26 @@ extension TripleIntTests {
 // MARK: + Assertions
 //=----------------------------------------------------------------------------=
 
-extension TripleIntTests.Case {
+private extension Test {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    func complement(_ increment: Bool, is expectation: Fallible<Item>) {
-        always: do {
-            test.same(item.complement(increment), expectation, "complement [0]")
-        }
+    func complement<B>(_ instance: TripleInt<B>, _ increment: Bool, _ expectation: Fallible<TripleInt<B>>) {
+        same(instance.complement(increment), expectation, "complement [0]")
         
         if  increment {
-            test.same(item.complement(), expectation.value, "complement [1]")
+            same(instance.complement(), expectation.value, "complement [1]")
         }   else {
-            let roundtrip = item.complement(increment).value.complement(increment).value
-            test.same(roundtrip,  item, "complement [2]")
+            let roundtrip = instance.complement(increment).value.complement(increment).value
+            same(roundtrip, instance, "complement [2]")
         }
         
-        if  increment, item.high.isNegative {
-            test.same(Item(raw: item.magnitude()), expectation.value, "complement [3]")
+        if  increment, instance.high.isNegative {
+            same(TripleInt(raw: instance.magnitude()), expectation.value, "complement [3]")
         }   else {
-            test.same(Item(raw: item.magnitude()), item, "complement [4]")
+            same(TripleInt(raw: instance.magnitude()), instance, "complement [4]")
         }
     }
 }

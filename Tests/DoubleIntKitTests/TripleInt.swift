@@ -173,33 +173,4 @@ final class TripleIntTests: XCTestCase {
             whereTheBaseIs(base)
         }
     }
-    
-    //*========================================================================*
-    // MARK: * Case
-    //*========================================================================*
-    
-    struct Case<Base: SystemsInteger> {
-        
-        typealias Item = TripleInt<Base>
-        
-        //=--------------------------------------------------------------------=
-        // MARK: State
-        //=--------------------------------------------------------------------=
-
-        var test: Test
-        var item: Item
-        
-        //=--------------------------------------------------------------------=
-        // MARK: Initializers
-        //=--------------------------------------------------------------------=
-
-        init(_ item: Item, test: Test) {
-            self.test = test
-            self.item = item
-        }
-        
-        init(_ item: Item, file: StaticString = #file, line: UInt = #line) {
-            self.init(item, test: Test(file: file, line: line))
-        }
-    }
 }
