@@ -17,14 +17,31 @@
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
-
+    
+    /// A `value` that may or may not be valid.
+    ///
+    /// The `error` indicator tells you whether it has been invalidated. 
+    /// Alternatively, you may use methods like `optional()`, `result()` 
+    /// or `prune(_:)` to access it conditionally.
+    ///
+    /// - Note: An invalid value can still be useful, think of it like a stack trace.
+    ///
+    /// - Note: Overflowing binary integer arithmetic is especially well-behaved.
+    ///
     public var value: Value
+    
+    /// An `error` indicator.
+    ///
+    /// It tells you whether the `value` has been invalidated. You may use
+    /// methods like `veto(_:)` to merge additional `error` indicators.
+    ///
     public var error: Bool
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
 
+    /// Creates a new instance from the given `value` and `error`.
     @inlinable public init(_ value: consuming Value, error: consuming Bool = false) {
         self.value = value
         self.error = error
@@ -43,16 +60,7 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// Returns the current `value`, or `nil` if the `error` indicator is set.
-    ///
-    /// ```swift
-    /// if  let index = unsigned.minus(1).optional() {
-    ///     assert(unsigned >= 1)
-    /// }   else {
-    ///     assert(unsigned == 0)
-    /// }
-    /// ```
-    ///
+    /// Tries to return its `value` but returns `nil` on `error`.
     @inlinable public consuming func optional() -> Optional<Value> {
         if  self.error {
             return Optional.none
@@ -61,16 +69,7 @@
         }
     }
     
-    /// Returns the current `value`, or throws `failure` if the `error` indicator is set.
-    ///
-    /// ```swift
-    /// always: do {
-    ///     try IX.max.plus(1).prune(Oops())
-    /// }   catch let error {
-    ///     // recover from failure and save the day
-    /// }
-    /// ```
-    ///
+    /// Tries to return its `value` but throws `failure()` on `error`.
     @inlinable public consuming func prune<Error>(_ failure: @autoclosure () -> Error) throws -> Value where Error: Swift.Error {
         if  self.error {
             throw  failure()
@@ -79,15 +78,7 @@
         }
     }
     
-    /// Returns the current `value`, or `failure` if the `error` indicator is set.
-    ///
-    /// ```swift
-    /// switch IX.max.plus(1).prune(Oops()) {
-    /// case Result<IX, Oops>.success(value): // ...
-    /// case Result<IX, Oops>.failure(error): // ...
-    /// }
-    /// ```
-    ///
+    /// Tries to return its `value` but returns `failure()` on `error`.
     @inlinable public consuming func result<Error>(_ failure: @autoclosure () -> Error) -> Result<Value, Error> {
         if  self.error {
             return Result.failure(failure())

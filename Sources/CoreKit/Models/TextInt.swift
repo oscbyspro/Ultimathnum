@@ -71,7 +71,7 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Creates a new instance using the given `radix` and `letters`.
+    /// Creates a new instance using the given `radix`.
     ///
     /// - Requires: `2 ≤ radix ≤ 36`
     ///
@@ -81,7 +81,7 @@
         Self.radix(UX(radix))
     }
     
-    /// Creates a new instance using the given `radix` and `letters`.
+    /// Creates a new instance using the given `radix`.
     ///
     /// - Requires: `2 ≤ radix ≤ 36`
     ///

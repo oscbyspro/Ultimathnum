@@ -13,10 +13,6 @@
 
 extension TextInt {
     
-    //*========================================================================*
-    // MARK: * Numerals
-    //*========================================================================*
-    
     /// An ASCII numeral coder.
     @frozen public struct Numerals: Equatable, Sendable {
         
