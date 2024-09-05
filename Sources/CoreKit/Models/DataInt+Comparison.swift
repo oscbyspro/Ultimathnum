@@ -51,7 +51,7 @@ extension DataInt {
         // comparison: appendix
         //=--------------------------------------=
         if  Bool(instance.appendix) {
-            return Signum.one(Sign(raw: signedness)) // - < 0, ∞ > 0
+            return Signum(Sign(raw: signedness)) // - < 0, ∞ > 0
         }
         //=--------------------------------------=
         // comparison: body
@@ -73,14 +73,14 @@ extension DataInt {
             let sign = Bool(lhs.appendix)
             ? lhsSignedness ==   .signed // - < ℕ or ∞ > ℕ
             : rhsSignedness == .unsigned // ℕ < ∞ or ℕ > -
-            return Signum.one(Sign(sign))
+            return Signum(Sign(sign))
         }
         //=--------------------------------------=
         // comparison: negative vs infinite
         //=--------------------------------------=
         if  lhsSignedness != rhsSignedness {
             if  Bool(lhs.appendix) {
-                return Signum.one(Sign(raw: lhsSignedness)) // - < ∞ or ∞ > -
+                return Signum(Sign(raw: lhsSignedness)) // - < ∞ or ∞ > -
             }
         }
         //=--------------------------------------=
@@ -98,7 +98,7 @@ extension DataInt {
             //
             let appendix = Bool(lhs.appendix)
             let order = lhs.body.count > rhs.body.count
-            return Signum.one(Sign(appendix == order))
+            return Signum(Sign(appendix == order))
         }
         //=--------------------------------------=
         // comparison: body
@@ -114,13 +114,13 @@ extension DataInt {
             //  0|1... is less than 1|1... because ...(1s)
             //
             if  lhsElement != rhsElement {
-                return Signum.one(Sign(lhsElement < rhsElement))
+                return Signum(Sign(lhsElement < rhsElement))
             }
         }
         //=--------------------------------------=
         // comparison: same
         //=--------------------------------------=
-        return Signum.same // as Signum as Signum
+        return Signum.zero // as Signum as Signum
     }
 }
 

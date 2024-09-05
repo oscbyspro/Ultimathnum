@@ -33,9 +33,9 @@ extension InfiniInt {
         //=--------------------------------------=
         if !Self.isSigned, rhsAppendixIsSet {
             switch self.compared(to: divisor.value) {
-            case Signum.less: return Fallible(Division(quotient: .zero, remainder:  self))
-            case Signum.same: return Fallible(Division(quotient:  0001, remainder: .zero))
-            case Signum.more: return Fallible(Division(quotient:  0001, remainder:  self - divisor.value))
+            case Signum.negative: return Fallible(Division(quotient: .zero, remainder:  self))
+            case Signum.zero:     return Fallible(Division(quotient:  0001, remainder: .zero))
+            case Signum.positive: return Fallible(Division(quotient:  0001, remainder:  self - divisor.value))
             }
         }
         //=--------------------------------------=
@@ -98,9 +98,9 @@ extension InfiniInt where Self: UnsignedInteger {
         // division: dividend <= divisor
         //=--------------------------------------=
         switch self.compared(to: divisor) {
-        case Signum.more: break
-        case Signum.same: return Division(quotient:  0001, remainder: .zero)
-        case Signum.less: return Division(quotient: .zero, remainder:  self)
+        case Signum.positive: break
+        case Signum.zero:     return Division(quotient:  0001, remainder: .zero)
+        case Signum.negative: return Division(quotient: .zero, remainder:  self)
         }
         //=--------------------------------------=
         // division: dividend >  divisor

@@ -27,7 +27,7 @@ extension DataIntTests {
             
             for appendix: Bit in [0, 1] {
                 for signedness: Signedness in [.unsigned, .signed] {
-                    let expectation = (appendix == 0) ? Signum.same : Signum.one(Sign(raw: signedness))
+                    let expectation = (appendix == 0) ? Signum.zero : Signum(Sign(raw: signedness))
                     C([       ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
                     C([0      ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
                     C([0, 0   ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
@@ -35,7 +35,7 @@ extension DataIntTests {
                 }
                 
                 for signedness: Signedness in [.unsigned, .signed] {
-                    let expectation = (appendix == 0) ? Signum.more : Signum.one(Sign(raw: signedness))
+                    let expectation = (appendix == 0) ? Signum.positive : Signum(Sign(raw: signedness))
                     C([1      ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
                     C([1, 2   ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
                     C([1, 2, 3] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
@@ -119,7 +119,7 @@ extension DataIntTests.Body {
             $0.signum()
         }
         
-        self.expect(expectation == Signum.same) {
+        self.expect(expectation.isZero) {
             $0.isZero
         }   write: {
             $0.isZero
@@ -144,7 +144,7 @@ extension DataIntTests.Extension {
             DataInt.signum(of: DataInt($0), mode: signedness)
         }
         
-        self.expect(expectation == Signum.same) {
+        self.expect(expectation.isZero) {
             $0.isZero
         }   write: {
             $0.isZero

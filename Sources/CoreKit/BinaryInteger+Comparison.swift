@@ -165,7 +165,7 @@ extension Namespace {
                     comparator.compare(lhs, to: LHS(load: rhs))
                     
                 }   else if lhs.isNegative {
-                    comparator.resolve(Signum.less)
+                    comparator.resolve(Signum.negative)
                     
                 }   else {
                     comparator.compare(RHS(load: lhs), to: rhs)
@@ -177,7 +177,7 @@ extension Namespace {
                     comparator.compare(RHS(load: lhs), to: rhs)
                     
                 }   else if rhs.isNegative {
-                    comparator.resolve(Signum.more)
+                    comparator.resolve(Signum.positive)
                     
                 }   else {
                     comparator.compare(lhs, to: LHS(load: rhs))

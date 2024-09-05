@@ -271,12 +271,12 @@ extension MutableDataInt.Body {
             //=----------------------------------=
             // regions
             //=----------------------------------=
-            let abSwap = b.compared(to: a) == Signum.less
+            let abSwap = b.compared(to: a).isNegative
             if  abSwap {
                 Swift.swap(&a, &b)
             }
             
-            let xySwap = y.compared(to: x) == Signum.less
+            let xySwap = y.compared(to: x).isNegative
             if  xySwap {
                 Swift.swap(&x, &y)
             }
@@ -382,7 +382,7 @@ extension MutableDataInt.Body {
             //=----------------------------------=
             // regions
             //=----------------------------------=
-            if  b.compared(to:  a) == Signum.less {
+            if  b.compared(to:  a).isNegative {
                 Swift.swap(&a, &b)
             }
             //=----------------------------------=

@@ -17,7 +17,31 @@ extension Signum {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func compared(to other: Self) -> Signum {
-        self < other ? Signum.less : self == other ? Signum.same : Signum.more
+    /// Indicates whether `self` is `negative`.
+    @inlinable public var isNegative: Bool {
+        self == Self.negative
+    }
+    
+    /// Indicates whether `self` is `zero`.
+    @inlinable public var isZero: Bool {
+        self == Self.zero
+    }
+    
+    /// Indicates whether `self` is `positive`.
+    @inlinable public var isPositive: Bool {
+        self == Self.positive
+    }
+    
+    /// Performs a three-way comparison of `self` versus `other`.
+    @inlinable public func compared(to other: Self) -> Self {
+        if  self < other {
+            Self.negative
+            
+        }   else if self == other {
+            Self.zero
+            
+        }   else {
+            Self.positive
+        }
     }
 }

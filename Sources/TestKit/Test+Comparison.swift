@@ -105,12 +105,12 @@ extension Test {
         _ expectation: Signum
     )   where T: BinaryInteger {
         
-        same(instance.isNegative, expectation == Signum.less, "BinaryInteger.isNegative")
-        same(instance.isZero,     expectation == Signum.same, "BinaryInteger.isZero")
-        same(instance.isPositive, expectation == Signum.more, "BinaryInteger.isPositive")
+        same(instance.isNegative, expectation.isNegative, "BinaryInteger.isNegative")
+        same(instance.isZero,     expectation.isZero,     "BinaryInteger.isZero")
+        same(instance.isPositive, expectation.isPositive, "BinaryInteger.isPositive")
         
         if  instance.isInfinite {
-            same(expectation, Signum.more, "BinaryInteger.isInfinite")
+            yay(expectation.isPositive, "BinaryInteger.isInfinite")
         }
         
         always: do {
@@ -160,37 +160,37 @@ extension Test {
             
             less: do {
                 let result:  Bool = lhs <  rhs
-                let success: Bool = result == (expectation == .less)
+                let success: Bool = result == expectation.isNegative
                 expect(success, "\(lhs) <  \(rhs) -> \(result)")
             }
             
             same: do {
                 let result:  Bool = lhs == rhs
-                let success: Bool = result == (expectation == .same)
+                let success: Bool = result == expectation.isZero
                 expect(success, "\(lhs) == \(rhs) -> \(result)")
             }
             
             more: do {
                 let result:  Bool = lhs >  rhs
-                let success: Bool = result == (expectation == .more)
+                let success: Bool = result == expectation.isPositive
                 expect(success, "\(lhs) >  \(rhs) -> \(result)")
             }
             
             nonless: do {
                 let result:  Bool = lhs >= rhs
-                let success: Bool = result == (expectation != .less)
+                let success: Bool = result != expectation.isNegative
                 expect(success, "\(lhs) >= \(rhs) -> \(result)")
             }
             
             nonsame: do {
                 let result:  Bool = lhs != rhs
-                let success: Bool = result == (expectation != .same)
+                let success: Bool = result != expectation.isZero
                 expect(success, "\(lhs) != \(rhs) -> \(result)")
             }
             
             nonmore: do {
                 let result:  Bool = lhs <= rhs
-                let success: Bool = result == (expectation != .more)
+                let success: Bool = result != expectation.isPositive
                 expect(success, "\(lhs) <= \(rhs) -> \(result)")
             }
             
@@ -252,7 +252,7 @@ extension Test {
         unidirectional(lhs, rhs, expectation)
         unidirectional(rhs, lhs, expectation.negated())
         
-        if  T.self == U.self, expectation == Signum.same {
+        if  T.self == U.self, expectation.isZero {
             same(lhs.hashValue, rhs.hashValue, "Hashable/hashValue")
         }
     }
@@ -276,37 +276,37 @@ extension Test {
             
             less: do {
                 let result:  Bool = lhs <  rhs
-                let success: Bool = result == (expectation == .less)
+                let success: Bool = result == expectation.isNegative
                 expect(success, "\(lhs) <  \(rhs) -> \(result)")
             }
             
             same: do {
                 let result:  Bool = lhs == rhs
-                let success: Bool = result == (expectation == .same)
+                let success: Bool = result == expectation.isZero
                 expect(success, "\(lhs) == \(rhs) -> \(result)")
             }
             
             more: do {
                 let result:  Bool = lhs >  rhs
-                let success: Bool = result == (expectation == .more)
+                let success: Bool = result == expectation.isPositive
                 expect(success, "\(lhs) >  \(rhs) -> \(result)")
             }
             
             nonless: do {
                 let result:  Bool = lhs >= rhs
-                let success: Bool = result == (expectation != .less)
+                let success: Bool = result != expectation.isNegative
                 expect(success, "\(lhs) >= \(rhs) -> \(result)")
             }
             
             nonsame: do {
                 let result:  Bool = lhs != rhs
-                let success: Bool = result == (expectation != .same)
+                let success: Bool = result != expectation.isZero
                 expect(success, "\(lhs) != \(rhs) -> \(result)")
             }
             
             nonmore: do {
                 let result:  Bool = lhs <= rhs
-                let success: Bool = result == (expectation != .more)
+                let success: Bool = result != expectation.isPositive
                 expect(success, "\(lhs) <= \(rhs) -> \(result)")
             }
         }

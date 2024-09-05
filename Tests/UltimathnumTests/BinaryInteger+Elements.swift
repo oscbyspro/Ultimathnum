@@ -138,7 +138,7 @@ final class BinaryIntegerTestsOnElements: XCTestCase {
     
     func testInitArbitraryWhereCountIsInvalidIsNil() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            Test().comparison(T.Element.size, Count(1), Signum.more, id: ComparableID())
+            Test().comparison(T.Element.size, Count(1), Signum.positive, id: ComparableID())
             
             for count: IX in [IX.min, IX.min + 1, -1, IX.max - 1, IX.max] as [IX] {
                 always: do {

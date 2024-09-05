@@ -8,7 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Signum x Subtraction
+// MARK: * Signum x Addition
 //*============================================================================*
 
 extension Signum {
@@ -17,16 +17,21 @@ extension Signum {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Returns the result of `0 - self`.
+    /// Forms the additive inverse of `self`
+    @inlinable public mutating func negate() {
+        self = self.negated()
+    }
+    
+    /// Returns the additive inverse of `self`
     @inlinable public consuming func negated() -> Self {
         switch self {
-        case .less: .more
-        case .same: .same
-        case .more: .less
+        case Self.negative: Self.positive
+        case Self.zero:     Self.zero
+        case Self.positive: Self.negative
         }
     }
     
-    /// Returns the result of `0 - instance`.
+    /// Returns the additive inverse of `self`
     @inlinable public static prefix func -(instance: consuming Self) -> Self {
         instance.negated()
     }

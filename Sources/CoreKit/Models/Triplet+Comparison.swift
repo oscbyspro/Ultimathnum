@@ -18,11 +18,11 @@ extension Triplet {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.same
+        lhs.compared(to: rhs).isZero
     }
     
     @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.compared(to: rhs) == Signum.less
+        lhs.compared(to: rhs).isNegative
     }
     
     @inlinable public borrowing func compared(to other: borrowing Self) -> Signum {
@@ -30,9 +30,9 @@ extension Triplet {
     
         loop: do {
             signum = self.high.compared(to: other.high)
-            if signum != Signum.same { break loop }
+            guard signum.isZero else { break loop }
             signum = self.mid .compared(to: other.mid )
-            if signum != Signum.same { break loop }
+            guard signum.isZero else { break loop }
             signum = self.low .compared(to: other.low )
         }
         

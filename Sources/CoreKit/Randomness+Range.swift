@@ -34,7 +34,7 @@ extension Randomness {
             return self.systems(through: limit)
             
         }   else {
-            return self.arbitrary(upTo: Signum.more, relativeTo: limit)
+            return self.arbitrary(upTo: Signum.positive, relativeTo: limit)
         }
     }
     
@@ -55,7 +55,7 @@ extension Randomness {
             return self.systems(upTo: limit)
             
         }   else {
-            return self.arbitrary(upTo: Signum.same, relativeTo: limit.value)
+            return self.arbitrary(upTo: Signum.zero, relativeTo: limit.value)
         }
     }
 }
@@ -140,11 +140,11 @@ extension Randomness {
             Swift.preconditionFailure(String.overflow())
         }
         
-        if  comparison == Signum.less {
+        if  comparison.isNegative {
             Swift.assertionFailure(String.brokenInvariant())
         }
         
-        if  comparison == Signum.same {
+        if  comparison.isZero {
             Swift.assert(!limit.isZero)
         }
         

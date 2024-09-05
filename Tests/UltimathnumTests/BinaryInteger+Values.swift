@@ -54,7 +54,7 @@ final class BinaryIntegerTestsOnValues: XCTestCase {
             //=----------------------------------=
             let relative = IX(raw: T.size)
             //=----------------------------------=
-            Test().comparison(T.lsb, T.msb, T.isSigned ? Signum.more : Signum.less)
+            Test().comparison(T.lsb, T.msb, Signum(Sign(!T.isSigned)))
             //=----------------------------------=
             Test() .ascending(T.msb, 0 as Bit, Count(raw: relative - 1))
             Test() .ascending(T.msb, 1 as Bit, Count(0))

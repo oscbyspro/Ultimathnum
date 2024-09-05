@@ -43,14 +43,29 @@ final class BitTests: XCTestCase {
         Test().same(T(raw: Sign.plus ), 0 as T)
         Test().same(T(raw: Sign.minus), 1 as T)
         
-        Test().same(Sign(0 as T), .plus)
-        Test().same(Sign(1 as T), .minus )
+        Test().same(Sign(0 as T), .plus )
+        Test().same(Sign(1 as T), .minus)
         
-        Test().same(Sign(raw: 0 as T), .plus)
-        Test().same(Sign(raw: 1 as T), .minus )
+        Test().same(Sign(raw: 0 as T), .plus )
+        Test().same(Sign(raw: 1 as T), .minus)
     }
     
     func testComparison() {
+        func comparison(_ lhs: T, _ rhs: T, _ expectation: Signum, _ test: Test = .init()) {
+            for (x, y, z) in [
+                (lhs, rhs, expectation),
+                (rhs, lhs, expectation.negated())
+            ] {
+                test.same(x.compared(to: y), z)
+                test.same(x <  y, z == Signum.negative)
+                test.same(x >= y, z != Signum.negative)
+                test.same(x == y, z == Signum.zero)
+                test.same(x != y, z != Signum.zero)
+                test.same(x >  y, z == Signum.positive)
+                test.same(x <= y, z != Signum.positive)
+            }
+        }
+        
         comparison( 0 as T,  0 as T,  0 as Signum)
         comparison( 0 as T,  1 as T, -1 as Signum)
         comparison( 1 as T,  0 as T,  1 as Signum)
@@ -85,21 +100,5 @@ final class BitTests: XCTestCase {
         Test().xor(0 as T, 1 as T, 1 as T)
         Test().xor(1 as T, 0 as T, 1 as T)
         Test().xor(1 as T, 1 as T, 0 as T)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    func comparison(_ lhs: T, _ rhs: T, _ expectation: Signum, _ check: Test = .init()) {
-        for (x, y, z) in [(lhs, rhs, expectation), (rhs, lhs, expectation.negated())] {
-            check.same(x.compared(to: y), ((z)))
-            check.same(x <  y, z == Signum.less)
-            check.same(x >= y, z != Signum.less)
-            check.same(x >  y, z == Signum.more)
-            check.same(x <= y, z != Signum.more)
-            check.same(x == y, z == Signum.same)
-            check.same(x != y, z != Signum.same)
-        }
     }
 }

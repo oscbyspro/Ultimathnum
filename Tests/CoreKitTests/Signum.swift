@@ -15,22 +15,29 @@ import TestKit
 //*============================================================================*
 
 final class SignumTests: XCTestCase {
-    
-    typealias T = Signum
-    
+        
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     func testInitBit() {
-        Test().same(T(0 as Bit), T.same)
-        Test().same(T(1 as Bit), T.more)
+        Test().same(Signum(0 as Bit), Signum.zero)
+        Test().same(Signum(1 as Bit), Signum.positive)
+    }
+    
+    func testInitSign() {
+        Test().same(Signum(Sign.plus ), Signum.positive)
+        Test().same(Signum(Sign.minus), Signum.negative)
+        
+        Test().same(Signum(Optional<Sign>(nil )), Signum.zero)
+        Test().same(Signum(Optional(Sign.plus )), Signum.positive)
+        Test().same(Signum(Optional(Sign.minus)), Signum.negative)
     }
     
     func testInitIntegerLiteral() {
-        Test().same(-1 as T, T.less)
-        Test().same( 0 as T, T.same)
-        Test().same( 1 as T, T.more)
+        Test().same(-1 as Signum, Signum.negative)
+        Test().same( 0 as Signum, Signum.zero)
+        Test().same( 1 as Signum, Signum.positive)
     }
     
     //=------------------------------------------------------------------------=
@@ -38,38 +45,48 @@ final class SignumTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testComparison() {
-        Test().same(T.less, T.less)
-        Test().less(T.less, T.same)
-        Test().less(T.less, T.more)
+        Test().yay(Signum.negative.isNegative)
+        Test().nay(Signum.negative.isZero)
+        Test().nay(Signum.negative.isPositive)
+        Test().nay(Signum.zero    .isNegative)
+        Test().yay(Signum.zero    .isZero)
+        Test().nay(Signum.zero    .isPositive)
+        Test().nay(Signum.positive.isNegative)
+        Test().nay(Signum.positive.isZero)
+        Test().yay(Signum.positive.isPositive)
         
-        Test().more(T.same, T.less)
-        Test().same(T.same, T.same)
-        Test().less(T.same, T.more)
-        
-        Test().more(T.more, T.less)
-        Test().more(T.more, T.same)
-        Test().same(T.more, T.more)
-        
-        Test().same(T.less.compared(to: T.less),  0 as Signum)
-        Test().same(T.less.compared(to: T.same), -1 as Signum)
-        Test().same(T.less.compared(to: T.more), -1 as Signum)
-        
-        Test().same(T.same.compared(to: T.less),  1 as Signum)
-        Test().same(T.same.compared(to: T.same),  0 as Signum)
-        Test().same(T.same.compared(to: T.more), -1 as Signum)
-        
-        Test().same(T.more.compared(to: T.less),  1 as Signum)
-        Test().same(T.more.compared(to: T.same),  1 as Signum)
-        Test().same(T.more.compared(to: T.more),  0 as Signum)
+        Test().same(Signum.negative, Signum.negative)
+        Test().less(Signum.negative, Signum.zero)
+        Test().less(Signum.negative, Signum.positive)
+        Test().more(Signum.zero,     Signum.negative)
+        Test().same(Signum.zero,     Signum.zero)
+        Test().less(Signum.zero,     Signum.positive)
+        Test().more(Signum.positive, Signum.negative)
+        Test().more(Signum.positive, Signum.zero)
+        Test().same(Signum.positive, Signum.positive)
+                
+        Test().same(Signum.negative.compared(to: Signum.negative),  0)
+        Test().same(Signum.negative.compared(to: Signum.zero),     -1)
+        Test().same(Signum.negative.compared(to: Signum.positive), -1)
+        Test().same(Signum.zero    .compared(to: Signum.negative),  1)
+        Test().same(Signum.zero    .compared(to: Signum.zero),      0)
+        Test().same(Signum.zero    .compared(to: Signum.positive), -1)
+        Test().same(Signum.positive.compared(to: Signum.negative),  1)
+        Test().same(Signum.positive.compared(to: Signum.zero),      1)
+        Test().same(Signum.positive.compared(to: Signum.positive),  0)
     }
     
     func testNegation() {
-        Test().same(-T.less, T.more)
-        Test().same(-T.same, T.same)
-        Test().same(-T.more, T.less)
+        Test().same(-Signum.negative, Signum.positive)
+        Test().same(-Signum.zero,     Signum.zero)
+        Test().same(-Signum.positive, Signum.negative)
         
-        Test().same( T.less.negated(), T.more)
-        Test().same( T.same.negated(), T.same)
-        Test().same( T.more.negated(), T.less)
+        Test().same( Signum.negative.negated(), Signum.positive)
+        Test().same( Signum.zero    .negated(), Signum.zero)
+        Test().same( Signum.positive.negated(), Signum.negative)
+        
+        Test().same({ var x = Signum.negative; x.negate(); return x }(), Signum.positive)
+        Test().same({ var x = Signum.zero;     x.negate(); return x }(), Signum.zero)
+        Test().same({ var x = Signum.positive; x.negate(); return x }(), Signum.negative)
     }
 }

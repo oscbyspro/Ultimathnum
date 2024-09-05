@@ -69,7 +69,7 @@
         
         @inline(__always)
         @inlinable internal func resolve(_ signum: Signum) -> Bool {
-            signum == Signum.same
+            signum.isZero
         }
         
         @inline(__always)
@@ -84,7 +84,7 @@
         
         @inline(__always)
         @inlinable internal func resolve(_ signum: Signum) -> Bool {
-            signum == Signum.less
+            signum.isNegative
         }
         
         @inline(__always)

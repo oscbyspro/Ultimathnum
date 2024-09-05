@@ -116,7 +116,7 @@ extension MutableDataInt.Body {
             "the dividend must be wider than the divisor"
         )
         Swift.assert(
-            dividend[unchecked: self.count...].compared(to: divisor) == .less,
+            dividend[unchecked: self.count...].compared(to: divisor).isNegative,
             "the quotient must fit in dividend.count - divisor.count elements"
         )
         
@@ -148,7 +148,7 @@ extension MutableDataInt.Body {
             "the dividend must be one element wider than the divisor"
         )
         Swift.assert(            
-            self[unchecked: 1...].compared(to: divisor) == .less,
+            self[unchecked: 1...].compared(to: divisor).isNegative,
             "the quotient of each iteration must fit in one element"
         )
         
@@ -178,7 +178,7 @@ extension MutableDataInt.Body {
             overflow = !self.increment(by: divisor).error
         }
         
-        Swift.assert(self.compared(to: divisor) == .less)
+        Swift.assert(self.compared(to: divisor).isNegative)
         return quotient
     }
 }

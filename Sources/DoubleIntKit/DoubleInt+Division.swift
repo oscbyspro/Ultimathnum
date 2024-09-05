@@ -122,12 +122,12 @@ extension DoubleInt where Base == Base.Magnitude {
         Swift.assert(!divisor .value.isZero, "must not divide by zero")
         Swift.assert((divisor).value.descending(Bit.zero) == normalization.value, "save shift distance")
         //=--------------------------------------=
-        // divisor is greater than or equal
+        // division: dividend <= divisor
         //=--------------------------------------=
-        switch divisor.value.compared(to: self) {
-        case Signum.less: break
-        case Signum.same: return Division(quotient: Self(low: 1), remainder: Self(low: 0))
-        case Signum.more: return Division(quotient: Self(low: 0), remainder: self)
+        switch self.compared(to: divisor.value) {
+        case Signum.positive: break
+        case Signum.zero:     return Division(quotient: Self(low: 1), remainder: Self(low: 0))
+        case Signum.negative: return Division(quotient: Self(low: 0), remainder: self)
         }
         //=--------------------------------------=
         // division: 1111
