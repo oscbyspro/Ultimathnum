@@ -143,8 +143,8 @@ final class StdlibIntTestsLikeOpenSourceTestsBySwift: XCTestCase {
         Test().same(-c,     b)
         Test().same( b + c, 0)
         
-        Test().nonsame(a.hashValue, b.hashValue)
-        Test().nonsame(b.hashValue, c.hashValue)
+        Test().nonsame(a, b) // was a Hashable/hashValue comparison
+        Test().nonsame(b, c) // was a Hashable/hashValue comparison
         
         let set = Set([a, b, c])
         Test().yay(set.contains( a))
