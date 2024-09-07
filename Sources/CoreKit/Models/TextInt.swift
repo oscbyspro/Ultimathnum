@@ -53,7 +53,7 @@
     ///
     /// - Note: Encoding is case sensitive.
     ///
-    @usableFromInline var numerals: Numerals
+    public var numerals: Numerals
     
     /// The number of elements per chunk.
     ///
