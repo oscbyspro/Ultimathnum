@@ -20,9 +20,9 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Creates a new instance from the given `source`.
+    /// Loads the `source` by trapping on `error`
     ///
-    /// - Note: This method does not need to perform any validation.
+    /// - Note: This particular overload cannot fail.
     ///
     @inline(__always) // performance: please fold it like a paper airplane
     @inlinable public init(_ source: consuming Self) {
@@ -33,7 +33,18 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Creates a validated instance from the given `sign` and `magnitude`.
+    /// Loads the `sign` and `magnitude` by trapping on `error`.
+    @inlinable public init<Other>(
+        sign: consuming Sign = .plus,
+        magnitude: consuming Other
+    )   where Other: UnsignedInteger  {
+        self = Self.exactly(sign: sign, magnitude: magnitude).unwrap()
+    }
+    
+    /// Loads the `sign` and `magnitude` and returns an `error` indicator.
+    ///
+    /// - Note: The `error` is set if the conversion is `lossy`.
+    ///
     @inlinable public static func exactly(
         sign: consuming Sign = .plus,
         magnitude: consuming Magnitude
@@ -50,23 +61,28 @@ extension BinaryInteger {
         return value.veto(value.isNegative != isNegative)
     }
     
-    /// Creates a validated instance from the given `sign` and `magnitude`.
+    /// Loads the `sign` and `magnitude` and returns an `error` indicator.
+    ///
+    /// - Note: The `error` is set if the conversion is `lossy`.
+    ///
     @inlinable public static func exactly<Other>(
         sign: consuming Sign = .plus,
         magnitude: consuming Other
     )   -> Fallible<Self> where Other: UnsignedInteger {
-        
         let magnitude = Magnitude.exactly(magnitude)
         let result = Self.exactly(sign: sign, magnitude: magnitude.value)
         return result.veto(magnitude.error)
     }
     
-    /// Creates a new instance from the given `sign` and `magnitude` by trapping on failure.
-    @inlinable public init<Other>(
+    /// Loads the `sign` and `magnitude` and returns an `error` indicator.
+    ///
+    /// - Note: The `error` is set if the conversion is `lossy`.
+    ///
+    @inlinable public static func exactly<Other>(
         sign: consuming Sign = .plus,
-        magnitude: consuming Other
-    )   where Other: UnsignedInteger  {
-        self = Self.exactly(sign: sign, magnitude: magnitude).unwrap()
+        magnitude: consuming Fallible<Other>
+    )   -> Fallible<Self> where Other: UnsignedInteger {
+        Self.exactly(sign: sign, magnitude: magnitude.value).veto(magnitude.error)
     }
 
     //=------------------------------------------------------------------------=
@@ -74,13 +90,16 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     // TODO: await appendix { borrowing get } fixes then make these borrowing
     //=------------------------------------------------------------------------=
-    
-    /// Creates a new instance from the given `source` by trapping on failure.
+        
+    /// Loads the `source` by trapping on `error`
     @inlinable public init<Other>(_ source: consuming Other) where Other: BinaryInteger {
         self = Self.exactly(source).unwrap()
     }
     
-    /// Creates a validated instance from the given `source`.
+    /// Loads the `source` and returns an `error` indicator.
+    ///
+    /// - Note: The `error` is set if the conversion is `lossy`.
+    ///
     @inlinable public static func exactly<Other>(_ source: consuming Other) -> Fallible<Self> where Other: BinaryInteger {
         if  let size = IX(size: Self.self), !Other.size.isInfinite {
             if  Self.size > Other.size, Self.isSigned {
@@ -108,5 +127,13 @@ extension BinaryInteger {
                 Self.exactly($0, mode: Other.mode)
             }
         }
+    }
+    
+    /// Loads the `source` and returns an `error` indicator.
+    ///
+    /// - Note: The `error` is set if the conversion is `lossy`.
+    ///
+    @inlinable public static func exactly<Other>(_ source: consuming Fallible<Other>) -> Fallible<Self> where Other: BinaryInteger {
+        Self.exactly(source.value).veto(source.error)
     }
 }

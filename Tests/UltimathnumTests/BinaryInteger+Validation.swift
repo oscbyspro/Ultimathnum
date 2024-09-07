@@ -10,6 +10,7 @@
 import CoreKit
 import DoubleIntKit
 import InfiniIntKit
+import RandomIntKit
 import TestKit
 
 //*============================================================================*
@@ -408,8 +409,73 @@ extension BinaryIntegerTestsOnValidation {
         }
         
         for source in arbitraryIntegersWhereIsUnsigned {
-            for destinaiton in systemsIntegers {
-                whereIs(source, destinaiton)
+            for destination in systemsIntegers {
+                whereIs(source, destination)
+            }
+        }
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Recoverable
+//=----------------------------------------------------------------------------=
+
+extension BinaryIntegerTestsOnValidation {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testErrorPropagationMechanism() {
+        func whereIs<A, B>(
+            source: A.Type,
+            destination: B.Type,
+            size: IX,
+            rounds: IX,
+            randomness: consuming FuzzerInt
+        ) where A: BinaryInteger, B: BinaryInteger {
+            
+            var success: IX = 0
+            
+            func random() -> A {
+                let index = IX.random(in: 00000 ..< size, using: &randomness)!
+                let pattern = A.Signitude.random(through: Shift(Count(index)), using: &randomness)
+                return A(raw: pattern) // do not forget about infinite values!
+            }
+            
+            for _ in 0 ..< rounds {
+                let source: A = random()
+                let destination =  B.exactly(source)
+                success &+= IX(Bit(B.exactly(source.veto(false)) == destination))
+                success &+= IX(Bit(B.exactly(source.veto(true )) == destination.veto()))
+            }
+            
+            for _ in 0 ..< rounds {
+                let sign = Sign(Bool.random(using: &randomness.stdlib))
+                let magnitude = A.Magnitude(raw: random())
+                let destination =  B.exactly(sign: sign, magnitude: magnitude)
+                success &+= IX(Bit(B.exactly(sign: sign, magnitude: magnitude.veto(false)) == destination))
+                success &+= IX(Bit(B.exactly(sign: sign, magnitude: magnitude.veto(true )) == destination.veto()))
+            }
+            
+            Test().same(success, rounds &* 4)
+        }
+        
+        #if DEBUG
+        let rounds: IX = 08
+        #else
+        let rounds: IX = 32
+        #endif
+        for source in binaryIntegers {
+            for destination in binaryIntegers {
+                let size =  IX(size: source) ?? 256
+                whereIs(
+                    source:      source,
+                    destination: destination,
+                    size:        size,
+                    rounds:      rounds,
+                    randomness:  fuzzer
+                )
             }
         }
     }

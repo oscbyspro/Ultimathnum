@@ -32,7 +32,7 @@ final class BinaryIntegerTestsOnFactorial: XCTestCase {
                 
                 let optional: Optional = instance.factorial()
                 let unsigned: Fallible = instance.magnitude().factorial()
-                let fallible: Fallible = T.exactly(unsigned.value).veto(unsigned.error)
+                let fallible: Fallible = T.exactly(unsigned)
                 
                 Test().same(optional, expectation.optional())
                 Test().same(fallible, expectation)

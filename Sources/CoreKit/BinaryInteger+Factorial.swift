@@ -44,9 +44,8 @@ extension UnsignedInteger {
             
         }   else if Self.size <= UX.size {
             // save some code size w.r.t. small integers
-            typealias   Algorithm = Namespace.Factorial<UX>
-            let small = Algorithm.unchecked(UX(load: self))
-            return Self.exactly(small.value).veto(small.error)
+            typealias Algorithm = Namespace.Factorial<UX>
+            return Self.exactly(Algorithm.unchecked(UX(load: self)))
             
         }   else {
             // clamping works because the allocation limit is IX.max
