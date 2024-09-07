@@ -328,21 +328,27 @@ extension MutableDataInt.Body {
     
     /// - Requires: `self.count >= elements.count + 1`
     @inlinable public consuming func incrementSubSequence(
-        by elements: borrowing Immutable,
-        times multiplier: consuming Element,
-        plus increment: Element = .zero
+        by elements: consuming Immutable,
+        times multiplier: borrowing Element,
+        plus increment: consuming Element = .zero
     )   -> Fallible<Self> {
         
-        var bit: Bool
-        var increment = increment // consume: compiler bug...
+        var overflow: (Bool, Bool)
         
-        for index in elements.indices {
-            let product = elements[unchecked: index].multiplication(multiplier, plus: increment)
-            (self[unchecked: index], bit) = (self[unchecked: index]).plus(product.low).components()
-            (increment) = product.high.plus(Element(Bit(bit))).unchecked()
+        while !elements.isEmpty {
+            let (low,high) = elements[unchecked: ((()))].multiplication(multiplier).components()
+            (self[unchecked: ()], overflow.0) = self[unchecked: ()].plus((((low)))).components()
+            (self[unchecked: ()], overflow.1) = self[unchecked: ()].plus(increment).components()
+            
+            increment = consume high
+            increment = increment.incremented(overflow.0).unchecked()
+            increment = increment.incremented(overflow.1).unchecked()
+            
+            self     = (consume self    )[unchecked: 1...]
+            elements = (consume elements)[unchecked: 1...]
         }
         
-        return (consume self)[unchecked: elements.count...].incrementSubSequence(by: increment)
+        return (consume self).incrementSubSequence(by: increment)
     }
     
     /// - Requires: `self.count >= elements.count + 1`
@@ -358,20 +364,26 @@ extension MutableDataInt.Body {
     
     /// - Requires: `self.count >= elements.count + 1`
     @inlinable public consuming func decrementSubSequence(
-        by elements: borrowing Immutable,
-        times multiplier: consuming Element,
-        plus decrement: Element = .zero
+        by elements: consuming Immutable,
+        times multiplier: borrowing Element,
+        plus decrement: consuming Element = .zero
     )   -> Fallible<Self> {
         
-        var bit: Bool
-        var decrement = decrement // consume: compiler bug...
+        var overflow: (Bool, Bool)
         
-        for index in elements.indices {
-            let product = elements[unchecked: index].multiplication(multiplier, plus: decrement)
-            (self[unchecked: index], bit) = (self[unchecked: index]).minus(product.low).components()
-            (decrement) = product.high.plus(Element(Bit(bit))).unchecked()
+        while !elements.isEmpty {
+            let (low,high) = elements[unchecked:(((())))].multiplication(multiplier).components()
+            (self[unchecked: ()], overflow.0) = self[unchecked: ()].minus((((low)))).components()
+            (self[unchecked: ()], overflow.1) = self[unchecked: ()].minus(decrement).components()
+            
+            decrement = consume high
+            decrement = decrement.incremented(overflow.0).unchecked()
+            decrement = decrement.incremented(overflow.1).unchecked()
+            
+            self     = (consume self    )[unchecked: 1...]
+            elements = (consume elements)[unchecked: 1...]
         }
         
-        return (consume self)[unchecked: elements.count...].decrementSubSequence(by: decrement)
+        return (consume self).decrementSubSequence(by: decrement)
     }
 }

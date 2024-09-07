@@ -678,8 +678,8 @@ It uses a fast double-and-add algorithm:
 ###### MacBook Pro, 13-inch, M1, 2020, -O, code coverage disabled.
 
 ```swift
-try! Fibonacci<UXL>( 1_000_000) // 0.04s
-try! Fibonacci<UXL>(10_000_000) // 1.65s
+try! Fibonacci<UXL>( 1_000_000) // 0.02s
+try! Fibonacci<UXL>(10_000_000) // 0.50s
 ```
 
 But you can also step through it manually:

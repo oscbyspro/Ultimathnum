@@ -59,8 +59,8 @@ extension MutableDataInt.Body {
     /// [algorithm]: https://en.wikipedia.org/wiki/multiplication_algorithm
     ///
     @inlinable public consuming func initialize(to lhs: Immutable, times rhs: Immutable) {
-        if  16 > Swift.min(lhs.count, rhs.count) {
-            self.initializeByLongAlgorithm(to: lhs, times: rhs, plus: .zero)
+        if  32 > Swift.min(lhs.count, rhs.count) {
+            self.initializeByLongAlgorithm(to: lhs, times: rhs)
         }   else {
             self.initializeByKaratsubaAlgorithm(to: lhs, times: rhs)
         }
@@ -71,8 +71,8 @@ extension MutableDataInt.Body {
     /// - Parameter self: A buffer of size `2 * elements`.
     ///
     @inlinable public consuming func initialize(toSquareProductOf elements: Immutable) {
-        if  16 > elements.count {
-            self.initializeByLongAlgorithm(toSquareProductOf: elements, plus: .zero)
+        if  32 > elements.count {
+            self.initializeByLongAlgorithm(toSquareProductOf: elements)
         }   else {
             self.initializeByKaratsubaAlgorithm(toSquareProductOf: elements)
         }
@@ -98,40 +98,45 @@ extension MutableDataInt.Body {
     /// [algorithm]: https://en.wikipedia.org/wiki/multiplication_algorithm
     ///
     @inline(never) @inlinable public consuming func initializeByLongAlgorithm(
-        to lhs: Immutable, times rhs: Immutable, plus increment: Element = .zero
+        to lhs: consuming Immutable, times rhs: consuming Immutable, plus increment: consuming Element = .zero
     ) {
-        //=--------------------------------------=
-        Swift.assert(self.count == lhs.count+rhs.count, String.indexOutOfBounds())
-        Swift.assert(self.count >= 1 || increment == 0, String.indexOutOfBounds())
+        
+        Swift.assert(self.count == lhs.count + rhs.count, String.indexOutOfBounds())
+        Swift.assert(self.count >= 1 || increment.isZero, String.indexOutOfBounds())
         //=--------------------------------------=
         var pointer: UnsafeMutablePointer<Element> = self.start
         //=--------------------------------------=
         // pointee: initialization 1
         //=--------------------------------------=
-        var carry: Element = increment
-        let first: Element = rhs.count > .zero ? rhs[unchecked: ()] : Element()
+        let first: Element = rhs.first ?? Element()
         
         for index in lhs.indices {
-            let product = lhs[unchecked: index].multiplication(first, plus: carry)
-            carry = product.high
+            let product = lhs[unchecked: index].multiplication(first, plus: increment)
+            increment = product.high
             pointer.initialize(to: product.low)
             pointer = pointer.successor()
         }
         
         if !rhs.isEmpty {
-            pointer.initialize(to: carry)
+            pointer.initialize(to: increment)
             pointer = pointer.successor()
+            rhs  = (consume rhs )[unchecked: 1...]
+            self = (consume self)[unchecked: 1...]
         }
+        
+        Swift.assert(IX(self.start.distance(to: pointer)) == lhs.count)
         //=--------------------------------------=
         // pointee: initialization 2
         //=--------------------------------------=
-        for index in rhs.indices.dropFirst() {
+        while !rhs.isEmpty {
             pointer.initialize(to: .zero)
             pointer = pointer.successor()
-            (copy self)[unchecked: index...].incrementSubSequence(by: lhs, times: rhs[unchecked: index], plus: .zero).unchecked()
+            (copy self).incrementSubSequence(by: copy lhs, times: rhs[unchecked: ()]).unchecked()
+            rhs  = (consume rhs )[unchecked: 1...]
+            self = (consume self)[unchecked: 1...]
         }
-        
-        Swift.assert(IX(self.start.distance(to: pointer)) == self.count)
+
+        Swift.assert(IX(self.start.distance(to: pointer)) == lhs.count)
     }
     
     /// Initializes `self` to the square [long][algorithm] product of `elements` plus `increment`.
@@ -145,9 +150,9 @@ extension MutableDataInt.Body {
     @inline(never) @inlinable public consuming func initializeByLongAlgorithm(
          toSquareProductOf elements: Immutable, plus increment: Element = .zero
     ) {
-        //=--------------------------------------=
-        Swift.assert(self.count == 2 *  elements.count, String.indexOutOfBounds())
-        Swift.assert(self.count >= 1 || increment == 0, String.indexOutOfBounds())
+        
+        Swift.assert(self.count == 2  * (elements.count), String.indexOutOfBounds())
+        Swift.assert(self.count >= 1 || increment.isZero, String.indexOutOfBounds())
         //=--------------------------------------=
         // pointee: initialization
         //=--------------------------------------=

@@ -43,15 +43,25 @@ final class FibonacciBenchmarks: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testFibonacciUXL1e5() throws {
-        blackHole(try! Fibonacci<UXL>(blackHoleIdentity(100_000)))
+        blackHole(try Fibonacci<UXL>(blackHoleIdentity(100_000)))
     }
     
+    /// ###### 2024-09-07 (MacBook Pro, 13-inch, M1, 2020):
+    ///
+    ///     0.04 seconds
+    ///     0.02 seconds after (#84)
+    ///
     func testFibonacciUXL1e6() throws {
-        blackHole(try! Fibonacci<UXL>(blackHoleIdentity(1_000_000)))
+        blackHole(try Fibonacci<UXL>(blackHoleIdentity(1_000_000)))
     }
     
+    /// ###### 2024-09-07 (MacBook Pro, 13-inch, M1, 2020):
+    ///
+    ///     1.65 seconds
+    ///     0.50 seconds after (#84)
+    ///
     func testFibonacciUXL1e7() throws {
-        blackHole(try! Fibonacci<UXL>(blackHoleIdentity(10_000_000)))
+        blackHole(try Fibonacci<UXL>(blackHoleIdentity(10_000_000)))
     }
     
     /// ###### 2024-08-08 (MacBook Pro, 13-inch, M1, 2020):

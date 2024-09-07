@@ -81,12 +81,12 @@ extension BinaryInteger {
     
     /// The next value in arithmetic progression.
     @inlinable public consuming func incremented(_ condition: Bool = true) -> Fallible<Self> {
-        self.plus(Self(Bit(condition)))  // size >= 8
+        self.plus(Self(Bit(condition)))
     }
     
     /// The next value in arithmetic progression.
     @inlinable public consuming func decremented(_ condition: Bool = true) -> Fallible<Self> {
-        self.minus(Self(Bit(condition))) // size >= 8
+        self.minus(Self(Bit(condition)))
     }
 }
 
