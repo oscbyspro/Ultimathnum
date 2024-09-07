@@ -50,6 +50,11 @@ extension TextInt {
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
+        /// Creates a new instance with a radix of `10`.
+        @inlinable public init() {
+            try! self.init(radix: 10)
+        }
+        
         /// Creates a new instance using the given `radix` and `letters`.
         ///
         /// - Requires: `0 ≤ radix ≤ 36`

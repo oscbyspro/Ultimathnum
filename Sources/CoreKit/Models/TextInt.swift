@@ -71,6 +71,11 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a new instance with a radix of `10`.
+    @inlinable public init() {
+        self = Self.decimal
+    }
+    
     /// Creates a new instance using the given `radix`.
     ///
     /// - Requires: `2 ≤ radix ≤ 36`

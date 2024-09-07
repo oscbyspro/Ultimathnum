@@ -30,6 +30,9 @@ final class TextIntTestsOnNumerals: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testInit() throws {
+        Test().same(TextInt.Numerals().radix,   10)
+        Test().same(TextInt.Numerals().letters, TextInt.Letters.lowercase)
+        
         for radix in Self.radices {
             for letters in Self.letters {
                 let numerals = try TextInt.Numerals(radix: radix, letters: letters)

@@ -42,6 +42,9 @@ final class TextIntTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testInit() {
+        Test().same(TextInt().radix,   10)
+        Test().same(TextInt().letters, TextInt.Letters.lowercase)
+        
         Test().same(TextInt.radix(02), TextInt.binary)
         Test().same(TextInt.radix(10), TextInt.decimal)
         Test().same(TextInt.radix(16), TextInt.hexadecimal)
