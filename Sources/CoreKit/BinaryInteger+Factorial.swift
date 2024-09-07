@@ -18,6 +18,20 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     /// The `factorial` of `self` or `nil`.
+    ///
+    /// ```swift
+    /// U8(0).factorial() // U8.exactly(   1)
+    /// U8(1).factorial() // U8.exactly(   1)
+    /// U8(2).factorial() // U8.exactly(   2)
+    /// U8(3).factorial() // U8.exactly(   6)
+    /// U8(4).factorial() // U8.exactly(  24)
+    /// U8(5).factorial() // U8.exactly( 120)
+    /// U8(6).factorial() // U8.exactly( 720)
+    /// U8(7).factorial() // U8.exactly(5040)
+    /// ```
+    ///
+    /// - Note: `T.Magnitude` guarantees nonoptional results.
+    ///
     @inlinable public /*borrowing*/ func factorial() -> Optional<Self> {
         if  self.isNegative { return nil }
         let magnitude = Magnitude(raw: self).factorial()
@@ -37,6 +51,20 @@ extension UnsignedInteger {
     //=------------------------------------------------------------------------=
     
     /// The `factorial` of `self` and an `error` indicator.
+    ///
+    /// ```swift
+    /// U8(0).factorial() // U8.exactly(   1)
+    /// U8(1).factorial() // U8.exactly(   1)
+    /// U8(2).factorial() // U8.exactly(   2)
+    /// U8(3).factorial() // U8.exactly(   6)
+    /// U8(4).factorial() // U8.exactly(  24)
+    /// U8(5).factorial() // U8.exactly( 120)
+    /// U8(6).factorial() // U8.exactly( 720)
+    /// U8(7).factorial() // U8.exactly(5040)
+    /// ```
+    ///
+    /// - Note: `T.Magnitude` guarantees nonoptional results.
+    ///
     @inlinable public /*borrowing*/ func factorial() -> Fallible<Self> {
         if  self.isInfinite {
             // lots of even factors
@@ -65,6 +93,20 @@ extension Fallible where Value: UnsignedInteger {
     //=------------------------------------------------------------------------=
     
     /// The `factorial` of `self` and an `error` indicator.
+    ///
+    /// ```swift
+    /// U8(0).factorial() // U8.exactly(   1)
+    /// U8(1).factorial() // U8.exactly(   1)
+    /// U8(2).factorial() // U8.exactly(   2)
+    /// U8(3).factorial() // U8.exactly(   6)
+    /// U8(4).factorial() // U8.exactly(  24)
+    /// U8(5).factorial() // U8.exactly( 120)
+    /// U8(6).factorial() // U8.exactly( 720)
+    /// U8(7).factorial() // U8.exactly(5040)
+    /// ```
+    ///
+    /// - Note: `T.Magnitude` guarantees nonoptional results.
+    ///
     @inlinable public borrowing func factorial() -> Self {
         self.value.factorial().veto(self.error)
     }

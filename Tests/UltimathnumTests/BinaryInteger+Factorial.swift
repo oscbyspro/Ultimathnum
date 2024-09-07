@@ -68,13 +68,44 @@ final class BinaryIntegerTestsOnFactorial: XCTestCase {
     
     func testElementAtNegativeIndexIsNil() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            precondition(T.isSigned)
+            
             Test().none((-1 as T).factorial())
             Test().none((-2 as T).factorial())
             Test().none((-3 as T).factorial())
             Test().none((-4 as T).factorial())
+            
+            Test().none((Esque<T>.min + 0).factorial())
+            Test().none((Esque<T>.min + 1).factorial())
+            Test().none((Esque<T>.min + 2).factorial())
+            Test().none((Esque<T>.min + 3).factorial())
         }
         
         for type in binaryIntegersWhereIsSigned {
+            whereIs(type)
+        }
+    }
+    
+    func testElementAtIndexGreaterThanOrEqualToSizePlus2IsZero() {
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            Test().none((T.max - 0).factorial())
+            Test().none((T.max - 1).factorial())
+            Test().none((T.max - 2).factorial())
+            Test().none((T.max - 3).factorial())
+            Test().none(T(UX(size: T.self) + 2).factorial())
+            
+            Test().same((T.max - 0).magnitude().factorial(), T.Magnitude.zero.veto())
+            Test().same((T.max - 1).magnitude().factorial(), T.Magnitude.zero.veto())
+            Test().same((T.max - 2).magnitude().factorial(), T.Magnitude.zero.veto())
+            Test().same((T.max - 3).magnitude().factorial(), T.Magnitude.zero.veto())
+            
+            Test().yay(T(UX(size: T.self) + 3).magnitude().factorial().value.isZero)
+            Test().yay(T(UX(size: T.self) + 2).magnitude().factorial().value.isZero)
+            Test().nay(T(UX(size: T.self) + 1).magnitude().factorial().value.isZero)
+            Test().nay(T(UX(size: T.self) + 0).magnitude().factorial().value.isZero)
+        }
+        
+        for type in systemsIntegers {
             whereIs(type)
         }
     }
@@ -244,5 +275,27 @@ extension BinaryIntegerTestsOnFactorial {
         for type in binaryIntegersWhereIsUnsigned {
             whereIs(type, size: IX(size: type) ?? 8, rounds: 32, randomness: fuzzer)
         }
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Documentation
+//=----------------------------------------------------------------------------=
+
+extension BinaryIntegerTestsOnFactorial {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testMethodsCodeSnippet() {
+        Test().same(U8(0).factorial(), U8.exactly(   1))
+        Test().same(U8(1).factorial(), U8.exactly(   1))
+        Test().same(U8(2).factorial(), U8.exactly(   2))
+        Test().same(U8(3).factorial(), U8.exactly(   6))
+        Test().same(U8(4).factorial(), U8.exactly(  24))
+        Test().same(U8(5).factorial(), U8.exactly( 120))
+        Test().same(U8(6).factorial(), U8.exactly( 720))
+        Test().same(U8(7).factorial(), U8.exactly(5040))
     }
 }
