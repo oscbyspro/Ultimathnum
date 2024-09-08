@@ -30,8 +30,6 @@ extension BinaryInteger {
     /// U8(7).factorial() // U8.exactly(5040)
     /// ```
     ///
-    /// - Note: `T.Magnitude` guarantees nonoptional results.
-    ///
     @inlinable public /*borrowing*/ func factorial() -> Optional<Self> {
         if  self.isNegative { return nil }
         let magnitude = Magnitude(raw: self).factorial()
@@ -62,8 +60,6 @@ extension UnsignedInteger {
     /// U8(6).factorial() // U8.exactly( 720)
     /// U8(7).factorial() // U8.exactly(5040)
     /// ```
-    ///
-    /// - Note: `T.Magnitude` guarantees nonoptional results.
     ///
     @inlinable public /*borrowing*/ func factorial() -> Fallible<Self> {
         if  self.isInfinite {
@@ -104,8 +100,6 @@ extension Fallible where Value: UnsignedInteger {
     /// U8(6).factorial() // U8.exactly( 720)
     /// U8(7).factorial() // U8.exactly(5040)
     /// ```
-    ///
-    /// - Note: `T.Magnitude` guarantees nonoptional results.
     ///
     @inlinable public borrowing func factorial() -> Self {
         self.value.factorial().veto(self.error)

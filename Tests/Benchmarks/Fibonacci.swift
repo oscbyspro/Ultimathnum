@@ -43,7 +43,9 @@ final class FibonacciBenchmarks: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testFibonacciUXL1e5() throws {
-        blackHole(try Fibonacci<UXL>(blackHoleIdentity(100_000)))
+        let index:   UXL = blackHoleIdentity(100_000)
+        let element: UXL = try Fibonacci<UXL>(index).element
+        XCTAssertEqual(element.entropy(), Count(69_425))
     }
     
     /// ###### 2024-09-07 (MacBook Pro, 13-inch, M1, 2020):
@@ -52,7 +54,9 @@ final class FibonacciBenchmarks: XCTestCase {
     ///     0.02 seconds after (#84)
     ///
     func testFibonacciUXL1e6() throws {
-        blackHole(try Fibonacci<UXL>(blackHoleIdentity(1_000_000)))
+        let index:   UXL = blackHoleIdentity(1_000_000)
+        let element: UXL = try Fibonacci<UXL>(index).element
+        XCTAssertEqual(element.entropy(), Count(694_242))
     }
     
     /// ###### 2024-09-07 (MacBook Pro, 13-inch, M1, 2020):
@@ -61,7 +65,9 @@ final class FibonacciBenchmarks: XCTestCase {
     ///     0.50 seconds after (#84)
     ///
     func testFibonacciUXL1e7() throws {
-        blackHole(try Fibonacci<UXL>(blackHoleIdentity(10_000_000)))
+        let index:   UXL = blackHoleIdentity(10_000_000)
+        let element: UXL = try Fibonacci<UXL>(index).element
+        XCTAssertEqual(element.entropy(), Count(6_942_419))
     }
     
     /// ###### 2024-08-08 (MacBook Pro, 13-inch, M1, 2020):

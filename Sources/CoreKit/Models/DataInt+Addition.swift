@@ -317,8 +317,8 @@ extension MutableDataInt.Body {
     
     /// - Requires: `self.count >= elements.count + 1`
     @inlinable public consuming func increment(
-        by elements: Immutable,
-        times multiplier: consuming Element,
+        by elements: consuming Immutable,
+        times multiplier: borrowing Element,
         plus increment: consuming Element = .zero
     )   -> Fallible<Void> {
 
@@ -353,8 +353,8 @@ extension MutableDataInt.Body {
     
     /// - Requires: `self.count >= elements.count + 1`
     @inlinable public consuming func decrement(
-        by elements: Immutable,
-        times multiplier: consuming Element,
+        by elements: consuming Immutable,
+        times multiplier: borrowing Element,
         plus decrement: consuming Element = .zero
     )   -> Fallible<Void> {
 
