@@ -214,9 +214,9 @@ extension Namespace {
                 var products = Factorial() // chunked odd sequence product
                 var sequence = Fallible(Value.lsb) // odd sequence product
                 
-                var high  = UX.lsb
-                var ilog2 = Nonzero(unchecked: index).ilog2()
-                
+                var high  = UX.lsb // first is pointless, down 1 to skip 1
+                var ilog2 = Nonzero(unchecked: index.down(Shift.one)).ilog2()
+
                 brrrrr: while true {
                     let low = high
                     high = index.down(Shift(unchecked: ilog2))
