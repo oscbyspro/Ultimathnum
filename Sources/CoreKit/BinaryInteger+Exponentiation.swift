@@ -74,7 +74,7 @@ extension BinaryInteger {
         coefficient: borrowing Nonzero<Self>
     ) -> Fallible<Self> {
         
-        if !Magnitude.isArbitrary {
+        if !Self.isArbitrary {
             var (magic, error) = Magnitude.exactly(exponent).components()
             if  (error) {
                 switch Bool(self.lsb) {

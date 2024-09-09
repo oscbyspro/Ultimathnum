@@ -103,12 +103,18 @@ extension BinaryInteger {
         }
     }
     
-    /// Creates a new instance from the given `source` and `signedness` by trapping on failure.
+    /// Loads the `source` as `signedness` by trapping on `error`.
+    ///
+    /// - Note: The `error` is set if the conversion is `lossy`.
+    ///
     @inlinable public init<OtherElement>(_ source: DataInt<OtherElement>, mode signedness: Signedness) {
         self = Self.exactly(source, mode: signedness).unwrap()
     }
     
-    /// Creates a validated instance from the given `source` and `signedness`.
+    /// Loads the `source` as `signedness` and returns an `error` indicator.
+    ///
+    /// - Note: The `error` is set if the conversion is `lossy`.
+    ///
     @inlinable public static func exactly<OtherElement>(_ source: DataInt<OtherElement>, mode signedness: Signedness) -> Fallible<Self> {
         if  Self.Element.Magnitude.size <= OtherElement.size {
             return source.reinterpret(as: Self.Element.Magnitude.self) {
@@ -122,7 +128,10 @@ extension BinaryInteger {
         }
     }
     
-    /// Creates a validated instance from the given `source` and `signedness`.
+    /// Loads the `source` as `signedness` and returns an `error` indicator.
+    ///
+    /// - Note: The `error` is set if the conversion is `lossy`.
+    ///
     @inlinable public static func exactly(_ source: DataInt<U8>, mode signedness: Signedness) -> Fallible<Self> {
         let instance = Self(load: source)
         let appendix = instance.appendix
@@ -140,7 +149,10 @@ extension BinaryInteger {
         return instance.veto(!Bool(success))
     }
     
-    /// Creates a validated instance from the given `source` and `signedness`.
+    /// Loads the `source` as `signedness` and returns an `error` indicator.
+    ///
+    /// - Note: The `error` is set if the conversion is `lossy`.
+    ///
     @inlinable public static func exactly(_ source: DataInt<Element.Magnitude>, mode signedness: Signedness) -> Fallible<Self> {
         let instance = Self(load: source)
         let appendix = instance.appendix

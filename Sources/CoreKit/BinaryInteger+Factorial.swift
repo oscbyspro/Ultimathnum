@@ -30,6 +30,10 @@ extension BinaryInteger {
     /// U8(7).factorial() // U8.exactly(5040)
     /// ```
     ///
+    /// - Note: It returns `nil` if the operation is `lossy`.
+    ///
+    /// - Note: It returns `nil` if the operation is `undefined`.
+    ///
     @inlinable public /*borrowing*/ func factorial() -> Optional<Self> {
         if  self.isNegative { return nil }
         let magnitude = Magnitude(raw: self).factorial()
@@ -61,6 +65,8 @@ extension UnsignedInteger {
     /// U8(7).factorial() // U8.exactly(5040)
     /// ```
     ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
     @inlinable public /*borrowing*/ func factorial() -> Fallible<Self> {
         if  self.isInfinite {
             // lots of even factors
@@ -69,11 +75,11 @@ extension UnsignedInteger {
         }   else if Self.size <= UX.size {
             // save some code size w.r.t. small integers
             typealias Algorithm = Namespace.Factorial<UX>
-            return Self.exactly(Algorithm.unchecked(UX(load: self)))
+            return Self.exactly(Algorithm.element(unchecked: UX(load: self)))
             
         }   else {
             // clamping works because the allocation limit is IX.max
-            return Namespace.Factorial.unchecked(UX(clamping: self))
+            return Namespace.Factorial.element(unchecked: UX(clamping: self))
         }
     }
 }
@@ -101,17 +107,32 @@ extension Fallible where Value: UnsignedInteger {
     /// U8(7).factorial() // U8.exactly(5040)
     /// ```
     ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
     @inlinable public borrowing func factorial() -> Self {
         self.value.factorial().veto(self.error)
     }
 }
 
 //*============================================================================*
-// MARK: * Binary Integer x Factorial x Algorithms
+// MARK: * Binary Integer x Factorial x Algorithm
 //*============================================================================*
 
 extension Namespace {
     
+    /// ### Factorial
+    ///
+    /// A multiplication sequence identified by its `index` factor.
+    ///
+    ///     0! == 1
+    ///     1! == 1
+    ///     2! == 1 * 2
+    ///     3! == 1 * 2 * 3
+    ///     4! == 1 * 2 * 3 * 4
+    ///     5! == 1 * 2 * 3 * 4 * 5
+    ///     6! == 1 * 2 * 3 * 4 * 5 * 6
+    ///     7! == 1 * 2 * 3 * 4 * 5 * 6 * 7
+    ///
     /// ### Algorithm
     ///
     /// This is a loose adaptation of `SplitRecursive` by Peter Luschny.
@@ -151,8 +172,7 @@ extension Namespace {
             case 2:
                 let low = self.factor.plus(2).unchecked()
                 self.factor = ((low)).plus(2).unchecked()
-                let product = ((low)).times(self.factor)
-                return product
+                return low.times(self.factor)
                 
             default:
                 let half = count.value.down(Shift.one)
@@ -166,26 +186,28 @@ extension Namespace {
         // MARK: Utilities
         //=--------------------------------------------------------------------=
         
-        /// Returns the `factorial` of `instance` and an `error` indicator.
+        /// Returns the `factorial` of `index` and an `error` indicator.
         ///
-        /// - Requires: `instance <= Value.max`
+        /// - Requires: `index <= Value.max`
         ///
-        @inlinable static func unchecked(_ instance: UX) -> Fallible<Value> {
+        /// - Note: The `error` is set if the operation is `lossy`.
+        ///
+        @inlinable static func element(unchecked index: UX) -> Fallible<Value> {
             //=----------------------------------=
-            Swift.assert(instance <= Value.max)
+            Swift.assert(index <= Value.max)
             //=----------------------------------=
             var result = Fallible(Value.lsb)
-            if  instance <= 1 {
+            if  index <= 1 {
                 return result
             }
             //=----------------------------------=
-            let ones = UX(raw: instance.count(Bit.one))
-            let twos = instance.minus(ones).unchecked()
+            let ones = UX(raw: index.count(Bit.one))
+            let twos = index.minus(ones).unchecked()
             let distance = Count<IX>(raw: consume twos)
             //=----------------------------------=
             // fast: overshift by even factors
             //=----------------------------------=
-            if  let size = UX(size: Value.self), size <= instance {
+            if  let size = UX(size: Value.self), size <= index {
                 result.error = true
                 
             }   else {
@@ -193,11 +215,11 @@ extension Namespace {
                 var sequence = Fallible(Value.lsb) // odd sequence product
                 
                 var high  = UX.lsb
-                var ilog2 = Nonzero(unchecked: instance).ilog2()
+                var ilog2 = Nonzero(unchecked: index).ilog2()
                 
                 brrrrr: while true {
                     let low = high
-                    high = instance.down(Shift(unchecked: ilog2))
+                    high = index.down(Shift(unchecked: ilog2))
                     high = high.decremented().unchecked() | 1
                     
                     if  let stride = Nonzero(exactly: high.minus(low).unchecked().down(Shift.one)) {
@@ -214,7 +236,7 @@ extension Namespace {
                     result.error = true
                 }
             }
-
+            
             return  result.value.up(distance).veto(result.error)
         }
     }

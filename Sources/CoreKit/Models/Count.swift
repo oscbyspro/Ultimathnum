@@ -85,8 +85,7 @@ Sendable where Layout: SignedInteger & SystemsInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// Returns the relative `value` of `self` and an `error` indicator.
-    /// The `error` indicator is set when `self` is infinite.
+    /// Returns its raw `value` and an `error` indicator.
     ///
     ///     ┌───────────────────────┬───────────────┐
     ///     │ self                  │ value │ error │
@@ -99,6 +98,8 @@ Sendable where Layout: SignedInteger & SystemsInteger {
     ///     │ log2(UXL.max + 1) - 1 │ -2    │ true  │
     ///     │ log2(UXL.max + 1)     │ -1    │ true  │
     ///     └───────────────────────┴───────┴───────┘
+    ///
+    /// - Note: The `error` is set if `self` is infinite.
     ///
     @inlinable public func natural() -> Fallible<Layout> {
         Fallible(self.base, error: self.isInfinite)

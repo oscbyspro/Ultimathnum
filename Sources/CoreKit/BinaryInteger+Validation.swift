@@ -22,6 +22,8 @@ extension BinaryInteger {
     
     /// Loads the `source` by trapping on `error`
     ///
+    /// - Note: The `error` is set if the conversion is `lossy`.
+    ///
     /// - Note: This particular overload cannot fail.
     ///
     @inline(__always) // performance: please fold it like a paper airplane
@@ -34,6 +36,9 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     /// Loads the `sign` and `magnitude` by trapping on `error`.
+    ///
+    /// - Note: The `error` is set if the conversion is `lossy`.
+    ///
     @inlinable public init<Other>(
         sign: consuming Sign = .plus,
         magnitude: consuming Other
@@ -92,6 +97,9 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
         
     /// Loads the `source` by trapping on `error`
+    ///
+    /// - Note: The `error` is set if the conversion is `lossy`.
+    ///
     @inlinable public init<Other>(_ source: consuming Other) where Other: BinaryInteger {
         self = Self.exactly(source).unwrap()
     }

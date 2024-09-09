@@ -76,18 +76,30 @@ final class FibonacciBenchmarks: XCTestCase {
     /// - `0.30 seconds` with `Divider21`
     ///
     func testFibonacciUXL1e6ToTextAsDecimal() throws {
-        blackHole(blackHoleIdentity(Self.fib1e6.element).description(as: blackHoleIdentity(.decimal)))
+        let data = blackHoleIdentity(Self.fib1e6.element)
+        let format = blackHoleIdentity(TextInt.decimal)
+        let text = data.description(as: format)
+        XCTAssertEqual(text.utf8.count, 208988)
     }
     
     func testFibonacciUXL1e6ToTextAsHexadecimal() throws {
-        blackHole(blackHoleIdentity(Self.fib1e6.element).description(as: blackHoleIdentity(.hexadecimal)))
+        let data = blackHoleIdentity(Self.fib1e6.element)
+        let format = blackHoleIdentity(TextInt.hexadecimal)
+        let text = data.description(as: format)
+        XCTAssertEqual(text.utf8.count, 173561)
     }
     
     func testFibonacciUXL1e6FromTextAsDecimal() throws {
-        blackHole(try! UXL(blackHoleIdentity(Self.fib1e6r10), as: blackHoleIdentity(.decimal)))
+        let text = blackHoleIdentity(Self.fib1e6r10)
+        let format = blackHoleIdentity(TextInt.decimal)
+        let data = try UXL.init(text, as: format)
+        XCTAssertEqual(data, Self.fib1e6.element)
     }
     
     func testFibonacciUXL1e6FromTextAsHexadecimal() throws {
-        blackHole(try! UXL(blackHoleIdentity(Self.fib1e6r16), as: blackHoleIdentity(.hexadecimal)))
+        let text = blackHoleIdentity(Self.fib1e6r16)
+        let format = blackHoleIdentity(TextInt.hexadecimal)
+        let data = try UXL.init(text, as: format)
+        XCTAssertEqual(data, Self.fib1e6.element)
     }
 }

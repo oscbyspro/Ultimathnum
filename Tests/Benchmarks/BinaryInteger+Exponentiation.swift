@@ -23,7 +23,7 @@ final class BinaryIntegerBenchmarksOnExponentiation: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testExponentiationAsU64() throws {
+    func testForEachUpTo128ForEachUpTo1000AsU64() throws {
         typealias T = U64
         
         for base: UX in 0..<128 {
@@ -33,7 +33,7 @@ final class BinaryIntegerBenchmarksOnExponentiation: XCTestCase {
         }
     }
     
-    func testExponentiationAsU256() throws {
+    func testForEachUpTo128ForEachUpTo1000AsU256() throws {
         typealias T = U256
         
         for base: UX in 0..<128 {
@@ -43,7 +43,12 @@ final class BinaryIntegerBenchmarksOnExponentiation: XCTestCase {
         }
     }
     
-    func testExponentiationAsUXL() throws {
+    /// ###### 2024-09-09 (MacBook Pro, 13-inch, M1, 2020):
+    ///
+    ///     0.44 seconds
+    ///     0.24 seconds after (#84)
+    ///
+    func testForEachUpTo128ForEachUpTo1000AsUXL() throws {
         typealias T = UXL
         
         for base: UX in 0..<128 {
