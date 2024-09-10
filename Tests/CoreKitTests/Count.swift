@@ -17,73 +17,51 @@ import TestKit
 final class CountTests: XCTestCase {
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests
+    // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    func testZero() {
-        func whereTheLayoutIs<Layout>(_ layout: Layout.Type) where Layout: SystemsInteger & SignedInteger {
-            typealias T = Count<Layout>
-            
-            Test().same(T.zero,           T(raw:   0 as Layout))
-            Test().same(T.zero.natural(), Fallible(0 as Layout))
-        }
-        
-        for layout in coreSystemsIntegersWhereIsSigned {
-            whereTheLayoutIs(layout)
-        }
-    }
-    
-    func testInfinity() {
-        func whereTheLayoutIs<Layout>(_ layout: Layout.Type) where Layout: SystemsInteger & SignedInteger {
-            typealias T = Count<Layout>
-            
-            Test().same(T.infinity,           T(raw:   -1 as Layout))
-            Test().same(T.infinity.natural(), Fallible(-1 as Layout, error: true))
-        }
-        
-        for layout in coreSystemsIntegersWhereIsSigned {
-            whereTheLayoutIs(layout)
-        }
-    }
+    static let patterns: [IX] = {
+        var elements = Array<IX>()
+        elements.append(contentsOf: IX.min...IX.min+127)
+        elements.append(contentsOf: -128...127)
+        elements.append(contentsOf: IX.max-127...IX.max)
+        return elements
+    }()
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     func testBitCast() {
-        func whereTheLayoutIs<Layout>(_ layout: Layout.Type) where Layout: SystemsInteger & SignedInteger {
-            typealias T = Count<Layout>
-            
-            for instance in Layout(I8.min) ... Layout(I8.max) {
-                Test().same(Layout(raw: T(raw: instance)), instance)
-            }
-        }
-        
-        for layout in coreSystemsIntegersWhereIsSigned {
-            whereTheLayoutIs(layout)
+        for x in Self.patterns {
+            Test().same(IX(raw: Count(raw: x)), x)
         }
     }
     
     func testInitLayout() {
-        func whereTheLayoutIs<Layout>(_ layout: Layout.Type) where Layout: SystemsInteger & SignedInteger {
-            typealias T = Count<Layout>
-            
-            for instance in Layout(I8.min) ... Layout(I8.max) {
-                let expectation = !instance.isNegative ? T(raw: instance) : nil
-                
-                always: do {
-                    Test().same(T(exactly:   instance), expectation)
-                }
-                
-                if  let expectation {
-                    Test().same(T(instance),            expectation)
-                    Test().same(T(unchecked: instance), expectation)
-                }
+        for x in Self.patterns {
+            if  x.isNegative {
+                Test().none(Count(exactly:   x))
+            }   else {
+                Test().same(Count(x),            Count(raw: x))
+                Test().same(Count(exactly:   x), Count(raw: x))
+                Test().same(Count(unchecked: x), Count(raw: x))
             }
         }
-        
-        for layout in coreSystemsIntegersWhereIsSigned {
-            whereTheLayoutIs(layout)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testInstances() {
+        Test().same(Count.zero,     Count(raw:  0 as IX))
+        Test().same(Count.infinity, Count(raw: -1 as IX))
+    }
+    
+    func testNatural() {
+        for x in Self.patterns {
+            Test().same(Count(raw: x).natural(), x.veto(x.isNegative))
         }
     }
 }

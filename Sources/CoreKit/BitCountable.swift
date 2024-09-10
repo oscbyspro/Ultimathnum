@@ -57,7 +57,7 @@ public protocol BitCountable {
     ///
     /// - Invariant: `count(x) + noncount(x) == size()`
     ///
-    @inlinable borrowing func size() -> Count<IX>
+    @inlinable borrowing func size() -> Count
     
     /// The `bit` count in `self`.
     ///
@@ -79,7 +79,7 @@ public protocol BitCountable {
     /// 11010000|1... // count(1) == ∞ - 5
     /// ```
     ///
-    @inlinable borrowing func count(_ bit: Bit) -> Count<IX>
+    @inlinable borrowing func count(_ bit: Bit) -> Count
     
     /// The ascending `bit` count in `self`.
     ///
@@ -103,7 +103,7 @@ public protocol BitCountable {
     /// 11010000|1... // ascending(1) == 2
     /// ```
     ///
-    @inlinable borrowing func ascending(_ bit: Bit) -> Count<IX>
+    @inlinable borrowing func ascending(_ bit: Bit) -> Count
     
     /// The descending `bit` count in `self`.
     ///
@@ -127,5 +127,5 @@ public protocol BitCountable {
     /// 11010000|1... // descending(1) == ∞ - 8
     /// ```
     ///
-    @inlinable borrowing func descending(_ bit: Bit) -> Count<IX>
+    @inlinable borrowing func descending(_ bit: Bit) -> Count
 }

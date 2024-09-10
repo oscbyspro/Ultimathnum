@@ -24,7 +24,7 @@ final class BinaryIntegerTestsOnLiteral: XCTestCase {
     
     func testBigIntLiteralValuesNearSizeEdges() {
         struct Values {
-            let size:  Count<IX>
+            let size:  Count
             let base:  IXL
             let minM1: LiteralInt
             let min:   LiteralInt

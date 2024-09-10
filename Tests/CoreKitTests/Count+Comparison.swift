@@ -14,55 +14,36 @@ import TestKit
 // MARK: * Count x Comparison
 //*============================================================================*
 
-extension CountTests {
+final class CountTestsOnComparison: XCTestCase {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Metadata
+    //=------------------------------------------------------------------------=
+    
+    static let patterns = CountTests.patterns
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
-        
-    func testIsZeroWhenLayoutIsZero() {
-        func whereTheLayoutIs<Layout>(_ layout: Layout.Type) where Layout: SystemsInteger & SignedInteger {
-            typealias T = Count<Layout>
-                        
-            for instance in Layout(I8.min) ... Layout(I8.max) {
-                Test().same(T(raw: instance).isZero, instance.isZero)
-            }
-        }
-        
-        for layout in coreSystemsIntegersWhereIsSigned {
-            whereTheLayoutIs(layout)
+    
+    func testIsZeroIsLikeBinaryIntegerIsZero() {
+        for x in Self.patterns {
+            Test().same(Count(raw: x).isZero, x.isZero)
         }
     }
     
-    func testIsInfiniteWhenLayoutIsNegative() {
-        func whereTheLayoutIs<Layout>(_ layout: Layout.Type) where Layout: SystemsInteger & SignedInteger {
-            typealias T = Count<Layout>
-                        
-            for instance in Layout(I8.min) ... Layout(I8.max) {
-                Test().same(T(raw: instance).isInfinite, instance.isNegative)
-            }
-        }
-        
-        for layout in coreSystemsIntegersWhereIsSigned {
-            whereTheLayoutIs(layout)
+    func testIsInfiniteIsLikeSignedIntegerIsNegative() {
+        for x in Self.patterns {
+            Test().same(Count(raw: x).isInfinite, x.isNegative)
         }
     }
     
-    func testComparisonIsLikeUnsignedInteger() {
-        func whereTheLayoutIs<Layout>(_ layout: Layout.Type) where Layout: SystemsInteger & SignedInteger {
-            typealias T = Count<Layout>
-            
-            let i8s = Layout(I8.min) ... Layout(I8.max)
-            
-            for lhs in i8s {
-                for rhs in i8s {
-                    let expectation = Layout.Magnitude(load: lhs).compared(to: Layout.Magnitude(load: rhs))
-                    Test().comparison(T(raw: lhs), T(raw: rhs), expectation, id: ComparableID())
-                }
+    func testComparisonIsLikeUnsignedIntegerComparison() {
+        for lhs in Self.patterns {
+            for rhs in Self.patterns {
+                let expectation: Signum = UX(load: lhs).compared(to: UX(load: rhs))
+                Test().comparison(Count(raw: lhs), Count(raw: rhs), expectation, id: ComparableID())
             }
         }
-        
-        whereTheLayoutIs(I8.self)
-        whereTheLayoutIs(IX.self)
     }
 }

@@ -203,7 +203,7 @@ extension Namespace {
             //=----------------------------------=
             let ones = UX(raw: index.count(Bit.one))
             let twos = index.minus(ones).unchecked()
-            let distance = Count<IX>(raw: consume twos)
+            let distance = Count(raw: consume twos)
             //=----------------------------------=
             // fast: overshift by even factors
             //=----------------------------------=

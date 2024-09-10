@@ -34,7 +34,7 @@ extension LiteralInt {
     ///
     /// - Note: An in-memory `entropy` must fit in `[0, IX.max]`.
     ///
-    @inlinable public func entropy() -> Count<IX> {
+    @inlinable public func entropy() -> Count {
         Count(unchecked: IX(self.base.bitWidth))
     }
 }

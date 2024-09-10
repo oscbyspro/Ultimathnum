@@ -111,7 +111,7 @@ where
     ///
     /// - Invariant: `count(x) + noncount(x) == size()`
     ///
-    @inlinable static var size: Count<IX> { get }
+    @inlinable static var size: Count { get }
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers

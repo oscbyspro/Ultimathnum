@@ -28,43 +28,42 @@
 ///
 /// - Note: Please roll a `D20` arcana check.
 ///
-@frozen public struct Count<Layout>: BitCastable, Comparable, Recoverable, 
-Sendable where Layout: SignedInteger & SystemsInteger {
-    
+@frozen public struct Count: BitCastable, Comparable, Recoverable, Sendable {
+        
     //=------------------------------------------------------------------------=
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
     /// A value equal to `0`.
     @inlinable public static var zero: Self {
-        Self(raw: Layout(repeating: 0))
+        Self(raw: IX(repeating: 0))
     }
     
     /// A value equal to `log2(UXL.max + 1)`
     @inlinable public static var infinity: Self {
-        Self(raw: Layout(repeating: 1))
+        Self(raw: IX(repeating: 1))
     }
     
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    @usableFromInline let base: Layout
+    @usableFromInline let base: IX
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ source: consuming Layout) {
+    @inlinable public init(_ source: consuming IX) {
         self.init(exactly: source)!
     }
     
-    @inlinable public init?(exactly source: consuming Layout) {
+    @inlinable public init?(exactly source: consuming IX) {
         guard !source.isNegative else { return nil }
         self.init(unchecked: source)
     }
     
-    @inlinable public init(unchecked source: consuming Layout) {
+    @inlinable public init(unchecked source: consuming IX) {
         Swift.assert(!source.isNegative)
         self.base = ((source))
     }
@@ -73,12 +72,12 @@ Sendable where Layout: SignedInteger & SystemsInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(raw source: Layout.BitPattern) {
-        self.base = Layout(raw: source)
+    @inlinable public init(raw source: IX.BitPattern) {
+        self.base = IX(raw: source)
     }
     
-    @inlinable public func load(as type: Layout.BitPattern.Type) -> Layout.BitPattern {
-        self.base.load(as: Layout.BitPattern.self)
+    @inlinable public func load(as type: IX.BitPattern.Type) -> IX.BitPattern {
+        self.base.load(as: IX.BitPattern.self)
     }
     
     //=------------------------------------------------------------------------=
@@ -101,7 +100,7 @@ Sendable where Layout: SignedInteger & SystemsInteger {
     ///
     /// - Note: The `error` is set if `self` is infinite.
     ///
-    @inlinable public func natural() -> Fallible<Layout> {
+    @inlinable public func natural() -> Fallible<IX> {
         Fallible(self.base, error: self.isInfinite)
     }
 }

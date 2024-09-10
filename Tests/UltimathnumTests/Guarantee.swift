@@ -48,7 +48,7 @@ final class GuaranteeTests: XCTestCase {
                 check(random, as: Finite .self)
                 check(random, as: Natural.self)
                 check(random, as: Nonzero.self)
-                check(Count<IX>(raw: IX(load: random)), as: Shift<T.Magnitude>.self)
+                check(Count(raw: IX(load: random)), as: Shift<T.Magnitude>.self)
             }
         }
                 

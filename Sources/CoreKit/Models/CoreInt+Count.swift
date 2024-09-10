@@ -17,7 +17,7 @@ extension CoreInteger {
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    @inlinable public static var size: Count<IX> {
+    @inlinable public static var size: Count {
         Count(raw: IX(Stdlib.bitWidth))
     }
     
@@ -25,21 +25,21 @@ extension CoreInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func count(_ bit: Bit) -> Count<IX> {
+    @inlinable public func count(_ bit: Bit) -> Count {
         switch Bool(bit) {
         case true:  Count(raw: ( self).base.nonzeroBitCount)
         case false: Count(raw: (~self).base.nonzeroBitCount)
         }
     }
     
-    @inlinable public func ascending(_ bit: Bit) -> Count<IX> {
+    @inlinable public func ascending(_ bit: Bit) -> Count {
         switch Bool(bit) {
         case true:  Count(raw: (~self).base.trailingZeroBitCount)
         case false: Count(raw: ( self).base.trailingZeroBitCount)
         }
     }
     
-    @inlinable public func descending(_ bit: Bit) -> Count<IX> {
+    @inlinable public func descending(_ bit: Bit) -> Count {
         switch Bool(bit) {
         case true:  Count(raw: (~self).base.leadingZeroBitCount)
         case false: Count(raw: ( self).base.leadingZeroBitCount)

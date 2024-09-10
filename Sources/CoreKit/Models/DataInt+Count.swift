@@ -17,21 +17,21 @@ extension DataInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func size() -> Count<IX> {
+    @inlinable public borrowing func size() -> Count {
         Count.infinity
     }
     
-    @inlinable public borrowing func count(_ bit: Bit) -> Count<IX> {
+    @inlinable public borrowing func count(_ bit: Bit) -> Count {
         var count = self.body.count(~self.appendix)
         
         if  self.appendix == bit {
             count = Count(raw: count.base.toggled())
         }
         
-        return count as Count<IX>
+        return count as Count
     }
     
-    @inlinable public borrowing func ascending(_ bit: Bit) -> Count<IX> {
+    @inlinable public borrowing func ascending(_ bit: Bit) -> Count {
         let count = IX(raw: self.body.ascending(bit))
         
         if  self.appendix == bit, count == IX(raw: self.body.size()) {
@@ -41,7 +41,7 @@ extension DataInt {
         return Count(unchecked: count)
     }
     
-    @inlinable public borrowing func descending(_ bit: Bit) -> Count<IX> {
+    @inlinable public borrowing func descending(_ bit: Bit) -> Count {
         if  self.appendix == bit {
             let size = IX(raw: self.body.size()).toggled()
             let base = IX(raw: self.body.descending(bit))
@@ -63,19 +63,19 @@ extension MutableDataInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
 
-    @inlinable public borrowing func size() -> Count<IX> {
+    @inlinable public borrowing func size() -> Count {
         Count.infinity
     }
     
-    @inlinable public borrowing func count(_ bit: Bit) -> Count<IX> {
+    @inlinable public borrowing func count(_ bit: Bit) -> Count {
         Immutable(self).count(bit)
     }
     
-    @inlinable public borrowing func ascending(_ bit: Bit) -> Count<IX> {
+    @inlinable public borrowing func ascending(_ bit: Bit) -> Count {
         Immutable(self).ascending(bit)
     }
     
-    @inlinable public borrowing func descending(_ bit: Bit) -> Count<IX> {
+    @inlinable public borrowing func descending(_ bit: Bit) -> Count {
         Immutable(self).descending(bit)
     }
 }
@@ -90,12 +90,12 @@ extension DataInt.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func size() -> Count<IX> {
+    @inlinable public borrowing func size() -> Count {
         let count = self.count.times(IX(size: Element.self))
         return Count(unchecked: count.unchecked("BinaryInteger/entropy/0...IX.max"))
     }
     
-    @inlinable public borrowing func count(_ bit: Bit) -> Count<IX> {
+    @inlinable public borrowing func count(_ bit: Bit) -> Count {
         var count = Fallible(IX.zero, error: false)
         
         for index in self.indices {
@@ -106,7 +106,7 @@ extension DataInt.Body {
         return Count(unchecked: count.unchecked("BinaryInteger/entropy/0...IX.max"))
     }
     
-    @inlinable public borrowing func ascending(_ bit: Bit) -> Count<IX> {
+    @inlinable public borrowing func ascending(_ bit: Bit) -> Count {
         var count = Fallible(IX.zero, error: false)
         
         for index in self.indices {
@@ -118,7 +118,7 @@ extension DataInt.Body {
         return Count(unchecked: count.unchecked("BinaryInteger/entropy/0...IX.max"))
     }
     
-    @inlinable public borrowing func descending(_ bit: Bit) -> Count<IX> {
+    @inlinable public borrowing func descending(_ bit: Bit) -> Count {
         var count = Fallible(IX.zero, error: false)
         
         for index in self.indices.reversed() {
@@ -141,19 +141,19 @@ extension MutableDataInt.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func size() -> Count<IX> {
+    @inlinable public borrowing func size() -> Count {
         Immutable(self).size()
     }
     
-    @inlinable public borrowing func count(_ bit: Bit) -> Count<IX> {
+    @inlinable public borrowing func count(_ bit: Bit) -> Count {
         Immutable(self).count(bit)
     }
     
-    @inlinable public borrowing func ascending(_ bit: Bit) -> Count<IX> {
+    @inlinable public borrowing func ascending(_ bit: Bit) -> Count {
         Immutable(self).ascending(bit)
     }
     
-    @inlinable public borrowing func descending(_ bit: Bit) -> Count<IX> {
+    @inlinable public borrowing func descending(_ bit: Bit) -> Count {
         Immutable(self).descending(bit)
     }
 }

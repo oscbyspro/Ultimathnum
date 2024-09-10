@@ -19,7 +19,7 @@ extension DoubleInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func count(_ bit: Bit) -> Count<IX> {
+    @inlinable public borrowing func count(_ bit: Bit) -> Count {
         var count: IX
 
         count   = IX(raw: self.storage.low .count(bit))
@@ -28,7 +28,7 @@ extension DoubleInt {
         return Count(unchecked: count)
     }
     
-    @inlinable public borrowing func ascending(_ bit: Bit) -> Count<IX> {
+    @inlinable public borrowing func ascending(_ bit: Bit) -> Count {
         var count: IX
 
         scope: do {
@@ -40,7 +40,7 @@ extension DoubleInt {
         return Count(unchecked: count)
     }
     
-    @inlinable public borrowing func descending(_ bit: Bit) -> Count<IX> {
+    @inlinable public borrowing func descending(_ bit: Bit) -> Count {
         var count: IX
 
         scope: do {

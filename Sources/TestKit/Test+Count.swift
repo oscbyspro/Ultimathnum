@@ -26,11 +26,11 @@ extension Test {
     public func count<T>(
         _ instance: T,
         _ bit: Bit,
-        _ expectation: Count<IX>
+        _ expectation: Count
     )   where T: BinaryInteger {
         
-        let nonexpectation = Count<IX>(raw: IX(raw: instance.size()) - IX(raw: expectation))
-        for var x: (instance: T, expectation: Count<IX>) in [(instance, expectation), (instance.toggled(), nonexpectation)] {
+        let nonexpectation = Count(raw: IX(raw: instance.size()) - IX(raw: expectation))
+        for var x: (instance: T, expectation: Count) in [(instance, expectation), (instance.toggled(), nonexpectation)] {
             self.count(x.instance, bit, x.expectation, id: BitCountableID())
             
             if !T.isArbitrary {
@@ -61,7 +61,7 @@ extension Test {
     public func ascending<T>(
         _ instance: T,
         _ bit: Bit,
-        _ expectation: Count<IX>
+        _ expectation: Count
     )   where T: BinaryInteger {
         
         for var x: (instance: T, bit: Bit) in [(instance, bit), (instance.toggled(), bit.toggled())] {
@@ -95,7 +95,7 @@ extension Test {
     public func descending<T>(
         _ instance: T,
         _ bit: Bit,
-        _ expectation: Count<IX>
+        _ expectation: Count
     )   where T: BinaryInteger {
         
         for var x: (instance: T, bit: Bit) in [(instance, bit), (instance.toggled(), bit.toggled())] {
@@ -130,11 +130,11 @@ extension Test {
     public func count<T>(
         _ instance: T,
         _ bit: Bit,
-        _ expectation: Count<IX>,
+        _ expectation: Count,
         id: BitCountableID = .init()
     )   where T: BitCountable {
         //=--------------------------------------=
-        let nonexpectation = Count<IX>(raw: IX(raw: instance.size()) - IX(raw: expectation))
+        let nonexpectation = Count(raw: IX(raw: instance.size()) - IX(raw: expectation))
         //=--------------------------------------=
         // path: count plus noncount is size
         //=--------------------------------------=
@@ -154,11 +154,11 @@ extension Test {
     public func ascending<T>(
         _ instance: T,
         _ bit: Bit,
-        _ expectation: Count<IX>,
+        _ expectation: Count,
         id: BitCountableID = .init()
     )   where T: BitCountable {
         //=--------------------------------------=
-        let nonexpectation = Count<IX>(raw: IX(raw: instance.size()) - IX(raw: expectation))
+        let nonexpectation = Count(raw: IX(raw: instance.size()) - IX(raw: expectation))
         //=--------------------------------------=
         // path: count plus noncount is size
         //=--------------------------------------=
@@ -175,7 +175,7 @@ extension Test {
     }
         
         if !(expectation).isZero {
-            same(instance.ascending(~bit), Count<IX>.zero, "ascending [1]")
+            same(instance.ascending(~bit), Count.zero, "ascending [1]")
         }
         //=--------------------------------------=
         // path: nonascending
@@ -193,11 +193,11 @@ extension Test {
     public func descending<T>(
         _ instance: T,
         _ bit: Bit,
-        _ expectation: Count<IX>,
+        _ expectation: Count,
         id: BitCountableID = .init()
     )   where T: BitCountable {
         //=--------------------------------------=
-        let nonexpectation = Count<IX>(raw: IX(raw: instance.size()) - IX(raw: expectation))
+        let nonexpectation = Count(raw: IX(raw: instance.size()) - IX(raw: expectation))
         //=--------------------------------------=
         // path: count plus noncount is size
         //=--------------------------------------=
@@ -214,7 +214,7 @@ extension Test {
         }
         
         if !(expectation).isZero {
-            same(instance.descending(~bit), Count<IX>.zero, "descending [1]")
+            same(instance.descending(~bit), Count.zero, "descending [1]")
         }
         //=--------------------------------------=
         // path: nondescending

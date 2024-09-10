@@ -41,7 +41,7 @@ import CoreKit
         Base.mode
     }
     
-    @inlinable public static var size: Count<IX> {
+    @inlinable public static var size: Count {
         Count(unchecked: 3 * IX(size: Base.self))
     }
     

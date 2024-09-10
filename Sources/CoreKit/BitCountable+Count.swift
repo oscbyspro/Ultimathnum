@@ -36,7 +36,7 @@ extension BitCountable {
     ///
     /// - Note: An in-memory `entropy` must fit in `[0, IX.max]`.
     ///
-    @inlinable public /* borrowing */ func entropy() -> Count<IX> {
+    @inlinable public /* borrowing */ func entropy() -> Count {
         let base = IX(raw: self.nondescending(self.appendix)).incremented()
         return Count(unchecked: base.unchecked("BitCountable/entropy/0...IX.max"))
     }
@@ -67,7 +67,7 @@ extension BitCountable {
     /// 11010000|1... // nonascending(1) == ∞ - 2
     /// ```
     ///
-    @inlinable public borrowing func nonascending(_ bit: Bit) -> Count<IX> {
+    @inlinable public borrowing func nonascending(_ bit: Bit) -> Count {
         let size = IX(raw: self.size())
         let base = IX(raw: self.ascending(bit))
         let difference = size.minus(base).unchecked()
@@ -96,7 +96,7 @@ extension BitCountable {
     /// 11010000|1... // nondescending(1) == 8
     /// ```
     ///
-    @inlinable public borrowing func nondescending(_ bit: Bit) -> Count<IX> {
+    @inlinable public borrowing func nondescending(_ bit: Bit) -> Count {
         let size = IX(raw: self.size())
         let base = IX(raw: self.descending(bit))
         let difference = size.minus(base).unchecked()

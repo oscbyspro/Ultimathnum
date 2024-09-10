@@ -22,11 +22,11 @@ extension Count {
     }
     
     @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
-        Layout.Magnitude(raw: lhs.base) < Layout.Magnitude(raw: rhs.base)
+        UX(raw: lhs.base) < UX(raw: rhs.base)
     }
     
     @inlinable public borrowing func compared(to other: Self) -> Signum {
-        Layout.Magnitude(raw: self.base).compared(to: Layout.Magnitude(raw: other.base))
+        UX(raw: self.base).compared(to:  UX(raw: other.base))
     }
     
     //=------------------------------------------------------------------------=

@@ -22,28 +22,28 @@ extension CoreIntTests {
     
     /// - Note: Generic tests may depend on these results.
     func testComparisonOfSize() {
-        for size: Count<IX> in [I8 .size, U8 .size] {
+        for size: Count in [I8 .size, U8 .size] {
             Test().comparison(size, U8 .size,  0 as Signum, id: ComparableID())
             Test().comparison(size, U16.size, -1 as Signum, id: ComparableID())
             Test().comparison(size, U32.size, -1 as Signum, id: ComparableID())
             Test().comparison(size, U64.size, -1 as Signum, id: ComparableID())
         }
         
-        for size: Count<IX> in [I16.size, U16.size] {
+        for size: Count in [I16.size, U16.size] {
             Test().comparison(size, U8 .size,  1 as Signum, id: ComparableID())
             Test().comparison(size, U16.size,  0 as Signum, id: ComparableID())
             Test().comparison(size, U32.size, -1 as Signum, id: ComparableID())
             Test().comparison(size, U64.size, -1 as Signum, id: ComparableID())
         }
         
-        for size: Count<IX> in [I32.size, U32.size] {
+        for size: Count in [I32.size, U32.size] {
             Test().comparison(size, U8 .size,  1 as Signum, id: ComparableID())
             Test().comparison(size, U16.size,  1 as Signum, id: ComparableID())
             Test().comparison(size, U32.size,  0 as Signum, id: ComparableID())
             Test().comparison(size, U64.size, -1 as Signum, id: ComparableID())
         }
         
-        for size: Count<IX> in [I64.size, U64.size] {
+        for size: Count in [I64.size, U64.size] {
             Test().comparison(size, U8 .size,  1 as Signum, id: ComparableID())
             Test().comparison(size, U16.size,  1 as Signum, id: ComparableID())
             Test().comparison(size, U32.size,  1 as Signum, id: ComparableID())

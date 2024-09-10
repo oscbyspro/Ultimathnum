@@ -25,7 +25,7 @@
   - [Upsize binary integer elements with DataInt\<U8\>](#corekit-upsize)
   - [Lightweight text decoding and encoding with TextInt](#corekit-text-int)
   - [Type-safe bit casts with BitCastable\<BitPattern\>](#corekit-bit-cast)
-  - [Bit counting with Count\<Layout\> and BitCountable](#corekit-bit-count)
+  - [Unified bit-counting with Count and BitCountable](#corekit-bit-count)
   - [Generic logic gates with BitOperable](#corekit-bitwise-logic)
   - [Three-way comparisons return Signum](#corekit-signum)
   - [Division by multiplication with Divider\<Value\>](#corekit-divider)
@@ -418,22 +418,22 @@ The init(load:) method is similar, but it returns the bit pattern that fits.
 
 <a name="corekit-bit-count"/>
 
-#### Bit counting with Count\<Layout\> and BitCountable
+#### Unified bit-counting with Count and BitCountable
 
 > Please roll a **D20** arcana check.
 
 An arbitrary binary integer's bit pattern extends infinitely, yet its bit pattern has an end.
-Count\<IX\> is a pointer-bit model that can count the bits of any binary integer stored in memory.
-It does this by reinterpreting the last bit as logarithmically infinite.
+As such, we need a special kind of integer to represent arbitrary binary integer sizes. Count
+fulfill our need by reinterpreting the last bit of a machine word as logarithmically infinite:
 
 ```
 min ..< msb: [0,  IX.max + 0]
 msb ... max: [∞ - IX.max,  ∞] ≤ log2(UXL.max + 1)
 ```
 
-All binary integer types and all data integer types let you perform bit-counting operations; 
-the BitCountable protocol unifies them. Their common protocol requires methods like *size()* 
-and *ascending(\_:)* then derives methods like *entropy()* and *nonascending(\_:)* for them.
+All binary integers, and all data integers, support bit-counting operations; their BitCountable 
+conformance unifies them. They require methods like *size()*, *ascending(\_:)*, and *descending(\_:)* 
+then derive methods like *entropy()*, *nonascending(\_:)*, and *nondescending(\_:)*.
 
 <a name="corekit-bitwise-logic"/>
 

@@ -25,9 +25,9 @@ final class BinaryIntegerTestsOnLogarithm: XCTestCase {
     
     func testBinaryLogarithmForSmallEntropies() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            let max = Count<IX>(raw: IX(raw: T.size) - 1)
+            let max = Count(raw: IX(raw: T.size) - 1)
             
-            func check(_ value: T, _ expectation: Count<IX>?) {
+            func check(_ value: T, _ expectation: Count?) {
                 Test().same(value.ilog2(), expectation)
                 Test().same(Nonzero(exactly: value)?.ilog2(), expectation)
             }

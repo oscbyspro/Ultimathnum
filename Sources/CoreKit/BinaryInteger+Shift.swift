@@ -175,9 +175,9 @@ extension BinaryInteger {
     ///
     /// - Note: A `distance` greater than `IX.max` is a directional flush.
     ///
-    /// - Note: This method improves `Count<IX>` ergonomics.
+    /// - Note: This method improves `Count` ergonomics.
     ///
-    @inlinable public consuming func up(_ distance: Count<IX>) -> Self {
+    @inlinable public consuming func up(_ distance: Count) -> Self {
         if  let distance = Shift<Magnitude>(exactly: distance) {
             return self.up(distance)
         }   else {
@@ -191,9 +191,9 @@ extension BinaryInteger {
     ///
     /// - Note: A `distance` greater than `IX.max` is a directional flush.
     ///
-    /// - Note: This method improves `Count<IX>` ergonomics.
+    /// - Note: This method improves `Count` ergonomics.
     ///
-    @inlinable public consuming func down(_ distance: Count<IX>) -> Self {
+    @inlinable public consuming func down(_ distance: Count) -> Self {
         if  let distance = Shift<Magnitude>(exactly: distance) {
             return self.down(distance)
         }   else {

@@ -29,7 +29,7 @@
     
     public typealias Target = Target
     
-    public typealias Value  = Count<IX>
+    public typealias Value  = Count
     
     //=------------------------------------------------------------------------=
     // MARK: Metadata

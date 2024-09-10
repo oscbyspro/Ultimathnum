@@ -17,7 +17,7 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public borrowing func size() -> Count<IX> {
+    @inlinable public borrowing func size() -> Count {
         Self.size
     }
 }
