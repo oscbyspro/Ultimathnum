@@ -40,12 +40,14 @@ final class CountTests: XCTestCase {
     
     func testInitLayout() {
         for x in Self.patterns {
-            if  x.isNegative {
-                Test().none(Count(exactly:   x))
-            }   else {
+            if !x.isNegative {
                 Test().same(Count(x),            Count(raw: x))
-                Test().same(Count(exactly:   x), Count(raw: x))
                 Test().same(Count(unchecked: x), Count(raw: x))
+                Test().same(Count(exactly:   x), Count(raw: x))
+                Test().success(try Count(x, prune: Bad.any), Count(raw: x))
+            }   else {
+                Test().none(Count(exactly:   x))
+                Test().failure(try Count(x, prune: Bad.any), Bad.any)
             }
         }
     }

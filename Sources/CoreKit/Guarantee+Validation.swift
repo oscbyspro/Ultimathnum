@@ -17,7 +17,7 @@ extension Guarantee {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Creates a new instance by trapping on failure.
+    /// Creates a new instance by trapping on `error`.
     ///
     /// - Requires: The given `value` must satisfy the `predicate` of this type.
     ///
@@ -26,7 +26,7 @@ extension Guarantee {
         self.init(unsafe:/**/value)
     }
     
-    /// Creates a new instance by trapping on failure in debug mode.
+    /// Creates a new instance by trapping on `error` in debug mode.
     ///
     /// - Requires: The given `value` must satisfy the `predicate` of this type.
     ///
@@ -35,7 +35,7 @@ extension Guarantee {
         self.init(unsafe:/**/value)
     }
     
-    /// Creates a new instance by returning `nil` on failure.
+    /// Creates a new instance by returning `nil` on `error`.
     ///
     /// - Requires: The given `value` must satisfy the `predicate` of this type.
     ///
@@ -44,12 +44,12 @@ extension Guarantee {
         self.init(unsafe:/**/value)
     }
     
-    /// Creates a new instance by throwing the `error()` on failure.
+    /// Creates a new instance by throwing `failure()` on `error`.
     ///
     /// - Requires: The given `value` must satisfy the `predicate` of this type.
     ///
-    @inlinable public init<Error>(_ value: consuming Value, prune error: @autoclosure () -> Error) throws where Error: Swift.Error {
-        guard Self.predicate(value) else { throw error() }
+    @inlinable public init<Error>(_ value: consuming Value, prune failure: @autoclosure () -> Error) throws where Error: Swift.Error {
+        guard Self.predicate(value) else { throw failure() }
         self.init(unsafe:/**/value)
     }
 }
