@@ -11,33 +11,28 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Count x Comparison
+// MARK: * Count x Text
 //*============================================================================*
 
-final class CountTestsOnComparison: XCTestCase {
+final class CountTestsOnText: XCTestCase {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testIsZeroIsLikeBinaryIntegerIsZero() {
-        for x in CountTests.patterns {
-            Test().same(Count(raw: x).isZero, x.isZero)
-        }
+    func testDescriptionWhereIsNatural() {
+        Test().same(Count(raw: IX( 0)).description, "0")
+        Test().same(Count(raw: IX( 1)).description, "1")
+        Test().same(Count(raw: IX( 2)).description, "2")
+        Test().same(Count(raw: IX( 3)).description, "3")
+        Test().same(Count(raw: IX.max).description, "\(IX.max)")
     }
     
-    func testIsInfiniteIsLikeSignedIntegerIsNegative() {
-        for x in CountTests.patterns {
-            Test().same(Count(raw: x).isInfinite, x.isNegative)
-        }
-    }
-    
-    func testComparisonIsLikeUnsignedIntegerComparison() {
-        for lhs in CountTests.patterns {
-            for rhs in CountTests.patterns {
-                let expectation: Signum = UX(load: lhs).compared(to: UX(load: rhs))
-                Test().comparison(Count(raw: lhs), Count(raw: rhs), expectation, id: ComparableID())
-            }
-        }
+    func testDescriptionWhereIsInfinite() {
+        Test().same(Count(raw: IX(~0)).description, "log2(&0+1)")
+        Test().same(Count(raw: IX(~1)).description, "log2(&0+1)-1")
+        Test().same(Count(raw: IX(~2)).description, "log2(&0+1)-2")
+        Test().same(Count(raw: IX(~3)).description, "log2(&0+1)-3")
+        Test().same(Count(raw: IX.min).description, "log2(&0+1)-\(IX.max)")
     }
 }

@@ -28,7 +28,7 @@
 ///
 /// - Note: Please roll a `D20` arcana check.
 ///
-@frozen public struct Count: BitCastable, Comparable, Recoverable, Sendable {
+@frozen public struct Count: BitCastable, Comparable, CustomStringConvertible, Recoverable, Sendable {
         
     //=------------------------------------------------------------------------=
     // MARK: Metadata
