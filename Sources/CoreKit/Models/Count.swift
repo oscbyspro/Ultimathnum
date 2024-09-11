@@ -63,7 +63,7 @@
         self.base = ((source))
     }
     
-    /// Loads the `source` by returning `nil` on `error` in debug mode.
+    /// Loads the `source` by trapping on `error` in debug mode.
     ///
     /// - Note: The `error` is set if the conversion is `lossy`.
     ///

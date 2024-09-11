@@ -135,8 +135,7 @@
         }
     }
     
-    /// Returns the relative `value` of `self` and an `error` indicator.
-    /// The `error` indicator is set when `self` is infinite.
+    /// Returns its raw `value` and an `error` indicator.
     ///
     ///     ┌───────────────────────┬───────────────┐
     ///     │ self                  │ value │ error │
@@ -150,28 +149,10 @@
     ///     │ log2(UXL.max + 1)     │ -1    │ true  │
     ///     └───────────────────────┴───────┴───────┘
     ///
+    /// - Note: The `error` is set if `self` is infinite.
+    ///
     @inlinable public func natural() -> Fallible<IX> {
         Fallible(IX(raw: self.value), error: self.isInfinite)
-    }
-    
-    /// Returns the wrapped value or its infinite promotion.
-    ///
-    ///     ┌───────────────────────┬─────────┐
-    ///     │ self                  │ UXL     │
-    ///     ├───────────────────────┼─────────┤
-    ///     │ 123                   │ 123     │
-    ///     │ log2(UXL.max + 1) - 1 │ UXL.max │
-    ///     └───────────────────────┴─────────┘
-    ///
-    /// - Note: `Count<T>` uses one's complement to represent infinity.
-    ///
-    @inlinable public func promoted() -> Target {        
-        if  self.isInfinite {
-            return Target(load: IX(raw: self.value).incremented().unchecked())
-
-        }   else {
-            return Target(load: IX(raw: self.value))
-        }
     }
 }
 

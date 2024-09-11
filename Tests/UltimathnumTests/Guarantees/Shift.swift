@@ -222,33 +222,4 @@ final class ShiftTests: XCTestCase {
         whereTheValueIs(InfiniInt<U8>.self)
         whereTheValueIs(InfiniInt<UX>.self)
     }
-    
-    func testPromoted() {
-        func whereTheValueIs<Value>(_ type: Value.Type) where Value: UnsignedInteger {
-            typealias T = Shift<Value>
-            
-            for x:  IX in 0 ..< 255 {
-                if  let shift = T(exactly: Count(x)) {
-                    Test().same(shift.promoted(), Value(load: x))
-                }
-            }
-            
-            if  Value.size.isInfinite {
-                Test().same(T(Count(raw: ~1 as IX)).promoted(), Value.max)
-                Test().same(T(Count(raw: ~2 as IX)).promoted(), Value.max - 1)
-                Test().same(T(Count(raw: ~3 as IX)).promoted(), Value.max - 2)
-                Test().same(T(Count(raw: ~4 as IX)).promoted(), Value.max - 3)
-            }
-        }
-        
-        for type in coreSystemsIntegersWhereIsUnsigned {
-            whereTheValueIs(type)
-        }
-        
-        whereTheValueIs(DoubleInt<U8>.self)
-        whereTheValueIs(DoubleInt<UX>.self)
-        
-        whereTheValueIs(InfiniInt<U8>.self)
-        whereTheValueIs(InfiniInt<UX>.self)
-    }
 }

@@ -423,8 +423,8 @@ The init(load:) method is similar, but it returns the bit pattern that fits.
 > Please roll a **D20** arcana check.
 
 An arbitrary binary integer's bit pattern extends infinitely, yet its bit pattern has an end.
-As such, we need a special kind of integer to represent arbitrary binary integer sizes. Count
-fulfill our need by reinterpreting the last bit of a machine word as logarithmically infinite:
+As such,  we need a special kind of integer to represent arbitrary binary integer sizes. Count
+fulfills our need by reinterpreting the last bit of a machine word as logarithmically infinite:
 
 ```
 min ..< msb: [0,  IX.max + 0]
