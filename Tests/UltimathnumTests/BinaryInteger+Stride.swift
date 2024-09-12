@@ -56,4 +56,38 @@ final class BinaryIntegerTestsOnStride: XCTestCase {
             }
         }
     }
+    
+    /// Here we check that the following invariant holds for finite values:
+    ///
+    ///     start.distance(by: end) == T.exactly(IXL(end) - IXL(start))
+    ///
+    func testDistanceByFuzzingGenericFiniteValuesVersusIXL() {
+        func whereIs<A, B>(type: A.Type, distance: B.Type, rounds: IX, randomness: consuming FuzzerInt) where A: BinaryInteger, B: SignedInteger {
+            func random() -> A {
+                let size  = IX(size: A.self) ?? 128
+                let index = IX.random(in: 000000000 ..< size, using: &randomness)!
+                return A.random(through: Shift(Count(index)), using: &randomness)
+            }
+            
+            for _ in 0 ..< rounds {
+                let start: A = random()
+                let end:   A = random()
+                let distance = IXL(end) - IXL(start)
+                let result: Fallible<B> = start.distance(to:  end)
+                let expectation: Fallible<B> = B.exactly(distance)
+                Test().same(result, expectation)
+            }
+        }
+        
+        #if DEBUG
+        let rounds: IX = 032
+        #else
+        let rounds: IX = 256
+        #endif
+        for type in binaryIntegers {
+            for distance in binaryIntegersWhereIsSigned {
+                whereIs(type: type, distance: distance, rounds: rounds, randomness: fuzzer)
+            }
+        }
+    }
 }
