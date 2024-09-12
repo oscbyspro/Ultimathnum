@@ -17,30 +17,33 @@ extension BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
 
-    /// Returns `self` offset by `distance`.
+    /// Returns `self` advanced by `distance` by trapping on `error`.
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
     @inlinable public func advanced(by distance: Swift.Int) -> Self {
         self.advanced(by: IX(distance)).unwrap()
     }
     
+    /// Returns `self` advanced by `distance` and an `error` indicator.
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
     @inlinable public func advanced<Distance>(
         by distance: Distance
     )   -> Fallible<Self> where Distance: SignedInteger {
         
-        if  Self.isSigned {
-            if  Self.size < Distance.size {
-                return Distance(load: self).plus(distance).map(Self.exactly)
-                
-            }   else {
-                return self.plus(Self(load: distance))
-            }
+        if  Self.size < Distance.size {
+            return Self.exactly(Distance(load: self).plus(distance))
             
+        }   else if Self.isSigned {
+            return Self(load: distance).plus(self)
+            
+        }   else if distance.isNegative {
+            return self.minus(Self(load: Distance.Magnitude(raw: distance.complement())))
+
         }   else {
-            if  distance.isNegative {
-                return self.minus(Self.exactly(Distance.Magnitude(raw: distance.complement())))
-                
-            }   else {
-                return self.plus (Self.exactly(Distance.Magnitude(raw: distance)))
-            }
+            return self.plus (Self(load: Distance.Magnitude(raw: distance)))
         }
     }
     
@@ -48,12 +51,18 @@ extension BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Returns the distance from `self` to `other` as a stride.
+    /// Returns the distance from `self` to `other` by trapping on `error`.
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
     @inlinable public func distance(to other: Self) -> Swift.Int {
         Swift.Int(self.distance(to: other, as: IX.self).unwrap())
     }
     
-    /// Returns the distance from `self` to `other` as a stride.
+    /// Returns the distance from `self` to `other` and an `error` indicator.
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
     @inlinable public func distance<Distance>(
         to other: Self,
         as type: Distance.Type = Distance.self
