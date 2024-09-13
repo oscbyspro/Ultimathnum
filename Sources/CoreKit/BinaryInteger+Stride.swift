@@ -37,7 +37,7 @@ extension BinaryInteger {
             return Self.exactly(Distance(load: self).plus(distance))
             
         }   else if Self.isSigned {
-            return Self(load: distance).plus(self)
+            return self.plus (Self(load: distance))
             
         }   else if distance.isNegative {
             return self.minus(Self(load: Distance.Magnitude(raw: distance.complement())))
