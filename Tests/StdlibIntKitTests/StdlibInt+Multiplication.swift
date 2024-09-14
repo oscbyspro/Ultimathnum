@@ -28,6 +28,11 @@ extension StdlibIntTests {
             
             test.same({ var x = lhs; x *= rhs; return x }(), expecation)
             test.same({ var x = rhs; x *= lhs; return x }(), expecation)
+            
+            if  lhs == rhs {
+                test.same(( lhs).squared(), expecation)
+                test.same((-lhs).squared(), expecation)
+            }
         }
         
         check(Test(), -2 as T, -2 as T,  4 as T)

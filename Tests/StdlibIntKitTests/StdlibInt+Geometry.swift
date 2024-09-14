@@ -43,9 +43,8 @@ final class StdlibIntTestsOnGeometry: XCTestCase {
     
     /// - Seealso: https://www.wolframalpha.com/input?i=floor%28sqrt%28321%21%29%29
     func testIntegerSquareRootOfFactorial321() {
-        let index = StdlibInt(321)
-        let element = index.factorial()!
-        let isqrt = element.isqrt()!
+        let value = StdlibInt(321).factorial()!
+        let isqrt = value.isqrt()!
         let expectation = StdlibInt("""
         0000000000000000000000000000000000000000000000000026062792913603\
         4852359151877315143131904266127104261942203056907277755117135873\
@@ -54,9 +53,9 @@ final class StdlibIntTestsOnGeometry: XCTestCase {
         8131925747401035885523686460539264165373280627726671674087518980\
         3775713261640843722248736613200259232221333640637256452385600599
         """)!
-                
+        
         Test().same((isqrt), expectation)
-        Test().less((isqrt + 0) * (isqrt + 0), element)
-        Test().more((isqrt + 1) * (isqrt + 1), element)
+        Test().less((isqrt + 0).squared(), value)
+        Test().more((isqrt + 1).squared(), value)
     }
 }

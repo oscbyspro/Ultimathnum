@@ -27,4 +27,8 @@ extension StdlibInt {
     @inlinable public static func *=(lhs: inout Self, rhs: borrowing Self) {
         lhs.base *= rhs.base
     }
+    
+    @inlinable public borrowing func squared() -> Self {
+        Self(self.base.squared().unchecked("ArbitraryInteger & SignedInteger"))
+    }
 }
