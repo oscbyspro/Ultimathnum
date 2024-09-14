@@ -11,29 +11,34 @@ import CoreKit
 import InfiniIntKit
 
 //*============================================================================*
-// MARK: * Stdlib Int x Factorial
+// MARK: * Stdlib Int x Geometry
 //*============================================================================*
 
 extension StdlibInt {
     
-    /// The `factorial` of `self` or `nil`.
+    /// Returns the integer square root of `self`.
     ///
     /// ```swift
-    /// U8(0).factorial() // U8.exactly(   1)
-    /// U8(1).factorial() // U8.exactly(   1)
-    /// U8(2).factorial() // U8.exactly(   2)
-    /// U8(3).factorial() // U8.exactly(   6)
-    /// U8(4).factorial() // U8.exactly(  24)
-    /// U8(5).factorial() // U8.exactly( 120)
-    /// U8(6).factorial() // U8.exactly( 720)
-    /// U8(7).factorial() // U8.exactly(5040)
+    /// I8( 4).isqrt() // 2
+    /// I8( 3).isqrt() // 1
+    /// I8( 2).isqrt() // 1
+    /// I8( 1).isqrt() // 1
+    /// I8( 0).isqrt() // 0
+    /// I8(-1).isqrt() // nil
+    /// I8(-2).isqrt() // nil
+    /// I8(-3).isqrt() // nil
+    /// I8(-4).isqrt() // nil
     /// ```
     ///
-    /// - Note: It returns `nil` if the operation is `lossy`.
+    /// - Note: `Natural<T>` guarantees nonoptional results.
     ///
-    /// - Note: It returns `nil` if the operation is `undefined`.
+    /// ### Algorithm
     ///
-    @inlinable public /*borrowing*/ func factorial() -> Optional<Self> {
-        self.base.factorial().map(Self.init)
+    /// - Seealso: https://en.wikipedia.org/wiki/newton's_method
+    ///
+    /// - Seealso: https://en.wikipedia.org/wiki/integer_square_root
+    ///
+    @inlinable public func isqrt() -> Optional<Self> {
+        self.base.isqrt().map(Self.init)
     }
 }

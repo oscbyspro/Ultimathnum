@@ -15,7 +15,7 @@ import TestKit
 // MARK: * Stdlib Int x Factorial
 //*============================================================================*
 
-extension StdlibIntTests {
+final class StdlibIntTestsOnFactorial: XCTestCase {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
