@@ -8,43 +8,23 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import StdlibIntKit
+import InfiniIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Stdlib Int x Factorial
+// MARK: * Infini Int x Factorial
 //*============================================================================*
 
-final class StdlibIntTestsOnFactorial: XCTestCase {
+final class InfiniIntTestsOnFactorial: XCTestCase {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testElementAtSmallIndices() {
-        Test().none(StdlibInt(-8).factorial())
-        Test().none(StdlibInt(-7).factorial())
-        Test().none(StdlibInt(-6).factorial())
-        Test().none(StdlibInt(-5).factorial())
-        Test().none(StdlibInt(-4).factorial())
-        Test().none(StdlibInt(-3).factorial())
-        Test().none(StdlibInt(-2).factorial())
-        Test().none(StdlibInt(-1).factorial())
-        Test().same(StdlibInt( 0).factorial(), 0001)
-        Test().same(StdlibInt( 1).factorial(), 0001)
-        Test().same(StdlibInt( 2).factorial(), 0002)
-        Test().same(StdlibInt( 3).factorial(), 0006)
-        Test().same(StdlibInt( 4).factorial(), 0024)
-        Test().same(StdlibInt( 5).factorial(), 0120)
-        Test().same(StdlibInt( 6).factorial(), 0720)
-        Test().same(StdlibInt( 7).factorial(), 5040)
-    }
-    
     /// - Seealso: https://www.wolframalpha.com/input?i=1337%21
     func testElementAtIndex1337() {
-        let index = StdlibInt(1337)
-        let element = index.factorial()
-        let expectation = StdlibInt("""
+        let index = I32(1337)
+        let expectation = UXL("""
         0000000000000000000000000000000000000000000000088746638366576796\
         1662410646418133009547720120993472817948825961826558347208242245\
         1756532829820227220586694812398717056396577963484185843624972811\
@@ -102,9 +82,17 @@ final class StdlibIntTestsOnFactorial: XCTestCase {
         0000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000
-        """)
+        """)!
         
-        Test().some(element)
-        Test().same(element, expectation)
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
+            Test().comparison(T(index).factorial()!, expectation, Signum.zero)
+        }
+        
+        whereIs(IXL.self)
+        whereIs(UXL.self)
+        #if !DEBUG
+        whereIs(InfiniInt<I8>.self)
+        whereIs(InfiniInt<U8>.self)
+        #endif
     }
 }

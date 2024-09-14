@@ -8,44 +8,23 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import StdlibIntKit
+import InfiniIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Stdlib Int x Geometry
+// MARK: * Infini Int x Geometry
 //*============================================================================*
 
-final class StdlibIntTestsOnGeometry: XCTestCase {
+final class InfiniIntTestsOnGeometry: XCTestCase {
 
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testIntegerSquareRootOfSmallValues() {
-        Test().same(StdlibInt( 0).isqrt(), 0)
-        Test().same(StdlibInt( 1).isqrt(), 1)
-        Test().same(StdlibInt( 2).isqrt(), 1)
-        Test().same(StdlibInt( 3).isqrt(), 1)
-        Test().same(StdlibInt( 4).isqrt(), 2)
-        Test().same(StdlibInt( 5).isqrt(), 2)
-        Test().same(StdlibInt( 6).isqrt(), 2)
-        Test().same(StdlibInt( 7).isqrt(), 2)
-        Test().same(StdlibInt( 8).isqrt(), 2)
-        Test().same(StdlibInt( 9).isqrt(), 3)
-    }
-    
-    func testIntegerSquareRootOfNegativeIsNil() {
-        Test().none(StdlibInt(-1).isqrt())
-        Test().none(StdlibInt(-2).isqrt())
-        Test().none(StdlibInt(-3).isqrt())
-        Test().none(StdlibInt(-4).isqrt())
-    }
-    
     /// - Seealso: https://www.wolframalpha.com/input?i=floor%28sqrt%28321%21%29%29
     func testIntegerSquareRootOfFactorial321() {
-        let value = StdlibInt(321).factorial()!
-        let isqrt = value.isqrt()!
-        let expectation = StdlibInt("""
+        let value = IXL(321).factorial()!
+        let expectation = UXL("""
         0000000000000000000000000000000000000000000000000026062792913603\
         4852359151877315143131904266127104261942203056907277755117135873\
         5999735977332697495465868036180289948163225036497853196327377133\
@@ -54,8 +33,18 @@ final class StdlibIntTestsOnGeometry: XCTestCase {
         3775713261640843722248736613200259232221333640637256452385600599
         """)!
         
-        Test().same((isqrt), expectation)
-        Test().less((isqrt + 0).squared(), value)
-        Test().more((isqrt + 1).squared(), value)
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
+            let isqrt = T(value).isqrt()!
+            Test().comparison(isqrt, expectation, Signum.zero)
+            Test().comparison(isqrt.plus(0).squared().unwrap(), value, Signum.negative)
+            Test().comparison(isqrt.plus(1).squared().unwrap(), value, Signum.positive)
+        }
+        
+        whereIs(IXL.self)
+        whereIs(UXL.self)
+        #if !DEBUG
+        whereIs(InfiniInt<I8>.self)
+        whereIs(InfiniInt<U8>.self)
+        #endif
     }
 }
