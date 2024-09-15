@@ -27,6 +27,28 @@ public let coreSystemsIntegersWhereIsUnsigned: [any (SystemsInteger & UnsignedIn
     UX.self, U8.self, U16.self, U32.self, U64.self,
 ]
 
+//=------------------------------------------------------------------------=
+// MARK: + Stdlib
+//=------------------------------------------------------------------------=
+
+public let stdlibSystemsIntegers: [any Swift.BinaryInteger.Type] = {
+    stdlibSystemsIntegersWhereIsSigned +
+    stdlibSystemsIntegersWhereIsUnsigned
+}()
+
+public let stdlibSystemsIntegersWhereIsSigned: [any (Swift.FixedWidthInteger & Swift.SignedInteger).Type] = [
+    Int.self, Int8.self, Int16.self, Int32.self, Int64.self,
+]
+
+public let stdlibSystemsIntegersWhereIsUnsigned: [any (Swift.FixedWidthInteger & Swift.UnsignedInteger).Type] = [
+    UInt.self, UInt8.self, UInt16.self, UInt32.self, UInt64.self,
+]
+
+public let stdlibSystemsFloats: [any Swift.BinaryFloatingPoint.Type] = [
+    Float32.self,
+    Float64.self,
+]
+
 //=----------------------------------------------------------------------------=
 // MARK: + Randomness
 //=----------------------------------------------------------------------------=

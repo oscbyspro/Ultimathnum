@@ -43,29 +43,11 @@ extension StdlibInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(_ source: some Swift.BinaryFloatingPoint) {
-        self.init(exactly: source.rounded(.towardZero))!
+        self.init(Base.stdlib(leniently: source)!.value)
     }
     
     @inlinable public init?<T>(exactly source: T) where T: Swift.BinaryFloatingPoint {
-        if  source.isZero {
-            self.init()
-            
-        }   else if source.isNaN || source.isInfinite || source != source.rounded() {
-            return nil
-            
-        }   else {
-            let exponent = Swift.Int(source.exponent)
-            let fraction = Self(source.significandBitPattern)
-            Swift.assert(exponent >= .zero)
-            
-            self = Self(1) << exponent | fraction << (exponent - T.significandBitCount)
-            
-            if  source.sign == .plus {
-                Swift.assert(source.floatingPointClass == .positiveNormal)
-            }   else {
-                self.negate()
-                Swift.assert(source.floatingPointClass == .negativeNormal)
-            }
-        }
+        guard let base = Base.stdlib(exactly: source) else { return nil }
+        self.init(base)
     }
 }
