@@ -543,7 +543,8 @@ final class BinaryIntegerTestsOnValidationOfStdlib: XCTestCase {
     
     func testInitFloatNanIsNil() {
         func whereIs<A, B>(source: A.Type, destination: B.Type) where A: Swift.BinaryFloatingPoint, B: BinaryInteger {
-            Test().stdlib(A.nan, is: Optional<B>.none)
+            Test().stdlib( A.nan, is: Optional<B>.none)
+            Test().stdlib(-A.nan, is: Optional<B>.none)
         }
         
         for source in stdlibSystemsFloats {
@@ -555,7 +556,8 @@ final class BinaryIntegerTestsOnValidationOfStdlib: XCTestCase {
     
     func testInitFloatInfinityIsNil() {
         func whereIs<A, B>(source: A.Type, destination: B.Type) where A: Swift.BinaryFloatingPoint, B: BinaryInteger {
-            Test().stdlib(A.infinity, is: Optional<B>.none)
+            Test().stdlib( A.infinity, is: Optional<B>.none)
+            Test().stdlib(-A.infinity, is: Optional<B>.none)
         }
         
         for source in stdlibSystemsFloats {
@@ -578,8 +580,8 @@ final class BinaryIntegerTestsOnValidationOfStdlib: XCTestCase {
                     Test().stdlib(positive, is: B.exactly(sign: .plus,  magnitude: magnitude).optional(), exactly: true)
                     Test().stdlib(negative, is: B.exactly(sign: .minus, magnitude: magnitude).optional(), exactly: true)
                 }   else {
-                    Test().stdlib(positive, is: Optional<B>.none, exactly: true)
-                    Test().stdlib(negative, is: Optional<B>.none, exactly: true)
+                    Test().stdlib(positive, is: Optional<B>.none)
+                    Test().stdlib(negative, is: Optional<B>.none)
                 }
             }
         }
@@ -598,7 +600,7 @@ final class BinaryIntegerTestsOnValidationOfStdlib: XCTestCase {
     func testInitGreatestFiniteMagnitudeAsFloat32() {
         let positive = IXL(340282346638528859811704183484516925440)
         let negative = positive.negated().unwrap()
-                
+        
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             Test().stdlib( Float32.greatestFiniteMagnitude, is: T.exactly(positive).optional(), exactly: true)
             Test().stdlib(-Float32.greatestFiniteMagnitude, is: T.exactly(negative).optional(), exactly: true)
@@ -616,7 +618,8 @@ final class BinaryIntegerTestsOnValidationOfStdlib: XCTestCase {
         4642343213268894641827684675467035375169860499105765512820762454\
         9009038932894407586850845513394230458323690322294816580855933212\
         3348274797826204144723168738177180919299881250404026184124858368
-        """)!, negative = -positive
+        """)!
+        let negative = positive.negated().unwrap()
         
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             Test().stdlib( Float64.greatestFiniteMagnitude, is: T.exactly(positive).optional(), exactly: true)
@@ -645,29 +648,32 @@ final class BinaryIntegerTestsOnValidationOfStdlib: XCTestCase {
     ///     1111111111111111111111111111111111111111111111111111110011000011 →
     ///
     func testInitLargeNegativeFloats() {
-        func whereIs<A, B>(source: A.Type, destination: B.Type) where A: Swift.BinaryFloatingPoint, B: ArbitraryInteger {
+        func whereIs<A, B>(
+            source: A.Type, destination: B.Type, exponents: IX, steps: IX
+        )   where A: Swift.BinaryFloatingPoint, B: ArbitraryInteger {
             //=--------------------------------------=
             let start = A.significandBitCount
             //=--------------------------------------=
-            for exponent: Swift.Int in start ..< start + 32 {
+            for exponent in start ..< start + Swift.Int(exponents) {
                 var source = A(sign: .minus, exponent: A.Exponent(exponent), significand: 1)
                 var sourceStep: A = source.ulp
                 var destination = B.isSigned ? B(-1) << IX(exponent) : nil
-                var destinationStep = B.stdlib(exactly: sourceStep)!
+                var destinationStep = B.exactly(sourceStep)!
 
-                for _ in 0 ..< A.significandBitCount {
+                for _ in 0 ..< steps {
                     source          -= sourceStep
-                    sourceStep      -= sourceStep
+                    sourceStep      += sourceStep
                     destination?    -= destinationStep
-                    destinationStep -= destinationStep
+                    destinationStep += destinationStep
                     Test().stdlib(source, is: destination, exactly: true)
                 }
             }
         }
         
         for source in stdlibSystemsFloats {
-            whereIs(source: source, destination: InfiniInt<IX>.self)
-            whereIs(source: source, destination: InfiniInt<UX>.self)
+            let steps = IX(source.significandBitCount)
+            whereIs(source: source, destination: InfiniInt<IX>.self, exponents: 32, steps: steps)
+            whereIs(source: source, destination: InfiniInt<UX>.self, exponents: 32, steps: steps)
         }
     }
     
@@ -684,18 +690,20 @@ final class BinaryIntegerTestsOnValidationOfStdlib: XCTestCase {
     ///     1110000000000000000000000000000000000000000000000000110011000011 →
     ///
     func testInitLargeNegativeFloatsNearMinSignificandBitPattern() {
-        func whereIs<A, B>(source: A.Type, destination: B.Type) where A: Swift.BinaryFloatingPoint, B: ArbitraryInteger {
+        func whereIs<A, B>(
+            source: A.Type, destination: B.Type, exponents: IX, steps: IX
+        )   where A: Swift.BinaryFloatingPoint, B: ArbitraryInteger {
             //=----------------------------------=
             let start = A.significandBitCount
             Test().same(A(sign: .minus, exponent: A.Exponent(start), significand: 1).ulp, 1)
             //=----------------------------------=
-            for exponent: Swift.Int in start ..< start + 32 {
+            for exponent in start ..< start + Swift.Int(exponents) {
                 var source = A(sign: .minus, exponent: A.Exponent(exponent), significand: 1)
                 let sourceStep: A = source.ulp
                 var destination = B.isSigned ? B(-1) << IX(exponent) : nil
-                let destinationStep = B.stdlib(exactly: sourceStep)!
+                let destinationStep = B.exactly(sourceStep)!
                 
-                for _ in 0 ..< 32 {
+                for _ in 0 ..< steps {
                     Test().stdlib(source, is: destination, exactly: true)
                     source -= sourceStep
                     destination? -= destinationStep
@@ -704,8 +712,8 @@ final class BinaryIntegerTestsOnValidationOfStdlib: XCTestCase {
         }
         
         for source in stdlibSystemsFloats {
-            whereIs(source: source, destination: InfiniInt<IX>.self)
-            whereIs(source: source, destination: InfiniInt<UX>.self)
+            whereIs(source: source, destination: InfiniInt<IX>.self, exponents: 32, steps: 32)
+            whereIs(source: source, destination: InfiniInt<UX>.self, exponents: 32, steps: 32)
         }
     }
     
@@ -722,19 +730,21 @@ final class BinaryIntegerTestsOnValidationOfStdlib: XCTestCase {
     ///     0001111111111111111111111111111111111111111111111111110011000011 →
     ///
     func testInitLargeNegativeFloatsNearMaxSignificandBitPattern() {
-        func whereIs<A, B>(source: A.Type, destination: B.Type) where A: Swift.BinaryFloatingPoint, B: ArbitraryInteger {
+        func whereIs<A, B>(
+            source: A.Type, destination: B.Type, exponents: IX, steps: IX
+        )   where A: Swift.BinaryFloatingPoint, B: ArbitraryInteger {
             //=----------------------------------=
             let start = A.significandBitCount + 1
             Test().same(A(sign: .minus, exponent: A.Exponent(start), significand: 1).ulp, 2)
             Test().same(A(sign: .minus, exponent: A.Exponent(start), significand: 1).nextUp.ulp, 1)
             //=----------------------------------=
-            for exponent: Swift.Int in start ..< start + 32 {
+            for exponent in start ..< start + Swift.Int(exponents) {
                 var source = A(sign: .minus, exponent: A.Exponent(exponent), significand: 1)
                 let sourceStep: A = source.nextUp.ulp
                 var destination = B.isSigned ? B(-1) << IX(exponent) : nil
-                let destinationStep = B.stdlib(exactly: sourceStep)!
+                let destinationStep = B.exactly(sourceStep)!
                 
-                for _ in 0 ..< 32 {
+                for _ in 0 ..< steps {
                     source += sourceStep
                     destination? += destinationStep
                     Test().stdlib(source, is: destination, exactly: true)
@@ -743,8 +753,8 @@ final class BinaryIntegerTestsOnValidationOfStdlib: XCTestCase {
         }
         
         for source in stdlibSystemsFloats {
-            whereIs(source: source, destination: InfiniInt<IX>.self)
-            whereIs(source: source, destination: InfiniInt<UX>.self)
+            whereIs(source: source, destination: InfiniInt<IX>.self, exponents: 32, steps: 32)
+            whereIs(source: source, destination: InfiniInt<UX>.self, exponents: 32, steps: 32)
         }
     }
     
@@ -761,17 +771,19 @@ final class BinaryIntegerTestsOnValidationOfStdlib: XCTestCase {
     ///     1111111111111111111111111111111111111111111111111111110011000010 →
     ///
     func testInitLargePositiveFloats() {
-        func whereIs<A, B>(source: A.Type, destination: B.Type) where A: Swift.BinaryFloatingPoint, B: ArbitraryInteger {
+        func whereIs<A, B>(
+            source: A.Type, destination: B.Type, exponents: IX, steps: IX
+        )   where A: Swift.BinaryFloatingPoint, B: ArbitraryInteger {
             //=--------------------------------------=
             let start = A.significandBitCount
             //=--------------------------------------=
-            for exponent: Swift.Int in start ..< start + 32 {
+            for exponent in start ..< start + Swift.Int(exponents) {
                 var source = A(sign: .plus, exponent: A.Exponent(exponent), significand: 1)
                 var sourceStep: A = source.ulp
                 var destination = B.lsb << IX(exponent)
-                var destinationStep = B.stdlib(exactly: sourceStep)!
+                var destinationStep = B.exactly(sourceStep)!
 
-                for _ in 0 ..< A.significandBitCount {
+                for _ in 0 ..< steps {
                     source          += sourceStep
                     sourceStep      += sourceStep
                     destination     += destinationStep
@@ -782,8 +794,9 @@ final class BinaryIntegerTestsOnValidationOfStdlib: XCTestCase {
         }
         
         for source in stdlibSystemsFloats {
-            whereIs(source: source, destination: InfiniInt<IX>.self)
-            whereIs(source: source, destination: InfiniInt<UX>.self)
+            let steps = IX(source.significandBitCount)
+            whereIs(source: source, destination: InfiniInt<IX>.self, exponents: 32, steps: steps)
+            whereIs(source: source, destination: InfiniInt<UX>.self, exponents: 32, steps: steps)
         }
     }
     
@@ -800,18 +813,20 @@ final class BinaryIntegerTestsOnValidationOfStdlib: XCTestCase {
     ///     1110000000000000000000000000000000000000000000000000110011000010 →
     ///
     func testInitLargePositiveFloatsNearMinSignificandBitPattern() {
-        func whereIs<A, B>(source: A.Type, destination: B.Type) where A: Swift.BinaryFloatingPoint, B: ArbitraryInteger {
+        func whereIs<A, B>(
+            source: A.Type, destination: B.Type, exponents: IX, steps: IX
+        )   where A: Swift.BinaryFloatingPoint, B: ArbitraryInteger {
             //=--------------------------------------=
             let start = A.significandBitCount
             Test().same(A(sign: .plus, exponent: A.Exponent(start), significand: 1).ulp, 1)
             //=--------------------------------------=
-            for exponent: Swift.Int in start ..< start + 32 {
+            for exponent in start ..< start + Swift.Int(exponents) {
                 var source = A(sign: .plus, exponent: A.Exponent(exponent), significand: 1)
                 let sourceStep: A = source.ulp
                 var destination = B.lsb << exponent
-                let destinationStep = B.stdlib(exactly: sourceStep)!
+                let destinationStep = B.exactly(sourceStep)!
                 
-                for _ in 0 ..< 32 {
+                for _ in 0 ..< steps {
                     Test().stdlib(source, is: destination, exactly: true)
                     source += sourceStep
                     destination += destinationStep
@@ -820,8 +835,8 @@ final class BinaryIntegerTestsOnValidationOfStdlib: XCTestCase {
         }
         
         for source in stdlibSystemsFloats {
-            whereIs(source: source, destination: InfiniInt<IX>.self)
-            whereIs(source: source, destination: InfiniInt<UX>.self)
+            whereIs(source: source, destination: InfiniInt<IX>.self, exponents: 32, steps: 32)
+            whereIs(source: source, destination: InfiniInt<UX>.self, exponents: 32, steps: 32)
         }
     }
     
@@ -838,19 +853,21 @@ final class BinaryIntegerTestsOnValidationOfStdlib: XCTestCase {
     ///     0001111111111111111111111111111111111111111111111111110011000010 →
     ///
     func testInitLargePositiveFloatsNearMaxSignificandBitPattern() {
-        func whereIs<A, B>(source: A.Type, destination: B.Type) where A: Swift.BinaryFloatingPoint, B: ArbitraryInteger {
+        func whereIs<A, B>(
+            source: A.Type, destination: B.Type, exponents: IX, steps: IX
+        )   where A: Swift.BinaryFloatingPoint, B: ArbitraryInteger {
             //=----------------------------------=
             let start = A.significandBitCount + 1
             Test().same(A(sign: .plus, exponent: A.Exponent(start), significand: 1).ulp, 2)
             Test().same(A(sign: .plus, exponent: A.Exponent(start), significand: 1).nextDown.ulp, 1)
             //=----------------------------------=
-            for exponent: Swift.Int in start ..< start + 32 {
+            for exponent in start ..< start + Swift.Int(exponents) {
                 var source = A(sign: .plus, exponent: A.Exponent(exponent), significand: 1)
                 let sourceStep: A = source.nextDown.ulp
                 var destination = B.lsb << IX(exponent)
-                let destinationStep = B.stdlib(exactly: sourceStep)!
+                let destinationStep = B.exactly(sourceStep)!
                 
-                for _ in 0 ..< 32 {
+                for _ in 0 ..< steps {
                     source -= sourceStep
                     destination -= destinationStep
                     Test().stdlib(source, is: destination, exactly: true)
@@ -859,8 +876,8 @@ final class BinaryIntegerTestsOnValidationOfStdlib: XCTestCase {
         }
         
         for source in stdlibSystemsFloats {
-            whereIs(source: source, destination: InfiniInt<IX>.self)
-            whereIs(source: source, destination: InfiniInt<UX>.self)
+            whereIs(source: source, destination: InfiniInt<IX>.self, exponents: 32, steps: 32)
+            whereIs(source: source, destination: InfiniInt<UX>.self, exponents: 32, steps: 32)
         }
     }
 }

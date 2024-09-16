@@ -153,43 +153,6 @@ extension BinaryInteger {
 extension BinaryInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers x Swift.BinaryInteger
-    //=------------------------------------------------------------------------=
-    // TODO: Write tests...
-    //=------------------------------------------------------------------------=
-    
-    /// Loads the `source`.
-    @inlinable public static func stdlib<Source>(load source: Source) -> Self where Source: Swift.BinaryInteger {
-        if  Source.isSigned, let small = Int(exactly: source) {
-            return Self(load: IX(small))
-        }
-        
-        if !Source.isSigned, let small = UInt(exactly: source) {
-            return Self(load: UX(small))
-        }
-        
-        //  TODO: deduplicate the following code
-        
-        let appendix = Bit(source < Source.zero)
-        let elements = source.words
-        let instance = elements.withContiguousStorageIfAvailable {
-            $0.withMemoryRebound(to: UX.self) {
-                Self(load: DataInt($0, repeating: appendix)!)
-            }
-        }
-        
-        if  let instance {
-            return instance
-        }
-        
-        return ContiguousArray(elements).withUnsafeBufferPointer {
-            $0.withMemoryRebound(to: UX.self) {
-                Self(load: DataInt($0, repeating: appendix)!)
-            }
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
     // MARK: Initializers x Swift.BinaryFloatingPoint
     //=------------------------------------------------------------------------=
     
@@ -199,8 +162,8 @@ extension BinaryInteger {
     ///
     /// - Note: It returns `nil` if the operation is `undefined`.
     ///
-    @inlinable public static func stdlib<Source>(exactly source: Source) -> Optional<Self> where Source: Swift.BinaryFloatingPoint {
-        Self.stdlib(leniently: source)?.optional()
+    @inlinable public static func exactly<Source>(_ source: Source) -> Optional<Self> where Source: Swift.BinaryFloatingPoint {
+        Self.leniently(source)?.optional()
     }
     
     /// Returns a `value` and an `error` indicator, or `nil`.
@@ -211,7 +174,7 @@ extension BinaryInteger {
     ///
     /// - Note: The `error` is set if the `value` has been rounded towards zero.
     ///
-    @inlinable public static func stdlib<Source>(leniently source: Source) -> Optional<Fallible<Self>> where Source: Swift.BinaryFloatingPoint {
+    @inlinable public static func leniently<Source>(_ source: Source) -> Optional<Fallible<Self>> where Source: Swift.BinaryFloatingPoint {
         //=--------------------------------------=
         // note: floating point zeros are special
         //=--------------------------------------=
@@ -254,17 +217,19 @@ extension BinaryInteger {
         Swift.assert((Swift.Int.zero <= exponent))
         Swift.assert((Swift.Int.zero <= capacity))
         //=--------------------------------------=
-        let implicit = Magnitude.lsb.up(position)
-        let fraction = if let size = IX(size: Self.self), Int(size) < capacity {
-            Magnitude.stdlib(load: pattern  << distance)
+        let sign = Sign(source.sign)
+        var magnitude  = Magnitude.lsb.up(position)
+        //=--------------------------------------=
+        // note: the distance may be negative here
+        //=--------------------------------------=
+        if  let  size  = IX(size: Self.self), size < IX(capacity as Swift.Int) {
+            magnitude |= Namespace.load(pattern   << (((distance))))
         }   else {
-            Magnitude.stdlib(load: pattern) << IX(distance as Swift.Int)
+            magnitude |= Namespace.load(pattern)  << IX(distance as Swift.Int)
         }
         //=--------------------------------------=
         // note: reject invalid sign and magnitude
         //=--------------------------------------=
-        let sign = Sign(source.sign)
-        let magnitude: Magnitude = (implicit |  fraction)
         let instance = Self.exactly(sign: sign, magnitude: magnitude)
         return instance.optional()?.veto(error)
     }

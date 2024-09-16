@@ -336,7 +336,7 @@ extension ArbitraryInteger {
         let instance = body.withContiguousStorageIfAvailable {
             Self(load: DataInt($0, repeating: appendix)!)
         }
-                
+        
         if  let    instance {
             self = instance
         }   else {

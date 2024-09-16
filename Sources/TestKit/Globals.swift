@@ -27,11 +27,11 @@ public let coreSystemsIntegersWhereIsUnsigned: [any (SystemsInteger & UnsignedIn
     UX.self, U8.self, U16.self, U32.self, U64.self,
 ]
 
-//=------------------------------------------------------------------------=
+//=----------------------------------------------------------------------------=
 // MARK: + Stdlib
-//=------------------------------------------------------------------------=
+//=----------------------------------------------------------------------------=
 
-public let stdlibSystemsIntegers: [any Swift.BinaryInteger.Type] = {
+public let stdlibSystemsIntegers: [any Swift.FixedWidthInteger.Type] = {
     stdlibSystemsIntegersWhereIsSigned +
     stdlibSystemsIntegersWhereIsUnsigned
 }()

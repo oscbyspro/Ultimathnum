@@ -43,11 +43,11 @@ extension StdlibInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(_ source: some Swift.BinaryFloatingPoint) {
-        self.init(Base.stdlib(leniently: source)!.value)
+        self.init(Base.leniently(source)!.value)
     }
     
     @inlinable public init?<T>(exactly source: T) where T: Swift.BinaryFloatingPoint {
-        guard let base = Base.stdlib(exactly: source) else { return nil }
+        guard let base = Base.exactly(source) else { return nil }
         self.init(base)
     }
 }

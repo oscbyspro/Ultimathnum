@@ -106,11 +106,11 @@ extension Test {
     )   where A: Swift.BinaryFloatingPoint, B: BinaryInteger {
         
         if  let destination {
-            same(B.stdlib(exactly:   source), Fallible(destination, error: !exactly).optional())
-            same(B.stdlib(leniently: source), Fallible(destination, error: !exactly))
+            same(B.exactly  (source), Fallible(destination, error: !exactly).optional())
+            same(B.leniently(source), Fallible(destination, error: !exactly))
         }   else {
-            none(B.stdlib(exactly:   source))
-            none(B.stdlib(leniently: source))
+            none(B.exactly  (source))
+            none(B.leniently(source))
         }
     }
 }
