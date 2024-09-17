@@ -328,22 +328,9 @@ extension BinaryIntegerTestsOnExponentiation {
                 success &+= IX(Bit(base.veto(true ).power(exponent,             coefficient: coefficient) == expectation.veto()))
                 success &+= IX(Bit(base.veto(true ).power(exponent.veto(false), coefficient: coefficient) == expectation.veto()))
                 success &+= IX(Bit(base.veto(true ).power(exponent.veto(true ), coefficient: coefficient) == expectation.veto()))
-                
-                if  let coefficient = Nonzero(exactly: coefficient.isZero ? T.lsb : coefficient) {
-                    let expectation: Fallible<T> = base.power(exponent,             coefficient: coefficient)
-                    success &+= IX(Bit(base            .power(exponent,             coefficient: coefficient) == expectation))
-                    success &+= IX(Bit(base            .power(exponent.veto(false), coefficient: coefficient) == expectation))
-                    success &+= IX(Bit(base            .power(exponent.veto(true ), coefficient: coefficient) == expectation.veto()))
-                    success &+= IX(Bit(base.veto(false).power(exponent,             coefficient: coefficient) == expectation))
-                    success &+= IX(Bit(base.veto(false).power(exponent.veto(false), coefficient: coefficient) == expectation))
-                    success &+= IX(Bit(base.veto(false).power(exponent.veto(true ), coefficient: coefficient) == expectation.veto()))
-                    success &+= IX(Bit(base.veto(true ).power(exponent,             coefficient: coefficient) == expectation.veto()))
-                    success &+= IX(Bit(base.veto(true ).power(exponent.veto(false), coefficient: coefficient) == expectation.veto()))
-                    success &+= IX(Bit(base.veto(true ).power(exponent.veto(true ), coefficient: coefficient) == expectation.veto()))
-                }
             }
             
-            Test().same(success, rounds &* 27)
+            Test().same(success, rounds &* 18)
         }
         
         // note that existentials are too slow for this

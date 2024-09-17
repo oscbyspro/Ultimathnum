@@ -29,13 +29,13 @@ extension BinaryInteger {
     ///
     @inlinable internal static func resolve(
         _ base: borrowing Self,
-        power exponent: consuming  Natural<some UnsignedInteger>,
-        coefficient: /*borrowing*/ Nonzero<Self>
+        power exponent: consuming Natural<some UnsignedInteger>,
+        coefficient: borrowing Nonzero<Self>
     ) -> Fallible<Self> {
         
         var power = Fallible((copy coefficient).value)
         var multiplier = Fallible(copy base)
-        var exponent = exponent.value
+        var exponent = (consume exponent).value
         
         exponentiation: while true {
             if  Bool(exponent.lsb) {
@@ -60,7 +60,7 @@ extension BinaryInteger {
     ///
     /// - Returns: `pow(self, exponent) * coefficient`
     ///
-    /// ```swift    
+    /// ```swift
     /// I8(0).power(U8(1), coefficient: I8(2)) // I8.exactly(   0)
     /// I8(1).power(U8(2), coefficient: I8(3)) // I8.exactly(   3)
     /// I8(2).power(U8(3), coefficient: I8(5)) // I8.exactly(  40)
@@ -70,9 +70,13 @@ extension BinaryInteger {
     /// - Note: The default `coefficient` is `1`.
     ///
     @inlinable public /*borrowing*/ func power(
-        _  exponent: some UnsignedInteger,
-        coefficient: borrowing Nonzero<Self>
+        _  exponent: /*consuming*/ some UnsignedInteger,
+        coefficient: borrowing Self = 1
     ) -> Fallible<Self> {
+        
+        guard let coefficient = Nonzero(exactly: copy coefficient) else {
+            return Fallible(Self.zero)
+        }
         
         if !Self.isArbitrary {
             var (magic, error) = Magnitude.exactly(exponent).components()
@@ -105,52 +109,7 @@ extension BinaryInteger {
     /// - Note: The default `coefficient` is `1`.
     ///
     @inlinable public borrowing func power(
-        _  exponent: some UnsignedInteger,
-        coefficient: borrowing Self = 1
-    ) -> Fallible<Self> {
-
-        if  let coefficient = Nonzero(exactly: copy  coefficient) {
-            return self.power(exponent, coefficient: coefficient)
-        }   else {
-            return Fallible(copy coefficient)
-        }
-    }
-    
-    /// Returns a `power` and an `error` indiactor.
-    ///
-    /// - Returns: `pow(self, exponent) * coefficient`
-    ///
-    /// ```swift
-    /// I8(0).power(U8(1), coefficient: I8(2)) // I8.exactly(   0)
-    /// I8(1).power(U8(2), coefficient: I8(3)) // I8.exactly(   3)
-    /// I8(2).power(U8(3), coefficient: I8(5)) // I8.exactly(  40)
-    /// I8(3).power(U8(5), coefficient: I8(7)) // I8.exactly(1701)
-    /// ```
-    ///
-    /// - Note: The default `coefficient` is `1`.
-    ///
-    @inlinable public borrowing func power(
-        _  exponent: borrowing Fallible<some UnsignedInteger>,
-        coefficient: borrowing Nonzero<Self>
-    ) -> Fallible<Self> {
-        self.power(exponent.value, coefficient: coefficient).veto(exponent.error)
-    }
-    
-    /// Returns a `power` and an `error` indiactor.
-    ///
-    /// - Returns: `pow(self, exponent) * coefficient`
-    ///
-    /// ```swift
-    /// I8(0).power(U8(1), coefficient: I8(2)) // I8.exactly(   0)
-    /// I8(1).power(U8(2), coefficient: I8(3)) // I8.exactly(   3)
-    /// I8(2).power(U8(3), coefficient: I8(5)) // I8.exactly(  40)
-    /// I8(3).power(U8(5), coefficient: I8(7)) // I8.exactly(1701)
-    /// ```
-    ///
-    /// - Note: The default `coefficient` is `1`.
-    ///
-    @inlinable public borrowing func power(
-        _  exponent: borrowing Fallible<some UnsignedInteger>,
+        _  exponent: consuming Fallible<some UnsignedInteger>,
         coefficient: borrowing Self = 1
     ) -> Fallible<Self> {
         self.power(exponent.value, coefficient: coefficient).veto(exponent.error)
@@ -181,27 +140,7 @@ extension Fallible where Value: BinaryInteger {
     /// - Note: The default `coefficient` is `1`.
     ///
     @inlinable public borrowing func power(
-        _  exponent: borrowing some UnsignedInteger,
-        coefficient: borrowing Nonzero<Value>
-    ) -> Fallible<Value> {
-        self.value.power(exponent, coefficient: coefficient).veto(self.error)
-    }
-    
-    /// Returns a `power` and an `error` indiactor.
-    ///
-    /// - Returns: `pow(self, exponent) * coefficient`
-    ///
-    /// ```swift
-    /// I8(0).power(U8(1), coefficient: I8(2)) // I8.exactly(   0)
-    /// I8(1).power(U8(2), coefficient: I8(3)) // I8.exactly(   3)
-    /// I8(2).power(U8(3), coefficient: I8(5)) // I8.exactly(  40)
-    /// I8(3).power(U8(5), coefficient: I8(7)) // I8.exactly(1701)
-    /// ```
-    ///
-    /// - Note: The default `coefficient` is `1`.
-    ///
-    @inlinable public borrowing func power(
-        _  exponent: borrowing some UnsignedInteger,
+        _  exponent: consuming some UnsignedInteger,
         coefficient: borrowing Value = 1
     ) -> Fallible<Value> {
         self.value.power(exponent, coefficient: coefficient).veto(self.error)
@@ -221,27 +160,7 @@ extension Fallible where Value: BinaryInteger {
     /// - Note: The default `coefficient` is `1`.
     ///
     @inlinable public borrowing func power(
-        _  exponent: borrowing Fallible<some UnsignedInteger>,
-        coefficient: borrowing Nonzero<Value>
-    ) -> Fallible<Value> {
-        self.power(exponent.value, coefficient: coefficient).veto(exponent.error)
-    }
-    
-    /// Returns a `power` and an `error` indiactor.
-    ///
-    /// - Returns: `pow(self, exponent) * coefficient`
-    ///
-    /// ```swift
-    /// I8(0).power(U8(1), coefficient: I8(2)) // I8.exactly(   0)
-    /// I8(1).power(U8(2), coefficient: I8(3)) // I8.exactly(   3)
-    /// I8(2).power(U8(3), coefficient: I8(5)) // I8.exactly(  40)
-    /// I8(3).power(U8(5), coefficient: I8(7)) // I8.exactly(1701)
-    /// ```
-    ///
-    /// - Note: The default `coefficient` is `1`.
-    ///
-    @inlinable public borrowing func power(
-        _  exponent: borrowing Fallible<some UnsignedInteger>,
+        _  exponent: consuming Fallible<some UnsignedInteger>,
         coefficient: borrowing Value = 1
     ) -> Fallible<Value> {
         self.power(exponent.value, coefficient: coefficient).veto(exponent.error)

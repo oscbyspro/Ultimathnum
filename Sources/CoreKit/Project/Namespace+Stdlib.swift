@@ -19,9 +19,9 @@ extension Namespace {
     
     /// ### Development
     ///
-    /// - Note: `Swift` to/from `Ultimathum` conversions should be 1-to-1.
+    /// - Note: Swift to/from Ultimathnum conversions should be 1-to-1.
     ///
-    /// - Note: This method is needed absent custom floating-point models.
+    /// - Note: We need this method until custom floating-point models.
     ///
     @inlinable public static func load<Source, Destination>(
         _ source: Source,
