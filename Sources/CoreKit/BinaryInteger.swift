@@ -217,20 +217,32 @@ where
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Returns the validated result of `self + increment`.
-    @inlinable consuming func plus (_ increment:  borrowing Self) -> Fallible<Self>
+    /// Returns `self + other` and an `error`.
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    @inlinable consuming func plus (_ other: borrowing Self) -> Fallible<Self>
     
-    /// Returns the validated result of `self - decrement`.
-    @inlinable consuming func minus(_ decrement:  borrowing Self) -> Fallible<Self>
+    /// Returns `self - other` and an `error`.
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    @inlinable consuming func minus(_ other: borrowing Self) -> Fallible<Self>
     
-    /// Returns the validated result of `self * multiplier`.
-    @inlinable borrowing func times(_ multiplier: borrowing Self) -> Fallible<Self>
+    /// Returns `self ✕ other` and an `error` indicator.
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    @inlinable borrowing func times(_ other: borrowing Self) -> Fallible<Self>
     
-    /// Returns the validated result of `self ^ 2`.
+    /// Returns `self ✕ self` and an `error` indicator.
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
     @inlinable borrowing func squared() -> Fallible<Self>
     
-    /// Returns the `low` and `high` product of `self` times `multiplier`.
-    @inlinable borrowing func multiplication(_ multiplier: borrowing Self) -> Doublet<Self>
+    /// Returns the `high` and `low` part of `self ✕ other`.
+    @inlinable borrowing func multiplication(_ other: borrowing Self) -> Doublet<Self>
     
     /// Returns the `quotient` and `error` of dividing `self` by the `divisor`.
     ///

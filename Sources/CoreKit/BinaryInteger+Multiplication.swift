@@ -114,9 +114,9 @@ extension SystemsInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Returns the full result of `self ✕ multiplier + increment`.
-    @inlinable public borrowing func multiplication(_ multiplier: Self, plus increment: Magnitude) -> Doublet<Self> {
-        let bit: Bool; var   product = self.multiplication(multiplier)
+    /// Returns the `high` and `low` part of `self ✕ other + increment`.
+    @inlinable public borrowing func multiplication(_ other: Self, plus increment: Magnitude) -> Doublet<Self> {
+        let bit: Bool; var   product = self.multiplication(other)
         (product.low, bit) = product.low .plus(increment).components()
         (product.high)     = product.high.incremented(bit).unchecked()
         return product
