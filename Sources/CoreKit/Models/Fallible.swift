@@ -11,7 +11,7 @@
 // MARK: * Fallible
 //*============================================================================*
 
-/// A wrapped `value` and an `error` indicator.
+/// A `value` and an `error` indicator.
 @frozen public struct Fallible<Value> {
     
     //=------------------------------------------------------------------------=
@@ -51,7 +51,7 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// Returns the `value` and `error` as a tuple.
+    /// Returns its `value` and `error` as a tuple.
     @inlinable public consuming func components() -> (value: Value, error: Bool) {
         (value: self.value, error: self.error)
     }

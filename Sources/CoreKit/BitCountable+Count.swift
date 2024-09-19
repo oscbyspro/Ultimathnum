@@ -36,7 +36,7 @@ extension BitCountable {
     ///
     /// - Note: An in-memory `entropy` must fit in `[0, IX.max]`.
     ///
-    @inlinable public /* borrowing */ func entropy() -> Count {
+    @inlinable public /*borrowing*/ func entropy() -> Count {
         let base = IX(raw: self.nondescending(self.appendix)).incremented()
         return Count(unchecked: base.unchecked("BitCountable/entropy/0...IX.max"))
     }

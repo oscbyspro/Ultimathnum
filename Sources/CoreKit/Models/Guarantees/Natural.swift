@@ -38,7 +38,7 @@
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func predicate(_ value: /* borrowing */ Value) -> Bool {
+    @inlinable public static func predicate(_ value: /*borrowing*/ Value) -> Bool {
         !Bool(value.appendix) // await borrowing fix
     }
     

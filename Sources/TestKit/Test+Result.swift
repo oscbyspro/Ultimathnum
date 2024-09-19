@@ -18,7 +18,7 @@ extension Test {
     //=------------------------------------------------------------------------=
     
     @discardableResult public func result<T: Equatable, E: Error & Equatable>(
-        _ value: () throws -> T,
+        _ value: @autoclosure () throws -> T,
         _ expectation: Result<T, E>,
         _ message:  @autoclosure () -> String = String()
     )  -> Result<T, E> {

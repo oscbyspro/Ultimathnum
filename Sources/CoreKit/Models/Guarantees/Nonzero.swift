@@ -33,7 +33,7 @@
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func predicate(_ value: /* borrowing */ Value) -> Bool {
+    @inlinable public static func predicate(_ value: /*borrowing*/ Value) -> Bool {
         !value.isZero // await borrowing fix
     }
     

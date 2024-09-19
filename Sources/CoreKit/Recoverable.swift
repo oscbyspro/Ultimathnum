@@ -11,12 +11,10 @@
 // MARK: * Recoverable
 //*============================================================================*
 
-/// A type with some functional features.
+/// A redemption arc.
 ///
 /// A recoverable type is essentially any type designed to propagate through
 /// the `Fallible<Value>` recovery metchanism. Such types should not have any
 /// independent failure modes.
-///
-/// - Note: This protocol offers some ergonomic enhancements.
 ///
 public protocol Recoverable { }

@@ -135,7 +135,7 @@ extension Randomness {
     ///
     /// Arbitrary integers accept-reject random bit patterns.
     ///
-    @inline(never) @inlinable internal mutating func arbitrary<T>(upTo comparison: Signum, relativeTo limit: /* borrowing */ T) -> T where T: UnsignedInteger {
+    @inline(never) @inlinable internal mutating func arbitrary<T>(upTo comparison: Signum, relativeTo limit: /*borrowing*/ T) -> T where T: UnsignedInteger {
         if  limit.isInfinite {
             Swift.preconditionFailure(String.overflow())
         }
