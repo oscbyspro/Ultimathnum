@@ -8,8 +8,9 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import StdlibIntKit
 import InfiniIntKit
+import RandomIntKit
+import StdlibIntKit
 import TestKit
 
 //*============================================================================*
@@ -42,19 +43,46 @@ extension StdlibIntTests {
     }
     
     func testInitBinaryIntegerForEachByteEntropy() {
-        var lhs = -128 as Swift.Int
-        var rhs = -128 as StdlibInt
-        
-        while rhs < 127 {
-            self.integer(lhs, is: rhs)
-            lhs += 1
-            rhs += 1
+        func whereIs<T>(_ source: T.Type) where T: Swift.BinaryInteger {
+            let min = T.isSigned ? T(Int8.min) : T(UInt8.min)
+            let max = T.isSigned ? T(Int8.max) : T(UInt8.max)
+            
+            var lhs = min
+            var rhs = StdlibInt(min)
+            
+            while true {
+                self.integer(lhs, is: rhs)
+                guard lhs < max else { break }
+                lhs += 1
+                rhs += 1
+            }
+            
+            Test().same(lhs, max)
+            Test().same(rhs, StdlibInt(max))
         }
         
-        Test().same(lhs, 127 as Swift.Int)
-        Test().same(rhs, 127 as StdlibInt)
+        whereIs( Int .self)
+        whereIs(UInt .self)
+        whereIs( Int8.self)
+        whereIs(UInt8.self)
+        whereIs(StdlibInt.self)
     }
     
+    func testInitBinaryIntegerByFuzzing() {
+        var randomness = fuzzer
+        #if DEBUG
+        let rounds = 0032
+        #else
+        let rounds = 1024
+        #endif
+        for _ in 0 ..< rounds {
+            let random = IXL.random(through: Shift(Count(255)), using: &randomness)
+            let source = StdlibInt(random)
+            self.integer(source, is: source)
+            Test().same(IXL(source), random)
+        }
+    }
+        
     //=------------------------------------------------------------------------=
     // MARK: Tests x Swift.BinaryFloatingPoint
     //=------------------------------------------------------------------------=

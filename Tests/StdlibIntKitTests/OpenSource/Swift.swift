@@ -67,7 +67,7 @@ final class StdlibIntTestsLikeOpenSourceTestsBySwift: XCTestCase {
     
     /// See also: `BigIntTests.test("Identity/Fixed point")`.
     func testIdentityFixedPoint() {
-        let a = StdlibInt(IXL(repeatElement(UX.max, count: 20)))
+        let a = StdlibInt(IXL(Array(repeating: UX.max, count: 20)))
         let b = -a
 
         Test().same( a /  a,  1)
@@ -97,8 +97,8 @@ final class StdlibIntTestsLikeOpenSourceTestsBySwift: XCTestCase {
     
     /// See also: `BigIntTests.test("Max arithmetic")`.
     func testMaxArithmetic() {
-        let a = StdlibInt(IXL(repeatElement(UX.max, count: 50)))
-        let b = StdlibInt(IXL(repeatElement(UX.max, count: 35)))
+        let a = StdlibInt(IXL(Array(repeating: UX.max, count: 50)))
+        let b = StdlibInt(IXL(Array(repeating: UX.max, count: 35)))
         let (q, r) = a.quotientAndRemainder(dividingBy: b)
 
         Test().same(q * b + r, a)

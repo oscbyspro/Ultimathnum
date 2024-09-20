@@ -40,17 +40,7 @@ extension Namespace {
             
         }   else {
             
-            //  TODO: deduplicate the following code
-            
-            let instance = words.withContiguousStorageIfAvailable {
-                $0.withMemoryRebound(to: UX.self) {
-                    Destination(load: DataInt($0, repeating: Source.isSigned ? $0.last!.msb : Bit.zero)!)
-                }
-            }
-            
-            if let instance { return instance }
-            
-            return ContiguousArray(words).withUnsafeBufferPointer {
+            return Namespace.withUnsafeBufferPointerOrCopy(of: words) {
                 $0.withMemoryRebound(to: UX.self) {
                     Destination(load: DataInt($0, repeating: Source.isSigned ? $0.last!.msb : Bit.zero)!)
                 }

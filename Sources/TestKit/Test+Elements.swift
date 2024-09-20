@@ -177,24 +177,71 @@ extension Test {
         _ expectation: Fallible<Integer>
     )   where Integer: BinaryInteger, Element: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
+        let appendix = Bit(signedness == .signed && body.last?.msb == Bit.one)
+        //=--------------------------------------=
         func ix(_ element: UX) -> some SystemsInteger<UX.BitPattern> { IX(raw: element) }
         func ux(_ element: UX) -> some SystemsInteger<UX.BitPattern> { UX(raw: element) }
         //=--------------------------------------=
+        if  let expectation = expectation.optional() {
+            same(Integer(body, repeating: appendix, mode: signedness), expectation, "T.init(_:repeating:mode:) - Array")
+            
+            if  appendix == Bit.zero {
+                same(Integer(body, mode: signedness), expectation, "T.init(_:mode:) - Array")
+            }
+            
+            if  signedness == Integer.mode {
+                same(Integer(body, repeating: appendix), expectation, "T.init(_:repeating:) - Array")
+            }
+            
+            if  appendix == Bit.zero, signedness == Integer.mode {
+                same(Integer(body), expectation, "T.init(_:) - Array")
+            }
+        }
+        
+        always: do {
+            same(Integer(load:   body, repeating: appendix), expectation.value, "T.init(load:repeating:mode:) - Array")
+            same(Integer.exactly(body, repeating: appendix,  mode: signedness), expectation, "T.exactly(_:repeating:mode:) - Array")
+            
+            if  appendix == Bit.zero {
+                same(Integer(load:   body), expectation.value, "T.init(load:) - Array")
+                same(Integer.exactly(body,  mode: signedness), expectation, "T.exactly(_:mode:) - Array")
+            }
+            
+            if  signedness == Integer.mode {
+                same(Integer.exactly(body, repeating: appendix), expectation, "T.exactly(_:repeating) - Array")
+            }
+            
+            if  appendix == Bit.zero, signedness == Integer.mode {
+                same(Integer.exactly(body), expectation, "T.exactly(_:) - Array")
+            }
+        }
+
         body.withUnsafeBufferPointer {
-            //=----------------------------------=
-            let appendix = Bit(signedness == .signed && $0.last?.msb == Bit.one)
             let elements = DataInt($0, repeating: appendix)!
-            //=----------------------------------=
-            if !expectation.error {
-                same(Integer(load: elements), expectation.value, "T.init(load:) - DataInt")
+            
+            if  let expectation = expectation.optional() {
+                same(Integer(elements, mode: signedness), expectation, "T.init(_:mode:) - DataInt")
+                
+                if  signedness == Integer.mode {
+                    //same(Integer(elements), expectation, "T.init(_:) - DataInt")
+                }
             }
             
             always: do {
-                same(Integer.exactly(elements, mode: signedness), expectation, "T.exactly(_:mode:) - DataInt")
+                same(Integer(load:   elements), expectation.value, "T.init(load:) - DataInt")
+                same(Integer.exactly(elements,  mode: signedness), expectation, "T.exactly(_:mode:) - DataInt")
+                
+                if  signedness == Integer.mode {
+                    //same(Integer.exactly(elements), expectation, "T.exactly(_:) - DataInt")
+                }
             }
-            
+                        
             elements.reinterpret(as: U8.self) {
                 same(Integer.exactly($0, mode: signedness), expectation, "T.exactly(_:mode:) - DataInt<U8>")
+                
+                if  signedness == Integer.mode {
+                    //same(Integer.exactly($0), expectation, "T.exactly(_:) - DataInt<U8>")
+                }
                 
                 if !expectation.error, $0.entropy() <= UX.size {
                     let word = $0.load(as: UX.self)

@@ -94,7 +94,7 @@ extension BinaryInteger {
     // MARK: Initializers x Data Int
     //=------------------------------------------------------------------------=
     
-    /// Creates a new instance from the bit pattern of `source` that fits.
+    /// Returns the bit pattern of `source` that fits.
     @inlinable public init<OtherElement>(load source: DataInt<OtherElement>) {
         if  Self.Element.Magnitude.size <= OtherElement.size {
             self = source.reinterpret(as: Self.Element.Magnitude.self, perform: Self.init(load:))
@@ -102,20 +102,31 @@ extension BinaryInteger {
             self = source.reinterpret(as: U8.self, perform: Self.init(load:))
         }
     }
-    
-    /// Loads the `source` as `signedness` by trapping on `error`.
+    /// Loads the `source` by trapping on `error`.
     ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
-    @inlinable public init<OtherElement>(_ source: DataInt<OtherElement>, mode signedness: Signedness) {
+    /// - Note: The `signedness` determines the significance of the `appendix`.
+    ///
+    @inlinable public init<OtherElement>(
+        _ source: DataInt<OtherElement>,
+        mode signedness: Signedness // = Self.mode (await fixes)
+    )   {
+        
         self = Self.exactly(source, mode: signedness).unwrap()
     }
     
-    /// Loads the `source` as `signedness` and returns an `error` indicator.
+    /// Loads the `source` and returns an `error` indicator.
     ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
-    @inlinable public static func exactly<OtherElement>(_ source: DataInt<OtherElement>, mode signedness: Signedness) -> Fallible<Self> {
+    /// - Note: The `signedness` determines the significance of the `appendix`.
+    ///
+    @inlinable public static func exactly<OtherElement>(
+        _ source: DataInt<OtherElement>,
+        mode signedness: Signedness // = Self.mode (await fixes)
+    )   -> Fallible<Self> {
+        
         if  Self.Element.Magnitude.size <= OtherElement.size {
             return source.reinterpret(as: Self.Element.Magnitude.self) {
                 Self.exactly($0, mode: signedness)
@@ -128,11 +139,17 @@ extension BinaryInteger {
         }
     }
     
-    /// Loads the `source` as `signedness` and returns an `error` indicator.
+    /// Loads the `source` and returns an `error` indicator.
     ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
-    @inlinable public static func exactly(_ source: DataInt<U8>, mode signedness: Signedness) -> Fallible<Self> {
+    /// - Note: The `signedness` determines the significance of the `appendix`.
+    ///
+    @inlinable public static func exactly(
+        _ source: DataInt<U8>,
+        mode signedness: Signedness // = Self.mode (await fixes)
+    )   -> Fallible<Self> {
+        
         let instance = Self(load: source)
         let appendix = instance.appendix
         var success  = appendix == source.appendix
@@ -149,11 +166,17 @@ extension BinaryInteger {
         return instance.veto(!Bool(success))
     }
     
-    /// Loads the `source` as `signedness` and returns an `error` indicator.
+    /// Loads the `source` and returns an `error` indicator.
     ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
-    @inlinable public static func exactly(_ source: DataInt<Element.Magnitude>, mode signedness: Signedness) -> Fallible<Self> {
+    /// - Note: The `signedness` determines the significance of the `appendix`.
+    ///
+    @inlinable public static func exactly(
+        _ source: DataInt<Element.Magnitude>,
+        mode signedness: Signedness // = Self.mode (await fixes)
+    )   -> Fallible<Self> {
+        
         let instance = Self(load: source)
         let appendix = instance.appendix
         var success  = appendix == source.appendix
@@ -171,12 +194,62 @@ extension BinaryInteger {
     }
     
     //=------------------------------------------------------------------------=
+    // MARK: Initializers x Contiguous
+    //=------------------------------------------------------------------------=
+    
+    /// Returns the bit pattern of `body` and `appendix` that fits.
+    @inlinable public init<Body: Contiguous>(
+        load body: borrowing Body,
+        repeating appendix: Bit = .zero
+    )   where Body.Element: SystemsInteger & UnsignedInteger {
+        
+        self = body.withUnsafeBufferPointer {
+            Self(load: DataInt($0, repeating: appendix)!)
+        }
+    }
+    
+    /// Loads the `body` and `appendix` by trapping on `error`.
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    /// - Note: The `signedness` determines the significance of the `appendix`.
+    ///
+    @inlinable public init<Body: Contiguous>(
+        _ body: borrowing Body,
+        repeating appendix: Bit = .zero,
+        mode signedness: Signedness = Self.mode
+    )   where Body.Element: SystemsInteger & UnsignedInteger {
+        
+        self = body.withUnsafeBufferPointer {
+            Self(DataInt($0, repeating: appendix)!, mode: signedness)
+        }
+    }
+    
+    /// Loads the `body` and `appendix` and returns an `error` indicator.
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    /// - Note: The `signedness` determines the significance of the `appendix`.
+    ///
+    @inlinable public static func exactly<Body: Contiguous>(
+        _ body: borrowing Body,
+        repeating appendix: Bit = .zero,
+        mode signedness: Signedness = Self.mode
+    )   -> Fallible<Self> where Body.Element: SystemsInteger & UnsignedInteger {
+        
+        body.withUnsafeBufferPointer {
+            Self.exactly(DataInt($0, repeating: appendix)!, mode: signedness)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Initializers x Binary Integer
     //=------------------------------------------------------------------------=
     
-    /// Creates a new instance from the bit pattern of `source` that fits.
+    /// Returns the bit pattern of `source` that fits.
     @inlinable public init<Other>(load source: borrowing Other) where Other: BinaryInteger {
         if  Other.size <= Swift.min(Element.size, UX.size) {
+            
             if  Other.isSigned {
                 self.init(load: Element.Signitude(load: IX(load: source)))
             }   else {
@@ -184,6 +257,7 @@ extension BinaryInteger {
             }
             
         }   else if Self.size <= UX.size || Other.size <= UX.size {
+            
             if  Other.isSigned {
                 self.init(load: IX(load: source))
             }   else {
@@ -312,37 +386,6 @@ extension BinaryInteger {
         
         try self.withUnsafeMutableBinaryIntegerElements {
             try $0.reinterpret(as: OtherElement.self, perform: action)
-        }
-    }
-}
-
-//*============================================================================*
-// MARK: * Binary Integer x Elements x Arbitrary
-//*============================================================================*
-
-extension ArbitraryInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    /// Creates a new instance from the given `body` and `appendix`.
-    ///
-    /// - Note: This is a convenience derived from `init<T>(DataInt<T>)`.
-    ///
-    @inlinable public init<T>(_ body: borrowing T, repeating appendix: Bit = .zero)
-    where T: Sequence, T.Element: SystemsInteger & UnsignedInteger {
-        
-        let instance = body.withContiguousStorageIfAvailable {
-            Self(load: DataInt($0, repeating: appendix)!)
-        }
-        
-        if  let    instance {
-            self = instance
-        }   else {
-            self = ContiguousArray(copy body).withUnsafeBufferPointer {
-                Self(load: DataInt($0, repeating: appendix)!)
-            }
         }
     }
 }

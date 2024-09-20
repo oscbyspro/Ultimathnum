@@ -24,7 +24,7 @@ extension BinaryInteger {
         self = Bool(bit) ?  1 : 0
     }
     
-    /// Creates a new instance from the repeating bit pattern of `bit` that fits.
+    /// Creates a new instance where each bit is set to `bit`.
     @inline(__always) // performance: please fold it like a paper airplane
     @inlinable public init(repeating bit: Bit) {
         self = Bool(bit) ? ~0 : 0

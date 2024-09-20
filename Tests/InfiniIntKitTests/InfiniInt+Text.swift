@@ -115,10 +115,10 @@ final class InfiniIntTestsOnText: XCTestCase {
     //=------------------------------------------------------------------------=
     
     /// The bit pattern: `0xfffefdfcfbfaf9f8...0706050403020100`.
-    static let ascending  = UXL((U8.min ... U8.max))
+    static let ascending  = UXL(Array(U8.min...U8.max))
     
     /// The bit pattern: `0x0001020304050607...f8f9fafbfcfdfeff`.
-    static let descending = UXL((U8.min ... U8.max).reversed())
+    static let descending = UXL(Array(U8.min...U8.max).reversed())
     
     //=------------------------------------------------------------------------=
     // MARK: Tests x Ascending, Descending

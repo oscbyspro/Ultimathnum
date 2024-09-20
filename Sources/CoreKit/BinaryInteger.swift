@@ -117,10 +117,10 @@ where
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Creates a new instance from the bit pattern of `source` that fits.
+    /// Returns the bit pattern of `source` that fits.
     @inlinable init(load source: consuming  UX.Signitude)
     
-    /// Creates a new instance from the bit pattern of `source` that fits.
+    /// Returns the bit pattern of `source` that fits.
     @inlinable init(load source: consuming  UX.Magnitude)
     
     /// Returns instance of `type` from the bit pattern of `self` that fits.
@@ -130,10 +130,10 @@ where
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Creates a new instance from the bit pattern of `source` that fits.
+    /// Returns the bit pattern of `source` that fits.
     @inlinable init(load source: consuming  Element.Signitude)
     
-    /// Creates a new instance from the bit pattern of `source` that fits.
+    /// Returns the bit pattern of `source` that fits.
     @inlinable init(load source: consuming  Element.Magnitude)
     
     /// Returns instance of `type` from the bit pattern of `self` that fits.
@@ -143,10 +143,10 @@ where
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Creates a new instance from the bit pattern of `source` that fits.
+    /// Returns the bit pattern of `source` that fits.
     @inlinable init(load source: DataInt<U8>)
     
-    /// Creates a new instance from the bit pattern of `source` that fits.
+    /// Returns the bit pattern of `source` that fits.
     @inlinable init(load source: DataInt<Element.Magnitude>)
     
     /// Creates a new instance by manually initializing memory, but only if
