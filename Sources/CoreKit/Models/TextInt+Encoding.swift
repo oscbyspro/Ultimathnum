@@ -87,7 +87,7 @@ extension TextInt {
         let count = body.count(as: UX.self)
         //=--------------------------------------=
         return Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(count)) {
-            let words = MutableDataInt.Body((consume $0).baseAddress!, count: count)
+            let words = MutableDataInt.Body($0.baseAddress!, count: count)
             //=----------------------------------=
             // pointee: initialization
             //=----------------------------------=

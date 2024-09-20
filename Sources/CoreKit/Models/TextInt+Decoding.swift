@@ -99,7 +99,7 @@ extension TextInt {
         }
         //=--------------------------------------=
         return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
-            let words = MutableDataInt<UX>.Body(consume $0)![unchecked: ..<capacity]
+            let words = MutableDataInt<UX>.Body($0)![unchecked: ..<capacity]
             var index = IX.zero
             //=----------------------------------=
             // pointee: deferred deinitialization
@@ -158,7 +158,7 @@ extension TextInt {
         }
         //=--------------------------------------=
         return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
-            let words = MutableDataInt<UX>.Body(consume $0)![unchecked: ..<capacity]
+            let words = MutableDataInt<UX>.Body($0)![unchecked: ..<capacity]
             var index = words.count
             //=----------------------------------=
             // pointee: deferred deinitialization

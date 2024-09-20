@@ -112,12 +112,12 @@ extension DoubleInt where Base == Base.Magnitude {
     //=------------------------------------------------------------------------=
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
-    @inlinable internal consuming func division2222(_ divisor: consuming Nonzero<Self>) -> Division<Self, Self> {
+    @inlinable internal consuming func division2222(_ divisor: Nonzero<Self>) -> Division<Self, Self> {
         self.division2222(divisor, normalization: Shift(unchecked: divisor.value.descending(Bit.zero)))
     }
     
     /// An adaptation of "Fast Recursive Division" by Christoph Burnikel and Joachim Ziegler.
-    @inlinable internal consuming func division2222(_ divisor: consuming Nonzero<Self>, normalization: Shift<Self>) -> Division<Self, Self> {
+    @inlinable internal consuming func division2222(_ divisor: Nonzero<Self>, normalization: Shift<Self>) -> Division<Self, Self> {
         //=--------------------------------------=
         Swift.assert(!divisor .value.isZero, "must not divide by zero")
         Swift.assert((divisor).value.descending(Bit.zero) == normalization.value, "save shift distance")
