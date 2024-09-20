@@ -105,7 +105,7 @@ extension BinaryInteger {
     
     /// Loads the `source` as `signedness` by trapping on `error`.
     ///
-    /// - Note: The `error` is set if the conversion is `lossy`.
+    /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public init<OtherElement>(_ source: DataInt<OtherElement>, mode signedness: Signedness) {
         self = Self.exactly(source, mode: signedness).unwrap()
@@ -113,7 +113,7 @@ extension BinaryInteger {
     
     /// Loads the `source` as `signedness` and returns an `error` indicator.
     ///
-    /// - Note: The `error` is set if the conversion is `lossy`.
+    /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public static func exactly<OtherElement>(_ source: DataInt<OtherElement>, mode signedness: Signedness) -> Fallible<Self> {
         if  Self.Element.Magnitude.size <= OtherElement.size {
@@ -130,7 +130,7 @@ extension BinaryInteger {
     
     /// Loads the `source` as `signedness` and returns an `error` indicator.
     ///
-    /// - Note: The `error` is set if the conversion is `lossy`.
+    /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public static func exactly(_ source: DataInt<U8>, mode signedness: Signedness) -> Fallible<Self> {
         let instance = Self(load: source)
@@ -151,7 +151,7 @@ extension BinaryInteger {
     
     /// Loads the `source` as `signedness` and returns an `error` indicator.
     ///
-    /// - Note: The `error` is set if the conversion is `lossy`.
+    /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public static func exactly(_ source: DataInt<Element.Magnitude>, mode signedness: Signedness) -> Fallible<Self> {
         let instance = Self(load: source)

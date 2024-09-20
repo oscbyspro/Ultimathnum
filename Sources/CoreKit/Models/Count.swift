@@ -56,7 +56,7 @@
     
     /// Loads the `source` by trapping on `error`.
     ///
-    /// - Note: The `error` is set if the conversion is `lossy`.
+    /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public init(_ source: consuming IX) {
         precondition(!source.isNegative)
@@ -65,7 +65,7 @@
     
     /// Loads the `source` by trapping on `error` in debug mode.
     ///
-    /// - Note: The `error` is set if the conversion is `lossy`.
+    /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public init(unchecked source: consuming IX) {
         Swift.assert(!source.isNegative)
@@ -74,7 +74,7 @@
     
     /// Loads the `source` by returning `nil` on `error`.
     ///
-    /// - Note: The `error` is set if the conversion is `lossy`.
+    /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public init?(exactly source: consuming IX) {
         guard !source.isNegative else { return nil }
@@ -83,7 +83,7 @@
     
     /// Loads the `source` by throwing `failure()` on `error`.
     ///
-    /// - Note: The `error` is set if the conversion is `lossy`.
+    /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public init<Error>(_ source: consuming IX, prune failure: @autoclosure () -> Error) throws where Error: Swift.Error {
         guard !source.isNegative else { throw failure() }

@@ -22,7 +22,7 @@ extension BinaryInteger {
     
     /// Loads the `source` by trapping on `error`
     ///
-    /// - Note: The `error` is set if the conversion is `lossy`.
+    /// - Note: The `error` is set if the operation is `lossy`.
     ///
     /// - Note: This particular overload cannot fail.
     ///
@@ -37,7 +37,7 @@ extension BinaryInteger {
     
     /// Loads the `sign` and `magnitude` by trapping on `error`.
     ///
-    /// - Note: The `error` is set if the conversion is `lossy`.
+    /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public init<Other>(
         sign: consuming Sign = .plus,
@@ -48,7 +48,7 @@ extension BinaryInteger {
     
     /// Loads the `sign` and `magnitude` and returns an `error` indicator.
     ///
-    /// - Note: The `error` is set if the conversion is `lossy`.
+    /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public static func exactly(
         sign: consuming Sign = .plus,
@@ -68,7 +68,7 @@ extension BinaryInteger {
     
     /// Loads the `sign` and `magnitude` and returns an `error` indicator.
     ///
-    /// - Note: The `error` is set if the conversion is `lossy`.
+    /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public static func exactly<Other>(
         sign: consuming Sign = .plus,
@@ -81,7 +81,7 @@ extension BinaryInteger {
     
     /// Loads the `sign` and `magnitude` and returns an `error` indicator.
     ///
-    /// - Note: The `error` is set if the conversion is `lossy`.
+    /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public static func exactly<Other>(
         sign: consuming Sign = .plus,
@@ -98,7 +98,7 @@ extension BinaryInteger {
         
     /// Loads the `source` by trapping on `error`
     ///
-    /// - Note: The `error` is set if the conversion is `lossy`.
+    /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public init<Other>(_ source: consuming Other) where Other: BinaryInteger {
         self = Self.exactly(source).unwrap()
@@ -106,7 +106,7 @@ extension BinaryInteger {
     
     /// Loads the `source` and returns an `error` indicator.
     ///
-    /// - Note: The `error` is set if the conversion is `lossy`.
+    /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public static func exactly<Other>(_ source: consuming Other) -> Fallible<Self> where Other: BinaryInteger {
         if  let size = IX(size: Self.self), !Other.size.isInfinite {
@@ -139,7 +139,7 @@ extension BinaryInteger {
     
     /// Loads the `source` and returns an `error` indicator.
     ///
-    /// - Note: The `error` is set if the conversion is `lossy`.
+    /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public static func exactly<Other>(_ source: consuming Fallible<Other>) -> Fallible<Self> where Other: BinaryInteger {
         Self.exactly(source.value).veto(source.error)
