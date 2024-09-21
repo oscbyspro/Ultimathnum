@@ -79,15 +79,15 @@ extension DataIntTests {
                         
                         var rhs = base
                         for _ in 0 ..< 4 {
-                            Test().same(result(lhs, bit, .unsigned, rhs,  bit, .unsigned), !Bool(bit) ?  0 :  0) // ℕ vs ℕ | ∞ vs ∞
-                            Test().same(result(lhs, bit, .unsigned, rhs,  bit,   .signed), !Bool(bit) ?  0 :  1) // ℕ vs ℕ | ∞ vs -
-                            Test().same(result(lhs, bit,   .signed, rhs,  bit, .unsigned), !Bool(bit) ?  0 : -1) // ℕ vs ℕ | - vs ∞
-                            Test().same(result(lhs, bit,   .signed, rhs,  bit,   .signed), !Bool(bit) ?  0 :  0) // ℕ vs ℕ | - vs -
+                            Test().same(result(lhs, bit, .unsigned, rhs,  bit, .unsigned),  Signum.zero) //...... ℕ vs ℕ | ∞ vs ∞
+                            Test().same(result(lhs, bit, .unsigned, rhs,  bit,   .signed),  Signum(bit)) //...... ℕ vs ℕ | ∞ vs -
+                            Test().same(result(lhs, bit,   .signed, rhs,  bit, .unsigned), -Signum(bit)) //...... ℕ vs ℕ | - vs ∞
+                            Test().same(result(lhs, bit,   .signed, rhs,  bit,   .signed),  Signum.zero) //...... ℕ vs ℕ | - vs -
                             
-                            Test().same(result(lhs, bit, .unsigned, rhs, ~bit, .unsigned), !Bool(bit) ? -1 :  1) // ℕ vs ∞ | ∞ vs ℕ
-                            Test().same(result(lhs, bit, .unsigned, rhs, ~bit,   .signed), !Bool(bit) ?  1 :  1) // ℕ vs - | ∞ vs ℕ
-                            Test().same(result(lhs, bit,   .signed, rhs, ~bit, .unsigned), !Bool(bit) ? -1 : -1) // ℕ vs ∞ | - vs ℕ
-                            Test().same(result(lhs, bit,   .signed, rhs, ~bit,   .signed), !Bool(bit) ?  1 : -1) // ℕ vs - | - vs ℕ
+                            Test().same(result(lhs, bit, .unsigned, rhs, ~bit, .unsigned), -Signum(Sign(bit))) // ℕ vs ∞ | ∞ vs ℕ
+                            Test().same(result(lhs, bit, .unsigned, rhs, ~bit,   .signed),  Signum.positive)   // ℕ vs - | ∞ vs ℕ
+                            Test().same(result(lhs, bit,   .signed, rhs, ~bit, .unsigned),  Signum.negative)   // ℕ vs ∞ | - vs ℕ
+                            Test().same(result(lhs, bit,   .signed, rhs, ~bit,   .signed),  Signum(Sign(bit))) // ℕ vs - | - vs ℕ
                             
                             rhs.append(T(repeating: bit))
                         };  lhs.append(T(repeating: bit))

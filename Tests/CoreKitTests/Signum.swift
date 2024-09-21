@@ -34,12 +34,6 @@ final class SignumTests: XCTestCase {
         Test().same(Signum(Optional(Sign.minus)), Signum.negative)
     }
     
-    func testInitIntegerLiteral() {
-        Test().same(-1 as Signum, Signum.negative)
-        Test().same( 0 as Signum, Signum.zero)
-        Test().same( 1 as Signum, Signum.positive)
-    }
-    
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
@@ -65,15 +59,15 @@ final class SignumTests: XCTestCase {
         Test().more(Signum.positive, Signum.zero)
         Test().same(Signum.positive, Signum.positive)
                 
-        Test().same(Signum.negative.compared(to: Signum.negative),  0)
-        Test().same(Signum.negative.compared(to: Signum.zero),     -1)
-        Test().same(Signum.negative.compared(to: Signum.positive), -1)
-        Test().same(Signum.zero    .compared(to: Signum.negative),  1)
-        Test().same(Signum.zero    .compared(to: Signum.zero),      0)
-        Test().same(Signum.zero    .compared(to: Signum.positive), -1)
-        Test().same(Signum.positive.compared(to: Signum.negative),  1)
-        Test().same(Signum.positive.compared(to: Signum.zero),      1)
-        Test().same(Signum.positive.compared(to: Signum.positive),  0)
+        Test().same(Signum.negative.compared(to: Signum.negative), Signum.zero)
+        Test().same(Signum.negative.compared(to: Signum.zero),     Signum.negative)
+        Test().same(Signum.negative.compared(to: Signum.positive), Signum.negative)
+        Test().same(Signum.zero    .compared(to: Signum.negative), Signum.positive)
+        Test().same(Signum.zero    .compared(to: Signum.zero),     Signum.zero)
+        Test().same(Signum.zero    .compared(to: Signum.positive), Signum.negative)
+        Test().same(Signum.positive.compared(to: Signum.negative), Signum.positive)
+        Test().same(Signum.positive.compared(to: Signum.zero),     Signum.positive)
+        Test().same(Signum.positive.compared(to: Signum.positive), Signum.zero)
     }
     
     func testNegation() {

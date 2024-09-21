@@ -24,13 +24,12 @@ extension DoubleIntTests {
     /// - Note: Generic tests may depend on these results.
     func testComparisonOfSize() {
         for size: Count in [I8x2.size, U8x2.size] {
-            Test().comparison(size, U8  .size,  1 as Signum, id: ComparableID())
-            Test().comparison(size, U16 .size,  0 as Signum, id: ComparableID())
-            Test().comparison(size, U32 .size, -1 as Signum, id: ComparableID())
-            Test().comparison(size, U64 .size, -1 as Signum, id: ComparableID())
-            
-            Test().comparison(size, I8x2.size,  0 as Signum, id: ComparableID())
-            Test().comparison(size, U8x2.size,  0 as Signum, id: ComparableID())
+            Test().comparison(size, U8  .size, Signum.positive, id: ComparableID())
+            Test().comparison(size, U16 .size, Signum.zero,     id: ComparableID())
+            Test().comparison(size, U32 .size, Signum.negative, id: ComparableID())
+            Test().comparison(size, U64 .size, Signum.negative, id: ComparableID())
+            Test().comparison(size, I8x2.size, Signum.zero,     id: ComparableID())
+            Test().comparison(size, U8x2.size, Signum.zero,     id: ComparableID())
         }
     }
     
@@ -42,15 +41,15 @@ extension DoubleIntTests {
         func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
             //=----------------------------------=
-            Test().comparison(T(low:  0, high:  0), T(low:  1, high:  1), -1 as Signum)
-            Test().comparison(T(low:  1, high:  0), T(low:  1, high:  1), -1 as Signum)
-            Test().comparison(T(low:  2, high:  0), T(low:  1, high:  1), -1 as Signum)
-            Test().comparison(T(low:  0, high:  1), T(low:  1, high:  1), -1 as Signum)
-            Test().comparison(T(low:  1, high:  1), T(low:  1, high:  1),  0 as Signum)
-            Test().comparison(T(low:  2, high:  1), T(low:  1, high:  1),  1 as Signum)
-            Test().comparison(T(low:  0, high:  2), T(low:  1, high:  1),  1 as Signum)
-            Test().comparison(T(low:  1, high:  2), T(low:  1, high:  1),  1 as Signum)
-            Test().comparison(T(low:  2, high:  2), T(low:  1, high:  1),  1 as Signum)
+            Test().comparison(T(low:  0, high:  0), T(low:  1, high:  1),  Signum.negative)
+            Test().comparison(T(low:  1, high:  0), T(low:  1, high:  1),  Signum.negative)
+            Test().comparison(T(low:  2, high:  0), T(low:  1, high:  1),  Signum.negative)
+            Test().comparison(T(low:  0, high:  1), T(low:  1, high:  1),  Signum.negative)
+            Test().comparison(T(low:  1, high:  1), T(low:  1, high:  1),  Signum.zero)
+            Test().comparison(T(low:  2, high:  1), T(low:  1, high:  1),  Signum.positive)
+            Test().comparison(T(low:  0, high:  2), T(low:  1, high:  1),  Signum.positive)
+            Test().comparison(T(low:  1, high:  2), T(low:  1, high:  1),  Signum.positive)
+            Test().comparison(T(low:  2, high:  2), T(low:  1, high:  1),  Signum.positive)
             
             Test().comparison(T(low:  0, high:  0), T(low: ~1, high: ~1), -Signum(Sign(T.isSigned)))
             Test().comparison(T(low:  1, high:  0), T(low: ~1, high: ~1), -Signum(Sign(T.isSigned)))
@@ -72,15 +71,15 @@ extension DoubleIntTests {
             Test().comparison(T(low: ~1, high: ~2), T(low:  1, high:  1),  Signum(Sign(T.isSigned)))
             Test().comparison(T(low: ~2, high: ~2), T(low:  1, high:  1),  Signum(Sign(T.isSigned)))
             
-            Test().comparison(T(low: ~0, high: ~0), T(low: ~1, high: ~1),  1 as Signum)
-            Test().comparison(T(low: ~1, high: ~0), T(low: ~1, high: ~1),  1 as Signum)
-            Test().comparison(T(low: ~2, high: ~0), T(low: ~1, high: ~1),  1 as Signum)
-            Test().comparison(T(low: ~0, high: ~1), T(low: ~1, high: ~1),  1 as Signum)
-            Test().comparison(T(low: ~1, high: ~1), T(low: ~1, high: ~1),  0 as Signum)
-            Test().comparison(T(low: ~2, high: ~1), T(low: ~1, high: ~1), -1 as Signum)
-            Test().comparison(T(low: ~0, high: ~2), T(low: ~1, high: ~1), -1 as Signum)
-            Test().comparison(T(low: ~1, high: ~2), T(low: ~1, high: ~1), -1 as Signum)
-            Test().comparison(T(low: ~2, high: ~2), T(low: ~1, high: ~1), -1 as Signum)
+            Test().comparison(T(low: ~0, high: ~0), T(low: ~1, high: ~1),  Signum.positive)
+            Test().comparison(T(low: ~1, high: ~0), T(low: ~1, high: ~1),  Signum.positive)
+            Test().comparison(T(low: ~2, high: ~0), T(low: ~1, high: ~1),  Signum.positive)
+            Test().comparison(T(low: ~0, high: ~1), T(low: ~1, high: ~1),  Signum.positive)
+            Test().comparison(T(low: ~1, high: ~1), T(low: ~1, high: ~1),  Signum.zero)
+            Test().comparison(T(low: ~2, high: ~1), T(low: ~1, high: ~1),  Signum.negative)
+            Test().comparison(T(low: ~0, high: ~2), T(low: ~1, high: ~1),  Signum.negative)
+            Test().comparison(T(low: ~1, high: ~2), T(low: ~1, high: ~1),  Signum.negative)
+            Test().comparison(T(low: ~2, high: ~2), T(low: ~1, high: ~1),  Signum.negative)
         }
         
         for base in Self.bases {

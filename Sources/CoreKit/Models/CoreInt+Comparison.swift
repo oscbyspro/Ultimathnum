@@ -17,15 +17,23 @@ extension CoreInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func compared(to other: Self) -> Signum {
-        self < other ? -1 : self == other ? 0 : 1
-    }
-    
     @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
         lhs.base == rhs.base
     }
     
     @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
         lhs.base <  rhs.base
+    }
+    
+    @inlinable public func compared(to other: Self) -> Signum {
+        if  self < other {
+            Signum.negative
+            
+        }   else if self == other {
+            Signum.zero
+            
+        }   else {
+            Signum.positive
+        }
     }
 }

@@ -28,7 +28,7 @@ final class BinaryIntegerTestsOnValues: XCTestCase {
             let min = T.isSigned ? 1 << T(UX(size: T.self)! - 1) : T.zero
             let max = min.toggled()
             //=----------------------------------=
-            Test().comparison(min, max, -1 as Signum)
+            Test().comparison(min, max, Signum.negative)
             //=----------------------------------=
             Test().same(T.min, min, "min")
             Test().same(T.max, max, "max")

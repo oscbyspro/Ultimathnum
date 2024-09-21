@@ -29,10 +29,10 @@ extension DataIntTests {
             Test().yay(MutableDataInt<E>     .capacity.times(chunk).plus(chunk).error)
             Test().yay(MutableDataInt<E>.Body.capacity.times(chunk).plus(chunk).error)
             
-            Test().comparison(       DataInt<E>     .capacity.times(chunk).unwrap(), IX.max, -1 as Signum)
-            Test().comparison(       DataInt<E>.Body.capacity.times(chunk).unwrap(), IX.max, -1 as Signum)
-            Test().comparison(MutableDataInt<E>     .capacity.times(chunk).unwrap(), IX.max, -1 as Signum)
-            Test().comparison(MutableDataInt<E>.Body.capacity.times(chunk).unwrap(), IX.max, -1 as Signum)
+            Test().comparison(       DataInt<E>     .capacity.times(chunk).unwrap(), IX.max, Signum.negative)
+            Test().comparison(       DataInt<E>.Body.capacity.times(chunk).unwrap(), IX.max, Signum.negative)
+            Test().comparison(MutableDataInt<E>     .capacity.times(chunk).unwrap(), IX.max, Signum.negative)
+            Test().comparison(MutableDataInt<E>.Body.capacity.times(chunk).unwrap(), IX.max, Signum.negative)
         }
         
         for element in coreSystemsIntegersWhereIsUnsigned {

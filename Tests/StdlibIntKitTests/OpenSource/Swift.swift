@@ -131,14 +131,14 @@ final class StdlibIntTestsLikeOpenSourceTestsBySwift: XCTestCase {
     func testConformances() {
         let a = StdlibInt(Swift.Int.max)
         let b = (a * a * a * a * a)
-        Test().comparison(b, b + 1, -1 as Signum, id: ComparableID())
-        Test().comparison(b, b - 1,  1 as Signum, id: ComparableID())
-        Test().comparison(b, 0,      1 as Signum, id: ComparableID())
+        Test().comparison(b, b + 1, Signum.negative, id: ComparableID())
+        Test().comparison(b, b - 1, Signum.positive, id: ComparableID())
+        Test().comparison(b, 0,     Signum.positive, id: ComparableID())
         
         let c = -b
-        Test().comparison(c, c + 1, -1 as Signum, id: ComparableID())
-        Test().comparison(c, c - 1,  1 as Signum, id: ComparableID())
-        Test().comparison(c, 0,     -1 as Signum, id: ComparableID())
+        Test().comparison(c, c + 1, Signum.negative, id: ComparableID())
+        Test().comparison(c, c - 1, Signum.positive, id: ComparableID())
+        Test().comparison(c, 0,     Signum.negative, id: ComparableID())
         
         Test().same(-c,     b)
         Test().same( b + c, 0)
@@ -187,8 +187,8 @@ final class StdlibIntTestsLikeOpenSourceTestsBySwift: XCTestCase {
         let a = makeRandomStdlibInt(maxBitWidth: 1_000_000)
         let b = -a
 
-        Test().comparison(a, a - 1, 1 as Signum, id: ComparableID())
-        Test().comparison(b, b - 1, 1 as Signum, id: ComparableID())
+        Test().comparison(a, a - 1, Signum.positive, id: ComparableID())
+        Test().comparison(b, b - 1, Signum.positive, id: ComparableID())
     }
     
     /// See also: `BigIntTests.test("Numeric")`.

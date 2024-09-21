@@ -11,8 +11,13 @@
 // MARK: * Signum
 //*============================================================================*
 
-/// A comparison result represented by `-1` (less), `0` (same) or `1` (more).
-@frozen public enum Signum: Comparable, ExpressibleByIntegerLiteral, Hashable, Sendable {
+/// A comparison result represented by `-1` (negative), `0` (zero) or `1` (positive).
+///
+/// ### Development
+///
+/// - Note: It must not conform to `ExpressibleByIntegerLiteral` (#94).
+///
+@frozen public enum Signum: Comparable, Hashable, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -20,7 +25,7 @@
     
     /// A `negative` value.
     ///
-    /// - Note: Its integer literal value is `-1`.
+    /// - Note: Its integer value `-1`.
     ///
     /// - Note: This comparison result can be read as: **is less than**.
     ///
@@ -28,7 +33,7 @@
     
     /// A value of `zero`.
     ///
-    /// - Note: Its integer literal value is  `0`.
+    /// - Note: Its integer value is  `0`.
     ///
     /// - Note: This comparison result can be read as: **is equal to**.
     ///
@@ -36,7 +41,7 @@
     
     /// A `positive` value.
     ///
-    /// - Note: Its integer literal value is  `1`.
+    /// - Note: Its integer value is  `1`.
     ///
     /// - Note: This comparison result can be read as: **is greater than**.
     ///
@@ -68,16 +73,6 @@
             self.init(sign)
         }   else {
             self = Self.zero
-        }
-    }
-    
-    /// Creates a new instance equal to `-1`, `0` or `1`.
-    @inlinable public init(integerLiteral: IX.IntegerLiteralType) {
-        self = switch integerLiteral {
-        case -1: Self.negative
-        case  0: Self.zero
-        case  1: Self.positive
-        default: Swift.preconditionFailure(String.overflow())
         }
     }
 }

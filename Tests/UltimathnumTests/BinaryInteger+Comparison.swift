@@ -24,20 +24,20 @@ final class BinaryIntegerTestsOnComparison: XCTestCase {
     
     func testSignum() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            Test().signum( 0 as T, 0 as Signum)
-            Test().signum( 1 as T, 1 as Signum)
-            Test().signum( 2 as T, 1 as Signum)
-            Test().signum( 3 as T, 1 as Signum)
+            Test().signum( 0 as T, Signum.zero)
+            Test().signum( 1 as T, Signum.positive)
+            Test().signum( 2 as T, Signum.positive)
+            Test().signum( 3 as T, Signum.positive)
             
             Test().signum(~3 as T, Signum(Sign(T.isSigned)))
             Test().signum(~2 as T, Signum(Sign(T.isSigned)))
             Test().signum(~1 as T, Signum(Sign(T.isSigned)))
             Test().signum(~0 as T, Signum(Sign(T.isSigned)))
             
-            Test().signum(Esque<T>.min, T.isSigned ? -1 : 0 as Signum)
-            Test().signum(Esque<T>.bot, 1 as Signum)
-            Test().signum(Esque<T>.msb, T.isSigned ? -1 : 1 as Signum)
-            Test().signum(Esque<T>.max, 1 as Signum)
+            Test().signum(Esque<T>.min, -Signum(Bit(T.isSigned)))
+            Test().signum(Esque<T>.bot,  Signum.positive)
+            Test().signum(Esque<T>.msb,  Signum(Sign(raw: T.isSigned)))
+            Test().signum(Esque<T>.max,  Signum.positive)
         }
         
         for type in binaryIntegers {
@@ -49,38 +49,38 @@ final class BinaryIntegerTestsOnComparison: XCTestCase {
         func whereIs<T, U>(_ lhs: T.Type, _ rhs: U.Type) where T: BinaryInteger, U: BinaryInteger {            
             switch (T.isSigned, U.isSigned) {
             case (true, true):
-                Test().comparison( 2 as T,  3 as U, -1 as Signum)
-                Test().comparison( 2 as T, ~3 as U,  1 as Signum)
-                Test().comparison(~2 as T,  3 as U, -1 as Signum)
-                Test().comparison(~2 as T, ~3 as U,  1 as Signum)
+                Test().comparison( 2 as T,  3 as U, Signum.negative)
+                Test().comparison( 2 as T, ~3 as U, Signum.positive)
+                Test().comparison(~2 as T,  3 as U, Signum.negative)
+                Test().comparison(~2 as T, ~3 as U, Signum.positive)
                 
-                Test().comparison( 0 as T,  0 as U,  0 as Signum)
-                Test().comparison( 0 as T, -1 as U,  1 as Signum)
-                Test().comparison(-1 as T,  0 as U, -1 as Signum)
-                Test().comparison(-1 as T, -1 as U,  0 as Signum)
+                Test().comparison( 0 as T,  0 as U, Signum.zero)
+                Test().comparison( 0 as T, -1 as U, Signum.positive)
+                Test().comparison(-1 as T,  0 as U, Signum.negative)
+                Test().comparison(-1 as T, -1 as U, Signum.zero)
                 
-                Test().comparison( 1 as T,  1 as U,  0 as Signum)
-                Test().comparison( 1 as T, -1 as U,  1 as Signum)
-                Test().comparison(-1 as T,  1 as U, -1 as Signum)
-                Test().comparison(-1 as T, -1 as U,  0 as Signum)
+                Test().comparison( 1 as T,  1 as U, Signum.zero)
+                Test().comparison( 1 as T, -1 as U, Signum.positive)
+                Test().comparison(-1 as T,  1 as U, Signum.negative)
+                Test().comparison(-1 as T, -1 as U, Signum.zero)
 
             case (true, false):
-                Test().comparison( 2 as T,  3 as U, -1 as Signum)
-                Test().comparison( 2 as T, ~3 as U, -1 as Signum)
-                Test().comparison(~2 as T,  3 as U, -1 as Signum)
-                Test().comparison(~2 as T, ~3 as U, -1 as Signum)
+                Test().comparison( 2 as T,  3 as U, Signum.negative)
+                Test().comparison( 2 as T, ~3 as U, Signum.negative)
+                Test().comparison(~2 as T,  3 as U, Signum.negative)
+                Test().comparison(~2 as T, ~3 as U, Signum.negative)
             
             case (false, true):
-                Test().comparison( 2 as T,  3 as U, -1 as Signum)
-                Test().comparison( 2 as T, ~3 as U,  1 as Signum)
-                Test().comparison(~2 as T,  3 as U,  1 as Signum)
-                Test().comparison(~2 as T, ~3 as U,  1 as Signum)
+                Test().comparison( 2 as T,  3 as U, Signum.negative)
+                Test().comparison( 2 as T, ~3 as U, Signum.positive)
+                Test().comparison(~2 as T,  3 as U, Signum.positive)
+                Test().comparison(~2 as T, ~3 as U, Signum.positive)
                 
             case (false, false):
-                Test().comparison( 2 as T,  3 as U, -1 as Signum)
-                Test().comparison( 2 as T, ~3 as U, -1 as Signum)
-                Test().comparison(~2 as T,  3 as U,  1 as Signum)
-                Test().comparison(~2 as T, ~3 as U,  T.size < U.size ? -1 : 1)
+                Test().comparison( 2 as T,  3 as U, Signum.negative)
+                Test().comparison( 2 as T, ~3 as U, Signum.negative)
+                Test().comparison(~2 as T,  3 as U, Signum.positive)
+                Test().comparison(~2 as T, ~3 as U, Signum(Sign(raw: T.size < U.size)))
             }
         }
         
@@ -94,8 +94,8 @@ final class BinaryIntegerTestsOnComparison: XCTestCase {
     func testGenericComparisonOfMinMaxEsque() {
         func whereIs<T, U>(_ lhs: T.Type, _ rhs: U.Type) where T: BinaryInteger, U: BinaryInteger {
             always: do {
-                Test().comparison(Esque<T>.min, Esque<U>.max, -1 as Signum)
-                Test().comparison(Esque<T>.max, Esque<U>.min,  1 as Signum)
+                Test().comparison(Esque<T>.min, Esque<U>.max, Signum.negative)
+                Test().comparison(Esque<T>.max, Esque<U>.min, Signum.positive)
             }
             
             switch (T.isSigned, U.isSigned) {
@@ -104,15 +104,15 @@ final class BinaryIntegerTestsOnComparison: XCTestCase {
                 Test().comparison(Esque<T>.max, Esque<U>.max,  T.size.compared(to: U.size))
                 
             case (true,  false):
-                Test().comparison(Esque<T>.min, Esque<U>.min, -1 as Signum)
+                Test().comparison(Esque<T>.min, Esque<U>.min,  Signum.negative)
                 Test().comparison(Esque<T>.max, Esque<U>.max, -Signum(Sign(T.size > U.size)))
             
             case (false, true):
-                Test().comparison(Esque<T>.min, Esque<U>.min,  1 as Signum)
+                Test().comparison(Esque<T>.min, Esque<U>.min,  Signum.positive)
                 Test().comparison(Esque<T>.max, Esque<U>.max,  Signum(Sign(T.size < U.size)))
                 
             case (false, false):
-                Test().comparison(Esque<T>.min, Esque<U>.min,  0 as Signum)
+                Test().comparison(Esque<T>.min, Esque<U>.min,  Signum.zero)
                 Test().comparison(Esque<T>.max, Esque<U>.max,  T.size.compared(to: U.size))
             }
         }
