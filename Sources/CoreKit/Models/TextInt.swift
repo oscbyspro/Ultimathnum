@@ -53,13 +53,19 @@
     ///
     /// - Note: Encoding is case sensitive.
     ///
-    public var numerals: Numerals
+    /// ### Development
+    ///
+    /// - Note: I wish `@inlinable` did not break `private(set)` access.
+    ///
+    /// - Note: Arbitrary mutations may break `exponent` and `power` invariants.
+    ///
+    @usableFromInline var base: Numerals
     
     /// The number of elements per chunk.
     ///
     /// - Note: It equals the number of numerals in a `power` chunk.
     ///
-    @usableFromInline var exponent: IX
+    @usableFromInline let exponent: IX
     
     /// A 2-by-1 `power` divider.
     ///
@@ -122,7 +128,7 @@
         radix: UX,
         letters: Letters = .lowercase
     )   throws {
-        self.numerals = try Numerals(radix: radix, letters: letters)
+        self.base = try Numerals(radix: radix, letters: letters)
         let exponentiation = try Exponentiation(radix)
         self.exponent = exponentiation.exponent as IX
         self.power = Divider21(Swift.max(1, exponentiation.power))
@@ -144,7 +150,7 @@
     
     /// Returns an similar instance that encodes the given `letters`.
     @inlinable public consuming func letters(_ letters: Letters) -> Self {
-        self.numerals = self.numerals.letters(letters)
+        self.base = self.base.letters(letters)
         return self
     }
     
@@ -152,12 +158,22 @@
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// A numeral map.
+    ///
+    /// - Note: Decoding is case insensitive.
+    ///
+    /// - Note: Encoding is case sensitive.
+    ///
+    @inlinable public var numerals: Numerals {
+        self.base
+    }
+
     /// The type of `letters` produced by this instance.
     ///
     /// - Returns: A `lowercase` or `uppercase` indicator.
     ///
     @inlinable public var letters: Letters {
-        self.numerals.letters
+        self.base.letters
     }
     
     /// The `radix` of its number system.
@@ -167,10 +183,10 @@
     /// - Note: The return type is `U8` to minimize size-related validation.
     ///
     @inlinable public var radix: U8 {
-        self.numerals.radix
+        self.base.radix
     }
     
     @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.numerals == rhs.numerals
+        lhs.base == rhs.base
     }
 }
