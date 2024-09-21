@@ -25,4 +25,11 @@ final class RandomIntTests: XCTestCase {
         Test().yay(RandomInt.self as Any is any Randomness.Type)
         Test().yay(RandomInt.Stdlib.self as Any is any Swift.RandomNumberGenerator.Type)
     }
+    
+    func testStdlib() {
+        let randomness = RandomInt(Swift.SystemRandomNumberGenerator())
+        let stdlib: Swift.SystemRandomNumberGenerator = randomness.stdlib()
+        Test().same(MemoryLayout.size(ofValue: randomness), Swift.Int.zero)
+        Test().same(MemoryLayout.size(ofValue:     stdlib), Swift.Int.zero)
+    }
 }
