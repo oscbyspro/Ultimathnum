@@ -223,7 +223,7 @@ extension Test {
                 same(Integer(elements, mode: signedness), expectation, "T.init(_:mode:) - DataInt")
                 
                 if  signedness == Integer.mode {
-                    //same(Integer(elements), expectation, "T.init(_:) - DataInt")
+                    same(Integer(elements), expectation, "T.init(_:) - DataInt")
                 }
             }
             
@@ -232,7 +232,7 @@ extension Test {
                 same(Integer.exactly(elements,  mode: signedness), expectation, "T.exactly(_:mode:) - DataInt")
                 
                 if  signedness == Integer.mode {
-                    //same(Integer.exactly(elements), expectation, "T.exactly(_:) - DataInt")
+                    same(Integer.exactly(elements), expectation, "T.exactly(_:) - DataInt")
                 }
             }
                         
@@ -240,7 +240,7 @@ extension Test {
                 same(Integer.exactly($0, mode: signedness), expectation, "T.exactly(_:mode:) - DataInt<U8>")
                 
                 if  signedness == Integer.mode {
-                    //same(Integer.exactly($0), expectation, "T.exactly(_:) - DataInt<U8>")
+                    same(Integer.exactly($0), expectation, "T.exactly(_:) - DataInt<U8>")
                 }
                 
                 if !expectation.error, $0.entropy() <= UX.size {

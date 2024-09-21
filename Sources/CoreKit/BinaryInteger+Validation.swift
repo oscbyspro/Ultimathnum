@@ -42,7 +42,7 @@ extension BinaryInteger {
     @inlinable public init<Other>(
         sign: consuming Sign = .plus,
         magnitude: consuming Other
-    )   where Other: UnsignedInteger  {
+    )   where Other: UnsignedInteger {
         self = Self.exactly(sign: sign, magnitude: magnitude).unwrap()
     }
     
