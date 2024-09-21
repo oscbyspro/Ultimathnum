@@ -25,12 +25,12 @@ extension InfiniIntTests {
     func testDivisionByNegative() {
         func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger & SignedInteger {
             //=----------------------------------=
-            let  small = T(0x0000000000000000000000000000007F)
-            let xsmall = small.complement()
-            let  large = T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0)
-            let xlarge = large.complement()
-            let  ratio = T(0x020406080A0C0E10121416181A1C1E20)
-            let xratio = ratio.complement()
+            let  small: T = 0x0000000000000000000000000000007F
+            let xsmall: T = small.complement()
+            let  large: T = 0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0
+            let xlarge: T = large.complement()
+            let  ratio: T = 0x020406080A0C0E10121416181A1C1E20
+            let xratio: T = ratio.complement()
             //=----------------------------------=
             Test().division( small,  small,  T( 1),  T( 0))
             Test().division( small, xsmall, ~T( 0),  T( 0))
@@ -61,12 +61,12 @@ extension InfiniIntTests {
     func testDivisionByInfinite() {
         func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger & UnsignedInteger {
             //=----------------------------------=
-            let  small = T(0x0000000000000000000000000000007F)
-            let xsmall = small.complement()
-            let  large = T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0)
-            let xlarge = large.complement()
-            let  ratio = T(0x020406080A0C0E10121416181A1C1E20)
-            let xratio = ratio.complement()
+            let  small: T = 0x0000000000000000000000000000007F
+            let xsmall: T = small.complement()
+            let  large: T = 0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0
+            let xlarge: T = large.complement()
+            let  ratio: T = 0x020406080A0C0E10121416181A1C1E20
+            let xratio: T = ratio.complement()
             //=----------------------------------=
             Test().division( small,  small,  T( 1),  T( 0))
             Test().division( small, xsmall,  T( 0),  small)

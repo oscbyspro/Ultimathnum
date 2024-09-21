@@ -24,9 +24,9 @@ extension InfiniIntTests {
     func testUpshift() {
         func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             //=----------------------------------=
-            let large = T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0)
+            let large: T = 0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0
             //=----------------------------------=
-            for value in [large, ~large] {
+            for value: T in [large, ~large] {
                 let appendix = T(repeating: value.appendix)
                 
                 Test().upshift(value, 000 as T, T(0x0000FFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0) ^ appendix & ~T(0x0000))
@@ -63,7 +63,7 @@ extension InfiniIntTests {
     func testDownshiftByMoreThanMaxSignedWordIsUpflush() {
         func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             //=----------------------------------=
-            let large = T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0)
+            let large: T = 0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0
             //=----------------------------------=
             for value: T in [~2, ~1, ~0, 0, 1, 2, large, ~large] {
                 Test().upshift(value, large,         T.zero)
@@ -92,9 +92,9 @@ extension InfiniIntTests {
     func testDownshift() {
         func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             //=----------------------------------=
-            let large = T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0)
+            let large: T = 0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0
             //=----------------------------------=
-            for value in [large, ~large] {
+            for value: T in [large, ~large] {
                 let appendix = T(repeating: value.appendix)
                 
                 Test().downshift(value, 00000 as T, T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0) ^ appendix)
@@ -139,7 +139,7 @@ extension InfiniIntTests {
     func testDownshiftByMoreThanMaxSignedWordIsDownflush() {
         func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             //=----------------------------------=
-            let large = T(0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0)
+            let large: T = 0xFFFEFDFCFBFAF9F8F7F6F5F4F3F2F1F0
             //=----------------------------------=
             for value: T in [~2, ~1, ~0, 0, 1, 2, large, ~large] {
                 let appendix = T(repeating: value.appendix)

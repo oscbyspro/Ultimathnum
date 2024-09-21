@@ -156,25 +156,43 @@ extension BinaryInteger {
     // MARK: Initializers x Swift.BinaryFloatingPoint
     //=------------------------------------------------------------------------=
     
-    /// Returns a `value` and an `error` indicator.
+    /// Returns the `value` of `source` rounded towards zero by trapping on `nil`.
     ///
-    /// - Note: It returns `nil` if the operation is `lossy`.
+    /// ```swift
+    /// Self.leniently(source)!.value
+    /// ```
     ///
-    /// - Note: It returns `nil` if the operation is `undefined`.
+    /// - Note: It is `nil` if the operation is `undefined`.
     ///
-    @inlinable public static func exactly<Source>(_ source: Source) -> Optional<Self> where Source: Swift.BinaryFloatingPoint {
+    /// - Note: It is `nil` if the integer part cannot be represented.
+    ///
+    @inlinable public init(_ source: some Swift.BinaryFloatingPoint) {
+        self = Self.leniently(source)!.value
+    }
+    
+    /// Returns the `value` of `source`, or `nil`.
+    ///
+    /// ```swift
+    /// Self.leniently(source)?.optional()
+    /// ```
+    ///
+    /// - Note: It is `nil` if the operation is `lossy`.
+    ///
+    /// - Note: It is `nil` if the operation is `undefined`.
+    ///
+    @inlinable public static func exactly(_ source: some Swift.BinaryFloatingPoint) -> Optional<Self> {
         Self.leniently(source)?.optional()
     }
     
-    /// Returns a `value` and an `error` indicator, or `nil`.
+    /// Returns the `value` of `source` rounded towards zero and an `error` indicator, or `nil`.
     ///
-    /// - Note: It returns `nil` if the operation is `undefined`.
+    /// - Note: It is `nil` if the operation is `undefined`.
     ///
-    /// - Note: It returns `nil` if the integer part cannot be represented.
+    /// - Note: It is `nil` if the integer part cannot be represented.
     ///
     /// - Note: The `error` is set if the `value` has been rounded towards zero.
     ///
-    @inlinable public static func leniently<Source>(_ source: Source) -> Optional<Fallible<Self>> where Source: Swift.BinaryFloatingPoint {
+    @inlinable public static func leniently(_ source: some Swift.BinaryFloatingPoint) -> Optional<Fallible<Self>> {
         //=--------------------------------------=
         // note: floating point zeros are special
         //=--------------------------------------=
@@ -191,7 +209,7 @@ extension BinaryInteger {
         // note: return zero when no integer part
         //=--------------------------------------=
         let exponent = source.exponent
-        if  exponent < Source.Exponent.zero {
+        if  exponent < .zero {
             return Self.zero.veto()
         }
         //=--------------------------------------=
