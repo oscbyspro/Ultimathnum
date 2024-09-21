@@ -162,7 +162,7 @@ extension Test {
         //=--------------------------------------=
         // path: count plus noncount is size
         //=--------------------------------------=
-        for bit: Bit in [0, 1] {
+        for bit in [Bit.zero, Bit.one] {
             let x0 = IX(raw: instance   .ascending(bit))
             let x1 = IX(raw: instance.nonascending(bit))
             same(Count.init(raw: x0 + x1), instance.size(), "count(x) + noncount(x) == size()")
@@ -201,7 +201,7 @@ extension Test {
         //=--------------------------------------=
         // path: count plus noncount is size
         //=--------------------------------------=
-        for bit: Bit in [0, 1] {
+        for bit in [Bit.zero, Bit.one] {
             let x0 = IX(raw: instance   .descending(bit))
             let x1 = IX(raw: instance.nondescending(bit))
             same(Count.init(raw: x0 + x1), instance.size(), "count(x) + noncount(x) == size()")

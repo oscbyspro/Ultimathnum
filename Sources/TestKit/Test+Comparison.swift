@@ -209,7 +209,7 @@ extension Test {
                     same(DataInt(rhs).isZero, rhsIsZero, "elements.isZero [0]")
                 }
                 
-                if  rhs.appendix == 0 {
+                if  rhs.appendix == Bit.zero {
                     same(rhs.body.isZero, rhsIsZero, "body.isZero [0]")
                     same(DataInt.Body(rhs.body).isZero, rhsIsZero, "body.isZero [1]")
                 }
@@ -218,11 +218,11 @@ extension Test {
                     same(DataInt.signum(of: DataInt(lhs), mode: A.mode), expectation, "elements.signum()")
                 }
                                 
-                if  rhsIsZero, lhs.appendix == 0, rhs.appendix == 0 {
+                if  rhsIsZero, lhs.appendix == Bit.zero, rhs.appendix == Bit.zero {
                     same(lhs.body.signum(), expectation, "body.signum()")
                 }
                 
-                if  lhs.appendix == 0, rhs.appendix == 0 {
+                if  lhs.appendix == Bit.zero, rhs.appendix == Bit.zero {
                     same(lhs.body.compared(to: rhs.body), expectation, "body.compared(to:) [0]")
                     same(lhs.body.compared(to: DataInt.Body( rhs.body)), expectation, "body.compared(to:) [1]")
                     same(DataInt.Body(lhs.body).compared(to: rhs.body ), expectation, "body.compared(to:) [2]")

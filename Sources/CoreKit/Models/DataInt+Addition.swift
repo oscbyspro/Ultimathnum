@@ -276,7 +276,7 @@ extension MutableDataInt.Body {
 
         if (pattern != bit) {
             let predicate = copy bit
-            let increment = copy bit ? 1 : Element(repeating: 1)
+            let increment = copy bit ? 1 : Element(repeating: Bit.one)
             
             while UX(raw: self.count) > .zero, copy bit ==  predicate {
                 (self, bit) = self.incrementSubSequence(by: increment).components()
@@ -294,7 +294,7 @@ extension MutableDataInt.Body {
         
         if (pattern != bit) {
             let predicate = copy bit
-            let increment = copy bit ? 1 : Element(repeating: 1)
+            let increment = copy bit ? 1 : Element(repeating: Bit.one)
             
             while UX(raw: self.count) > .zero, copy bit ==  predicate {
                 (self, bit) = self.decrementSubSequence(by: increment).components()

@@ -101,8 +101,8 @@ extension Test {
         }
         
         shift: if !expectation.error {
-            guard let zeros0 = lhs.ascending(0).natural().optional() else { break shift }
-            guard let zeros1 = rhs.ascending(0).natural().optional() else { break shift }
+            guard let zeros0 = lhs.ascending(Bit.zero).natural().optional() else { break shift }
+            guard let zeros1 = rhs.ascending(Bit.zero).natural().optional() else { break shift }
             
             let a = T(zeros0), lhsX = (lhs >> a)
             let b = T(zeros1), rhsX = (rhs >> b)

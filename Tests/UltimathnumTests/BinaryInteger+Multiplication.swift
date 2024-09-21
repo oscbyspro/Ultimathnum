@@ -130,11 +130,11 @@ final class BinaryIntegerTestsOnMultiplication: XCTestCase {
     }
     
     func testMultiplicationOfRepeatingBit() {
-        func whereIsBinaryInteger<T>(_ type: T.Type) where T: BinaryInteger {
+        func whereIsBinaryInteger<T>(_ type : T.Type) where T: BinaryInteger {
             typealias F = Fallible<T>
             //=----------------------------------=
-            let x0 = T(repeating: 0)
-            let x1 = T(repeating: 1)
+            let x0 = T(repeating: Bit.zero)
+            let x1 = T(repeating: Bit.one)
             //=----------------------------------=
             for multiplier in [4, 3, 2, 1, 0, ~0, ~1, ~2, ~3, ~4] as [T] {
                 Test().multiplication(x0, multiplier, Fallible(x0))
@@ -170,8 +170,8 @@ final class BinaryIntegerTestsOnMultiplication: XCTestCase {
             typealias D = Doublet <T>
             typealias F = Fallible<D>
             //=----------------------------------=
-            let x0 = T(repeating: 0)
-            let x1 = T(repeating: 1)
+            let x0 = T(repeating: Bit.zero)
+            let x1 = T(repeating: Bit.one )
             //=----------------------------------=
             for multiplier in [4, 3, 2, 1, 0, ~0, ~1, ~2, ~3, ~4] as [T] {
                 Test().multiplication(x0, multiplier, F(D(low: T.Magnitude(raw: x0), high: x0)))

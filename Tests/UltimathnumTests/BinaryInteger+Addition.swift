@@ -99,8 +99,8 @@ final class BinaryIntegerTestsOnAddition: XCTestCase {
     func testAdditionOfRepeatingBit() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             //=----------------------------------=
-            let x0 = T(repeating: 0)
-            let x1 = T(repeating: 1)
+            let x0 = T(repeating: Bit.zero)
+            let x1 = T(repeating: Bit.one )
             //=----------------------------------=
             Test().addition(x0, x0, Fallible(x0))
             Test().addition(x0, x1, Fallible(x1))
@@ -121,8 +121,8 @@ final class BinaryIntegerTestsOnAddition: XCTestCase {
     func testSubtractionOfRepeatingBit() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             //=----------------------------------=
-            let x0 = T(repeating: 0)
-            let x1 = T(repeating: 1)
+            let x0 = T(repeating: Bit.zero)
+            let x1 = T(repeating: Bit.one )
             //=----------------------------------=
             Test().subtraction(x0, x0, Fallible(x0))
             Test().subtraction(x0, x1, Fallible( 1, error: !T.isSigned))

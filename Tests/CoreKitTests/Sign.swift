@@ -23,17 +23,17 @@ final class SignTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testBit() {
-        Test().same(T(0 as Bit), T.plus )
-        Test().same(T(1 as Bit), T.minus)
+        Test().same(T(Bit.zero), T.plus )
+        Test().same(T(Bit.one ), T.minus)
         
-        Test().same(T(raw: 0 as Bit), T.plus )
-        Test().same(T(raw: 1 as Bit), T.minus)
+        Test().same(T(raw: Bit.zero), T.plus )
+        Test().same(T(raw: Bit.one ), T.minus)
         
-        Test().same(Bit(T.plus ), 0 as Bit)
-        Test().same(Bit(T.minus), 1 as Bit)
+        Test().same(Bit(T.plus ), Bit.zero)
+        Test().same(Bit(T.minus), Bit.one )
         
-        Test().same(Bit(raw: T.plus ), 0 as Bit)
-        Test().same(Bit(raw: T.minus), 1 as Bit)
+        Test().same(Bit(raw: T.plus ), Bit.zero)
+        Test().same(Bit(raw: T.minus), Bit.one )
     }
     
     func testBool() {

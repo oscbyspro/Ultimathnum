@@ -27,41 +27,41 @@ final class BinaryIntegerTestsOnCount: XCTestCase {
             //=----------------------------------=
             let relative = IX(raw: T.size)
             //=----------------------------------=
-            for bit: Bit in [0, 1] {
+            for bit in [Bit.zero, Bit.one] {
                 always: do {
-                    Test()     .count( 0 as T, bit, Count(raw: bit == 0 ? relative : IX.zero))
-                    Test()     .count(~0 as T, bit, Count(raw: bit == 1 ? relative : IX.zero))
-                    Test() .ascending( 0 as T, bit, Count(raw: bit == 0 ? relative : IX.zero))
-                    Test() .ascending(~0 as T, bit, Count(raw: bit == 1 ? relative : IX.zero))
-                    Test().descending( 0 as T, bit, Count(raw: bit == 0 ? relative : IX.zero))
-                    Test().descending(~0 as T, bit, Count(raw: bit == 1 ? relative : IX.zero))
+                    Test()     .count( 0 as T, bit, Count(raw: bit == Bit.zero ? relative : IX.zero))
+                    Test()     .count(~0 as T, bit, Count(raw: bit == Bit.one  ? relative : IX.zero))
+                    Test() .ascending( 0 as T, bit, Count(raw: bit == Bit.zero ? relative : IX.zero))
+                    Test() .ascending(~0 as T, bit, Count(raw: bit == Bit.one  ? relative : IX.zero))
+                    Test().descending( 0 as T, bit, Count(raw: bit == Bit.zero ? relative : IX.zero))
+                    Test().descending(~0 as T, bit, Count(raw: bit == Bit.one  ? relative : IX.zero))
                 }
                 
-                for element: (value: T, bit: Bit) in [(11, 0), (~11, 1)] {
+                for element: (value: T, bit: Bit) in [(11, Bit.zero), (~11, Bit.one)] {
                     Test()     .count(element.value, bit, Count(raw: bit == element.bit ? (relative - 3) : 3 as IX))
                     Test() .ascending(element.value, bit, Count(raw: bit == element.bit ? (000000000000) : 2 as IX))
                     Test().descending(element.value, bit, Count(raw: bit == element.bit ? (relative - 4) : 0 as IX))
                 }
                 
-                for element: (value: T, bit: Bit) in [(22, 0), (~22, 1)] {
+                for element: (value: T, bit: Bit) in [(22, Bit.zero), (~22, Bit.one)] {
                     Test()     .count(element.value, bit, Count(raw: bit == element.bit ? (relative - 3) : 3 as IX))
                     Test() .ascending(element.value, bit, Count(raw: bit == element.bit ? (000000000001) : 0 as IX))
                     Test().descending(element.value, bit, Count(raw: bit == element.bit ? (relative - 5) : 0 as IX))
                 }
                 
-                for element: (value: T, bit: Bit) in [(33, 0), (~33, 1)] {
+                for element: (value: T, bit: Bit) in [(33, Bit.zero), (~33, Bit.one)] {
                     Test()     .count(element.value, bit, Count(raw: bit == element.bit ? (relative - 2) : 2 as IX))
                     Test() .ascending(element.value, bit, Count(raw: bit == element.bit ? (000000000000) : 1 as IX))
                     Test().descending(element.value, bit, Count(raw: bit == element.bit ? (relative - 6) : 0 as IX))
                 }
                 
-                for element: (value: T, bit: Bit) in [(44, 0), (~44, 1)] {
+                for element: (value: T, bit: Bit) in [(44, Bit.zero), (~44, Bit.one)] {
                     Test()     .count(element.value, bit, Count(raw: bit == element.bit ? (relative - 3) : 3 as IX))
                     Test() .ascending(element.value, bit, Count(raw: bit == element.bit ? (000000000002) : 0 as IX))
                     Test().descending(element.value, bit, Count(raw: bit == element.bit ? (relative - 6) : 0 as IX))
                 }
                             
-                for element: (value: T, bit: Bit) in [(55, 0), (~55, 1)] {
+                for element: (value: T, bit: Bit) in [(55, Bit.zero), (~55, Bit.one)] {
                     Test()     .count(element.value, bit, Count(raw: bit == element.bit ? (relative - 5) : 5 as IX))
                     Test() .ascending(element.value, bit, Count(raw: bit == element.bit ? (000000000000) : 3 as IX))
                     Test().descending(element.value, bit, Count(raw: bit == element.bit ? (relative - 6) : 0 as IX))

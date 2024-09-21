@@ -25,9 +25,9 @@ extension DataIntTests {
             typealias C = DataIntTests.Extension<T>
             typealias F = Fallible<[T]>
             
-            for appendix: Bit in [0, 1] {
+            for appendix in [Bit.zero, Bit.one] {
                 for signedness: Signedness in [.unsigned, .signed] {
-                    let expectation = (appendix == 0) ? Signum.zero : Signum(Sign(raw: signedness))
+                    let expectation = (appendix == Bit.zero) ? Signum.zero : Signum(Sign(raw: signedness))
                     C([       ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
                     C([0      ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
                     C([0, 0   ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
@@ -35,7 +35,7 @@ extension DataIntTests {
                 }
                 
                 for signedness: Signedness in [.unsigned, .signed] {
-                    let expectation = (appendix == 0) ? Signum.positive : Signum(Sign(raw: signedness))
+                    let expectation = (appendix == Bit.zero) ? Signum.positive : Signum(Sign(raw: signedness))
                     C([1      ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
                     C([1, 2   ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
                     C([1, 2, 3] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
@@ -72,7 +72,7 @@ extension DataIntTests {
             }
             
             for base: [T] in (T.zero ..< 4).lazy.map({ Array(0 ..< $0) }) {
-                for bit: Bit in [0, 1] {
+                for bit in [Bit.zero, Bit.one] {
                     
                     var lhs = base
                     for _ in 0 ..< 4 {
@@ -150,7 +150,7 @@ extension DataIntTests.Extension {
             $0.isZero
         }
         
-        if  item.appendix == 0 {
+        if  item.appendix == Bit.zero {
             let other = DataIntTests.Body(item.body, test: test)
             other.signum(is: expectation)
         }

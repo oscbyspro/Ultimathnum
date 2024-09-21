@@ -28,8 +28,8 @@ final class BitCastableTests: XCTestCase {
             Test().same(T(raw: S.min),  T.msb)
             Test().same(T(raw: S.max), ~T.msb)
             
-            Test().same(T(raw: M.min),  T(repeating: 0))
-            Test().same(T(raw: M.max),  T(repeating: 1))
+            Test().same(T(raw: M.min),  T(repeating: Bit.zero))
+            Test().same(T(raw: M.max),  T(repeating: Bit.one ))
         }
 
         for type in coreSystemsIntegers {

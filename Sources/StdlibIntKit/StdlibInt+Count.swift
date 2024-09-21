@@ -36,7 +36,7 @@ extension StdlibInt {
                 if  $0.body.isEmpty {
                     return Swift.Int(IX($0.appendix.toggled()))
                 }   else {
-                    return Swift.Int($0.body.ascending(0).natural().unchecked())
+                    return Swift.Int($0.body.ascending(Bit.zero).natural().unchecked())
                 }
             }
         }

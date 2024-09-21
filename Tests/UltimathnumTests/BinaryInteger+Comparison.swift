@@ -127,23 +127,23 @@ final class BinaryIntegerTestsOnComparison: XCTestCase {
     func testGenericComparisonOfRepeatingBit() {
         func whereIs<T, U>(_ lhs: T.Type, _ rhs: U.Type) where T: BinaryInteger, U: BinaryInteger {
             always: do {
-                Test().comparison(T(repeating: 0), U(repeating: 0),  Signum.zero)
-                Test().comparison(T(repeating: 0), U(repeating: 1), -Signum(Sign(U.isSigned)))
-                Test().comparison(T(repeating: 1), U(repeating: 0),  Signum(Sign(T.isSigned)))
+                Test().comparison(T(repeating: Bit.zero), U(repeating: Bit.zero),  Signum.zero)
+                Test().comparison(T(repeating: Bit.zero), U(repeating: Bit.one ), -Signum(Sign(U.isSigned)))
+                Test().comparison(T(repeating: Bit.one ), U(repeating: Bit.zero),  Signum(Sign(T.isSigned)))
             }
             
             switch (T.isSigned, U.isSigned) {
             case (true,  true):
-                Test().comparison(T(repeating: 1), U(repeating: 1),  0 as Signum)
+                Test().comparison(T(repeating: Bit.one ), U(repeating: Bit.one ),  Signum.zero)
                 
             case (true,  false):
-                Test().comparison(T(repeating: 1), U(repeating: 1), -1 as Signum)
+                Test().comparison(T(repeating: Bit.one ), U(repeating: Bit.one ),  Signum.negative)
             
             case (false, true):
-                Test().comparison(T(repeating: 1), U(repeating: 1),  1 as Signum)
+                Test().comparison(T(repeating: Bit.one ), U(repeating: Bit.one ),  Signum.positive)
                 
             case (false, false):
-                Test().comparison(T(repeating: 1), U(repeating: 1),  T.size.compared(to: U.size))
+                Test().comparison(T(repeating: Bit.one ), U(repeating: Bit.one ),  T.size.compared(to: U.size))
             }
         }
         

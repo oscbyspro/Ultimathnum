@@ -34,7 +34,7 @@
 /// bit cast all kinds of binary integers and recover from bitwise negation.
 ///
 /// ```swift
-/// UXL(repeating: 0).toggled() == UXL(repeating: 1)
+/// UXL(repeating: Bit.zero).toggled() == UXL(repeating: Bit.one )
 /// ```
 ///
 /// - Important: Infinite values take on the order of their host type.
@@ -188,27 +188,27 @@ where
     /// The notion of infinity keeps arbitrary unsigned integers well-behaved.
     ///
     /// ```swift
-    /// UXL(repeating: 0) //  a
-    /// UXL(repeating: 1) // ~a
-    /// UXL(repeating: 0) // ~a &+ 1 == b
-    /// UXL(repeating: 1) // ~b
-    /// UXL(repeating: 0) // ~b &+ 1 == a
+    /// UXL(repeating: Bit.zero) //  a
+    /// UXL(repeating: Bit.one ) // ~a
+    /// UXL(repeating: Bit.zero) // ~a &+ 1 == b
+    /// UXL(repeating: Bit.one ) // ~b
+    /// UXL(repeating: Bit.zero) // ~b &+ 1 == a
     /// ```
     ///
     /// ```swift
-    /// UXL([~0] as [UX], repeating: 0) //  a
-    /// UXL([ 0] as [UX], repeating: 1) // ~a
-    /// UXL([ 1] as [UX], repeating: 1) // ~a &+ 1 == b
-    /// UXL([~1] as [UX], repeating: 0) // ~b
-    /// UXL([~0] as [UX], repeating: 0) // ~b &+ 1 == a
+    /// UXL([~0] as [UX], repeating: Bit.zero) //  a
+    /// UXL([ 0] as [UX], repeating: Bit.one ) // ~a
+    /// UXL([ 1] as [UX], repeating: Bit.one ) // ~a &+ 1 == b
+    /// UXL([~1] as [UX], repeating: Bit.zero) // ~b
+    /// UXL([~0] as [UX], repeating: Bit.zero) // ~b &+ 1 == a
     /// ```
     ///
     /// ```swift
-    /// UXL([ 0    ] as [UX], repeating: 1) //  a
-    /// UXL([~0    ] as [UX], repeating: 0) // ~a
-    /// UXL([ 0,  1] as [UX], repeating: 0) // ~a &+ 1 == b
-    /// UXL([~0, ~1] as [UX], repeating: 1) // ~b
-    /// UXL([ 0    ] as [UX], repeating: 1) // ~b &+ 1 == a
+    /// UXL([ 0    ] as [UX], repeating: Bit.one ) //  a
+    /// UXL([~0    ] as [UX], repeating: Bit.zero) // ~a
+    /// UXL([ 0,  1] as [UX], repeating: Bit.zero) // ~a &+ 1 == b
+    /// UXL([~0, ~1] as [UX], repeating: Bit.one ) // ~b
+    /// UXL([ 0    ] as [UX], repeating: Bit.one ) // ~b &+ 1 == a
     /// ```
     ///
     @inlinable consuming func complement(_ increment: consuming Bool) -> Fallible<Self>

@@ -24,30 +24,30 @@ extension DataIntTests {
         typealias Case = Extension<U8>
         typealias Item = Extension<U8>.Item
         
-        Case([1, 2, 3], repeating: nil).load(as: U8 .self, from: 000000, is: 0x01)
-        Case([1, 2, 3], repeating: nil).load(as: U8 .self, from: 000001, is: 0x02)
-        Case([1, 2, 3], repeating: nil).load(as: U8 .self, from: 000002, is: 0x03)
-        Case([1, 2, 3], repeating:   0).load(as: U8 .self, from: 123456, is: 0x00)
-        Case([1, 2, 3], repeating:   1).load(as: U8 .self, from: 123456, is: 0xff)
-        Case([1, 2, 3], repeating:   0).load(as: U8 .self, from: UX.max, is: 0x00)
-        Case([1, 2, 3], repeating:   1).load(as: U8 .self, from: UX.max, is: 0xff)
+        Case([1, 2, 3], repeating: nil     ).load(as: U8 .self, from: 000000, is: 0x01)
+        Case([1, 2, 3], repeating: nil     ).load(as: U8 .self, from: 000001, is: 0x02)
+        Case([1, 2, 3], repeating: nil     ).load(as: U8 .self, from: 000002, is: 0x03)
+        Case([1, 2, 3], repeating: Bit.zero).load(as: U8 .self, from: 123456, is: 0x00)
+        Case([1, 2, 3], repeating: Bit.one ).load(as: U8 .self, from: 123456, is: 0xff)
+        Case([1, 2, 3], repeating: Bit.zero).load(as: U8 .self, from: UX.max, is: 0x00)
+        Case([1, 2, 3], repeating: Bit.one ).load(as: U8 .self, from: UX.max, is: 0xff)
     }
     
     func testUpsizeElement16() {
         typealias Case = Extension<U8>
         typealias Item = Extension<U8>.Item
 
-        Case([1, 2, 3], repeating: nil).load(as: U16.self, from: 000000, is: 0x0201)
-        Case([1, 2, 3], repeating: nil).load(as: U16.self, from: 000001, is: 0x0302)
-        Case([1, 2, 3], repeating:   0).load(as: U16.self, from: 000002, is: 0x0003)
-        Case([1, 2, 3], repeating:   1).load(as: U16.self, from: 000002, is: 0xff03)
-        Case([1, 2, 3], repeating:   0).load(as: U16.self, from: 000003, is: 0x0000)
-        Case([1, 2, 3], repeating:   1).load(as: U16.self, from: 000003, is: 0xffff)
+        Case([1, 2, 3], repeating: nil     ).load(as: U16.self, from: 000000, is: 0x0201)
+        Case([1, 2, 3], repeating: nil     ).load(as: U16.self, from: 000001, is: 0x0302)
+        Case([1, 2, 3], repeating: Bit.zero).load(as: U16.self, from: 000002, is: 0x0003)
+        Case([1, 2, 3], repeating: Bit.one ).load(as: U16.self, from: 000002, is: 0xff03)
+        Case([1, 2, 3], repeating: Bit.zero).load(as: U16.self, from: 000003, is: 0x0000)
+        Case([1, 2, 3], repeating: Bit.one ).load(as: U16.self, from: 000003, is: 0xffff)
         
-        Case([1, 2, 3], repeating:   0).load(as: U16.self, from: 123456, is: 0x0000)
-        Case([1, 2, 3], repeating:   1).load(as: U16.self, from: 123456, is: 0xffff)
-        Case([1, 2, 3], repeating:   0).load(as: U16.self, from: UX.max, is: 0x0000)
-        Case([1, 2, 3], repeating:   1).load(as: U16.self, from: UX.max, is: 0xffff)
+        Case([1, 2, 3], repeating: Bit.zero).load(as: U16.self, from: 123456, is: 0x0000)
+        Case([1, 2, 3], repeating: Bit.one ).load(as: U16.self, from: 123456, is: 0xffff)
+        Case([1, 2, 3], repeating: Bit.zero).load(as: U16.self, from: UX.max, is: 0x0000)
+        Case([1, 2, 3], repeating: Bit.one ).load(as: U16.self, from: UX.max, is: 0xffff)
     }
     
     //=------------------------------------------------------------------------=
@@ -58,22 +58,22 @@ extension DataIntTests {
         typealias Case = Extension<U8>
         typealias Item = Extension<U8>.Item
         
-        Case([       ], repeating: nil).body(as: U8 .self, is:[       ] as [U8])
-        Case([1      ], repeating: nil).body(as: U8 .self, is:[1      ] as [U8])
-        Case([1, 2   ], repeating: nil).body(as: U8 .self, is:[1, 2   ] as [U8])
-        Case([1, 2, 3], repeating: nil).body(as: U8 .self, is:[1, 2, 3] as [U8])
+        Case([       ], repeating: nil     ).body(as: U8 .self, is:[       ] as [U8])
+        Case([1      ], repeating: nil     ).body(as: U8 .self, is:[1      ] as [U8])
+        Case([1, 2   ], repeating: nil     ).body(as: U8 .self, is:[1, 2   ] as [U8])
+        Case([1, 2, 3], repeating: nil     ).body(as: U8 .self, is:[1, 2, 3] as [U8])
     }
     
     func testUpsizeBody16() {
         typealias Case = Extension<U8>
         typealias Item = Extension<U8>.Item
         
-        Case([       ], repeating: nil).body(as: U16.self, is:[              ] as [U16])
-        Case([1      ], repeating:   0).body(as: U16.self, is:[0x0001        ] as [U16])
-        Case([1      ], repeating:   1).body(as: U16.self, is:[0xff01        ] as [U16])
-        Case([1, 2   ], repeating: nil).body(as: U16.self, is:[0x0201        ] as [U16])
-        Case([1, 2, 3], repeating:   0).body(as: U16.self, is:[0x0201, 0x0003] as [U16])
-        Case([1, 2, 3], repeating:   1).body(as: U16.self, is:[0x0201, 0xff03] as [U16])
+        Case([       ], repeating: nil     ).body(as: U16.self, is:[              ] as [U16])
+        Case([1      ], repeating: Bit.zero).body(as: U16.self, is:[0x0001        ] as [U16])
+        Case([1      ], repeating: Bit.one ).body(as: U16.self, is:[0xff01        ] as [U16])
+        Case([1, 2   ], repeating: nil     ).body(as: U16.self, is:[0x0201        ] as [U16])
+        Case([1, 2, 3], repeating: Bit.zero).body(as: U16.self, is:[0x0201, 0x0003] as [U16])
+        Case([1, 2, 3], repeating: Bit.one ).body(as: U16.self, is:[0x0201, 0xff03] as [U16])
     }
     
     //=------------------------------------------------------------------------=
@@ -84,7 +84,7 @@ extension DataIntTests {
         typealias Case = Extension<U8>
         typealias Item = Extension<U8>.Item
         
-        for bit: Bit in [0, 1] {
+        for bit in [Bit.zero, Bit.one] {
             let a = U8(repeating: bit), b = U8(repeating: bit.toggled())
             
             Case([a, a, a], repeating: bit).normalized(as: U8 .self, is:[       ] as [U8])
@@ -103,7 +103,7 @@ extension DataIntTests {
         typealias Case = Extension<U8>
         typealias Item = Extension<U8>.Item
         
-        for bit: Bit in [0, 1] {
+        for bit in [Bit.zero, Bit.one] {
             let a = U8 (repeating:  bit), b = U8 (repeating: bit.toggled())
             let x = U16(repeating:  bit), y = U16(repeating: bit.toggled())
             
@@ -127,26 +127,26 @@ extension DataIntTests {
         typealias Case = Extension<U8>
         typealias Item = Extension<U8>.Item
         
-        Case([1, 2, 3], repeating: nil).prefix(0, as: U8 .self, is:[                      ] as [U8])
-        Case([1, 2, 3], repeating: nil).prefix(1, as: U8 .self, is:[0x01                  ] as [U8])
-        Case([1, 2, 3], repeating: nil).prefix(2, as: U8 .self, is:[0x01, 0x02            ] as [U8])
-        Case([1, 2, 3], repeating: nil).prefix(3, as: U8 .self, is:[0x01, 0x02, 0x03      ] as [U8])
-        Case([1, 2, 3], repeating:   0).prefix(4, as: U8 .self, is:[0x01, 0x02, 0x03, 0x00] as [U8])
-        Case([1, 2, 3], repeating:   1).prefix(4, as: U8 .self, is:[0x01, 0x02, 0x03, 0xff] as [U8])
+        Case([1, 2, 3], repeating: nil     ).prefix(0, as: U8 .self, is:[                      ] as [U8])
+        Case([1, 2, 3], repeating: nil     ).prefix(1, as: U8 .self, is:[0x01                  ] as [U8])
+        Case([1, 2, 3], repeating: nil     ).prefix(2, as: U8 .self, is:[0x01, 0x02            ] as [U8])
+        Case([1, 2, 3], repeating: nil     ).prefix(3, as: U8 .self, is:[0x01, 0x02, 0x03      ] as [U8])
+        Case([1, 2, 3], repeating: Bit.zero).prefix(4, as: U8 .self, is:[0x01, 0x02, 0x03, 0x00] as [U8])
+        Case([1, 2, 3], repeating: Bit.one ).prefix(4, as: U8 .self, is:[0x01, 0x02, 0x03, 0xff] as [U8])
     }
     
     func testUpsizePrefix16() {
         typealias Case = Extension<U8>
         typealias Item = Extension<U8>.Item
         
-        Case([1, 2, 3], repeating: nil).prefix(0, as: U16.self, is:[                              ] as [U16])
-        Case([1, 2, 3], repeating: nil).prefix(1, as: U16.self, is:[0x0201                        ] as [U16])
-        Case([1, 2, 3], repeating:   0).prefix(2, as: U16.self, is:[0x0201, 0x0003                ] as [U16])
-        Case([1, 2, 3], repeating:   1).prefix(2, as: U16.self, is:[0x0201, 0xff03                ] as [U16])
-        Case([1, 2, 3], repeating:   0).prefix(3, as: U16.self, is:[0x0201, 0x0003, 0x0000        ] as [U16])
-        Case([1, 2, 3], repeating:   1).prefix(3, as: U16.self, is:[0x0201, 0xff03, 0xffff        ] as [U16])
-        Case([1, 2, 3], repeating:   0).prefix(4, as: U16.self, is:[0x0201, 0x0003, 0x0000, 0x0000] as [U16])
-        Case([1, 2, 3], repeating:   1).prefix(4, as: U16.self, is:[0x0201, 0xff03, 0xffff, 0xffff] as [U16])
+        Case([1, 2, 3], repeating: nil     ).prefix(0, as: U16.self, is:[                              ] as [U16])
+        Case([1, 2, 3], repeating: nil     ).prefix(1, as: U16.self, is:[0x0201                        ] as [U16])
+        Case([1, 2, 3], repeating: Bit.zero).prefix(2, as: U16.self, is:[0x0201, 0x0003                ] as [U16])
+        Case([1, 2, 3], repeating: Bit.one ).prefix(2, as: U16.self, is:[0x0201, 0xff03                ] as [U16])
+        Case([1, 2, 3], repeating: Bit.zero).prefix(3, as: U16.self, is:[0x0201, 0x0003, 0x0000        ] as [U16])
+        Case([1, 2, 3], repeating: Bit.one ).prefix(3, as: U16.self, is:[0x0201, 0xff03, 0xffff        ] as [U16])
+        Case([1, 2, 3], repeating: Bit.zero).prefix(4, as: U16.self, is:[0x0201, 0x0003, 0x0000, 0x0000] as [U16])
+        Case([1, 2, 3], repeating: Bit.one ).prefix(4, as: U16.self, is:[0x0201, 0xff03, 0xffff, 0xffff] as [U16])
     }
 }
 

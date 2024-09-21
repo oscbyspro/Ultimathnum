@@ -36,12 +36,12 @@
     
     /// A value equal to `0`.
     @inlinable public static var zero: Self {
-        Self(raw: IX(repeating: 0))
+        Self(raw: IX(repeating: Bit.zero))
     }
     
     /// A value equal to `log2(UXL.max + 1)`
     @inlinable public static var infinity: Self {
-        Self(raw: IX(repeating: 1))
+        Self(raw: IX(repeating: Bit.one))
     }
     
     //=------------------------------------------------------------------------=

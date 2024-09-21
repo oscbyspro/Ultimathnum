@@ -30,8 +30,8 @@ final class BinaryIntegerTestsOnElements: XCTestCase {
                 
                 Test().elements(~1 as T, [T.Element.Magnitude(load: ~1 as T)] + [T.Element.Magnitude](repeating: ~0, count: count - 1), Bit(T.isSigned))
                 Test().elements(~0 as T, [T.Element.Magnitude(load: ~0 as T)] + [T.Element.Magnitude](repeating: ~0, count: count - 1), Bit(T.isSigned))
-                Test().elements( 0 as T, [T.Element.Magnitude(load:  0 as T)] + [T.Element.Magnitude](repeating:  0, count: count - 1), 000000000000000)
-                Test().elements( 1 as T, [T.Element.Magnitude(load:  1 as T)] + [T.Element.Magnitude](repeating:  0, count: count - 1), 000000000000000)
+                Test().elements( 0 as T, [T.Element.Magnitude(load:  0 as T)] + [T.Element.Magnitude](repeating:  0, count: count - 1), Bit.zero)
+                Test().elements( 1 as T, [T.Element.Magnitude(load:  1 as T)] + [T.Element.Magnitude](repeating:  0, count: count - 1), Bit.zero)
             }
             
             element: do {
@@ -146,7 +146,7 @@ final class BinaryIntegerTestsOnElements: XCTestCase {
                     Test().none(T.arbitrary(uninitialized: count) { _ in Void() })
                 }
                 
-                for appendix: Bit in [0, 1] {
+                for appendix in [Bit.zero, Bit.one] {
                     Test().none(T.arbitrary(uninitialized: count, repeating: appendix) { _ in 000000 })
                     Test().none(T.arbitrary(uninitialized: count, repeating: appendix) { _ in Void() })
                 }
@@ -191,7 +191,7 @@ final class BinaryIntegerTestsOnElements: XCTestCase {
                         Test().same(result1, expectation, "body: \(source[..<end]), bit: default [1]")
                     }
                     
-                    for bit: Bit in [0, 1] {
+                    for bit in [Bit.zero, Bit.one] {
                         let expectation = source[..<end].withUnsafeBufferPointer {
                             T.isArbitrary ? T(load: DataInt($0, repeating: bit)!) : nil
                         }

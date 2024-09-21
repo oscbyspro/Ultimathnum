@@ -86,7 +86,7 @@ extension Test {
             if  element.appendix == appendix {
                 same(Integer(load:  element), integer, "init(load:) [0]")
             }   else {
-                let mask: Integer = Integer(repeating: 1) << IX(size: Integer.Element.self)
+                let mask: Integer = Integer(repeating: Bit.one) << IX(size: Integer.Element.self)
                 same(Integer(load:  element) ^ mask, integer, "init(load:) [1]")
             }
         }

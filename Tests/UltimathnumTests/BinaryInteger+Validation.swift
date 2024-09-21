@@ -66,7 +66,7 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
             //=----------------------------------=
             if  U.size < T.size || (U.size == T.size && (U.isSigned, T.isSigned) != (false, true)) {
                 let max: U = Esque<U>.max
-                let maxAsOther: T = T(repeating: 1) << T(load: UX(size: U.self)! - UX(Bit(U.isSigned))) ^ T(repeating: 1)
+                let maxAsOther: T = T(repeating: Bit.one) << T(load: UX(size: U.self)! - UX(Bit(U.isSigned))) ^ T(repeating: Bit.one)
                 
                 Test().exactly(maxAsOther &- 2, Fallible(max &- 2))
                 Test().exactly(maxAsOther &- 1, Fallible(max &- 1))
@@ -74,7 +74,7 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
                 Test().exactly(maxAsOther &+ 1, Fallible(max &+ 1, error: U.size < T.size || (U.isSigned != T.isSigned)))
                 Test().exactly(maxAsOther &+ 2, Fallible(max &+ 2, error: U.size < T.size || (U.isSigned != T.isSigned)))
             }   else {
-                Test().exactly(Esque<U>.max, Fallible(T(repeating: 1), error: true))
+                Test().exactly(Esque<U>.max, Fallible(T(repeating: Bit.one), error: true))
             }
         }
         
@@ -85,17 +85,17 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
             //=----------------------------------=
             always: do {
                 let load = U.zero
-                Test().exactly(T(repeating: 0) - 2, Fallible(load &- 2, error: !U.isSigned))
-                Test().exactly(T(repeating: 0) - 1, Fallible(load &- 1, error: !U.isSigned))
-                Test().exactly(T(repeating: 0),     Fallible(load     ))
-                Test().exactly(T(repeating: 0) + 1, Fallible(load &+ 1))
-                Test().exactly(T(repeating: 0) + 2, Fallible(load &+ 2))
+                Test().exactly(T(repeating: Bit.zero) - 2, Fallible(load &- 2, error: !U.isSigned))
+                Test().exactly(T(repeating: Bit.zero) - 1, Fallible(load &- 1, error: !U.isSigned))
+                Test().exactly(T(repeating: Bit.zero),     Fallible(load     ))
+                Test().exactly(T(repeating: Bit.zero) + 1, Fallible(load &+ 1))
+                Test().exactly(T(repeating: Bit.zero) + 2, Fallible(load &+ 2))
             }
             //=----------------------------------=
             // path: about U.min
             //=----------------------------------=
             always: do {
-                let load = U(repeating: 1) << (size - 1)
+                let load = U(repeating: Bit.one) << (size - 1)
                 Test().exactly(T.min,      Fallible(load,      error: U.size < T.size || !U.isSigned))
                 Test().exactly(T.min &+ 1, Fallible(load &+ 1, error: U.size < T.size || !U.isSigned))
                 Test().exactly(T.min &+ 2, Fallible(load &+ 2, error: U.size < T.size || !U.isSigned))
@@ -104,7 +104,7 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
             // path: about U.max
             //=----------------------------------=
             always: do {
-                let load = U(repeating: 1) << (size - 1) ^ U(repeating: 1)
+                let load = U(repeating: Bit.one) << (size - 1) ^ U(repeating: Bit.one)
                 Test().exactly(T.max,      Fallible(load,      error: U.size < T.size))
                 Test().exactly(T.max &- 1, Fallible(load &- 1, error: U.size < T.size))
                 Test().exactly(T.max &- 2, Fallible(load &- 2, error: U.size < T.size))
@@ -114,7 +114,7 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
             //=----------------------------------=
             if  U.isSigned, U.size <= T.size {
                 let min: U = Esque<U>.min
-                let minAsOther: T = T(repeating: 1) << T(load: UX(size: U.self)! - 1)
+                let minAsOther: T = T(repeating: Bit.one) << T(load: UX(size: U.self)! - 1)
                 
                 Test().exactly(minAsOther &- 2, Fallible(min &- 2, error: U.size < T.size))
                 Test().exactly(minAsOther &- 1, Fallible(min &- 1, error: U.size < T.size))
@@ -131,18 +131,18 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
             //=----------------------------------=
             always: do {
                 let load = U.zero
-                Test().exactly(T(repeating: 0),     Fallible(load    ))
-                Test().exactly(T(repeating: 0) + 1, Fallible(load + 1))
-                Test().exactly(T(repeating: 0) + 2, Fallible(load + 2))
+                Test().exactly(T(repeating: Bit.zero),     Fallible(load    ))
+                Test().exactly(T(repeating: Bit.zero) + 1, Fallible(load + 1))
+                Test().exactly(T(repeating: Bit.zero) + 2, Fallible(load + 2))
             }
             //=----------------------------------=
             // path: about U.max
             //=----------------------------------=
             always: do {
-                let load = U(repeating: 1) << size ^ U(repeating: 1)
-                Test().exactly(T(repeating: 1) - 2, Fallible(load - 2, error: U.size < T.size || (U.isSigned && U.size == T.size)))
-                Test().exactly(T(repeating: 1) - 1, Fallible(load - 1, error: U.size < T.size || (U.isSigned && U.size == T.size)))
-                Test().exactly(T(repeating: 1),     Fallible(load,     error: U.size < T.size || (U.isSigned && U.size == T.size)))
+                let load = U(repeating: Bit.one) << size ^ U(repeating: Bit.one)
+                Test().exactly(T(repeating: Bit.one) - 2, Fallible(load - 2, error: U.size < T.size || (U.isSigned && U.size == T.size)))
+                Test().exactly(T(repeating: Bit.one) - 1, Fallible(load - 1, error: U.size < T.size || (U.isSigned && U.size == T.size)))
+                Test().exactly(T(repeating: Bit.one),     Fallible(load,     error: U.size < T.size || (U.isSigned && U.size == T.size)))
             }
             //=----------------------------------=
             // path: about U.msb
@@ -193,7 +193,7 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
             var rhs = U.zero
             
             for ones in 0 ..< IX(size: T.self) {
-                Test().ascending(lhs, 1, Count(ones))
+                Test().ascending(lhs, Bit.one, Count(ones))
                 Test().exactly(lhs, Fallible(rhs, error: U.isSigned ? U.size <= Count(ones) : U.size < Count(ones)))
                 
                 lhs <<= 1
@@ -228,15 +228,15 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
     func testExactlySystemsIntegerRainOf1s() {
         /// Tests the sequence in reverse order because it's easier.
         func whereIs<T, U>(source: T.Type, destination: U.Type) where T: SystemsInteger, U: BinaryInteger {
-            var mask = U(repeating: 1)
+            var mask = U(repeating: Bit.one)
             
             if !T.isSigned {
                 mask = mask.up(T.size).toggled()
             }
             
             always: do {
-                var lhs = T(repeating: 1)
-                var rhs = U(repeating: 1)
+                var lhs = T(repeating: Bit.one)
+                var rhs = U(repeating: Bit.one)
                 
                 for zeros in 0 ..< IX(size: T.self) {
                     let error = switch (U.isSigned, T.isSigned) {
@@ -246,7 +246,7 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
                     case (false, false): U.size <  T.size
                     }
                     
-                    Test().ascending(lhs, 0, Count(zeros))
+                    Test().ascending(lhs, Bit.zero, Count(zeros))
                     Test().exactly(lhs, Fallible(rhs & mask, error: error))
                     lhs <<= 1
                     rhs <<= 1
@@ -280,7 +280,7 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
         func whereIs<T, U>(source: T.Type, destination: U.Type) where T: SystemsInteger, U: BinaryInteger {
             always: do {
                 let patterns: [IX] = [~1, ~3, ~7, ~15]
-                var mask = U(repeating: 1)
+                var mask = U(repeating: Bit.one)
                 
                 if !T.isSigned {
                     mask = mask.up(T.size).toggled()
@@ -307,11 +307,11 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
                         rhs  |= 1
                     }
                     
-                    Test().same(IX(size: T.self), ones + zeros)
-                    Test().descending(lhs, 0, Count(zeros))
+                    Test().same(IX(size:    T.self), ones + zeros)
+                    Test().descending(lhs, Bit.zero, Count(zeros))
                     
                     last: do {
-                        let value = rhs & U(load: T.Magnitude(repeating: 1))
+                        let value = rhs & U(load: T.Magnitude(repeating: Bit.one))
                         let error = U.isSigned ? U.size <= Count(ones) : U.size < Count(ones)
                         Test().exactly(lhs, Fallible(value, error: error))
                     }
@@ -345,7 +345,7 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
         func whereIs<T, U>(source: T.Type, destination: U.Type) where T: SystemsInteger, U: BinaryInteger {
             always: do {
                 let patterns: [UX] = [1, 3, 7, 15]
-                let mask = U(load: T.Magnitude(repeating: 1))
+                let mask = U(load: T.Magnitude(repeating: Bit.one))
                 
                 for ones in 1 ... IX(patterns.count) {
                     var zeros = IX()
@@ -360,8 +360,8 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
                         rhs  <<= 1
                     }
                     
-                    Test().same(IX(size: T.self), zeros + ones)
-                    Test().descending(lhs, 1, Count(ones))
+                    Test().same(IX(size:   T.self), zeros + ones)
+                    Test().descending(lhs, Bit.one, Count( ones))
                     
                     last: do {
                         let value = T.isSigned ? rhs ^ mask.toggled() : rhs & mask

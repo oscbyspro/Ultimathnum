@@ -76,7 +76,7 @@ extension DataIntTests {
             typealias Case = Extension<T>
             typealias Item = Extension<T>.Item
             
-            for bit: Bit in [0, 1] {
+            for bit in [Bit.zero, Bit.one] {
                 let a = T(repeating: bit), b = T(repeating: bit.toggled())
                 
                 Case([a, a, a], repeating: bit).normalized(is:[       ] as [T])
@@ -101,12 +101,12 @@ extension DataIntTests {
             typealias Case = Extension<T>
             typealias Item = Extension<T>.Item
             
-            Case([1, 2, 3], repeating: nil).prefix(0, is:[             ] as [T])
-            Case([1, 2, 3], repeating: nil).prefix(1, is:[1            ] as [T])
-            Case([1, 2, 3], repeating: nil).prefix(2, is:[1, 2         ] as [T])
-            Case([1, 2, 3], repeating: nil).prefix(3, is:[1, 2, 3      ] as [T])
-            Case([1, 2, 3], repeating:   0).prefix(4, is:[1, 2, 3, .min] as [T])
-            Case([1, 2, 3], repeating:   1).prefix(4, is:[1, 2, 3, .max] as [T])
+            Case([1, 2, 3], repeating: nil     ).prefix(0, is:[             ] as [T])
+            Case([1, 2, 3], repeating: nil     ).prefix(1, is:[1            ] as [T])
+            Case([1, 2, 3], repeating: nil     ).prefix(2, is:[1, 2         ] as [T])
+            Case([1, 2, 3], repeating: nil     ).prefix(3, is:[1, 2, 3      ] as [T])
+            Case([1, 2, 3], repeating: Bit.zero).prefix(4, is:[1, 2, 3, .min] as [T])
+            Case([1, 2, 3], repeating: Bit.one ).prefix(4, is:[1, 2, 3, .max] as [T])
         }
         
         for type in coreSystemsIntegersWhereIsUnsigned {
@@ -197,7 +197,7 @@ extension DataIntTests.Extension {
             Self(Item(expectation, item.appendix), test: test).expect(true, read: \.isNormal, write: \.isNormal)
         }
         
-        if  item.appendix == 0 {
+        if  item.appendix == Bit.zero {
             DataIntTests.Body(item.body, test: test).normalized(is: expectation)
         }
     }

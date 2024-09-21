@@ -49,7 +49,7 @@ final class BinaryIntegerTestsOnDivision: XCTestCase {
                 
                 Test().division(msb, ~3 as T, (msb >> 2).complement(), 0 as T)
                 Test().division(msb, ~1 as T, (msb >> 1).complement(), 0 as T)
-                Test().division(msb, ~0 as T, (msb >> 0).complement(), 0 as T, msb.ascending(0) == Count(raw: size - 1))
+                Test().division(msb, ~0 as T, (msb >> 0).complement(), 0 as T, msb.ascending(Bit.zero) == Count(raw: size - 1))
                 Test().division(msb,  0 as T, (nil))
                 Test().division(msb,  1 as T, (msb),          0 as T)
                 Test().division(msb,  2 as T, (msb >> 1),     0 as T)
@@ -544,8 +544,8 @@ extension BinaryIntegerTestsOnDivision {
     func testDivisionLongCodeCoverageAsUnsignedInteger() {
         func whereIsBinaryInteger<T>(_ type: T.Type) where T: UnsignedInteger {
             //=----------------------------------=
-            let size = (Esque<T>.shl + 1)
-            let ones = (T(repeating: 001) << size).toggled()
+            let size = (Esque<T>.shl + 00001)
+            let ones = (T(repeating: Bit.one) << size).toggled()
             //=----------------------------------=
             var dividend: T, divisor: T, quotient: T, remainder: T
             //=----------------------------------=

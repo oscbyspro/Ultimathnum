@@ -111,7 +111,7 @@ extension InfiniInt where Self: UnsignedInteger {
         let quotient = Self.arbitrary(uninitialized: capacity, repeating: .zero) { quotient -> Void in
             self.withUnsafeMutableBinaryIntegerBody { lhs in
                 divisor.storage.withUnsafeMutableBinaryIntegerBody { rhs in
-                    let shift = IX(raw: rhs[unchecked: rhs.count - 1].descending(0))
+                    let shift = IX(raw: rhs[unchecked: rhs.count - 1].descending(Bit.zero))
                     Swift.assert(Count(raw: shift) < Element.size)
                     
                     if !shift.isZero {

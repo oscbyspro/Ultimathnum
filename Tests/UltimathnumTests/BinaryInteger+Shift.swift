@@ -25,8 +25,8 @@ final class BinaryIntegerTestsOnShifts: XCTestCase {
     func testUpshiftRepeatingBitByGenericDistancesAsArbitrayInteger() {
         func whereIs<A, B>(value: A.Type, distance: B.Type) where A: ArbitraryInteger, B: BinaryInteger {
             //=----------------------------------=
-            let a0 = A(repeating: 0)
-            let a1 = A(repeating: 1)
+            let a0 = A(repeating: Bit.zero)
+            let a1 = A(repeating: Bit.one )
             //=----------------------------------=
             for distance: B in (-4 as IX ..< 4).lazy.map(B.init(load:))  {
                 Test().upshift(a0, distance, a0)
@@ -73,8 +73,8 @@ final class BinaryIntegerTestsOnShifts: XCTestCase {
     func testUpshiftRepeatingBitByGenericDistancesAsSystemsInteger() {
         func whereIs<A, B>(value: A.Type, distance: B.Type) where A: SystemsInteger, B: BinaryInteger {
             //=----------------------------------=
-            let a0 = A(repeating: 0)
-            let a1 = A(repeating: 1)
+            let a0 = A(repeating: Bit.zero)
+            let a1 = A(repeating: Bit.one )
             //=----------------------------------=
             for distance: B in (-4 as IX ..< 4).lazy.map(B.init(load:))  {
                 Test().upshift(a0, distance, a0)
@@ -120,8 +120,8 @@ final class BinaryIntegerTestsOnShifts: XCTestCase {
     func testDownshiftRepeatingBitByGenericDistancesAsArbitraryInteger() {
         func whereIs<A, B>(value: A.Type, distance: B.Type) where A: ArbitraryInteger, B: BinaryInteger {
             //=----------------------------------=
-            let a0 = A(repeating: 0)
-            let a1 = A(repeating: 1)
+            let a0 = A(repeating: Bit.zero)
+            let a1 = A(repeating: Bit.one )
             //=----------------------------------=
             for distance: B in (-4 as IX ..< 4).lazy.map(B.init(load:))  {
                 Test().downshift(a0, distance, a0)
@@ -168,8 +168,8 @@ final class BinaryIntegerTestsOnShifts: XCTestCase {
     func testDownshiftRepeatingBitByGenericDistancesAsSystemsInteger() {
         func whereIs<A, B>(value: A.Type, distance: B.Type) where A: SystemsInteger, B: BinaryInteger {
             //=----------------------------------=
-            let a0 = A(repeating: 0)
-            let a1 = A(repeating: 1)
+            let a0 = A(repeating: Bit.zero)
+            let a1 = A(repeating: Bit.one )
             //=----------------------------------=
             for distance: B in (-4 as IX ..< 4).lazy.map(B.init(load:))  {
                 Test().downshift(a0, distance, a0)
@@ -223,13 +223,13 @@ final class BinaryIntegerTestsOnShifts: XCTestCase {
                     let distance = B(IX(size: A.self)) + increment
                     
                     always: do {
-                        Test()  .upshift(base, distance, A(repeating: 0))
+                        Test()  .upshift(base, distance, A(repeating: Bit.zero))
                         Test().downshift(base, distance, A(repeating: base.appendix))
                     }
                     
                     if  let distance = distance.negated().optional() {
                         Test()  .upshift(base, distance, A(repeating: base.appendix))
-                        Test().downshift(base, distance, A(repeating: 0))
+                        Test().downshift(base, distance, A(repeating: Bit.zero))
                     }
                 }
             }
@@ -249,13 +249,13 @@ final class BinaryIntegerTestsOnShifts: XCTestCase {
                     let distance = B(IX.max) + increment
                     
                     always: do {
-                        Test()  .upshift(base, distance, A(repeating: 0))
+                        Test()  .upshift(base, distance, A(repeating: Bit.zero))
                         Test().downshift(base, distance, A(repeating: base.appendix))
                     }
                     
                     if  let distance = distance.negated().optional() {
                         Test()  .upshift(base, distance, A(repeating: base.appendix))
-                        Test().downshift(base, distance, A(repeating: 0))
+                        Test().downshift(base, distance, A(repeating: Bit.zero))
                     }
                 }
             }

@@ -218,17 +218,17 @@ extension BinaryIntegerTestsOnExponentiation {
                     let coefficient = T(load: coefficient)
                     
                     Test().same(
-                        T(1 as Bit).power(exponent, coefficient: coefficient),
+                        T(Bit.one).power(exponent, coefficient: coefficient),
                         Fallible(coefficient)
                     )
                     
                     Test().same(
-                        T(repeating: 0 as Bit).power(exponent, coefficient: coefficient),
+                        T(repeating: Bit.zero).power(exponent, coefficient: coefficient),
                         Fallible(exponent.isZero ? coefficient : T.zero)
                     )
 
                     Test().same(
-                        T(repeating: 1 as Bit).power(exponent, coefficient: coefficient),
+                        T(repeating: Bit.one ).power(exponent, coefficient: coefficient),
                         coefficient.times(Bool(exponent.lsb) ? ~0 : 1).veto(
                             !T.isSigned && exponent >= 2 && !coefficient.isZero
                         )

@@ -25,19 +25,19 @@ extension DataIntTests {
             typealias Case = Extension<T>
             typealias Item = Extension<T>.Item
             
-            for bit: Bit in [0, 1] {
-                for index: UX in [~2, ~1, ~0, 1, 2, 3] {
+            for bit in [Bit.zero, Bit.one] {
+                for index in [~2, ~1, ~0, 1, 2, 3] as [UX] {
                     Case([], repeating: bit).element(at: index, is: T(repeating: bit))
                 }
             }
             
-            Case([1, 2, 3], repeating: nil).element(at: 000000, is:  0x01)
-            Case([1, 2, 3], repeating: nil).element(at: 000001, is:  0x02)
-            Case([1, 2, 3], repeating: nil).element(at: 000002, is:  0x03)
-            Case([1, 2, 3], repeating:   0).element(at: 123456, is:  0x00)
-            Case([1, 2, 3], repeating:   1).element(at: 123456, is: ~0x00)
-            Case([1, 2, 3], repeating:   0).element(at: UX.max, is:  0x00)
-            Case([1, 2, 3], repeating:   1).element(at: UX.max, is: ~0x00)
+            Case([1, 2, 3], repeating: nil     ).element(at: 000000, is:  0x01)
+            Case([1, 2, 3], repeating: nil     ).element(at: 000001, is:  0x02)
+            Case([1, 2, 3], repeating: nil     ).element(at: 000002, is:  0x03)
+            Case([1, 2, 3], repeating: Bit.zero).element(at: 123456, is:  0x00)
+            Case([1, 2, 3], repeating: Bit.one ).element(at: 123456, is: ~0x00)
+            Case([1, 2, 3], repeating: Bit.zero).element(at: UX.max, is:  0x00)
+            Case([1, 2, 3], repeating: Bit.one ).element(at: UX.max, is: ~0x00)
         }
         
         for type in coreSystemsIntegersWhereIsUnsigned {
@@ -82,14 +82,14 @@ extension DataIntTests {
                         Test().same(Array(body.bytes ()), Array(UnsafeRawBufferPointer(prefix)))
                     }
                     
-                    for bit: Bit in [0, 1] {
+                    for bit in [Bit.zero, Bit.one] {
                         let elements = DataInt(start, count: count, repeating: bit)
                         Test().same(elements.body.start, start)
                         Test().same(elements.body.count, count)
                         Test().same(elements.appendix, ((bit)))
                     }
                     
-                    for bit: Bit in [0, 1] {
+                    for bit in [Bit.zero, Bit.one] {
                         let elements = MutableDataInt(start, count: count, repeating: bit)
                         Test().same(elements.body.start, start)
                         Test().same(elements.body.count, count)

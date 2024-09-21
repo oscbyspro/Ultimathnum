@@ -23,32 +23,32 @@ extension InfiniIntTests {
     
     func testMakeBody() {
         func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
-            Test().elements(~1 as T, [~1] as [T.Element.Magnitude], 1 as Bit)
-            Test().elements(~0 as T, [  ] as [T.Element.Magnitude], 1 as Bit)
-            Test().elements( 0 as T, [  ] as [T.Element.Magnitude], 0 as Bit)
-            Test().elements( 1 as T, [ 1] as [T.Element.Magnitude], 0 as Bit)
+            Test().elements(~1 as T, [~1] as [T.Element.Magnitude], Bit.one )
+            Test().elements(~0 as T, [  ] as [T.Element.Magnitude], Bit.one )
+            Test().elements( 0 as T, [  ] as [T.Element.Magnitude], Bit.zero)
+            Test().elements( 1 as T, [ 1] as [T.Element.Magnitude], Bit.zero)
             
             always: do {
-                var instance = T(repeating: 0)
+                var instance = T(repeating: Bit.zero)
                 var body = Array<T.Element.Magnitude>()
                 
                 for element: T.Element.Magnitude in (0 ..< 12).lazy.map(~) {
                     instance <<= T(load: IX(size: T.Element.Magnitude.self))
                     instance  |= T(load: element)
                     body.insert(element, at: Int.zero)
-                    Test().elements(instance, body, 0)
+                    Test().elements(instance, body, Bit.zero)
                 }
             }
 
             always: do {
-                var instance = T(repeating: 1)
+                var instance = T(repeating: Bit.one)
                 var body = Array<T.Element.Magnitude>()
                 
                 for element: T.Element.Magnitude in (0 ..< 12) {
                     instance <<= T(load: IX(size: T.Element.Magnitude.self))
                     instance  |= T(load: element)
                     body.insert(element, at: Int.zero)
-                    Test().elements(instance, body, 1)
+                    Test().elements(instance, body, Bit.one)
                 }
             }
         }

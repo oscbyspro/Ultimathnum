@@ -28,13 +28,13 @@ extension CoreIntTests {
             Test().upshift( 1 as T,  3 as T,  8 as T)
             
             Test().upshift( 1 as T,  T .min,  T(           Bit(!T.isSigned)))
-            Test().upshift(~0 as T,  T .min,  T(repeating: 000000001 as Bit))
-            Test().upshift( 1 as T,  T .max,  T(repeating: 000000000 as Bit))
-            Test().upshift(~0 as T,  T .max,  T(repeating: 000000000 as Bit))
+            Test().upshift(~0 as T,  T .min,  T(repeating: Bit.one ))
+            Test().upshift( 1 as T,  T .max,  T(repeating: Bit.zero))
+            Test().upshift(~0 as T,  T .max,  T(repeating: Bit.zero))
             
-            Test().upshift( 1 as T, ~T .msb,  T(repeating: 000000000 as Bit))
-            Test().upshift(~0 as T, ~T .msb,  T(repeating: 000000000 as Bit))
-            Test().upshift( 1 as T,  T .msb,  T(repeating: 000000000 as Bit))
+            Test().upshift( 1 as T, ~T .msb,  T(repeating: Bit.zero))
+            Test().upshift(~0 as T, ~T .msb,  T(repeating: Bit.zero))
+            Test().upshift( 1 as T,  T .msb,  T(repeating: Bit.zero))
             Test().upshift(~0 as T,  T .msb,  T(repeating: Bit( T.isSigned)))
         }
         
@@ -52,13 +52,13 @@ extension CoreIntTests {
             
             Test().downshift( 1 as T,  T .min,  T(           Bit(!T.isSigned)))
             Test().downshift(~0 as T,  T .min,  T(repeating: Bit(!T.isSigned)))
-            Test().downshift( 1 as T,  T .max,  T(repeating: 000000000 as Bit))
+            Test().downshift( 1 as T,  T .max,  T(repeating: Bit.zero))
             Test().downshift(~0 as T,  T .max,  T(repeating: Bit( T.isSigned)))
             
-            Test().downshift( 1 as T, ~T .msb,  T(repeating: 000000000 as Bit))
+            Test().downshift( 1 as T, ~T .msb,  T(repeating: Bit.zero))
             Test().downshift(~0 as T, ~T .msb,  T(repeating: Bit( T.isSigned)))
-            Test().downshift( 1 as T,  T .msb,  T(repeating: 000000000 as Bit))
-            Test().downshift(~0 as T,  T .msb,  T(repeating: 000000000 as Bit))
+            Test().downshift( 1 as T,  T .msb,  T(repeating: Bit.zero))
+            Test().downshift(~0 as T,  T .msb,  T(repeating: Bit.zero))
         }
         
         for type in Self.types {

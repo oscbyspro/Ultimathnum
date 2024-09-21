@@ -28,10 +28,10 @@ final class SignednessTests: XCTestCase {
     }
     
     func testBitCast() {
-        Test().same(Bit(raw: T.unsigned), 0 as Bit)
-        Test().same(Bit(raw: T  .signed), 1 as Bit)
-        Test().same(T  (raw: 0 as Bit), T.unsigned)
-        Test().same(T  (raw: 1 as Bit), T  .signed)
+        Test().same(Bit(raw: T.unsigned), Bit.zero)
+        Test().same(Bit(raw: T  .signed), Bit.one )
+        Test().same(T  (raw: Bit.zero), T.unsigned)
+        Test().same(T  (raw: Bit.one ), T  .signed)
     }
     
     func testComparison() {

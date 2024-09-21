@@ -107,21 +107,21 @@ final class DataIntTests: XCTestCase {
             
             var copy = item
             copy.body.withUnsafeBufferPointer {
-                if  self.item.appendix != 0 {
-                    var source = DataInt($0, repeating: 1)!
+                if  self.item.appendix != Bit.zero {
+                    var source = DataInt($0, repeating: Bit.one)!
                     test.same(read(&source), expectation)
                 }
                 
-                if  self.item.appendix != 1 {
-                    var source = DataInt($0, repeating: 0)!
+                if  self.item.appendix != Bit.one {
+                    var source = DataInt($0, repeating: Bit.zero)!
                     test.same(read(&source), expectation)
                 }
             }
             
             copy = self.item
             copy.body.withUnsafeMutableBufferPointer {
-                if  self.item.appendix != 0 {
-                    var source = MutableDataInt($0, repeating: 1)!
+                if  self.item.appendix != Bit.zero {
+                    var source = MutableDataInt($0, repeating: Bit.one)!
                     test.same(write(&source), expectation)
                 }
             }
@@ -129,8 +129,8 @@ final class DataIntTests: XCTestCase {
             
             copy = self.item
             copy.body.withUnsafeMutableBufferPointer {
-                if  self.item.appendix != 1 {
-                    var source = MutableDataInt($0, repeating: 0)!
+                if  self.item.appendix != Bit.one {
+                    var source = MutableDataInt($0, repeating: Bit.zero)!
                     test.same(write(&source), expectation)
                 }
             }

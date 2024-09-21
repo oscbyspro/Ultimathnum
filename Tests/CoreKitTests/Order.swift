@@ -15,44 +15,42 @@ import TestKit
 //*============================================================================*
 
 final class OrderTests: XCTestCase {
-    
-    typealias T = Order
-    
+        
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     func testInit() {
-        Test().same(T(descending: false), T .ascending)
-        Test().same(T(descending:  true), T.descending)
+        Test().same(Order(descending: false), Order .ascending)
+        Test().same(Order(descending:  true), Order.descending)
     }
     
     func testBitCast() {
-        Test().same(Bit(raw: T .ascending), 0 as Bit)
-        Test().same(Bit(raw: T.descending), 1 as Bit)
-        Test().same(T  (raw: 0 as Bit), T .ascending)
-        Test().same(T  (raw: 1 as Bit), T.descending)
+        Test().same(Bit(raw: Order .ascending), Bit.zero)
+        Test().same(Bit(raw: Order.descending), Bit.one )
+        Test().same(Order(raw: Bit.zero), Order .ascending)
+        Test().same(Order(raw: Bit.one ), Order.descending)
     }
     
     func testComparison() {
-        Test()   .same(T .ascending, T .ascending)
-        Test().nonsame(T .ascending, T.descending)
-        Test().nonsame(T.descending, T .ascending)
-        Test()   .same(T.descending, T.descending)
+        Test()   .same(Order .ascending, Order .ascending)
+        Test().nonsame(Order .ascending, Order.descending)
+        Test().nonsame(Order.descending, Order .ascending)
+        Test()   .same(Order.descending, Order.descending)
     }
     
     func testEndianess() {
         #if _endian(little)
-        Test()   .same(T.endianess, T .ascending)
-        Test().nonsame(T.endianess, T.descending)
+        Test()   .same(Order.endianess, Order .ascending)
+        Test().nonsame(Order.endianess, Order.descending)
         #elseif _endian(big)
-        Test().nonsame(T.endianess, T .ascending)
-        Test()   .same(T.endianess, T.descending)
+        Test().nonsame(Order.endianess, Order .ascending)
+        Test()   .same(Order.endianess, Order.descending)
         #endif
     }
     
     func testReversed() {
-        Test().same(T .ascending.reversed(), T.descending)
-        Test().same(T.descending.reversed(), T .ascending)
+        Test().same(Order .ascending.reversed(), Order.descending)
+        Test().same(Order.descending.reversed(), Order .ascending)
     }
 }

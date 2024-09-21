@@ -26,10 +26,10 @@ extension DoubleIntTests {
             typealias T = DoubleInt<B>
             typealias M = DoubleInt<B>.Magnitude
             
-            Test().same(T(low:  0, high:  0).lsb, 0 as Bit)
-            Test().same(T(low:  0, high: ~0).lsb, 0 as Bit)
-            Test().same(T(low: ~0, high:  0).lsb, 1 as Bit)
-            Test().same(T(low: ~0, high: ~0).lsb, 1 as Bit)
+            Test().same(T(low:  0, high:  0).lsb, Bit.zero)
+            Test().same(T(low:  0, high: ~0).lsb, Bit.zero)
+            Test().same(T(low: ~0, high:  0).lsb, Bit.one )
+            Test().same(T(low: ~0, high: ~0).lsb, Bit.one )
         }
         
         for base in Self.bases {

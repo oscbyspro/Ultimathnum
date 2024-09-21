@@ -55,9 +55,9 @@ final class BinaryIntegerTestsOnMetadata: XCTestCase {
             Test().same(T.size, T.Magnitude.size, "T.size == T.Magnitude.size")
             Test().same(T.size, T.Signitude.size, "T.size == T.Signitude.size")
             
-            for value: T in [~3, ~2, ~1, ~0, 0, 1, 2, 3] {
-                let x0 = IX(raw: value.count(0))
-                let x1 = IX(raw: value.count(1))
+            for value: T in [~3, ~2, ~1, ~0, 0, 1, 2, 3] as [T] {
+                let x0 = IX(raw: value.count(Bit.zero))
+                let x1 = IX(raw: value.count(Bit.one ))
                 Test().same(Count(raw: x0 + x1), T.size, "size == 0s + 1s [\(value), \(x0), \(x1)]")
             }
             
@@ -70,7 +70,7 @@ final class BinaryIntegerTestsOnMetadata: XCTestCase {
         
         func whereIsSystemsInteger<T>(_ type: T.Type) where T: SystemsInteger {
             Test().same(
-                IX(size: T.self).count(1),
+                IX(size: T.self).count(Bit.one),
                 Count(1),
                 "\(T.self).size must be a power of 2"
             )

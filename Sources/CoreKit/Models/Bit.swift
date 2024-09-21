@@ -11,7 +11,13 @@
 // MARK: * Bit
 //*============================================================================*
 
-@frozen public struct Bit: BitCastable, BitOperable, Comparable, Hashable, ExpressibleByIntegerLiteral, Sendable {
+/// A binary unit equal to `0` or a `1`.
+///
+/// ### Development
+///
+/// - Note: It must not conform to `ExpressibleByIntegerLiteral` (#93).
+///
+@frozen public struct Bit: BitCastable, BitOperable, Comparable, Hashable, Sendable {
     
     public typealias BitPattern = Bool
     
@@ -23,14 +29,13 @@
     ///
     /// - Note: A bit can only bet set to `0` or `1`.
     ///
-    public static let zero = 0 as Self
-    
+    public static let zero = Self(false)
     
     /// A bit set to `1`.
     ///
     /// - Note: A bit can only bet set to `0` or `1`.
     ///
-    public static let one  = 1 as Self
+    public static let one  = Self(true)
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -48,16 +53,6 @@
     
     @inlinable public init(_ source: Bool) {
         self.init(raw: source)
-    }
-    
-    @inlinable public init(integerLiteral: IX.IntegerLiteralType) {
-        if  integerLiteral == 0 {
-            self.init(false)
-        }   else if integerLiteral == 1 {
-            self.init(true )
-        }   else {
-            Swift.preconditionFailure(String.overflow())
-        }
     }
     
     //=------------------------------------------------------------------------=

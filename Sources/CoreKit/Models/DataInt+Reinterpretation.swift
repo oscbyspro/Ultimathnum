@@ -206,7 +206,7 @@ extension DataInt.Body where Element == U8 {
         
         var count = UX(raw: self.count)
         count   &+= UX(raw: MemoryLayout<Destination>.stride).decremented().unchecked()
-        count  &>>= UX(raw: UX(raw: MemoryLayout<Destination>.stride).ascending(00000))
+        count  &>>= UX(raw: UX(raw: MemoryLayout<Destination>.stride).ascending(Bit.zero))
         return IX(raw: count)
     }
 }

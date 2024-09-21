@@ -92,31 +92,31 @@ extension InfiniIntTests {
         func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             typealias F = Fallible<T>
             //=----------------------------------=
-            let a1234 = T([1, 2, 3, 4] as [UX], repeating: 0)
-            let a5678 = T([5, 6, 7, 8] as [UX], repeating: 0)
+            let a1234 = T([1, 2, 3, 4] as [UX], repeating: Bit.zero)
+            let a5678 = T([5, 6, 7, 8] as [UX], repeating: Bit.zero)
             //=----------------------------------=
-            Test().multiplication( a1234,  5 as T, F(T([ 05,  10,  15,  20,  00] as [UX], repeating: 0)))
-            Test().multiplication( a1234, ~5 as T, F(T([~05, ~12, ~18, ~24, ~00] as [UX], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~a1234,  5 as T, F(T([~09, ~10, ~15, ~20, ~00] as [UX], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~a1234, ~5 as T, F(T([ 12,  12,  18,  24,  00] as [UX], repeating: 0), error: !T.isSigned))
+            Test().multiplication( a1234,  5 as T, F(T([ 05,  10,  15,  20,  00] as [UX], repeating: Bit.zero)))
+            Test().multiplication( a1234, ~5 as T, F(T([~05, ~12, ~18, ~24, ~00] as [UX], repeating: Bit.one ), error: !T.isSigned))
+            Test().multiplication(~a1234,  5 as T, F(T([~09, ~10, ~15, ~20, ~00] as [UX], repeating: Bit.one ), error: !T.isSigned))
+            Test().multiplication(~a1234, ~5 as T, F(T([ 12,  12,  18,  24,  00] as [UX], repeating: Bit.zero), error: !T.isSigned))
             
-            Test().multiplication( a5678,  5 as T, F(T([ 25,  30,  35,  40,  00] as [UX], repeating: 0)))
-            Test().multiplication( a5678, ~5 as T, F(T([~29, ~36, ~42, ~48, ~00] as [UX], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~a5678,  5 as T, F(T([~29, ~30, ~35, ~40, ~00] as [UX], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~a5678, ~5 as T, F(T([ 36,  36,  42,  48,  00] as [UX], repeating: 0), error: !T.isSigned))
+            Test().multiplication( a5678,  5 as T, F(T([ 25,  30,  35,  40,  00] as [UX], repeating: Bit.zero)))
+            Test().multiplication( a5678, ~5 as T, F(T([~29, ~36, ~42, ~48, ~00] as [UX], repeating: Bit.one ), error: !T.isSigned))
+            Test().multiplication(~a5678,  5 as T, F(T([~29, ~30, ~35, ~40, ~00] as [UX], repeating: Bit.one ), error: !T.isSigned))
+            Test().multiplication(~a5678, ~5 as T, F(T([ 36,  36,  42,  48,  00] as [UX], repeating: Bit.zero), error: !T.isSigned))
             //=----------------------------------=
-            let b1234 = T([1, 2, 3, 4] as [UX], repeating: 1)
-            let b5678 = T([5, 6, 7, 8] as [UX], repeating: 1)
+            let b1234 = T([1, 2, 3, 4] as [UX], repeating: Bit.one )
+            let b5678 = T([5, 6, 7, 8] as [UX], repeating: Bit.one )
             //=----------------------------------=
-            Test().multiplication( b1234,  5 as T, F(T([ 05,  10,  15,  20, ~04] as [UX], repeating: 1), error: !T.isSigned))
-            Test().multiplication( b1234, ~5 as T, F(T([~05, ~12, ~18, ~24,  05] as [UX], repeating: 0), error: !T.isSigned))
-            Test().multiplication(~b1234,  5 as T, F(T([~09, ~10, ~15, ~20,  04] as [UX], repeating: 0)))
-            Test().multiplication(~b1234, ~5 as T, F(T([ 12,  12,  18,  24, ~05] as [UX], repeating: 1), error: !T.isSigned))
+            Test().multiplication( b1234,  5 as T, F(T([ 05,  10,  15,  20, ~04] as [UX], repeating: Bit.one ), error: !T.isSigned))
+            Test().multiplication( b1234, ~5 as T, F(T([~05, ~12, ~18, ~24,  05] as [UX], repeating: Bit.zero), error: !T.isSigned))
+            Test().multiplication(~b1234,  5 as T, F(T([~09, ~10, ~15, ~20,  04] as [UX], repeating: Bit.zero)))
+            Test().multiplication(~b1234, ~5 as T, F(T([ 12,  12,  18,  24, ~05] as [UX], repeating: Bit.one ), error: !T.isSigned))
             
-            Test().multiplication( b5678,  5 as T, F(T([ 25,  30,  35,  40, ~04] as [UX], repeating: 1), error: !T.isSigned))
-            Test().multiplication( b5678, ~5 as T, F(T([~29, ~36, ~42, ~48,  05] as [UX], repeating: 0), error: !T.isSigned))
-            Test().multiplication(~b5678,  5 as T, F(T([~29, ~30, ~35, ~40,  04] as [UX], repeating: 0)))
-            Test().multiplication(~b5678, ~5 as T, F(T([ 36,  36,  42,  48, ~05] as [UX], repeating: 1), error: !T.isSigned))
+            Test().multiplication( b5678,  5 as T, F(T([ 25,  30,  35,  40, ~04] as [UX], repeating: Bit.one ), error: !T.isSigned))
+            Test().multiplication( b5678, ~5 as T, F(T([~29, ~36, ~42, ~48,  05] as [UX], repeating: Bit.zero), error: !T.isSigned))
+            Test().multiplication(~b5678,  5 as T, F(T([~29, ~30, ~35, ~40,  04] as [UX], repeating: Bit.zero)))
+            Test().multiplication(~b5678, ~5 as T, F(T([ 36,  36,  42,  48, ~05] as [UX], repeating: Bit.one ), error: !T.isSigned))
             //=----------------------------------=
             for number in [a1234, ~a1234, b1234, ~b1234, a5678, ~a5678, b5678, ~b5678] {
                 Test().multiplication(number, ~0 as T, F(number.complement(), error: !T.isSigned))
@@ -134,43 +134,43 @@ extension InfiniIntTests {
         func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             typealias F = Fallible<T>
             //=----------------------------------=
-            let a1234 = T([1, 2, 3, 4] as [UX], repeating: 0)
-            let a5678 = T([5, 6, 7, 8] as [UX], repeating: 0)
+            let a1234 = T([1, 2, 3, 4] as [UX], repeating: Bit.zero)
+            let a5678 = T([5, 6, 7, 8] as [UX], repeating: Bit.zero)
             //=----------------------------------=
-            Test().multiplication( a1234,  a1234, F(T([ 001,  004,  010,  020,  025,  024,  016,  000] as [UX], repeating: 0)))
-            Test().multiplication( a1234, ~a1234, F(T([~001, ~006, ~013, ~024, ~025, ~024, ~016, ~000] as [UX], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~a1234, ~a1234, F(T([ 004,  008,  016,  028,  025,  024,  016,  000] as [UX], repeating: 0), error: !T.isSigned))
+            Test().multiplication( a1234,  a1234, F(T([ 001,  004,  010,  020,  025,  024,  016,  000] as [UX], repeating: Bit.zero)))
+            Test().multiplication( a1234, ~a1234, F(T([~001, ~006, ~013, ~024, ~025, ~024, ~016, ~000] as [UX], repeating: Bit.one ), error: !T.isSigned))
+            Test().multiplication(~a1234, ~a1234, F(T([ 004,  008,  016,  028,  025,  024,  016,  000] as [UX], repeating: Bit.zero), error: !T.isSigned))
             
-            Test().multiplication( a1234,  a5678, F(T([ 005,  016,  034,  060,  061,  052,  032,  000] as [UX], repeating: 0)))
-            Test().multiplication( a1234, ~a5678, F(T([~005, ~018, ~037, ~064, ~061, ~052, ~032, ~000] as [UX], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~a1234,  a5678, F(T([~009, ~022, ~041, ~068, ~061, ~052, ~032, ~000] as [UX], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~a1234, ~a5678, F(T([ 012,  024,  044,  072,  061,  052,  032,  000] as [UX], repeating: 0), error: !T.isSigned))
+            Test().multiplication( a1234,  a5678, F(T([ 005,  016,  034,  060,  061,  052,  032,  000] as [UX], repeating: Bit.zero)))
+            Test().multiplication( a1234, ~a5678, F(T([~005, ~018, ~037, ~064, ~061, ~052, ~032, ~000] as [UX], repeating: Bit.one ), error: !T.isSigned))
+            Test().multiplication(~a1234,  a5678, F(T([~009, ~022, ~041, ~068, ~061, ~052, ~032, ~000] as [UX], repeating: Bit.one ), error: !T.isSigned))
+            Test().multiplication(~a1234, ~a5678, F(T([ 012,  024,  044,  072,  061,  052,  032,  000] as [UX], repeating: Bit.zero), error: !T.isSigned))
             
-            Test().multiplication( a5678,  a5678, F(T([ 025,  060,  106,  164,  145,  112,  064,  000] as [UX], repeating: 0)))
-            Test().multiplication( a5678, ~a5678, F(T([~029, ~066, ~113, ~172, ~145, ~112, ~064, ~000] as [UX], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~a5678, ~a5678, F(T([ 036,  072,  120,  180,  145,  112,  064,  000] as [UX], repeating: 0), error: !T.isSigned))
+            Test().multiplication( a5678,  a5678, F(T([ 025,  060,  106,  164,  145,  112,  064,  000] as [UX], repeating: Bit.zero)))
+            Test().multiplication( a5678, ~a5678, F(T([~029, ~066, ~113, ~172, ~145, ~112, ~064, ~000] as [UX], repeating: Bit.one ), error: !T.isSigned))
+            Test().multiplication(~a5678, ~a5678, F(T([ 036,  072,  120,  180,  145,  112,  064,  000] as [UX], repeating: Bit.zero), error: !T.isSigned))
             //=----------------------------------=
-            let b1234 = T([1, 2, 3, 4] as [UX], repeating: 1)
-            let b5678 = T([5, 6, 7, 8] as [UX], repeating: 1)
+            let b1234 = T([1, 2, 3, 4] as [UX], repeating: Bit.one )
+            let b5678 = T([5, 6, 7, 8] as [UX], repeating: Bit.one )
             //=----------------------------------=
-            Test().multiplication( b1234,  b1234, F(T([ 001,  004,  010,  020,  023,  020,  010, ~007] as [UX], repeating: 0), error: !T.isSigned))
-            Test().multiplication( b1234, ~b1234, F(T([~001, ~006, ~013, ~024, ~022, ~020, ~010,  007] as [UX], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~b1234, ~b1234, F(T([ 004,  008,  016,  028,  021,  020,  010, ~007] as [UX], repeating: 0)))
+            Test().multiplication( b1234,  b1234, F(T([ 001,  004,  010,  020,  023,  020,  010, ~007] as [UX], repeating: Bit.zero), error: !T.isSigned))
+            Test().multiplication( b1234, ~b1234, F(T([~001, ~006, ~013, ~024, ~022, ~020, ~010,  007] as [UX], repeating: Bit.one ), error: !T.isSigned))
+            Test().multiplication(~b1234, ~b1234, F(T([ 004,  008,  016,  028,  021,  020,  010, ~007] as [UX], repeating: Bit.zero)))
             
-            Test().multiplication( b1234,  b5678, F(T([ 005,  016,  034,  060,  055,  044,  022, ~011] as [UX], repeating: 0), error: !T.isSigned))
-            Test().multiplication( b1234, ~b5678, F(T([~005, ~018, ~037, ~064, ~054, ~044, ~022,  011] as [UX], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~b1234,  b5678, F(T([~009, ~022, ~041, ~068, ~054, ~044, ~022,  011] as [UX], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~b1234, ~b5678, F(T([ 012,  024,  044,  072,  053,  044,  022, ~011] as [UX], repeating: 0)))
+            Test().multiplication( b1234,  b5678, F(T([ 005,  016,  034,  060,  055,  044,  022, ~011] as [UX], repeating: Bit.zero), error: !T.isSigned))
+            Test().multiplication( b1234, ~b5678, F(T([~005, ~018, ~037, ~064, ~054, ~044, ~022,  011] as [UX], repeating: Bit.one ), error: !T.isSigned))
+            Test().multiplication(~b1234,  b5678, F(T([~009, ~022, ~041, ~068, ~054, ~044, ~022,  011] as [UX], repeating: Bit.one ), error: !T.isSigned))
+            Test().multiplication(~b1234, ~b5678, F(T([ 012,  024,  044,  072,  053,  044,  022, ~011] as [UX], repeating: Bit.zero)))
             
-            Test().multiplication( b5678,  b5678, F(T([ 025,  060,  106,  164,  135,  100,  050, ~015] as [UX], repeating: 0), error: !T.isSigned))
-            Test().multiplication( b5678, ~b5678, F(T([~029, ~066, ~113, ~172, ~134, ~100, ~050,  015] as [UX], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~b5678, ~b5678, F(T([ 036,  072,  120,  180,  133,  100,  050, ~015] as [UX], repeating: 0)))
+            Test().multiplication( b5678,  b5678, F(T([ 025,  060,  106,  164,  135,  100,  050, ~015] as [UX], repeating: Bit.zero), error: !T.isSigned))
+            Test().multiplication( b5678, ~b5678, F(T([~029, ~066, ~113, ~172, ~134, ~100, ~050,  015] as [UX], repeating: Bit.one ), error: !T.isSigned))
+            Test().multiplication(~b5678, ~b5678, F(T([ 036,  072,  120,  180,  133,  100,  050, ~015] as [UX], repeating: Bit.zero)))
             //=----------------------------------=
-            let x0000 = T([~0, ~0, ~0, ~0] as [UX], repeating: 0)
+            let x0000 = T([~0, ~0, ~0, ~0] as [UX], repeating: Bit.zero)
             //=----------------------------------=
-            Test().multiplication( x0000,  x0000, F(T([ 001,  000,  000,  000, ~001, ~000, ~000, ~000] as [UX] + [ 0] as [UX], repeating: 0)))
-            Test().multiplication( x0000, ~x0000, F(T([ 000,  000,  000,  000,  001,  000,  000,  000] as [UX] + [~0] as [UX], repeating: 1), error: !T.isSigned))
-            Test().multiplication(~x0000, ~x0000, F(T([ 000,  000,  000,  000,  000,  000,  000,  000] as [UX] + [ 1] as [UX], repeating: 0), error: !T.isSigned))
+            Test().multiplication( x0000,  x0000, F(T([ 001,  000,  000,  000, ~001, ~000, ~000, ~000] as [UX] + [ 0] as [UX], repeating: Bit.zero)))
+            Test().multiplication( x0000, ~x0000, F(T([ 000,  000,  000,  000,  001,  000,  000,  000] as [UX] + [~0] as [UX], repeating: Bit.one ), error: !T.isSigned))
+            Test().multiplication(~x0000, ~x0000, F(T([ 000,  000,  000,  000,  000,  000,  000,  000] as [UX] + [ 1] as [UX], repeating: Bit.zero), error: !T.isSigned))
         }
         
         for type in Self.types {
@@ -406,14 +406,14 @@ extension InfiniIntTests {
     func testMultiplicationByLargeStorageWhereBodyIsZerosAndAppendixIsOne() {
         func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger, T.Element.BitPattern == U8.BitPattern {
             compact: do {
-                let x16 = T(repeating: 1)  << 15
+                let x16 = T(repeating: Bit.one )  << 15
                 Test().multiplication(x16, x16 - 1, Fallible((1 << 30) &- x16, error: !T.isSigned))
                 Test().multiplication(x16, x16,     Fallible((1 << 30),        error: !T.isSigned))
                 Test().multiplication(x16, x16 + 1, Fallible((1 << 30) &+ x16, error: !T.isSigned))
             }
             
             extended: do {
-                let x16 = T(repeating: 1)  << 16
+                let x16 = T(repeating: Bit.one )  << 16
                 Test().multiplication(x16, x16 - 1, Fallible((1 << 32) &- x16, error: !T.isSigned)) // OK
                 Test().multiplication(x16, x16,     Fallible((1 << 32),        error: !T.isSigned)) // :(
                 Test().multiplication(x16, x16 + 1, Fallible((1 << 32) &+ x16, error: !T.isSigned)) // OK
@@ -449,20 +449,20 @@ extension InfiniIntTests {
                     
                     let c: [UX] = a + b
                     
-                    Test().multiplication(T(a0, repeating: 0), T(b0, repeating: 0), F(T(c + [ 1        ] as [UX], repeating: 0)))
-                    Test().multiplication(T(a1, repeating: 0), T(b1, repeating: 0), F(T(c + [ 0        ] as [UX], repeating: 0)))
-                    Test().multiplication(T(a2, repeating: 0), T(b2, repeating: 0), F(T(c + [ 1, ~1    ] as [UX], repeating: 0)))
-                    Test().multiplication(T(a3, repeating: 0), T(b3, repeating: 0), F(T(c + [ 4, ~3    ] as [UX], repeating: 0)))
+                    Test().multiplication(T(a0, repeating: Bit.zero), T(b0, repeating: Bit.zero), F(T(c + [ 1        ] as [UX], repeating: Bit.zero)))
+                    Test().multiplication(T(a1, repeating: Bit.zero), T(b1, repeating: Bit.zero), F(T(c + [ 0        ] as [UX], repeating: Bit.zero)))
+                    Test().multiplication(T(a2, repeating: Bit.zero), T(b2, repeating: Bit.zero), F(T(c + [ 1, ~1    ] as [UX], repeating: Bit.zero)))
+                    Test().multiplication(T(a3, repeating: Bit.zero), T(b3, repeating: Bit.zero), F(T(c + [ 4, ~3    ] as [UX], repeating: Bit.zero)))
                     
-                    Test().multiplication(T(a0, repeating: 0), T(b0, repeating: 1), F(T(c + [ 1        ] as [UX], repeating: 1), error: !T.isSigned && a.count > 0))
-                    Test().multiplication(T(a1, repeating: 0), T(b1, repeating: 1), F(T(c + [ 0        ] as [UX], repeating: 0)))
-                    Test().multiplication(T(a2, repeating: 0), T(b2, repeating: 1), F(T(c + [ 1        ] as [UX], repeating: 1), error: !T.isSigned))
-                    Test().multiplication(T(a3, repeating: 0), T(b3, repeating: 1), F(T(c + [ 4, ~1,   ] as [UX], repeating: 1), error: !T.isSigned))
+                    Test().multiplication(T(a0, repeating: Bit.zero), T(b0, repeating: Bit.one ), F(T(c + [ 1        ] as [UX], repeating: Bit.one ), error: !T.isSigned && a.count > 0))
+                    Test().multiplication(T(a1, repeating: Bit.zero), T(b1, repeating: Bit.one ), F(T(c + [ 0        ] as [UX], repeating: Bit.zero)))
+                    Test().multiplication(T(a2, repeating: Bit.zero), T(b2, repeating: Bit.one ), F(T(c + [ 1        ] as [UX], repeating: Bit.one ), error: !T.isSigned))
+                    Test().multiplication(T(a3, repeating: Bit.zero), T(b3, repeating: Bit.one ), F(T(c + [ 4, ~1,   ] as [UX], repeating: Bit.one ), error: !T.isSigned))
                     
-                    Test().multiplication(T(a0, repeating: 1), T(b0, repeating: 1), F(T(c + [ 1, ~1    ] as [UX], repeating: 0), error: !T.isSigned))
-                    Test().multiplication(T(a1, repeating: 1), T(b1, repeating: 1), F(T(c + [ 0,  0,  1] as [UX], repeating: 0), error: !T.isSigned))
-                    Test().multiplication(T(a2, repeating: 1), T(b2, repeating: 1), F(T(c + [ 1        ] as [UX], repeating: 0), error: !T.isSigned))
-                    Test().multiplication(T(a3, repeating: 1), T(b3, repeating: 1), F(T(c + [ 4        ] as [UX], repeating: 0), error: !T.isSigned))
+                    Test().multiplication(T(a0, repeating: Bit.one ), T(b0, repeating: Bit.one ), F(T(c + [ 1, ~1    ] as [UX], repeating: Bit.zero), error: !T.isSigned))
+                    Test().multiplication(T(a1, repeating: Bit.one ), T(b1, repeating: Bit.one ), F(T(c + [ 0,  0,  1] as [UX], repeating: Bit.zero), error: !T.isSigned))
+                    Test().multiplication(T(a2, repeating: Bit.one ), T(b2, repeating: Bit.one ), F(T(c + [ 1        ] as [UX], repeating: Bit.zero), error: !T.isSigned))
+                    Test().multiplication(T(a3, repeating: Bit.one ), T(b3, repeating: Bit.one ), F(T(c + [ 4        ] as [UX], repeating: Bit.zero), error: !T.isSigned))
                 }
             }
         }

@@ -15,43 +15,41 @@ import TestKit
 //*============================================================================*
 
 final class BitTests: XCTestCase {
-    
-    typealias T = Bit
-    
+        
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     func testBool() {
-        Test().same(T(false), 0 as T)
-        Test().same(T(true ), 1 as T)
+        Test().same(Bit(false), Bit.zero)
+        Test().same(Bit(true ), Bit.one )
         
-        Test().same(T(raw: false), 0 as T)
-        Test().same(T(raw: true ), 1 as T)
+        Test().same(Bit(raw: false), Bit.zero)
+        Test().same(Bit(raw: true ), Bit.one )
         
-        Test().same(Bool(0 as T), false)
-        Test().same(Bool(1 as T), true )
+        Test().same(Bool(Bit.zero), false)
+        Test().same(Bool(Bit.one ), true )
         
-        Test().same(Bool(raw: 0 as T), false)
-        Test().same(Bool(raw: 1 as T), true )
+        Test().same(Bool(raw: Bit.zero), false)
+        Test().same(Bool(raw: Bit.one ), true )
     }
         
     func testSign() {
-        Test().same(T(Sign.plus ), 0 as T)
-        Test().same(T(Sign.minus), 1 as T)
+        Test().same(Bit(Sign.plus ), Bit.zero)
+        Test().same(Bit(Sign.minus), Bit.one )
         
-        Test().same(T(raw: Sign.plus ), 0 as T)
-        Test().same(T(raw: Sign.minus), 1 as T)
+        Test().same(Bit(raw: Sign.plus ), Bit.zero)
+        Test().same(Bit(raw: Sign.minus), Bit.one )
         
-        Test().same(Sign(0 as T), .plus )
-        Test().same(Sign(1 as T), .minus)
+        Test().same(Sign(Bit.zero), .plus )
+        Test().same(Sign(Bit.one ), .minus)
         
-        Test().same(Sign(raw: 0 as T), .plus )
-        Test().same(Sign(raw: 1 as T), .minus)
+        Test().same(Sign(raw: Bit.zero), .plus )
+        Test().same(Sign(raw: Bit.one ), .minus)
     }
     
     func testComparison() {
-        func comparison(_ lhs: T, _ rhs: T, _ expectation: Signum, _ test: Test = .init()) {
+        func comparison(_ lhs: Bit, _ rhs: Bit, _ expectation: Signum, _ test: Test = .init()) {
             for (x, y, z) in [
                 (lhs, rhs, expectation),
                 (rhs, lhs, expectation.negated())
@@ -66,10 +64,10 @@ final class BitTests: XCTestCase {
             }
         }
         
-        comparison( 0 as T,  0 as T,  0 as Signum)
-        comparison( 0 as T,  1 as T, -1 as Signum)
-        comparison( 1 as T,  0 as T,  1 as Signum)
-        comparison( 1 as T,  1 as T,  0 as Signum)
+        comparison(Bit.zero,  Bit.zero, Signum.zero)
+        comparison(Bit.zero,  Bit.one,  Signum.negative)
+        comparison(Bit.one,   Bit.zero, Signum.positive)
+        comparison(Bit.one,   Bit.one,  Signum.zero)
     }
     
     //=------------------------------------------------------------------------=
@@ -77,28 +75,28 @@ final class BitTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testLogicalNot() {
-        Test().not(0 as T, 1 as T)
-        Test().not(1 as T, 0 as T)
+        Test().not(Bit.zero, Bit.one )
+        Test().not(Bit.one,  Bit.zero)
     }
     
     func testLogicalAnd() {
-        Test().and(0 as T, 0 as T, 0 as T)
-        Test().and(0 as T, 1 as T, 0 as T)
-        Test().and(1 as T, 0 as T, 0 as T)
-        Test().and(1 as T, 1 as T, 1 as T)
+        Test().and(Bit.zero, Bit.zero, Bit.zero)
+        Test().and(Bit.zero, Bit.one,  Bit.zero)
+        Test().and(Bit.one,  Bit.zero, Bit.zero)
+        Test().and(Bit.one,  Bit.one,  Bit.one )
     }
     
     func testLogicalOr() {
-        Test().or (0 as T, 0 as T, 0 as T)
-        Test().or (0 as T, 1 as T, 1 as T)
-        Test().or (1 as T, 0 as T, 1 as T)
-        Test().or (1 as T, 1 as T, 1 as T)
+        Test().or (Bit.zero, Bit.zero, Bit.zero)
+        Test().or (Bit.zero, Bit.one,  Bit.one )
+        Test().or (Bit.one,  Bit.zero, Bit.one )
+        Test().or (Bit.one,  Bit.one,  Bit.one )
     }
     
     func testLogcialXor() {
-        Test().xor(0 as T, 0 as T, 0 as T)
-        Test().xor(0 as T, 1 as T, 1 as T)
-        Test().xor(1 as T, 0 as T, 1 as T)
-        Test().xor(1 as T, 1 as T, 0 as T)
+        Test().xor(Bit.zero, Bit.zero, Bit.zero)
+        Test().xor(Bit.zero, Bit.one,  Bit.one )
+        Test().xor(Bit.one,  Bit.zero, Bit.one )
+        Test().xor(Bit.one,  Bit.one,  Bit.zero)
     }
 }

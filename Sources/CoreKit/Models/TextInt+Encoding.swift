@@ -111,11 +111,11 @@ extension TextInt {
         //=--------------------------------------=
         // text: capacity upper bound
         //=--------------------------------------=
-        var capacity = IX(raw: body.nondescending(0))
+        var capacity = IX(raw: body.nondescending(Bit.zero))
         let speed = if self.power.divisor == 1 {
             IX(raw: self.power.divisor.size())
         }   else  {
-            IX(raw: self.power.divisor.nondescending(0)).decremented().unchecked()
+            IX(raw: self.power.divisor.nondescending(Bit.zero)).decremented().unchecked()
         }
         
         capacity /= speed

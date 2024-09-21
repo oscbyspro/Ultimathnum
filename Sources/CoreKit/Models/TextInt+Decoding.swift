@@ -134,8 +134,8 @@ extension TextInt {
         numerals: consuming UnsafeBufferPointer<UInt8>, success: (DataInt<UX>) -> Void
     )   throws {
         //=--------------------------------------=
-        Swift.assert(self.power.divisor ==  01)
-        Swift.assert(self.exponent.count(1) == Count(1))
+        Swift.assert(self.power.divisor == 1)
+        Swift.assert(self.exponent.count(Bit.one) == Count(1))
         //=--------------------------------------=
         // text must contain at least one numeral
         //=--------------------------------------=

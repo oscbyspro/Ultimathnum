@@ -41,10 +41,10 @@ extension Esque where T: BinaryInteger {
     
     @inlinable public static var min: T {
         if  T.isSigned {
-            return T(repeating: 1) << shl
+            return T(repeating: Bit.one) << shl
             
         }   else {
-            return T(repeating: 0)
+            return T.zero
         }
     }
     

@@ -44,10 +44,10 @@ final class BinaryIntegerTestsOnValues: XCTestCase {
             //=----------------------------------=
             let relative = IX(raw: T.size)
             //=----------------------------------=
-            Test() .ascending(T.lsb, 0 as Bit, Count(0))
-            Test() .ascending(T.lsb, 1 as Bit, Count(1))
-            Test().descending(T.lsb, 0 as Bit, Count(raw: relative - 1))
-            Test().descending(T.lsb, 1 as Bit, Count(0))
+            Test() .ascending(T.lsb, Bit.zero, Count(0))
+            Test() .ascending(T.lsb, Bit.one,  Count(1))
+            Test().descending(T.lsb, Bit.zero, Count(raw: relative - 1))
+            Test().descending(T.lsb, Bit.one,  Count(0))
         }
         
         func whereIsSystemsInteger<T>(_ type: T.Type) where T: SystemsInteger {
@@ -56,10 +56,10 @@ final class BinaryIntegerTestsOnValues: XCTestCase {
             //=----------------------------------=
             Test().comparison(T.lsb, T.msb, Signum(Sign(!T.isSigned)))
             //=----------------------------------=
-            Test() .ascending(T.msb, 0 as Bit, Count(raw: relative - 1))
-            Test() .ascending(T.msb, 1 as Bit, Count(0))
-            Test().descending(T.msb, 0 as Bit, Count(0))
-            Test().descending(T.msb, 1 as Bit, Count(1))
+            Test() .ascending(T.msb, Bit.zero, Count(raw: relative - 1))
+            Test() .ascending(T.msb, Bit.one,  Count(0))
+            Test().descending(T.msb, Bit.zero, Count(0))
+            Test().descending(T.msb, Bit.one,  Count(1))
         }
         
         for type in binaryIntegers {

@@ -21,8 +21,8 @@ final class SignumTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testInitBit() {
-        Test().same(Signum(0 as Bit), Signum.zero)
-        Test().same(Signum(1 as Bit), Signum.positive)
+        Test().same(Signum(Bit.zero), Signum.zero)
+        Test().same(Signum(Bit.one ), Signum.positive)
     }
     
     func testInitSign() {

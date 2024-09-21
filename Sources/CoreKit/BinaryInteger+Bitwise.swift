@@ -43,27 +43,27 @@ extension BinaryInteger {
     /// The notion of infinity keeps arbitrary unsigned integers well-behaved.
     ///
     /// ```swift
-    /// UXL(repeating: 0) //  x
-    /// UXL(repeating: 1) // ~x
-    /// UXL(repeating: 0) // ~x &+ 1 == y
-    /// UXL(repeating: 1) // ~y
-    /// UXL(repeating: 0) // ~y &+ 1 == x
+    /// UXL(repeating: Bit.zero) //  x
+    /// UXL(repeating: Bit.one ) // ~x
+    /// UXL(repeating: Bit.zero) // ~x &+ 1 == y
+    /// UXL(repeating: Bit.one ) // ~y
+    /// UXL(repeating: Bit.zero) // ~y &+ 1 == x
     /// ```
     ///
     /// ```swift
-    /// UXL([~0] as [UX], repeating: 0) //  x
-    /// UXL([ 0] as [UX], repeating: 1) // ~x
-    /// UXL([ 1] as [UX], repeating: 1) // ~x &+ 1 == y
-    /// UXL([~1] as [UX], repeating: 0) // ~y
-    /// UXL([~0] as [UX], repeating: 0) // ~y &+ 1 == x
+    /// UXL([~0] as [UX], repeating: Bit.zero) //  x
+    /// UXL([ 0] as [UX], repeating: Bit.one ) // ~x
+    /// UXL([ 1] as [UX], repeating: Bit.one ) // ~x &+ 1 == y
+    /// UXL([~1] as [UX], repeating: Bit.zero) // ~y
+    /// UXL([~0] as [UX], repeating: Bit.zero) // ~y &+ 1 == x
     /// ```
     ///
     /// ```swift
-    /// UXL([ 0    ] as [UX], repeating: 1) //  x
-    /// UXL([~0    ] as [UX], repeating: 0) // ~x
-    /// UXL([ 0,  1] as [UX], repeating: 0) // ~x &+ 1 == y
-    /// UXL([~0, ~1] as [UX], repeating: 1) // ~y
-    /// UXL([ 0    ] as [UX], repeating: 1) // ~y &+ 1 == x
+    /// UXL([ 0    ] as [UX], repeating: Bit.one ) //  x
+    /// UXL([~0    ] as [UX], repeating: Bit.zero) // ~x
+    /// UXL([ 0,  1] as [UX], repeating: Bit.zero) // ~x &+ 1 == y
+    /// UXL([~0, ~1] as [UX], repeating: Bit.one ) // ~y
+    /// UXL([ 0    ] as [UX], repeating: Bit.one ) // ~y &+ 1 == x
     /// ```
     ///
     @inlinable public consuming func complement() -> Self {

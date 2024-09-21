@@ -21,21 +21,21 @@ extension LiteralIntTests {
     //=------------------------------------------------------------------------=
     
     func testAppendix() {
-        Test().same(T(-6).appendix, 1 as Bit)
-        Test().same(T(-5).appendix, 1 as Bit)
-        Test().same(T(-4).appendix, 1 as Bit)
-        Test().same(T(-3).appendix, 1 as Bit)
-        Test().same(T(-2).appendix, 1 as Bit)
-        Test().same(T(-1).appendix, 1 as Bit)
-        Test().same(T( 0).appendix, 0 as Bit)
-        Test().same(T( 1).appendix, 0 as Bit)
-        Test().same(T( 2).appendix, 0 as Bit)
-        Test().same(T( 3).appendix, 0 as Bit)
-        Test().same(T( 4).appendix, 0 as Bit)
-        Test().same(T( 5).appendix, 0 as Bit)
+        Test().same(T(-6).appendix, Bit.one )
+        Test().same(T(-5).appendix, Bit.one )
+        Test().same(T(-4).appendix, Bit.one )
+        Test().same(T(-3).appendix, Bit.one )
+        Test().same(T(-2).appendix, Bit.one )
+        Test().same(T(-1).appendix, Bit.one )
+        Test().same(T( 0).appendix, Bit.zero)
+        Test().same(T( 1).appendix, Bit.zero)
+        Test().same(T( 2).appendix, Bit.zero)
+        Test().same(T( 3).appendix, Bit.zero)
+        Test().same(T( 4).appendix, Bit.zero)
+        Test().same(T( 5).appendix, Bit.zero)
         
-        Test().same(T(-0x80000000000000000000000000000000).appendix, 1 as Bit)
-        Test().same(T( 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF).appendix, 0 as Bit)
+        Test().same(T(-0x80000000000000000000000000000000).appendix, Bit.one )
+        Test().same(T( 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF).appendix, Bit.zero)
     }
     
     func testElements() throws {

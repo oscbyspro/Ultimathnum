@@ -27,32 +27,32 @@ extension InfiniIntTests {
             //=----------------------------------=
             let x = UX.msb
             //=----------------------------------=
-            Test().complement(T([ 0,  0] as [UX], repeating: 0), false, F(T([~0, ~0    ] as [UX], repeating: 1)))
-            Test().complement(T([ 0,  0] as [UX], repeating: 0), true , F(T([ 0,  0    ] as [UX], repeating: 0), error: !T.isSigned))
-            Test().complement(T([ 0,  0] as [UX], repeating: 1), false, F(T([~0, ~0    ] as [UX], repeating: 0)))
-            Test().complement(T([ 0,  0] as [UX], repeating: 1), true , F(T([ 0,  0,  1] as [UX], repeating: 0)))
-            Test().complement(T([~0, ~0] as [UX], repeating: 0), false, F(T([ 0,  0    ] as [UX], repeating: 1)))
-            Test().complement(T([~0, ~0] as [UX], repeating: 0), true , F(T([ 1,  0    ] as [UX], repeating: 1)))
-            Test().complement(T([~0, ~0] as [UX], repeating: 1), false, F(T([ 0,  0    ] as [UX], repeating: 0)))
-            Test().complement(T([~0, ~0] as [UX], repeating: 1), true , F(T([ 1,  0    ] as [UX], repeating: 0)))
+            Test().complement(T([ 0,  0] as [UX], repeating: Bit.zero), false, F(T([~0, ~0    ] as [UX], repeating: Bit.one )))
+            Test().complement(T([ 0,  0] as [UX], repeating: Bit.zero), true , F(T([ 0,  0    ] as [UX], repeating: Bit.zero), error: !T.isSigned))
+            Test().complement(T([ 0,  0] as [UX], repeating: Bit.one ), false, F(T([~0, ~0    ] as [UX], repeating: Bit.zero)))
+            Test().complement(T([ 0,  0] as [UX], repeating: Bit.one ), true , F(T([ 0,  0,  1] as [UX], repeating: Bit.zero)))
+            Test().complement(T([~0, ~0] as [UX], repeating: Bit.zero), false, F(T([ 0,  0    ] as [UX], repeating: Bit.one )))
+            Test().complement(T([~0, ~0] as [UX], repeating: Bit.zero), true , F(T([ 1,  0    ] as [UX], repeating: Bit.one )))
+            Test().complement(T([~0, ~0] as [UX], repeating: Bit.one ), false, F(T([ 0,  0    ] as [UX], repeating: Bit.zero)))
+            Test().complement(T([~0, ~0] as [UX], repeating: Bit.one ), true , F(T([ 1,  0    ] as [UX], repeating: Bit.zero)))
             
-            Test().complement(T([ 0,  x] as [UX], repeating: 0), false, F(T([~0, ~x    ] as [UX], repeating: 1)))
-            Test().complement(T([ 0,  x] as [UX], repeating: 0), true , F(T([ 0,  x    ] as [UX], repeating: 1)))
-            Test().complement(T([ 0,  x] as [UX], repeating: 1), false, F(T([~0, ~x    ] as [UX], repeating: 0)))
-            Test().complement(T([ 0,  x] as [UX], repeating: 1), true , F(T([ 0,  x    ] as [UX], repeating: 0)))
-            Test().complement(T([~0, ~x] as [UX], repeating: 0), false, F(T([ 0,  x    ] as [UX], repeating: 1)))
-            Test().complement(T([~0, ~x] as [UX], repeating: 0), true , F(T([ 1,  x    ] as [UX], repeating: 1)))
-            Test().complement(T([~0, ~x] as [UX], repeating: 1), false, F(T([ 0,  x    ] as [UX], repeating: 0)))
-            Test().complement(T([~0, ~x] as [UX], repeating: 1), true , F(T([ 1,  x    ] as [UX], repeating: 0)))
+            Test().complement(T([ 0,  x] as [UX], repeating: Bit.zero), false, F(T([~0, ~x    ] as [UX], repeating: Bit.one )))
+            Test().complement(T([ 0,  x] as [UX], repeating: Bit.zero), true , F(T([ 0,  x    ] as [UX], repeating: Bit.one )))
+            Test().complement(T([ 0,  x] as [UX], repeating: Bit.one ), false, F(T([~0, ~x    ] as [UX], repeating: Bit.zero)))
+            Test().complement(T([ 0,  x] as [UX], repeating: Bit.one ), true , F(T([ 0,  x    ] as [UX], repeating: Bit.zero)))
+            Test().complement(T([~0, ~x] as [UX], repeating: Bit.zero), false, F(T([ 0,  x    ] as [UX], repeating: Bit.one )))
+            Test().complement(T([~0, ~x] as [UX], repeating: Bit.zero), true , F(T([ 1,  x    ] as [UX], repeating: Bit.one )))
+            Test().complement(T([~0, ~x] as [UX], repeating: Bit.one ), false, F(T([ 0,  x    ] as [UX], repeating: Bit.zero)))
+            Test().complement(T([~0, ~x] as [UX], repeating: Bit.one ), true , F(T([ 1,  x    ] as [UX], repeating: Bit.zero)))
             
-            Test().complement(T([ 1,  2] as [UX], repeating: 0), false, F(T([~1, ~2    ] as [UX], repeating: 1)))
-            Test().complement(T([ 1,  2] as [UX], repeating: 0), true , F(T([~0, ~2    ] as [UX], repeating: 1)))
-            Test().complement(T([ 1,  2] as [UX], repeating: 1), false, F(T([~1, ~2    ] as [UX], repeating: 0)))
-            Test().complement(T([ 1,  2] as [UX], repeating: 1), true , F(T([~0, ~2    ] as [UX], repeating: 0)))
-            Test().complement(T([~1, ~2] as [UX], repeating: 0), false, F(T([ 1,  2    ] as [UX], repeating: 1)))
-            Test().complement(T([~1, ~2] as [UX], repeating: 0), true , F(T([ 2,  2    ] as [UX], repeating: 1)))
-            Test().complement(T([~1, ~2] as [UX], repeating: 1), false, F(T([ 1,  2    ] as [UX], repeating: 0)))
-            Test().complement(T([~1, ~2] as [UX], repeating: 1), true , F(T([ 2,  2    ] as [UX], repeating: 0)))
+            Test().complement(T([ 1,  2] as [UX], repeating: Bit.zero), false, F(T([~1, ~2    ] as [UX], repeating: Bit.one )))
+            Test().complement(T([ 1,  2] as [UX], repeating: Bit.zero), true , F(T([~0, ~2    ] as [UX], repeating: Bit.one )))
+            Test().complement(T([ 1,  2] as [UX], repeating: Bit.one ), false, F(T([~1, ~2    ] as [UX], repeating: Bit.zero)))
+            Test().complement(T([ 1,  2] as [UX], repeating: Bit.one ), true , F(T([~0, ~2    ] as [UX], repeating: Bit.zero)))
+            Test().complement(T([~1, ~2] as [UX], repeating: Bit.zero), false, F(T([ 1,  2    ] as [UX], repeating: Bit.one )))
+            Test().complement(T([~1, ~2] as [UX], repeating: Bit.zero), true , F(T([ 2,  2    ] as [UX], repeating: Bit.one )))
+            Test().complement(T([~1, ~2] as [UX], repeating: Bit.one ), false, F(T([ 1,  2    ] as [UX], repeating: Bit.zero)))
+            Test().complement(T([~1, ~2] as [UX], repeating: Bit.one ), true , F(T([ 2,  2    ] as [UX], repeating: Bit.zero)))
         }
                 
         for type in Self.types {
@@ -66,10 +66,10 @@ extension InfiniIntTests {
     
     func testLogicalNot() {
         func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
-            Test().not(T([ 1,  2,  3,  4] as [UX], repeating: 0), T([~1, ~2, ~3, ~4] as [UX], repeating: 1))
-            Test().not(T([ 1,  2,  3,  4] as [UX], repeating: 1), T([~1, ~2, ~3, ~4] as [UX], repeating: 0))
-            Test().not(T([~1, ~2, ~3, ~4] as [UX], repeating: 0), T([ 1,  2,  3,  4] as [UX], repeating: 1))
-            Test().not(T([~1, ~2, ~3, ~4] as [UX], repeating: 1), T([ 1,  2,  3,  4] as [UX], repeating: 0))
+            Test().not(T([ 1,  2,  3,  4] as [UX], repeating: Bit.zero), T([~1, ~2, ~3, ~4] as [UX], repeating: Bit.one ))
+            Test().not(T([ 1,  2,  3,  4] as [UX], repeating: Bit.one ), T([~1, ~2, ~3, ~4] as [UX], repeating: Bit.zero))
+            Test().not(T([~1, ~2, ~3, ~4] as [UX], repeating: Bit.zero), T([ 1,  2,  3,  4] as [UX], repeating: Bit.one ))
+            Test().not(T([~1, ~2, ~3, ~4] as [UX], repeating: Bit.one ), T([ 1,  2,  3,  4] as [UX], repeating: Bit.zero))
         }
         
         for type in Self.types {
@@ -164,40 +164,40 @@ extension InfiniIntTests {
         func whereIs<T>(_ type: T.Type) where T: ArbitraryInteger {
             
             /// ```swift
-            /// UXL(repeating: 0) //  x
-            /// UXL(repeating: 1) // ~x
-            /// UXL(repeating: 0) // ~x &+ 1 == y
-            /// UXL(repeating: 1) // ~y
-            /// UXL(repeating: 0) // ~y &+ 1 == x
+            /// UXL(repeating: Bit.zero) //  x
+            /// UXL(repeating: Bit.one ) // ~x
+            /// UXL(repeating: Bit.zero) // ~x &+ 1 == y
+            /// UXL(repeating: Bit.one ) // ~y
+            /// UXL(repeating: Bit.zero) // ~y &+ 1 == x
             /// ```
-            Test().complement(T(repeating: 0), false, Fallible(T(repeating: 1)))
-            Test().complement(T(repeating: 0), true,  Fallible(T(repeating: 0), error: !T.isSigned))
-            Test().complement(T(repeating: 0), false, Fallible(T(repeating: 1)))
-            Test().complement(T(repeating: 0), true,  Fallible(T(repeating: 0), error: !T.isSigned))
+            Test().complement(T(repeating: Bit.zero), false, Fallible(T(repeating: Bit.one )))
+            Test().complement(T(repeating: Bit.zero), true,  Fallible(T(repeating: Bit.zero), error: !T.isSigned))
+            Test().complement(T(repeating: Bit.zero), false, Fallible(T(repeating: Bit.one )))
+            Test().complement(T(repeating: Bit.zero), true,  Fallible(T(repeating: Bit.zero), error: !T.isSigned))
             
             /// ```swift
-            /// UXL([~0] as [UX], repeating: 0) //  x
-            /// UXL([ 0] as [UX], repeating: 1) // ~x
-            /// UXL([ 1] as [UX], repeating: 1) // ~x &+ 1 == y
-            /// UXL([~1] as [UX], repeating: 0) // ~y
-            /// UXL([~0] as [UX], repeating: 0) // ~y &+ 1 == x
+            /// UXL([~0] as [UX], repeating: Bit.zero) //  x
+            /// UXL([ 0] as [UX], repeating: Bit.one ) // ~x
+            /// UXL([ 1] as [UX], repeating: Bit.one ) // ~x &+ 1 == y
+            /// UXL([~1] as [UX], repeating: Bit.zero) // ~y
+            /// UXL([~0] as [UX], repeating: Bit.zero) // ~y &+ 1 == x
             /// ```
-            Test().complement(T([~0    ] as [UX], repeating: 0), false, Fallible(T([ 0    ] as [UX], repeating: 1)))
-            Test().complement(T([~0    ] as [UX], repeating: 0), true,  Fallible(T([ 1    ] as [UX], repeating: 1)))
-            Test().complement(T([ 1    ] as [UX], repeating: 1), false, Fallible(T([~1    ] as [UX], repeating: 0)))
-            Test().complement(T([ 1    ] as [UX], repeating: 1), true,  Fallible(T([~0    ] as [UX], repeating: 0)))
+            Test().complement(T([~0    ] as [UX], repeating: Bit.zero), false, Fallible(T([ 0    ] as [UX], repeating: Bit.one )))
+            Test().complement(T([~0    ] as [UX], repeating: Bit.zero), true,  Fallible(T([ 1    ] as [UX], repeating: Bit.one )))
+            Test().complement(T([ 1    ] as [UX], repeating: Bit.one ), false, Fallible(T([~1    ] as [UX], repeating: Bit.zero)))
+            Test().complement(T([ 1    ] as [UX], repeating: Bit.one ), true,  Fallible(T([~0    ] as [UX], repeating: Bit.zero)))
             
             /// ```swift
-            /// UXL([ 0    ] as [UX], repeating: 1) //  x
-            /// UXL([~0    ] as [UX], repeating: 0) // ~x
-            /// UXL([ 0,  1] as [UX], repeating: 0) // ~x &+ 1 == y
-            /// UXL([~0, ~1] as [UX], repeating: 1) // ~y
-            /// UXL([ 0    ] as [UX], repeating: 1) // ~y &+ 1 == x
+            /// UXL([ 0    ] as [UX], repeating: Bit.one ) //  x
+            /// UXL([~0    ] as [UX], repeating: Bit.zero) // ~x
+            /// UXL([ 0,  1] as [UX], repeating: Bit.zero) // ~x &+ 1 == y
+            /// UXL([~0, ~1] as [UX], repeating: Bit.one ) // ~y
+            /// UXL([ 0    ] as [UX], repeating: Bit.one ) // ~y &+ 1 == x
             /// ```
-            Test().complement(T([ 0    ] as [UX], repeating: 1), false, Fallible(T([~0    ] as [UX], repeating: 0)))
-            Test().complement(T([ 0    ] as [UX], repeating: 1), true,  Fallible(T([ 0,  1] as [UX], repeating: 0)))
-            Test().complement(T([ 0,  1] as [UX], repeating: 0), false, Fallible(T([~0, ~1] as [UX], repeating: 1)))
-            Test().complement(T([ 0,  1] as [UX], repeating: 0), true,  Fallible(T([ 0    ] as [UX], repeating: 1)))
+            Test().complement(T([ 0    ] as [UX], repeating: Bit.one ), false, Fallible(T([~0    ] as [UX], repeating: Bit.zero)))
+            Test().complement(T([ 0    ] as [UX], repeating: Bit.one ), true,  Fallible(T([ 0,  1] as [UX], repeating: Bit.zero)))
+            Test().complement(T([ 0,  1] as [UX], repeating: Bit.zero), false, Fallible(T([~0, ~1] as [UX], repeating: Bit.one )))
+            Test().complement(T([ 0,  1] as [UX], repeating: Bit.zero), true,  Fallible(T([ 0    ] as [UX], repeating: Bit.one )))
         }
                 
         for type in Self.types {
