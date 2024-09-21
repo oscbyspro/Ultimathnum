@@ -268,9 +268,16 @@ extension BinaryInteger {
             self = source.withUnsafeBinaryIntegerElements(Self.init(load:))
         }
     }
-    
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Data Int Source
+//=----------------------------------------------------------------------------=
+
+extension BinaryInteger {
+
     //=------------------------------------------------------------------------=
-    // MARK: Utilities x Elements
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     //=------------------------------------------------------------------------=
     // TODO: await appendix { borrowing get } fixes then make these borrowing
@@ -282,14 +289,14 @@ extension BinaryInteger {
         _ action: (DataInt<Element.Magnitude>) throws -> Value
     )   rethrows -> Value {
         
-        let appendix = self.appendix
+        let appendix: Bit = self.appendix
         
         return try self.withUnsafeBinaryIntegerBody {
             try action(DataInt($0, repeating: appendix))
         }
     }  
     
-    /// Performs the `action` on the mutable `body` and `appendix` of `self`.
+    /// Performs the `action` on the `body` and `appendix` of `self`.
     @inlinable public mutating func withUnsafeMutableBinaryIntegerElements<Value>(
         _ action: (MutableDataInt<Element.Magnitude>) throws -> Value
     )   rethrows -> Value {
@@ -302,7 +309,7 @@ extension BinaryInteger {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities x Elements x Downsized
+    // MARK: Utilities x Downsized
     //=------------------------------------------------------------------------=
     
     /// Performs the `action` on the `body` of `self` and temporarily 
@@ -312,7 +319,7 @@ extension BinaryInteger {
     /// triggers a precondition failure. In other words, you may only downsize
     /// elements with this method.
     ///
-    /// - Requires: `Element.size >= Destination.size`
+    /// - Requires: `Element.size >= OtherElement.size`
     ///
     /// - Note: You may always reinterpret its elements as bytes (`U8`).
     ///
@@ -326,14 +333,14 @@ extension BinaryInteger {
         }
     }
     
-    /// Performs the `action` on the mutable `body` of `self` and temporarily
+    /// Performs the `action` on the `body` of `self` and temporarily
     /// rebinds each element to the given `type`.
     ///
     /// Any attempt to rebind the elements of `self` to a larger element `type`
     /// triggers a precondition failure. In other words, you may only downsize
     /// elements with this method.
     ///
-    /// - Requires: `Element.size >= Destination.size`
+    /// - Requires: `Element.size >= OtherElement.size`
     ///
     /// - Note: You may always reinterpret its elements as bytes (`U8`).
     ///
@@ -354,7 +361,7 @@ extension BinaryInteger {
     /// triggers a precondition failure. In other words, you may only downsize
     /// elements with this method.
     ///
-    /// - Requires: `Element.size >= Destination.size`
+    /// - Requires: `Element.size >= OtherElement.size`
     ///
     /// - Note: You may always reinterpret its elements as bytes (`U8`).
     ///
@@ -368,14 +375,14 @@ extension BinaryInteger {
         }
     }
     
-    /// Performs the `action` on the mutable `body` and `appendix` of `self` and temporarily
+    /// Performs the `action` on the `body` and `appendix` of `self` and temporarily
     /// rebinds each element to the given `type`.
     ///
     /// Any attempt to rebind the elements of `self` to a larger element `type`
     /// triggers a precondition failure. In other words, you may only downsize
     /// elements with this method.
     ///
-    /// - Requires: `Element.size >= Destination.size`
+    /// - Requires: `Element.size >= OtherElement.size`
     ///
     /// - Note: You may always reinterpret its elements as bytes (`U8`).
     ///
