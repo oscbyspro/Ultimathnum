@@ -22,6 +22,33 @@ final class BinaryIntegerTestsOnLiteral: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
+    /// Here we check that integer literals aren't inferred as `Int` or `Double`.
+    ///
+    /// - Note: Neither `Int` nor `Double` can represent `I256.max`.
+    ///
+    /// - Note: Most, or all, literal conversions are `BinaryInteger` extensions.
+    ///
+    /// - Seealso: https://github.com/oscbyspro/Ultimathnum/issues/25
+    ///
+    func testGenericTypeInference() {
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            let expectation = T.lsb << 255 - 1
+            
+            let a: T =          (57896044618658097711785492504343953926634992332820282019728792003956564819967)
+            let b: T = T        (57896044618658097711785492504343953926634992332820282019728792003956564819967)
+            let c: T = T.init   (57896044618658097711785492504343953926634992332820282019728792003956564819967)
+            let d: T = T.exactly(57896044618658097711785492504343953926634992332820282019728792003956564819967).value
+            
+            Test().same(a, expectation)
+            Test().same(b, expectation)
+            Test().same(c, expectation)
+            Test().same(d, expectation)
+        }
+        
+        whereIs(IXL.self)
+        whereIs(UXL.self)
+    }
+    
     func testBigIntLiteralValuesNearSizeEdges() {
         struct Values {
             let size:  Count
