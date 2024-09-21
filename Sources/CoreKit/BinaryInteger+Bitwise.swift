@@ -18,15 +18,12 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     /// Creates a new instance that is equal to `1` or `0`.
-    @_disfavoredOverload // disfavor: 1-bit integer literal demotion
-    @inline(__always) // performance: please fold it like a paper airplane
-    @inlinable public init(_ bit: Bit) {
+    @inline(__always) @inlinable public init(_ bit: Bit) {
         self = Bool(bit) ?  1 : 0
     }
     
     /// Creates a new instance where each bit is set to `bit`.
-    @inline(__always) // performance: please fold it like a paper airplane
-    @inlinable public init(repeating bit: Bit) {
+    @inline(__always) @inlinable public init(repeating bit: Bit) {
         self = Bool(bit) ? ~0 : 0
     }
     
