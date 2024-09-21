@@ -17,6 +17,10 @@ extension Namespace {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// ### Development
+    ///
+    /// - Note: It can be used to load `Swift.BinaryInteger/words`.
+    ///
     @inlinable package static func withUnsafeBufferPointerOrCopy<Elements, Value>(
         of sequence: Elements,
         perform action: (UnsafeBufferPointer<Elements.Element>) throws -> Value

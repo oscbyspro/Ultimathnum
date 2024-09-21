@@ -70,16 +70,23 @@ extension StdlibIntTests {
     
     func testInitBinaryIntegerByFuzzing() {
         var randomness = fuzzer
+        func random<T>(_ random: T.Type = T.self) -> T where T: BinaryInteger {
+            let size  = IX(size: T.self) ?? 256
+            let index = IX.random(in: 000000000 ..< size, using: &randomness)!
+            return T.random(through: Shift(Count(index)), using: &randomness)
+        }
+        
         #if DEBUG
         let rounds = 0032
         #else
         let rounds = 1024
         #endif
+        
         for _ in 0 ..< rounds {
-            let random = IXL.random(through: Shift(Count(255)), using: &randomness)
-            let source = StdlibInt(random)
-            self.integer(source, is: source)
-            Test().same(IXL(source), random)
+            let random: IXL = random()
+            let value = StdlibInt(  random)
+            self.integer(value, is:  value)
+            Test().same(IXL(value), random)
         }
     }
         
