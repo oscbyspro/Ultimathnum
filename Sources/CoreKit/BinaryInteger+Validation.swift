@@ -166,6 +166,7 @@ extension BinaryInteger {
     ///
     /// - Note: It is `nil` if the integer part cannot be represented.
     ///
+    @_disfavoredOverload // disfavor: integer literal as Double
     @inlinable public init(_ source: some Swift.BinaryFloatingPoint) {
         self = Self.leniently(source)!.value
     }
@@ -180,6 +181,7 @@ extension BinaryInteger {
     ///
     /// - Note: It is `nil` if the operation is `undefined`.
     ///
+    @_disfavoredOverload // disfavor: integer literal as Double
     @inlinable public static func exactly(_ source: some Swift.BinaryFloatingPoint) -> Optional<Self> {
         Self.leniently(source)?.optional()
     }
@@ -192,6 +194,7 @@ extension BinaryInteger {
     ///
     /// - Note: The `error` is set if the `value` has been rounded towards zero.
     ///
+    @_disfavoredOverload // disfavor: integer literal as Double
     @inlinable public static func leniently(_ source: some Swift.BinaryFloatingPoint) -> Optional<Fallible<Self>> {
         //=--------------------------------------=
         // note: floating point zeros are special
