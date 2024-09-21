@@ -32,6 +32,6 @@ extension Bit {
     
     /// Performs a three-way comparison of `self` versus `other`.
     @inlinable public func compared(to other: Self) -> Signum {        
-        self == other ? Signum.zero : self.base ? Signum.positive : Signum.negative
+        self == other ? Signum.zero : other.base ? Signum.negative : Signum.positive
     }
 }

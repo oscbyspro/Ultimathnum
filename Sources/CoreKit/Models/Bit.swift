@@ -47,17 +47,9 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ source: Sign) {
-        self.init(raw: source)
+    @inlinable public init(_ source: some BitCastable<BitPattern>) {
+        self.base = source.load(as: BitPattern.self)
     }
-    
-    @inlinable public init(_ source: Bool) {
-        self.init(raw: source)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
     
     @inlinable public init(raw source: BitPattern) {
         self.base = source
