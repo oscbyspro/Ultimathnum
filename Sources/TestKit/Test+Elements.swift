@@ -185,7 +185,7 @@ extension Test {
         if  let expectation = expectation.optional() {
             same(Integer(body, repeating: appendix, mode: signedness), expectation, "T.init(_:repeating:mode:) - Array")
             
-            if  appendix == Bit.zero {
+            if  appendix.isZero {
                 same(Integer(body, mode: signedness), expectation, "T.init(_:mode:) - Array")
             }
             
@@ -193,7 +193,7 @@ extension Test {
                 same(Integer(body, repeating: appendix), expectation, "T.init(_:repeating:) - Array")
             }
             
-            if  appendix == Bit.zero, signedness == Integer.mode {
+            if  appendix.isZero, signedness == Integer.mode {
                 same(Integer(body), expectation, "T.init(_:) - Array")
             }
         }
@@ -202,7 +202,7 @@ extension Test {
             same(Integer(load:   body, repeating: appendix), expectation.value, "T.init(load:repeating:mode:) - Array")
             same(Integer.exactly(body, repeating: appendix,  mode: signedness), expectation, "T.exactly(_:repeating:mode:) - Array")
             
-            if  appendix == Bit.zero {
+            if  appendix.isZero {
                 same(Integer(load:   body), expectation.value, "T.init(load:) - Array")
                 same(Integer.exactly(body,  mode: signedness), expectation, "T.exactly(_:mode:) - Array")
             }
@@ -211,7 +211,7 @@ extension Test {
                 same(Integer.exactly(body, repeating: appendix), expectation, "T.exactly(_:repeating) - Array")
             }
             
-            if  appendix == Bit.zero, signedness == Integer.mode {
+            if  appendix.isZero, signedness == Integer.mode {
                 same(Integer.exactly(body), expectation, "T.exactly(_:) - Array")
             }
         }

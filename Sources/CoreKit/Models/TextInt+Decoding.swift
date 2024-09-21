@@ -50,7 +50,7 @@ extension TextInt {
             throw Error.lossy
         }
         
-        if  components.mask == Bit.one {
+        if  Bool(components.mask) {
             if  T.isArbitrary {
                 magnitude.value.toggle()
             }   else {

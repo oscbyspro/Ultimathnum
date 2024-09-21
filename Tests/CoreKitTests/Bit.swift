@@ -48,6 +48,11 @@ final class BitTests: XCTestCase {
         Test().same(Sign(raw: Bit.one ), .minus)
     }
     
+    func testIsZero() {
+        Test().yay(Bit.zero.isZero)
+        Test().nay(Bit.one .isZero)
+    }
+    
     func testComparison() {
         func comparison(_ lhs: Bit, _ rhs: Bit, _ expectation: Signum, _ test: Test = .init()) {
             for (x, y, z) in [

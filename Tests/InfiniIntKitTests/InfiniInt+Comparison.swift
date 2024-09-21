@@ -106,11 +106,11 @@ extension InfiniIntTests {
             for x: UX in [~2, ~1,  1, 2] as [UX] {
                 for y: UX in [~2, ~1, 1, 2] as [UX] {
                     for z: Bit in [Bit.zero, Bit.one] {
-                        Test().comparison(S([x, x] as [UX], repeating: z), S([          ] as [UX], repeating: ~z),  Signum(Sign(z == Bit.one )))
-                        Test().comparison(S([x, x] as [UX], repeating: z), S([y         ] as [UX], repeating: ~z),  Signum(Sign(z == Bit.one )))
-                        Test().comparison(S([x, x] as [UX], repeating: z), S([y, y      ] as [UX], repeating: ~z),  Signum(Sign(z == Bit.one )))
-                        Test().comparison(S([x, x] as [UX], repeating: z), S([y, y, y   ] as [UX], repeating: ~z),  Signum(Sign(z == Bit.one )))
-                        Test().comparison(S([x, x] as [UX], repeating: z), S([y, y, y, y] as [UX], repeating: ~z),  Signum(Sign(z == Bit.one )))
+                        Test().comparison(S([x, x] as [UX], repeating: z), S([          ] as [UX], repeating: ~z),  Signum(Sign(raw: z)))
+                        Test().comparison(S([x, x] as [UX], repeating: z), S([y         ] as [UX], repeating: ~z),  Signum(Sign(raw: z)))
+                        Test().comparison(S([x, x] as [UX], repeating: z), S([y, y      ] as [UX], repeating: ~z),  Signum(Sign(raw: z)))
+                        Test().comparison(S([x, x] as [UX], repeating: z), S([y, y, y   ] as [UX], repeating: ~z),  Signum(Sign(raw: z)))
+                        Test().comparison(S([x, x] as [UX], repeating: z), S([y, y, y, y] as [UX], repeating: ~z),  Signum(Sign(raw: z)))
                         
                         Test().comparison(S([x, x] as [UX], repeating: z), M([          ] as [UX], repeating: ~z), -1 as Signum)
                         Test().comparison(S([x, x] as [UX], repeating: z), M([y         ] as [UX], repeating: ~z), -1 as Signum)
@@ -124,11 +124,11 @@ extension InfiniIntTests {
                         Test().comparison(M([x, x] as [UX], repeating: z), S([y, y, y   ] as [UX], repeating: ~z),  1 as Signum)
                         Test().comparison(M([x, x] as [UX], repeating: z), S([y, y, y, y] as [UX], repeating: ~z),  1 as Signum)
                         
-                        Test().comparison(M([x, x] as [UX], repeating: z), M([          ] as [UX], repeating: ~z),  Signum(Sign(z == Bit.zero)))
-                        Test().comparison(M([x, x] as [UX], repeating: z), M([y         ] as [UX], repeating: ~z),  Signum(Sign(z == Bit.zero)))
-                        Test().comparison(M([x, x] as [UX], repeating: z), M([y, y      ] as [UX], repeating: ~z),  Signum(Sign(z == Bit.zero)))
-                        Test().comparison(M([x, x] as [UX], repeating: z), M([y, y, y   ] as [UX], repeating: ~z),  Signum(Sign(z == Bit.zero)))
-                        Test().comparison(M([x, x] as [UX], repeating: z), M([y, y, y, y] as [UX], repeating: ~z),  Signum(Sign(z == Bit.zero)))
+                        Test().comparison(M([x, x] as [UX], repeating: z), M([          ] as [UX], repeating: ~z), -Signum(Sign(raw: z)))
+                        Test().comparison(M([x, x] as [UX], repeating: z), M([y         ] as [UX], repeating: ~z), -Signum(Sign(raw: z)))
+                        Test().comparison(M([x, x] as [UX], repeating: z), M([y, y      ] as [UX], repeating: ~z), -Signum(Sign(raw: z)))
+                        Test().comparison(M([x, x] as [UX], repeating: z), M([y, y, y   ] as [UX], repeating: ~z), -Signum(Sign(raw: z)))
+                        Test().comparison(M([x, x] as [UX], repeating: z), M([y, y, y, y] as [UX], repeating: ~z), -Signum(Sign(raw: z)))
                     }
                 }
             }
@@ -148,11 +148,11 @@ extension InfiniIntTests {
             for x: UX in [~2, ~1,  1, 2] as [UX] {
                 for y: UX in [~2, ~1, 1, 2] as [UX] {
                     for z: Bit in [Bit.zero, Bit.one] {
-                        Test().comparison(T([x, x] as [UX], repeating: z), U([          ] as [UX], repeating: z), Signum(Sign( z == Bit.one )))
-                        Test().comparison(T([x, x] as [UX], repeating: z), U([y         ] as [UX], repeating: z), Signum(Sign( z == Bit.one )))
-                        Test().comparison(T([x, x] as [UX], repeating: z), U([y, y      ] as [UX], repeating: z), x == y ? 0 : x < y ? -1 :  1)
-                        Test().comparison(T([x, x] as [UX], repeating: z), U([y, y, y   ] as [UX], repeating: z), Signum(Sign( z == Bit.zero)))
-                        Test().comparison(T([x, x] as [UX], repeating: z), U([y, y, y, y] as [UX], repeating: z), Signum(Sign( z == Bit.zero)))
+                        Test().comparison(T([x, x] as [UX], repeating: z), U([          ] as [UX], repeating: z),  Signum(Sign(raw: z)))
+                        Test().comparison(T([x, x] as [UX], repeating: z), U([y         ] as [UX], repeating: z),  Signum(Sign(raw: z)))
+                        Test().comparison(T([x, x] as [UX], repeating: z), U([y, y      ] as [UX], repeating: z),  x == y ? 0 : x < y ? -1 : 1)
+                        Test().comparison(T([x, x] as [UX], repeating: z), U([y, y, y   ] as [UX], repeating: z), -Signum(Sign(raw: z)))
+                        Test().comparison(T([x, x] as [UX], repeating: z), U([y, y, y, y] as [UX], repeating: z), -Signum(Sign(raw: z)))
                     }
                 }
             }

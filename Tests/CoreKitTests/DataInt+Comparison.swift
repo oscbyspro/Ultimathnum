@@ -27,7 +27,7 @@ extension DataIntTests {
             
             for appendix in [Bit.zero, Bit.one] {
                 for signedness: Signedness in [.unsigned, .signed] {
-                    let expectation = (appendix == Bit.zero) ? Signum.zero : Signum(Sign(raw: signedness))
+                    let expectation = appendix.isZero ? Signum.zero : Signum(Sign(raw: signedness))
                     C([       ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
                     C([0      ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
                     C([0, 0   ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
@@ -35,7 +35,7 @@ extension DataIntTests {
                 }
                 
                 for signedness: Signedness in [.unsigned, .signed] {
-                    let expectation = (appendix == Bit.zero) ? Signum.positive : Signum(Sign(raw: signedness))
+                    let expectation = appendix.isZero ? Signum.positive : Signum(Sign(raw: signedness))
                     C([1      ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
                     C([1, 2   ] as [T], repeating: appendix).signum(mode: signedness, is: expectation)
                     C([1, 2, 3] as [T], repeating: appendix).signum(mode: signedness, is: expectation)

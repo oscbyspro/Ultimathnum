@@ -29,11 +29,11 @@ final class BinaryIntegerTestsOnCount: XCTestCase {
             //=----------------------------------=
             for bit in [Bit.zero, Bit.one] {
                 always: do {
-                    Test()     .count( 0 as T, bit, Count(raw: bit == Bit.zero ? relative : IX.zero))
+                    Test()     .count( 0 as T, bit, Count(raw: bit.isZero ? relative : IX.zero))
                     Test()     .count(~0 as T, bit, Count(raw: bit == Bit.one  ? relative : IX.zero))
-                    Test() .ascending( 0 as T, bit, Count(raw: bit == Bit.zero ? relative : IX.zero))
+                    Test() .ascending( 0 as T, bit, Count(raw: bit.isZero ? relative : IX.zero))
                     Test() .ascending(~0 as T, bit, Count(raw: bit == Bit.one  ? relative : IX.zero))
-                    Test().descending( 0 as T, bit, Count(raw: bit == Bit.zero ? relative : IX.zero))
+                    Test().descending( 0 as T, bit, Count(raw: bit.isZero ? relative : IX.zero))
                     Test().descending(~0 as T, bit, Count(raw: bit == Bit.one  ? relative : IX.zero))
                 }
                 

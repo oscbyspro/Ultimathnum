@@ -17,15 +17,21 @@ extension Bit {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func compared(to other: Self) -> Signum {
-        self == other ? 0 : self.base ? 1 : -1
-    }
-    
     @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         lhs.base == rhs.base
     }
     
     @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         (lhs.base, rhs.base) == (false, true)
+    }
+    
+    /// Indicates whether this value is equal to zero.
+    @inlinable public var isZero: Bool {
+        !self.base
+    }
+    
+    /// Performs a three-way comparison of `self` versus `other`.
+    @inlinable public func compared(to other: Self) -> Signum {        
+        self == other ? Signum.zero : self.base ? Signum.positive : Signum.negative
     }
 }

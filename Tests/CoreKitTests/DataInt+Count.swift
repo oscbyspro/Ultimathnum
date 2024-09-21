@@ -166,7 +166,7 @@ extension DataIntTests.Body {
         self.expect(Count(       expectation), read:{ $0   .descending(bit) }, write:{ $0   .descending(bit) })
         self.expect(Count(size - expectation), read:{ $0.nondescending(bit) }, write:{ $0.nondescending(bit) })
         
-        if  bit == Bit.zero {
+        if  bit.isZero {
             self .expect(Count(1 + size - expectation), read:{ $0.entropy() }, write:{ $0.entropy() })
         }
         
