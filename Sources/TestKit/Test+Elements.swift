@@ -177,7 +177,7 @@ extension Test {
         _ expectation: Fallible<Integer>
     )   where Integer: BinaryInteger, Element: SystemsInteger & UnsignedInteger {
         //=--------------------------------------=
-        let appendix = Bit(signedness == .signed && body.last?.msb == Bit.one)
+        let appendix = Bit(signedness == Signedness.signed && body.last?.msb == Bit.one)
         //=--------------------------------------=
         func ix(_ element: UX) -> some SystemsInteger<UX.BitPattern> { IX(raw: element) }
         func ux(_ element: UX) -> some SystemsInteger<UX.BitPattern> { UX(raw: element) }
@@ -235,7 +235,7 @@ extension Test {
                     same(Integer.exactly(elements), expectation, "T.exactly(_:) - DataInt")
                 }
             }
-                        
+            
             elements.reinterpret(as: U8.self) {
                 same(Integer.exactly($0, mode: signedness), expectation, "T.exactly(_:mode:) - DataInt<U8>")
                 
@@ -252,6 +252,16 @@ extension Test {
                     }   else {
                         same(Integer(load:  ux(word)), expectation.value,   "T.init(load:) - UX")
                         same(UX(raw: word), UX(load:   expectation.value), "UX.init(load:) - T" )
+                    }
+                }
+            }
+            
+            if  Integer.Element.size <=  Element.size {
+                elements.reinterpret(as: Integer.Element.Magnitude.self) {
+                    same(Integer.exactly($0, mode: signedness), expectation, "T.exactly(_:mode:) - DataInt<Element.Magnitude>")
+                    
+                    if  signedness == Integer.mode {
+                        same(Integer.exactly($0), expectation, "T.exactly(_:) - DataInt<Element.Magnitude>")
                     }
                 }
             }

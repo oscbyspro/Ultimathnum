@@ -7,17 +7,29 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Bit Castable x Cast
+// MARK: * Test x Floats
 //*============================================================================*
 
-extension BitCastable {
+extension Test {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inline(__always) @inlinable public init(raw source: consuming some BitCastable<BitPattern>) {
-        self.init(raw: source.load(as: BitPattern.self))
+    public func stdlib<A, B>(
+        _ source: A, is destination: B?, exactly: Bool = false, as type: B.Type = B.self
+    )   where A: Swift.BinaryFloatingPoint, B: BinaryInteger {
+        
+        if  let destination {
+            same(B.init     (source), destination)
+            same(B.exactly  (source), Fallible(destination, error: !exactly).optional())
+            same(B.leniently(source), Fallible(destination, error: !exactly))
+        }   else {
+            none(B.exactly  (source))
+            none(B.leniently(source))
+        }
     }
 }

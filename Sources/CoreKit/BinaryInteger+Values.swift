@@ -27,9 +27,8 @@ extension BinaryInteger {
         Self(raw: 1 as Magnitude)
     }
     
-    /// The additive identity element: `zero`.
-    @inline(__always) // performance: please fold it like a paper airplane
-    @inlinable public static var zero: Self {
+    /// Returns the additive identity element: `zero`.
+    @inline(__always) @inlinable public static var zero: Self {
         Self()
     }
     
@@ -38,8 +37,7 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     /// Returns the additive identity element: `zero`.
-    @inline(__always) // performance: please fold it like a paper airplane
-    @inlinable public init() {
+    @inline(__always) @inlinable public init() {
         self = 0
     }
 }

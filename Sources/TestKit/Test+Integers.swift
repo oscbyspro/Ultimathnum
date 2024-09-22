@@ -10,7 +10,7 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Test x Validation
+// MARK: * Test x Integers
 //*============================================================================*
 
 extension Test {
@@ -87,31 +87,6 @@ extension Test {
             input.withUnsafeBinaryIntegerBody {
                 self.exactly(Array($0.buffer()), Input.mode, expectation)
             }
-        }
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Stdlib
-//=----------------------------------------------------------------------------=
-
-extension Test {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    public func stdlib<A, B>(
-        _ source: A, is destination: B?, exactly: Bool = false, as type: B.Type = B.self
-    )   where A: Swift.BinaryFloatingPoint, B: BinaryInteger {
-        
-        if  let destination {
-            same(B.init     (source), destination)
-            same(B.exactly  (source), Fallible(destination, error: !exactly).optional())
-            same(B.leniently(source), Fallible(destination, error: !exactly))
-        }   else {
-            none(B.exactly  (source))
-            none(B.leniently(source))
         }
     }
 }
