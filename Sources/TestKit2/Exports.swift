@@ -7,22 +7,8 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-import RandomIntKit
-import TestKit2
-
 //*============================================================================*
-// MARK: * Random Int
+// MARK: * Exports
 //*============================================================================*
 
-@Suite struct RandomIntTests {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    @Test func metadata() {
-        #expect(RandomInt.self as Any is any Randomness.Type)
-        #expect(MemoryLayout<RandomInt>.size == 0)
-    }
-}
+@_exported import Testing

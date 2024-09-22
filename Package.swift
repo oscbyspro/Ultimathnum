@@ -108,7 +108,7 @@ let package = Package(
         ),
         .testTarget(
             name: "RandomIntKitTests",
-            dependencies: ["RandomIntKit", "TestKit"]
+            dependencies: ["RandomIntKit", "TestKit", "TestKit2"]
         ),
         .target(
             name: "StdlibIntKit",
@@ -120,6 +120,10 @@ let package = Package(
         ),
         .target(
             name: "TestKit",
+            dependencies: ["CoreKit", "RandomIntKit"]
+        ),
+        .target(
+            name: "TestKit2",
             dependencies: ["CoreKit", "RandomIntKit"]
         ),
         .testTarget(

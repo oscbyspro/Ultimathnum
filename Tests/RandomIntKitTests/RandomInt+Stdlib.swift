@@ -12,17 +12,25 @@ import RandomIntKit
 import TestKit2
 
 //*============================================================================*
-// MARK: * Random Int
+// MARK: * Random Int x Stdlib
 //*============================================================================*
 
-@Suite struct RandomIntTests {
+@Suite struct RandomIntTestsOnStdlib {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     @Test func metadata() {
-        #expect(RandomInt.self as Any is any Randomness.Type)
-        #expect(MemoryLayout<RandomInt>.size == 0)
+        #expect(RandomInt.Stdlib.self as Any is any Swift.RandomNumberGenerator.Type)
+        #expect(MemoryLayout<RandomInt.Stdlib>.size == 0)
+    }
+    
+    @Test func stdlib() {
+        let custom = RandomInt(Swift.SystemRandomNumberGenerator())
+        let stdlib: Swift.SystemRandomNumberGenerator = custom.stdlib()
+        #expect(MemoryLayout.size(ofValue: custom) == Swift.Int.zero)
+        #expect(MemoryLayout.size(ofValue: stdlib) == Swift.Int.zero)
     }
 }
+

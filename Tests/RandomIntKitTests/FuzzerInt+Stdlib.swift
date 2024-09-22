@@ -12,17 +12,18 @@ import RandomIntKit
 import TestKit2
 
 //*============================================================================*
-// MARK: * Random Int
+// MARK: * Fuzzer Int x Stdlib
 //*============================================================================*
 
-@Suite struct RandomIntTests {
+@Suite struct FuzzerIntTestsOnStdlib {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     @Test func metadata() {
-        #expect(RandomInt.self as Any is any Randomness.Type)
-        #expect(MemoryLayout<RandomInt>.size == 0)
+        #expect(FuzzerInt.Stdlib.self as Any is any Swift.RandomNumberGenerator.Type)
+        #expect(MemoryLayout<FuzzerInt.Stdlib>.size == 8)
     }
 }
+

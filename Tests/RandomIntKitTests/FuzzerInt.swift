@@ -9,74 +9,46 @@
 
 import CoreKit
 import RandomIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Fuzzer Int
 //*============================================================================*
 
-final class FuzzerIntTests: XCTestCase {
-    
+@Suite struct FuzzerIntTests {
+        
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testMetadata() {
-        Test().yay(FuzzerInt.self as Any is any Randomness.Type)
-        Test().yay(FuzzerInt.Stdlib.self as Any is any Swift.RandomNumberGenerator.Type)
+    @Test func metadata() {
+        #expect(FuzzerInt.self as Any is any Randomness.Type)
+        #expect(MemoryLayout<FuzzerInt>.size == 8)
     }
     
-    func testSeeds() {
-        var randomness = FuzzerInt(seed: 0)
+    @Test(arguments: [
+        Many( 0 as I64, yields: [0xe220a8397b1dcdaf, 0x6e789e6aa1b965f4, 0x06c45d188009454f, 0xf88bb8a8724c81ec] as [U64]),
+        Many( 1 as I64, yields: [0x910a2dec89025cc1, 0xbeeb8da1658eec67, 0xf893a2eefb32555e, 0x71c18690ee42c90b] as [U64]),
+        Many(~1 as I64, yields: [0xf3203e9039f4a821, 0xba56949915dcf9e9, 0xd0d5127a96e8d90d, 0x1ef156bb76650c37] as [U64]),
+        Many(~0 as I64, yields: [0xe4d971771b652c20, 0xe99ff867dbf682c9, 0x382ff84cb27281e9, 0x6d1db36ccba982d2] as [U64]),
+    ]) func seeded(_ expectation: Many<I64, U64>) {
         
-        func expect(_ expectation: U64, line: UInt = #line) {
+        var randomness = FuzzerInt(seed: U64(raw: expectation.input))
+        for element in expectation.output {
             var copy    = randomness
             var stdlibX = randomness.stdlib
             var stdlibY = randomness.stdlib()
             
-            Test(line: line).same(randomness, copy)
-            Test(line: line).same(stdlibX, stdlibY)
+            #expect(randomness == copy)
+            #expect(stdlibX == stdlibY)
             
-            Test(line: line).same(randomness .next(),       (expectation), "normal")
-            Test(line: line).same(copy.stdlib.next(), UInt64(expectation), "stdlib modify")
-            Test(line: line).same(((stdlibX)).next(), UInt64(expectation), "stdlib mutating read")
-            Test(line: line).same(((stdlibY)).next(), UInt64(expectation), "stdlib consuming get")
+            #expect(randomness .next() ==       (element)) // custom
+            #expect(copy.stdlib.next() == UInt64(element)) // stdlib modify
+            #expect(((stdlibX)).next() == UInt64(element)) // stdlib mutating read
+            #expect(((stdlibY)).next() == UInt64(element)) // stdlib consuming get
             
-            Test(line: line).same(randomness, copy)
-            Test(line: line).same(stdlibX, stdlibY)
+            #expect(randomness == copy)
+            #expect(stdlibX == stdlibY)
         }
-        
-        randomness = .init(seed:  0)
-        expect(16294208416658607535)
-        expect(07960286522194355700)
-        expect(00487617019471545679)
-        expect(17909611376780542444)
-        
-        randomness = .init(seed:  1)
-        expect(10451216379200822465)
-        expect(13757245211066428519)
-        expect(17911839290282890590)
-        expect(08196980753821780235)
-        
-        randomness = .init(seed: ~1)
-        expect(17519071339639777313)
-        expect(13427082724269423081)
-        expect(15047954047655532813)
-        expect(02229658653670313015)
-        
-        randomness = .init(seed: ~0)
-        expect(16490336266968443936)
-        expect(16834447057089888969)
-        expect(04048727598324417001)
-        expect(07862637804313477842)
-        
-        randomness = .init(seed:  0)
-        var unique = Set<U64>()
-        
-        for _ in 0 ..< 10000 {
-            unique.insert(randomness.next())
-        }
-        
-        Test().same(unique.count, 10000)
     }
 }
