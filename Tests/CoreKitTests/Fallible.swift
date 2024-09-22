@@ -17,6 +17,20 @@ import TestKit
 final class FallibleTests: XCTestCase {
     
     //=------------------------------------------------------------------------=
+    // MARK: Tests x Metadata
+    //=------------------------------------------------------------------------=
+    
+    func testOptionalFallibleHasSameMemoryLayoutAsFallible() {
+        Test().same(MemoryLayout<Optional<Fallible<I8  >>>.self, MemoryLayout<Fallible<I8  >>.self)
+        Test().same(MemoryLayout<Optional<Fallible<U8  >>>.self, MemoryLayout<Fallible<U8  >>.self)
+        Test().same(MemoryLayout<Optional<Fallible<IX  >>>.self, MemoryLayout<Fallible<IX  >>.self)
+        Test().same(MemoryLayout<Optional<Fallible<UX  >>>.self, MemoryLayout<Fallible<UX  >>.self)
+        Test().same(MemoryLayout<Optional<Fallible<Bool>>>.self, MemoryLayout<Fallible<Bool>>.self)
+        Test().same(MemoryLayout<Optional<Fallible<Void>>>.self, MemoryLayout<Fallible<Void>>.self)
+        Test().same(MemoryLayout<Optional<Fallible<[U8]>>>.self, MemoryLayout<Fallible<[U8]>>.self)
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
