@@ -36,13 +36,8 @@ import TestKit2
         Some((lhs: Bit.one,  rhs: Bit.zero), yields: Signum.positive),
         Some((lhs: Bit.one,  rhs: Bit.one ), yields: Signum.zero),
         
-    ]) func comparison(_ expectation: Some<(lhs: Bit, rhs: Bit), Signum>) {
+    ]) func compare(_ expectation: Some<(lhs: Bit, rhs: Bit), Signum>) {
+        expect(expectation.input.lhs, equals: expectation.input.rhs, is: expectation.output)
         #expect((expectation.input.lhs.compared(to: expectation.input.rhs)) == expectation.output)
-        #expect((expectation.input.lhs <  expectation.input.rhs) == (expectation.output == Signum.negative))
-        #expect((expectation.input.lhs >= expectation.input.rhs) == (expectation.output != Signum.negative))
-        #expect((expectation.input.lhs == expectation.input.rhs) == (expectation.output == Signum.zero))
-        #expect((expectation.input.lhs != expectation.input.rhs) == (expectation.output != Signum.zero))
-        #expect((expectation.input.lhs >  expectation.input.rhs) == (expectation.output == Signum.positive))
-        #expect((expectation.input.lhs <= expectation.input.rhs) == (expectation.output != Signum.positive))
     }
 }

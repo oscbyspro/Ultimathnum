@@ -8,95 +8,76 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Sign
 //*============================================================================*
 
-final class SignTests: XCTestCase {
-    
-    typealias T = Sign
-    
+@Suite struct SignTests {
+        
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testBit() {
-        Test().same(T(Bit.zero), T.plus )
-        Test().same(T(Bit.one ), T.minus)
+    @Test("Sign ← Bit", arguments: [
         
-        Test().same(T(raw: Bit.zero), T.plus )
-        Test().same(T(raw: Bit.one ), T.minus)
+        Some(Bit.zero, yields: Sign.plus ),
+        Some(Bit.one,  yields: Sign.minus),
         
-        Test().same(Bit(T.plus ), Bit.zero)
-        Test().same(Bit(T.minus), Bit.one )
-        
-        Test().same(Bit(raw: T.plus ), Bit.zero)
-        Test().same(Bit(raw: T.minus), Bit.one )
+    ]) func initBit(_ expectation: Some<Bit, Sign>) {
+        #expect(Sign(     expectation.input) == expectation.output)
+        #expect(Sign(raw: expectation.input) == expectation.output)
     }
     
-    func testBool() {
-        Test().same(T(false), T.plus )
-        Test().same(T(true ), T.minus)
+    @Test("Sign → Bit", arguments: [
         
-        Test().same(T(raw: false), T.plus )
-        Test().same(T(raw: true ), T.minus)
+        Some(Sign.plus,  yields: Bit.zero),
+        Some(Sign.minus, yields: Bit.one ),
         
-        Test().same(Bool(T.plus ), false)
-        Test().same(Bool(T.minus), true )
-        
-        Test().same(Bool(raw: T.plus ), false)
-        Test().same(Bool(raw: T.minus), true )
+    ]) func makeBit(_ expectation: Some<Sign, Bit>) {
+        #expect(Bit(     expectation.input) == expectation.output)
+        #expect(Bit(raw: expectation.input) == expectation.output)
     }
     
-    func testFloatingPointSign() {
-        Test().same(T(FloatingPointSign.plus ), T.plus )
-        Test().same(T(FloatingPointSign.minus), T.minus)
+    @Test("Sign ← Bool", arguments: [
         
-        Test().same(T(raw: FloatingPointSign.plus ), T.plus )
-        Test().same(T(raw: FloatingPointSign.minus), T.minus)
+        Some(false, yields: Sign.plus ),
+        Some(true,  yields: Sign.minus),
         
-        Test().same(T.plus .stdlib(), FloatingPointSign.plus )
-        Test().same(T.minus.stdlib(), FloatingPointSign.minus)
-        
-        Test().same(FloatingPointSign(T.plus ), FloatingPointSign.plus )
-        Test().same(FloatingPointSign(T.minus), FloatingPointSign.minus)
-        
-        Test().same(FloatingPointSign(raw: T.plus ), FloatingPointSign.plus )
-        Test().same(FloatingPointSign(raw: T.minus), FloatingPointSign.minus)
+    ]) func initBool(_ expectation: Some<Bool, Sign>) {
+        #expect(Sign(     expectation.input) == expectation.output)
+        #expect(Sign(raw: expectation.input) == expectation.output)
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Tests x Transformations
-    //=------------------------------------------------------------------------=
-    
-    func testLogicalNot() {
-        Test().not(T.plus,  T.minus)
-        Test().not(T.minus, T.plus )
+    @Test("Sign → Bool", arguments: [
         
-        Test().same({ var x = T.plus;  x.toggle(); return x }(), T.minus)
-        Test().same({ var x = T.minus; x.toggle(); return x }(), T.plus )
+        Some(Sign.plus,  yields: false),
+        Some(Sign.minus, yields: true ),
+        
+    ]) func makeBool(_ expectation: Some<Sign, Bool>) {
+        #expect(Bool(     expectation.input) == expectation.output)
+        #expect(Bool(raw: expectation.input) == expectation.output)
     }
     
-    func testLogicalAnd() {
-        Test().and(T.plus , T.plus , T.plus )
-        Test().and(T.plus , T.minus, T.plus )
-        Test().and(T.minus, T.plus , T.plus )
-        Test().and(T.minus, T.minus, T.minus)
+    @Test("Sign ← Stdlib", arguments: [
+        
+        Some(FloatingPointSign.plus,  yields: Sign.plus ),
+        Some(FloatingPointSign.minus, yields: Sign.minus),
+        
+    ]) func initStdlib(_ expectation: Some<FloatingPointSign, Sign>) {
+        #expect(Sign(     expectation.input) == expectation.output)
+        #expect(Sign(raw: expectation.input) == expectation.output)
     }
     
-    func testLogicalOr() {
-        Test().or (T.plus , T.plus , T.plus )
-        Test().or (T.plus , T.minus, T.minus)
-        Test().or (T.minus, T.plus , T.minus)
-        Test().or (T.minus, T.minus, T.minus)
-    }
-    
-    func testLogcialXor() {
-        Test().xor(T.plus , T.plus , T.plus )
-        Test().xor(T.plus , T.minus, T.minus)
-        Test().xor(T.minus, T.plus , T.minus)
-        Test().xor(T.minus, T.minus, T.plus )
+    @Test("Sign → Stdlib", arguments: [
+        
+        Some(Sign.plus,  yields: FloatingPointSign.plus ),
+        Some(Sign.minus, yields: FloatingPointSign.minus),
+        
+    ]) func makeStdlib(_ expectation: Some<Sign, FloatingPointSign>) {
+        #expect(expectation.input.stdlib()                == expectation.output)
+        #expect(FloatingPointSign(     expectation.input) == expectation.output)
+        #expect(FloatingPointSign(raw: expectation.input) == expectation.output)
     }
 }

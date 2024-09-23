@@ -8,49 +8,42 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Order
 //*============================================================================*
 
-final class OrderTests: XCTestCase {
+@Suite struct OrderTests {
         
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testInit() {
-        Test().same(Order(descending: false), Order .ascending)
-        Test().same(Order(descending:  true), Order.descending)
+    @Test(arguments: [
+        
+        Some(Order.ascending,  yields: false),
+        Some(Order.descending, yields: true ),
+        
+    ]) func descending(_ expectation: Some<Order, Bool>) {
+        #expect(Order(descending: expectation.output) == expectation.input)
     }
     
-    func testBitCast() {
-        Test().same(Bit(raw: Order .ascending), Bit.zero)
-        Test().same(Bit(raw: Order.descending), Bit.one )
-        Test().same(Order(raw: Bit.zero), Order .ascending)
-        Test().same(Order(raw: Bit.one ), Order.descending)
+    #if _endian(little)
+    @Test("Order.endianness (↑)", arguments: CollectionOfOne(Order.ascending ))
+    #else
+    @Test("Order.endianness (↓)", arguments: CollectionOfOne(Order.descending))
+    #endif
+    func endianness(_ expectation: Order) {
+        #expect(Order.endianess == expectation)
     }
     
-    func testComparison() {
-        Test()   .same(Order .ascending, Order .ascending)
-        Test().nonsame(Order .ascending, Order.descending)
-        Test().nonsame(Order.descending, Order .ascending)
-        Test()   .same(Order.descending, Order.descending)
-    }
-    
-    func testEndianess() {
-        #if _endian(little)
-        Test()   .same(Order.endianess, Order .ascending)
-        Test().nonsame(Order.endianess, Order.descending)
-        #elseif _endian(big)
-        Test().nonsame(Order.endianess, Order .ascending)
-        Test()   .same(Order.endianess, Order.descending)
-        #endif
-    }
-    
-    func testReversed() {
-        Test().same(Order .ascending.reversed(), Order.descending)
-        Test().same(Order.descending.reversed(), Order .ascending)
+    @Test(arguments: [
+        
+        Some(Order.ascending,  yields: Order.descending),
+        Some(Order.descending, yields: Order.ascending ),
+        
+    ]) func reversed(_ expectation: Some<Order, Order>) {
+        #expect(expectation.input.reversed() == expectation.output)
     }
 }

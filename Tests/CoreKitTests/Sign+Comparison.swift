@@ -8,32 +8,26 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
-// MARK: * Bit Castable
+// MARK: * Sign x Comparison
 //*============================================================================*
 
-final class BitCastableTests: XCTestCase {
-    
+@Suite struct SignTestsOnComparison {
+        
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testRawInitUsingCoreSystemsIntegers() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            typealias S = T.Signitude
-            typealias M = T.Magnitude
-            
-            Test().same(T(raw: S.min),  T.msb)
-            Test().same(T(raw: S.max), ~T.msb)
-            
-            Test().same(T(raw: M.min),  T(repeating: Bit.zero))
-            Test().same(T(raw: M.max),  T(repeating: Bit.one ))
-        }
-
-        for type in coreSystemsIntegers {
-            whereIs(type)
-        }
+    @Test(arguments: [
+        
+        Some((lhs: Sign.plus,  rhs: Sign.plus ), yields: true ),
+        Some((lhs: Sign.plus,  rhs: Sign.minus), yields: false),
+        Some((lhs: Sign.minus, rhs: Sign.plus ), yields: false),
+        Some((lhs: Sign.minus, rhs: Sign.minus), yields: true ),
+        
+    ]) func compare(_ expectation: Some<(lhs: Sign, rhs: Sign), Bool>) {
+        expect(expectation.input.lhs, equals: expectation.input.rhs, is: expectation.output)
     }
 }

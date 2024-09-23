@@ -11,30 +11,23 @@ import CoreKit
 import TestKit2
 
 //*============================================================================*
-// MARK: * Signedness
+// MARK: * Signedness x Comparison
 //*============================================================================*
 
-@Suite struct SignednessTests {
+@Suite struct SignednessTestsOnComparison {
         
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
-        
-    @Test("Signedness.init(raw:)", arguments: [
-        
-        Some(Bit.zero, yields: Signedness.unsigned),
-        Some(Bit.one,  yields: Signedness  .signed),
-        
-    ]) func initBit(_ expectation: Some<Bit, Signedness>) {
-        #expect(Signedness(raw: expectation.input) == expectation.output)
-    }
     
-    @Test("Signedness.init(signed:)", arguments: [
-      
-        Some(false, yields: Signedness.unsigned),
-        Some(true,  yields: Signedness  .signed),
+    @Test(arguments: [
         
-    ]) func initSigned(_ expectation: Some<Bool, Signedness>) {
-        #expect(Signedness(signed: expectation.input) == expectation.output)
+        Some((lhs: Signedness.unsigned, rhs: Signedness.unsigned), yields: true ),
+        Some((lhs: Signedness.unsigned, rhs: Signedness  .signed), yields: false),
+        Some((lhs: Signedness  .signed, rhs: Signedness.unsigned), yields: false),
+        Some((lhs: Signedness  .signed, rhs: Signedness  .signed), yields: true ),
+        
+    ]) func compare(_ expectation: Some<(lhs: Signedness, rhs: Signedness), Bool>) {
+        expect(expectation.input.lhs, equals: expectation.input.rhs, is: expectation.output)
     }
 }
