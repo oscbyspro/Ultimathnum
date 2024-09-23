@@ -8,86 +8,96 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * UInt
+// MARK: * Swift x Int
 //*============================================================================*
 
-extension UInt: BitCastable {
-    
-    public typealias BitPattern = Magnitude
+extension Int: BitCastable {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ source: UX) {
-        self = source.base
+    @inlinable public init(raw source: consuming Magnitude) {
+        self.init(bitPattern: source)
+    }
+    
+    @inlinable public consuming func load(as type: Magnitude.Type) -> Magnitude {
+        Magnitude(bitPattern: self)
     }
 }
 
 //*============================================================================*
-// MARK: * UInt x 8
+// MARK: * Swift x Int8
 //*============================================================================*
 
-extension UInt8: BitCastable {
+extension Int8: BitCastable {
     
-    public typealias BitPattern = Magnitude
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(raw source: consuming Magnitude) {
+        self.init(bitPattern: source)
+    }
+    
+    @inlinable public consuming func load(as type: Magnitude.Type) -> Magnitude {
+        Magnitude(bitPattern: self)
+    }
+}
+
+//*============================================================================*
+// MARK: * Swift x Int16
+//*============================================================================*
+
+extension Int16: BitCastable {
         
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ source: U8) {
-        self = source.base
+    @inlinable public init(raw source: consuming Magnitude) {
+        self.init(bitPattern: source)
+    }
+    
+    @inlinable public consuming func load(as type: Magnitude.Type) -> Magnitude {
+        Magnitude(bitPattern: self)
     }
 }
 
 //*============================================================================*
-// MARK: * UInt x 16
+// MARK: * Swift x Int32
 //*============================================================================*
 
-extension UInt16: BitCastable {
-    
-    public typealias BitPattern = Magnitude
+extension Int32: BitCastable {
         
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ source: U16) {
-        self = source.base
+    @inlinable public init(raw source: consuming Magnitude) {
+        self.init(bitPattern: source)
+    }
+    
+    @inlinable public consuming func load(as type: Magnitude.Type) -> Magnitude {
+        Magnitude(bitPattern: self)
     }
 }
 
 //*============================================================================*
-// MARK: * UInt x 32
+// MARK: * Swift x Int64
 //*============================================================================*
 
-extension UInt32: BitCastable {
-    
-    public typealias BitPattern = Magnitude
+extension Int64: BitCastable {
         
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ source: U32) {
-        self = source.base
+    @inlinable public init(raw source: consuming Magnitude) {
+        self.init(bitPattern: source)
     }
-}
-
-//*============================================================================*
-// MARK: * UInt x 64
-//*============================================================================*
-
-extension UInt64: BitCastable {
     
-    public typealias BitPattern = Magnitude
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(_ source: U64) {
-        self = source.base
+    @inlinable public consuming func load(as type: Magnitude.Type) -> Magnitude {
+        Magnitude(bitPattern: self)
     }
 }

@@ -8,7 +8,17 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Array
+// MARK: * Swift x Binary Integer
 //*============================================================================*
 
-extension Array: Contiguous { }
+extension Swift.BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    /// Reinterprets the given `source` as an instance of this type.
+    @inlinable public init(_ source: consuming some Interoperable<Self>) {
+        self = source.stdlib()
+    }
+}

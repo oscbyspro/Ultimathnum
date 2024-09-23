@@ -12,7 +12,7 @@
 //*============================================================================*
 
 /// A type with a standard-library-compatible representation.
-public protocol Interoperable {
+public protocol Interoperable<Stdlib> {
     
     /// A standard-library-compatible representation of `Self`.
     associatedtype Stdlib

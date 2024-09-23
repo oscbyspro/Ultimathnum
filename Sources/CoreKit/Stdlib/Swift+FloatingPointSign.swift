@@ -8,30 +8,24 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Optional
+// MARK: * Swift x Floating Point Sign
 //*============================================================================*
 
-extension Optional: BitCastable where Wrapped: BitCastable {
-    
-    public typealias BitPattern = Optional<Wrapped.BitPattern>
+extension FloatingPointSign: BitCastable {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(raw source: consuming BitPattern) {
-        if  let source {
-            self.init(Wrapped(raw: source))
-        }   else {
-            self = nil
-        }
+    @inlinable public init(_ sign: Sign) {
+        self.init(raw: sign)
     }
     
-    @inlinable public func load(as type: BitPattern.Type) -> BitPattern {
-        if  let self {
-            return self.load(as: Wrapped.BitPattern.self)
-        }   else {
-            return nil
-        }
+    @inlinable public init(raw source: Bool) {
+        self = source ? Self.minus : Self.plus
+    }
+    
+    @inlinable public consuming func load(as type: Bool.Type) -> Bool {
+        self == Self.minus
     }
 }
