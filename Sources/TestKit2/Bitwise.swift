@@ -13,7 +13,7 @@ import CoreKit
 // MARK: * Bitwise
 //*============================================================================*
 
-@inlinable public func expect<T>(
+@inlinable public func Ɣexpect<T>(
     not instance: T,
     is  expectation: T,
     at  location: SourceLocation = #_sourceLocation
@@ -23,7 +23,7 @@ import CoreKit
     #expect({ var x = instance; x.toggle(); return x }() == expectation, "BitOperable/toggle()", sourceLocation: location)
 }
 
-@inlinable public func expect<T>(
+@inlinable public func Ɣexpect<T>(
     _   lhs: T,
     and rhs: T,
     is  expectation: T,
@@ -33,7 +33,7 @@ import CoreKit
     #expect({ var x = lhs; x &= rhs; return x }() == expectation, "BitOperable/&=(_:)", sourceLocation: location)
 }
 
-@inlinable public func expect<T>(
+@inlinable public func Ɣexpect<T>(
     _   lhs: T,
     or  rhs: T,
     is  expectation: T,
@@ -43,7 +43,7 @@ import CoreKit
     #expect({ var x = lhs; x |= rhs; return x }() == expectation, "BitOperable/|=(_:)", sourceLocation: location)
 }
 
-@inlinable public func expect<T>(
+@inlinable public func Ɣexpect<T>(
     _   lhs: T,
     xor rhs: T,
     is  expectation: T,

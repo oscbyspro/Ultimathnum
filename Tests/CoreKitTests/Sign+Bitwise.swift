@@ -26,7 +26,7 @@ import TestKit2
         Some(Sign.minus, yields: Sign.plus ),
         
     ]) func not(_ expectation: Some<Sign, Sign>) {
-        expect(not: expectation.input, is: expectation.output)
+        Ɣexpect(not: expectation.input, is: expectation.output)
     }
     
     @Test("Sign.&(_:_:)", arguments: [
@@ -37,7 +37,7 @@ import TestKit2
         Some((lhs: Sign.minus, rhs: Sign.minus), yields: Sign.minus),
         
     ]) func and(_ expectation: Some<(lhs: Sign, rhs: Sign), Sign>) {
-        expect(expectation.input.lhs, and: expectation.input.rhs, is: expectation.output)
+        Ɣexpect(expectation.input.lhs, and: expectation.input.rhs, is: expectation.output)
     }
     
     @Test("Sign.|(_:_:)", arguments: [
@@ -48,7 +48,7 @@ import TestKit2
         Some((lhs: Sign.minus, rhs: Sign.minus), yields: Sign.minus),
         
     ]) func or(_ expectation: Some<(lhs: Sign, rhs: Sign), Sign>) {
-        expect(expectation.input.lhs, or: expectation.input.rhs, is: expectation.output)
+        Ɣexpect(expectation.input.lhs, or: expectation.input.rhs, is: expectation.output)
     }
     
     @Test("Sign.^(_:_:)", arguments: [
@@ -59,6 +59,6 @@ import TestKit2
         Some((lhs: Sign.minus, rhs: Sign.minus), yields: Sign.plus ),
         
     ]) func xor(_ expectation: Some<(lhs: Sign, rhs: Sign), Sign>) {
-        expect(expectation.input.lhs, xor: expectation.input.rhs, is: expectation.output)
+        Ɣexpect(expectation.input.lhs, xor: expectation.input.rhs, is: expectation.output)
     }
 }

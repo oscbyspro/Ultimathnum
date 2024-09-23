@@ -28,6 +28,6 @@ import TestKit2
         Some((lhs: Signedness  .signed, rhs: Signedness  .signed), yields: true ),
         
     ]) func compare(_ expectation: Some<(lhs: Signedness, rhs: Signedness), Bool>) {
-        expect(expectation.input.lhs, equals: expectation.input.rhs, is: expectation.output)
+        Ɣexpect(expectation.input.lhs, equals: expectation.input.rhs, is: expectation.output)
     }
 }

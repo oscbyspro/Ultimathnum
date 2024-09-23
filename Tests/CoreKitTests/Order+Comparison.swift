@@ -28,6 +28,6 @@ import TestKit2
         Some((lhs: Order.descending, rhs: Order.descending), yields: true ),
         
     ]) func compare(_ expectation: Some<(lhs: Order, rhs: Order), Bool>) {
-        expect(expectation.input.lhs, equals: expectation.input.rhs, is: expectation.output)
+        Ɣexpect(expectation.input.lhs, equals: expectation.input.rhs, is: expectation.output)
     }
 }

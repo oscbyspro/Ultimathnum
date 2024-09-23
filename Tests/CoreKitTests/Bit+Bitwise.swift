@@ -26,7 +26,7 @@ import TestKit2
         Some(Bit.one,  yields: Bit.zero),
         
     ]) func not(_ expectation: Some<Bit, Bit>) {
-        expect(not: expectation.input, is: expectation.output)
+        Ɣexpect(not: expectation.input, is: expectation.output)
     }
     
     @Test("Bit.&(_:_:)", arguments: [
@@ -37,7 +37,7 @@ import TestKit2
         Some((lhs: Bit.one,  rhs: Bit.one ), yields: Bit.one ),
         
     ]) func and(_ expectation: Some<(lhs: Bit, rhs: Bit), Bit>) {
-        expect(expectation.input.lhs, and: expectation.input.rhs, is: expectation.output)
+        Ɣexpect(expectation.input.lhs, and: expectation.input.rhs, is: expectation.output)
     }
     
     @Test("Bit.|(_:_:)", arguments: [
@@ -48,7 +48,7 @@ import TestKit2
         Some((lhs: Bit.one,  rhs: Bit.one ), yields: Bit.one ),
         
     ]) func or(_ expectation: Some<(lhs: Bit, rhs: Bit), Bit>) {
-        expect(expectation.input.lhs, or: expectation.input.rhs, is: expectation.output)
+        Ɣexpect(expectation.input.lhs, or: expectation.input.rhs, is: expectation.output)
     }
     
     @Test("Bit.^(_:_:)", arguments: [
@@ -59,6 +59,6 @@ import TestKit2
         Some((lhs: Bit.one,  rhs: Bit.one ), yields: Bit.zero),
         
     ]) func xor(_ expectation: Some<(lhs: Bit, rhs: Bit), Bit>) {
-        expect(expectation.input.lhs, xor: expectation.input.rhs, is: expectation.output)
+        Ɣexpect(expectation.input.lhs, xor: expectation.input.rhs, is: expectation.output)
     }
 }

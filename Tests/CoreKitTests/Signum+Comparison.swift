@@ -63,7 +63,7 @@ import TestKit2
         Some((lhs: Signum.positive, rhs: Signum.positive), yields: Signum.zero),
         
     ]) func compare(_ expectation: Some<(lhs: Signum, rhs: Signum), Signum>) {
-        expect(expectation.input.lhs, equals: expectation.input.rhs, is: expectation.output)
-        #expect((expectation.input.lhs.compared(to: expectation.input.rhs)) == expectation.output)
+        Ɣexpect(expectation.input.lhs, equals: expectation.input.rhs, is:    expectation.output)
+        #expect(expectation.input.lhs.compared(to: expectation.input.rhs) == expectation.output)
     }
 }

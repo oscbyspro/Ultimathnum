@@ -13,7 +13,7 @@ import CoreKit
 // MARK: * Comparison
 //*============================================================================*
 
-@inlinable public func expect<T>(
+@inlinable public func Ɣexpect<T>(
     _      lhs: T,
     equals rhs: T,
     is     expectation: Signum = .zero,
@@ -26,10 +26,10 @@ import CoreKit
     #expect((lhs >  rhs) == (expectation == Signum.positive), "Comparable.> (_:_:)", sourceLocation: location)
     #expect((lhs <= rhs) == (expectation != Signum.positive), "Comparable.<=(_:_:)", sourceLocation: location)
     
-    expect(lhs, equals: rhs, is: expectation.isZero, using: ID.Equatable.self, at: location)
+    Ɣexpect(lhs, equals: rhs, is: expectation.isZero, using: ID.Equatable.self, at: location)
 }
 
-@inlinable public func expect<T>(
+@inlinable public func Ɣexpect<T>(
     _      lhs: T,
     equals rhs: T,
     is     expectation: Bool = true,
