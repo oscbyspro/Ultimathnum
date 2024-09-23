@@ -8,100 +8,55 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Bit
 //*============================================================================*
 
-final class BitTests: XCTestCase {
+@Suite struct BitTests {
         
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testBool() {
-        Test().same(Bit(false), Bit.zero)
-        Test().same(Bit(true ), Bit.one )
+    @Test("Bit ← Bool", arguments: [
         
-        Test().same(Bit(raw: false), Bit.zero)
-        Test().same(Bit(raw: true ), Bit.one )
+        Some(false, yields: Bit.zero),
+        Some(true,  yields: Bit.one ),
         
-        Test().same(Bool(Bit.zero), false)
-        Test().same(Bool(Bit.one ), true )
-        
-        Test().same(Bool(raw: Bit.zero), false)
-        Test().same(Bool(raw: Bit.one ), true )
-    }
-        
-    func testSign() {
-        Test().same(Bit(Sign.plus ), Bit.zero)
-        Test().same(Bit(Sign.minus), Bit.one )
-        
-        Test().same(Bit(raw: Sign.plus ), Bit.zero)
-        Test().same(Bit(raw: Sign.minus), Bit.one )
-        
-        Test().same(Sign(Bit.zero), .plus )
-        Test().same(Sign(Bit.one ), .minus)
-        
-        Test().same(Sign(raw: Bit.zero), .plus )
-        Test().same(Sign(raw: Bit.one ), .minus)
+    ]) func initBool(expectation: Some<Bool, Bit>) {
+        #expect(Bit(     expectation.input) == expectation.output)
+        #expect(Bit(raw: expectation.input) == expectation.output)
     }
     
-    func testIsZero() {
-        Test().yay(Bit.zero.isZero)
-        Test().nay(Bit.one .isZero)
-    }
-    
-    func testComparison() {
-        func comparison(_ lhs: Bit, _ rhs: Bit, _ expectation: Signum, _ test: Test = .init()) {
-            for (x, y, z) in [
-                (lhs, rhs, expectation),
-                (rhs, lhs, expectation.negated())
-            ] {
-                test.same(x.compared(to: y), z)
-                test.same(x <  y, z == Signum.negative)
-                test.same(x >= y, z != Signum.negative)
-                test.same(x == y, z == Signum.zero)
-                test.same(x != y, z != Signum.zero)
-                test.same(x >  y, z == Signum.positive)
-                test.same(x <= y, z != Signum.positive)
-            }
-        }
+    @Test("Bit → Bool", arguments: [
         
-        comparison(Bit.zero,  Bit.zero, Signum.zero)
-        comparison(Bit.zero,  Bit.one,  Signum.negative)
-        comparison(Bit.one,   Bit.zero, Signum.positive)
-        comparison(Bit.one,   Bit.one,  Signum.zero)
+        Some(Bit.zero, yields: false),
+        Some(Bit.one,  yields: true ),
+        
+    ]) func makeBool(expectation: Some<Bit, Bool>) {
+        #expect(Bool(     expectation.input) == expectation.output)
+        #expect(Bool(raw: expectation.input) == expectation.output)
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Tests x Transformations
-    //=------------------------------------------------------------------------=
-    
-    func testLogicalNot() {
-        Test().not(Bit.zero, Bit.one )
-        Test().not(Bit.one,  Bit.zero)
+    @Test("Bit ← Sign", arguments: [
+        
+        Some(Sign.plus,  yields: Bit.zero),
+        Some(Sign.minus, yields: Bit.one ),
+        
+    ]) func initSign(expectation: Some<Sign, Bit>) {
+        #expect(Bit(     expectation.input) == expectation.output)
+        #expect(Bit(raw: expectation.input) == expectation.output)
     }
     
-    func testLogicalAnd() {
-        Test().and(Bit.zero, Bit.zero, Bit.zero)
-        Test().and(Bit.zero, Bit.one,  Bit.zero)
-        Test().and(Bit.one,  Bit.zero, Bit.zero)
-        Test().and(Bit.one,  Bit.one,  Bit.one )
-    }
-    
-    func testLogicalOr() {
-        Test().or (Bit.zero, Bit.zero, Bit.zero)
-        Test().or (Bit.zero, Bit.one,  Bit.one )
-        Test().or (Bit.one,  Bit.zero, Bit.one )
-        Test().or (Bit.one,  Bit.one,  Bit.one )
-    }
-    
-    func testLogcialXor() {
-        Test().xor(Bit.zero, Bit.zero, Bit.zero)
-        Test().xor(Bit.zero, Bit.one,  Bit.one )
-        Test().xor(Bit.one,  Bit.zero, Bit.one )
-        Test().xor(Bit.one,  Bit.one,  Bit.zero)
+    @Test("Bit → Sign", arguments: [
+        
+        Some(Bit.zero, yields: Sign.plus ),
+        Some(Bit.one,  yields: Sign.minus),
+        
+    ]) func makeSign(expectation: Some<Bit, Sign>) {
+        #expect(Sign(     expectation.input) == expectation.output)
+        #expect(Sign(raw: expectation.input) == expectation.output)
     }
 }

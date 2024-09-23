@@ -8,32 +8,22 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Many
+// MARK: * Expect
 //*============================================================================*
 
-@frozen public struct Many<Input, Element>: CustomTestStringConvertible {
+@frozen public struct Expect {
     
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    public let input:  Input
-    public let output: Array<Element>
+    @usableFromInline let sourceLocation: SourceLocation
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    public init(_ input: Input, yields output: Array<Element>) {
-        self.input  = input
-        self.output = output
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public var testDescription: String {
-        "\(self.input) → \(self.output.count) elements"
+    @inlinable public init(sourceLocation: SourceLocation = #_sourceLocation) {
+        self.sourceLocation = sourceLocation
     }
 }
