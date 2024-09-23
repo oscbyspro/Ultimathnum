@@ -17,13 +17,13 @@ extension CoreInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func plus(_ increment: Self) -> Fallible<Self> {
-        let result = self.base.addingReportingOverflow(increment.base)
+    @inlinable public func plus(_ other: Self) -> Fallible<Self> {
+        let result = self.stdlib().addingReportingOverflow(other.stdlib())
         return Self(result.partialValue).veto(result.overflow)
     }
     
-    @inlinable public func minus(_ decrement: Self) -> Fallible<Self> {
-        let result = self.base.subtractingReportingOverflow(decrement.base)
+    @inlinable public func minus(_ other: Self) -> Fallible<Self> {
+        let result = self.stdlib().subtractingReportingOverflow(other.stdlib())
         return Self(result.partialValue).veto(result.overflow)
     }
 }

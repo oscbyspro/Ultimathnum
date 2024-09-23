@@ -11,58 +11,15 @@
 // MARK: * Core Int
 //*============================================================================*
 
-/// The stuff integers are made of.
-///
-/// This protocol is meant to reduce code duplication.
-///
-/// ### Models
-///
-/// Only the following types conform to this protocol:
-///
-/// - `IX`
-/// - `I8`
-/// - `I16`
-/// - `I32`
-/// - `I64`
-/// - `UX`
-/// - `U8`
-/// - `U16`
-/// - `U32`
-/// - `U64`
-///
-@usableFromInline protocol CoreInteger: 
-    Interoperable,
-    SystemsInteger
-where 
-    BitPattern == Stdlib.BitPattern,
-    Element == Self,
-    IntegerLiteralType == Stdlib,
-    Signitude: CoreInteger,
-    Stdlib: BitCastable,
-    Stdlib: Swift.FixedWidthInteger,
-    Stdlib: Swift.Sendable,
-    Magnitude: CoreInteger,
-    Magnitude.Stdlib == Stdlib.Magnitude
-{
-    
-    @inlinable var base: Stdlib { get }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Composition
-//=----------------------------------------------------------------------------=
-
 @usableFromInline protocol CoreIntegerWhereIsNotByte:  CoreInteger { }
 @usableFromInline protocol CoreIntegerWhereIsNotToken: CoreInteger { }
-@usableFromInline protocol CoreIntegerWhereIsSigned:   CoreInteger &   SignedInteger where Stdlib: Swift  .SignedInteger { }
-@usableFromInline protocol CoreIntegerWhereIsUnsigned: CoreInteger & UnsignedInteger where Stdlib: Swift.UnsignedInteger { }
 
 //*============================================================================*
 // MARK: * Core Int x IX
 //*============================================================================*
 
 /// A pointer-bit signed binary integer.
-@frozen public struct IX: CoreIntegerWhereIsSigned, CoreIntegerWhereIsNotByte {
+@frozen public struct IX: CoreInteger, SignedInteger, CoreIntegerWhereIsNotByte {
     
     public typealias Stdlib = Swift.Int
     
@@ -106,7 +63,7 @@ where
 //*============================================================================*
 
 /// An 8-bit signed binary integer.
-@frozen public struct I8: CoreIntegerWhereIsSigned, CoreIntegerWhereIsNotToken {
+@frozen public struct I8: CoreInteger, SignedInteger, CoreIntegerWhereIsNotToken {
     
     public typealias Stdlib = Swift.Int8
     
@@ -150,7 +107,7 @@ where
 //*============================================================================*
 
 /// A 16-bit signed binary integer.
-@frozen public struct I16: CoreIntegerWhereIsSigned, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
+@frozen public struct I16: CoreInteger, SignedInteger, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
     
     public typealias Stdlib = Swift.Int16
     
@@ -194,7 +151,7 @@ where
 //*============================================================================*
 
 /// A 32-bit signed binary integer.
-@frozen public struct I32: CoreIntegerWhereIsSigned, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
+@frozen public struct I32: CoreInteger, SignedInteger, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
     
     public typealias Stdlib = Swift.Int32
     
@@ -238,7 +195,7 @@ where
 //*============================================================================*
 
 /// A 64-bit signed binary integer.
-@frozen public struct I64: CoreIntegerWhereIsSigned, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
+@frozen public struct I64: CoreInteger, SignedInteger, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
     
     public typealias Stdlib = Swift.Int64
     
@@ -282,7 +239,7 @@ where
 //*============================================================================*
 
 /// A pointer-bit unsigned binary integer.
-@frozen public struct UX: CoreIntegerWhereIsUnsigned, CoreIntegerWhereIsNotByte {
+@frozen public struct UX: CoreInteger, UnsignedInteger, CoreIntegerWhereIsNotByte {
     
     public typealias Stdlib = Swift.UInt
     
@@ -326,7 +283,7 @@ where
 //*============================================================================*
 
 /// An 8-bit unsigned binary integer.
-@frozen public struct U8: CoreIntegerWhereIsUnsigned, CoreIntegerWhereIsNotToken {
+@frozen public struct U8: CoreInteger, UnsignedInteger, CoreIntegerWhereIsNotToken {
     
     public typealias Stdlib = Swift.UInt8
     
@@ -370,7 +327,7 @@ where
 //*============================================================================*
 
 /// A 16-bit unsigned binary integer.
-@frozen public struct U16: CoreIntegerWhereIsUnsigned, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
+@frozen public struct U16: CoreInteger, UnsignedInteger, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
     
     public typealias Stdlib = Swift.UInt16
     
@@ -414,7 +371,7 @@ where
 //*============================================================================*
 
 /// A 32-bit unsigned binary integer.
-@frozen public struct U32: CoreIntegerWhereIsUnsigned, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
+@frozen public struct U32: CoreInteger, UnsignedInteger, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
     
     public typealias Stdlib = Swift.UInt32
     
@@ -458,7 +415,7 @@ where
 //*============================================================================*
 
 /// A 64-bit unsigned binary integer.
-@frozen public struct U64: CoreIntegerWhereIsUnsigned, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
+@frozen public struct U64: CoreInteger, UnsignedInteger, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
     
     public typealias Stdlib = Swift.UInt64
     

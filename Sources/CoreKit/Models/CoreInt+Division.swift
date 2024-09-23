@@ -19,13 +19,13 @@ extension CoreInteger {
     
     @inlinable public func quotient (_ divisor: Nonzero<Self>) -> Fallible<Self> {
         Swift.assert(!divisor.value.isZero, String.brokenInvariant())
-        let result = self.base.dividedReportingOverflow(by: divisor.value.base)
+        let result = self.stdlib().dividedReportingOverflow(by: divisor.value.stdlib())
         return Self(result.partialValue).veto(Self.isSigned && result.overflow)
     }
     
     @inlinable public func remainder(_ divisor: Nonzero<Self>) -> Self {
         Swift.assert(!divisor.value.isZero, String.brokenInvariant())
-        let result = self.base.remainderReportingOverflow(dividingBy: divisor.value.base)
+        let result = self.stdlib().remainderReportingOverflow(dividingBy: divisor.value.stdlib())
         return Self(result.partialValue)
     }
     
@@ -41,7 +41,7 @@ extension CoreInteger {
 // MARK: * Core Int x Division x Signed
 //*============================================================================*
 
-extension CoreIntegerWhereIsSigned {
+extension CoreInteger where Self: SignedInteger, Stdlib: Swift.SignedInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -81,7 +81,7 @@ extension CoreIntegerWhereIsSigned {
 // MARK: * Core Int x Division x Unsigned
 //*============================================================================*
 
-extension CoreIntegerWhereIsUnsigned {
+extension CoreInteger where Self: UnsignedInteger, Stdlib: Swift.UnsignedInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -96,7 +96,9 @@ extension CoreIntegerWhereIsUnsigned {
             dividend.high = dividend.high.remainder(divisor)
         }
         //=--------------------------------------=
-        let result = divisor.value.base.dividingFullWidth((high: dividend.high.base, low: dividend.low.base))
+        // TODO: custom 2-by-1 division algorithm
+        //=--------------------------------------=
+        let result = divisor.value.stdlib().dividingFullWidth((high: dividend.high.stdlib(), low: dividend.low.stdlib()))
         return Division(quotient: Self(result.quotient), remainder: Self(result.remainder)).veto(overflow)
     }
 }

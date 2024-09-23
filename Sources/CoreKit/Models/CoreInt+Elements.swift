@@ -63,15 +63,15 @@ extension CoreIntegerWhereIsNotToken {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(load source: Element.Signitude) {
-        self.init(Stdlib(truncatingIfNeeded: source.base))
+        self.init(Stdlib(truncatingIfNeeded: source.stdlib()))
     }
     
     @inlinable public init(load source: Element.Magnitude) {
-        self.init(Stdlib(truncatingIfNeeded: source.base))
+        self.init(Stdlib(truncatingIfNeeded: source.stdlib()))
     }
         
     @inlinable public func load(as type: Element.BitPattern.Type) -> Element.BitPattern {
-        self.base.load(as: Element.BitPattern.self)
+        self.stdlib().load(as: Element.BitPattern.self)
     }
     
     //=------------------------------------------------------------------------=
@@ -79,15 +79,15 @@ extension CoreIntegerWhereIsNotToken {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(load source: UX.Signitude) {
-        self.init(Stdlib(truncatingIfNeeded: source.base))
+        self.init(Stdlib(truncatingIfNeeded: source.stdlib()))
     }
     
     @inlinable public init(load source: UX.Magnitude) {
-        self.init(Stdlib(truncatingIfNeeded: source.base))
+        self.init(Stdlib(truncatingIfNeeded: source.stdlib()))
     }
     
     @inlinable public func load(as type: UX.BitPattern.Type) -> UX.BitPattern {
-        UInt(truncatingIfNeeded: self.base)
+        UX.BitPattern(truncatingIfNeeded: self.stdlib())
     }
 }
 
@@ -121,11 +121,11 @@ extension IX {
     }
     
     @inlinable public init(load source: UX.Magnitude) {
-        self.init(Stdlib(bitPattern: source.base))
+        self.init(Stdlib(bitPattern: source.stdlib()))
     }
     
     @inlinable public func load(as type: UX.BitPattern.Type) -> UX.BitPattern {
-        UInt(bitPattern: self.base)
+        UInt(bitPattern: self.stdlib())
     }
 }
 
@@ -140,7 +140,7 @@ extension UX {
     //=------------------------------------------------------------------------=
     
     @inlinable public init(load source: UX.Signitude) {
-        self.init(Stdlib(bitPattern: source.base))
+        self.init(Stdlib(bitPattern: source.stdlib()))
     }
     
     @inlinable public init(load source: UX.Magnitude) {
@@ -148,6 +148,6 @@ extension UX {
     }
     
     @inlinable public func load(as type: UX.BitPattern.Type) -> UX.BitPattern {
-        self.base
+        self.stdlib()
     }
 }

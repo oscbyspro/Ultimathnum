@@ -14,39 +14,22 @@ import RandomIntKit
 // MARK: * Globals
 //*============================================================================*
 
-public let coreSystemsIntegers: [any CoreInteger.Type] = {
-    coreSystemsIntegersWhereIsSigned +
-    coreSystemsIntegersWhereIsUnsigned
-}()
-
-public let coreSystemsIntegersWhereIsSigned: [any CoreIntegerWhereIsSigned.Type] = [
-    IX.self, I8.self, I16.self, I32.self, I64.self,
-]
-
-public let coreSystemsIntegersWhereIsUnsigned: [any CoreIntegerWhereIsUnsigned.Type] = [
-    UX.self, U8.self, U16.self, U32.self, U64.self,
-]
-
-//=----------------------------------------------------------------------------=
-// MARK: + Stdlib
-//=----------------------------------------------------------------------------=
-
-public let stdlibSystemsFloats: [any Swift.BinaryFloatingPoint.Type] = [
+public let coreFloats: [any Swift.BinaryFloatingPoint.Type] = [
     Float32.self,
     Float64.self,
 ]
 
-public let stdlibSystemsIntegers: [any Swift.FixedWidthInteger.Type] = {
-    stdlibSystemsIntegersWhereIsSigned +
-    stdlibSystemsIntegersWhereIsUnsigned
+public let coreIntegers: [any CoreInteger.Type] = {
+    coreIntegersWhereIsSigned +
+    coreIntegersWhereIsUnsigned
 }()
 
-public let stdlibSystemsIntegersWhereIsSigned: [any (Swift.FixedWidthInteger & Swift.SignedInteger).Type] = [
-    Int.self, Int8.self, Int16.self, Int32.self, Int64.self,
+public let coreIntegersWhereIsSigned: [any CoreIntegerWhereIsSigned.Type] = [
+    IX.self, I8.self, I16.self, I32.self, I64.self,
 ]
 
-public let stdlibSystemsIntegersWhereIsUnsigned: [any (Swift.FixedWidthInteger & Swift.UnsignedInteger).Type] = [
-    UInt.self, UInt8.self, UInt16.self, UInt32.self, UInt64.self,
+public let coreIntegersWhereIsUnsigned: [any CoreIntegerWhereIsUnsigned.Type] = [
+    UX.self, U8.self, U16.self, U32.self, U64.self,
 ]
 
 //=----------------------------------------------------------------------------=

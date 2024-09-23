@@ -7,21 +7,11 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Core Int x Shift
+// MARK: * Aliases
 //*============================================================================*
 
-extension CoreInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func up(_ distance: Shift<Magnitude>) -> Self {
-        Self(self.stdlib() &<< distance.value.base.stdlib())
-    }
-    
-    @inlinable public consuming func down(_ distance: Shift<Magnitude>) -> Self {
-        Self(self.stdlib() &>> distance.value.base.stdlib())
-    }
-}
+public typealias CoreIntegerWhereIsSigned   = CoreInteger &   SignedInteger
+public typealias CoreIntegerWhereIsUnsigned = CoreInteger & UnsignedInteger

@@ -18,19 +18,19 @@ extension CoreInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static prefix func ~(instance: Self) -> Self {
-        Self(~instance.base)
+        Self(~instance.stdlib())
     }
     
     @inlinable public static func &(lhs: Self, rhs: Self) -> Self {
-        Self(lhs.base & rhs.base)
+        Self(lhs.stdlib() & rhs.stdlib())
     }
     
     @inlinable public static func |(lhs: Self, rhs: Self) -> Self {
-        Self(lhs.base | rhs.base)
+        Self(lhs.stdlib() | rhs.stdlib())
     }
     
     @inlinable public static func ^(lhs: Self, rhs: Self) -> Self {
-        Self(lhs.base ^ rhs.base)
+        Self(lhs.stdlib() ^ rhs.stdlib())
     }
     
     //=------------------------------------------------------------------------=
@@ -38,7 +38,7 @@ extension CoreInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public func reversed(_ type: U8.Type) -> Self {
-        Self(self.base.byteSwapped)
+        Self(self.stdlib().byteSwapped)
     }
     
     @inlinable public func complement(_ increment: Bool) -> Fallible<Self> {

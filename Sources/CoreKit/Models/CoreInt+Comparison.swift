@@ -18,11 +18,11 @@ extension CoreInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func ==(lhs: Self, rhs: Self) -> Bool {
-        lhs.base == rhs.base
+        lhs.stdlib() == rhs.stdlib()
     }
     
     @inlinable public static func < (lhs: Self, rhs: Self) -> Bool {
-        lhs.base <  rhs.base
+        lhs.stdlib() <  rhs.stdlib()
     }
     
     @inlinable public func compared(to other: Self) -> Signum {

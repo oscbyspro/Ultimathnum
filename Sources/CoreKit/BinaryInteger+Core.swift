@@ -7,15 +7,26 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Core Integer
+// MARK: * Binary Integer x Core
 //*============================================================================*
 
-/// ### Development
+/// The stuff integers are made of.
 ///
-/// - TODO: Consider adding a public version to `CoreKit`.
+/// ### Models
+///
+/// Only the following types conform to this protocol:
+///
+/// - `IX`
+/// - `I8`
+/// - `I16`
+/// - `I32`
+/// - `I64`
+/// - `UX`
+/// - `U8`
+/// - `U16`
+/// - `U32`
+/// - `U64`
 ///
 public protocol CoreInteger:
     Interoperable,
@@ -32,26 +43,3 @@ where
     Stdlib.BitPattern == Stdlib.Magnitude,
     Stdlib.Magnitude  == Magnitude.Stdlib
 { }
-
-//=----------------------------------------------------------------------------=
-// MARK: + Aliases
-//=----------------------------------------------------------------------------=
-
-public typealias CoreIntegerWhereIsSigned   = CoreInteger &   SignedInteger
-public typealias CoreIntegerWhereIsUnsigned = CoreInteger & UnsignedInteger
-
-//=----------------------------------------------------------------------------=
-// MARK: + Models
-//=----------------------------------------------------------------------------=
-
-extension IX:  CoreInteger { }
-extension I8:  CoreInteger { }
-extension I16: CoreInteger { }
-extension I32: CoreInteger { }
-extension I64: CoreInteger { }
-
-extension UX:  CoreInteger { }
-extension U8:  CoreInteger { }
-extension U16: CoreInteger { }
-extension U32: CoreInteger { }
-extension U64: CoreInteger { }

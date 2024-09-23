@@ -21,8 +21,8 @@ extension CoreInteger {
         self.times(self)
     }
     
-    @inlinable public func times(_ multiplier: Self) -> Fallible<Self> {
-        let result = self.base.multipliedReportingOverflow(by: multiplier.base)
+    @inlinable public func times(_ other: Self) -> Fallible<Self> {
+        let result = self.stdlib().multipliedReportingOverflow(by: other.stdlib())
         return Self(result.partialValue).veto(result.overflow)
     }
     
@@ -30,8 +30,8 @@ extension CoreInteger {
     // MARK: Transformations x Composition
     //=------------------------------------------------------------------------=
     
-    @inlinable public func multiplication(_  multiplier: Self) -> Doublet<Self> {
-        let result = self.base.multipliedFullWidth(by: multiplier.base)
+    @inlinable public func multiplication(_ other: Self) -> Doublet<Self> {
+        let result = self.stdlib().multipliedFullWidth(by: other.stdlib())
         return Doublet(low: Magnitude(result.low), high: Self(result.high))
     }
 }

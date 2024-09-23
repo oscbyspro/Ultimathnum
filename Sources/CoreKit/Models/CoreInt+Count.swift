@@ -27,22 +27,22 @@ extension CoreInteger {
     
     @inlinable public func count(_ bit: Bit) -> Count {
         switch Bool(bit) {
-        case true:  Count(raw: ( self).base.nonzeroBitCount)
-        case false: Count(raw: (~self).base.nonzeroBitCount)
+        case true:  Count(raw: ( self).stdlib().nonzeroBitCount)
+        case false: Count(raw: (~self).stdlib().nonzeroBitCount)
         }
     }
     
     @inlinable public func ascending(_ bit: Bit) -> Count {
         switch Bool(bit) {
-        case true:  Count(raw: (~self).base.trailingZeroBitCount)
-        case false: Count(raw: ( self).base.trailingZeroBitCount)
+        case true:  Count(raw: (~self).stdlib().trailingZeroBitCount)
+        case false: Count(raw: ( self).stdlib().trailingZeroBitCount)
         }
     }
     
     @inlinable public func descending(_ bit: Bit) -> Count {
         switch Bool(bit) {
-        case true:  Count(raw: (~self).base.leadingZeroBitCount)
-        case false: Count(raw: ( self).base.leadingZeroBitCount)
+        case true:  Count(raw: (~self).stdlib().leadingZeroBitCount)
+        case false: Count(raw: ( self).stdlib().leadingZeroBitCount)
         }
     }
 }
