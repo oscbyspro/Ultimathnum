@@ -8,79 +8,39 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Signum
 //*============================================================================*
 
-final class SignumTests: XCTestCase {
+@Suite struct SignumTests {
         
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testInitBit() {
-        Test().same(Signum(Bit.zero), Signum.zero)
-        Test().same(Signum(Bit.one ), Signum.positive)
+    @Test("Signum ← Bit", arguments: [
+        
+        Some(Bit.zero, yields: Signum.zero    ),
+        Some(Bit.one,  yields: Signum.positive),
+        
+    ]) func initBit(_ expectation: Some<Bit, Signum>) {
+        #expect(Signum(expectation.input) == expectation.output)
     }
     
-    func testInitSign() {
-        Test().same(Signum(Sign.plus ), Signum.positive)
-        Test().same(Signum(Sign.minus), Signum.negative)
-        
-        Test().same(Signum(Optional<Sign>(nil )), Signum.zero)
-        Test().same(Signum(Optional(Sign.plus )), Signum.positive)
-        Test().same(Signum(Optional(Sign.minus)), Signum.negative)
-    }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    func testComparison() {
-        Test().yay(Signum.negative.isNegative)
-        Test().nay(Signum.negative.isZero)
-        Test().nay(Signum.negative.isPositive)
-        Test().nay(Signum.zero    .isNegative)
-        Test().yay(Signum.zero    .isZero)
-        Test().nay(Signum.zero    .isPositive)
-        Test().nay(Signum.positive.isNegative)
-        Test().nay(Signum.positive.isZero)
-        Test().yay(Signum.positive.isPositive)
+    @Test("Signum ← Sign or Sign?", arguments: [
         
-        Test().same(Signum.negative, Signum.negative)
-        Test().less(Signum.negative, Signum.zero)
-        Test().less(Signum.negative, Signum.positive)
-        Test().more(Signum.zero,     Signum.negative)
-        Test().same(Signum.zero,     Signum.zero)
-        Test().less(Signum.zero,     Signum.positive)
-        Test().more(Signum.positive, Signum.negative)
-        Test().more(Signum.positive, Signum.zero)
-        Test().same(Signum.positive, Signum.positive)
-                
-        Test().same(Signum.negative.compared(to: Signum.negative), Signum.zero)
-        Test().same(Signum.negative.compared(to: Signum.zero),     Signum.negative)
-        Test().same(Signum.negative.compared(to: Signum.positive), Signum.negative)
-        Test().same(Signum.zero    .compared(to: Signum.negative), Signum.positive)
-        Test().same(Signum.zero    .compared(to: Signum.zero),     Signum.zero)
-        Test().same(Signum.zero    .compared(to: Signum.positive), Signum.negative)
-        Test().same(Signum.positive.compared(to: Signum.negative), Signum.positive)
-        Test().same(Signum.positive.compared(to: Signum.zero),     Signum.positive)
-        Test().same(Signum.positive.compared(to: Signum.positive), Signum.zero)
-    }
-    
-    func testNegation() {
-        Test().same(-Signum.negative, Signum.positive)
-        Test().same(-Signum.zero,     Signum.zero)
-        Test().same(-Signum.positive, Signum.negative)
+        Some(Optional<Sign>(nil ), yields: Signum.zero),
+        Some(Optional(Sign.plus ), yields: Signum.positive),
+        Some(Optional(Sign.minus), yields: Signum.negative),
         
-        Test().same( Signum.negative.negated(), Signum.positive)
-        Test().same( Signum.zero    .negated(), Signum.zero)
-        Test().same( Signum.positive.negated(), Signum.negative)
+    ]) func initSignOrOptionalSign(_ expectation: Some<Sign?, Signum>) {
+        #expect(Signum(expectation.input) == expectation.output)
         
-        Test().same({ var x = Signum.negative; x.negate(); return x }(), Signum.positive)
-        Test().same({ var x = Signum.zero;     x.negate(); return x }(), Signum.zero)
-        Test().same({ var x = Signum.positive; x.negate(); return x }(), Signum.negative)
+        if  let sign = expectation.input {
+            #expect(Signum(sign) == expectation.output)
+        }
     }
 }
