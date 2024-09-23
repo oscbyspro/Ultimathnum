@@ -17,7 +17,7 @@
 ///
 /// - Note: It must not conform to `ExpressibleByIntegerLiteral` (#93).
 ///
-@frozen public struct Bit: BitCastable, BitOperable, Comparable, Hashable, Sendable {
+@frozen public struct Bit: BitCastable, BitOperable, Comparable, CustomStringConvertible, Hashable, Sendable {
     
     public typealias BitPattern = Bool
     
@@ -57,5 +57,16 @@
     
     @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
         self.base
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var description: String {
+        switch self.base {
+        case  true: "1"
+        case false: "0"
+        }
     }
 }

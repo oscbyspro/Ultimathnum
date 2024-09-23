@@ -59,4 +59,18 @@ import TestKit2
         #expect(Sign(     expectation.input) == expectation.output)
         #expect(Sign(raw: expectation.input) == expectation.output)
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Test
+    //=------------------------------------------------------------------------=
+    
+    @Test("Bit/description", arguments: [
+        
+        Some(Bit.zero, yields: "0"),
+        Some(Bit.one,  yields: "1"),
+        
+    ]) func description(_ expectation: Some<Bit, String>) {
+        #expect(expectation.input.description == expectation.output)
+        #expect(String(describing: expectation.input) == expectation.output)
+    }
 }

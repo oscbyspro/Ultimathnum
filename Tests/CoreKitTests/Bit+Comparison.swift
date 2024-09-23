@@ -25,18 +25,18 @@ import TestKit2
         Some(Bit.zero, yields: true ),
         Some(Bit.one,  yields: false),
         
-    ]) func isZero(expectation: Some<Bit, Bool>) {
+    ]) func isZero(_ expectation: Some<Bit, Bool>) {
         #expect(expectation.input.isZero == expectation.output)
     }
     
-    @Test("Bit vs Bit", arguments: [
+    @Test("Bit/compared(to:)", arguments: [
         
         Some((lhs: Bit.zero, rhs: Bit.zero), yields: Signum.zero),
         Some((lhs: Bit.zero, rhs: Bit.one ), yields: Signum.negative),
         Some((lhs: Bit.one,  rhs: Bit.zero), yields: Signum.positive),
         Some((lhs: Bit.one,  rhs: Bit.one ), yields: Signum.zero),
         
-    ]) func comparison(expectation: Some<(lhs: Bit, rhs: Bit), Signum>) {
+    ]) func comparison(_ expectation: Some<(lhs: Bit, rhs: Bit), Signum>) {
         #expect((expectation.input.lhs.compared(to: expectation.input.rhs)) == expectation.output)
         #expect((expectation.input.lhs <  expectation.input.rhs) == (expectation.output == Signum.negative))
         #expect((expectation.input.lhs >= expectation.input.rhs) == (expectation.output != Signum.negative))

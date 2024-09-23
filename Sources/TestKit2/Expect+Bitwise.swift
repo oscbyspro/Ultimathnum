@@ -1,4 +1,3 @@
-
 //=----------------------------------------------------------------------------=
 // This source file is part of the Ultimathnum open source project.
 //

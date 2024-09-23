@@ -24,7 +24,7 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    public init(_ input: Input, yields output: Array<Element>) {
+    @inlinable public init(_ input: Input, yields output: Array<Element>) {
         self.input  = input
         self.output = output
     }
