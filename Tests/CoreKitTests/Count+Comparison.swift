@@ -8,36 +8,41 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import TestKit
+import RandomIntKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Count x Comparison
 //*============================================================================*
 
-final class CountTestsOnComparison: XCTestCase {
+@Suite struct CountTestsOnComparison {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testIsZeroIsLikeBinaryIntegerIsZero() {
-        for x in CountTests.patterns {
-            Test().same(Count(raw: x).isZero, x.isZero)
+    @Test(arguments: CollectionOfOne(fuzzer))
+    func isZeroIsLikeBinaryIntegerIsZero(_ randomness: consuming FuzzerInt) {
+        for _ in 0 ..< 256 {
+            let random: IX = randomness.sizewise()
+            #expect(Count(raw: random).isZero == random.isZero)
         }
     }
     
-    func testIsInfiniteIsLikeSignedIntegerIsNegative() {
-        for x in CountTests.patterns {
-            Test().same(Count(raw: x).isInfinite, x.isNegative)
+    @Test(arguments: CollectionOfOne(fuzzer))
+    func isInfiniteIsLikeSignedIntegerIsNegative(_ randomness: consuming FuzzerInt) {
+        for _ in 0 ..< 256 {
+            let random: IX = randomness.sizewise()
+            #expect(Count(raw: random).isInfinite == random.isNegative)
         }
     }
     
-    func testComparisonIsLikeUnsignedIntegerComparison() {
-        for lhs in CountTests.patterns {
-            for rhs in CountTests.patterns {
-                let expectation: Signum = UX(load: lhs).compared(to: UX(load: rhs))
-                Test().comparison(Count(raw: lhs), Count(raw: rhs), expectation, id: ComparableID())
-            }
+    @Test(arguments: CollectionOfOne(fuzzer))
+    func comparisonIsLikeUnsignedIntegerComparison(_ randomness: consuming FuzzerInt) {
+        for _ in 0 ..< 256 {
+            let lhs: UX = randomness.sizewise()
+            let rhs: UX = randomness.sizewise()
+            Ɣexpect(Count(raw: lhs), equals: Count(raw: rhs), is: lhs.compared(to: rhs))
         }
     }
 }

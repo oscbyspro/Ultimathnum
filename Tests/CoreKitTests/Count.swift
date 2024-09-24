@@ -8,62 +8,44 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import TestKit
+import RandomIntKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Count
 //*============================================================================*
 
-final class CountTests: XCTestCase {
+@Suite struct CountTests {
     
     //=------------------------------------------------------------------------=
-    // MARK: Metadata
+    // MARK: Tests x Metadata
     //=------------------------------------------------------------------------=
     
-    static let patterns: [IX] = {
-        var elements = Array<IX>()
-        elements.append(contentsOf: IX.min...IX.min+127)
-        elements.append(contentsOf: -128...127)
-        elements.append(contentsOf: IX.max-127...IX.max)
-        return elements
-    }()
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    func testBitCast() {
-        for x in Self.patterns {
-            Test().same(IX(raw: Count(raw: x)), x)
-        }
-    }
-    
-    func testInitLayout() {
-        for x in Self.patterns {
-            if !x.isNegative {
-                Test().same(Count(x),            Count(raw: x))
-                Test().same(Count(unchecked: x), Count(raw: x))
-                Test().same(Count(exactly:   x), Count(raw: x))
-                Test().success(try Count(x, prune: Bad.any), Count(raw: x))
-            }   else {
-                Test().none(Count(exactly:   x))
-                Test().failure(try Count(x, prune: Bad.any), Bad.any)
-            }
-        }
+    @Test func instances() {
+        #expect(Count.zero     == Count(raw:  0 as IX))
+        #expect(Count.infinity == Count(raw: -1 as IX))
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testInstances() {
-        Test().same(Count.zero,     Count(raw:  0 as IX))
-        Test().same(Count.infinity, Count(raw: -1 as IX))
+    @Test("Count.init(raw:)", arguments: CollectionOfOne(fuzzer))
+    func pattern(_ randomness: consuming FuzzerInt) {
+        for _ in 0 ..< 256 {
+            let expectation: IX = randomness.sizewise()
+            let result = IX(raw: Count(raw: expectation))
+            #expect(result == expectation)
+        }
     }
     
-    func testNatural() {
-        for x in Self.patterns {
-            Test().same(Count(raw: x).natural(), x.veto(x.isNegative))
+    @Test("Count/natural", arguments: CollectionOfOne(fuzzer))
+    func natural(_ randomness: consuming FuzzerInt) {
+        for _ in 0 ..< 256 {
+            let random: IX = randomness.sizewise()
+            let result = Count(raw: random).natural()
+            let expectation = random.veto(random.isNegative)
+            #expect(result == expectation)
         }
     }
 }

@@ -8,31 +8,39 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Count x Text
 //*============================================================================*
 
-final class CountTestsOnText: XCTestCase {
+@Suite struct CountTestsOnText {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testDescriptionWhereIsNatural() {
-        Test().same(Count(raw: IX( 0)).description, "0")
-        Test().same(Count(raw: IX( 1)).description, "1")
-        Test().same(Count(raw: IX( 2)).description, "2")
-        Test().same(Count(raw: IX( 3)).description, "3")
-        Test().same(Count(raw: IX.max).description, "\(IX.max)")
+    @Test("Count/description - natural", arguments: [
+        
+        Some(Count(IX( 0)), yields: "0"),
+        Some(Count(IX( 1)), yields: "1"),
+        Some(Count(IX( 2)), yields: "2"),
+        Some(Count(IX( 3)), yields: "3"),
+        Some(Count(IX.max), yields: "\(IX.max)"),
+        
+    ])  func descriptionAsNatural(_ argument: Some<Count, String>) {
+        Ɣexpect(argument.input, description: argument.output)
     }
     
-    func testDescriptionWhereIsInfinite() {
-        Test().same(Count(raw: IX(~0)).description, "log2(&0+1)")
-        Test().same(Count(raw: IX(~1)).description, "log2(&0+1)-1")
-        Test().same(Count(raw: IX(~2)).description, "log2(&0+1)-2")
-        Test().same(Count(raw: IX(~3)).description, "log2(&0+1)-3")
-        Test().same(Count(raw: IX.min).description, "log2(&0+1)-\(IX.max)")
+    @Test("Count/description - infinite", arguments: [
+        
+        Some(Count(raw: IX(~0)), yields: "log2(&0+1)"  ),
+        Some(Count(raw: IX(~1)), yields: "log2(&0+1)-1"),
+        Some(Count(raw: IX(~2)), yields: "log2(&0+1)-2"),
+        Some(Count(raw: IX(~3)), yields: "log2(&0+1)-3"),
+        Some(Count(raw: IX.min), yields: "log2(&0+1)-\(IX.max)"),
+        
+    ])  func descriptionAsInfinite(_ argument: Some<Count, String>) {
+        Ɣexpect(argument.input, description: argument.output)
     }
 }
