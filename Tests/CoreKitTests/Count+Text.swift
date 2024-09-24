@@ -20,7 +20,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Count/description - natural", arguments: [
+    @Test("Count/description - natural", .serialized, arguments: [
         
         Some(Count(IX( 0)), yields: "0"),
         Some(Count(IX( 1)), yields: "1"),
@@ -32,7 +32,7 @@ import TestKit2
         Ɣexpect(argument.input, description: argument.output)
     }
     
-    @Test("Count/description - infinite", arguments: [
+    @Test("Count/description - infinite", .serialized, arguments: [
         
         Some(Count(raw: IX(~0)), yields: "log2(&0+1)"  ),
         Some(Count(raw: IX(~1)), yields: "log2(&0+1)-1"),

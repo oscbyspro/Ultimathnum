@@ -20,7 +20,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Bit ← Bool", arguments: [
+    @Test("Bit ← Bool", .serialized, arguments: [
         
         Some(false, yields: Bit.zero),
         Some(true,  yields: Bit.one ),
@@ -30,7 +30,7 @@ import TestKit2
         #expect(Bit(raw: argument.input) == argument.output)
     }
     
-    @Test("Bit → Bool", arguments: [
+    @Test("Bit → Bool", .serialized, arguments: [
         
         Some(Bit.zero, yields: false),
         Some(Bit.one,  yields: true ),
@@ -40,7 +40,7 @@ import TestKit2
         #expect(Bool(raw: argument.input) == argument.output)
     }
     
-    @Test("Bit ← Sign", arguments: [
+    @Test("Bit ← Sign", .serialized, arguments: [
         
         Some(Sign.plus,  yields: Bit.zero),
         Some(Sign.minus, yields: Bit.one ),
@@ -50,7 +50,7 @@ import TestKit2
         #expect(Bit(raw: argument.input) == argument.output)
     }
     
-    @Test("Bit → Sign", arguments: [
+    @Test("Bit → Sign", .serialized, arguments: [
         
         Some(Bit.zero, yields: Sign.plus ),
         Some(Bit.one,  yields: Sign.minus),

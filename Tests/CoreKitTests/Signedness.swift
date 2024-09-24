@@ -20,7 +20,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
         
-    @Test("Signedness.init(raw:)", arguments: [
+    @Test("Signedness.init(raw:)", .serialized, arguments: [
         
         Some(Bit.zero, yields: Signedness.unsigned),
         Some(Bit.one,  yields: Signedness  .signed),
@@ -29,7 +29,7 @@ import TestKit2
         #expect(Signedness(raw: argument.input) == argument.output)
     }
     
-    @Test("Signedness.init(signed:)", arguments: [
+    @Test("Signedness.init(signed:)", .serialized, arguments: [
       
         Some(false, yields: Signedness.unsigned),
         Some(true,  yields: Signedness  .signed),

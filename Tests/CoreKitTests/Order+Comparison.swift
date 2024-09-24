@@ -20,7 +20,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test(arguments: [
+    @Test(.serialized, arguments: [
         
         Some(Order.ascending,  Order.ascending,  yields: true ),
         Some(Order.ascending,  Order.descending, yields: false),

@@ -20,7 +20,7 @@ import TestKit2
     // MARK: Test
     //=------------------------------------------------------------------------=
     
-    @Test("Bit/description", arguments: [
+    @Test("Bit/description", .serialized, arguments: [
         
         Some(Bit.zero, yields: "0"),
         Some(Bit.one,  yields: "1"),

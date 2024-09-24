@@ -20,7 +20,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Bit/isZero", arguments: [
+    @Test("Bit/isZero", .serialized, arguments: [
         
         Some(Bit.zero, yields: true ),
         Some(Bit.one,  yields: false),
@@ -29,7 +29,7 @@ import TestKit2
         #expect(argument.input.isZero == argument.output)
     }
     
-    @Test("Bit/compared(to:)", arguments: [
+    @Test("Bit/compared(to:)", .serialized, arguments: [
         
         Some(Bit.zero, Bit.zero, yields: Signum.zero),
         Some(Bit.zero, Bit.one,  yields: Signum.negative),

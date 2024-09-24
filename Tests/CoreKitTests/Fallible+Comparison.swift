@@ -21,7 +21,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Equatable vs memeq(_:_:)", arguments:
+    @Test("Equatable vs memeq(_:_:)", .serialized, arguments:
         
         Fallible<Bit>.all,
         Fallible<Bit>.all

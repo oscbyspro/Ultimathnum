@@ -20,7 +20,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Signum/isNegative", arguments: [
+    @Test("Signum/isNegative", .serialized, arguments: [
         
         Some(Signum.negative, yields: true ),
         Some(Signum.zero,     yields: false),
@@ -30,7 +30,7 @@ import TestKit2
         #expect(arguments.input.isNegative == arguments.output)
     }
     
-    @Test("Signum/isZero", arguments: [
+    @Test("Signum/isZero", .serialized, arguments: [
         
         Some(Signum.negative, yields: false),
         Some(Signum.zero,     yields: true ),
@@ -40,7 +40,7 @@ import TestKit2
         #expect(arguments.input.isZero == arguments.output)
     }
     
-    @Test("Signum/isPositive", arguments: [
+    @Test("Signum/isPositive", .serialized, arguments: [
         
         Some(Signum.negative, yields: false),
         Some(Signum.zero,     yields: false),
@@ -50,7 +50,7 @@ import TestKit2
         #expect(argument.input.isPositive == argument.output)
     }
     
-    @Test("Signum/compared(to:)", arguments: [
+    @Test("Signum/compared(to:)", .serialized, arguments: [
         
         Some(Signum.negative, Signum.negative, yields: Signum.zero),
         Some(Signum.negative, Signum.zero,     yields: Signum.negative),

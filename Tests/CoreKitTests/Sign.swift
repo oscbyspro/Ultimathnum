@@ -20,7 +20,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Sign ← Bit", arguments: [
+    @Test("Sign ← Bit", .serialized, arguments: [
         
         Some(Bit.zero, yields: Sign.plus ),
         Some(Bit.one,  yields: Sign.minus),
@@ -30,7 +30,7 @@ import TestKit2
         #expect(Sign(raw: argument.input) == argument.output)
     }
     
-    @Test("Sign → Bit", arguments: [
+    @Test("Sign → Bit", .serialized, arguments: [
         
         Some(Sign.plus,  yields: Bit.zero),
         Some(Sign.minus, yields: Bit.one ),
@@ -40,7 +40,7 @@ import TestKit2
         #expect(Bit(raw: argument.input) == argument.output)
     }
     
-    @Test("Sign ← Bool", arguments: [
+    @Test("Sign ← Bool", .serialized, arguments: [
         
         Some(false, yields: Sign.plus ),
         Some(true,  yields: Sign.minus),
@@ -50,7 +50,7 @@ import TestKit2
         #expect(Sign(raw: argument.input) == argument.output)
     }
     
-    @Test("Sign → Bool", arguments: [
+    @Test("Sign → Bool", .serialized, arguments: [
         
         Some(Sign.plus,  yields: false),
         Some(Sign.minus, yields: true ),
@@ -60,7 +60,7 @@ import TestKit2
         #expect(Bool(raw: argument.input) == argument.output)
     }
     
-    @Test("Sign ← Stdlib", arguments: [
+    @Test("Sign ← Stdlib", .serialized, arguments: [
         
         Some(FloatingPointSign.plus,  yields: Sign.plus ),
         Some(FloatingPointSign.minus, yields: Sign.minus),
@@ -70,7 +70,7 @@ import TestKit2
         #expect(Sign(raw: argument.input) == argument.output)
     }
     
-    @Test("Sign → Stdlib", arguments: [
+    @Test("Sign → Stdlib", .serialized, arguments: [
         
         Some(Sign.plus,  yields: FloatingPointSign.plus ),
         Some(Sign.minus, yields: FloatingPointSign.minus),

@@ -20,7 +20,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Signum ← Bit", arguments: [
+    @Test("Signum ← Bit", .serialized, arguments: [
         
         Some(Bit.zero, yields: Signum.zero    ),
         Some(Bit.one,  yields: Signum.positive),
@@ -30,7 +30,7 @@ import TestKit2
     }
     
     
-    @Test("Signum ← Sign or Sign?", arguments: [
+    @Test("Signum ← Sign or Sign?", .serialized, arguments: [
         
         Some(Optional<Sign>(nil ), yields: Signum.zero),
         Some(Optional(Sign.plus ), yields: Signum.positive),

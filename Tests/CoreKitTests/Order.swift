@@ -20,7 +20,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test(arguments: [
+    @Test(.serialized, arguments: [
         
         Some(Order.ascending,  yields: false),
         Some(Order.descending, yields: true ),
@@ -38,7 +38,7 @@ import TestKit2
         #expect(Order.endianess == arguments)
     }
     
-    @Test(arguments: [
+    @Test(.serialized, arguments: [
         
         Some(Order.ascending,  yields: Order.descending),
         Some(Order.descending, yields: Order.ascending ),

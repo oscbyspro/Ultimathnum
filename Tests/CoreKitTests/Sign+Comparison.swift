@@ -20,7 +20,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test(arguments: [
+    @Test(.serialized, arguments: [
         
         Some(Sign.plus,  Sign.plus,  yields: true ),
         Some(Sign.plus,  Sign.minus, yields: false),

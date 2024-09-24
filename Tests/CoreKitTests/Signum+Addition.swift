@@ -20,7 +20,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Signum/negated()", arguments: [
+    @Test("Signum/negated()", .serialized, arguments: [
         
         Some(Signum.negative, yields: Signum.positive),
         Some(Signum.zero,     yields: Signum.zero    ),

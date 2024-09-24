@@ -20,7 +20,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
 
-    @Test("Bit.~(_:)", arguments: [
+    @Test("Bit.~(_:)", .serialized, arguments: [
         
         Some(Bit.zero, yields: Bit.one ),
         Some(Bit.one,  yields: Bit.zero),
@@ -29,7 +29,7 @@ import TestKit2
         Ɣexpect(not: argument.input, is: argument.output)
     }
     
-    @Test("Bit.&(_:_:)", arguments: [
+    @Test("Bit.&(_:_:)", .serialized, arguments: [
         
         Some(Bit.zero, Bit.zero, yields: Bit.zero),
         Some(Bit.zero, Bit.one,  yields: Bit.zero),
@@ -40,7 +40,7 @@ import TestKit2
         Ɣexpect(argument.0, and: argument.1, is: argument.output)
     }
     
-    @Test("Bit.|(_:_:)", arguments: [
+    @Test("Bit.|(_:_:)", .serialized, arguments: [
         
         Some(Bit.zero, Bit.zero, yields: Bit.zero),
         Some(Bit.zero, Bit.one,  yields: Bit.one ),
@@ -51,7 +51,7 @@ import TestKit2
         Ɣexpect(argument.0,  or: argument.1, is: argument.output)
     }
     
-    @Test("Bit.^(_:_:)", arguments: [
+    @Test("Bit.^(_:_:)", .serialized, arguments: [
         
         Some(Bit.zero, Bit.zero, yields: Bit.zero),
         Some(Bit.zero, Bit.one,  yields: Bit.one ),

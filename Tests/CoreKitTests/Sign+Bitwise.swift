@@ -20,7 +20,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
 
-    @Test("Sign.~(_:)", arguments: [
+    @Test("Sign.~(_:)", .serialized, arguments: [
         
         Some(Sign.plus,  yields: Sign.minus),
         Some(Sign.minus, yields: Sign.plus ),
@@ -29,7 +29,7 @@ import TestKit2
         Ɣexpect(not: argument.input, is: argument.output)
     }
     
-    @Test("Sign.&(_:_:)", arguments: [
+    @Test("Sign.&(_:_:)", .serialized, arguments: [
         
         Some(Sign.plus,  Sign.plus,  yields: Sign.plus ),
         Some(Sign.plus,  Sign.minus, yields: Sign.plus ),
@@ -40,7 +40,7 @@ import TestKit2
         Ɣexpect(argument.0, and: argument.1, is: argument.output)
     }
     
-    @Test("Sign.|(_:_:)", arguments: [
+    @Test("Sign.|(_:_:)", .serialized, arguments: [
         
         Some(Sign.plus,  Sign.plus,  yields: Sign.plus ),
         Some(Sign.plus,  Sign.minus, yields: Sign.minus),
@@ -51,7 +51,7 @@ import TestKit2
         Ɣexpect(argument.0,  or: argument.1, is: argument.output)
     }
     
-    @Test("Sign.^(_:_:)", arguments: [
+    @Test("Sign.^(_:_:)", .serialized, arguments: [
         
         Some(Sign.plus,  Sign.plus,  yields: Sign.plus ),
         Some(Sign.plus,  Sign.minus, yields: Sign.minus),

@@ -21,7 +21,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Fallible/description - x1", arguments: [
+    @Test("Fallible/description - x1", .serialized, arguments: [
         
         Some(Bit.zero, false, yields: "0[-]"),
         Some(Bit.zero, true,  yields: "0[x]"),
@@ -32,7 +32,7 @@ import TestKit2
         Ɣexpect(Fallible(argument.0, error: argument.1), description: argument.output)
     }
     
-    @Test("Fallible/description - x2", arguments: [
+    @Test("Fallible/description - x2", .serialized, arguments: [
         
         Some(Bit.zero, false, false, yields: "0[-][-]"),
         Some(Bit.zero, false, true,  yields: "0[-][x]"),
