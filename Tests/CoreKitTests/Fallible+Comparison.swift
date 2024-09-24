@@ -8,34 +8,25 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import RandomIntKit
 import TestKit2
 
 //*============================================================================*
-// MARK: * Fallible
+// MARK: * Fallible x Comparison
 //*============================================================================*
 
-@Suite struct FallibleTests {
+@Suite struct FallibleTestsOnComparison {
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests x Metadata
+    // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Optional<Fallible<T>> has same memory layout as Fallible<T>")
-    func optionalFallibleHasSameMemoryLayoutAsFallible() {
-        whereIs(Bit .self)
-        whereIs(Bool.self)
-        whereIs(Void.self)
+    @Test("Equatable vs memeq(_:_:)", arguments:
         
-        for type in coreIntegers {
-            whereIsBinaryInteger(type)
-        }
-        
-        func whereIs<T>(_ type: T.Type) {
-            Ɣexpect(MemoryLayout<Optional<Fallible<T>>>.self, equals: MemoryLayout<Fallible<T>>.self)
-        }
-        
-        func whereIsBinaryInteger<T>(_ type: T.Type) where T: BinaryInteger {
-            Ɣexpect(MemoryLayout<Optional<Fallible<T>>>.self, equals: MemoryLayout<Fallible<T>>.self)
-        }
+        Fallible<Bit>.all,
+        Fallible<Bit>.all
+          
+    )   func compare(_ lhs: Fallible<Bit>, _ rhs: Fallible<Bit>) {
+        Ɣexpect(lhs, equals: rhs, is: memeq(lhs, rhs))
     }
 }

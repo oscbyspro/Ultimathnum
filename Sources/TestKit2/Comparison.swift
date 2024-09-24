@@ -44,3 +44,18 @@ import CoreKit
         #expect(lhs.hashValue == rhs.hashValue, "Hashable/hashValue", sourceLocation: location)
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Memory Layout
+//=----------------------------------------------------------------------------=
+
+@inlinable public func Ɣexpect<T, U>(
+    _      lhs: MemoryLayout<T>.Type,
+    equals rhs: MemoryLayout<U>.Type,
+    at     location: SourceLocation = #_sourceLocation
+) {
+    
+    #expect(lhs.size      == rhs.size,      "MemoryLayout<T>.size",      sourceLocation: location)
+    #expect(lhs.stride    == rhs.stride,    "MemoryLayout<T>.stride",    sourceLocation: location)
+    #expect(lhs.alignment == rhs.alignment, "MemoryLayout<T>.alignment", sourceLocation: location)
+}
