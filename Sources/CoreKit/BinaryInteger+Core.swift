@@ -38,6 +38,7 @@ where
     Magnitude: CoreInteger,
     Signitude: CoreInteger,
     Stdlib: BitCastable,
+    Stdlib: Swift.Codable,
     Stdlib: Swift.FixedWidthInteger,
     Stdlib: Swift.Sendable,
     Stdlib.BitPattern == Stdlib.Magnitude,
