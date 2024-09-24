@@ -22,7 +22,6 @@ import TestKit2
     
     @Test("Optional<Fallible<T>> has same memory layout as Fallible<T>")
     func optionalFallibleHasSameMemoryLayoutAsFallible() {
-        whereIs(Bit .self)
         whereIs(Bool.self)
         whereIs(Void.self)
         

@@ -12,7 +12,7 @@
 //*============================================================================*
 
 /// A `value` and an `error` indicator.
-@frozen public struct Fallible<Value> {
+@frozen public struct Fallible<Value>: CustomStringConvertible {
     
     //=------------------------------------------------------------------------=
     // MARK: State
