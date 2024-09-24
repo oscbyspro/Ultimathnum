@@ -26,8 +26,8 @@ import TestKit2
         Some(Signum.zero,     yields: false),
         Some(Signum.positive, yields: false),
         
-    ]) func isNegative(_ expectation: Some<Signum, Bool>) {
-        #expect(expectation.input.isNegative == expectation.output)
+    ]) func isNegative(_ arguments: Some<Signum, Bool>) {
+        #expect(arguments.input.isNegative == arguments.output)
     }
     
     @Test("Signum/isZero", arguments: [
@@ -36,8 +36,8 @@ import TestKit2
         Some(Signum.zero,     yields: true ),
         Some(Signum.positive, yields: false),
         
-    ]) func isZero(_ expectation: Some<Signum, Bool>) {
-        #expect(expectation.input.isZero == expectation.output)
+    ]) func isZero(_ arguments: Some<Signum, Bool>) {
+        #expect(arguments.input.isZero == arguments.output)
     }
     
     @Test("Signum/isPositive", arguments: [
@@ -46,24 +46,24 @@ import TestKit2
         Some(Signum.zero,     yields: false),
         Some(Signum.positive, yields: true ),
         
-    ]) func isPositive(_ expectation: Some<Signum, Bool>) {
-        #expect(expectation.input.isPositive == expectation.output)
+    ]) func isPositive(_ argument: Some<Signum, Bool>) {
+        #expect(argument.input.isPositive == argument.output)
     }
     
     @Test("Signum/compared(to:)", arguments: [
         
-        Some((lhs: Signum.negative, rhs: Signum.negative), yields: Signum.zero),
-        Some((lhs: Signum.negative, rhs: Signum.zero    ), yields: Signum.negative),
-        Some((lhs: Signum.negative, rhs: Signum.positive), yields: Signum.negative),
-        Some((lhs: Signum.zero,     rhs: Signum.negative), yields: Signum.positive),
-        Some((lhs: Signum.zero,     rhs: Signum.zero    ), yields: Signum.zero),
-        Some((lhs: Signum.zero,     rhs: Signum.positive), yields: Signum.negative),
-        Some((lhs: Signum.positive, rhs: Signum.negative), yields: Signum.positive),
-        Some((lhs: Signum.positive, rhs: Signum.zero    ), yields: Signum.positive),
-        Some((lhs: Signum.positive, rhs: Signum.positive), yields: Signum.zero),
+        Some(Signum.negative, Signum.negative, yields: Signum.zero),
+        Some(Signum.negative, Signum.zero,     yields: Signum.negative),
+        Some(Signum.negative, Signum.positive, yields: Signum.negative),
+        Some(Signum.zero,     Signum.negative, yields: Signum.positive),
+        Some(Signum.zero,     Signum.zero,     yields: Signum.zero),
+        Some(Signum.zero,     Signum.positive, yields: Signum.negative),
+        Some(Signum.positive, Signum.negative, yields: Signum.positive),
+        Some(Signum.positive, Signum.zero,     yields: Signum.positive),
+        Some(Signum.positive, Signum.positive, yields: Signum.zero),
         
-    ]) func compare(_ expectation: Some<(lhs: Signum, rhs: Signum), Signum>) {
-        Ɣexpect(expectation.input.lhs, equals: expectation.input.rhs, is:    expectation.output)
-        #expect(expectation.input.lhs.compared(to: expectation.input.rhs) == expectation.output)
+    ]) func compare(_ argument: Some<Signum, Signum, Signum>) {
+        Ɣexpect(argument.0, equals: argument.1, is:    argument.output)
+        #expect(argument.0.compared(to: argument.1) == argument.output)
     }
 }

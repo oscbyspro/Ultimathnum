@@ -25,9 +25,9 @@ import TestKit2
         Some(false, yields: Bit.zero),
         Some(true,  yields: Bit.one ),
         
-    ]) func initBool(_ expectation: Some<Bool, Bit>) {
-        #expect(Bit(     expectation.input) == expectation.output)
-        #expect(Bit(raw: expectation.input) == expectation.output)
+    ]) func initBool(_ argument: Some<Bool, Bit>) {
+        #expect(Bit(     argument.input) == argument.output)
+        #expect(Bit(raw: argument.input) == argument.output)
     }
     
     @Test("Bit → Bool", arguments: [
@@ -35,9 +35,9 @@ import TestKit2
         Some(Bit.zero, yields: false),
         Some(Bit.one,  yields: true ),
         
-    ]) func makeBool(_ expectation: Some<Bit, Bool>) {
-        #expect(Bool(     expectation.input) == expectation.output)
-        #expect(Bool(raw: expectation.input) == expectation.output)
+    ]) func makeBool(_ argument: Some<Bit, Bool>) {
+        #expect(Bool(     argument.input) == argument.output)
+        #expect(Bool(raw: argument.input) == argument.output)
     }
     
     @Test("Bit ← Sign", arguments: [
@@ -45,9 +45,9 @@ import TestKit2
         Some(Sign.plus,  yields: Bit.zero),
         Some(Sign.minus, yields: Bit.one ),
         
-    ]) func initSign(_ expectation: Some<Sign, Bit>) {
-        #expect(Bit(     expectation.input) == expectation.output)
-        #expect(Bit(raw: expectation.input) == expectation.output)
+    ]) func initSign(_ argument: Some<Sign, Bit>) {
+        #expect(Bit(     argument.input) == argument.output)
+        #expect(Bit(raw: argument.input) == argument.output)
     }
     
     @Test("Bit → Sign", arguments: [
@@ -55,9 +55,9 @@ import TestKit2
         Some(Bit.zero, yields: Sign.plus ),
         Some(Bit.one,  yields: Sign.minus),
         
-    ]) func makeSign(_ expectation: Some<Bit, Sign>) {
-        #expect(Sign(     expectation.input) == expectation.output)
-        #expect(Sign(raw: expectation.input) == expectation.output)
+    ]) func makeSign(_ argument: Some<Bit, Sign>) {
+        #expect(Sign(     argument.input) == argument.output)
+        #expect(Sign(raw: argument.input) == argument.output)
     }
     
     //=------------------------------------------------------------------------=
@@ -69,8 +69,8 @@ import TestKit2
         Some(Bit.zero, yields: "0"),
         Some(Bit.one,  yields: "1"),
         
-    ]) func description(_ expectation: Some<Bit, String>) {
-        #expect(expectation.input.description == expectation.output)
-        #expect(String(describing: expectation.input) == expectation.output)
+    ]) func description(_ argument: Some<Bit, String>) {
+        #expect(argument.input.description == argument.output)
+        #expect(String(describing: argument.input) == argument.output)
     }
 }

@@ -16,7 +16,7 @@ import CoreKit
 @inlinable public func Ɣexpect<T>(
     _      lhs: T,
     equals rhs: T,
-    is     expectation: Signum = .zero,
+    is     expectation: Signum =  .zero,
     using  strategy: ID.Comparable.Type = ID.Comparable.self,
     at     location: SourceLocation = #_sourceLocation
 )   where  T: Comparable {

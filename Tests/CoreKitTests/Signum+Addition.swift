@@ -26,9 +26,9 @@ import TestKit2
         Some(Signum.zero,     yields: Signum.zero    ),
         Some(Signum.positive, yields: Signum.negative),
         
-    ]) func negation(_ expectation: Some<Signum, Signum>) {
-        #expect(-expectation.input == expectation.output)
-        #expect((expectation.input.negated() == expectation.output))
-        #expect({ var x = expectation.input; x.negate(); return x }() == expectation.output)
+    ]) func negation(_ argument: Some<Signum, Signum>) {
+        #expect(-argument.input == argument.output)
+        #expect((argument.input.negated() == argument.output))
+        #expect({ var x = argument.input; x.negate(); return x }() == argument.output)
     }
 }

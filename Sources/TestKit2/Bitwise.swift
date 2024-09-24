@@ -30,7 +30,7 @@ import CoreKit
     at  location: SourceLocation = #_sourceLocation
 )   where T: BitOperable & Equatable {
     #expect(lhs & rhs == expectation, "BitOperable.&(_:_:)", sourceLocation: location)
-    #expect({ var x = lhs; x &= rhs; return x }() == expectation, "BitOperable/&=(_:)", sourceLocation: location)
+    #expect({ var x = lhs; x &= rhs; return x }() == expectation, "BitOperable.&=(_:_:)", sourceLocation: location)
 }
 
 @inlinable public func Ɣexpect<T>(
@@ -40,7 +40,7 @@ import CoreKit
     at  location: SourceLocation = #_sourceLocation
 )   where T: BitOperable & Equatable {
     #expect(lhs | rhs == expectation, "BitOperable.|(_:_:)", sourceLocation: location)
-    #expect({ var x = lhs; x |= rhs; return x }() == expectation, "BitOperable/|=(_:)", sourceLocation: location)
+    #expect({ var x = lhs; x |= rhs; return x }() == expectation, "BitOperable.|=(_:_:)", sourceLocation: location)
 }
 
 @inlinable public func Ɣexpect<T>(
@@ -50,5 +50,5 @@ import CoreKit
     at  location: SourceLocation = #_sourceLocation
 )   where T: BitOperable & Equatable {
     #expect(lhs ^ rhs == expectation, "BitOperable.^(_:_:)", sourceLocation: location)
-    #expect({ var x = lhs; x ^= rhs; return x }() == expectation, "BitOperable/^=(_:)", sourceLocation: location)
+    #expect({ var x = lhs; x ^= rhs; return x }() == expectation, "BitOperable.^=(_:_:)", sourceLocation: location)
 }

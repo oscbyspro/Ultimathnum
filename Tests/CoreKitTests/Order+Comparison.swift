@@ -22,12 +22,12 @@ import TestKit2
     
     @Test(arguments: [
         
-        Some((lhs: Order.ascending,  rhs: Order.ascending ), yields: true ),
-        Some((lhs: Order.ascending,  rhs: Order.descending), yields: false),
-        Some((lhs: Order.descending, rhs: Order.ascending ), yields: false),
-        Some((lhs: Order.descending, rhs: Order.descending), yields: true ),
+        Some(Order.ascending,  Order.ascending,  yields: true ),
+        Some(Order.ascending,  Order.descending, yields: false),
+        Some(Order.descending, Order.ascending,  yields: false),
+        Some(Order.descending, Order.descending, yields: true ),
         
-    ]) func compare(_ expectation: Some<(lhs: Order, rhs: Order), Bool>) {
-        Ɣexpect(expectation.input.lhs, equals: expectation.input.rhs, is: expectation.output)
+    ]) func compare(_ argument: Some<Order, Order, Bool>) {
+        Ɣexpect(argument.0, equals: argument.1, is: argument.output)
     }
 }

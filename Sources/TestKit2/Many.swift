@@ -11,22 +11,22 @@
 // MARK: * Many
 //*============================================================================*
 
-@frozen public struct Many<Input, Element>: CustomTestStringConvertible {
+@dynamicMemberLookup @frozen public struct Many<each Input, Element>: CustomTestStringConvertible {
     
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    public let input:  Input
+    public let input: (repeat each Input)
     public let output: Array<Element>
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ input: Input, yields output: Array<Element>) {
-        self.input  = input
-        self.output = output
+    @inlinable public init(_ input: repeat each Input, yields output: Array<Element>) {
+        self.input  = (repeat each input)
+        self.output = (output)
     }
     
     //=------------------------------------------------------------------------=
@@ -35,5 +35,9 @@
     
     @inlinable public var testDescription: String {
         "\(self.input) → \(self.output.count) elements"
+    }
+    
+    @inlinable public subscript<T>(dynamicMember keyPath: KeyPath<(repeat each Input), T>) -> T {
+        self.input[keyPath: keyPath]
     }
 }

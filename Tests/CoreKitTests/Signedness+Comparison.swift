@@ -22,12 +22,12 @@ import TestKit2
     
     @Test(arguments: [
         
-        Some((lhs: Signedness.unsigned, rhs: Signedness.unsigned), yields: true ),
-        Some((lhs: Signedness.unsigned, rhs: Signedness  .signed), yields: false),
-        Some((lhs: Signedness  .signed, rhs: Signedness.unsigned), yields: false),
-        Some((lhs: Signedness  .signed, rhs: Signedness  .signed), yields: true ),
+        Some(Signedness.unsigned, Signedness.unsigned, yields: true ),
+        Some(Signedness.unsigned, Signedness  .signed, yields: false),
+        Some(Signedness  .signed, Signedness.unsigned, yields: false),
+        Some(Signedness  .signed, Signedness  .signed, yields: true ),
         
-    ]) func compare(_ expectation: Some<(lhs: Signedness, rhs: Signedness), Bool>) {
-        Ɣexpect(expectation.input.lhs, equals: expectation.input.rhs, is: expectation.output)
+    ]) func compare(_ argument: Some<Signedness, Signedness, Bool>) {
+        Ɣexpect(argument.0, equals: argument.1, is: argument.output)
     }
 }

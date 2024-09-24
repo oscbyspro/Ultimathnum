@@ -25,9 +25,9 @@ import TestKit2
         Some(Bit.zero, yields: Sign.plus ),
         Some(Bit.one,  yields: Sign.minus),
         
-    ]) func initBit(_ expectation: Some<Bit, Sign>) {
-        #expect(Sign(     expectation.input) == expectation.output)
-        #expect(Sign(raw: expectation.input) == expectation.output)
+    ]) func initBit(_ argument: Some<Bit, Sign>) {
+        #expect(Sign(     argument.input) == argument.output)
+        #expect(Sign(raw: argument.input) == argument.output)
     }
     
     @Test("Sign → Bit", arguments: [
@@ -35,9 +35,9 @@ import TestKit2
         Some(Sign.plus,  yields: Bit.zero),
         Some(Sign.minus, yields: Bit.one ),
         
-    ]) func makeBit(_ expectation: Some<Sign, Bit>) {
-        #expect(Bit(     expectation.input) == expectation.output)
-        #expect(Bit(raw: expectation.input) == expectation.output)
+    ]) func makeBit(_ argument: Some<Sign, Bit>) {
+        #expect(Bit(     argument.input) == argument.output)
+        #expect(Bit(raw: argument.input) == argument.output)
     }
     
     @Test("Sign ← Bool", arguments: [
@@ -45,9 +45,9 @@ import TestKit2
         Some(false, yields: Sign.plus ),
         Some(true,  yields: Sign.minus),
         
-    ]) func initBool(_ expectation: Some<Bool, Sign>) {
-        #expect(Sign(     expectation.input) == expectation.output)
-        #expect(Sign(raw: expectation.input) == expectation.output)
+    ]) func initBool(_ argument: Some<Bool, Sign>) {
+        #expect(Sign(     argument.input) == argument.output)
+        #expect(Sign(raw: argument.input) == argument.output)
     }
     
     @Test("Sign → Bool", arguments: [
@@ -55,9 +55,9 @@ import TestKit2
         Some(Sign.plus,  yields: false),
         Some(Sign.minus, yields: true ),
         
-    ]) func makeBool(_ expectation: Some<Sign, Bool>) {
-        #expect(Bool(     expectation.input) == expectation.output)
-        #expect(Bool(raw: expectation.input) == expectation.output)
+    ]) func makeBool(_ argument: Some<Sign, Bool>) {
+        #expect(Bool(     argument.input) == argument.output)
+        #expect(Bool(raw: argument.input) == argument.output)
     }
     
     @Test("Sign ← Stdlib", arguments: [
@@ -65,9 +65,9 @@ import TestKit2
         Some(FloatingPointSign.plus,  yields: Sign.plus ),
         Some(FloatingPointSign.minus, yields: Sign.minus),
         
-    ]) func initStdlib(_ expectation: Some<FloatingPointSign, Sign>) {
-        #expect(Sign(     expectation.input) == expectation.output)
-        #expect(Sign(raw: expectation.input) == expectation.output)
+    ]) func initStdlib(_ argument: Some<FloatingPointSign, Sign>) {
+        #expect(Sign(     argument.input) == argument.output)
+        #expect(Sign(raw: argument.input) == argument.output)
     }
     
     @Test("Sign → Stdlib", arguments: [
@@ -75,9 +75,9 @@ import TestKit2
         Some(Sign.plus,  yields: FloatingPointSign.plus ),
         Some(Sign.minus, yields: FloatingPointSign.minus),
         
-    ]) func makeStdlib(_ expectation: Some<Sign, FloatingPointSign>) {
-        #expect(expectation.input.stdlib()                == expectation.output)
-        #expect(FloatingPointSign(     expectation.input) == expectation.output)
-        #expect(FloatingPointSign(raw: expectation.input) == expectation.output)
+    ]) func makeStdlib(_ argument: Some<Sign, FloatingPointSign>) {
+        #expect(argument.input.stdlib()                == argument.output)
+        #expect(FloatingPointSign(     argument.input) == argument.output)
+        #expect(FloatingPointSign(raw: argument.input) == argument.output)
     }
 }

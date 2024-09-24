@@ -25,19 +25,19 @@ import TestKit2
         Some(Bit.zero, yields: true ),
         Some(Bit.one,  yields: false),
         
-    ]) func isZero(_ expectation: Some<Bit, Bool>) {
-        #expect(expectation.input.isZero == expectation.output)
+    ]) func isZero(_ argument: Some<Bit, Bool>) {
+        #expect(argument.input.isZero == argument.output)
     }
     
     @Test("Bit/compared(to:)", arguments: [
         
-        Some((lhs: Bit.zero, rhs: Bit.zero), yields: Signum.zero),
-        Some((lhs: Bit.zero, rhs: Bit.one ), yields: Signum.negative),
-        Some((lhs: Bit.one,  rhs: Bit.zero), yields: Signum.positive),
-        Some((lhs: Bit.one,  rhs: Bit.one ), yields: Signum.zero),
+        Some(Bit.zero, Bit.zero, yields: Signum.zero),
+        Some(Bit.zero, Bit.one,  yields: Signum.negative),
+        Some(Bit.one,  Bit.zero, yields: Signum.positive),
+        Some(Bit.one,  Bit.one,  yields: Signum.zero),
         
-    ]) func compare(_ expectation: Some<(lhs: Bit, rhs: Bit), Signum>) {
-        Ɣexpect(expectation.input.lhs, equals: expectation.input.rhs, is:    expectation.output)
-        #expect(expectation.input.lhs.compared(to: expectation.input.rhs) == expectation.output)
+    ]) func compare(_ argument: Some<Bit, Bit, Signum>) {
+        Ɣexpect(argument.0, equals: argument.1, is:    argument.output)
+        #expect(argument.0.compared(to: argument.1) == argument.output)
     }
 }
