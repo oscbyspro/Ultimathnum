@@ -18,7 +18,7 @@ import TestKit2
 @Suite struct CountTests {
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests x Metadata
+    // MARK: Tests
     //=------------------------------------------------------------------------=
     
     @Test func instances() {
@@ -26,11 +26,7 @@ import TestKit2
         #expect(Count.infinity == Count(raw: -1 as IX))
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    @Test("Count.init(raw:)", arguments: CollectionOfOne(fuzzer))
+    @Test("Count.init(raw:)",  arguments: fuzzers)
     func pattern(_ randomness: consuming FuzzerInt) {
         for _ in 0 ..< 256 {
             let expectation: IX = randomness.sizewise()
@@ -39,7 +35,7 @@ import TestKit2
         }
     }
     
-    @Test("Count/natural", arguments: CollectionOfOne(fuzzer))
+    @Test("Count/natural", arguments: fuzzers)
     func natural(_ randomness: consuming FuzzerInt) {
         for _ in 0 ..< 256 {
             let random: IX = randomness.sizewise()

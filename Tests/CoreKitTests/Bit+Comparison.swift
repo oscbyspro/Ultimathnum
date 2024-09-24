@@ -25,7 +25,7 @@ import TestKit2
         Some(Bit.zero, yields: true ),
         Some(Bit.one,  yields: false),
         
-    ]) func isZero(_ argument: Some<Bit, Bool>) {
+    ])  func isZero(_ argument: Some<Bit, Bool>) {
         #expect(argument.input.isZero == argument.output)
     }
     
@@ -36,7 +36,7 @@ import TestKit2
         Some(Bit.one,  Bit.zero, yields: Signum.positive),
         Some(Bit.one,  Bit.one,  yields: Signum.zero),
         
-    ]) func compare(_ argument: Some<Bit, Bit, Signum>) {
+    ])  func compare(_ argument: Some<Bit, Bit, Signum>) {
         Ɣexpect(argument.0, equals: argument.1, is:    argument.output)
         #expect(argument.0.compared(to: argument.1) == argument.output)
     }

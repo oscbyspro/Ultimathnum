@@ -21,7 +21,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("T.init(raw:)", arguments: coreIntegers, CollectionOfOne(fuzzer))
+    @Test("T.init(raw:)", arguments: coreIntegers, fuzzers)
     func bitcasting(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         

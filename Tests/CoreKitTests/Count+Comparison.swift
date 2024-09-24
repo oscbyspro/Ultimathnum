@@ -21,7 +21,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test(arguments: CollectionOfOne(fuzzer))
+    @Test(arguments: fuzzers)
     func isZeroIsLikeBinaryIntegerIsZero(_ randomness: consuming FuzzerInt) {
         for _ in 0 ..< 256 {
             let random: IX = randomness.sizewise()
@@ -29,7 +29,7 @@ import TestKit2
         }
     }
     
-    @Test(arguments: CollectionOfOne(fuzzer))
+    @Test(arguments: fuzzers)
     func isInfiniteIsLikeSignedIntegerIsNegative(_ randomness: consuming FuzzerInt) {
         for _ in 0 ..< 256 {
             let random: IX = randomness.sizewise()
@@ -37,7 +37,7 @@ import TestKit2
         }
     }
     
-    @Test(arguments: CollectionOfOne(fuzzer))
+    @Test(arguments: fuzzers)
     func comparisonIsLikeUnsignedIntegerComparison(_ randomness: consuming FuzzerInt) {
         for _ in 0 ..< 256 {
             let lhs: UX = randomness.sizewise()

@@ -25,7 +25,7 @@ import TestKit2
         Some(Bit.zero, yields: Bit.one ),
         Some(Bit.one,  yields: Bit.zero),
         
-    ]) func not(_ argument: Some<Bit, Bit>) {
+    ])  func not(_ argument: Some<Bit, Bit>) {
         Ɣexpect(not: argument.input, is: argument.output)
     }
     
@@ -35,8 +35,8 @@ import TestKit2
         Some(Bit.zero, Bit.one,  yields: Bit.zero),
         Some(Bit.one,  Bit.zero, yields: Bit.zero),
         Some(Bit.one,  Bit.one,  yields: Bit.one ),
-        
-    ]) func and(_ argument: Some<Bit, Bit, Bit>) {
+    
+    ])  func and(_ argument: Some<Bit, Bit, Bit>) {
         Ɣexpect(argument.0, and: argument.1, is: argument.output)
     }
     
@@ -47,7 +47,7 @@ import TestKit2
         Some(Bit.one,  Bit.zero, yields: Bit.one ),
         Some(Bit.one,  Bit.one,  yields: Bit.one ),
         
-    ]) func or(_ argument: Some<Bit, Bit, Bit>) {
+    ])  func or(_ argument: Some<Bit, Bit, Bit>) {
         Ɣexpect(argument.0,  or: argument.1, is: argument.output)
     }
     
@@ -58,7 +58,7 @@ import TestKit2
         Some(Bit.one,  Bit.zero, yields: Bit.one ),
         Some(Bit.one,  Bit.one,  yields: Bit.zero),
         
-    ]) func xor(_ argument: Some<Bit, Bit, Bit>) {
+    ])  func xor(_ argument: Some<Bit, Bit, Bit>) {
         Ɣexpect(argument.0, xor: argument.1, is: argument.output)
     }
 }

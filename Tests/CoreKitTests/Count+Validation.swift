@@ -21,7 +21,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Count is Guarantee-esque", arguments: CollectionOfOne(fuzzer))
+    @Test("Guarantee-esque initializers",   arguments: fuzzers)
     func validation(_ randomness: consuming FuzzerInt) throws {
         for _ in 0 ..< 256 {
             let random: IX = randomness.sizewise()

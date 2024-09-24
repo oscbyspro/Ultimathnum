@@ -8,31 +8,24 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import RandomIntKit
+import TestKit2
 
 //*============================================================================*
-// MARK: * Random
+// MARK: * Bit x Text
 //*============================================================================*
 
-extension Randomness {
+@Suite struct BitTestsOnText {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Test
     //=------------------------------------------------------------------------=
     
-    /// Generates an `index` in `0 ..< size` then a pattern through `index`.
-    ///
-    /// - Note: Use the `unsigned` mode to reject `infinite` values.
-    ///
-    @inlinable public mutating func sizewise<T>(
-        through size: IX = IX(size: T.self) ?? 256,
-        mode signedness: Signedness = T.mode
-    )   -> T where T: BinaryInteger {
+    @Test("Bit/description", arguments: [
         
-        let index = Count(IX.random(in: IX.zero ..< size, using: &self)!)
-        switch signedness {
-        case Signedness  .signed: return T(raw: T.Signitude.random(through: Shift(index), using: &self))
-        case Signedness.unsigned: return T(raw: T.Magnitude.random(through: Shift(index), using: &self))
-        }
+        Some(Bit.zero, yields: "0"),
+        Some(Bit.one,  yields: "1"),
+        
+    ])  func description(_ argument: Some<Bit, String>) {
+        Ɣexpect(argument.input, description: argument.output)
     }
 }

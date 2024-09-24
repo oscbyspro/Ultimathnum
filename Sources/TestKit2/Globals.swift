@@ -42,6 +42,8 @@ public let fuzzer = FuzzerInt(seed: random.next())
 
 public let randomnesses: [any Randomness] = [random, fuzzer]
 
+public let fuzzers: [FuzzerInt] = [fuzzer]
+
 //=----------------------------------------------------------------------------=
 // MARK: + Data
 //=----------------------------------------------------------------------------=

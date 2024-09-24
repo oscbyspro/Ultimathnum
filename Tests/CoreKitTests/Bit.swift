@@ -25,7 +25,7 @@ import TestKit2
         Some(false, yields: Bit.zero),
         Some(true,  yields: Bit.one ),
         
-    ]) func initBool(_ argument: Some<Bool, Bit>) {
+    ])  func initBool(_ argument: Some<Bool, Bit>) {
         #expect(Bit(     argument.input) == argument.output)
         #expect(Bit(raw: argument.input) == argument.output)
     }
@@ -35,7 +35,7 @@ import TestKit2
         Some(Bit.zero, yields: false),
         Some(Bit.one,  yields: true ),
         
-    ]) func makeBool(_ argument: Some<Bit, Bool>) {
+    ])  func makeBool(_ argument: Some<Bit, Bool>) {
         #expect(Bool(     argument.input) == argument.output)
         #expect(Bool(raw: argument.input) == argument.output)
     }
@@ -45,7 +45,7 @@ import TestKit2
         Some(Sign.plus,  yields: Bit.zero),
         Some(Sign.minus, yields: Bit.one ),
         
-    ]) func initSign(_ argument: Some<Sign, Bit>) {
+    ])  func initSign(_ argument: Some<Sign, Bit>) {
         #expect(Bit(     argument.input) == argument.output)
         #expect(Bit(raw: argument.input) == argument.output)
     }
@@ -55,22 +55,8 @@ import TestKit2
         Some(Bit.zero, yields: Sign.plus ),
         Some(Bit.one,  yields: Sign.minus),
         
-    ]) func makeSign(_ argument: Some<Bit, Sign>) {
+    ])  func makeSign(_ argument: Some<Bit, Sign>) {
         #expect(Sign(     argument.input) == argument.output)
         #expect(Sign(raw: argument.input) == argument.output)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Test
-    //=------------------------------------------------------------------------=
-    
-    @Test("Bit/description", arguments: [
-        
-        Some(Bit.zero, yields: "0"),
-        Some(Bit.one,  yields: "1"),
-        
-    ]) func description(_ argument: Some<Bit, String>) {
-        #expect(argument.input.description == argument.output)
-        #expect(String(describing: argument.input) == argument.output)
     }
 }
