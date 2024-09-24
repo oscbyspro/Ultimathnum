@@ -19,7 +19,7 @@ extension Fallible {
     
     @inlinable public var description: String {
         var description = String(describing: self.value)
-        description.append(self.error ? "[x]" : "[ ]")
+        description.append(self.error ? "[x]" : "[-]")
         return description
     }
 }

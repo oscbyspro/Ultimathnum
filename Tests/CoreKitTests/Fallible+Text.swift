@@ -23,9 +23,9 @@ import TestKit2
     
     @Test("Fallible/description - x1", arguments: [
         
-        Some(Bit.zero, false, yields: "0[ ]"),
+        Some(Bit.zero, false, yields: "0[-]"),
         Some(Bit.zero, true,  yields: "0[x]"),
-        Some(Bit.one,  false, yields: "1[ ]"),
+        Some(Bit.one,  false, yields: "1[-]"),
         Some(Bit.one,  true,  yields: "1[x]"),
         
     ])  func description1(_ argument: Some<Bit, Bool, String>) {
@@ -34,13 +34,13 @@ import TestKit2
     
     @Test("Fallible/description - x2", arguments: [
         
-        Some(Bit.zero, false, false, yields: "0[ ][ ]"),
-        Some(Bit.zero, false, true,  yields: "0[ ][x]"),
-        Some(Bit.zero, true,  false, yields: "0[x][ ]"),
+        Some(Bit.zero, false, false, yields: "0[-][-]"),
+        Some(Bit.zero, false, true,  yields: "0[-][x]"),
+        Some(Bit.zero, true,  false, yields: "0[x][-]"),
         Some(Bit.zero, true,  true,  yields: "0[x][x]"),
-        Some(Bit.one,  false, false, yields: "1[ ][ ]"),
-        Some(Bit.one,  false, true,  yields: "1[ ][x]"),
-        Some(Bit.one,  true,  false, yields: "1[x][ ]"),
+        Some(Bit.one,  false, false, yields: "1[-][-]"),
+        Some(Bit.one,  false, true,  yields: "1[-][x]"),
+        Some(Bit.one,  true,  false, yields: "1[x][-]"),
         Some(Bit.one,  true,  true,  yields: "1[x][x]"),
         
     ])  func description2(_ argument: Some<Bit, Bool, Bool, String>) {
