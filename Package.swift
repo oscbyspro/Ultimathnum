@@ -60,7 +60,7 @@ let package = Package(
         ),
         .testTarget(
             name: "UltimathnumTests",
-            dependencies: ["Ultimathnum", "TestKit"]
+            dependencies: ["Ultimathnum", "TestKit", "TestKit2"]
         ),
         .target(
             name: "CoreKit",

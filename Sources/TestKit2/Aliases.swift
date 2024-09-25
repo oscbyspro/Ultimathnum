@@ -13,5 +13,9 @@ import CoreKit
 // MARK: * Aliases
 //*============================================================================*
 
-public typealias CoreIntegerWhereIsSigned   = CoreInteger &   SignedInteger
-public typealias CoreIntegerWhereIsUnsigned = CoreInteger & UnsignedInteger
+public typealias ArbitraryIntegerWhereIsSigned   = ArbitraryInteger &   SignedInteger
+public typealias ArbitraryIntegerWhereIsUnsigned = ArbitraryInteger & UnsignedInteger
+public typealias      CoreIntegerWhereIsSigned   =      CoreInteger &   SignedInteger
+public typealias      CoreIntegerWhereIsUnsigned =      CoreInteger & UnsignedInteger
+public typealias   SystemsIntegerWhereIsSigned   =   SystemsInteger &   SignedInteger
+public typealias   SystemsIntegerWhereIsUnsigned =   SystemsInteger & UnsignedInteger

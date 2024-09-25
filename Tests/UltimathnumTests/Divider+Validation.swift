@@ -20,11 +20,11 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Divider.init(exactly:) - load each I8", arguments: coreIntegersWhereIsUnsigned)
-    func initForEachSignedByteEntropy(_ type: any CoreIntegerWhereIsUnsigned.Type) throws {
+    @Test("Divider.init(exactly:) - load each I8", arguments: systemsIntegersWhereIsUnsigned)
+    func initForEachSignedByteEntropy(_ type: any SystemsIntegerWhereIsUnsigned.Type) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsInteger & UnsignedInteger {
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerWhereIsUnsigned {
             for divisor in I8.all.lazy.map(T.init(load:)) {
                 if !divisor.isZero {
                     #expect(Divider(divisor           ) .divisor == divisor)
@@ -41,11 +41,11 @@ import TestKit2
         }
     }
     
-    @Test("Divider21.init(exactly:) - load each I8", arguments: coreIntegersWhereIsUnsigned)
-    func initForEachSignedByteEntropy21(_ type: any CoreIntegerWhereIsUnsigned.Type) throws {
+    @Test("Divider21.init(exactly:) - load each I8", arguments: systemsIntegersWhereIsUnsigned)
+    func initForEachSignedByteEntropy21(_ type: any SystemsIntegerWhereIsUnsigned.Type) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsInteger & UnsignedInteger {
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerWhereIsUnsigned {
             for divisor in I8.all.lazy.map(T.init(load:)) {
                 if !divisor.isZero {
                     #expect(Divider21(divisor           ) .divisor == divisor)

@@ -10,7 +10,7 @@
 import CoreKit
 import DoubleIntKit
 import InfiniIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Globals
@@ -36,12 +36,12 @@ let arbitraryIntegers: [any ArbitraryInteger.Type] = {
     arbitraryIntegersWhereIsUnsigned
 }()
 
-let arbitraryIntegersWhereIsSigned: [any (ArbitraryInteger & SignedInteger).Type] = [
+let arbitraryIntegersWhereIsSigned: [any ArbitraryIntegerWhereIsSigned.Type] = [
     InfiniInt<I8>.self,
     InfiniInt<IX>.self,
 ]
 
-let arbitraryIntegersWhereIsUnsigned: [any (ArbitraryInteger & UnsignedInteger).Type] = [
+let arbitraryIntegersWhereIsUnsigned: [any ArbitraryIntegerWhereIsUnsigned.Type] = [
     InfiniInt<U8>.self,
     InfiniInt<UX>.self,
 ]
@@ -51,13 +51,13 @@ let systemsIntegers: [any SystemsInteger.Type] = {
     systemsIntegersWhereIsUnsigned
 }()
 
-let systemsIntegersWhereIsSigned: [any (SystemsInteger & SignedInteger).Type] = [
+let systemsIntegersWhereIsSigned: [any SystemsIntegerWhereIsSigned.Type] = [
     IX.self,  I8 .self, I16.self, I32.self, I64 .self,
     DoubleInt<I8>.self, DoubleInt<DoubleInt<I8>>.self,
     DoubleInt<IX>.self, DoubleInt<DoubleInt<IX>>.self,
 ]
 
-let systemsIntegersWhereIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = [
+let systemsIntegersWhereIsUnsigned: [any SystemsIntegerWhereIsUnsigned.Type] = [
     UX.self,  U8 .self, U16.self, U32.self, U64 .self,
     DoubleInt<U8>.self, DoubleInt<DoubleInt<U8>>.self,
     DoubleInt<UX>.self, DoubleInt<DoubleInt<UX>>.self,
