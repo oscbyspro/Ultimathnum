@@ -8,28 +8,49 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import TestKit
+import RandomIntKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Division
 //*============================================================================*
 
-final class DivisionTests: XCTestCase {
+@Suite struct DivisionTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testBitCast() {
-        Test().same(Division<I16, I8>(raw: Division<U16, U8>(quotient: ~0, remainder: ~1)).quotient,  -1)
-        Test().same(Division<I16, I8>(raw: Division<U16, U8>(quotient: ~0, remainder: ~1)).remainder, -2)
-        Test().same(Division<U16, U8>(raw: Division<I16, I8>(quotient: -1, remainder: -2)).quotient,  ~0)
-        Test().same(Division<U16, U8>(raw: Division<I16, I8>(quotient: -1, remainder: -2)).remainder, ~1)
+    @Test("Division/init(raw:) - T.init(load:)", .serialized, arguments: I8(-2)...I8(2), I8(-2)...I8(2))
+    func pattern(quotient: I8, remainder: I8) {
+        for quotient in coreIntegers {
+            for remainder in coreIntegers {
+                whereIs(quotient, remainder)
+            }
+        }
+        
+        func whereIs<Q, R>(_ first: Q.Type,  _ second: R.Type) where Q: BinaryInteger, R: BinaryInteger {
+            let normal    = Division(quotient: Q          (load: quotient), remainder: R          (load: remainder))
+            let magnitude = Division(quotient: Q.Magnitude(load: quotient), remainder: R.Magnitude(load: remainder))
+            let signitude = Division(quotient: Q.Signitude(load: quotient), remainder: R.Signitude(load: remainder))
+            #expect(normal == Division<Q, R>(raw: magnitude))
+            #expect(normal == Division<Q, R>(raw: signitude))
+        }
     }
     
-    func testComponents() {
-        let (quotient, remainder) = Division<I16, I8>(quotient: 1, remainder: 2).components()
-        Test().same(quotient,  1)
-        Test().same(remainder, 2)
+    @Test("Division/components() - T.init(load:)", .serialized, arguments: I8(-2)...I8(2), I8(-2)...I8(2))
+    func components(quotient: I8, remainder: I8) {
+        for quotient in coreIntegers {
+            for remainder in coreIntegers {
+                whereIs(quotient, remainder)
+            }
+        }
+        
+        func whereIs<Q, R>(_ first: Q.Type,  _ second: R.Type) where Q: BinaryInteger, R: BinaryInteger {
+            let quotient  = Q(load: quotient )
+            let remainder = R(load: remainder)
+            let division  = Division(quotient: quotient, remainder: remainder)
+            #expect(division.components() ==  (quotient, remainder))
+        }
     }
 }

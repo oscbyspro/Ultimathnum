@@ -19,12 +19,12 @@ extension Division {
     
     /// Increments the `quotient` when the `remainder` is positive.
     @inlinable public consuming func ceil() -> Fallible<Quotient> {
-        self.quotient.plus(self.remainder.isPositive ? 1 : 0)
+        self.quotient.incremented(self.remainder.isPositive)
     }
     
     /// Decrements the `quotient` when the `remainder` is negative.
     @inlinable public consuming func floor() -> Fallible<Quotient> {
-        self.quotient.minus(self.remainder.isNegative ? 1 : 0)
+        self.quotient.decremented(self.remainder.isNegative)
     }
 }
 

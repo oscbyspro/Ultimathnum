@@ -8,96 +8,72 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Division x Rounding
 //*============================================================================*
 
-final class DivisionTestsOnRounding: XCTestCase {
-
+@Suite struct DivisionTestsOnRounding {
+    
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
- 
-    func testCeil() {
+    
+    @Test("Division/ceil() - [I8, U8]", .tags(.exhaustive), arguments: i8u8, i8u8)
+    func ceil(_ quotient: any SystemsInteger.Type, _ remainder: any SystemsInteger.Type) {
+        whereIs(quotient, remainder)
+        
         func whereIs<Q, R>(_ quotient: Q.Type, _ remainder: R.Type) where Q: SystemsInteger, R: SystemsInteger {
-            func expect(_ quotient: Q, _ remainder: R, _ expectation: Q, _ error: Bool = false, line: UInt = #line) {
-                let division = Division(quotient: quotient, remainder: remainder)
-                Test(line: line).same(division            .ceil(), Fallible(expectation, error: error))
-                Test(line: line).same(division.veto(false).ceil(), Fallible(expectation, error: error))
-                Test(line: line).same(division.veto(true ).ceil(), Fallible(expectation, error: true ))
+            var success:     U32 = 0000000000000
+            let expectation: U32 = 3 * 256 * 256
+            
+            for quotient in Q.all {
+                for remainder in R.nonpositives {
+                    ceil(quotient, remainder, is: Fallible(quotient))
+                }
+                
+                for remainder in R.positives {
+                    ceil(quotient, remainder, is: quotient.plus(1))
+                }
             }
             
-            expect(Q.min, R.min, Q.min)
-            expect(Q.min, ~0000, R.isSigned ? Q.min : Q.min + 1)
-            expect(Q.min, 00000, Q.min)
-            expect(Q.min, 00001, Q.min + 1)
-            expect(Q.min, R.max, Q.min + 1)
-        
-            expect(00000, R.min, 0)
-            expect(00000, ~0000, R.isSigned ? 0 : 1)
-            expect(00000, 00000, 0)
-            expect(00000, 00001, 1)
-            expect(00000, R.max, 1)
+            #expect(success == expectation)
 
-            expect(00001, R.min, 1)
-            expect(00001, ~0000, R.isSigned ? 1 : 2)
-            expect(00001, 00000, 1)
-            expect(00001, 00001, 2)
-            expect(00001, R.max, 2)
-            
-            expect(Q.max, R.min, Q.max)
-            expect(Q.max, ~0000, R.isSigned ? Q.max : Q.min, !R.isSigned)
-            expect(Q.max, 00000, Q.max)
-            expect(Q.max, 00001, Q.min, true)
-            expect(Q.max, R.max, Q.min, true)
-        }
-        
-        for quotient in coreSystemsIntegers {
-            for remainder in coreSystemsIntegers {
-                whereIs(quotient, remainder)
+            func ceil(_ quotient: Q, _ remainder: R, is expectation: Fallible<Q>) {
+                let division = Division(quotient: quotient, remainder: remainder)
+                success &+= U32(Bit(division            .ceil() == expectation))
+                success &+= U32(Bit(division.veto(false).ceil() == expectation))
+                success &+= U32(Bit(division.veto(true ).ceil() == expectation.veto()))
             }
         }
     }
     
-    func testFloor() {
+    @Test("Division/floor() - [I8, U8]", .tags(.exhaustive), arguments: i8u8, i8u8)
+    func floor(_ quotient: any SystemsInteger.Type, _ remainder: any SystemsInteger.Type) {
+        whereIs(quotient, remainder)
+        
         func whereIs<Q, R>(_ quotient: Q.Type, _ remainder: R.Type) where Q: SystemsInteger, R: SystemsInteger {
-            func expect(_ quotient: Q, _ remainder: R, _ expectation: Q, _ error: Bool = false, line: UInt = #line) {
-                let division = Division(quotient: quotient, remainder: remainder)
-                Test(line: line).same(division            .floor(), Fallible(expectation, error: error))
-                Test(line: line).same(division.veto(false).floor(), Fallible(expectation, error: error))
-                Test(line: line).same(division.veto(true ).floor(), Fallible(expectation, error: true ))
+            var success:     U32 = 0000000000000
+            let expectation: U32 = 3 * 256 * 256
+            
+            for quotient in Q.all {
+                for remainder in R.negatives {
+                    floor(quotient, remainder, is: quotient.minus(1))
+                }
+                
+                for remainder in R.nonnegatives {
+                    floor(quotient, remainder, is: Fallible(quotient))
+                }
             }
             
-            expect(Q.min, R.min, R.isSigned ? Q.max : Q.min, R.isSigned)
-            expect(Q.min, ~0000, R.isSigned ? Q.max : Q.min, R.isSigned)
-            expect(Q.min, 00000, Q.min)
-            expect(Q.min, 00001, Q.min)
-            expect(Q.min, R.max, Q.min)
-        
-            expect(00000, R.min, R.isSigned ? ~0000 : 00000, R.isSigned && !Q.isSigned)
-            expect(00000, ~0000, R.isSigned ? ~0000 : 00000, R.isSigned && !Q.isSigned)
-            expect(00000, 00000, 0)
-            expect(00000, 00001, 0)
-            expect(00000, R.max, 0)
+            #expect(success == expectation)
             
-            expect(00001, R.min, R.isSigned ? 0 : 1)
-            expect(00001, ~0000, R.isSigned ? 0 : 1)
-            expect(00001, 00000, 1)
-            expect(00001, 00001, 1)
-            expect(00001, R.max, 1)
-            
-            expect(Q.max, R.min, R.isSigned ? Q.max - 1 : Q.max)
-            expect(Q.max, ~0000, R.isSigned ? Q.max - 1 : Q.max)
-            expect(Q.max, 00000, Q.max)
-            expect(Q.max, 00001, Q.max)
-            expect(Q.max, R.max, Q.max)
-        }
-        
-        for quotient in coreSystemsIntegers {
-            for remainder in coreSystemsIntegers {
-                whereIs(quotient, remainder)
+            func floor(_ quotient: Q, _ remainder: R, is expectation: Fallible<Q>) {
+                let division = Division(quotient: quotient, remainder: remainder)
+                success &+= U32(Bit(division            .floor() == expectation))
+                success &+= U32(Bit(division.veto(false).floor() == expectation))
+                success &+= U32(Bit(division.veto(true ).floor() == expectation.veto()))
             }
         }
     }

@@ -8,24 +8,18 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Expect x Result
+// MARK: * Tag
 //*============================================================================*
 
-@inlinable public func Ɣexpect<T, E>(
-    _  value: @autoclosure () throws -> T,
-    is expectation: Result<T, E>,
-    at location: SourceLocation = #_sourceLocation
-)   where T: Equatable, E: Error & Equatable {
+extension Tag {
     
-    var result = expectation // await Swift 6.0
+    //=------------------------------------------------------------------------=
+    // MARK: Metadata
+    //=------------------------------------------------------------------------=
     
-    do  {
-        result = Result.success(try value())
-    }   catch let error as E {
-        result = Result.failure(error)
-    }   catch {
-        #expect(Bool(false), "unknown(\(error))", sourceLocation: location)
-    }
-    
-    #expect(result == expectation, sourceLocation: location)
+    /// Including or considering all elements or aspects.
+    ///
+    /// - Note: An `exhaustive` process may take a while to complete.
+    ///
+    @Tag public static var exhaustive: Self
 }

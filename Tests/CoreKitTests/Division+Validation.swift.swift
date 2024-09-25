@@ -8,36 +8,33 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import TestKit
+import RandomIntKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Division x Validation
 //*============================================================================*
 
-final class DivisionTestsOnValidation: XCTestCase {
+@Suite struct DivisionTestsOnValidation {
 
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
  
-    func testExactly() {
-        func whereIs<Q, R>(_ quotient: Q.Type, _ remainder: R.Type) where Q: SystemsInteger, R: SystemsInteger {
-            let patterns =  I8(-2)...I8(2)
-            for quotient in patterns.lazy.map(Q.init(load:)) {
-                for remainder in patterns.lazy.map(R.init(load:)) {
-                    let error = !remainder.isZero
-                    let division = Division(quotient: quotient, remainder: remainder)
-                    Test().same(division            .exactly(), Fallible(quotient, error: error))
-                    Test().same(division.veto(false).exactly(), Fallible(quotient, error: error))
-                    Test().same(division.veto(true ).exactly(), Fallible(quotient, error: true ))
-                }
+    @Test("Division/exactly() - T.init(load:)", .serialized, arguments: I8(-2)...I8(2), I8(-2)...I8(2))
+    func exactly(quotient: I8, remainder: I8) {
+        let error = !remainder.isZero
+        for quotient in coreIntegers {
+            for remainder in coreIntegers {
+                whereIs(quotient, remainder)
             }
         }
         
-        for quotient in coreSystemsIntegers {
-            for remainder in coreSystemsIntegers {
-                whereIs(quotient, remainder)
-            }
+        func whereIs<Q, R>(_ first: Q.Type, _ second: R.Type) where Q: BinaryInteger, R: BinaryInteger {
+            let division = Division(quotient: Q(load: quotient), remainder: R(load:  remainder))
+            #expect(division            .exactly() == Fallible(division.quotient, error: error))
+            #expect(division.veto(false).exactly() == Fallible(division.quotient, error: error))
+            #expect(division.veto(true ).exactly() == Fallible(division.quotient, error: true ))
         }
     }
 }
