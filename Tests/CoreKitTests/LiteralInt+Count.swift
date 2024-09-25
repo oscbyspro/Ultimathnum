@@ -8,33 +8,41 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Literal Int x Count
 //*============================================================================*
 
-extension LiteralIntTests {
+@Suite struct LiteralIntTestsOnCount {
         
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testEntropy() {
-        Test().same(T(-6).entropy(), Count(4 as IX), "010....1")
-        Test().same(T(-5).entropy(), Count(4 as IX), "110....1")
-        Test().same(T(-4).entropy(), Count(3 as IX), "00.....1")
-        Test().same(T(-3).entropy(), Count(3 as IX), "10.....1")
-        Test().same(T(-2).entropy(), Count(2 as IX), "0......1")
-        Test().same(T(-1).entropy(), Count(1 as IX), ".......1")
-        Test().same(T( 0).entropy(), Count(1 as IX), ".......0")
-        Test().same(T( 1).entropy(), Count(2 as IX), "1......0")
-        Test().same(T( 2).entropy(), Count(3 as IX), "01.....0")
-        Test().same(T( 3).entropy(), Count(3 as IX), "11.....0")
-        Test().same(T( 4).entropy(), Count(4 as IX), "001....0")
-        Test().same(T( 5).entropy(), Count(4 as IX), "101....0")
+    @Test("LiteralInt/entropy()", .serialized, arguments: [
         
-        Test().same(T(-0x80000000000000000000000000000000).entropy(), Count(128 as IX))
-        Test().same(T( 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF).entropy(), Count(128 as IX))
+        Some(-8 as LiteralInt, yields: Count(4)), // 000....1
+        Some(-7 as LiteralInt, yields: Count(4)), // 100....1
+        Some(-6 as LiteralInt, yields: Count(4)), // 010....1
+        Some(-5 as LiteralInt, yields: Count(4)), // 110....1
+        Some(-4 as LiteralInt, yields: Count(3)), // 00.....1
+        Some(-3 as LiteralInt, yields: Count(3)), // 10.....1
+        Some(-2 as LiteralInt, yields: Count(2)), // 0......1
+        Some(-1 as LiteralInt, yields: Count(1)), // .......1
+        Some( 0 as LiteralInt, yields: Count(1)), // .......0
+        Some( 1 as LiteralInt, yields: Count(2)), // 1......0
+        Some( 2 as LiteralInt, yields: Count(3)), // 01.....0
+        Some( 3 as LiteralInt, yields: Count(3)), // 11.....0
+        Some( 4 as LiteralInt, yields: Count(4)), // 001....0
+        Some( 5 as LiteralInt, yields: Count(4)), // 101....0
+        Some( 6 as LiteralInt, yields: Count(4)), // 011....0
+        Some( 7 as LiteralInt, yields: Count(4)), // 111....0
+        
+        Some(-0x80000000000000000000000000000000 as LiteralInt, yields: Count(128)),
+        Some( 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF as LiteralInt, yields: Count(128)),
+        
+    ])  func éntropy(_ argument: Some<LiteralInt, Count>) {
+        #expect(argument.input.entropy() == argument.output)
     }
 }

@@ -8,22 +8,20 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Literal Int
 //*============================================================================*
 
-final class LiteralIntTests: XCTestCase {
-    
-    typealias T = LiteralInt
-    
+@Suite struct LiteralIntTests {
+        
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testMode() {
-        Test().yay(T.isSigned)
-        Test().yay(T.mode == .signed)
+    @Test func mode() {
+        #expect(LiteralInt.isSigned)
+        #expect(LiteralInt.mode == Signedness.signed)
     }
 }

@@ -25,7 +25,7 @@ import TestKit2
         Some(Order.ascending,  yields: false),
         Some(Order.descending, yields: true ),
         
-    ]) func descending(_ argument: Some<Order, Bool>) {
+    ])  func descending(_ argument: Some<Order, Bool>) {
         #expect(argument.input == Order(descending: argument.output))
     }
     
@@ -34,8 +34,8 @@ import TestKit2
     #else
     @Test("Order.endianness (↓)", arguments: CollectionOfOne(Order.descending))
     #endif
-    func endianness(_ arguments: Order) {
-        #expect(Order.endianess == arguments)
+    func endianness(_ argument: Order) {
+        #expect(Order.endianess == argument)
     }
     
     @Test(.serialized, arguments: [
@@ -43,7 +43,7 @@ import TestKit2
         Some(Order.ascending,  yields: Order.descending),
         Some(Order.descending, yields: Order.ascending ),
         
-    ]) func reversed(_ argument: Some<Order, Order>) {
+    ])  func reversed(_ argument: Some<Order, Order>) {
         #expect(argument.input.reversed() == argument.output)
     }
 }
