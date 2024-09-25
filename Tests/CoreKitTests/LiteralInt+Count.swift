@@ -40,7 +40,7 @@ import TestKit2
         Some( 7 as LiteralInt, yields: Count(4)), // 111....0
         
         Some(-0x80000000000000000000000000000000 as LiteralInt, yields: Count(128)),
-        Some( 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF as LiteralInt, yields: Count(128)),
+        Some( 0x7fffffffffffffffffffffffffffffff as LiteralInt, yields: Count(128)),
         
     ])  func éntropy(_ argument: Some<LiteralInt, Count>) {
         #expect(argument.input.entropy() == argument.output)

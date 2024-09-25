@@ -40,7 +40,7 @@ import TestKit2
         Some( 7 as LiteralInt, yields: Signum.positive), // 111....0
         
         Some(-0x80000000000000000000000000000000 as LiteralInt, yields: Signum.negative),
-        Some( 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF as LiteralInt, yields: Signum.positive),
+        Some( 0x7fffffffffffffffffffffffffffffff as LiteralInt, yields: Signum.positive),
         
     ])  func signum(_ argument: Some<LiteralInt, Signum>) {
         #expect(argument.input.signum() == argument.output)

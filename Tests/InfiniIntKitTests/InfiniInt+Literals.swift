@@ -23,13 +23,13 @@ extension InfiniIntTests {
     
     func testLiteralInt() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            Test().same(T.exactly(-0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF as LiteralInt), Fallible((~0 as T) << 128 + 1, error: !T.isSigned))
+            Test().same(T.exactly(-0xffffffffffffffffffffffffffffffff as LiteralInt), Fallible((~0 as T) << 128 + 1, error: !T.isSigned))
             Test().same(T.exactly(-0x80000000000000000000000000000001 as LiteralInt), Fallible((~0 as T) << 127 - 1, error: !T.isSigned))
             Test().same(T.exactly(-0x80000000000000000000000000000000 as LiteralInt), Fallible((~0 as T) << 127,     error: !T.isSigned))
             Test().same(T.exactly( 0x00000000000000000000000000000000 as LiteralInt), Fallible(T.zero))
-            Test().same(T.exactly( 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF as LiteralInt), Fallible(( 1 as T) << 127 - 1))
+            Test().same(T.exactly( 0x7fffffffffffffffffffffffffffffff as LiteralInt), Fallible(( 1 as T) << 127 - 1))
             Test().same(T.exactly( 0x80000000000000000000000000000000 as LiteralInt), Fallible(( 1 as T) << 127    ))
-            Test().same(T.exactly( 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF as LiteralInt), Fallible(( 1 as T) << 128 - 1))
+            Test().same(T.exactly( 0xffffffffffffffffffffffffffffffff as LiteralInt), Fallible(( 1 as T) << 128 - 1))
         }
         
         for type in Self.types {

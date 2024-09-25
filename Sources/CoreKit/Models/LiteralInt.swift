@@ -11,13 +11,13 @@
 // MARK: * Literal Int
 //*============================================================================*
 
-/// An immutable arbitrary-precision signed integer.
+/// An immutable signed arbitrary-precision integer.
 ///
 /// Use this type to spawn integers or other, similar, objects.
 ///
 /// - Note: *We don't know where it comes from, only that it exists.*
 ///
-@frozen public struct LiteralInt: ExpressibleByIntegerLiteral, Sendable {
+@frozen public struct LiteralInt: CustomStringConvertible, ExpressibleByIntegerLiteral, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: Metadata

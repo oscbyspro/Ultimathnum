@@ -47,7 +47,7 @@ import TestKit2
         Some( 7 as LiteralInt, yields: Bit.zero), // 111....0
         
         Some(-0x80000000000000000000000000000000 as LiteralInt, yields: Bit.one ),
-        Some( 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF as LiteralInt, yields: Bit.zero),
+        Some( 0x7fffffffffffffffffffffffffffffff as LiteralInt, yields: Bit.zero),
         
     ])  func appendix(_ argument: Some<LiteralInt, Bit>) {
         #expect(argument.input.appendix == argument.output)
