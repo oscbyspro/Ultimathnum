@@ -10,14 +10,14 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Comparison
+// MARK: * Expect x Comparison
 //*============================================================================*
 
 @inlinable public func Ɣexpect<T>(
     _      lhs: T,
     equals rhs: T,
-    is     expectation: Signum =  .zero,
-    using  strategy: ID.Comparable.Type = ID.Comparable.self,
+    is     expectation: Signum = .zero,
+    using  strategy: ƔComparable.Type = Ɣcomparable,
     at     location: SourceLocation = #_sourceLocation
 )   where  T: Comparable {
     
@@ -26,14 +26,14 @@ import CoreKit
     #expect((lhs >  rhs) == (expectation == Signum.positive), "Comparable.> (_:_:)", sourceLocation: location)
     #expect((lhs <= rhs) == (expectation != Signum.positive), "Comparable.<=(_:_:)", sourceLocation: location)
     
-    Ɣexpect(lhs, equals: rhs, is: expectation.isZero, using: ID.Equatable.self, at: location)
+    Ɣexpect(lhs, equals: rhs, is: expectation.isZero, using: Ɣequatable, at: location)
 }
 
 @inlinable public func Ɣexpect<T>(
     _      lhs: T,
     equals rhs: T,
-    is     expectation: Bool = true,
-    using  strategy: ID.Equatable.Type = ID.Equatable.self,
+    is     expectation: Bool =  true,
+    using  strategy: ƔEquatable.Type  = Ɣequatable,
     at     location: SourceLocation = #_sourceLocation
 )   where  T: Equatable {
     

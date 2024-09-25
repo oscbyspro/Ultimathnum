@@ -8,24 +8,14 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Result
+// MARK: * Utilities x Comparison
 //*============================================================================*
 
-@inlinable public func Ɣexpect<T, E>(
-    _  value: @autoclosure () throws -> T,
-    is expectation: Result<T, E>,
-    at location: SourceLocation = #_sourceLocation
-)  where T: Equatable, E: Error & Equatable {
-    
-    var result = expectation // await Swift 6.0
-    
-    do  {
-        result = Result.success(try value())
-    }   catch let error as E {
-        result = Result.failure(error)
-    }   catch {
-        #expect(Bool(false), "unknown(\(error))", sourceLocation: location)
+/// Indicates whether raw bytes of `lhs` and `rhs` are equal.
+@inlinable public func memeq(_ lhs: some Any, _ rhs: some Any) -> Bool {
+    Swift.withUnsafeBytes(of: lhs) { lhs in
+        Swift.withUnsafeBytes(of: rhs) { rhs in
+            lhs.elementsEqual(rhs)
+        }
     }
-    
-    #expect(result == expectation, sourceLocation: location)
 }

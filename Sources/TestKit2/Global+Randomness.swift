@@ -7,13 +7,17 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+import RandomIntKit
+
 //*============================================================================*
-// MARK: * Identifiers
+// MARK: * Global x Randomness
 //*============================================================================*
 
-@frozen public enum ID {
-    
-    @frozen public enum Comparable { }
+public var random = RandomInt()
 
-    @frozen public enum Equatable  { }
-}
+public let fuzzer = FuzzerInt(seed: random.next())
+
+public let randomnesses: [any Randomness] = [random, fuzzer]
+
+public let fuzzers: [FuzzerInt] = [fuzzer]

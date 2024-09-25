@@ -25,8 +25,21 @@ extension Randomness {
     /// - Note: Use the `unsigned` mode to reject `infinite` values.
     ///
     @inlinable public mutating func sizewise<T>(
-        size: IX = IX(size: T.self) ?? 256,
-        mode: Signedness =  T.mode
+        mode: Signedness =  T.mode,
+        as   type: T.Type = T.self
+    )   -> T where T: SystemsInteger {
+        
+        self.sizewise(size: IX(size: T.self), mode: mode)
+    }
+    
+    /// Generates an `index` in `0 ..< size` then a pattern through `index`.
+    ///
+    /// - Note: Use the `unsigned` mode to reject `infinite` values.
+    ///
+    @inlinable public mutating func sizewise<T>(
+        size: IX,
+        mode: Signedness =  T.mode,
+        as   type: T.Type = T.self
     )   -> T where T: BinaryInteger {
         
         let index = Count(IX.random(in: IX.zero ..< size, using: &self)!)

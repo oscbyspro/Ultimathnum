@@ -7,15 +7,26 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Utilities
+// MARK: * Global x Types
 //*============================================================================*
 
-/// Indicates whether raw bytes of `lhs` and `rhs` are equal.
-@inlinable public func memeq(_ lhs: some Any, _ rhs: some Any) -> Bool {
-    Swift.withUnsafeBytes(of: lhs) { lhs in
-        Swift.withUnsafeBytes(of: rhs) { rhs in
-            lhs.elementsEqual(rhs)
-        }
-    }
-}
+public let coreFloats: [any Swift.BinaryFloatingPoint.Type] = [
+    Float32.self,
+    Float64.self,
+]
+
+public let coreIntegers: [any CoreInteger.Type] = {
+    coreIntegersWhereIsSigned +
+    coreIntegersWhereIsUnsigned
+}()
+
+public let coreIntegersWhereIsSigned: [any CoreIntegerWhereIsSigned.Type] = [
+    IX.self, I8.self, I16.self, I32.self, I64.self,
+]
+
+public let coreIntegersWhereIsUnsigned: [any CoreIntegerWhereIsUnsigned.Type] = [
+    UX.self, U8.self, U16.self, U32.self, U64.self,
+]

@@ -8,15 +8,17 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Text
+// MARK: * Identifiers
 //*============================================================================*
 
-@inlinable public func Ɣexpect<T>(
-    _ input: T,
-    description expectation: String,
-    at location: SourceLocation = #_sourceLocation
-) where T: CustomStringConvertible {
-    
-    #expect(input.description         == expectation, sourceLocation: location)
-    #expect(String(describing: input) == expectation, sourceLocation: location)
-}
+@frozen public enum ƔBinary { }
+public let Ɣbinary = ƔBinary.self
+
+@frozen public enum ƔComparable { }
+public let Ɣcomparable = ƔComparable.self
+
+@frozen public enum ƔEquatable { }
+public let Ɣequatable = ƔEquatable.self
+
+@frozen public enum ƔSystems { }
+public let Ɣsystems = ƔSystems.self
