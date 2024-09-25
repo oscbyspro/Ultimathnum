@@ -29,19 +29,18 @@ import TestKit2
     @Test("Count.init(raw:)",  arguments: fuzzers)
     func pattern(_ randomness: consuming FuzzerInt) {
         for _ in 0 ..< 256 {
-            let expectation: IX = randomness.sizewise()
-            let result = IX(raw: Count(raw: expectation))
-            #expect(result == expectation)
+            let random = IX.entropic(using: &randomness)
+            let result = IX(raw: Count(raw: random))
+            #expect(result == random)
         }
     }
     
     @Test("Count/natural", arguments: fuzzers)
     func natural(_ randomness: consuming FuzzerInt) {
         for _ in 0 ..< 256 {
-            let random: IX = randomness.sizewise()
+            let random = IX.entropic(using: &randomness)
             let result = Count(raw: random).natural()
-            let expectation = random.veto(random.isNegative)
-            #expect(result == expectation)
+            #expect(result == random.veto(random.isNegative))
         }
     }
 }

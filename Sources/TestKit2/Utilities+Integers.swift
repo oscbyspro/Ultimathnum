@@ -39,3 +39,27 @@ extension EdgyInteger {
         Range(uncheckedBounds: (Self.min, Self.lsb))
     }
 }
+
+//*============================================================================*
+// MARK: * Utilities x Integers x Randomness
+//*============================================================================*
+
+extension BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func entropic(using randomness: inout some Randomness) -> Self where Self: SystemsInteger {
+        Self.entropic(through: Shift.max, using: &randomness)
+    }
+    
+    @inlinable public static func entropic<T>(
+        through index: Shift<Magnitude>,
+        using randomness: inout some Randomness
+    )   -> T where T: BinaryInteger {
+        
+        let index = IX.random(in: 0000000000000...index.natural().unwrap(), using: &randomness)
+        return T.random(through: Shift(unchecked: Count(unchecked: index)), using: &randomness)
+    }
+}

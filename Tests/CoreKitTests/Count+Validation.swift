@@ -24,7 +24,7 @@ import TestKit2
     @Test("Guarantee-esque initializers",   arguments: fuzzers)
     func validation(_ randomness: consuming FuzzerInt) throws {
         for _ in 0 ..< 256 {
-            let random: IX = randomness.sizewise()
+            let random = IX.entropic(using: &randomness)
             if !random.isNegative {
                 #expect(Count(random)            == Count(raw: random))
                 #expect(Count(unchecked: random) == Count(raw: random))
