@@ -30,7 +30,8 @@
 ///
 public protocol CoreInteger:
     Interoperable,
-    SystemsInteger
+    SystemsInteger,
+    Swift._HasCustomAnyHashableRepresentation
 where
     BitPattern == Stdlib.BitPattern,
     Element == Self,
@@ -41,6 +42,7 @@ where
     Stdlib: Swift.Codable,
     Stdlib: Swift.FixedWidthInteger,
     Stdlib: Swift.Sendable,
+    Stdlib: Swift._HasCustomAnyHashableRepresentation,
     Stdlib.BitPattern == Stdlib.Magnitude,
     Stdlib.Magnitude  == Magnitude.Stdlib
 { }

@@ -17,9 +17,9 @@ extension Tag {
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    /// Including or considering all elements or aspects.
-    ///
-    /// - Note: An `exhaustive` process may take a while to complete.
-    ///
+    /// Including or considering all arguments.
     @Tag public static var exhaustive: Self
+    
+    /// Not officially authorized or confirmed.
+    @Tag public static var unofficial: Self
 }
