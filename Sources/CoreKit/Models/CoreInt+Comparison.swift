@@ -36,20 +36,4 @@ extension CoreInteger {
             Signum.positive
         }
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities x Hashable (roll: arcana, D20, DC15)
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public func hash(into hasher: inout Swift.Hasher) {
-        self.stdlib().hash(into: &hasher)
-    }
-    
-    @inlinable public func _rawHashValue(seed: Swift.Int) -> Swift.Int {
-        self.stdlib()._rawHashValue(seed: seed)
-    }
-    
-    @inlinable public func _toCustomAnyHashable() -> Swift.AnyHashable? {
-        self.stdlib()._toCustomAnyHashable()
-    }
 }
