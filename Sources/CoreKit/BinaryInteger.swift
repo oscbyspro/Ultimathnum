@@ -43,6 +43,16 @@
 ///
 /// Its stride type is Swift.Int so that you may use Swift's range models.
 ///
+/// ### Type-agnostic binary integer hashes
+///
+/// Binary integers hash their normalized 8-bit data integer representations,
+/// so equal values produce equal hashes regardless of their underlying types.
+///
+/// ```swift
+/// #expect(random.hashValue == IXL(load: random).hashValue)
+/// #expect(random.hashValue == UXL(load: random).hashValue)
+/// ```
+///
 /// ### Requirements
 ///
 /// - Requires: Its `body` and `appendix` must fit in `IX.max` bits.

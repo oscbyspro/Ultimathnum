@@ -13,7 +13,7 @@ import CoreKit
 // MARK: * Triple Int
 //*============================================================================*
 
-@frozen public struct TripleInt<Base: SystemsInteger>: BitCastable, Comparable, Hashable {
+@frozen public struct TripleInt<Base: SystemsInteger>: BitCastable, Comparable {
     
     public typealias Storage = Triplet<Base>
     

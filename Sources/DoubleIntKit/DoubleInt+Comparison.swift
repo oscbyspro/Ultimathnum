@@ -30,9 +30,4 @@ extension DoubleInt {
     @inlinable public borrowing func compared(to other: borrowing Self) -> Signum {
         self.storage.compared(to: other.storage)
     }
-    
-    @inlinable public borrowing func hash(into hasher: inout Hasher) {
-        hasher.combine(self.storage.low )
-        hasher.combine(self.storage.high)
-    }
 }

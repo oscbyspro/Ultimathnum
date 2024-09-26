@@ -161,9 +161,5 @@ private extension Test {
         same(lhs.compared(to: rhs), expectation)
         same(rhs.compared(to: lhs), expectation.negated())
         comparison(lhs, rhs, expectation, id: ComparableID())
-        
-        if  expectation.isZero {
-            same(lhs.hashValue, rhs.hashValue)
-        }
     }
 }

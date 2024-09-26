@@ -10,6 +10,7 @@
 import CoreKit
 import DoubleIntKit
 import InfiniIntKit
+import RandomIntKit
 import TestKit
 
 //*============================================================================*
@@ -151,6 +152,40 @@ final class BinaryIntegerTestsOnComparison: XCTestCase {
             for rhs in binaryIntegers {
                 whereIs(lhs, rhs)
             }
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Random
+    //=------------------------------------------------------------------------=
+    
+    /// Here we check that the following invariants hold for all values:
+    ///
+    ///     integer.hashValue == IXL(load: integer).hashValue
+    ///     integer.hashValue == UXL(load: integer).hashValue
+    ///
+    func testHashValueByFuzzingGenericVersusXL() {
+        func whereIs<T>(type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
+            func random() -> T {
+                let index = IX.random(in: 00000 ..< size, using: &randomness)!
+                let pattern = T.Signitude.random(through: Shift(Count(index)), using: &randomness)
+                return T(raw: pattern) // do not forget about infinite values!
+            }
+            
+            for _ in 0 ..< rounds {
+                let integer: T = random()
+                Test().same(integer.hashValue, IXL(load: integer).hashValue)
+                Test().same(integer.hashValue, UXL(load: integer).hashValue)
+            }
+        }
+        
+        #if DEBUG
+        let rounds: IX = 128
+        #else
+        let rounds: IX = 512
+        #endif
+        for type in binaryIntegers {
+            whereIs(type: type, size: IX(size: type) ?? 256, rounds: rounds, randomness: fuzzer)
         }
     }
 }

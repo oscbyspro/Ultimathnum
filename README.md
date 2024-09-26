@@ -29,6 +29,7 @@
   - [Generic logic gates with BitOperable](#corekit-bitwise-logic)
   - [Three-way comparisons return Signum](#corekit-signum)
   - [Division by multiplication with Divider\<Value\>](#corekit-divider)
+  - [Type-agnostic binary integer hashes](#corekit-hashes)
   - [Call standard library code with Interoperable](#corekit-interoperable)
 * [DoubleIntKit](#doubleintkit)
   - [A big systems integer](#doubleintkit-systems-integer)
@@ -476,6 +477,18 @@ precondition(typical == magical) // quotient and remainder
 You know how the compiler sometimes replaces division with multiplication? 
 Well, now you can be a wizard too! Divider\<Value\> finds same-size magic
 constants and replaces division with: multiplication, addition, and shifts.
+
+<a name="corekit-hashes"/>
+
+#### Type-agnostic binary integer hashes
+
+Binary integers hash their normalized 8-bit data integer representations,
+so equal values produce equal hashes regardless of their underlying types.
+
+```swift
+#expect(random.hashValue == IXL(load: random).hashValue)
+#expect(random.hashValue == UXL(load: random).hashValue)
+```
 
 <a name="corekit-interoperable"/>
 

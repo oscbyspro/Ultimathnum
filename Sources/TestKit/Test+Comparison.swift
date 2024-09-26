@@ -252,8 +252,8 @@ extension Test {
         unidirectional(lhs, rhs, expectation)
         unidirectional(rhs, lhs, expectation.negated())
         
-        if  T.self == U.self, expectation.isZero {
-            same(lhs.hashValue, rhs.hashValue, "Hashable/hashValue")
+        if  expectation.isZero {
+            same(lhs.hashValue, rhs.hashValue, "BinaryInteger/hashValue")
         }
     }
     
