@@ -27,7 +27,7 @@ import TestKit2
         Some(Sign.minus, Sign.plus,  yields: false),
         Some(Sign.minus, Sign.minus, yields: true ),
         
-    ]) func compare(_ argument: Some<Sign, Sign, Bool>) {
+    ])  func compare(_ argument: Some<Sign, Sign, Bool>) {
         Ɣexpect(argument.0, equals: argument.1, is: argument.output)
     }
 }

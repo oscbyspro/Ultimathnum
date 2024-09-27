@@ -20,64 +20,40 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Sign ← Bit", .serialized, arguments: [
+    @Test("Sign as Bit", .serialized, arguments: [
         
-        Some(Bit.zero, yields: Sign.plus ),
-        Some(Bit.one,  yields: Sign.minus),
+        (sign: Sign.plus,  bit: Bit.zero),
+        (sign: Sign.minus, bit: Bit.one ),
         
-    ]) func initBit(_ argument: Some<Bit, Sign>) {
-        #expect(Sign(     argument.input) == argument.output)
-        #expect(Sign(raw: argument.input) == argument.output)
+    ])  func bit(_ argument: (sign: Sign, bit: Bit)) {
+        #expect(Bit (     argument.sign) == argument.bit )
+        #expect(Bit (raw: argument.sign) == argument.bit )
+        #expect(Sign(     argument.bit ) == argument.sign)
+        #expect(Sign(raw: argument.bit ) == argument.sign)
     }
     
-    @Test("Sign → Bit", .serialized, arguments: [
+    @Test("Sign as Bool", .serialized, arguments: [
         
-        Some(Sign.plus,  yields: Bit.zero),
-        Some(Sign.minus, yields: Bit.one ),
+        (sign: Sign.plus,  bool: false),
+        (sign: Sign.minus, bool: true ),
         
-    ]) func makeBit(_ argument: Some<Sign, Bit>) {
-        #expect(Bit(     argument.input) == argument.output)
-        #expect(Bit(raw: argument.input) == argument.output)
+    ])  func bool(_ argument: (sign: Sign, bool: Bool)) {
+        #expect(Bool(     argument.sign) == argument.bool)
+        #expect(Bool(raw: argument.sign) == argument.bool)
+        #expect(Sign(     argument.bool) == argument.sign)
+        #expect(Sign(raw: argument.bool) == argument.sign)
     }
     
-    @Test("Sign ← Bool", .serialized, arguments: [
+    @Test("Sign as Stdlib", .serialized, arguments: [
         
-        Some(false, yields: Sign.plus ),
-        Some(true,  yields: Sign.minus),
+        (sign: Sign.plus,  stdlib: FloatingPointSign.plus ),
+        (sign: Sign.minus, stdlib: FloatingPointSign.minus),
         
-    ]) func initBool(_ argument: Some<Bool, Sign>) {
-        #expect(Sign(     argument.input) == argument.output)
-        #expect(Sign(raw: argument.input) == argument.output)
-    }
-    
-    @Test("Sign → Bool", .serialized, arguments: [
-        
-        Some(Sign.plus,  yields: false),
-        Some(Sign.minus, yields: true ),
-        
-    ]) func makeBool(_ argument: Some<Sign, Bool>) {
-        #expect(Bool(     argument.input) == argument.output)
-        #expect(Bool(raw: argument.input) == argument.output)
-    }
-    
-    @Test("Sign ← Stdlib", .serialized, arguments: [
-        
-        Some(FloatingPointSign.plus,  yields: Sign.plus ),
-        Some(FloatingPointSign.minus, yields: Sign.minus),
-        
-    ]) func initStdlib(_ argument: Some<FloatingPointSign, Sign>) {
-        #expect(Sign(     argument.input) == argument.output)
-        #expect(Sign(raw: argument.input) == argument.output)
-    }
-    
-    @Test("Sign → Stdlib", .serialized, arguments: [
-        
-        Some(Sign.plus,  yields: FloatingPointSign.plus ),
-        Some(Sign.minus, yields: FloatingPointSign.minus),
-        
-    ]) func makeStdlib(_ argument: Some<Sign, FloatingPointSign>) {
-        #expect(argument.input.stdlib()                == argument.output)
-        #expect(FloatingPointSign(     argument.input) == argument.output)
-        #expect(FloatingPointSign(raw: argument.input) == argument.output)
+    ])  func stdlib(_ argument: (sign: Sign, stdlib: FloatingPointSign)) {
+        #expect(argument.sign.stdlib()                == argument.stdlib)
+        #expect(FloatingPointSign(     argument.sign) == argument.stdlib)
+        #expect(FloatingPointSign(raw: argument.sign) == argument.stdlib)
+        #expect(Sign(     argument.stdlib) == argument.sign)
+        #expect(Sign(raw: argument.stdlib) == argument.sign)
     }
 }

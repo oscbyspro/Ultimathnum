@@ -25,7 +25,7 @@ import TestKit2
         Some(Sign.plus,  yields: Sign.minus),
         Some(Sign.minus, yields: Sign.plus ),
         
-    ]) func not(_ argument: Some<Sign, Sign>) {
+    ])  func not(_ argument: Some<Sign, Sign>) {
         Ɣexpect(not: argument.input, is: argument.output)
     }
     
@@ -36,7 +36,7 @@ import TestKit2
         Some(Sign.minus, Sign.plus,  yields: Sign.plus ),
         Some(Sign.minus, Sign.minus, yields: Sign.minus),
         
-    ]) func and(_ argument: Some<Sign, Sign, Sign>) {
+    ])  func and(_ argument: Some<Sign, Sign, Sign>) {
         Ɣexpect(argument.0, and: argument.1, is: argument.output)
     }
     
@@ -47,7 +47,7 @@ import TestKit2
         Some(Sign.minus, Sign.plus,  yields: Sign.minus),
         Some(Sign.minus, Sign.minus, yields: Sign.minus),
         
-    ]) func or(_ argument: Some<Sign, Sign, Sign>) {
+    ])  func or(_ argument: Some<Sign, Sign, Sign>) {
         Ɣexpect(argument.0,  or: argument.1, is: argument.output)
     }
     
@@ -58,7 +58,7 @@ import TestKit2
         Some(Sign.minus, Sign.plus,  yields: Sign.minus),
         Some(Sign.minus, Sign.minus, yields: Sign.plus ),
         
-    ]) func xor(_ argument: Some<Sign, Sign, Sign>) {
+    ])  func xor(_ argument: Some<Sign, Sign, Sign>) {
         Ɣexpect(argument.0, xor: argument.1, is: argument.output)
     }
 }
