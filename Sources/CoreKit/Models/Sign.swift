@@ -11,7 +11,7 @@
 // MARK: * Sign
 //*============================================================================*
 
-@frozen public enum Sign: BitCastable, BitOperable, Hashable, Interoperable, Sendable {
+@frozen public enum Sign: BitCastable, BitOperable, CustomStringConvertible, Hashable, Interoperable, Sendable {
     
     //=------------------------------------------------------------------------=
     // MARK: State
