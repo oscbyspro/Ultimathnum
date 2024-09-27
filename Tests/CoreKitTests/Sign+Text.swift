@@ -7,27 +7,25 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+import TestKit2
+
 //*============================================================================*
 // MARK: * Sign x Text
 //*============================================================================*
 
-extension Sign {
+@Suite struct SignTestsOnText {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    /// A textual representation of `self`.
-    ///
-    /// ```swift
-    /// Sign.plus .description // "+" (ASCII: 43)
-    /// Sign.minus.description // "-" (ASCII: 45)
-    /// ```
-    ///
-    @inlinable public var description: String {
-        switch self {
-        case  .plus: "+"
-        case .minus: "-"
-        }
+    @Test("Sign/description", .serialized, arguments: [
+        
+        (sign: Sign.plus,  description: "+"),
+        (sign: Sign.minus, description: "-"),
+        
+    ])  func description(sign: Sign, description: String) {
+        Ɣexpect(sign, description: description)
     }
 }

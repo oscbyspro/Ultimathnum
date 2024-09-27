@@ -46,11 +46,15 @@ extension TextInt {
     //=------------------------------------------------------------------------=
     
     @inlinable package static func decode(_ text: UInt8) -> Sign? {
-        Sign(ascii: U8(text))
+        switch text {
+        case UInt8(ascii: "+"): .plus
+        case UInt8(ascii: "-"): .minus
+        default: nil
+        }
     }
     
     @inlinable package static func encode(_ data: Sign) -> UInt8 {
-        UInt8(data.ascii)
+        UInt8(ascii: data == .plus ? "+" : "-")
     }
     
     //=------------------------------------------------------------------------=
