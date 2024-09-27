@@ -17,6 +17,27 @@ extension Sign {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// The `ASCII` representation of `self`.
+    ///
+    /// ```swift
+    /// Sign.plus .ascii // 43 (description: "+")
+    /// Sign.minus.ascii // 45 (description: "-")
+    /// ```
+    ///
+    @inlinable public var ascii: U8 {
+        switch self {
+        case  .plus: 43
+        case .minus: 45
+        }
+    }
+    
+    /// AA textual representation of `self`.
+    ///
+    /// ```swift
+    /// Sign.plus .description // "+" (ASCII: 43)
+    /// Sign.minus.description // "-" (ASCII: 45)
+    /// ```
+    ///
     @inlinable public var description: String {
         switch self {
         case  .plus: "+"
