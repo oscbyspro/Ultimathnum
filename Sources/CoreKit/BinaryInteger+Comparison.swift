@@ -82,6 +82,21 @@ extension BinaryInteger {
             }
         }
     }
+    
+    /// Hashes the normalized 8-bit data integer representation of `self`.
+    ///
+    /// ```swift
+    /// #expect(random.hashValue == IXL(load: random).hashValue)
+    /// #expect(random.hashValue == UXL(load: random).hashValue)
+    /// ```
+    ///
+    @inlinable public borrowing func hash(into hasher: inout Swift.Hasher) {
+        self.withUnsafeBinaryIntegerElements(as: U8.self) {
+            let normalized: DataInt<U8> = $0.normalized()
+            hasher.combine(bytes: normalized.body.bytes())
+            hasher.combine(normalized.appendix)
+        }
+    }
 }
 
 //=----------------------------------------------------------------------------=
@@ -125,21 +140,6 @@ extension BinaryInteger {
     /// Performs a three-way comparison of `self` versus `other`.
     @inlinable public borrowing func compared(to other: borrowing some BinaryInteger) -> Signum {
         Namespace.compare(self, to: other, using: Namespace.Compare())
-    }
-    
-    /// Hashes the normalized 8-bit data integer representation of `self`.
-    ///
-    /// ```swift
-    /// #expect(random.hashValue == IXL(load: random).hashValue)
-    /// #expect(random.hashValue == UXL(load: random).hashValue)
-    /// ```
-    ///
-    @inlinable public func hash(into hasher: inout Swift.Hasher) {
-        self.withUnsafeBinaryIntegerElements(as: U8.self) {
-            let normalized: DataInt<U8> = $0.normalized()
-            hasher.combine(bytes: normalized.body.bytes())
-            hasher.combine(normalized.appendix)
-        }
     }
 }
 
