@@ -49,10 +49,6 @@
         self.value = value
     }
     
-    @inlinable public consuming func payload() -> Value {
-        self.value
-    }
-    
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=

@@ -17,7 +17,7 @@
 ///
 ///     x / div == (x * mul + add) >> shr
 ///
-@frozen public struct Divider<Value>: Guarantee, Sendable where Value: SystemsInteger & UnsignedInteger {
+@frozen public struct Divider<Value>: Equatable, Guarantee, Sendable where Value: SystemsInteger & UnsignedInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Metadata
@@ -51,14 +51,6 @@
         self.init(Nonzero (unsafe: value))
     }
     
-    @inlinable public consuming func payload() -> Value {
-        self.div
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
     /// Finds magic constants suitable for the given `divisor`.
     @inlinable public init(_ divisor: consuming Nonzero<Value>) {
         let subshift = UX(raw: divisor.ilog2())
@@ -91,7 +83,7 @@
             }
         }
         
-        self.div = divisor.payload()
+        self.div = (consume    divisor).value
         self.shr = Value(load: UX(size: Value.self).plus(subshift).unchecked())
     }
 }
@@ -110,7 +102,7 @@
 ///
 /// - TODO: Consider a DoubleableInteger constraint.
 ///
-@frozen public struct Divider21<Value>: Guarantee, Sendable where Value: SystemsInteger & UnsignedInteger {
+@frozen public struct Divider21<Value>: Equatable, Guarantee, Sendable where Value: SystemsInteger & UnsignedInteger {
 
     //=------------------------------------------------------------------------=
     // MARK: Metadata
@@ -143,14 +135,6 @@
     @inlinable public init(unsafe  value: consuming Value) {
         self.init(Nonzero (unsafe: value))
     }
-    
-    @inlinable public consuming func payload() -> Value {
-        self.div
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
     
     /// Finds magic constants suitable for the given `divisor`.
     @inlinable public init(_ divisor: consuming Nonzero<Value>) {
@@ -191,7 +175,7 @@
             }
         }
         
-        self.div = divisor.payload()
+        self.div = (consume    divisor).value
         self.shr = Value(load: UX(size: Value.self).times(2).plus(subshift).unchecked())
     }
 }

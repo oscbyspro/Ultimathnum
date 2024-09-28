@@ -228,17 +228,16 @@ algorithms.
 
 | Type         | Guarantee          |
 |:-------------|:-------------------|
+| Divider      | x ≠ 0              |
 | Finite       | x ∈ ℤ              |
 | Natural      | x ∈ ℕ              |
 | Nonzero      | x ≠ 0              |
 | Shift        | x ∈ 0 up to T.size |
-| Divider      | x ≠ 0              |
-| Divider21    | x ≠ 0              |
 
 Guarantee types delegate their precondition checks to the programmer, who may leverage
 this power to compose complex types with less overhead or reduce the number of failure
-modes in their algorithms. The type system will prompt you to accept or reject their *payload()* 
-using one of the following methods: 
+modes in their algorithms. The type system will prompt you to accept or reject arguments
+using one of the following methods:
 
 ```swift
 init(_:prune:)   // error: throws

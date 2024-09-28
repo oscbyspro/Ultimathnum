@@ -18,7 +18,7 @@ import CoreKit
     as guarantee: T.Type,
     if success: Bool,
     at location: SourceLocation = #_sourceLocation
-)   where T: Guarantee, T.Value: Equatable {
+)   where T: Equatable & Guarantee {
     
     #expect(
         T.predicate(value) == success,
@@ -27,33 +27,35 @@ import CoreKit
     )
     
     if (success) {
+        let expectation = T(unsafe: value)
+        
         Ɣexpect(
-            try T(value, prune: Bad.error).payload(),
-            is: Result<T.Value, Bad>.success(value),
+            try T(value, prune: Bad.error),
+            is: Result<T, Bad>.success(expectation),
             because: "Guarantee.init(_:prune:)",
             at: location
         )
         
         #expect(
-            T(unsafe: value).payload() == value,
+            T(unsafe: value) == expectation,
             "Guarantee.init(unsafe:)",
             sourceLocation: location
         )
         
         #expect(
-            T(value).payload() == value,
+            T(value) == expectation,
             "Guarantee.init(_:)",
             sourceLocation: location
         )
         
         #expect(
-            T(unchecked: value).payload() == value,
+            T(unchecked: value) == expectation,
             "Guarantee.init(unchecked:)",
             sourceLocation: location
         )
 
         #expect(
-            T(exactly: value)?.payload() == value,
+            T(exactly: value) == expectation,
             "Guarantee.init(exactly:)",
             sourceLocation: location
         )

@@ -51,14 +51,6 @@
         self.value = value
     }
     
-    @inlinable public consuming func payload() -> Value {
-        self.value
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
     @inlinable public init(raw source: consuming BitPattern) {
         self.init(unchecked: Value(raw: source.value))
     }

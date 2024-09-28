@@ -11,7 +11,7 @@
 // MARK: * Guarantee
 //*============================================================================*
 
-/// Validates values according to its `predicate(_:)` function.
+/// Validates values according to its static `predicate(_:)` function.
 ///
 /// ### Guarantee
 ///
@@ -45,7 +45,4 @@ public protocol Guarantee<Value> {
     /// - Requires: The given `value` must satisfy the `predicate` of this type.
     ///
     @inlinable init(unsafe value: consuming Value)
-    
-    /// Consumes `self` and returns its `value`.
-    @inlinable consuming func payload() ->  Value
 }

@@ -10,124 +10,103 @@
 import CoreKit
 import DoubleIntKit
 import InfiniIntKit
-import TestKit
+import RandomIntKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Shift
 //*============================================================================*
 
-final class ShiftTests: XCTestCase {
+@Suite struct ShiftTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testInstances() {
-        func whereTheValueIs<Value>(_ type: Value.Type) where Value: UnsignedInteger {
-            typealias T = Shift<Value>
-            
-            Test().same(T.min, T(Count(raw: 0 as IX)))
-            Test().same(T.one, T(Count(raw: 1 as IX)))
-            Test().same(T.max, T(Count(raw: IX(raw: Value.size) - 1)))
+    @Test("Shift.instance", arguments: binaryIntegersWhereIsUnsigned)
+    func instances(_ type: any UnsignedInteger.Type) {
+        whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) where T: UnsignedInteger {
+            #expect(Shift<T>.min == Shift<T>(Count(raw: 0 as IX)))
+            #expect(Shift<T>.one == Shift<T>(Count(raw: 1 as IX)))
+            #expect(Shift<T>.max == Shift<T>(Count(raw: IX(raw: T.size) - 1)))
         }
-        
-        for type in coreSystemsIntegersWhereIsUnsigned {
-            whereTheValueIs(type)
-        }
-        
-        whereTheValueIs(DoubleInt<U8>.self)
-        whereTheValueIs(DoubleInt<UX>.self)
-        
-        whereTheValueIs(InfiniInt<U8>.self)
-        whereTheValueIs(InfiniInt<UX>.self)
     }
     
-    func testPredicate() {
+    @Test("Shift.predicate(_:)", arguments: binaryIntegersWhereIsUnsigned)
+    func predicate(_ type: any UnsignedInteger.Type) {
+        whereIs(type)
+        
         func whereIs<T>(_ type: T.Type) where T: UnsignedInteger {
-            typealias G = Shift<T>
-            
             always: do {
-                Test().yay(G.predicate(Count(raw:  0 as IX)))
-                Test().yay(G.predicate(Count(raw:  1 as IX)))
-                Test().yay(G.predicate(Count(raw:  2 as IX)))
+                #expect( Shift<T>.predicate(Count(raw:  0 as IX)))
+                #expect( Shift<T>.predicate(Count(raw:  1 as IX)))
+                #expect( Shift<T>.predicate(Count(raw:  2 as IX)))
             }
             
             if !T.size.isInfinite {
-                Test().nay(G.predicate(Count(raw: ~2 as IX)))
-                Test().nay(G.predicate(Count(raw: ~1 as IX)))
-                Test().nay(G.predicate(Count(raw: ~0 as IX)))
+                #expect(!Shift<T>.predicate(Count(raw: ~2 as IX)))
+                #expect(!Shift<T>.predicate(Count(raw: ~1 as IX)))
+                #expect(!Shift<T>.predicate(Count(raw: ~0 as IX)))
             }   else {
-                Test().yay(G.predicate(Count(raw: ~2 as IX)))
-                Test().yay(G.predicate(Count(raw: ~1 as IX)))
-                Test().nay(G.predicate(Count(raw: ~0 as IX)))
+                #expect( Shift<T>.predicate(Count(raw: ~2 as IX)))
+                #expect( Shift<T>.predicate(Count(raw: ~1 as IX)))
+                #expect(!Shift<T>.predicate(Count(raw: ~0 as IX)))
             }
             
             if  let size: IX = T.size.natural().optional() {
-                Test().yay(G.predicate(Count(size - 1)))
-                Test().nay(G.predicate(Count(size    )))
-                Test().nay(G.predicate(Count(size + 1)))
+                #expect( Shift<T>.predicate(Count(size - 1)))
+                #expect(!Shift<T>.predicate(Count(size    )))
+                #expect(!Shift<T>.predicate(Count(size + 1)))
             }
         }
-        
-        for type in coreSystemsIntegersWhereIsUnsigned {
-            whereIs(type)
-        }
-        
-        whereIs(DoubleInt<U8>.self)
-        whereIs(DoubleInt<UX>.self)
-        
-        whereIs(InfiniInt<U8>.self)
-        whereIs(InfiniInt<UX>.self)
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testIsZero() {
-        func whereTheValueIs<Value>(_ type: Value.Type) where Value: UnsignedInteger {
-            typealias T = Shift<Value>
-            
-            for relative: IX in IX(I8.min) ..< IX(I8.max) {
-                if  let shift = T(exactly: Count(raw: relative)) {
-                    Test().same(shift.isZero, relative.isZero)
-                    Test().same(shift.isZero, shift.value.isZero)
-                }
+    @Test("Shift.init - [entropic]", arguments: binaryIntegers, fuzzers)
+    func initByFuzzingEntropies(_ type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
+        whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            for _ in 0 ..< 128 {
+                let random = Count(raw: IX.entropic(using: &randomness))
+                Ɣexpect(random, as: Shift<T.Magnitude>.self, if: random < T.size)
             }
         }
-        
-        for type in coreSystemsIntegersWhereIsUnsigned {
-            whereTheValueIs(type)
-        }
-        
-        whereTheValueIs(DoubleInt<U8>.self)
-        whereTheValueIs(DoubleInt<UX>.self)
-        
-        whereTheValueIs(InfiniInt<U8>.self)
-        whereTheValueIs(InfiniInt<UX>.self)
     }
     
-    func testIsInfinite() {
-        func whereTheValueIs<Value>(_ type: Value.Type) where Value: UnsignedInteger {
-            typealias T = Shift<Value>
-            
-            for relative: IX in IX(I8.min) ..< IX(I8.max) {
-                if  let shift = T(exactly: Count(raw: relative)) {
-                    Test().same(shift.isInfinite, relative.isNegative)
-                    Test().same(shift.isInfinite, shift.value.isInfinite)
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    @Test("Shift/isZero - load each I8", arguments: binaryIntegersWhereIsUnsigned)
+    func isZero(_ type: any UnsignedInteger.Type) {
+        whereIs(type)
+
+        func whereIs<T>(_ type: T.Type) where T: UnsignedInteger {
+            for relative: IX in I8.all.lazy.map(IX.init) {
+                if  let shift = Shift<T>(exactly: Count(raw: relative)) {
+                    #expect(shift.isZero == relative.isZero)
                 }
             }
         }
-        
-        for type in coreSystemsIntegersWhereIsUnsigned {
-            whereTheValueIs(type)
+    }
+    
+    @Test("Shift/isInfinite - load each I8", arguments: binaryIntegersWhereIsUnsigned)
+    func isInfinite(_ type: any UnsignedInteger.Type) {
+        whereIs(type)
+
+        func whereIs<T>(_ type: T.Type) where T: UnsignedInteger {
+            for relative: IX in I8.all.lazy.map(IX.init) {
+                if  let shift = Shift<T>(exactly: Count(raw: relative)) {
+                    #expect(shift.isInfinite == relative.isNegative)
+                }
+            }
         }
-        
-        whereTheValueIs(DoubleInt<U8>.self)
-        whereTheValueIs(DoubleInt<UX>.self)
-        
-        whereTheValueIs(InfiniInt<U8>.self)
-        whereTheValueIs(InfiniInt<UX>.self)
     }
     
     //=------------------------------------------------------------------------=
@@ -135,91 +114,73 @@ final class ShiftTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     /// - 2024-06-15: Checks that the inverse of zero is nil.
-    func testInverse() {
-        func whereTheValueIs<Value>(_ type: Value.Type) where Value: UnsignedInteger {
-            typealias T = Shift<Value>
+    @Test("Shift/inverse()", arguments: binaryIntegersWhereIsUnsigned)
+    func inverse(_ type: any UnsignedInteger.Type) {
+        whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) where T: UnsignedInteger {
             //=----------------------------------=
-            let size = IX(raw: Value.size)
+            let size = IX(raw: T.size)
             //=----------------------------------=
-            Test().none(T(Count(0 as IX)).inverse())
-            Test().same(T(Count(1 as IX)).inverse(), Shift(Count(raw: size - 1)))
-            Test().same(T(Count(2 as IX)).inverse(), Shift(Count(raw: size - 2)))
-            Test().same(T(Count(3 as IX)).inverse(), Shift(Count(raw: size - 3)))
-            Test().same(T(Count(4 as IX)).inverse(), Shift(Count(raw: size - 4)))
-            Test().same(T(Count(5 as IX)).inverse(), Shift(Count(raw: size - 5)))
-            Test().same(T(Count(6 as IX)).inverse(), Shift(Count(raw: size - 6)))
-            Test().same(T(Count(7 as IX)).inverse(), Shift(Count(raw: size - 7)))
+            #expect(Shift<T>(Count(0 as IX)).inverse() == nil)
+            #expect(Shift<T>(Count(1 as IX)).inverse() == Shift(Count(raw: size - 1)))
+            #expect(Shift<T>(Count(2 as IX)).inverse() == Shift(Count(raw: size - 2)))
+            #expect(Shift<T>(Count(3 as IX)).inverse() == Shift(Count(raw: size - 3)))
+            #expect(Shift<T>(Count(4 as IX)).inverse() == Shift(Count(raw: size - 4)))
+            #expect(Shift<T>(Count(5 as IX)).inverse() == Shift(Count(raw: size - 5)))
+            #expect(Shift<T>(Count(6 as IX)).inverse() == Shift(Count(raw: size - 6)))
+            #expect(Shift<T>(Count(7 as IX)).inverse() == Shift(Count(raw: size - 7)))
             
-            Test().nay (T.predicate(Value.size))
-            Test().none(T(exactly:  Value.size))
-            Test().same(T(Count(raw: size - 1)).inverse(), Shift(Count(1 as IX)))
-            Test().same(T(Count(raw: size - 2)).inverse(), Shift(Count(2 as IX)))
-            Test().same(T(Count(raw: size - 3)).inverse(), Shift(Count(3 as IX)))
-            Test().same(T(Count(raw: size - 4)).inverse(), Shift(Count(4 as IX)))
-            Test().same(T(Count(raw: size - 5)).inverse(), Shift(Count(5 as IX)))
-            Test().same(T(Count(raw: size - 6)).inverse(), Shift(Count(6 as IX)))
-            Test().same(T(Count(raw: size - 7)).inverse(), Shift(Count(7 as IX)))
+            #expect(Shift<T>.predicate(T.size) == false)
+            #expect(Shift<T>(Count(raw: size - 1)).inverse() == Shift(Count(1 as IX)))
+            #expect(Shift<T>(Count(raw: size - 2)).inverse() == Shift(Count(2 as IX)))
+            #expect(Shift<T>(Count(raw: size - 3)).inverse() == Shift(Count(3 as IX)))
+            #expect(Shift<T>(Count(raw: size - 4)).inverse() == Shift(Count(4 as IX)))
+            #expect(Shift<T>(Count(raw: size - 5)).inverse() == Shift(Count(5 as IX)))
+            #expect(Shift<T>(Count(raw: size - 6)).inverse() == Shift(Count(6 as IX)))
+            #expect(Shift<T>(Count(raw: size - 7)).inverse() == Shift(Count(7 as IX)))
             
-            if  Value.size.isInfinite {
-                Test().same(T(Count(raw: IX.max    )).inverse(), Shift(Count(raw: IX.min    )))
-                Test().same(T(Count(raw: IX.max - 1)).inverse(), Shift(Count(raw: IX.min + 1)))
-                Test().same(T(Count(raw: IX.min    )).inverse(), Shift(Count(raw: IX.max    )))
-                Test().same(T(Count(raw: IX.min + 1)).inverse(), Shift(Count(raw: IX.max - 1)))
+            if  T.size.isInfinite {
+                #expect(Shift<T>(Count(raw: IX.max    )).inverse() == Shift(Count(raw: IX.min    )))
+                #expect(Shift<T>(Count(raw: IX.max - 1)).inverse() == Shift(Count(raw: IX.min + 1)))
+                #expect(Shift<T>(Count(raw: IX.min    )).inverse() == Shift(Count(raw: IX.max    )))
+                #expect(Shift<T>(Count(raw: IX.min + 1)).inverse() == Shift(Count(raw: IX.max - 1)))
             }
         }
-        
-        for type in coreSystemsIntegersWhereIsUnsigned {
-            whereTheValueIs(type)
-        }
-        
-        whereTheValueIs(DoubleInt<U8>.self)
-        whereTheValueIs(DoubleInt<UX>.self)
-        
-        whereTheValueIs(InfiniInt<U8>.self)
-        whereTheValueIs(InfiniInt<UX>.self)
     }
-    
-    func testNatural() {
-        func whereTheValueIs<Value>(_ type: Value.Type) where Value: UnsignedInteger {
-            typealias T = Shift<Value>
+
+    @Test("Shift/natural()", arguments: binaryIntegersWhereIsUnsigned)
+    func natural(_ type: any UnsignedInteger.Type) {
+        whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) where T: UnsignedInteger {
             //=----------------------------------=
-            let size = IX(raw: Value.size)
+            let size = IX(raw: T.size)
             //=----------------------------------=
-            Test().same(T(Count(0 as IX)).natural(), Fallible(0 as IX))
-            Test().same(T(Count(1 as IX)).natural(), Fallible(1 as IX))
-            Test().same(T(Count(2 as IX)).natural(), Fallible(2 as IX))
-            Test().same(T(Count(3 as IX)).natural(), Fallible(3 as IX))
-            Test().same(T(Count(4 as IX)).natural(), Fallible(4 as IX))
-            Test().same(T(Count(5 as IX)).natural(), Fallible(5 as IX))
-            Test().same(T(Count(6 as IX)).natural(), Fallible(6 as IX))
-            Test().same(T(Count(7 as IX)).natural(), Fallible(7 as IX))
+            #expect(Shift<T>(Count(0 as IX)).natural() == Fallible(0 as IX))
+            #expect(Shift<T>(Count(1 as IX)).natural() == Fallible(1 as IX))
+            #expect(Shift<T>(Count(2 as IX)).natural() == Fallible(2 as IX))
+            #expect(Shift<T>(Count(3 as IX)).natural() == Fallible(3 as IX))
+            #expect(Shift<T>(Count(4 as IX)).natural() == Fallible(4 as IX))
+            #expect(Shift<T>(Count(5 as IX)).natural() == Fallible(5 as IX))
+            #expect(Shift<T>(Count(6 as IX)).natural() == Fallible(6 as IX))
+            #expect(Shift<T>(Count(7 as IX)).natural() == Fallible(7 as IX))
             
-            Test().nay (T.predicate(Value.size))
-            Test().none(T(exactly:  Value.size))
-            Test().same(T(Count(raw: size - 1)).natural(), Fallible(size - 1, error: Value.size.isInfinite))
-            Test().same(T(Count(raw: size - 2)).natural(), Fallible(size - 2, error: Value.size.isInfinite))
-            Test().same(T(Count(raw: size - 3)).natural(), Fallible(size - 3, error: Value.size.isInfinite))
-            Test().same(T(Count(raw: size - 4)).natural(), Fallible(size - 4, error: Value.size.isInfinite))
-            Test().same(T(Count(raw: size - 5)).natural(), Fallible(size - 5, error: Value.size.isInfinite))
-            Test().same(T(Count(raw: size - 6)).natural(), Fallible(size - 6, error: Value.size.isInfinite))
-            Test().same(T(Count(raw: size - 7)).natural(), Fallible(size - 7, error: Value.size.isInfinite))
+            #expect(Shift<T>.predicate(T.size) == false)
+            #expect(Shift<T>(Count(raw: size - 1)).natural() == Fallible(size - 1, error: T.size.isInfinite))
+            #expect(Shift<T>(Count(raw: size - 2)).natural() == Fallible(size - 2, error: T.size.isInfinite))
+            #expect(Shift<T>(Count(raw: size - 3)).natural() == Fallible(size - 3, error: T.size.isInfinite))
+            #expect(Shift<T>(Count(raw: size - 4)).natural() == Fallible(size - 4, error: T.size.isInfinite))
+            #expect(Shift<T>(Count(raw: size - 5)).natural() == Fallible(size - 5, error: T.size.isInfinite))
+            #expect(Shift<T>(Count(raw: size - 6)).natural() == Fallible(size - 6, error: T.size.isInfinite))
+            #expect(Shift<T>(Count(raw: size - 7)).natural() == Fallible(size - 7, error: T.size.isInfinite))
             
-            if  Value.size.isInfinite {
-                Test().same(T(Count(raw: IX.max    )).natural(), Fallible(IX.max                 ))
-                Test().same(T(Count(raw: IX.max - 1)).natural(), Fallible(IX.max - 1             ))
-                Test().same(T(Count(raw: IX.min    )).natural(), Fallible(IX.min,     error: true))
-                Test().same(T(Count(raw: IX.min + 1)).natural(), Fallible(IX.min + 1, error: true))
+            if  T.size.isInfinite {
+                #expect(Shift<T>(Count(raw: IX.max    )).natural() == Fallible(IX.max    ))
+                #expect(Shift<T>(Count(raw: IX.max - 1)).natural() == Fallible(IX.max - 1))
+                #expect(Shift<T>(Count(raw: IX.min    )).natural() == Fallible(IX.min,     error: true))
+                #expect(Shift<T>(Count(raw: IX.min + 1)).natural() == Fallible(IX.min + 1, error: true))
             }
         }
-        
-        for type in coreSystemsIntegersWhereIsUnsigned {
-            whereTheValueIs(type)
-        }
-        
-        whereTheValueIs(DoubleInt<U8>.self)
-        whereTheValueIs(DoubleInt<UX>.self)
-        
-        whereTheValueIs(InfiniInt<U8>.self)
-        whereTheValueIs(InfiniInt<UX>.self)
     }
 }
