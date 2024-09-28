@@ -54,12 +54,15 @@ extension BinaryInteger {
         Self.entropic(through: Shift.max, using: &randomness)
     }
     
-    @inlinable public static func entropic<T>(
-        through index: Shift<Magnitude>,
-        using randomness: inout some Randomness
-    )   -> T where T: BinaryInteger {
-        
-        let index = IX.random(in: 0000000000000...index.natural().unwrap(), using: &randomness)
-        return T.random(through: Shift(unchecked: Count(unchecked: index)), using: &randomness)
+    @inlinable public static func entropic(through index: Shift<Magnitude>, using randomness: inout some Randomness) -> Self {
+        let index = IX.random(in:   00000000000000...index.natural().unwrap(), using: &randomness)
+        return Self.random(through: Shift(unchecked: Count(unchecked: index)), using: &randomness)
+    }
+    
+    @inlinable public static func entropic(through index: Shift<Magnitude>, mode: Signedness, using randomness: inout some Randomness) -> Self {
+        switch mode {
+        case Signedness  .signed: return Self(raw: Signitude.entropic(through: index, using: &randomness))
+        case Signedness.unsigned: return Self(raw: Magnitude.entropic(through: index, using: &randomness))
+        }
     }
 }

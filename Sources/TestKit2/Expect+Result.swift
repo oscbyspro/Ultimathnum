@@ -14,6 +14,7 @@
 @inlinable public func Ɣexpect<T, E>(
     _  value: @autoclosure () throws -> T,
     is expectation: Result<T, E>,
+    because comment: Comment? = nil,
     at location: SourceLocation = #_sourceLocation
 )   where T: Equatable, E: Error & Equatable {
     
@@ -27,5 +28,5 @@
         #expect(Bool(false), "unknown(\(error))", sourceLocation: location)
     }
     
-    #expect(result == expectation, sourceLocation: location)
+    #expect(result == expectation, comment, sourceLocation: location)
 }

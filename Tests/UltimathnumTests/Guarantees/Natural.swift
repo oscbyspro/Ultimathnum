@@ -10,42 +10,32 @@
 import CoreKit
 import DoubleIntKit
 import InfiniIntKit
-import TestKit
+import RandomIntKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Natural
 //*============================================================================*
 
-final class NaturalTests: XCTestCase {
+@Suite final class NaturalTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testForEachByteEntropyExtension() {
+    @Test("Natural.init - [entropic]", arguments: binaryIntegers, fuzzers)
+    func initByFuzzingEntropies(_ type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
+        whereIs(type)
+
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            typealias G = Natural<T>
-            
-            for pattern in I8.min...I8.max {
-                let value = T(load: pattern)
-                
-                Test().same(G.predicate(value), !value.isInfinite && !value.isNegative)
-                
-                if  let guarantee = G(exactly: value) {
-                    Test().same(guarantee.value, value)
-                    Test().same(guarantee.magnitude().value, value.magnitude())
+            for _ in 0 ..< 32 {
+                let random = T.entropic(through: Shift.max(or: 255), mode: .signed, using: &randomness)
+                Ɣexpect(random, as: Natural.self, is: !random.isInfinite && !random.isNegative)
+                if  let result = Natural(exactly: random) {
+                    #expect(result.value == random)
+                    #expect(result.magnitude().value == random.magnitude())
                 }
             }
         }
-        
-        for type in coreSystemsIntegers {
-            whereIs(type)
-        }
-        
-        whereIs(DoubleInt<I8>.self)
-        whereIs(DoubleInt<U8>.self)
-        
-        whereIs(InfiniInt<I8>.self)
-        whereIs(InfiniInt<U8>.self)
     }
 }

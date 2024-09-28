@@ -10,45 +10,35 @@
 import CoreKit
 import DoubleIntKit
 import InfiniIntKit
-import TestKit
+import RandomIntKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Nonzero
 //*============================================================================*
 
-final class NonzeroTests: XCTestCase {
+@Suite final class NonzeroTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testForEachByteEntropyExtension() {
+    @Test("Nonzero.init - [entropic]", arguments: binaryIntegers, fuzzers)
+    func initByFuzzingEntropies(_ type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
+        whereIs(type)
+        
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            typealias G = Nonzero<T>
-            
-            for pattern in I8.min...I8.max {
-                let value = T(load: pattern)
-                
-                Test().same(G.predicate(value), !value.isZero)
-                
-                if  let guarantee = G(exactly: value) {
-                    Test().same(guarantee.value, value)
-                    Test().same(guarantee.complement().value, value.complement())
-                    Test().same(guarantee.magnitude ().value, value.magnitude ())
-                    Test().same(G(raw: Nonzero(T.Signitude(raw: value))).value, value)
-                    Test().same(G(raw: Nonzero(T.Magnitude(raw: value))).value, value)
+            for _ in 0 ..< 32 {
+                let random = T.entropic(through: Shift.max(or: 255), mode: .signed, using: &randomness)
+                Ɣexpect(random, as: Nonzero.self, is: !random.isZero)
+                if  let result = Nonzero(exactly: random) {
+                    #expect(result.value == random)
+                    #expect(result.complement().value == random.complement())
+                    #expect(result.magnitude ().value == random.magnitude ())
+                    #expect(Nonzero<T>(raw: Nonzero(T.Signitude(raw: random))).value == random)
+                    #expect(Nonzero<T>(raw: Nonzero(T.Magnitude(raw: random))).value == random)
                 }
             }
         }
-        
-        for type in coreSystemsIntegers {
-            whereIs(type)
-        }
-        
-        whereIs(DoubleInt<I8>.self)
-        whereIs(DoubleInt<U8>.self)
-        
-        whereIs(InfiniInt<I8>.self)
-        whereIs(InfiniInt<U8>.self)
     }
 }
