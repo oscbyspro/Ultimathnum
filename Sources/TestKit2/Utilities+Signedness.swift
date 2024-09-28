@@ -13,11 +13,11 @@ import CoreKit
 // MARK: * Utilities x Bool
 //*============================================================================*
 
-extension Bool {
+extension Signedness {
     
     //=------------------------------------------------------------------------=
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    public static let all: [Self] = [false, true]
+    public static let all: [Self] = [Signedness.unsigned, Signedness.signed]
 }

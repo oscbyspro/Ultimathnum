@@ -15,7 +15,7 @@ import CoreKit
 
 /// A data integer source.
 ///
-/// - Note: Optional values are used to indicate agnostic behavior.
+/// - Note: Optional values indicate agnostic behavior.
 ///
 @frozen public struct DXL<Element>: CustomTestStringConvertible where Element: SystemsInteger & UnsignedInteger {
     
@@ -31,7 +31,11 @@ import CoreKit
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ body: [Element], repeating appendix: Bit? = nil, mode: Signedness? = nil) {
+    @inlinable public init(_ body: [Element], _ appendix: Bit? = nil, _ mode: Signedness? = nil) {
+        self.init(body, repeating: appendix, as: mode)
+    }
+    
+    @inlinable public init(_ body: [Element], repeating appendix: Bit? = nil, as mode: Signedness? = nil) {
         self.body = body
         self.appendix = appendix
         self.mode = mode
@@ -43,21 +47,14 @@ import CoreKit
     
     @inlinable public var testDescription: String {
         let mode = switch self.mode {
+        case Optional.none:                      "B"
         case Optional.some(Signedness.unsigned): "U"
         case Optional.some(Signedness  .signed): "S"
-        default: "B"
         }
         
-        let size = IX(size: Element.self)
-        
-        let body = String(describing: self.body)
-        
-        let appendix = switch self.appendix {
-        case Optional.some(Bit.zero): "0"
-        case Optional.some(Bit.one ): "1"
-        default: "X"
-        }
-        
+        let size = String(describing: Element.size)
+        let body = String(describing:    self.body)
+        let appendix = self.appendix?.description ?? "X"
         return "\(mode)\(size)\(body)...\(appendix)"
     }
     
@@ -70,67 +67,32 @@ import CoreKit
         writing: (inout MutableDataInt<Element>, Signedness) -> Void
     ) {
         
-        var copy = self.body
-        copy.withUnsafeBufferPointer {
-            if  self.appendix != Bit.one, self.mode != Signedness.signed {
-                var data = DataInt($0, repeating: Bit.zero)!
-                reading(&data, Signedness.unsigned)
+        self.reading(reading)
+        self.writing(writing)
+    }
+    
+    @inlinable public func reading(_ action: (inout DataInt<Element>, Signedness) -> Void) {
+        self.combinations { appendix, mode in
+            self.body.withUnsafeBufferPointer {
+                var data = DataInt($0, repeating: appendix)!
+                action(&data, mode)
             }
         }
-        
-        copy = self.body
-        copy.withUnsafeBufferPointer {
-            if  self.appendix != Bit.one, self.mode != Signedness.unsigned {
-                var data = DataInt($0, repeating: Bit.zero)!
-                reading(&data, Signedness.signed)
+    }
+    
+    @inlinable public func writing(_ action: (inout MutableDataInt<Element>, Signedness) -> Void) {
+        self.combinations { appendix, mode in
+            var x = self.body; x.withUnsafeMutableBufferPointer {
+                var data = MutableDataInt($0, repeating: appendix)!
+                action(&data, mode)
             }
         }
-        
-        copy = self.body
-        copy.withUnsafeBufferPointer {
-            if  self.appendix != Bit.zero, self.mode != Signedness.signed {
-                var data = DataInt($0, repeating: Bit.one)!
-                reading(&data, Signedness.unsigned)
-            }
-        }
-        
-        copy = self.body
-        copy.withUnsafeBufferPointer {
-            if  self.appendix != Bit.zero, self.mode != Signedness.unsigned {
-                var data = DataInt($0, repeating: Bit.one)!
-                reading(&data, Signedness.signed)
-            }
-        }
-        
-        copy = self.body
-        copy.withUnsafeMutableBufferPointer {
-            if  self.appendix != Bit.one, self.mode != Signedness.signed {
-                var data = MutableDataInt($0, repeating: Bit.zero)!
-                writing(&data, Signedness.unsigned)
-            }
-        }
-        
-        copy = self.body
-        copy.withUnsafeMutableBufferPointer {
-            if  self.appendix != Bit.one, self.mode != Signedness.unsigned {
-                var data = MutableDataInt($0, repeating: Bit.zero)!
-                writing(&data, Signedness.signed)
-            }
-        }
-        
-        copy = self.body
-        copy.withUnsafeMutableBufferPointer {
-            if  self.appendix != Bit.zero, self.mode != Signedness.signed {
-                var data = MutableDataInt($0, repeating: Bit.one)!
-                writing(&data, Signedness.unsigned)
-            }
-        }
-        
-        copy = self.body
-        copy.withUnsafeMutableBufferPointer {
-            if  self.appendix != Bit.zero, self.mode != Signedness.unsigned {
-                var data = MutableDataInt($0, repeating: Bit.one)!
-                writing(&data, Signedness.signed)
+    }
+    
+    @inlinable public borrowing func combinations(_ action: (Bit, Signedness) -> Void) {
+        for appendix in Bit.all where (self.appendix ?? appendix) == appendix {
+            for mode in Signedness.all where (self.mode ??  mode) == mode {
+                action(appendix, mode)
             }
         }
     }

@@ -29,7 +29,7 @@ import TestKit2
         (data: DXL([1, 2, 3] as [U8], repeating:  .one), index:  3 as UX, element: 0xff as U8),
         (data: DXL([1, 2, 3] as [U8], repeating: .zero), index: ~0 as UX, element: 0x00 as U8),
         (data: DXL([1, 2, 3] as [U8], repeating:  .one), index: ~0 as UX, element: 0xff as U8),
-
+        
     ])  func load0808(data: DXL<U8>, index: UX, element: U8) {
         Ɣexpect(data, load: index, is: element)
     }
@@ -89,28 +89,11 @@ import TestKit2
     func Ɣexpect<T>(_ data: DXL<U8>, body expectation: [T], at location: SourceLocation = #_sourceLocation)
     where T: SystemsInteger & UnsignedInteger {
         data.perform { elements, _ in
-            
             #expect(elements.body.count(as: T.self) == IX(expectation.count), sourceLocation: location)
-            
-            var result = [T]()
-            
-            while !elements.body.isEmpty {
-                result.append(elements.next(as: T.self))
-            }
-            
-            #expect(result == expectation, sourceLocation: location)
-            
+            #expect(expectation.reduce(true) { $0 && $1 == elements.next(as: T.self) }, sourceLocation: location)
         }   writing: { elements, _ in
-
             #expect(elements.body.count(as: T.self) == IX(expectation.count), sourceLocation: location)
-            
-            var result = [T]()
-            
-            while !elements.body.isEmpty {
-                result.append(elements.next(as: T.self))
-            }
-            
-            #expect(result == expectation, sourceLocation: location)
+            #expect(expectation.reduce(true) { $0 && $1 == elements.next(as: T.self) }, sourceLocation: location)
         }
     }
     
@@ -120,71 +103,59 @@ import TestKit2
     
     @Test("DataInt<U8>/normalized(as: U8.self)")
     func normalized0808() {
-        
-        for bit in [Bit.zero, Bit.one] {
+        for bit in Bit.all {
             let a = U8(repeating: bit)
             let b = U8(repeating: bit.toggled())
             
-            Ɣexpect(DXL([a, a, a], repeating: bit), normalized: [       ] as [U8])
-            Ɣexpect(DXL([1, a, a], repeating: bit), normalized: [1      ] as [U8])
-            Ɣexpect(DXL([1, 2, a], repeating: bit), normalized: [1, 2   ] as [U8])
-            Ɣexpect(DXL([1, 2, 3], repeating: bit), normalized: [1, 2, 3] as [U8])
+            Ɣexpect(DXL([       ] as [U8], repeating: bit), normalized: [       ] as [U8])
+            Ɣexpect(DXL([1      ] as [U8], repeating: bit), normalized: [1      ] as [U8])
+            Ɣexpect(DXL([1, 2   ] as [U8], repeating: bit), normalized: [1, 2   ] as [U8])
+            Ɣexpect(DXL([1, 2, 3] as [U8], repeating: bit), normalized: [1, 2, 3] as [U8])
             
-            Ɣexpect(DXL([b, b, b], repeating: bit), normalized: [b, b, b] as [U8])
-            Ɣexpect(DXL([1, b, b], repeating: bit), normalized: [1, b, b] as [U8])
-            Ɣexpect(DXL([1, 2, b], repeating: bit), normalized: [1, 2, b] as [U8])
-            Ɣexpect(DXL([1, 2, 3], repeating: bit), normalized: [1, 2, 3] as [U8])
+            Ɣexpect(DXL([a, a, a] as [U8], repeating: bit), normalized: [       ] as [U8])
+            Ɣexpect(DXL([1, a, a] as [U8], repeating: bit), normalized: [1      ] as [U8])
+            Ɣexpect(DXL([1, 2, a] as [U8], repeating: bit), normalized: [1, 2   ] as [U8])
+            Ɣexpect(DXL([1, 2, 3] as [U8], repeating: bit), normalized: [1, 2, 3] as [U8])
+            
+            Ɣexpect(DXL([b, b, b] as [U8], repeating: bit), normalized: [b, b, b] as [U8])
+            Ɣexpect(DXL([1, b, b] as [U8], repeating: bit), normalized: [1, b, b] as [U8])
+            Ɣexpect(DXL([1, 2, b] as [U8], repeating: bit), normalized: [1, 2, b] as [U8])
+            Ɣexpect(DXL([1, 2, 3] as [U8], repeating: bit), normalized: [1, 2, 3] as [U8])
         }
     }
     
     @Test("DataInt<U8>/normalized(as: U16.self)")
     func normalized0816() {
         
-        for bit in [Bit.zero, Bit.one] {
+        for bit in Bit.all {
             let a = U8 (repeating: bit)
             let b = U8 (repeating: bit.toggled())
             let x = U16(repeating: bit)
             let y = U16(repeating: bit.toggled())
             
-            Ɣexpect(DXL([a, a, a], repeating: bit), normalized: [                                    ] as [U16])
-            Ɣexpect(DXL([1, a, a], repeating: bit), normalized: [(x << 8)|(0x0001)                   ] as [U16])
-            Ɣexpect(DXL([1, 2, a], repeating: bit), normalized: [(0x0201)|(0x0000)                   ] as [U16])
-            Ɣexpect(DXL([1, 2, 3], repeating: bit), normalized: [(0x0201)|(0x0000), (x << 8)|(0x0003)] as [U16])
+            Ɣexpect(DXL([a, a, a] as [U8], repeating: bit), normalized: [                                    ] as [U16])
+            Ɣexpect(DXL([1, a, a] as [U8], repeating: bit), normalized: [(x << 8)|(0x0001)                   ] as [U16])
+            Ɣexpect(DXL([1, 2, a] as [U8], repeating: bit), normalized: [(0x0201)|(0x0000)                   ] as [U16])
+            Ɣexpect(DXL([1, 2, 3] as [U8], repeating: bit), normalized: [(0x0201)|(0x0000), (x << 8)|(0x0003)] as [U16])
             
-            Ɣexpect(DXL([b, b, b], repeating: bit), normalized: [(y << 0)|(0x0000), (x << 8)|(y >> 8)] as [U16])
-            Ɣexpect(DXL([1, b, b], repeating: bit), normalized: [(y << 8)|(0x0001), (x << 8)|(y >> 8)] as [U16])
-            Ɣexpect(DXL([1, 2, b], repeating: bit), normalized: [(0x0201)|(0x0000), (x << 8)|(y >> 8)] as [U16])
-            Ɣexpect(DXL([1, 2, 3], repeating: bit), normalized: [(0x0201)|(0x0000), (x << 8)|(0x0003)] as [U16])
+            Ɣexpect(DXL([b, b, b] as [U8], repeating: bit), normalized: [(y << 0)|(0x0000), (x << 8)|(y >> 8)] as [U16])
+            Ɣexpect(DXL([1, b, b] as [U8], repeating: bit), normalized: [(y << 8)|(0x0001), (x << 8)|(y >> 8)] as [U16])
+            Ɣexpect(DXL([1, 2, b] as [U8], repeating: bit), normalized: [(0x0201)|(0x0000), (x << 8)|(y >> 8)] as [U16])
+            Ɣexpect(DXL([1, 2, 3] as [U8], repeating: bit), normalized: [(0x0201)|(0x0000), (x << 8)|(0x0003)] as [U16])
         }
     }
     
     func Ɣexpect<T>(_ data: DXL<U8>, normalized expectation: [T], at location: SourceLocation = #_sourceLocation)
     where T: SystemsInteger & UnsignedInteger {
         data.perform { elements, _ in
-            
             elements = elements.normalized()
             #expect(elements.body.count(as: T.self) == IX(expectation.count), sourceLocation: location)
-            
-            var result = [T]()
-            
-            while !elements.body.isEmpty {
-                result.append(elements.next(as: T.self))
-            }
-            
-            #expect(result == expectation, sourceLocation: location)
+            #expect(expectation.reduce(true) { $0 && $1 == elements.next(as: T.self) }, sourceLocation: location)
             
         }   writing: { elements, _ in
-            
             elements = elements.normalized()
             #expect(elements.body.count(as: T.self) == IX(expectation.count), sourceLocation: location)
-            
-            var result = [T]()
-            
-            while !elements.body.isEmpty {
-                result.append(elements.next(as: T.self))
-            }
-            
-            #expect(result == expectation, sourceLocation: location)
+            #expect(expectation.reduce(true) { $0 && $1 == elements.next(as: T.self) }, sourceLocation: location)
         }
     }
     
@@ -223,24 +194,9 @@ import TestKit2
     func Ɣexpect<T>(_ data: DXL<U8>, prefix expectation: [T], at location: SourceLocation = #_sourceLocation)
     where T: SystemsInteger & UnsignedInteger {
         data.perform { elements, _ in
-            
-            var result = [T]()
-            
-            for _ in 0 ..< expectation.count {
-                result.append(elements.next(as: T.self))
-            }
-            
-            #expect(result == expectation, sourceLocation: location)
-            
+            #expect(expectation.reduce(true) { $0 && $1 == elements.next(as: T.self) }, sourceLocation: location)
         }   writing: { elements, _ in
-            
-            var result = [T]()
-            
-            for _ in 0 ..< expectation.count {
-                result.append(elements.next(as: T.self))
-            }
-            
-            #expect(result == expectation, sourceLocation: location)
+            #expect(expectation.reduce(true) { $0 && $1 == elements.next(as: T.self) }, sourceLocation: location)
         }
     }
 }
