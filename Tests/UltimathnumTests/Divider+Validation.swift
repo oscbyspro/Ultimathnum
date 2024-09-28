@@ -40,9 +40,20 @@ import TestKit2
             }
         }
     }
+}
+
+//*============================================================================*
+// MARK: * Divider x Validation x 2-by-1
+//*============================================================================*
+
+@Suite struct DividerTestsOnValidation21 {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
     
     @Test("Divider21.init(exactly:) - load each I8", arguments: systemsIntegersWhereIsUnsigned)
-    func initForEachSignedByteEntropy21(_ type: any SystemsIntegerWhereIsUnsigned.Type) throws {
+    func initForEachSignedByteEntropy(_ type: any SystemsIntegerWhereIsUnsigned.Type) throws {
         try  whereIs(type)
         
         func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerWhereIsUnsigned {

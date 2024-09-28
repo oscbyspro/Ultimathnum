@@ -45,8 +45,19 @@ import TestKit2
             #expect(divider.shift      == (shr),                sourceLocation: location)
         }
     }
+}
+
+//*============================================================================*
+// MARK: * Divider x 2-by-1
+//*============================================================================*
+
+@Suite struct DividerTests21 {
     
-    @Test func instances21() throws {
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    @Test func instances() throws {
         Ɣdivider21(07 as U8,  mul: Doublet(low: 00000000000000000073, high: 00000000000000000146), add: true,  shr: 2 * 08 + 2) // shr:  18
         Ɣdivider21(07 as U16, mul: Doublet(low: 00000000000000009362, high: 00000000000000037449), add: true,  shr: 2 * 16 + 2) // shr:  34
         Ɣdivider21(07 as U32, mul: Doublet(low: 00000000001227133513, high: 00000000002454267026), add: true,  shr: 2 * 32 + 2) // shr:  66
