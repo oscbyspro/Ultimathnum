@@ -11,11 +11,11 @@
 // MARK: * Guarantee
 //*============================================================================*
 
-/// A trusted input type.
+/// Validates values according to its `predicate(_:)` function.
 ///
-/// ### Trusted Input
+/// ### Guarantee
 ///
-/// This is a trusted input type. Validate inputs with these methods:
+/// Validate values with these methods:
 ///
 /// ```swift
 /// init(_:prune:)   // error: throws
@@ -33,7 +33,7 @@ public protocol Guarantee<Value> {
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    /// Indicates whether the given `value` satisfies its `predicate`.
+    /// Indicates whether the given `value` satisfies its requirements.
     @inlinable static func predicate(_ value: borrowing Value) -> Bool
     
     //=------------------------------------------------------------------------=

@@ -16,7 +16,7 @@
   - [What is a binary integer?](#nomenclature-binary-integer)
   - [What is a data integer?](#nomenclature-data-integer)
   - [What is a systems integer?](#nomenclature-systems-integer)
-  - [What is a trusted input?](#nomenclature-trusted-input)
+  - [What is a guarantee type?](#nomenclature-trusted-input)
   - [What is an unchecked operation?](#nomenclature-unchecked-value)
 * [CoreKit](#corekit)
   - [Validation and recovery with Fallible\<Value\>](#corekit-validation)
@@ -216,12 +216,13 @@ integer's size is a power of two in 8 through IX.max.
 |  32-bit | I32    | U32      |
 |  64-bit | I64    | U64      |
 
-Systems integers are intentionally simple so that the things you build with them may be simple. 
-The protocol only requires efficient byte-swapping and 2-by-1 division algorithms.
+Systems integers are intentionally simple, so the things you build with them may
+be simple. The protocol only requires efficient byte-swapping and 2-by-1 division 
+algorithms.
 
 <a name="nomenclature-trusted-input"/>
 
-#### What is a trusted input?
+#### What is a guarantee type?
 
 > Trust me, I know what I'm doing...
 
@@ -231,11 +232,13 @@ The protocol only requires efficient byte-swapping and 2-by-1 division algorithm
 | Natural      | x ∈ ℕ              |
 | Nonzero      | x ≠ 0              |
 | Shift        | x ∈ 0 up to T.size |
+| Divider      | x ≠ 0              |
+| Divider21    | x ≠ 0              |
 
-Once you start using primitive types to form more complex types, you notice that some behaviors
-compose better than others. A trusted input delegates precondition checks to the programmer 
-so that complex types can be built with less overhead. The type system will ask you to accept or 
-reject such inputs. Your validation strategy will either make your code safer or easier to audit.
+Guarantee types delegate their precondition checks to the programmer, who may leverage
+this power to compose complex types with less overhead or reduce the number of failure
+modes in their algorithms. The type system will prompt you to accept or reject their *payload()* 
+using one of the following methods: 
 
 ```swift
 init(_:prune:)   // error: throws

@@ -13,9 +13,9 @@
 
 /// A value from zero up to the target's size.
 ///
-/// ### Trusted Input
+/// ### Guarantee
 ///
-/// This is a trusted input type. Validate inputs with these methods:
+/// Validate values with these methods:
 ///
 /// ```swift
 /// init(_:prune:)   // error: throws
