@@ -35,7 +35,7 @@ extension TextInt {
         let numerals   = UnsafeBufferPointer(rebasing: components.body)
         var magnitude  = Fallible(T.Magnitude.zero, error: true)
         
-        if  self.power.divisor == 1 {
+        if  self.power.div == 1 {
             try self.words16(numerals: numerals) {
                 magnitude = T.Magnitude.exactly($0, mode: .unsigned)
             }
@@ -76,7 +76,7 @@ extension TextInt {
         numerals: consuming UnsafeBufferPointer<UInt8>, success: (DataInt<UX>) -> Void
     )   throws {
         //=--------------------------------------=
-        Swift.assert(self.power.divisor != 1)
+        Swift.assert(self.power.div != 1)
         //=--------------------------------------=
         // text must contain at least one numeral
         //=--------------------------------------=
@@ -117,7 +117,7 @@ extension TextInt {
                 numerals = UnsafeBufferPointer(rebasing: numerals[Int(stride)...])
                 let element = try self.numerals.load(part, as: UX.self)
                 // note that the index advances faster than the product
-                words[unchecked: index] = words[unchecked: ..<index].multiply(by: self.power.divisor, add: element)
+                words[unchecked: index] = words[unchecked: ..<index].multiply(by: self.power.div, add: element)
                 stride = self.exponent
                 index  = index.incremented().unchecked()
             }
@@ -134,7 +134,7 @@ extension TextInt {
         numerals: consuming UnsafeBufferPointer<UInt8>, success: (DataInt<UX>) -> Void
     )   throws {
         //=--------------------------------------=
-        Swift.assert(self.power.divisor == 1)
+        Swift.assert(self.power.div == 1)
         Swift.assert(self.exponent.count(Bit.one) == Count(1))
         //=--------------------------------------=
         // text must contain at least one numeral

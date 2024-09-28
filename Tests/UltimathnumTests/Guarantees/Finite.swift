@@ -30,7 +30,7 @@ import TestKit2
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             for _ in 0 ..< 32 {
                 let random = T.entropic(through: Shift.max(or: 255), mode: .signed, using: &randomness)
-                Ɣexpect(random, as: Finite.self, is: !random.isInfinite)
+                Ɣexpect(random, as: Finite.self, if: !random.isInfinite)
                 if  let result = Finite(exactly: random) {
                     #expect(result.value == random)
                     #expect(result.magnitude().value == random.magnitude())

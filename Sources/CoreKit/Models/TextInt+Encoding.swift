@@ -112,10 +112,10 @@ extension TextInt {
         // text: capacity upper bound
         //=--------------------------------------=
         var capacity = IX(raw: body.nondescending(Bit.zero))
-        let speed = if self.power.divisor == 1 {
-            IX(raw: self.power.divisor.size())
+        let speed = if self.power.div == 1 {
+            IX(raw: self.power.div.size())
         }   else  {
-            IX(raw: self.power.divisor.nondescending(Bit.zero)).decremented().unchecked()
+            IX(raw: self.power.div.nondescending(Bit.zero)).decremented().unchecked()
         }
         
         capacity /= speed
@@ -139,7 +139,7 @@ extension TextInt {
             //=----------------------------------=
             major: while true {
                 
-                if  self.power.divisor != 1 {
+                if  self.power.div != 1 {
                     chunk = (body).divisionSetQuotientGetRemainder(self.power)
                     body  = (body).normalized()
                 }   else if !body .isEmpty {

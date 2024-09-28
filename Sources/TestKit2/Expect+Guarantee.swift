@@ -16,17 +16,17 @@ import CoreKit
 @inlinable public func Ɣexpect<T>(
     _  value: T.Value,
     as guarantee: T.Type,
-    is expectation: Bool,
+    if success: Bool,
     at location: SourceLocation = #_sourceLocation
 )   where T: Guarantee, T.Value: Equatable {
     
     #expect(
-        T.predicate(value) == expectation,
+        T.predicate(value) == success,
         "Guarantee.predicate(_:)",
         sourceLocation: location
     )
     
-    if  expectation {
+    if (success) {
         Ɣexpect(
             try T(value, prune: Bad.error).payload(),
             is: Result<T.Value, Bad>.success(value),

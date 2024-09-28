@@ -40,9 +40,9 @@ import TestKit2
         
         func Ɣdivider<T>(_ divisor: T, mul: T, add: Bool, shr: T, location: SourceLocation = #_sourceLocation) where T: SystemsInteger & UnsignedInteger {
             let divider = Divider(exactly: divisor)!
-            #expect(divider.multiplier == (mul),                sourceLocation: location)
-            #expect(divider.increment  == (add ? mul : T.zero), sourceLocation: location)
-            #expect(divider.shift      == (shr),                sourceLocation: location)
+            #expect(divider.mul == (mul),                sourceLocation: location)
+            #expect(divider.add == (add ? mul : T.zero), sourceLocation: location)
+            #expect(divider.shr == (shr),                sourceLocation: location)
         }
     }
 }
@@ -77,9 +77,9 @@ import TestKit2
                 
         func Ɣdivider21<T>(_ divisor: T, mul: Doublet<T>, add: Bool, shr: T, location: SourceLocation = #_sourceLocation) where T: SystemsInteger & UnsignedInteger {
             let divider = Divider21(exactly: divisor)!
-            #expect(divider.multiplier == (mul),                   sourceLocation: location)
-            #expect(divider.increment  == (add ? mul : Doublet()), sourceLocation: location)
-            #expect(divider.shift      == (shr),                   sourceLocation: location)
+            #expect(divider.mul == (mul),                   sourceLocation: location)
+            #expect(divider.add == (add ? mul : Doublet()), sourceLocation: location)
+            #expect(divider.shr == (shr),                   sourceLocation: location)
         }
     }
 }

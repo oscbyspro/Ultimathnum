@@ -44,12 +44,12 @@ extension Guarantee {
         self.init(unsafe:/**/value)
     }
     
-    /// Creates a new instance by throwing `failure()` on `error`.
+    /// Creates a new instance by throwing `error()` on `error`.
     ///
     /// - Requires: The given `value` must satisfy the `predicate` of this type.
     ///
-    @inlinable public init<Error>(_ value: consuming Value, prune failure: @autoclosure () -> Error) throws where Error: Swift.Error {
-        guard Self.predicate(value) else { throw failure() }
+    @inlinable public init<Error>(_ value: consuming Value, prune error: @autoclosure () -> Error) throws where Error: Swift.Error {
+        guard Self.predicate(value) else { throw error() }
         self.init(unsafe:/**/value)
     }
 }

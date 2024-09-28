@@ -8,6 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import RandomIntKit
 import TestKit2
 
 //*============================================================================*
@@ -20,22 +21,16 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Divider.init(exactly:) - load each I8", arguments: systemsIntegersWhereIsUnsigned)
-    func initForEachSignedByteEntropy(_ type: any SystemsIntegerWhereIsUnsigned.Type) throws {
-        try  whereIs(type)
-        
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerWhereIsUnsigned {
-            for divisor in I8.all.lazy.map(T.init(load:)) {
-                if !divisor.isZero {
-                    #expect(Divider(divisor           ) .divisor == divisor)
-                    #expect(Divider(unchecked: divisor) .divisor == divisor)
-                    #expect(Divider(exactly:   divisor)?.divisor == divisor)
-                    #expect(try Divider(divisor, prune: Bad.error).divisor == divisor)
-                }   else {
-                    #expect(Divider(exactly: divisor) == nil)
-                    #expect(throws: Bad.error) {
-                        try Divider(divisor, prune: Bad.error)
-                    }
+    @Test("Divider.init - [entropic]", arguments: systemsIntegersWhereIsUnsigned, fuzzers)
+    func initByFuzzingEntropies(_ type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
+        whereIs(type)
+
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+            for _ in 0 ..< 32 {
+                let random = T.entropic(using: &randomness)
+                Ɣexpect(random, as: Divider.self, if: !random.isZero)
+                if  let result = Divider(exactly: random) {
+                    #expect(result.div == random)
                 }
             }
         }
@@ -52,22 +47,16 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Divider21.init(exactly:) - load each I8", arguments: systemsIntegersWhereIsUnsigned)
-    func initForEachSignedByteEntropy(_ type: any SystemsIntegerWhereIsUnsigned.Type) throws {
-        try  whereIs(type)
-        
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerWhereIsUnsigned {
-            for divisor in I8.all.lazy.map(T.init(load:)) {
-                if !divisor.isZero {
-                    #expect(Divider21(divisor           ) .divisor == divisor)
-                    #expect(Divider21(unchecked: divisor) .divisor == divisor)
-                    #expect(Divider21(exactly:   divisor)?.divisor == divisor)
-                    #expect(try Divider21(divisor, prune: Bad.error).divisor == divisor)
-                }   else {
-                    #expect(Divider21(exactly: divisor) == nil)
-                    #expect(throws: Bad.error) {
-                        try Divider21(divisor, prune: Bad.error)
-                    }
+    @Test("Divider21.init - [entropic]", arguments: systemsIntegersWhereIsUnsigned, fuzzers)
+    func initByFuzzingEntropies(_ type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
+        whereIs(type)
+
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+            for _ in 0 ..< 32 {
+                let random = T.entropic(using: &randomness)
+                Ɣexpect(random, as: Divider21.self, if: !random.isZero)
+                if  let result = Divider21(exactly: random) {
+                    #expect(result.div == random)
                 }
             }
         }

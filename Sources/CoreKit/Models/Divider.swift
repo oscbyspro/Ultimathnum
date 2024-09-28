@@ -13,66 +13,62 @@
 
 /// An integer divider.
 ///
-/// It finds magic constants such that `A` and `B` are equivalent double-size
-/// expressions for all same-size dividends:
+/// It finds magic constants satisfying this full-size expression:
 ///
-///     A) (dividend / divisor)
-///     B) (dividend * multiplier + increment) >> shift
+///     x / div == (x * mul + add) >> shr
 ///
-/// - Note: It performs division by multiplication, addition, and shifts.
-///
-/// - Note: Its constants are all same-size integers (mul-add-shr).
-///
-@frozen public struct Divider<Value>: Sendable where Value: SystemsInteger & UnsignedInteger {
-
-    public typealias Value = Value
+@frozen public struct Divider<Value>: Guarantee, Sendable where Value: SystemsInteger & UnsignedInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Metadata
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func predicate(_ value: borrowing Value) -> Bool {
+        Nonzero.predicate(value)
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    /// The divisor of this divider.
-    public let divisor: Value
+    /// The `div` constant of this divider.
+    public let div: Value
     
-    /// The multiplier of this divider.
-    public let multiplier: Value
+    /// The `mul` constant of this divider.
+    public let mul: Value
     
-    /// The increment of this divider.
-    public let increment: Value
+    /// The `add` constant of this divider.
+    public let add: Value
     
-    /// The shift of this divider.
-    public let shift: Value
+    /// The `shr` constant of this divider.
+    public let shr: Value
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<Error>(_ divisor: consuming Value, prune error: @autoclosure () -> Error) throws where Error: Swift.Error {
-        self.init(try Nonzero(divisor, prune: error()))
+    @inlinable public init(unsafe  value: Value) {
+        self.init(Nonzero (unsafe: value))
     }
     
-    @inlinable public init?(exactly divisor: consuming Value) {
-        guard let divisor = Nonzero(exactly: divisor) else { return nil }
-        self.init(divisor)
+    @inlinable public consuming func payload() -> Value {
+        self.div
     }
     
-    @inlinable public init(unchecked divisor: consuming Value) {
-        self.init(Nonzero(unchecked: divisor))
-    }
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ divisor: consuming Value) {
-        self.init(Nonzero(divisor))
-    }
-    
+    /// Finds magic constants suitable for the given `divisor`.
     @inlinable public init(_ divisor: consuming Nonzero<Value>) {
         let subshift = UX(raw: divisor.ilog2())
         let subpower = Value.lsb &<< subshift
         
         if  divisor.value == subpower {
-            // x × max + max: high == x
-            self.multiplier = Value.max
-            self.increment  = Value.max
-        
+            // x × max + max -> high: x
+            self.mul = Value.max
+            self.add = Value.max
+            
         }   else {
             let power =  Doublet(low: Value.min, high: subpower)
             let division = Value.division(power, by: divisor).unchecked()
@@ -85,18 +81,18 @@
             //  takes the path with no increment when error == subpower
             if  division.remainder < subpower {
                 Swift.assert(subpower >= division.remainder)
-                self.multiplier = division.quotient
-                self.increment  = division.quotient
+                self.mul = division.quotient
+                self.add = division.quotient
                 
             }   else {
                 Swift.assert(subpower >= divisor.value - division.remainder)
-                self.multiplier = division.quotient.incremented().unchecked()
-                self.increment  = Value.min
+                self.mul = division.quotient.incremented().unchecked()
+                self.add = Value.min
             }
         }
         
-        self.divisor = (consume  divisor).value
-        self.shift = Value(load: UX(size: Value.self).plus(subshift).unchecked())
+        self.div = divisor.payload()
+        self.shr = Value(load: UX(size: Value.self).plus(subshift).unchecked())
     }
 }
 
@@ -106,67 +102,65 @@
 
 /// A 2-by-1 integer divider.
 ///
-/// It finds magic constants such that `A` and `B` are equivalent quadruple-size
-/// expressions for all double-size dividends:
+/// It finds magic constants satisfying this full-size expression:
 ///
-///     A) (dividend / divisor)
-///     B) (dividend * multiplier + increment) >> shift
-///
-/// - Note: It performs division by multiplication, addition, and shifts.
+///     x / div == (x * mul + add) >> shr
 ///
 /// ### Development
 ///
 /// - TODO: Consider a DoubleableInteger constraint.
 ///
-@frozen public struct Divider21<Value>: Sendable where Value: SystemsInteger & UnsignedInteger {
+@frozen public struct Divider21<Value>: Guarantee, Sendable where Value: SystemsInteger & UnsignedInteger {
 
-    public typealias Value = Value
+    //=------------------------------------------------------------------------=
+    // MARK: Metadata
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func predicate(_ value: borrowing Value) -> Bool {
+        Nonzero.predicate(value)
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    /// The divisor of this divider.
-    public let divisor: Value
+    /// The `div` constant of this divider.
+    public let div: Value
     
-    /// The multiplier of this divider.
-    public let multiplier: Doublet<Value>
+    /// The `mul` constant of this divider.
+    public let mul: Doublet<Value>
     
-    /// The increment of this divider.
-    public let increment: Doublet<Value>
+    /// The `add` constant of this divider.
+    public let add: Doublet<Value>
     
-    /// The shift of this divider.
-    public let shift: Value
+    /// The `shr` constant of this divider.
+    public let shr: Value
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init<Error>(_ divisor: consuming Value, prune error: @autoclosure () -> Error) throws where Error: Swift.Error {
-        self.init(try Nonzero(divisor, prune: error()))
+    @inlinable public init(unsafe  value: consuming Value) {
+        self.init(Nonzero (unsafe: value))
     }
     
-    @inlinable public init?(exactly divisor: consuming Value) {
-        guard let divisor = Nonzero(exactly: divisor) else { return nil }
-        self.init(divisor)
+    @inlinable public consuming func payload() -> Value {
+        self.div
     }
     
-    @inlinable public init(unchecked divisor: consuming Value) {
-        self.init(Nonzero(unchecked: divisor))
-    }
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ divisor: consuming Value) {
-        self.init(Nonzero(divisor))
-    }
-    
+    /// Finds magic constants suitable for the given `divisor`.
     @inlinable public init(_ divisor: consuming Nonzero<Value>) {
         let subshift = UX(raw: divisor.ilog2())
         let subpower = Value.lsb &<< subshift
         
         if  divisor.value == subpower {
-            // x × max + max: high == x
-            self.multiplier = Doublet(low: .max, high: .max)
-            self.increment  = Doublet(low: .max, high: .max)
+            // x × max + max -> high: x
+            self.mul = Doublet(low: .max, high: .max)
+            self.add = Doublet(low: .max, high: .max)
             
         }   else {
             var remainder = subpower
@@ -182,22 +176,22 @@
             //  takes the path with no increment when error == subpower
             if  remainder < subpower {
                 Swift.assert(subpower >= remainder)
-                self.multiplier = quotient
-                self.increment  = quotient
+                self.mul = quotient
+                self.add = quotient
                 
             }   else {
                 Swift.assert(subpower >= divisor.value - remainder)
-
+                
                 var bit: Bool
                 (quotient.low, bit) = quotient.low.incremented().components()
                 (quotient.high) = quotient.high.incremented(bit).unchecked ()
                 
-                self.multiplier = quotient
-                self.increment  = Doublet()
+                self.mul = quotient
+                self.add = Doublet()
             }
         }
         
-        self.divisor = (consume  divisor).value
-        self.shift = Value(load: UX(size: Value.self).times(2).plus(subshift).unchecked())
+        self.div = divisor.payload()
+        self.shr = Value(load: UX(size: Value.self).times(2).plus(subshift).unchecked())
     }
 }

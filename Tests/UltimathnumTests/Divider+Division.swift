@@ -28,7 +28,7 @@ import TestKit2
         for dividend in U8.all {
             for divisor in U8.all {
                 if  let divider = Divider(exactly: divisor) {
-                    let expectation = dividend.division(Nonzero(divider.divisor)).unwrap()
+                    let expectation = dividend.division(Nonzero(divider.div)).unwrap()
                     success &+= IX(Bit(divider.division(dividing: dividend) == expectation))
                     success &+= IX(Bit(divider.quotient(dividing: dividend) == expectation.quotient))
                 }
@@ -53,7 +53,7 @@ import TestKit2
             for _ in 0 ..< rounds {
                 let divider  = Divider(T.random(in: T.positives, using: &randomness))
                 let dividend = T.random(using: &randomness)
-                let expectation:  Division = dividend.division(Nonzero(divider.divisor))
+                let expectation:  Division = dividend.division(Nonzero(divider.div))
                 Ɣexpect(dividend, division:  divider,  is: expectation)
              }
         }
@@ -70,7 +70,7 @@ import TestKit2
             for _ in 0 ..< rounds {
                 if  let divider  = Divider(exactly: T.entropic(using: &randomness)) {
                     let dividend = T.entropic(using: &randomness)
-                    let expectation:  Division = dividend.division(Nonzero(divider.divisor))
+                    let expectation:  Division = dividend.division(Nonzero(divider.div))
                     Ɣexpect(dividend, division:  divider,  is: expectation)
                 }
             }
@@ -92,7 +92,7 @@ import TestKit2
             for _ in 0 ..< rounds {
                 let divider = Divider(T.lsb.up(random()))
                 let dividend: T = T.entropic(using: &randomness)
-                let expectation = dividend.division(Nonzero(divider.divisor)).unwrap()
+                let expectation = dividend.division(Nonzero(divider.div)).unwrap()
                 Ɣexpect(dividend, division:  divider,  is: expectation)
             }
         }
@@ -122,7 +122,7 @@ import TestKit2
                 let low  = T.random(using: &randomness)
                 let high = T.random(using: &randomness)
                 let dividend = Doublet(low: low, high: high)
-                let expectation = T.division(dividend, by: Nonzero(divider.divisor))
+                let expectation = T.division(dividend, by: Nonzero(divider.div))
                 Ɣexpect(dividend, division:  divider,  is: expectation)
              }
         }
@@ -141,7 +141,7 @@ import TestKit2
                     let low  = T.entropic(using: &randomness)
                     let high = T.entropic(using: &randomness)
                     let dividend = Doublet(low: low, high: high)
-                    let expectation = T.division(dividend, by: Nonzero(divider.divisor))
+                    let expectation = T.division(dividend, by: Nonzero(divider.div))
                     Ɣexpect(dividend, division:  divider,  is: expectation)
                 }
             }
@@ -165,7 +165,7 @@ import TestKit2
                 let low:  T  = T.entropic(using: &randomness)
                 let high: T  = T.entropic(using: &randomness)
                 let dividend = Doublet(low: low, high: high)
-                let expectation = T.division(dividend, by: Nonzero(divider.divisor))
+                let expectation = T.division(dividend, by: Nonzero(divider.div))
                 Ɣexpect(dividend, division:  divider,  is: expectation)
             }
         }
