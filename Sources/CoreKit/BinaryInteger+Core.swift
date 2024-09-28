@@ -28,7 +28,7 @@
 /// - `U32`
 /// - `U64`
 ///
-public protocol CoreInteger:
+public protocol CoreInteger<BitPattern>:
     Interoperable,
     SystemsInteger
 where
