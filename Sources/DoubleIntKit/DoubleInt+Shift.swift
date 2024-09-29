@@ -37,7 +37,7 @@ extension DoubleInt {
             return Self(self.storage.up(Shift(unchecked: distance.value)))
             
         }   else {
-            let shift = Shift<Low>(unchecked: Count(unchecked: IX(raw: difference.value)))
+            let shift = Shift<Low>(unchecked: Count(raw: IX(raw: difference.value)))
             return Self(low: Low.zero, high: High(raw: self.low.up(shift)))
         }
     }
@@ -48,7 +48,7 @@ extension DoubleInt {
             return Self(self.storage.down(Shift(unchecked: distance.value)))
             
         }   else {
-            let shift = Shift<Low>(unchecked: Count(unchecked: IX(raw: difference.value)))
+            let shift = Shift<Low>(unchecked: Count(raw: IX(raw: difference.value)))
             return Self(low: Low(raw: self.high.down(shift)), high: High(repeating: self.high.appendix))
         }
     }

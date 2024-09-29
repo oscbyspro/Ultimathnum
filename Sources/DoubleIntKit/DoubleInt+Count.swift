@@ -25,7 +25,7 @@ extension DoubleInt {
         count   = IX(raw: self.storage.low .count(bit))
         count &+= IX(raw: self.storage.high.count(bit))
         
-        return Count(unchecked: count)
+        return Count(Natural(unchecked: count))
     }
     
     @inlinable public borrowing func ascending(_ bit: Bit) -> Count {
@@ -37,7 +37,7 @@ extension DoubleInt {
             count &+= IX(raw: self.storage.high.ascending(bit))
         }
         
-        return Count(unchecked: count)
+        return Count(Natural(unchecked: count))
     }
     
     @inlinable public borrowing func descending(_ bit: Bit) -> Count {
@@ -49,6 +49,6 @@ extension DoubleInt {
             count &+= IX(raw: self.storage.low .descending(bit))
         }
         
-        return Count(unchecked: count)
+        return Count(Natural(unchecked: count))
     }
 }

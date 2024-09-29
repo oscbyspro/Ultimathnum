@@ -71,7 +71,7 @@ extension BinaryInteger {
             }
             
             let mask = size.decremented().unchecked()
-            let down = Count(unchecked: mask & index.toggled())
+            let down = Count(  Natural(unchecked: mask & index.toggled()))
             return instance.down(Shift(unchecked: down))
             
         }   else {

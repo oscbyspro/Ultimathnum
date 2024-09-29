@@ -56,7 +56,7 @@
     /// - Note: Shifting by `1` is common and the minimum binary integer size is `8`.
     ///
     @inlinable public static var one: Self {
-        Self(unchecked: Count(unchecked: 1))
+        Self(unchecked: Count(raw: IX.lsb))
     }
     
     /// The maximum bit index of the target binary integer type.
@@ -67,8 +67,6 @@
     ///     │ I64  │ 63                    │
     ///     │ IXL  │ log2(UXL.max + 1) - 1 │
     ///     └──────┴───────────────────────┘
-    ///
-    /// - Returns: A value in `0 ..< log2(UXL.max + 1)`.
     ///
     /// - Note: The `size` of a binary integer is a power of `2`.
     ///

@@ -17,6 +17,9 @@ extension Tag {
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
+    /// Material that serves as a record.
+    @Tag public static var documentation: Self
+    
     /// Including or considering all arguments.
     @Tag public static var exhaustive: Self
     

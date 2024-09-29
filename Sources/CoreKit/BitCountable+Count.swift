@@ -38,7 +38,7 @@ extension BitCountable {
     ///
     @inlinable public /*borrowing*/ func entropy() -> Count {
         let base = IX(raw: self.nondescending(self.appendix)).incremented()
-        return Count(unchecked: base.unchecked("BitCountable/entropy/0...IX.max"))
+        return Count(Natural(unchecked: base.unchecked("BitCountable/entropy/0...IX.max")))
     }
     
     //=------------------------------------------------------------------------=

@@ -121,7 +121,7 @@ extension BinaryInteger {
                 
             }   else {
                 Swift.assert(Self.size < Other.size)
-                let limit = Count(unchecked: size.decremented(Self.isSigned).unchecked())
+                let limit = Count(raw: size.decremented(Self.isSigned).unchecked())
                 let count = source.nondescending(Bit(Self.isSigned && source.isNegative))
                 return Self(load: source).veto(limit < count)
             }

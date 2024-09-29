@@ -38,7 +38,7 @@ extension DataInt {
             return Count.infinity
         }
         
-        return Count(unchecked: count)
+        return Count(Natural(unchecked: count))
     }
     
     @inlinable public borrowing func descending(_ bit: Bit) -> Count {
@@ -92,7 +92,7 @@ extension DataInt.Body {
     
     @inlinable public borrowing func size() -> Count {
         let count = self.count.times(IX(size: Element.self))
-        return Count(unchecked: count.unchecked("BinaryInteger/entropy/0...IX.max"))
+        return Count(Natural(unchecked: count.unchecked("BinaryInteger/entropy/0...IX.max")))
     }
     
     @inlinable public borrowing func count(_ bit: Bit) -> Count {
@@ -103,7 +103,7 @@ extension DataInt.Body {
             count = count.plus(subcount.natural().unchecked())
         }
         
-        return Count(unchecked: count.unchecked("BinaryInteger/entropy/0...IX.max"))
+        return Count(Natural(unchecked: count.unchecked("BinaryInteger/entropy/0...IX.max")))
     }
     
     @inlinable public borrowing func ascending(_ bit: Bit) -> Count {
@@ -115,7 +115,7 @@ extension DataInt.Body {
             guard subcount == Element.size else { break }
         }
         
-        return Count(unchecked: count.unchecked("BinaryInteger/entropy/0...IX.max"))
+        return Count(Natural(unchecked: count.unchecked("BinaryInteger/entropy/0...IX.max")))
     }
     
     @inlinable public borrowing func descending(_ bit: Bit) -> Count {
@@ -127,7 +127,7 @@ extension DataInt.Body {
             guard subcount == Element.size else { break }
         }
         
-        return Count(unchecked: count.unchecked("BinaryInteger/entropy/0...IX.max"))
+        return Count(Natural(unchecked: count.unchecked("BinaryInteger/entropy/0...IX.max")))
     }
 }
 

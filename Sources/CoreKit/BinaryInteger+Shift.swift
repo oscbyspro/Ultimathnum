@@ -44,7 +44,7 @@ extension BinaryInteger {
         if  distance.isNegative {
             
             if  distance >= max.complement() {
-                return instance.down(Shift(unchecked: Count(unchecked: IX(load: distance).complement())))
+                return instance.down(Shift(unchecked: Count(Natural(unchecked: IX(load: distance).complement()))))
                 
             }   else {
                 return instance.down(Count.infinity) // flush >= IX.max as per protocol
@@ -53,7 +53,7 @@ extension BinaryInteger {
         }   else {
 
             if  distance <= UX(raw: max) {
-                return instance.up(Shift(unchecked: Count(unchecked: IX(load: distance))))
+                return instance.up(Shift(unchecked: Count(Natural(unchecked: IX(load: distance)))))
                 
             }   else {
                 return instance.up(Count.infinity) //.. flush >= IX.max as per protocol
@@ -89,7 +89,7 @@ extension BinaryInteger {
         if  distance.isNegative {
             
             if  distance >= max.complement() {
-                return instance.up(Shift(unchecked: Count(unchecked: IX(load: distance).complement())))
+                return instance.up(Shift(unchecked: Count(Natural(unchecked: IX(load: distance).complement()))))
                 
             }   else {
                 return instance.up(Count.infinity) //.. flush >= IX.max as per protocol
@@ -98,7 +98,7 @@ extension BinaryInteger {
         }   else {
 
             if  distance <= UX(raw: max) {
-                return instance.down(Shift(unchecked: Count(unchecked: IX(load: distance))))
+                return instance.down(Shift(unchecked: Count(Natural(unchecked: IX(load: distance)))))
                 
             }   else {
                 return instance.down(Count.infinity) // flush >= IX.max as per protocol

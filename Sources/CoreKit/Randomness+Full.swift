@@ -68,7 +68,7 @@ extension Randomness {
         var random = T()
         
         for index  in Range(uncheckedBounds: (IX.zero, ratio)) {
-            random |= T(load: self.next()).up(Shift(unchecked: Count(unchecked: IX(size: Element.self) &* index)))
+            random |= T(load: self.next()).up(Shift(unchecked: Count(raw: IX(size: Element.self) &* index)))
         }
         
         return random

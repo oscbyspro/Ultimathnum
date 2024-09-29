@@ -42,7 +42,7 @@ import CoreKit
     }
     
     @inlinable public static var size: Count {
-        Count(unchecked: 3 * IX(size: Base.self))
+        Count(raw: IX(size: Base.self) * 3)
     }
     
     //=------------------------------------------------------------------------=

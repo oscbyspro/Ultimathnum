@@ -18,7 +18,7 @@
 ///
 /// ```
 /// min ..< msb: [0,  IX.max + 0]
-/// msb ... max: [∞ - IX.max,  ∞] ≤ log2(UXL.max + 1)
+/// msb ... max: [∞ - IX.max,  ∞] ≤ log2(&0 + 1) = log2(UXL.max + 1)
 /// ```
 ///
 /// Its extends like a signed integer but compares like an unsigned integer
@@ -28,8 +28,16 @@
 ///
 /// - Note: Please roll a `D20` arcana check.
 ///
+/// ### The upper bound is power of `2`
+///
+/// We define `Count.infinity` as a power of `2` becuase it makes our lives easier,
+/// as long as we are consistend about it. This means that all binary integer sizes
+/// are powers of two. We may also truncate negative values in `[-IX.min, -1]`.
+///
+/// - Seealso: `Count.exactly(_:)` and its `[-IX.min, IX.max]` semantics.
+///
 @frozen public struct Count: BitCastable, Comparable, CustomStringConvertible, Recoverable, Sendable {
-        
+    
     //=------------------------------------------------------------------------=
     // MARK: Metadata
     //=------------------------------------------------------------------------=
@@ -39,7 +47,10 @@
         Self(raw: IX(repeating: Bit.zero))
     }
     
-    /// A value equal to `log2(UXL.max + 1)`
+    /// A value equal to `log2(&0 + 1)`
+    ///
+    /// - Important: It is a power of `2`.
+    ///
     @inlinable public static var infinity: Self {
         Self(raw: IX(repeating: Bit.one))
     }
@@ -53,47 +64,7 @@
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
-    
-    /// Loads the `source` by trapping on `error`.
-    ///
-    /// - Note: The `error` is set if the operation is `lossy`.
-    ///
-    @inlinable public init(_ source: consuming IX) {
-        precondition(!source.isNegative)
-        self.base = ((source))
-    }
-    
-    /// Loads the `source` by trapping on `error` in debug mode.
-    ///
-    /// - Note: The `error` is set if the operation is `lossy`.
-    ///
-    @inlinable public init(unchecked source: consuming IX) {
-        Swift.assert(!source.isNegative)
-        self.base = ((source))
-    }
-    
-    /// Loads the `source` by returning `nil` on `error`.
-    ///
-    /// - Note: The `error` is set if the operation is `lossy`.
-    ///
-    @inlinable public init?(exactly source: consuming IX) {
-        guard !source.isNegative else { return nil }
-        self.base = ((source))
-    }
-    
-    /// Loads the `source` by throwing `failure()` on `error`.
-    ///
-    /// - Note: The `error` is set if the operation is `lossy`.
-    ///
-    @inlinable public init<Error>(_ source: consuming IX, prune failure: @autoclosure () -> Error) throws where Error: Swift.Error {
-        guard !source.isNegative else { throw failure() }
-        self.base = ((source))
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
+        
     @inlinable public init(raw source: IX.BitPattern) {
         self.base = IX(raw: source)
     }
@@ -108,17 +79,17 @@
     
     /// Returns its raw `value` and an `error` indicator.
     ///
-    ///     ┌───────────────────────┬───────────────┐
-    ///     │ self                  │ value │ error │
-    ///     ├───────────────────────┼───────┼───────┤
-    ///     │ 0                     │  0    │ false │
-    ///     │ 1                     │  1    │ false │
-    ///     │ 2                     │  2    │ false │
-    ///     ├───────────────────────┼───────┼───────┤
-    ///     │ log2(UXL.max + 1) - 2 │ -3    │ true  │
-    ///     │ log2(UXL.max + 1) - 1 │ -2    │ true  │
-    ///     │ log2(UXL.max + 1)     │ -1    │ true  │
-    ///     └───────────────────────┴───────┴───────┘
+    ///     ┌──────────────────┬───────────────┐
+    ///     │ self             │ value │ error │
+    ///     ├──────────────────┼───────┼───────┤
+    ///     │ 0                │  0    │ false │
+    ///     │ 1                │  1    │ false │
+    ///     │ 2                │  2    │ false │
+    ///     ├──────────────────┼───────┼───────┤
+    ///     │ log2(&0 + 1) - 2 │ -3    │ true  │
+    ///     │ log2(&0 + 1) - 1 │ -2    │ true  │
+    ///     │ log2(&0 + 1)     │ -1    │ true  │
+    ///     └──────────────────┴───────┴───────┘
     ///
     /// - Note: The `error` is set if `self` is infinite.
     ///

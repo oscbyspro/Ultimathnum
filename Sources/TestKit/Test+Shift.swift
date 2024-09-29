@@ -78,14 +78,14 @@ extension Test {
             same({         instance    <<  Swift.Int(small)           }(), expectation,  "<< [Swift.Int]")
             same({ var x = instance; x <<= Swift.Int(small); return x }(), expectation, "<<= [Swift.Int]")
             
-            if  let count = Count(exactly: small) {
+            if  let count = Count.exactly(small)?.optional() {
                 same(instance.up(count), expectation, "BinaryInteger/up(Count)")
                 
                 if  let shift = Shift<T.Magnitude>(exactly: count) {
                     same(instance.up(shift), expectation, "BinaryInteger/up(Shift)")
                 }
                 
-            }   else if let count = Count(exactly: small.complement()) {
+            }   else if let count = Count.exactly(small.complement())?.optional() {
                 same(instance.down(count), expectation, "BinaryInteger/down(Count)")
                 
                 if  let shift = Shift<T.Magnitude>(exactly: count) {
@@ -163,14 +163,14 @@ extension Test {
             same({         instance    >>  Swift.Int(small)           }(), expectation,  ">> [Swift.Int]")
             same({ var x = instance; x >>= Swift.Int(small); return x }(), expectation, ">>= [Swift.Int]")
             
-            if  let count = Count(exactly: small) {
+            if  let count = Count.exactly(small)?.optional() {
                 same(instance.down(count), expectation, "BinaryInteger/down(Count)")
                 
                 if  let shift = Shift<T.Magnitude>(exactly: count) {
                     same(instance.down(shift), expectation, "BinaryInteger/down(Shift)")
                 }
                 
-            }   else if let count = Count(exactly: small.complement()) {
+            }   else if let count = Count.exactly(small.complement())?.optional() {
                 same(instance.up(count), expectation, "BinaryInteger/up(Count)")
                 
                 if  let shift = Shift<T.Magnitude>(exactly: count) {
