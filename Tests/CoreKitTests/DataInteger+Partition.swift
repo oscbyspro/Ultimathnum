@@ -151,7 +151,7 @@ import TestKit2
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            for count in 1 ... 8 {
+            for count in 0 ... 8 {
                 let body = Array(1 ..< T(IX(count+1)))
                 Ɣexpect(DXL(body, repeating: Bit.zero), prefix: body + [T](repeating: T.min, count: 8 - count))
                 Ɣexpect(DXL(body, repeating: Bit.one ), prefix: body + [T](repeating: T.max, count: 8 - count))

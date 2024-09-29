@@ -18,7 +18,7 @@ import TestKit2
 
 @Suite struct CountTestsOnIntegers {
     
-    typealias Example = (source: IXL, expectation: Fallible<String>?)
+    typealias Example = (source: IXL, expectation: Optional<Fallible<String>>)
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -63,12 +63,12 @@ import TestKit2
                 let random = T.entropic(through: Shift.max(or: 255), mode: .signed, using: &randomness)
                 
                 if  IX.zero <= random, random <= IX.max {
-                    let expectation = Fallible(Count(raw: IX(load: random)))
+                    let expectation = Fallible(Count(raw: IX(random)))
                     #expect(Count.exactly(random) == expectation)
                     #expect(Count   .init(random) == expectation.value)
                     
                 }   else if  IX.min < random, random < IX.zero {
-                    let expectation = Fallible(Count(raw: IX(load: random - 1)), error: true)
+                    let expectation = Count(raw:  IX(random).decremented().value).veto()
                     #expect(Count.exactly(random) == expectation)
                     
                 }   else {
