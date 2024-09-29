@@ -83,7 +83,7 @@ extension BinaryInteger {
         }
     }
     
-    /// Hashes the normalized 8-bit data integer representation of `self`.
+    /// Hashes the normalized 8-bit data integer elements of `self`.
     ///
     /// ```swift
     /// #expect(random.hashValue == IXL(load: random).hashValue)

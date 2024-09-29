@@ -45,8 +45,8 @@
 ///
 /// ### Type-agnostic binary integer hashes
 ///
-/// Binary integers hash their normalized 8-bit data integer representations,
-/// so equal values produce equal hashes regardless of their underlying types.
+/// Binary integers hash their normalized 8-bit data integer elements, so
+/// equal values produce equal hashes regardless of their underlying types.
 ///
 /// ```swift
 /// #expect(random.hashValue == IXL(load: random).hashValue)
