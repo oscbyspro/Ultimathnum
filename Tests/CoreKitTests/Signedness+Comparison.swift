@@ -27,7 +27,7 @@ import TestKit2
         Some(Signedness  .signed, Signedness.unsigned, yields: false),
         Some(Signedness  .signed, Signedness  .signed, yields: true ),
         
-    ]) func compare(_ argument: Some<Signedness, Signedness, Bool>) {
+    ])  func compare(_ argument: Some<Signedness, Signedness, Bool>) {
         Ɣexpect(argument.0, equals: argument.1, is: argument.output)
     }
 }

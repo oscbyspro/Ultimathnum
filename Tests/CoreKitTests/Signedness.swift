@@ -25,7 +25,7 @@ import TestKit2
         Some(Bit.zero, yields: Signedness.unsigned),
         Some(Bit.one,  yields: Signedness  .signed),
         
-    ]) func initBit(_ argument: Some<Bit, Signedness>) {
+    ])  func initBit(_ argument: Some<Bit, Signedness>) {
         #expect(Signedness(raw: argument.input) == argument.output)
     }
     
@@ -34,7 +34,7 @@ import TestKit2
         Some(false, yields: Signedness.unsigned),
         Some(true,  yields: Signedness  .signed),
         
-    ]) func initSigned(_ argument: Some<Bool, Signedness>) {
+    ])  func initSigned(_ argument: Some<Bool, Signedness>) {
         #expect(Signedness(signed: argument.input) == argument.output)
     }
 }

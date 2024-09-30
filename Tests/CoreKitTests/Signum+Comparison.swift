@@ -26,7 +26,7 @@ import TestKit2
         Some(Signum.zero,     yields: false),
         Some(Signum.positive, yields: false),
         
-    ]) func isNegative(_ arguments: Some<Signum, Bool>) {
+    ])  func isNegative(_ arguments: Some<Signum, Bool>) {
         #expect(arguments.input.isNegative == arguments.output)
     }
     
@@ -36,7 +36,7 @@ import TestKit2
         Some(Signum.zero,     yields: true ),
         Some(Signum.positive, yields: false),
         
-    ]) func isZero(_ arguments: Some<Signum, Bool>) {
+    ])  func isZero(_ arguments: Some<Signum, Bool>) {
         #expect(arguments.input.isZero == arguments.output)
     }
     
@@ -46,7 +46,7 @@ import TestKit2
         Some(Signum.zero,     yields: false),
         Some(Signum.positive, yields: true ),
         
-    ]) func isPositive(_ argument: Some<Signum, Bool>) {
+    ])  func isPositive(_ argument: Some<Signum, Bool>) {
         #expect(argument.input.isPositive == argument.output)
     }
     
@@ -62,7 +62,7 @@ import TestKit2
         Some(Signum.positive, Signum.zero,     yields: Signum.positive),
         Some(Signum.positive, Signum.positive, yields: Signum.zero),
         
-    ]) func compare(_ argument: Some<Signum, Signum, Signum>) {
+    ])  func compare(_ argument: Some<Signum, Signum, Signum>) {
         Ɣexpect(argument.0, equals: argument.1, is:    argument.output)
         #expect(argument.0.compared(to: argument.1) == argument.output)
     }

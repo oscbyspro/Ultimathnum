@@ -16,7 +16,7 @@
   - [What is a binary integer?](#nomenclature-binary-integer)
   - [What is a data integer?](#nomenclature-data-integer)
   - [What is a systems integer?](#nomenclature-systems-integer)
-  - [What is a guarantee type?](#nomenclature-trusted-input)
+  - [What is a guarantee type?](#nomenclature-guarantee-type)
   - [What is an unchecked operation?](#nomenclature-unchecked-value)
 * [CoreKit](#corekit)
   - [Validation and recovery with Fallible\<Value\>](#corekit-validation)
@@ -220,7 +220,7 @@ Systems integers are intentionally simple, so the things you build with them may
 be simple. The protocol only requires efficient byte-swapping and 2-by-1 division 
 algorithms.
 
-<a name="nomenclature-trusted-input"/>
+<a name="nomenclature-guarantee-type"/>
 
 #### What is a guarantee type?
 

@@ -27,7 +27,7 @@ import TestKit2
         Some(Order.descending, Order.ascending,  yields: false),
         Some(Order.descending, Order.descending, yields: true ),
         
-    ]) func compare(_ argument: Some<Order, Order, Bool>) {
+    ])  func compare(_ argument: Some<Order, Order, Bool>) {
         Ɣexpect(argument.0, equals: argument.1, is: argument.output)
     }
 }

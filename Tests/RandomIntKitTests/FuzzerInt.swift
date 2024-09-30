@@ -33,7 +33,7 @@ import TestKit2
         Many(~1 as I64, yields: [0xf3203e9039f4a821, 0xba56949915dcf9e9, 0xd0d5127a96e8d90d, 0x1ef156bb76650c37] as [U64]),
         Many(~0 as I64, yields: [0xe4d971771b652c20, 0xe99ff867dbf682c9, 0x382ff84cb27281e9, 0x6d1db36ccba982d2] as [U64]),
         
-    ]) func seeded(_ expectation: Many<I64, U64>) {
+    ])  func seeded(_ expectation: Many<I64, U64>) {
         var randomness = FuzzerInt(seed: U64(raw: expectation.input))
         for element in expectation.output {
             var copy    = randomness

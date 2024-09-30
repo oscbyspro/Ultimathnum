@@ -25,7 +25,7 @@ import TestKit2
         Some(Bit.zero, yields: Signum.zero    ),
         Some(Bit.one,  yields: Signum.positive),
         
-    ]) func initBit(_ argument: Some<Bit, Signum>) {
+    ])  func initBit(_ argument: Some<Bit, Signum>) {
         #expect(Signum(argument.input) == argument.output)
     }
     
@@ -36,7 +36,7 @@ import TestKit2
         Some(Optional(Sign.plus ), yields: Signum.positive),
         Some(Optional(Sign.minus), yields: Signum.negative),
         
-    ]) func initSignOrOptionalSign(_ argument: Some<Sign?, Signum>) {
+    ])  func initSignOrOptionalSign(_ argument: Some<Sign?, Signum>) {
         #expect(Signum(argument.input) == argument.output)
         if  let sign = argument.input {
             #expect(Signum(sign) == argument.output)
