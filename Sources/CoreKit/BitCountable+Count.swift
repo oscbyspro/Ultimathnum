@@ -19,30 +19,29 @@ extension BitCountable {
     
     /// The number of bits needed to *arbitrarily* represent `self`.
     ///
-    /// ```
-    /// ┌──────┬──────────── → ────────┐
-    /// │ self │ bit pattern │ entropy │
-    /// ├──────┼──────────── → ────────┤
-    /// │   ~3 │ 00........1 │ 3       │
-    /// │   ~2 │ 10........1 │ 3       │
-    /// │   ~1 │ 0.........1 │ 2       │
-    /// │   ~0 │ ..........1 │ 1       │
-    /// │    0 │ ..........0 │ 1       │
-    /// │    1 │ 1.........0 │ 2       │
-    /// │    2 │ 01........0 │ 3       │
-    /// │    3 │ 11........0 │ 3       │
-    /// └──────┴──────────── → ────────┘
-    /// ```
+    ///     ┌──────┬──────────── → ────────┐
+    ///     │ self │ bit pattern │ entropy │
+    ///     ├──────┼──────────── → ────────┤
+    ///     │   ~3 │ 00........1 │ 3       │
+    ///     │   ~2 │ 10........1 │ 3       │
+    ///     │   ~1 │ 0.........1 │ 2       │
+    ///     │   ~0 │ ..........1 │ 1       │
+    ///     │    0 │ ..........0 │ 1       │
+    ///     │    1 │ 1.........0 │ 2       │
+    ///     │    2 │ 01........0 │ 3       │
+    ///     │    3 │ 11........0 │ 3       │
+    ///     └──────┴──────────── → ────────┘
     ///
     /// - Note: An in-memory `entropy` must fit in `[0, IX.max]`.
     ///
-    @inlinable public /*borrowing*/ func entropy() -> Count {
-        let base = IX(raw: self.nondescending(self.appendix)).incremented()
-        return Count(Natural(unchecked: base.unchecked("BitCountable/entropy/0...IX.max")))
+    @inlinable public borrowing func entropy() -> Count {
+        var result = IX(raw: self.nondescending(self.appendix))
+        result = result.incremented().unchecked("BitCountable/entropy/0...IX.max")
+        return Count(Natural(unchecked: result))
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities x Inverse
+    // MARK: Utilities x Inverses
     //=------------------------------------------------------------------------=
     
     /// The inverse ascending `bit` count in `self`.
