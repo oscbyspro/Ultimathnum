@@ -24,13 +24,16 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Count.exactly(IX.min) == nil")
-    func initSameSizeSignedIntegerMinValueIsNil() {
-        #expect(Count.exactly(   (IX.min)) == nil)
-        #expect(Count.exactly(IXL(IX.min)) == nil)
+    @Test("Count ← some BinaryInteger - disambiguation", .tags(.disambiguation))
+    func disambiguation() {
+        func build() {
+            _ = Count.init(0)
+            _ = Count.init(load: 0)
+            _ = Count.exactly(0)
+        }
     }
     
-    @Test("Count.exactly(some BinaryInteger) - [documentation]", .serialized, .tags(.documentation), arguments: [
+    @Test("Count ← some BinaryInteger - documentation", .serialized, .tags(.documentation), arguments: [
         
         Example(source: IXL(IX.max ) + 2, expectation: nil),
         Example(source: IXL(IX.max ) + 1, expectation: nil),
@@ -50,11 +53,50 @@ import TestKit2
         Example(source: IXL(IX.min ) - 1, expectation: nil),
         Example(source: IXL(IX.min ) - 2, expectation: nil),
         
-    ]   as [Example]) func initSomeBinaryIntegerExanples(source: IXL, expectation: Fallible<String>?) {
+    ]   as [Example]) func initSomeBinaryIntegerExamples(source: IXL, expectation: Fallible<String>?) {
         #expect(Count.exactly(source)?.map(\.description) == expectation)
     }
     
-    @Test("Count.exactly(some BinaryInteger) - [entropic]", arguments: binaryIntegers, fuzzers)
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Edges
+    //=------------------------------------------------------------------------=
+    
+    @Test("Count ← IX.min == nil")
+    func initSameSizeSignedIntegerMinValueIsNil() {
+        #expect(Count(load:      (IX.min)) == nil)
+        #expect(Count(load:   IXL(IX.min)) == nil)
+        #expect(Count.exactly(   (IX.min)) == nil)
+        #expect(Count.exactly(IXL(IX.min)) == nil)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Random
+    //=------------------------------------------------------------------------=
+    
+    @Test("Count ← IX - entropic", arguments: fuzzers)
+    func initSameSizeSignedIntegerByFuzzing(randomness: consuming FuzzerInt) {
+        for _ in 0 ..< 1024 {
+            let random = IX.entropic(using: &randomness)
+            
+            if  IX.zero <= random, random <= IX.max {
+                let expectation = Fallible(Count(raw: IX(random)))
+                #expect(Count.exactly(random) == expectation)
+                #expect(Count(load:   random) == expectation.value)
+                #expect(Count(        random) == expectation.value)
+
+            }   else if  IX.min < random, random < IX.zero {
+                let expectation = Count(raw:  IX(random).decremented().value).veto()
+                #expect(Count.exactly(random) == expectation)
+                #expect(Count(load:   random) == expectation.value)
+                
+            }   else {
+                #expect(Count.exactly(random) == nil)
+                #expect(Count(load:   random) == nil)
+            }
+        }
+    }
+    
+    @Test("Count ← some BinaryInteger - entropic", arguments: binaryIntegers, fuzzers)
     func initSomeBinaryIntegerByFuzzing(source: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(source)
         
@@ -65,14 +107,17 @@ import TestKit2
                 if  IX.zero <= random, random <= IX.max {
                     let expectation = Fallible(Count(raw: IX(random)))
                     #expect(Count.exactly(random) == expectation)
-                    #expect(Count   .init(random) == expectation.value)
-                    
+                    #expect(Count(load:   random) == expectation.value)
+                    #expect(Count(        random) == expectation.value)
+
                 }   else if  IX.min < random, random < IX.zero {
                     let expectation = Count(raw:  IX(random).decremented().value).veto()
                     #expect(Count.exactly(random) == expectation)
+                    #expect(Count(load:   random) == expectation.value)
                     
                 }   else {
                     #expect(Count.exactly(random) == nil)
+                    #expect(Count(load:   random) == nil)
                 }
             }
         }

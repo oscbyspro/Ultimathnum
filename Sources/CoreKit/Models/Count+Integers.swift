@@ -27,7 +27,7 @@ extension Count {
     ///
     /// - Note: The `error` is set if `source` is not in `[0, IX.max]`.
     ///
-    /// - Note: `Natural<IX>` guarantees exact results.
+    /// - Note: `Count.init(_: Natural<IX>)` guarantees exact results.
     ///
     /// ### Examples
     ///
@@ -73,7 +73,7 @@ extension Count {
     ///
     /// - Note: The `error` is set if `source` is not in `[0, IX.max]`.
     ///
-    /// - Note: `Natural<IX>` guarantees exact results.
+    /// - Note: `Count.init(_: Natural<IX>)` guarantees exact results.
     ///
     /// ### Examples
     ///
@@ -119,7 +119,7 @@ extension Count {
     ///
     /// - Note: The `error` is set if `source` is not in `[0, IX.max]`.
     ///
-    /// - Note: `Natural<IX>` guarantees exact results.
+    /// - Note: `Count.init(_: Natural<IX>)` guarantees exact results.
     ///
     /// ### Examples
     ///
@@ -156,6 +156,104 @@ extension Count {
     }
     
     //=------------------------------------------------------------------------=
+    // MARK: Initializers x T.init?(load:)
+    //=------------------------------------------------------------------------=
+    
+    /// Loads the `source` by wrapping on `error` or returns `nil`.
+    ///
+    /// ```swift
+    /// Self.exactly(source)?.value
+    /// ```
+    ///
+    /// - Note: It is `nil` if `source` is not in  `[-IX.max, IX.max]`.
+    ///
+    /// - Note: The `error` is set if `source` is not in `[0, IX.max]`.
+    ///
+    /// - Note: `Count.init(_: Natural<IX>)` guarantees exact results.
+    ///
+    /// ### Examples
+    ///
+    ///     ┌──────────── → ──────────────────────────┬───────┐
+    ///     │ source      │ value                     │ error │
+    ///     ├──────────── → ──────────────────────────┼───────┤
+    ///     │ IX.max  + 2 │ ------------------------- │ ----- │
+    ///     │ IX.max  + 1 │ ------------------------- │ ----- │
+    ///     │ IX.max      │ IX.max                    │ false │
+    ///     │ IX.max  - 1 │ IX.max  - 1               │ false │
+    ///     │ IX.max  - 2 │ IX.max  - 2               │ false │
+    ///     ├─────────── → ───────────────────────────┼───────┤
+    ///     │ IX.zero + 2 │ IX.zero + 2               │ false │
+    ///     │ IX.zero + 1 │ IX.zero + 1               │ false │
+    ///     │ IX.zero     │ IX.zero                   │ false │
+    ///     │ IX.zero - 1 │ log2(&0 + 1) - 1          │ true  │
+    ///     │ IX.zero - 2 │ log2(&0 + 1) - 2          │ true  │
+    ///     ├──────────── → ──────────────────────────┼───────┤
+    ///     │ IX.min  + 2 │ log2(&0 + 1) - IX.max - 1 │ true  │
+    ///     │ IX.min  + 1 │ log2(&0 + 1) - IX.max     │ true  │
+    ///     │ IX.min      │ ------------------------- │ ----- │
+    ///     │ IX.min  - 1 │ ------------------------- │ ----- │
+    ///     │ IX.min  - 2 │ ------------------------- │ ----- │
+    ///     └──────────── → ──────────────────────────┴───────┘
+    ///
+    /// - Note: Binary integers cannot represent values near `log2(&0+1)`.
+    ///
+    /// ### Development
+    ///
+    /// - Note: `log2(&0+1)` must be a power of `2` to load negative values.
+    ///
+    @inlinable public init?(load source: consuming IX) {
+        guard let source = Self.exactly(source)?.value else { return nil }
+        self  = ((source))
+    }
+    
+    /// Loads the `source` by wrapping on `error` or returns `nil`.
+    ///
+    /// ```swift
+    /// Self.exactly(source)?.value
+    /// ```
+    ///
+    /// - Note: It is `nil` if `source` is not in  `[-IX.max, IX.max]`.
+    ///
+    /// - Note: The `error` is set if `source` is not in `[0, IX.max]`.
+    ///
+    /// - Note: `Count.init(_: Natural<IX>)` guarantees exact results.
+    ///
+    /// ### Examples
+    ///
+    ///     ┌──────────── → ──────────────────────────┬───────┐
+    ///     │ source      │ value                     │ error │
+    ///     ├──────────── → ──────────────────────────┼───────┤
+    ///     │ IX.max  + 2 │ ------------------------- │ ----- │
+    ///     │ IX.max  + 1 │ ------------------------- │ ----- │
+    ///     │ IX.max      │ IX.max                    │ false │
+    ///     │ IX.max  - 1 │ IX.max  - 1               │ false │
+    ///     │ IX.max  - 2 │ IX.max  - 2               │ false │
+    ///     ├─────────── → ───────────────────────────┼───────┤
+    ///     │ IX.zero + 2 │ IX.zero + 2               │ false │
+    ///     │ IX.zero + 1 │ IX.zero + 1               │ false │
+    ///     │ IX.zero     │ IX.zero                   │ false │
+    ///     │ IX.zero - 1 │ log2(&0 + 1) - 1          │ true  │
+    ///     │ IX.zero - 2 │ log2(&0 + 1) - 2          │ true  │
+    ///     ├──────────── → ──────────────────────────┼───────┤
+    ///     │ IX.min  + 2 │ log2(&0 + 1) - IX.max - 1 │ true  │
+    ///     │ IX.min  + 1 │ log2(&0 + 1) - IX.max     │ true  │
+    ///     │ IX.min      │ ------------------------- │ ----- │
+    ///     │ IX.min  - 1 │ ------------------------- │ ----- │
+    ///     │ IX.min  - 2 │ ------------------------- │ ----- │
+    ///     └──────────── → ──────────────────────────┴───────┘
+    ///
+    /// - Note: Binary integers cannot represent values near `log2(&0+1)`.
+    ///
+    /// ### Development
+    ///
+    /// - Note: `log2(&0+1)` must be a power of `2` to load negative values.
+    ///
+    @inlinable public init?(load source: some BinaryInteger) {
+        guard let source = Self.exactly(source)?.value else { return nil }
+        self  = ((source))
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Initializers x T.exactly(_:)
     //=------------------------------------------------------------------------=
     
@@ -165,7 +263,7 @@ extension Count {
     ///
     /// - Note: The `error` is set if `source` is not in `[0, IX.max]`.
     ///
-    /// - Note: `Natural<IX>` guarantees exact results.
+    /// - Note: `Count.init(_: Natural<IX>)` guarantees exact results.
     ///
     /// ### Examples
     ///
@@ -215,7 +313,7 @@ extension Count {
     ///
     /// - Note: The `error` is set if `source` is not in `[0, IX.max]`.
     ///
-    /// - Note: `Natural<IX>` guarantees exact results.
+    /// - Note: `Count.init(_: Natural<IX>)` guarantees exact results.
     ///
     /// ### Examples
     ///

@@ -17,6 +17,9 @@ extension Tag {
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
+    /// Removing uncertainty of meaning.
+    @Tag public static var disambiguation: Self
+    
     /// Material that serves as a record.
     @Tag public static var documentation: Self
     
