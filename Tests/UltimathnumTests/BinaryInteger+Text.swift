@@ -11,39 +11,33 @@ import CoreKit
 import DoubleIntKit
 import InfiniIntKit
 import RandomIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Binary Integer x Text
 //*============================================================================*
 
-final class BinaryIntegerTestsOnText: XCTestCase {
+@Suite struct BinaryIntegerTestsOnText {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testDescriptionByFuzzing() {
-        func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
-            func random() -> T {
-                let index = IX.random(in: 00000 ..< size, using: &randomness)!
-                let pattern = T.Signitude.random(through: Shift(Count(index)), using: &randomness)
-                return T(raw: pattern) // do not forget about infinite values!
-            }
-            
+    @Test("BinaryInteger/description [bidirectional][entropic]", arguments: binaryIntegers, fuzzers)
+    func description(_ type: any BinaryInteger.Type, _ randomness: consuming FuzzerInt) throws {
+        #if DEBUG
+        try  whereIs(type, size: IX(size: type) ?? 0256, rounds: 0032)
+        #else
+        try  whereIs(type, size: IX(size: type) ?? 4096, rounds: 1024)
+        #endif
+        func whereIs<T>(_ type: T.Type, size: IX, rounds: IX) throws where T: BinaryInteger {
             for _ in 0 ..< rounds {
-                let instance = random()
-                let radix = UX.random(in: 2...36, using: &((randomness)))
-                Test().description(roundtripping: instance, radix: radix)
+                let radix = UX.random(in: 2...36, using: &randomness)
+                let coder = try TextInt(radix: radix)
+                let value = T.entropic(size: size, mode: .signed, using: &randomness)
+                try Ɣexpect(coder.lowercased(), bidirectional: value)
+                try Ɣexpect(coder.uppercased(), bidirectional: value)
             }
-        }
-        
-        for type in binaryIntegers {
-            #if DEBUG
-            whereIs(type, size: IX(size: type) ?? 0256, rounds: 0032, randomness: fuzzer)
-            #else
-            whereIs(type, size: IX(size: type) ?? 4096, rounds: 1024, randomness: fuzzer)
-            #endif
         }
     }
 }
