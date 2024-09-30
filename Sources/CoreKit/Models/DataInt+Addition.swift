@@ -27,7 +27,7 @@ extension MutableDataInt.Body {
         //=--------------------------------------=
         // performance: compare index then bit
         //=--------------------------------------=
-        while UX(raw: self.count) > .zero, copy bit {
+        while !self.isEmpty, copy bit {
             (self[unchecked: ()], bit) =
             (self[unchecked: ()]).incremented().components()
             (self) = (consume self)[unchecked: 1...]
@@ -44,7 +44,7 @@ extension MutableDataInt.Body {
         //=--------------------------------------=
         // performance: compare index then bit
         //=--------------------------------------=
-        while UX(raw: self.count) > .zero, copy bit {
+        while !self.isEmpty, copy bit {
             (self[unchecked: ()], bit) =
             (self[unchecked: ()]).decremented().components()
             (self) = (consume self)[unchecked: 1...]
@@ -278,7 +278,7 @@ extension MutableDataInt.Body {
             let predicate = copy bit
             let increment = copy bit ? 1 : Element(repeating: Bit.one)
             
-            while UX(raw: self.count) > .zero, copy bit ==  predicate {
+            while !self.isEmpty, copy bit ==  predicate {
                 (self, bit) = self.incrementSubSequence(by: increment).components()
             }
         }
@@ -296,7 +296,7 @@ extension MutableDataInt.Body {
             let predicate = copy bit
             let increment = copy bit ? 1 : Element(repeating: Bit.one)
             
-            while UX(raw: self.count) > .zero, copy bit ==  predicate {
+            while !self.isEmpty, copy bit ==  predicate {
                 (self, bit) = self.decrementSubSequence(by: increment).components()
             }
         }

@@ -32,7 +32,7 @@ extension MutableDataInt.Body {
         
         var increment = increment // consume: compiler bug...
         
-        while UX(raw: self.count) > .zero {
+        while !self.isEmpty {
             (self[unchecked: ()], increment) =
             (self[unchecked: ()]).multiplication(multiplier, plus: increment).components()
             (self) = (consume self)[unchecked: 1...]
@@ -162,7 +162,7 @@ extension MutableDataInt.Body {
         var index = 000 as IX
         var carry = increment
         //=--------------------------------------=
-        while UX(raw: self.count) > .zero {
+        while !self.isEmpty {
             //=----------------------------------=
             let multiplier = Immutable(elements.start + Int(index), count: 1)
             let (diagonal) = multiplier[unchecked:()]
