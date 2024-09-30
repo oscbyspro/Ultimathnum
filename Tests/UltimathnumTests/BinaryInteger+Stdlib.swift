@@ -9,60 +9,47 @@
 
 import CoreKit
 import RandomIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Binary Integer x Stdlib
 //*============================================================================*
 
-final class BinaryIntegerTestsOnStdlib: XCTestCase {
+@Suite struct BinaryIntegerTestsOnStdlib {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testStdlib() {
-        func whereIs<T>(_ type: T.Type, randomness: consuming FuzzerInt, line: UInt = #line)
-        where T: BinaryInteger, T: Interoperable, T.Stdlib: Swift.BinaryInteger {
-            
-            let test  = Test(line: line)
-            let range = Esque<T>.min...Esque<T>.max
-            
-            for _ in 0..<16 {
-                var a = T.random(in: range, using: &randomness)
-                var b = T.random(in: range, using: &randomness)
+    @Test("BinaryInteger/stdlib - uniform", arguments: coreIntegers, fuzzers)
+    func stdlib(_ type: any CoreInteger.Type, _ randomness: consuming FuzzerInt) {
+        whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) where T: CoreInteger {            
+            for _  in 0 ..< 16 {
+                var a = T.random(using: &randomness)
+                var b = T.random(using: &randomness)
                 let x = a
                 let y = b
                 
-                test.same(a, x)
-                test.same(b, y)
-                test.same(T(a.stdlib),   x)
-                test.same(T(b.stdlib),   y)
-                test.same(T(a.stdlib()), x)
-                test.same(T(b.stdlib()), y)
+                #expect(a == x)
+                #expect(b == y)
+                #expect(T(a.stdlib)   == x)
+                #expect(T(b.stdlib)   == y)
+                #expect(T(a.stdlib()) == x)
+                #expect(T(b.stdlib()) == y)
                 
                 a.stdlib ^= b.stdlib
                 b.stdlib ^= a.stdlib
                 a.stdlib ^= b.stdlib
                 
-                test.same(a, y)
-                test.same(b, x)
-                test.same(T(a.stdlib),   y)
-                test.same(T(b.stdlib),   x)
-                test.same(T(a.stdlib()), y)
-                test.same(T(b.stdlib()), x)
+                #expect(a == y)
+                #expect(b == x)
+                #expect(T(a.stdlib)   == y)
+                #expect(T(b.stdlib)   == x)
+                #expect(T(a.stdlib()) == y)
+                #expect(T(b.stdlib()) == x)
             }
         }
-        
-        whereIs( IX.self, randomness: fuzzer)
-        whereIs( UX.self, randomness: fuzzer)
-        whereIs( I8.self, randomness: fuzzer)
-        whereIs( U8.self, randomness: fuzzer)
-        whereIs(I16.self, randomness: fuzzer)
-        whereIs(U16.self, randomness: fuzzer)
-        whereIs(I32.self, randomness: fuzzer)
-        whereIs(U32.self, randomness: fuzzer)
-        whereIs(I64.self, randomness: fuzzer)
-        whereIs(U64.self, randomness: fuzzer)
     }
 }
