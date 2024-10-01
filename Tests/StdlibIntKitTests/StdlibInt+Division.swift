@@ -15,13 +15,23 @@ import TestKit2
 // MARK: * Stdlib Int x Division
 //*============================================================================*
 
+/// An `StdlibInt` test suite.
+///
+/// ### Wrapper
+///
+/// `StdlibInt` should forward most function calls to its underlying model.
+///
+/// ### Development
+///
+/// - TODO: Test `StdlibInt` forwarding in generic `BinaryInteger` tests.
+///
 @Suite struct StdlibIntTestsOnDivision {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt - division", arguments: [
+    @Test("StdlibInt - division [forwarding]", arguments: [
         
         ( 0 as StdlibInt, -2 as StdlibInt,  0 as StdlibInt,  0 as StdlibInt),
         ( 0 as StdlibInt, -1 as StdlibInt,  0 as StdlibInt,  0 as StdlibInt),

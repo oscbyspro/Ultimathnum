@@ -71,7 +71,6 @@ extension StdlibIntTests {
         check(Test(),  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T, ~0xffffffffffffffffffffffffffffffff as T,  0x00000000000000000000000000000000 as T)
         check(Test(), ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0xffffffffffffffffffffffffffffffff as T,  0x55555555555555555555555555555555 as T)
         check(Test(), ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T, ~0xffffffffffffffffffffffffffffffff as T, ~0xffffffffffffffffffffffffffffffff as T)
-
     }
     
     func testBitwiseOr() {
@@ -142,17 +141,5 @@ extension StdlibIntTests {
         check(Test(),  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T, ~0xffffffffffffffffffffffffffffffff as T, ~0x55555555555555555555555555555555 as T)
         check(Test(), ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0xffffffffffffffffffffffffffffffff as T, ~0x55555555555555555555555555555555 as T)
         check(Test(), ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T, ~0xffffffffffffffffffffffffffffffff as T,  0x55555555555555555555555555555555 as T)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    func testMagnitude() {
-        Test().same(T(-2).magnitude, 2 as T)
-        Test().same(T(-1).magnitude, 1 as T)
-        Test().same(T( 0).magnitude, 0 as T)
-        Test().same(T( 1).magnitude, 1 as T)
-        Test().same(T( 2).magnitude, 2 as T)
     }
 }

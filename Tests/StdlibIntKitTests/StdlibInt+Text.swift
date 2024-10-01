@@ -17,6 +17,16 @@ import TestKit2
 // MARK: * Stdlib Int x Text
 //*============================================================================*
 
+/// An `StdlibInt` test suite.
+///
+/// ### Wrapper
+///
+/// `StdlibInt` should forward most function calls to its underlying model.
+///
+/// ### Development
+///
+/// - TODO: Test `StdlibInt` forwarding in generic `BinaryInteger` tests.
+///
 @Suite struct StdlibIntTestsOnText {
     
     //=------------------------------------------------------------------------=

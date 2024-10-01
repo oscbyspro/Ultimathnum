@@ -20,6 +20,18 @@ import TestKit
 extension StdlibIntTests {
     
     //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    func testMagnitude() {
+        Test().same(T(-2).magnitude, 2 as T)
+        Test().same(T(-1).magnitude, 1 as T)
+        Test().same(T( 0).magnitude, 0 as T)
+        Test().same(T( 1).magnitude, 1 as T)
+        Test().same(T( 2).magnitude, 2 as T)
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Tests x Swift.BinaryInteger
     //=------------------------------------------------------------------------=
     

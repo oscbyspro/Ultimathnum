@@ -16,11 +16,15 @@ import TestKit
 // MARK: * Stdlib Int
 //*============================================================================*
 
-/// A test suite about `StdlibInt`.
+/// An `StdlibInt` test suite.
 ///
-/// `StdlibInt` forwards all relevant calls to the underlying `InfiniInt<IX>` model.
-/// This test suite is, therefore, relatively light-weight. Its purpose it primarily 
-/// to ensure that `StdlibInt`'s forwarding rules are correct.
+/// ### Wrapper
+///
+/// `StdlibInt` should forward most function calls to its underlying model.
+///
+/// ### Development
+///
+/// - TODO: Test `StdlibInt` forwarding in generic `BinaryInteger` tests.
 ///
 final class StdlibIntTests: XCTestCase {
     

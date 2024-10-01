@@ -15,13 +15,23 @@ import TestKit2
 // MARK: * Stdlib Int x Comparison
 //*============================================================================*
 
+/// An `StdlibInt` test suite.
+///
+/// ### Wrapper
+///
+/// `StdlibInt` should forward most function calls to its underlying model.
+///
+/// ### Development
+///
+/// - TODO: Test `StdlibInt` forwarding in generic `BinaryInteger` tests.
+///
 @Suite struct StdlibIntTestsOnComparison {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt - comparison", arguments: [
+    @Test("StdlibInt - comparison [forwarding]", arguments: [
         
         (-2 as StdlibInt, -2 as StdlibInt, Signum.zero),
         (-2 as StdlibInt, -1 as StdlibInt, Signum.negative),

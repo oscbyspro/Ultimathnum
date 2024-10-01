@@ -9,27 +9,38 @@
 
 import CoreKit
 import StdlibIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Stdlib Int x Count
 //*============================================================================*
 
-extension StdlibIntTests {
-    
+/// An `StdlibInt` test suite.
+///
+/// ### Wrapper
+///
+/// `StdlibInt` should forward most function calls to its underlying model.
+///
+/// ### Development
+///
+/// - TODO: Test `StdlibInt` forwarding in generic `BinaryInteger` tests.
+///
+@Suite struct StdlibIntTestsOnCount {
+        
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
  
-    func testBitWidth() {
+    @Test("StdlibInt/bitWidth")
+    func bitWidth() {
         zero: do {
-            Test().same(T.zero.bitWidth, 1)
+            #expect(StdlibInt.zero.bitWidth == 1)
         }
         
         positive: do {
             var value =  1 as StdlibInt
             for count in 2 ... 256 {
-                Test().same(value.bitWidth, count)
+                #expect(value.bitWidth == count)
                 value <<= 1
             }
         }
@@ -37,21 +48,22 @@ extension StdlibIntTests {
         negative: do {
             var value = -1 as StdlibInt
             for count in 1 ... 256 {
-                Test().same(value.bitWidth, count)
+                #expect(value.bitWidth == count)
                 value <<= 1
             }
         }
     }
     
-    func testTrailingZeroBitCount() {
+    @Test("StdlibInt/trailingZeroBitCount")
+    func trailingZeroBitCount() {
         zero: do {
-            Test().same(T.zero.trailingZeroBitCount, 1)
+            #expect(StdlibInt.zero.trailingZeroBitCount == 1)
         }
             
         positive: do {
             var value =  1 as StdlibInt
             for count in 0 ..< 256 {
-                Test().same(value.trailingZeroBitCount, count)
+                #expect(value.trailingZeroBitCount == count)
                 value <<= 1
             }
         }
@@ -59,7 +71,7 @@ extension StdlibIntTests {
         negative: do {
             var value = -1 as StdlibInt
             for count in 0 ..< 256 {
-                Test().same(value.trailingZeroBitCount, count)
+                #expect(value.trailingZeroBitCount == count)
                 value <<= 1
             }
         }

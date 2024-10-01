@@ -15,13 +15,23 @@ import TestKit2
 // MARK: * Stdlib Int x Addition
 //*============================================================================*
 
+/// An `StdlibInt` test suite.
+///
+/// ### Wrapper
+///
+/// `StdlibInt` should forward most function calls to its underlying model.
+///
+/// ### Development
+///
+/// - TODO: Test `StdlibInt` forwarding in generic `BinaryInteger` tests.
+///
 @Suite struct StdlibIntTestsOnAddition {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt - addition", arguments: [
+    @Test("StdlibInt - addition [forwarding]", arguments: [
         
         ( 0 as StdlibInt,  0 as StdlibInt,  0 as StdlibInt),
         ( 3 as StdlibInt,  5 as StdlibInt,  8 as StdlibInt),
@@ -43,7 +53,7 @@ import TestKit2
         #expect({ var x = expectation; x -= rhs; return x }() == lhs)
     }
     
-    @Test("StdlibInt - negation", arguments: [
+    @Test("StdlibInt - negation [forwarding]", arguments: [
         
         (-2 as StdlibInt,  2 as StdlibInt),
         (-1 as StdlibInt,  1 as StdlibInt),
