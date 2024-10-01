@@ -9,55 +9,56 @@
 
 import CoreKit
 import StdlibIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Stdlib Int x Multiplication
 //*============================================================================*
 
-extension StdlibIntTests {
+@Suite struct StdlibIntTestsOnMultiplication {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testMultiplication() {
-        func check(_ test: Test, _ lhs: T, _ rhs: T, _ expecation: T) {
-            test.same(lhs * rhs, expecation)
-            test.same(rhs * lhs, expecation)
-            
-            test.same({ var x = lhs; x *= rhs; return x }(), expecation)
-            test.same({ var x = rhs; x *= lhs; return x }(), expecation)
-        }
+    @Test("StdlibInt - multiplication [forwarding]", arguments: [
         
-        check(Test(), -2 as T, -2 as T,  4 as T)
-        check(Test(), -1 as T, -2 as T,  2 as T)
-        check(Test(),  0 as T, -2 as T,  0 as T)
-        check(Test(),  1 as T, -2 as T, -2 as T)
-        check(Test(),  2 as T, -2 as T, -4 as T)
+        (-2 as StdlibInt, -2 as StdlibInt,  4 as StdlibInt),
+        (-1 as StdlibInt, -2 as StdlibInt,  2 as StdlibInt),
+        ( 0 as StdlibInt, -2 as StdlibInt,  0 as StdlibInt),
+        ( 1 as StdlibInt, -2 as StdlibInt, -2 as StdlibInt),
+        ( 2 as StdlibInt, -2 as StdlibInt, -4 as StdlibInt),
         
-        check(Test(), -2 as T, -1 as T,  2 as T)
-        check(Test(), -1 as T, -1 as T,  1 as T)
-        check(Test(),  0 as T, -1 as T,  0 as T)
-        check(Test(),  1 as T, -1 as T, -1 as T)
-        check(Test(),  2 as T, -1 as T, -2 as T)
+        (-2 as StdlibInt, -1 as StdlibInt,  2 as StdlibInt),
+        (-1 as StdlibInt, -1 as StdlibInt,  1 as StdlibInt),
+        ( 0 as StdlibInt, -1 as StdlibInt,  0 as StdlibInt),
+        ( 1 as StdlibInt, -1 as StdlibInt, -1 as StdlibInt),
+        ( 2 as StdlibInt, -1 as StdlibInt, -2 as StdlibInt),
         
-        check(Test(), -2 as T,  0 as T,  0 as T)
-        check(Test(), -1 as T,  0 as T,  0 as T)
-        check(Test(),  0 as T,  0 as T,  0 as T)
-        check(Test(),  1 as T,  0 as T,  0 as T)
-        check(Test(),  2 as T,  0 as T,  0 as T)
+        (-2 as StdlibInt,  0 as StdlibInt,  0 as StdlibInt),
+        (-1 as StdlibInt,  0 as StdlibInt,  0 as StdlibInt),
+        ( 0 as StdlibInt,  0 as StdlibInt,  0 as StdlibInt),
+        ( 1 as StdlibInt,  0 as StdlibInt,  0 as StdlibInt),
+        ( 2 as StdlibInt,  0 as StdlibInt,  0 as StdlibInt),
         
-        check(Test(), -2 as T,  1 as T, -2 as T)
-        check(Test(), -1 as T,  1 as T, -1 as T)
-        check(Test(),  0 as T,  1 as T,  0 as T)
-        check(Test(),  1 as T,  1 as T,  1 as T)
-        check(Test(),  2 as T,  1 as T,  2 as T)
+        (-2 as StdlibInt,  1 as StdlibInt, -2 as StdlibInt),
+        (-1 as StdlibInt,  1 as StdlibInt, -1 as StdlibInt),
+        ( 0 as StdlibInt,  1 as StdlibInt,  0 as StdlibInt),
+        ( 1 as StdlibInt,  1 as StdlibInt,  1 as StdlibInt),
+        ( 2 as StdlibInt,  1 as StdlibInt,  2 as StdlibInt),
         
-        check(Test(), -2 as T,  2 as T, -4 as T)
-        check(Test(), -1 as T,  2 as T, -2 as T)
-        check(Test(),  0 as T,  2 as T,  0 as T)
-        check(Test(),  1 as T,  2 as T,  2 as T)
-        check(Test(),  2 as T,  2 as T,  4 as T)
+        (-2 as StdlibInt,  2 as StdlibInt, -4 as StdlibInt),
+        (-1 as StdlibInt,  2 as StdlibInt, -2 as StdlibInt),
+        ( 0 as StdlibInt,  2 as StdlibInt,  0 as StdlibInt),
+        ( 1 as StdlibInt,  2 as StdlibInt,  2 as StdlibInt),
+        ( 2 as StdlibInt,  2 as StdlibInt,  4 as StdlibInt),
+        
+    ] as [(StdlibInt, StdlibInt, StdlibInt)])
+    func multiplication(lhs: StdlibInt, rhs: StdlibInt, expectation: StdlibInt) {
+        #expect(lhs * rhs == expectation)
+        #expect(rhs * lhs == expectation)
+        
+        #expect({ var x = lhs; x *= rhs; return x }() == expectation)
+        #expect({ var x = rhs; x *= lhs; return x }() == expectation)
     }
 }
