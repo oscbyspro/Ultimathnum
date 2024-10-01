@@ -31,7 +31,7 @@ extension Tag {
     
     /// Source code that is made available for possible modification.
     ///
-    /// - Important: Open source tests is one of few ways to prove: feature parity.
+    /// - Note: Open source tests is one of few ways to prove: feature parity.
     ///
     @Tag public static var opensource: Self
 }
