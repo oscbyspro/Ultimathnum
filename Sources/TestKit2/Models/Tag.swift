@@ -28,4 +28,10 @@ extension Tag {
     
     /// Not officially authorized or confirmed.
     @Tag public static var unofficial: Self
+    
+    /// Source code that is made available for possible modification.
+    ///
+    /// - Important: Open source tests is one of few ways to prove: feature parity.
+    ///
+    @Tag public static var opensource: Self
 }
