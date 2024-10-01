@@ -29,7 +29,11 @@ extension Tag {
     /// Not officially authorized or confirmed.
     @Tag public static var unofficial: Self
     
-    /// Source code that is made available for possible modification.
+    //=------------------------------------------------------------------------=
+    // MARK: Metadata x Attribution
+    //=------------------------------------------------------------------------=
+    
+    /// Written (or inspired) by another open source project.
     ///
     /// - Note: Open source tests is one of few ways to prove: feature parity.
     ///

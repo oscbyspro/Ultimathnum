@@ -9,51 +9,52 @@
 
 import CoreKit
 import StdlibIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Stdlib Int x Comparison
 //*============================================================================*
 
-extension StdlibIntTests {
+@Suite struct StdlibIntTestsOnComparison {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testComparison() {
-        func check(_ test: Test, _ lhs: T, _ rhs: T, _ expectation: Signum) {
-            test.comparison(lhs, rhs, expectation, id: ComparableID())
-        }
+    @Test("StdlibInt - comparison", arguments: [
         
-        check(Test(), -2 as T, -2 as T, Signum.zero)
-        check(Test(), -2 as T, -1 as T, Signum.negative)
-        check(Test(), -2 as T,  0 as T, Signum.negative)
-        check(Test(), -2 as T,  1 as T, Signum.negative)
-        check(Test(), -2 as T,  2 as T, Signum.negative)
+        (-2 as StdlibInt, -2 as StdlibInt, Signum.zero),
+        (-2 as StdlibInt, -1 as StdlibInt, Signum.negative),
+        (-2 as StdlibInt,  0 as StdlibInt, Signum.negative),
+        (-2 as StdlibInt,  1 as StdlibInt, Signum.negative),
+        (-2 as StdlibInt,  2 as StdlibInt, Signum.negative),
         
-        check(Test(), -1 as T, -2 as T, Signum.positive)
-        check(Test(), -1 as T, -1 as T, Signum.zero)
-        check(Test(), -1 as T,  0 as T, Signum.negative)
-        check(Test(), -1 as T,  1 as T, Signum.negative)
-        check(Test(), -1 as T,  2 as T, Signum.negative)
+        (-1 as StdlibInt, -2 as StdlibInt, Signum.positive),
+        (-1 as StdlibInt, -1 as StdlibInt, Signum.zero),
+        (-1 as StdlibInt,  0 as StdlibInt, Signum.negative),
+        (-1 as StdlibInt,  1 as StdlibInt, Signum.negative),
+        (-1 as StdlibInt,  2 as StdlibInt, Signum.negative),
         
-        check(Test(),  0 as T, -2 as T, Signum.positive)
-        check(Test(),  0 as T, -1 as T, Signum.positive)
-        check(Test(),  0 as T,  0 as T, Signum.zero)
-        check(Test(),  0 as T,  1 as T, Signum.negative)
-        check(Test(),  0 as T,  2 as T, Signum.negative)
+        ( 0 as StdlibInt, -2 as StdlibInt, Signum.positive),
+        ( 0 as StdlibInt, -1 as StdlibInt, Signum.positive),
+        ( 0 as StdlibInt,  0 as StdlibInt, Signum.zero),
+        ( 0 as StdlibInt,  1 as StdlibInt, Signum.negative),
+        ( 0 as StdlibInt,  2 as StdlibInt, Signum.negative),
         
-        check(Test(),  1 as T, -2 as T, Signum.positive)
-        check(Test(),  1 as T, -1 as T, Signum.positive)
-        check(Test(),  1 as T,  0 as T, Signum.positive)
-        check(Test(),  1 as T,  1 as T, Signum.zero)
-        check(Test(),  1 as T,  2 as T, Signum.negative)
+        ( 1 as StdlibInt, -2 as StdlibInt, Signum.positive),
+        ( 1 as StdlibInt, -1 as StdlibInt, Signum.positive),
+        ( 1 as StdlibInt,  0 as StdlibInt, Signum.positive),
+        ( 1 as StdlibInt,  1 as StdlibInt, Signum.zero),
+        ( 1 as StdlibInt,  2 as StdlibInt, Signum.negative),
         
-        check(Test(),  2 as T, -2 as T, Signum.positive)
-        check(Test(),  2 as T, -1 as T, Signum.positive)
-        check(Test(),  2 as T,  0 as T, Signum.positive)
-        check(Test(),  2 as T,  1 as T, Signum.positive)
-        check(Test(),  2 as T,  2 as T, Signum.zero)
+        ( 2 as StdlibInt, -2 as StdlibInt, Signum.positive),
+        ( 2 as StdlibInt, -1 as StdlibInt, Signum.positive),
+        ( 2 as StdlibInt,  0 as StdlibInt, Signum.positive),
+        ( 2 as StdlibInt,  1 as StdlibInt, Signum.positive),
+        ( 2 as StdlibInt,  2 as StdlibInt, Signum.zero),
+        
+    ] as [(StdlibInt, StdlibInt, Signum)])
+    func comparison(lhs: StdlibInt, rhs: StdlibInt, expectation: Signum) {
+        Ɣexpect(lhs, equals: rhs, is: expectation)
     }
 }
