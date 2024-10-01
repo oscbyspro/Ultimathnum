@@ -9,19 +9,19 @@
 
 import CoreKit
 import PrototypeKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Prototype
 //*============================================================================*
 
-final class PrototypeTests: XCTestCase {
+@Suite struct PrototypeTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func test() {
+    @Test func example() {
         print("Hello, World!")
     }
 }

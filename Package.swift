@@ -100,7 +100,7 @@ let package = Package(
         ),
         .testTarget(
             name: "PrototypeKitTests",
-            dependencies: ["PrototypeKit", "TestKit"]
+            dependencies: ["PrototypeKit", "TestKit2"]
         ),
         .target(
             name: "RandomIntKit",
