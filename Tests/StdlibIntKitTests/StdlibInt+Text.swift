@@ -8,51 +8,43 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import RandomIntKit
+import InfiniIntKit
 import StdlibIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Stdlib Int x Text
 //*============================================================================*
 
-extension StdlibIntTests {
+@Suite struct StdlibIntTestsOnText {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
-        
-    func testInitText() {
-        Test().same(T( "10"),  10)
-        Test().same(T("+10"),  10)
-        Test().same(T("-10"), -10)
-        Test().same(T( "ff"), nil)
-        
-        Test().success(try T( "10", as:     .decimal),   10)
-        Test().success(try T("+10", as:     .decimal),   10)
-        Test().success(try T("-10", as:     .decimal),  -10)
-        Test().failure(try T( "ff", as:     .decimal),  TextInt.Error.invalid)
-        Test().failure(try T("+ff", as:     .decimal),  TextInt.Error.invalid)
-        Test().failure(try T("-ff", as:     .decimal),  TextInt.Error.invalid)
-        Test().failure(try T( "zz", as:     .decimal),  TextInt.Error.invalid)
-        Test().failure(try T("+zz", as:     .decimal),  TextInt.Error.invalid)
-        Test().failure(try T("-zz", as:     .decimal),  TextInt.Error.invalid)
-        Test().success(try T( "10", as: .hexadecimal),   16)
-        Test().success(try T("+10", as: .hexadecimal),   16)
-        Test().success(try T("-10", as: .hexadecimal),  -16)
-        Test().success(try T( "ff", as: .hexadecimal),  255)
-        Test().success(try T("+ff", as: .hexadecimal),  255)
-        Test().success(try T("-ff", as: .hexadecimal), -255)
-        Test().failure(try T( "zz", as: .hexadecimal),  TextInt.Error.invalid)
-        Test().failure(try T("+zz", as: .hexadecimal),  TextInt.Error.invalid)
-        Test().failure(try T("-zz", as: .hexadecimal),  TextInt.Error.invalid)
-    }
     
-    func testMakeText() {
-        Test().same(T( 9999).description,                    "9999")
-        Test().same(T(-9999).description,                   "-9999")
-        Test().same(T( 9999).description(as:     .decimal),  "9999")
-        Test().same(T(-9999).description(as:     .decimal), "-9999")
-        Test().same(T( 9999).description(as: .hexadecimal),  "270f")
-        Test().same(T(-9999).description(as: .hexadecimal), "-270f")
+    /// Here we check that `StdlibInt/description` matches `IXL/description`.
+    @Test("BinaryInteger/description [bidirectional][entropic][comparison]", arguments: fuzzers)
+    func description(_ randomness: consuming FuzzerInt) throws {
+        for _ in 0  ..< 128 {
+            let radix = IX.random(in: 2...36, using: &randomness)
+            let coder = try TextInt(radix: radix)
+            let value = IXL.entropic(size: 256, mode: .signed, using: &randomness)
+            let lowercase = value.description(as: coder.lowercased())
+            let uppercase = value.description(as: coder.uppercased())
+            
+            #expect(try StdlibInt(lowercase,  as: coder) == StdlibInt(value))
+            #expect(try StdlibInt(uppercase,  as: coder) == StdlibInt(value))
+            #expect(StdlibInt(value).description(as: coder.lowercased()) == lowercase)
+            #expect(StdlibInt(value).description(as: coder.uppercased()) == uppercase)
+            #expect(String(StdlibInt(value),  radix: Swift.Int(radix), uppercase: false) == lowercase)
+            #expect(String(StdlibInt(value),  radix: Swift.Int(radix), uppercase: true ) == uppercase)
+            
+            if  radix == 10 {
+                #expect(StdlibInt(lowercase)  == StdlibInt(value))
+                #expect(StdlibInt(value).description == lowercase)
+                #expect(String(StdlibInt(((value)))) == lowercase)
+            }
+        }
     }
 }

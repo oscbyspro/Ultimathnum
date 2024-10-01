@@ -9,43 +9,44 @@
 
 import CoreKit
 import StdlibIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Stdlib Int x Division
 //*============================================================================*
 
-extension StdlibIntTests {
+@Suite struct StdlibIntTestsOnDivision {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testDivision() {
-        func check(_ test: Test, _ dividend: T, _ divisor: T, _ quotient: T, _ remainder: T) {
-            let division = dividend.quotientAndRemainder(dividingBy: divisor)
-            test.same(dividend / divisor, quotient )
-            test.same(division .quotient, quotient )
-            test.same(dividend % divisor, remainder)
-            test.same(division.remainder, remainder)
-            
-            test.same({ var x = dividend; x /= divisor; return x }(), quotient )
-            test.same({ var x = dividend; x %= divisor; return x }(), remainder)
-        }
+    @Test("StdlibInt - division", arguments: [
         
-        check(Test(),  0 as T, -2 as T,  0 as T,  0 as T)
-        check(Test(),  0 as T, -1 as T,  0 as T,  0 as T)
-        check(Test(),  0 as T,  1 as T,  0 as T,  0 as T)
-        check(Test(),  0 as T,  2 as T,  0 as T,  0 as T)
+        ( 0 as StdlibInt, -2 as StdlibInt,  0 as StdlibInt,  0 as StdlibInt),
+        ( 0 as StdlibInt, -1 as StdlibInt,  0 as StdlibInt,  0 as StdlibInt),
+        ( 0 as StdlibInt,  1 as StdlibInt,  0 as StdlibInt,  0 as StdlibInt),
+        ( 0 as StdlibInt,  2 as StdlibInt,  0 as StdlibInt,  0 as StdlibInt),
         
-        check(Test(),  5 as T,  3 as T,  1 as T,  2 as T)
-        check(Test(),  5 as T, -3 as T, -1 as T,  2 as T)
-        check(Test(), -5 as T,  3 as T, -1 as T, -2 as T)
-        check(Test(), -5 as T, -3 as T,  1 as T, -2 as T)
+        ( 5 as StdlibInt,  3 as StdlibInt,  1 as StdlibInt,  2 as StdlibInt),
+        ( 5 as StdlibInt, -3 as StdlibInt, -1 as StdlibInt,  2 as StdlibInt),
+        (-5 as StdlibInt,  3 as StdlibInt, -1 as StdlibInt, -2 as StdlibInt),
+        (-5 as StdlibInt, -3 as StdlibInt,  1 as StdlibInt, -2 as StdlibInt),
         
-        check(Test(),  7 as T,  3 as T,  2 as T,  1 as T)
-        check(Test(),  7 as T, -3 as T, -2 as T,  1 as T)
-        check(Test(), -7 as T,  3 as T, -2 as T, -1 as T)
-        check(Test(), -7 as T, -3 as T,  2 as T, -1 as T)
+        ( 7 as StdlibInt,  3 as StdlibInt,  2 as StdlibInt,  1 as StdlibInt),
+        ( 7 as StdlibInt, -3 as StdlibInt, -2 as StdlibInt,  1 as StdlibInt),
+        (-7 as StdlibInt,  3 as StdlibInt, -2 as StdlibInt, -1 as StdlibInt),
+        (-7 as StdlibInt, -3 as StdlibInt,  2 as StdlibInt, -1 as StdlibInt),
+        
+    ] as [(StdlibInt, StdlibInt, StdlibInt, StdlibInt)])
+    func division(dividend: StdlibInt, divisor: StdlibInt, quotient: StdlibInt, remainder: StdlibInt) {
+        let division = dividend.quotientAndRemainder(dividingBy: divisor)
+        #expect(dividend / divisor == quotient )
+        #expect(division .quotient == quotient )
+        #expect(dividend % divisor == remainder)
+        #expect(division.remainder == remainder)
+        
+        #expect({ var x = dividend; x /= divisor; return x }() == quotient )
+        #expect({ var x = dividend; x %= divisor; return x }() == remainder)
     }
 }
