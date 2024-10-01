@@ -9,53 +9,53 @@
 
 import CoreKit
 import StdlibIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Stdlib Int x Addition
 //*============================================================================*
 
-extension StdlibIntTests {
+@Suite struct StdlibIntTestsOnAddition {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testAddition() {
-        func check(_ test: Test, _ lhs: T, _ rhs: T, _ expecation: T) {
-            test.same(lhs + rhs, expecation)
-            test.same(rhs + lhs, expecation)
-            
-            test.same({ var x = lhs; x += rhs; return x }(), expecation)
-            test.same({ var x = rhs; x += lhs; return x }(), expecation)
-            
-            test.same(expecation - lhs, rhs)
-            test.same(expecation - rhs, lhs)
-            
-            test.same({ var x = expecation; x -= lhs; return x }(), rhs)
-            test.same({ var x = expecation; x -= rhs; return x }(), lhs)
-        }
+    @Test("StdlibInt - addition", arguments: [
         
-        check(Test(),  0 as T,  0 as T,  0 as T)
-        check(Test(),  3 as T,  5 as T,  8 as T)
-        check(Test(),  3 as T, -5 as T, -2 as T)
-        check(Test(), -3 as T,  5 as T,  2 as T)
-        check(Test(), -3 as T, -5 as T, -8 as T)
+        ( 0 as StdlibInt,  0 as StdlibInt,  0 as StdlibInt),
+        ( 3 as StdlibInt,  5 as StdlibInt,  8 as StdlibInt),
+        ( 3 as StdlibInt, -5 as StdlibInt, -2 as StdlibInt),
+        (-3 as StdlibInt,  5 as StdlibInt,  2 as StdlibInt),
+        (-3 as StdlibInt, -5 as StdlibInt, -8 as StdlibInt),
+        
+    ]   as [(StdlibInt, StdlibInt, StdlibInt)]) func addition(lhs: StdlibInt, rhs: StdlibInt, expectation: StdlibInt) {
+        #expect(lhs + rhs == expectation)
+        #expect(rhs + lhs == expectation)
+        
+        #expect({ var x = lhs; x += rhs; return x }() == expectation)
+        #expect({ var x = rhs; x += lhs; return x }() == expectation)
+        
+        #expect(expectation - lhs == rhs)
+        #expect(expectation - rhs == lhs)
+        
+        #expect({ var x = expectation; x -= lhs; return x }() == rhs)
+        #expect({ var x = expectation; x -= rhs; return x }() == lhs)
     }
     
-    func testNegation() {
-        func check(_ test: Test, _ instance: T, _ expecation: T) {
-            test.same(-instance, expecation)
-            test.same(-expecation, instance)
-            
-            test.same({ var x = instance;   x.negate(); return x }(), expecation)
-            test.same({ var x = expecation; x.negate(); return x }(),   instance)
-        }
+    @Test("StdlibInt - negation", arguments: [
         
-        check(Test(), -2 as T,  2 as T)
-        check(Test(), -1 as T,  1 as T)
-        check(Test(),  0 as T,  0 as T)
-        check(Test(),  1 as T, -1 as T)
-        check(Test(),  2 as T, -2 as T)
+        (-2 as StdlibInt,  2 as StdlibInt),
+        (-1 as StdlibInt,  1 as StdlibInt),
+        ( 0 as StdlibInt,  0 as StdlibInt),
+        ( 1 as StdlibInt, -1 as StdlibInt),
+        ( 2 as StdlibInt, -2 as StdlibInt),
+        
+    ]   as [(StdlibInt, StdlibInt)]) func negation(instance: StdlibInt, expectation: StdlibInt) {
+        #expect(-instance == expectation)
+        #expect(-expectation == instance)
+        
+        #expect({ var x = instance; x.negate(); return x }() == expectation)
+        #expect({ var x = expectation; x.negate(); return x }() == instance)
     }
 }
