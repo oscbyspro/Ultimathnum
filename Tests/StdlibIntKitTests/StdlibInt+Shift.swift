@@ -8,122 +8,90 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import InfiniIntKit
+import RandomIntKit
 import StdlibIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
-// MARK: * Stdlib Int x Count
+// MARK: * Stdlib Int x Shift
 //*============================================================================*
 
-extension StdlibIntTests {
+/// An `StdlibInt` test suite.
+///
+/// ### Wrapper
+///
+/// `StdlibInt` should forward most function calls to its underlying model.
+///
+/// ### Development
+///
+/// - TODO: Test `StdlibInt` forwarding in generic `BinaryInteger` tests.
+///
+@Suite struct StdlibIntTestsOnShift {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
- 
-    func testUpshift() {
-        self.upshift(-1 as T, Int( 1),  -2 as T)
-        self.upshift(-1 as T, Int( 2),  -4 as T)
-        self.upshift(-1 as T, Int( 3),  -8 as T)
-        self.upshift(-1 as T, Int( 4), -16 as T)
-        self.upshift( 0 as T, Int( 1),   0 as T)
-        self.upshift( 0 as T, Int( 2),   0 as T)
-        self.upshift( 0 as T, Int( 3),   0 as T)
-        self.upshift( 0 as T, Int( 4),   0 as T)
-        self.upshift( 1 as T, Int( 1),   2 as T)
-        self.upshift( 1 as T, Int( 2),   4 as T)
-        self.upshift( 1 as T, Int( 3),   8 as T)
-        self.upshift( 1 as T, Int( 4),  16 as T)
-    }
     
-    func testUpshiftAnyByMinInt() {
-        self.upshift( 2 as T, Int.min,  0 as T)
-        self.upshift( 1 as T, Int.min,  0 as T)
-        self.upshift( 0 as T, Int.min,  0 as T)
-        self.upshift(-1 as T, Int.min, -1 as T)
-        self.upshift(-2 as T, Int.min, -1 as T)
-    }
-    
-    func testUpshiftZeroByMaxInt() {
-        self.upshift( 0 as T, Int.max,  0 as T)
-    }
-    
-    func testUpshiftAnyByZero() {
-        for instance: T in [~2, ~1, ~0, 0, 1, 2] {
-            self.upshift(instance, Int.zero, instance)
+    @Test("StdlibInt.<<(_:_:) - [forwarding][entropic]", arguments: fuzzers)
+    func shift(_ randomness: consuming FuzzerInt) {
+        for _ in 0 ..< 32 {
+            let instance = IXL.entropic(size: 000256, using: &randomness)
+            let distance = IXL.random(in: -128...127, using: &randomness)
+            let expectation = instance << distance
+            Ɣexpect(StdlibInt(instance), up: StdlibInt(distance), is: StdlibInt(expectation))
         }
     }
     
-    func testDownshift() {
-        self.downshift(-8 as T, Int( 1),  -4 as T)
-        self.downshift(-8 as T, Int( 2),  -2 as T)
-        self.downshift(-8 as T, Int( 3),  -1 as T)
-        self.downshift(-8 as T, Int( 4),  -1 as T)
-        self.downshift( 0 as T, Int( 1),   0 as T)
-        self.downshift( 0 as T, Int( 2),   0 as T)
-        self.downshift( 0 as T, Int( 3),   0 as T)
-        self.downshift( 0 as T, Int( 4),   0 as T)
-        self.downshift( 8 as T, Int( 1),   4 as T)
-        self.downshift( 8 as T, Int( 2),   2 as T)
-        self.downshift( 8 as T, Int( 3),   1 as T)
-        self.downshift( 8 as T, Int( 4),   0 as T)
+    @Test("StdlibInt.<<(_:_:) - Int.max [forwarding]")
+    func shiftByDistancesNearMaxInt() {
+        Ɣexpect(StdlibInt.zero, up: StdlibInt(Int.max) + 2, is: StdlibInt.zero)
+        Ɣexpect(StdlibInt.zero, up: StdlibInt(Int.max) + 1, is: StdlibInt.zero)
+        Ɣexpect(StdlibInt.zero, up: StdlibInt(Int.max),     is: StdlibInt.zero)
+        Ɣexpect(StdlibInt.zero, up: StdlibInt(Int.max) - 1, is: StdlibInt.zero)
+        Ɣexpect(StdlibInt.zero, up: StdlibInt(Int.max) - 2, is: StdlibInt.zero)
     }
     
-    func testDownshiftAnyByMaxInt() {
-        self.downshift( 2 as T, Int.max,  0 as T)
-        self.downshift( 1 as T, Int.max,  0 as T)
-        self.downshift( 0 as T, Int.max,  0 as T)
-        self.downshift(-1 as T, Int.max, -1 as T)
-        self.downshift(-2 as T, Int.max, -1 as T)
-    }
-    
-    func testDownshiftZeroByMinInt() {
-        self.downshift( 0 as T, Int.min,  0 as T)
-    }
-    
-    func testDownshiftAnyByZero() {
-        for instance: T in [~2, ~1, ~0, 0, 1, 2] {
-            self.downshift(instance, Int.zero, instance)
+    @Test("StdlibInt.<<(_:_:) - Int.min [forwarding][entropic]", arguments: fuzzers)
+    func shiftByDistancesNearMinInt(_ randomness: consuming FuzzerInt) {
+        for _ in 0 ..< 32 {
+            let random = StdlibInt(IXL.entropic(size: 256, using: &randomness))
+            let expectation = StdlibInt(IXL(repeating: Bit(random < 0)))
+            Ɣexpect(random, up: StdlibInt(Int.min) + 2, is: expectation)
+            Ɣexpect(random, up: StdlibInt(Int.min) + 1, is: expectation)
+            Ɣexpect(random, up: StdlibInt(Int.min),     is: expectation)
+            Ɣexpect(random, up: StdlibInt(Int.min) - 1, is: expectation)
+            Ɣexpect(random, up: StdlibInt(Int.min) - 2, is: expectation)
         }
     }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Assertions
-//=----------------------------------------------------------------------------=
-
-extension StdlibIntTests {
     
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    func upshift(_ lhs: T, _ rhs: Int, _ expectation: T, file: StaticString = #file, line: UInt = #line) {
-        let test = Test(file: file, line: line)
+    /// - Note: This method checks `ascending` and `descending` shifts.
+    func Ɣexpect(_ instance: StdlibInt, up distance: StdlibInt, is expectation: StdlibInt, at location: SourceLocation = #_sourceLocation) {
+        //=--------------------------------------=
+        let opposite: StdlibInt = -distance
+        //=--------------------------------------=
+        if  instance != 0, distance >= 0 {
+            #expect((instance.bitWidth + Int(distance)) == expectation.bitWidth, sourceLocation: location)
+        }
         
         always: do {
-            test.same(lhs << rhs, expectation)
-            test.same({ var x = lhs; x <<= rhs; return x }(), expectation)
+            #expect((instance << distance) == expectation, sourceLocation: location)
+            #expect({ var x = instance; x <<= distance; return x }() == expectation, sourceLocation: location)
         }
-        
-        if  rhs != .min {
-            test.same(lhs >> -rhs, expectation)
-            test.same({ var x = lhs; x >>= -rhs; return x }(), expectation)
-        }
-    }
-    
-    
-    func downshift(_ lhs: T, _ rhs: Int, _ expectation: T, file: StaticString = #file, line: UInt = #line) {
-        let test = Test(file: file, line: line)
         
         always: do {
-            test.same(lhs >> rhs, expectation)
-            test.same({ var x = lhs; x >>= rhs; return x }(), expectation)
+            #expect((instance >> opposite) == expectation, sourceLocation: location)
+            #expect({ var x = instance; x >>= opposite; return x }() == expectation, sourceLocation: location)
         }
         
-        if  rhs != .min {
-            test.same(lhs << -rhs, expectation)
-            test.same({ var x = lhs; x <<= -rhs; return x }(), expectation)
+        if  let distance = Swift.Int(exactly: distance) {
+            #expect((instance << distance) == expectation, sourceLocation: location)
+            #expect({ var x = instance; x <<= distance; return x }() == expectation, sourceLocation: location)
+        }
+        
+        if  let opposite = Swift.Int(exactly: opposite) {
+            #expect((instance >> opposite) == expectation, sourceLocation: location)
+            #expect({ var x = instance; x >>= opposite; return x }() == expectation, sourceLocation: location)
         }
     }
 }
