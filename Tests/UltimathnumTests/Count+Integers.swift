@@ -18,8 +18,6 @@ import TestKit2
 
 @Suite struct CountTestsOnIntegers {
     
-    typealias Example = (source: IXL, expectation: Optional<Fallible<String>>)
-    
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
@@ -35,25 +33,26 @@ import TestKit2
     
     @Test("Count ← some BinaryInteger - documentation", .serialized, .tags(.documentation), arguments: [
         
-        Example(source: IXL(IX.max ) + 2, expectation: nil),
-        Example(source: IXL(IX.max ) + 1, expectation: nil),
-        Example(source: IXL(IX.max ),     expectation: Fallible("\(IX.max      )")),
-        Example(source: IXL(IX.max ) - 1, expectation: Fallible("\(IX.max  -  1)")),
-        Example(source: IXL(IX.max ) - 2, expectation: Fallible("\(IX.max  -  2)")),
+        (source: IXL(IX.max ) + 2, expectation: nil),
+        (source: IXL(IX.max ) + 1, expectation: nil),
+        (source: IXL(IX.max ),     expectation: Fallible("\(IX.max      )")),
+        (source: IXL(IX.max ) - 1, expectation: Fallible("\(IX.max  -  1)")),
+        (source: IXL(IX.max ) - 2, expectation: Fallible("\(IX.max  -  2)")),
         
-        Example(source: IXL(IX.zero) + 2, expectation: Fallible("\(IX.zero +  2)")),
-        Example(source: IXL(IX.zero) + 1, expectation: Fallible("\(IX.zero +  1)")),
-        Example(source: IXL(IX.zero),     expectation: Fallible("\(IX.zero     )")),
-        Example(source: IXL(IX.zero) - 1, expectation: Fallible("log2(&0+1)-\(IX.zero + 1)").veto()),
-        Example(source: IXL(IX.zero) - 2, expectation: Fallible("log2(&0+1)-\(IX.zero + 2)").veto()),
+        (source: IXL(IX.zero) + 2, expectation: Fallible("\(IX.zero +  2)")),
+        (source: IXL(IX.zero) + 1, expectation: Fallible("\(IX.zero +  1)")),
+        (source: IXL(IX.zero),     expectation: Fallible("\(IX.zero     )")),
+        (source: IXL(IX.zero) - 1, expectation: Fallible("log2(&0+1)\(IX.zero - 1)").veto()),
+        (source: IXL(IX.zero) - 2, expectation: Fallible("log2(&0+1)\(IX.zero - 2)").veto()),
         
-        Example(source: IXL(IX.min ) + 2, expectation: Fallible("log2(&0+1)-\(IX.max  - 1)").veto()),
-        Example(source: IXL(IX.min ) + 1, expectation: Fallible("log2(&0+1)-\(IX.max     )").veto()),
-        Example(source: IXL(IX.min ),     expectation: nil),
-        Example(source: IXL(IX.min ) - 1, expectation: nil),
-        Example(source: IXL(IX.min ) - 2, expectation: nil),
+        (source: IXL(IX.min ) + 2, expectation: Fallible("log2(&0+1)\(IX.min  + 2)").veto()),
+        (source: IXL(IX.min ) + 1, expectation: Fallible("log2(&0+1)\(IX.min  + 1)").veto()),
+        (source: IXL(IX.min ),     expectation: nil),
+        (source: IXL(IX.min ) - 1, expectation: nil),
+        (source: IXL(IX.min ) - 2, expectation: nil),
         
-    ]   as [Example]) func initSomeBinaryIntegerExamples(source: IXL, expectation: Fallible<String>?) {
+    ] as [(source: IXL, expectation: Optional<Fallible<String>>)])
+    func initSomeBinaryIntegerExamples(source: IXL, expectation: Fallible<String>?) {
         #expect(Count.exactly(source)?.map(\.description) == expectation)
     }
     

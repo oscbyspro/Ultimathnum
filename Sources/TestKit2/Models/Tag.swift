@@ -33,9 +33,9 @@ extension Tag {
     // MARK: Metadata x Attribution
     //=------------------------------------------------------------------------=
     
-    /// Written (or inspired) by another open source project.
+    /// Written (or inspired) by another open-source project.
     ///
-    /// - Note: Open source tests is one of few ways to prove: feature parity.
+    /// - Note: Open-source tests are one of the few ways to prove feature parity.
     ///
     @Tag public static var opensource: Self
 }

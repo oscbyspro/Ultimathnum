@@ -26,10 +26,6 @@ extension CoreInteger {
         return Self(result.partialValue).veto(result.overflow)
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Composition
-    //=------------------------------------------------------------------------=
-    
     @inlinable public func multiplication(_ other: Self) -> Doublet<Self> {
         let result = self.stdlib().multipliedFullWidth(by: other.stdlib())
         return Doublet(low: Magnitude(result.low), high: Self(result.high))
