@@ -8,138 +8,71 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import InfiniIntKit
+import RandomIntKit
 import StdlibIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Stdlib Int x Bitwise
 //*============================================================================*
 
-extension StdlibIntTests {
+/// An `StdlibInt` test suite.
+///
+/// ### Wrapper
+///
+/// `StdlibInt` should forward most function calls to its underlying model.
+///
+/// ### Development
+///
+/// - TODO: Test `StdlibInt` forwarding in generic `BinaryInteger` tests.
+///
+@Suite struct StdlibIntTestsOnBitwise {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testBitwiseNot() {
-        let values: [T] = [
-            0x00000000000000000000000000000000,
-            0x00000000000000000000000000000001,
-            0x0f0e0d0c0b0a09080706050403020100,
-            0xf0f1f2f3f4f5f6f7f8f9fafbfcfdfeff,
-            0xfffffffffffffffffffffffffffffffe,
-            0xffffffffffffffffffffffffffffffff,
-        ]
-        
-        for value in values  {
-            let expectation: T = -1 - value
-            Test().same(~value, expectation)
-            Test().same(~expectation, value)
+    @Test("StdlibInt.~(_:) - [forwarding][entropic]", arguments: fuzzers)
+    func not(_ randomness: consuming FuzzerInt) {
+        for _ in 0 ..< 32 {
+            let random = IXL.entropic(size: 256, using: &randomness)
+            let expectation = random.toggled()
+            #expect(~StdlibInt(random) == StdlibInt(expectation))
+            #expect(~StdlibInt(expectation) == StdlibInt(random))
         }
     }
     
-    func testBitwiseAnd() {
-        func check(_ test: Test, _ lhs: T, _ rhs: T, _ expectation: T) {
-            test.same(lhs & rhs, expectation)
-            test.same(rhs & lhs, expectation)
-            
-            test.same({ var x = lhs; x &= rhs; return x }(), expectation)
-            test.same({ var x = rhs; x &= lhs; return x }(), expectation)
+    @Test("StdlibInt.&(_:_:) - [forwarding][entropic]", arguments: fuzzers)
+    func and(_ randomness: consuming FuzzerInt) {
+        for _ in 0 ..< 32 {
+            let lhs = IXL.entropic(size: 256, using: &randomness)
+            let rhs = IXL.entropic(size: 256, using: &randomness)
+            let expectation = lhs  & rhs
+            #expect(StdlibInt(lhs) & StdlibInt(rhs) == StdlibInt(expectation))
+            #expect({ var x = StdlibInt(lhs); x &= StdlibInt(rhs); return x }() == StdlibInt(expectation))
         }
-        
-        check(Test(),  0x55555555555555555555555555555555 as T,  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0x00000000000000000000000000000000 as T)
-        check(Test(),  0x55555555555555555555555555555555 as T,  0x55555555555555555555555555555555 as T,  0x55555555555555555555555555555555 as T)
-        check(Test(),  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T)
-        check(Test(),  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0x55555555555555555555555555555555 as T,  0x00000000000000000000000000000000 as T)
-        
-        check(Test(),  0x55555555555555555555555555555555 as T,  0x00000000000000000000000000000000 as T,  0x00000000000000000000000000000000 as T)
-        check(Test(),  0x55555555555555555555555555555555 as T, ~0x00000000000000000000000000000000 as T,  0x55555555555555555555555555555555 as T)
-        check(Test(), ~0x55555555555555555555555555555555 as T,  0x00000000000000000000000000000000 as T,  0x00000000000000000000000000000000 as T)
-        check(Test(), ~0x55555555555555555555555555555555 as T, ~0x00000000000000000000000000000000 as T, ~0x55555555555555555555555555555555 as T)
-        
-        check(Test(),  0x55555555555555555555555555555555 as T,  0xffffffffffffffffffffffffffffffff as T,  0x55555555555555555555555555555555 as T)
-        check(Test(),  0x55555555555555555555555555555555 as T, ~0xffffffffffffffffffffffffffffffff as T,  0x00000000000000000000000000000000 as T)
-        check(Test(), ~0x55555555555555555555555555555555 as T,  0xffffffffffffffffffffffffffffffff as T,  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T)
-        check(Test(), ~0x55555555555555555555555555555555 as T, ~0xffffffffffffffffffffffffffffffff as T, ~0xffffffffffffffffffffffffffffffff as T)
-        
-        check(Test(),  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0x00000000000000000000000000000000 as T,  0x00000000000000000000000000000000 as T)
-        check(Test(),  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T, ~0x00000000000000000000000000000000 as T,  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T)
-        check(Test(), ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0x00000000000000000000000000000000 as T,  0x00000000000000000000000000000000 as T)
-        check(Test(), ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T, ~0x00000000000000000000000000000000 as T, ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T)
-        
-        check(Test(),  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0xffffffffffffffffffffffffffffffff as T,  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T)
-        check(Test(),  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T, ~0xffffffffffffffffffffffffffffffff as T,  0x00000000000000000000000000000000 as T)
-        check(Test(), ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0xffffffffffffffffffffffffffffffff as T,  0x55555555555555555555555555555555 as T)
-        check(Test(), ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T, ~0xffffffffffffffffffffffffffffffff as T, ~0xffffffffffffffffffffffffffffffff as T)
     }
     
-    func testBitwiseOr() {
-        func check(_ test: Test, _ lhs: T, _ rhs: T, _ expectation: T) {
-            test.same(lhs | rhs, expectation)
-            test.same(rhs | lhs, expectation)
-            
-            test.same({ var x = lhs; x |= rhs; return x }(), expectation)
-            test.same({ var x = rhs; x |= lhs; return x }(), expectation)
+    @Test("StdlibInt.|(_:_:) - [forwarding][entropic]", arguments: fuzzers)
+    func or(_ randomness: consuming FuzzerInt) {
+        for _ in 0 ..< 32 {
+            let lhs = IXL.entropic(size: 256, using: &randomness)
+            let rhs = IXL.entropic(size: 256, using: &randomness)
+            let expectation = lhs  | rhs
+            #expect(StdlibInt(lhs) | StdlibInt(rhs) == StdlibInt(expectation))
+            #expect({ var x = StdlibInt(lhs); x |= StdlibInt(rhs); return x }() == StdlibInt(expectation))
         }
-        
-        check(Test(),  0x55555555555555555555555555555555 as T,  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0xffffffffffffffffffffffffffffffff as T)
-        check(Test(),  0x55555555555555555555555555555555 as T,  0x55555555555555555555555555555555 as T,  0x55555555555555555555555555555555 as T)
-        check(Test(),  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T)
-        check(Test(),  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0x55555555555555555555555555555555 as T,  0xffffffffffffffffffffffffffffffff as T)
-        
-        check(Test(),  0x55555555555555555555555555555555 as T,  0x00000000000000000000000000000000 as T,  0x55555555555555555555555555555555 as T)
-        check(Test(),  0x55555555555555555555555555555555 as T, ~0x00000000000000000000000000000000 as T, ~0x00000000000000000000000000000000 as T)
-        check(Test(), ~0x55555555555555555555555555555555 as T,  0x00000000000000000000000000000000 as T, ~0x55555555555555555555555555555555 as T)
-        check(Test(), ~0x55555555555555555555555555555555 as T, ~0x00000000000000000000000000000000 as T, ~0x00000000000000000000000000000000 as T)
-        
-        check(Test(),  0x55555555555555555555555555555555 as T,  0xffffffffffffffffffffffffffffffff as T,  0xffffffffffffffffffffffffffffffff as T)
-        check(Test(),  0x55555555555555555555555555555555 as T, ~0xffffffffffffffffffffffffffffffff as T, ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T)
-        check(Test(), ~0x55555555555555555555555555555555 as T,  0xffffffffffffffffffffffffffffffff as T, ~0x00000000000000000000000000000000 as T)
-        check(Test(), ~0x55555555555555555555555555555555 as T, ~0xffffffffffffffffffffffffffffffff as T, ~0x55555555555555555555555555555555 as T)
-        
-        check(Test(),  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0x00000000000000000000000000000000 as T,  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T)
-        check(Test(),  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T, ~0x00000000000000000000000000000000 as T, ~0x00000000000000000000000000000000 as T)
-        check(Test(), ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0x00000000000000000000000000000000 as T, ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T)
-        check(Test(), ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T, ~0x00000000000000000000000000000000 as T, ~0x00000000000000000000000000000000 as T)
-        
-        check(Test(),  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0xffffffffffffffffffffffffffffffff as T,  0xffffffffffffffffffffffffffffffff as T)
-        check(Test(),  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T, ~0xffffffffffffffffffffffffffffffff as T, ~0x55555555555555555555555555555555 as T)
-        check(Test(), ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0xffffffffffffffffffffffffffffffff as T, ~0x00000000000000000000000000000000 as T)
-        check(Test(), ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T, ~0xffffffffffffffffffffffffffffffff as T, ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T)
     }
     
-    func testBitwiseXor() {
-        func check(_ test: Test, _ lhs: T, _ rhs: T, _ expectation: T) {
-            test.same(lhs ^ rhs, expectation)
-            test.same(rhs ^ lhs, expectation)
-            
-            test.same({ var x = lhs; x ^= rhs; return x }(), expectation)
-            test.same({ var x = rhs; x ^= lhs; return x }(), expectation)
+    @Test("StdlibInt.^(_:_:) - [forwarding][entropic]", arguments: fuzzers)
+    func xor(_ randomness: consuming FuzzerInt) {
+        for _ in 0 ..< 32 {
+            let lhs = IXL.entropic(size: 256, using: &randomness)
+            let rhs = IXL.entropic(size: 256, using: &randomness)
+            let expectation = lhs  ^ rhs
+            #expect(StdlibInt(lhs) ^ StdlibInt(rhs) == StdlibInt(expectation))
+            #expect({ var x = StdlibInt(lhs); x ^= StdlibInt(rhs); return x }() == StdlibInt(expectation))
         }
-        
-        check(Test(),  0x55555555555555555555555555555555 as T,  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0xffffffffffffffffffffffffffffffff as T)
-        check(Test(),  0x55555555555555555555555555555555 as T,  0x55555555555555555555555555555555 as T,  0x00000000000000000000000000000000 as T)
-        check(Test(),  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0x00000000000000000000000000000000 as T)
-        check(Test(),  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0x55555555555555555555555555555555 as T,  0xffffffffffffffffffffffffffffffff as T)
-        
-        check(Test(),  0x55555555555555555555555555555555 as T,  0x00000000000000000000000000000000 as T,  0x55555555555555555555555555555555 as T)
-        check(Test(),  0x55555555555555555555555555555555 as T, ~0x00000000000000000000000000000000 as T, ~0x55555555555555555555555555555555 as T)
-        check(Test(), ~0x55555555555555555555555555555555 as T,  0x00000000000000000000000000000000 as T, ~0x55555555555555555555555555555555 as T)
-        check(Test(), ~0x55555555555555555555555555555555 as T, ~0x00000000000000000000000000000000 as T,  0x55555555555555555555555555555555 as T)
-        
-        check(Test(),  0x55555555555555555555555555555555 as T,  0xffffffffffffffffffffffffffffffff as T,  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T)
-        check(Test(),  0x55555555555555555555555555555555 as T, ~0xffffffffffffffffffffffffffffffff as T, ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T)
-        check(Test(), ~0x55555555555555555555555555555555 as T,  0xffffffffffffffffffffffffffffffff as T, ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T)
-        check(Test(), ~0x55555555555555555555555555555555 as T, ~0xffffffffffffffffffffffffffffffff as T,  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T)
-        
-        check(Test(),  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0x00000000000000000000000000000000 as T,  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T)
-        check(Test(),  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T, ~0x00000000000000000000000000000000 as T, ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T)
-        check(Test(), ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0x00000000000000000000000000000000 as T, ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T)
-        check(Test(), ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T, ~0x00000000000000000000000000000000 as T,  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T)
-        
-        check(Test(),  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0xffffffffffffffffffffffffffffffff as T,  0x55555555555555555555555555555555 as T)
-        check(Test(),  0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T, ~0xffffffffffffffffffffffffffffffff as T, ~0x55555555555555555555555555555555 as T)
-        check(Test(), ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T,  0xffffffffffffffffffffffffffffffff as T, ~0x55555555555555555555555555555555 as T)
-        check(Test(), ~0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa as T, ~0xffffffffffffffffffffffffffffffff as T,  0x55555555555555555555555555555555 as T)
     }
 }

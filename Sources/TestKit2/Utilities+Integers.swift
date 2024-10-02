@@ -50,23 +50,36 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func entropic(size: IX, mode: Signedness, using randomness: inout some Randomness) -> Self {
+    @inlinable public static func entropic(
+        size: IX,
+        mode: Signedness = Self.mode,
+        using randomness: inout some Randomness
+    )   -> Self {
         let index = Shift<Magnitude>(Count(size  - 1))
         return Self.entropic(through: index, mode: mode, using: &randomness)
     }
     
-    @inlinable public static func entropic(through index: Shift<Magnitude>, mode: Signedness, using randomness: inout some Randomness) -> Self {
+    @inlinable public static func entropic(
+        through index: Shift<Magnitude>,
+        mode: Signedness = Self.mode,
+        using randomness: inout some Randomness
+    )   -> Self {
         switch mode {
         case Signedness  .signed: return Self(raw: Signitude.entropic(through: index, using: &randomness))
         case Signedness.unsigned: return Self(raw: Magnitude.entropic(through: index, using: &randomness))
         }
     }
     
-    @inlinable public static func entropic(using randomness: inout some Randomness) -> Self where Self: SystemsInteger {
+    @inlinable public static func entropic(
+        using randomness: inout some Randomness
+    )   -> Self where Self: SystemsInteger {
         Self.entropic(through: Shift.max, using: &randomness)
     }
     
-    @inlinable public static func entropic(through index: Shift<Magnitude>, using randomness: inout some Randomness) -> Self {
+    @inlinable public static func entropic(
+        through index: Shift<Magnitude>,
+        using randomness: inout some Randomness
+    )   -> Self {
         let index = IX.random(in:   00000000...index.natural().unwrap(), using: &randomness)
         return Self.random(through: Shift(unchecked: Count(raw: index)), using: &randomness)
     }
