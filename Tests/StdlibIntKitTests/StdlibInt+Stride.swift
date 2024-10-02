@@ -8,32 +8,39 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import InfiniIntKit
+import RandomIntKit
 import StdlibIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Stdlib Int x Stride
 //*============================================================================*
 
-extension StdlibIntTests {
+/// An `StdlibInt` test suite.
+///
+/// ### Wrapper
+///
+/// `StdlibInt` should forward most function calls to its underlying model.
+///
+/// ### Development
+///
+/// - TODO: Test `StdlibInt` forwarding in generic `BinaryInteger` tests.
+///
+@Suite struct StdlibIntTestsOnStride {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testStride() {
-        for start: StdlibInt in [0, 1, -1, Self.min128, Self.max128, Self.min256, Self.max256] {
-            for distance: Swift.Int in [0, 1, -1,  Int.min, Int.max, Int.min + 1, Int.max - 1] {
-                let end = start.advanced(by: distance)
-                
-                always: do {
-                    Test().same(start.distance(to: end),  distance)
-                }
-                
-                if  distance != Swift.Int.min {
-                    Test().same(end.distance(to: start), -distance)
-                }
-            }
+    @Test("StdlibInt - stride [forwarding][entropic]", arguments: fuzzers)
+    func stride(_ randomness: consuming FuzzerInt) throws {
+        for _ in 0 ..< 256 {
+            let distance = IX.entropic(using: &randomness)
+            let start = IXL.entropic(size: 256, using: &randomness)
+            let end = try start.advanced(by: distance).prune(Bad.error)
+            #expect(StdlibInt(start).advanced(by: Swift.Int(distance)) == StdlibInt(end))
+            #expect(StdlibInt(start).distance(to: StdlibInt(end)) == Swift.Int(distance))
         }
     }
 }
