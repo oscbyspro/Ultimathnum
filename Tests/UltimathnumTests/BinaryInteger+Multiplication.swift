@@ -36,7 +36,7 @@ final class BinaryIntegerTestsOnMultiplication: XCTestCase {
             Test().multiplication(msb, bot, Fallible(((bot    ) << shl) ^ xor &+ add, error: !T.isArbitrary))
             Test().multiplication(bot, msb, Fallible(((bot    ) << shl) ^ xor &+ add, error: !T.isArbitrary))
             Test().multiplication(bot, bot, Fallible(((bot ^ 1) << shl) | 0000000001, error: !T.isArbitrary))
-            //=--------------------------------------=
+            //=----------------------------------=
             Test().multiplication(bot,  ~4, Fallible(0 &- (bot << 2) &- bot, error:  T.isEdgy))
             Test().multiplication(bot,  ~3, Fallible(0 &- (bot << 2),        error:  T.isEdgy))
             Test().multiplication(bot,  ~2, Fallible(0 &- (bot << 1) &- bot, error:  T.isEdgy))

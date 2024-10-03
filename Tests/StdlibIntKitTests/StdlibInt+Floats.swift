@@ -11,62 +11,96 @@ import CoreKit
 import InfiniIntKit
 import RandomIntKit
 import StdlibIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Stdlib Int x Floats
 //*============================================================================*
 
-extension StdlibIntTests {
+/// An `StdlibInt` test suite.
+///
+/// ### Wrapper
+///
+/// `StdlibInt` should forward most function calls to its underlying model.
+///
+/// ### Development
+///
+/// - TODO: Test `StdlibInt` forwarding in generic `BinaryInteger` tests.
+///
+@Suite struct StdlibIntTestsOnFloats {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests x Swift.BinaryFloatingPoint
     //=------------------------------------------------------------------------=
     
-    func testInitDoubleNanIsNil() {
-        self.double( Double.nan, is: nil)
-        self.double(-Double.nan, is: nil)
+    @Test("StdlibInt ← Swift.BinaryFloatingPoint - nan is nil", arguments: allSwiftBinaryFloatingPointTypes)
+    func initSwiftBinaryFloatingPointNanIsNil(type: any Swift.BinaryFloatingPoint.Type) {
+        whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) where T: Swift.BinaryFloatingPoint {
+            Ɣexpect( T.nan, is: nil)
+            Ɣexpect(-T.nan, is: nil)
+        }
     }
     
-    func testInitDoubleInfinityIsNil() {
-        self.double( Double.infinity, is: nil)
-        self.double(-Double.infinity, is: nil)
+    @Test("StdlibInt ← Swift.BinaryFloatingPoint - infinity is nil", arguments: allSwiftBinaryFloatingPointTypes)
+    func initSwiftBinaryFloatingPointInfinityIsNil(type: any Swift.BinaryFloatingPoint.Type) {
+        whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) where T: Swift.BinaryFloatingPoint {
+            Ɣexpect( T.infinity, is: nil)
+            Ɣexpect(-T.infinity, is: nil)
+        }
     }
     
-    func testInitDoubleRoundsTowardsZero() {
-        self.double( 2.00, is:  2 as T, exactly: true)
-        self.double( 1.75, is:  1 as T)
-        self.double( 1.50, is:  1 as T)
-        self.double( 1.25, is:  1 as T)
-        self.double( 1.00, is:  1 as T, exactly: true)
-        self.double( 0.75, is:  0 as T)
-        self.double( 0.50, is:  0 as T)
-        self.double( 0.25, is:  0 as T)
-        self.double( 0.00, is:  0 as T, exactly: true)
-        self.double( 0.25, is:  0 as T)
-        self.double( 0.50, is:  0 as T)
-        self.double( 0.75, is:  0 as T)
-        self.double(-1.00, is: -1 as T, exactly: true)
-        self.double(-1.25, is: -1 as T)
-        self.double(-1.50, is: -1 as T)
-        self.double(-1.75, is: -1 as T)
-        self.double(-2.00, is: -2 as T, exactly: true)
+    @Test("StdlibInt ← Swift.BinaryFloatingPoint - rounds towards zero", arguments: allSwiftBinaryFloatingPointTypes)
+    func initSwiftBinaryFloatingPointRoundsTowardsZero(type: any Swift.BinaryFloatingPoint.Type) {
+        whereIs(type)
         
-        self.double( Double.pi,       is:  3 as T)
-        self.double(-Double.pi,       is: -3 as T)
-        
-        self.double( Double.ulpOfOne, is:  0 as T)
-        self.double(-Double.ulpOfOne, is:  0 as T)
-        
-        self.double( Double.leastNormalMagnitude,  is: 0 as T)
-        self.double(-Double.leastNormalMagnitude,  is: 0 as T)
-        
-        self.double( Double.leastNonzeroMagnitude, is: 0 as T)
-        self.double(-Double.leastNonzeroMagnitude, is: 0 as T)
+        func whereIs<T>(_ type: T.Type) where T: Swift.BinaryFloatingPoint {
+            Ɣexpect( 2.00 as T, is:  2 as StdlibInt, exactly: true)
+            Ɣexpect( 1.75 as T, is:  1 as StdlibInt)
+            Ɣexpect( 1.50 as T, is:  1 as StdlibInt)
+            Ɣexpect( 1.25 as T, is:  1 as StdlibInt)
+            Ɣexpect( 1.00 as T, is:  1 as StdlibInt, exactly: true)
+            Ɣexpect( 0.75 as T, is:  0 as StdlibInt)
+            Ɣexpect( 0.50 as T, is:  0 as StdlibInt)
+            Ɣexpect( 0.25 as T, is:  0 as StdlibInt)
+            Ɣexpect( 0.00 as T, is:  0 as StdlibInt, exactly: true)
+            Ɣexpect( 0.25 as T, is:  0 as StdlibInt)
+            Ɣexpect( 0.50 as T, is:  0 as StdlibInt)
+            Ɣexpect( 0.75 as T, is:  0 as StdlibInt)
+            Ɣexpect(-1.00 as T, is: -1 as StdlibInt, exactly: true)
+            Ɣexpect(-1.25 as T, is: -1 as StdlibInt)
+            Ɣexpect(-1.50 as T, is: -1 as StdlibInt)
+            Ɣexpect(-1.75 as T, is: -1 as StdlibInt)
+            Ɣexpect(-2.00 as T, is: -2 as StdlibInt, exactly: true)
+
+            Ɣexpect( T.pi, is:  3 as StdlibInt)
+            Ɣexpect(-T.pi, is: -3 as StdlibInt)
+
+            Ɣexpect( T.ulpOfOne, is: 0 as StdlibInt)
+            Ɣexpect(-T.ulpOfOne, is: 0 as StdlibInt)
+
+            Ɣexpect( T.leastNormalMagnitude,  is: 0 as StdlibInt)
+            Ɣexpect(-T.leastNormalMagnitude,  is: 0 as StdlibInt)
+
+            Ɣexpect( T.leastNonzeroMagnitude, is: 0 as StdlibInt)
+            Ɣexpect(-T.leastNonzeroMagnitude, is: 0 as StdlibInt)
+        }
     }
     
-    func testInitDoubleGreatestFiniteMagnitude() {
-        let expectation = T("""
+    @Test("StdlibInt ← Swift.BinaryFloatingPoint - greatest finite magnitude [32-bit]")
+    func initGreatestFiniteMagnitudeAsFloat32() {
+        let positive = IXL(340282346638528859811704183484516925440)
+        
+        Ɣexpect( Float32.greatestFiniteMagnitude, is: StdlibInt( positive), exactly: true)
+        Ɣexpect(-Float32.greatestFiniteMagnitude, is: StdlibInt(-positive), exactly: true)
+    }
+    
+    @Test("StdlibInt ← Swift.BinaryFloatingPoint - greatest finite magnitude [64-bit]")
+    func initGreatestFiniteMagnitudeAsFloat64() {
+        let positive = IXL("""
         0000000000017976931348623157081452742373170435679807056752584499\
         6598917476803157260780028538760589558632766878171540458953514382\
         4642343213268894641827684675467035375169860499105765512820762454\
@@ -74,11 +108,15 @@ extension StdlibIntTests {
         3348274797826204144723168738177180919299881250404026184124858368
         """)!
         
-        self.double( Double.greatestFiniteMagnitude, is:  expectation, exactly: true)
-        self.double(-Double.greatestFiniteMagnitude, is: -expectation, exactly: true)
+        Ɣexpect( Float64.greatestFiniteMagnitude, is: StdlibInt( positive), exactly: true)
+        Ɣexpect(-Float64.greatestFiniteMagnitude, is: StdlibInt(-positive), exactly: true)
     }
     
-    /// Checks some bit patterns for exponents >= 52.
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    /// Checks some bit patterns for exponents >= 52 (64-bit).
     ///
     ///     1000000000000000000000000000000000000000000000000000110011000011 →
     ///     1100000000000000000000000000000000000000000000000000110011000011 →
@@ -90,28 +128,32 @@ extension StdlibIntTests {
     ///     1111111111111111111111111111111111111111111111111110110011000011 →
     ///     1111111111111111111111111111111111111111111111111111110011000011 →
     ///
-    func testInitDoubleLargeNegativeValues() {
-        //=--------------------------------------=
-        let start = Double.significandBitCount
-        //=--------------------------------------=
-        for exponent: Swift.Int in start ..< start + 64 {
-            var source = Double(sign: .minus, exponent: exponent, significand: 1)
-            var sourceIncrement: Double = -source.ulp
-            
-            var destination = T(-1) << exponent
-            var destinationincrement = T(sourceIncrement)
-            
-            for _ in 0 ..< Double.significandBitCount {
-                source               += sourceIncrement
-                sourceIncrement      += sourceIncrement
-                destination          += destinationincrement
-                destinationincrement += destinationincrement
-                self.double(source, is: destination, exactly: true)
+    @Test("StdlibInt ← Swift.BinaryFloatingPoint - [large][negative]", arguments: allSwiftBinaryFloatingPointTypes)
+    func initLargeNegativeFloats(source: any Swift.BinaryFloatingPoint.Type) {
+        whereIs(source: source, exponents: 32, steps: source.significandBitCount)
+        
+        func whereIs<T>(source: T.Type, exponents: Int, steps: Int) where T: Swift.BinaryFloatingPoint {
+            //=----------------------------------=
+            let start = T.significandBitCount
+            //=----------------------------------=
+            for exponent in start ..< start + exponents {
+                var source = T(sign: .minus,  exponent: T.Exponent(exponent), significand: 1)
+                var sourceStep: T = source.ulp
+                var destination = StdlibInt.isSigned ? StdlibInt(-1) << exponent : nil
+                var destinationStep = StdlibInt(exactly: sourceStep)!
+                
+                for _ in 0 ..< steps {
+                    source          -= sourceStep
+                    sourceStep      += sourceStep
+                    destination?    -= destinationStep
+                    destinationStep += destinationStep
+                    Ɣexpect(source, is: destination, exactly: true)
+                }
             }
         }
     }
     
-    /// Checks some bit patterns for exponents >= 52.
+    /// Checks some bit patterns for exponents >= 52 (64-bit).
     ///
     ///     0000000000000000000000000000000000000000000000000000110011000011 →
     ///     1000000000000000000000000000000000000000000000000000110011000011 →
@@ -123,26 +165,30 @@ extension StdlibIntTests {
     ///     0110000000000000000000000000000000000000000000000000110011000011 →
     ///     1110000000000000000000000000000000000000000000000000110011000011 →
     ///
-    func testInitDoubleLargeNegativeValuesNearMinSignificandBitPattern() {
-        //=--------------------------------------=
-        let start = Double.significandBitCount
-        Test().same(Double(sign: .minus, exponent: start, significand: 1).ulp, 1)
-        //=--------------------------------------=
-        for exponent: Swift.Int in start ..< start + 64 {
-            var source = Double(sign: .minus, exponent: exponent, significand: 1)
-            var destination = T(-1) << exponent
-            let sourceIncrement: Double = -source.ulp
-            let destinationincrement = T(sourceIncrement)
-            
-            for _ in 0 ..< 32 {
-                self.double(source, is: destination, exactly: true)
-                source += sourceIncrement
-                destination += destinationincrement
+    @Test("StdlibInt ← Swift.BinaryFloatingPoint - [large][negative][min]", arguments: allSwiftBinaryFloatingPointTypes)
+    func initLargeNegativeFloatsNearMinSignificandBitPattern(source: any Swift.BinaryFloatingPoint.Type) {
+        whereIs(source: source, exponents: 32, steps: 32)
+        
+        func whereIs<T>(source: T.Type, exponents: Int, steps: Int) where T: Swift.BinaryFloatingPoint {
+            //=----------------------------------=
+            let start = T.significandBitCount
+            //=----------------------------------=
+            for exponent in start ..< start + exponents {
+                var source = T(sign: .minus,  exponent: T.Exponent(exponent), significand: 1)
+                let sourceStep: T = source.ulp
+                var destination = StdlibInt.isSigned ? StdlibInt(-1) << exponent : nil
+                let destinationStep = StdlibInt(exactly: sourceStep)!
+                
+                for _ in 0 ..< steps {
+                    Ɣexpect(source, is: destination, exactly: true)
+                    source -= sourceStep
+                    destination? -= destinationStep
+                }
             }
         }
     }
     
-    /// Checks some bit patterns for exponents >= 52.
+    /// Checks some bit patterns for exponents >= 52 (64-bit).
     ///
     ///     1111111111111111111111111111111111111111111111111111110011000011 →
     ///     0111111111111111111111111111111111111111111111111111110011000011 →
@@ -154,27 +200,30 @@ extension StdlibIntTests {
     ///     1001111111111111111111111111111111111111111111111111110011000011 →
     ///     0001111111111111111111111111111111111111111111111111110011000011 →
     ///
-    func testInitDoubleLargeNegativeValuesNearMaxSignificandBitPattern() {
-        //=--------------------------------------=
-        let start = Double.significandBitCount + 1
-        Test().same(Double(sign: .minus, exponent: start, significand: 1).ulp, 2)
-        Test().same(Double(sign: .minus, exponent: start, significand: 1).nextUp.ulp, 1)
-        //=--------------------------------------=
-        for exponent: Swift.Int in start ..< start + 64 {
-            var source = Double(sign: .minus, exponent: exponent, significand: 1)
-            let sourceIncrement: Double = source.nextUp.ulp
-            var destination = T(-1) << exponent
-            let destinationincrement = T(sourceIncrement)
-            
-            for _ in 0 ..< 32 {
-                source += sourceIncrement
-                destination += destinationincrement
-                self.double(source, is: destination, exactly: true)
+    @Test("StdlibInt ← Swift.BinaryFloatingPoint - [large][negative][max]", arguments: allSwiftBinaryFloatingPointTypes)
+    func initLargeNegativeFloatsNearMaxSignificandBitPattern(source: any Swift.BinaryFloatingPoint.Type) {
+        whereIs(source: source, exponents: 32, steps: 32)
+        
+        func whereIs<T>(source: T.Type, exponents: Int, steps: Int) where T: Swift.BinaryFloatingPoint {
+            //=----------------------------------=
+            let start = T.significandBitCount + 1
+            //=----------------------------------=
+            for exponent in start ..< start + exponents {
+                var source = T(sign: .minus,  exponent: T.Exponent(exponent), significand: 1)
+                let sourceStep: T = source.nextUp.ulp
+                var destination = StdlibInt.isSigned ? StdlibInt(-1) << exponent : nil
+                let destinationStep = StdlibInt(exactly: sourceStep)!
+                
+                for _ in 0 ..< steps {
+                    source += sourceStep
+                    destination? += destinationStep
+                    Ɣexpect(source, is: destination, exactly: true)
+                }
             }
         }
     }
     
-    /// Checks some bit patterns for exponents >= 52.
+    /// Checks some bit patterns for exponents >= 52 (64-bit).
     ///
     ///     1000000000000000000000000000000000000000000000000000110011000010 →
     ///     1100000000000000000000000000000000000000000000000000110011000010 →
@@ -186,28 +235,32 @@ extension StdlibIntTests {
     ///     1111111111111111111111111111111111111111111111111110110011000010 →
     ///     1111111111111111111111111111111111111111111111111111110011000010 →
     ///
-    func testInitDoubleLargePositiveValues() {
-        //=--------------------------------------=
-        let start = Double.significandBitCount
-        //=--------------------------------------=
-        for exponent: Swift.Int in start ..< start + 64 {
-            var source = Double(sign: .plus, exponent: exponent, significand: 1)
-            var sourceIncrement: Double = source.ulp
-            
-            var destination = T(1) << exponent
-            var destinationincrement = T(sourceIncrement)
-            
-            for _ in 0 ..< Double.significandBitCount {
-                source               += sourceIncrement
-                sourceIncrement      += sourceIncrement
-                destination          += destinationincrement
-                destinationincrement += destinationincrement
-                self.double(source, is: destination, exactly: true)
+    @Test("StdlibInt ← Swift.BinaryFloatingPoint - [large][positive]", arguments: allSwiftBinaryFloatingPointTypes)
+    func initLargePositiveFloats(source: any Swift.BinaryFloatingPoint.Type) {
+        whereIs(source: source, exponents: 32, steps: source.significandBitCount)
+        
+        func whereIs<T>(source: T.Type, exponents: Int, steps: Int) where T: Swift.BinaryFloatingPoint {
+            //=----------------------------------=
+            let start = T.significandBitCount
+            //=----------------------------------=
+            for exponent in start ..< start + exponents {
+                var source = T(sign: .plus,   exponent: T.Exponent(exponent), significand: 1)
+                var sourceStep: T = source.ulp
+                var destination = StdlibInt(1) << exponent
+                var destinationStep = StdlibInt(exactly: sourceStep)!
+
+                for _ in 0 ..< steps {
+                    source          += sourceStep
+                    sourceStep      += sourceStep
+                    destination     += destinationStep
+                    destinationStep += destinationStep
+                    Ɣexpect(source, is: destination, exactly: true)
+                }
             }
         }
     }
     
-    /// Checks some bit patterns for exponents >= 52.
+    /// Checks some bit patterns for exponents >= 52 (64-bit).
     ///
     ///     0000000000000000000000000000000000000000000000000000110011000010 →
     ///     1000000000000000000000000000000000000000000000000000110011000010 →
@@ -219,26 +272,30 @@ extension StdlibIntTests {
     ///     0110000000000000000000000000000000000000000000000000110011000010 →
     ///     1110000000000000000000000000000000000000000000000000110011000010 →
     ///
-    func testInitDoubleLargePositiveValuesNearMinSignificandBitPattern() {
-        //=--------------------------------------=
-        let start = Double.significandBitCount
-        Test().same(Double(sign: .plus, exponent: start, significand: 1).ulp, 1)
-        //=--------------------------------------=
-        for exponent: Swift.Int in start ..< start + 64 {
-            var source = Double(sign: .plus, exponent: exponent, significand: 1)
-            var destination = T(1) << exponent
-            let sourceIncrement: Double = source.ulp
-            let destinationincrement = T(sourceIncrement)
-            
-            for _ in 0 ..< 32 {
-                self.double(source, is: destination, exactly: true)
-                source += sourceIncrement
-                destination += destinationincrement
+    @Test("StdlibInt ← Swift.BinaryFloatingPoint - [large][positive][min]", arguments: allSwiftBinaryFloatingPointTypes)
+    func initLargePositiveFloatsNearMinSignificandBitPattern(source: any Swift.BinaryFloatingPoint.Type) {
+        whereIs(source: source, exponents: 32, steps: 32)
+        
+        func whereIs<T>(source: T.Type, exponents: Int, steps: Int) where T: Swift.BinaryFloatingPoint {
+            //=----------------------------------=
+            let start = T.significandBitCount
+            //=----------------------------------=
+            for exponent in start ..< start + exponents {
+                var source = T(sign: .plus,   exponent: T.Exponent(exponent), significand: 1)
+                let sourceStep: T = source.ulp
+                var destination = StdlibInt(1) << exponent
+                let destinationStep = StdlibInt(exactly: sourceStep)!
+                
+                for _ in 0 ..< steps {
+                    Ɣexpect(source, is: destination, exactly: true)
+                    source += sourceStep
+                    destination += destinationStep
+                }
             }
         }
     }
     
-    /// Checks some bit patterns for exponents >= 52.
+    /// Checks some bit patterns for exponents >= 52 (64-bit).
     ///
     ///     1111111111111111111111111111111111111111111111111111110011000010 →
     ///     0111111111111111111111111111111111111111111111111111110011000010 →
@@ -250,48 +307,48 @@ extension StdlibIntTests {
     ///     1001111111111111111111111111111111111111111111111111110011000010 →
     ///     0001111111111111111111111111111111111111111111111111110011000010 →
     ///
-    func testInitDoubleLargePositiveValuesNearMaxSignificandBitPattern() {
-        //=--------------------------------------=
-        let start = Double.significandBitCount + 1
-        Test().same(Double(sign: .plus, exponent: start, significand: 1).ulp, 2)
-        Test().same(Double(sign: .plus, exponent: start, significand: 1).nextDown.ulp, 1)
-        //=--------------------------------------=
-        for exponent: Swift.Int in start ..< start + 64 {
-            var source = Double(sign: .plus, exponent: exponent, significand: 1)
-            let sourceIncrement: Double = -source.nextDown.ulp
-            var destination = T(1) << exponent
-            let destinationincrement = T(sourceIncrement)
-            
-            for _ in 0 ..< 32 {
-                source += sourceIncrement
-                destination += destinationincrement
-                self.double(source, is: destination, exactly: true)
+    @Test("StdlibInt ← Swift.BinaryFloatingPoint - [large][positive][max]", arguments: allSwiftBinaryFloatingPointTypes)
+    func initLargePositiveFloatsNearMaxSignificandBitPattern(source: any Swift.BinaryFloatingPoint.Type) {
+        whereIs(source: source, exponents: 32, steps: 32)
+        
+        func whereIs<T>(source: T.Type, exponents: Int, steps: Int) where T: Swift.BinaryFloatingPoint {
+            //=----------------------------------=
+            let start = T.significandBitCount + 1
+            //=----------------------------------=
+            for exponent in start ..< start + exponents {
+                var source = T(sign: .plus,   exponent: T.Exponent(exponent), significand: 1)
+                let sourceStep: T = source.nextDown.ulp
+                var destination = StdlibInt(1) << exponent
+                let destinationStep = StdlibInt(exactly: sourceStep)!
+                
+                for _ in 0 ..< steps {
+                    source -= sourceStep
+                    destination -= destinationStep
+                    Ɣexpect(source, is: destination, exactly: true)
+                }
             }
         }
     }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Assertions
-//=----------------------------------------------------------------------------=
-
-extension StdlibIntTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
-
-    func double(_ source: Double, is destination: StdlibInt?, exactly: Bool = false, file: StaticString = #file, line: UInt = #line) {
-        let test = Test(file: file, line: line)
+    
+    func Ɣexpect<Source>(
+        _  source: Source,
+        is destination: StdlibInt?,
+        exactly: Bool = false,
+        at location: SourceLocation = #_sourceLocation
+    )   where Source: Swift.BinaryFloatingPoint {
         
         if  let destination {
-            test.same(StdlibInt(source), destination)
+            #expect(StdlibInt(source) == destination)
         }
         
         if  let destination, exactly {
-            test.same(Double(destination), source)
+            #expect(Source(destination) == source)
         }
         
-        test.same(T(exactly: source), exactly ? destination : nil)
+        #expect(StdlibInt(exactly: source) == (exactly ? destination : nil))
     }
 }

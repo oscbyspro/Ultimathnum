@@ -183,9 +183,9 @@ final class BinaryIntegerTestsOnFloats: XCTestCase {
         func whereIs<A, B>(
             source: A.Type, destination: B.Type, exponents: IX, steps: IX
         )   where A: Swift.BinaryFloatingPoint, B: ArbitraryInteger {
-            //=--------------------------------------=
+            //=----------------------------------=
             let start = A.significandBitCount
-            //=--------------------------------------=
+            //=----------------------------------=
             for exponent in start ..< start + Swift.Int(exponents) {
                 var source = A(sign: .minus, exponent: A.Exponent(exponent), significand: 1)
                 var sourceStep: A = source.ulp
@@ -306,9 +306,9 @@ final class BinaryIntegerTestsOnFloats: XCTestCase {
         func whereIs<A, B>(
             source: A.Type, destination: B.Type, exponents: IX, steps: IX
         )   where A: Swift.BinaryFloatingPoint, B: ArbitraryInteger {
-            //=--------------------------------------=
+            //=----------------------------------=
             let start = A.significandBitCount
-            //=--------------------------------------=
+            //=----------------------------------=
             for exponent in start ..< start + Swift.Int(exponents) {
                 var source = A(sign: .plus, exponent: A.Exponent(exponent), significand: 1)
                 var sourceStep: A = source.ulp
@@ -348,10 +348,10 @@ final class BinaryIntegerTestsOnFloats: XCTestCase {
         func whereIs<A, B>(
             source: A.Type, destination: B.Type, exponents: IX, steps: IX
         )   where A: Swift.BinaryFloatingPoint, B: ArbitraryInteger {
-            //=--------------------------------------=
+            //=----------------------------------=
             let start = A.significandBitCount
             Test().same(A(sign: .plus, exponent: A.Exponent(start), significand: 1).ulp, 1)
-            //=--------------------------------------=
+            //=----------------------------------=
             for exponent in start ..< start + Swift.Int(exponents) {
                 var source = A(sign: .plus, exponent: A.Exponent(exponent), significand: 1)
                 let sourceStep: A = source.ulp
