@@ -11,129 +11,125 @@ import CoreKit
 import InfiniIntKit
 import RandomIntKit
 import StdlibIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Stdlib Int x Integers
 //*============================================================================*
 
-extension StdlibIntTests {
+/// An `StdlibInt` test suite.
+///
+/// ### Wrapper
+///
+/// `StdlibInt` should forward most function calls to its underlying model.
+///
+/// ### Development
+///
+/// - TODO: Test `StdlibInt` forwarding in generic `BinaryInteger` tests.
+///
+@Suite struct StdlibIntTestsOnIntegers {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testMagnitude() {
-        Test().same(T(-2).magnitude, 2 as T)
-        Test().same(T(-1).magnitude, 1 as T)
-        Test().same(T( 0).magnitude, 0 as T)
-        Test().same(T( 1).magnitude, 1 as T)
-        Test().same(T( 2).magnitude, 2 as T)
+    @Test("StdlibInt/magnitude", .serialized, arguments: [
+        
+        (-2 as StdlibInt, 2 as StdlibInt),
+        (-1 as StdlibInt, 1 as StdlibInt),
+        ( 0 as StdlibInt, 0 as StdlibInt),
+        ( 1 as StdlibInt, 1 as StdlibInt),
+        ( 2 as StdlibInt, 2 as StdlibInt),
+        
+    ] as [(StdlibInt, StdlibInt)])
+    func magnitude(instance: StdlibInt, expectation: StdlibInt) {
+        #expect(instance.magnitude == expectation)
+    }
+    
+    @Test("StdlibInt/magnitude - [forwarding][entropic]", arguments: fuzzers)
+    func magnitude(randomness: consuming FuzzerInt) {
+        for _ in 0 ..< 32 {
+            let random = IXL.entropic(size: 256, using: &randomness)
+            let expectation = IXL(random.magnitude())
+            #expect(StdlibInt(random).magnitude == StdlibInt(expectation))
+        }
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Tests x Swift.BinaryInteger
     //=------------------------------------------------------------------------=
     
-    func testInitBinaryInteger() {
-        self.integer(  Int8.min, is:               -0x80 as T)
-        self.integer(  Int8.max, is:                0x7f as T)
-        self.integer( UInt8.min, is:                0x00 as T)
-        self.integer( UInt8.max, is:                0xff as T)
-        self.integer( Int16.min, is:             -0x8000 as T)
-        self.integer( Int16.max, is:              0x7fff as T)
-        self.integer(UInt16.min, is:              0x0000 as T)
-        self.integer(UInt16.max, is:              0xffff as T)
-        self.integer( Int32.min, is:         -0x80000000 as T)
-        self.integer( Int32.max, is:          0x7fffffff as T)
-        self.integer(UInt32.min, is:          0x00000000 as T)
-        self.integer(UInt32.max, is:          0xffffffff as T)
-        self.integer( Int64.min, is: -0x8000000000000000 as T)
-        self.integer( Int64.max, is:  0x7fffffffffffffff as T)
-        self.integer(UInt64.min, is:  0x0000000000000000 as T)
-        self.integer(UInt64.max, is:  0xffffffffffffffff as T)
+    @Test("StdlibInt.init(some Swift.BinaryInteger)", .serialized, arguments: [
+        
+        (  Int8.min,               -0x80 as StdlibInt),
+        (  Int8.max,                0x7f as StdlibInt),
+        ( UInt8.min,                0x00 as StdlibInt),
+        ( UInt8.max,                0xff as StdlibInt),
+        ( Int16.min,             -0x8000 as StdlibInt),
+        ( Int16.max,              0x7fff as StdlibInt),
+        (UInt16.min,              0x0000 as StdlibInt),
+        (UInt16.max,              0xffff as StdlibInt),
+        ( Int32.min,         -0x80000000 as StdlibInt),
+        ( Int32.max,          0x7fffffff as StdlibInt),
+        (UInt32.min,          0x00000000 as StdlibInt),
+        (UInt32.max,          0xffffffff as StdlibInt),
+        ( Int64.min, -0x8000000000000000 as StdlibInt),
+        ( Int64.max,  0x7fffffffffffffff as StdlibInt),
+        (UInt64.min,  0x0000000000000000 as StdlibInt),
+        (UInt64.max,  0xffffffffffffffff as StdlibInt),
+        
+    ] as [(any Swift.BinaryInteger, StdlibInt)])
+    func initSwiftBinaryInteger(source: any Swift.BinaryInteger, destination: StdlibInt) throws {
+        try Ɣexpect(source, is: destination)
     }
     
-    func testInitBinaryIntegerForEachByteEntropy() {
-        func whereIs<T>(_ source: T.Type) where T: Swift.BinaryInteger {
-            let min = T.isSigned ? T(Int8.min) : T(UInt8.min)
-            let max = T.isSigned ? T(Int8.max) : T(UInt8.max)
-            
-            var lhs = min
-            var rhs = StdlibInt(min)
-            
-            while true {
-                self.integer(lhs, is: rhs)
-                guard lhs < max else { break }
-                lhs += 1
-                rhs += 1
-            }
-            
-            Test().same(lhs, max)
-            Test().same(rhs, StdlibInt(max))
-        }
-        
-        whereIs( Int .self)
-        whereIs(UInt .self)
-        whereIs( Int8.self)
-        whereIs(UInt8.self)
-        whereIs(StdlibInt.self)
-    }
-    
-    func testInitBinaryIntegerByFuzzing() {
-        var randomness = fuzzer
-        func random<T>(_ random: T.Type = T.self) -> T where T: BinaryInteger {
-            let size  = IX(size: T.self) ?? 256
-            let index = IX.random(in: 000000000 ..< size, using: &randomness)!
-            return T.random(through: Shift(Count(index)), using: &randomness)
-        }
-        
+    @Test("StdlibInt.init(some Swift.BinaryInteger) - [entropic]", arguments: fuzzers)
+    func initSwiftBinaryInteger(randomness: consuming FuzzerInt) throws {
         #if DEBUG
-        let rounds = 0032
+        try  whereIs(size: 256, rounds: 0032)
         #else
-        let rounds = 1024
+        try  whereIs(size: 256, rounds: 1024)
         #endif
-        
-        for _ in 0 ..< rounds {
-            let random: IXL = random()
-            let value = StdlibInt(  random)
-            self.integer(value, is:  value)
-            Test().same(IXL(value), random)
+        func whereIs(size: IX,  rounds: IX) throws {
+            for _ in 0 ..< rounds {
+                let random = IXL.entropic(size: size, using: &randomness)
+                #expect(IXL(StdlibInt(random)) ==  random)
+                try Ɣexpect(StdlibInt(random), is: StdlibInt(random))
+            }
         }
     }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Assertions
-//=----------------------------------------------------------------------------=
-
-extension StdlibIntTests {
     
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    func integer(_ source: some Swift.BinaryInteger, is destination: StdlibInt, file: StaticString = #file, line: UInt = #line) {
-        let test = Test(file: file, line: line)
+    func Ɣexpect<T>(
+        _  source: T,
+        is destination: StdlibInt,
+        at location: SourceLocation = #_sourceLocation
+    )   throws where T: Swift.BinaryInteger {
         
-        test.same(T(                    source), destination)
-        test.same(T(exactly:            source), destination)
-        test.same(T(clamping:           source), destination)
-        test.same(T(truncatingIfNeeded: source), destination)
-        test.same(T(InfiniInt<IX>(destination)), destination)
+        #expect(StdlibInt(                    source) == destination, sourceLocation: location)
+        #expect(StdlibInt(exactly:            source) == destination, sourceLocation: location)
+        #expect(StdlibInt(clamping:           source) == destination, sourceLocation: location)
+        #expect(StdlibInt(truncatingIfNeeded: source) == destination, sourceLocation: location)
+        #expect(StdlibInt(InfiniInt<IX>(destination)) == destination, sourceLocation: location)
+        
+        if  T.isSigned == StdlibInt.isSigned, destination.bitWidth <= source.bitWidth {
+            #expect(T(                    destination)  == source, sourceLocation: location)
+            #expect(T(exactly:            destination)! == source, sourceLocation: location)
+            #expect(T(clamping:           destination)  == source, sourceLocation: location)
+            #expect(T(truncatingIfNeeded: destination)  == source, sourceLocation: location)
+        }
         
         description: do {
-            let     decimal = destination.description(as:     .decimal)
-            let hexadecimal = destination.description(as: .hexadecimal)
+            let radix10 = destination.description(as:     .decimal)
+            let radix16 = destination.description(as: .hexadecimal)
             
-            test.same(    decimal,      source.description)
-            test.same(    decimal, destination.description)
-            test.same(    decimal, String(destination, radix: 10))
-            test.same(hexadecimal, String(destination, radix: 16))
+            #expect(radix10 ==      source.description,        sourceLocation: location)
+            #expect(radix10 == destination.description,        sourceLocation: location)
+            #expect(radix10 == String(destination, radix: 10), sourceLocation: location)
+            #expect(radix16 == String(destination, radix: 16), sourceLocation: location)
             
-            test.same(     T(    decimal),                   destination)
-            test.same(try? T(    decimal, as:     .decimal), destination)
-            test.same(try? T(hexadecimal, as: .hexadecimal), destination)
+            #expect(    StdlibInt(radix10) ==                   destination, sourceLocation: location)
+            #expect(try StdlibInt(radix10, as:     .decimal) == destination, sourceLocation: location)
+            #expect(try StdlibInt(radix16, as: .hexadecimal) == destination, sourceLocation: location)
         }
     }
 }
