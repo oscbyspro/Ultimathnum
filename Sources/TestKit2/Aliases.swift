@@ -17,5 +17,7 @@ public typealias ArbitraryIntegerWhereIsSigned   = ArbitraryInteger &   SignedIn
 public typealias ArbitraryIntegerWhereIsUnsigned = ArbitraryInteger & UnsignedInteger
 public typealias      CoreIntegerWhereIsSigned   =      CoreInteger &   SignedInteger
 public typealias      CoreIntegerWhereIsUnsigned =      CoreInteger & UnsignedInteger
+public typealias      EdgyIntegerWhereIsSigned   =      EdgyInteger &   SignedInteger
+public typealias      EdgyIntegerWhereIsUnsigned =      EdgyInteger & UnsignedInteger
 public typealias   SystemsIntegerWhereIsSigned   =   SystemsInteger &   SignedInteger
 public typealias   SystemsIntegerWhereIsUnsigned =   SystemsInteger & UnsignedInteger

@@ -17,34 +17,6 @@ import TestKit
 extension CoreIntTests {
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    func testComplement() {
-        func whereIs<T>(_ base: T.Type) where T: SystemsInteger {
-            Test().complement(~2 as T, false, Fallible( 2 as T, error:  false))
-            Test().complement(~1 as T, false, Fallible( 1 as T, error:  false))
-            Test().complement(~0 as T, false, Fallible( 0 as T, error:  false))
-            Test().complement( 0 as T, false, Fallible(~0 as T, error:  false))
-            Test().complement( 1 as T, false, Fallible(~1 as T, error:  false))
-            Test().complement( 2 as T, false, Fallible(~2 as T, error:  false))
-            Test().complement( T .msb, false, Fallible(~T .msb, error:  false))
-
-            Test().complement(~2 as T, true,  Fallible( 3 as T, error:  false))
-            Test().complement(~1 as T, true,  Fallible( 2 as T, error:  false))
-            Test().complement(~0 as T, true,  Fallible( 1 as T, error:  false))
-            Test().complement( 0 as T, true,  Fallible( 0 as T, error: !T.isSigned))
-            Test().complement( 1 as T, true,  Fallible(~0 as T, error:  false))
-            Test().complement( 2 as T, true,  Fallible(~1 as T, error:  false))
-            Test().complement( T .msb, true,  Fallible( T .msb, error:  T.isSigned))
-        }
-        
-        for type in Self.types {
-            whereIs(type)
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
     // MARK: Tests x Logic
     //=------------------------------------------------------------------------=
     

@@ -16,6 +16,21 @@ import TestKit2
 // MARK: * Globals
 //*============================================================================*
 
+let arbitraryIntegers: [any ArbitraryInteger.Type] = {
+    arbitraryIntegersWhereIsSigned +
+    arbitraryIntegersWhereIsUnsigned
+}()
+
+let arbitraryIntegersWhereIsSigned: [any ArbitraryIntegerWhereIsSigned.Type] = [
+    InfiniInt<I8>.self,
+    InfiniInt<IX>.self,
+]
+
+let arbitraryIntegersWhereIsUnsigned: [any ArbitraryIntegerWhereIsUnsigned.Type] = [
+    InfiniInt<U8>.self,
+    InfiniInt<UX>.self,
+]
+
 let binaryIntegers: [any BinaryInteger.Type] = {
     binaryIntegersWhereIsSigned +
     binaryIntegersWhereIsUnsigned
@@ -31,20 +46,18 @@ let binaryIntegersWhereIsUnsigned: [any UnsignedInteger.Type] = {
     arbitraryIntegersWhereIsUnsigned
 }()
 
-let arbitraryIntegers: [any ArbitraryInteger.Type] = {
-    arbitraryIntegersWhereIsSigned +
-    arbitraryIntegersWhereIsUnsigned
+let edgyIntegers: [any EdgyInteger.Type] = {
+    edgyIntegersWhereIsSigned +
+    edgyIntegersWhereIsUnsigned
 }()
 
-let arbitraryIntegersWhereIsSigned: [any ArbitraryIntegerWhereIsSigned.Type] = [
-    InfiniInt<I8>.self,
-    InfiniInt<IX>.self,
-]
+let edgyIntegersWhereIsSigned: [any EdgyIntegerWhereIsSigned.Type] = {
+    systemsIntegersWhereIsSigned
+}()
 
-let arbitraryIntegersWhereIsUnsigned: [any ArbitraryIntegerWhereIsUnsigned.Type] = [
-    InfiniInt<U8>.self,
-    InfiniInt<UX>.self,
-]
+let edgyIntegersWhereIsUnsigned: [any EdgyIntegerWhereIsUnsigned.Type] = {
+    binaryIntegersWhereIsUnsigned
+}()
 
 let systemsIntegers: [any SystemsInteger.Type] = {
     systemsIntegersWhereIsSigned +

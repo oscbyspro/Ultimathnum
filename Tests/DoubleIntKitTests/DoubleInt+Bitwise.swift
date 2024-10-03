@@ -41,31 +41,6 @@ extension DoubleIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testComplement() {
-        func whereTheBaseIs<B>(_ base: B.Type) where B: SystemsInteger {
-            typealias T = DoubleInt<B>
-            typealias F = Fallible<T>
-            
-            Test().complement(T(low:  0, high:  00000), false,  F(T(low: ~0, high: ~00000)))
-            Test().complement(T(low:  0, high:  00000), true,   F(T(low:  0, high:  00000), error: !B.isSigned))
-            Test().complement(T(low:  1, high:  00002), false,  F(T(low: ~1, high: ~00002)))
-            Test().complement(T(low:  1, high:  00002), true,   F(T(low: ~0, high: ~00002)))
-            
-            Test().complement(T(low: ~0, high: ~B.msb), false,  F(T(low:  0, high:  B.msb)))
-            Test().complement(T(low: ~0, high: ~B.msb), true,   F(T(low:  1, high:  B.msb)))
-            Test().complement(T(low:  0, high:  B.msb), false,  F(T(low: ~0, high: ~B.msb)))
-            Test().complement(T(low:  0, high:  B.msb), true,   F(T(low:  0, high:  B.msb), error:  B.isSigned))
-        }
-        
-        for base in Self.bases {
-            whereTheBaseIs(base)
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
     func testEndianness() {
         func whereTheBaseTypeIs<B>(_ base: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>
