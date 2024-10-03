@@ -116,7 +116,7 @@ let package = Package(
         ),
         .testTarget(
             name: "StdlibIntKitTests",
-            dependencies: ["StdlibIntKit", "TestKit", "TestKit2"]
+            dependencies: ["StdlibIntKit", "TestKit2"]
         ),
         .target(
             name: "TestKit",

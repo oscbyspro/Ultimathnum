@@ -9,8 +9,9 @@
 
 import CoreKit
 import InfiniIntKit
+import RandomIntKit
 import StdlibIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Stdlib Int
@@ -26,32 +27,24 @@ import TestKit
 ///
 /// - TODO: Test `StdlibInt` forwarding in generic `BinaryInteger` tests.
 ///
-final class StdlibIntTests: XCTestCase {
-    
-    typealias T = StdlibInt
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Metadata
-    //=------------------------------------------------------------------------=
-    
-    static let min128: StdlibInt = -0x80000000000000000000000000000000
-    static let max128: StdlibInt =  0x7fffffffffffffffffffffffffffffff
-    static let min256: StdlibInt = -0x8000000000000000000000000000000000000000000000000000000000000000
-    static let max256: StdlibInt =  0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+@Suite struct StdlibIntTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testMetadata() {
-        Test().yay(StdlibInt.isSigned)
-        Test().yay(StdlibInt.Magnitude.isSigned)
+    @Test("StdlibInt - metadata")
+    func metadata() {
+        #expect(StdlibInt.isSigned)
+        #expect(StdlibInt.Magnitude.isSigned)
     }
     
-    func testBitCast() {
-        for x: StdlibInt in [0, 1, -1, Self.min128, Self.max128, Self.min256, Self.max256] {
-            Test().same(StdlibInt(raw: IXL(raw: x)), x)
-            Test().same(StdlibInt(raw: UXL(raw: x)), x)
+    @Test("StdlibInt.init(raw:) - [entropic]", arguments: fuzzers)
+    func bitcasting(randomness: consuming FuzzerInt) {
+        for _ in 0 ..< 32 {
+            let random = StdlibInt(IXL.entropic(size: 256, using: &randomness))
+            #expect(StdlibInt(raw: IXL(raw: random)) == random)
+            #expect(StdlibInt(raw: UXL(raw: random)) == random)
         }
     }
 }
