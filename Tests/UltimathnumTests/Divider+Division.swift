@@ -44,13 +44,10 @@ import TestKit2
     
     @Test("Divider/division(_:) - [uniform]", arguments: systemsIntegersWhereIsUnsigned, fuzzers)
     func divisionByFuzzingValues(_ type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
-        #if DEBUG
-        whereIs(type, rounds: 1024)
-        #else
-        whereIs(type, rounds: 8192)
-        #endif
-        func whereIs<T>(_ type: T.Type, rounds: IX) where T: SystemsIntegerWhereIsUnsigned {
-            for _ in 0 ..< rounds {
+        whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+            for _ in 0 ..< conditional(debug: 1024, release: 8192) {
                 let divider  = Divider(T.random(in: T.positives, using: &randomness))
                 let dividend = T.random(using: &randomness)
                 let expectation:  Division = dividend.division(Nonzero(divider.div))
@@ -61,13 +58,10 @@ import TestKit2
     
     @Test("Divider/division(_:) - [entropic]", arguments: systemsIntegersWhereIsUnsigned, fuzzers)
     func divisionByFuzzingEntropies(_ type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
-        #if DEBUG
-        whereIs(type, rounds: 1024)
-        #else
-        whereIs(type, rounds: 8192)
-        #endif
-        func whereIs<T>(_ type: T.Type, rounds: IX) where T: SystemsIntegerWhereIsUnsigned {
-            for _ in 0 ..< rounds {
+        whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+            for _ in 0 ..< conditional(debug: 1024, release: 8192) {
                 if  let divider  = Divider(exactly: T.entropic(using: &randomness)) {
                     let dividend = T.entropic(using: &randomness)
                     let expectation:  Division = dividend.division(Nonzero(divider.div))
@@ -79,18 +73,11 @@ import TestKit2
     
     @Test("Divider/division(_:) - [power-of-2]", arguments: systemsIntegersWhereIsUnsigned, fuzzers)
     func divisionByFuzzingPowerOf2s(_ type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
-        #if DEBUG
-        whereIs(type, rounds: 1024)
-        #else
-        whereIs(type, rounds: 8192)
-        #endif
-        func whereIs<T>(_ type: T.Type, rounds: IX) where T: SystemsIntegerWhereIsUnsigned {
-            func random() -> Shift<T.Magnitude> {
-                Shift(Count(IX.random(in: 0 ..< IX(size: T.self), using: &randomness)!))
-            }
-            
-            for _ in 0 ..< rounds {
-                let divider = Divider(T.lsb.up(random()))
+        whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+            for _ in 0 ..< conditional(debug: 1024, release: 8192) {
+                let divider = Divider(T.lsb.up(Shift.random(using: &randomness)))
                 let dividend: T = T.entropic(using: &randomness)
                 let expectation = dividend.division(Nonzero(divider.div)).unwrap()
                 Ɣexpect(dividend, division:  divider,  is: expectation)
@@ -111,13 +98,10 @@ import TestKit2
     
     @Test("Divider21/division(_:) - [uniform]", arguments: systemsIntegersWhereIsUnsigned, fuzzers)
     func divisionByFuzzingValues(_ type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
-        #if DEBUG
-        whereIs(type, rounds: 1024)
-        #else
-        whereIs(type, rounds: 8192)
-        #endif
-        func whereIs<T>(_ type: T.Type, rounds: IX) where T: SystemsIntegerWhereIsUnsigned {
-            for _ in 0 ..< rounds {
+        whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+            for _ in 0 ..< conditional(debug: 1024, release: 8192) {
                 let divider = Divider21(T.random(in: T.positives, using: &randomness))
                 let low  = T.random(using: &randomness)
                 let high = T.random(using: &randomness)
@@ -130,13 +114,10 @@ import TestKit2
     
     @Test("Divider21/division(_:) - [entropic]", arguments: systemsIntegersWhereIsUnsigned, fuzzers)
     func divisionByFuzzingEntropies(_ type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
-        #if DEBUG
-        whereIs(type, rounds: 1024)
-        #else
-        whereIs(type, rounds: 8192)
-        #endif
-        func whereIs<T>(_ type: T.Type, rounds: IX) where T: SystemsIntegerWhereIsUnsigned {
-            for _ in 0 ..< rounds {
+        whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+            for _ in 0 ..< conditional(debug: 1024, release: 8192) {
                 if  let divider = Divider21(exactly: T.entropic(using: &randomness)) {
                     let low  = T.entropic(using: &randomness)
                     let high = T.entropic(using: &randomness)
@@ -150,18 +131,11 @@ import TestKit2
     
     @Test("Divider21/division(_:) - [power-of-2]", arguments: systemsIntegersWhereIsUnsigned, fuzzers)
     func divisionByFuzzingPowerOf2s(_ type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
-        #if DEBUG
-        whereIs(type, rounds: 1024)
-        #else
-        whereIs(type, rounds: 8192)
-        #endif
-        func whereIs<T>(_ type: T.Type, rounds: IX) where T: SystemsIntegerWhereIsUnsigned {
-            func random() -> Shift<T.Magnitude> {
-                Shift(Count(IX.random(in: 0 ..< IX(size: T.self), using: &randomness)!))
-            }
-            
-            for _ in 0 ..< rounds {
-                let divider  = Divider21(T.lsb.up(random()))
+        whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+            for _ in 0 ..< conditional(debug: 1024, release: 8192) {
+                let divider  = Divider21(T.lsb.up(Shift.random(using: &randomness)))
                 let low:  T  = T.entropic(using: &randomness)
                 let high: T  = T.entropic(using: &randomness)
                 let dividend = Doublet(low: low, high: high)

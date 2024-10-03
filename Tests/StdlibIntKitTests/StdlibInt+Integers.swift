@@ -85,17 +85,10 @@ import TestKit2
     
     @Test("StdlibInt.init(some Swift.BinaryInteger) - [entropic]", arguments: fuzzers)
     func initSwiftBinaryInteger(randomness: consuming FuzzerInt) throws {
-        #if DEBUG
-        try  whereIs(size: 256, rounds: 0032)
-        #else
-        try  whereIs(size: 256, rounds: 1024)
-        #endif
-        func whereIs(size: IX,  rounds: IX) throws {
-            for _ in 0 ..< rounds {
-                let random = IXL.entropic(size: size, using: &randomness)
-                #expect(IXL(StdlibInt(random)) ==  random)
-                try Ɣexpect(StdlibInt(random), is: StdlibInt(random))
-            }
+        for _ in 0 ..<   conditional(debug: 032, release: 1024) {
+            let random = IXL.entropic(size: 256, using: &randomness)
+            #expect(IXL(StdlibInt(random))  ==   random)
+            try Ɣexpect(StdlibInt(random),  is:  StdlibInt(random))
         }
     }
     

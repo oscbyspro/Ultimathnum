@@ -7,17 +7,17 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Utilities x Signedness
+// MARK: * Utilities x Conditional
 //*============================================================================*
 
-extension Signedness {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Metadata
-    //=------------------------------------------------------------------------=
-    
-    public static let all: [Self] = [unsigned, signed]
+@inlinable public func conditional<T>(
+    debug:   @autoclosure () throws -> T,
+    release: @autoclosure () throws -> T
+)   rethrows -> T {
+    #if DEBUG
+    return try debug()
+    #else
+    return try release()
+    #endif
 }

@@ -14,7 +14,7 @@ import TestKit2
 // MARK: * Data Integer x Metadata
 //*============================================================================*
 
-extension DataIntTests {
+@Suite struct DataIntegerTestsOnMetadata {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests

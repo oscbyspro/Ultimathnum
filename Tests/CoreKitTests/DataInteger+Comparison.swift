@@ -93,7 +93,7 @@ import TestKit2
         
         func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
             for base: [T] in (T.zero ..< 4).lazy.map({ Array(0 ..< $0) }) {
-                for bit in [Bit.zero, Bit.one] {
+                for bit in Bit.all {
                     
                     var lhs = base
                     for _ in 0 ..< 4 {
