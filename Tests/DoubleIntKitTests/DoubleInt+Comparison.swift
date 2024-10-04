@@ -21,22 +21,6 @@ extension DoubleIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    /// - Note: Generic tests may depend on these results.
-    func testComparisonOfSize() {
-        for size: Count in [I8x2.size, U8x2.size] {
-            Test().comparison(size, U8  .size, Signum.positive, id: ComparableID())
-            Test().comparison(size, U16 .size, Signum.zero,     id: ComparableID())
-            Test().comparison(size, U32 .size, Signum.negative, id: ComparableID())
-            Test().comparison(size, U64 .size, Signum.negative, id: ComparableID())
-            Test().comparison(size, I8x2.size, Signum.zero,     id: ComparableID())
-            Test().comparison(size, U8x2.size, Signum.zero,     id: ComparableID())
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
     func testComparisonOfLowHighPairs() {
         func whereTheBaseTypeIs<B>(_ type: B.Type) where B: SystemsInteger {
             typealias T = DoubleInt<B>

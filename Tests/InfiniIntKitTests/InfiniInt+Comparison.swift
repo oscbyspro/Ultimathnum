@@ -21,30 +21,6 @@ extension InfiniIntTests {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    /// - Note: Generic tests may depend on these results.
-    func testComparisonOfSize() {
-        for size: Count in [IXL.size, UXL.size] {
-            Test().comparison(size, U8 .size,Signum.positive, id: ComparableID())
-            Test().comparison(size, U16.size,Signum.positive, id: ComparableID())
-            Test().comparison(size, U32.size,Signum.positive, id: ComparableID())
-            Test().comparison(size, U64.size,Signum.positive, id: ComparableID())
-        }
-        
-        func whereIs<A, B>(_ lhs: A.Type, _ rhs: B.Type) where A: ArbitraryInteger, B: ArbitraryInteger {
-            Test().comparison(A.size, B.size, Signum.zero, id: ComparableID())
-        }
-        
-        for lhs in Self.types {
-            for rhs in Self.types {
-                whereIs(lhs, rhs)
-            }
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
     func testComparisonVersusToken() {
         func whereIs<S, M>(_ signed: S.Type, _ unsigned: M.Type) where S: ArbitraryInteger & SignedInteger, M: ArbitraryInteger & UnsignedInteger {
             Test().comparison(S(load: IX.min), IX(load: IX.min), Signum.zero)

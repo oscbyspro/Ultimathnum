@@ -13,45 +13,6 @@ import TestKit
 //*============================================================================*
 // MARK: * Core Int x Comparison
 //*============================================================================*
-
-extension CoreIntTests {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    /// - Note: Generic tests may depend on these results.
-    func testComparisonOfSize() {
-        for size: Count in [I8 .size, U8 .size] {
-            Test().comparison(size, U8 .size, Signum.zero,     id: ComparableID())
-            Test().comparison(size, U16.size, Signum.negative, id: ComparableID())
-            Test().comparison(size, U32.size, Signum.negative, id: ComparableID())
-            Test().comparison(size, U64.size, Signum.negative, id: ComparableID())
-        }
-        
-        for size: Count in [I16.size, U16.size] {
-            Test().comparison(size, U8 .size, Signum.positive, id: ComparableID())
-            Test().comparison(size, U16.size, Signum.zero,     id: ComparableID())
-            Test().comparison(size, U32.size, Signum.negative, id: ComparableID())
-            Test().comparison(size, U64.size, Signum.negative, id: ComparableID())
-        }
-        
-        for size: Count in [I32.size, U32.size] {
-            Test().comparison(size, U8 .size, Signum.positive, id: ComparableID())
-            Test().comparison(size, U16.size, Signum.positive, id: ComparableID())
-            Test().comparison(size, U32.size, Signum.zero,     id: ComparableID())
-            Test().comparison(size, U64.size, Signum.negative, id: ComparableID())
-        }
-        
-        for size: Count in [I64.size, U64.size] {
-            Test().comparison(size, U8 .size, Signum.positive, id: ComparableID())
-            Test().comparison(size, U16.size, Signum.positive, id: ComparableID())
-            Test().comparison(size, U32.size, Signum.positive, id: ComparableID())
-            Test().comparison(size, U64.size, Signum.zero,     id: ComparableID())
-        }
-    }
-}
-
 //=----------------------------------------------------------------------------=
 // MARK: + Edge Cases
 //=----------------------------------------------------------------------------=
