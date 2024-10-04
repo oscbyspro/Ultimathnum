@@ -29,7 +29,7 @@ import TestKit2
         
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             for _ in 0 ..< 128 {
-                let random = T.entropic(through: Shift.max(or: 255), mode: .signed, using: &randomness)
+                let random = T.entropic(through: Shift.max(or: 255), using: &randomness)
                 Ɣexpect(random, as: Nonzero.self, if: !random.isZero)
                 if  let result = Nonzero(exactly: random) {
                     #expect(result.value == random)

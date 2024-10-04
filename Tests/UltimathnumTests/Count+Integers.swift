@@ -101,7 +101,7 @@ import TestKit2
         
         func whereIs<T>(_ source: T.Type) where T: BinaryInteger {
             for _ in 0 ..< 128 {
-                let random = T.entropic(through: Shift.max(or: 255), mode: .signed, using: &randomness)
+                let random = T.entropic(through: Shift.max(or: 255), using: &randomness)
                 
                 if  IX.zero <= random, random <= IX.max {
                     let expectation = Fallible(Count(raw: IX(random)))

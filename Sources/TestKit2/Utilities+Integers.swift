@@ -51,36 +51,34 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static func entropic(
-        size: IX,
-        mode: Signedness = Self.mode,
-        using randomness: inout some Randomness
-    )   -> Self {
-        let index = Shift<Magnitude>(Count(size  - 1))
-        return Self.entropic(through: index, mode: mode, using: &randomness)
-    }
-    
-    @inlinable public static func entropic(
-        through index: Shift<Magnitude>,
-        mode: Signedness = Self.mode,
-        using randomness: inout some Randomness
-    )   -> Self {
-        switch mode {
-        case Signedness  .signed: return Self(raw: Signitude.entropic(through: index, using: &randomness))
-        case Signedness.unsigned: return Self(raw: Magnitude.entropic(through: index, using: &randomness))
-        }
-    }
-    
-    @inlinable public static func entropic(
+        as domain: Domain = Domain.binary,
         using randomness: inout some Randomness
     )   -> Self where Self: SystemsInteger {
-        Self.entropic(through: Shift.max, using: &randomness)
+        
+        Self.entropic(through: Shift.max, as: domain, using: &randomness)
+    }
+    
+    @inlinable public static func entropic(
+        size: IX,
+        as domain: Domain = Domain.binary,
+        using randomness: inout some Randomness
+    )   -> Self {
+        
+        Self.entropic(through: Shift(Count(size - 1)), as: domain, using: &randomness)
     }
     
     @inlinable public static func entropic(
         through index: Shift<Magnitude>,
+        as domain: Domain = Domain.binary,
         using randomness: inout some Randomness
     )   -> Self {
-        let index = IX.random(in:   00000000...index.natural().unwrap(), using: &randomness)
-        return Self.random(through: Shift(unchecked: Count(raw: index)), using: &randomness)
+        
+        let index = Shift.random(through: index, using: &randomness)
+        
+        switch domain {
+        case Domain .binary: return Self(raw: Signitude.random(through: index, using: &randomness))
+        case Domain .finite: return Self(raw: Magnitude.random(through: index, using: &randomness))
+        case Domain.natural: return Self(raw: Self.random(through: index, using: &randomness).magnitude())
+        }
     }
 }

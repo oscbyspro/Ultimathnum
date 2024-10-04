@@ -30,6 +30,10 @@ extension Shift {
     }
     
     @inlinable public static func random(using randomness: inout some Randomness) -> Self where Target: SystemsInteger {
-        Shift(Count(IX.random(in: IX.zero..<IX(size: Target.self), using: &randomness)!))
+        Self.random(through: Self.max, using: &randomness)
+    }
+    
+    @inlinable public static func random(through limit: Self, using randomness: inout some Randomness) -> Self {
+        Shift(Count(IX.random(in: IX.zero...limit.natural().unwrap(), using: &randomness)))
     }
 }

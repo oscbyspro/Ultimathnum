@@ -31,9 +31,9 @@ import TestKit2
             let size = IX(size: type) ?? conditional(debug: 256, release: 4096)
             
             for _ in 0 ..< conditional(debug: 32, release: 1024) {
-                let radix = UX.random(in: 2...36, using: &randomness)
+                let radix = UX.random(in: 2...36,  using: &randomness)
                 let coder = try TextInt(radix: radix)
-                let value = T.entropic(size: size, mode: .signed, using: &randomness)
+                let value = T.entropic(size: size, using: &randomness)
                 try Ɣexpect(coder.lowercased(), bidirectional: value)
                 try Ɣexpect(coder.uppercased(), bidirectional: value)
             }

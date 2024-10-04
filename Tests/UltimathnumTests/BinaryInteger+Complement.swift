@@ -35,7 +35,7 @@ import TestKit2
         
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             for _ in 0 ..< conditional(debug: 256, release: 1024) {
-                let instance = T.entropic(through: Shift.max(or: 255), mode: .signed, using: &randomness)
+                let instance = T.entropic(through: Shift.max(or: 255), using: &randomness)
                 let ones = instance.toggled()
                 let twos = ones.incremented()
                 Ɣexpect(instance, complement: false, is: ones)
@@ -56,7 +56,7 @@ import TestKit2
         
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             for _ in 0 ..< conditional(debug: 256, release: 1024) {
-                let instance = T.entropic(through: Shift.max(or: 255), mode: .signed, using: &randomness)
+                let instance = T.entropic(through: Shift.max(or: 255), using: &randomness)
                 let result = instance.magnitude()
                 let expectation = T.Magnitude(raw: instance.isNegative ? instance.complement() : instance)
                 #expect(result == expectation)
@@ -75,7 +75,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    /// Here we check that the following invariants hold for all edgy intgers:
+    /// Here we check that the following invariants hold for all edgy integers:
     ///
     ///     T.min.complement(false) == T.max
     ///     T.min.complement(true ) == T.min.veto() // (!)

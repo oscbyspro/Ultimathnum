@@ -39,7 +39,7 @@ import TestKit2
         for _ in 0  ..< 128 {
             let radix = IX.random(in: 2...36, using: &randomness)
             let coder = try TextInt(radix: radix)
-            let value = IXL.entropic(size: 256, mode: .signed, using: &randomness)
+            let value = IXL.entropic(size: 256, using: &randomness)
             let lowercase = value.description(as: coder.lowercased())
             let uppercase = value.description(as: coder.uppercased())
             
