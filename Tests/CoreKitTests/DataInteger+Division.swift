@@ -15,7 +15,7 @@ import TestKit2
 // MARK: * Data Integer x Division
 //*============================================================================*
 
-@Suite struct DataIntTestsOnDivision {
+@Suite struct DataIntegerTestsOnDivision {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -27,8 +27,9 @@ import TestKit2
         
         func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerWhereIsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
+                let dividend = [] as [T]
                 let divisor  = Nonzero(T.random(in: T.positives, using: &randomness))
-                try Ɣexpect(bidirectional: [], division: divisor, is: [], T.zero)
+                try Ɣexpect(bidirectional: dividend, division: divisor, is: [], T())
             }
         }
     }
@@ -70,9 +71,12 @@ import TestKit2
         
         func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerWhereIsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
-                let count    = Swift.Int(IX.random(in: 0...32,   using: &randomness))
+                let count    = Swift.Int(IX.random(in: 000...32, using: &randomness))
                 let divisor  = Nonzero(T.random(in: T.positives, using: &randomness))
-                let dividend = [T](count: count, next:{ T.random(using: &randomness) })
+                let dividend = [T](count: count) {
+                    T.random(using: &randomness)
+                }
+                
                 try Ɣexpect(bidirectional: dividend, division: divisor)
             }
         }

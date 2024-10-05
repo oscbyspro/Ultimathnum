@@ -17,15 +17,15 @@ extension MutableDataInt.Body {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Returns the `quotient` and `remainder` of dividing `self` by the `divisor`.
-    ///
-    /// - Requires: The `divisor` must be nonzero.
-    ///
-    /// - Returns: The `remainder` is returned. Note that the value of the `remainder` is less than the `divisor`.
+    /// Returns the `remainder` of dividing `self` by the `divisor`.
     ///
     /// - Note: This operation does not need `write` access.
     ///
     /// - Important: This operation is `unsigned` and `finite`.
+    ///
+    /// ### Development
+    ///
+    /// - TODO: This operation does not need write access.
     ///
     @inlinable public func remainder(_ divisor: borrowing Nonzero<Element>) -> Element {
         var remainder = Element()
@@ -33,6 +33,27 @@ extension MutableDataInt.Body {
         for index: IX in self.indices.reversed() {
             let dividend = Doublet(low: self[unchecked: index], high: remainder)
             remainder = Element.division(dividend, by: divisor).unchecked().remainder
+        }
+        
+        return remainder as Element
+    }
+    
+    /// Returns the `remainder` of dividing `self` by the `divisor`.
+    ///
+    /// - Note: This operation does not need `write` access.
+    ///
+    /// - Important: This operation is `unsigned` and `finite`.
+    ///
+    /// ### Development
+    ///
+    /// - TODO: This operation does not need write access.
+    ///
+    @inlinable public func remainder(_ divider: borrowing Divider21<Element>) -> Element {
+        var remainder = Element()
+        
+        for index: IX in self.indices.reversed() {
+            let dividend = Doublet(low: self[unchecked: index], high: remainder)
+            remainder = divider.division(dividing: dividend).unchecked().remainder
         }
         
         return remainder as Element

@@ -80,9 +80,11 @@ import CoreKit
         if  i.count < dividend.count {
             i.append(o)
             i.append(contentsOf: repeatElement(T.zero, count: dividend.count - i.count))
+        }   else {
+            #expect(o.isZero, sourceLocation: location)
         }
         
-        #expect(i == dividend, "divisor * quotient + remainder", sourceLocation: location)
+        #expect(i == dividend, "invariant: dividend == divisor * quotient + remainder", sourceLocation: location)
     }
     //=--------------------------------------=
     // division: remainder
@@ -91,6 +93,16 @@ import CoreKit
         var i = dividend
         let o = i.withUnsafeMutableBufferPointer {
             MutableDataInt.Body($0)!.remainder(divisor)
+        }
+        
+        #expect(i == dividend,  sourceLocation: location)
+        #expect(o == remainder, sourceLocation: location)
+    }
+    
+    remainder: do {
+        var i = dividend
+        let o = i.withUnsafeMutableBufferPointer {
+            MutableDataInt.Body($0)!.remainder(divider21)
         }
         
         #expect(i == dividend,  sourceLocation: location)
