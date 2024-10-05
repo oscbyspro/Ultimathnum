@@ -18,20 +18,19 @@ import CoreKit
     division divider: Divider<T>,
     is expectation: Division<T, T>,
     at location: SourceLocation = #_sourceLocation
-)   where T: UnsignedInteger & SystemsInteger {
+)   where T: SystemsIntegerWhereIsUnsigned {
     
     let quotient: T = expectation.quotient
     #expect(dividend.division(divider) == expectation, "T/division(_:)", sourceLocation: location)
     #expect(dividend.quotient(divider) == quotient,    "T/quotient(_:)", sourceLocation: location)
 }
 
-
 @inlinable public func Ɣexpect<T>(
     _  dividend: Doublet<T>,
     division divider: Divider21<T>,
     is expectation: Fallible<Division<T, T>>,
     at location: SourceLocation = #_sourceLocation
-)   where T: UnsignedInteger & SystemsInteger {
+)   where T: SystemsIntegerWhereIsUnsigned {
     
     let quotient: Fallible<T> = expectation.map({ $0.quotient })
     #expect(divider.division(dividing: dividend) == expectation, "Divider21/division(dividing:)", sourceLocation: location)
@@ -56,8 +55,7 @@ import CoreKit
     try Ɣexpect(bidirectional: dividend, division: divisor, is: i, o, at: location)
 }
 
-///- Note: It also checks that: `dividend == divisor * quotient + remainder`.
-@inlinable public func  Ɣexpect<T>(
+@inlinable public func Ɣexpect<T>(
     bidirectional dividend: [T],
     division divisor: Nonzero<T>,
     is quotient: [T],
