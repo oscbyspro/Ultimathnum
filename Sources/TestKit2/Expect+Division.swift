@@ -37,3 +37,85 @@ import CoreKit
     #expect(divider.division(dividing: dividend) == expectation, "Divider21/division(dividing:)", sourceLocation: location)
     #expect(divider.quotient(dividing: dividend) == quotient,    "Divider21/quotient(dividing:)", sourceLocation: location)
 }
+
+//*============================================================================*
+// MARK: * Expect x Division x Data Integer
+//*============================================================================*
+
+@inlinable public func Ɣexpect<T>(
+    bidirectional dividend: [T],
+    division divisor: Nonzero<T>,
+    at location: SourceLocation = #_sourceLocation
+)   throws where T: SystemsIntegerWhereIsUnsigned {
+    //=--------------------------------------=
+    var i = dividend
+    let o = i.withUnsafeMutableBufferPointer {
+        MutableDataInt.Body($0)!.divisionSetQuotientGetRemainder(divisor)
+    }
+    //=--------------------------------------=
+    try Ɣexpect(bidirectional: dividend, division: divisor, is: i, o, at: location)
+}
+
+///- Note: It also checks that: `dividend == divisor * quotient + remainder`.
+@inlinable public func  Ɣexpect<T>(
+    bidirectional dividend: [T],
+    division divisor: Nonzero<T>,
+    is quotient: [T],
+    _  remainder: T,
+    at location: SourceLocation = #_sourceLocation
+)   throws where T: SystemsIntegerWhereIsUnsigned {
+    //=--------------------------------------=
+    try #require(dividend.count >= quotient.count, sourceLocation: location)
+    //=--------------------------------------=
+    let divider21 = Divider21(divisor)
+    //=--------------------------------------=
+    // reversed: divisor * quotient + remainder
+    //=--------------------------------------=
+    reversed: do {
+        var i = quotient
+        let o = i.withUnsafeMutableBufferPointer {
+            MutableDataInt.Body($0)!.multiply(by: divisor.value, add: remainder)
+        }
+        
+        if  i.count < dividend.count {
+            i.append(o)
+            i.append(contentsOf: repeatElement(T.zero, count: dividend.count - i.count))
+        }
+        
+        #expect(i == dividend, "divisor * quotient + remainder", sourceLocation: location)
+    }
+    //=--------------------------------------=
+    // division: remainder
+    //=--------------------------------------=
+    remainder: do {
+        var i = dividend
+        let o = i.withUnsafeMutableBufferPointer {
+            MutableDataInt.Body($0)!.remainder(divisor)
+        }
+        
+        #expect(i == dividend,  sourceLocation: location)
+        #expect(o == remainder, sourceLocation: location)
+    }
+    //=--------------------------------------=
+    // division: quotient and remainder
+    //=--------------------------------------=
+    division: do {
+        var i = dividend
+        let o = i.withUnsafeMutableBufferPointer {
+            MutableDataInt.Body($0)!.divisionSetQuotientGetRemainder(divisor)
+        }
+        
+        #expect(i == quotient,  sourceLocation: location)
+        #expect(o == remainder, sourceLocation: location)
+    }
+    
+    division: do {
+        var i = dividend
+        let o = i.withUnsafeMutableBufferPointer {
+            MutableDataInt.Body($0)!.divisionSetQuotientGetRemainder(divider21)
+        }
+        
+        #expect(i == quotient,  sourceLocation: location)
+        #expect(o == remainder, sourceLocation: location)
+    }
+}
