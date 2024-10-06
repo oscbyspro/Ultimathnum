@@ -39,6 +39,22 @@ extension EdgyInteger {
         Range(uncheckedBounds: (Self.min, Self.lsb))
     }
 }
+//*============================================================================*
+// MARK: * Utilities x Integers x Partitions
+//*============================================================================*
+
+extension BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// Returns the `floor` and `ceil` of `division` by `2`.
+    @inlinable public consuming func floorceil() -> (floor: Self, ceil: Self)? {
+        guard let division = self.division(Nonzero(2)).optional() else { return nil }
+        return (floor: division.floor().unwrap(), ceil: division.ceil().unwrap())
+    }
+}
 
 //*============================================================================*
 // MARK: * Utilities x Integers x Randomness
