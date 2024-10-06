@@ -29,7 +29,7 @@ import TestKit2
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
                 let dividend = [] as [T]
                 let divisor  = Nonzero(T.random(in: T.positives, using: &randomness))
-                try Ɣexpect(bidirectional: dividend, division: divisor, is: [], T())
+                try Ɣexpect(bidirectional: dividend, division: divisor, is: [], and: T())
             }
         }
     }
@@ -43,7 +43,7 @@ import TestKit2
                 let dividend = T.random(using: &randomness)
                 let divisor  = Nonzero(T.random(in: T.positives, using: &randomness))
                 let expectation: Division = dividend.division(divisor)
-                try Ɣexpect(bidirectional: [dividend], division: divisor, is: [expectation.quotient], expectation.remainder)
+                try Ɣexpect(bidirectional: [dividend], division: divisor, is: [expectation.quotient], and: expectation.remainder)
             }
         }
     }
@@ -54,13 +54,13 @@ import TestKit2
         
         func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerWhereIsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
-                let dividend = Doublet(low: T.random(using: &randomness), high: T.random(using: &randomness))
+                let dividend = [T.random(using: &randomness), T.random(using: &randomness)]
                 let divisor  = Nonzero(T.random(in: T.positives, using: &randomness))
                 var remainder = T.zero
                 var quotient  = dividend
-                (quotient.high, remainder) = T.division(Doublet(low: quotient.high, high: remainder), by: divisor).unwrap().components()
-                (quotient.low,  remainder) = T.division(Doublet(low: quotient.low,  high: remainder), by: divisor).unwrap().components()
-                try Ɣexpect(bidirectional: [dividend.low, dividend.high], division: divisor, is: [quotient.low, quotient.high], remainder)
+                (quotient[1], remainder) = T.division(Doublet(low: quotient[1], high: remainder), by: divisor).unwrap().components()
+                (quotient[0], remainder) = T.division(Doublet(low: quotient[0], high: remainder), by: divisor).unwrap().components()
+                try Ɣexpect(bidirectional: dividend, division: divisor, is: quotient, and: remainder)
             }
         }
     }

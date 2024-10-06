@@ -52,14 +52,14 @@ import CoreKit
         MutableDataInt.Body($0)!.divisionSetQuotientGetRemainder(divisor)
     }
     //=--------------------------------------=
-    try Ɣexpect(bidirectional: dividend, division: divisor, is: i, o, at: location)
+    try Ɣexpect(bidirectional: dividend, division: divisor, is: i, and: o, at: location)
 }
 
 @inlinable public func Ɣexpect<T>(
     bidirectional dividend: [T],
     division divisor: Nonzero<T>,
     is quotient: [T],
-    _  remainder: T,
+    and remainder: T,
     at location: SourceLocation = #_sourceLocation
 )   throws where T: SystemsIntegerWhereIsUnsigned {
     //=--------------------------------------=
