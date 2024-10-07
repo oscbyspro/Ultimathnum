@@ -71,4 +71,39 @@ extension Array where Element: SystemsIntegerWhereIsUnsigned {
             try action(MutableDataInt.Body($0)!)
         }
     }
+    
+    @inlinable public borrowing func asBinaryIntegerBodyNormalized() -> SubSequence {
+        self[...].asBinaryIntegerBodyNormalized()
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Sub Sequence
+//=----------------------------------------------------------------------------=
+
+extension ArraySlice where Element: SystemsIntegerWhereIsUnsigned {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public borrowing func withUnsafeBinaryIntegerBody<T>(
+        _ action: (DataInt<Element>.Body) throws -> T
+    )   rethrows -> T where Self == Array<Element>.SubSequence {
+        try self.withUnsafeBufferPointer {
+            try action(DataInt.Body($0)!)
+        }
+    }
+    
+    @inlinable public mutating func withUnsafeMutableBinaryIntegerBody<T>(
+        _ action: (MutableDataInt<Element>.Body) throws -> T
+    )   rethrows -> T where Self == Array<Element>.SubSequence {
+        try self.withUnsafeMutableBufferPointer {
+            try action(MutableDataInt.Body($0)!)
+        }
+    }
+    
+    @inlinable public consuming func asBinaryIntegerBodyNormalized() -> SubSequence {
+        while self.last == 0 { self.removeLast() }; return self
+    }
 }

@@ -20,23 +20,23 @@ extension EdgyInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public static var all: ClosedRange<Self> {
-        ClosedRange(uncheckedBounds: (Self.min, Self.max))
+        Self.min  ... Self.max
     }
     
     @inlinable public static var negatives: Range<Self> {
-        Range(uncheckedBounds: (Self.min, Self.zero))
+        Self.min  ..< Self.zero
     }
     
     @inlinable public static var positives: ClosedRange<Self> {
-        ClosedRange(uncheckedBounds: (Self.lsb, Self.max))
+        Self.lsb  ... Self.max
     }
     
     @inlinable public static var nonnegatives: ClosedRange<Self> {
-        ClosedRange(uncheckedBounds: (Self.zero, Self.max))
+        Self.zero ... Self.max
     }
     
     @inlinable public static var nonpositives: Range<Self> {
-        Range(uncheckedBounds: (Self.min, Self.lsb))
+        Self.min  ..< Self.lsb
     }
 }
 //*============================================================================*

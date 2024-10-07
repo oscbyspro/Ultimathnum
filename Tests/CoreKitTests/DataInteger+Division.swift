@@ -35,16 +35,16 @@ import TestKit2
     }
     
     @Test("DataInt/division(_:) - 1-by-1 [uniform]", arguments: coreIntegersWhereIsUnsigned, fuzzers)
-    func division11(type: any CoreIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    func division11(type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerWhereIsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
                 let divisor   = Nonzero(T.random(in: T.positives, using: &randomness))
-                let remainder = T.random(in: 000..<divisor.value, using: &randomness)!
+                let remainder = (T).random(in: 0..<divisor.value, using: &randomness)!
                 let quotient  = [T].random(count: 1, using: &randomness) + [0]
                 var dividend  = quotient
-
+                
                 try dividend.withUnsafeMutableBinaryIntegerBody { product in
                     try #require(product.multiply(by: divisor.value, add: remainder).isZero)
                 }
@@ -55,13 +55,13 @@ import TestKit2
     }
     
     @Test("DataInt/division(_:) - X-by-1 [uniform]", arguments: coreIntegersWhereIsUnsigned, fuzzers)
-    func divisionX1(type: any CoreIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    func divisionX1(type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerWhereIsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
                 let divisor   = Nonzero(T.random(in: T.positives, using: &randomness))
-                let remainder = T.random(in: 000..<divisor.value, using: &randomness)!
+                let remainder = (T).random(in: 0..<divisor.value, using: &randomness)!
                 let quotient  = [T].random(count: 00...32, using: &randomness) + [0]
                 var dividend  = quotient
                 

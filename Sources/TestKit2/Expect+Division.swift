@@ -65,8 +65,8 @@ import CoreKit
     //=--------------------------------------=
     remainder: do {
         var i = dividend
-        let o = i.withUnsafeMutableBufferPointer {
-            MutableDataInt.Body($0)!.remainder(divisor)
+        let o = i.withUnsafeMutableBinaryIntegerBody {
+            $0.remainder(divisor)
         }
         
         #expect(i == dividend,  "DataInt/remainder(_:)", sourceLocation: location)
@@ -75,8 +75,8 @@ import CoreKit
     
     remainder: do {
         var i = dividend
-        let o = i.withUnsafeMutableBufferPointer {
-            MutableDataInt.Body($0)!.remainder(divider21)
+        let o = i.withUnsafeMutableBinaryIntegerBody {
+            $0.remainder(divider21)
         }
         
         #expect(i == dividend,  "DataInt/remainder(_:) - Divider21", sourceLocation: location)
@@ -87,8 +87,8 @@ import CoreKit
     //=--------------------------------------=
     division: do {
         var i = dividend
-        let o = i.withUnsafeMutableBufferPointer {
-            MutableDataInt.Body($0)!.divisionSetQuotientGetRemainder(divisor)
+        let o = i.withUnsafeMutableBinaryIntegerBody {
+            $0.divisionSetQuotientGetRemainder(divisor)
         }
         
         #expect(i == quotient,  "DataInt/divisionSetQuotientGetRemainder(_:)", sourceLocation: location)
@@ -97,8 +97,8 @@ import CoreKit
     
     division: do {
         var i = dividend
-        let o = i.withUnsafeMutableBufferPointer {
-            MutableDataInt.Body($0)!.divisionSetQuotientGetRemainder(divider21)
+        let o = i.withUnsafeMutableBinaryIntegerBody {
+            $0.divisionSetQuotientGetRemainder(divider21)
         }
         
         #expect(i == quotient,  "DataInt/divisionSetQuotientGetRemainder(_:) - Divider21", sourceLocation: location)

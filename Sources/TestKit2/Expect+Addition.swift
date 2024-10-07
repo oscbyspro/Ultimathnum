@@ -26,18 +26,14 @@ import CoreKit
     //=--------------------------------------=
     try #require(integer.count >= other.count)
     //=--------------------------------------=
-    var normalized = other[...]
-    while normalized.last == 0 {
-        normalized.removeLast()
-    }
+    let normalized = other.asBinaryIntegerBodyNormalized()
     //=--------------------------------------=
     // increment: none + bit
     //=--------------------------------------=
     if  normalized.count == 0, bit {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return value.increment().error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            value.increment().error
         }
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
@@ -45,9 +41,8 @@ import CoreKit
     
     if  normalized.count == 0 {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return value.increment(by: bit).error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            value.increment(by: bit).error
         }
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
@@ -57,9 +52,8 @@ import CoreKit
     //=--------------------------------------=
     if  integer.count >= 1, normalized.count == 1, !bit {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return value.increment(by: normalized.first!).error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            value.increment(by: normalized.first!).error
         }
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
@@ -69,9 +63,8 @@ import CoreKit
     //=--------------------------------------=
     if  integer.count >= 1, normalized.count == 1 {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return value.increment(by: normalized.first!, plus: bit).error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            value.increment(by: normalized.first!, plus: bit).error
         }
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
@@ -81,11 +74,9 @@ import CoreKit
     //=--------------------------------------=
     for many in [normalized, other[...]] where integer.count >= many.count && !bit {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return (many).withUnsafeBufferPointer {
-                let many = DataInt.Body($0)!
-                return value.increment(by: many).error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            many.withUnsafeBinaryIntegerBody { many in
+                value.increment(by: many).error
             }
         }
         
@@ -96,11 +87,9 @@ import CoreKit
     //=--------------------------------------=
     for many in [normalized, other[...]] {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return (many).withUnsafeBufferPointer {
-                let many = DataInt.Body($0)!
-                return value.increment(by: many, plus: bit).error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            many.withUnsafeBinaryIntegerBody { many in
+                value.increment(by: many, plus: bit).error
             }
         }
         
@@ -111,10 +100,8 @@ import CoreKit
     //=--------------------------------------=
     for var many in [normalized, other[...]] {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return (many).withUnsafeMutableBufferPointer {
-                let many = MutableDataInt.Body($0)!
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            many.withUnsafeMutableBinaryIntegerBody { many in
                 many.toggle(carrying: false).discard()
                 return value.increment(toggling: DataInt.Body(many), plus: bit).error
             }
@@ -125,10 +112,8 @@ import CoreKit
     
     for var many in [normalized, other[...]] where !bit && !normalized.isEmpty {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return (many).withUnsafeMutableBufferPointer {
-                let many = MutableDataInt.Body($0)!
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            many.withUnsafeMutableBinaryIntegerBody { many in
                 many.toggle(carrying: true).discard()
                 return value.increment(toggling: DataInt.Body(many), plus: true).error
             }
@@ -148,18 +133,14 @@ import CoreKit
     //=--------------------------------------=
     try #require(integer.count >= other.count)
     //=--------------------------------------=
-    var normalized = other[...]
-    while normalized.last == 0 {
-        normalized.removeLast()
-    }
+    let normalized = other.asBinaryIntegerBodyNormalized()
     //=--------------------------------------=
     // decrement: none + bit
     //=--------------------------------------=
     if  normalized.count == 0, bit {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return value.decrement().error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            value.decrement().error
         }
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
@@ -167,9 +148,8 @@ import CoreKit
     
     if  normalized.count == 0 {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return value.decrement(by: bit).error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            value.decrement(by: bit).error
         }
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
@@ -179,9 +159,8 @@ import CoreKit
     //=--------------------------------------=
     if  integer.count >= 1, normalized.count == 1, !bit {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return value.decrement(by: normalized.first!).error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            value.decrement(by: normalized.first!).error
         }
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
@@ -191,9 +170,8 @@ import CoreKit
     //=--------------------------------------=
     if  integer.count >= 1, normalized.count == 1 {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return value.decrement(by: normalized.first!, plus: bit).error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            value.decrement(by: normalized.first!, plus: bit).error
         }
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
@@ -203,11 +181,9 @@ import CoreKit
     //=--------------------------------------=
     for many in [normalized, other[...]] where !bit {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return (many).withUnsafeBufferPointer {
-                let many = DataInt.Body($0)!
-                return value.decrement(by: many).error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            many.withUnsafeBinaryIntegerBody { many in
+                value.decrement(by: many).error
             }
         }
         
@@ -218,11 +194,9 @@ import CoreKit
     //=--------------------------------------=
     for many in [normalized, other[...]] {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return (many).withUnsafeBufferPointer {
-                let many = DataInt.Body($0)!
-                return value.decrement(by: many, plus: bit).error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            many.withUnsafeBinaryIntegerBody { many in
+                value.decrement(by: many, plus: bit).error
             }
         }
         
@@ -233,10 +207,8 @@ import CoreKit
     //=--------------------------------------=
     for var many in [normalized, other[...]] {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return (many).withUnsafeMutableBufferPointer {
-                let many = MutableDataInt.Body($0)!
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            many.withUnsafeMutableBinaryIntegerBody { many in
                 many.toggle(carrying: false).discard()
                 return value.decrement(toggling: DataInt.Body(many), plus: bit).error
             }
@@ -247,10 +219,8 @@ import CoreKit
     
     for var many in [normalized, other[...]] where !bit && !normalized.isEmpty {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return (many).withUnsafeMutableBufferPointer {
-                let many = MutableDataInt.Body($0)!
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            many.withUnsafeMutableBinaryIntegerBody { many in
                 many.toggle(carrying: true).discard()
                 return value.decrement(toggling: DataInt.Body(many), plus: true).error
             }
@@ -275,20 +245,15 @@ import CoreKit
     //=--------------------------------------=
     try #require(integer.count > other.count)
     //=--------------------------------------=
-    var normalized = other[...]
-    while normalized.last == 0 {
-        normalized.removeLast()
-    }
+    let normalized = other.asBinaryIntegerBodyNormalized()
     //=--------------------------------------=
     // increment: many × some
     //=--------------------------------------=
     for many in [normalized, other[...]] where increment.isZero {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return (many).withUnsafeBufferPointer {
-                let many = DataInt.Body($0)!
-                return value.increment(by: many, times: multiplier).error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            many.withUnsafeBinaryIntegerBody { many in
+                value.increment(by: many, times: multiplier).error
             }
         }
         
@@ -299,11 +264,9 @@ import CoreKit
     //=--------------------------------------=
     for many in [normalized, other[...]] {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return (many).withUnsafeBufferPointer {
-                let many = DataInt.Body($0)!
-                return value.increment(by: many, times: multiplier, plus: increment).error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            many.withUnsafeBinaryIntegerBody { many in
+                value.increment(by: many, times: multiplier, plus: increment).error
             }
         }
         
@@ -314,10 +277,8 @@ import CoreKit
     //=--------------------------------------=
     for many in [normalized, other[...]] where multiplier <= 16 {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return (many).withUnsafeBufferPointer {
-                let many = DataInt.Body($0)!
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            many.withUnsafeBinaryIntegerBody { many in
                 var error: Bool = value.increment(by: increment).error
                 
                 for _ in 0 ..< multiplier {
@@ -343,20 +304,15 @@ import CoreKit
     //=--------------------------------------=
     try #require(integer.count > other.count)
     //=--------------------------------------=
-    var normalized = other[...]
-    while normalized.last == 0 {
-        normalized.removeLast()
-    }
+    let normalized = other.asBinaryIntegerBodyNormalized()
     //=--------------------------------------=
     // decrement: many × some
     //=--------------------------------------=
     for many in [normalized, other[...]] where increment.isZero {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return (many).withUnsafeBufferPointer {
-                let many = DataInt.Body($0)!
-                return value.decrement(by: many, times: multiplier).error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            many.withUnsafeBinaryIntegerBody { many in
+                value.decrement(by: many, times: multiplier).error
             }
         }
         
@@ -367,11 +323,9 @@ import CoreKit
     //=--------------------------------------=
     for many in [normalized, other[...]] {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return (many).withUnsafeBufferPointer {
-                let many = DataInt.Body($0)!
-                return value.decrement(by: many, times: multiplier, plus: increment).error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            many.withUnsafeBinaryIntegerBody { many in
+                value.decrement(by: many, times: multiplier, plus: increment).error
             }
         }
         
@@ -382,10 +336,8 @@ import CoreKit
     //=--------------------------------------=
     for many in [normalized, other[...]] where multiplier <= 16 {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return (many).withUnsafeBufferPointer {
-                let many = DataInt.Body($0)!
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            many.withUnsafeBinaryIntegerBody { many in
                 var error: Bool = value.decrement(by: increment).error
                 
                 for _ in 0 ..< multiplier {
@@ -420,9 +372,8 @@ import CoreKit
     //=--------------------------------------=
     if !pattern {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return value.increment(by: bit).error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            value.increment(by: bit).error
         }
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
@@ -432,9 +383,8 @@ import CoreKit
     //=--------------------------------------=
     if !bit {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return value.incrementSameSize(repeating: pattern).error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            value.incrementSameSize(repeating: pattern).error
         }
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
@@ -444,9 +394,8 @@ import CoreKit
     //=--------------------------------------=
     always: do {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return value.incrementSameSize(repeating: pattern, plus: bit).error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            value.incrementSameSize(repeating: pattern, plus: bit).error
         }
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
@@ -477,9 +426,8 @@ import CoreKit
     //=--------------------------------------=
     if !pattern {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return value.decrement(by: bit).error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            value.decrement(by: bit).error
         }
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
@@ -489,9 +437,8 @@ import CoreKit
     //=--------------------------------------=
     if !bit {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return value.decrementSameSize(repeating: pattern).error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            value.decrementSameSize(repeating: pattern).error
         }
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
@@ -501,9 +448,8 @@ import CoreKit
     //=--------------------------------------=
     always: do {
         var value = integer
-        let error = value.withUnsafeMutableBufferPointer {
-            let value = MutableDataInt.Body($0)!
-            return value.decrementSameSize(repeating: pattern, plus: bit).error
+        let error = value.withUnsafeMutableBinaryIntegerBody { value in
+            value.decrementSameSize(repeating: pattern, plus: bit).error
         }
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)

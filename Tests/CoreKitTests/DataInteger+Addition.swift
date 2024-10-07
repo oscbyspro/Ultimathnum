@@ -62,9 +62,9 @@ import TestKit2
                 }
                 
                 var res = lhs
-                let err = res.withUnsafeMutableBufferPointer { res in
-                    rhs.withUnsafeBufferPointer { rhs in
-                        MutableDataInt.Body(res)!.increment(by: DataInt.Body(rhs)!, plus: bit).error
+                let err = res.withUnsafeMutableBinaryIntegerBody { res in
+                    rhs.withUnsafeBinaryIntegerBody { rhs in
+                        res.increment(by: rhs, plus: bit).error
                     }
                 }
                 
@@ -91,9 +91,9 @@ import TestKit2
                 }
                 
                 var res = lhs
-                let err = res.withUnsafeMutableBufferPointer { res in
-                    rhs.withUnsafeBufferPointer { rhs in
-                        MutableDataInt.Body(res)!.decrement(by: DataInt.Body(rhs)!, plus: bit).error
+                let err = res.withUnsafeMutableBinaryIntegerBody { res in
+                    rhs.withUnsafeBinaryIntegerBody { rhs in
+                        res.decrement(by: rhs, plus: bit).error
                     }
                 }
                 
@@ -125,12 +125,12 @@ import TestKit2
                 let add = T.random(using: &randomness)
                 
                 var res = lhs
-                let err = res.withUnsafeMutableBufferPointer { res in
-                    rhs.withUnsafeBufferPointer { rhs in
+                let err = res.withUnsafeMutableBinaryIntegerBody { res in
+                    rhs.withUnsafeBinaryIntegerBody { rhs in
                         let a = mul.floorceil()!
                         let b = add.floorceil()!
-                        let x = MutableDataInt.Body(res)!.increment(by: DataInt.Body(rhs)!, times: a.floor, plus: b.floor).error
-                        let y = MutableDataInt.Body(res)!.increment(by: DataInt.Body(rhs)!, times: a.ceil,  plus: b.ceil ).error
+                        let x = res.increment(by: rhs, times: a.floor, plus: b.floor).error
+                        let y = res.increment(by: rhs, times: a.ceil,  plus: b.ceil ).error
                         return (x || y)
                     }
                 }
@@ -159,12 +159,12 @@ import TestKit2
                 let add = T.random(using: &randomness)
                 
                 var res = lhs
-                let err = res.withUnsafeMutableBufferPointer { res in
-                    rhs.withUnsafeBufferPointer { rhs in
+                let err = res.withUnsafeMutableBinaryIntegerBody { res in
+                    rhs.withUnsafeBinaryIntegerBody { rhs in
                         let a = mul.floorceil()!
                         let b = add.floorceil()!
-                        let x = MutableDataInt.Body(res)!.decrement(by: DataInt.Body(rhs)!, times: a.floor, plus: b.floor).error
-                        let y = MutableDataInt.Body(res)!.decrement(by: DataInt.Body(rhs)!, times: a.ceil,  plus: b.ceil ).error
+                        let x = res.decrement(by: rhs, times: a.floor, plus: b.floor).error
+                        let y = res.decrement(by: rhs, times: a.ceil,  plus: b.ceil ).error
                         return (x || y)
                     }
                 }
@@ -193,9 +193,9 @@ import TestKit2
                 let bit = Bool.random(using: &randomness.stdlib)
                                 
                 var res = lhs
-                let err = res.withUnsafeMutableBufferPointer { res in
-                    Array(repeating: T(repeating: Bit(rhs)), count: lhs.count).withUnsafeBufferPointer { rhs in
-                        MutableDataInt.Body(res)!.increment(by: DataInt.Body(rhs)!, plus: bit).error
+                let err = res.withUnsafeMutableBinaryIntegerBody { res in
+                    Array(repeating: T(repeating: Bit(rhs)), count: lhs.count).withUnsafeBinaryIntegerBody { rhs in
+                        res.increment(by: rhs, plus: bit).error
                     }
                 }
                 
@@ -219,9 +219,9 @@ import TestKit2
                 let bit = Bool.random(using: &randomness.stdlib)
                                 
                 var res = lhs
-                let err = res.withUnsafeMutableBufferPointer { res in
-                    Array(repeating: T(repeating: Bit(rhs)), count: lhs.count).withUnsafeBufferPointer { rhs in
-                        MutableDataInt.Body(res)!.decrement(by: DataInt.Body(rhs)!, plus: bit).error
+                let err = res.withUnsafeMutableBinaryIntegerBody { res in
+                    Array(repeating: T(repeating: Bit(rhs)), count: lhs.count).withUnsafeBinaryIntegerBody { rhs in
+                        res.decrement(by: rhs, plus: bit).error
                     }
                 }
                 
