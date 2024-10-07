@@ -26,10 +26,10 @@ import TestKit2
         try  whereIs(type)
         
         func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerWhereIsUnsigned {
-            for _ in 0 ..<  conditional(debug:     64, release: 1024) {
-                let value = [T ].random(count: 1...32, using: &randomness)
-                let major = (IX).random(in: 0..<IX(value.count), using: &randomness)!
-                let minor = (IX).random(in: 0..<IX(size:T.self), using: &randomness)!
+            for _ in 0 ..< conditional(debug:     64, release: 1024) {
+                let value = [T].random(count: 1...32, using: &randomness)
+                let major = (IX.random(in: 0..<IX(value.count), using: &randomness)!)
+                let minor = (IX.random(in: 0..<IX(size:T.self), using: &randomness)!)
                 let environment = T.random(using:  &randomness)
                 
                 try whereIs(value, major: major, minor: minor, environment: environment)
@@ -41,10 +41,10 @@ import TestKit2
         func whereIs<T>(_ value: [T], major: IX, minor: IX, environment: T) throws where T: SystemsIntegerWhereIsUnsigned {
             var expectation = value
             expectation.removeLast(Swift.Int(major))
-            expectation.insert(contentsOf: repeatElement(environment, count: Swift.Int(major + 1)), at: .zero)
+            expectation.insert(contentsOf: repeatElement(environment, count: Swift.Int(major + 1)), at: 0)
             
             expectation.withUnsafeMutableBinaryIntegerBody {
-                _ = $0.multiply(by: T.lsb << (minor), add: environment >> (IX(size: T.self) - minor))
+                _ = $0.multiply(by: T.lsb << minor, add: environment >> (IX(size: T.self) - minor))
             }
             
             expectation.removeFirst()
@@ -57,10 +57,10 @@ import TestKit2
         try  whereIs(type)
         
         func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerWhereIsUnsigned {
-            for _ in 0 ..<  conditional(debug:     64, release: 1024) {
-                let value = [T ].random(count: 1...32, using: &randomness)
-                let major = (IX).random(in: 0..<IX(value.count), using: &randomness)!
-                let minor = (IX).random(in: 0..<IX(size:T.self), using: &randomness)!
+            for _ in 0 ..< conditional(debug:     64, release: 1024) {
+                let value = [T].random(count: 1...32, using: &randomness)
+                let major = (IX.random(in: 0..<IX(value.count), using: &randomness)!)
+                let minor = (IX.random(in: 0..<IX(size:T.self), using: &randomness)!)
                 let environment = T.random(using:  &randomness)
                 
                 try whereIs(value, major: major, minor: minor, environment: environment)
