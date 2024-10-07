@@ -42,21 +42,7 @@ import CoreKit
 //*============================================================================*
 
 @inlinable public func Ɣexpect<T>(
-    bidirectional dividend: [T],
-    division divisor: Nonzero<T>,
-    at location: SourceLocation = #_sourceLocation
-)   throws where T: SystemsIntegerWhereIsUnsigned {
-    //=--------------------------------------=
-    var i = dividend
-    let o = i.withUnsafeMutableBufferPointer {
-        MutableDataInt.Body($0)!.divisionSetQuotientGetRemainder(divisor)
-    }
-    //=--------------------------------------=
-    try Ɣexpect(bidirectional: dividend, division: divisor, is: i, and: o, at: location)
-}
-
-@inlinable public func Ɣexpect<T>(
-    bidirectional dividend: [T],
+    _  dividend: [T],
     division divisor: Nonzero<T>,
     is quotient: [T],
     and remainder: T,
@@ -67,22 +53,12 @@ import CoreKit
     //=--------------------------------------=
     let divider21 = Divider21(divisor)
     //=--------------------------------------=
-    // reversed: divisor * quotient + remainder
+    // division: 1-by-1
     //=--------------------------------------=
-    reversed: do {
-        var i = quotient
-        let o = i.withUnsafeMutableBufferPointer {
-            MutableDataInt.Body($0)!.multiply(by: divisor.value, add: remainder)
-        }
-        
-        if  i.count < dividend.count {
-            i.append(o)
-            i.append(contentsOf: repeatElement(T.zero, count: dividend.count - i.count))
-        }   else {
-            #expect(o.isZero, sourceLocation: location)
-        }
-        
-        #expect(i == dividend, "invariant: dividend == divisor * quotient + remainder", sourceLocation: location)
+    if  dividend.count == 1 {
+        let expectation: Division = dividend.first!.division(divisor)
+        #expect([expectation.quotient ] == quotient,  "BinaryInteger/division(_:)", sourceLocation: location)
+        #expect((expectation.remainder) == remainder, "BinaryInteger/division(_:)", sourceLocation: location)
     }
     //=--------------------------------------=
     // division: remainder
@@ -93,8 +69,8 @@ import CoreKit
             MutableDataInt.Body($0)!.remainder(divisor)
         }
         
-        #expect(i == dividend,  sourceLocation: location)
-        #expect(o == remainder, sourceLocation: location)
+        #expect(i == dividend,  "DataInt/remainder(_:)", sourceLocation: location)
+        #expect(o == remainder, "DataInt/remainder(_:)", sourceLocation: location)
     }
     
     remainder: do {
@@ -103,8 +79,8 @@ import CoreKit
             MutableDataInt.Body($0)!.remainder(divider21)
         }
         
-        #expect(i == dividend,  sourceLocation: location)
-        #expect(o == remainder, sourceLocation: location)
+        #expect(i == dividend,  "DataInt/remainder(_:) - Divider21", sourceLocation: location)
+        #expect(o == remainder, "DataInt/remainder(_:) - Divider21", sourceLocation: location)
     }
     //=--------------------------------------=
     // division: quotient and remainder
@@ -115,8 +91,8 @@ import CoreKit
             MutableDataInt.Body($0)!.divisionSetQuotientGetRemainder(divisor)
         }
         
-        #expect(i == quotient,  sourceLocation: location)
-        #expect(o == remainder, sourceLocation: location)
+        #expect(i == quotient,  "DataInt/divisionSetQuotientGetRemainder(_:)", sourceLocation: location)
+        #expect(o == remainder, "DataInt/divisionSetQuotientGetRemainder(_:)", sourceLocation: location)
     }
     
     division: do {
@@ -125,7 +101,7 @@ import CoreKit
             MutableDataInt.Body($0)!.divisionSetQuotientGetRemainder(divider21)
         }
         
-        #expect(i == quotient,  sourceLocation: location)
-        #expect(o == remainder, sourceLocation: location)
+        #expect(i == quotient,  "DataInt/divisionSetQuotientGetRemainder(_:) - Divider21", sourceLocation: location)
+        #expect(o == remainder, "DataInt/divisionSetQuotientGetRemainder(_:) - Divider21", sourceLocation: location)
     }
 }

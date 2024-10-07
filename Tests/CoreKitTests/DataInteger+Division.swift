@@ -18,7 +18,7 @@ import TestKit2
 @Suite struct DataIntegerTestsOnDivision {
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests
+    // MARK: Tests x Many ÷ Some
     //=------------------------------------------------------------------------=
     
     @Test("DataInt/division(_:) - 0-by-1 [uniform]", arguments: coreIntegersWhereIsUnsigned, fuzzers)
@@ -29,55 +29,47 @@ import TestKit2
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
                 let dividend = [] as [T]
                 let divisor  = Nonzero(T.random(in: T.positives, using: &randomness))
-                try Ɣexpect(bidirectional: dividend, division: divisor, is: [], and: T())
+                try Ɣexpect(dividend, division: divisor, is: [], and: T())
             }
         }
     }
     
     @Test("DataInt/division(_:) - 1-by-1 [uniform]", arguments: coreIntegersWhereIsUnsigned, fuzzers)
-    func division11(type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    func division11(type: any CoreIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerWhereIsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
-                let dividend = T.random(using: &randomness)
-                let divisor  = Nonzero(T.random(in: T.positives, using: &randomness))
-                let expectation: Division = dividend.division(divisor)
-                try Ɣexpect(bidirectional: [dividend], division: divisor, is: [expectation.quotient], and: expectation.remainder)
-            }
-        }
-    }
-    
-    @Test("DataInt/division(_:) - 2-by-1 [uniform]", arguments: coreIntegersWhereIsUnsigned, fuzzers)
-    func division21(type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
-        
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerWhereIsUnsigned {
-            for _ in 0 ..< conditional(debug: 64, release: 1024) {
-                let dividend = [T.random(using: &randomness), T.random(using: &randomness)]
-                let divisor  = Nonzero(T.random(in: T.positives, using: &randomness))
-                var remainder = T.zero
-                var quotient  = dividend
-                (quotient[1], remainder) = T.division(Doublet(low: quotient[1], high: remainder), by: divisor).unwrap().components()
-                (quotient[0], remainder) = T.division(Doublet(low: quotient[0], high: remainder), by: divisor).unwrap().components()
-                try Ɣexpect(bidirectional: dividend, division: divisor, is: quotient, and: remainder)
+                let divisor   = Nonzero(T.random(in: T.positives, using: &randomness))
+                let remainder = T.random(in: 000..<divisor.value, using: &randomness)!
+                let quotient  = [T].random(count: 1, using: &randomness) + [0]
+                var dividend  = quotient
+
+                try dividend.withUnsafeMutableBinaryIntegerBody { product in
+                    try #require(product.multiply(by: divisor.value, add: remainder).isZero)
+                }
+                
+                try Ɣexpect(dividend, division: divisor, is: quotient, and: remainder)
             }
         }
     }
     
     @Test("DataInt/division(_:) - X-by-1 [uniform]", arguments: coreIntegersWhereIsUnsigned, fuzzers)
-    func divisionX1(type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    func divisionX1(type: any CoreIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerWhereIsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
-                let count    = Swift.Int(IX.random(in: 000...32, using: &randomness))
-                let divisor  = Nonzero(T.random(in: T.positives, using: &randomness))
-                let dividend = [T](count: count) {
-                    T.random(using: &randomness)
+                let divisor   = Nonzero(T.random(in: T.positives, using: &randomness))
+                let remainder = T.random(in: 000..<divisor.value, using: &randomness)!
+                let quotient  = [T].random(count: 00...32, using: &randomness) + [0]
+                var dividend  = quotient
+                
+                try dividend.withUnsafeMutableBinaryIntegerBody { product in
+                    try #require(product.multiply(by: divisor.value, add: remainder).isZero)
                 }
                 
-                try Ɣexpect(bidirectional: dividend, division: divisor)
+                try Ɣexpect(dividend, division: divisor, is: quotient, and: remainder)
             }
         }
     }

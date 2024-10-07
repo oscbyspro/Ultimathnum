@@ -7,6 +7,9 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+import RandomIntKit
+
 //*============================================================================*
 // MARK: * Utilities x Array
 //*============================================================================*
@@ -22,6 +25,50 @@ extension Array {
         self.reserveCapacity(count)
         for _ in 0 ..< count {
             self.append(next())
+        }
+    }
+}
+
+//*============================================================================*
+// MARK: * Utilities x Array x Data Integer x Body
+//*============================================================================*
+
+extension Array where Element: SystemsIntegerWhereIsUnsigned {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func random(count: Swift.Int, using randomness: inout some Randomness) -> Self {
+        Self.random(count: count...count, using: &randomness)
+    }
+    
+    @inlinable public static func random(count: ClosedRange<Swift.Int>, using randomness: inout some Randomness) -> Self {
+        let range = IX(count.lowerBound)...IX(count.upperBound)
+        let count = IX.random(in: range, using: &randomness)
+        
+        return Self(count: Swift.Int(count)) {
+            Element.random(using: &randomness)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public borrowing func withUnsafeBinaryIntegerBody<T>(
+        _ action: (DataInt<Element>.Body) throws -> T
+    )   rethrows -> T {
+        try self.withUnsafeBufferPointer {
+            try action(DataInt.Body($0)!)
+        }
+    }
+    
+    @inlinable public mutating func withUnsafeMutableBinaryIntegerBody<T>(
+        _ action: (MutableDataInt<Element>.Body) throws -> T
+    )   rethrows -> T {
+        try self.withUnsafeMutableBufferPointer {
+            try action(MutableDataInt.Body($0)!)
         }
     }
 }
