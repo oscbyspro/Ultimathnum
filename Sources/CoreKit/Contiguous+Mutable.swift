@@ -7,12 +7,36 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-
 //*============================================================================*
-// MARK: * Contiguous x Read|Write
+// MARK: * Contiguous x Mutable
 //*============================================================================*
 
+/// A mutable contiguous memory region.
+///
+/// ### Banned: DataInteger and BinaryInteger
+///
+/// A binary integer's bit pattern extends forever, so it cannot be represented
+/// as a contiguous sequence on a finite machine. Why does this matter? Imagine
+/// the following method and consider why the body must not be a binary integer.
+///
+/// ```swift
+/// extension BinaryInteger {
+///     // Returns the bit pattern of `body` and `appendix` that fits.
+///     @inlinable public init<T>(
+///         load body: borrowing some Contiguous<T>,
+///         repeating  appendix: Bit = .zero
+///     )   where  T: SystemsInteger & UnsignedInteger {
+///         self = body.withUnsafeBufferPointer {
+///             Self(load: DataInt($0, repeating: appendix)!)
+///         }
+///     }
+/// }
+/// ```
+///
+/// ### Development
+///
+/// - TODO: Rework this when buffer views are added to Swift.
+///
 public protocol MutableContiguous<Element>: Contiguous {
     
     //=------------------------------------------------------------------------=
@@ -21,11 +45,3 @@ public protocol MutableContiguous<Element>: Contiguous {
     
     @inlinable mutating func withUnsafeMutableBufferPointer<T>(_ action: (inout UnsafeMutableBufferPointer<Element>) throws -> T) rethrows -> T
 }
-
-//=----------------------------------------------------------------------------=
-// MARK: + Models
-//=----------------------------------------------------------------------------=
-
-extension Array: MutableContiguous { }
-extension ArraySlice: MutableContiguous { }
-extension ContiguousArray: MutableContiguous { }

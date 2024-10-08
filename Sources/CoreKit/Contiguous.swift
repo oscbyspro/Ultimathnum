@@ -22,10 +22,10 @@
 /// ```swift
 /// extension BinaryInteger {
 ///     // Returns the bit pattern of `body` and `appendix` that fits.
-///     @inlinable public init<Body: Contiguous>(
-///         load body: borrowing Body,
-///         repeating appendix: Bit = .zero
-///     )   where Body.Element: SystemsInteger & UnsignedInteger {
+///     @inlinable public init<T>(
+///         load body: borrowing some Contiguous<T>,
+///         repeating  appendix: Bit = .zero
+///     )   where  T: SystemsInteger & UnsignedInteger {
 ///         self = body.withUnsafeBufferPointer {
 ///             Self(load: DataInt($0, repeating: appendix)!)
 ///         }

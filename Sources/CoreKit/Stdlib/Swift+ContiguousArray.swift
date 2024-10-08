@@ -11,4 +11,4 @@
 // MARK: * Swift x Contiguous Array
 //*============================================================================*
 
-extension ContiguousArray: Contiguous { }
+extension ContiguousArray: MutableContiguous { }

@@ -11,4 +11,4 @@
 // MARK: * Swift x Array Slice
 //*============================================================================*
 
-extension ArraySlice: Contiguous { }
+extension ArraySlice: MutableContiguous { }
