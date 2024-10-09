@@ -27,7 +27,7 @@ extension BinaryInteger {
         }
         //=--------------------------------------=
         return source.withUnsafeBinaryIntegerElements {
-            Self.exactly($0, mode: .signed)
+            Self.exactly($0, mode: Signedness.signed)
         }
     }
 }

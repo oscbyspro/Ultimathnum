@@ -43,7 +43,6 @@ extension DataInt {
         
     /// Performs a three-way comparson of `instance` versus `zero` where the mode
     /// of the `instance` is determined by `isSigned`.
-    ///
     @inline(never) @inlinable public static func signum(
         of instance: Self, mode signedness: Signedness
     )   -> Signum {
@@ -61,7 +60,6 @@ extension DataInt {
     
     /// Performs a three-way comparson of `lhs` versus `rhs` where the mode
     /// of each instance is determined by `lhsSignedness` and `rhsSignedness`.
-    ///
     @inline(never) @inlinable public static func compare(
         lhs: consuming Self, mode lhsSignedness: Signedness,
         rhs: consuming Self, mode rhsSignedness: Signedness

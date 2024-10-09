@@ -279,13 +279,9 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
-    //=------------------------------------------------------------------------=
-    // TODO: await appendix { borrowing get } fixes then make these borrowing
-    //=------------------------------------------------------------------------=
-    
     
     /// Performs the `action` on the `body` and `appendix` of `self`.
-    @inlinable public func withUnsafeBinaryIntegerElements<Value>(
+    @inlinable public borrowing func withUnsafeBinaryIntegerElements<Value>(
         _ action: (DataInt<Element.Magnitude>) throws -> Value
     )   rethrows -> Value {
         

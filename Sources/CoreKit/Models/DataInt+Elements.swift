@@ -8,7 +8,7 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Data Int x Element x Read
+// MARK: * Data Int x Elements x Read
 //*============================================================================*
 
 extension DataInt {
@@ -63,7 +63,7 @@ extension DataInt {
 }
 
 //*============================================================================*
-// MARK: * Data Int x Element x Read|Write
+// MARK: * Data Int x Elements x Read|Write
 //*============================================================================*
 
 extension MutableDataInt {
@@ -108,7 +108,7 @@ extension MutableDataInt {
 }
 
 //*============================================================================*
-// MARK: * Data Int x Element x Read|Body
+// MARK: * Data Int x Elements x Read|Body
 //*============================================================================*
 
 extension DataInt.Body {
@@ -175,7 +175,7 @@ extension DataInt.Body {
 }
 
 //*============================================================================*
-// MARK: * Data Int x Element x Read|Write|Body
+// MARK: * Data Int x Elements x Read|Write|Body
 //*============================================================================*
 
 extension MutableDataInt.Body {
