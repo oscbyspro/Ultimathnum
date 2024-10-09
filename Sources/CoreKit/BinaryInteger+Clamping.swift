@@ -18,13 +18,13 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     /// Creates a new instance by clamping the given `source`.
-    @inlinable public init(clamping source: /*borrowing*/ some FiniteInteger) {
+    @inlinable public init(clamping source: borrowing some FiniteInteger) {
         self.init(clamping: source)!
     }
     
     /// Creates a new instance by clamping the given `source`.
     @_disfavoredOverload // BinaryInteger.init(clamping: some FiniteInteger)
-    @inlinable public init(clamping source: /*borrowing*/ some BinaryInteger) where Self: EdgyInteger {
+    @inlinable public init(clamping source: borrowing some BinaryInteger) where Self: EdgyInteger {
         self.init(clamping: source)!
     }
     
@@ -43,7 +43,7 @@ extension BinaryInteger {
     /// - Note: This is the most generic version of `init(clamping:)`.
     ///
     @_disfavoredOverload // BinaryInteger.init(clamping: some FiniteInteger)
-    @inlinable public init?(clamping source: /*borrowing*/ some BinaryInteger) {
+    @inlinable public init?(clamping source: borrowing some BinaryInteger) {
         if  Self.isArbitrary {
             
             if  Self.isSigned, source.isInfinite {
