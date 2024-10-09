@@ -89,14 +89,12 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
-    // TODO: await appendix { borrowing get } fixes then make these borrowing
-    //=------------------------------------------------------------------------=
         
     /// Loads the `source` by trapping on `error`
     ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
-    @inlinable public init<Other>(_ source: consuming Other) where Other: BinaryInteger {
+    @inlinable public init<Other>(_ source: borrowing Other) where Other: BinaryInteger {
         self = Self.exactly(source).unwrap()
     }
     
@@ -104,7 +102,7 @@ extension BinaryInteger {
     ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
-    @inlinable public static func exactly<Other>(_ source: consuming Other) -> Fallible<Self> where Other: BinaryInteger {
+    @inlinable public static func exactly<Other>(_ source: borrowing Other) -> Fallible<Self> where Other: BinaryInteger {
         if  let size = IX(size: Self.self), !Other.size.isInfinite {
             if  Self.size > Other.size, Self.isSigned {
                 return Fallible(Self(load: source))
@@ -121,8 +119,9 @@ extension BinaryInteger {
                 
             }   else {
                 Swift.assert(Self.size < Other.size)
+                let bit   = Self.isSigned ? source.appendix : Bit.zero
                 let limit = Count(raw: size.decremented(Self.isSigned).unchecked())
-                let count = source.nondescending(Bit(Self.isSigned && source.isNegative))
+                let count = source.nondescending(bit)
                 return Self(load: source).veto(limit < count)
             }
             
@@ -137,7 +136,7 @@ extension BinaryInteger {
     ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
-    @inlinable public static func exactly<Other>(_ source: consuming Fallible<Other>) -> Fallible<Self> where Other: BinaryInteger {
+    @inlinable public static func exactly<Other>(_ source: borrowing Fallible<Other>) -> Fallible<Self> where Other: BinaryInteger {
         Self.exactly(source.value).veto(source.error)
     }
 }
