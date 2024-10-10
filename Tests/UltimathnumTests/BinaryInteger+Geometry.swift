@@ -9,127 +9,155 @@
 
 import CoreKit
 import RandomIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Binary Integer x Geometry
 //*============================================================================*
 
-final class BinaryIntegerTestsOnGeometry: XCTestCase {
+@Suite struct BinaryIntegerTestsOnGeometry {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    /// Checks all values in `0` through `min(T.max, 255)`.
-    func testSquareRootOfSmallValues() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            var low  = (base: 0 as U32, square: 0 as U32)
-            var high = (base: 1 as U32, square: 1 as U32)
-            
-            while low.square <= U8.max {
-                for value in low.square ..< high.square {
-                    guard let value = T.exactly(value).optional() else { return }
-                    Test().isqrt(value, T(load: low.base))
-                }
-                
-                low  = high
-                high.base = high.base.incremented().unwrap()
-                high.square = (high).base.squared().unwrap()
+    @Test("BinaryInteger/isqrt() - [entropic]", arguments: binaryIntegers, fuzzers)
+    func integerSquareRoot(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        if  let type = type as? any SystemsIntegerWhereIsUnsigned.Type {
+            try whereIsSystemsIntegerWhereIsUnsigned(type)
+        }
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< conditional(debug:   32,  release: 256) {
+                let value = T.entropic(through: Shift.max(or: 255), as: .natural, using: &randomness)
+                try Ɣexpect(value, isqrt: try #require(value.isqrt()))
             }
         }
         
-        for type in binaryIntegers {
-            whereIs(type)
+        func whereIsSystemsIntegerWhereIsUnsigned<T>(_ type: T.Type) throws where T: SystemsIntegerWhereIsUnsigned {
+            for _ in 0 ..< conditional(debug:   32,  release: 256) {
+                let value = T.entropic(through: Shift.max(or: 255), as: .natural, using: &randomness)
+                try Ɣexpect(value, isqrt: value.isqrt())
+            }
         }
     }
+    
+    @Test("BinaryInteger/isqrt() - recovery mechanism [entropic]", arguments: systemsIntegersWhereIsUnsigned, fuzzers)
+    func integerSquareRootRecoveryMechanism(type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
+        whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+            for _ in 0 ..< 32 {
+                let random = T.entropic(using: &randomness)
+                let expectation: T = random.isqrt()
+                for error in Bool.all {
+                    #expect(random.veto(error).isqrt() == expectation.veto(error))
+                }
+            }
+        }
+    }
+}
+    
+//*============================================================================*
+// MARK: * Binary Integer x Geometry x Edge Cases
+//*============================================================================*
+
+@Suite(.tags(.documentation)) struct BinaryIntegerTestsOnGeometryEdgeCases {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
     
     /// - Note: A binary algorithm may make a correct initial guess here.
-    func testSquareRootOfPowerOf2Squares() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
-            for index in 0 ..< IX(size: type)/2 {
+    @Test("BinaryInteger/isqrt() - natural power-of-2 squares", arguments: binaryIntegers, fuzzers)
+    func integerSquareRootOfNaturalPowerOf2Squares(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
+        whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            for index in 0 ..< ((IX(size: T.self) ?? 256) / 2) {
                 let expectation = T.lsb << index
                 let power = expectation << index
-                Test().isqrt(power, expectation)
+                #expect(power.isqrt() == expectation)
             }
-        }
-                
-        for type in systemsIntegersWhereIsUnsigned {
-            whereIs(type)
         }
     }
     
-    func testSquareRootOfInfiniteOrNegativeIsNil() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            guard type.isSigned || type.isArbitrary else { return }
-            Test().none((~0 as  T).isqrt())
-            Test().none((~1 as  T).isqrt())
-            Test().none((~2 as  T).isqrt())
-            Test().none((~3 as  T).isqrt())
-        }
+    @Test("BinaryInteger/isqrt() - negative is nil [uniform]", arguments: binaryIntegersWhereIsSigned, fuzzers)
+    func integerSquareRootOfNegativeIsNil(type: any SignedInteger.Type, randomness: consuming FuzzerInt) throws {
+        try whereIs(type)
         
-        for type in binaryIntegers {
-            whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: SignedInteger {
+            let low  = T(repeating: Bit.one).up(Shift.max(or: 255))
+            let high = T(repeating: Bit.one)
+            
+            #expect(low .isqrt() == nil)
+            #expect(high.isqrt() == nil)
+            
+            for _ in 0 ..< 32 {
+                let random = T.random(in: low...high, using: &randomness)
+                #expect(random.isqrt() == nil)
+            }
         }
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Tests x Random
-    //=------------------------------------------------------------------------=
-    
-    func testSquareRootByFuzzing() {
-        func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: UnsignedInteger {
-            let index = Shift<T>(Count(size/2-1))
-            for _  in 0 ..< rounds {
-                let expectation = T.random(through: index, using: &randomness)
-                let limit = expectation.times(2).incremented().unwrap()
-                let error = T.random(in: T.zero ..< limit, using: &randomness) ?? T.zero
-                let power = expectation.squared().plus(error)
-                Test().same(power.optional()?.isqrt(), expectation)
-            }
-        }
+    @Test("BinaryInteger/isqrt() - infinite is nil [uniform]", arguments: arbitraryIntegersWhereIsUnsigned, fuzzers)
+    func integerSquareRootOfInfiniteIsNil(type: any ArbitraryIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+        try whereIs(type)
         
-        for type in binaryIntegersWhereIsUnsigned {
-            #if DEBUG
-            whereIs(type, size: IX(size: type) ?? 128, rounds: 032, randomness: fuzzer)
-            #else
-            whereIs(type, size: IX(size: type) ?? 256, rounds: 256, randomness: fuzzer)
-            #endif
+        func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerWhereIsUnsigned {
+            let low  = T(repeating: Bit.one).up(Shift.max(or: 255))
+            let high = T(repeating: Bit.one)
+            
+            #expect(low .isqrt() == nil)
+            #expect(high.isqrt() == nil)
+            
+            for _ in 0 ..< 32 {
+                let random = T.random(in: low...high, using: &randomness)
+                #expect(random.isqrt() == nil)
+            }
         }
     }
 }
 
-//=----------------------------------------------------------------------------=
-// MARK: + Recoverable
-//=----------------------------------------------------------------------------=
+//*============================================================================*
+// MARK: * Binary Integer x Geometry x Examples
+//*============================================================================*
 
-extension BinaryIntegerTestsOnGeometry {
+@Suite(.tags(.documentation), .serialized) struct BinaryIntegerTestsOnGeometryExamples {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testErrorPropagationMechanism() {
-        func whereIs<T>(_ type: T.Type, rounds: IX, randomness: consuming FuzzerInt) where T: UnsignedInteger & SystemsInteger {
-            var success: IX = 0
-            
-            func random() -> T {
-                let index = IX.random(in: 0..<IX(size: type), using: &randomness)!
-                return T.random(through: Shift(Count(index)), using: &randomness)
-            }
-            
-            for _ in 0 ..< rounds {
-                let instance: T = random()
-                let expectation: Fallible<T> = instance.isqrt().veto(false)
-                success &+= IX(Bit(instance.veto(false).isqrt() == expectation))
-                success &+= IX(Bit(instance.veto(true ).isqrt() == expectation.veto()))
-            }
-            
-            Test().same(success, rounds &* 2)
+    @Test("BinaryInteger/isqrt()", arguments: [
+        
+        ( 0 as U8, 0 as U8),
+        ( 1 as U8, 1 as U8),
+        ( 2 as U8, 1 as U8),
+        ( 3 as U8, 1 as U8),
+        ( 4 as U8, 2 as U8),
+        ( 5 as U8, 2 as U8),
+        ( 6 as U8, 2 as U8),
+        ( 7 as U8, 2 as U8),
+        ( 8 as U8, 2 as U8),
+        ( 9 as U8, 3 as U8),
+        (10 as U8, 3 as U8),
+        (11 as U8, 3 as U8),
+        (12 as U8, 3 as U8),
+        (13 as U8, 3 as U8),
+        (14 as U8, 3 as U8),
+        (15 as U8, 3 as U8),
+        (16 as U8, 4 as U8),
+        
+    ]   as [(U8, U8)]) func integerSquareRootOfSmallNaturals(value: U8, expectation: U8) throws {
+        for type in binaryIntegers {
+            try whereIs(type)
         }
         
-        for type in systemsIntegersWhereIsUnsigned {
-            whereIs(type, rounds: 32, randomness: fuzzer)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            try Ɣexpect(T(value), isqrt: T(expectation))
         }
     }
 }
