@@ -44,8 +44,8 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger/isqrt() - recovery mechanism [entropic]", arguments: systemsIntegersWhereIsUnsigned, fuzzers)
-    func integerSquareRootRecoveryMechanism(type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
+    @Test("BinaryInteger/isqrt() - error propagation [entropic]", arguments: systemsIntegersWhereIsUnsigned, fuzzers)
+    func integerSquareRootErrorPropagation(type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
@@ -70,9 +70,40 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
+    @Test("BinaryInteger/isqrt() - small", .serialized, arguments: [
+        
+        Some( 0 as U8, yields: 0 as U8),
+        Some( 1 as U8, yields: 1 as U8),
+        Some( 2 as U8, yields: 1 as U8),
+        Some( 3 as U8, yields: 1 as U8),
+        Some( 4 as U8, yields: 2 as U8),
+        Some( 5 as U8, yields: 2 as U8),
+        Some( 6 as U8, yields: 2 as U8),
+        Some( 7 as U8, yields: 2 as U8),
+        Some( 8 as U8, yields: 2 as U8),
+        Some( 9 as U8, yields: 3 as U8),
+        Some(10 as U8, yields: 3 as U8),
+        Some(11 as U8, yields: 3 as U8),
+        Some(12 as U8, yields: 3 as U8),
+        Some(13 as U8, yields: 3 as U8),
+        Some(14 as U8, yields: 3 as U8),
+        Some(15 as U8, yields: 3 as U8),
+        Some(16 as U8, yields: 4 as U8),
+        
+    ] as [Some<U8, U8>])
+    func integerSquareRootOfNaturalSmall(expectation: Some<U8, U8>) throws {
+        for type in binaryIntegers {
+            try whereIs(type)
+        }
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            try Ɣexpect(T(expectation.input), isqrt: T(expectation.output))
+        }
+    }
+    
     /// - Note: A binary algorithm may make a correct initial guess here.
-    @Test("BinaryInteger/isqrt() - natural power-of-2 squares", arguments: binaryIntegers, fuzzers)
-    func integerSquareRootOfNaturalPowerOf2Squares(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
+    @Test("BinaryInteger/isqrt() - power-of-2 squares", arguments: binaryIntegers, fuzzers)
+    func integerSquareRootOfPowerOf2Squares(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
@@ -117,47 +148,6 @@ import TestKit2
                 let random = T.random(in: low...high, using: &randomness)
                 #expect(random.isqrt() == nil)
             }
-        }
-    }
-}
-
-//*============================================================================*
-// MARK: * Binary Integer x Geometry x Examples
-//*============================================================================*
-
-@Suite(.tags(.documentation), .serialized) struct BinaryIntegerTestsOnGeometryExamples {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    @Test("BinaryInteger/isqrt()", arguments: [
-        
-        ( 0 as U8, 0 as U8),
-        ( 1 as U8, 1 as U8),
-        ( 2 as U8, 1 as U8),
-        ( 3 as U8, 1 as U8),
-        ( 4 as U8, 2 as U8),
-        ( 5 as U8, 2 as U8),
-        ( 6 as U8, 2 as U8),
-        ( 7 as U8, 2 as U8),
-        ( 8 as U8, 2 as U8),
-        ( 9 as U8, 3 as U8),
-        (10 as U8, 3 as U8),
-        (11 as U8, 3 as U8),
-        (12 as U8, 3 as U8),
-        (13 as U8, 3 as U8),
-        (14 as U8, 3 as U8),
-        (15 as U8, 3 as U8),
-        (16 as U8, 4 as U8),
-        
-    ]   as [(U8, U8)]) func integerSquareRootOfSmallNaturals(value: U8, expectation: U8) throws {
-        for type in binaryIntegers {
-            try whereIs(type)
-        }
-        
-        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
-            try Ɣexpect(T(value), isqrt: T(expectation))
         }
     }
 }
