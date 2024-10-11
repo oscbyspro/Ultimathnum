@@ -93,8 +93,8 @@ extension Natural {
             revision = (consume revision).plus(guess.value).unchecked()
             revision = (consume revision).down(Shift.one)
             
-        } while revision < guess.value
-        return Value(raw:  guess.value)
+        }while revision < guess.value
+        return Value(raw: guess.value)
     }
 }
 

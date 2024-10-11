@@ -18,8 +18,9 @@ import CoreKit
     ilog2 expectation: Count,
     at location: SourceLocation = #_sourceLocation
 )   throws where T: BinaryInteger {
-        
+    //=------------------------------------------=
     let ilog2 = try #require(value.ilog2())
+    //=------------------------------------------=
     #expect(ilog2 == expectation, sourceLocation: location)
     #expect(ilog2 <  T.size,      sourceLocation: location)
     #expect(ilog2.isInfinite == value.isInfinite, sourceLocation: location)

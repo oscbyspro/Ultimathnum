@@ -32,14 +32,12 @@ import TestKit2
                     #expect(random.ilog2() == nil)
                     
                 }   else {
-                    let random = try #require(Nonzero(exactly: random))
-                    let expectation = try #require(random.value.ilog2())
-
-                    #expect(expectation == random.ilog2())
-                    #expect(expectation == random.magnitude().ilog2())
-                    #expect(expectation == random.magnitude().value.ilog2())
-                    
-                    try Ɣexpect(random.value, ilog2: expectation)
+                    let nonzero = try #require(Nonzero(exactly:  random))
+                    let expectation = try #require(nonzero.value.ilog2())
+                    let magnitude: Nonzero<T.Magnitude> = nonzero.magnitude()
+                    #expect(expectation == magnitude.ilog2())
+                    #expect(expectation == magnitude.value.ilog2())
+                    try Ɣexpect(nonzero.value, ilog2: expectation)
                 }
             }
         }
