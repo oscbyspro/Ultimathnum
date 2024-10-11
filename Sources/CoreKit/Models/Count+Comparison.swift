@@ -42,4 +42,17 @@ extension Count {
     @inlinable public var isInfinite: Bool {
         Bool(self.base.appendix)
     }
+    
+    /// Indicates whether this value is a power of `2`.
+    ///
+    /// - Note: `log2(&0+1)` is the only representable infinite power of `2`.
+    ///
+    @inlinable public var isPowerOf2: Bool {
+        if  self.base.isPositive {
+            return (self.base & self.base.decremented().unchecked()).isZero
+            
+        }   else {
+            return (self == Self.infinity)
+        }
+    }
 }

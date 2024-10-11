@@ -37,10 +37,11 @@ import TestKit2
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            #expect(T.size.isPowerOf2)
             #expect(T.size >= T.Element  .size)
             #expect(T.size == T.Magnitude.size)
             #expect(T.size == T.Signitude.size)
-                        
+            
             Ɣexpect(MemoryLayout<T>.self, equals: MemoryLayout<T.Magnitude>.self)
             Ɣexpect(MemoryLayout<T>.self, equals: MemoryLayout<T.Signitude>.self)
             

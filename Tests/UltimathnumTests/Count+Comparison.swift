@@ -22,6 +22,15 @@ import TestKit2
     //=------------------------------------------------------------------------=
     
     @Test(arguments: fuzzers)
+    func comparisonIsLikeUnsignedIntegerComparison(_ randomness: consuming FuzzerInt) {
+        for _ in 0 ..< 256 {
+            let lhs = UX.entropic(using: &randomness)
+            let rhs = UX.entropic(using: &randomness)
+            Ɣexpect(Count(raw: lhs), equals: Count(raw: rhs), is: lhs.compared(to: rhs))
+        }
+    }
+    
+    @Test(arguments: fuzzers)
     func isZeroIsLikeBinaryIntegerIsZero(_ randomness: consuming FuzzerInt) {
         for _ in 0 ..< 256 {
             let random = IX.entropic(using: &randomness)
@@ -38,11 +47,24 @@ import TestKit2
     }
     
     @Test(arguments: fuzzers)
-    func comparisonIsLikeUnsignedIntegerComparison(_ randomness: consuming FuzzerInt) {
-        for _ in 0 ..< 256 {
-            let lhs = UX.entropic(using: &randomness)
-            let rhs = UX.entropic(using: &randomness)
-            Ɣexpect(Count(raw: lhs), equals: Count(raw: rhs), is: lhs.compared(to: rhs))
+    func isPowerOf2IsNormalExceptMaxIsPowerOf2(_ randomness: consuming FuzzerInt) {
+        #expect( Count(raw: UX.max).isPowerOf2)
+        #expect(!Count(raw: IX.min).isPowerOf2)
+        #expect(!Count(raw: IX.max).isPowerOf2)
+        #expect(!Count(raw: UX.min).isPowerOf2)
+        
+        for distance in 0 ..< IX(size: IX.self) - 1 {
+            #expect(Count(IX.lsb << distance).isPowerOf2)
+        }
+        
+        for _ in 0 ..< conditional(debug: 64, release: 256) {
+            let random = IX.entropic(as: .natural, using: &randomness)
+            let expectation: Bool = random.count(Bit.one) == Count(01)
+            #expect(Count(random).isPowerOf2 == expectation)
+        }
+        
+        for _ in 0 ..< conditional(debug: 64, release: 256) {
+            #expect(!Count(raw: IX.random(in: IX.min...IX(-2), using: &randomness)).isPowerOf2)
         }
     }
 }
