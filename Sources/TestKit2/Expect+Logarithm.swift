@@ -10,19 +10,26 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Expect x Geometry
+// MARK: * Expect x Logarithm
 //*============================================================================*
 
 @inlinable public func Ɣexpect<T>(
     _  value: T,
-    isqrt expectation: T,
+    ilog2 expectation: Count,
     at location: SourceLocation = #_sourceLocation
 )   throws where T: BinaryInteger {
+        
+    let ilog2 = try #require(value.ilog2())
+    #expect(ilog2 == expectation, sourceLocation: location)
+    #expect(ilog2 <  T.size,      sourceLocation: location)
+    #expect(ilog2.isInfinite == value.isInfinite, sourceLocation: location)
     
-    let low = try #require(expectation.squared().optional())
-    #expect(value >= low, sourceLocation: location)
-    
-    if  let high = expectation.incremented().squared().optional() {
-        #expect(value < high, sourceLocation: location)
+    if !ilog2.isInfinite {
+        let low = T.lsb.up(ilog2)
+        #expect(value >= low, sourceLocation: location)
+
+        if  let high = low.times(2).optional() {
+            #expect(value < high, sourceLocation: location)
+        }
     }
 }

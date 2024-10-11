@@ -70,7 +70,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("BinaryInteger/isqrt() - small", .serialized, arguments: [
+    @Test("BinaryInteger/isqrt() - small natural", .serialized, arguments: [
         
         Some( 0 as U8, yields: 0 as U8),
         Some( 1 as U8, yields: 1 as U8),
@@ -91,7 +91,7 @@ import TestKit2
         Some(16 as U8, yields: 4 as U8),
         
     ] as [Some<U8, U8>])
-    func integerSquareRootOfNaturalSmall(expectation: Some<U8, U8>) throws {
+    func integerSquareRootOfSmallNatural(expectation: Some<U8, U8>) throws {
         for type in binaryIntegers {
             try whereIs(type)
         }
@@ -128,6 +128,7 @@ import TestKit2
             
             for _ in 0 ..< 32 {
                 let random = T.random(in: low...high, using: &randomness)
+                #expect(random.isNegative)
                 #expect(random.isqrt() == nil)
             }
         }
@@ -146,6 +147,7 @@ import TestKit2
             
             for _ in 0 ..< 32 {
                 let random = T.random(in: low...high, using: &randomness)
+                #expect(random.isInfinite)
                 #expect(random.isqrt() == nil)
             }
         }
