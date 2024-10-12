@@ -34,4 +34,34 @@ extension Optional: BitCastable where Wrapped: BitCastable {
             return nil
         }
     }
+    
+    //=----------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=----------------------------------------------------------------------------=
+    
+    /// Returns the `value` by trapping on `nil`.
+    @discardableResult @inlinable public consuming func unwrap(
+        _ message: @autoclosure () -> String = String(),
+        file: StaticString = #file, line: UInt = #line
+    )   -> Wrapped {
+        
+        if  self == nil {
+            Swift.preconditionFailure(message(), file: file, line: line)
+        }
+        
+        return self.unsafelyUnwrapped
+    }
+    
+    /// Returns the `value` by trapping on `nil` in debug mode.
+    @discardableResult @inlinable public consuming func unchecked(
+        _ message: @autoclosure () -> String = String(),
+        file: StaticString = #file, line: UInt = #line
+    )   -> Wrapped {
+        
+        #if DEBUG
+        return self.unwrap(message(), file: file, line: line)
+        #else
+        return self.unsafelyUnwrapped
+        #endif
+    }
 }

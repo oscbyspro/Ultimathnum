@@ -119,9 +119,7 @@ extension UnsignedInteger {
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public borrowing func factorial() -> Fallible<Self> {
-        //  TODO: add Optional/unchecked()
-        let optional: Optional = self.factorial()
-        return optional.unsafelyUnwrapped
+        (self.factorial() as Optional).unchecked("UnsignedInteger")
     }
 }
 

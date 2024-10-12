@@ -38,4 +38,15 @@ import TestKit2
             }
         }
     }
+    
+    @Test("Optional/unwrap()", arguments: coreIntegers, fuzzers)
+    func unwrapping(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
+        whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+            let random = T.random(using: &randomness)
+            #expect(Optional(random).unwrap()    == random)
+            #expect(Optional(random).unchecked() == random)
+        }
+    }
 }

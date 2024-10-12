@@ -102,7 +102,7 @@
         
     }
     
-    /// Returns the `value` and traps on `error`.
+    /// Returns the `value` by trapping on `error`.
     @discardableResult @inlinable public consuming func unwrap(
         _ message: @autoclosure () -> String = String(),
         file: StaticString = #file, line: UInt = #line
@@ -115,7 +115,7 @@
         return self.value
     }
     
-    /// Returns the `value` and traps on `error` in debug mode.
+    /// Returns the `value` by trapping on `error` in debug mode.
     @discardableResult @inlinable public consuming func unchecked(
         _ message: @autoclosure () -> String = String(),
         file: StaticString = #file, line: UInt = #line
