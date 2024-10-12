@@ -11,109 +11,73 @@ import CoreKit
 import DoubleIntKit
 import InfiniIntKit
 import RandomIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Binary Integer x Factorial
 //*============================================================================*
 
-final class BinaryIntegerTestsOnFactorial: XCTestCase {
+@Suite("BinaryInteger/factorial()", .serialized)
+struct BinaryIntegerTestsOnFactorial {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testVersusNaiveApproach() {
-        func whereIs<T>(_ type: T.Type, through factorial: UX) where T: BinaryInteger {
-            var expectation = Fallible(T.lsb)
-                        
-            for instance: T in 0...T(clamping: factorial) {
-                expectation = expectation.times(Swift.max(1, instance))
-                
-                let optional: Optional = instance.factorial()
-                let unsigned: Fallible = instance.magnitude().factorial()
-                let fallible: Fallible = T.exactly(unsigned)
-                
-                Test().same(optional, expectation.optional())
-                Test().same(fallible, expectation)
-            }
+    @Test("element at small natural index", arguments: [
+        
+        (index:  0 as U8, element:                                    1 as IXL),
+        (index:  1 as U8, element:                                    1 as IXL),
+        (index:  2 as U8, element:                                    2 as IXL),
+        (index:  3 as U8, element:                                    6 as IXL),
+        (index:  4 as U8, element:                                   24 as IXL),
+        (index:  5 as U8, element:                                  120 as IXL),
+        (index:  6 as U8, element:                                  720 as IXL),
+        (index:  7 as U8, element:                                 5040 as IXL),
+        (index:  8 as U8, element:                                40320 as IXL),
+        (index:  9 as U8, element:                               362880 as IXL),
+        (index: 10 as U8, element:                              3628800 as IXL),
+        (index: 11 as U8, element:                             39916800 as IXL),
+        (index: 12 as U8, element:                            479001600 as IXL),
+        (index: 13 as U8, element:                           6227020800 as IXL),
+        (index: 14 as U8, element:                          87178291200 as IXL),
+        (index: 15 as U8, element:                        1307674368000 as IXL),
+        (index: 16 as U8, element:                       20922789888000 as IXL),
+        (index: 17 as U8, element:                      355687428096000 as IXL),
+        (index: 18 as U8, element:                     6402373705728000 as IXL),
+        (index: 19 as U8, element:                   121645100408832000 as IXL),
+        (index: 20 as U8, element:                  2432902008176640000 as IXL),
+        (index: 21 as U8, element:                 51090942171709440000 as IXL),
+        (index: 22 as U8, element:               1124000727777607680000 as IXL),
+        (index: 23 as U8, element:              25852016738884976640000 as IXL),
+        (index: 24 as U8, element:             620448401733239439360000 as IXL),
+        (index: 25 as U8, element:           15511210043330985984000000 as IXL),
+        (index: 26 as U8, element:          403291461126605635584000000 as IXL),
+        (index: 27 as U8, element:        10888869450418352160768000000 as IXL),
+        (index: 28 as U8, element:       304888344611713860501504000000 as IXL),
+        (index: 29 as U8, element:      8841761993739701954543616000000 as IXL),
+        (index: 30 as U8, element:    265252859812191058636308480000000 as IXL),
+        (index: 31 as U8, element:   8222838654177922817725562880000000 as IXL),
+        (index: 32 as U8, element: 263130836933693530167218012160000000 as IXL),
+        
+    ] as [(index: U8, element: IXL)])
+    func elementAtSmallNaturalIndex(index: U8, element: IXL) throws {
+        for type in binaryIntegers {
+            whereIs(type)
         }
         
-        #if DEBUG
-        let limit: UX = 80
-        #else
-        let limit: UX = 160
-        #endif
-        for type in systemsIntegers {
-            whereIs(type, through: limit)
-        }
+        // TODO: consider Optional<Fallible<T>> approach
         
-        whereIs(InfiniInt<IX>.self, through: limit)
-        whereIs(InfiniInt<UX>.self, through: limit)
-    }
-    
-    func testElementThatFitsInUnsignedButNotInSigned() {
-        Test().same(I16(7).factorial(),  5040)
-        Test().same(U16(7).factorial(),  5040)
-        Test().same(I16(8).factorial(),   nil)
-        Test().same(U16(8).factorial(), 40320)
-    }
-    
-    func testElementAtInfiniteIndexIsZeroBecauseOfEvenFactors() {
-        Test().same((~0 as UXL).factorial(), UXL.zero.veto())
-        Test().same((~1 as UXL).factorial(), UXL.zero.veto())
-        Test().same((~2 as UXL).factorial(), UXL.zero.veto())
-        Test().same((~3 as UXL).factorial(), UXL.zero.veto())
-    }
-    
-    func testElementAtNegativeIndexIsNil() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            precondition(T.isSigned)
-            
-            Test().none((-1 as T).factorial())
-            Test().none((-2 as T).factorial())
-            Test().none((-3 as T).factorial())
-            Test().none((-4 as T).factorial())
-            
-            Test().none((Esque<T>.min + 0).factorial())
-            Test().none((Esque<T>.min + 1).factorial())
-            Test().none((Esque<T>.min + 2).factorial())
-            Test().none((Esque<T>.min + 3).factorial())
-        }
-        
-        for type in binaryIntegersWhereIsSigned {
-            whereIs(type)
-        }
-    }
-    
-    func testElementAtIndexGreaterThanOrEqualToSizePlus2IsZero() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            Test().none((T.max - 0).factorial())
-            Test().none((T.max - 1).factorial())
-            Test().none((T.max - 2).factorial())
-            Test().none((T.max - 3).factorial())
-            Test().none(T(UX(size: T.self) + 2).factorial())
-            
-            Test().same((T.max - 0).magnitude().factorial(), T.Magnitude.zero.veto())
-            Test().same((T.max - 1).magnitude().factorial(), T.Magnitude.zero.veto())
-            Test().same((T.max - 2).magnitude().factorial(), T.Magnitude.zero.veto())
-            Test().same((T.max - 3).magnitude().factorial(), T.Magnitude.zero.veto())
-            
-            Test().yay(T(UX(size: T.self) + 3).magnitude().factorial().value.isZero)
-            Test().yay(T(UX(size: T.self) + 2).magnitude().factorial().value.isZero)
-            Test().nay(T(UX(size: T.self) + 1).magnitude().factorial().value.isZero)
-            Test().nay(T(UX(size: T.self) + 0).magnitude().factorial().value.isZero)
-        }
-        
-        for type in systemsIntegers {
-            whereIs(type)
+            #expect(T.exactly(index).optional()?.factorial() == T.exactly(element).optional())
         }
     }
     
     /// - Seealso: https://www.wolframalpha.com/input?i=1000%21
-    func testElementAtIndex1000() throws {
-        let index: U32  = 1000
-        let expectation = UXL("""
+    /// - Seealso: https://www.wolframalpha.com/input?i=1024%21
+    @Test("element at large natural index", arguments: [
+        
+        (index: IXL(1000), element: IXL("""
         0000000000000000000000000000000000000000000000000000000040238726\
         0077093773543702433923003985719374864210714632543799910429938512\
         3986290205920442084869694048004799886101971960586316668729948085\
@@ -155,30 +119,9 @@ final class BinaryIntegerTestsOnFactorial: XCTestCase {
         0000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000
-        """)!
+        """)!),
         
-        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
-            typealias M = T.Magnitude
-            
-            if  T.isSigned {
-                Test().same(try T.exactly(index).prune(Bad.any).factorial(), T.exactly(expectation).optional())
-            }   else {
-                Test().same(try M.exactly(index).prune(Bad.any).factorial(), M.exactly(expectation))
-            }
-        }
-        
-        try whereIs(IX.self)
-        try whereIs(UX.self)
-        try whereIs(DoubleInt<IX>.self)
-        try whereIs(DoubleInt<UX>.self)
-        try whereIs(InfiniInt<IX>.self)
-        try whereIs(InfiniInt<UX>.self)
-    }
-    
-    /// - Seealso: https://www.wolframalpha.com/input?i=1024%21
-    func testElementAtIndex1024() throws {
-        let index: U32  = 1024
-        let expectation = UXL("""
+        (index: IXL(1024), element: IXL("""
         0000000000000000000000000000000000000000000000005418528796058857\
         2830769219446838547380015539635380134444828702706832106120733766\
         0373314098413621458671907918845708980753931994165770187368260454\
@@ -221,81 +164,95 @@ final class BinaryIntegerTestsOnFactorial: XCTestCase {
         0000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000\
         0000000000000000000000000000000000000000000000000000000000000000
-        """)!
+        """)!),
+        
+    ] as [(index: IXL, element: IXL)])
+    func elementAtLargeNaturalIndex(index: IXL, element: IXL) throws {
+        for type in systemsIntegers {
+            try whereIs(type)
+        }
+        
+        try  whereIs(InfiniInt<IX>.self)
+        try  whereIs(InfiniInt<UX>.self)
+        
+        // TODO: consider Optional<Fallible<T>> approach
         
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
-            typealias M = T.Magnitude
+            guard let index = T.exactly(index).optional() else { return }
             
             if  T.isSigned {
-                Test().same(try T.exactly(index).prune(Bad.any).factorial(), T.exactly(expectation).optional())
+                #expect(index.factorial() == T.exactly(element).optional())
             }   else {
-                Test().same(try M.exactly(index).prune(Bad.any).factorial(), M.exactly(expectation))
+                #expect(index.magnitude().factorial() == T.Magnitude.exactly(element))
             }
         }
-        
-        try whereIs(IX.self)
-        try whereIs(UX.self)
-        try whereIs(DoubleInt<IX>.self)
-        try whereIs(DoubleInt<UX>.self)
-        try whereIs(InfiniInt<IX>.self)
-        try whereIs(InfiniInt<UX>.self)
     }
 }
 
-//=----------------------------------------------------------------------------=
-// MARK: + Recoverable
-//=----------------------------------------------------------------------------=
+//*============================================================================*
+// MARK: * Binary Integer x Factorial x Edge Cases
+//*============================================================================*
 
-extension BinaryIntegerTestsOnFactorial {
+@Suite("BinaryInteger/factorial() - edge cases", .tags(.documentation))
+struct BinaryIntegerTestsOnFactorialEdgeCases {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testErrorPropagationMechanism() {
-        func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: UnsignedInteger {
-            var success: IX = 0
-            
-            func random() -> T {
-                let index = IX.random(in: 00000 ..< size, using: &randomness)!
-                let pattern = T.Signitude.random(through: Shift(Count(index)), using: &randomness)
-                return T(raw: pattern) // do not forget about infinite values!
-            }
+    @Test("element at negative index is nil [uniform]", arguments: binaryIntegersWhereIsSigned, fuzzers)
+    func elementAtNegativeIndexIsNil(type: any SignedInteger.Type, randomness: consuming FuzzerInt) {
+        whereIs(type)
         
-            for _ in 0 ..< rounds {
-                let instance = random()
-                let expectation =  instance.factorial()
-                success &+= IX(Bit(instance.veto(false).factorial() == expectation))
-                success &+= IX(Bit(instance.veto(true ).factorial() == expectation.veto()))
-            }
+        func whereIs<T>(_ type: T.Type) where T: SignedInteger {
+            let low  = T(repeating: Bit.one).up(Shift.max(or: 255))
+            let high = T(repeating: Bit.one)
+            let expectation = Optional<T>.none
             
-            Test().same(success, rounds &* 2)
-        }
-        
-        for type in binaryIntegersWhereIsUnsigned {
-            whereIs(type, size: IX(size: type) ?? 8, rounds: 32, randomness: fuzzer)
+            #expect(low .factorial() == expectation)
+            #expect(high.factorial() == expectation)
+            
+            for _ in 0 ..< 32 {
+                let random = T.random(in: low...high, using: &randomness)
+                #expect(random.isNegative)
+                #expect(random.factorial() == expectation)
+            }
         }
     }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Documentation
-//=----------------------------------------------------------------------------=
-
-extension BinaryIntegerTestsOnFactorial {
     
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
+    /// Here we check that the infinite even factors overshift the result.
+    @Test("element at infinite index is zero with error [uniform]", arguments: arbitraryIntegersWhereIsUnsigned, fuzzers)
+    func elementAtInfiniteIndexIsZeroWithError(type: any ArbitraryIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
+        whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryIntegerWhereIsUnsigned {
+            let low  = T(repeating: Bit.one).up(Shift.max(or: 255))
+            let high = T(repeating: Bit.one)
+            let expectation = T.zero.veto()
+            
+            #expect(low .factorial() == expectation)
+            #expect(high.factorial() == expectation)
+            
+            for _ in 0 ..< 32 {
+                let random = T.random(in: low...high, using: &randomness)
+                #expect(random.isInfinite)
+                #expect(random.factorial() == expectation)
+            }
+        }
+    }
     
-    func testMethodsCodeSnippet() {
-        Test().same(U8(0).factorial(), U8.exactly(   1))
-        Test().same(U8(1).factorial(), U8.exactly(   1))
-        Test().same(U8(2).factorial(), U8.exactly(   2))
-        Test().same(U8(3).factorial(), U8.exactly(   6))
-        Test().same(U8(4).factorial(), U8.exactly(  24))
-        Test().same(U8(5).factorial(), U8.exactly( 120))
-        Test().same(U8(6).factorial(), U8.exactly( 720))
-        Test().same(U8(7).factorial(), U8.exactly(5040))
+    @Test("element at random index error propagation [entropic]", arguments: binaryIntegersWhereIsUnsigned, fuzzers)
+    func elementAtRandomIndexErrorPropagation(type: any UnsignedInteger.Type, randomness: consuming FuzzerInt) {
+        whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) where T: UnsignedInteger {
+            for _ in 0 ..< 32 {
+                let index = T.entropic(through: Shift.max(or: 7), using: &randomness)
+                let element: Fallible<T> = index.factorial()
+                for error in Bool.all {
+                    #expect(index.veto(error).factorial() == element.veto(error))
+                }
+            }
+        }
     }
 }
