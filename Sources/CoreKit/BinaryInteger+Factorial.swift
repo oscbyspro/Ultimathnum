@@ -17,42 +17,7 @@ extension BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// The `factorial` of `self` or `nil`.
-    ///
-    /// ```swift
-    /// U8(0).factorial() // U8.exactly(   1)
-    /// U8(1).factorial() // U8.exactly(   1)
-    /// U8(2).factorial() // U8.exactly(   2)
-    /// U8(3).factorial() // U8.exactly(   6)
-    /// U8(4).factorial() // U8.exactly(  24)
-    /// U8(5).factorial() // U8.exactly( 120)
-    /// U8(6).factorial() // U8.exactly( 720)
-    /// U8(7).factorial() // U8.exactly(5040)
-    /// ```
-    ///
-    /// - Note: It returns `nil` if the operation is `lossy`.
-    ///
-    /// - Note: It returns `nil` if the operation is `undefined`.
-    ///
-    @inlinable public /*borrowing*/ func factorial() -> Optional<Self> {
-        if  self.isNegative { return nil }
-        let magnitude = Magnitude(raw: self).factorial()
-        if  magnitude.error { return nil }
-        return Self.exactly(magnitude: magnitude.value).optional()
-    }
-}
-
-//*============================================================================*
-// MARK: * Binary Integer x Factorial x Unsigned
-//*============================================================================*
-
-extension UnsignedInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    /// The `factorial` of `self` and an `error` indicator.
+    /// Returns the `factorial` of `self` and an `error` indicator, or `nil`.
     ///
     /// ```swift
     /// U8(0).factorial() // U8.exactly(   1)
@@ -67,20 +32,96 @@ extension UnsignedInteger {
     ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
-    @inlinable public /*borrowing*/ func factorial() -> Fallible<Self> {
-        if  self.isInfinite {
+    /// - Note: It returns `nil` if the operation is `undefined`.
+    ///
+    /// - Note: `T.Magnitude` guarantees nonoptional results.
+    ///
+    @inlinable public borrowing func factorial() -> Optional<Fallible<Self>> {
+        if  self.isNegative {
+            return nil
+            
+        }   else if self.isInfinite {
             // lots of even factors
             return Self.zero.veto()
             
         }   else if Self.size <= UX.size {
             // save some code size w.r.t. small integers
             typealias Algorithm = Namespace.Factorial<UX>
+            // we don't need to go through magnitude here
             return Self.exactly(Algorithm.element(unchecked: UX(load: self)))
             
         }   else {
+            // save some code size w.r.t. signed binary integers
+            typealias Algorithm = Namespace.Factorial<Magnitude>
             // clamping works because the allocation limit is IX.max
-            return Namespace.Factorial.element(unchecked: UX(clamping: self))
+            return Self.exactly(magnitude: Algorithm.element(unchecked: UX(clamping: self)))
         }
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Recoverable
+//=----------------------------------------------------------------------------=
+
+extension Fallible where Value: BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// Returns the `factorial` of `self` and an `error` indicator, or `nil`.
+    ///
+    /// ```swift
+    /// U8(0).factorial() // U8.exactly(   1)
+    /// U8(1).factorial() // U8.exactly(   1)
+    /// U8(2).factorial() // U8.exactly(   2)
+    /// U8(3).factorial() // U8.exactly(   6)
+    /// U8(4).factorial() // U8.exactly(  24)
+    /// U8(5).factorial() // U8.exactly( 120)
+    /// U8(6).factorial() // U8.exactly( 720)
+    /// U8(7).factorial() // U8.exactly(5040)
+    /// ```
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    /// - Note: It returns `nil` if the operation is `undefined`.
+    ///
+    /// - Note: `T.Magnitude` guarantees nonoptional results.
+    ///
+    @inlinable public borrowing func factorial() -> Optional<Self> {
+        self.value.factorial()?.veto(self.error)
+    }
+}
+
+//*============================================================================*
+// MARK: * Binary Integer x Factorial x Unsigned
+//*============================================================================*
+
+extension UnsignedInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// Returns the `factorial` of `self` and an `error` indicator.
+    ///
+    /// ```swift
+    /// U8(0).factorial() // U8.exactly(   1)
+    /// U8(1).factorial() // U8.exactly(   1)
+    /// U8(2).factorial() // U8.exactly(   2)
+    /// U8(3).factorial() // U8.exactly(   6)
+    /// U8(4).factorial() // U8.exactly(  24)
+    /// U8(5).factorial() // U8.exactly( 120)
+    /// U8(6).factorial() // U8.exactly( 720)
+    /// U8(7).factorial() // U8.exactly(5040)
+    /// ```
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    @inlinable public borrowing func factorial() -> Fallible<Self> {
+        //  TODO: add Optional/unchecked()
+        let optional: Optional = self.factorial()
+        return optional.unsafelyUnwrapped
     }
 }
 
@@ -94,7 +135,7 @@ extension Fallible where Value: UnsignedInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// The `factorial` of `self` and an `error` indicator.
+    /// Returns the `factorial` of `self` and an `error` indicator.
     ///
     /// ```swift
     /// U8(0).factorial() // U8.exactly(   1)
