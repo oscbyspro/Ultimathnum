@@ -47,8 +47,8 @@ extension BinaryInteger {
         }   else if Self.size <= UX.size {
             // save some code size w.r.t. small integers
             typealias Algorithm = Namespace.Factorial<UX>
-            // we don't need to go through magnitude here
-            return Self.exactly(Algorithm.element(unchecked: UX(load: self)))
+            // the magnitude path is a bit faster
+            return Self.exactly(magnitude: Algorithm.element(unchecked: UX(load: self)))
             
         }   else {
             // save some code size w.r.t. signed binary integers

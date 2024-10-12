@@ -51,15 +51,14 @@ extension BinaryInteger {
         magnitude: consuming Magnitude
     )   -> Fallible<Self> {
         
-        var magnitude  = magnitude // await consuming fix
-        var isNegative = Bool(sign)
-        
+        var isNegative = Bool(sign)        
         if  isNegative {
             (magnitude, isNegative) = magnitude.negated().components()
         }
         
         let value = Self(raw: magnitude)
-        return value.veto(value.isNegative != isNegative)
+        let error = value.isNegative != isNegative
+        return value.veto(error)
     }
     
     /// Loads the `sign` and `magnitude` and returns an `error` indicator.
