@@ -26,6 +26,12 @@ extension Tag {
     /// Including or considering all arguments.
     @Tag public static var exhaustive: Self
     
+    /// Sending to another destination.
+    @Tag public static var forwarding: Self
+    
+    /// Something that may be regained.
+    @Tag public static var recoverable: Self
+    
     /// Not officially authorized or confirmed.
     @Tag public static var unofficial: Self
     

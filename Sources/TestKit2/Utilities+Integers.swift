@@ -50,6 +50,11 @@ extension BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// Returns this instance but downshifted by its ascending `bit` count.
+    @inlinable public consuming func drain(_ bit: Bit) -> Self {
+        self.down(self.ascending(bit))
+    }
+    
     /// Returns the `floor` and `ceil` of `division` by `2`.
     @inlinable public consuming func floorceil() -> (floor: Self, ceil: Self)? {
         guard let division = self.division(Nonzero(2)).optional() else { return nil }
