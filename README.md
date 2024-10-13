@@ -12,6 +12,10 @@
   - [Keep stdlib extensions to a minimum](#introduction-stdlib)
   - [Derive  all the things!](#introduction-minimalistic)
   - [Recover all the things!](#introduction-recoverable)
+* [Installation](#installation)
+  - [SemVer 2.0.0](#installation-semver)
+  - [Swift Package Manager](#installation-swift-package-manager)
+  - [Testing](#installation-testing)
 * [Nomenclature](#nomenclature)
   - [What is a binary integer?](#nomenclature-binary-integer)
   - [What is a data integer?](#nomenclature-data-integer)
@@ -47,9 +51,6 @@
   - [The Fibonacci\<Value\> sequence](#fibonaccikit-sequence)
   - [Fast sequence addition (+/-)](#fibonaccikit-addition)
   - [Code coverage with sequence invariants](#fibonaccikit-invariants)
-* [Installation](#installation)
-  - [SemVer 2.0.0](#installation-semver)
-  - [Swift Package Manager](#installation-swift-package-manager)
 
 <a name="introduction"/>
 
@@ -91,6 +92,50 @@ unavoidable traps because there now exists a recoverable alternative for every
 safe operation. Overflow, underflow, whatever—the framework will lazily prompt
 you to handle it. Furthermore, the abstractions and recovery mechanisms presented 
 to you are ever-present in generic code as well.
+
+<a name="installation"/>
+
+## Installation
+
+<a name="installation-semver"/>
+
+#### SemVer 2.0.0
+
+> Major version zero (0.y.z) is for initial development.\
+> Anything MAY change at any time.\
+> The public API SHOULD NOT be considered stable.
+
+<a name="installation-swift-package-manager"/>
+
+#### Swift Package Manager
+
+Add this package to your list of package dependencies.
+
+```swift
+.package(url: "https://github.com/oscbyspro/Ultimathnum.git", exact: "x.y.z"),
+```
+
+Choose target dependencies from this list of products.
+
+```swift
+.product(name: "Ultimathnum",  package: "Ultimathnum"), // umbrella
+.product(name: "CoreKit",      package: "Ultimathnum"),
+.product(name: "DoubleIntKit", package: "Ultimathnum"),
+.product(name: "FibonacciKit", package: "Ultimathnum"),
+.product(name: "InfiniIntKit", package: "Ultimathnum"),
+.product(name: "RandomIntKit", package: "Ultimathnum"),
+.product(name: "StdlibIntKit", package: "Ultimathnum"),
+```
+
+<a name="installation-testing"/>
+
+#### Testing
+
+Use this terminal command to run all validation tests:
+
+```
+swift test -Xswiftc -O --disable-code-coverage --skip Benchmarks
+```
 
 ## Nomenclature
 
@@ -750,38 +795,4 @@ to know the inputs and outputs ahead of time because it's an equation. Neat!
 
 ```swift
 f(x) * f(y) == (f(x+y+1) / f(x+1) - f(y+1)) * f(x+1) + f(x+y+1) % f(x+1)
-```
-
-<a name="installation"/>
-
-## Installation
-
-<a name="installation-semver"/>
-
-#### SemVer 2.0.0
-
-> Major version zero (0.y.z) is for initial development.\
-> Anything MAY change at any time.\
-> The public API SHOULD NOT be considered stable.
-
-<a name="installation-swift-package-manager"/>
-
-#### Swift Package Manager
-
-Add this package to your list of package dependencies.
-
-```swift
-.package(url: "https://github.com/oscbyspro/Ultimathnum.git", exact: "x.y.z"),
-```
-
-Choose target dependencies from this list of products.
-
-```swift
-.product(name: "Ultimathnum",  package: "Ultimathnum"), // umbrella
-.product(name: "CoreKit",      package: "Ultimathnum"),
-.product(name: "DoubleIntKit", package: "Ultimathnum"),
-.product(name: "FibonacciKit", package: "Ultimathnum"),
-.product(name: "InfiniIntKit", package: "Ultimathnum"),
-.product(name: "RandomIntKit", package: "Ultimathnum"),
-.product(name: "StdlibIntKit", package: "Ultimathnum"),
 ```
