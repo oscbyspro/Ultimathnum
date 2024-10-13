@@ -15,7 +15,8 @@
 * [Installation](#installation)
   - [SemVer 2.0.0](#installation-semver)
   - [Swift Package Manager](#installation-swift-package-manager)
-  - [Testing](#installation-testing)
+  - [Unit testing](#installation-unit-testing)
+  - [Performance testing](#installation-performance-testing)
 * [Nomenclature](#nomenclature)
   - [What is a binary integer?](#nomenclature-binary-integer)
   - [What is a data integer?](#nomenclature-data-integer)
@@ -127,20 +128,28 @@ Choose target dependencies from this list of products.
 .product(name: "StdlibIntKit", package: "Ultimathnum"),
 ```
 
-<a name="installation-testing"/>
+<a name="installation-unit-testing"/>
 
-#### Testing
+#### Unit testing
 
-Use this terminal command to run all validation tests:
-
-```
-swift test -Xswiftc -O --disable-code-coverage --skip Benchmarks
-```
-
-Use this terminal command to run all performance tests:
+Run unit tests with the following terminal commands:
 
 ```
-xcodebuild test -scheme Ultimathnum-Measurement -destination 'platform=macOS'
+swift test --skip Benchmarks -Xswiftc -O
+```
+
+```
+swift test --skip Benchmarks -Xswiftc -O --configuration release
+```
+
+<a name="installation-performance-testing"/>
+
+#### Performance testing
+
+Run performance tests with the following terminal commands:
+
+```
+xcodebuild test -scheme Ultimathnum-Performance -destination 'platform=macOS'
 ```
 
 ## Nomenclature

@@ -113,7 +113,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:.swiftpm/xcode/xcshareddata/xctestplans/Ultimathnum-Measurement.xctestplan"
+            reference = "container:.swiftpm/xcode/xcshareddata/xctestplans/Ultimathnum-Performance.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
