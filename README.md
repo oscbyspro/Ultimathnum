@@ -137,6 +137,12 @@ Use this terminal command to run all validation tests:
 swift test -Xswiftc -O --disable-code-coverage --skip Benchmarks
 ```
 
+Use this terminal command to run all performance tests:
+
+```
+xcodebuild test -scheme Ultimathnum-Measurement -destination 'platform=macOS'
+```
+
 ## Nomenclature
 
 <a name="nomenclature-binary-integer"/>

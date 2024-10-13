@@ -414,7 +414,7 @@ struct BinaryIntegerTestsOnDivisionRecoveryMechanisms {
 }
 
 //*============================================================================*
-// MARK: * BinaryInteger x Division x Open Source Issues
+// MARK: * Binary Integer x Division x Open Source Issues
 //*============================================================================*
 
 @Suite("BinaryInteger/division - open source issues", .tags(.opensource))
