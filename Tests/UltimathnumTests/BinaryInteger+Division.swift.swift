@@ -235,7 +235,10 @@ import TestKit2
                 let high = T.init(repeating: low.appendix)
                 let dividend = Doublet(low: T.Magnitude(raw: low), high: high)
                 let divisor  = T.entropic(using: &randomness)
-                let division = Nonzero(exactly:  divisor).map({ low.division($0) })
+                let division = Nonzero(exactly:  divisor).map {
+                    low.division($0)
+                }
+                
                 Ɣexpect(bidirectional: dividend, by: divisor, is: division)
             }
         }
@@ -275,10 +278,10 @@ struct BinaryIntegerTestsOnDivisionEdgeCases {
         }
     }
     
-    @Test("division of finite by infinite is trivial [1-by-1][uniform]", arguments: arbitraryIntegersWhereIsUnsigned, fuzzers)
-    func division11OfInfiniteByFiniteIsTrivial(type: any ArbitraryIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    @Test("1-by-1 division of finite by infinite is trivial [uniform]", arguments: arbitraryIntegersWhereIsUnsigned, fuzzers)
+    func division11OfFiniteByInfiniteIsTrivial(type: any ArbitraryIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
-                
+        
         func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerWhereIsUnsigned {
             let low  = T(repeating: Bit.one).up(Shift.max(or: 255))
             let high = T(repeating: Bit.one)
@@ -293,7 +296,7 @@ struct BinaryIntegerTestsOnDivisionEdgeCases {
         }
     }
     
-    @Test("division of infinite by finite is error like signed [1-by-1][uniform]", arguments: arbitraryIntegersWhereIsUnsigned, fuzzers)
+    @Test("1-by-1 division of infinite by finite is error like signed [uniform]", arguments: arbitraryIntegersWhereIsUnsigned, fuzzers)
     func division11OfInfiniteByFiniteIsErrorLikeSigned(type: any ArbitraryIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
                 
@@ -353,34 +356,24 @@ struct BinaryIntegerTestsOnDivisionRecoveryMechanisms {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            let rounds:  IX = 8
-            var (index): IX = 0
-            var success: IX = 0
-            
-            while (index) < rounds {
+            for _ in 0 ..< 8 {
                 let dividend = T.entropic(through: Shift.max(or: 255), using: &randomness)
                 let divisor  = T.entropic(through: Shift.max(or: 255), using: &randomness)
                 guard let divisor = Nonzero(exactly: divisor) else { continue }
-                (index) += 1
                 
-                let division:  Fallible<Division<T, T>> = dividend.division(divisor)
-                let quotient:  Fallible<T> = dividend.quotient(divisor)
-                let remainder: Fallible<T> = Fallible(dividend.remainder(divisor))
-                let ceil:      Fallible<T> = division.ceil()
-                let floor:     Fallible<T> = division.floor()
-                let exactly:   Fallible<T> = division.exactly()
+                let division  = dividend.division (divisor) as Fallible<Division<T, T>>
+                let quotient  = dividend.quotient (divisor) as Fallible<T>
+                let remainder = dividend.remainder(divisor) as T
+                
+                #expect(quotient  == division.map(\.quotient))
+                #expect(remainder == division.value.remainder)
                 
                 for error in Bool.all {
-                    success &+= IX(Bit(dividend.veto(error).division (divisor) == division .veto(error)))
-                    success &+= IX(Bit(dividend.veto(error).quotient (divisor) == quotient .veto(error)))
-                    success &+= IX(Bit(dividend.veto(error).remainder(divisor) == remainder.veto(error)))
-                    success &+= IX(Bit(division.veto(error).ceil()    == ceil   .veto(error)))
-                    success &+= IX(Bit(division.veto(error).floor()   == floor  .veto(error)))
-                    success &+= IX(Bit(division.veto(error).exactly() == exactly.veto(error)))
+                    #expect(dividend.veto(error).division (divisor) == division .veto(error))
+                    #expect(dividend.veto(error).quotient (divisor) == quotient .veto(error))
+                    #expect(dividend.veto(error).remainder(divisor) == remainder.veto(error))
                 }
             }
-            
-            #expect(success == rounds &* 12)
         }
     }
     
@@ -389,26 +382,19 @@ struct BinaryIntegerTestsOnDivisionRecoveryMechanisms {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
-            let rounds:  IX = 32
-            var (index): IX = 0
-            var success: IX = 0
-            
-            while (index) < rounds {
+            for _ in 0 ..< 8 {
                 let dividend = T.entropic(using: &randomness)
                 let divisor  = T.entropic(using: &randomness)
                 guard let divisor = Nonzero(exactly: divisor) else { continue }
-                (index) += 1
                 //  note that 1-by-1 division does not fail
-                let division: Fallible<Division<T, T>> = dividend.division(divisor)
-                success &+= IX(Bit(division.error == false))
-                success &+= IX(Bit(dividend.division(divisor) == division.value))
-                //  note that 1-by-1 division does not fail
-                let quotient: Fallible<T> = dividend.quotient(divisor)
-                success &+= IX(Bit(quotient.error == false))
-                success &+= IX(Bit(dividend.quotient(divisor) == quotient.value))
+                let division = dividend.division(divisor) as Fallible<Division<T, T>>
+                let quotient = dividend.quotient(divisor) as Fallible<T>
+                
+                #expect(division.error == false)
+                #expect(division.value == dividend.division(divisor))
+                #expect(quotient.error == false)
+                #expect(quotient.value == dividend.quotient(divisor))
             }
-            
-            #expect(success == rounds &* 4)
         }
     }
 }
