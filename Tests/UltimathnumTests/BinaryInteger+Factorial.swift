@@ -24,7 +24,7 @@ struct BinaryIntegerTestsOnFactorial {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("element at small natural index", arguments: [
+    @Test("BinaryInteger/factorial() - element at small natural index", arguments: [
         
         (index:  0 as U8, element:                                    1 as IXL),
         (index:  1 as U8, element:                                    1 as IXL),
@@ -81,7 +81,7 @@ struct BinaryIntegerTestsOnFactorial {
     
     /// - Seealso: https://www.wolframalpha.com/input?i=1000%21
     /// - Seealso: https://www.wolframalpha.com/input?i=1024%21
-    @Test("element at large natural index", arguments: [
+    @Test("BinaryInteger/factorial() - element at large natural index", arguments: [
         
         (index: IXL(1000), element: IXL("""
         0000000000000000000000000000000000000000000000000000000040238726\
@@ -207,7 +207,7 @@ struct BinaryIntegerTestsOnFactorialEdgeCases {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("element at negative index is nil [uniform]", arguments: typesAsBinaryIntegerAsSigned, fuzzers)
+    @Test("BinaryInteger/factorial() - element at negative index is nil [uniform]", arguments: typesAsBinaryIntegerAsSigned, fuzzers)
     func elementAtNegativeIndexIsNil(type: any SignedInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
@@ -228,7 +228,7 @@ struct BinaryIntegerTestsOnFactorialEdgeCases {
     }
     
     /// Here we check that the infinite even factors overshift the result.
-    @Test("element at infinite index is zero with error [uniform]", arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers)
+    @Test("BinaryInteger/factorial() - element at infinite index is zero with error [uniform]", arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers)
     func elementAtInfiniteIndexIsZeroWithError(type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
@@ -248,7 +248,7 @@ struct BinaryIntegerTestsOnFactorialEdgeCases {
         }
     }
     
-    @Test("element at random index error propagation [entropic]", arguments: typesAsBinaryInteger, fuzzers)
+    @Test("BinaryInteger/factorial() - element at random index error propagation [entropic]", arguments: typesAsBinaryInteger, fuzzers)
     func elementAtRandomIndexErrorPropagation(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         

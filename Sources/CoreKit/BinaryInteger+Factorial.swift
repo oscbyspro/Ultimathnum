@@ -261,7 +261,8 @@ extension Namespace {
                     high = index.down(Shift(unchecked: ilog2))
                     high = high.decremented().unchecked() | 1
                     
-                    if  let stride = Nonzero(exactly: high.minus(low).unchecked().down(Shift.one)) {
+                    let stride = high.minus(low).unchecked().down(Shift.one)
+                    if  let stride = Nonzero(exactly: stride) {
                         let next = products.next (stride)
                         sequence = sequence.times((next))
                         (result) = sequence.times(result)
