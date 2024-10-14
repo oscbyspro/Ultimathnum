@@ -29,7 +29,7 @@ import TestKit2
     /// x.complement(     ) == x.toggled().incremented().value
     /// ```
     ///
-    @Test("BinaryInteger/complement(_:) - [entropic]", arguments: binaryIntegers, fuzzers)
+    @Test("BinaryInteger/complement(_:) - [entropic]", arguments: typesAsBinaryInteger, fuzzers)
     func complement(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
@@ -50,7 +50,7 @@ import TestKit2
     /// x.magnitude() == T.Magnitude(raw: x.isNegative ? x.complement() : x)
     /// ```
     ///
-    @Test("BinaryInteger/magnitude(_:) - [entropic]", arguments: binaryIntegers, fuzzers)
+    @Test("BinaryInteger/magnitude(_:) - [entropic]", arguments: typesAsBinaryInteger, fuzzers)
     func magnitude(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
@@ -84,7 +84,7 @@ import TestKit2
     ///
     /// - Note: `T.min.complement(true)` is the only `error` case.
     ///
-    @Test("BinaryInteger/complement(_:) of edges", arguments: edgyIntegers)
+    @Test("BinaryInteger/complement(_:) of edges", arguments: typesAsEdgyInteger)
     func complementOfEdges(type: any EdgyInteger.Type) {
         whereIs(type)
         
@@ -118,7 +118,7 @@ import TestKit2
     /// T(load: [ 0    ] as [T.Element.Magnitude], repeating: Bit.one ) // ~b &+ 1 == a
     /// ```
     ///
-    @Test("BinaryInteger/complement(_:) is well-behaved", arguments: binaryIntegers)
+    @Test("BinaryInteger/complement(_:) is well-behaved", arguments: typesAsBinaryInteger)
     func complementIsWellBehaved(type: any BinaryInteger.Type) {
         whereIs(type)
         

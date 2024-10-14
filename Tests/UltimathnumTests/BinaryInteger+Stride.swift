@@ -50,8 +50,8 @@ final class BinaryIntegerTestsOnStride: XCTestCase {
         #else
         let rounds: IX = 256
         #endif
-        for type in binaryIntegers {
-            for distance in binaryIntegersWhereIsSigned {
+        for type in typesAsBinaryInteger {
+            for distance in typesAsBinaryIntegerAsSigned {
                 whereIs(type: type, distance: distance, rounds: rounds, randomness: fuzzer)
             }
         }
@@ -84,8 +84,8 @@ final class BinaryIntegerTestsOnStride: XCTestCase {
         #else
         let rounds: IX = 256
         #endif
-        for type in binaryIntegers {
-            for distance in binaryIntegersWhereIsSigned {
+        for type in typesAsBinaryInteger {
+            for distance in typesAsBinaryIntegerAsSigned {
                 whereIs(type: type, distance: distance, rounds: rounds, randomness: fuzzer)
             }
         }

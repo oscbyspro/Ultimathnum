@@ -39,7 +39,7 @@ extension InfiniIntTests {
                 whereIs(type, distance)
             }
             
-            for distance in coreSystemsIntegersWhereIsSigned {
+            for distance in typesAsCoreIntegerAsSigned {
                 whereIs(type, distance)
             }
         }
@@ -56,7 +56,7 @@ extension InfiniIntTests {
         }
         
         for type in Self.types {
-            for distance in coreSystemsIntegersWhereIsSigned {
+            for distance in typesAsCoreIntegerAsSigned {
                 whereIs(type, distance)
             }
         }

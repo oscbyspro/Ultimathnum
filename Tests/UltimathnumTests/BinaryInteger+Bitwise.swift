@@ -31,7 +31,7 @@ final class BinaryIntegerTestsOnBitwise: XCTestCase {
             Test().same(T(repeating: Bit.one ), ~(0 as T))
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type)
         }
     }
@@ -55,7 +55,7 @@ final class BinaryIntegerTestsOnBitwise: XCTestCase {
             Test().same((Esque<T>.max    ).lsb, Bit.one )
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type)
         }
     }
@@ -77,7 +77,7 @@ final class BinaryIntegerTestsOnBitwise: XCTestCase {
             Test().same((Esque<T>.max    ).msb, Bit(!T.isSigned))
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type)
         }
     }
@@ -122,7 +122,7 @@ final class BinaryIntegerTestsOnBitwise: XCTestCase {
             Test().xor(~r01, ~r01,  x00)
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type)
         }
     }
@@ -149,7 +149,7 @@ final class BinaryIntegerTestsOnBitwise: XCTestCase {
             Test().same(T(2).endianness(.descending).endianness(.descending), T(2))
         }
         
-        for type in systemsIntegers {
+        for type in typesAsSystemsInteger {
             whereIs(type)
         }
     }
@@ -197,7 +197,7 @@ final class BinaryIntegerTestsOnBitwise: XCTestCase {
             Test().same(result, T(repeating: Bit.zero))
         }
         
-        for type in systemsIntegers {
+        for type in typesAsSystemsInteger {
             whereIs(type)
         }
     }
@@ -252,7 +252,7 @@ final class BinaryIntegerTestsOnBitwise: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type, size: IX(size: type) ?? 256, rounds: 32, randomness: fuzzer)
         }
     }

@@ -42,7 +42,7 @@ final class BinaryIntegerTestsOnFactorization: XCTestCase {
             Test().euclidean(T.zero, Esque<T>.max, T.isFinite ? Esque<T>.max.magnitude() : nil)
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type)
         }
     }
@@ -55,7 +55,7 @@ final class BinaryIntegerTestsOnFactorization: XCTestCase {
             Test().euclidean(16 as T, 16 as T, 16 as T.Magnitude)
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type)
         }
     }

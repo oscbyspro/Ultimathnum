@@ -149,7 +149,7 @@ extension TextIntTests {
             }
         }
         
-        for type in coreSystemsIntegers {
+        for type in typesAsCoreInteger {
             whereIs(type)
         }
     }

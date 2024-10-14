@@ -21,14 +21,14 @@ final class CoreIntTests: XCTestCase {
     //=------------------------------------------------------------------------=
         
     static var types: [any SystemsInteger.Type] {
-        coreSystemsIntegers
+        typesAsCoreInteger
     }
             
     static var typesWhereIsSigned: [any (SystemsInteger & SignedInteger).Type] {
-        coreSystemsIntegersWhereIsSigned
+        typesAsCoreIntegerAsSigned
     }
     
     static var typesWhereIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] {
-        coreSystemsIntegersWhereIsUnsigned
+        typesAsCoreIntegerAsUnsigned
     }
 }

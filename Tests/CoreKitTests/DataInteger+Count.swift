@@ -20,11 +20,11 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt/size()", arguments: coreIntegersWhereIsUnsigned)
-    func size(type: any SystemsIntegerWhereIsUnsigned.Type) {
+    @Test("DataInt/size()", arguments: typesAsCoreIntegersAsUnsigned)
+    func size(type: any SystemsIntegerAsUnsigned.Type) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
             whereIs(DXL([          ] as [T]), is: 0 * IX(size: T.self))
             whereIs(DXL([11        ] as [T]), is: 1 * IX(size: T.self))
             whereIs(DXL([11, 22    ] as [T]), is: 2 * IX(size: T.self))
@@ -48,11 +48,11 @@ import TestKit2
         }
     }
     
-    @Test("DataInt/count(_:)", arguments: coreIntegersWhereIsUnsigned)
-    func count(type: any SystemsIntegerWhereIsUnsigned.Type) {
+    @Test("DataInt/count(_:)", arguments: typesAsCoreIntegersAsUnsigned)
+    func count(type: any SystemsIntegerAsUnsigned.Type) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
             whereIs(DXL([          ] as [T]), is: 0 as IX)
             whereIs(DXL([11        ] as [T]), is: 3 as IX)
             whereIs(DXL([11, 22    ] as [T]), is: 6 as IX)
@@ -84,11 +84,11 @@ import TestKit2
         }
     }
     
-    @Test("DataInt/ascending(_:)", arguments: coreIntegersWhereIsUnsigned)
-    func ascending(type: any SystemsIntegerWhereIsUnsigned.Type) {
+    @Test("DataInt/ascending(_:)", arguments: typesAsCoreIntegersAsUnsigned)
+    func ascending(type: any SystemsIntegerAsUnsigned.Type) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
             let size = IX(size: T.self)
 
             for bit in Bit.all {
@@ -134,11 +134,11 @@ import TestKit2
         }
     }
     
-    @Test("DataInt/descending(_:)", arguments: coreIntegersWhereIsUnsigned)
-    func descending(type: any SystemsIntegerWhereIsUnsigned.Type) {
+    @Test("DataInt/descending(_:)", arguments: typesAsCoreIntegersAsUnsigned)
+    func descending(type: any SystemsIntegerAsUnsigned.Type) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
             let size = IX(size: T.self)
             
             for bit in Bit.all {

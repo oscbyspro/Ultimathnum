@@ -19,7 +19,7 @@ import CoreKit
     environment: Element,
     is expectation: [Element],
     at location: SourceLocation = #_sourceLocation
-)   throws where Element: SystemsIntegerWhereIsUnsigned {
+)   throws where Element: SystemsIntegerAsUnsigned {
     //=------------------------------------------=
     try #require(integer.count == expectation.count)
     try #require(distance <    IX(expectation.count) * IX(size: Element.self))
@@ -88,7 +88,7 @@ import CoreKit
     environment: Element,
     is expectation: [Element],
     at location: SourceLocation = #_sourceLocation
-)   throws where Element: SystemsIntegerWhereIsUnsigned {
+)   throws where Element: SystemsIntegerAsUnsigned {
     //=------------------------------------------=
     try #require(integer.count == expectation.count)
     try #require(distance <    IX(expectation.count) * IX(size: Element.self))

@@ -33,7 +33,7 @@ extension RangeReplaceableCollection {
 // MARK: + Data Integer Body
 //=----------------------------------------------------------------------------=
 
-extension BidirectionalCollection where Element: SystemsIntegerWhereIsUnsigned {
+extension BidirectionalCollection where Element: SystemsIntegerAsUnsigned {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -50,7 +50,7 @@ extension BidirectionalCollection where Element: SystemsIntegerWhereIsUnsigned {
     }
 }
 
-extension RangeReplaceableCollection where Element: SystemsIntegerWhereIsUnsigned {
+extension RangeReplaceableCollection where Element: SystemsIntegerAsUnsigned {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers

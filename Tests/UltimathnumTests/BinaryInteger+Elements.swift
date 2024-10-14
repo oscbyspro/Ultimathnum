@@ -79,7 +79,7 @@ final class BinaryIntegerTestsOnElements: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type)
         }
     }
@@ -127,7 +127,7 @@ final class BinaryIntegerTestsOnElements: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type)
         }
     }
@@ -153,7 +153,7 @@ final class BinaryIntegerTestsOnElements: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type)
         }
     }
@@ -217,7 +217,7 @@ final class BinaryIntegerTestsOnElements: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type, randomness: fuzzer)
         }
     }
@@ -246,7 +246,7 @@ final class BinaryIntegerTestsOnElements: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type, randomness: fuzzer)
         }
     }

@@ -35,11 +35,11 @@ final class TripleIntTests: XCTestCase {
     }()
     
     static let basesWhereIsSigned: [any (SystemsInteger & SignedInteger).Type] = {
-        coreSystemsIntegersWhereIsSigned
+        typesAsCoreIntegerAsSigned
     }()
     
     static let basesWhereIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = {
-        coreSystemsIntegersWhereIsUnsigned
+        typesAsCoreIntegerAsUnsigned
     }()
     
     //=------------------------------------------------------------------------=

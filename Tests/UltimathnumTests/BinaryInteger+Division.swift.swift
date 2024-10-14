@@ -30,7 +30,7 @@ import TestKit2
         
     ] as [(I8, I8, I8, I8)])
     func signs(dividend: I8, divisor: I8, quotient: I8, remainder: I8) {
-        for type in binaryIntegersWhereIsSigned {
+        for type in typesAsBinaryIntegerAsSigned {
             whereIs(type)
         }
         
@@ -69,7 +69,7 @@ import TestKit2
         }
     }
     
-    @Test("1-by-1 division of random by random", arguments: binaryIntegers, fuzzers)
+    @Test("1-by-1 division of random by random", arguments: typesAsBinaryInteger, fuzzers)
     func division11OfRandomByRandom(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
@@ -82,7 +82,7 @@ import TestKit2
         }
     }
     
-    @Test("1-by-1 division of random by power-of-2-esque [entropic]", arguments: binaryIntegers, fuzzers)
+    @Test("1-by-1 division of random by power-of-2-esque [entropic]", arguments: typesAsBinaryInteger, fuzzers)
     func division11OfRandomByPowerOf2Esque(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
@@ -109,7 +109,7 @@ import TestKit2
         }
     }
     
-    @Test("1-by-1 division ascending zeros by ascending zeros [entropic]", arguments: binaryIntegers, fuzzers)
+    @Test("1-by-1 division ascending zeros by ascending zeros [entropic]", arguments: typesAsBinaryInteger, fuzzers)
     func division11OfAscendingZerosByAscendingZeros(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
@@ -127,7 +127,7 @@ import TestKit2
         }
     }
     
-    @Test("1-by-1 division of contiguous ones by contiguous ones", arguments: binaryIntegers, fuzzers)
+    @Test("1-by-1 division of contiguous ones by contiguous ones", arguments: typesAsBinaryInteger, fuzzers)
     func division11OfContiguousOnesByContiguousOnes(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
@@ -145,7 +145,7 @@ import TestKit2
         }
     }
     
-    @Test("1-by-1 division of silly big by silly big [entropic]", arguments: arbitraryIntegers, fuzzers)
+    @Test("1-by-1 division of silly big by silly big [entropic]", arguments: typesAsArbitraryInteger, fuzzers)
     func division11OfSillyBigBySillyBig(type: any ArbitraryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
@@ -170,7 +170,7 @@ import TestKit2
     // MARK: Tests x 2 by 1
     //=------------------------------------------------------------------------=
     
-    @Test("2-by-1 division of random by random [entropic]", arguments: systemsIntegers, fuzzers)
+    @Test("2-by-1 division of random by random [entropic]", arguments: typesAsSystemsInteger, fuzzers)
     func division21OfRandomByRandom(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
@@ -185,7 +185,7 @@ import TestKit2
         }
     }
     
-    @Test("2-by-1 division of random by power-of-2-esque [entropic]", arguments: systemsIntegers, fuzzers)
+    @Test("2-by-1 division of random by power-of-2-esque [entropic]", arguments: typesAsSystemsInteger, fuzzers)
     func division21OfRandomByPowerOf2Esque(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
@@ -206,7 +206,7 @@ import TestKit2
         }
     }
     
-    @Test("2-by-1 division of ascending zeros by ascending zeros [entropic]", arguments: systemsIntegers, fuzzers)
+    @Test("2-by-1 division of ascending zeros by ascending zeros [entropic]", arguments: typesAsSystemsInteger, fuzzers)
     func division21OfAscendingZerosByAscendingZeros(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
 
@@ -225,7 +225,7 @@ import TestKit2
         }
     }
     
-    @Test("2-by-1 division of one half by random [entropic]", arguments: systemsIntegers, fuzzers)
+    @Test("2-by-1 division of one half by random [entropic]", arguments: typesAsSystemsInteger, fuzzers)
     func division21OfOneHalfByRandom(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
@@ -256,7 +256,7 @@ struct BinaryIntegerTestsOnDivisionEdgeCases {
     // MARK: Tests x 1 by 1
     //=------------------------------------------------------------------------=
     
-    @Test("1-by-1 division of random by zero is nil [entropic]", arguments: binaryIntegers, fuzzers)
+    @Test("1-by-1 division of random by zero is nil [entropic]", arguments: typesAsBinaryInteger, fuzzers)
     func division11OfRandomByZeroIsNil(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
@@ -268,21 +268,21 @@ struct BinaryIntegerTestsOnDivisionEdgeCases {
         }
     }
     
-    @Test("1-by-1 division of T.min by -1 as signed systems integers is error", arguments: systemsIntegersWhereIsSigned)
-    func division11OfMinByNegativeOneAsSignedSystemsIntegerIsError(type: any SystemsIntegerWhereIsSigned.Type) {
+    @Test("1-by-1 division of T.min by -1 as signed systems integers is error", arguments: typesAsSystemsIntegerAsSigned)
+    func division11OfMinByNegativeOneAsSignedSystemsIntegerIsError(type: any SystemsIntegerAsSigned.Type) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsSigned {
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsSigned {
             let division = Fallible(Division(quotient: T.min, remainder: T.zero), error: true)
             Ɣexpect(bidirectional: T.min, by: -1, is: division)
         }
     }
     
-    @Test("1-by-1 division of finite by infinite is trivial [uniform]", arguments: arbitraryIntegersWhereIsUnsigned, fuzzers)
-    func division11OfFiniteByInfiniteIsTrivial(type: any ArbitraryIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    @Test("1-by-1 division of finite by infinite is trivial [uniform]", arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers)
+    func division11OfFiniteByInfiniteIsTrivial(type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsUnsigned {
             let low  = T(repeating: Bit.one).up(Shift.max(or: 255))
             let high = T(repeating: Bit.one)
             let top  = low.toggled()
@@ -296,11 +296,11 @@ struct BinaryIntegerTestsOnDivisionEdgeCases {
         }
     }
     
-    @Test("1-by-1 division of infinite by finite is error like signed [uniform]", arguments: arbitraryIntegersWhereIsUnsigned, fuzzers)
-    func division11OfInfiniteByFiniteIsErrorLikeSigned(type: any ArbitraryIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    @Test("1-by-1 division of infinite by finite is error like signed [uniform]", arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers)
+    func division11OfInfiniteByFiniteIsErrorLikeSigned(type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
                 
-        func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsUnsigned {
             let low  = T(repeating: Bit.one).up(Shift.max(or: 255))
             let high = T(repeating: Bit.one)
             let top  = low.toggled()
@@ -325,7 +325,7 @@ struct BinaryIntegerTestsOnDivisionEdgeCases {
     // MARK: Tests x 2 by 1
     //=------------------------------------------------------------------------=
     
-    @Test("2-by-1 division of random by zero is nil [entropic]", arguments: systemsIntegers, fuzzers)
+    @Test("2-by-1 division of random by zero is nil [entropic]", arguments: typesAsSystemsInteger, fuzzers)
     func division21OfRandomByZeroIsNil(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
@@ -351,7 +351,7 @@ struct BinaryIntegerTestsOnDivisionRecoveryMechanisms {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("division error propagation as binary integer [entropic]", arguments: binaryIntegers, fuzzers)
+    @Test("division error propagation as binary integer [entropic]", arguments: typesAsBinaryInteger, fuzzers)
     func divisionErrorPropagationAsBinaryInteger(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
@@ -377,11 +377,11 @@ struct BinaryIntegerTestsOnDivisionRecoveryMechanisms {
         }
     }
     
-    @Test("division error propagation as natural integer [entropic]", arguments: systemsIntegersWhereIsUnsigned, fuzzers)
-    func divisionErrorPropagationAsNaturalInteger(type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
+    @Test("division error propagation as natural integer [entropic]", arguments: typesAsSystemsIntegerAsUnsigned, fuzzers)
+    func divisionErrorPropagationAsNaturalInteger(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
             for _ in 0 ..< 8 {
                 let dividend = T.entropic(using: &randomness)
                 let divisor  = T.entropic(using: &randomness)
@@ -414,7 +414,7 @@ struct BinaryIntegerTestsOnDivisionOpenSourceIssues {
     ///
     /// - Note: Checks whether the 3212-path knows when the quotient fits.
     ///
-    @Test(arguments: binaryIntegers) func sourceIsGitHubOscbysproNumberickIssues101(_ type: any BinaryInteger.Type) throws {
+    @Test(arguments: typesAsBinaryInteger) func sourceIsGitHubOscbysproNumberickIssues101(_ type: any BinaryInteger.Type) throws {
         try  whereIs(type)
         
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
@@ -432,7 +432,7 @@ struct BinaryIntegerTestsOnDivisionOpenSourceIssues {
     ///
     /// - Note: Said to crash and/or return incorrect results.
     ///
-    @Test(arguments: binaryIntegers) func sourceIsGitHubAppleSwiftNumericsIssues272(_ type: any BinaryInteger.Type) throws {
+    @Test(arguments: typesAsBinaryInteger) func sourceIsGitHubAppleSwiftNumericsIssues272(_ type: any BinaryInteger.Type) throws {
         try  whereIs(type)
         
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {

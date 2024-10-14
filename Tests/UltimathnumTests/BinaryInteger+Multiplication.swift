@@ -120,11 +120,11 @@ final class BinaryIntegerTestsOnMultiplication: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIsBinaryInteger(type)
         }
         
-        for type in systemsIntegers {
+        for type in typesAsSystemsInteger {
             whereIsSystemsInteger(type)
         }
     }
@@ -202,11 +202,11 @@ final class BinaryIntegerTestsOnMultiplication: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIsBinaryInteger(type)
         }
         
-        for type in systemsIntegers {
+        for type in typesAsSystemsInteger {
             whereIsSystemsInteger(type)
         }
     }
@@ -216,7 +216,7 @@ final class BinaryIntegerTestsOnMultiplication: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testMultiplication112OfLowEntropies() {
-        func whereIsSigned<T>(_ type: T.Type) where T: SignedInteger {
+        func AsSigned<T>(_ type: T.Type) where T: SignedInteger {
             Test().multiplication(~2 as T, ~2 as T, Fallible(Doublet(low:  9, high:  0)))
             Test().multiplication(~2 as T, ~1 as T, Fallible(Doublet(low:  6, high:  0)))
             Test().multiplication(~2 as T, ~0 as T, Fallible(Doublet(low:  3, high:  0)))
@@ -260,7 +260,7 @@ final class BinaryIntegerTestsOnMultiplication: XCTestCase {
             Test().multiplication( 2 as T,  2 as T, Fallible(Doublet(low:  4, high:  0)))
         }
         
-        func whereIsUnsigned<T>(_ type: T.Type) where T: UnsignedInteger {
+        func AsUnsigned<T>(_ type: T.Type) where T: UnsignedInteger {
             Test().multiplication(~5 as T, ~5 as T, Fallible(Doublet(low:  36, high: ~11), error: true))
             Test().multiplication(~5 as T, ~4 as T, Fallible(Doublet(low:  30, high: ~10), error: true))
             Test().multiplication(~5 as T, ~3 as T, Fallible(Doublet(low:  24, high:  ~9), error: true))
@@ -299,12 +299,12 @@ final class BinaryIntegerTestsOnMultiplication: XCTestCase {
             Test().multiplication( 5 as T,  5 as T, Fallible(Doublet(low:  25, high:   0)))
         }
         
-        for type in binaryIntegersWhereIsSigned {
-            whereIsSigned(type)
+        for type in typesAsBinaryIntegerAsSigned {
+            AsSigned(type)
         }
 
-        for type in binaryIntegersWhereIsUnsigned {
-            whereIsUnsigned(type)
+        for type in typesAsBinaryIntegerAsUnsigned {
+            AsUnsigned(type)
         }
     }
     
@@ -369,7 +369,7 @@ final class BinaryIntegerTestsOnMultiplication: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             #if DEBUG
             whereIs(type, size: IX(size: type) ?? 0256, rounds: 16, randomness: fuzzer)
             #else
@@ -395,7 +395,7 @@ final class BinaryIntegerTestsOnMultiplication: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             #if DEBUG
             whereIs(type, size: IX(size: type) ?? 0256, rounds: 16, randomness: fuzzer)
             #else
@@ -451,7 +451,7 @@ extension BinaryIntegerTestsOnMultiplication {
             Test().same(success, rounds &* 12)
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type, size: IX(size: type) ?? 256, rounds: 8, randomness: fuzzer)
         }
     }

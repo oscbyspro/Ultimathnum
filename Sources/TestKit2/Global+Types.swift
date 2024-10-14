@@ -22,15 +22,15 @@ public let i8u8: [any CoreInteger.Type] = [
 ]
 
 public let coreIntegers: [any CoreInteger.Type] = {
-    coreIntegersWhereIsSigned +
-    coreIntegersWhereIsUnsigned
+    typesAsCoreIntegersAsSigned +
+    typesAsCoreIntegersAsUnsigned
 }()
 
-public let coreIntegersWhereIsSigned: [any CoreIntegerWhereIsSigned.Type] = [
+public let typesAsCoreIntegersAsSigned: [any CoreIntegerAsSigned.Type] = [
     IX.self, I8.self, I16.self, I32.self, I64.self,
 ]
 
-public let coreIntegersWhereIsUnsigned: [any CoreIntegerWhereIsUnsigned.Type] = [
+public let typesAsCoreIntegersAsUnsigned: [any CoreIntegerAsUnsigned.Type] = [
     UX.self, U8.self, U16.self, U32.self, U64.self,
 ]
 

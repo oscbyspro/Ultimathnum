@@ -54,7 +54,7 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type)
         }
     }
@@ -157,16 +157,16 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
             }
         }
         
-        for destination in binaryIntegers {
-            for source in systemsIntegers {
+        for destination in typesAsBinaryInteger {
+            for source in typesAsSystemsInteger {
                 whereTheSourceIs(source: source, destination: destination)
             }
             
-            for source in systemsIntegersWhereIsSigned {
+            for source in typesAsSystemsIntegerAsSigned {
                 whereTheSourceIsIsSigned(source: source, destination: destination)
             }
             
-            for source in systemsIntegersWhereIsUnsigned {
+            for source in typesAsSystemsIntegerAsUnsigned {
                 whereTheSourceIsUnsigned(source: source, destination: destination)
             }
         }
@@ -203,12 +203,12 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
             }
         }
         
-        for destination in binaryIntegers {
+        for destination in typesAsBinaryInteger {
             #if DEBUG
             whereIs(source: I32.self, destination: destination)
             whereIs(source: U32.self, destination: destination)
             #else
-            for source in systemsIntegers {
+            for source in typesAsSystemsInteger {
                 whereIs(source: source, destination: destination)
             }
             #endif
@@ -254,12 +254,12 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
             }
         }
         
-        for destination in binaryIntegers {
+        for destination in typesAsBinaryInteger {
             #if DEBUG
             whereIs(source: I32.self, destination: destination)
             whereIs(source: U32.self, destination: destination)
             #else
-            for source in systemsIntegers {
+            for source in typesAsSystemsInteger {
                 whereIs(source: source, destination: destination)
             }
             #endif
@@ -276,7 +276,7 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
     ///     11111111111111111111111111100001
     ///     11111111111111111111111111110000
     ///
-    func testExactlySystemsIntegerSlicesOf0s() {
+    func testExactlytypesAsSystemsIntegerlicesOf0s() {
         func whereIs<T, U>(source: T.Type, destination: U.Type) where T: SystemsInteger, U: BinaryInteger {
             always: do {
                 let patterns: [IX] = [~1, ~3, ~7, ~15]
@@ -319,12 +319,12 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
             }
         }
         
-        for destination in binaryIntegers {
+        for destination in typesAsBinaryInteger {
             #if DEBUG
             whereIs(source: I32.self, destination: destination)
             whereIs(source: U32.self, destination: destination)
             #else
-            for source in systemsIntegers {
+            for source in typesAsSystemsInteger {
                 whereIs(source: source, destination: destination)
             }
             #endif
@@ -341,7 +341,7 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
     ///     00000000000000000000000000011110
     ///     00000000000000000000000000001111
     ///
-    func testExactlySystemsIntegerSlicesOf1s() {
+    func testExactlytypesAsSystemsIntegerlicesOf1s() {
         func whereIs<T, U>(source: T.Type, destination: U.Type) where T: SystemsInteger, U: BinaryInteger {
             always: do {
                 let patterns: [UX] = [1, 3, 7, 15]
@@ -378,12 +378,12 @@ final class BinaryIntegerTestsOnValidation: XCTestCase {
             }
         }
         
-        for destination in binaryIntegers {
+        for destination in typesAsBinaryInteger {
             #if DEBUG
             whereIs(source: I32.self, destination: destination)
             whereIs(source: U32.self, destination: destination)
             #else
-            for source in systemsIntegers {
+            for source in typesAsSystemsInteger {
                 whereIs(source: source, destination: destination)
             }
             #endif
@@ -402,14 +402,14 @@ extension BinaryIntegerTestsOnValidation {
     //=------------------------------------------------------------------------=
     
     /// 2024-06-20: Signed systems integers should successfully clamp `∞`.
-    func testSystemsIntegersCanClampInfiniteValues() {
+    func testtypesAsSystemsIntegerCanClampInfiniteValues() {
         func whereIs<A, B>(_ source: A.Type, _ destination: B.Type) where A: ArbitraryInteger & UnsignedInteger, B: SystemsInteger {
             Test().same(B(clamping: A.max    ), B.max)
             Test().same(B(clamping: A.max - 1), B.max)
         }
         
-        for source in arbitraryIntegersWhereIsUnsigned {
-            for destination in systemsIntegers {
+        for source in typesAsArbitraryIntegerAsUnsigned {
+            for destination in typesAsSystemsInteger {
                 whereIs(source, destination)
             }
         }
@@ -466,8 +466,8 @@ extension BinaryIntegerTestsOnValidation {
         #else
         let rounds: IX = 32
         #endif
-        for source in binaryIntegers {
-            for destination in binaryIntegers {
+        for source in typesAsBinaryInteger {
+            for destination in typesAsBinaryInteger {
                 let size =  IX(size: source) ?? 256
                 whereIs(
                     source:      source,

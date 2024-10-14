@@ -22,7 +22,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("BinaryInteger - mode", arguments: binaryIntegers)
+    @Test("BinaryInteger - mode", arguments: typesAsBinaryInteger)
     func modes(type: any BinaryInteger.Type) {
         whereIs(type)
         
@@ -32,7 +32,7 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger - size", arguments: binaryIntegers)
+    @Test("BinaryInteger - size", arguments: typesAsBinaryInteger)
     func sizes(type: any BinaryInteger.Type) {
         whereIs(type)
         
@@ -58,7 +58,7 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger - quadrants", arguments: binaryIntegers)
+    @Test("BinaryInteger - quadrants", arguments: typesAsBinaryInteger)
     func quadrants(type: any BinaryInteger.Type) {
         whereIs(type)
         

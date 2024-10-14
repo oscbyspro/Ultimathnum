@@ -69,7 +69,7 @@ final class BinaryIntegerTestsOnCount: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type)
         }
     }

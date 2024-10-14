@@ -42,11 +42,11 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Divider/division(_:) - [uniform]", arguments: systemsIntegersWhereIsUnsigned, fuzzers)
-    func divisionByFuzzingValues(_ type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
+    @Test("Divider/division(_:) - [uniform]", arguments: typesAsSystemsIntegerAsUnsigned, fuzzers)
+    func divisionByFuzzingValues(_ type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 1024, release: 8192) {
                 let divider  = Divider(T.random(in: T.positives, using: &randomness))
                 let dividend = T.random(using: &randomness)
@@ -56,11 +56,11 @@ import TestKit2
         }
     }
     
-    @Test("Divider/division(_:) - [entropic]", arguments: systemsIntegersWhereIsUnsigned, fuzzers)
-    func divisionByFuzzingEntropies(_ type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
+    @Test("Divider/division(_:) - [entropic]", arguments: typesAsSystemsIntegerAsUnsigned, fuzzers)
+    func divisionByFuzzingEntropies(_ type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 1024, release: 8192) {
                 if  let divider  = Divider(exactly: T.entropic(using: &randomness)) {
                     let dividend = T.entropic(using: &randomness)
@@ -71,11 +71,11 @@ import TestKit2
         }
     }
     
-    @Test("Divider/division(_:) - [power-of-2]", arguments: systemsIntegersWhereIsUnsigned, fuzzers)
-    func divisionByFuzzingPowerOf2s(_ type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
+    @Test("Divider/division(_:) - [power-of-2]", arguments: typesAsSystemsIntegerAsUnsigned, fuzzers)
+    func divisionByFuzzingPowerOf2s(_ type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 1024, release: 8192) {
                 let divider = Divider(T.lsb.up(Shift.random(using: &randomness)))
                 let dividend: T = T.entropic(using: &randomness)
@@ -96,11 +96,11 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Divider21/division(_:) - [uniform]", arguments: systemsIntegersWhereIsUnsigned, fuzzers)
-    func divisionByFuzzingValues(_ type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
+    @Test("Divider21/division(_:) - [uniform]", arguments: typesAsSystemsIntegerAsUnsigned, fuzzers)
+    func divisionByFuzzingValues(_ type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 1024, release: 8192) {
                 let divider = Divider21(T.random(in: T.positives, using: &randomness))
                 let low  = T.random(using: &randomness)
@@ -112,11 +112,11 @@ import TestKit2
         }
     }
     
-    @Test("Divider21/division(_:) - [entropic]", arguments: systemsIntegersWhereIsUnsigned, fuzzers)
-    func divisionByFuzzingEntropies(_ type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
+    @Test("Divider21/division(_:) - [entropic]", arguments: typesAsSystemsIntegerAsUnsigned, fuzzers)
+    func divisionByFuzzingEntropies(_ type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 1024, release: 8192) {
                 if  let divider = Divider21(exactly: T.entropic(using: &randomness)) {
                     let low  = T.entropic(using: &randomness)
@@ -129,11 +129,11 @@ import TestKit2
         }
     }
     
-    @Test("Divider21/division(_:) - [power-of-2]", arguments: systemsIntegersWhereIsUnsigned, fuzzers)
-    func divisionByFuzzingPowerOf2s(_ type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
+    @Test("Divider21/division(_:) - [power-of-2]", arguments: typesAsSystemsIntegerAsUnsigned, fuzzers)
+    func divisionByFuzzingPowerOf2s(_ type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 1024, release: 8192) {
                 let divider  = Divider21(T.lsb.up(Shift.random(using: &randomness)))
                 let low:  T  = T.entropic(using: &randomness)

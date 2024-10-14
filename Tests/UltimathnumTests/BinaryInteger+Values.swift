@@ -34,7 +34,7 @@ final class BinaryIntegerTestsOnValues: XCTestCase {
             Test().same(T.max, max, "max")
         }
         
-        for case let type as any EdgyInteger.Type in binaryIntegers {
+        for case let type as any EdgyInteger.Type in typesAsBinaryInteger {
             whereIs((type))
         }
     }
@@ -62,11 +62,11 @@ final class BinaryIntegerTestsOnValues: XCTestCase {
             Test().descending(T.msb, Bit.one,  Count(1))
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIsBinaryInteger(type)
         }
         
-        for type in systemsIntegers {
+        for type in typesAsSystemsInteger {
             whereIsSystemsInteger(type)
         }
     }

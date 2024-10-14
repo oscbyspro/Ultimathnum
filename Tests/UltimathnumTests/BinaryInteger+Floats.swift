@@ -66,8 +66,8 @@ final class BinaryIntegerTestsOnFloats: XCTestCase {
             Test().stdlib(-A.leastNonzeroMagnitude, is: B.zero)
         }
         
-        for source in stdlibSystemsFloats {
-            for destination in binaryIntegers {
+        for source in typesAsSwiftBinaryFloatingPoint {
+            for destination in typesAsBinaryInteger {
                 whereIs(source: source, destination: destination)
             }
         }
@@ -79,8 +79,8 @@ final class BinaryIntegerTestsOnFloats: XCTestCase {
             Test().stdlib(-A.nan, is: Optional<B>.none)
         }
         
-        for source in stdlibSystemsFloats {
-            for destination in binaryIntegers {
+        for source in typesAsSwiftBinaryFloatingPoint {
+            for destination in typesAsBinaryInteger {
                 whereIs(source: source, destination: destination)
             }
         }
@@ -92,8 +92,8 @@ final class BinaryIntegerTestsOnFloats: XCTestCase {
             Test().stdlib(-A.infinity, is: Optional<B>.none)
         }
         
-        for source in stdlibSystemsFloats {
-            for destination in binaryIntegers {
+        for source in typesAsSwiftBinaryFloatingPoint {
+            for destination in typesAsBinaryInteger {
                 whereIs(source: source, destination: destination)
             }
         }
@@ -118,8 +118,8 @@ final class BinaryIntegerTestsOnFloats: XCTestCase {
             }
         }
         
-        for source in stdlibSystemsFloats {
-            for destination in binaryIntegers {
+        for source in typesAsSwiftBinaryFloatingPoint {
+            for destination in typesAsBinaryInteger {
                 whereIs(source: source, destination: destination)
             }
         }
@@ -138,7 +138,7 @@ final class BinaryIntegerTestsOnFloats: XCTestCase {
             Test().stdlib(-Float32.greatestFiniteMagnitude, is: T.exactly(negative).optional(), exactly: true)
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type)
         }
     }
@@ -158,7 +158,7 @@ final class BinaryIntegerTestsOnFloats: XCTestCase {
             Test().stdlib(-Float64.greatestFiniteMagnitude, is: T.exactly(negative).optional(), exactly: true)
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type)
         }
     }
@@ -202,7 +202,7 @@ final class BinaryIntegerTestsOnFloats: XCTestCase {
             }
         }
         
-        for source in stdlibSystemsFloats {
+        for source in typesAsSwiftBinaryFloatingPoint {
             let steps = IX(source.significandBitCount)
             whereIs(source: source, destination: InfiniInt<IX>.self, exponents: 32, steps: steps)
             whereIs(source: source, destination: InfiniInt<UX>.self, exponents: 32, steps: steps)
@@ -243,7 +243,7 @@ final class BinaryIntegerTestsOnFloats: XCTestCase {
             }
         }
         
-        for source in stdlibSystemsFloats {
+        for source in typesAsSwiftBinaryFloatingPoint {
             whereIs(source: source, destination: InfiniInt<IX>.self, exponents: 32, steps: 32)
             whereIs(source: source, destination: InfiniInt<UX>.self, exponents: 32, steps: 32)
         }
@@ -284,7 +284,7 @@ final class BinaryIntegerTestsOnFloats: XCTestCase {
             }
         }
         
-        for source in stdlibSystemsFloats {
+        for source in typesAsSwiftBinaryFloatingPoint {
             whereIs(source: source, destination: InfiniInt<IX>.self, exponents: 32, steps: 32)
             whereIs(source: source, destination: InfiniInt<UX>.self, exponents: 32, steps: 32)
         }
@@ -325,7 +325,7 @@ final class BinaryIntegerTestsOnFloats: XCTestCase {
             }
         }
         
-        for source in stdlibSystemsFloats {
+        for source in typesAsSwiftBinaryFloatingPoint {
             let steps = IX(source.significandBitCount)
             whereIs(source: source, destination: InfiniInt<IX>.self, exponents: 32, steps: steps)
             whereIs(source: source, destination: InfiniInt<UX>.self, exponents: 32, steps: steps)
@@ -366,7 +366,7 @@ final class BinaryIntegerTestsOnFloats: XCTestCase {
             }
         }
         
-        for source in stdlibSystemsFloats {
+        for source in typesAsSwiftBinaryFloatingPoint {
             whereIs(source: source, destination: InfiniInt<IX>.self, exponents: 32, steps: 32)
             whereIs(source: source, destination: InfiniInt<UX>.self, exponents: 32, steps: 32)
         }
@@ -407,7 +407,7 @@ final class BinaryIntegerTestsOnFloats: XCTestCase {
             }
         }
         
-        for source in stdlibSystemsFloats {
+        for source in typesAsSwiftBinaryFloatingPoint {
             whereIs(source: source, destination: InfiniInt<IX>.self, exponents: 32, steps: 32)
             whereIs(source: source, destination: InfiniInt<UX>.self, exponents: 32, steps: 32)
         }

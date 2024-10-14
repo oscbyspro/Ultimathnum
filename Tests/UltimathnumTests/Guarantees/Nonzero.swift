@@ -23,7 +23,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Nonzero.init - [entropic]", arguments: binaryIntegers, fuzzers)
+    @Test("Nonzero.init - [entropic]", arguments: typesAsBinaryInteger, fuzzers)
     func initByFuzzingEntropies(_ type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         

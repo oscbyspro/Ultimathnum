@@ -223,7 +223,7 @@ extension InfiniIntTests {
         }
         
         for type in Self.types {
-            for source in coreSystemsIntegersWhereIsUnsigned {
+            for source in typesAsCoreIntegerAsUnsigned {
                 whereIs(type, source)
             }
         }
@@ -297,7 +297,7 @@ extension InfiniIntTests {
         }
         
         for type in Self.types {
-            for source in coreSystemsIntegersWhereIsUnsigned {
+            for source in typesAsCoreIntegerAsUnsigned {
                 whereIs(type, source)
             }
         }

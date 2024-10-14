@@ -20,11 +20,11 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt/signum()", arguments: coreIntegersWhereIsUnsigned)
-    func signum(_ type: any SystemsIntegerWhereIsUnsigned.Type) {
+    @Test("DataInt/signum()", arguments: typesAsCoreIntegersAsUnsigned)
+    func signum(_ type: any SystemsIntegerAsUnsigned.Type) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
             for appendix in Bit.all {
                 for mode in Signedness.all {
                     let expectation = Signum(appendix.isZero ? nil : Sign(raw: mode))
@@ -87,11 +87,11 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt/compared(to:) - ignores body appendix extensions", arguments: coreIntegersWhereIsUnsigned)
-    func comparisonIgnoresBodyAppendixExtensions(_ type: any SystemsIntegerWhereIsUnsigned.Type) {
+    @Test("DataInt/compared(to:) - ignores body appendix extensions", arguments: typesAsCoreIntegersAsUnsigned)
+    func comparisonIgnoresBodyAppendixExtensions(_ type: any SystemsIntegerAsUnsigned.Type) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
             for base: [T] in (T.zero ..< 4).lazy.map({ Array(0 ..< $0) }) {
                 for bit in Bit.all {
                     

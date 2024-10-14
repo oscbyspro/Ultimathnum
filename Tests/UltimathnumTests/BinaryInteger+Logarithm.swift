@@ -21,7 +21,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
         
-    @Test("BinaryInteger/ilog2() - [entropic]", arguments: binaryIntegers, fuzzers)
+    @Test("BinaryInteger/ilog2() - [entropic]", arguments: typesAsBinaryInteger, fuzzers)
     func binaryIntegerLogarithm(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
@@ -75,7 +75,7 @@ import TestKit2
         
     ] as [Some<U8, Count>])
     func binaryIntegerLogarithmOfSmallPositive(expectation: Some<U8, Count>) throws {
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             try whereIs(type)
         }
         
@@ -84,7 +84,7 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger/ilog2() - zero is nil [uniform]", arguments: binaryIntegersWhereIsSigned)
+    @Test("BinaryInteger/ilog2() - zero is nil [uniform]", arguments: typesAsBinaryIntegerAsSigned)
     func binaryIntegerLogarithmOfZeroIsNil(type: any BinaryInteger.Type) {
         whereIs(type)
         
@@ -93,7 +93,7 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger/ilog2() - negative is nil [uniform]", arguments: binaryIntegersWhereIsSigned, fuzzers)
+    @Test("BinaryInteger/ilog2() - negative is nil [uniform]", arguments: typesAsBinaryIntegerAsSigned, fuzzers)
     func binaryIntegerLogarithmOfNegativeIsNil(type: any SignedInteger.Type, randomness: consuming FuzzerInt) throws {
         try whereIs(type)
         
@@ -112,11 +112,11 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger/ilog2() - infinite is one less than size [uniform]", arguments: arbitraryIntegersWhereIsUnsigned, fuzzers)
-    func binaryIntegerLogarithmOfInfiniteIsOneLessThanSize(type: any ArbitraryIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    @Test("BinaryInteger/ilog2() - infinite is one less than size [uniform]", arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers)
+    func binaryIntegerLogarithmOfInfiniteIsOneLessThanSize(type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsUnsigned {
             let low  = T(repeating: Bit.one).up(Shift.max(or: 255))
             let high = T(repeating: Bit.one)
             let expectation = Count(raw: -2)

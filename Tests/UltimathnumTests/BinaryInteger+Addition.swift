@@ -43,7 +43,7 @@ final class BinaryIntegerTestsOnAddition: XCTestCase {
             Test().subtraction(T.zero,  2 as T, Fallible(~1 as T, error: !T.isSigned))
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type)
         }
     }
@@ -67,7 +67,7 @@ final class BinaryIntegerTestsOnAddition: XCTestCase {
             Test().addition(max,  001, Fallible( min ^  min << 1, error:  T.isEdgy))
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type)
         }
     }
@@ -91,7 +91,7 @@ final class BinaryIntegerTestsOnAddition: XCTestCase {
             Test().subtraction(max,  001, Fallible(max ^ 001))
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type)
         }
     }
@@ -113,7 +113,7 @@ final class BinaryIntegerTestsOnAddition: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type)
         }
     }
@@ -135,7 +135,7 @@ final class BinaryIntegerTestsOnAddition: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type)
         }
     }
@@ -174,7 +174,7 @@ final class BinaryIntegerTestsOnAddition: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             #if DEBUG
             whereIs(type, size: IX(size: type) ?? 0256, rounds: 16, randomness: fuzzer)
             #else
@@ -333,7 +333,7 @@ extension BinaryIntegerTestsOnAddition {
             Test().same(success, rounds &* 40 &+ 18)
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type, size: IX(size: type) ?? 256, rounds: 32, randomness: fuzzer)
         }
     }

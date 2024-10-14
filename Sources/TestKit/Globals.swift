@@ -14,16 +14,16 @@ import RandomIntKit
 // MARK: * Globals
 //*============================================================================*
 
-public let coreSystemsIntegers: [any SystemsInteger.Type] = {
-    coreSystemsIntegersWhereIsSigned +
-    coreSystemsIntegersWhereIsUnsigned
+public let typesAsCoreInteger: [any SystemsInteger.Type] = {
+    typesAsCoreIntegerAsSigned +
+    typesAsCoreIntegerAsUnsigned
 }()
 
-public let coreSystemsIntegersWhereIsSigned: [any (SystemsInteger & SignedInteger).Type] = [
+public let typesAsCoreIntegerAsSigned: [any (SystemsInteger & SignedInteger).Type] = [
     IX.self, I8.self, I16.self, I32.self, I64.self,
 ]
 
-public let coreSystemsIntegersWhereIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = [
+public let typesAsCoreIntegerAsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = [
     UX.self, U8.self, U16.self, U32.self, U64.self,
 ]
 
@@ -31,20 +31,20 @@ public let coreSystemsIntegersWhereIsUnsigned: [any (SystemsInteger & UnsignedIn
 // MARK: + Stdlib
 //=----------------------------------------------------------------------------=
 
-public let stdlibSystemsIntegers: [any Swift.FixedWidthInteger.Type] = {
-    stdlibSystemsIntegersWhereIsSigned +
-    stdlibSystemsIntegersWhereIsUnsigned
+public let typesAsSwiftFixedWidthInteger: [any Swift.FixedWidthInteger.Type] = {
+    typesAsSwiftFixedWidthIntegerAsSigned +
+    typesAsSwiftFixedWidthIntegerAsUnsigned
 }()
 
-public let stdlibSystemsIntegersWhereIsSigned: [any (Swift.FixedWidthInteger & Swift.SignedInteger).Type] = [
+public let typesAsSwiftFixedWidthIntegerAsSigned: [any (Swift.FixedWidthInteger & Swift.SignedInteger).Type] = [
     Int.self, Int8.self, Int16.self, Int32.self, Int64.self,
 ]
 
-public let stdlibSystemsIntegersWhereIsUnsigned: [any (Swift.FixedWidthInteger & Swift.UnsignedInteger).Type] = [
+public let typesAsSwiftFixedWidthIntegerAsUnsigned: [any (Swift.FixedWidthInteger & Swift.UnsignedInteger).Type] = [
     UInt.self, UInt8.self, UInt16.self, UInt32.self, UInt64.self,
 ]
 
-public let stdlibSystemsFloats: [any Swift.BinaryFloatingPoint.Type] = [
+public let typesAsSwiftBinaryFloatingPoint: [any Swift.BinaryFloatingPoint.Type] = [
     Float32.self,
     Float64.self,
 ]

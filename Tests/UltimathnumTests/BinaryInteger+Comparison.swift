@@ -41,7 +41,7 @@ final class BinaryIntegerTestsOnComparison: XCTestCase {
             Test().signum(Esque<T>.max,  Signum.positive)
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type)
         }
     }
@@ -85,8 +85,8 @@ final class BinaryIntegerTestsOnComparison: XCTestCase {
             }
         }
         
-        for lhs in binaryIntegers {
-            for rhs in binaryIntegers {
+        for lhs in typesAsBinaryInteger {
+            for rhs in typesAsBinaryInteger {
                 whereIs(lhs, rhs)
             }
         }
@@ -118,8 +118,8 @@ final class BinaryIntegerTestsOnComparison: XCTestCase {
             }
         }
         
-        for lhs in binaryIntegers {
-            for rhs in binaryIntegers {
+        for lhs in typesAsBinaryInteger {
+            for rhs in typesAsBinaryInteger {
                 whereIs(lhs, rhs)
             }
         }
@@ -148,8 +148,8 @@ final class BinaryIntegerTestsOnComparison: XCTestCase {
             }
         }
         
-        for lhs in binaryIntegers {
-            for rhs in binaryIntegers {
+        for lhs in typesAsBinaryInteger {
+            for rhs in typesAsBinaryInteger {
                 whereIs(lhs, rhs)
             }
         }
@@ -184,7 +184,7 @@ final class BinaryIntegerTestsOnComparison: XCTestCase {
         #else
         let rounds: IX = 512
         #endif
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type: type, size: IX(size: type) ?? 256, rounds: rounds, randomness: fuzzer)
         }
     }

@@ -15,62 +15,64 @@ import TestKit2
 //*============================================================================*
 // MARK: * Globals
 //*============================================================================*
+// Imagine an array of chosen types and a bunch of type filters...
+//=----------------------------------------------------------------------------=
 
-let arbitraryIntegers: [any ArbitraryInteger.Type] = {
-    arbitraryIntegersWhereIsSigned +
-    arbitraryIntegersWhereIsUnsigned
+let typesAsArbitraryInteger: [any ArbitraryInteger.Type] = {
+    typesAsArbitraryIntegerAsSigned +
+    typesAsArbitraryIntegerAsUnsigned
 }()
 
-let arbitraryIntegersWhereIsSigned: [any ArbitraryIntegerWhereIsSigned.Type] = [
+let typesAsArbitraryIntegerAsSigned: [any ArbitraryIntegerAsSigned.Type] = [
     InfiniInt<I8>.self,
     InfiniInt<IX>.self,
 ]
 
-let arbitraryIntegersWhereIsUnsigned: [any ArbitraryIntegerWhereIsUnsigned.Type] = [
+let typesAsArbitraryIntegerAsUnsigned: [any ArbitraryIntegerAsUnsigned.Type] = [
     InfiniInt<U8>.self,
     InfiniInt<UX>.self,
 ]
 
-let binaryIntegers: [any BinaryInteger.Type] = {
-    binaryIntegersWhereIsSigned +
-    binaryIntegersWhereIsUnsigned
+let typesAsBinaryInteger: [any BinaryInteger.Type] = {
+    typesAsBinaryIntegerAsSigned +
+    typesAsBinaryIntegerAsUnsigned
 }()
         
-let binaryIntegersWhereIsSigned: [any SignedInteger.Type] = {
-    systemsIntegersWhereIsSigned +
-    arbitraryIntegersWhereIsSigned
+let typesAsBinaryIntegerAsSigned: [any SignedInteger.Type] = {
+    typesAsSystemsIntegerAsSigned +
+    typesAsArbitraryIntegerAsSigned
 }()
         
-let binaryIntegersWhereIsUnsigned: [any UnsignedInteger.Type] = {
-    systemsIntegersWhereIsUnsigned +
-    arbitraryIntegersWhereIsUnsigned
+let typesAsBinaryIntegerAsUnsigned: [any UnsignedInteger.Type] = {
+    typesAsSystemsIntegerAsUnsigned +
+    typesAsArbitraryIntegerAsUnsigned
 }()
 
-let edgyIntegers: [any EdgyInteger.Type] = {
-    edgyIntegersWhereIsSigned +
-    edgyIntegersWhereIsUnsigned
+let typesAsEdgyInteger: [any EdgyInteger.Type] = {
+    typesAsEdgyIntegerAsSigned +
+    typesAsEdgyIntegerAsUnsigned
 }()
 
-let edgyIntegersWhereIsSigned: [any EdgyIntegerWhereIsSigned.Type] = {
-    systemsIntegersWhereIsSigned
+let typesAsEdgyIntegerAsSigned: [any EdgyIntegerAsSigned.Type] = {
+    typesAsSystemsIntegerAsSigned
 }()
 
-let edgyIntegersWhereIsUnsigned: [any EdgyIntegerWhereIsUnsigned.Type] = {
-    binaryIntegersWhereIsUnsigned
+let typesAsEdgyIntegerAsUnsigned: [any EdgyIntegerAsUnsigned.Type] = {
+    typesAsBinaryIntegerAsUnsigned
 }()
 
-let systemsIntegers: [any SystemsInteger.Type] = {
-    systemsIntegersWhereIsSigned +
-    systemsIntegersWhereIsUnsigned
+let typesAsSystemsInteger: [any SystemsInteger.Type] = {
+    typesAsSystemsIntegerAsSigned +
+    typesAsSystemsIntegerAsUnsigned
 }()
 
-let systemsIntegersWhereIsSigned: [any SystemsIntegerWhereIsSigned.Type] = [
+let typesAsSystemsIntegerAsSigned: [any SystemsIntegerAsSigned.Type] = [
     IX.self,  I8 .self, I16.self, I32.self, I64 .self,
     DoubleInt<I8>.self, DoubleInt<DoubleInt<I8>>.self,
     DoubleInt<IX>.self, DoubleInt<DoubleInt<IX>>.self,
 ]
 
-let systemsIntegersWhereIsUnsigned: [any SystemsIntegerWhereIsUnsigned.Type] = [
+let typesAsSystemsIntegerAsUnsigned: [any SystemsIntegerAsUnsigned.Type] = [
     UX.self,  U8 .self, U16.self, U32.self, U64 .self,
     DoubleInt<U8>.self, DoubleInt<DoubleInt<U8>>.self,
     DoubleInt<UX>.self, DoubleInt<DoubleInt<UX>>.self,

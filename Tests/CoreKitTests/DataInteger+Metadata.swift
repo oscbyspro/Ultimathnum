@@ -20,11 +20,11 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt.capacity", arguments: coreIntegersWhereIsUnsigned)
-    func capacity(_ type: any SystemsIntegerWhereIsUnsigned.Type) {
+    @Test("DataInt.capacity", arguments: typesAsCoreIntegersAsUnsigned)
+    func capacity(_ type: any SystemsIntegerAsUnsigned.Type) {
         whereIs(type)
         
-        func whereIs<T>(_ element: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+        func whereIs<T>(_ element: T.Type) where T: SystemsIntegerAsUnsigned {
             let chunk = IX(size: T.self)
             
             #expect(       DataInt<T>     .capacity.times(chunk).plus(chunk).error)

@@ -62,19 +62,19 @@ struct BinaryIntegerTestsOnFactorial {
         
     ] as [(index: U8, element: IXL)])
     func elementAtSmallNaturalIndex(index: U8, element: IXL) throws {
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type)
         }
                 
-        for type in binaryIntegersWhereIsUnsigned {
-            whereIsUnsignedInteger(type)
+        for type in typesAsBinaryIntegerAsUnsigned {
+            AsUnsignedInteger(type)
         }
                 
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             #expect(T(clamping: index).factorial() as Optional == T.exactly(element))
         }
         
-        func whereIsUnsignedInteger<T>(_ type: T.Type) where T: UnsignedInteger {
+        func AsUnsignedInteger<T>(_ type: T.Type) where T: UnsignedInteger {
             #expect(T(clamping: index).factorial() as Fallible == T.exactly(element))
         }
     }
@@ -174,23 +174,23 @@ struct BinaryIntegerTestsOnFactorial {
         
     ] as [(index: IXL, element: IXL)])
     func elementAtLargeNaturalIndex(index: IXL, element: IXL) {
-        for type in systemsIntegers {
+        for type in typesAsSystemsInteger {
             whereIs(type)
         }
         
-        for type in systemsIntegersWhereIsUnsigned {
-            whereIsUnsignedInteger(type)
+        for type in typesAsSystemsIntegerAsUnsigned {
+            AsUnsignedInteger(type)
         }
         
         whereIs(IXL.self)
         whereIs(UXL.self)
-        whereIsUnsignedInteger(UXL.self)
+        AsUnsignedInteger(UXL.self)
                 
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             #expect(T(clamping: index).factorial() as Optional == T.exactly(element))
         }
                 
-        func whereIsUnsignedInteger<T>(_ type: T.Type) where T: UnsignedInteger {
+        func AsUnsignedInteger<T>(_ type: T.Type) where T: UnsignedInteger {
             #expect(T(clamping: index).factorial() as Fallible == T.exactly(element))
         }
     }
@@ -207,7 +207,7 @@ struct BinaryIntegerTestsOnFactorialEdgeCases {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("element at negative index is nil [uniform]", arguments: binaryIntegersWhereIsSigned, fuzzers)
+    @Test("element at negative index is nil [uniform]", arguments: typesAsBinaryIntegerAsSigned, fuzzers)
     func elementAtNegativeIndexIsNil(type: any SignedInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
@@ -228,11 +228,11 @@ struct BinaryIntegerTestsOnFactorialEdgeCases {
     }
     
     /// Here we check that the infinite even factors overshift the result.
-    @Test("element at infinite index is zero with error [uniform]", arguments: arbitraryIntegersWhereIsUnsigned, fuzzers)
-    func elementAtInfiniteIndexIsZeroWithError(type: any ArbitraryIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
+    @Test("element at infinite index is zero with error [uniform]", arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers)
+    func elementAtInfiniteIndexIsZeroWithError(type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: ArbitraryIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: ArbitraryIntegerAsUnsigned {
             let low  = T(repeating: Bit.one).up(Shift.max(or: 255))
             let high = T(repeating: Bit.one)
             let expectation = Optional(T.zero.veto())
@@ -248,12 +248,12 @@ struct BinaryIntegerTestsOnFactorialEdgeCases {
         }
     }
     
-    @Test("element at random index error propagation [entropic]", arguments: binaryIntegers, fuzzers)
+    @Test("element at random index error propagation [entropic]", arguments: typesAsBinaryInteger, fuzzers)
     func elementAtRandomIndexErrorPropagation(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
         if  let type = type as? any UnsignedInteger.Type {
-            whereIsUnsignedInteger(type)
+            AsUnsignedInteger(type)
         }
         
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
@@ -266,7 +266,7 @@ struct BinaryIntegerTestsOnFactorialEdgeCases {
             }
         }
         
-        func whereIsUnsignedInteger<T>(_ type: T.Type) where T: UnsignedInteger {
+        func AsUnsignedInteger<T>(_ type: T.Type) where T: UnsignedInteger {
             for _ in 0 ..< 32 {
                 let index = T.entropic(through: Shift.max(or: 7), using: &randomness)
                 let element: Fallible<T> = index.factorial()

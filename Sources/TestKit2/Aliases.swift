@@ -13,11 +13,11 @@ import CoreKit
 // MARK: * Aliases
 //*============================================================================*
 
-public typealias ArbitraryIntegerWhereIsSigned   = ArbitraryInteger &   SignedInteger
-public typealias ArbitraryIntegerWhereIsUnsigned = ArbitraryInteger & UnsignedInteger
-public typealias      CoreIntegerWhereIsSigned   =      CoreInteger &   SignedInteger
-public typealias      CoreIntegerWhereIsUnsigned =      CoreInteger & UnsignedInteger
-public typealias      EdgyIntegerWhereIsSigned   =      EdgyInteger &   SignedInteger
-public typealias      EdgyIntegerWhereIsUnsigned =      EdgyInteger & UnsignedInteger
-public typealias   SystemsIntegerWhereIsSigned   =   SystemsInteger &   SignedInteger
-public typealias   SystemsIntegerWhereIsUnsigned =   SystemsInteger & UnsignedInteger
+public typealias ArbitraryIntegerAsSigned   = ArbitraryInteger &   SignedInteger
+public typealias ArbitraryIntegerAsUnsigned = ArbitraryInteger & UnsignedInteger
+public typealias      CoreIntegerAsSigned   =      CoreInteger &   SignedInteger
+public typealias      CoreIntegerAsUnsigned =      CoreInteger & UnsignedInteger
+public typealias      EdgyIntegerAsSigned   =      EdgyInteger &   SignedInteger
+public typealias      EdgyIntegerAsUnsigned =      EdgyInteger & UnsignedInteger
+public typealias   SystemsIntegerAsSigned   =   SystemsInteger &   SignedInteger
+public typealias   SystemsIntegerAsUnsigned =   SystemsInteger & UnsignedInteger

@@ -95,7 +95,7 @@ import TestKit2
         }
     }
     
-    @Test("Count ← some BinaryInteger - entropic", arguments: binaryIntegers, fuzzers)
+    @Test("Count ← some BinaryInteger - entropic", arguments: typesAsBinaryInteger, fuzzers)
     func initSomeBinaryIntegerByFuzzing(source: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(source)
         

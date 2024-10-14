@@ -55,7 +55,7 @@ final class BinaryIntegerTestsOnRandom: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type, randomness: fuzzer)
         }
     }
@@ -86,7 +86,7 @@ final class BinaryIntegerTestsOnRandom: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type, randomness: fuzzer)
         }
     }
@@ -127,7 +127,7 @@ final class BinaryIntegerTestsOnRandom: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type, randomness: fuzzer)
         }
     }
@@ -155,7 +155,7 @@ final class BinaryIntegerTestsOnRandom: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type, randomness: fuzzer)
         }
     }
@@ -190,7 +190,7 @@ final class BinaryIntegerTestsOnRandom: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type, randomness: fuzzer)
         }
     }
@@ -225,7 +225,7 @@ final class BinaryIntegerTestsOnRandom: XCTestCase {
             check(Shift(Count(7)), T.isSigned ? -128 ... 127 : 000 ... 255)
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type, randomness: fuzzer)
         }
     }

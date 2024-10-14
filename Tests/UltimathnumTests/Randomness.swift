@@ -30,7 +30,7 @@ final class RandomnessTests: XCTestCase {
             }
         }
         
-        for type in systemsIntegersWhereIsUnsigned {
+        for type in typesAsSystemsIntegerAsUnsigned {
             for var randomness in randomnesses {
                 whereIs(type, using: &randomness)
             }
@@ -44,7 +44,7 @@ final class RandomnessTests: XCTestCase {
             }
         }
         
-        for type in systemsIntegersWhereIsUnsigned {
+        for type in typesAsSystemsIntegerAsUnsigned {
             for var randomness in randomnesses {
                 whereIs(type, using: &randomness)
             }
@@ -73,7 +73,7 @@ final class RandomnessTests: XCTestCase {
             }
         }
         
-        for type in systemsIntegersWhereIsUnsigned {
+        for type in typesAsSystemsIntegerAsUnsigned {
             whereIs(type, using: fuzzer)
         }
     }
@@ -91,7 +91,7 @@ final class RandomnessTests: XCTestCase {
             }
         }
         
-        for type in systemsIntegersWhereIsUnsigned {
+        for type in typesAsSystemsIntegerAsUnsigned {
             whereIs(type, using: fuzzer)
         }
     }

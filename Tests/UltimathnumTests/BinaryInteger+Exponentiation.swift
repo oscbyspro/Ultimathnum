@@ -59,8 +59,8 @@ final class BinaryIntegerTestsOnExponentiation: XCTestCase {
         whereIs(InfiniInt<IX>.self, InfiniInt<UX>.self)
         whereIs(InfiniInt<UX>.self, InfiniInt<UX>.self)
         #else
-        for type in binaryIntegers {
-            for exponent in binaryIntegersWhereIsUnsigned {
+        for type in typesAsBinaryInteger {
+            for exponent in typesAsBinaryIntegerAsUnsigned {
                 whereIs(type, exponent)
             }
         }
@@ -102,7 +102,7 @@ final class BinaryIntegerTestsOnExponentiation: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             #if DEBUG
             whereIs(type, size: IX(size: type) ?? 0032, rounds: 04, randomness: fuzzer)
             #else
@@ -134,7 +134,7 @@ final class BinaryIntegerTestsOnExponentiation: XCTestCase {
             }
         }
         
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             #if DEBUG
             whereIs(type, size: IX(size: type) ?? 255, rounds: 04, randomness: fuzzer)
             #else
@@ -169,7 +169,7 @@ final class BinaryIntegerTestsOnExponentiation: XCTestCase {
             }
         }
         
-        for type in systemsIntegers {
+        for type in typesAsSystemsInteger {
             whereIs(type)
         }
     }
@@ -188,8 +188,8 @@ final class BinaryIntegerTestsOnExponentiation: XCTestCase {
             }
         }
         
-        for small in systemsIntegers {
-            for large in systemsIntegers {
+        for small in typesAsSystemsInteger {
+            for large in typesAsSystemsInteger {
                 #if DEBUG
                 whereIs(small: small, large: large, rounds: 4, randomness: fuzzer)
                 #else
@@ -242,7 +242,7 @@ extension BinaryIntegerTestsOnExponentiation {
         whereIs(DoubleInt<UX>.self)
         whereIs(InfiniInt<UX>.self)
         #else
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             whereIs(type)
         }
         #endif
@@ -254,8 +254,8 @@ extension BinaryIntegerTestsOnExponentiation {
             Test().same(Esque<A>.max.power(B.max, coefficient: A.zero), Fallible(A.zero))
         }
         
-        for type in binaryIntegers {
-            for exponent in binaryIntegersWhereIsUnsigned {
+        for type in typesAsBinaryInteger {
+            for exponent in typesAsBinaryIntegerAsUnsigned {
                 whereIs(type, exponent)
             }
         }
@@ -270,8 +270,8 @@ extension BinaryIntegerTestsOnExponentiation {
             }
         }
         
-        for type in binaryIntegers {
-            for exponent in binaryIntegersWhereIsUnsigned {
+        for type in typesAsBinaryInteger {
+            for exponent in typesAsBinaryIntegerAsUnsigned {
                 whereIs(type, exponent)
             }
         }
@@ -361,8 +361,8 @@ extension BinaryIntegerTestsOnExponentiation {
             Test().same(A(3).power(B(5), coefficient: A(7)), A.exactly(1701))
         }
         
-        for type in binaryIntegers {
-            for exponent in binaryIntegersWhereIsUnsigned {
+        for type in typesAsBinaryInteger {
+            for exponent in typesAsBinaryIntegerAsUnsigned {
                 whereIs(type, exponent)
             }
         }

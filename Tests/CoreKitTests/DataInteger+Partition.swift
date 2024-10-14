@@ -20,11 +20,11 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt/split(at:)", arguments: coreIntegersWhereIsUnsigned)
-    func split(_ type: any SystemsIntegerWhereIsUnsigned.Type) {
+    @Test("DataInt/split(at:)", arguments: typesAsCoreIntegersAsUnsigned)
+    func split(_ type: any SystemsIntegerAsUnsigned.Type) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
             Ɣexpect(split: [       ] as [T], clamping: 0, low: [       ] as [T], high: [       ] as [T])
             Ɣexpect(split: [       ] as [T], clamping: 1, low: [       ] as [T], high: [       ] as [T])
             Ɣexpect(split: [       ] as [T], clamping: 2, low: [       ] as [T], high: [       ] as [T])
@@ -48,7 +48,7 @@ import TestKit2
     }
     
     func Ɣexpect<T>(split body: [T], clamping index: IX, low: [T], high: [T], at location: SourceLocation = #_sourceLocation)
-    where T: SystemsIntegerWhereIsUnsigned {
+    where T: SystemsIntegerAsUnsigned {
         let index = Swift.min(Swift.max(IX.zero, index), IX(body.count))
         
         DXL(body, repeating: Bit.zero, as: Signedness.unsigned).perform { elements, _ in
@@ -64,11 +64,11 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt/body", arguments: coreIntegersWhereIsUnsigned)
-    func body(_ type: any SystemsIntegerWhereIsUnsigned.Type) {
+    @Test("DataInt/body", arguments: typesAsCoreIntegersAsUnsigned)
+    func body(_ type: any SystemsIntegerAsUnsigned.Type) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
             Ɣexpect(DXL([       ]), body: [       ] as [T])
             Ɣexpect(DXL([1      ]), body: [1      ] as [T])
             Ɣexpect(DXL([1, 2   ]), body: [1, 2   ] as [T])
@@ -88,8 +88,8 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt/normalized()", arguments: coreIntegersWhereIsUnsigned)
-    func normalized(_ type: any SystemsIntegerWhereIsUnsigned.Type) {
+    @Test("DataInt/normalized()", arguments: typesAsCoreIntegersAsUnsigned)
+    func normalized(_ type: any SystemsIntegerAsUnsigned.Type) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
@@ -146,8 +146,8 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt/prefix(_:)", .serialized, arguments: coreIntegersWhereIsUnsigned)
-    func prefix(_ type: any SystemsIntegerWhereIsUnsigned.Type) {
+    @Test("DataInt/prefix(_:)", .serialized, arguments: typesAsCoreIntegersAsUnsigned)
+    func prefix(_ type: any SystemsIntegerAsUnsigned.Type) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {

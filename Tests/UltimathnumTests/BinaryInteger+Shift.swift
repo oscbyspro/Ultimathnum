@@ -62,8 +62,8 @@ final class BinaryIntegerTestsOnShifts: XCTestCase {
             }
         }
         
-        for value in arbitraryIntegers {
-            for distance in binaryIntegers {
+        for value in typesAsArbitraryInteger {
+            for distance in typesAsBinaryInteger {
                 whereIs(value: value, distance: distance)
             }
         }
@@ -110,8 +110,8 @@ final class BinaryIntegerTestsOnShifts: XCTestCase {
             }
         }
         
-        for value in systemsIntegers {
-            for distance in binaryIntegers {
+        for value in typesAsSystemsInteger {
+            for distance in typesAsBinaryInteger {
                 whereIs(value: value, distance: distance)
             }
         }
@@ -157,8 +157,8 @@ final class BinaryIntegerTestsOnShifts: XCTestCase {
             }
         }
         
-        for value in arbitraryIntegers {
-            for distance in binaryIntegers {
+        for value in typesAsArbitraryInteger {
+            for distance in typesAsBinaryInteger {
                 whereIs(value: value, distance: distance)
             }
         }
@@ -205,8 +205,8 @@ final class BinaryIntegerTestsOnShifts: XCTestCase {
             }
         }
         
-        for value in systemsIntegers {
-            for distance in binaryIntegers {
+        for value in typesAsSystemsInteger {
+            for distance in typesAsBinaryInteger {
                 whereIs(value: value, distance: distance)
             }
         }
@@ -235,8 +235,8 @@ final class BinaryIntegerTestsOnShifts: XCTestCase {
             }
         }
         
-        for value in systemsIntegers {
-            for distance in arbitraryIntegers {
+        for value in typesAsSystemsInteger {
+            for distance in typesAsArbitraryInteger {
                 whereIs(value: value, distance: distance)
             }
         }
@@ -261,8 +261,8 @@ final class BinaryIntegerTestsOnShifts: XCTestCase {
             }
         }
         
-        for value in binaryIntegers {
-            for distance in arbitraryIntegers {
+        for value in typesAsBinaryInteger {
+            for distance in typesAsArbitraryInteger {
                 whereIs(value: value, distance: distance)
             }
         }
@@ -294,7 +294,7 @@ final class BinaryIntegerTestsOnShifts: XCTestCase {
             }
         }
         
-        for value in coreSystemsIntegers {
+        for value in typesAsCoreInteger {
             whereIs(value: value)
         }
         

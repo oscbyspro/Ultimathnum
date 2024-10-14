@@ -23,7 +23,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("BinaryInteger/description [bidirectional][entropic]", arguments: binaryIntegers, fuzzers)
+    @Test("BinaryInteger/description [bidirectional][entropic]", arguments: typesAsBinaryInteger, fuzzers)
     func description(_ type: any BinaryInteger.Type, _ randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         

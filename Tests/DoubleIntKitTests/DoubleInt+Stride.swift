@@ -61,7 +61,7 @@ extension DoubleIntTests {
                 whereIs(type, distance)
             }
             
-            for distance in coreSystemsIntegersWhereIsSigned {
+            for distance in typesAsCoreIntegerAsSigned {
                 whereIs(type, distance)
             }
         }

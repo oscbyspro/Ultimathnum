@@ -97,7 +97,7 @@ final class BinaryIntegerTestsOnLiterals: XCTestCase {
            ),
         ]
                 
-        func whereIsSigned<T>(_ integer: T.Type, values: Values) where T: SignedInteger {
+        func AsSigned<T>(_ integer: T.Type, values: Values) where T: SignedInteger {
             Test().same(T.exactly(values.minM1), Fallible(T(load: ~values.base - 1), error: T.size <= values.size))
             Test().same(T.exactly(values.min  ), Fallible(T(load: ~values.base    ), error: T.size <  values.size))
             Test().same(T.exactly(values.minP1), Fallible(T(load: ~values.base + 1), error: T.size <  values.size))
@@ -106,7 +106,7 @@ final class BinaryIntegerTestsOnLiterals: XCTestCase {
             Test().same(T.exactly(values.maxP1), Fallible(T(load:  values.base + 1), error: T.size <= values.size))
         }
         
-        func whereIsUnsigned<T>(_ integer: T.Type, values: Values) where T: UnsignedInteger {
+        func AsUnsigned<T>(_ integer: T.Type, values: Values) where T: UnsignedInteger {
             Test().same(T.exactly(values.minM1), Fallible(T(load: ~values.base - 1), error: true))
             Test().same(T.exactly(values.min  ), Fallible(T(load: ~values.base    ), error: true))
             Test().same(T.exactly(values.minP1), Fallible(T(load: ~values.base + 1), error: true))
@@ -124,12 +124,12 @@ final class BinaryIntegerTestsOnLiterals: XCTestCase {
             Test().same(values.max  .entropy(), values.size)
             Test().same(values.maxP1.entropy(), Count(IX(raw: values.size) + 1))
             
-            for integer in binaryIntegersWhereIsSigned {
-                whereIsSigned(integer, values: values)
+            for integer in typesAsBinaryIntegerAsSigned {
+                AsSigned(integer, values: values)
             }
             
-            for integer in binaryIntegersWhereIsUnsigned {
-                whereIsUnsigned(integer, values: values)
+            for integer in typesAsBinaryIntegerAsUnsigned {
+                AsUnsigned(integer, values: values)
             }
         }
     }

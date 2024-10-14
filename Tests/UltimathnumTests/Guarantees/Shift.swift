@@ -23,7 +23,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Shift.instance", arguments: binaryIntegersWhereIsUnsigned)
+    @Test("Shift.instance", arguments: typesAsBinaryIntegerAsUnsigned)
     func instances(_ type: any UnsignedInteger.Type) {
         whereIs(type)
         
@@ -34,7 +34,7 @@ import TestKit2
         }
     }
     
-    @Test("Shift.predicate(_:)", arguments: binaryIntegersWhereIsUnsigned)
+    @Test("Shift.predicate(_:)", arguments: typesAsBinaryIntegerAsUnsigned)
     func predicate(_ type: any UnsignedInteger.Type) {
         whereIs(type)
         
@@ -67,7 +67,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Shift.init - [entropic]", arguments: binaryIntegers, fuzzers)
+    @Test("Shift.init - [entropic]", arguments: typesAsBinaryInteger, fuzzers)
     func initByFuzzingEntropies(_ type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
@@ -83,7 +83,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Shift/isZero - load each I8", arguments: binaryIntegersWhereIsUnsigned)
+    @Test("Shift/isZero - load each I8", arguments: typesAsBinaryIntegerAsUnsigned)
     func isZero(_ type: any UnsignedInteger.Type) {
         whereIs(type)
 
@@ -96,7 +96,7 @@ import TestKit2
         }
     }
     
-    @Test("Shift/isInfinite - load each I8", arguments: binaryIntegersWhereIsUnsigned)
+    @Test("Shift/isInfinite - load each I8", arguments: typesAsBinaryIntegerAsUnsigned)
     func isInfinite(_ type: any UnsignedInteger.Type) {
         whereIs(type)
 
@@ -114,7 +114,7 @@ import TestKit2
     //=------------------------------------------------------------------------=
     
     /// - 2024-06-15: Checks that the inverse of zero is nil.
-    @Test("Shift/inverse()", arguments: binaryIntegersWhereIsUnsigned)
+    @Test("Shift/inverse()", arguments: typesAsBinaryIntegerAsUnsigned)
     func inverse(_ type: any UnsignedInteger.Type) {
         whereIs(type)
         
@@ -149,7 +149,7 @@ import TestKit2
         }
     }
 
-    @Test("Shift/natural()", arguments: binaryIntegersWhereIsUnsigned)
+    @Test("Shift/natural()", arguments: typesAsBinaryIntegerAsUnsigned)
     func natural(_ type: any UnsignedInteger.Type) {
         whereIs(type)
         

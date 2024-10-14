@@ -32,7 +32,7 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger.entropic(through:as:using:) - small indices for each domain", arguments: binaryIntegers, fuzzers)
+    @Test("BinaryInteger.entropic(through:as:using:) - small indices for each domain", arguments: typesAsBinaryInteger, fuzzers)
     func entropicThroughSmallIndicesForEachDomain(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         

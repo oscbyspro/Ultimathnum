@@ -22,7 +22,7 @@ import CoreKit
     plus bit: Bool,
     is expectation: Fallible<[Element]>,
     at location: SourceLocation = #_sourceLocation
-)   throws where Element: SystemsIntegerWhereIsUnsigned {
+)   throws where Element: SystemsIntegerAsUnsigned {
     //=--------------------------------------=
     try #require(integer.count >= other.count)
     //=--------------------------------------=
@@ -129,7 +129,7 @@ import CoreKit
     plus bit: Bool,
     is expectation: Fallible<[Element]>,
     at location: SourceLocation = #_sourceLocation
-)   throws where Element: SystemsIntegerWhereIsUnsigned {
+)   throws where Element: SystemsIntegerAsUnsigned {
     //=--------------------------------------=
     try #require(integer.count >= other.count)
     //=--------------------------------------=
@@ -241,7 +241,7 @@ import CoreKit
     plus  increment: Element,
     is expectation: Fallible<[Element]>,
     at location: SourceLocation = #_sourceLocation
-)   throws where Element: SystemsIntegerWhereIsUnsigned {
+)   throws where Element: SystemsIntegerAsUnsigned {
     //=--------------------------------------=
     try #require(integer.count > other.count)
     //=--------------------------------------=
@@ -300,7 +300,7 @@ import CoreKit
     plus  increment:  Element,
     is expectation: Fallible<[Element]>,
     at location: SourceLocation = #_sourceLocation
-)   throws where Element: SystemsIntegerWhereIsUnsigned {
+)   throws where Element: SystemsIntegerAsUnsigned {
     //=--------------------------------------=
     try #require(integer.count > other.count)
     //=--------------------------------------=
@@ -362,7 +362,7 @@ import CoreKit
     plus bit: Bool,
     is expectation: Fallible<[Element]>,
     at location: SourceLocation = #_sourceLocation
-)   throws where Element: SystemsIntegerWhereIsUnsigned {
+)   throws where Element: SystemsIntegerAsUnsigned {
     //=--------------------------------------=
     if  pattern == bit {
         #expect(Fallible(integer, error: bit) == expectation, sourceLocation: location)
@@ -416,7 +416,7 @@ import CoreKit
     plus bit: Bool,
     is expectation: Fallible<[Element]>,
     at location: SourceLocation = #_sourceLocation
-)   throws where Element: SystemsIntegerWhereIsUnsigned {
+)   throws where Element: SystemsIntegerAsUnsigned {
     //=--------------------------------------=
     if  pattern == bit {
         #expect(Fallible(integer, error: bit) == expectation, sourceLocation: location)

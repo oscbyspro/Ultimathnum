@@ -21,11 +21,11 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt/buffer()", arguments: coreIntegersWhereIsUnsigned)
-    func buffer(type: any SystemsIntegerWhereIsUnsigned.Type) throws {
+    @Test("DataInt/buffer()", arguments: typesAsCoreIntegersAsUnsigned)
+    func buffer(type: any SystemsIntegerAsUnsigned.Type) throws {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
             #expect(DataInt<T>(UnsafeBufferPointer(start: nil, count: 0)) == nil)
             #expect(DataInt<T>.Body(UnsafeBufferPointer(start: nil, count: 0)) == nil)
             #expect(MutableDataInt<T>(UnsafeMutableBufferPointer(start: nil, count: 0)) == nil)
@@ -75,8 +75,8 @@ import TestKit2
         }
     }
     
-    @Test("DataInt/subscript(_:) - [uniform]", arguments: coreIntegersWhereIsUnsigned, fuzzers)
-    func element(type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
+    @Test("DataInt/subscript(_:) - [uniform]", arguments: typesAsCoreIntegersAsUnsigned, fuzzers)
+    func element(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {

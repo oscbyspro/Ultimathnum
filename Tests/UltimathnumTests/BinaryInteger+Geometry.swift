@@ -21,12 +21,12 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("BinaryInteger/isqrt() - [entropic]", arguments: binaryIntegers, fuzzers)
+    @Test("BinaryInteger/isqrt() - [entropic]", arguments: typesAsBinaryInteger, fuzzers)
     func integerSquareRoot(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
-        if  let type = type as? any SystemsIntegerWhereIsUnsigned.Type {
-            try whereIsSystemsIntegerWhereIsUnsigned(type)
+        if  let type = type as? any SystemsIntegerAsUnsigned.Type {
+            try whereIsSystemsIntegerAsUnsigned(type)
         }
         
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
@@ -36,7 +36,7 @@ import TestKit2
             }
         }
         
-        func whereIsSystemsIntegerWhereIsUnsigned<T>(_ type: T.Type) throws where T: SystemsIntegerWhereIsUnsigned {
+        func whereIsSystemsIntegerAsUnsigned<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug:   32,  release: 256) {
                 let value = T.entropic(through: Shift.max(or: 255), as: .natural, using: &randomness)
                 try Ɣexpect(value, isqrt: value.isqrt())
@@ -44,11 +44,11 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger/isqrt() - error propagation [entropic]", arguments: systemsIntegersWhereIsUnsigned, fuzzers)
-    func integerSquareRootErrorPropagation(type: any SystemsIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) {
+    @Test("BinaryInteger/isqrt() - error propagation [entropic]", arguments: typesAsSystemsIntegerAsUnsigned, fuzzers)
+    func integerSquareRootErrorPropagation(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
             for _ in 0 ..< 32 {
                 let random = T.entropic(using: &randomness)
                 let expectation: T = random.isqrt()
@@ -92,7 +92,7 @@ import TestKit2
         
     ] as [Some<U8, U8>])
     func integerSquareRootOfSmallNatural(expectation: Some<U8, U8>) throws {
-        for type in binaryIntegers {
+        for type in typesAsBinaryInteger {
             try whereIs(type)
         }
         
@@ -102,7 +102,7 @@ import TestKit2
     }
     
     /// - Note: A binary algorithm may make a correct initial guess here.
-    @Test("BinaryInteger/isqrt() - power-of-2 squares", arguments: binaryIntegers, fuzzers)
+    @Test("BinaryInteger/isqrt() - power-of-2 squares", arguments: typesAsBinaryInteger, fuzzers)
     func integerSquareRootOfPowerOf2Squares(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
@@ -115,7 +115,7 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger/isqrt() - negative is nil [uniform]", arguments: binaryIntegersWhereIsSigned, fuzzers)
+    @Test("BinaryInteger/isqrt() - negative is nil [uniform]", arguments: typesAsBinaryIntegerAsSigned, fuzzers)
     func integerSquareRootOfNegativeIsNil(type: any SignedInteger.Type, randomness: consuming FuzzerInt) throws {
         try whereIs(type)
         
@@ -134,11 +134,11 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger/isqrt() - infinite is nil [uniform]", arguments: arbitraryIntegersWhereIsUnsigned, fuzzers)
-    func integerSquareRootOfInfiniteIsNil(type: any ArbitraryIntegerWhereIsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    @Test("BinaryInteger/isqrt() - infinite is nil [uniform]", arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers)
+    func integerSquareRootOfInfiniteIsNil(type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerWhereIsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsUnsigned {
             let low  = T(repeating: Bit.one).up(Shift.max(or: 255))
             let high = T(repeating: Bit.one)
             
