@@ -44,7 +44,7 @@ extension BinaryInteger {
 // MARK: * Binary Integer x Logarithm x Unsigned
 //*============================================================================*
 //=----------------------------------------------------------------------------=
-// MARK: + Guarantees
+// MARK: + Guarantee
 //=----------------------------------------------------------------------------=
 
 extension Nonzero where Value: UnsignedInteger {

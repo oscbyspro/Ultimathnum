@@ -128,7 +128,7 @@ extension FiniteInteger {
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Guarantees
+// MARK: + Guarantee
 //=----------------------------------------------------------------------------=
 
 extension Finite where Value: BinaryInteger {

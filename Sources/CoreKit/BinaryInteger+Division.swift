@@ -62,7 +62,7 @@ extension Fallible where Value: BinaryInteger {
 }
 
 //*============================================================================*
-// MARK: * Binary Integer x Division x Systems x Unsigned
+// MARK: * Binary Integer x Division x Natural
 //*============================================================================*
 
 extension BinaryInteger where Self: SystemsInteger & UnsignedInteger {
@@ -72,11 +72,11 @@ extension BinaryInteger where Self: SystemsInteger & UnsignedInteger {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func quotient(_ divisor: borrowing Nonzero<Self>) -> Self {
-        self.quotient(divisor).unchecked("SystemsInteger & UnsignedInteger")
+        Natural(unchecked: self).quotient(divisor)
     }
     
     @inlinable public consuming func division(_ divisor: borrowing Nonzero<Self>) -> Division<Self, Self> {
-        self.division(divisor).unchecked("SystemsInteger & UnsignedInteger")
+        Natural(unchecked: self).division(divisor)
     }
     
     //=------------------------------------------------------------------------=
@@ -108,5 +108,24 @@ extension Fallible where Value: SystemsInteger & UnsignedInteger {
     
     @inlinable public consuming func division(_ divider: borrowing Divider<Value>) -> Fallible<Division<Value, Value>> {
         self.value.division(divider).veto(self.error)
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Guarantee
+//=----------------------------------------------------------------------------=
+
+extension Natural where Value: BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public consuming func quotient(_ divisor: borrowing Nonzero<Value>) -> Value {
+        self.value.quotient(divisor).unchecked()
+    }
+    
+    @inlinable public consuming func division(_ divisor: borrowing Nonzero<Value>) -> Division<Value, Value> {
+        self.value.division(divisor).unchecked()
     }
 }
