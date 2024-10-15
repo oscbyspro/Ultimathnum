@@ -29,8 +29,14 @@ extension Tag {
     /// Sending to another destination.
     @Tag public static var forwarding: Self
     
+    /// Of great significance or value.
+    @Tag public static var important: Self
+    
     /// Something that may be regained.
     @Tag public static var recoverable: Self
+    
+    /// Happening, done, or chosen by chance.
+    @Tag public static var random: Self
     
     /// Not officially authorized or confirmed.
     @Tag public static var unofficial: Self

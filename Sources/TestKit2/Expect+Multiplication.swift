@@ -10,6 +10,130 @@
 import CoreKit
 
 //*============================================================================*
+// MARK: * Expect x Multiplication x Binary Integer
+//*============================================================================*
+
+@inlinable public func Ɣexpect<T>(
+    _ lhs: T,
+    times rhs: T,
+    is  low: Fallible<T>,
+    and high: T? = nil,
+    derivatives: Bool = true,
+    division: Bool = true,
+    at  location: SourceLocation = #_sourceLocation
+)   where T: BinaryInteger {
+    //=------------------------------------------=
+    let inputsAreEqual = lhs == rhs
+    let high = high ?? T(repeating: low.value.appendix)
+    let wide = Doublet(low: T.Magnitude(raw: low.value), high: high)
+    //=------------------------------------------=
+    if  derivatives {
+        derivativesOneWayOnly(lhs, rhs)
+    }
+    
+    if  derivatives, !inputsAreEqual {
+        derivativesOneWayOnly(rhs, lhs)
+    }
+    
+    always: do {
+        #expect(lhs.times(rhs) == low, "BinaryInteger/times(_:)", sourceLocation: location)
+    }
+    
+    if !inputsAreEqual {
+        #expect(rhs.times(lhs) == low, "BinaryInteger/times(_:)", sourceLocation: location)
+    }
+    
+    if  inputsAreEqual {
+        #expect(lhs.squared()  == low, "BinaryInteger/squared()", sourceLocation: location)
+    }
+    
+    always: do {
+        #expect(lhs.multiplication(rhs) == wide, "BinaryInteger/multiplication(_:)", sourceLocation: location)
+    }
+    
+    if !inputsAreEqual {
+        #expect(rhs.multiplication(lhs) == wide, "BinaryInteger/multiplication(_:)", sourceLocation: location)
+    }
+    
+    if  division, !low.error {
+        divisionOneWayOnly(lhs, rhs)
+    }
+    
+    if  division, !low.error, !inputsAreEqual {
+        divisionOneWayOnly(rhs, lhs)
+    }
+    
+    complements: do {
+        let lhsComplement = lhs.complement()
+        let rhsComplement = rhs.complement()
+        let lowComplement = low.value.complement()
+        
+        always: do {
+            #expect(lhs.times(rhsComplement).value == (((lowComplement))), "BinaryInteger/times(_:) - complement [0]", sourceLocation: location)
+            #expect(lhsComplement.times(rhs).value == (((lowComplement))), "BinaryInteger/times(_:) - complement [1]", sourceLocation: location)
+            #expect(lhsComplement.times(rhsComplement).value == low.value, "BinaryInteger/times(_:) - complement [2]", sourceLocation: location)
+        }
+
+        if !inputsAreEqual {
+            #expect(rhs.times(lhsComplement).value == (((lowComplement))), "BinaryInteger/times(_:) - complement [3]", sourceLocation: location)
+            #expect(rhsComplement.times(lhs).value == (((lowComplement))), "BinaryInteger/times(_:) - complement [4]", sourceLocation: location)
+        }
+        
+        if  inputsAreEqual {
+            #expect(lhsComplement.squared( ).value == (((((low.value))))), "BinaryInteger/squared() - complement [5]", sourceLocation: location)
+        }
+    }
+    
+    drain: do {
+        guard let a = lhs.ascending(Bit.zero).natural().optional() else { break drain }
+        guard let b = rhs.ascending(Bit.zero).natural().optional() else { break drain }
+        guard let c = a.plus(b).optional() else { break drain }
+        
+        let lhsDown = (lhs >>  a)
+        let rhsDown = (rhs >>  b)
+        
+        always: do {
+            #expect(((lhs)).times(rhsDown).value << b == low.value, "BinaryInteger/times(_:) - drain [0]", sourceLocation: location)
+            #expect(lhsDown.times(rhsDown).value << c == low.value, "BinaryInteger/times(_:) - drain [1]", sourceLocation: location)
+        }
+        
+        if !inputsAreEqual {
+            #expect(lhsDown.times(((rhs))).value << a == low.value, "BinaryInteger/times(_:) - drain [2]", sourceLocation: location)
+        }
+        
+        if  inputsAreEqual {
+            #expect(lhsDown.squared(     ).value << c == low.value, "BinaryInteger/times(_:) - drain [3]", sourceLocation: location)
+        }
+    }
+    //=------------------------------------------=
+    func divisionOneWayOnly(_ lhs: T, _ rhs: T) {
+        if  let divisor  = Nonzero(exactly: rhs) {
+            let division = low.value.division(divisor)
+            #expect(division.value.quotient  == lhs, "invariant: (a * b) / b == a", sourceLocation: location)
+            #expect(division.value.remainder.isZero, "invariant: (a * b) % b == 0", sourceLocation: location)
+        }
+    }
+    
+    func derivativesOneWayOnly(_ lhs: T, _ rhs: T) {
+        scope: do {
+            #expect(lhs &* rhs == low.value, "BinaryInteger.&*(_:_:)", sourceLocation: location)
+        }
+        
+        scope: if !low.error {
+            #expect(lhs  * rhs == low.value, "BinaryInteger.*(_:_:)",  sourceLocation: location)
+        }
+        
+        scope: do {
+            #expect({ var x = lhs; x &*= rhs; return x }() == low.value, "BinaryInteger.&*=(_:_:)", sourceLocation: location)
+        }
+        
+        scope: if !low.error {
+            #expect({ var x = lhs; x  *= rhs; return x }() == low.value, "BinaryInteger.*=(_:_:)",  sourceLocation: location)
+        }
+    }
+}
+
+//*============================================================================*
 // MARK: * Expect x Multiplication x Data Integer
 //*============================================================================*
 

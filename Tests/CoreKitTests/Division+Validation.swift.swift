@@ -24,8 +24,8 @@ import TestKit2
     @Test("Division/exactly() - T.init(load:)", .serialized, arguments: I8(-2)...I8(2), I8(-2)...I8(2))
     func exactly(quotient: I8, remainder: I8) {
         let error = !remainder.isZero
-        for quotient in coreIntegers {
-            for remainder in coreIntegers {
+        for quotient in typesAsCoreInteger {
+            for remainder in typesAsCoreInteger {
                 whereIs(quotient, remainder)
             }
         }

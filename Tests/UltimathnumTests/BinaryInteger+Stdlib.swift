@@ -21,7 +21,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("BinaryInteger/stdlib - uniform", arguments: coreIntegers, fuzzers)
+    @Test("BinaryInteger/stdlib - uniform", arguments: typesAsCoreInteger, fuzzers)
     func stdlib(_ type: any CoreInteger.Type, _ randomness: consuming FuzzerInt) {
         whereIs(type)
         

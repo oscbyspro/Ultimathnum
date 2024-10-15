@@ -33,7 +33,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt vs StdlibInt.Base - [entropic]", .tags(.forwarding), arguments: fuzzers)
+    @Test("StdlibInt/division: vs StdlibInt.Base", .tags(.forwarding, .random), arguments: fuzzers)
     func forwarding(_ randomness: consuming FuzzerInt) {
         for _ in 0 ..< conditional(debug: 64, release: 128) {
             let dividend = IXL.entropic(through: Shift.max(or: 255), using: &randomness)

@@ -8,6 +8,8 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import RandomIntKit
+import InfiniIntKit
 import StdlibIntKit
 import TestKit2
 
@@ -25,50 +27,26 @@ import TestKit2
 ///
 /// - TODO: Test `StdlibInt` forwarding in generic `BinaryInteger` tests.
 ///
-@Suite struct StdlibIntTestsOnMultiplication {
+@Suite("StdlibInt/multiplication") struct StdlibIntTestsOnMultiplication {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt - multiplication [forwarding]", arguments: [
-        
-        (-2 as StdlibInt, -2 as StdlibInt,  4 as StdlibInt),
-        (-1 as StdlibInt, -2 as StdlibInt,  2 as StdlibInt),
-        ( 0 as StdlibInt, -2 as StdlibInt,  0 as StdlibInt),
-        ( 1 as StdlibInt, -2 as StdlibInt, -2 as StdlibInt),
-        ( 2 as StdlibInt, -2 as StdlibInt, -4 as StdlibInt),
-        
-        (-2 as StdlibInt, -1 as StdlibInt,  2 as StdlibInt),
-        (-1 as StdlibInt, -1 as StdlibInt,  1 as StdlibInt),
-        ( 0 as StdlibInt, -1 as StdlibInt,  0 as StdlibInt),
-        ( 1 as StdlibInt, -1 as StdlibInt, -1 as StdlibInt),
-        ( 2 as StdlibInt, -1 as StdlibInt, -2 as StdlibInt),
-        
-        (-2 as StdlibInt,  0 as StdlibInt,  0 as StdlibInt),
-        (-1 as StdlibInt,  0 as StdlibInt,  0 as StdlibInt),
-        ( 0 as StdlibInt,  0 as StdlibInt,  0 as StdlibInt),
-        ( 1 as StdlibInt,  0 as StdlibInt,  0 as StdlibInt),
-        ( 2 as StdlibInt,  0 as StdlibInt,  0 as StdlibInt),
-        
-        (-2 as StdlibInt,  1 as StdlibInt, -2 as StdlibInt),
-        (-1 as StdlibInt,  1 as StdlibInt, -1 as StdlibInt),
-        ( 0 as StdlibInt,  1 as StdlibInt,  0 as StdlibInt),
-        ( 1 as StdlibInt,  1 as StdlibInt,  1 as StdlibInt),
-        ( 2 as StdlibInt,  1 as StdlibInt,  2 as StdlibInt),
-        
-        (-2 as StdlibInt,  2 as StdlibInt, -4 as StdlibInt),
-        (-1 as StdlibInt,  2 as StdlibInt, -2 as StdlibInt),
-        ( 0 as StdlibInt,  2 as StdlibInt,  0 as StdlibInt),
-        ( 1 as StdlibInt,  2 as StdlibInt,  2 as StdlibInt),
-        ( 2 as StdlibInt,  2 as StdlibInt,  4 as StdlibInt),
-        
-    ] as [(StdlibInt, StdlibInt, StdlibInt)])
-    func multiplication(lhs: StdlibInt, rhs: StdlibInt, expectation: StdlibInt) {
-        #expect(lhs * rhs == expectation)
-        #expect(rhs * lhs == expectation)
-        
-        #expect({ var x = lhs; x *= rhs; return x }() == expectation)
-        #expect({ var x = rhs; x *= lhs; return x }() == expectation)
+    @Test("StdlibInt/multiplication: vs StdlibInt.Base", .tags(.forwarding, .random), arguments: fuzzers)
+    func forwarding(_ randomness: consuming FuzzerInt) throws {
+        for _ in 0 ..< conditional(debug: 64, release: 128) {
+            let lhs = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
+            let rhs = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
+            
+            let a = StdlibInt(lhs)
+            let b = StdlibInt(rhs)
+            let c = a * b
+            
+            try #require(c == ( a * b ))
+            try #require(c == { var x = a; x *= b; return x }())
+            
+            Ɣexpect(lhs, times: rhs, is: Fallible(IXL(c)))
+        }
     }
 }

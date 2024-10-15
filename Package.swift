@@ -76,7 +76,7 @@ let package = Package(
         ),
         .testTarget(
             name: "DoubleIntKitTests",
-            dependencies: ["DoubleIntKit", "TestKit"]
+            dependencies: ["DoubleIntKit", "TestKit", "TestKit2"]
         ),
         .target(
             name: "FibonacciKit",

@@ -21,7 +21,7 @@ public let i8u8: [any CoreInteger.Type] = [
     U8.self,
 ]
 
-public let coreIntegers: [any CoreInteger.Type] = {
+public let typesAsCoreInteger: [any CoreInteger.Type] = {
     typesAsCoreIntegersAsSigned +
     typesAsCoreIntegersAsUnsigned
 }()

@@ -25,7 +25,7 @@ import TestKit2
         whereIs(Bool.self)
         whereIs(Void.self)
         
-        for type in coreIntegers {
+        for type in typesAsCoreInteger {
             whereIsBinaryInteger(type)
         }
         

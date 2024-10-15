@@ -21,7 +21,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("T.init(raw:)", arguments: coreIntegers, fuzzers)
+    @Test("T.init(raw:)", arguments: typesAsCoreInteger, fuzzers)
     func bitcasting(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
@@ -39,7 +39,7 @@ import TestKit2
         }
     }
     
-    @Test("Optional/unwrap()", arguments: coreIntegers, fuzzers)
+    @Test("Optional/unwrap()", arguments: typesAsCoreInteger, fuzzers)
     func unwrapping(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         

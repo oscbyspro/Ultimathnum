@@ -23,8 +23,8 @@ import TestKit2
     
     @Test("Division/init(raw:) - T.init(load:)", .serialized, arguments: I8(-2)...I8(2), I8(-2)...I8(2))
     func pattern(quotient: I8, remainder: I8) {
-        for quotient in coreIntegers {
-            for remainder in coreIntegers {
+        for quotient in typesAsCoreInteger {
+            for remainder in typesAsCoreInteger {
                 whereIs(quotient, remainder)
             }
         }
@@ -40,8 +40,8 @@ import TestKit2
     
     @Test("Division/components() - T.init(load:)", .serialized, arguments: I8(-2)...I8(2), I8(-2)...I8(2))
     func components(quotient: I8, remainder: I8) {
-        for quotient in coreIntegers {
-            for remainder in coreIntegers {
+        for quotient in typesAsCoreInteger {
+            for remainder in typesAsCoreInteger {
                 whereIs(quotient, remainder)
             }
         }
