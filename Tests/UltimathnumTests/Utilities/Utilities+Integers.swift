@@ -21,7 +21,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("BinaryInteger.entropic(through:as:using:) - max index for each domain", arguments: i8u8, fuzzers)
+    @Test("BinaryInteger.entropic(through:as:using:) - max index for each domain", arguments: typesAsCoreIntegerAsByte, fuzzers)
     func entropicThroughMaxIndexForEachDomain(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         

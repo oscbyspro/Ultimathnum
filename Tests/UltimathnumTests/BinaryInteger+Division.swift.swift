@@ -21,7 +21,11 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("BinaryInteger/division - signs", .serialized, .tags(.documentation), arguments: [
+    @Test(
+        "BinaryInteger/division - signs",
+        Tag.List.tags(.documentation),
+        ParallelizationTrait.serialized,
+        arguments: [
         
         (dividend:  7 as I8, divisor:  3 as I8, quotient:  2 as I8, remainder:  1 as I8),
         (dividend:  7 as I8, divisor: -3 as I8, quotient: -2 as I8, remainder:  1 as I8),
@@ -48,9 +52,11 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("BinaryInteger/division: for each 8-bit integer pair [1-by-1]",
-    .tags(.exhaustive), arguments: i8u8)
-    func division11ForEachEightBitIntegerPair(type: any SystemsInteger.Type) {
+    @Test(
+        "BinaryInteger/division: for each 8-bit integer pair [1-by-1]",
+        Tag.List.tags(.exhaustive),
+        arguments: typesAsCoreIntegerAsByte
+    )   func division11ForEachEightBitIntegerPair(type: any SystemsInteger.Type) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
@@ -70,9 +76,11 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger/division: 1-by-1 division of random by random",
-    .tags(.random), arguments: typesAsBinaryInteger, fuzzers)
-    func division11OfRandomByRandom(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
+    @Test(
+        "BinaryInteger/division: 1-by-1 division of random by random",
+        Tag.List.tags(.random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func division11OfRandomByRandom(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
@@ -84,9 +92,11 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger/division: random by power-of-2-esque [1-by-1]",
-    .tags(.random), arguments: typesAsBinaryInteger, fuzzers)
-    func division11OfRandomByPowerOf2Esque(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
+    @Test(
+        "BinaryInteger/division: random by power-of-2-esque [1-by-1]",
+        Tag.List.tags(.random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func division11OfRandomByPowerOf2Esque(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
@@ -112,9 +122,11 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger/division: ascending zeros by ascending zeros [1-by-1]",
-    .tags(.random), arguments: typesAsBinaryInteger, fuzzers)
-    func division11OfAscendingZerosByAscendingZeros(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
+    @Test(
+        "BinaryInteger/division: ascending zeros by ascending zeros [1-by-1]",
+        Tag.List.tags(.random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func division11OfAscendingZerosByAscendingZeros(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
@@ -131,9 +143,11 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger/division: contiguous ones by contiguous ones [1-by-1]",
-    .tags(.random), arguments: typesAsBinaryInteger, fuzzers)
-    func division11OfContiguousOnesByContiguousOnes(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
+    @Test(
+        "BinaryInteger/division: contiguous ones by contiguous ones [1-by-1]",
+        Tag.List.tags(.random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func division11OfContiguousOnesByContiguousOnes(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
@@ -150,9 +164,11 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger/division: silly big by silly big [1-by-1]",
-    .tags(.random), arguments: typesAsArbitraryInteger, fuzzers)
-    func division11OfSillyBigBySillyBig(type: any ArbitraryInteger.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "BinaryInteger/division: silly big by silly big [1-by-1]",
+        Tag.List.tags(.random),
+        arguments: typesAsArbitraryInteger, fuzzers
+    )   func division11OfSillyBigBySillyBig(type: any ArbitraryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
         func whereIs<T>(_ type: T.Type) throws where T: ArbitraryInteger {
@@ -176,9 +192,11 @@ import TestKit2
     // MARK: Tests x 2 by 1
     //=------------------------------------------------------------------------=
     
-    @Test("BinaryInteger/division: random by random [2-by-1]",
-    .tags(.random), arguments: typesAsSystemsInteger, fuzzers)
-    func division21OfRandomByRandom(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
+    @Test(
+        "BinaryInteger/division: random by random [2-by-1]",
+        Tag.List.tags(.random),
+        arguments: typesAsSystemsInteger, fuzzers
+    )   func division21OfRandomByRandom(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
@@ -192,9 +210,11 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger/division: random by power-of-2-esque [2-by-1]",
-    .tags(.random), arguments: typesAsSystemsInteger, fuzzers)
-    func division21OfRandomByPowerOf2Esque(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
+    @Test(
+        "BinaryInteger/division: random by power-of-2-esque [2-by-1]",
+        Tag.List.tags(.random),
+        arguments: typesAsSystemsInteger, fuzzers
+    )   func division21OfRandomByPowerOf2Esque(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
@@ -214,9 +234,11 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger/division: ascending zeros by ascending zeros [2-by-1]",
-    .tags(.random), arguments: typesAsSystemsInteger, fuzzers)
-    func division21OfAscendingZerosByAscendingZeros(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
+    @Test(
+        "BinaryInteger/division: ascending zeros by ascending zeros [2-by-1]",
+        Tag.List.tags(.random),
+        arguments: typesAsSystemsInteger, fuzzers
+    )   func division21OfAscendingZerosByAscendingZeros(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
 
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
@@ -234,9 +256,11 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger/division: one half by random [2-by-1]",
-    .tags(.random), arguments: typesAsSystemsInteger, fuzzers)
-    func division21OfOneHalfByRandom(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
+    @Test(
+        "BinaryInteger/division: one half by random [2-by-1]",
+        Tag.List.tags(.random),
+        arguments: typesAsSystemsInteger, fuzzers
+    )   func division21OfOneHalfByRandom(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
@@ -265,9 +289,11 @@ import TestKit2
     // MARK: Tests x 1 by 1
     //=------------------------------------------------------------------------=
     
-    @Test("BinaryInteger/division: random by zero is nil [1-by-1]",
-    .tags(.random), arguments: typesAsBinaryInteger, fuzzers)
-    func division11OfRandomByZeroIsNil(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
+    @Test(
+        "BinaryInteger/division: random by zero is nil [1-by-1]",
+        Tag.List.tags(.random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func division11OfRandomByZeroIsNil(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
@@ -278,9 +304,11 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger/division: T.min by -1 as signed systems integers is error [1-by-1]",
-    .tags(.exhaustive), arguments: typesAsSystemsIntegerAsSigned)
-    func division11OfMinByNegativeOneAsSignedSystemsIntegerIsError(type: any SystemsIntegerAsSigned.Type) {
+    @Test(
+        "BinaryInteger/division: T.min by -1 as signed systems integers is error [1-by-1]",
+        Tag.List.tags(.exhaustive),
+        arguments: typesAsSystemsIntegerAsSigned
+    )   func division11OfMinByNegativeOneAsSignedSystemsIntegerIsError(type: any SystemsIntegerAsSigned.Type) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsSigned {
@@ -289,9 +317,11 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger/division: finite by infinite is trivial [1-by-1]",
-    .tags(.random), arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers)
-    func division11OfFiniteByInfiniteIsTrivial(type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "BinaryInteger/division: finite by infinite is trivial [1-by-1]",
+        Tag.List.tags(.random),
+        arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers
+    )   func division11OfFiniteByInfiniteIsTrivial(type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
         func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsUnsigned {
@@ -308,9 +338,11 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger/division: infinite by finite is error like signed [2-by-1]",
-    .tags(.random), arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers)
-    func division11OfInfiniteByFiniteIsErrorLikeSigned(type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "BinaryInteger/division: infinite by finite is error like signed [2-by-1]",
+        Tag.List.tags(.random),
+        arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers
+    )   func division11OfInfiniteByFiniteIsErrorLikeSigned(type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
                 
         func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsUnsigned {
@@ -338,9 +370,11 @@ import TestKit2
     // MARK: Tests x 2 by 1
     //=------------------------------------------------------------------------=
     
-    @Test("BinaryInteger/division: random by zero is nil [2-by-1]",
-    .tags(.random), arguments: typesAsSystemsInteger, fuzzers)
-    func division21OfRandomByZeroIsNil(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
+    @Test(
+        "BinaryInteger/division: random by zero is nil [2-by-1]",
+        Tag.List.tags(.random),
+        arguments: typesAsSystemsInteger, fuzzers
+    )   func division21OfRandomByZeroIsNil(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
@@ -364,9 +398,11 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("BinaryInteger/division: division error propagation as binary integer",
-    .tags(.random), arguments: typesAsBinaryInteger, fuzzers)
-    func divisionErrorPropagationAsBinaryInteger(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
+    @Test(
+        "BinaryInteger/division: division error propagation as binary integer",
+        Tag.List.tags(.random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func divisionErrorPropagationAsBinaryInteger(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
@@ -391,9 +427,11 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger/division: division error propagation as natural integer",
-    .tags(.random), arguments: typesAsSystemsIntegerAsUnsigned, fuzzers)
-    func divisionErrorPropagationAsNaturalInteger(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) {
+    @Test(
+        "BinaryInteger/division: division error propagation as natural integer",
+        Tag.List.tags(.random),
+        arguments: typesAsSystemsIntegerAsUnsigned, fuzzers
+    )   func divisionErrorPropagationAsNaturalInteger(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {

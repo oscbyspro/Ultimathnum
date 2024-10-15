@@ -16,15 +16,15 @@ import CoreKit
 // MARK: + Integers
 //=----------------------------------------------------------------------------=
 
-public let i8u8: [any CoreInteger.Type] = [
-    I8.self,
-    U8.self,
-]
-
 public let typesAsCoreInteger: [any CoreInteger.Type] = {
     typesAsCoreIntegersAsSigned +
     typesAsCoreIntegersAsUnsigned
 }()
+
+public let typesAsCoreIntegerAsByte: [any CoreInteger.Type] = [
+    I8.self,
+    U8.self,
+]
 
 public let typesAsCoreIntegersAsSigned: [any CoreIntegerAsSigned.Type] = [
     IX.self, I8.self, I16.self, I32.self, I64.self,

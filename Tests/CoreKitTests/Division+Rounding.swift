@@ -20,7 +20,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Division/ceil() - [I8, U8]", .tags(.exhaustive), arguments: i8u8, i8u8)
+    @Test("Division/ceil() - [I8, U8]", .tags(.exhaustive), arguments: typesAsCoreIntegerAsByte, typesAsCoreIntegerAsByte)
     func ceil(_ quotient: any SystemsInteger.Type, _ remainder: any SystemsInteger.Type) {
         whereIs(quotient, remainder)
         
@@ -49,7 +49,7 @@ import TestKit2
         }
     }
     
-    @Test("Division/floor() - [I8, U8]", .tags(.exhaustive), arguments: i8u8, i8u8)
+    @Test("Division/floor() - [I8, U8]", .tags(.exhaustive), arguments: typesAsCoreIntegerAsByte, typesAsCoreIntegerAsByte)
     func floor(_ quotient: any SystemsInteger.Type, _ remainder: any SystemsInteger.Type) {
         whereIs(quotient, remainder)
         

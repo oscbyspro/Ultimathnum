@@ -133,8 +133,11 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("BinaryInteger/multiplication: random by random", .tags(.random), arguments: typesAsBinaryInteger, fuzzers)
-    func multiplicationOfRandomByRandom(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "BinaryInteger/multiplication: random by random",
+        Tag.List.tags(.random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func multiplicationOfRandomByRandom(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
@@ -153,8 +156,11 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger/multiplication: random by itself", .tags(.random), arguments: typesAsBinaryInteger, fuzzers)
-    func multiplicationOfRandomByItself(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "BinaryInteger/multiplication: random by itself",
+        Tag.List.tags(.random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func multiplicationOfRandomByItself(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
@@ -171,8 +177,11 @@ import TestKit2
         }
     }
     
-    @Test("BinaryInteger/multiplication: ascending zeros by ascending zeros", .tags(.random), arguments: typesAsBinaryInteger, fuzzers)
-    func multiplicationOfAscendingZerosByAscendingZeros(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "BinaryInteger/multiplication: ascending zeros by ascending zeros",
+        Tag.List.tags(.random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func multiplicationOfAscendingZerosByAscendingZeros(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
@@ -192,8 +201,11 @@ import TestKit2
     }
     
     /// - TODO: Consider full-width square multiplication algorithm.
-    @Test("BinaryInteger/multiplication: ascending zeros by itself", .tags(.random), arguments: typesAsBinaryInteger, fuzzers)
-    func multiplicationOfAscendingZerosByItself(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "BinaryInteger/multiplication: ascending zeros by itself",
+        Tag.List.tags(.random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func multiplicationOfAscendingZerosByItself(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
@@ -213,8 +225,11 @@ import TestKit2
     //=------------------------------------------------------------------------=
     
     /// - Note: The `(0s, 1) ⨉ (0s, 1)` case does not fit in the combined size.
-    @Test("BinaryInteger/multiplication: zeros then ones", .tags(.important), arguments: typesAsArbitraryIntegerAsByte)
-    func multiplicationOfZerosThenOnes(type: any ArbitraryInteger.Type) throws {
+    @Test(
+        "BinaryInteger/multiplication: zeros then ones",
+        Tag.List.tags(.important),
+        arguments: typesAsArbitraryIntegerAsByte
+    )   func multiplicationOfZerosThenOnes(type: any ArbitraryInteger.Type) throws {
         try  whereIs(type)
         
         func whereIs<T>(_ type: T.Type) throws where T: ArbitraryInteger {
@@ -244,8 +259,11 @@ import TestKit2
     // MARK: Tests x Systems Integer
     //=------------------------------------------------------------------------=
     
-    @Test("BinaryInteger/multiplication: full 8-bit is half 16-bit",
-    .tags(.exhaustive), .disabled(if: isDebug), arguments: [
+    @Test(
+        "BinaryInteger/multiplication: full 8-bit is half 16-bit",
+        Tag.List.tags(.exhaustive),
+        ConditionTrait.disabled(if: isDebug),
+        arguments: [
         
         (x08: I8.self, x16: I16.self),
         (x08: I8.self, x16: DoubleInt<I8>.self),
@@ -292,8 +310,11 @@ struct BinaryIntegerTestsOnMultiplicationRecoveryMechanisms {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("BinaryInteger/multiplication: error propagation", .tags(.random), arguments: typesAsBinaryInteger, fuzzers)
-    func multiplicationErrorPropagation(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
+    @Test(
+        "BinaryInteger/multiplication: error propagation",
+        Tag.List.tags(.random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func multiplicationErrorPropagation(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
