@@ -345,7 +345,7 @@ extension Count {
     ///
     /// - Note: `log2(&0+1)` must be a power of `2` to load negative values.
     ///
-    @inlinable public static func exactly(_ source: /*borrowing*/ some BinaryInteger) -> Optional<Fallible<Self>> {
+    @inlinable public static func exactly(_ source: borrowing some BinaryInteger) -> Optional<Fallible<Self>> {
         IX.exactly(source).optional().flatMap(Self.exactly)
     }
 }

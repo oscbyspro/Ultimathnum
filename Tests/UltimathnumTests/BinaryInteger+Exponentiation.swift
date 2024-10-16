@@ -185,7 +185,7 @@ final class BinaryIntegerTestsOnExponentiation: XCTestCase {
                 let coefficient = A.random(using: &randomness)
                 let small = A(base).power(exponent, coefficient: A(coefficient))
                 let large = B(base).power(exponent, coefficient: B(coefficient))
-                Test().same(small, A.exactly(large))
+                Test().same(small, large.map(A.exactly))
             }
         }
         

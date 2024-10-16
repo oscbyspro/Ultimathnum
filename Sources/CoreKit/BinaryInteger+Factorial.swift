@@ -48,13 +48,17 @@ extension BinaryInteger {
             // save some code size w.r.t. small integers
             typealias Algorithm = Namespace.Factorial<UX>
             // the magnitude path is a bit faster
-            return Self.exactly(magnitude: Algorithm.element(unchecked: UX(load: self)))
+            let small = UX(load: self)
+            let magnitude = Algorithm.element(unchecked: small)
+            return magnitude.map{Self.exactly(magnitude: $0)}
             
         }   else {
             // save some code size w.r.t. signed binary integers
             typealias Algorithm = Namespace.Factorial<Magnitude>
             // clamping works because the allocation limit is IX.max
-            return Self.exactly(magnitude: Algorithm.element(unchecked: UX(clamping: self)))
+            let small = UX(clamping: self)
+            let magnitude = Algorithm.element(unchecked: small)
+            return magnitude.map{Self.exactly(magnitude: $0)}
         }
     }
 }

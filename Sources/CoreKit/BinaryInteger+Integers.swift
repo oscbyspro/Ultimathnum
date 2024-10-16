@@ -73,17 +73,6 @@ extension BinaryInteger {
         let result = Self.exactly(sign: sign, magnitude: magnitude.value)
         return result.veto(magnitude.error)
     }
-    
-    /// Loads the `sign` and `magnitude` and returns an `error` indicator.
-    ///
-    /// - Note: The `error` is set if the operation is `lossy`.
-    ///
-    @inlinable public static func exactly<Other>(
-        sign: consuming Sign = .plus,
-        magnitude: consuming Fallible<Other>
-    )   -> Fallible<Self> where Other: UnsignedInteger {
-        Self.exactly(sign: sign, magnitude: magnitude.value).veto(magnitude.error)
-    }
 
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -129,13 +118,5 @@ extension BinaryInteger {
                 Self.exactly($0, mode: Other.mode)
             }
         }
-    }
-    
-    /// Loads the `source` and returns an `error` indicator.
-    ///
-    /// - Note: The `error` is set if the operation is `lossy`.
-    ///
-    @inlinable public static func exactly<Other>(_ source: borrowing Fallible<Other>) -> Fallible<Self> where Other: BinaryInteger {
-        Self.exactly(source.value).veto(source.error)
     }
 }
