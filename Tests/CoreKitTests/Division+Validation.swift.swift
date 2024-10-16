@@ -21,20 +21,22 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
  
-    @Test("Division/exactly() - T.init(load:)", .serialized, arguments: I8(-2)...I8(2), I8(-2)...I8(2))
-    func exactly(quotient: I8, remainder: I8) {
+    @Test(
+        "Division/exactly: T.init(load:)",
+        ParallelizationTrait.serialized,
+        arguments: I8(-2)...I8(2), I8(-2)...I8(2)
+    )   func exactly(quotient: I8, remainder: I8) throws {
+        
         let error = !remainder.isZero
         for quotient in typesAsCoreInteger {
             for remainder in typesAsCoreInteger {
-                whereIs(quotient, remainder)
+                try whereIs(quotient, remainder)
             }
         }
         
-        func whereIs<Q, R>(_ first: Q.Type, _ second: R.Type) where Q: BinaryInteger, R: BinaryInteger {
+        func whereIs<Q, R>(_ first: Q.Type, _ second: R.Type) throws where Q: BinaryInteger, R: BinaryInteger {
             let division = Division(quotient: Q(load: quotient), remainder: R(load:  remainder))
-            #expect(division            .exactly() == Fallible(division.quotient, error: error))
-            #expect(division.veto(false).exactly() == Fallible(division.quotient, error: error))
-            #expect(division.veto(true ).exactly() == Fallible(division.quotient, error: true ))
+            try #require(division.exactly() == Fallible(division.quotient, error: error))
         }
     }
 }

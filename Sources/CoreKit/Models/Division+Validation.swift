@@ -25,22 +25,3 @@ extension Division {
         self.quotient.veto(!self.remainder.isZero)
     }
 }
-
-//=----------------------------------------------------------------------------=
-// MARK: + Recoverable
-//=----------------------------------------------------------------------------=
-
-extension Fallible {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    /// Returns the `quotient` and an `error` indicator.
-    ///
-    /// The `error` is set when the `remainder` is nonzero.
-    ///
-    @inlinable public consuming func exactly<Quotient, Remainder>() -> Fallible<Quotient> where Value == Division<Quotient, Remainder> {
-        self.value.exactly().veto(self.error)
-    }
-}

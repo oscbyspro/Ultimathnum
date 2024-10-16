@@ -42,7 +42,7 @@ extension LiteralInt {
     }
     
     @inlinable public func withUnsafeBinaryIntegerBody<T>(_ action: (DataInt<UX>.Body) throws -> T) rethrows -> T {
-        let entropy = self.entropy().natural().unchecked()
+        let entropy = Natural(unchecked: IX(raw: self.entropy()))
         let count = Swift.Int(entropy.division(Nonzero(size:  UX.self)).ceil().unchecked())
         return try  Swift.withUnsafeTemporaryAllocation(of:   UX.self, capacity: count) {
             let buffer = UnsafeMutableBufferPointer(rebasing: $0[..<count])

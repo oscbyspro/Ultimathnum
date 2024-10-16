@@ -27,24 +27,3 @@ extension Division {
         self.quotient.decremented(self.remainder.isNegative)
     }
 }
-
-//=----------------------------------------------------------------------------=
-// MARK: + Recoverable
-//=----------------------------------------------------------------------------=
-
-extension Fallible {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    /// Increments the `quotient` when the `remainder` is positive.
-    @inlinable public consuming func ceil<Quotient, Remainder>() -> Fallible<Quotient> where Value == Division<Quotient, Remainder> {
-        self.value.ceil().veto(self.error)
-    }
-    
-    /// Decrements the `quotient` when the `remainder` is negative.
-    @inlinable public consuming func floor<Quotient, Remainder>() -> Fallible<Quotient> where Value == Division<Quotient, Remainder> {
-        self.value.floor().veto(self.error)
-    }
-}

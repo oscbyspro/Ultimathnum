@@ -20,61 +20,53 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Division/ceil() - [I8, U8]", .tags(.exhaustive), arguments: typesAsCoreIntegerAsByte, typesAsCoreIntegerAsByte)
-    func ceil(_ quotient: any SystemsInteger.Type, _ remainder: any SystemsInteger.Type) {
+    @Test(
+        "Division/ceil: [I8, U8] x [I8, U8]",
+        Tag.List.tags(.exhaustive),
+        arguments: typesAsCoreIntegerAsByte, typesAsCoreIntegerAsByte
+    )   func ceil(_ quotient: any SystemsInteger.Type, _ remainder: any SystemsInteger.Type) {
         whereIs(quotient, remainder)
         
         func whereIs<Q, R>(_ quotient: Q.Type, _ remainder: R.Type) where Q: SystemsInteger, R: SystemsInteger {
-            var success:     U32 = 0000000000000
-            let expectation: U32 = 3 * 256 * 256
-            
+            var success = IX.zero
             for quotient in Q.all {
                 for remainder in R.nonpositives {
-                    ceil(quotient, remainder, is: Fallible(quotient))
+                    let division = Division(quotient: quotient, remainder: remainder)
+                    success &+= IX(Bit(division.ceil() == quotient.veto(false)))
                 }
                 
                 for remainder in R.positives {
-                    ceil(quotient, remainder, is: quotient.plus(1))
+                    let division = Division(quotient: quotient, remainder: remainder)
+                    success &+= IX(Bit(division.ceil() == quotient.incremented()))
                 }
             }
             
-            #expect(success == expectation)
-
-            func ceil(_ quotient: Q, _ remainder: R, is expectation: Fallible<Q>) {
-                let division = Division(quotient: quotient, remainder: remainder)
-                success &+= U32(Bit(division            .ceil() == expectation))
-                success &+= U32(Bit(division.veto(false).ceil() == expectation))
-                success &+= U32(Bit(division.veto(true ).ceil() == expectation.veto()))
-            }
+            #expect(success == IX(Q.all.count) &* IX(R.all.count))
         }
     }
     
-    @Test("Division/floor() - [I8, U8]", .tags(.exhaustive), arguments: typesAsCoreIntegerAsByte, typesAsCoreIntegerAsByte)
-    func floor(_ quotient: any SystemsInteger.Type, _ remainder: any SystemsInteger.Type) {
+    @Test(
+        "Division/ceil: [I8, U8] x [I8, U8]",
+        Tag.List.tags(.exhaustive),
+        arguments: typesAsCoreIntegerAsByte, typesAsCoreIntegerAsByte
+    )   func floor(quotient: any SystemsInteger.Type, remainder: any SystemsInteger.Type) {
         whereIs(quotient, remainder)
         
         func whereIs<Q, R>(_ quotient: Q.Type, _ remainder: R.Type) where Q: SystemsInteger, R: SystemsInteger {
-            var success:     U32 = 0000000000000
-            let expectation: U32 = 3 * 256 * 256
-            
+            var success = IX.zero
             for quotient in Q.all {
                 for remainder in R.negatives {
-                    floor(quotient, remainder, is: quotient.minus(1))
+                    let division = Division(quotient: quotient, remainder: remainder)
+                    success &+= IX(Bit(division.floor() == quotient.decremented()))
                 }
                 
                 for remainder in R.nonnegatives {
-                    floor(quotient, remainder, is: Fallible(quotient))
+                    let division = Division(quotient: quotient, remainder: remainder)
+                    success &+= IX(Bit(division.floor() == quotient.veto(false)))
                 }
             }
             
-            #expect(success == expectation)
-            
-            func floor(_ quotient: Q, _ remainder: R, is expectation: Fallible<Q>) {
-                let division = Division(quotient: quotient, remainder: remainder)
-                success &+= U32(Bit(division            .floor() == expectation))
-                success &+= U32(Bit(division.veto(false).floor() == expectation))
-                success &+= U32(Bit(division.veto(true ).floor() == expectation.veto()))
-            }
+            #expect(success == IX(Q.all.count) &* IX(R.all.count))
         }
     }
 }
