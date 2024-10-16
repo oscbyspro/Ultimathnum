@@ -40,7 +40,12 @@
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
-
+    
+    /// Creates an unset `error` indicator.
+    @inlinable public init() where Value == Void {
+        self.init(())
+    }
+    
     /// Creates a new instance from the given `value` and `error`.
     @inlinable public init(_ value: consuming Value, error: consuming Bool = false) {
         self.value = value
@@ -54,78 +59,6 @@
     /// Returns its `value` and `error` as a tuple.
     @inlinable public consuming func components() -> (value: Value, error: Bool) {
         (value: self.value, error: self.error)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    /// Tries to return its `value` but returns `nil` on `error`.
-    @inlinable public consuming func optional() -> Optional<Value> {
-        if  self.error {
-            return Optional.none
-        }   else {
-            return Optional.some(self.value)
-        }
-    }
-    
-    /// Tries to return its `value` but throws `failure()` on `error`.
-    @inlinable public consuming func prune<Error>(_ failure: @autoclosure () -> Error) throws -> Value where Error: Swift.Error {
-        if  self.error {
-            throw  failure()
-        }   else {
-            return self.value
-        }
-    }
-    
-    /// Tries to return its `value` but returns `failure()` on `error`.
-    @inlinable public consuming func result<Error>(_ failure: @autoclosure () -> Error) -> Result<Value, Error> {
-        if  self.error {
-            return Result.failure(failure())
-        }   else {
-            return Result.success(self.value)
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-        
-    /// Consumes the `value` and `error` with no other effect.
-    ///
-    /// You should not mark operations that return `Fallible<Value>` results as
-    /// discardable. Instead, you should always use the most appropriate recovery
-    /// mechanism. The `error` indicator has feelings and it would get very sad
-    /// if you were to forget about it.
-    ///
-    @inlinable public consuming func discard() {
-        
-    }
-    
-    /// Returns the `value` by trapping on `error`.
-    @discardableResult @inlinable public consuming func unwrap(
-        _ message: @autoclosure () -> String = String(),
-        file: StaticString = #file, line: UInt = #line
-    )   -> Value {
-        
-        if  self.error {
-            Swift.preconditionFailure(message(), file: file, line: line)
-        }
-        
-        return self.value
-    }
-    
-    /// Returns the `value` by trapping on `error` in debug mode.
-    @discardableResult @inlinable public consuming func unchecked(
-        _ message: @autoclosure () -> String = String(),
-        file: StaticString = #file, line: UInt = #line
-    ) -> Value {
-        
-        if  self.error {
-            Swift.assertionFailure(message(), file: file, line: line)
-        }
-         
-        return self.value
     }
 }
 

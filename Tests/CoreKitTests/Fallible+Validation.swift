@@ -21,11 +21,13 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Fallible/veto(_:)", .serialized, arguments:
-            
-        Fallible<Bit>.all
-          
-    )   func veto(_ argument: Fallible<Bit>) {
+    @Test(
+        "Fallible/veto(_:)",
+        Tag.List.tags(.exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Fallible<Bit>.all
+    )   func veto(argument: Fallible<Bit>) {
+        
         let invalid = Fallible(argument.value, error: true)
         #expect(argument.veto(              )  ==  invalid)
         #expect(argument.veto(       false  )  == argument)
@@ -34,7 +36,11 @@ import TestKit2
         #expect(argument.veto({ _ in true  })  ==  invalid)
     }
     
-    @Test("Fallible/optional(_:)", .serialized, arguments: [
+    @Test(
+        "Fallible/optional(_:)",
+        Tag.List.tags(.exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: [
 
         Some(Fallible(Bit.zero, error: false), yields: Optional(Bit.zero)),
         Some(Fallible(Bit.zero, error: true ), yields: Optional<Bit>(nil)),
@@ -45,7 +51,11 @@ import TestKit2
         #expect(argument.input.optional() == argument.output)
     }
     
-    @Test("Fallible/prune(_:) and /result(_:)", .serialized, arguments: [
+    @Test(
+        "Fallible/prune(_:) and /result(_:)",
+        Tag.List.tags(.exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: [
 
         Some(Fallible(Bit.zero, error: false), Bad.error, yields: Result<Bit, Bad>.success(Bit.zero )),
         Some(Fallible(Bit.zero, error: true ), Bad.error, yields: Result<Bit, Bad>.failure(Bad.error)),

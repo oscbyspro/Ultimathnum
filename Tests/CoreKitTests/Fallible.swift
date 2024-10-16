@@ -20,8 +20,11 @@ import TestKit2
     // MARK: Tests x Metadata
     //=------------------------------------------------------------------------=
     
-    @Test("Optional<Fallible<T>> has same memory layout as Fallible<T>")
-    func optionalFallibleHasSameMemoryLayoutAsFallible() {
+    @Test(
+        "Optional<Fallible<T>> has same memory layout as Fallible<T>",
+        Tag.List.tags(.documentation, .important)
+    )   func optionalFallibleHasSameMemoryLayoutAsFallible() {
+        
         whereIs(Bool.self)
         whereIs(Void.self)
         
@@ -36,5 +39,20 @@ import TestKit2
         func whereIsBinaryInteger<T>(_ type: T.Type) where T: BinaryInteger {
             Ɣexpect(MemoryLayout<Optional<Fallible<T>>>.self, equals: MemoryLayout<Fallible<T>>.self)
         }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "Fallible: init() where Value is Void",
+        Tag.List.tags(.disambiguation, .exhaustive)
+    )   func initAsVoid() {
+        
+        #expect(Fallible      ().value == ())
+        #expect(Fallible      ().error == false)
+        #expect(Fallible<Void>().value == ())
+        #expect(Fallible<Void>().error == false)
     }
 }

@@ -8,23 +8,28 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Recoverable x Validation
+// MARK: * Fallible x Veto
 //*============================================================================*
 
-extension Recoverable {
+extension Fallible {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Sets the `error` indicator when the `condition` is `true`.
-    @inlinable public consuming func veto(_ condition: Bool = true) -> Fallible<Self> {
-        Fallible(self, error: condition)
+    /// Sets the `error` indicator.
+    @inlinable public consuming func veto() -> Self {
+        Self(self.value, error: true)
+    }
+    
+    /// Sets the `error` indicator when `condition` is `true`.
+    @inlinable public consuming func veto(_ condition: Bool) -> Self {
+        Self(self.value, error: Bool(Bit(self.error) | Bit(condition)))
     }
     
     /// Sets the `error` indicator if the `predicate` returns `true`.
-    @inlinable public consuming func veto(_ predicate: (borrowing Self) -> Bool) -> Fallible<Self> {
-        let error = predicate(self)
-        return self.veto(error)
+    @inlinable public consuming func veto(_ predicate: (Value) -> Bool) -> Self {
+        let condition = predicate(self.value)
+        return self.veto(condition)
     }
 }
