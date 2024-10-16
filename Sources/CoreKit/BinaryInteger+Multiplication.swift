@@ -50,60 +50,6 @@ extension BinaryInteger {
     }
 }
 
-//=----------------------------------------------------------------------------=
-// MARK: + Recoverable
-//=----------------------------------------------------------------------------=
-
-extension BinaryInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    /// Returns `self ✕ other` and an `error` indicator.
-    ///
-    /// - Note: The `error` is set if the operation is `lossy`.
-    ///
-    @inlinable public consuming func times(_ other: borrowing Fallible<Self>) -> Fallible<Self> {
-        self.times(other.value).veto(other.error)
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Recoverable
-//=----------------------------------------------------------------------------=
-
-extension Fallible where Value: BinaryInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    /// Returns `self ✕ self` and an `error` indicator.
-    ///
-    /// - Note: The `error` is set if the operation is `lossy`.
-    ///
-    @inlinable public consuming func squared() -> Self {
-        self.value.squared().veto(self.error)
-    }
-    
-    /// Returns `self ✕ other` and an `error` indicator.
-    ///
-    /// - Note: The `error` is set if the operation is `lossy`.
-    ///
-    @inlinable public consuming func times(_ other: borrowing Value) -> Self {
-        self.value.times(other).veto(self.error)
-    }
-    
-    /// Returns `self ✕ other` and an `error` indicator.
-    ///
-    /// - Note: The `error` is set if the operation is `lossy`.
-    ///
-    @inlinable public consuming func times(_ other: borrowing Fallible<Value>) -> Self {
-        self.value.times(other).veto(self.error)
-    }
-}
-
 //*============================================================================*
 // MARK: * Binary Integer x Multiplication x Systems
 //*============================================================================*

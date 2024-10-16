@@ -287,7 +287,7 @@ final class BinaryIntegerTestsOnShifts: XCTestCase {
                     
                     Test()  .upshift(instance, distance, product)
                     Test().downshift(instance, distance, quotient)
-                    multiplier = multiplier.times(2)
+                    multiplier = multiplier.map({ $0.times(2) })
                 }
                 
                 instance = instance.times(2).value // << 1

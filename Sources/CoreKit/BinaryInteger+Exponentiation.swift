@@ -33,22 +33,23 @@ extension BinaryInteger {
         coefficient: borrowing Nonzero<Self>
     ) -> Fallible<Self> {
         
-        var power = Fallible((copy coefficient).value)
-        var multiplier = Fallible(copy base)
-        var exponent = (copy exponent).value
+        var error: Bool = false
+        var power: Self = (copy coefficient).value
+        var multiplier: Self = copy base
+        var exponent: some UnsignedInteger = (copy exponent).value
         
         exponentiation: while true {
             if  Bool(exponent.lsb) {
-                power = power.times(multiplier.value)
+                power = power.times(multiplier).sink(&error)
             }
             
             exponent = exponent.down(Shift.one)
             
             if  exponent.isZero {
-                return (power).veto(multiplier.error)
+                return (power).veto(error)
             }
             
-            multiplier = multiplier.squared()
+            multiplier = multiplier.squared().sink(&error)
         }
     }
     

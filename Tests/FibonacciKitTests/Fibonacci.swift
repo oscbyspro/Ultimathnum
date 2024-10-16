@@ -96,14 +96,34 @@ extension FibonacciTests.Case {
     func checkMathInvariants() {
         for divisor: Nonzero<Value> in [2, 3, 5, 7, 11].map(Nonzero.init) {
             always: do {
-                var a = self.item as Fibonacci<Value>
-                let b = try Fibonacci(a.index.quotient(divisor).prune(Bad.division))
-                let c = try a.next.division(Nonzero(b.next, prune: Bad.divisor)).prune(Bad.division)
+                var a = self.item
+                
+                let b = try Fibonacci<Value>(
+                    .init(a.index)
+                    .quotient(divisor)
+                    .prune(Bad.division)
+                )
+                
+                let c = try Value
+                    .init(a.next)
+                    .division(Nonzero(b.next, prune: Bad.divisor))
+                    .prune(Bad.division)
                 
                 try a.decrement(by: b)
                 
-                let d = try b.element.times(a.element).prune(Bad.multiplication)
-                let e = try c.quotient.minus(a.next).times(b.next).plus(c.remainder).prune(Bad.any)
+                let d = try Value
+                    .init (b.element)
+                    .times(a.element)
+                    .prune(Bad.multiplication)
+                
+                let e = try Value
+                    .init (c.quotient)
+                    .minus(a.next)
+                    .prune(Bad.subtraction)
+                    .times(b.next)
+                    .prune(Bad.multiplication)
+                    .plus(c.remainder)
+                    .prune(Bad.addition)
                 
                 try a.increment(by: b)
                 

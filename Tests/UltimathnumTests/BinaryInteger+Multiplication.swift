@@ -159,6 +159,7 @@ import TestKit2
     @Test(
         "BinaryInteger/multiplication: random by itself",
         Tag.List.tags(.random),
+        .serialized,
         arguments: typesAsBinaryInteger, fuzzers
     )   func multiplicationOfRandomByItself(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
@@ -168,11 +169,16 @@ import TestKit2
             let rounds = !T.isArbitrary ?  conditional(debug: 128, release: 1024) : 16
             
             for _  in 0 ..< rounds {
-                let a = T.entropic(size: size, using: &randomness)
-                let b = T.entropic(size: size, using: &randomness)
-                let c = (a.plus(b).squared().value)
-                let d = (a.squared().plus(a.times(b).times(2)).plus(b.squared()).value)
-                try #require(c == d)
+                let x = T.entropic(size: size, using: &randomness)
+                let y = T.entropic(size: size, using: &randomness)
+                let z = x.plus(y).map({ $0.squared() })
+                
+                let a = x.squared()
+                let b = x.times(y).map({ $0.times(2) })
+                let c = y.squared()
+                let d = a.plus (b).map({ $0.plus (c) })
+                
+                try #require((x.isNegative != y.isNegative) ? (z.value == d.value) : (z == d))
             }
         }
     }
@@ -295,53 +301,6 @@ import TestKit2
             }
             
             #expect(success == IX(A.all.count) &* IX(A.all.count))
-        }
-    }
-}
-
-//*============================================================================*
-// MARK: * Binary Integer x Multiplication x Recovery Mechanisms
-//*============================================================================*
-
-@Suite("BinaryInteger/multiplication: recovery mechanisms", .tags(.recoverable))
-struct BinaryIntegerTestsOnMultiplicationRecoveryMechanisms {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    @Test(
-        "BinaryInteger/multiplication: error propagation",
-        Tag.List.tags(.random),
-        arguments: typesAsBinaryInteger, fuzzers
-    )   func multiplicationErrorPropagation(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
-        whereIs(type)
-        
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            for _ in 0 ..< 8 {
-                let instance = T.random(through: Shift.max(or: 255), using: &randomness)
-                let expectation: Fallible<T> = instance.squared()
-
-                for error in Bool.all {
-                    #expect(instance.veto(error).squared() == expectation.veto(error))
-                }
-            }
-            
-            for _ in 0 ..< 8 {
-                let lhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                let rhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                let expectation = lhs.times(rhs) as Fallible<T>
-                
-                #expect(lhs            .times(rhs)             == expectation)
-                #expect(lhs            .times(rhs.veto(false)) == expectation)
-                #expect(lhs            .times(rhs.veto(true )) == expectation.veto())
-                #expect(lhs.veto(false).times(rhs)             == expectation)
-                #expect(lhs.veto(false).times(rhs.veto(false)) == expectation)
-                #expect(lhs.veto(false).times(rhs.veto(true )) == expectation.veto())
-                #expect(lhs.veto(true ).times(rhs)             == expectation.veto())
-                #expect(lhs.veto(true ).times(rhs.veto(false)) == expectation.veto())
-                #expect(lhs.veto(true ).times(rhs.veto(true )) == expectation.veto())
-            }
         }
     }
 }

@@ -93,7 +93,7 @@ final class BinaryIntegerTestsOnExponentiation: XCTestCase {
 
                 for exponent: T.Magnitude in 0 ..< 8 {
                     Test().same(base.power(exponent, coefficient: coefficient), power)
-                    power = power.times(base)
+                    power = power.map({ $0.times(base) })
                 }
             }
         }

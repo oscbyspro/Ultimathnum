@@ -22,7 +22,7 @@ import CoreKit
     let low = try #require(expectation.squared().optional())
     #expect(value >= low, sourceLocation: location)
     
-    if  let high = expectation.incremented().squared().optional() {
+    if  let next = expectation.incremented().optional(), let high = next.squared().optional() {
         #expect(value < high, sourceLocation: location)
     }
 }

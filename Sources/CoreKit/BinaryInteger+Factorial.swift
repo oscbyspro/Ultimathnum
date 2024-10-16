@@ -151,9 +151,9 @@ extension Namespace {
                 
             default:
                 let half = count.value.down(Shift.one)
-                let low  = self.next(Nonzero(unchecked: count.value.minus(half).unchecked()))
+                let low  = self.next(Nonzero(unchecked: count.value &- half))
                 let high = self.next(Nonzero(unchecked: half))
-                return low.times(high)
+                return low.value.times(high.value).veto(low.error).veto(high.error)
             }
         }
         
@@ -171,9 +171,11 @@ extension Namespace {
             //=----------------------------------=
             Swift.assert(index <= Value.max)
             //=----------------------------------=
-            var result = Fallible(Value.lsb)
+            var value = Value.lsb
+            var error = false
+            
             if  index <= 1 {
-                return result
+                return value.veto(error)
             }
             //=----------------------------------=
             let ones = UX(raw: index.count(Bit.one))
@@ -183,37 +185,37 @@ extension Namespace {
             // fast: overshift by even factors
             //=----------------------------------=
             if  let size = UX(size: Value.self), size <= index {
-                result.error = true
+                error = true
                 
             }   else {
                 var products = Factorial() // chunked odd sequence product
-                var sequence = Fallible(Value.lsb) // odd sequence product
+                var sequence = Value.lsb   // odd sequence product
                 
                 var high  = UX.lsb // first is pointless, down 1 to skip 1
                 var ilog2 = Nonzero(unchecked: index.down(Shift.one)).ilog2()
-
+                
                 brrrrr: while true {
                     let low = high
                     high = index.down(Shift(unchecked: ilog2))
                     high = high.decremented().unchecked() | 1
                     
-                    let stride = high.minus(low).unchecked().down(Shift.one)
-                    if  let stride = Nonzero(exactly: stride) {
-                        let next = products.next (stride)
-                        sequence = sequence.times((next))
-                        (result) = sequence.times(result)
+                    let step = high.minus(low).unchecked().down(Shift.one)
+                    if  let step = Nonzero(exactly: step) {
+                        let next = products.next (step).sink(&error)
+                        sequence = sequence.times(next).sink(&error)
+                        value = value.times((sequence)).sink(&error)
                     }
                     
                     guard !ilog2.isZero else { break }
                     ilog2 = Count(raw: UX(raw: ilog2).decremented().value)
                 }
                 
-                if  result.value.descending(Bit.zero) < distance {
-                    result.error = true
+                if  value.descending(Bit.zero) < distance {
+                    error = true
                 }
             }
             
-            return  result.value.up(distance).veto(result.error)
+            return  value.up(distance).veto(error)
         }
     }
 }

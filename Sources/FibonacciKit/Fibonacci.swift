@@ -103,7 +103,7 @@ import CoreKit
     //=------------------------------------------------------------------------=
     
     /// The sequence `index`.
-    @inlinable public var index: Value { 
+    @inlinable public var index: Value {
         self.i
     }
     
@@ -113,7 +113,7 @@ import CoreKit
     }
     
     /// The sequence `element` at `index + 1`.
-    @inlinable public var next: Value { 
+    @inlinable public var next: Value {
         self.b
     }
     
@@ -147,10 +147,11 @@ import CoreKit
     
     /// Forms the sequence pair at `index * 2`.
     @inlinable public mutating func double() throws {
-        let ix = try i.times(2).prune(Error.overflow)
-        let ax = try b.times(2).minus(a).times (a).prune(Error.overflow)
-        let bx = try b.squared().plus(a.squared()).prune(Error.overflow)
-
+        let ex = Self.Error.overflow
+        let ix = try i.times(2) .prune(ex)
+        let ax = try b.times(2) .prune(ex).minus(a).prune(ex).times(a).prune(ex)
+        let bx = try b.squared().prune(ex).plus(a.squared().prune(ex)).prune(ex)
+        
         self.i = consume ix
         self.a = consume ax
         self.b = consume bx
@@ -158,9 +159,10 @@ import CoreKit
     
     /// Forms the sequence pair at `index + x.index`.
     @inlinable public mutating func increment(by x: borrowing Self) throws {
-        let ix = try i.plus (x.i).prune(Error.overflow)
-        let ax = try a.times(x.b).plus(b.minus(a).times(x.a)).prune(Error.overflow)
-        let bx = try b.times(x.b).plus(       (a).times(x.a)).prune(Error.overflow)
+        let ex = Self.Error.overflow
+        let ix = try i.plus (x.i).prune(ex)
+        let ax = try a.times(x.b).plus(b.minus(a).prune(ex).times(x.a).prune(ex)).prune(ex)
+        let bx = try b.times(x.b).prune(ex).plus(       (a).times(x.a).prune(ex)).prune(ex)
 
         self.i = consume ix
         self.a = consume ax
@@ -173,7 +175,7 @@ import CoreKit
         
         var a0 = b.times(x.a).value
         var a1 = a.times(x.b).value
-        var b0 = b.plus(a).times(x.a).value
+        var b0 = b.plus(a).value.times(x.a).value
         var b1 = b.times(x.b).value
         
         if  Bool(x.i.lsb) {
