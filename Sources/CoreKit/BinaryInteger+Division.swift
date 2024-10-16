@@ -38,29 +38,6 @@ extension BinaryInteger {
     }
 }
 
-//=----------------------------------------------------------------------------=
-// MARK: + Recoverable
-//=----------------------------------------------------------------------------=
-
-extension Fallible where Value: BinaryInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func quotient (_ divisor: borrowing Nonzero<Value>) -> Fallible<Value> {
-        self.value.quotient (divisor).veto(self.error)
-    }
-    
-    @inlinable public consuming func remainder(_ divisor: borrowing Nonzero<Value>) -> Fallible<Value> {
-        self.value.remainder(divisor).veto(self.error)
-    }
-    
-    @inlinable public consuming func division (_ divisor: borrowing Nonzero<Value>) -> Fallible<Division<Value, Value>> {
-        self.value.division (divisor).veto(self.error)
-    }
-}
-
 //*============================================================================*
 // MARK: * Binary Integer x Division x Natural
 //*============================================================================*
@@ -89,25 +66,6 @@ extension BinaryInteger where Self: SystemsInteger & UnsignedInteger {
     
     @inlinable public consuming func division(_ divider: borrowing Divider<Self>) -> Division<Self, Self> {
         divider.division(dividing: self)
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Recoverable
-//=----------------------------------------------------------------------------=
-
-extension Fallible where Value: SystemsInteger & UnsignedInteger {
-
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x Divider
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func quotient(_ divider: borrowing Divider<Value>) -> Fallible<Value> {
-        self.value.quotient(divider).veto(self.error)
-    }
-    
-    @inlinable public consuming func division(_ divider: borrowing Divider<Value>) -> Fallible<Division<Value, Value>> {
-        self.value.division(divider).veto(self.error)
     }
 }
 
