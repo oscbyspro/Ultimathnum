@@ -17,7 +17,15 @@
 ///
 /// - Note: It must not conform to `ExpressibleByIntegerLiteral` (#93).
 ///
-@frozen public struct Bit: BitCastable, BitOperable, Comparable, CustomStringConvertible, Hashable, Sendable {
+@frozen public struct Bit:
+    BitCastable,
+    BitOperable,
+    Comparable,
+    CustomStringConvertible,
+    Hashable,
+    Recoverable,
+    Sendable
+{
     
     public typealias BitPattern = Bool
     

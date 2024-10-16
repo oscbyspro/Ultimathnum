@@ -16,7 +16,7 @@ import TestKit2
 // MARK: * Binary Integer x Multiplication
 //*============================================================================*
 
-@Suite("BinaryInteger/multiplication") struct BinaryIntegerTestsOnMultiplication {
+@Suite struct BinaryIntegerTestsOnMultiplication {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -159,7 +159,6 @@ import TestKit2
     @Test(
         "BinaryInteger/multiplication: random by itself",
         Tag.List.tags(.random),
-        .serialized,
         arguments: typesAsBinaryInteger, fuzzers
     )   func multiplicationOfRandomByItself(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
@@ -171,27 +170,23 @@ import TestKit2
             for _  in 0 ..< rounds {
                 let lhs = T.entropic(size: size, using: &randomness)
                 let rhs = T.entropic(size: size, using: &randomness)
-                let foo = foo(lhs, rhs)
-                let bar = bar(lhs, rhs)
-                //  checks that the low parts are equal
+                
+                let foo = Fallible<T>.sink {
+                    lhs.plus(rhs).sink(&$0).squared()
+                }
+                
+                let bar = Fallible<T>.sink {
+                    let a: T = lhs.squared( ).sink(&$0)
+                    let b: T = lhs.times(rhs).sink(&$0).times(2).sink(&$0)
+                    let c: T = rhs.squared( ).sink(&$0)
+                    return a.plus(b).sink(&$0).plus(c )
+                }
+                
                 try #require(foo.value == bar.value)
-                //  checks whether there were any error
+                
                 if  lhs.isNegative == rhs.isNegative {
                     try #require(foo.error == bar.error)
                 }
-            }
-            
-            #warning("todo: consider Fallible.sink(_:)")
-            
-            func foo(_ lhs: T, _ rhs: T, error: consuming Bool = false) -> Fallible<T> {
-                lhs.plus(rhs).sink(&error).squared().veto(error)
-            }
-            
-            func bar(_ lhs: T, _ rhs: T, error: consuming Bool = false) -> Fallible<T> {
-                let a  = lhs.squared( ).sink(&error)
-                let b  = lhs.times(rhs).sink(&error).times(2).sink(&error)
-                let c  = rhs.squared( ).sink(&error)
-                return a.plus(b).sink(&error).plus(c).veto(error)
             }
         }
     }
