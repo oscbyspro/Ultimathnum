@@ -169,16 +169,29 @@ import TestKit2
             let rounds = !T.isArbitrary ?  conditional(debug: 128, release: 1024) : 16
             
             for _  in 0 ..< rounds {
-                let x = T.entropic(size: size, using: &randomness)
-                let y = T.entropic(size: size, using: &randomness)
-                let z = x.plus(y).map({ $0.squared() })
-                
-                let a = x.squared()
-                let b = x.times(y).map({ $0.times(2) })
-                let c = y.squared()
-                let d = a.plus (b).map({ $0.plus (c) })
-                
-                try #require((x.isNegative != y.isNegative) ? (z.value == d.value) : (z == d))
+                let lhs = T.entropic(size: size, using: &randomness)
+                let rhs = T.entropic(size: size, using: &randomness)
+                let foo = foo(lhs, rhs)
+                let bar = bar(lhs, rhs)
+                //  checks that the low parts are equal
+                try #require(foo.value == bar.value)
+                //  checks whether there were any error
+                if  lhs.isNegative == rhs.isNegative {
+                    try #require(foo.error == bar.error)
+                }
+            }
+            
+            #warning("todo: consider Fallible.sink(_:)")
+            
+            func foo(_ lhs: T, _ rhs: T, error: consuming Bool = false) -> Fallible<T> {
+                lhs.plus(rhs).sink(&error).squared().veto(error)
+            }
+            
+            func bar(_ lhs: T, _ rhs: T, error: consuming Bool = false) -> Fallible<T> {
+                let a  = lhs.squared( ).sink(&error)
+                let b  = lhs.times(rhs).sink(&error).times(2).sink(&error)
+                let c  = rhs.squared( ).sink(&error)
+                return a.plus(b).sink(&error).plus(c).veto(error)
             }
         }
     }

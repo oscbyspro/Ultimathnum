@@ -161,8 +161,8 @@ import CoreKit
     @inlinable public mutating func increment(by x: borrowing Self) throws {
         let ex = Self.Error.overflow
         let ix = try i.plus (x.i).prune(ex)
-        let ax = try a.times(x.b).plus(b.minus(a).prune(ex).times(x.a).prune(ex)).prune(ex)
-        let bx = try b.times(x.b).prune(ex).plus(       (a).times(x.a).prune(ex)).prune(ex)
+        let ax = try a.times(x.b).prune(ex).plus(b.minus(a).prune(ex).times(x.a).prune(ex)).prune(ex)
+        let bx = try b.times(x.b).prune(ex).plus(((((((((a   )))))))).times(x.a).prune(ex)).prune(ex)
 
         self.i = consume ix
         self.a = consume ax

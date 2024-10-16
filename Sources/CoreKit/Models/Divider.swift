@@ -176,6 +176,6 @@
         }
         
         self.div = (consume    divisor).value
-        self.shr = Value(load: UX(size: Value.self).times(2).plus(subshift).unchecked())
+        self.shr = Value(load: UX(size: Value.self).times(2).unchecked().plus(subshift).unchecked())
     }
 }

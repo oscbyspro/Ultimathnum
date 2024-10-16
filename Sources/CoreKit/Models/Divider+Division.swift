@@ -33,8 +33,9 @@ extension Divider {
     
     /// Returns the `quotient` and `remainder` of dividing the `dividend` by the `divisor`.
     @inlinable public borrowing func division(dividing dividend: consuming Value) -> Division<Value, Value> {
-        let quotient  = self.quotient(dividing: dividend)
-        let remainder = dividend.minus(quotient.times(self.div)).unchecked()
+        let quotient  = self.quotient (dividing: dividend)
+        let product   = quotient.times(self.div).unchecked()
+        let remainder = dividend.minus(product ).unchecked()
         return Division(quotient: quotient, remainder: remainder)
     }
 }

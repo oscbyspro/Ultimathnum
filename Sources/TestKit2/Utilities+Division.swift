@@ -20,6 +20,7 @@ extension Division where Quotient == Remainder {
     //=------------------------------------------------------------------------=
     
     @inlinable public borrowing func dividend(_ divisor: Nonzero<Quotient>) -> Fallible<Quotient> {
-        self.quotient.times(divisor.value).plus(self.remainder)
+        let product = self.quotient.times(divisor.value)
+        return product.value.plus(self.remainder).veto(product.error)
     }
 }

@@ -91,43 +91,44 @@ extension DataInt.Body {
     //=------------------------------------------------------------------------=
     
     @inlinable public borrowing func size() -> Count {
-        let count = self.count.times(IX(size: Element.self))
-        return Count(Natural(unchecked: count.unchecked("BinaryInteger/entropy/0...IX.max")))
+        let part  = IX(size: Element.self)
+        let count = self.count.times(part).unchecked("BinaryInteger/entropy/0...IX.max")
+        return Count(Natural(unchecked: count))
     }
     
     @inlinable public borrowing func count(_ bit: Bit) -> Count {
-        var count = Fallible(IX.zero, error: false)
+        var count = IX.zero
         
         for index in self.indices {
-            let subcount = self[unchecked: index].count(bit)
-            count = count.plus(subcount.natural().unchecked())
+            let part = self[unchecked: index].count(bit).natural().unchecked()
+            count = count.plus(part).unchecked("BinaryInteger/entropy/0...IX.max")
         }
         
-        return Count(Natural(unchecked: count.unchecked("BinaryInteger/entropy/0...IX.max")))
+        return Count(Natural(unchecked: count))
     }
     
     @inlinable public borrowing func ascending(_ bit: Bit) -> Count {
-        var count = Fallible(IX.zero, error: false)
+        var count = IX.zero
         
         for index in self.indices {
-            let subcount = self[unchecked: index].ascending(bit)
-            count = count.plus(subcount.natural().unchecked())
-            guard subcount == Element.size else { break }
+            let part = self[unchecked: index].ascending(bit).natural().unchecked()
+            count = count.plus(part).unchecked("BinaryInteger/entropy/0...IX.max")
+            guard part == IX(size: Element.self) else { break }
         }
         
-        return Count(Natural(unchecked: count.unchecked("BinaryInteger/entropy/0...IX.max")))
+        return Count(Natural(unchecked: count))
     }
     
     @inlinable public borrowing func descending(_ bit: Bit) -> Count {
-        var count = Fallible(IX.zero, error: false)
+        var count = IX.zero
         
         for index in self.indices.reversed() {
-            let subcount = self[unchecked: index].descending(bit)
-            count = count.plus(subcount.natural().unchecked())
-            guard subcount == Element.size else { break }
+            let part = self[unchecked: index].descending(bit).natural().unchecked()
+            count = count.plus(part).unchecked("BinaryInteger/entropy/0...IX.max")
+            guard part == IX(size: Element.self) else { break }
         }
         
-        return Count(Natural(unchecked: count.unchecked("BinaryInteger/entropy/0...IX.max")))
+        return Count(Natural(unchecked: count))
     }
 }
 

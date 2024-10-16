@@ -21,21 +21,21 @@ import TestKit2
     //=------------------------------------------------------------------------=
     
     @Test("DataInt.capacity", arguments: typesAsCoreIntegersAsUnsigned)
-    func capacity(_ type: any SystemsIntegerAsUnsigned.Type) {
-        whereIs(type)
+    func capacity(_ type: any SystemsIntegerAsUnsigned.Type) throws {
+        try  whereIs(type)
         
-        func whereIs<T>(_ element: T.Type) where T: SystemsIntegerAsUnsigned {
-            let chunk = IX(size: T.self)
+        func whereIs<T>(_ element: T.Type) throws where T: SystemsIntegerAsUnsigned {
+            try check(       DataInt<T>     .capacity)
+            try check(       DataInt<T>.Body.capacity)
+            try check(MutableDataInt<T>     .capacity)
+            try check(MutableDataInt<T>.Body.capacity)
             
-            #expect(       DataInt<T>     .capacity.times(chunk).plus(chunk).error)
-            #expect(       DataInt<T>.Body.capacity.times(chunk).plus(chunk).error)
-            #expect(MutableDataInt<T>     .capacity.times(chunk).plus(chunk).error)
-            #expect(MutableDataInt<T>.Body.capacity.times(chunk).plus(chunk).error)
-                        
-            Ɣexpect(       DataInt<T>     .capacity.times(chunk).unwrap(), equals: IX.max, is: Signum.negative)
-            Ɣexpect(       DataInt<T>.Body.capacity.times(chunk).unwrap(), equals: IX.max, is: Signum.negative)
-            Ɣexpect(MutableDataInt<T>     .capacity.times(chunk).unwrap(), equals: IX.max, is: Signum.negative)
-            Ɣexpect(MutableDataInt<T>.Body.capacity.times(chunk).unwrap(), equals: IX.max, is: Signum.negative)
+            func check(_ capacity: IX) throws {
+                let part = IX(size: T.self)
+                let size = try #require(capacity.times(part).optional( ))
+                Ɣexpect(size, equals: IX.max - part, is: Signum.positive)
+                Ɣexpect(size, equals: IX.max,        is: Signum.negative)
+            }
         }
     }
 }

@@ -109,7 +109,7 @@ extension Test {
         }
         
         if !expectation.error {
-            same(rhs.minus(lhs), expectation.negated())
+            same(rhs.minus(lhs), expectation.value.negated())
         }
         
         decrement: if rhs == 0 {

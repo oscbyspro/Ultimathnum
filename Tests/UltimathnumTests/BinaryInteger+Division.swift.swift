@@ -112,7 +112,7 @@ import TestKit2
                 if  let divisor = Nonzero(exactly: divisor) {
                     let sign = Sign(raw: dividend.isNegative != divisor.value.isNegative)
                     let quotient  = T.exactly(sign: sign, magnitude: dividend.magnitude().down(distance))
-                    let remainder = dividend.minus(quotient.value.times(divisor.value)).value
+                    let remainder = dividend.minus(quotient.value.times(divisor.value).value).value
                     let division  = Fallible(Division(quotient: quotient.value, remainder: remainder), error: quotient.error)
                     Ɣexpect(bidirectional: dividend, by: divisor, is: division)
                 }   else {

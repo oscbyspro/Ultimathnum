@@ -155,7 +155,8 @@ import CoreKit
         let b = try #require(U64.exactly(multiplier ).optional())
         let c = try #require(U64.exactly(increment  ).optional())
         let d = try #require(U64.exactly(expectation).optional())
-        #expect(a.times(b).plus(c).optional() == d, "DataInt/initialize(to:times:plus:) <= U64.max", sourceLocation: location)
+        let e = a.times(b).optional()?.plus(c).optional()
+        #expect(e == d, "DataInt/initialize(to:times:plus:) <= U64.max", sourceLocation: location)
     }
     //=------------------------------------------=
     // multiplication: many × some + some
