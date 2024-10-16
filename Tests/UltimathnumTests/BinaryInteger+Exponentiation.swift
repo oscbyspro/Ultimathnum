@@ -68,6 +68,8 @@ final class BinaryIntegerTestsOnExponentiation: XCTestCase {
     }
     
     func testCoefficientIsOneByDefault() {
+        Test().same(I8(2).power(   3 ), Fallible(8))
+        Test().same(U8(2).power(   3 ), Fallible(8))
         Test().same(I8(2).power(UX(3)), Fallible(8))
         Test().same(U8(2).power(UX(3)), Fallible(8))
     }
