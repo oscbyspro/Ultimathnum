@@ -68,14 +68,8 @@ final class BinaryIntegerTestsOnExponentiation: XCTestCase {
     }
     
     func testCoefficientIsOneByDefault() {
-        Test().same(I8(2).power(UX(3)),                     Fallible(8))
-        Test().same(U8(2).power(UX(3)),                     Fallible(8))
-        Test().same(Fallible(I8(2)).power(UX(3)),           Fallible(8))
-        Test().same(Fallible(U8(2)).power(UX(3)),           Fallible(8))
-        Test().same(I8(2).power(Fallible(UX(3))),           Fallible(8))
-        Test().same(U8(2).power(Fallible(UX(3))),           Fallible(8))
-        Test().same(Fallible(I8(2)).power(Fallible(UX(3))), Fallible(8))
-        Test().same(Fallible(U8(2)).power(Fallible(UX(3))), Fallible(8))
+        Test().same(I8(2).power(UX(3)), Fallible(8))
+        Test().same(U8(2).power(UX(3)), Fallible(8))
     }
     
     //=------------------------------------------------------------------------=
@@ -124,12 +118,17 @@ final class BinaryIntegerTestsOnExponentiation: XCTestCase {
             for _  in 0 ..< rounds {
                 let coefficient: T = random()
                 let exponent = T.Magnitude.random(in: 0...limit, using: &randomness)
-                let result = T(3).times(5).power(exponent, coefficient: coefficient)
-                                
+                let power = T(3).times(5).unwrap().power(exponent, coefficient: coefficient)
+                
                 if  coefficient.isZero {
-                    Test().same(result, Fallible(T.zero))
+                    Test().same(power, Fallible(T.zero))
                 }   else {
-                    Test().same(result, T(3).power(exponent).times(T(5).power(exponent)).times(coefficient))
+                    var error = false
+                    let lhs   = T(3).power(exponent).sink(&error)
+                    let rhs   = T(5).power(exponent).sink(&error)
+                    var value = lhs.times((((rhs)))).sink(&error)
+                    value = value.times(coefficient).sink(&error)
+                    Test().same(power, Fallible(value, error: error))
                 }
             }
         }
@@ -275,71 +274,6 @@ extension BinaryIntegerTestsOnExponentiation {
                 whereIs(type, exponent)
             }
         }
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Recoverable
-//=----------------------------------------------------------------------------=
-
-extension BinaryIntegerTestsOnExponentiation {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    func testErrorPropagationMechanism() {
-        func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
-            func random() -> T {
-                let index = IX.random(in: 00000 ..< size, using: &randomness)!
-                let pattern = T.Signitude.random(through: Shift(Count(index)), using: &randomness)
-                return T(raw: pattern) // do not forget about infinite values!
-            }
-            
-            var success: IX = 0
-            let max = T.isArbitrary ? 16 : T.Magnitude.max
-            
-            for _ in 0 ..< rounds {
-                let base: T  = random()
-                let exponent = T.Magnitude.random(in: 0...max, using: &randomness)
-                let expectation: Fallible<T> = base.power(exponent)
-                success &+= IX(Bit(base            .power(exponent)             == expectation))
-                success &+= IX(Bit(base            .power(exponent.veto(false)) == expectation))
-                success &+= IX(Bit(base            .power(exponent.veto(true )) == expectation.veto()))
-                success &+= IX(Bit(base.veto(false).power(exponent)             == expectation))
-                success &+= IX(Bit(base.veto(false).power(exponent.veto(false)) == expectation))
-                success &+= IX(Bit(base.veto(false).power(exponent.veto(true )) == expectation.veto()))
-                success &+= IX(Bit(base.veto(true ).power(exponent)             == expectation.veto()))
-                success &+= IX(Bit(base.veto(true ).power(exponent.veto(false)) == expectation.veto()))
-                success &+= IX(Bit(base.veto(true ).power(exponent.veto(true )) == expectation.veto()))
-            }
-            
-            for _ in 0 ..< rounds {
-                let base: T  = random()
-                let exponent = T.Magnitude.random(in: 0...max, using: &randomness)
-                let coefficient: T = random()
-                let expectation: Fallible<T> = base.power(exponent,             coefficient: coefficient)
-                success &+= IX(Bit(base            .power(exponent,             coefficient: coefficient) == expectation))
-                success &+= IX(Bit(base            .power(exponent.veto(false), coefficient: coefficient) == expectation))
-                success &+= IX(Bit(base            .power(exponent.veto(true ), coefficient: coefficient) == expectation.veto()))
-                success &+= IX(Bit(base.veto(false).power(exponent,             coefficient: coefficient) == expectation))
-                success &+= IX(Bit(base.veto(false).power(exponent.veto(false), coefficient: coefficient) == expectation))
-                success &+= IX(Bit(base.veto(false).power(exponent.veto(true ), coefficient: coefficient) == expectation.veto()))
-                success &+= IX(Bit(base.veto(true ).power(exponent,             coefficient: coefficient) == expectation.veto()))
-                success &+= IX(Bit(base.veto(true ).power(exponent.veto(false), coefficient: coefficient) == expectation.veto()))
-                success &+= IX(Bit(base.veto(true ).power(exponent.veto(true ), coefficient: coefficient) == expectation.veto()))
-            }
-            
-            Test().same(success, rounds &* 18)
-        }
-        
-        // note that existentials are too slow for this
-        whereIs(          I8 .self, size:  8, rounds: 8, randomness: fuzzer)
-        whereIs(          U8 .self, size:  8, rounds: 8, randomness: fuzzer)
-        whereIs(DoubleInt<I8>.self, size: 16, rounds: 8, randomness: fuzzer)
-        whereIs(DoubleInt<I8>.self, size: 16, rounds: 8, randomness: fuzzer)
-        whereIs(InfiniInt<I8>.self, size: 16, rounds: 8, randomness: fuzzer)
-        whereIs(InfiniInt<I8>.self, size: 16, rounds: 8, randomness: fuzzer)
     }
 }
 
