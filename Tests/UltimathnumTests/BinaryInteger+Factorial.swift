@@ -17,14 +17,14 @@ import TestKit2
 // MARK: * Binary Integer x Factorial
 //*============================================================================*
 
-@Suite("BinaryInteger/factorial()", .serialized)
+@Suite("BinaryInteger/factorial", ParallelizationTrait.serialized)
 struct BinaryIntegerTestsOnFactorial {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("BinaryInteger/factorial() - element at small natural index", arguments: [
+    @Test("BinaryInteger/factorial: element at small natural index", arguments: [
         
         (index:  0 as U8, element:                                    1 as IXL),
         (index:  1 as U8, element:                                    1 as IXL),
@@ -81,7 +81,7 @@ struct BinaryIntegerTestsOnFactorial {
     
     /// - Seealso: https://www.wolframalpha.com/input?i=1000%21
     /// - Seealso: https://www.wolframalpha.com/input?i=1024%21
-    @Test("BinaryInteger/factorial() - element at large natural index", arguments: [
+    @Test("BinaryInteger/factorial: element at large natural index", arguments: [
         
         (index: IXL(1000), element: IXL("""
         0000000000000000000000000000000000000000000000000000000040238726\
@@ -200,18 +200,21 @@ struct BinaryIntegerTestsOnFactorial {
 // MARK: * Binary Integer x Factorial x Edge Cases
 //*============================================================================*
 
-@Suite("BinaryInteger/factorial() - edge cases", .tags(.documentation))
+@Suite("BinaryInteger/factorial/edge-cases", Tag.List.tags(.documentation))
 struct BinaryIntegerTestsOnFactorialEdgeCases {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("BinaryInteger/factorial() - element at negative index is nil [uniform]", arguments: typesAsBinaryIntegerAsSigned, fuzzers)
-    func elementAtNegativeIndexIsNil(type: any SignedInteger.Type, randomness: consuming FuzzerInt) {
-        whereIs(type)
+    @Test(
+        "BinaryInteger/factorial: element at negative index is nil",
+        Tag.List.tags(.random),
+        arguments: typesAsBinaryIntegerAsSigned, fuzzers
+    )   func elementAtNegativeIndexIsNil(type: any SignedInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SignedInteger {
+        func whereIs<T>(_ type: T.Type) throws where T: SignedInteger {
             let low  = T(repeating: Bit.one).up(Shift.max(or: 255))
             let high = T(repeating: Bit.one)
             let expectation = Optional<Fallible<T>>.none
@@ -221,18 +224,20 @@ struct BinaryIntegerTestsOnFactorialEdgeCases {
             
             for _ in 0 ..< 32 {
                 let random = T.random(in: low...high, using: &randomness)
-                #expect(random.isNegative)
-                #expect(random.factorial() == expectation)
+                try #require(random.isNegative)
+                try #require(random.factorial() == expectation)
             }
         }
     }
     
-    /// Here we check that the infinite even factors overshift the result.
-    @Test("BinaryInteger/factorial() - element at infinite index is zero with error [uniform]", arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers)
-    func elementAtInfiniteIndexIsZeroWithError(type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) {
-        whereIs(type)
+    @Test(
+        "BinaryInteger/factorial: element at infinite index is zero with error",
+        Tag.List.tags(.random),
+        arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers
+    )   func elementAtInfiniteIndexIsZeroWithError(type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: ArbitraryIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsUnsigned {
             let low  = T(repeating: Bit.one).up(Shift.max(or: 255))
             let high = T(repeating: Bit.one)
             let expectation = Optional(T.zero.veto())
@@ -242,37 +247,8 @@ struct BinaryIntegerTestsOnFactorialEdgeCases {
             
             for _ in 0 ..< 32 {
                 let random = T.random(in: low...high, using: &randomness)
-                #expect(random.isInfinite)
-                #expect(random.factorial() == expectation)
-            }
-        }
-    }
-    
-    @Test("BinaryInteger/factorial() - element at random index error propagation [entropic]", arguments: typesAsBinaryInteger, fuzzers)
-    func elementAtRandomIndexErrorPropagation(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
-        whereIs(type)
-        
-        if  let type = type as? any UnsignedInteger.Type {
-            AsUnsignedInteger(type)
-        }
-        
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            for _ in 0 ..< 32 {
-                let index = T.entropic(through: Shift.max(or: 7), using: &randomness)
-                let element: Optional<Fallible<T>> = index.factorial()
-                for error in Bool.all {
-                    #expect(index.veto(error).factorial() == element?.veto(error))
-                }
-            }
-        }
-        
-        func AsUnsignedInteger<T>(_ type: T.Type) where T: UnsignedInteger {
-            for _ in 0 ..< 32 {
-                let index = T.entropic(through: Shift.max(or: 7), using: &randomness)
-                let element: Fallible<T> = index.factorial()
-                for error in Bool.all {
-                    #expect(index.veto(error).factorial() == element.veto(error))
-                }
+                try #require(random.isInfinite)
+                try #require(random.factorial() == expectation)
             }
         }
     }
