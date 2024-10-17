@@ -149,9 +149,23 @@ import TestKit2
                 let b = T.entropic(size: size, using: &randomness)
                 let c = T.entropic(size: size, using: &randomness)
                 let d = T.entropic(size: size, using: &randomness)
-                let e = (a &+ b) &* (c &+ d)
-                let f = (a &* c) &+ (a &* d) &+ (b &* c) &+ (b &* d)
-                try #require(e == f)
+                
+                let x = Fallible<T>.sink {
+                    let e: T = a.plus(b).sink(&$0)
+                    let f: T = c.plus(d).sink(&$0)
+                    return e.times(f)
+                }
+                
+                let y = Fallible<T>.sink {
+                    let e: T = a.times(c).sink(&$0)
+                    let f: T = a.times(d).sink(&$0)
+                    let g: T = b.times(c).sink(&$0)
+                    let h: T = b.times(d).sink(&$0)
+                    return e.plus(f).sink(&$0).plus(g).sink(&$0).plus(h)
+                }
+                
+                try #require(x.value == y.value)
+                if !T.isSigned, !x.value.isZero { try #require(x.error == y.error) }
             }
         }
     }
@@ -168,25 +182,22 @@ import TestKit2
             let rounds = !T.isArbitrary ?  conditional(debug: 128, release: 1024) : 16
             
             for _  in 0 ..< rounds {
-                let lhs = T.entropic(size: size, using: &randomness)
-                let rhs = T.entropic(size: size, using: &randomness)
+                let a = T.entropic(size: size, using: &randomness)
+                let b = T.entropic(size: size, using: &randomness)
                 
-                let foo = Fallible<T>.sink {
-                    lhs.plus(rhs).sink(&$0).squared()
+                let x = Fallible<T>.sink {
+                    a.plus(b).sink(&$0).squared()
                 }
                 
-                let bar = Fallible<T>.sink {
-                    let a: T = lhs.squared( ).sink(&$0)
-                    let b: T = lhs.times(rhs).sink(&$0).times(2).sink(&$0)
-                    let c: T = rhs.squared( ).sink(&$0)
-                    return a.plus(b).sink(&$0).plus(c )
+                let y = Fallible<T>.sink {
+                    let c: T = a.squared().sink(&$0)
+                    let d: T = a.times(b ).sink(&$0).times(2).sink(&$0)
+                    let e: T = b.squared().sink(&$0)
+                    return c.plus(d).sink(&$0).plus(e)
                 }
                 
-                try #require(foo.value == bar.value)
-                
-                if  lhs.isNegative == rhs.isNegative {
-                    try #require(foo.error == bar.error)
-                }
+                try #require(x.value == y.value)
+                if  a.isNegative == b.isNegative { try #require(x.error == y.error) }
             }
         }
     }
