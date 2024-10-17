@@ -89,7 +89,7 @@ Run performance tests with the following terminal command(s):
 xcodebuild test -scheme Ultimathnum-Performance -destination 'platform=macOS'
 ```
 
-The above Xcode scheme enables optimizations and disables instrumentation that may limit performance. These steps are exceptionally important for this project since it is both highly abstracted and highly modularized. Omitting compiler optimizations reduces performance by up two orders of magnitude, for example. Similarly, failing to ommit code coverage reduces performance by yet another order of magnitude. If your measurements show poor results for reasonable inputs, feel free to open an issue about it or ask any questions that you may have.
+The above Xcode scheme enables optimizations and disables instrumentation that may limit performance. These steps are critical in this case since the project is both abstracted and modularized. Omitting compiler optimizations reduces performance by up to two orders of magnitude. Similarly, failing to omit code coverage reduces performance by yet another order of magnitude. If your measurements show poor results for reasonable inputs, feel free to open an issue about it or ask any questions you may have.
 
 <a name="overview"/>
 
@@ -105,11 +105,11 @@ The above Xcode scheme enables optimizations and disables instrumentation that m
 
 #### The `Fallible<T>` redemption arc
 
-The value-error pair is undoubtedly a top-tier recovery mechanism when the value preserves relevant information, like in many binary integer operations. `Fallible<T>` supercharges this idea by adding powerful transformations and ergonomic utilities. It promotes soundness by easing the process of propagating errors. Let's get you up to speed by examining your scalable error-handling arsenal.
+The value-error pair is undoubtedly a top-tier recovery mechanism when the value preserves relevant information, like in many binary integer operations. `Fallible<T>` supercharges this idea by adding powerful transformations and ergonomic utilities. It promotes soundness by streamlining the process of propagating errors. Let's get you up to speed by examining your scalable error-handling arsenal.
 
 ##### Propagation: `veto(_:)`
 
-A single error is usually enough to invalidate an operation, but you may want to group all errors corresponding to a semantically meaningful unit of work. The `veto(_:)` operation lets you efficiently combine multiple errors. It forwards its value, along with the logical disjunction of its error indicator and the given argument. Here's how it works in practice.
+A single error is usually enough to invalidate an operation, but you may want to group all errors corresponding to a semantically meaningful unit of work. The `veto(_:)` operation allows you to combine multiple error indicators efficiently and with ease. It forwards the underlying value alongside the logical disjunction of the current error indicator and the given argument. Here's how it works in practice.
 
 ```swift
 U8.max.veto(false).veto(false) // value: 255, error: false
@@ -130,7 +130,7 @@ func sumsquare<T: UnsignedInteger>(a: T, b: T) -> Fallible<T> {
 
 ##### Propagation: `sink(_:)`
 
-Now that you know the basics of error propagation, let's equip you with the means to take on the world. While `map(_:)` is fantastic, at times, you may have noticed that it sometimes devolves into a pyramid-of-doom. In short, it doesn't scale. But do not fret! You may use the `sink(_:)` method to offload error indicators between operations. Let's rewrite our example by using another formula.
+Now that you know the basics of error propagation, let's equip you with the means to take on the world. While `map(_:)` is fantastic, at times, you may have noticed that it sometimes devolves into a pyramid-of-doom. In other words, it doesn't scale. But do not worry, the `sink(_:)` method has arrived! It lets you offload error indicators between operations. Let's rewrite our example by using another formula.
 
 ```swift
 // tip: Fallible.sink(_:) creates the Bool and calls veto(_:)
