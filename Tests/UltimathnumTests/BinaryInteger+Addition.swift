@@ -8,178 +8,287 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import DoubleIntKit
-import InfiniIntKit
 import RandomIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Binary Integer x Addition
 //*============================================================================*
 
-final class BinaryIntegerTestsOnAddition: XCTestCase {
+@Suite struct BinaryIntegerTestsOnAddition {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testNegation() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            //=----------------------------------=
-            let min: T = Esque<T>.min
-            let max: T = Esque<T>.max
-            let msb: T = Esque<T>.msb
-            let bot: T = Esque<T>.bot
-            //=----------------------------------=
-            Test().subtraction(T.zero, min, Fallible(min.complement(), error:  T.isSigned && !T.isArbitrary))
-            Test().subtraction(T.zero, max, Fallible(max.complement(), error: !T.isSigned))
-            Test().subtraction(T.zero, msb, Fallible(msb.complement(), error:  T.isEdgy))
-            Test().subtraction(T.zero, bot, Fallible(bot.complement(), error: !T.isSigned))
-            //=----------------------------------=
-            Test().subtraction(T.zero, ~1 as T, Fallible( 2 as T, error: !T.isSigned))
-            Test().subtraction(T.zero, ~0 as T, Fallible( 1 as T, error: !T.isSigned))
-            Test().subtraction(T.zero,  0 as T, Fallible( 0 as T))
-            Test().subtraction(T.zero,  1 as T, Fallible(~0 as T, error: !T.isSigned))
-            Test().subtraction(T.zero,  2 as T, Fallible(~1 as T, error: !T.isSigned))
-        }
+    @Test(
+        "BinaryInteger/addition: 0 ± x",
+        Tag.List.tags(.random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func additionOfZeroByRandom(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
         
-        for type in typesAsBinaryInteger {
-            whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in IX.zero ..< conditional(debug: 64, release: 256) {
+                let a = T.zero
+                let b = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let c = a.minus(b)
+                let d = a.plus (b)
+                
+                try #require(c.value.plus (b) == a.veto(c.error))
+                try #require(d.value.minus(b) == a.veto(d.error))
+                try #require(d.value.minus(c.value).value == b.times(2).value)
+                
+                if  let c = c.optional(), let d = d.optional() {
+                    Ɣexpect(c, equals: d, is: b.signum().negated())
+                }
+            }
         }
     }
     
-    func testAdditionOfMinMaxEsque() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            //=----------------------------------=
-            let min: T = Esque<T>.min
-            let max: T = Esque<T>.max
-            //=----------------------------------=
-            Test().addition(min,  min, Fallible( min << 001,      error:  T.isSigned && !T.isArbitrary))
-            Test().addition(min,  max, Fallible(~000))
-            Test().addition(max,  min, Fallible(~000))
-            Test().addition(max,  max, Fallible( max << 001,      error:  T.isEdgy))
+    @Test(
+        "BinaryInteger/addition: x ± y",
+        Tag.List.tags(.random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func subtractionOfRandomByRandom(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in IX.zero ..< conditional(debug: 64, release: 256) {
+                let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let b = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let c = a.minus(b)
+                let d = a.plus (b)
+                
+                try #require(a.veto(c.error) == c.value.plus (b))
+                try #require(b.veto(c.error) == a.minus(c.value))
+                
+                try #require(a.veto(d.error) == d.value.minus(b))
+                try #require(b.veto(d.error) == d.value.minus(a))
+                
+                try #require(d.value.minus(c.value).value == b.plus (b).value)
+                try #require(d.value.minus(c.value).value == b.times(2).value)
+            }
+        }
+    }
+        
+    @Test(
+        "BinaryInteger/addition: x ± x",
+        Tag.List.tags(.random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func additionOfRandomBySelf(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in IX.zero ..< conditional(debug: 64, release: 256) {
+                let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let b = a.minus(a)
+                let c = a.plus (a)
+                
+                try #require(b.value.isZero)
+                try #require(b.error == false)
+                
+                try #require(c == a.times(2))
+                try #require(c.value.minus(a) == a.veto(c.error))
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/addition: x ± 0 or 1",
+        Tag.List.tags(.random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func additionOfRandomByBool(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in IX.zero ..< conditional(debug: 64, release: 256) {
+                let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let b = Bool.random(using: &randomness.stdlib)
+                let c = a.decremented(b)
+                let d = a.incremented(b)
+                
+                try #require(c == a.minus(T(Bit(b))))
+                try #require(d == a.plus (T(Bit(b))))
+                
+                try #require(c.value.incremented(b) == a.veto(c.error))
+                try #require(d.value.decremented(b) == a.veto(d.error))
+                try #require(d.value.minus(c.value).value == T(Bit(b)).times(2).value)
+                
+                if  let c = c.optional(), let d = d.optional() {
+                    Ɣexpect(c, equals: d, is: Signum(Bit(b)).negated())
+                }
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/addition: versus linear expression",
+        Tag.List.tags(.random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func additionVersusLinearExpression(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in IX.zero ..< conditional(debug: 16, release: 64) {
+                let base = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let step = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                var some = base
+                
+                for multiplier in T.zero ..< 16 {
+                    let leap = (multiplier &* step)
+                    let expectation = base &+ leap
+                    try #require(expectation == some)
+                    
+                    some &+= step
+                    
+                    try #require(expectation == some &- step)
+                    try #require(base == expectation &- leap)
+                }
+            }
+        }
+    }
+}
 
-            Test().addition(min, ~000, Fallible( max |  min << 1, error:  T.isSigned && !T.isArbitrary))
-            Test().addition(min,  000, Fallible( min))
-            Test().addition(min,  001, Fallible( min |  001))
-            Test().addition(max, ~000, Fallible( max ^  001,      error: !T.isSigned))
-            Test().addition(max,  000, Fallible( max))
-            Test().addition(max,  001, Fallible( min ^  min << 1, error:  T.isEdgy))
-        }
+//*============================================================================*
+// MARK: * Binary Integer x Addition x Edge Cases
+//*============================================================================*
+
+@Suite(.tags(.documentation)) struct BinaryIntegerTestsOnAdditionEdgeCases {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/addition/edge-cases: additive inverse of T.min as signed is error",
+        Tag.List.tags(.exhaustive),
+        arguments: typesAsSystemsIntegerAsSigned
+    )   func additiveInverseOfMinValueAsSignedIsError(type: any SystemsIntegerAsSigned.Type) {
+        whereIs(type)
         
-        for type in typesAsBinaryInteger {
-            whereIs(type)
+        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsSigned {
+            #expect(T.min.negated()        == T.min.veto())
+            #expect(T.min.complement(true) == T.min.veto())
         }
     }
     
-    func testSubtractionOfMinMaxEsque() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            //=----------------------------------=
-            let min: T = Esque<T>.min
-            let max: T = Esque<T>.max
-            //=----------------------------------=
-            Test().subtraction(min,  min, Fallible(000))
-            Test().subtraction(min,  max, Fallible(001 | min << 1, error:  T.isEdgy))
-            Test().subtraction(max,  min, Fallible(001 | max << 1, error:  T.isSigned && !T.isArbitrary))
-            Test().subtraction(max,  max, Fallible(000))
-            
-            Test().subtraction(min, ~000, Fallible(min | 001,      error: !T.isSigned))
-            Test().subtraction(min,  000, Fallible(min))
-            Test().subtraction(min,  001, Fallible(max | min << 1, error:  T.isEdgy))
-            Test().subtraction(max, ~000, Fallible(min ^ min << 1, error:  T.isSigned && !T.isArbitrary))
-            Test().subtraction(max,  000, Fallible(max))
-            Test().subtraction(max,  001, Fallible(max ^ 001))
-        }
+    @Test(
+        "BinaryInteger/addition/edge-cases: additive inverse of T.min as unsigned is not error",
+        Tag.List.tags(.exhaustive),
+        arguments: typesAsBinaryIntegerAsUnsigned
+    )   func additiveInverseOfMinValueAsUnsignedIsNotError(type: any UnsignedInteger.Type) {
+        whereIs(type)
         
-        for type in typesAsBinaryInteger {
-            whereIs(type)
+        func whereIs<T>(_ type: T.Type) where T: UnsignedInteger {
+            #expect(T.min.negated()        == T.min.veto(false))
+            #expect(T.min.complement(true) == T.min.veto())
         }
     }
+}
+
+//*============================================================================*
+// MARK: * Binary Integer x Addition x Conveniences
+//*============================================================================*
+
+@Suite struct BinaryIntegerTestsOnAdditionVersusConveniences {
     
-    func testAdditionOfRepeatingBit() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            //=----------------------------------=
-            let x0 = T(repeating: Bit.zero)
-            let x1 = T(repeating: Bit.one )
-            //=----------------------------------=
-            Test().addition(x0, x0, Fallible(x0))
-            Test().addition(x0, x1, Fallible(x1))
-            Test().addition(x1, x0, Fallible(x1))
-            Test().addition(x1, x1, Fallible(~1, error: !T.isSigned))
-            //=----------------------------------=
-            for increment: T in [1, 2, 3, ~1, ~2, ~3]  {
-                Test().addition(x0, increment, Fallible(increment))
-                Test().addition(x1, increment, Fallible(increment &- 1, error: !T.isSigned))
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/addition/conveniences: 0 ± x",
+        Tag.List.tags(.random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func additionOfZeroByRandom(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< 32 {
+                let a = T.zero
+                let b = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let c = a.minus(b)
+                let d = a.plus (b)
+                
+                try self.Ɣrequire(a, plus:  b, is: d)
+                try self.Ɣrequire(a, minus: b, is: c)
+                
+                try #require(c == b.negated())
+                try #require(c.value == b.complement())
+                
+                if  let c = c.optional() {
+                    try #require(c == reduce(-, b))
+                }
             }
         }
+    }
+    
+    @Test(
+        "BinaryInteger/addition/conveniences: x ± 0",
+        Tag.List.tags(.random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func additionOfRandomByZero(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
         
-        for type in typesAsBinaryInteger {
-            whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< 32 {
+                let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let b = T.zero
+                
+                try #require(a == a.plus (b).optional())
+                try #require(a == a.minus(b).optional())
+                
+                try self.Ɣrequire(a, plus:  b, is: a.veto(false))
+                try self.Ɣrequire(a, minus: b, is: a.veto(false))
+            }
         }
     }
     
-    func testSubtractionOfRepeatingBit() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            //=----------------------------------=
-            let x0 = T(repeating: Bit.zero)
-            let x1 = T(repeating: Bit.one )
-            //=----------------------------------=
-            Test().subtraction(x0, x0, Fallible(x0))
-            Test().subtraction(x0, x1, Fallible( 1, error: !T.isSigned))
-            Test().subtraction(x1, x0, Fallible(x1))
-            Test().subtraction(x1, x1, Fallible(x0))
-            //=----------------------------------=
-            for decrement: T in [1, 2, 3, ~1, ~2, ~3] {
-                Test().subtraction(x0, decrement, Fallible(decrement.complement(), error: !T.isSigned))
-                Test().subtraction(x1, decrement, Fallible(decrement.toggled()))
-            }
-        }
+    @Test(
+        "BinaryInteger/addition/conveniences: x ± y",
+        Tag.List.tags(.random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func subtractionOfRandomByRandomVersusDerivatives(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
         
-        for type in typesAsBinaryInteger {
-            whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< 32 {
+                let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let b = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                try self.Ɣrequire(a, plus:  b, is: a.plus (b))
+                try self.Ɣrequire(a, minus: b, is: a.minus(b))
+            }
         }
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests x Random
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    func testAdditionByFuzzing() {
-        func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
-            func random() -> T {
-                let index = IX.random(in: 00000 ..< size, using: &randomness)!
-                let pattern = T.Signitude.random(through: Shift(Count(index)), using: &randomness)
-                return T(raw: pattern) // do not forget about infinite values!
-            }
-            
-            var values = Array(repeating: T.zero, count: 16)
-            for _ in 0 ..< rounds {
-                let base = random()
-                let increment = random()
-                var result: T = base
-                
-                for multiplier in values.indices {
-                    values[multiplier] = T(IX(multiplier)) &* increment &+ base
-                }
-                
-                for multiplier in values.indices {
-                    Test().same(result, values[multiplier])
-                    result &+= increment
-                }
-                
-                for multiplier in values.indices.reversed() {
-                    result &-= increment
-                    Test().same(result, values[multiplier])
-                }
-            }
+    func Ɣrequire<T>(_ a: T, plus  b: T, is c: Fallible<T>) throws where T: BinaryInteger {
+        try #require(c.value == reduce(a, &+,  b))
+        try #require(c.value == reduce(a, &+=, b))
+                        
+        if  let c = c.optional() {
+            try #require(c == reduce(a, +,  b))
+            try #require(c == reduce(a, +=, b))
+                                
+            Ɣexpect(c, equals: a, is: b.signum())
+            Ɣexpect(c, equals: b, is: a.signum())
         }
+    }
+    
+    func Ɣrequire<T>(_ a: T, minus b: T, is c: Fallible<T>) throws where T: BinaryInteger {
+        try #require(c.value == reduce(a, &-,  b))
+        try #require(c.value == reduce(a, &-=, b))
         
-        for type in typesAsBinaryInteger {
-            #if DEBUG
-            whereIs(type, size: IX(size: type) ?? 0256, rounds: 16, randomness: fuzzer)
-            #else
-            whereIs(type, size: IX(size: type) ?? 4096, rounds: 64, randomness: fuzzer)
-            #endif
+        if  let c = c.optional() {
+            try #require(c == reduce(a, -,  b))
+            try #require(c == reduce(a, -=, b))
+            
+            Ɣexpect(a, equals: c, is: b.signum())
+            Ɣexpect(a, equals: b, is: c.signum())
         }
     }
 }
