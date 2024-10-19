@@ -150,7 +150,7 @@ func sumsquare<T: UnsignedInteger>(a: T, b: T) throws -> T {
 
 #### Expectation: `unwrap(_:)`, `unchecked(_:)`
 
-What about expectations? Sometimes, you declare a fallible function call that should never produce an error; the function only happens to be generalized beyond the scope of the call site. In these cases, an error would indicate a program with unspecified behavior. Consider using `unwrap(_:)` to stop program execution and `unchecked(_:)` to stop program execution of unoptimized builds only. Additionally, you may pass a clarifying comment for debugging purposes.
+What about expectations? Sometimes, you make a fallible function call that should never produce an error; the function only happens to be generalized beyond the scope of the call site. In that case, an error would indicate program misbehavior. Consider using `unwrap(_:)` to stop program execution and `unchecked(_:)` to stop program execution of unoptimized builds only. Additionally, you may pass a clarifying comment for debugging purposes.
 
 ```swift
 U8.min.incremented().unwrap("precondition") // must not fail
