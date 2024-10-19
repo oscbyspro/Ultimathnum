@@ -4,33 +4,26 @@
 
 ## Table of Contents
 
-* [Introduction](#introduction)
-  - [Holistic low-level abstractions](#introduction-holistic-low-level-abstractions)
-  - [How can I support this project?](#introduction-how-can-i-support)
+* [Prelude](#prelude)
+  - [The abstract symphony](#prelude-the-abstract-symphony)
 * [Installation](#installation)
   - [SemVer 2.0.0](#installation-semver)
   - [Using Swift Package Manager](#installation-swift-package-manager)
   - [How to run unit tests](#installation-how-to-run-unit-tests)
   - [How to run performance tests](#installation-how-to-run-performance-tests)
 * [Overview](#overview)
-  - [The overpowered `BinaryInteger`](#overview-binary-integers)
+  - [The overpowered `BinaryInteger`](#overview-the-overpowered-binary-integer)
   - [The `Fallible<T>` redemption arc](#overview-the-fallible-redemption-arc)
 
-<a name="introduction"/>
+<a name="prelude"/>
 
-## Introduction
+## Prelude
 
-<a name="introduction-holistic-low-level-abstractions"/>
+<a name="prelude-the-abstract-symphony"/>
 
-#### Holistic low-level abstractions
+### The abstract symphony
 
-> TODO...
-
-<a name="introduction-how-can-i-support"/>
-
-#### How can I support this project?
-
-Leave a like; it doesn't hurt. I'm also open to work.
+This work seeks to unify the various concepts of low-level arithmetic. It streamlines error handling and introduces a notion of arbitrary binary integer infinities, among other things. But, the emphasis is not on the diversity of ideas but on the orchestration of scalable abstractions. Imagine an oasis of harmony in a world of discord. It's more of a symphony than a library.
 
 <a name="installation"/>
 
@@ -38,7 +31,7 @@ Leave a like; it doesn't hurt. I'm also open to work.
 
 <a name="installation-semver"/>
 
-#### SemVer 2.0.0
+### SemVer 2.0.0
 
 Please install the latest release, or a specific commit.
 
@@ -48,7 +41,7 @@ Please install the latest release, or a specific commit.
 
 <a name="installation-swift-package-manager"/>
 
-#### Swift Package Manager
+### Swift Package Manager
 
 Add this package to your list of package dependencies.
 
@@ -70,7 +63,7 @@ Choose target dependencies from this list of products.
 
 <a name="installation-how-to-run-unit-tests"/>
 
-#### How to run unit tests
+### How to run unit tests
 
 Run unit tests with the following terminal command(s):
 
@@ -81,7 +74,7 @@ swift test --skip Benchmarks -Xswiftc -O --configuration release
 
 <a name="installation-how-to-run-performance-tests"/>
 
-#### How to run performance tests
+### How to run performance tests
 
 Run performance tests with the following terminal command(s):
 
@@ -89,25 +82,25 @@ Run performance tests with the following terminal command(s):
 xcodebuild test -scheme Ultimathnum-Performance -destination 'platform=macOS'
 ```
 
-The above Xcode scheme enables optimizations and disables instrumentation that may limit performance. These steps are critical in this case since the project is both abstracted and modularized. Omitting compiler optimizations reduces performance by up to two orders of magnitude. Similarly, failing to omit code coverage reduces performance by yet another order of magnitude. If your measurements show poor results for reasonable inputs, feel free to open an issue about it or ask any questions you may have.
+The above setup enables optimizations and disables instrumentation that may limit performance. These steps are critical since the project is both abstracted and modularized. Omitting compiler optimizations reduces performance by up to two orders of magnitude. Similarly, failing to omit code coverage reduces performance by yet another order of magnitude. If your measurements show poor results for reasonable inputs, feel free to open an issue about it or ask any questions you may have.
 
 <a name="overview"/>
 
 ## Overview
 
-<a name="overview-binary-integers"/>
+<a name="overview-the-overpowered-binary-integer"/>
 
-#### The overpowered `BinaryInteger`
+### The overpowered `BinaryInteger`
 
-> TODO...
+👨‍💻🛠️🚧🧱🧱🏗️🧱🧱🚧⏳
 
 <a name="overview-the-fallible-redemption-arc"/>
 
-#### The `Fallible<T>` redemption arc
+### The `Fallible<T>` redemption arc
 
 The value-error pair is undoubtedly a top-tier recovery mechanism when the value preserves relevant information, like in many binary integer operations. `Fallible<T>` supercharges this idea by adding powerful transformations and ergonomic utilities. It promotes soundness by streamlining the process of propagating errors. Let's get you up to speed by examining your scalable error-handling arsenal.
 
-##### Propagation: `veto(_:)`
+#### Propagation: `veto(_:)`, `map(_:)`, `sink(_:)`
 
 A single error is usually enough to invalidate an operation, but you may want to group all errors corresponding to a semantically meaningful unit of work. The `veto(_:)` operation allows you to combine multiple error indicators efficiently and with ease. It forwards the underlying value alongside the logical disjunction of the current error indicator and the given argument. Here's how it works in practice.
 
@@ -118,9 +111,7 @@ U8.max.veto(true ).veto(false) // value: 255, error: true
 U8.max.veto(true ).veto(true ) // value: 255, error: true
 ```
 
-##### Propagation: `map(_:)`
-
-Chaining multiple expressions is a common functional approach and something you may want to consider. The `map(_:)` transforms the underlying value and marges additional error indicators at the end of the given function. Please take a close look at the following example. We'll revisit it in a moment.
+Chaining multiple expressions is a common functional approach and something you may want to consider. The `map(_:)` transforms the underlying value and merges additional error indicators at the end of the given function. Please take a close look at the following example. We'll revisit it in a moment.
 
 ```swift
 func sumsquare<T: UnsignedInteger>(a: T, b: T) -> Fallible<T> {
@@ -128,9 +119,7 @@ func sumsquare<T: UnsignedInteger>(a: T, b: T) -> Fallible<T> {
 }
 ```
 
-##### Propagation: `sink(_:)`
-
-Now that you know the basics of error propagation, let's equip you with the means to take on the world. While `map(_:)` is fantastic, at times, you may have noticed that it sometimes devolves into a pyramid-of-doom. In other words, it doesn't scale. But do not worry, the `sink(_:)` method has arrived! It lets you offload error indicators between operations. Let's rewrite our example by using another formula.
+Now that you know the basics of error propagation, let's equip you with the means to take on the world. While `map(_:)` is fantastic, at times, you may have noticed that it sometimes devolves into a pyramid of doom. In other words, it doesn't scale to fit the needs of more complex problems. But do not worry, the `sink(_:)` method has arrived! It lets you offload error indicators between operations. Let's rewrite our example by using another formula.
 
 ```swift
 // tip: Fallible.sink(_:) creates the Bool and calls veto(_:)
@@ -144,9 +133,9 @@ func sumsquare<T: UnsignedInteger>(a: T, b: T) -> Fallible<T> {
 }
 ```
 
-##### Propagation: `optional(_:)`, `result(_:)` and `prune(_:)`
+#### Transformation: `optional()`, `result(_:)`, `prune(_:)`
 
-The value-error pair has important properties for writing expressive library code. But what if you're the end user? Good news! Let's take a look at `optional(_:)`, `result(_:)` and `prune(_:)`. The first two methods transform errors into well-understood types with similar names, nice and simple. The last one throws its argument on error. Imagine a laid-back version of `sink(_:)`. Let's rewrite our example again, using `prune(_:)` this time.
+The value-error pair has important properties for writing expressive library code. But what if you're the end user? Good news! Let's take a look at `optional()`, `result(_:)` and `prune(_:)`. The first two methods transform errors into well-understood types with similar names, nice and simple. The last one throws its argument on error. Imagine a laid-back version of `sink(_:)`. Let's rewrite our example again, using `prune(_:)` this time.
 
 ```swift
 enum Oops: Error { case such, error, much, wow, very, impressive }
@@ -157,4 +146,13 @@ func sumsquare<T: UnsignedInteger>(a: T, b: T) throws -> T {
     let z: T = try b.squared().prune(Oops.wow)
     return try x.plus(y).prune((Oops.very)).plus(z).prune(Oops.impressive)
 }
+```
+
+#### Expectation: `unwrap(_:)`, `unchecked(_:)`
+
+What about expectations? Sometimes, you declare a fallible function call that should never produce an error; the function only happens to be generalized beyond the scope of the call site. In these cases, an error would indicate a program with unspecified behavior. Consider using `unwrap(_:)` to stop program execution and `unchecked(_:)` to stop program execution of unoptimized builds only. Additionally, you may pass a clarifying comment for debugging purposes.
+
+```swift
+U8.min.incremented().unwrap("precondition") // must not fail
+U8.min.incremented().unchecked("assertion") // must not fail, must go brrr
 ```
