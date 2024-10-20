@@ -32,9 +32,8 @@ import TestKit2
             
             func check(_ capacity: IX) throws {
                 let part = IX(size: T.self)
-                let size = try #require(capacity.times(part).optional( ))
-                Ɣexpect(size, equals: IX.max - part, is: Signum.positive)
-                Ɣexpect(size, equals: IX.max,        is: Signum.negative)
+                let size = try #require(capacity.times(part).optional())
+                #expect(size > (IX.max - part) && size < IX.max)
             }
         }
     }

@@ -273,7 +273,7 @@ import TestKit2
         if  let c = c.optional() {
             try #require(c == reduce(a, +,  b))
             try #require(c == reduce(a, +=, b))
-                                
+            
             Ɣexpect(c, equals: a, is: b.signum())
             Ɣexpect(c, equals: b, is: a.signum())
         }

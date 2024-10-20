@@ -23,6 +23,11 @@ let typesAsArbitraryInteger: [any ArbitraryInteger.Type] = {
     typesAsArbitraryIntegerAsUnsigned
 }()
 
+let typesAsBinaryIntegerAsAppendix: [any BinaryInteger.Type] = {
+    typesAsBinaryIntegerAsSigned +
+    typesAsArbitraryIntegerAsUnsigned
+}()
+
 let typesAsArbitraryIntegerAsByte: [any ArbitraryInteger.Type] = [
     InfiniInt<I8>.self,
     InfiniInt<U8>.self,

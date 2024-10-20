@@ -29,6 +29,9 @@ extension Tag {
     /// Sending to another destination.
     @Tag public static var forwarding: Self
     
+    /// Relating to a class or group of things.
+    @Tag public static var generic: Self
+    
     /// Of great significance or value.
     @Tag public static var important: Self
     

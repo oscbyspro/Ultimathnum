@@ -8,6 +8,8 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import InfiniIntKit
+import RandomIntKit
 import StdlibIntKit
 import TestKit2
 
@@ -31,40 +33,12 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt - comparison [forwarding]", arguments: [
-        
-        (-2 as StdlibInt, -2 as StdlibInt, Signum.zero),
-        (-2 as StdlibInt, -1 as StdlibInt, Signum.negative),
-        (-2 as StdlibInt,  0 as StdlibInt, Signum.negative),
-        (-2 as StdlibInt,  1 as StdlibInt, Signum.negative),
-        (-2 as StdlibInt,  2 as StdlibInt, Signum.negative),
-        
-        (-1 as StdlibInt, -2 as StdlibInt, Signum.positive),
-        (-1 as StdlibInt, -1 as StdlibInt, Signum.zero),
-        (-1 as StdlibInt,  0 as StdlibInt, Signum.negative),
-        (-1 as StdlibInt,  1 as StdlibInt, Signum.negative),
-        (-1 as StdlibInt,  2 as StdlibInt, Signum.negative),
-        
-        ( 0 as StdlibInt, -2 as StdlibInt, Signum.positive),
-        ( 0 as StdlibInt, -1 as StdlibInt, Signum.positive),
-        ( 0 as StdlibInt,  0 as StdlibInt, Signum.zero),
-        ( 0 as StdlibInt,  1 as StdlibInt, Signum.negative),
-        ( 0 as StdlibInt,  2 as StdlibInt, Signum.negative),
-        
-        ( 1 as StdlibInt, -2 as StdlibInt, Signum.positive),
-        ( 1 as StdlibInt, -1 as StdlibInt, Signum.positive),
-        ( 1 as StdlibInt,  0 as StdlibInt, Signum.positive),
-        ( 1 as StdlibInt,  1 as StdlibInt, Signum.zero),
-        ( 1 as StdlibInt,  2 as StdlibInt, Signum.negative),
-        
-        ( 2 as StdlibInt, -2 as StdlibInt, Signum.positive),
-        ( 2 as StdlibInt, -1 as StdlibInt, Signum.positive),
-        ( 2 as StdlibInt,  0 as StdlibInt, Signum.positive),
-        ( 2 as StdlibInt,  1 as StdlibInt, Signum.positive),
-        ( 2 as StdlibInt,  2 as StdlibInt, Signum.zero),
-        
-    ] as [(StdlibInt, StdlibInt, Signum)])
-    func comparison(lhs: StdlibInt, rhs: StdlibInt, expectation: Signum) {
-        Ɣexpect(lhs, equals: rhs, is: expectation)
+    @Test("StdlibInt/comparison: vs StdlibInt.Base", .tags(.forwarding, .random), arguments: fuzzers)
+    func forwarding(_ randomness: consuming FuzzerInt) throws {
+        for _ in 0 ..< conditional(debug: 64, release: 128) {
+            let lhs = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
+            let rhs = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
+            Ɣexpect(StdlibInt(lhs), equals: StdlibInt(rhs), is: lhs.compared(to: rhs))
+        }
     }
 }
