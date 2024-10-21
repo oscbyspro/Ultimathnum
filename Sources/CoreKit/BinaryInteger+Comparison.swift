@@ -199,15 +199,8 @@ extension Namespace {
                 }
             }
             
-        }   else if LHS.Element.Magnitude.size <= RHS.Element.Magnitude.size {
-            lhs.withUnsafeBinaryIntegerElements { lhs in
-                rhs.withUnsafeBinaryIntegerElements(as: LHS.Element.Magnitude.self) { rhs in
-                    comparator.resolve(DataInt.compare(lhs: lhs, mode: LHS.mode, rhs: rhs, mode: RHS.mode))
-                }
-            }
-            
         }   else {
-            lhs.withUnsafeBinaryIntegerElements(as: RHS.Element.Magnitude.self) { lhs in
+            lhs.withUnsafeBinaryIntegerElements { lhs in
                 rhs.withUnsafeBinaryIntegerElements { rhs in
                     comparator.resolve(DataInt.compare(lhs: lhs, mode: LHS.mode, rhs: rhs, mode: RHS.mode))
                 }

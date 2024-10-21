@@ -40,9 +40,14 @@ extension DataInt {
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
-        
+    
     /// Performs a three-way comparson of `instance` versus `zero` where the mode
     /// of the `instance` is determined by `isSigned`.
+    ///
+    /// ### Development
+    ///
+    /// - TODO: Consider adding a static or dynamic mode to this model (#104).
+    ///
     @inline(never) @inlinable public static func signum(
         of instance: Self, mode signedness: Signedness
     )   -> Signum {
@@ -60,6 +65,11 @@ extension DataInt {
     
     /// Performs a three-way comparson of `lhs` versus `rhs` where the mode
     /// of each instance is determined by `lhsSignedness` and `rhsSignedness`.
+    ///
+    /// ### Development
+    ///
+    /// - TODO: Consider adding a static or dynamic mode to this model (#104).
+    ///
     @inline(never) @inlinable public static func compare(
         lhs: consuming Self, mode lhsSignedness: Signedness,
         rhs: consuming Self, mode rhsSignedness: Signedness
@@ -119,6 +129,38 @@ extension DataInt {
         // comparison: same
         //=--------------------------------------=
         return Signum.zero // as Signum as Signum
+    }
+    
+    /// Performs a three-way comparson of `lhs` versus `rhs` where the mode
+    /// of each instance is determined by `lhsSignedness` and `rhsSignedness`.
+    ///
+    /// ### Development
+    ///
+    /// - TODO: Consider adding a static or dynamic mode to this model (#104).
+    ///
+    @inlinable public static func compare<OtherElement>(
+        lhs: consuming Self,
+        mode lhsSignedness: Signedness,
+        rhs: consuming DataInt<OtherElement>,
+        mode rhsSignedness: Signedness
+    )   -> Signum {
+        
+        if  Self.Element.size <= OtherElement.size {
+            rhs.reinterpret(as:  Self.Element.self) { rhs in
+                DataInt<Self.Element>.compare(
+                    lhs: lhs, mode: lhsSignedness,
+                    rhs: rhs, mode: rhsSignedness
+                )
+            }
+            
+        }   else {
+            lhs.reinterpret(as:  OtherElement.self) { lhs in
+                DataInt<OtherElement>.compare(
+                    lhs: lhs, mode: lhsSignedness,
+                    rhs: rhs, mode: rhsSignedness
+                )
+            }
+        }
     }
 }
 
