@@ -156,3 +156,14 @@ What about expectations? Sometimes, you make a fallible function call that shoul
 U8.min.incremented().unwrap("precondition") // must not fail
 U8.min.incremented().unchecked("assertion") // must not fail, must go brrr
 ```
+
+#### Destructuring: `value`, `error`, `components()`
+
+While this model strives to streamline the error-handling process, perhaps you want to take the wheel. Sure, have fun! You can read and write to its value and error fields directly. Alternatively, you may destructure the pair by invoking the consuming `components()` method. Here's the short version of it.
+
+```swift
+var pair = Fallible("Hello")
+pair.value.append(", World")
+pair.error.toggle()
+let (value, error) = pair.components()
+```
