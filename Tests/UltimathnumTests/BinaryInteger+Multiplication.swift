@@ -165,7 +165,10 @@ import TestKit2
                 }
                 
                 try #require(x.value == y.value)
-                if !T.isSigned, !x.value.isZero { try #require(x.error == y.error) }
+                
+                if !T.isSigned, !x.value.isZero {
+                    try #require(x.error == y.error)
+                }
             }
         }
     }
@@ -197,7 +200,10 @@ import TestKit2
                 }
                 
                 try #require(x.value == y.value)
-                if  a.isNegative == b.isNegative { try #require(x.error == y.error) }
+                
+                if  a.isNegative == b.isNegative {
+                    try #require(x.error == y.error)
+                }
             }
         }
     }
@@ -320,6 +326,132 @@ import TestKit2
             }
             
             #expect(success == IX(A.all.count) &* IX(A.all.count))
+        }
+    }
+}
+
+//*============================================================================*
+// MARK: * Binary Integer x Multiplication x Edge Cases
+//*============================================================================*
+
+@Suite struct BinaryIntgerTestsOnMultiplicationEdgeCases {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/multiplication/edge-cases: low complements",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func multiplicationOfLowComplements(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            try withOnlyOneCallToRequire { require in
+                for _ in 0 ..< conditional(debug:  16, release: 32) {
+                    let lhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                    let rhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                    let low = lhs &* rhs
+                    
+                    let lhsComplement = lhs.complement()
+                    let rhsComplement = rhs.complement()
+                    let lowComplement = low.complement()
+                    
+                    require((lhsComplement &* rhs) == lowComplement)
+                    require((lhs &* rhsComplement) == lowComplement)
+                    require((lhsComplement &* rhsComplement) == low)
+                }
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/multiplication/edge-cases: x * 0 is 0",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func multiplicationByZeroIsZero(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            try withOnlyOneCallToRequire { require in
+                for _ in 0 ..< 32 {
+                    let lhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                    let rhs = T.zero
+                    
+                    let expectation = Doublet<T>()
+                    
+                    require(lhs.times(rhs) == Fallible(T.zero))
+                    require(rhs.times(lhs) == Fallible(T.zero))
+                    
+                    require(lhs.multiplication(rhs) == expectation)
+                    require(rhs.multiplication(lhs) == expectation)
+                }
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/multiplication/edge-cases: x * 1 is x",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func multiplicationByOneIsSelf(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+                
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            try withOnlyOneCallToRequire(type) { require in
+                for _ in 0 ..< 32 {
+                    let lhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                    let rhs = T(1)
+                    
+                    let expectation = Doublet(low: T.Magnitude(raw: lhs), high: T(repeating: Bit(lhs.isNegative)))
+                    
+                    require(lhs.times(rhs) == Fallible(lhs))
+                    require(rhs.times(lhs) == Fallible(lhs))
+                    
+                    require(lhs.multiplication(rhs) == expectation)
+                    require(rhs.multiplication(lhs) == expectation)
+                }
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/multiplication/edge-cases: x * -1 is -x",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func multiplicationByMinusOneIsAdditiveInverseOfSelf(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            try withOnlyOneCallToRequire(type) { require in
+                for _ in 0 ..< 32 {
+                    let lhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                    let rhs = T.zero.toggled()
+                    
+                    var expectation = lhs.negated()
+                    if !T.isSigned, lhs  <= T.lsb {
+                        expectation.error = false // 0 or 1 times T.max
+                    }
+                    
+                    require(lhs.times(rhs) == expectation)
+                    require(rhs.times(lhs) == expectation)
+                    
+                    if T.isSigned {
+                        var full  = Doublet(
+                            low:  T.Magnitude.init(raw: expectation.value),
+                            high: T(repeating: expectation.value.appendix)
+                        )
+                        
+                        if  expectation.error {
+                            full.high = T.zero // T.min times -1
+                        }
+                        
+                        require(lhs.multiplication(rhs) == full)
+                        require(rhs.multiplication(lhs) == full)
+                    }
+                }
+            }
         }
     }
 }
