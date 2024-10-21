@@ -84,6 +84,19 @@ let typesAsEdgyIntegerAsUnsigned: [any EdgyIntegerAsUnsigned.Type] = {
     typesAsBinaryIntegerAsUnsigned
 }()
 
+let typesAsFiniteInteger: [any FiniteInteger.Type] = {
+    typesAsFiniteIntegerAsSigned +
+    typesAsFiniteIntegerAsUnsigned
+}()
+
+let typesAsFiniteIntegerAsSigned: [any FiniteIntegerAsSigned.Type] = {
+    typesAsBinaryIntegerAsSigned
+}()
+
+let typesAsFiniteIntegerAsUnsigned: [any FiniteIntegerAsUnsigned.Type] = {
+    typesAsSystemsIntegerAsUnsigned
+}()
+
 let typesAsSystemsInteger: [any SystemsInteger.Type] = {
     typesAsSystemsIntegerAsSigned +
     typesAsSystemsIntegerAsUnsigned

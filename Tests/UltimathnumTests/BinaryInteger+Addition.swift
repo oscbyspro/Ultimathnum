@@ -191,7 +191,7 @@ import TestKit2
 // MARK: * Binary Integer x Addition x Conveniences
 //*============================================================================*
 
-@Suite struct BinaryIntegerTestsOnAdditionVersusConveniences {
+@Suite(.tags(.forwarding)) struct BinaryIntegerTestsOnAdditionVersusConveniences {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests

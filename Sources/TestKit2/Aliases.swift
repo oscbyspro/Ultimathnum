@@ -19,5 +19,7 @@ public typealias      CoreIntegerAsSigned   =      CoreInteger &   SignedInteger
 public typealias      CoreIntegerAsUnsigned =      CoreInteger & UnsignedInteger
 public typealias      EdgyIntegerAsSigned   =      EdgyInteger &   SignedInteger
 public typealias      EdgyIntegerAsUnsigned =      EdgyInteger & UnsignedInteger
+public typealias    FiniteIntegerAsSigned   =    FiniteInteger &   SignedInteger
+public typealias    FiniteIntegerAsUnsigned =    FiniteInteger & UnsignedInteger
 public typealias   SystemsIntegerAsSigned   =   SystemsInteger &   SignedInteger
 public typealias   SystemsIntegerAsUnsigned =   SystemsInteger & UnsignedInteger

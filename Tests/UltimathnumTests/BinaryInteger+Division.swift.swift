@@ -381,6 +381,154 @@ import TestKit2
 }
 
 //*============================================================================*
+// MARK: * Binary Integer x Division x Conveniences
+//*============================================================================*
+
+@Suite(.tags(.forwarding)) struct BinaryIntegerTestsOnDivisionVersusConveniences {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Finite
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/division/conveniences: as FiniteInteger",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsFiniteInteger, fuzzers
+    )   func divisionOfRandomByNonzeroAsFiniteInteger(type: any FiniteInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: FiniteInteger {
+            for _ in 0 ..< 32 {
+                let dividend = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let divisor  = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                
+                guard let divisor = Nonzero(exactly: divisor) else { continue }
+                
+                let baseline: Optional = dividend.division (divisor)
+                let division: Fallible = dividend.division (divisor)
+                let quotient: Fallible = dividend.quotient (divisor)
+                let remainder: T       = dividend.remainder(divisor)
+                
+                try #require(baseline == division)
+                try #require(baseline?.map(\.quotient) == quotient )
+                try #require(baseline?.value.remainder == remainder)
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/division/conveniences: as Finite<Value>",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func divisionOfRandomByNonzeroAsFinite(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< 32 {
+                let dividend = T.entropic(through: Shift.max(or: 255), as: .finite, using: &randomness)
+                let divisor  = T.entropic(through: Shift.max(or: 255), as: .binary, using: &randomness)
+                
+                guard let dividend = Finite(exactly: dividend) else { continue }
+                guard let divisor  = Nonzero(exactly: divisor) else { continue }
+                
+                let baseline: Optional = dividend.value.division(divisor)
+                let division: Fallible = dividend.division (divisor)
+                let quotient: Fallible = dividend.quotient (divisor)
+                let remainder:       T = dividend.remainder(divisor)
+                
+                try #require(baseline == division)
+                try #require(baseline?.map(\.quotient) == quotient )
+                try #require(baseline?.value.remainder == remainder)
+                
+                if  let baseline = baseline?.optional() {
+                    try #require(baseline.quotient  == reduce(dividend.value, /,  divisor.value))
+                    try #require(baseline.quotient  == reduce(dividend.value, /=, divisor.value))
+                    try #require(baseline.remainder == reduce(dividend.value, %,  divisor.value))
+                    try #require(baseline.remainder == reduce(dividend.value, %=, divisor.value))
+                }
+            }
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Natural
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/division/conveniences: as NaturalInteger",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsSystemsIntegerAsUnsigned, fuzzers
+    )   func divisionOfRandomByNonzeroAsNaturalInteger(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
+            for _ in 0 ..< 32 {
+                let dividend = T.entropic(using: &randomness)
+                let divisor  = T.entropic(using: &randomness)
+                
+                guard let divisor = Nonzero(exactly: divisor) else { continue }
+                
+                let baseline: Optional = dividend.division (divisor)
+                let division: Division = dividend.division (divisor)
+                let quotient:  T       = dividend.quotient (divisor)
+                let remainder: T       = dividend.remainder(divisor)
+                
+                try #require(baseline == Fallible(division))
+                try #require(baseline?.map(\.quotient) == Fallible(quotient))
+                try #require(baseline?.value.remainder == remainder)
+            }
+            
+            for _ in 0 ..< 32 {
+                let dividend = T.entropic(using: &randomness)
+                let divisor  = T.entropic(using: &randomness)
+                
+                guard let divisor = Nonzero(exactly: divisor) else { continue }
+                let divider = Divider(divisor)
+                
+                let baseline: Optional = dividend.division(divisor)
+                let division: Division = dividend.division(divider)
+                let quotient:  T       = dividend.quotient(divider)
+                
+                try #require(baseline == Fallible(division))
+                try #require(baseline?.map(\.quotient) == Fallible(quotient))
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/division/conveniences: as Natural<Value>",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func divisionOfRandomByNonzeroAsNatural(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< 32 {
+                let dividend = T.entropic(through: Shift.max(or: 255), as: .natural, using: &randomness)
+                let divisor  = T.entropic(through: Shift.max(or: 255), as: .binary,  using: &randomness)
+                
+                guard let dividend = Natural(exactly: dividend) else { continue }
+                guard let divisor  = Nonzero(exactly: divisor ) else { continue }
+                
+                let baseline: Optional = dividend.value.division(divisor)
+                let division: Division = dividend.division(divisor)
+                let quotient: T        = dividend.quotient(divisor)
+                
+                try #require(baseline == Optional(Fallible(division)))
+                try #require(baseline?.map(\.quotient) == Fallible(quotient))
+                
+                if  let baseline = baseline?.optional() {
+                    try #require(baseline.quotient  == reduce(dividend.value, /,  divisor.value))
+                    try #require(baseline.quotient  == reduce(dividend.value, /=, divisor.value))
+                    try #require(baseline.remainder == reduce(dividend.value, %,  divisor.value))
+                    try #require(baseline.remainder == reduce(dividend.value, %=, divisor.value))
+                }
+            }
+        }
+    }
+}
+
+//*============================================================================*
 // MARK: * Binary Integer x Division x Open Source Issues
 //*============================================================================*
 
