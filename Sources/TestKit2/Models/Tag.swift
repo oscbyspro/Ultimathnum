@@ -35,6 +35,9 @@ extension Tag {
     /// Of great significance or value.
     @Tag public static var important: Self
     
+    /// Inspired by an open-source project.
+    @Tag public static var opensource: Self
+    
     /// Something that may be regained.
     @Tag public static var recoverable: Self
     
@@ -43,14 +46,4 @@ extension Tag {
     
     /// Not officially authorized or confirmed.
     @Tag public static var unofficial: Self
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Metadata x Attribution
-    //=------------------------------------------------------------------------=
-    
-    /// Written (or inspired) by another open-source project.
-    ///
-    /// - Note: Open-source tests are one of the few ways to prove feature parity.
-    ///
-    @Tag public static var opensource: Self
 }
