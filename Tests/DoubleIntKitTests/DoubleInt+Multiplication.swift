@@ -22,7 +22,7 @@ struct DoubleIntTestsOnMultiplicationNotInProtocol {
     //=------------------------------------------------------------------------=
     // MARK: Tests x 2 by 1 as 3
     //=------------------------------------------------------------------------=
-    // TODO: HalveableInteger/multiplication(_:) would let us hoist this test
+    // TODO: HalveableInteger/multiplication(_:) would let us hoist these tests
     //=------------------------------------------------------------------------=
     
     @Test("DoubleInt/multiplication - 213 vs 224 [entropic]", arguments: typesAsCoreInteger, fuzzers)

@@ -239,8 +239,8 @@ import TestKit2
                 try #require(a == a.plus (b).optional())
                 try #require(a == a.minus(b).optional())
                 
-                try self.Ɣrequire(a, plus:  b, is: a.veto(false))
-                try self.Ɣrequire(a, minus: b, is: a.veto(false))
+                try Ɣrequire(a, plus:  b, is: a.veto(false))
+                try Ɣrequire(a, minus: b, is: a.veto(false))
             }
         }
     }
@@ -256,8 +256,9 @@ import TestKit2
             for _ in 0 ..< 32 {
                 let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
                 let b = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                try self.Ɣrequire(a, plus:  b, is: a.plus (b))
-                try self.Ɣrequire(a, minus: b, is: a.minus(b))
+                
+                try Ɣrequire(a, plus:  b, is: a.plus (b))
+                try Ɣrequire(a, minus: b, is: a.minus(b))
             }
         }
     }

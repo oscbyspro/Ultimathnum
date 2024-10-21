@@ -23,13 +23,13 @@ import CoreKit
     is expectation: Fallible<[Element]>,
     at location: SourceLocation = #_sourceLocation
 )   throws where Element: SystemsIntegerAsUnsigned {
-    //=--------------------------------------=
+    //=------------------------------------------=
     try #require(integer.count >= other.count)
-    //=--------------------------------------=
+    //=------------------------------------------=
     let normalized = other.asBinaryIntegerBodyNormalized()
-    //=--------------------------------------=
+    //=------------------------------------------=
     // increment: none + bit
-    //=--------------------------------------=
+    //=------------------------------------------=
     if  normalized.count == 0, bit {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -47,9 +47,9 @@ import CoreKit
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // increment: some
-    //=--------------------------------------=
+    //=------------------------------------------=
     if  integer.count >= 1, normalized.count == 1, !bit {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -58,9 +58,9 @@ import CoreKit
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // increment: some + bit
-    //=--------------------------------------=
+    //=------------------------------------------=
     if  integer.count >= 1, normalized.count == 1 {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -69,9 +69,9 @@ import CoreKit
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // increment: many
-    //=--------------------------------------=
+    //=------------------------------------------=
     for many in [normalized, other[...]] where integer.count >= many.count && !bit {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -82,9 +82,9 @@ import CoreKit
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // increment: many + bit
-    //=--------------------------------------=
+    //=------------------------------------------=
     for many in [normalized, other[...]] {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -95,9 +95,9 @@ import CoreKit
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // increment: flip + bit
-    //=--------------------------------------=
+    //=------------------------------------------=
     for var many in [normalized, other[...]] {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -130,13 +130,13 @@ import CoreKit
     is expectation: Fallible<[Element]>,
     at location: SourceLocation = #_sourceLocation
 )   throws where Element: SystemsIntegerAsUnsigned {
-    //=--------------------------------------=
+    //=------------------------------------------=
     try #require(integer.count >= other.count)
-    //=--------------------------------------=
+    //=------------------------------------------=
     let normalized = other.asBinaryIntegerBodyNormalized()
-    //=--------------------------------------=
+    //=------------------------------------------=
     // decrement: none + bit
-    //=--------------------------------------=
+    //=------------------------------------------=
     if  normalized.count == 0, bit {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -154,9 +154,9 @@ import CoreKit
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // decrement: some
-    //=--------------------------------------=
+    //=------------------------------------------=
     if  integer.count >= 1, normalized.count == 1, !bit {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -165,9 +165,9 @@ import CoreKit
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // decrement: some + bit
-    //=--------------------------------------=
+    //=------------------------------------------=
     if  integer.count >= 1, normalized.count == 1 {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -176,9 +176,9 @@ import CoreKit
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // decrement: many
-    //=--------------------------------------=
+    //=------------------------------------------=
     for many in [normalized, other[...]] where !bit {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -189,9 +189,9 @@ import CoreKit
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // decrement: many + bit
-    //=--------------------------------------=
+    //=------------------------------------------=
     for many in [normalized, other[...]] {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -202,9 +202,9 @@ import CoreKit
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // decrement: toggling + bit
-    //=--------------------------------------=
+    //=------------------------------------------=
     for var many in [normalized, other[...]] {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -242,13 +242,13 @@ import CoreKit
     is expectation: Fallible<[Element]>,
     at location: SourceLocation = #_sourceLocation
 )   throws where Element: SystemsIntegerAsUnsigned {
-    //=--------------------------------------=
+    //=------------------------------------------=
     try #require(integer.count > other.count)
-    //=--------------------------------------=
+    //=------------------------------------------=
     let normalized = other.asBinaryIntegerBodyNormalized()
-    //=--------------------------------------=
+    //=------------------------------------------=
     // increment: many × some
-    //=--------------------------------------=
+    //=------------------------------------------=
     for many in [normalized, other[...]] where increment.isZero {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -259,9 +259,9 @@ import CoreKit
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // increment: many × some + some
-    //=--------------------------------------=
+    //=------------------------------------------=
     for many in [normalized, other[...]] {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -272,9 +272,9 @@ import CoreKit
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // increment: many × some + some (naive)
-    //=--------------------------------------=
+    //=------------------------------------------=
     for many in [normalized, other[...]] where multiplier <= 16 {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -301,13 +301,13 @@ import CoreKit
     is expectation: Fallible<[Element]>,
     at location: SourceLocation = #_sourceLocation
 )   throws where Element: SystemsIntegerAsUnsigned {
-    //=--------------------------------------=
+    //=------------------------------------------=
     try #require(integer.count > other.count)
-    //=--------------------------------------=
+    //=------------------------------------------=
     let normalized = other.asBinaryIntegerBodyNormalized()
-    //=--------------------------------------=
+    //=------------------------------------------=
     // decrement: many × some
-    //=--------------------------------------=
+    //=------------------------------------------=
     for many in [normalized, other[...]] where increment.isZero {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -318,9 +318,9 @@ import CoreKit
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // decrement: many × some + some
-    //=--------------------------------------=
+    //=------------------------------------------=
     for many in [normalized, other[...]] {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -331,9 +331,9 @@ import CoreKit
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // decrement: many × some + some (naive)
-    //=--------------------------------------=
+    //=------------------------------------------=
     for many in [normalized, other[...]] where multiplier <= 16 {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -363,13 +363,13 @@ import CoreKit
     is expectation: Fallible<[Element]>,
     at location: SourceLocation = #_sourceLocation
 )   throws where Element: SystemsIntegerAsUnsigned {
-    //=--------------------------------------=
+    //=------------------------------------------=
     if  pattern == bit {
         #expect(Fallible(integer, error: bit) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // increment: none + bit
-    //=--------------------------------------=
+    //=------------------------------------------=
     if !pattern {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -378,9 +378,9 @@ import CoreKit
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // increment: reps
-    //=--------------------------------------=
+    //=------------------------------------------=
     if !bit {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -389,9 +389,9 @@ import CoreKit
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // increment: reps + bit
-    //=--------------------------------------=
+    //=------------------------------------------=
     always: do {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -400,9 +400,9 @@ import CoreKit
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // increment: many + bit
-    //=--------------------------------------=
+    //=------------------------------------------=
     always: do {
         let element = Element(repeating: Bit(pattern))
         let other = Array(repeating: element, count: integer.count)
@@ -417,13 +417,13 @@ import CoreKit
     is expectation: Fallible<[Element]>,
     at location: SourceLocation = #_sourceLocation
 )   throws where Element: SystemsIntegerAsUnsigned {
-    //=--------------------------------------=
+    //=------------------------------------------=
     if  pattern == bit {
         #expect(Fallible(integer, error: bit) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // decrement: none + bit
-    //=--------------------------------------=
+    //=------------------------------------------=
     if !pattern {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -432,9 +432,9 @@ import CoreKit
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // decrement: reps
-    //=--------------------------------------=
+    //=------------------------------------------=
     if !bit {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -443,9 +443,9 @@ import CoreKit
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // decrement: reps + bit
-    //=--------------------------------------=
+    //=------------------------------------------=
     always: do {
         var value = integer
         let error = value.withUnsafeMutableBinaryIntegerBody { value in
@@ -454,9 +454,9 @@ import CoreKit
         
         #expect(Fallible(value, error: error) == expectation, sourceLocation: location)
     }
-    //=--------------------------------------=
+    //=------------------------------------------=
     // decrement: many + bit
-    //=--------------------------------------=
+    //=------------------------------------------=
     always: do {
         let element = Element(repeating: Bit(pattern))
         let other = Array(repeating: element, count: integer.count)
