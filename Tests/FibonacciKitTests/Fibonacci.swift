@@ -101,12 +101,14 @@ extension FibonacciTests.Case {
                 let b = try Fibonacci<Value>(
                     .init(a.index)
                     .quotient(divisor)
+                    .unwrap("todo: consider Optional/prune(_:)")
                     .prune(Bad.division)
                 )
                 
                 let c = try Value
                     .init(a.next)
                     .division(Nonzero(b.next, prune: Bad.divisor))
+                    .unwrap("todo: consider Optional/prune(_:)")
                     .prune(Bad.division)
                 
                 try a.decrement(by: b)

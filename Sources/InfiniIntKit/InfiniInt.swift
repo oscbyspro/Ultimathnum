@@ -28,7 +28,7 @@ import CoreKit
 ///
 @frozen public struct InfiniInt<Element>: ArbitraryInteger, Namespace.Foo, Namespace.Bar 
 where Element: SystemsInteger, Element.Element == Element {
-        
+    
     public typealias BitPattern = InfiniInt<Element.Magnitude>
     
     public typealias Magnitude  = InfiniInt<Element.Magnitude>

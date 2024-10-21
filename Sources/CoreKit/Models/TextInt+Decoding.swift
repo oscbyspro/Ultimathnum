@@ -88,9 +88,9 @@ extension TextInt {
         //=--------------------------------------=
         // capacity is measured in radix powers
         //=--------------------------------------=
-        let divisor  = Nonzero(unchecked: self.exponent)
-        var (stride) = IX(numerals.count).remainder(divisor)
-        var capacity = IX(numerals.count).quotient (divisor).unchecked()
+        let divisor = Nonzero(unchecked: self.exponent)
+        var (stride): IX = IX(numerals.count).remainder(divisor)
+        var capacity: IX = IX(numerals.count).quotient (divisor).unchecked()
         
         if  (stride).isZero {
             (stride) = self.exponent
@@ -147,9 +147,9 @@ extension TextInt {
         //=--------------------------------------=
         // capacity is measured in radix powers
         //=--------------------------------------=
-        let divisor  = Nonzero(unchecked: self.exponent)
-        var stride   = IX(numerals.count).remainder(divisor)
-        var capacity = IX(numerals.count).quotient (divisor).unchecked()
+        let divisor = Nonzero(unchecked: self.exponent)
+        var (stride): IX = IX(numerals.count).remainder(divisor)
+        var capacity: IX = IX(numerals.count).quotient (divisor).unchecked()
         
         if  (stride).isZero {
             (stride) = self.exponent
@@ -158,7 +158,7 @@ extension TextInt {
         }
         //=--------------------------------------=
         return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
-            let words = MutableDataInt<UX>.Body($0)![unchecked: ..<capacity]
+            let words = MutableDataInt<UX>.Body($0)![unchecked:  ..<capacity]
             var index = words.count
             //=----------------------------------=
             // pointee: deferred deinitialization

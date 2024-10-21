@@ -22,10 +22,8 @@ import CoreKit
 )   throws where Element: SystemsIntegerAsUnsigned {
     //=------------------------------------------=
     try #require(integer.count == expectation.count)
-    try #require(distance <    IX(expectation.count) * IX(size: Element.self))
-    //=------------------------------------------=
-    let (size) = IX(size: Element.self)
-    let (major, minor) = distance.division(Nonzero(size)).unwrap().components()
+    try #require(distance <    IX(expectation.count) *   IX(size: Element.self))
+    let (major, minor) = Natural(distance).division(Nonzero(size: Element.self)).components()
     //=------------------------------------------=
     // upshift: any
     //=------------------------------------------=
@@ -91,10 +89,8 @@ import CoreKit
 )   throws where Element: SystemsIntegerAsUnsigned {
     //=------------------------------------------=
     try #require(integer.count == expectation.count)
-    try #require(distance <    IX(expectation.count) * IX(size: Element.self))
-    //=------------------------------------------=
-    let (size) = IX(size: Element.self)
-    let (major, minor) = distance.division(Nonzero(size)).unwrap().components()
+    try #require(distance <    IX(expectation.count) *   IX(size: Element.self))
+    let (major, minor) = Natural(distance).division(Nonzero(size: Element.self)).components()
     //=------------------------------------------=
     // downshift: any
     //=------------------------------------------=

@@ -23,7 +23,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/division - signs",
-        Tag.List.tags(.documentation),
+        Tag.List.tags(.documentation, .generic),
         ParallelizationTrait.serialized,
         arguments: [
         
@@ -54,7 +54,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/division: for each 8-bit integer pair [1-by-1]",
-        Tag.List.tags(.exhaustive),
+        Tag.List.tags(.exhaustive, .generic),
         arguments: typesAsCoreIntegerAsByte
     )   func division11ForEachEightBitIntegerPair(type: any SystemsInteger.Type) {
         whereIs(type)
@@ -65,7 +65,7 @@ import TestKit2
             for dividend in T.all {
                 for divisor in T.all {
                     guard let divisor = Nonzero(exactly: divisor) else { continue }
-                    let division = dividend.division(divisor)
+                    let division: Fallible<Division> = dividend.division(divisor)
                     let reconstitution = division.value.dividend(divisor)
                     success &+= IX(Bit(reconstitution.value == dividend))
                     success &+= IX(Bit(reconstitution.error == division.error))
@@ -78,7 +78,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/division: 1-by-1 division of random by random",
-        Tag.List.tags(.random),
+        Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func division11OfRandomByRandom(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
@@ -94,7 +94,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/division: random by power-of-2-esque [1-by-1]",
-        Tag.List.tags(.random),
+        Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func division11OfRandomByPowerOf2Esque(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
@@ -124,7 +124,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/division: ascending zeros by ascending zeros [1-by-1]",
-        Tag.List.tags(.random),
+        Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func division11OfAscendingZerosByAscendingZeros(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
@@ -145,7 +145,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/division: contiguous ones by contiguous ones [1-by-1]",
-        Tag.List.tags(.random),
+        Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func division11OfContiguousOnesByContiguousOnes(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
@@ -166,7 +166,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/division: silly big by silly big [1-by-1]",
-        Tag.List.tags(.random),
+        Tag.List.tags(.generic, .random),
         arguments: typesAsArbitraryInteger, fuzzers
     )   func division11OfSillyBigBySillyBig(type: any ArbitraryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
@@ -178,7 +178,7 @@ import TestKit2
                 let divisor  = T.entropic(size: size, as: Domain.finite, using: &randomness)
                 //  one round-trip for performance
                 if  let divisor  = Nonzero(exactly: divisor) {
-                    let division = try #require(dividend.division(divisor).optional())
+                    let division = try #require(dividend.division(divisor)?.optional())
                     let reconstitution = try #require(division.dividend(divisor).optional())
                     #expect(dividend  == reconstitution)
                 }   else {
@@ -194,7 +194,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/division: random by random [2-by-1]",
-        Tag.List.tags(.random),
+        Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsInteger, fuzzers
     )   func division21OfRandomByRandom(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
@@ -212,7 +212,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/division: random by power-of-2-esque [2-by-1]",
-        Tag.List.tags(.random),
+        Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsInteger, fuzzers
     )   func division21OfRandomByPowerOf2Esque(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
@@ -236,7 +236,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/division: ascending zeros by ascending zeros [2-by-1]",
-        Tag.List.tags(.random),
+        Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsInteger, fuzzers
     )   func division21OfAscendingZerosByAscendingZeros(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
@@ -258,7 +258,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/division: one half by random [2-by-1]",
-        Tag.List.tags(.random),
+        Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsInteger, fuzzers
     )   func division21OfOneHalfByRandom(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
@@ -269,7 +269,7 @@ import TestKit2
                 let high = T.init(repeating: low.appendix)
                 let dividend = Doublet(low: T.Magnitude(raw: low), high: high)
                 let divisor  = T.entropic(using: &randomness)
-                let division = Nonzero(exactly:  divisor).map {
+                let division = Nonzero(exactly:  divisor).flatMap {
                     low.division($0)
                 }
                 
@@ -291,7 +291,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/division: random by zero is nil [1-by-1]",
-        Tag.List.tags(.random),
+        Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func division11OfRandomByZeroIsNil(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
@@ -306,7 +306,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/division: T.min by -1 as signed systems integers is error [1-by-1]",
-        Tag.List.tags(.exhaustive),
+        Tag.List.tags(.exhaustive, .generic),
         arguments: typesAsSystemsIntegerAsSigned
     )   func division11OfMinByNegativeOneAsSignedSystemsIntegerIsError(type: any SystemsIntegerAsSigned.Type) {
         whereIs(type)
@@ -319,7 +319,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/division: finite by infinite is trivial [1-by-1]",
-        Tag.List.tags(.random),
+        Tag.List.tags(.generic, .random),
         arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers
     )   func division11OfFiniteByInfiniteIsTrivial(type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
@@ -339,29 +339,21 @@ import TestKit2
     }
     
     @Test(
-        "BinaryInteger/division: infinite by finite is error like signed [2-by-1]",
-        Tag.List.tags(.random),
+        "BinaryInteger/division: infinite by random is nil [1-by-1]",
+        Tag.List.tags(.generic, .random),
         arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers
-    )   func division11OfInfiniteByFiniteIsErrorLikeSigned(type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    )   func division11OfInfiniteByRandomIsNil(type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
                 
         func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsUnsigned {
             let low  = T(repeating: Bit.one).up(Shift.max(or: 255))
             let high = T(repeating: Bit.one)
-            let top  = low.toggled()
             
             for _ in 0 ..< conditional(debug: 32, release: 256) {
-                let magnitudes: (dividend: T.Magnitude, divisor: T.Magnitude)
-                let signitudes: (dividend: T.Signitude, divisor: T.Signitude)
-                
-                magnitudes.dividend = T.random(in: low...high, using: &randomness)
-                magnitudes.divisor  = T.random(in: T(1)...top, using: &randomness)
-                
-                signitudes.dividend = T.Signitude(raw: magnitudes.dividend)
-                signitudes.divisor  = T.Signitude(raw: magnitudes.divisor )
-                                
-                let division = signitudes.dividend.division(try #require(Nonzero(exactly: signitudes.divisor))).veto()
-                Ɣexpect(bidirectional: magnitudes.dividend, by: magnitudes.divisor, is: Fallible(raw: division))
+                let dividend = T.random(in: low...high, using: &randomness)
+                let divisor  = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                #expect(dividend.isInfinite)
+                Ɣexpect(bidirectional: dividend, by: divisor, is: nil)
             }
         }
     }
@@ -372,7 +364,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/division: random by zero is nil [2-by-1]",
-        Tag.List.tags(.random),
+        Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsInteger, fuzzers
     )   func division21OfRandomByZeroIsNil(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)

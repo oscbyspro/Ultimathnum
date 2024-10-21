@@ -166,12 +166,12 @@ extension Finite where Value: BinaryInteger {
         // micro: T.predicate(x) then T(unsafe: x)
         //=--------------------------------------=
         dividing: while   Nonzero.predicate(other) {
-            let divisor = Nonzero(unsafe:   other)
-            other = (consume value).remainder(divisor)
+            let divisor = Nonzero(unsafe: consume other)
+            other = Finite<Value.Magnitude>(unchecked: consume value).remainder(divisor)
             value = (consume divisor).value
         }
         
-        return value // as Value.Magnitude as Value.Magnitude
+        return value // as Value.Magnitude
     }
     
     /// The greatest common divisor and `2` Bézout coefficients.

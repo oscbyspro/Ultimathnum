@@ -19,18 +19,23 @@ extension InfiniInt {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func quotient (_ divisor: consuming Nonzero<Self>) -> Fallible<Self> {
-        self.division(divisor).map({ $0.quotient })
+    @inlinable public consuming func quotient (_ divisor: consuming Nonzero<Self>) -> Optional<Fallible<Self>> {
+        self.division(divisor)?.map({ $0.quotient })
     }
     
-    @inlinable public consuming func remainder(_ divisor: consuming Nonzero<Self>) -> Self {
-        self.division(divisor).value.remainder
+    @inlinable public consuming func remainder(_ divisor: consuming Nonzero<Self>) -> Optional<Self> {
+        self.division(divisor)?.value.remainder
     }
     
-    @inline(never) @inlinable public consuming func division(_ divisor: consuming Nonzero<Self>) -> Fallible<Division<Self, Self>> {
+    @inline(never) @inlinable public consuming func division(_ divisor: consuming Nonzero<Self>) -> Optional<Fallible<Division<Self, Self>>> {
         //=--------------------------------------=
+        let lhsAppendixIsSet = Bool(self.appendix)
         let rhsAppendixIsSet = Bool(divisor.value.appendix)
         //=--------------------------------------=
+        if !Self.isSigned, lhsAppendixIsSet {
+            return nil
+        }
+        
         if !Self.isSigned, rhsAppendixIsSet {
             switch self.compared(to: divisor.value) {
             case Signum.negative: return Fallible(Division(quotient: .zero, remainder:  self))
@@ -38,14 +43,12 @@ extension InfiniInt {
             case Signum.positive: return Fallible(Division(quotient:  0001, remainder:  self - divisor.value))
             }
         }
-        //=--------------------------------------=
-        let lhsAppendixIsSet = Bool(self.appendix)
-        //=--------------------------------------=
-        if  lhsAppendixIsSet {
+        
+        if  Self.isSigned, lhsAppendixIsSet {
             self = self.complement()
         }
         
-        if  rhsAppendixIsSet {
+        if  Self.isSigned, rhsAppendixIsSet {
             divisor = divisor.complement()
         }
         //=--------------------------------------=
@@ -59,7 +62,7 @@ extension InfiniInt {
             division.remainder = division.remainder.complement()
         }
         
-        return Fallible(Division(raw: division), error: !Self.isSigned && lhsAppendixIsSet)
+        return Optional(Fallible(Division(raw: division)))
     }
 }
 

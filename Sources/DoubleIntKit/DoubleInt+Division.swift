@@ -16,18 +16,18 @@ import CoreKit
 extension DoubleInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x 2 by 2
+    // MARK: Transformations x 2 by 2 as 2 and 2
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func quotient(_  divisor: Nonzero<Self>) -> Fallible<Self> {
+    @inlinable public consuming func quotient(_  divisor: Nonzero<Self>) -> Optional<Fallible<Self>> {
         self.division(divisor).map({ $0.quotient })
     }
     
-    @inlinable public consuming func remainder(_ divisor: Nonzero<Self>) -> Self {
+    @inlinable public consuming func remainder(_ divisor: Nonzero<Self>) -> Optional<Self> {
         self.division(divisor).value.remainder
     }
     
-    @inlinable public consuming func division(_  divisor: Nonzero<Self>) -> Fallible<Division<Self, Self>> {
+    @inlinable public consuming func division(_  divisor: Nonzero<Self>) -> Optional<Fallible<Division<Self, Self>>> {
         //=--------------------------------------=
         // error...: quotient ∉ [-U.max, U.max]
         // suberror: quotient ∉ [ S.min, S.max]
@@ -58,7 +58,7 @@ extension DoubleInt {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x Composition
+    // MARK: Transformations x 4 by 2 as 2 and 2
     //=------------------------------------------------------------------------=
     
     @inlinable public static func division(_ dividend: consuming Doublet<Self>, by divisor: Nonzero<Self>) -> Fallible<Division<Self, Self>> {

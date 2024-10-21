@@ -17,21 +17,21 @@ extension CoreInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func quotient (_ divisor: Nonzero<Self>) -> Fallible<Self> {
+    @inlinable public func quotient(_ divisor: Nonzero<Self>) -> Optional<Fallible<Self>> {
         Swift.assert(!divisor.value.isZero, String.brokenInvariant())
         let result = self.stdlib().dividedReportingOverflow(by: divisor.value.stdlib())
         return Self(result.partialValue).veto(Self.isSigned && result.overflow)
     }
     
-    @inlinable public func remainder(_ divisor: Nonzero<Self>) -> Self {
+    @inlinable public func remainder(_ divisor: Nonzero<Self>) -> Optional<Self> {
         Swift.assert(!divisor.value.isZero, String.brokenInvariant())
         let result = self.stdlib().remainderReportingOverflow(dividingBy: divisor.value.stdlib())
         return Self(result.partialValue)
     }
     
-    @inlinable public func division (_ divisor: Nonzero<Self>) -> Fallible<Division<Self, Self>> {
-        let quotient  = self.quotient (divisor)
-        let remainder = self.remainder(divisor)
+    @inlinable public func division(_ divisor: Nonzero<Self>) -> Optional<Fallible<Division<Self, Self>>> {
+        let quotient  = self.quotient (divisor) as Fallible<Self>
+        let remainder = self.remainder(divisor) as Self
         let division  = Division(quotient: quotient.value, remainder: remainder)
         return Fallible(division,   error: quotient.error)
     }

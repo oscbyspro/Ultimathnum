@@ -62,9 +62,9 @@
         //=--------------------------------------=
         // micro: T.predicate(x) then T(unsafe: x)
         //=--------------------------------------=
-        dividing: while    Nonzero.predicate(rhs) {
-            let divisor  = Nonzero(unsafe:   rhs)
-            (lhs,   rhs) = (consume lhs).division(divisor).unchecked().components()
+        dividing: while   Nonzero.predicate( rhs) {
+            let divisor = Nonzero(unsafe:    rhs)
+            (lhs,  rhs) = Natural(unchecked: consume lhs).division(divisor).components()
             // bit cast may overflow in the final iteration
             let quotient = Layout.Signitude(raw: consume lhs)
             (lhs) = (consume divisor).value

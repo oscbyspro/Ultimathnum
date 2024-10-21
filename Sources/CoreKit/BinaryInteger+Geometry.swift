@@ -88,8 +88,8 @@ extension Natural {
         
         repeat {
             
-            guess = Nonzero(unchecked: consume revision)
-            revision = instance.value.quotient(guess).unchecked()
+            guess    = Nonzero<Value.Magnitude>(unchecked: revision)
+            revision = Natural<Value.Magnitude>(unchecked: instance.value).quotient(guess)
             revision = (consume revision).plus(guess.value).unchecked()
             revision = (consume revision).down(Shift.one)
             

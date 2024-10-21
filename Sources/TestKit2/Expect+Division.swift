@@ -19,7 +19,7 @@ import CoreKit
     at location: SourceLocation = #_sourceLocation
 )   where T: BinaryInteger {
     
-    let division = Nonzero(exactly: divisor).map {
+    let division = Nonzero(exactly: divisor).flatMap {
         dividend.division($0)
     }
     
@@ -36,9 +36,8 @@ import CoreKit
     if  let  division, let  divisor = Nonzero(exactly: divisor) {
         Ɣexpect(bidirectional: dividend, by: divisor, is: division, at: location)
     }   else {
-        // TODO: consider a blanket ban on infinite dividends
-        #expect(divisor .isZero, sourceLocation: location)
-        #expect(division == nil, sourceLocation: location)
+        #expect(division == nil,                        sourceLocation: location)
+        #expect(dividend.isInfinite || divisor.isZero,  sourceLocation: location)
     }
 }
 

@@ -296,7 +296,7 @@ struct BinaryIntegerTestsOnComparisonEdgeCases {
                     var end: IX = $0.size().natural().unwrap()
                     end  -=  IX(Bit(T.isSigned && !T.isArbitrary))
                     if  let index = IX.random(in: IX.zero..<end) {
-                        let major = index.quotient(Nonzero(size: U8.self)).unwrap()
+                        let major = Natural(index).quotient(Nonzero(size: U8.self))
                         let minor = Shift<U8>(masking:index)
                         $0[unchecked: major][minor].toggle()
                         expectation = Signum(Sign(raw: $0[unchecked: major][minor]))

@@ -107,8 +107,8 @@ import CoreKit
     }
     //=------------------------------------------=
     func divisionOneWayOnly(_ lhs: T, _ rhs: T) {
-        if  let divisor  = Nonzero(exactly: rhs) {
-            let division = low.value.division(divisor)
+        if  let dividend = Finite(exactly: low.value), let divisor = Nonzero(exactly: rhs) {
+            let division = dividend.division(divisor)
             #expect(division.value.quotient  == lhs, "invariant: (a * b) / b == a", sourceLocation: location)
             #expect(division.value.remainder.isZero, "invariant: (a * b) % b == 0", sourceLocation: location)
         }

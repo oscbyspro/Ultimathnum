@@ -21,7 +21,8 @@ extension InfiniInt {
     
     @inline(never) @inlinable public consuming func up(_ distance: Shift<Magnitude>) -> Self {
         if  let distance = distance.natural().optional() {
-            let division = distance.division(Nonzero(size: Element.self)).unchecked()
+            let divisor  = Nonzero<IX>(size: Element.self)
+            let division = distance.division(divisor).unchecked() as Division<IX, IX>
             self.storage.upshift(major: division.quotient, minor: division.remainder)
             Swift.assert(self.storage.isNormal)
             return self as Self as Self as Self
@@ -33,7 +34,8 @@ extension InfiniInt {
     
     @inline(never) @inlinable public consuming func down(_ distance: Shift<Magnitude>) -> Self {
         if  let distance = distance.natural().optional() {
-            let division = distance.division(Nonzero(size: Element.self)).unchecked()
+            let divisor  = Nonzero<IX>(size: Element.self)
+            let division = distance.division(divisor).unchecked() as Division<IX, IX>
             self.storage.downshift(major: division.quotient, minor: division.remainder)
             Swift.assert(self.storage.isNormal)
             return self as Self as Self as Self

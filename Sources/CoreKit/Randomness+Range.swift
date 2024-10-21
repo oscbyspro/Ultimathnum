@@ -110,7 +110,7 @@ extension Randomness {
         var product = limit.value.multiplication(self.systems())
         if  product.low < limit.value {
             //  magic = (2 ** T.size) % limit
-            let magic = limit.value.complement().remainder(limit)
+            let magic = Finite(unchecked: limit.value.complement()).remainder(limit)
             while product.low < magic {
                 product = limit.value.multiplication(self.systems())
             }

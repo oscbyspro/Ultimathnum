@@ -28,7 +28,7 @@ import TestKit2
         for dividend in U8.all {
             for divisor in U8.all {
                 if  let divider = Divider(exactly: divisor) {
-                    let expectation = dividend.division(Nonzero(divider.div)).unwrap()
+                    let expectation: Division = dividend.division(Nonzero(divider.div))
                     success &+= IX(Bit(divider.division(dividing: dividend) == expectation))
                     success &+= IX(Bit(divider.quotient(dividing: dividend) == expectation.quotient))
                 }
@@ -79,7 +79,7 @@ import TestKit2
             for _ in 0 ..< conditional(debug: 1024, release: 8192) {
                 let divider = Divider(T.lsb.up(Shift.random(using: &randomness)))
                 let dividend: T = T.entropic(using: &randomness)
-                let expectation = dividend.division(Nonzero(divider.div)).unwrap()
+                let expectation:  Division = dividend.division(Nonzero(divider.div))
                 Ɣexpect(dividend, division:  divider,  is: expectation)
             }
         }
