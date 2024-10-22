@@ -94,6 +94,16 @@ The above setup enables optimizations and disables instrumentation that may limi
 
 👨‍💻🛠️🚧🧱🧱🏗️🧱🧱🚧⏳
 
+#### The lossy invariant
+
+**Lossy** operations are remarkably well-behaved. In the case of binary integers, we use this term specifically to denote truncation. In other words, a **lossy** binary integer result omits bits beyond its in-memory representation, which means all existing bits are still valid. In practice, types of different sizes agree on the bits that fit in the smaller type. The following code demonstrates the **lossy** invariant.
+
+```swift
+let a = I32.random()
+let b = I32.random()
+#expect((a).times(b) == I32.exactly(IXL(a) * IXL(b)))
+```
+
 <a name="overview-the-fallible-redemption-arc"/>
 
 ### The `Fallible<T>` redemption arc
@@ -159,7 +169,7 @@ U8.min.incremented().unchecked("assertion") // must not fail, must go brrr
 
 #### Destructuring: `value`, `error`, `components()`
 
-While this model strives to streamline the error-handling process, perhaps you want to take the wheel. Sure, have fun! You can read and write to its value and error fields directly. Alternatively, you may destructure the pair by invoking the consuming `components()` method. Here's the short version of it.
+While `Fallible<T>` strives to streamline the error-handling process, perhaps you like to do things manually. Sure, have fun! You can read and write to its value and error fields. Alternatively, you may destructure the pair by invoking the consuming `components()` method.
 
 ```swift
 var pair = Fallible("Hello")
