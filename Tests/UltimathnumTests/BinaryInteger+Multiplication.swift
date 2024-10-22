@@ -383,14 +383,12 @@ import TestKit2
                 for _ in 0 ..< 32 {
                     let lhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
                     let rhs = T.zero
-                    
-                    let expectation = Doublet<T>()
-                    
+                                        
                     require(lhs.times(rhs) == Fallible(T.zero))
                     require(rhs.times(lhs) == Fallible(T.zero))
                     
-                    require(lhs.multiplication(rhs) == expectation)
-                    require(rhs.multiplication(lhs) == expectation)
+                    require(lhs.multiplication(rhs) == Doublet<T>())
+                    require(rhs.multiplication(lhs) == Doublet<T>())
                 }
             }
         }
@@ -408,17 +406,12 @@ import TestKit2
                 for _ in 0 ..< 32 {
                     let lhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
                     let rhs = T(1)
-                    
-                    let expectation = Doublet(
-                        low:  T.Magnitude.init(raw: (((lhs)))),
-                        high: T(repeating: Bit(lhs.isNegative))
-                    )
-                    
+                                        
                     require(lhs.times(rhs) == Fallible(lhs))
                     require(rhs.times(lhs) == Fallible(lhs))
                     
-                    require(lhs.multiplication(rhs) == expectation)
-                    require(rhs.multiplication(lhs) == expectation)
+                    require(lhs.multiplication(rhs) == Doublet(lhs))
+                    require(rhs.multiplication(lhs) == Doublet(lhs))
                 }
             }
         }

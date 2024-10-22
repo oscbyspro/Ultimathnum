@@ -40,6 +40,17 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Creates a new instance equal to the `source`.
+    ///
+    /// - Note: The `high` part of an unsigned `source` is always `0`.
+    ///
+    @inlinable public init(_ source: consuming Base) {
+        let bit  = Bit(source.isNegative)
+        let low  = Base.Magnitude(raw: source)
+        let high = Base(repeating: bit)
+        self.init(low: low, high: high)
+    }
+    
     /// Creates a new instance from the given components.
     @inlinable public init() {
         self.low  = Low .zero

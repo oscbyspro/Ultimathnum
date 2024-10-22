@@ -125,9 +125,7 @@ extension InfiniInt {
     
     @inline(never) @inlinable public borrowing func multiplication(_ other: borrowing Self) -> Doublet<Self> {
         if  Self.isSigned {
-            let low  = Magnitude(raw: self &* other)
-            let high = Self(repeating: low.appendix)
-            return Doublet(low: low, high: high)
+            return Doublet(self &* other)
             
         }   else if self.isZero || other.isZero {
             return Doublet()
