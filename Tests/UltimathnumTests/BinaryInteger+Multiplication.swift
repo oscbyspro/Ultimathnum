@@ -348,7 +348,7 @@ import TestKit2
         try  whereIs(type)
         
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
-            try withOnlyOneCallToRequire { require in
+            try withOnlyOneCallToRequire(type) { require in
                 for _ in 0 ..< conditional(debug:  16, release: 32) {
                     let lhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
                     let rhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -362,6 +362,11 @@ import TestKit2
                     require((lhs &* rhsComplement) == lowComplement)
                     require((lhsComplement &* rhsComplement) == low)
                 }
+                
+                for _ in 0 ..< conditional(debug:  16, release: 32) {
+                    let int = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                    require(int.complement().squared().value == int.squared().value)
+                }
             }
         }
     }
@@ -374,7 +379,7 @@ import TestKit2
         try  whereIs(type)
         
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
-            try withOnlyOneCallToRequire { require in
+            try withOnlyOneCallToRequire(type) { require in
                 for _ in 0 ..< 32 {
                     let lhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
                     let rhs = T.zero
