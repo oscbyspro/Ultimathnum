@@ -387,6 +387,48 @@ import TestKit2
 @Suite(.tags(.forwarding)) struct BinaryIntegerTestsOnDivisionVersusConveniences {
     
     //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/division/conveniences: as BinaryInteger",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func divisionOfRandomByRandomAsBinaryInteger(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< 32 {
+                let dividend  = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let divisor   = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let quotient  = dividend.quotient (divisor) as Optional<Fallible<T>>
+                let remainder = dividend.remainder(divisor) as Optional<T>
+                let division  = dividend.division (divisor) as Optional<Fallible<Division<T, T>>>
+                
+                try #require(division?.map(\.quotient) == quotient )
+                try #require(division?.value.remainder == remainder)
+                
+                try #require(nil == dividend.quotient (T.zero) as Optional<Fallible<T>>)
+                try #require(nil == dividend.remainder(T.zero) as Optional<T>)
+                try #require(nil == dividend.division (T.zero) as Optional<Fallible<Division<T, T>>>)
+                
+                if  let divisor = Nonzero(exactly: divisor) {
+                    try #require(quotient  == dividend.quotient (divisor) as Optional<Fallible<T>>)
+                    try #require(remainder == dividend.remainder(divisor) as Optional<T>)
+                    try #require(division  == dividend.division (divisor) as Optional<Fallible<Division<T, T>>>)
+                }
+                
+                if  let division = division?.optional() {
+                    try #require(division.quotient  == reduce(dividend, /,  divisor))
+                    try #require(division.quotient  == reduce(dividend, /=, divisor))
+                    try #require(division.remainder == reduce(dividend, %,  divisor))
+                    try #require(division.remainder == reduce(dividend, %=, divisor))
+                }
+            }
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Tests x Finite
     //=------------------------------------------------------------------------=
     
@@ -394,24 +436,32 @@ import TestKit2
         "BinaryInteger/division/conveniences: as FiniteInteger",
         Tag.List.tags(.generic, .random),
         arguments: typesAsFiniteInteger, fuzzers
-    )   func divisionOfRandomByNonzeroAsFiniteInteger(type: any FiniteInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func divisionOfRandomAsFiniteInteger(type: any FiniteInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
         func whereIs<T>(_ type: T.Type) throws where T: FiniteInteger {
             for _ in 0 ..< 32 {
-                let dividend = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                let divisor  = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let dividend  = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let divisor   = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let quotient  = dividend.quotient (divisor) as Optional<Fallible<T>>
+                let remainder = dividend.remainder(divisor) as Optional<T>
+                let division  = dividend.division (divisor) as Optional<Fallible<Division<T, T>>>
                 
-                guard let divisor = Nonzero(exactly: divisor) else { continue }
+                try #require(division?.map(\.quotient) == quotient )
+                try #require(division?.value.remainder == remainder)
                 
-                let baseline: Optional = dividend.division (divisor)
-                let division: Fallible = dividend.division (divisor)
-                let quotient: Fallible = dividend.quotient (divisor)
-                let remainder: T       = dividend.remainder(divisor)
+                if  let divisor = Nonzero(exactly: divisor) {
+                    try #require(quotient  == dividend.quotient (divisor) as Fallible<T>)
+                    try #require(remainder == dividend.remainder(divisor) as T)
+                    try #require(division  == dividend.division (divisor) as Fallible<Division<T, T>>)
+                }
                 
-                try #require(baseline == division)
-                try #require(baseline?.map(\.quotient) == quotient )
-                try #require(baseline?.value.remainder == remainder)
+                if  let division = division?.optional() {
+                    try #require(division.quotient  == reduce(dividend, /,  divisor))
+                    try #require(division.quotient  == reduce(dividend, /=, divisor))
+                    try #require(division.remainder == reduce(dividend, %,  divisor))
+                    try #require(division.remainder == reduce(dividend, %=, divisor))
+                }
             }
         }
     }
@@ -420,31 +470,77 @@ import TestKit2
         "BinaryInteger/division/conveniences: as Finite<Value>",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func divisionOfRandomByNonzeroAsFinite(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func divisionOfRandomAsFinite(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 32 {
-                let dividend = T.entropic(through: Shift.max(or: 255), as: .finite, using: &randomness)
-                let divisor  = T.entropic(through: Shift.max(or: 255), as: .binary, using: &randomness)
+                let dividend  = T.entropic(through: Shift.max(or: 255), as: .finite, using: &randomness)
+                let divisor   = T.entropic(through: Shift.max(or: 255), as: .binary, using: &randomness)
+                let quotient  = dividend.quotient (divisor) as Optional<Fallible<T>>
+                let remainder = dividend.remainder(divisor) as Optional<T>
+                let division  = dividend.division (divisor) as Optional<Fallible<Division<T, T>>>
                 
-                guard let dividend = Finite(exactly: dividend) else { continue }
-                guard let divisor  = Nonzero(exactly: divisor) else { continue }
+                try #require(division?.map(\.quotient) == quotient )
+                try #require(division?.value.remainder == remainder)
                 
-                let baseline: Optional = dividend.value.division(divisor)
-                let division: Fallible = dividend.division (divisor)
-                let quotient: Fallible = dividend.quotient (divisor)
-                let remainder:       T = dividend.remainder(divisor)
+                if  let dividend = Finite(exactly: dividend), let divisor = Nonzero(exactly: divisor) {
+                    try #require(quotient  == dividend.quotient (divisor) as Fallible<T>)
+                    try #require(remainder == dividend.remainder(divisor) as T)
+                    try #require(division  == dividend.division (divisor) as Fallible<Division<T, T>>)
+                }
                 
-                try #require(baseline == division)
-                try #require(baseline?.map(\.quotient) == quotient )
-                try #require(baseline?.value.remainder == remainder)
+                if  let division = division?.optional() {
+                    try #require(division.quotient  == reduce(dividend, /,  divisor))
+                    try #require(division.quotient  == reduce(dividend, /=, divisor))
+                    try #require(division.remainder == reduce(dividend, %,  divisor))
+                    try #require(division.remainder == reduce(dividend, %=, divisor))
+                }
+            }
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Lenient
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/division/conveniences: as LenientInteger",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsArbitraryIntegerAsSigned, fuzzers
+    )   func divisionOfRandomAsLenientInteger(type: any ArbitraryIntegerAsSigned.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsSigned {
+            for _ in 0 ..< 32 {
+                let dividend  = T.entropic(size: 256, using: &randomness)
+                let divisor   = T.entropic(size: 256, using: &randomness)
+                let quotient  = dividend.quotient (divisor) as Optional<Fallible<T>>
+                let remainder = dividend.remainder(divisor) as Optional<T>
+                let division  = dividend.division (divisor) as Optional<Fallible<Division<T, T>>>
                 
-                if  let baseline = baseline?.optional() {
-                    try #require(baseline.quotient  == reduce(dividend.value, /,  divisor.value))
-                    try #require(baseline.quotient  == reduce(dividend.value, /=, divisor.value))
-                    try #require(baseline.remainder == reduce(dividend.value, %,  divisor.value))
-                    try #require(baseline.remainder == reduce(dividend.value, %=, divisor.value))
+                try #require(division?.map(\.quotient) == quotient )
+                try #require(division?.value.remainder == remainder)
+                
+                try #require(nil == dividend.quotient (T.zero) as Optional<T>)
+                try #require(nil == dividend.remainder(T.zero) as Optional<T>)
+                try #require(nil == dividend.division (T.zero) as Optional<Division<T, T>>)
+                
+                try #require(quotient?.optional() == dividend.quotient (divisor) as Optional<T>)
+                try #require(remainder            == dividend.remainder(divisor) as Optional<T>)
+                try #require(division?.optional() == dividend.division (divisor) as Optional<Division<T, T>>)
+                
+                if  let divisor = Nonzero(exactly: divisor) {
+                    try #require(quotient?.optional() == dividend.quotient (divisor) as T)
+                    try #require(remainder            == dividend.remainder(divisor) as T)
+                    try #require(division?.optional() == dividend.division (divisor) as Division<T, T>)
+                }
+                
+                if  let division = division?.optional() {
+                    try #require(division.quotient  == reduce(dividend, /,  divisor))
+                    try #require(division.quotient  == reduce(dividend, /=, divisor))
+                    try #require(division.remainder == reduce(dividend, %,  divisor))
+                    try #require(division.remainder == reduce(dividend, %=, divisor))
                 }
             }
         }
@@ -458,24 +554,40 @@ import TestKit2
         "BinaryInteger/division/conveniences: as NaturalInteger",
         Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsIntegerAsUnsigned, fuzzers
-    )   func divisionOfRandomByNonzeroAsNaturalInteger(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    )   func divisionOfRandomAsNaturalInteger(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
         func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
             for _ in 0 ..< 32 {
-                let dividend = T.entropic(using: &randomness)
-                let divisor  = T.entropic(using: &randomness)
+                let dividend  = T.entropic(using: &randomness)
+                let divisor   = T.entropic(using: &randomness)
+                let quotient  = dividend.quotient (divisor) as Optional<Fallible<T>>
+                let remainder = dividend.remainder(divisor) as Optional<T>
+                let division  = dividend.division (divisor) as Optional<Fallible<Division<T, T>>>
                 
-                guard let divisor = Nonzero(exactly: divisor) else { continue }
+                try #require(division?.map(\.quotient) == quotient )
+                try #require(division?.value.remainder == remainder)
                 
-                let baseline: Optional = dividend.division (divisor)
-                let division: Division = dividend.division (divisor)
-                let quotient:  T       = dividend.quotient (divisor)
-                let remainder: T       = dividend.remainder(divisor)
+                try #require(nil == dividend.quotient (T.zero) as Optional<T>)
+                try #require(nil == dividend.remainder(T.zero) as Optional<T>)
+                try #require(nil == dividend.division (T.zero) as Optional<Division<T, T>>)
                 
-                try #require(baseline == Fallible(division))
-                try #require(baseline?.map(\.quotient) == Fallible(quotient))
-                try #require(baseline?.value.remainder == remainder)
+                try #require(quotient?.optional() == dividend.quotient (divisor) as Optional<T>)
+                try #require(remainder            == dividend.remainder(divisor) as Optional<T>)
+                try #require(division?.optional() == dividend.division (divisor) as Optional<Division<T, T>>)
+                
+                if  let divisor = Nonzero(exactly: divisor) {
+                    try #require(quotient?.optional() == dividend.quotient (divisor) as T)
+                    try #require(remainder            == dividend.remainder(divisor) as T)
+                    try #require(division?.optional() == dividend.division (divisor) as Division<T, T>)
+                }
+                
+                if  let division = division?.optional() {
+                    try #require(division.quotient  == reduce(dividend, /,  divisor))
+                    try #require(division.quotient  == reduce(dividend, /=, divisor))
+                    try #require(division.remainder == reduce(dividend, %,  divisor))
+                    try #require(division.remainder == reduce(dividend, %=, divisor))
+                }
             }
             
             for _ in 0 ..< 32 {
@@ -483,11 +595,11 @@ import TestKit2
                 let divisor  = T.entropic(using: &randomness)
                 
                 guard let divisor = Nonzero(exactly: divisor) else { continue }
-                let divider = Divider(divisor)
+                let divider = Divider(divisor) as Divider as Divider as Divider
                 
                 let baseline: Optional = dividend.division(divisor)
                 let division: Division = dividend.division(divider)
-                let quotient:  T       = dividend.quotient(divider)
+                let quotient: T        = dividend.quotient(divider)
                 
                 try #require(baseline == Fallible(division))
                 try #require(baseline?.map(\.quotient) == Fallible(quotient))
@@ -499,29 +611,30 @@ import TestKit2
         "BinaryInteger/division/conveniences: as Natural<Value>",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func divisionOfRandomByNonzeroAsNatural(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func divisionOfRandomAsNatural(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 32 {
-                let dividend = T.entropic(through: Shift.max(or: 255), as: .natural, using: &randomness)
-                let divisor  = T.entropic(through: Shift.max(or: 255), as: .binary,  using: &randomness)
+                let dividend  = T.entropic(through: Shift.max(or: 255), as: .natural, using: &randomness)
+                let divisor   = T.entropic(through: Shift.max(or: 255), as: .binary,  using: &randomness)
+                let quotient  = dividend.quotient (divisor) as Optional<Fallible<T>>
+                let remainder = dividend.remainder(divisor) as Optional<T>
+                let division  = dividend.division (divisor) as Optional<Fallible<Division<T, T>>>
                 
-                guard let dividend = Natural(exactly: dividend) else { continue }
-                guard let divisor  = Nonzero(exactly: divisor ) else { continue }
+                try #require(division?.map(\.quotient) == quotient )
+                try #require(division?.value.remainder == remainder)
                 
-                let baseline: Optional = dividend.value.division(divisor)
-                let division: Division = dividend.division(divisor)
-                let quotient: T        = dividend.quotient(divisor)
+                if  let dividend = Natural(exactly: dividend), let divisor = Nonzero(exactly: divisor) {
+                    try #require(quotient?.optional() == dividend.quotient(divisor) as T)
+                    try #require(division?.optional() == dividend.division(divisor) as Division<T, T>)
+                }
                 
-                try #require(baseline == Optional(Fallible(division)))
-                try #require(baseline?.map(\.quotient) == Fallible(quotient))
-                
-                if  let baseline = baseline?.optional() {
-                    try #require(baseline.quotient  == reduce(dividend.value, /,  divisor.value))
-                    try #require(baseline.quotient  == reduce(dividend.value, /=, divisor.value))
-                    try #require(baseline.remainder == reduce(dividend.value, %,  divisor.value))
-                    try #require(baseline.remainder == reduce(dividend.value, %=, divisor.value))
+                if  let division = division?.optional() {
+                    try #require(division.quotient  == reduce(dividend, /,  divisor))
+                    try #require(division.quotient  == reduce(dividend, /=, divisor))
+                    try #require(division.remainder == reduce(dividend, %,  divisor))
+                    try #require(division.remainder == reduce(dividend, %=, divisor))
                 }
             }
         }
