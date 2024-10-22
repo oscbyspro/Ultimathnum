@@ -402,14 +402,17 @@ import TestKit2
         arguments: typesAsBinaryInteger, fuzzers
     )   func multiplicationByOneIsSelf(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
-                
+        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             try withOnlyOneCallToRequire(type) { require in
                 for _ in 0 ..< 32 {
                     let lhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
                     let rhs = T(1)
                     
-                    let expectation = Doublet(low: T.Magnitude(raw: lhs), high: T(repeating: Bit(lhs.isNegative)))
+                    let expectation = Doublet(
+                        low:  T.Magnitude.init(raw: (((lhs)))),
+                        high: T(repeating: Bit(lhs.isNegative))
+                    )
                     
                     require(lhs.times(rhs) == Fallible(lhs))
                     require(rhs.times(lhs) == Fallible(lhs))

@@ -11,7 +11,7 @@
 // MARK: * Expect x Once
 //*============================================================================*
 
-/// - Note: The `expect` macro is too slow to call inside of a hot loop.
+/// - Note: The `expect` macro is too slow to call in hot loops.
 @inlinable public func withOnlyOneCallToExpect(
     _ comment: @autoclosure () -> Any = "",
     at location: SourceLocation = #_sourceLocation,
@@ -19,13 +19,11 @@
 ) {
     
     var success = true
-
     expect({ success = success && $0 })
-    
-    #expect(success, Comment(rawValue: String(describing: comment())), sourceLocation: location)
+    #expect((success), Comment(rawValue: String(describing: comment())), sourceLocation: location)
 }
 
-/// - Note: The `require` macro is too slow to call inside of a hot loop.
+/// - Note: The `require` macro is too slow to call in hot loops.
 @inlinable public func withOnlyOneCallToRequire(
     _ comment: @autoclosure () -> Any = "",
     at location: SourceLocation = #_sourceLocation,
@@ -33,8 +31,6 @@
 )   throws {
     
     var success = true
-    
     try require({ success = success && $0 })
-    
-    try #require(success, Comment(rawValue: String(describing: comment())), sourceLocation: location)
+    try #require((success), Comment(rawValue: String(describing: comment())), sourceLocation: location)
 }
