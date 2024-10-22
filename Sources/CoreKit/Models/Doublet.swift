@@ -45,10 +45,9 @@
     /// - Note: The `high` part of an unsigned `source` is always `0`.
     ///
     @inlinable public init(_ source: consuming Base) {
-        let bit  = Bit(source.isNegative)
-        let low  = Base.Magnitude(raw: source)
-        let high = Base(repeating: bit)
-        self.init(low: low, high: high)
+        let x = Bit(source.isNegative)
+        self.low  = Low (raw:  source)
+        self.high = High(repeating: x)
     }
     
     /// Creates a new instance from the given components.

@@ -12,7 +12,7 @@
 //*============================================================================*
 
 /// An integer split into 3 parts.
-@frozen public struct Triplet<Base>: BitCastable, Comparable, Sendable where Base: SystemsInteger {
+@frozen public struct Triplet<Base>: BitCastable, Comparable, Sendable where Base: BinaryInteger {
     
     public typealias High = Base
     
@@ -43,6 +43,17 @@
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
+    
+    /// Creates a new instance equal to the `source`.
+    ///
+    /// - Note: The `mid` and `high` parts of an unsigned `source` are always `0`.
+    ///
+    @inlinable public init(_ source: consuming Base) {
+        let x = Bit(source.isNegative)
+        self.low  = Low (raw:  source)
+        self.mid  = Mid (repeating: x)
+        self.high = High(repeating: x)
+    }
     
     /// Creates a new instance from the given components.
     @inlinable public init() {
