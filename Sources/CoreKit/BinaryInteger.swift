@@ -227,13 +227,17 @@ where
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Returns `self + other` and an `error`.
+    /// Returns `self + other` and an `error` indicator.
+    ///
+    /// ### Addition & Subtraction
     ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable consuming func plus (_ other: borrowing Self) -> Fallible<Self>
     
-    /// Returns `self - other` and an `error`.
+    /// Returns `self - other` and an `error` indicator.
+    ///
+    /// ### Addition & Subtraction
     ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///

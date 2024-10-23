@@ -23,7 +23,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/addition: 0 ± x",
-        Tag.List.tags(.random),
+        Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func additionOfZeroByRandom(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
@@ -48,7 +48,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/addition: x ± y",
-        Tag.List.tags(.random),
+        Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func subtractionOfRandomByRandom(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
@@ -74,7 +74,7 @@ import TestKit2
         
     @Test(
         "BinaryInteger/addition: x ± x",
-        Tag.List.tags(.random),
+        Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func additionOfRandomBySelf(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
@@ -96,7 +96,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/addition: x ± 0 or 1",
-        Tag.List.tags(.random),
+        Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func additionOfRandomByBool(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
@@ -124,7 +124,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/addition: versus linear expression",
-        Tag.List.tags(.random),
+        Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func additionVersusLinearExpression(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
@@ -162,7 +162,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/addition/edge-cases: additive inverse of T.min as signed is error",
-        Tag.List.tags(.exhaustive),
+        Tag.List.tags(.generic, .exhaustive),
         arguments: typesAsSystemsIntegerAsSigned
     )   func additiveInverseOfMinValueAsSignedIsError(type: any SystemsIntegerAsSigned.Type) {
         whereIs(type)
@@ -175,7 +175,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/addition/edge-cases: additive inverse of T.min as unsigned is not error",
-        Tag.List.tags(.exhaustive),
+        Tag.List.tags(.generic, .exhaustive),
         arguments: typesAsBinaryIntegerAsUnsigned
     )   func additiveInverseOfMinValueAsUnsignedIsNotError(type: any UnsignedInteger.Type) {
         whereIs(type)
@@ -199,7 +199,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/addition/conveniences: 0 ± x",
-        Tag.List.tags(.random),
+        Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func additionOfZeroByRandom(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
@@ -226,7 +226,7 @@ import TestKit2
     
     @Test(
         "BinaryInteger/addition/conveniences: x ± 0",
-        Tag.List.tags(.random),
+        Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func additionOfRandomByZero(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
@@ -246,10 +246,38 @@ import TestKit2
     }
     
     @Test(
-        "BinaryInteger/addition/conveniences: x ± y",
-        Tag.List.tags(.random),
+        "BinaryInteger/addition/conveniences: x ± 0 or 1",
+        Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func subtractionOfRandomByRandomVersusDerivatives(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func additionOfRandomByZeroOrOne(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< 32 {
+                let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let b = T.lsb
+                let c = a.plus(b)
+                
+                try #require(a.incremented( ) == c)
+                try #require(c.value.decremented( ) == a.veto(c.error))
+            }
+            
+            for _ in 0 ..< 32 {
+                let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let b = Bool.random(using: &randomness.stdlib)
+                let c = a.plus(T(Bit(b)))
+                                
+                try #require(a.incremented(b) == c)
+                try #require(c.value.decremented(b) == a.veto(c.error))
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/addition/conveniences: x ± y",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func additionOfRandomByRandom(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
@@ -259,6 +287,76 @@ import TestKit2
                 
                 try Ɣrequire(a, plus:  b, is: a.plus (b))
                 try Ɣrequire(a, minus: b, is: a.minus(b))
+            }
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Lenient
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/addition/conveniences: -x as LenientInteger",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsArbitraryIntegerAsSigned, fuzzers
+    )   func additionInverseAsLenientInteger(type: any ArbitraryIntegerAsSigned.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsSigned {
+            for _ in 0 ..< 32 {
+                let a = T.entropic(size: 256, using: &randomness)
+                let b = a.negated() as Fallible<T>
+                let c = a.negated() as T
+                var d = a
+                var e = a
+                
+                let complement: T = a.complement()
+                
+                try #require(d.negate().error == false)
+                try #require(e.negate() == ((((( ))))))
+                
+                try #require(complement == b.optional())
+                try #require(complement == c)
+                try #require(complement == d)
+                try #require(complement == e)
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/addition/conveniences: x ± y as LenientInteger",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsArbitraryIntegerAsSigned, fuzzers
+    )   func additionOfRandomByRandomAsLenientInteger(type: any ArbitraryIntegerAsSigned.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsSigned {
+            for _ in 0 ..< 32 {
+                let a = T.entropic(size: 256, using: &randomness)
+                let b = T.entropic(size: 256, using: &randomness)
+                
+                try #require(a.plus (b).optional() == a.plus (b) as T)
+                try #require(a.minus(b).optional() == a.minus(b) as T)
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/addition/conveniences: x ± 0 or 1 as LenientInteger",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsArbitraryIntegerAsSigned, fuzzers
+    )   func additionOfRandomByZeroOrOneAsLenientInteger(type: any ArbitraryIntegerAsSigned.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsSigned {
+            for _ in 0 ..< 32 {
+                let a = T.entropic(size: 256, using: &randomness)
+                let b = Bool.random(using: &randomness.stdlib)
+                
+                try #require(a.incremented( ).optional() == a.incremented( ) as T)
+                try #require(a.decremented( ).optional() == a.decremented( ) as T)
+                try #require(a.incremented(b).optional() == a.incremented(b) as T)
+                try #require(a.decremented(b).optional() == a.decremented(b) as T)
             }
         }
     }

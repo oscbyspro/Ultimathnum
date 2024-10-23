@@ -19,6 +19,8 @@ extension BinaryInteger {
     
     /// Returns the additive inverse of `instance` by trapping on `error`.
     ///
+    /// ### Addition & Subtraction
+    ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public static prefix func -(instance: consuming Self) -> Self {
@@ -26,6 +28,8 @@ extension BinaryInteger {
     }
     
     /// Returns `lhs + rhs` by trapping on `error`.
+    ///
+    /// ### Addition & Subtraction
     ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
@@ -35,6 +39,8 @@ extension BinaryInteger {
     
     /// Returns `lhs - rhs` by trapping on `error`.
     ///
+    /// ### Addition & Subtraction
+    ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public static func -(lhs: consuming Self, rhs: borrowing Self) -> Self {
@@ -43,6 +49,8 @@ extension BinaryInteger {
     
     /// Returns `lhs + rhs` by wrapping on `error`.
     ///
+    /// ### Addition & Subtraction
+    ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public static func &+(lhs: consuming Self, rhs: borrowing Self) -> Self {
@@ -50,6 +58,8 @@ extension BinaryInteger {
     }
     
     /// Returns `lhs - rhs` by wrapping on `error`.
+    ///
+    /// ### Addition & Subtraction
     ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
@@ -67,6 +77,8 @@ extension BinaryInteger {
     
     /// Forms `lhs - rhs` by trapping on `error`.
     ///
+    /// ### Addition & Subtraction
+    ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public static func -=(lhs: inout Self, rhs: borrowing Self) {
@@ -75,6 +87,8 @@ extension BinaryInteger {
     
     /// Forms `lhs + rhs` by wrapping on `error`.
     ///
+    /// ### Addition & Subtraction
+    ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public static func &+=(lhs: inout Self, rhs: borrowing Self) {
@@ -82,6 +96,8 @@ extension BinaryInteger {
     }
     
     /// Forms `lhs - rhs` by wrapping on `error`.
+    ///
+    /// ### Addition & Subtraction
     ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
@@ -95,6 +111,8 @@ extension BinaryInteger {
     
     /// Forms the additive inverse of `self` and an `error` indicator.
     ///
+    /// ### Addition & Subtraction
+    ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public mutating func negate() -> Fallible<Void> {
@@ -105,6 +123,8 @@ extension BinaryInteger {
     
     /// Returns the additive inverse of `self` and an `error` indicator.
     ///
+    /// ### Addition & Subtraction
+    ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public consuming func negated() -> Fallible<Self> {
@@ -114,6 +134,8 @@ extension BinaryInteger {
     
     /// Returns `self` or `self + 1` and an `error` indicator.
     ///
+    /// ### Addition & Subtraction
+    ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public consuming func incremented(_ condition: Bool = true) -> Fallible<Self> {
@@ -122,10 +144,83 @@ extension BinaryInteger {
     
     /// Returns `self` or `self - 1` and an `error` indicator.
     ///
+    /// ### Addition & Subtraction
+    ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public consuming func decremented(_ condition: Bool = true) -> Fallible<Self> {
         self.minus(Self(Bit(condition)))
+    }
+}
+
+//*============================================================================*
+// MARK: * Binary Integer x Addition x Lenient
+//*============================================================================*
+
+extension BinaryInteger where Self: ArbitraryInteger & SignedInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// Forms the additive inverse of `self`.
+    ///
+    /// ### Addition & Subtraction
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    @inlinable public mutating func negate() {
+        self.negate().unchecked()
+    }
+    
+    /// Returns the additive inverse of `self`.
+    ///
+    /// ### Addition & Subtraction
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    @inlinable public consuming func negated() -> Self {
+        self.negated().unchecked()
+    }
+    
+    /// Returns `self + other`.
+    ///
+    /// ### Addition & Subtraction
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    @inlinable public consuming func plus(_ other: borrowing Self) -> Self {
+        self.plus(other).unchecked()
+    }
+    
+    /// Returns `self - other`.
+    ///
+    /// ### Addition & Subtraction
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    @inlinable public consuming func minus(_ other: borrowing Self) -> Self {
+        self.minus(other).unchecked()
+    }
+    
+    /// Returns `self` or `self + 1`.
+    ///
+    /// ### Addition & Subtraction
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    @inlinable public consuming func incremented(_ condition: Bool = true) -> Self {
+        self.incremented(condition).unchecked()
+    }
+    
+    /// Returns `self` or `self - 1`.
+    ///
+    /// ### Addition & Subtraction
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    @inlinable public consuming func decremented(_ condition: Bool = true) -> Self {
+        self.decremented(condition).unchecked()
     }
 }
 
@@ -141,6 +236,8 @@ extension SystemsInteger {
     
     /// Returns `self + (other + bit)` and an `error` indicator.
     ///
+    /// ### Addition & Subtraction
+    ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
     @inlinable public consuming func plus(_ other: borrowing Self, plus bit: Bool) -> Fallible<Self> {
@@ -151,6 +248,8 @@ extension SystemsInteger {
     }
     
     /// Returns `self - (other + bit)` and an `error` indicator.
+    ///
+    /// ### Addition & Subtraction
     ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
