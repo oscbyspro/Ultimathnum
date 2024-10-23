@@ -27,52 +27,56 @@ import TestKit2
 ///
 /// - TODO: Test `StdlibInt` forwarding in generic `BinaryInteger` tests.
 ///
-@Suite struct StdlibIntTestsOnBitwise {
+@Suite(.tags(.forwarding)) struct StdlibIntTestsOnBitwise {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt.~(_:) - [forwarding][entropic]", arguments: fuzzers)
-    func not(_ randomness: consuming FuzzerInt) {
+    @Test("StdlibInt.~(_:)", .tags(.random), arguments: fuzzers)
+    func not(_ randomness: consuming FuzzerInt) throws {
         for _ in 0 ..< 32 {
             let random = IXL.entropic(size: 256, using: &randomness)
             let expectation = random.toggled()
+            
             #expect(~StdlibInt(random) == StdlibInt(expectation))
             #expect(~StdlibInt(expectation) == StdlibInt(random))
         }
     }
     
-    @Test("StdlibInt.&(_:_:) - [forwarding][entropic]", arguments: fuzzers)
-    func and(_ randomness: consuming FuzzerInt) {
+    @Test("StdlibInt.&(_:_:)", .tags(.random), arguments: fuzzers)
+    func and(_ randomness: consuming FuzzerInt) throws {
         for _ in 0 ..< 32 {
             let lhs = IXL.entropic(size: 256, using: &randomness)
             let rhs = IXL.entropic(size: 256, using: &randomness)
-            let expectation = lhs  & rhs
-            #expect(StdlibInt(lhs) & StdlibInt(rhs) == StdlibInt(expectation))
-            #expect({ var x = StdlibInt(lhs); x &= StdlibInt(rhs); return x }() == StdlibInt(expectation))
+            let expectation = lhs & rhs
+            
+            try #require(StdlibInt(expectation) == reduce(StdlibInt(lhs), &,  StdlibInt(rhs)))
+            try #require(StdlibInt(expectation) == reduce(StdlibInt(lhs), &=, StdlibInt(rhs)))
         }
     }
     
-    @Test("StdlibInt.|(_:_:) - [forwarding][entropic]", arguments: fuzzers)
-    func or(_ randomness: consuming FuzzerInt) {
+    @Test("StdlibInt.|(_:_:)", .tags(.random), arguments: fuzzers)
+    func or(_ randomness: consuming FuzzerInt) throws {
         for _ in 0 ..< 32 {
             let lhs = IXL.entropic(size: 256, using: &randomness)
             let rhs = IXL.entropic(size: 256, using: &randomness)
-            let expectation = lhs  | rhs
-            #expect(StdlibInt(lhs) | StdlibInt(rhs) == StdlibInt(expectation))
-            #expect({ var x = StdlibInt(lhs); x |= StdlibInt(rhs); return x }() == StdlibInt(expectation))
+            let expectation = lhs | rhs
+
+            try #require(StdlibInt(expectation) == reduce(StdlibInt(lhs), |,  StdlibInt(rhs)))
+            try #require(StdlibInt(expectation) == reduce(StdlibInt(lhs), |=, StdlibInt(rhs)))
         }
     }
     
-    @Test("StdlibInt.^(_:_:) - [forwarding][entropic]", arguments: fuzzers)
-    func xor(_ randomness: consuming FuzzerInt) {
+    @Test("StdlibInt.^(_:_:)", .tags(.random), arguments: fuzzers)
+    func xor(_ randomness: consuming FuzzerInt) throws {
         for _ in 0 ..< 32 {
             let lhs = IXL.entropic(size: 256, using: &randomness)
             let rhs = IXL.entropic(size: 256, using: &randomness)
-            let expectation = lhs  ^ rhs
-            #expect(StdlibInt(lhs) ^ StdlibInt(rhs) == StdlibInt(expectation))
-            #expect({ var x = StdlibInt(lhs); x ^= StdlibInt(rhs); return x }() == StdlibInt(expectation))
+            let expectation = lhs ^ rhs
+            
+            try #require(StdlibInt(expectation) == reduce(StdlibInt(lhs), ^,  StdlibInt(rhs)))
+            try #require(StdlibInt(expectation) == reduce(StdlibInt(lhs), ^=, StdlibInt(rhs)))
         }
     }
 }

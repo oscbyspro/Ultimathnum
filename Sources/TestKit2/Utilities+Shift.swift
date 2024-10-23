@@ -37,3 +37,22 @@ extension Shift {
         Shift(Count(IX.random(in: IX.zero...limit.natural().unwrap(), using: &randomness)))
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Systems
+//=----------------------------------------------------------------------------=
+
+extension Shift where Target: SystemsInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Metadata
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static var all: some Sequence<Self> {
+        let range = IX.zero..<IX(size: Target.self)
+        return range.lazy.map {
+            Self(unchecked: Count(Natural(unchecked: $0)))
+        }
+    }
+    
+}

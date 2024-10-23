@@ -8,252 +8,371 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import DoubleIntKit
-import InfiniIntKit
 import RandomIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Binary Integer x Bitwise
 //*============================================================================*
 
-final class BinaryIntegerTestsOnBitwise: XCTestCase {
+@Suite struct BinaryIntegerTestsOnBitwise {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testInitBitOrRepeatingBit() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            Test().same(T(Bit.zero), 0 as T)
-            Test().same(T(Bit.one ), 1 as T)
-            Test().same(T(repeating: Bit.zero),  (0 as T))
-            Test().same(T(repeating: Bit.one ), ~(0 as T))
-        }
+    @Test(
+        "BinaryInteger/bitwise: from bit",
+        Tag.List.tags(.generic, .exhaustive),
+        arguments: typesAsBinaryInteger
+    )   func fromBit(type: any BinaryInteger.Type) {
+        whereIs(type)
         
-        for type in typesAsBinaryInteger {
-            whereIs(type)
+        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+            #expect(T(Bit.zero) == (0 as T))
+            #expect(T(Bit.one ) == (1 as T))
         }
     }
     
-    func testLsbEqualsIsOdd() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            var isOdd =  false
-            for small in I8.min ... I8.max {
-                Test().same(T(load: small).lsb, Bit(isOdd))
-                isOdd.toggle()
-            }
-            
-            Test().same((Esque<T>.min    ).lsb, Bit.zero)
-            Test().same((Esque<T>.min + 1).lsb, Bit.one )
-            Test().same((Esque<T>.min + 2).lsb, Bit.zero)
-            Test().same((Esque<T>.min + 3).lsb, Bit.one )
-            
-            Test().same((Esque<T>.max - 3).lsb, Bit.zero)
-            Test().same((Esque<T>.max - 2).lsb, Bit.one )
-            Test().same((Esque<T>.max - 1).lsb, Bit.zero)
-            Test().same((Esque<T>.max    ).lsb, Bit.one )
-        }
+    @Test(
+        "BinaryInteger/bitwise: from repeating bit",
+        Tag.List.tags(.generic, .exhaustive),
+        arguments: typesAsBinaryInteger
+    )   func fromRepeatingBit(type: any BinaryInteger.Type) {
+        whereIs(type)
         
-        for type in typesAsBinaryInteger {
-            whereIs(type)
-        }
-    }
-    
-    func testMsbEqualsSignitudeIsNegative() {
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            for small in I8.min ... I8.max {
-                Test().same(T(load: small).msb, Bit(small.isNegative))
-            }
-            
-            Test().same((Esque<T>.min    ).msb, Bit( T.isSigned))
-            Test().same((Esque<T>.min + 1).msb, Bit( T.isSigned))
-            Test().same((Esque<T>.min + 2).msb, Bit( T.isSigned))
-            Test().same((Esque<T>.min + 3).msb, Bit( T.isSigned))
-            
-            Test().same((Esque<T>.max - 3).msb, Bit(!T.isSigned))
-            Test().same((Esque<T>.max - 2).msb, Bit(!T.isSigned))
-            Test().same((Esque<T>.max - 1).msb, Bit(!T.isSigned))
-            Test().same((Esque<T>.max    ).msb, Bit(!T.isSigned))
-        }
-        
-        for type in typesAsBinaryInteger {
-            whereIs(type)
-        }
-    }
-    
-    func testLogicOfAlternatingBitEsque() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            let r10 = T.exactly(0x55555555555555555555555555555555).value // 128-bit: 1010...
-            let r01 = T.exactly(0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA).value // 128-bit: 0101...
-            let x00 = T.exactly(0x00000000000000000000000000000000).value // 128-bit: 0000...
-            let xff = T.exactly(0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF).value // 128-bit: 1111...
-            
-            Test().not( r10, T(repeating: Bit.one) - r10)
-            Test().not(~r10, T(repeating: Bit.one) - r10.toggled())
-            Test().not( r01, T(repeating: Bit.one) - r01)
-            Test().not(~r01, T(repeating: Bit.one) - r01.toggled())
-            
-            Test().and( r10,  r10,  r10)
-            Test().and( r10,  r01,  x00)
-            Test().and( r01,  r10,  x00)
-            Test().and( r01,  r01,  r01)
-            Test().and(~r10, ~r10, ~r10)
-            Test().and(~r10, ~r01, ~xff)
-            Test().and(~r01, ~r10, ~xff)
-            Test().and(~r01, ~r01, ~r01)
-            
-            Test().or ( r10,  r10,  r10)
-            Test().or ( r10,  r01,  xff)
-            Test().or ( r01,  r10,  xff)
-            Test().or ( r01,  r01,  r01)
-            Test().or (~r10, ~r10, ~r10)
-            Test().or (~r10, ~r01, ~x00)
-            Test().or (~r01, ~r10, ~x00)
-            Test().or (~r01, ~r01, ~r01)
-            
-            Test().xor( r10,  r10,  x00)
-            Test().xor( r10,  r01,  xff)
-            Test().xor( r01,  r10,  xff)
-            Test().xor( r01,  r01,  x00)
-            Test().xor(~r10, ~r10,  x00)
-            Test().xor(~r10, ~r01,  xff)
-            Test().xor(~r01, ~r10,  xff)
-            Test().xor(~r01, ~r01,  x00)
-        }
-        
-        for type in typesAsBinaryInteger {
-            whereIs(type)
+            #expect(T(repeating: Bit.zero) == ( 0 as T))
+            #expect(T(repeating: Bit.one ) == (~0 as T))
         }
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests x Systems Integer
+    // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testEndianness() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            //=----------------------------------=
-            let size = IX(size: T.self)
-            //=----------------------------------=
-            Test().same(T(repeating: Bit.zero).endianness( .ascending), T(repeating: Bit.zero))
-            Test().same(T(repeating: Bit.zero).endianness(.descending), T(repeating: Bit.zero))
-            Test().same(T(repeating: Bit.one ).endianness( .ascending), T(repeating: Bit.one ))
-            Test().same(T(repeating: Bit.one ).endianness(.descending), T(repeating: Bit.one ))
-            
-            Test().same(T(1).endianness( .endianess),                         T(1))
-            Test().same(T(1).endianness( .endianess.reversed()),              T(1) << (size - 8))
-            Test().same(T(5).endianness( .ascending).endianness( .ascending), T(5))
-            Test().same(T(4).endianness( .ascending).endianness(.descending), T(4) << (size - 8))
-            Test().same(T(3).endianness(.descending).endianness( .ascending), T(3) << (size - 8))
-            Test().same(T(2).endianness(.descending).endianness(.descending), T(2))
-        }
+    @Test(
+        "BinaryInteger/bitwise: least significant bit",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func lsb(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
         
-        for type in typesAsSystemsInteger {
-            whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..<  4 {
+                var value = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                ((((value)))) |= 1
+                var isOdd = (true)
+                
+                try withOnlyOneCallToRequire(value) { require in
+                    for _ in U8.all {
+                        require(value.lsb == Bit(isOdd))
+                        value = value.incremented().value
+                        isOdd.toggle()
+                    }
+                }
+            }
         }
     }
     
-    func testGetSetBitAtIndex() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
+    @Test(
+        "BinaryInteger/bitwise: most significant bit",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func msb(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< 32 {
+                let value = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let expectation = Bit(T.Signitude(raw: value).isNegative)
+                try #require( expectation ==  value.msb)
+                try #require(~expectation == ~value.msb)
+            }
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/bitwise: NOT(x)",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func not(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< conditional(debug: 64,release: 256) {
+                let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let b = ~a
+                
+                try #require(a  == b.toggled())
+                try Ɣrequire(a, ^, T(repeating: Bit.one), is: b)
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/bitwise: x AND y",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func and(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< conditional(debug: 64,release: 256) {
+                let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let b = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                try Ɣrequire(a, &, b, is: a & b)
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/bitwise: x OR y",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func or(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< conditional(debug: 64,release: 256) {
+                let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let b = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                try Ɣrequire(a, |, b, is: a | b)
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/bitwise: x XOR y",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func xor(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< conditional(debug: 64,release: 256) {
+                let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let b = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                try Ɣrequire(a, ^, b, is: a ^ b)
+            }
+        }
+    }
+    
+    func Ɣrequire<T>(_ a: T, _ map: (Bit, Bit) -> Bit, _ b: T, is c: T) throws where T: BinaryInteger {
+        try withOnlyOneCallToRequire((a, b)) { require in
+            require(map(a.appendix, b.appendix) == c.appendix)
+            
+            a.withUnsafeBinaryIntegerElements { a in
+                b.withUnsafeBinaryIntegerElements { b in
+                    c.withUnsafeBinaryIntegerElements { c in
+                        let max = UX(Swift.max(a.body.count, b.body.count))
+                        for major in 0 ..< max {
+                            let x = a[major]
+                            let y = b[major]
+                            let z = c[major]
+                            
+                            for minor in Shift<T.Element.Magnitude>.all {
+                                require(map(x[minor], y[minor]) == z[minor])
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Systems
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/bitwise: byte swapped",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsSystemsInteger, fuzzers
+    )   func byteSwapped(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsInteger {
+            for _ in 0 ..< conditional(debug: 64,release: 256) {
+                let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let b = a.reversed(U8.self)
+                let c = b.reversed(U8.self)
+                
+                try #require(a == c)
+                
+                try a.withUnsafeBinaryIntegerBody(as: U8.self) { a in
+                    try b.withUnsafeBinaryIntegerBody(as: U8.self) { b in
+                        let x = a.buffer()
+                        let y = b.buffer().reversed()
+                        try #require(x.elementsEqual(y))
+                    }
+                }
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/bitwise: get/set bit at index",
+        Tag.List.tags(.generic),
+        arguments: typesAsSystemsInteger
+    )   func getSetBitAtIndex(type: any SystemsInteger.Type) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsInteger {
             var result: T   = T.zero
             var expectation = T.Magnitude.zero
             let range = 0 ..< IX(size: T.self)
-            
-            Test().same(result, T(repeating: Bit.zero))
-            
+
+            try #require(result == T(repeating: Bit.zero))
+
             for index: IX in range {
                 expectation <<= T.Magnitude.lsb
                 expectation  |= T.Magnitude.lsb
                 result[Shift(Count(index))].toggle()
-                Test().same(result, T(raw: expectation))
+                try #require(result == T(raw: expectation))
             }
-            
-            Test().same(result, T(repeating: Bit.one))
-            
+
+            try #require(result == T(repeating: Bit.one))
+
             for index: IX in range {
                 expectation <<= T.Magnitude.lsb
                 result[Shift(Count(index))].toggle()
-                Test().same(result, T(raw: expectation))
+                try #require(result == T(raw: expectation))
             }
-            
-            Test().same(result, T(repeating: Bit.zero))
-            
+
+            try #require(result == T(repeating: Bit.zero))
+
             for index: IX in range.reversed() {
                 expectation >>= T.Magnitude.lsb
                 expectation  |= T.Magnitude.msb
                 result[Shift(Count(index))].toggle()
-                Test().same(result, T(raw: expectation))
+                try #require(result == T(raw: expectation))
             }
-            
-            Test().same(result, T(repeating: Bit.one))
-            
+
+            try #require(result == T(repeating: Bit.one))
+
             for index: IX in range.reversed() {
                 expectation >>= T.Magnitude.lsb
                 result[Shift(Count(index))].toggle()
-                Test().same(result, T(raw: expectation))
+                try #require(result == T(raw: expectation))
             }
-            
-            Test().same(result, T(repeating: Bit.zero))
+
+            try #require(result == T(repeating: Bit.zero))
         }
+    }
+}
+
+//*============================================================================*
+// MARK: * Binary Integer x Bitwise x Conveniences
+//*============================================================================*
+
+@Suite(.tags(.forwarding)) struct BinaryIntegerTestsOnBitwiseConveniences {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/bitwise/conveniences: NOT(x)",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func not(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
         
-        for type in typesAsSystemsInteger {
-            whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< 64 {
+                let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let b = ~a
+                
+                try #require(b == a.toggled())
+                try #require(b == { var x = a;  x.toggle(); return x }())
+                try #require(b == reduce(a, ^,  T(repeating: Bit.one)))
+                try #require(b == reduce(a, ^=, T(repeating: Bit.one)))
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/bitwise/conveniences: x AND y",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func and(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< 64 {
+                let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let b = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let c = a & b
+                
+                try #require(c == reduce(a, &=, b))
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/bitwise/conveniences: x OR y",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func or(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< 64 {
+                let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let b = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let c = a | b
+                
+                try #require(c == reduce(a, |=, b))
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/bitwise/conveniences: x XOR y",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func xor(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< 64 {
+                let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let b = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let c = a ^ b
+                
+                try #require(c == reduce(a, ^=, b))
+            }
         }
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests x Random
+    // MARK: Tests x Systems
     //=------------------------------------------------------------------------=
     
-    func testOperationsByFuzzing() {
-        func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
-            func random() -> T {
-                let index = IX.random(in: 00000 ..< size, using: &randomness)!
-                let pattern = T.Signitude.random(through: Shift(Count(index)), using: &randomness)
-                return T(raw: pattern) // do not forget about infinite values!
-            }
-            
-            for _ in 0 ..< rounds {
-                let a0 = random()
-                let a1 = a0.toggled()
-                let b0 = random()
-                let b1 = b0.toggled()
-                
-                always: do {
-                    Test().same(a0, a1.toggled())
-                    Test().same(b0, b1.toggled())
-                }
-
-                always: do {
-                    let c0 = a0 ^ b0
-                    let c1 = c0.toggled()
-                    
-                    Test().same((c0 ^ a0), (b0))
-                    Test().same((c0 ^ b0), (a0))
-                    Test().same((c0 ^ a1), (b1))
-                    Test().same((c0 ^ b1), (a1))
-                    
-                    Test().same((a0 ^ b0), (c0))
-                    Test().same((a0 ^ b1), (c1))
-                    Test().same((a1 ^ b0), (c1))
-                    Test().same((a1 ^ b1), (c0))
-                }
-                
-                always: do {
-                    let c0 = a0 | b0
-                    let c1 = c0.toggled()
-                    
-                    Test().same((c0 ^ a0), (b0 & a1))
-                    Test().same((c0 ^ b0), (a0 & b1))
-                    Test().same((c1 ^ a0), (b0 & a1).toggled())
-                    Test().same((c1 ^ b0), (a0 & b1).toggled())
-                }
-            }
-        }
+    @Test(
+        "BinaryInteger/bitwise: x.reversed(U8.self)",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsSystemsInteger, fuzzers
+    )   func reversed(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
         
-        for type in typesAsBinaryInteger {
-            whereIs(type, size: IX(size: type) ?? 256, rounds: 32, randomness: fuzzer)
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsInteger {
+            for _ in 0 ..< 64 {
+                let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let b = a.reversed(U8.self)
+                
+                try #require(a.endianness(.endianess) == a)
+                try #require(a.endianness(.endianess.reversed()) == b)
+                try #require(a.endianness(.ascending ).endianness(.ascending ) == a)
+                try #require(a.endianness(.ascending ).endianness(.descending) == b)
+                try #require(a.endianness(.descending).endianness(.ascending ) == b)
+                try #require(a.endianness(.descending).endianness(.descending) == a)
+            }
         }
     }
 }
