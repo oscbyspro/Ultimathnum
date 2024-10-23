@@ -456,3 +456,109 @@ import TestKit2
         }
     }
 }
+
+//*============================================================================*
+// MARK: * Binary Integer x Multiplication x Conveniences
+//*============================================================================*
+
+@Suite(.tags(.forwarding)) struct BinaryIntegerTestsOnMultiplicationConveniences {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/multiplication/conveniences: x * y as BinaryInteger",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func multiplicationOfRandomByRandomAsBinaryInteger(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< 32 {
+                let lhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let rhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                
+                let expectation = lhs.times(rhs) as Fallible<T>
+                
+                if  let expectation = expectation.optional() {
+                    try #require(expectation == reduce(lhs, *,  rhs))
+                    try #require(expectation == reduce(lhs, *=, rhs))
+                }
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/multiplication/conveniences: x * x as BinaryInteger",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func multiplicationOfRandomByItselfAsBinaryInteger(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< 32 {
+                let lhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                
+                let expectation = lhs.squared() as Fallible<T>
+                
+                if  let expectation = expectation.optional() {
+                    try #require(expectation == reduce(lhs, *,  lhs))
+                    try #require(expectation == reduce(lhs, *=, lhs))
+                }
+            }
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Lenient
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/multiplication/conveniences: x * y as LenientInteger",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsArbitraryIntegerAsSigned, fuzzers
+    )   func multiplicationOfRandomByRandomAsLenientInteger(type: any ArbitraryIntegerAsSigned.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsSigned {
+            for _ in 0 ..< 32 {
+                let lhs = T.entropic(size: 256, using: &randomness)
+                let rhs = T.entropic(size: 256, using: &randomness)
+                
+                let expectation = lhs.times(rhs) as Fallible<T>
+                
+                try #require(expectation.optional() == lhs.times(rhs) as T)
+                
+                if  let expectation = expectation.optional() {
+                    try #require(expectation == reduce(lhs, *,  rhs))
+                    try #require(expectation == reduce(lhs, *=, rhs))
+                }
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/multiplication/conveniences: x * x as LenientInteger",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsArbitraryIntegerAsSigned, fuzzers
+    )   func multiplicationOfRandomByItselfAsLenientInteger(type: any ArbitraryIntegerAsSigned.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsSigned {
+            for _ in 0 ..< 32 {
+                let lhs = T.entropic(size: 256, using: &randomness)
+                
+                let expectation = lhs.squared() as Fallible<T>
+                
+                try #require(expectation.optional() == lhs.times(lhs) as T)
+                try #require(expectation.optional() == lhs.squared( ) as T)
+                
+                if  let expectation = expectation.optional() {
+                    try #require(expectation == reduce(lhs, *,  lhs))
+                    try #require(expectation == reduce(lhs, *=, lhs))
+                }
+            }
+        }
+    }
+}

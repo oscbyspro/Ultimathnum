@@ -51,6 +51,33 @@ extension BinaryInteger {
 }
 
 //*============================================================================*
+// MARK: * Binary Integer x Multiplication x Lenient
+//*============================================================================*
+
+extension BinaryInteger where Self: ArbitraryInteger & SignedInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// Returns `self ✕ self`.
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    @inlinable public borrowing func squared() -> Self {
+        self.squared().unchecked()
+    }
+    
+    /// Returns `self ✕ other`.
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    @inlinable public borrowing func times(_ other: borrowing Self) -> Self {
+        self.times(other).unchecked()
+    }
+}
+
+//*============================================================================*
 // MARK: * Binary Integer x Multiplication x Systems
 //*============================================================================*
 

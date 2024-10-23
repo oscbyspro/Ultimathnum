@@ -384,7 +384,7 @@ import TestKit2
 // MARK: * Binary Integer x Division x Conveniences
 //*============================================================================*
 
-@Suite(.tags(.forwarding)) struct BinaryIntegerTestsOnDivisionVersusConveniences {
+@Suite(.tags(.forwarding)) struct BinaryIntegerTestsOnDivisionConveniences {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
