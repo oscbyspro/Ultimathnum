@@ -187,6 +187,8 @@ where
     
     /// Returns the 1's or 2's complement of `self`.
     ///
+    /// ### Complements
+    ///
     /// - Note: The 1's complement is defined as `self.toggled()`.
     ///
     /// - Note: The 2's complement is defined as `self.toggled() &+ 1`.

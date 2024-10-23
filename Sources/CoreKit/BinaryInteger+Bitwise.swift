@@ -31,50 +31,6 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// Returns the 2's complement of this value.
-    ///
-    /// - Note: The 2's complement is defined as `self.toggled() &+ 1`.
-    ///
-    /// ### Well-behaved arbitrary unsigned integers
-    ///
-    /// The notion of infinity keeps arbitrary unsigned integers well-behaved.
-    ///
-    /// ```swift
-    /// UXL(repeating: Bit.zero) //  x
-    /// UXL(repeating: Bit.one ) // ~x
-    /// UXL(repeating: Bit.zero) // ~x &+ 1 == y
-    /// UXL(repeating: Bit.one ) // ~y
-    /// UXL(repeating: Bit.zero) // ~y &+ 1 == x
-    /// ```
-    ///
-    /// ```swift
-    /// UXL([~0] as [UX], repeating: Bit.zero) //  x
-    /// UXL([ 0] as [UX], repeating: Bit.one ) // ~x
-    /// UXL([ 1] as [UX], repeating: Bit.one ) // ~x &+ 1 == y
-    /// UXL([~1] as [UX], repeating: Bit.zero) // ~y
-    /// UXL([~0] as [UX], repeating: Bit.zero) // ~y &+ 1 == x
-    /// ```
-    ///
-    /// ```swift
-    /// UXL([ 0    ] as [UX], repeating: Bit.one ) //  x
-    /// UXL([~0    ] as [UX], repeating: Bit.zero) // ~x
-    /// UXL([ 0,  1] as [UX], repeating: Bit.zero) // ~x &+ 1 == y
-    /// UXL([~0, ~1] as [UX], repeating: Bit.one ) // ~y
-    /// UXL([ 0    ] as [UX], repeating: Bit.one ) // ~y &+ 1 == x
-    /// ```
-    ///
-    @inlinable public consuming func complement() -> Self {
-        self.complement(true).value
-    }
-    
-    /// Returns the unsigned magnitude of this value.
-    ///
-    /// - Note: This is equivalent to a conditional 2's complement bit cast.
-    ///
-    @inlinable public consuming func magnitude() -> Magnitude {
-        Magnitude(raw: self.isNegative ? self.complement() : self)
-    }
-    
     /// Returns the least significant bit in its `body`, or the `appendix`.
     ///
     /// - Returns: The bit at index: `0`.
