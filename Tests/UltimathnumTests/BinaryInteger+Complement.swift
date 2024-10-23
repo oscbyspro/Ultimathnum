@@ -24,13 +24,16 @@ import TestKit2
     /// Here we check that the following invariants hold for all values:
     ///
     /// ```swift
-    /// x.complement(false) == x.toggled()
-    /// x.complement(true ) == x.toggled().incremented()
-    /// x.complement(     ) == x.toggled().incremented().value
+    /// x.complement(false) == x.toggled().value
+    /// x.complement(true ) == x.toggled().value.incremented()
+    /// x.complement(     ) == x.toggled().value.incremented().value
     /// ```
     ///
-    @Test("BinaryInteger/complement(_:) - [entropic]", arguments: typesAsBinaryInteger, fuzzers)
-    func complement(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
+    @Test(
+        "BinaryInteger/complement: 1's and 2's",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func complement(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
@@ -50,16 +53,19 @@ import TestKit2
     /// x.magnitude() == T.Magnitude(raw: x.isNegative ? x.complement() : x)
     /// ```
     ///
-    @Test("BinaryInteger/magnitude(_:) - [entropic]", arguments: typesAsBinaryInteger, fuzzers)
-    func magnitude(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
-        whereIs(type)
+    @Test(
+        "BinaryInteger/complement: magnitude",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func magnitude(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< conditional(debug: 256, release: 1024) {
                 let instance = T.entropic(through: Shift.max(or: 255), using: &randomness)
                 let result = instance.magnitude()
                 let expectation = T.Magnitude(raw: instance.isNegative ? instance.complement() : instance)
-                #expect(result == expectation)
+                try #require(result == expectation)
             }
         }
     }
@@ -84,8 +90,11 @@ import TestKit2
     ///
     /// - Note: `T.min.complement(true)` is the only `error` case.
     ///
-    @Test("BinaryInteger/complement(_:) of edges", arguments: typesAsEdgyInteger)
-    func complementOfEdges(type: any EdgyInteger.Type) {
+    @Test(
+        "BinaryInteger/complement/edge-cases: min and max",
+        Tag.List.tags(.generic),
+        arguments: typesAsEdgyInteger
+    )   func complementOfEdges(type: any EdgyInteger.Type) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: EdgyInteger {
@@ -118,8 +127,11 @@ import TestKit2
     /// T(load: [ 0    ] as [T.Element.Magnitude], repeating: Bit.one ) // ~b &+ 1 == a
     /// ```
     ///
-    @Test("BinaryInteger/complement(_:) is well-behaved", arguments: typesAsBinaryInteger)
-    func complementIsWellBehaved(type: any BinaryInteger.Type) {
+    @Test(
+        "BinaryInteger/complement/edge-cases: is well-behaved",
+        Tag.List.tags(.generic),
+        arguments: typesAsBinaryInteger
+    )   func complementIsWellBehaved(type: any BinaryInteger.Type) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {

@@ -44,6 +44,43 @@ extension BinaryInteger {
     }
 }
 
+//*============================================================================*
+// MARK: * Binary Integer x Geometry x Natural
+//*============================================================================*
+
+extension BinaryInteger where Self: UnsignedInteger & SystemsInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// Returns the integer square root of `self`.
+    ///
+    /// ```swift
+    /// I8( 4).isqrt() // 2
+    /// I8( 3).isqrt() // 1
+    /// I8( 2).isqrt() // 1
+    /// I8( 1).isqrt() // 1
+    /// I8( 0).isqrt() // 0
+    /// I8(-1).isqrt() // nil
+    /// I8(-2).isqrt() // nil
+    /// I8(-3).isqrt() // nil
+    /// I8(-4).isqrt() // nil
+    /// ```
+    ///
+    /// - Note: `Natural<T>` guarantees nonoptional results.
+    ///
+    /// ### Algorithm
+    ///
+    /// - Seealso: https://en.wikipedia.org/wiki/newton's_method
+    ///
+    /// - Seealso: https://en.wikipedia.org/wiki/integer_square_root
+    ///
+    @inlinable public func isqrt() -> Self {
+        Natural(unchecked: self).isqrt()
+    }
+}
+
 //=----------------------------------------------------------------------------=
 // MARK: + Guarantee
 //=----------------------------------------------------------------------------=
@@ -95,42 +132,5 @@ extension Natural {
             
         }while revision < guess.value
         return Value(raw: guess.value)
-    }
-}
-
-//*============================================================================*
-// MARK: * Binary Integer x Geometry x Natural
-//*============================================================================*
-
-extension BinaryInteger where Self: UnsignedInteger & SystemsInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    /// Returns the integer square root of `self`.
-    ///
-    /// ```swift
-    /// I8( 4).isqrt() // 2
-    /// I8( 3).isqrt() // 1
-    /// I8( 2).isqrt() // 1
-    /// I8( 1).isqrt() // 1
-    /// I8( 0).isqrt() // 0
-    /// I8(-1).isqrt() // nil
-    /// I8(-2).isqrt() // nil
-    /// I8(-3).isqrt() // nil
-    /// I8(-4).isqrt() // nil
-    /// ```
-    ///
-    /// - Note: `Natural<T>` guarantees nonoptional results.
-    ///
-    /// ### Algorithm
-    ///
-    /// - Seealso: https://en.wikipedia.org/wiki/newton's_method
-    ///
-    /// - Seealso: https://en.wikipedia.org/wiki/integer_square_root
-    ///
-    @inlinable public func isqrt() -> Self {
-        Natural(unchecked: self).isqrt()
     }
 }

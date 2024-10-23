@@ -96,7 +96,7 @@ The above setup enables optimizations and disables instrumentation that may limi
 
 #### The lossy invariant
 
-Lossy operations are remarkably well-behaved. In the case of binary integers, we use this term specifically to denote truncation. In other words, a lossy binary integer result omits bits beyond its in-memory representation, which means all existing bits are still valid. In practice, types of different sizes agree on the bits that fit in the smaller type. The following code demonstrates the lossy invariant.
+Lossy operations are remarkably well-behaved. In the case of binary integers, we use this term specifically to denote truncation. In other words, a lossy binary integer result omits bits beyond its in-memory representation, which means all existing bits are still valid. In practice, types of different sizes agree on the bits that fit in the smaller type. The following example demonstrates this invariant.
 
 ```swift
 let a = I32.random()

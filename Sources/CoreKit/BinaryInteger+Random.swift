@@ -76,7 +76,7 @@ extension BinaryInteger {
             
         }   else {
             let divisor  = Nonzero<IX>(size: Element.self)
-            var division = index.division(divisor).unchecked() as Division<IX, IX>
+            var division = Natural(unchecked: index).division(divisor)
             
             increment: do {
                 division.remainder &+= 1
