@@ -96,7 +96,7 @@ The above setup enables optimizations and disables instrumentation that may limi
 
 #### The lossy invariant
 
-**Lossy** operations are remarkably well-behaved. In the case of binary integers, we use this term specifically to denote truncation. In other words, a **lossy** binary integer result omits bits beyond its in-memory representation, which means all existing bits are still valid. In practice, types of different sizes agree on the bits that fit in the smaller type. The following code demonstrates the **lossy** invariant.
+Lossy operations are remarkably well-behaved. In the case of binary integers, we use this term specifically to denote truncation. In other words, a lossy binary integer result omits bits beyond its in-memory representation, which means all existing bits are still valid. In practice, types of different sizes agree on the bits that fit in the smaller type. The following code demonstrates the lossy invariant.
 
 ```swift
 let a = I32.random()
@@ -169,7 +169,7 @@ U8.min.incremented().unchecked("assertion") // must not fail, must go brrr
 
 #### Destructuring: `value`, `error`, `components()`
 
-While `Fallible<T>` strives to streamline the error-handling process, perhaps you like to do things manually. Sure, have fun! You can read and write to its value and error fields. Alternatively, you may destructure the pair by invoking the consuming `components()` method.
+While `Fallible<T>` strives to streamline the error-handling process, perhaps you like to do things manually. Good luck, have fun! You can read and write to its value and error fields. Alternatively, consider destructuring the pair by invoking the consuming `components()` method.
 
 ```swift
 var pair = Fallible("Hello")
