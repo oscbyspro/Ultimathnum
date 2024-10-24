@@ -23,7 +23,7 @@
 
 ### The abstract symphony
 
-This work seeks to unify the various concepts of low-level arithmetic. It streamlines error handling and introduces a notion of arbitrary binary integer infinities, among other things. But, the emphasis is not on the diversity of ideas but on the orchestration of scalable abstractions. Imagine an oasis of harmony in a world of discord. It's more of a symphony than a library.
+This work seeks to unify the various concepts of low-level arithmetic. It streamlines error handling and introduces arbitrary binary integer infinities, among other things. But, the emphasis is not on the diversity of ideas but on the orchestration of scalable abstractions. Imagine an oasis of harmony in a world of discord. It's more of a symphony than a library.
 
 <a name="installation"/>
 
@@ -82,7 +82,7 @@ Run performance tests with the following terminal command(s):
 xcodebuild test -scheme Ultimathnum-Performance -destination 'platform=macOS'
 ```
 
-The above setup enables optimizations and disables instrumentation that may limit performance. These steps are critical since the project is both abstracted and modularized. Omitting compiler optimizations reduces performance by up to two orders of magnitude. Similarly, failing to omit code coverage reduces performance by yet another order of magnitude. If your measurements show poor results for reasonable inputs, feel free to open an issue about it or ask any questions you may have.
+This setup enables optimizations and omits unrelated metrics. These steps are critical since the project is both abstracted and modularized. Omitting compiler optimizations reduces performance by up to two orders of magnitude. Similarly, failing to omit code coverage reduces performance by another order of magnitude. If your measurements show poor results for reasonable inputs, feel free to open an issue about it or ask any questions you may have.
 
 <a name="overview"/>
 
@@ -113,7 +113,7 @@ The above setup enables optimizations and disables instrumentation that may limi
 
 #### The lossy invariant
 
-Lossy operations are remarkably well-behaved. In the case of binary integers, we use this term specifically to denote truncation. In other words, a lossy binary integer result omits bits beyond its in-memory representation, which means all existing bits are still valid. In practice, types of different sizes agree on the bits that fit in the smaller type. The following example demonstrates this invariant.
+Lossy operations are remarkably well-behaved. In the case of binary integers, we use this term specifically to denote truncation. In other words, a lossy binary integer result omits bits that don't fit, which means all existing bits are still valid. In practice, types of different sizes agree on the bits that fit in the smaller type. The following example demonstrates this invariant.
 
 ```swift
 let a = I32.random()
