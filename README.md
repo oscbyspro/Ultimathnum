@@ -94,6 +94,23 @@ The above setup enables optimizations and disables instrumentation that may limi
 
 👨‍💻🛠️🚧🧱🧱🏗️🧱🧱🚧⏳
 
+```
+           ┌───────────┬───────────┐
+           │  Systems  │ Arbitrary │
+┌──────────┼───────────┤───────────┤
+│   Signed │ B,E,F,S,X │  A,B,F,X  │
+├──────────┼───────────┤───────────┤
+│ Unsigned │ B,E,F,S,Y │  A,B,E,Y  │
+└──────────┴───────────┴───────────┘
+ A) ArbitraryInteger: B
+ B)    BinaryInteger: -
+ E)      EdgyInteger: B
+ F)    FiniteInteger: B
+ S)   SystemsInteger: E, F
+ X)    SignedInteger: F
+ Y)  UnsignedInteger: E
+```
+
 #### The lossy invariant
 
 Lossy operations are remarkably well-behaved. In the case of binary integers, we use this term specifically to denote truncation. In other words, a lossy binary integer result omits bits beyond its in-memory representation, which means all existing bits are still valid. In practice, types of different sizes agree on the bits that fit in the smaller type. The following example demonstrates this invariant.
