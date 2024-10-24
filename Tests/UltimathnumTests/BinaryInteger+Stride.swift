@@ -8,85 +8,77 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import DoubleIntKit
 import InfiniIntKit
 import RandomIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Binary Integer x Stride
 //*============================================================================*
 
-final class BinaryIntegerTestsOnStride: XCTestCase {
+@Suite struct BinaryIntegerTestsOnStride {
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests x Random
+    // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    /// Here we check that the following invariant holds for finite values:
-    ///
-    ///     start.advanced(by: distance) == T.exactly(IXL(start) + IXL(distance))
-    ///
-    func testAdvancedByFuzzingGenericFiniteValuesVersusIXL() {
-        func whereIs<A, B>(type: A.Type, distance: B.Type, rounds: IX, randomness: consuming FuzzerInt) where A: BinaryInteger, B: SignedInteger {
-            func random<T>(_ random: T.Type = T.self) -> T where T: BinaryInteger {
-                let size  = IX(size: T.self) ?? 128
-                let index = IX.random(in: 000000000 ..< size, using: &randomness)!
-                return T.random(through: Shift(Count(index)), using: &randomness)
-            }
-            
-            for _ in 0 ..< rounds {
-                let start:    A = random()
-                let distance: B = random()
-                let end: IXL  = IXL(start) + IXL(distance)
-                let result =  start.advanced(by: distance)
-                let expectation = A.exactly(end)
-                Test().same(result, expectation)
+    @Test(
+        "BinaryInteger/stride: advanced(by:) vs ArbitraryInteger.±(_:_:)",
+        Tag.List.tags(.generic, .random),
+        arguments: fuzzers
+    )   func advancedByVersusArbitraryInteger(randomness: consuming FuzzerInt) throws {
+        for type in typesAsBinaryInteger {
+            for distance in typesAsBinaryIntegerAsSigned {
+                try whereIs(type: type, distance: distance)
             }
         }
         
-        #if DEBUG
-        let rounds: IX = 032
-        #else
-        let rounds: IX = 256
-        #endif
-        for type in typesAsBinaryInteger {
-            for distance in typesAsBinaryIntegerAsSigned {
-                whereIs(type: type, distance: distance, rounds: rounds, randomness: fuzzer)
+        func whereIs<A, B>(type: A.Type, distance: B.Type) throws where A: BinaryInteger, B: SignedInteger {
+            for _ in 0 ..< conditional(debug: 32, release: 256) {
+                let start    = A.entropic(through: Shift.max(or: 255), using: &randomness)
+                let distance = B.entropic(through: Shift.max(or: 255), using: &randomness)
+                let end      = start.advanced(by: distance) as Fallible<A>
+                
+                if !start.isInfinite {
+                    try #require(end == A.exactly(IXL(start) + IXL(distance)))
+                    
+                }   else if !distance.isNegative {
+                    try #require(end == UXL(start).plus (UXL(distance.magnitude())).map(A.exactly))
+                    
+                }   else {
+                    try #require(end == UXL(start).minus(UXL(distance.magnitude())).map(A.exactly))
+                    try #require(end.error == false)
+                }
             }
         }
     }
     
-    /// Here we check that the following invariant holds for finite values:
-    ///
-    ///     start.distance(by: end) == T.exactly(IXL(end) - IXL(start))
-    ///
-    func testDistanceByFuzzingGenericFiniteValuesVersusIXL() {
-        func whereIs<A, B>(type: A.Type, distance: B.Type, rounds: IX, randomness: consuming FuzzerInt) where A: BinaryInteger, B: SignedInteger {
-            func random() -> A {
-                let size  = IX(size: A.self) ?? 128
-                let index = IX.random(in: 000000000 ..< size, using: &randomness)!
-                return A.random(through: Shift(Count(index)), using: &randomness)
-            }
-            
-            for _ in 0 ..< rounds {
-                let start: A = random()
-                let end:   A = random()
-                let distance = IXL(end) - IXL(start)
-                let result: Fallible<B> = start.distance(to:  end)
-                let expectation: Fallible<B> = B.exactly(distance)
-                Test().same(result, expectation)
+    @Test(
+        "BinaryInteger/stride: distance(to:) vs ArbitraryInteger.±(_:_:)",
+        Tag.List.tags(.generic, .random),
+        arguments: fuzzers
+    )   func distanceToVersusArbitraryInteger(randomness: consuming FuzzerInt) throws {
+        for type in typesAsBinaryInteger {
+            for distance in typesAsBinaryIntegerAsSigned {
+                try whereIs(type: type, distance: distance)
             }
         }
         
-        #if DEBUG
-        let rounds: IX = 032
-        #else
-        let rounds: IX = 256
-        #endif
-        for type in typesAsBinaryInteger {
-            for distance in typesAsBinaryIntegerAsSigned {
-                whereIs(type: type, distance: distance, rounds: rounds, randomness: fuzzer)
+        func whereIs<A, B>(type: A.Type, distance: B.Type) throws where A: BinaryInteger, B: SignedInteger {
+            for _ in 0 ..< conditional(debug: 32, release: 256) {
+                let start    = A.entropic(through: Shift.max(or: 255), using: &randomness)
+                let end      = A.entropic(through: Shift.max(or: 255), using: &randomness)
+                let distance = start.distance(to: end) as Fallible<B>
+                
+                if !start.isInfinite, !end.isInfinite {
+                    try #require(distance == B.exactly(IXL(end) - IXL(start)))
+                    
+                }   else if start <= end {
+                    try #require(distance == B.exactly(sign: Sign.plus,  magnitude: UXL(end - start)))
+                    
+                }   else {
+                    try #require(distance == B.exactly(sign: Sign.minus, magnitude: UXL(start - end)))
+                }
             }
         }
     }

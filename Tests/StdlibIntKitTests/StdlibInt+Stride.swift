@@ -33,14 +33,15 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt - stride [forwarding][entropic]", arguments: fuzzers)
-    func stride(_ randomness: consuming FuzzerInt) throws {
+    @Test("StdlibInt/stride: vs StdlibInt.Base", .tags(.forwarding), arguments: fuzzers)
+    func forwarding(randomness: consuming FuzzerInt) throws {
         for _ in 0 ..< 256 {
-            let distance = IX.entropic(using: &randomness)
-            let start = IXL.entropic(size: 256, using: &randomness)
-            let end = try start.advanced(by: distance).prune(Bad.error)
-            #expect(StdlibInt(start).advanced(by: Swift.Int(distance)) == StdlibInt(end))
-            #expect(StdlibInt(start).distance(to: StdlibInt(end)) == Swift.Int(distance))
+            let start    = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
+            let distance = IX .entropic(through: Shift.max(or: 255), using: &randomness)
+            let end      = try #require(start.advanced(by: distance).optional())
+            
+            try #require(StdlibInt(start).advanced(by: Swift.Int(distance)) == StdlibInt(end))
+            try #require(StdlibInt(start).distance(to: StdlibInt(end)) == Swift.Int(distance))
         }
     }
 }
