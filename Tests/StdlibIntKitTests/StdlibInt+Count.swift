@@ -8,6 +8,8 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import InfiniIntKit
+import RandomIntKit
 import StdlibIntKit
 import TestKit2
 
@@ -30,50 +32,41 @@ import TestKit2
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
- 
-    @Test("StdlibInt/bitWidth")
-    func bitWidth() {
-        zero: do {
-            #expect(StdlibInt.zero.bitWidth == 1)
-        }
-        
-        positive: do {
-            var value =  1 as StdlibInt
-            for count in 2 ... 256 {
-                #expect(value.bitWidth == count)
-                value <<= 1
+    
+    @Test("StdlibInt/count: vs StdlibInt.Base", .tags(.forwarding, .random), arguments: fuzzers)
+    func forwarding(_ randomness: consuming FuzzerInt) throws {
+        for _ in 0 ..< 1024 {
+            let random = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
+            
+            always: do {
+                let a = StdlibInt(random).bitWidth
+                let b = Swift.Int(IX(raw: random.entropy()))
+                try #require(a == b)
             }
-        }
-        
-        negative: do {
-            var value = -1 as StdlibInt
-            for count in 1 ... 256 {
-                #expect(value.bitWidth == count)
-                value <<= 1
+            
+            always: do {
+                let a = StdlibInt(random).trailingZeroBitCount
+                let b = Swift.Int(IX(IX(raw: random.ascending(Bit.zero)).magnitude()))
+                try #require(a == b)
             }
         }
     }
+}
+
+//*============================================================================*
+// MARK: * Stdlib Int x Count x Edge Cases
+//*============================================================================*
+
+@Suite struct StdlibIntTestsOnCountEdgeCases {
+        
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt/trailingZeroBitCount")
-    func trailingZeroBitCount() {
-        zero: do {
-            #expect(StdlibInt.zero.trailingZeroBitCount == 1)
-        }
-            
-        positive: do {
-            var value =  1 as StdlibInt
-            for count in 0 ..< 256 {
-                #expect(value.trailingZeroBitCount == count)
-                value <<= 1
-            }
-        }
-       
-        negative: do {
-            var value = -1 as StdlibInt
-            for count in 0 ..< 256 {
-                #expect(value.trailingZeroBitCount == count)
-                value <<= 1
-            }
-        }
+    @Test("StdlibInt/count/edge-cases: 0.trailingZeroBitCount", .tags(.exhaustive))
+    func trailingZeroBitCountOfZero() {
+        #expect(IXL.zero.ascending(Bit.zero) == Count.infinity)
+        #expect(StdlibInt(IXL.zero).trailingZeroBitCount == 1)
+        #expect(StdlibInt(IXL.zero).trailingZeroBitCount == StdlibInt.zero.bitWidth)
     }
 }
