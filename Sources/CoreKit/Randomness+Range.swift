@@ -82,7 +82,7 @@ extension Randomness {
     ///
     @inlinable internal mutating func systems<T>(
         through limit: T
-    ) -> T where T: UnsignedInteger {
+    )   -> T where T: UnsignedInteger {
 
         if  let end = limit.incremented().optional() {
             return self.systems(upTo: Nonzero(unchecked: end))
@@ -104,7 +104,7 @@ extension Randomness {
     ///
     @inlinable internal mutating func systems<T>(
         upTo limit: Nonzero<T>
-    ) -> T where T: UnsignedInteger {
+    )   -> T where T: UnsignedInteger {
         //  product.low  = product % (2 ** T.size)
         //  product.high = product / (2 ** T.size)
         var product = limit.value.multiplication(self.systems())
@@ -135,23 +135,27 @@ extension Randomness {
     ///
     /// Arbitrary integers accept-reject random bit patterns.
     ///
-    @inline(never) @inlinable internal mutating func arbitrary<T>(upTo comparison: Signum, relativeTo limit: /*borrowing*/ T) -> T where T: UnsignedInteger {
+    @inline(never) @inlinable internal mutating func arbitrary<T>(
+        upTo comparison: Signum,
+        relativeTo limit: borrowing T
+    )   -> T where T: UnsignedInteger {
+        
         if  limit.isInfinite {
-            Swift.preconditionFailure(String.overflow())
+            Swift.preconditionFailure(String.overallocation())
         }
         
         if  comparison.isNegative {
             Swift.assertionFailure(String.brokenInvariant())
         }
         
-        if  comparison.isZero {
-            Swift.assert(!limit.isZero)
+        if  comparison.isZero, limit.isZero {
+            Swift.assertionFailure(String.brokenInvariant())
         }
         
         return (limit).withUnsafeBinaryIntegerBody {
             let limit = (consume $0).normalized()
             //  TODO: req. normalized body, maybe?
-            return T.arbitrary(uninitialized: limit.count, repeating: .zero) { body in
+            return T.arbitrary(uninitialized: limit.count, repeating: Bit.zero) { body in
                 guard !body.isEmpty else { return }
                 
                 let lastIndex = body.count.decremented().unchecked()

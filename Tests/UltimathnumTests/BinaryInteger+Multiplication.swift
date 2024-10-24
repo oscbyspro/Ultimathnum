@@ -429,8 +429,8 @@ import TestKit2
                 for _ in 0 ..< 32 {
                     let lhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
                     let rhs = T.zero.toggled()
-                    
                     var expectation = lhs.negated()
+                    
                     if !T.isSigned, lhs  <= T.lsb {
                         expectation.error = false // 0 or 1 times T.max
                     }
@@ -478,7 +478,6 @@ import TestKit2
             for _ in 0 ..< 32 {
                 let lhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
                 let rhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                
                 let expectation = lhs.times(rhs) as Fallible<T>
                 
                 if  let expectation = expectation.optional() {
@@ -499,7 +498,6 @@ import TestKit2
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 32 {
                 let lhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                
                 let expectation = lhs.squared() as Fallible<T>
                 
                 if  let expectation = expectation.optional() {
@@ -525,7 +523,6 @@ import TestKit2
             for _ in 0 ..< 32 {
                 let lhs = T.entropic(size: 256, using: &randomness)
                 let rhs = T.entropic(size: 256, using: &randomness)
-                
                 let expectation = lhs.times(rhs) as Fallible<T>
                 
                 try #require(expectation.optional() == lhs.times(rhs) as T)
@@ -548,7 +545,6 @@ import TestKit2
         func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsSigned {
             for _ in 0 ..< 32 {
                 let lhs = T.entropic(size: 256, using: &randomness)
-                
                 let expectation = lhs.squared() as Fallible<T>
                 
                 try #require(expectation.optional() == lhs.times(lhs) as T)

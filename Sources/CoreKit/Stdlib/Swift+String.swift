@@ -16,7 +16,7 @@ extension String {
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
-    
+        
     /// A message describing the location of a broken invariant.
     @inlinable package static func brokenInvariant(
         function: StaticString = #function,
@@ -42,5 +42,15 @@ extension String {
         line: UInt = #line
     )   -> String {
         "overflow in \(function) at \(file):\(line)"
+    }
+    
+    
+    /// A message describing the location of an overallocation error.
+    @inlinable package static func overallocation(
+        function: StaticString = #function,
+        file: StaticString = #file,
+        line: UInt = #line
+    )   -> String {
+        "overallocation in \(function) at \(file):\(line)"
     }
 }

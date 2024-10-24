@@ -32,8 +32,8 @@ extension BinaryInteger {
     ///
     @inlinable public static func random(in range: Range<Self>, using randomness: inout some Randomness) -> Optional<Self> {
         let distance = Magnitude.init(raw: range.upperBound.minus(range.lowerBound).value)
-        guard let distance =  Nonzero(exactly:    distance) else { return nil }
-        return Self(raw: randomness.next(upTo:    distance)).plus(range.lowerBound).value
+        guard let distance =  Nonzero(exactly:/**/distance) else { return nil }
+        return Self(raw: randomness.next(upTo:/**/distance)).plus(range.lowerBound).value
     }
     
     //=------------------------------------------------------------------------=
@@ -60,7 +60,7 @@ extension BinaryInteger {
     ///
     @inlinable public static func random(through index: Shift<Magnitude>, using randomness: inout some Randomness) -> Self {
         guard let index: IX = index.natural().optional() else {
-            Swift.preconditionFailure(String.indexOutOfBounds())
+            Swift.preconditionFailure(String.overallocation())
         }
         
         if  let size = IX(size: Self.self) {

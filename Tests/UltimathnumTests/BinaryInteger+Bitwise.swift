@@ -61,14 +61,14 @@ import TestKit2
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..<  4 {
                 var value = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                ((((value)))) |= 1
-                var isOdd = (true)
+                value = value | 1
+                var expectation = true
                 
                 try withOnlyOneCallToRequire(value) { require in
                     for _ in U8.all {
-                        require(value.lsb == Bit(isOdd))
+                        require(value.lsb == Bit(expectation))
                         value = value.incremented().value
-                        isOdd.toggle()
+                        expectation.toggle()
                     }
                 }
             }
