@@ -82,13 +82,13 @@ extension SystemsInteger {
 }
 
 //=----------------------------------------------------------------------------=
-// MARK: + Machine Word
+// MARK: + Token
 //=----------------------------------------------------------------------------=
 
 extension SystemsInteger where BitPattern == UX.BitPattern {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers x Size
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
     /// Returns the `size` of the given type as a machine word.
