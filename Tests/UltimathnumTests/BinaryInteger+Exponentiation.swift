@@ -8,24 +8,38 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import DoubleIntKit
 import InfiniIntKit
 import RandomIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Binary Integer x Exponentiation
 //*============================================================================*
 
-final class BinaryIntegerTestsOnExponentiation: XCTestCase {
+@Suite struct BinaryIntegerTestsOnExponentiation {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    /// https://www.wolframalpha.com/input?i2d=true&i=Power%5B3%2C2239%5D
-    func testRaiseThreeToPrime333() {
-        let expectation = UXL("""
+    /// - Seealso: https://www.wolframalpha.com/input?i2d=true&i=Power%5B2%2C1399%5D
+    /// - Seealso: https://www.wolframalpha.com/input?i2d=true&i=Power%5B3%2C2239%5D
+    @Test(
+        "BinaryInteger/exponentiation: examples",
+        Tag.List.tags(.generic),
+        arguments: [
+        
+        (base: 2 as IXL, exponent: 1399 as UXL, power: IXL("""
+        0000000000000000000000000013834514851379060073245971093437442064\
+        9160977983437969614705766643223075185306094487364790624541806526\
+        1469876608299964693394277268648930360258831509072633846696053692\
+        0615225071992089480779025598319909176616250787667116220112182629\
+        2066306122745343237483669467464293469194680096834470280624398144\
+        7140309400278171194198038370675489371535762220733644100930478390\
+        9871197489979144724073675307870340798761005614290980492634226688
+        """)!),
+        
+        (base: 3 as IXL, exponent: 2239 as UXL, power: IXL("""
         0000000000000000000188143542653317364740047262022158266784428791\
         9275755434856235633416147929751345775198585370887106410700145660\
         6941136649945052148587729379215298759841906211465894489332805610\
@@ -43,263 +57,232 @@ final class BinaryIntegerTestsOnExponentiation: XCTestCase {
         8835641810301075822245153655314705395817134933252061409024669198\
         8059476349693766699090206318226803178343171280950787682695695659\
         6036250169540192297202679456092601217013126286587177412655204267
-        """)!
-        
-        func whereIs<A, B>(_ type: A.Type, _ exponent: B.Type) where A: BinaryInteger, B: UnsignedInteger {
-            if  let exponent = B.exactly(2239).optional() {
-                Test().same(A(3).power(exponent), A.exactly(expectation))
-            }
-        }
-        
-        #if DEBUG
-        whereIs(          IX .self,           UX .self)
-        whereIs(          UX .self,           UX .self)
-        whereIs(DoubleInt<IX>.self, DoubleInt<UX>.self)
-        whereIs(DoubleInt<UX>.self, DoubleInt<UX>.self)
-        whereIs(InfiniInt<IX>.self, InfiniInt<UX>.self)
-        whereIs(InfiniInt<UX>.self, InfiniInt<UX>.self)
-        #else
-        for type in typesAsBinaryInteger {
-            for exponent in typesAsBinaryIntegerAsUnsigned {
-                whereIs(type, exponent)
-            }
-        }
-        #endif
-    }
-    
-    func testCoefficientIsOneByDefault() {
-        Test().same(I8(2).power(   3 ), Fallible(8))
-        Test().same(U8(2).power(   3 ), Fallible(8))
-        Test().same(I8(2).power(UX(3)), Fallible(8))
-        Test().same(U8(2).power(UX(3)), Fallible(8))
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests x Random
-    //=------------------------------------------------------------------------=
-    
-    func testRaiseRandomByKnownExponent() {
-        func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
-            func random() -> T {
-                let index = IX.random(in: 00000 ..< size, using: &randomness)!
-                let pattern = T.Signitude.random(through: Shift(Count(index)), using: &randomness)
-                return T(raw: pattern) // do not forget about infinite values!
-            }
+        """)!),
             
-            for _  in 0 ..< rounds {
-                let base  = random()
-                let coefficient = random()
+    ] as [(base: IXL, exponent: UXL, power: IXL)])
+    func examples(base: IXL, exponent: UXL, power: IXL) throws {
+        for type in typesAsBinaryInteger {
+            try whereIs(type)
+        }
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            if  let base = T.exactly(base).optional() {
+                try #require(base.power(exponent) == T.exactly(power))
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/exponentiation: vs multiplication loop for small exponents",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func exponentiationVersusMultiplicationLoopForSmallExponents(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            let size = IX(size: T.self) ?? conditional(debug: 32, release: 256)
+            
+            for _  in 0 ..< conditional(debug: 4, release: 16) {
+                let base = T.entropic(size: size, using: &randomness)
+                let coefficient = T.entropic(size: size, using: &randomness)
                 var power = Fallible(coefficient)
-
-                for exponent: T.Magnitude in 0 ..< 8 {
-                    Test().same(base.power(exponent, coefficient: coefficient), power)
-                    power = power.map({ $0.times(base) })
-                }
-            }
-        }
-        
-        for type in typesAsBinaryInteger {
-            #if DEBUG
-            whereIs(type, size: IX(size: type) ?? 0032, rounds: 04, randomness: fuzzer)
-            #else
-            whereIs(type, size: IX(size: type) ?? 0256, rounds: 16, randomness: fuzzer)
-            #endif
-        }
-    }
-    
-    func testRaiseByFuzzing() {
-        func whereIs<T>(_ type: T.Type, size: IX, rounds: IX, randomness: consuming FuzzerInt) where T: BinaryInteger {
-            let limit = T.isArbitrary ? 255 : T.Magnitude.max
-            
-            func random() -> T {
-                let index = IX.random(in: 00000 ..< size, using: &randomness)!
-                let pattern = T.Signitude.random(through: Shift(Count(index)), using: &randomness)
-                return T(raw: pattern) // do not forget about infinite values!
-            }
-                        
-            for _  in 0 ..< rounds {
-                let coefficient: T = random()
-                let exponent = T.Magnitude.random(in: 0...limit, using: &randomness)
-                let power = T(3).times(5).unwrap().power(exponent, coefficient: coefficient)
                 
-                if  coefficient.isZero {
-                    Test().same(power, Fallible(T.zero))
-                }   else {
-                    var error = false
-                    let lhs   = T(3).power(exponent).sink(&error)
-                    let rhs   = T(5).power(exponent).sink(&error)
-                    var value = lhs.times((((rhs)))).sink(&error)
-                    value = value.times(coefficient).sink(&error)
-                    Test().same(power, Fallible(value, error: error))
+                for exponent: T.Magnitude in 0 ..< 16 {
+                    try #require(base.power(exponent, coefficient: coefficient) == power)
+                    power = power.map{$0.times(base)}
                 }
             }
         }
-        
-        for type in typesAsBinaryInteger {
-            #if DEBUG
-            whereIs(type, size: IX(size: type) ?? 255, rounds: 04, randomness: fuzzer)
-            #else
-            whereIs(type, size: IX(size: type) ?? 255, rounds: 16, randomness: fuzzer)
-            #endif
+    }
+}
+
+//*============================================================================*
+// MARK: * Binary Integer x Exponentiation x Conveniences
+//*============================================================================*
+
+@Suite struct BinaryIntegerTestsOnExponentiationConveniences {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/exponentiation/conveniences: disambiguation",
+        Tag.List.tags(.disambiguation, .generic)
+    )   func disambiguation() {
+        func build<T>(_ x: inout T) where T: BinaryInteger {
+            _ = x.power(0)
+            _ = x.power(0 as UX)
+            _ = x.power(0,       coefficient: 0)
+            _ = x.power(0 as UX, coefficient: 0)
         }
     }
     
-    /// - Note: Exponents beyond `T.Magnitude.max` repeat or return zero.
-    func testExponentsThatDontFitInMagnitudeAsSystemsInteger() {
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            let exponent = UXL.lsb << IX(size: type)
-            for coefficient: T in (I8(-2)...I8(2)).lazy.map(T.init(load:)) {
-                Test().same((~8 as T).power(exponent, coefficient: coefficient), Fallible(coefficient, error: !coefficient.isZero))
-                Test().same((~7 as T).power(exponent, coefficient: coefficient), Fallible(00000000000, error: !coefficient.isZero))
-                Test().same((~6 as T).power(exponent, coefficient: coefficient), Fallible(coefficient, error: !coefficient.isZero))
-                Test().same((~5 as T).power(exponent, coefficient: coefficient), Fallible(00000000000, error: !coefficient.isZero))
-                Test().same((~4 as T).power(exponent, coefficient: coefficient), Fallible(coefficient, error: !coefficient.isZero))
-                Test().same((~3 as T).power(exponent, coefficient: coefficient), Fallible(00000000000, error: !coefficient.isZero))
-                Test().same((~2 as T).power(exponent, coefficient: coefficient), Fallible(coefficient, error: !coefficient.isZero))
-                Test().same((~1 as T).power(exponent, coefficient: coefficient), Fallible(00000000000, error: !coefficient.isZero))
-                Test().same((~0 as T).power(exponent, coefficient: coefficient), Fallible(coefficient, error: !coefficient.isZero && !T.isSigned))
-                Test().same(( 0 as T).power(exponent, coefficient: coefficient), Fallible(00000000000))
-                Test().same(( 1 as T).power(exponent, coefficient: coefficient), Fallible(coefficient))
-                Test().same(( 2 as T).power(exponent, coefficient: coefficient), Fallible(00000000000, error: !coefficient.isZero))
-                Test().same(( 3 as T).power(exponent, coefficient: coefficient), Fallible(coefficient, error: !coefficient.isZero))
-                Test().same(( 4 as T).power(exponent, coefficient: coefficient), Fallible(00000000000, error: !coefficient.isZero))
-                Test().same(( 5 as T).power(exponent, coefficient: coefficient), Fallible(coefficient, error: !coefficient.isZero))
-                Test().same(( 6 as T).power(exponent, coefficient: coefficient), Fallible(00000000000, error: !coefficient.isZero))
-                Test().same(( 7 as T).power(exponent, coefficient: coefficient), Fallible(coefficient, error: !coefficient.isZero))
-                Test().same(( 8 as T).power(exponent, coefficient: coefficient), Fallible(00000000000, error: !coefficient.isZero))
+    @Test(
+        "BinaryInteger/exponentiation/conveniences: coefficient is one by default",
+        Tag.List.tags(.generic),
+        arguments: typesAsBinaryInteger
+    )   func coefficientIsOneByDefault(type: any BinaryInteger.Type) throws {
+        try  whereIs(type)
+
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            try #require(I8(2).power(U8(3)) == Fallible(I8(8)))
+            try #require(U8(2).power(U8(3)) == Fallible(U8(8)))
+            try #require(I8(2).power(UX(3)) == Fallible(I8(8)))
+            try #require(U8(2).power(UX(3)) == Fallible(U8(8)))
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/exponentiation/conveniences: exponent as SystemsInteger.Magnitude vs UXL",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsSystemsInteger, fuzzers
+    )   func exponentAsSystemsIntegerMagnitudeVersusUXL(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsInteger {
+            typealias M = T.Magnitude
+            
+            for _ in 0 ..< 4 {
+                let a = T.entropic(using: &randomness)
+                let b = M.entropic(using: &randomness)
+                let c = T.entropic(using: &randomness)
+                let x = a.power(   (b), coefficient:c)
+                let y = a.power(UXL(b), coefficient:c)
+                try #require((((((((((x == y))))))))))
+            }
+        }
+    }
+}
+
+//*============================================================================*
+// MARK: * Binary Integer x Exponentiation x Edge Cases
+//*============================================================================*
+
+@Suite struct BinaryIntegerTestsOnExponentiationEdgeCases {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Base
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/exponentiation/edge-cases: base is 1 → coefficient",
+        Tag.List.tags(.documentation, .generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func baseIsOneYieldsCoefficient(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            typealias M = T.Magnitude
+            
+            for _ in 0 ..< 32 {
+                let a = M.entropic(through: Shift.max(or: 255), using: &randomness)
+                let b = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                try #require(T.lsb.power(a, coefficient: b) == Fallible(b))
+            }
+        }
+    }
+
+    @Test(
+        "BinaryInteger/exponentiation/edge-cases: base is 0 → 0 or coefficient",
+        Tag.List.tags(.documentation, .generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func baseIsZeroYieldsZeroOrCoefficient(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            typealias M = T.Magnitude
+            
+            for _ in 0 ..< 32 {
+                let a = T.zero
+                let b = M.entropic(through: Shift.max(or: 255), using: &randomness)
+                let c = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let d = Fallible(b.isZero ? c : T.zero)
+                try #require(a.power(b, coefficient: c) == d)
+            }
+        }
+    }
+
+    @Test(
+        "BinaryInteger/exponentiation/edge-cases: base is NOT(0) → coefficient * (1 or ~0)",
+        Tag.List.tags(.documentation, .generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func baseIsRepeatingOnesYieldsCoefficietExpression(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            typealias M = T.Magnitude
+            
+            for _ in 0 ..< 32 {
+                let a = T(repeating: Bit.one)
+                let b = M.entropic(through: Shift.max(or: 255), using: &randomness)
+                let c = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let d = c.times(Bool(b.lsb) ? ~0 : 1).veto(!T.isSigned && b >= 2 && !c.isZero)
+                try #require(a.power(b, coefficient: c) == d)
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/exponentiation/edge-cases: exponent is 0 → coefficient",
+        Tag.List.tags(.documentation, .generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func exponentIsZeroYieldsCoefficientNoError(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< 32 {
+                let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let b = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                try #require(a.power(T.Magnitude.zero, coefficient: b) == Fallible(b))
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/exponentiation/edge-cases: coefficient is 0 → 0",
+        Tag.List.tags(.documentation, .generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func coefficientIsZeroYieldsZeroNoError(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        try  whereIs(type)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< 32 {
+                let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let b = T.Magnitude.entropic(through: Shift.max(or: 255), using: &randomness)
+                try #require(a.power(b, coefficient: T.zero) == Fallible(T.zero))
+            }
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/exponentiation/edge-cases: exponent > Magnitude.max",
+        Tag.List.tags(.generic, .random),
+        arguments: fuzzers
+    )   func exponentsThatDontFitInMagnitude(randomness: consuming FuzzerInt) throws {
+        for small in typesAsSystemsInteger {
+            for large in typesAsSystemsInteger {
+                try whereIs(small: small, large: large)
             }
         }
         
-        for type in typesAsSystemsInteger {
-            whereIs(type)
-        }
-    }
-    
-    func testExponentsThatDontFitInMagnitudeAsSystemsIntegerByFuzzing() {
-        func whereIs<A, B>(small: A.Type, large: B.Type, rounds: IX, randomness: consuming FuzzerInt) where A: SystemsInteger, B: SystemsInteger {
-            guard A.size <= B.size, A.isSigned == B.isSigned else { return }
+        func whereIs<A, B>(small: A.Type, large: B.Type) throws where A: SystemsInteger, B: SystemsInteger {
+            guard A.size < B.size, A.isSigned == B.isSigned else { return }
             
-            for _ in 0 ..< rounds {
+            let min = B.Magnitude(A.Magnitude.max) + 1
+            let max = B.Magnitude(B.Magnitude.max)
+            
+            for _ in 0 ..< 4 {
                 let base = A.random(using: &randomness)
-                let exponent = B.Magnitude.random(in: B.Magnitude(A.Magnitude.max)...B.Magnitude.max)
+                let exponent = B.Magnitude.random(in: min...max, using: &randomness)
                 let coefficient = A.random(using: &randomness)
                 let small = A(base).power(exponent, coefficient: A(coefficient))
                 let large = B(base).power(exponent, coefficient: B(coefficient))
-                Test().same(small, large.map(A.exactly))
-            }
-        }
-        
-        for small in typesAsSystemsInteger {
-            for large in typesAsSystemsInteger {
-                #if DEBUG
-                whereIs(small: small, large: large, rounds: 4, randomness: fuzzer)
-                #else
-                whereIs(small: small, large: large, rounds: 8, randomness: fuzzer)
-                #endif
-            }
-        }
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Edge Cases
-//=----------------------------------------------------------------------------=
-
-extension BinaryIntegerTestsOnExponentiation {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    func testBasesNearZero() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            for exponent: I8 in -2...2 {
-                let exponent = T.Magnitude(load: exponent)
-                for coefficient: I8 in -2...2 {
-                    let coefficient = T(load: coefficient)
-                    
-                    Test().same(
-                        T(Bit.one).power(exponent, coefficient: coefficient),
-                        Fallible(coefficient)
-                    )
-                    
-                    Test().same(
-                        T(repeating: Bit.zero).power(exponent, coefficient: coefficient),
-                        Fallible(exponent.isZero ? coefficient : T.zero)
-                    )
-
-                    Test().same(
-                        T(repeating: Bit.one ).power(exponent, coefficient: coefficient),
-                        coefficient.times(Bool(exponent.lsb) ? ~0 : 1).veto(
-                            !T.isSigned && exponent >= 2 && !coefficient.isZero
-                        )
-                    )
-                }
-            }
-        }
-        
-        #if DEBUG
-        whereIs(UX.self)
-        whereIs(DoubleInt<UX>.self)
-        whereIs(InfiniInt<UX>.self)
-        #else
-        for type in typesAsBinaryInteger {
-            whereIs(type)
-        }
-        #endif
-    }
-    
-    func testZeroCoefficientsReturnZeroNoError() {
-        func whereIs<A, B>(_ type: A.Type, _ exponent: B.Type) where A: BinaryInteger, B: UnsignedInteger {
-            Test().same(Esque<A>.min.power(B.max, coefficient: A.zero), Fallible(A.zero))
-            Test().same(Esque<A>.max.power(B.max, coefficient: A.zero), Fallible(A.zero))
-        }
-        
-        for type in typesAsBinaryInteger {
-            for exponent in typesAsBinaryIntegerAsUnsigned {
-                whereIs(type, exponent)
-            }
-        }
-    }
-    
-    func testZeroExponentsReturnCoefficientNoError() {
-        func whereIs<A, B>(_ type: A.Type, _ exponent: B.Type) where A: BinaryInteger, B: UnsignedInteger {
-            for coefficient: I8 in -2...2 {
-                let coefficient = A(load: coefficient)
-                Test().same(Esque<A>.min.power(B.min, coefficient: coefficient), Fallible(coefficient))
-                Test().same(Esque<A>.max.power(B.min, coefficient: coefficient), Fallible(coefficient))
-            }
-        }
-        
-        for type in typesAsBinaryInteger {
-            for exponent in typesAsBinaryIntegerAsUnsigned {
-                whereIs(type, exponent)
-            }
-        }
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Documentation
-//=----------------------------------------------------------------------------=
-
-extension BinaryIntegerTestsOnExponentiation {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    func testBinaryIntegerDocumentation() {
-        func whereIs<A, B>(_ type: A.Type, _ exponent: B.Type) where A: BinaryInteger, B: UnsignedInteger {
-            Test().same(A(0).power(B(1), coefficient: A(2)), A.exactly(   0))
-            Test().same(A(1).power(B(2), coefficient: A(3)), A.exactly(   3))
-            Test().same(A(2).power(B(3), coefficient: A(5)), A.exactly(  40))
-            Test().same(A(3).power(B(5), coefficient: A(7)), A.exactly(1701))
-        }
-        
-        for type in typesAsBinaryInteger {
-            for exponent in typesAsBinaryIntegerAsUnsigned {
-                whereIs(type, exponent)
+                try #require(small == large.map(A.exactly))
             }
         }
     }
