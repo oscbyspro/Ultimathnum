@@ -22,19 +22,3 @@ import CoreKit
     #expect(input.description         == expectation, sourceLocation: location)
     #expect(String(describing: input) == expectation, sourceLocation: location)
 }
-
-//*============================================================================*
-// MARK: * Expect x Text x Integers
-//*============================================================================*
-
-/// Tests whether an integer's description is stable.
-@inlinable public func Ɣexpect<T>(
-    _  format: TextInt,
-    bidirectional integer: T,
-    at location: SourceLocation = #_sourceLocation
-)   throws where T: BinaryInteger {
-        
-    let encoded = integer.description(as: format)
-    let decoded = try T.init(encoded, as: format)
-    #expect(decoded == integer, "BinaryInteger/description(_:as:) then BinaryInteger.init(_:as:)", sourceLocation: location)
-}
