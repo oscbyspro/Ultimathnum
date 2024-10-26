@@ -11,26 +11,26 @@
 // MARK: * Utilities x Reduce
 //*============================================================================*
 
-@inlinable public func reduce<T>(
-    _ transform: (consuming T) throws -> T,
-    _ rhs: T
-)   rethrows -> T {
+@inlinable public func reduce<A, B>(
+    _ transform: (consuming A) throws -> B,
+    _ rhs: A
+)   rethrows -> B {
     try transform(rhs)
 }
 
-@inlinable public func reduce<T>(
-    _ lhs: consuming T,
-    _ transform: (consuming T, borrowing T) throws -> T,
-    _ rhs: borrowing T
-)   rethrows -> T {
+@inlinable public func reduce<A, B, C>(
+    _ lhs: consuming A,
+    _ transform: (consuming A, borrowing B) throws -> C,
+    _ rhs: borrowing B
+)   rethrows -> C {
     try transform(lhs, rhs)
 }
 
-@inlinable public func reduce<T>(
-    _ lhs: consuming T,
-    _ transform: (inout T, borrowing T) throws -> Void,
-    _ rhs: borrowing T
-)   rethrows -> T {
+@inlinable public func reduce<A, B>(
+    _ lhs: consuming A,
+    _ transform: (inout A, borrowing B) throws -> Void,
+    _ rhs: borrowing B
+)   rethrows -> A {
     try transform(&lhs, rhs)
     return lhs
 }

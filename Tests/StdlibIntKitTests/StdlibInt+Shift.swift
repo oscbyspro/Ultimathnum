@@ -33,65 +33,64 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt.<<(_:_:) - [forwarding][entropic]", arguments: fuzzers)
-    func shift(_ randomness: consuming FuzzerInt) {
-        for _ in 0 ..< 32 {
-            let instance = IXL.entropic(size: 000256, using: &randomness)
+    @Test("StdlibInt.<<(_:_:)", .tags(.forwarding, .random), arguments: fuzzers)
+    func shift(_ randomness: consuming FuzzerInt) throws {
+        for _ in 0 ..< 128 {
+            let random   = IXL.entropic(size: 000256, using: &randomness)
             let distance = IXL.random(in: -128...127, using: &randomness)
-            let expectation = instance << distance
-            Ɣexpect(StdlibInt(instance), up: StdlibInt(distance), is: StdlibInt(expectation))
+            let expectation: IXL = random   <<  distance
+            try Ɣrequire(StdlibInt(random), up: StdlibInt(distance), is: StdlibInt(expectation))
         }
     }
     
-    @Test("StdlibInt.<<(_:_:) - Int.max [forwarding]")
-    func shiftByDistancesNearMaxInt() {
-        Ɣexpect(StdlibInt.zero, up: StdlibInt(Int.max) + 2, is: StdlibInt.zero)
-        Ɣexpect(StdlibInt.zero, up: StdlibInt(Int.max) + 1, is: StdlibInt.zero)
-        Ɣexpect(StdlibInt.zero, up: StdlibInt(Int.max),     is: StdlibInt.zero)
-        Ɣexpect(StdlibInt.zero, up: StdlibInt(Int.max) - 1, is: StdlibInt.zero)
-        Ɣexpect(StdlibInt.zero, up: StdlibInt(Int.max) - 2, is: StdlibInt.zero)
+    @Test("StdlibInt.<<(_:_:) - Int.max", .tags(.forwarding))
+    func shiftByDistancesNearMaxInt() throws {
+        try Ɣrequire(StdlibInt.zero, up: StdlibInt(Int.max) + 2, is: StdlibInt.zero)
+        try Ɣrequire(StdlibInt.zero, up: StdlibInt(Int.max) + 1, is: StdlibInt.zero)
+        try Ɣrequire(StdlibInt.zero, up: StdlibInt(Int.max),     is: StdlibInt.zero)
+        try Ɣrequire(StdlibInt.zero, up: StdlibInt(Int.max) - 1, is: StdlibInt.zero)
+        try Ɣrequire(StdlibInt.zero, up: StdlibInt(Int.max) - 2, is: StdlibInt.zero)
     }
     
-    @Test("StdlibInt.<<(_:_:) - Int.min [forwarding][entropic]", arguments: fuzzers)
-    func shiftByDistancesNearMinInt(_ randomness: consuming FuzzerInt) {
+    @Test("StdlibInt.<<(_:_:) - Int.min", .tags(.forwarding, .random), arguments: fuzzers)
+    func shiftByDistancesNearMinInt(_ randomness: consuming FuzzerInt) throws {
         for _ in 0 ..< 32 {
             let random = StdlibInt(IXL.entropic(size: 256, using: &randomness))
             let expectation = StdlibInt(IXL(repeating: Bit(random < 0)))
-            Ɣexpect(random, up: StdlibInt(Int.min) + 2, is: expectation)
-            Ɣexpect(random, up: StdlibInt(Int.min) + 1, is: expectation)
-            Ɣexpect(random, up: StdlibInt(Int.min),     is: expectation)
-            Ɣexpect(random, up: StdlibInt(Int.min) - 1, is: expectation)
-            Ɣexpect(random, up: StdlibInt(Int.min) - 2, is: expectation)
+            try Ɣrequire(random, up: StdlibInt(Int.min) + 2, is: expectation)
+            try Ɣrequire(random, up: StdlibInt(Int.min) + 1, is: expectation)
+            try Ɣrequire(random, up: StdlibInt(Int.min),     is: expectation)
+            try Ɣrequire(random, up: StdlibInt(Int.min) - 1, is: expectation)
+            try Ɣrequire(random, up: StdlibInt(Int.min) - 2, is: expectation)
         }
     }
     
-    /// - Note: This method checks `ascending` and `descending` shifts.
-    func Ɣexpect(_ instance: StdlibInt, up distance: StdlibInt, is expectation: StdlibInt, at location: SourceLocation = #_sourceLocation) {
+    func Ɣrequire(_ instance: StdlibInt, up distance: StdlibInt, is expectation: StdlibInt, at location: SourceLocation = #_sourceLocation) throws {
         //=--------------------------------------=
         let opposite: StdlibInt = -distance
         //=--------------------------------------=
         if  instance != 0, distance >= 0 {
-            #expect((instance.bitWidth + Int(distance)) == expectation.bitWidth, sourceLocation: location)
+            try #require((instance.bitWidth + Int(distance)) == expectation.bitWidth, sourceLocation: location)
         }
         
         always: do {
-            #expect((instance << distance) == expectation, sourceLocation: location)
-            #expect({ var x = instance; x <<= distance; return x }() == expectation, sourceLocation: location)
+            try #require(reduce(instance, <<,  distance) == expectation, sourceLocation: location)
+            try #require(reduce(instance, <<=, distance) == expectation, sourceLocation: location)
         }
         
         always: do {
-            #expect((instance >> opposite) == expectation, sourceLocation: location)
-            #expect({ var x = instance; x >>= opposite; return x }() == expectation, sourceLocation: location)
+            try #require(reduce(instance, >>,  opposite) == expectation, sourceLocation: location)
+            try #require(reduce(instance, >>=, opposite) == expectation, sourceLocation: location)
         }
         
-        if  let distance = Swift.Int(exactly: distance) {
-            #expect((instance << distance) == expectation, sourceLocation: location)
-            #expect({ var x = instance; x <<= distance; return x }() == expectation, sourceLocation: location)
+        if  let distance = Swift.Int(exactly:  distance) {
+            try #require(reduce(instance, <<,  distance) == expectation, sourceLocation: location)
+            try #require(reduce(instance, <<=, distance) == expectation, sourceLocation: location)
         }
         
-        if  let opposite = Swift.Int(exactly: opposite) {
-            #expect((instance >> opposite) == expectation, sourceLocation: location)
-            #expect({ var x = instance; x >>= opposite; return x }() == expectation, sourceLocation: location)
+        if  let opposite = Swift.Int(exactly:  opposite) {
+            try #require(reduce(instance, >>,  opposite) == expectation, sourceLocation: location)
+            try #require(reduce(instance, >>=, opposite) == expectation, sourceLocation: location)
         }
     }
 }
