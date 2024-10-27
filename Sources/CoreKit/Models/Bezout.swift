@@ -21,6 +21,7 @@
 ///     2. gcd(a, b) == gcd(±a, ±b)
 ///     3. gcd(a, b) == gcd( a,  b % a)
 ///     4. gcd(a, b) == gcd( b,  a)
+///     5. gcd(a, ∞) == nil
 ///
 /// ### Bézout's identity
 ///

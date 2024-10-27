@@ -27,6 +27,7 @@ extension BinaryInteger {
     ///     2. gcd(a, b) == gcd(±a, ±b)
     ///     3. gcd(a, b) == gcd( a,  b % a)
     ///     4. gcd(a, b) == gcd( b,  a)
+    ///     5. gcd(a, ∞) == nil
     ///
     /// ### Gretest Common Divisor to Least Common Multiple
     ///
@@ -53,6 +54,7 @@ extension BinaryInteger {
     ///     2. gcd(a, b) == gcd(±a, ±b)
     ///     3. gcd(a, b) == gcd( a,  b % a)
     ///     4. gcd(a, b) == gcd( b,  a)
+    ///     5. gcd(a, ∞) == nil
     ///
     /// ### Bézout's identity
     ///
@@ -90,6 +92,7 @@ extension FiniteInteger {
     ///     2. gcd(a, b) == gcd(±a, ±b)
     ///     3. gcd(a, b) == gcd( a,  b % a)
     ///     4. gcd(a, b) == gcd( b,  a)
+    ///     5. gcd(a, ∞) == nil
     ///
     /// ### Gretest Common Divisor to Least Common Multiple
     ///
@@ -113,6 +116,7 @@ extension FiniteInteger {
     ///     2. gcd(a, b) == gcd(±a, ±b)
     ///     3. gcd(a, b) == gcd( a,  b % a)
     ///     4. gcd(a, b) == gcd( b,  a)
+    ///     5. gcd(a, ∞) == nil
     ///
     /// ### Bézout's identity
     ///
@@ -147,6 +151,7 @@ extension Finite where Value: BinaryInteger {
     ///     2. gcd(a, b) == gcd(±a, ±b)
     ///     3. gcd(a, b) == gcd( a,  b % a)
     ///     4. gcd(a, b) == gcd( b,  a)
+    ///     5. gcd(a, ∞) == nil
     ///
     /// ### Gretest Common Divisor to Least Common Multiple
     ///
@@ -184,6 +189,7 @@ extension Finite where Value: BinaryInteger {
     ///     2. gcd(a, b) == gcd(±a, ±b)
     ///     3. gcd(a, b) == gcd( a,  b % a)
     ///     4. gcd(a, b) == gcd( b,  a)
+    ///     5. gcd(a, ∞) == nil
     ///
     /// ### Bézout's identity
     ///
