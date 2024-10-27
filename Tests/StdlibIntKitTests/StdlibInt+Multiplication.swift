@@ -27,7 +27,7 @@ import TestKit2
 ///
 /// - TODO: Test `StdlibInt` forwarding in generic `BinaryInteger` tests.
 ///
-@Suite("StdlibInt/multiplication") struct StdlibIntTestsOnMultiplication {
+@Suite struct StdlibIntTestsOnMultiplication {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests

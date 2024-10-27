@@ -8,137 +8,166 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import DoubleIntKit
 import InfiniIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Binary Integer x Literals
 //*============================================================================*
 
-final class BinaryIntegerTestsOnLiterals: XCTestCase {
+@Suite struct BinaryIntegerTestsOnLiterals {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Metadata
+    //=------------------------------------------------------------------------=
+    
+    static let minI128 = IXL(repeating: Bit.one).up(Count(127))
+    static let maxI128 = IXL(repeating: Bit.one).up(Count(127)).toggled()
+    static let maxU128 = IXL(repeating: Bit.one).up(Count(128)).toggled()
+    
+    static let minI256 = IXL(repeating: Bit.one).up(Count(255))
+    static let maxI256 = IXL(repeating: Bit.one).up(Count(255)).toggled()
+    static let maxU256 = IXL(repeating: Bit.one).up(Count(256)).toggled()
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Literal Int
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/literals: from LiteralInt near zero",
+        Tag.List.tags(.generic),
+        arguments: [
+            
+            (LiteralInt(-4), IXL.zero - 4),
+            (LiteralInt(-3), IXL.zero - 3),
+            (LiteralInt(-2), IXL.zero - 2),
+            (LiteralInt(-1), IXL.zero - 1),
+            (LiteralInt( 0), IXL.zero + 0),
+            (LiteralInt( 1), IXL.zero + 1),
+            (LiteralInt( 2), IXL.zero + 2),
+            (LiteralInt( 3), IXL.zero + 3),
+            
+    ] as [(LiteralInt, IXL)])
+    func fromLiteralIntNearZero(literal: LiteralInt, expectation: IXL) throws {
+        for type in typesAsBinaryInteger {
+            try whereIs(type)
+        }
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            try #require(T.exactly(literal) == T.exactly(expectation))
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/literals: from LiteralInt near edges of signed",
+        Tag.List.tags(.generic),
+        arguments: [
+    
+            (LiteralInt(-129), IXL(I8.min) - 1),
+            (LiteralInt(-128), IXL(I8.min)    ),
+            (LiteralInt(-127), IXL(I8.min) + 1),
+            (LiteralInt( 126), IXL(I8.max) - 1),
+            (LiteralInt( 127), IXL(I8.max)    ),
+            (LiteralInt( 128), IXL(I8.max) + 1),
+        
+            (LiteralInt(-32769), IXL(I16.min) - 1),
+            (LiteralInt(-32768), IXL(I16.min)    ),
+            (LiteralInt(-32767), IXL(I16.min) + 1),
+            (LiteralInt( 32766), IXL(I16.max) - 1),
+            (LiteralInt( 32767), IXL(I16.max)    ),
+            (LiteralInt( 32768), IXL(I16.max) + 1),
+            
+            (LiteralInt(-2147483649), IXL(I32.min) - 1),
+            (LiteralInt(-2147483648), IXL(I32.min)    ),
+            (LiteralInt(-2147483647), IXL(I32.min) + 1),
+            (LiteralInt( 2147483646), IXL(I32.max) - 1),
+            (LiteralInt( 2147483647), IXL(I32.max)    ),
+            (LiteralInt( 2147483648), IXL(I32.max) + 1),
+            
+            (LiteralInt(-9223372036854775809), IXL(I64.min) - 1),
+            (LiteralInt(-9223372036854775808), IXL(I64.min)    ),
+            (LiteralInt(-9223372036854775807), IXL(I64.min) + 1),
+            (LiteralInt( 9223372036854775806), IXL(I64.max) - 1),
+            (LiteralInt( 9223372036854775807), IXL(I64.max)    ),
+            (LiteralInt( 9223372036854775808), IXL(I64.max) + 1),
+            
+            (LiteralInt(-170141183460469231731687303715884105729), BinaryIntegerTestsOnLiterals.minI128 - 1),
+            (LiteralInt(-170141183460469231731687303715884105728), BinaryIntegerTestsOnLiterals.minI128    ),
+            (LiteralInt(-170141183460469231731687303715884105727), BinaryIntegerTestsOnLiterals.minI128 + 1),
+            (LiteralInt( 170141183460469231731687303715884105726), BinaryIntegerTestsOnLiterals.maxI128 - 1),
+            (LiteralInt( 170141183460469231731687303715884105727), BinaryIntegerTestsOnLiterals.maxI128    ),
+            (LiteralInt( 170141183460469231731687303715884105728), BinaryIntegerTestsOnLiterals.maxI128 + 1),
+            
+            (LiteralInt(-57896044618658097711785492504343953926634992332820282019728792003956564819969), BinaryIntegerTestsOnLiterals.minI256 - 1),
+            (LiteralInt(-57896044618658097711785492504343953926634992332820282019728792003956564819968), BinaryIntegerTestsOnLiterals.minI256    ),
+            (LiteralInt(-57896044618658097711785492504343953926634992332820282019728792003956564819967), BinaryIntegerTestsOnLiterals.minI256 + 1),
+            (LiteralInt( 57896044618658097711785492504343953926634992332820282019728792003956564819966), BinaryIntegerTestsOnLiterals.maxI256 - 1),
+            (LiteralInt( 57896044618658097711785492504343953926634992332820282019728792003956564819967), BinaryIntegerTestsOnLiterals.maxI256    ),
+            (LiteralInt( 57896044618658097711785492504343953926634992332820282019728792003956564819968), BinaryIntegerTestsOnLiterals.maxI256 + 1),
+            
+    ] as [(LiteralInt, IXL)])
+    func fromLiteralIntNearEdgesOfSignedIntegers(literal: LiteralInt, expectation: IXL) throws {
+        for type in typesAsBinaryInteger {
+            try whereIs(type)
+        }
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            try #require(T.exactly(literal) == T.exactly(expectation))
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/literals: from LiteralInt near size edges of unsigned",
+        Tag.List.tags(.generic),
+        arguments: [
+            
+            (LiteralInt( 254), IXL(U8.max) - 1),
+            (LiteralInt( 255), IXL(U8.max)    ),
+            (LiteralInt( 256), IXL(U8.max) + 1),
+            
+            (LiteralInt( 65534), IXL(U16.max) - 1),
+            (LiteralInt( 65535), IXL(U16.max)    ),
+            (LiteralInt( 65536), IXL(U16.max) + 1),
+            
+            (LiteralInt( 4294967294), IXL(U32.max) - 1),
+            (LiteralInt( 4294967295), IXL(U32.max)    ),
+            (LiteralInt( 4294967296), IXL(U32.max) + 1),
+            
+            (LiteralInt( 18446744073709551614), IXL(U64.max) - 1),
+            (LiteralInt( 18446744073709551615), IXL(U64.max)    ),
+            (LiteralInt( 18446744073709551616), IXL(U64.max) + 1),
+            
+            (LiteralInt( 340282366920938463463374607431768211454), BinaryIntegerTestsOnLiterals.maxU128 - 1),
+            (LiteralInt( 340282366920938463463374607431768211455), BinaryIntegerTestsOnLiterals.maxU128    ),
+            (LiteralInt( 340282366920938463463374607431768211456), BinaryIntegerTestsOnLiterals.maxU128 + 1),
+
+            (LiteralInt( 115792089237316195423570985008687907853269984665640564039457584007913129639934), BinaryIntegerTestsOnLiterals.maxU256 - 1),
+            (LiteralInt( 115792089237316195423570985008687907853269984665640564039457584007913129639935), BinaryIntegerTestsOnLiterals.maxU256    ),
+            (LiteralInt( 115792089237316195423570985008687907853269984665640564039457584007913129639936), BinaryIntegerTestsOnLiterals.maxU256 + 1),
+            
+    ] as [(LiteralInt, IXL)])
+    func fromLiteralIntNearSizeEdgesOfUnsigned(literal: LiteralInt, expectation: IXL) throws {
+        for type in typesAsBinaryInteger {
+            try whereIs(type)
+        }
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            try #require(T.exactly(literal) == T.exactly(expectation))
+        }
+    }
+}
+
+//*============================================================================*
+// MARK: * Binary Integer x Literals x Edge Cases
+//*============================================================================*
+
+@Suite struct BinaryIntegerTestsOnLiteralsEdgeCases {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testBigIntLiteralValuesNearSizeEdges() {
-        struct Values {
-            let size:  Count
-            let base:  IXL
-            let minM1: LiteralInt
-            let min:   LiteralInt
-            let minP1: LiteralInt
-            let maxM1: LiteralInt
-            let max:   LiteralInt
-            let maxP1: LiteralInt
-        }
-        
-        let arguments: [Values] = [
-            Values(
-                size:   Count(008),
-                base:   127,
-                minM1: -129,
-                min:   -128,
-                minP1: -127,
-                maxM1:  126,
-                max:    127,
-                maxP1:  128
-            ),
-            Values(
-                size:   Count(016),
-                base:   32767,
-                minM1: -32769,
-                min:   -32768,
-                minP1: -32767,
-                maxM1:  32766,
-                max:    32767,
-                maxP1:  32768
-            ),
-            Values(
-                size:   Count(032),
-                base:   2147483647,
-                minM1: -2147483649,
-                min:   -2147483648,
-                minP1: -2147483647,
-                maxM1:  2147483646,
-                max:    2147483647,
-                maxP1:  2147483648
-            ),
-            Values(
-                size:   Count(064),
-                base:   9223372036854775807,
-                minM1: -9223372036854775809,
-                min:   -9223372036854775808,
-                minP1: -9223372036854775807,
-                maxM1:  9223372036854775806,
-                max:    9223372036854775807,
-                maxP1:  9223372036854775808
-            ),
-            Values(
-               size:   Count(128),
-               base:   170141183460469231731687303715884105727,
-               minM1: -170141183460469231731687303715884105729,
-               min:   -170141183460469231731687303715884105728,
-               minP1: -170141183460469231731687303715884105727,
-               maxM1:  170141183460469231731687303715884105726,
-               max:    170141183460469231731687303715884105727,
-               maxP1:  170141183460469231731687303715884105728
-           ),
-            Values(
-               size:   Count(256),
-               base:   57896044618658097711785492504343953926634992332820282019728792003956564819967,
-               minM1: -57896044618658097711785492504343953926634992332820282019728792003956564819969,
-               min:   -57896044618658097711785492504343953926634992332820282019728792003956564819968,
-               minP1: -57896044618658097711785492504343953926634992332820282019728792003956564819967,
-               maxM1:  57896044618658097711785492504343953926634992332820282019728792003956564819966,
-               max:    57896044618658097711785492504343953926634992332820282019728792003956564819967,
-               maxP1:  57896044618658097711785492504343953926634992332820282019728792003956564819968
-           ),
-        ]
-                
-        func AsSigned<T>(_ integer: T.Type, values: Values) where T: SignedInteger {
-            Test().same(T.exactly(values.minM1), Fallible(T(load: ~values.base - 1), error: T.size <= values.size))
-            Test().same(T.exactly(values.min  ), Fallible(T(load: ~values.base    ), error: T.size <  values.size))
-            Test().same(T.exactly(values.minP1), Fallible(T(load: ~values.base + 1), error: T.size <  values.size))
-            Test().same(T.exactly(values.maxM1), Fallible(T(load:  values.base - 1), error: T.size <  values.size))
-            Test().same(T.exactly(values.max  ), Fallible(T(load:  values.base    ), error: T.size <  values.size))
-            Test().same(T.exactly(values.maxP1), Fallible(T(load:  values.base + 1), error: T.size <= values.size))
-        }
-        
-        func AsUnsigned<T>(_ integer: T.Type, values: Values) where T: UnsignedInteger {
-            Test().same(T.exactly(values.minM1), Fallible(T(load: ~values.base - 1), error: true))
-            Test().same(T.exactly(values.min  ), Fallible(T(load: ~values.base    ), error: true))
-            Test().same(T.exactly(values.minP1), Fallible(T(load: ~values.base + 1), error: true))
-            Test().same(T.exactly(values.maxM1), Fallible(T(load:  values.base - 1), error: T.size <  values.size))
-            Test().same(T.exactly(values.max  ), Fallible(T(load:  values.base    ), error: T.size <  values.size))
-            Test().same(T.exactly(values.maxP1), Fallible(T(load:  values.base + 1), error: T.size <  values.size))
-        }
-        
-        for values in arguments {
-            Test().same(values.base .entropy(), values.size)
-            Test().same(values.minM1.entropy(), Count(IX(raw: values.size) + 1))
-            Test().same(values.min  .entropy(), values.size)
-            Test().same(values.minP1.entropy(), values.size)
-            Test().same(values.maxM1.entropy(), values.size)
-            Test().same(values.max  .entropy(), values.size)
-            Test().same(values.maxP1.entropy(), Count(IX(raw: values.size) + 1))
-            
-            for integer in typesAsBinaryIntegerAsSigned {
-                AsSigned(integer, values: values)
-            }
-            
-            for integer in typesAsBinaryIntegerAsUnsigned {
-                AsUnsigned(integer, values: values)
-            }
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests x Edge Cases
-    //=------------------------------------------------------------------------=
-    
-    /// Here we check that integer literals aren't inferred as `Int` or `Double`.
+    /// Checks that integer literals aren't inferred as `Int` or `Double`.
     ///
     /// - Note: Neither `Int` nor `Double` can represent `I256.max`.
     ///
@@ -146,22 +175,25 @@ final class BinaryIntegerTestsOnLiterals: XCTestCase {
     ///
     /// - Seealso: https://github.com/oscbyspro/Ultimathnum/issues/25
     ///
-    func testGenericTypeInference() {
+    @Test(
+        "BinaryInteger/literals/edge-cases: generic type inference",
+        Tag.List.tags(.generic, .important),
+        arguments: typesAsArbitraryInteger
+    )   func genericTypeInference(type: any ArbitraryInteger.Type) {
+        whereIs(type)
+        
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            let expectation = T.init(I256.max)
+            let expectation = T.init(BinaryIntegerTestsOnLiterals.maxI256)
             
             let a: T =          (57896044618658097711785492504343953926634992332820282019728792003956564819967)
             let b: T = T        (57896044618658097711785492504343953926634992332820282019728792003956564819967)
             let c: T = T.init   (57896044618658097711785492504343953926634992332820282019728792003956564819967)
             let d: T = T.exactly(57896044618658097711785492504343953926634992332820282019728792003956564819967).value
             
-            Test().same(a, expectation)
-            Test().same(b, expectation)
-            Test().same(c, expectation)
-            Test().same(d, expectation)
+            #expect(a == expectation)
+            #expect(b == expectation)
+            #expect(c == expectation)
+            #expect(d == expectation)
         }
-        
-        whereIs(IXL.self)
-        whereIs(UXL.self)
     }
 }

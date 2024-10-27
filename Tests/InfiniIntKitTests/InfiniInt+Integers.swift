@@ -76,25 +76,4 @@ extension InfiniIntTests {
             }
         }
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    func testIntegerLiterals() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            typealias F = Fallible<T>
-            Test().same(T.exactly(-0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF), F((~0 as T) << 128 + 1, error: !T.isSigned))
-            Test().same(T.exactly(-0x80000000000000000000000000000001), F((~0 as T) << 127 - 1, error: !T.isSigned))
-            Test().same(T.exactly(-0x80000000000000000000000000000000), F((~0 as T) << 127,     error: !T.isSigned))
-            Test().same(T.exactly( 0x00000000000000000000000000000000), F(T.zero))
-            Test().same(T.exactly( 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF), F(( 1 as T) << 127 - 1))
-            Test().same(T.exactly( 0x80000000000000000000000000000000), F(( 1 as T) << 127    ))
-            Test().same(T.exactly( 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF), F(( 1 as T) << 128 - 1))
-        }
-        
-        for type in Self.types {
-            whereIs(type)
-        }
-    }
 }
