@@ -10,6 +10,43 @@
 import CoreKit
 
 //*============================================================================*
+// MARK: * Utilities x Integers
+//*============================================================================*
+
+extension BinaryInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func minLikeSystemsInteger(size: IX) -> Optional<Self> {
+        guard !size.isZero, Count(size) <= Self.size else {
+            return nil
+        }
+        
+        if  Self.isSigned {
+            return Self(repeating: Bit.one).up(Count(size - 1))
+            
+        }   else {
+            return Self.zero
+        }
+    }
+    
+    @inlinable public static func maxLikeSystemsInteger(size: IX) -> Optional<Self> {
+        guard !size.isZero, Count(size) <= Self.size else {
+            return nil
+        }
+                
+        if  Self.isSigned {
+            return Self(repeating: Bit.one).up(Count(size - 1)).toggled()
+
+        }   else {
+            return Self(repeating: Bit.one).up(Count(((size)))).toggled()
+        }
+    }
+}
+
+//*============================================================================*
 // MARK: * Utilities x Integers x Edgy
 //*============================================================================*
 
