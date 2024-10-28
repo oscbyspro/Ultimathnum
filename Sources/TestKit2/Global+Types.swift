@@ -38,7 +38,7 @@ public let typesAsCoreIntegersAsUnsigned: [any CoreIntegerAsUnsigned.Type] = [
 // MARK: + Floats
 //=----------------------------------------------------------------------------=
 
-public let allSwiftBinaryFloatingPointTypes: [any Swift.BinaryFloatingPoint.Type] = [
+public let typesAsSwiftBinaryFloatingPoint: [any Swift.BinaryFloatingPoint.Type] = [
     Float32.self,
     Float64.self,
 ]

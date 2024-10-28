@@ -33,8 +33,10 @@ import TestKit2
     // MARK: Tests x Swift.BinaryFloatingPoint
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt ← Swift.BinaryFloatingPoint - nan is nil", arguments: allSwiftBinaryFloatingPointTypes)
-    func initSwiftBinaryFloatingPointNanIsNil(type: any Swift.BinaryFloatingPoint.Type) {
+    @Test(
+        "StdlibInt ← Swift.BinaryFloatingPoint - nan is nil",
+        arguments: typesAsSwiftBinaryFloatingPoint
+    )   func initSwiftBinaryFloatingPointNanIsNil(type: any Swift.BinaryFloatingPoint.Type) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: Swift.BinaryFloatingPoint {
@@ -43,8 +45,10 @@ import TestKit2
         }
     }
     
-    @Test("StdlibInt ← Swift.BinaryFloatingPoint - infinity is nil", arguments: allSwiftBinaryFloatingPointTypes)
-    func initSwiftBinaryFloatingPointInfinityIsNil(type: any Swift.BinaryFloatingPoint.Type) {
+    @Test(
+        "StdlibInt ← Swift.BinaryFloatingPoint - infinity is nil",
+        arguments: typesAsSwiftBinaryFloatingPoint
+    )   func initSwiftBinaryFloatingPointInfinityIsNil(type: any Swift.BinaryFloatingPoint.Type) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: Swift.BinaryFloatingPoint {
@@ -53,8 +57,10 @@ import TestKit2
         }
     }
     
-    @Test("StdlibInt ← Swift.BinaryFloatingPoint - rounds towards zero", arguments: allSwiftBinaryFloatingPointTypes)
-    func initSwiftBinaryFloatingPointRoundsTowardsZero(type: any Swift.BinaryFloatingPoint.Type) {
+    @Test(
+        "StdlibInt ← Swift.BinaryFloatingPoint - rounds towards zero",
+        arguments: typesAsSwiftBinaryFloatingPoint
+    )   func initSwiftBinaryFloatingPointRoundsTowardsZero(type: any Swift.BinaryFloatingPoint.Type) {
         whereIs(type)
         
         func whereIs<T>(_ type: T.Type) where T: Swift.BinaryFloatingPoint {
@@ -128,8 +134,10 @@ import TestKit2
     ///     1111111111111111111111111111111111111111111111111110110011000011 →
     ///     1111111111111111111111111111111111111111111111111111110011000011 →
     ///
-    @Test("StdlibInt ← Swift.BinaryFloatingPoint - [large][negative]", arguments: allSwiftBinaryFloatingPointTypes)
-    func initLargeNegativeFloats(source: any Swift.BinaryFloatingPoint.Type) {
+    @Test(
+        "StdlibInt ← Swift.BinaryFloatingPoint - [large][negative]",
+        arguments: typesAsSwiftBinaryFloatingPoint
+    )   func initLargeNegativeFloats(source: any Swift.BinaryFloatingPoint.Type) {
         whereIs(source: source, exponents: 32, steps: source.significandBitCount)
         
         func whereIs<T>(source: T.Type, exponents: Int, steps: Int) where T: Swift.BinaryFloatingPoint {
@@ -165,8 +173,10 @@ import TestKit2
     ///     0110000000000000000000000000000000000000000000000000110011000011 →
     ///     1110000000000000000000000000000000000000000000000000110011000011 →
     ///
-    @Test("StdlibInt ← Swift.BinaryFloatingPoint - [large][negative][min]", arguments: allSwiftBinaryFloatingPointTypes)
-    func initLargeNegativeFloatsNearMinSignificandBitPattern(source: any Swift.BinaryFloatingPoint.Type) {
+    @Test(
+        "StdlibInt ← Swift.BinaryFloatingPoint - [large][negative][min]",
+        arguments: typesAsSwiftBinaryFloatingPoint
+    )   func initLargeNegativeFloatsNearMinSignificandBitPattern(source: any Swift.BinaryFloatingPoint.Type) {
         whereIs(source: source, exponents: 32, steps: 32)
         
         func whereIs<T>(source: T.Type, exponents: Int, steps: Int) where T: Swift.BinaryFloatingPoint {
@@ -200,8 +210,10 @@ import TestKit2
     ///     1001111111111111111111111111111111111111111111111111110011000011 →
     ///     0001111111111111111111111111111111111111111111111111110011000011 →
     ///
-    @Test("StdlibInt ← Swift.BinaryFloatingPoint - [large][negative][max]", arguments: allSwiftBinaryFloatingPointTypes)
-    func initLargeNegativeFloatsNearMaxSignificandBitPattern(source: any Swift.BinaryFloatingPoint.Type) {
+    @Test(
+        "StdlibInt ← Swift.BinaryFloatingPoint - [large][negative][max]",
+        arguments: typesAsSwiftBinaryFloatingPoint
+    )   func initLargeNegativeFloatsNearMaxSignificandBitPattern(source: any Swift.BinaryFloatingPoint.Type) {
         whereIs(source: source, exponents: 32, steps: 32)
         
         func whereIs<T>(source: T.Type, exponents: Int, steps: Int) where T: Swift.BinaryFloatingPoint {
@@ -235,8 +247,10 @@ import TestKit2
     ///     1111111111111111111111111111111111111111111111111110110011000010 →
     ///     1111111111111111111111111111111111111111111111111111110011000010 →
     ///
-    @Test("StdlibInt ← Swift.BinaryFloatingPoint - [large][positive]", arguments: allSwiftBinaryFloatingPointTypes)
-    func initLargePositiveFloats(source: any Swift.BinaryFloatingPoint.Type) {
+    @Test(
+        "StdlibInt ← Swift.BinaryFloatingPoint - [large][positive]",
+        arguments: typesAsSwiftBinaryFloatingPoint
+    )   func initLargePositiveFloats(source: any Swift.BinaryFloatingPoint.Type) {
         whereIs(source: source, exponents: 32, steps: source.significandBitCount)
         
         func whereIs<T>(source: T.Type, exponents: Int, steps: Int) where T: Swift.BinaryFloatingPoint {
@@ -272,8 +286,10 @@ import TestKit2
     ///     0110000000000000000000000000000000000000000000000000110011000010 →
     ///     1110000000000000000000000000000000000000000000000000110011000010 →
     ///
-    @Test("StdlibInt ← Swift.BinaryFloatingPoint - [large][positive][min]", arguments: allSwiftBinaryFloatingPointTypes)
-    func initLargePositiveFloatsNearMinSignificandBitPattern(source: any Swift.BinaryFloatingPoint.Type) {
+    @Test(
+        "StdlibInt ← Swift.BinaryFloatingPoint - [large][positive][min]",
+        arguments: typesAsSwiftBinaryFloatingPoint
+    )   func initLargePositiveFloatsNearMinSignificandBitPattern(source: any Swift.BinaryFloatingPoint.Type) {
         whereIs(source: source, exponents: 32, steps: 32)
         
         func whereIs<T>(source: T.Type, exponents: Int, steps: Int) where T: Swift.BinaryFloatingPoint {
@@ -307,8 +323,10 @@ import TestKit2
     ///     1001111111111111111111111111111111111111111111111111110011000010 →
     ///     0001111111111111111111111111111111111111111111111111110011000010 →
     ///
-    @Test("StdlibInt ← Swift.BinaryFloatingPoint - [large][positive][max]", arguments: allSwiftBinaryFloatingPointTypes)
-    func initLargePositiveFloatsNearMaxSignificandBitPattern(source: any Swift.BinaryFloatingPoint.Type) {
+    @Test(
+        "StdlibInt ← Swift.BinaryFloatingPoint - [large][positive][max]",
+        arguments: typesAsSwiftBinaryFloatingPoint
+    )   func initLargePositiveFloatsNearMaxSignificandBitPattern(source: any Swift.BinaryFloatingPoint.Type) {
         whereIs(source: source, exponents: 32, steps: 32)
         
         func whereIs<T>(source: T.Type, exponents: Int, steps: Int) where T: Swift.BinaryFloatingPoint {
