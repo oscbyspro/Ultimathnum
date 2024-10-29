@@ -33,7 +33,7 @@ import TestKit2
         try  whereIs(type, randomness)
         func whereIs<T, R>(_ type: T.Type, _ randomness: consuming R)
         throws where T: UnsignedInteger, R: Randomness {
-            for limit: T in 1 ... 32 {
+            for limit: T in 1 ... T(U8.max) {
                 try #require(randomness.next(upTo: Nonzero(limit)) < limit)
             }
         }
@@ -51,7 +51,7 @@ import TestKit2
         try  whereIs(type, randomness)
         func whereIs<T, R>(_ type: T.Type, _ randomness: consuming R)
         throws where T: UnsignedInteger, R: Randomness {
-            for limit: T in 0 ..< 32 {
+            for limit: T in 0 ... T(U8.max) {
                 try #require(randomness.next(through: limit) <= limit)
             }
         }

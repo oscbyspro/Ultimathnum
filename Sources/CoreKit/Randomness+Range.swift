@@ -153,19 +153,21 @@ extension Randomness {
         }
         
         return (limit).withUnsafeBinaryIntegerBody {
+            //  the last element is nonzero after
             let limit = (consume $0).normalized()
             //  TODO: req. normalized body, maybe?
             return T.arbitrary(uninitialized: limit.count, repeating: Bit.zero) { body in
                 guard !body.isEmpty else { return }
                 
                 let lastIndex = body.count.decremented().unchecked()
-                let last = body[unchecked: lastIndex...].start
-                let down = IX(raw: limit[unchecked: lastIndex].descending(Bit.zero))
+                let last = body [unchecked: lastIndex...].start
+                let down = limit[unchecked: lastIndex].descending(Bit.zero)
+                let mask = T.Element.max.down(Shift(unchecked: down))
                 
                 probabilistic: repeat {
                     
                     self.fill(body.bytes())
-                    last.pointee &>>= down
+                    last.pointee &= mask
                     
                 } while body.compared(to: limit) >= comparison
             }!
