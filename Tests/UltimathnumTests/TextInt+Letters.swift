@@ -8,25 +8,41 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Text Int x Letters
 //*============================================================================*
 
-final class TextIntTestsOnLetters: XCTestCase {
+@Suite(Tag.List.tags(.exhaustive), ParallelizationTrait.serialized)
+struct TextIntTestsOnLetters {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
- 
-    func testInitBool() {
-        Test().same(TextInt.Letters(uppercase: false), TextInt.Letters.lowercase)
-        Test().same(TextInt.Letters(uppercase: true ), TextInt.Letters.uppercase)
+    
+    @Test("TextInt.Letters: start", arguments: [
+            
+        (instance: TextInt.Letters.lowercase, start: 97 as U8),
+        (instance: TextInt.Letters.uppercase, start: 65 as U8),
+            
+    ] as [(TextInt.Letters, U8)])
+    func start(instance: TextInt.Letters, start: U8) throws {
+        #expect(instance.start == start)
+        
+        let numerals = try TextInt.Numerals(radix: 36, letters: instance)
+        #expect(try numerals.decode(start) == 10)
+        #expect(try numerals.encode(10) == start)
     }
     
-    func testGetStart() {
-        Test().same(TextInt.Letters.lowercase.start, U8(UInt8(ascii: "a")))
-        Test().same(TextInt.Letters.uppercase.start, U8(UInt8(ascii: "A")))
+    @Test("TextInt.Letters: uppercase", arguments: [
+            
+        (instance: TextInt.Letters.lowercase, uppercase: false),
+        (instance: TextInt.Letters.uppercase, uppercase: true ),
+            
+    ] as [(TextInt.Letters, Bool)])
+    func uppercase(instance: TextInt.Letters, uppercase: Bool) {
+        #expect((instance == TextInt.Letters (uppercase:    uppercase)))
+        #expect((instance == TextInt.Letters .uppercase) == uppercase)
     }
 }
