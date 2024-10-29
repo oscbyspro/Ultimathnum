@@ -8,37 +8,40 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Text Int x Exponentiation
 //*============================================================================*
 
-final class TextIntTestsOnExponentiation: XCTestCase {
-
+@Suite struct TextIntTestsOnExponentiation {
+    
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testEachRadixThrough1024() throws {
-        let perfect256: [UX] = [2, 4, 16, 256]
-        //=--------------------------------------=
-        // test: the minimum radix is 2
-        //=--------------------------------------=
-        Test().failure(try TextInt.Exponentiation(0), TextInt.Error.invalid)
-        Test().failure(try TextInt.Exponentiation(1), TextInt.Error.invalid)
-        //=--------------------------------------=
+    @Test("TextInt.Exponentiation: each radix < 2 is nil", .tags(.exhaustive))
+    func eachRadixLessThanTwoIsNil() throws {
+        for radix: UX in 0 ..< 2 {
+            #expect(throws: TextInt.Error.invalid) {
+                try TextInt.Exponentiation(radix)
+            }
+        }
+    }
+    
+    @Test("TextInt.Exponentiation: each radix in [2, 1024]")
+    func eachRadixFromTwoThrough1024() throws {
         for radix: UX in 2...1024 {
-            let exponentiation = try TextInt.Exponentiation(radix)
-            Test().more(exponentiation.exponent, 1 as IX)
-            //=----------------------------------=
-            // test: perfect or imperfect
-            //=----------------------------------=
-            if  let radixLog2Log2 = perfect256.firstIndex(of: radix) {
-                Test().same(exponentiation.power,    UX.zero)
-                Test().same(exponentiation.exponent, IX(size: UX.self) >> IX(radixLog2Log2))
+            let radixLog2: UX = UX(raw: try #require(radix    .ilog2()))
+            let radixLog2Log2 = UX(raw: try #require(radixLog2.ilog2()))
+            
+            let instance = try TextInt.Exponentiation(radix)
+            if  radix == UX.lsb << (UX.lsb << radixLog2Log2) {
+                try #require(instance.power.isZero)
+                try #require(instance.exponent == IX(size: UX.self) >> IX(radixLog2Log2))
             }   else {
-                Test().nonsame(exponentiation.power, UX.zero)
+                try #require(instance.power   .isPositive)
+                try #require(instance.exponent.isPositive)
             }
         }
     }
