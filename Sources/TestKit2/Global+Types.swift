@@ -38,6 +38,11 @@ public let typesAsCoreIntegersAsUnsigned: [any CoreIntegerAsUnsigned.Type] = [
 // MARK: + Floats
 //=----------------------------------------------------------------------------=
 
+public let typesAsSwiftIEEE754: [any SwiftIEEE754.Type] = [
+    Float32.self,
+    Float64.self,
+]
+
 public let typesAsSwiftBinaryFloatingPoint: [any Swift.BinaryFloatingPoint.Type] = [
     Float32.self,
     Float64.self,
