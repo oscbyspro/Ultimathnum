@@ -8,45 +8,51 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import DoubleIntKit
-import InfiniIntKit
 import RandomIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Randomness
 //*============================================================================*
 
-final class RandomnessTests: XCTestCase {
+@Suite struct RandomnessTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testUpToSmallLimit() {
-        func whereIs<T>(_ type: T.Type, using randomness: inout some Randomness) where T: SystemsInteger & UnsignedInteger {
-            for limit: T in 1 ... 16 {
-                Test().yay(randomness.next(upTo: Nonzero(limit)) < limit)
-            }
-        }
+    @Test(
+        "Randomness: next(upTo:)",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryIntegerAsUnsigned, randomnesses
+    )   func nextUpTo(
+        type: any UnsignedInteger.Type,
+        randomness: any Randomness
+    )   throws {
         
-        for type in typesAsSystemsIntegerAsUnsigned {
-            for var randomness in randomnesses {
-                whereIs(type, using: &randomness)
+        try  whereIs(type, randomness)
+        func whereIs<T, R>(_ type: T.Type, _ randomness: consuming R)
+        throws where T: UnsignedInteger, R: Randomness {
+            for limit: T in 1 ... 32 {
+                try #require(randomness.next(upTo: Nonzero(limit)) < limit)
             }
         }
     }
     
-    func testThroughSmallLimit() {
-        func whereIs<T>(_ type: T.Type, using randomness: inout some Randomness) where T: SystemsInteger & UnsignedInteger {
-            for limit: T in 0 ..< 16 {
-                Test().yay(randomness.next(through: limit) <= limit)
-            }
-        }
+    @Test(
+        "Randomness: next(through:)",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryIntegerAsUnsigned, randomnesses
+    )   func nextThrough(
+        type: any UnsignedInteger.Type,
+        randomness: any Randomness
+    )   throws {
         
-        for type in typesAsSystemsIntegerAsUnsigned {
-            for var randomness in randomnesses {
-                whereIs(type, using: &randomness)
+        try  whereIs(type, randomness)
+        func whereIs<T, R>(_ type: T.Type, _ randomness: consuming R)
+        throws where T: UnsignedInteger, R: Randomness {
+            for limit: T in 0 ..< 32 {
+                try #require(randomness.next(through: limit) <= limit)
             }
         }
     }
@@ -55,44 +61,50 @@ final class RandomnessTests: XCTestCase {
     // MARK: Tests x Req. Determinism
     //=------------------------------------------------------------------------=
     
-    func testNextIsSimilarToFill() {
-        func whereIs<T>(_ type: T.Type, using randomness: FuzzerInt) where T: SystemsInteger & UnsignedInteger {
-            
+    @Test(
+        "Randomness: next() is similar to fill(_:) as SystemsInteger",
+        Tag.List.tags(.documentation, .generic, .random, .unofficial),
+        arguments: typesAsSystemsIntegerAsUnsigned, fuzzers
+    )   func nextIsSimilarToFillAsSystemsInteger(
+        type: any SystemsIntegerAsUnsigned.Type,
+        randomness: FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
             var a = randomness
             var b = randomness
             
-            for _ in 0 ..< 16 {
-                let lhs = a.next(as: T.self)
-                var rhs = T.zero
+            for _ in 0 ..< 32 {
+                let x = a.next(as: T.self)
+                var y = T.zero
                 
-                rhs.withUnsafeMutableBinaryIntegerBody {
+                y.withUnsafeMutableBinaryIntegerBody {
                     b.fill($0.bytes())
                 }
                 
-                Test().same(lhs, rhs)
+                try #require(x == y)
             }
-        }
-        
-        for type in typesAsSystemsIntegerAsUnsigned {
-            whereIs(type, using: fuzzer)
         }
     }
     
-    func testUpToIsSimilarToThrough() {
-        func whereIs<T>(_ type: T.Type, using randomness: FuzzerInt) where T: SystemsInteger & UnsignedInteger {
-            
+    @Test(
+        "Randomness: next(upTo:) is similar to next(through:) as SystemsInteger",
+        Tag.List.tags(.documentation, .generic, .random, .unofficial),
+        arguments: typesAsSystemsIntegerAsUnsigned, fuzzers
+    )   func nextUpToIsSimilarToNextThroughAsSystemsInteger(
+        type: any SystemsIntegerAsUnsigned.Type,
+        randomness: FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
             var a = randomness
             var b = randomness
             
-            for limit: T in 0 ..< 16 {
-                let lhs = a.next(through: limit)
-                let rhs = b.next(upTo: Nonzero(limit + 1))
-                Test().same(lhs, rhs)
+            for limit: T in 0 ..< 32 {
+                try #require(a.next(through: limit) == b.next(upTo: Nonzero(limit + 1)))
             }
-        }
-        
-        for type in typesAsSystemsIntegerAsUnsigned {
-            whereIs(type, using: fuzzer)
         }
     }
 }

@@ -136,7 +136,7 @@ extension Randomness {
     /// Arbitrary integers accept-reject random bit patterns.
     ///
     @inline(never) @inlinable internal mutating func arbitrary<T>(
-        upTo comparison: Signum,
+        upTo  comparison: Signum,
         relativeTo limit: borrowing T
     )   -> T where T: UnsignedInteger {
         
