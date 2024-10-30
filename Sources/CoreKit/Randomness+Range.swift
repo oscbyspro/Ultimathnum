@@ -166,7 +166,7 @@ extension Randomness {
                 
                 probabilistic: repeat {
                     
-                    self.fill(body.bytes())
+                    self.fill(body)
                     last.pointee &= mask
                     
                 } while body.compared(to: limit) >= comparison

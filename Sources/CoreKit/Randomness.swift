@@ -12,6 +12,11 @@
 //*============================================================================*
 
 /// A source of uniformly distributed random data.
+///
+/// ### Development
+///
+/// - TODO: Consider `MutableDataInt<U8>.Body` vs `UnsafeMutableRawBufferPointer`.
+///
 public protocol Randomness {
     
     associatedtype Element: SystemsInteger & UnsignedInteger

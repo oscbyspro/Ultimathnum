@@ -64,14 +64,9 @@ extension BinaryInteger {
         }
         
         if  let size = IX(size: Self.self) {
-            let instance = if size == IX(size: Element.self) {
-                Self(load: randomness.next(as: Element.Magnitude.self))
-            }   else {
-                Self.systems { randomness.fill($0.bytes()) }!
-            }
-            
             let mask = size.decremented().unchecked()
-            let down = Count(  Natural(unchecked: mask & index.toggled()))
+            let down = Count(((Natural(unchecked: mask & index.toggled()))))
+            let instance = Self(raw: randomness.systems(as: Magnitude.self))
             return instance.down(Shift(unchecked: down))
             
         }   else {
@@ -90,7 +85,7 @@ extension BinaryInteger {
             return Self.arbitrary(uninitialized: division.ceil().unchecked(), repeating: last.appendix) {
                 guard !$0.isEmpty else { return }
                 let lastIndex: IX = $0.count.decremented().unchecked()
-                randomness.fill($0[unchecked:   ..<lastIndex].bytes())
+                randomness.fill($0[unchecked:   ..<lastIndex])
                 $0[unchecked: lastIndex] = Element.Magnitude(raw: last)
             }!
         }

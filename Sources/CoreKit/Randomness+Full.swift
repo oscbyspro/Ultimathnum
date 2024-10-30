@@ -22,18 +22,17 @@ extension Randomness {
         var count: Swift.Int = buffer.count
         
         while count >= MemoryLayout<Element>.stride {
-            Swift.withUnsafeBytes(of:  self.next()) {
-                Swift.assert($0.count  == MemoryLayout<Element>.stride)
-                start.copyMemory(from: $0.baseAddress!, byteCount: MemoryLayout<Element>.stride)
-                start  += MemoryLayout<Element>.stride
-                count &-= MemoryLayout<Element>.stride
+            start.withMemoryRebound(to: Element.self, capacity: 1) {
+                $0.initialize(to: self.next())
             }
+            
+            start   += MemoryLayout<Element>.stride
+            count  &-= MemoryLayout<Element>.stride
         }
         
         if  count > Swift.Int.zero {
             Swift.withUnsafeBytes(of:  self.next()) {
-                Swift.assert($0.count  > ((count)))
-                start.copyMemory(from: $0.baseAddress!, byteCount: count)
+                start.copyMemory(from: $0.baseAddress.unsafelyUnwrapped, byteCount: count)
             }
         }
     }
@@ -58,19 +57,41 @@ extension Randomness {
     ///
     /// - Requires: The given `type` must be a systems integer.
     ///
-    @inlinable internal mutating func systems<T>(as type: T.Type = T.self) -> T where T: UnsignedInteger {        
+    @inlinable internal mutating func systems<T>(as type: T.Type = T.self) -> T where T: UnsignedInteger {
         if  T.size <= Element.size {
-            return T(load: self.next())
+            T.init(load: self.next())
+            
+        }   else {
+            T.systems(initializer:{ self.fill($0) })!
         }
-        
-        Swift.assert(IX(size: T.self)! % IX(size: Element.self) == IX.zero)
-        let ratio  = IX(size: T.self)!.down(Shift(unchecked: UX(size: Element.self).ascending(Bit.zero)))
-        var random = T()
-        
-        for index  in Range(uncheckedBounds: (IX.zero, ratio)) {
-            random |= T(load: self.next()).up(Shift(unchecked: Count(raw: IX(size: Element.self) &* index)))
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    // TODO: consider DataInt<T>.Body requirement vs UnsafeRawBufferPointer
+    //=------------------------------------------------------------------------=
+    
+    @inlinable internal mutating func fill(_ buffer: consuming MutableDataInt<U8>.Body) {
+        self.fill(buffer.bytes())
+    }
+    
+    @inlinable internal mutating func fill(_ buffer: consuming MutableDataInt<Element>.Body) {
+        for index: IX in buffer.indices {
+            buffer[unchecked: index] = self.next()
         }
-        
-        return random
+    }
+    
+    @inlinable internal mutating func fill<T>(_ buffer: consuming MutableDataInt<T>.Body) {
+        if  T.size < Element.size {
+            buffer.reinterpret(as: U8.self) {
+                self.fill($0)
+            }
+            
+        }   else {
+            buffer.reinterpret(as: Element.self) {
+                self.fill($0)
+            }
+        }
     }
 }
