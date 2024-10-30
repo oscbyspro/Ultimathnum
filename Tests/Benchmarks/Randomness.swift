@@ -89,11 +89,6 @@ final class RandomnessBenchmarks: XCTestCase {
         }
     }
     
-    /// ###### 2024-10-30 (MacBook Pro, 13-inch, M1, 2020):
-    ///
-    /// - `0.12 seconds`
-    /// - `0.05 seconds` with `withMemoryRebound(to:capacity:)`
-    ///
     func testFillAsU256() {
         typealias T    = U256
         var randomness = blackHoleIdentity(FuzzerInt(seed: 1234567890))

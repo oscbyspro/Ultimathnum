@@ -22,8 +22,8 @@ extension Randomness {
         var count: Swift.Int = buffer.count
         
         while count >= MemoryLayout<Element>.stride {
-            start.withMemoryRebound(to: Element.self, capacity: 1) {
-                $0.initialize(to: self.next())
+            Swift.withUnsafeBytes(of:  self.next()) {
+                start.copyMemory(from: $0.baseAddress.unchecked(), byteCount: MemoryLayout<Element>.stride)
             }
             
             start   += MemoryLayout<Element>.stride
