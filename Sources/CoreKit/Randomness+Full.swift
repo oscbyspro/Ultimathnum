@@ -32,7 +32,7 @@ extension Randomness {
         
         if  count > Swift.Int.zero {
             Swift.withUnsafeBytes(of:  self.next()) {
-                start.copyMemory(from: $0.baseAddress.unsafelyUnwrapped, byteCount: count)
+                start.copyMemory(from: $0.baseAddress.unchecked(), byteCount: count)
             }
         }
     }

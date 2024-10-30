@@ -11,33 +11,11 @@
 // MARK: * Swift x Optional
 //*============================================================================*
 
-extension Optional: BitCastable where Wrapped: BitCastable {
-    
-    public typealias BitPattern = Optional<Wrapped.BitPattern>
+extension Optional {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(raw source: consuming BitPattern) {
-        if  let source {
-            self.init(Wrapped(raw: source))
-        }   else {
-            self = nil
-        }
-    }
-    
-    @inlinable public func load(as type: BitPattern.Type) -> BitPattern {
-        if  let self {
-            return self.load(as: Wrapped.BitPattern.self)
-        }   else {
-            return nil
-        }
-    }
-    
-    //=----------------------------------------------------------------------------=
     // MARK: Utilities
-    //=----------------------------------------------------------------------------=
+    //=------------------------------------------------------------------------=
     
     /// Returns the `value` by trapping on `nil`.
     @discardableResult @inlinable public consuming func unwrap(
@@ -63,5 +41,34 @@ extension Optional: BitCastable where Wrapped: BitCastable {
         #else
         return self.unsafelyUnwrapped
         #endif
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Bit Castable
+//=----------------------------------------------------------------------------=
+
+extension Optional: BitCastable where Wrapped: BitCastable {
+    
+    public typealias BitPattern = Optional<Wrapped.BitPattern>
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(raw source: consuming BitPattern) {
+        if  let source {
+            self.init(Wrapped(raw: source))
+        }   else {
+            self = nil
+        }
+    }
+    
+    @inlinable public func load(as type: BitPattern.Type) -> BitPattern {
+        if  let self {
+            return self.load(as: Wrapped.BitPattern.self)
+        }   else {
+            return nil
+        }
     }
 }
