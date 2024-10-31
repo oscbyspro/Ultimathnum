@@ -26,79 +26,79 @@ final class RandomnessBenchmarks: XCTestCase {
     
     func testFillAsU008() {
         typealias T    = U8
+        var payload: T = blackHoleIdentity(T.zero)
         var randomness = blackHoleIdentity(FuzzerInt(seed: 1234567890))
-        
+
         for _ in 0 ..< 10_000_000 {
-            let random = T.systems {
-                randomness.fill($0.bytes())
+            blackHole(payload)
+            Swift.withUnsafeMutableBytes(of: &payload) {
+                randomness.fill($0)
             }
-            
-            blackHole(random)
         }
     }
     
     func testFillAsU016() {
         typealias T    = U16
+        var payload: T = blackHoleIdentity(T.zero)
         var randomness = blackHoleIdentity(FuzzerInt(seed: 1234567890))
 
         for _ in 0 ..< 10_000_000 {
-            let random = T.systems {
-                randomness.fill($0.bytes())
+            blackHole(payload)
+            Swift.withUnsafeMutableBytes(of: &payload) {
+                randomness.fill($0)
             }
-            
-            blackHole(random)
         }
     }
     
     func testFillAsU032() {
         typealias T    = U32
+        var payload: T = blackHoleIdentity(T.zero)
         var randomness = blackHoleIdentity(FuzzerInt(seed: 1234567890))
-        
+
         for _ in 0 ..< 10_000_000 {
-            let random = T.systems {
-                randomness.fill($0.bytes())
+            blackHole(payload)
+            Swift.withUnsafeMutableBytes(of: &payload) {
+                randomness.fill($0)
             }
-            
-            blackHole(random)
         }
     }
     
     func testFillAsU064() {
         typealias T    = U64
+        var payload: T = blackHoleIdentity(T.zero)
         var randomness = blackHoleIdentity(FuzzerInt(seed: 1234567890))
-        
+
         for _ in 0 ..< 10_000_000 {
-            let random = T.systems {
-                randomness.fill($0.bytes())
+            blackHole(payload)
+            Swift.withUnsafeMutableBytes(of: &payload) {
+                randomness.fill($0)
             }
-            
-            blackHole(random)
         }
     }
     
     func testFillAsU128() {
         typealias T    = U128
+        var payload: T = blackHoleIdentity(T.zero)
         var randomness = blackHoleIdentity(FuzzerInt(seed: 1234567890))
 
         for _ in 0 ..< 10_000_000 {
-            let random = T.systems {
-                randomness.fill($0.bytes())
+            blackHole(payload)
+            Swift.withUnsafeMutableBytes(of: &payload) {
+                randomness.fill($0)
             }
-            
-            blackHole(random)
         }
     }
     
     func testFillAsU256() {
         typealias T    = U256
+        var payload: T = blackHoleIdentity(T.zero)
         var randomness = blackHoleIdentity(FuzzerInt(seed: 1234567890))
-        
+
         for _ in 0 ..< 10_000_000 {
-            let random = T.systems {
-                randomness.fill($0.bytes())
+            blackHole(payload)
+            Swift.withUnsafeMutableBytes(of: &payload) {
+                randomness.fill($0)
             }
-            
-            blackHole(random)
         }
     }
     
