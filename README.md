@@ -113,12 +113,22 @@ This setup enables optimizations and omits unrelated metrics. These steps are cr
 
 #### The lossy invariant
 
-Lossy operations are remarkably well-behaved. In the case of binary integers, we use this term specifically to denote truncation. In other words, a lossy binary integer result omits bits that don't fit, which means all existing bits are still valid. In practice, types of different sizes agree on the bits that fit in the smaller type. The following example demonstrates this invariant.
+Lossy operations are remarkably well-behaved. In the case of binary integers, we use this term specifically to denote truncation. In other words, lossy binary integer results omit bits that don't fit, meaning all existing bits are still valid. In practice, types of different sizes agree on the bits that fit in the smaller type. The following example demonstrates this invariant.
 
 ```swift
 let a = I32.random()
 let b = I32.random()
 #expect((a).times(b) == I32.exactly(IXL(a) * IXL(b)))
+```
+
+#### Type-agnostic hashes
+
+All binary integers of equal value agree on a common low-level representation, specifically, the contents of their normalized 8-bit extensions. This common ground lets us produce equal hashes for equal values across type boundaries. Note that you may also use this form to perform direct comparisons. The following snippet of code shows you what to expect.
+
+```swift
+let x = I32.random()
+#expect(x.hashValue == I64(x).hashValue)
+#expect(x.hashValue == IXL(x).hashValue)
 ```
 
 <a name="overview-the-fallible-redemption-arc"/>
