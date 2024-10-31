@@ -9,7 +9,7 @@
 
 import CoreKit
 import DoubleIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Double Int

@@ -12,7 +12,6 @@ import DoubleIntKit
 import InfiniIntKit
 import RandomIntKit
 import TestKit2
-import XCTest
 
 //*============================================================================*
 // MARK: * Randomness

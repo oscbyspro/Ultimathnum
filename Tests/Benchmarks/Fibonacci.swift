@@ -11,7 +11,7 @@ import CoreKit
 import DoubleIntKit
 import FibonacciKit
 import InfiniIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Fibonacci

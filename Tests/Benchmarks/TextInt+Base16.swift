@@ -11,7 +11,7 @@ import CoreKit
 import DoubleIntKit
 import FibonacciKit
 import InfiniIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Text Int x Radix 16
@@ -65,7 +65,7 @@ final class TextIntBenchmarksOnRadix16: XCTestCase {
             counter += UX(Bit(!Self.formatter.encode(value).isEmpty))
         }
         
-        Test().same(counter, 1_000_000)
+        XCTAssertEqual(counter, 1_000_000)
     }
     
     func testEncodingFirstOneMillionBinaryIntegerAsUXL() throws {
@@ -76,7 +76,7 @@ final class TextIntBenchmarksOnRadix16: XCTestCase {
             counter += UX(Bit(!Self.formatter.encode(value).isEmpty))
         }
         
-        Test().same(counter, 1_000_000)
+        XCTAssertEqual(counter, 1_000_000)
     }
     
     func testEncodingFirstOneMillionSignMagnitudeAsUX() throws {
@@ -86,7 +86,7 @@ final class TextIntBenchmarksOnRadix16: XCTestCase {
             counter += UX(Bit(!Self.formatter.encode(sign: .plus, magnitude: value).isEmpty))
         }
         
-        Test().same(counter, 1_000_000)
+        XCTAssertEqual(counter, 1_000_000)
     }
     
     func testEncodingFirstOneMillionSignMagnitudeAsUXL() throws {
@@ -97,6 +97,6 @@ final class TextIntBenchmarksOnRadix16: XCTestCase {
             counter += UX(Bit(!Self.formatter.encode(sign: .plus, magnitude: value).isEmpty))
         }
         
-        Test().same(counter, 1_000_000)
+        XCTAssertEqual(counter, 1_000_000)
     }
 }

@@ -128,7 +128,7 @@ let package = Package(
         ),
         .testTarget(
             name: "Benchmarks",
-            dependencies: ["Ultimathnum", "TestKit", "TestKit2"]
+            dependencies: ["Ultimathnum", "TestKit2"]
         ),
     ]
 )

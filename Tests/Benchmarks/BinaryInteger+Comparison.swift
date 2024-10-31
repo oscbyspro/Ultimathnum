@@ -10,7 +10,7 @@
 import CoreKit
 import DoubleIntKit
 import InfiniIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Binary Integer x Comparison
