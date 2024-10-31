@@ -8,145 +8,206 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import InfiniIntKit
-import TestKit
+import RandomIntKit
+import TestKit2
+
+//*============================================================================*
+// MARK: * Metadata
+//*============================================================================*
+
+/// The preferred radix type.
+///
+/// - Note: Generic alternatives derive from it.
+///
+private typealias Radix = UX // TODO: consider IX or fancy branches
+
+private let radices: Range<Radix> = 0..<37
+
+private let letters: [TextInt.Letters] = [.lowercase, .uppercase]
 
 //*============================================================================*
 // MARK: * Text Int x Numerals
 //*============================================================================*
 
-final class TextIntTestsOnNumerals: XCTestCase {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Metadata
-    //=------------------------------------------------------------------------=
-    
-    static let radices: Range<U8> = 0..<37
-    
-    static let letters: [TextInt.Letters] = [.uppercase, .lowercase]
+@Suite struct TextIntTestsOnNumerals {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testInit() throws {
-        Test().same(TextInt.Numerals().radix,   10)
-        Test().same(TextInt.Numerals().letters, TextInt.Letters.lowercase)
-        
-        for radix in Self.radices {
-            for letters in Self.letters {
-                let numerals = try TextInt.Numerals(radix: radix, letters: letters)
-                Test().same(numerals.radix,   radix)
-                Test().same(numerals.letters, letters)
-                Test().same(numerals.lowercased().letters,        TextInt.Letters.lowercase)
-                Test().same(numerals.uppercased().letters,        TextInt.Letters.uppercase)
-                Test().same(numerals.letters(.lowercase).letters, TextInt.Letters.lowercase)
-                Test().same(numerals.letters(.uppercase).letters, TextInt.Letters.uppercase)
-            }
-        }
-        
-        for radix in Self.radices.upperBound...255 {
-            for letters in Self.letters {
-                Test().failure(try TextInt.Numerals(radix: radix, letters: letters), TextInt.Error.invalid)
-            }
-        }
-    }
-    
-    func testInitNegativeRadixIsInvalid() {
-        for letters in Self.letters {
-            Test().failure(try TextInt.Numerals(radix: -1 as IXL, letters: letters), TextInt.Error.invalid)
-            Test().failure(try TextInt.Numerals(radix: -2 as IXL, letters: letters), TextInt.Error.invalid)
-            Test().failure(try TextInt.Numerals(radix: -3 as IXL, letters: letters), TextInt.Error.invalid)
-        }
-    }
-    
-    func testInitInfiniteRadixIsInvalid() {
-        for letters in Self.letters {
-            Test().failure(try TextInt.Numerals(radix: ~0 as UXL, letters: letters), TextInt.Error.invalid)
-            Test().failure(try TextInt.Numerals(radix: ~1 as UXL, letters: letters), TextInt.Error.invalid)
-            Test().failure(try TextInt.Numerals(radix: ~2 as UXL, letters: letters), TextInt.Error.invalid)
-        }
-    }
-    
-    func testInitSuperBigRadixIsInvalid() {
-        for letters in Self.letters {
-            Test().failure(try TextInt.Numerals(radix: UXL(U8.max) - 1, letters: letters), TextInt.Error.invalid)
-            Test().failure(try TextInt.Numerals(radix: UXL(U8.max),     letters: letters), TextInt.Error.invalid)
-            Test().failure(try TextInt.Numerals(radix: UXL(U8.max) + 1, letters: letters), TextInt.Error.invalid)
-        }
-    }
-    
-    func testInitDefaultLettersIsLowercase() throws {
-        for radix: U8 in Self.radices {
-            let numerals = try TextInt.Numerals(radix: radix)
-            Test().same(numerals.radix,   U8(radix))
-            Test().same(numerals.letters, TextInt.Letters.lowercase)
-        }
-        
-        for radix: UX in Self.radices.lazy.map(UX.init) {
-            let numerals = try TextInt.Numerals(radix: radix)
-            Test().same(numerals.radix,   U8(radix))
-            Test().same(numerals.letters, TextInt.Letters.lowercase)
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    func testDecodingEachByteForEachRadix() throws {
+    @Test(
+        "TextInt.Numerals: decode each byte for each instance",
+        Tag.List.tags(.exhaustive)
+    )   func decodeEachByteForEachInstance() throws {
         var expectation: [U8: U8] = [:]
-                
-        Test().same(UInt8(ascii: "0"),  48)
-        Test().same(UInt8(ascii: "9"),  57)
-        Test().same(UInt8(ascii: "A"),  65)
-        Test().same(UInt8(ascii: "Z"),  90)
-        Test().same(UInt8(ascii: "a"),  97)
-        Test().same(UInt8(ascii: "z"), 122)
         
+        try #require(UInt8(ascii: "0") ==  48)
+        try #require(UInt8(ascii: "9") ==  57)
+        try #require(UInt8(ascii: "A") ==  65)
+        try #require(UInt8(ascii: "Z") ==  90)
+        try #require(UInt8(ascii: "a") ==  97)
+        try #require(UInt8(ascii: "z") == 122)
+
         for key: U8 in 48...57 {
             expectation[key] = key - 48
         }
-        
+
         for key: U8 in 65...90 {
             expectation[key] = key - 55
         }
-        
+
         for key: U8 in 97...122 {
             expectation[key] = key - 87
         }
         
-        for radix in Self.radices {
-            for letters in Self.letters {
+        for radix in radices {
+            for letters in letters {
                 let numerals = try TextInt.Numerals(radix: radix, letters: letters)
-                
+
                 for key in U8.min...U8.max {
                     if  let value = expectation[key], value < radix {
-                        Test().success(try numerals.decode(key), value)
+                        try #require(try numerals.decode(key) == value)
                     }   else {
-                        Test().failure(try numerals.decode(key), TextInt.Error.invalid)
+                        try #require(throws: TextInt.Error.invalid) {
+                            try numerals.decode(key)
+                        }
                     }
                 }
             }
         }
     }
     
-    func testEncodingEachByteForEachRadix() throws {
-        func whereIs(letters: TextInt.Letters, expectation: [U8]) throws {
-            for radix in Self.radices {
-                let numerals = try TextInt.Numerals(radix: radix, letters: letters)
-                
-                for data in U8.min..<U8(radix) {
-                    Test().success(try numerals.encode(data), expectation[Int(IX(data))])
-                }
-                
-                for data in U8(radix)..<U8.max {
-                    Test().failure(try numerals.encode(data), TextInt.Error.invalid)
+    @Test(
+        "TextInt.Numerals: encode each byte for each instance",
+        Tag.List.tags(.exhaustive),
+        arguments: [
+            
+            (TextInt.Letters.lowercase, [U8](48...57) + [U8](97...122)),
+            (TextInt.Letters.uppercase, [U8](48...57) + [U8](65...090)),
+            
+    ] as [(TextInt.Letters, [U8])])
+    func encodeEachByteForEachInstance(letters: TextInt.Letters, expectation: [U8]) throws {
+        for radix in radices {
+            let numerals = try TextInt.Numerals(radix: radix, letters: letters)
+            
+            for data in U8.min..<U8(numerals.radix) {
+                try #require(numerals.encode(data) == expectation[Int(IX(data))])
+            }
+            
+            for data in U8(numerals.radix)..<U8.max {
+                try #require(throws: TextInt.Error.invalid) {
+                    try numerals.encode(data)
                 }
             }
         }
+    }
+}
+
+//*============================================================================*
+// MARK: * Text Int x Numerals x Initialization
+//*============================================================================*
+
+@Suite struct TextIntTestsOnNumeralsInitialization {
+
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "TextInt.Numerals/initialization: default radix is 10",
+        Tag.List.tags(.exhaustive)
+    )   func defaultRadixIsDecimal() throws {
+        try #require(TextInt.Numerals().radix == 10)
+    }
+    
+    @Test(
+        "TextInt.Numerals/initialization: default letters is lowercase",
+        Tag.List.tags(.exhaustive)
+    )   func defaultLettersIsLowercase() throws {
+        try #require(TextInt.Numerals().letters == TextInt.Letters.lowercase)
         
-        try whereIs(letters: .uppercase, expectation: [48...57, 65...090].flatMap({ $0 }))
-        try whereIs(letters: .lowercase, expectation: [48...57, 97...122].flatMap({ $0 }))
+        for radix: Radix in radices {
+            let generic: some BinaryInteger = radix
+            try #require(try TextInt.Numerals(radix: (radix)).letters == TextInt.Letters.lowercase)
+            try #require(try TextInt.Numerals(radix: generic).letters == TextInt.Letters.lowercase)
+        }
+    }
+    
+    @Test(
+        "TextInt.Numerals/initialization: each radix in [0, 36] is valid",
+        Tag.List.tags(.generic, .exhaustive),
+        arguments: typesAsBinaryInteger
+    )   func eachRadixFromZeroThrough36IsValid(type: any BinaryInteger.Type) throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for radix in radices.lazy.map(T.init) {
+                for letters in letters {
+                    let numerals = try TextInt.Numerals(radix:      (radix), letters: letters)
+                    let concrete = try TextInt.Numerals(radix: Radix(radix), letters: letters)
+                    try #require(numerals == concrete)
+                    
+                    try #require(numerals.radix   == radix)
+                    try #require(numerals.letters == letters)
+                    try #require(numerals.lowercased().letters == TextInt.Letters.lowercase)
+                    try #require(numerals.uppercased().letters == TextInt.Letters.uppercase)
+                    try #require(numerals.letters(.lowercase).letters == TextInt.Letters.lowercase)
+                    try #require(numerals.letters(.uppercase).letters == TextInt.Letters.uppercase)
+                }
+            }
+        }
+    }
+    
+    @Test(
+        "TextInt.Numerals/initialization: throws error if radix is invalid",
+        Tag.List.tags(.generic, .random),
+        TimeLimitTrait.timeLimit(TimeLimitTrait.Duration.minutes(3)),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func throwsErrorIfRadixIsInvalid(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            var   counter = 00
+            while counter < 32 {
+                let radix = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                if  0 <= radix, radix <= 36 { continue } else { counter += 1 }
+                
+                for letters in letters {
+                    try #require(throws: TextInt.Error.invalid) {
+                        try TextInt.Numerals(radix: radix, letters: letters)
+                    }
+                    
+                    if  let radix = Radix.exactly(radix).optional() {
+                        try #require(throws: TextInt.Error.invalid) {
+                            try TextInt.Numerals(radix: radix, letters: letters)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    @Test(
+        "TextInt.Numerals/initialization: throws error if radix is one past limit",
+        Tag.List.tags(.generic, .exhaustive),
+        arguments: typesAsBinaryInteger, [-1, 37] as [I8]
+    )   func throwsErrorIfRadixIsOnePastLimit(type: any BinaryInteger.Type, radix: I8) throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for letters in letters {
+                if  let radix = T.exactly(radix).optional() {
+                    try #require(throws: TextInt.Error.invalid) {
+                        try TextInt.Numerals(radix: radix, letters: letters)
+                    }
+                }
+                
+                if  let radix = Radix.exactly(radix).optional() {
+                    try #require(throws: TextInt.Error.invalid) {
+                        try TextInt.Numerals(radix: radix, letters: letters)
+                    }
+                }
+            }
+        }
     }
 }
