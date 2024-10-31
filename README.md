@@ -123,7 +123,7 @@ let b = I32.random()
 
 #### Type-agnostic hashes
 
-All binary integers of equal value agree on a common low-level representation, specifically, the contents of their normalized 8-bit extensions. This common ground lets us produce equal hashes for equal values across type boundaries. Note that you may also use this form to perform direct comparisons. The following snippet of code shows you what to expect.
+Binary integers of equal value agree on a common low-level representation, specifically, the contents of their normalized byte sequences. This common ground produces equal hashes for equal values across type boundaries. Note that we may use this reinterpretation strategy to perform comparisons too. The following snippet of code shows you what to expect.
 
 ```swift
 let x = I32.random()
