@@ -20,19 +20,21 @@ extension BinaryInteger {
     /// Returns the `factorial` of `self` and an `error` indicator, or `nil`.
     ///
     /// ```swift
-    /// U8(0).factorial() // U8.exactly(   1)
-    /// U8(1).factorial() // U8.exactly(   1)
-    /// U8(2).factorial() // U8.exactly(   2)
-    /// U8(3).factorial() // U8.exactly(   6)
-    /// U8(4).factorial() // U8.exactly(  24)
-    /// U8(5).factorial() // U8.exactly( 120)
-    /// U8(6).factorial() // U8.exactly( 720)
-    /// U8(7).factorial() // U8.exactly(5040)
+    /// I8(-1).factorial() // nil
+    /// U8( 0).factorial() // U8.exactly(  1)
+    /// U8( 1).factorial() // U8.exactly(  1)
+    /// U8( 2).factorial() // U8.exactly(  2)
+    /// U8( 3).factorial() // U8.exactly(  6)
+    /// U8( 4).factorial() // U8.exactly( 24)
+    /// U8( 5).factorial() // U8.exactly(120)
+    /// U8( 6).factorial() // U8.exactly(720)
     /// ```
+    ///
+    /// ### Factorial
     ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
-    /// - Note: It returns `nil` if the operation is `undefined`.
+    /// - Note: It produces `nil` if the operation is `undefined`.
     ///
     /// - Note: `T.Magnitude` guarantees nonoptional results.
     ///
@@ -76,20 +78,62 @@ extension UnsignedInteger {
     /// Returns the `factorial` of `self` and an `error` indicator.
     ///
     /// ```swift
-    /// U8(0).factorial() // U8.exactly(   1)
-    /// U8(1).factorial() // U8.exactly(   1)
-    /// U8(2).factorial() // U8.exactly(   2)
-    /// U8(3).factorial() // U8.exactly(   6)
-    /// U8(4).factorial() // U8.exactly(  24)
-    /// U8(5).factorial() // U8.exactly( 120)
-    /// U8(6).factorial() // U8.exactly( 720)
-    /// U8(7).factorial() // U8.exactly(5040)
+    /// I8(-1).factorial() // nil
+    /// U8( 0).factorial() // U8.exactly(  1)
+    /// U8( 1).factorial() // U8.exactly(  1)
+    /// U8( 2).factorial() // U8.exactly(  2)
+    /// U8( 3).factorial() // U8.exactly(  6)
+    /// U8( 4).factorial() // U8.exactly( 24)
+    /// U8( 5).factorial() // U8.exactly(120)
+    /// U8( 6).factorial() // U8.exactly(720)
     /// ```
+    ///
+    /// ### Factorial
     ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
+    /// - Note: It produces `nil` if the operation is `undefined`.
+    ///
+    /// - Note: `T.Magnitude` guarantees nonoptional results.
+    ///
     @inlinable public borrowing func factorial() -> Fallible<Self> {
-        (self.factorial() as Optional).unchecked("UnsignedInteger")
+        (self.factorial() as Optional<Fallible<Self>>).unchecked("UnsignedInteger")
+    }
+}
+
+//*============================================================================*
+// MARK: * Binary Integer x Factorial x Lenient
+//*============================================================================*
+
+extension BinaryInteger where Self: ArbitraryInteger & SignedInteger {
+
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// Returns the `factorial` of `self`, or `nil`.
+    ///
+    /// ```swift
+    /// I8(-1).factorial() // nil
+    /// U8( 0).factorial() // U8.exactly(  1)
+    /// U8( 1).factorial() // U8.exactly(  1)
+    /// U8( 2).factorial() // U8.exactly(  2)
+    /// U8( 3).factorial() // U8.exactly(  6)
+    /// U8( 4).factorial() // U8.exactly( 24)
+    /// U8( 5).factorial() // U8.exactly(120)
+    /// U8( 6).factorial() // U8.exactly(720)
+    /// ```
+    ///
+    /// ### Factorial
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    /// - Note: It produces `nil` if the operation is `undefined`.
+    ///
+    /// - Note: `T.Magnitude` guarantees nonoptional results.
+    ///
+    @inlinable public borrowing func factorial() -> Optional<Self> {
+        (self.factorial() as Optional<Fallible<Self>>)?.unchecked()
     }
 }
 
@@ -219,7 +263,7 @@ extension Namespace {
                 }
             }
             
-            return  value.up(distance).veto(error)
+            return  value.up(distance).veto(error) // as Fallible<Value>
         }
     }
 }

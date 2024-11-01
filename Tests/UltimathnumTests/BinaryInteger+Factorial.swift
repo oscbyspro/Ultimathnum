@@ -17,8 +17,7 @@ import TestKit2
 // MARK: * Binary Integer x Factorial
 //*============================================================================*
 
-@Suite("BinaryInteger/factorial", ParallelizationTrait.serialized)
-struct BinaryIntegerTestsOnFactorial {
+@Suite(.serialized) struct BinaryIntegerTestsOnFactorial {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -200,20 +199,22 @@ struct BinaryIntegerTestsOnFactorial {
 // MARK: * Binary Integer x Factorial x Edge Cases
 //*============================================================================*
 
-@Suite("BinaryInteger/factorial/edge-cases", Tag.List.tags(.documentation))
-struct BinaryIntegerTestsOnFactorialEdgeCases {
+@Suite(.tags(.documentation)) struct BinaryIntegerTestsOnFactorialEdgeCases {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     @Test(
-        "BinaryInteger/factorial: element at negative index is nil",
+        "BinaryInteger/factorial/edge-cases: element at negative index is nil",
         Tag.List.tags(.random),
         arguments: typesAsBinaryIntegerAsSigned, fuzzers
-    )   func elementAtNegativeIndexIsNil(type: any SignedInteger.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    )   func elementAtNegativeIndexIsNil(
+        type: any SignedInteger.Type,
+        randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: SignedInteger {
             let low  = T(repeating: Bit.one).up(Shift.max(or: 255))
             let high = T(repeating: Bit.one)
@@ -231,12 +232,15 @@ struct BinaryIntegerTestsOnFactorialEdgeCases {
     }
     
     @Test(
-        "BinaryInteger/factorial: element at infinite index is zero with error",
+        "BinaryInteger/factorial/edge-cases: element at infinite index is zero with error",
         Tag.List.tags(.random),
         arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers
-    )   func elementAtInfiniteIndexIsZeroWithError(type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    )   func elementAtInfiniteIndexIsZeroWithError(
+        type: any ArbitraryIntegerAsUnsigned.Type,
+        randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsUnsigned {
             let low  = T(repeating: Bit.one).up(Shift.max(or: 255))
             let high = T(repeating: Bit.one)
@@ -249,6 +253,66 @@ struct BinaryIntegerTestsOnFactorialEdgeCases {
                 let random = T.random(in: low...high, using: &randomness)
                 try #require(random.isInfinite)
                 try #require(random.factorial() == expectation)
+            }
+        }
+    }
+}
+
+//*============================================================================*
+// MARK: * Binary Integer x Factorial x Conveniences
+//*============================================================================*
+
+@Suite(.tags(.forwarding)) struct BinaryIntegerTestsOnFactorialConveniences {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/factorial/conveniences: element is never nil as UnsignedInteger",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryIntegerAsUnsigned, fuzzers
+    )   func elementIsNeverNilAsUnsignedInteger(
+        type: any UnsignedInteger.Type,
+        randomness: consuming FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: UnsignedInteger {
+            let size = IX(size: T.self) ?? 8
+            
+            for _ in 0 ..< 8 {
+                let random = T.entropic(size: size, using: &randomness)
+                let expectation = random.factorial() as Optional<Fallible<T>>
+                let convenience = random.factorial() as Fallible<T>
+                try #require(#require((expectation)) == convenience)
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/factorial/conveniences: element is never lossy as LenientInteger",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsArbitraryIntegerAsSigned, fuzzers
+    )   func elementIsNeverLossyAsLenientInteger(
+        type: any ArbitraryIntegerAsSigned.Type,
+        randomness: consuming FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsSigned {
+            for _ in 0 ..< 8 {
+                let random = T.entropic(size: 8, using: &randomness)
+                let expectation = random.factorial() as Optional<Fallible<T>>
+                let convenience = random.factorial() as Optional<T>
+                
+                if  let expectation, let convenience {
+                    try #require(expectation.error == false)
+                    try #require(expectation.value == convenience)
+                }   else {
+                    try #require(expectation == nil)
+                    try #require(convenience == nil)
+                }
             }
         }
     }
