@@ -8,409 +8,249 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import DoubleIntKit
-import InfiniIntKit
 import RandomIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
-// MARK: * Binary Integer x Validation
+// MARK: * Binary Integer x Integers x Sequences
 //*============================================================================*
 
-final class BinaryIntegerTestsOnValidation: XCTestCase {
+@Suite struct BinaryIntegerTestsOnIntegersUsingSequences {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testExactlySameSizeIntegers() {
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            typealias S = T.Signitude
-            typealias M = T.Magnitude
-            
-            Test().exactly( Esque<S>.min, Fallible( T(raw: Esque<S>.min), error: !T.isSigned))
-            Test().exactly( Esque<S>.lsb, Fallible( T(raw: Esque<S>.lsb)))
-            Test().exactly( Esque<S>.msb, Fallible( T(raw: Esque<S>.msb), error: !T.isSigned))
-            Test().exactly( Esque<S>.max, Fallible( T(raw: Esque<S>.max)))
-            
-            Test().exactly(~Esque<S>.min, Fallible(~T(raw: Esque<S>.min)))
-            Test().exactly(~Esque<S>.lsb, Fallible(~T(raw: Esque<S>.lsb), error: !T.isSigned))
-            Test().exactly(~Esque<S>.msb, Fallible(~T(raw: Esque<S>.msb)))
-            Test().exactly(~Esque<S>.max, Fallible(~T(raw: Esque<S>.max), error: !T.isSigned))
-            
-            Test().exactly( Esque<M>.min, Fallible( T(raw: Esque<M>.min)))
-            Test().exactly( Esque<M>.lsb, Fallible( T(raw: Esque<M>.lsb)))
-            Test().exactly( Esque<M>.msb, Fallible( T(raw: Esque<M>.msb), error:  T.isSigned && !T.isArbitrary))
-            Test().exactly( Esque<M>.max, Fallible( T(raw: Esque<M>.max), error:  T.isSigned))
-            
-            Test().exactly(~Esque<M>.min, Fallible(~T(raw: Esque<M>.min), error:  T.isSigned))
-            Test().exactly(~Esque<M>.lsb, Fallible(~T(raw: Esque<M>.lsb), error:  T.isSigned))
-            Test().exactly(~Esque<M>.msb, Fallible(~T(raw: Esque<M>.msb), error: !T.isEdgy))
-            Test().exactly(~Esque<M>.max, Fallible(~T(raw: Esque<M>.max)))
-            
-            if  T.isSigned, !T.isArbitrary {
-                Test().exactly(Esque<M>.msb,     Fallible(Esque<T>.msb,     error: true))
-                Test().exactly(Esque<M>.msb + 1, Fallible(Esque<T>.msb + 1, error: true))
-            }
-        }
-        
-        for type in typesAsBinaryInteger {
-            whereIs(type)
-        }
-    }
-    
-    func testExactlySystemsInteger() {
-        func whereTheSourceIs<T, U>(source: T.Type, destination: U.Type) where T: SystemsInteger, U: BinaryInteger {
-            //=----------------------------------=
-            // path: about T.max as U
-            //=----------------------------------=
-            if  U.size < T.size || (U.size == T.size && (U.isSigned, T.isSigned) != (false, true)) {
-                let max: U = Esque<U>.max
-                let maxAsOther: T = T(repeating: Bit.one) << T(load: UX(size: U.self)! - UX(Bit(U.isSigned))) ^ T(repeating: Bit.one)
-                
-                Test().exactly(maxAsOther &- 2, Fallible(max &- 2))
-                Test().exactly(maxAsOther &- 1, Fallible(max &- 1))
-                Test().exactly(maxAsOther,      Fallible(max     ))
-                Test().exactly(maxAsOther &+ 1, Fallible(max &+ 1, error: U.size < T.size || (U.isSigned != T.isSigned)))
-                Test().exactly(maxAsOther &+ 2, Fallible(max &+ 2, error: U.size < T.size || (U.isSigned != T.isSigned)))
-            }   else {
-                Test().exactly(Esque<U>.max, Fallible(T(repeating: Bit.one), error: true))
-            }
-        }
-        
-        func whereTheSourceIsIsSigned<T, U>(source: T.Type, destination: U.Type) where T: SystemsInteger & SignedInteger, U: BinaryInteger {
-            let size = UX(size: T.self)
-            //=----------------------------------=
-            // path: about U.zero
-            //=----------------------------------=
-            always: do {
-                let load = U.zero
-                Test().exactly(T(repeating: Bit.zero) - 2, Fallible(load &- 2, error: !U.isSigned))
-                Test().exactly(T(repeating: Bit.zero) - 1, Fallible(load &- 1, error: !U.isSigned))
-                Test().exactly(T(repeating: Bit.zero),     Fallible(load     ))
-                Test().exactly(T(repeating: Bit.zero) + 1, Fallible(load &+ 1))
-                Test().exactly(T(repeating: Bit.zero) + 2, Fallible(load &+ 2))
-            }
-            //=----------------------------------=
-            // path: about U.min
-            //=----------------------------------=
-            always: do {
-                let load = U(repeating: Bit.one) << (size - 1)
-                Test().exactly(T.min,      Fallible(load,      error: U.size < T.size || !U.isSigned))
-                Test().exactly(T.min &+ 1, Fallible(load &+ 1, error: U.size < T.size || !U.isSigned))
-                Test().exactly(T.min &+ 2, Fallible(load &+ 2, error: U.size < T.size || !U.isSigned))
-            }
-            //=----------------------------------=
-            // path: about U.max
-            //=----------------------------------=
-            always: do {
-                let load = U(repeating: Bit.one) << (size - 1) ^ U(repeating: Bit.one)
-                Test().exactly(T.max,      Fallible(load,      error: U.size < T.size))
-                Test().exactly(T.max &- 1, Fallible(load &- 1, error: U.size < T.size))
-                Test().exactly(T.max &- 2, Fallible(load &- 2, error: U.size < T.size))
-            }
-            //=----------------------------------=
-            // path: about T.min as U
-            //=----------------------------------=
-            if  U.isSigned, U.size <= T.size {
-                let min: U = Esque<U>.min
-                let minAsOther: T = T(repeating: Bit.one) << T(load: UX(size: U.self)! - 1)
-                
-                Test().exactly(minAsOther &- 2, Fallible(min &- 2, error: U.size < T.size))
-                Test().exactly(minAsOther &- 1, Fallible(min &- 1, error: U.size < T.size))
-                Test().exactly(minAsOther,      Fallible(min     ))
-                Test().exactly(minAsOther &+ 1, Fallible(min &+ 1))
-                Test().exactly(minAsOther &+ 2, Fallible(min &+ 2))
-            }
-        }
-        
-        func whereTheSourceIsUnsigned<T, U>(source: T.Type, destination: U.Type) where T: SystemsInteger & UnsignedInteger, U: BinaryInteger {
-            let size = UX(size: T.self)
-            //=----------------------------------=
-            // path: about U.min
-            //=----------------------------------=
-            always: do {
-                let load = U.zero
-                Test().exactly(T(repeating: Bit.zero),     Fallible(load    ))
-                Test().exactly(T(repeating: Bit.zero) + 1, Fallible(load + 1))
-                Test().exactly(T(repeating: Bit.zero) + 2, Fallible(load + 2))
-            }
-            //=----------------------------------=
-            // path: about U.max
-            //=----------------------------------=
-            always: do {
-                let load = U(repeating: Bit.one) << size ^ U(repeating: Bit.one)
-                Test().exactly(T(repeating: Bit.one) - 2, Fallible(load - 2, error: U.size < T.size || (U.isSigned && U.size == T.size)))
-                Test().exactly(T(repeating: Bit.one) - 1, Fallible(load - 1, error: U.size < T.size || (U.isSigned && U.size == T.size)))
-                Test().exactly(T(repeating: Bit.one),     Fallible(load,     error: U.size < T.size || (U.isSigned && U.size == T.size)))
-            }
-            //=----------------------------------=
-            // path: about U.msb
-            //=----------------------------------=
-            always: do {
-                let load = U(1) << (size - 1)
-                Test().exactly(T.msb - 2, Fallible(load &- 2, error: U.size < T.size))
-                Test().exactly(T.msb - 1, Fallible(load &- 1, error: U.size < T.size))
-                Test().exactly(T.msb,     Fallible(load,      error: U.size < T.size || (U.isSigned && U.size == T.size)))
-                Test().exactly(T.msb + 1, Fallible(load &+ 1, error: U.size < T.size || (U.isSigned && U.size == T.size)))
-                Test().exactly(T.msb + 2, Fallible(load &+ 2, error: U.size < T.size || (U.isSigned && U.size == T.size)))
-            }
-        }
-        
-        for destination in typesAsBinaryInteger {
-            for source in typesAsSystemsInteger {
-                whereTheSourceIs(source: source, destination: destination)
-            }
-            
-            for source in typesAsSystemsIntegerAsSigned {
-                whereTheSourceIsIsSigned(source: source, destination: destination)
-            }
-            
-            for source in typesAsSystemsIntegerAsUnsigned {
-                whereTheSourceIsUnsigned(source: source, destination: destination)
-            }
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    /// Tests binary integer conversions for sequences of descending 0s.
+    /// Validates the following sequence:
     ///
-    ///     11111111111111111111111111111110 != 1s
-    ///     11111111111111111111111111111100
-    ///     11111111111111111111111111111000
+    ///     00000000000000000000000000000000 → == 0s
+    ///     10000000000000000000000000000000 →
+    ///     11000000000000000000000000000000 →
+    ///     11100000000000000000000000000000 →
     ///     ................................
-    ///     11000000000000000000000000000000
-    ///     10000000000000000000000000000000
-    ///     00000000000000000000000000000000
+    ///     11111111111111111111111111110000 →
+    ///     11111111111111111111111111111000 →
+    ///     11111111111111111111111111111100 →
+    ///     11111111111111111111111111111110 → != 1s
     ///
-    func testExactlySystemsIntegerRainOf0s() {
-        /// Tests the sequence in reverse order because it's easier.
-        func whereIs<T, U>(source: T.Type, destination: U.Type) where T: SystemsInteger, U: BinaryInteger {
-            var lhs = T.zero
-            var rhs = U.zero
-            
-            for ones in 0 ..< IX(size: T.self) {
-                Test().ascending(lhs, Bit.one, Count(ones))
-                Test().exactly(lhs, Fallible(rhs, error: U.isSigned ? U.size <= Count(ones) : U.size < Count(ones)))
-                
-                lhs <<= 1
-                lhs  |= 1
-                rhs <<= 1
-                rhs  |= 1
+    @Test(
+        "BinaryInteger/integers/generators: rain 0s",
+        Tag.List.tags(.generic)
+    )   func rain0s() throws {
+        
+        for source in typesAsBinaryInteger {
+            for destination in typesAsBinaryInteger {
+                try whereIs(source: source, destination: destination)
             }
         }
         
-        for destination in typesAsBinaryInteger {
-            #if DEBUG
-            whereIs(source: I32.self, destination: destination)
-            whereIs(source: U32.self, destination: destination)
-            #else
-            for source in typesAsSystemsInteger {
-                whereIs(source: source, destination: destination)
-            }
-            #endif
-        }
-    }
-    
-    /// Tests binary integer conversions for sequences of descending 1s.
-    ///
-    ///     00000000000000000000000000000001 != 0s
-    ///     00000000000000000000000000000011
-    ///     00000000000000000000000000000111
-    ///     ................................
-    ///     00111111111111111111111111111111
-    ///     01111111111111111111111111111111
-    ///     11111111111111111111111111111111
-    ///
-    func testExactlySystemsIntegerRainOf1s() {
-        /// Tests the sequence in reverse order because it's easier.
-        func whereIs<T, U>(source: T.Type, destination: U.Type) where T: SystemsInteger, U: BinaryInteger {
-            var mask = U(repeating: Bit.one)
-            
-            if !T.isSigned {
-                mask = mask.up(T.size).toggled()
-            }
-            
-            always: do {
-                var lhs = T(repeating: Bit.one)
-                var rhs = U(repeating: Bit.one)
+        func whereIs<A, B>(source: A.Type, destination: B.Type) throws where A: BinaryInteger, B: BinaryInteger {
+            try withOnlyOneCallToRequire((source, destination)) { require in
+                var a = A.zero, x = A.lsb
+                var b = B.zero, y = B.lsb
                 
-                for zeros in 0 ..< IX(size: T.self) {
-                    let error = switch (U.isSigned, T.isSigned) {
-                    case (true,  true ): U.size <= Count(zeros)
-                    case (true,  false): U.size <= T.size
-                    case (false, true ): ((((((true))))))
-                    case (false, false): U.size <  T.size
+                let size = IX(size: A.self) ?? conditional(debug: 64, release: 256)
+                for ones in 0 ..< size {
+                    let error = switch B.mode {
+                    case   .signed: B.size <= Count(ones)
+                    case .unsigned: B.size <  Count(ones)
                     }
                     
-                    Test().ascending(lhs, Bit.zero, Count(zeros))
-                    Test().exactly(lhs, Fallible(rhs & mask, error: error))
-                    lhs <<= 1
-                    rhs <<= 1
+                    require(B.exactly(a) == b.veto(error))
+                    require(a.ascending(Bit.one) == Count(ones))
+                    
+                    a = a.up(Shift.one) | x
+                    b = b.up(Shift.one) | y
                 }
             }
-        }
-        
-        for destination in typesAsBinaryInteger {
-            #if DEBUG
-            whereIs(source: I32.self, destination: destination)
-            whereIs(source: U32.self, destination: destination)
-            #else
-            for source in typesAsSystemsInteger {
-                whereIs(source: source, destination: destination)
-            }
-            #endif
         }
     }
     
-    /// Tests binary integer conversions for various slices of 0s.
+    /// Validates the following sequence:
     ///
-    ///     00001111111111111111111111111111
-    ///     10000111111111111111111111111111
-    ///     11000011111111111111111111111111
+    ///     11111111111111111111111111111111 → == 1s
+    ///     01111111111111111111111111111111 →
+    ///     00111111111111111111111111111111 →
+    ///     00011111111111111111111111111111 →
     ///     ................................
-    ///     11111111111111111111111111000011
-    ///     11111111111111111111111111100001
-    ///     11111111111111111111111111110000
+    ///     00000000000000000000000000001111 →
+    ///     00000000000000000000000000000111 →
+    ///     00000000000000000000000000000011 →
+    ///     00000000000000000000000000000001 → != 0s
     ///
-    func testExactlytypesAsSystemsIntegerlicesOf0s() {
-        func whereIs<T, U>(source: T.Type, destination: U.Type) where T: SystemsInteger, U: BinaryInteger {
-            always: do {
-                let patterns: [IX] = [~1, ~3, ~7, ~15]
-                var mask = U(repeating: Bit.one)
-                
-                if !T.isSigned {
-                    mask = mask.up(T.size).toggled()
+    @Test(
+        "BinaryInteger/integers/generators: rain 1s",
+        Tag.List.tags(.generic)
+    )   func rain1s() throws {
+        
+        for source in typesAsBinaryInteger {
+            for destination in typesAsBinaryInteger {
+                try whereIs(source: source, destination: destination)
+            }
+        }
+        
+        func whereIs<A, B>(source: A.Type, destination: B.Type) throws where A: BinaryInteger, B: BinaryInteger {
+            try withOnlyOneCallToRequire((source, destination)) { require in
+                var mask = B(repeating: Bit.one)
+    
+                if !A.isSigned {
+                    mask = mask.up(A.size).toggled()
                 }
-                
-                for zeros in 1 ... IX(patterns.count) {
-                    var ones: IX = 0
-                    var lhs = T(load: patterns[Int(zeros - 1)])
-                    var rhs = U(load: patterns[Int(zeros - 1)])
-                    
-                    forwards: while ones + zeros < IX(size: T.self) {
-                        let error = switch (U.isSigned, T.isSigned) {
-                        case (true,  true ): U.size <= Count(ones + zeros)
-                        case (true,  false): U.size <= T.size
-                        case (false, true ):   true
-                        case (false, false): U.size <  T.size
+    
+                always: do {
+                    var a = A(repeating: Bit.one)
+                    var b = B(repeating: Bit.one)
+    
+                    let size = IX(size: A.self) ?? conditional(debug: 64, release: 256)
+                    for zeros in 0 ..< size {
+                        let error = switch (A.mode,  B.mode) {
+                        case (  .signed,   .signed): B.size <= Count(zeros)
+                        case (  .signed, .unsigned): ((((((true))))))
+                        case (.unsigned,   .signed): A.size >= B.size
+                        case (.unsigned, .unsigned): A.size >  B.size
                         }
+
+                        b = b & mask
                         
-                        Test().exactly(lhs, Fallible(rhs & mask, error: error))
-                        ones += 1
-                        lhs <<= 1
-                        lhs  |= 1
-                        rhs <<= 1
-                        rhs  |= 1
-                    }
-                    
-                    Test().same(IX(size:    T.self), ones + zeros)
-                    Test().descending(lhs, Bit.zero, Count(zeros))
-                    
-                    last: do {
-                        let value = rhs & U(load: T.Magnitude(repeating: Bit.one))
-                        let error = U.isSigned ? U.size <= Count(ones) : U.size < Count(ones)
-                        Test().exactly(lhs, Fallible(value, error: error))
+                        require(B.exactly(a) == b.veto(error))
+                        require(a.ascending(Bit.zero) == Count(zeros))
+                        
+                        a = a.up(Shift.one)
+                        b = b.up(Shift.one)
                     }
                 }
             }
         }
-        
-        for destination in typesAsBinaryInteger {
-            #if DEBUG
-            whereIs(source: I32.self, destination: destination)
-            whereIs(source: U32.self, destination: destination)
-            #else
-            for source in typesAsSystemsInteger {
-                whereIs(source: source, destination: destination)
-            }
-            #endif
-        }
     }
     
-    /// Tests binary integer conversions for various slices of 1s.
+    /// Validates the following sequence:
     ///
-    ///     11110000000000000000000000000000
-    ///     01111000000000000000000000000000
-    ///     00111100000000000000000000000000
+    ///     00001111111111111111111111111111 →
+    ///     10000111111111111111111111111111 →
+    ///     11000011111111111111111111111111 →
+    ///     11100001111111111111111111111111 →
     ///     ................................
-    ///     00000000000000000000000000111100
-    ///     00000000000000000000000000011110
-    ///     00000000000000000000000000001111
+    ///     11111111111111111111111110000111 →
+    ///     11111111111111111111111111000011 →
+    ///     11111111111111111111111111100001 →
+    ///     11111111111111111111111111110000 →
     ///
-    func testExactlytypesAsSystemsIntegerlicesOf1s() {
-        func whereIs<T, U>(source: T.Type, destination: U.Type) where T: SystemsInteger, U: BinaryInteger {
-            always: do {
-                let patterns: [UX] = [1, 3, 7, 15]
-                let mask = U(load: T.Magnitude(repeating: Bit.one))
+    @Test(
+        "BinaryInteger/integers/generators: slices 0s",
+        Tag.List.tags(.generic),
+        arguments: IX(1)..<IX(5)
+    )   func slices0s(zeros: IX) throws {
+        
+        for source in typesAsBinaryInteger {
+            for destination in typesAsBinaryInteger {
+                try whereIs(source: source, destination: destination)
+            }
+        }
+        
+        func whereIs<A, B>(source: A.Type, destination: B.Type) throws where A: BinaryInteger, B: BinaryInteger {
+            try withOnlyOneCallToRequire((source, destination)) { require in
+                var mask = B(repeating: Bit.one)
+
+                if !A.isSigned {
+                    mask = mask.up(A.size).toggled()
+                }
                 
-                for ones in 1 ... IX(patterns.count) {
-                    var zeros = IX()
-                    var lhs = T(load: patterns[Int(ones - 1)])
-                    var rhs = U(load: patterns[Int(ones - 1)])
+                var a = A(load: IX(repeating: Bit.one) << zeros), x = A.lsb
+                var b = B(load: IX(repeating: Bit.one) << zeros), y = B.lsb
+                
+                let size = IX(size: A.self) ?? conditional(debug: 64, release: 256)
+                for ones in 0 ..< size - zeros + IX(Bit(A.isArbitrary)) {
+                    let error = switch (A.mode, B.mode) {
+                    case (  .signed,   .signed): B.size <= Count(ones + zeros)
+                    case (  .signed, .unsigned): ((((((true))))))
+                    case (.unsigned,   .signed): B.size <= A.size
+                    case (.unsigned, .unsigned): B.size <  A.size
+                    }
+
+                    b = b & mask
                     
-                    forwards: while zeros + ones < IX(size: T.self) {
-                        let sum = Count(zeros + ones)
-                        Test().exactly(lhs, Fallible(rhs & mask, error: U.isSigned ? U.size <= sum : U.size < sum))
-                        zeros += 1
-                        lhs  <<= 1
-                        rhs  <<= 1
+                    require(B.exactly(a) == b.veto(error))
+                    require(a.count(Bit.zero) == Count(zeros))
+                    require(a.ascending(Bit.one) == Count(ones))
+                                            
+                    a = a.up(Shift.one) | x
+                    b = b.up(Shift.one) | y
+                }
+                
+                for ones: IX in CollectionOfOne(size - zeros) where !A.isArbitrary {
+                    let error = switch B.mode {
+                    case   .signed: B.size <= Count(ones)
+                    case .unsigned: B.size <  Count(ones)
                     }
                     
-                    Test().same(IX(size:   T.self), zeros + ones)
-                    Test().descending(lhs, Bit.one, Count( ones))
+                    b = b & B(load: A.Magnitude(repeating: Bit.one))
                     
-                    last: do {
-                        let value = T.isSigned ? rhs ^ mask.toggled() : rhs & mask
-                        let error = switch (U.isSigned, T.isSigned) {
-                        case (true,  true ): U.size <  Count(zeros + ones)
-                        case (true,  false): U.size <= Count(zeros + ones)
-                        case (false, true ):   true
-                        case (false, false): U.size <  Count(zeros + ones)
-                        }
-                        
-                        Test().exactly(lhs, Fallible(value, error: error))
-                    }
+                    require(B.exactly(a) == b.veto(error))
+                    require(a.descending(Bit.zero) == Count(zeros))
                 }
             }
         }
-        
-        for destination in typesAsBinaryInteger {
-            #if DEBUG
-            whereIs(source: I32.self, destination: destination)
-            whereIs(source: U32.self, destination: destination)
-            #else
-            for source in typesAsSystemsInteger {
-                whereIs(source: source, destination: destination)
-            }
-            #endif
-        }
     }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Edge Cases
-//=----------------------------------------------------------------------------=
-
-extension BinaryIntegerTestsOnValidation {
-
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
     
-    /// 2024-06-20: Signed systems integers should successfully clamp `∞`.
-    func testtypesAsSystemsIntegerCanClampInfiniteValues() {
-        func whereIs<A, B>(_ source: A.Type, _ destination: B.Type) where A: ArbitraryInteger & UnsignedInteger, B: SystemsInteger {
-            Test().same(B(clamping: A.max    ), B.max)
-            Test().same(B(clamping: A.max - 1), B.max)
+    /// Validates the following sequence:
+    ///
+    ///     11110000000000000000000000000000 →
+    ///     01111000000000000000000000000000 →
+    ///     00111100000000000000000000000000 →
+    ///     00011110000000000000000000000000 →
+    ///     ................................
+    ///     00000000000000000000000001111000 →
+    ///     00000000000000000000000000111100 →
+    ///     00000000000000000000000000011110 →
+    ///     00000000000000000000000000001111 →
+    ///
+    @Test(
+        "BinaryInteger/integers/generators: slices 1s",
+        Tag.List.tags(.generic),
+        arguments: IX(1)..<IX(5)
+    )   func slices1s(ones: IX) throws {
+        
+        for source in typesAsBinaryInteger {
+            for destination in typesAsBinaryInteger {
+                try whereIs(source: source, destination: destination)
+            }
         }
         
-        for source in typesAsArbitraryIntegerAsUnsigned {
-            for destination in typesAsSystemsInteger {
-                whereIs(source, destination)
+        func whereIs<A, B>(source: A.Type, destination: B.Type) throws where A: BinaryInteger, B: BinaryInteger {
+            try withOnlyOneCallToRequire((source, destination)) { require in
+                let mask = B(load: A.Magnitude(repeating: Bit.one))
+
+                var a = A(load: ~(UX.max << ones))
+                var b = B(load: ~(UX.max << ones))
+                                
+                let size = IX(size: A.self) ?? conditional(debug: 64, release: 256)
+                for zeros in 0 ..< size - ones + IX(Bit(A.isArbitrary)) {
+                    let error = switch B.mode {
+                    case   .signed: B.size <= Count(zeros + ones)
+                    case .unsigned: B.size <  Count(zeros + ones)
+                    }
+                    
+                    b = b & mask
+                    
+                    require(B.exactly(a) == b.veto(error))
+                    require(a.count(Bit.one) == Count(ones))
+                    require(a.ascending(Bit.zero) == Count(zeros))
+
+                    a = a.up(Shift.one)
+                    b = b.up(Shift.one)
+                }
+                
+                for zeros in CollectionOfOne(size - ones) where !A.isArbitrary {
+                    let value = A.isSigned ? b ^ mask.toggled() : b & mask
+                    let error = switch (A.mode,  B.mode) {
+                    case (  .signed,   .signed): B.size <  Count(zeros + ones)
+                    case (  .signed, .unsigned): (true)
+                    case (.unsigned,   .signed): B.size <= Count(zeros + ones)
+                    case (.unsigned, .unsigned): B.size <  Count(zeros + ones)
+                    }
+
+                    require(B.exactly(a) == value.veto(error))
+                }
             }
         }
     }
