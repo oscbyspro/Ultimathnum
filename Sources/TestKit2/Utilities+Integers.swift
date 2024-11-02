@@ -170,4 +170,23 @@ extension BinaryInteger {
             return Self(raw: Self.isSigned ? random.down(Shift.one) : random)
         }
     }
+    
+    /// Picks an `entropic` value that also fits in the `destination` type.
+    @inlinable public static func entropic<Other>(
+        in destination: Other.Type,
+        or arbitrary: IX,
+        using randomness: inout some Randomness
+    )   -> Self where Other: BinaryInteger {
+        
+        let sourceSize = IX(size: Self.self) ?? arbitrary
+        let destinationSize = IX(size: Other.self) ?? arbitrary
+        var actualSize = Swift.min(sourceSize, destinationSize)
+        
+        if !Self.isSigned, Other.isSigned, !Other.isArbitrary {
+            actualSize -= 1 // natural from unsigned to compact
+        }
+        
+        let domain = Self.mode == Other.mode ? Domain.finite : Domain.natural
+        return Self.entropic(size: actualSize, as: domain, using: &randomness)
+    }
 }
