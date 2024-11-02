@@ -10,18 +10,20 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Utilities x Signedness
+// MARK: * Utilities x Signum
 //*============================================================================*
 
-extension Signedness {
+extension Signum {
     
     //=------------------------------------------------------------------------=
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    public static let u: Self = unsigned
+    public static let n: Self = negative
+        
+    public static let z: Self = zero
     
-    public static let s: Self = (signed)
+    public static let p: Self = positive
 
-    public static let all: [Self] = [u, s]
+    public static let all: [Self] = [n, z, p]
 }

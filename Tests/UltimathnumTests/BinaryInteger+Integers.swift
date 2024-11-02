@@ -18,115 +18,118 @@ import TestKit2
 @Suite struct BinaryIntegerTestsOnIntegers {
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests x Loading vs Exactly vs Trapping
+    // MARK: Tests
     //=------------------------------------------------------------------------=
     
     @Test(
-        "BinaryInteger/integers: loading vs exactly",
+        "BinaryInteger/integers: random in bounds",
         Tag.List.tags(.generic, .random),
         arguments: fuzzers
-    )   func loadingVersusExactly(randomness: consuming FuzzerInt) throws {
-        
+    )   func randomInBounds(randomness: consuming FuzzerInt) throws {
         for source in typesAsBinaryInteger {
             for destination in typesAsBinaryInteger {
                 try whereIs(source: source, destination: destination)
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws
-        where A: BinaryInteger, B: BinaryInteger {
-            for _ in 0 ..< conditional(debug: 8, release: 32) {
-                let source = A.entropic(through: Shift.max(or: 255), using: &randomness)
-                try #require(B(load: source) == B.exactly(source).value)
-            }
-        }
-    }
-    
-    @Test(
-        "BinaryInteger/integers: trapping vs exactly",
-        Tag.List.tags(.generic, .random),
-        arguments: fuzzers
-    )   func trappingVersusExactly(randomness: consuming FuzzerInt) throws {
-        
-        for source in typesAsBinaryInteger {
-            for destination in typesAsBinaryInteger {
-                try whereIs(source: source, destination: destination)
-            }
-        }
-        
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws
-        where A: BinaryInteger, B: BinaryInteger {
-            for _ in 0 ..< conditional(debug: 8, release: 32) {
-                let source = A.entropic(in: B.self, or: 256, using: &randomness)
-                try #require(B(source) == B.exactly(source).optional())
-            }
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests x To & From
-    //=------------------------------------------------------------------------=
-    
-    @Test(
-        "BinaryInteger/integers/roundtripping: in exact range",
-        Tag.List.tags(.generic, .random),
-        arguments: fuzzers
-    )   func rountrippingInExactRange(randomness: consuming FuzzerInt) throws {
-        
-        for source in typesAsBinaryInteger {
-            for destination in typesAsBinaryInteger {
-                try whereIs(source: source, destination: destination)
-            }
-        }
-        
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws
-        where A: BinaryInteger, B: BinaryInteger {
-            for _ in 0 ..< conditional(debug: 8, release: 32) {
-                let source = A.entropic(in: B.self, or: 256, using: &randomness)
-                let destination = try #require(B.exactly(source).optional())
-                let backtracked = try #require(A.exactly(destination).optional())
-                try #require(backtracked == source)
-            }
-        }
-    }
-    
-    @Test(
-        "BinaryInteger/integers/roundtripping: exactly versus masking",
-        Tag.List.tags(.generic, .random),
-        arguments: fuzzers
-    )   func rountrippingExactlyVersusMasking(randomness: consuming FuzzerInt) throws {
-        
-        for source in typesAsBinaryInteger {
-            for destination in typesAsBinaryInteger {
-                try whereIs(source: source, destination: destination)
-            }
-        }
-        
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws
-        where A: BinaryInteger, B: BinaryInteger {
-            for _ in 0 ..< conditional(debug: 8, release: 32) {
-                let source = A.entropic(through: Shift.max(or: 255), using: &randomness)
-                let destination = B.exactly(source) as Fallible<B>
-                let backtracked = A(load: destination.value) as A
-                let isSameIsNegative = source.isNegative == destination.value.isNegative
-                let isSameIsInfinite = source.isInfinite == destination.value.isInfinite
-                let isSameAppendixRange: Bool = isSameIsNegative && isSameIsInfinite
-                
-                if  A.size <= B.size {
-                    try #require(backtracked == source)
-                    try #require(destination.error == !isSameAppendixRange)
+        func whereIs<A, B>(source: A.Type, destination: B.Type) throws where A: BinaryInteger, B: BinaryInteger {
+            try withOnlyOneCallToRequire((source, destination)) { require in
+                for _ in 0 ..< conditional(debug: 32, release: 256) {
+                    let source: A  = A.entropic(in: B.self,or: 255, using: &randomness)
+                    let magnitude: A.Magnitude = source.magnitude()
+                    let destination: B = B(source)
+                    //=--------------------------=
+                    require(source == A(destination))
+                    require(source == B(destination))
+                    //=--------------------------=
+                    require(destination == B(load: source))
                     
-                }   else if Bool(destination.value.appendix) {
-                    let mask = A(repeating: Bit.one).up(B.size)
-                    let masked = source | mask
-                    try #require(backtracked == masked)
-                    try #require(destination.error == ((source != masked) || !isSameAppendixRange))
+                    if !source.isNegative {
+                        require(destination == B(magnitude: magnitude))
+                    }
                     
-                }   else {
-                    let mask = A(repeating: Bit.one).up(B.size).toggled()
-                    let masked = source & mask
-                    try #require(backtracked == masked)
-                    try #require(destination.error == ((source != masked) || !isSameAppendixRange))
+                    if !source.isPositive {
+                        require(destination == B(sign: Sign.minus, magnitude: magnitude))
+                    }
+                    
+                    source.withUnsafeBinaryIntegerElements {
+                        require(destination == B(load: $0))
+                        require(destination == B($0, mode: A.mode))
+                    }
+                    
+                    source.withUnsafeBinaryIntegerElements(as: U8.self) {
+                        require(destination == B(load: $0))
+                        require(destination == B($0, mode: A.mode))
+                    }
+                }
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/integers: random vs alternatives",
+        Tag.List.tags(.generic, .random),
+        arguments: fuzzers
+    )   func randomVersusAlternatives(randomness: consuming FuzzerInt) throws {
+        for source in typesAsBinaryInteger {
+            for destination in typesAsBinaryInteger {
+                try whereIs(source: source, destination: destination)
+            }
+        }
+        
+        func whereIs<A, B>(source: A.Type, destination: B.Type) throws where A: BinaryInteger, B: BinaryInteger {
+            try withOnlyOneCallToRequire((source, destination)) { require in
+                let size = IX(size: B.self) ?? (1 + 256)
+                let min: B = B(repeating: Bit(B.isSigned)).up(Count(size - 1))
+                let max: B = min.toggled()
+                //=------------------------------=
+                let mask01: A = A(repeating: Bit.one).up(B.size)
+                let mask10: A = mask01.toggled()
+                //=------------------------------=
+                for _ in 0 ..< conditional(debug: 32, release: 256) {
+                    let source: A  = A.entropic(through: Shift.max(or: 255), using: &randomness)
+                    let magnitude: A.Magnitude = source.magnitude()
+                    let destination: Fallible<B> = B.exactly(source)
+                    let backtracked: A = A(load: destination.value)
+                    let isSameIsNegative = source.isNegative == destination.value.isNegative
+                    let isSameIsInfinite = source.isInfinite == destination.value.isInfinite
+                    let isSameAppendixRange: Bool = isSameIsNegative && isSameIsInfinite
+                    //=--------------------------=
+                    require(destination.value == B(load: source))
+                    require(destination.error == (source < min || max < source))
+                    //=--------------------------=
+                    if  A.size <= B.size {
+                        require(backtracked == source)
+                        require(destination.error == !isSameAppendixRange)
+                        
+                    }   else if Bool(destination.value.appendix) {
+                        let masked = source | (mask01)
+                        require(backtracked == masked)
+                        require(destination.error == ((source != masked) || !isSameAppendixRange))
+                        
+                    }   else {
+                        let masked = source & (mask10)
+                        require(backtracked == masked)
+                        require(destination.error == ((source != masked) || !isSameAppendixRange))
+                    }
+                    
+                    if !source.isNegative {
+                        require(destination == B.exactly(magnitude: magnitude))
+                    }
+                    
+                    if !source.isPositive {
+                        require(destination == B.exactly(sign: Sign.minus, magnitude: magnitude))
+                    }
+                    
+                    source.withUnsafeBinaryIntegerElements {
+                        require(destination.value == B(load: $0))
+                        require(destination == B.exactly($0, mode: A.mode))
+                    }
+                    
+                    source.withUnsafeBinaryIntegerElements(as: U8.self) {
+                        require(destination.value == B(load: $0))
+                        require(destination == B.exactly($0, mode: A.mode))
+                    }
                 }
             }
         }
@@ -137,59 +140,116 @@ import TestKit2
 // MARK: * Binary Integer x Integers x Edge Cases
 //*============================================================================*
 
-@Suite struct BinaryIntegerTestsOnIntegersEdgeCases {
+@Suite(.tags(.important)) struct BinaryIntegerTestsOnIntegersEdgeCases {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     @Test(
-        "BinaryInteger/integers/edge-cases: init ± zero is zero",
+        "BinaryInteger/integers/edge-cases: ± zero is zero",
         Tag.List.tags(.generic, .exhaustive)
     )   func initPlusMinusZeroIsZero() throws {
         for source in typesAsBinaryIntegerAsUnsigned {
-            for destination in typesAsBinaryIntegerAsUnsigned {
+            for destination in typesAsBinaryInteger {
                 try whereIs(source: source, destination: destination)
             }
         }
         
         func whereIs<A, B>(source: A.Type, destination: B.Type) throws where A: UnsignedInteger, B: BinaryInteger {
             for sign in Sign.all {
-                try #require(B.zero == B(sign: sign, magnitude: A.zero))
+                try #require(B(sign: sign, magnitude: A.Magnitude.zero).isZero)
+            }
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Destination Edges
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/integers/edge-cases: Destination.min",
+        Tag.List.tags(.generic)
+    )   func destinationMinValue() throws {
+        for source in typesAsBinaryInteger {
+            for destination in typesAsEdgyInteger {
+                try whereIs(source: source, destination: destination)
+            }
+        }
+        
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: BinaryInteger, B: EdgyInteger {
+            let source: Fallible<A> = A.exactly(B.min)
+            switch (A.mode, A.size.compared(to: B.size), B.mode) {
+            case ( _,  _, .u): fallthrough
+            case (.s, .z,  _): fallthrough
+            case (.s, .p,  _): try #require(source.map(B.exactly).optional() == B.min)
+            default:           try #require(source.error)
             }
         }
     }
     
     @Test(
-        "BinaryInteger/integers/edge-cases: round-tripping same or smaller always works",
-        Tag.List.tags(.generic, .random),
-        arguments: fuzzers
-    )   func roundtrippingSameOrSmallerAlwaysWorks(randomness: consuming FuzzerInt) throws {
+        "BinaryInteger/integers/edge-cases: Destination.min - 1",
+        Tag.List.tags(.generic)
+    )   func destinationMinValueMinusOne() throws {
         for source in typesAsBinaryInteger {
-            for destination in typesAsBinaryInteger {
+            for destination in typesAsEdgyInteger {
                 try whereIs(source: source, destination: destination)
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws where A: BinaryInteger, B: BinaryInteger {
-            guard A.mode == B.mode else { return }
-            guard A.size <= B.size else { return }
-            
-            for _ in 0 ..< conditional(debug: 8, release: 64) {
-                let random = A.entropic(through: Shift.max(or: 255), using: &randomness)
-                try #require(random == B(random))
-                
-                try random.withUnsafeBinaryIntegerElements {
-                    try #require(random == B($0, mode: B.mode))
-                }
-                
-                try random.withUnsafeBinaryIntegerElements(as: U8.self) {
-                    try #require(random == B($0, mode: B.mode))
-                }
-                
-                let sign = Sign(raw: random.isNegative)
-                let magnitude: some UnsignedInteger = random.magnitude()
-                try #require(random == B(sign: sign, magnitude: magnitude))
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: BinaryInteger, B: EdgyInteger {
+            let source: Fallible<A> = A.exactly(B.min).map{$0.decremented()}
+            switch (A.mode, A.size.compared(to: B.size), B.mode) {
+            case (.s,  _, .u): fallthrough
+            case (.s, .p,  _): try #require(B.exactly(#require(source.optional())) == B.min.decremented())
+            default:           try #require(source.error)
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/integers/edge-cases: Destination.max",
+        Tag.List.tags(.generic)
+    )   func destinationMaxValue() throws {
+        for source in typesAsBinaryInteger {
+            for destination in typesAsEdgyInteger {
+                try whereIs(source: source, destination: destination)
+            }
+        }
+        
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: BinaryInteger, B: EdgyInteger {
+            let source: Fallible<A> = A.exactly(B.max)
+            switch (A.mode, A.size.compared(to: B.size), B.mode) {
+            case ( _, .p,  _): fallthrough
+            case (.u, .z,  _): fallthrough
+            case (.s, .z, .s): try #require(source.map(B.exactly).optional() == B.max)
+            default:           try #require(source.error)
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/integers/edge-cases: Destination.max + 1",
+        Tag.List.tags(.generic)
+    )   func destinationMaxValuePlusOne() throws {
+        for source in typesAsBinaryInteger {
+            for destination in typesAsEdgyInteger {
+                try whereIs(source: source, destination: destination)
+            }
+        }
+        
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: BinaryInteger, B: EdgyInteger {
+            let source: Fallible<A> = A.exactly(B.max).map{$0.incremented()}
+            switch (A.mode, A.size.compared(to: B.size), B.mode) {
+            case (.u, .z, .s): fallthrough
+            case (.u, .p,  _): fallthrough
+            case (.s, .p,  _): try #require(B.exactly(#require(source.optional())) == B.max.incremented())
+            default:           try #require(source.error)
             }
         }
     }
@@ -206,181 +266,69 @@ import TestKit2
     //=------------------------------------------------------------------------=
     
     @Test(
-        "BinaryInteger/integers/conveniences: consuming",
+        "BinaryInteger/integers/conveniences: no-ops",
         Tag.List.tags(.generic, .random),
         arguments: fuzzers
-    )   func consuming(randomness: consuming FuzzerInt) throws {
+    )   func noops(randomness: consuming FuzzerInt) throws {
         for type in typesAsBinaryInteger {
             try whereIs(type)
         }
         
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
-            for _ in 0 ..< conditional(debug: 8, release: 64) {
+            for _ in 0 ..< 8 {
                 let random = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                try #require(random == T.init(random))
-            }
-        }
-    }
-}
-
-//*============================================================================*
-// MARK: * Binary Integer x Integers x Data Integer
-//*============================================================================*
-
-@Suite struct BinaryIntegerTestsOnIntegersVersusDataInteger {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    @Test(
-        "BinaryInteger/integers/data-integer: loading BinaryInteger vs DataInteger",
-        Tag.List.tags(.generic, .random),
-        arguments: fuzzers
-    )   func loadingBinaryIntegerVersusDataInteger(randomness: consuming FuzzerInt) throws {
-        for source in typesAsBinaryInteger {
-            for destination in typesAsBinaryInteger {
-                try whereIs(source: source, destination: destination)
-            }
-        }
-        
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws
-        where A: BinaryInteger, B: BinaryInteger {
-            for _ in 0 ..< conditional(debug: 8, release: 32) {
-                let source = A.entropic(through: Shift.max(or: 255), using: &randomness)
-                let destination = B(load: source)
-                
-                try source.withUnsafeBinaryIntegerElements {
-                    try #require(destination == B(load: $0))
-                }
-                
-                try source.withUnsafeBinaryIntegerElements(as: U8.self) {
-                    try #require(destination == B(load: $0))
-                }
+                try #require(random == T.init(random)) // TODO: cosider whether to keep
             }
         }
     }
     
     @Test(
-        "BinaryInteger/integers/data-integer: exactly BinaryInteger vs DataInteger",
+        "BinaryInteger/integers/conveniences: default sign is Sign.plus",
         Tag.List.tags(.generic, .random),
         arguments: fuzzers
-    )   func exactlyBinaryIntegerVersusDataInteger(randomness: consuming FuzzerInt) throws {
-        for source in typesAsBinaryInteger {
-            for destination in typesAsBinaryInteger {
+    )   func defaultSignIsPlus(randomness: consuming FuzzerInt) throws {
+        for source in typesAsBinaryIntegerAsUnsigned {
+            for destination in typesAsBinaryIntegerAsUnsigned {
                 try whereIs(source: source, destination: destination)
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws
-        where A: BinaryInteger, B: BinaryInteger {
-            for _ in 0 ..< conditional(debug: 8, release: 32) {
-                let source = A.entropic(through: Shift.max(or: 255), using: &randomness)
-                let destination = B.exactly(source) as Fallible<B>
-                
-                try source.withUnsafeBinaryIntegerElements {
-                    try #require(destination == B.exactly($0, mode: A.mode))
-                }
-                
-                try source.withUnsafeBinaryIntegerElements(as: U8.self) {
-                    try #require(destination == B.exactly($0, mode: A.mode))
-                }
+        func whereIs<A, B>(source: A.Type, destination: B.Type) throws where A: UnsignedInteger, B: BinaryInteger {
+            for _ in 0 ..< 8 {
+                let random = A.entropic(in: B.self, or: 256, using: &randomness)
+                try #require(    random == A(magnitude: random))
+                try #require(try random == #require(A.exactly(magnitude: random).optional()))
+                try #require(    random == B(magnitude: random))
+                try #require(try random == #require(B.exactly(magnitude: random).optional()))
             }
         }
     }
     
     @Test(
-        "BinaryInteger/integers/data-integer: trapping BinaryInteger vs DataInteger",
+        "BinaryInteger/integers/conveniences: default mode is Self.mode",
         Tag.List.tags(.generic, .random),
-        arguments: fuzzers
-    )   func trappingBinaryIntegerVersusDataInteger(randomness: consuming FuzzerInt) throws {
-        for source in typesAsBinaryInteger {
-            for destination in typesAsBinaryInteger {
-                try whereIs(source: source, destination: destination)
-            }
-        }
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func defaultModeIsMode(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws
-        where A: BinaryInteger, B: BinaryInteger {
-            for _ in 0 ..< conditional(debug: 8, release: 32) {
-                let source = A.entropic(in: B.self, or: 256, using: &randomness)
-                let destination = B(source)
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< 8 {
+                let random = T.entropic(through: Shift.max(or: 255), using: &randomness)
                 
-                try source.withUnsafeBinaryIntegerElements {
-                    try #require(destination == B($0, mode: A.mode))
+                try random.withUnsafeBinaryIntegerElements { data in
+                    try #require(    random == T.init(data))
+                    try #require(try random == #require(T.exactly(data).optional()))
                 }
                 
-                try source.withUnsafeBinaryIntegerElements(as: U8.self) {
-                    try #require(destination == B($0, mode: A.mode))
+                try random.withUnsafeBinaryIntegerElements(as: U8.self) { data in
+                    try #require(    random == T.init(data))
+                    try #require(try random == #require(T.exactly(data).optional()))
                 }
-            }
-        }
-    }
-}
-
-//*============================================================================*
-// MARK: * Binary Integer x Integers x Sign & Magnitude
-//*============================================================================*
-
-@Suite struct BinaryIntegerTestsOnIntegersVersusSignMagnitude {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    @Test(
-        "BinaryInteger/integers/sign-magnitude: exactly BinaryInteger vs Sign & Magnitude",
-        Tag.List.tags(.generic, .random),
-        arguments: fuzzers
-    )   func exactlyBinaryIntegerVersusSignMagnitude(randomness: consuming FuzzerInt) throws {
-        for source in typesAsBinaryInteger {
-            for destination in typesAsBinaryInteger {
-                try whereIs(source: source, destination: destination)
-            }
-        }
-        
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws
-        where A: BinaryInteger, B: BinaryInteger {
-            for _ in 0 ..< conditional(debug: 8, release: 32) {
-                let source = A.entropic(through: Shift.max(or: 255), using: &randomness)
-                let destination = B.exactly(source) as Fallible<B>
                 
-                let sign = Sign(source.isNegative)
-                let magnitude = source.magnitude()
-                
-                try #require(destination == B.exactly(sign: sign, magnitude: magnitude))
-                
-                if  sign == Sign.plus {
-                    try #require(destination == B.exactly(magnitude: source.magnitude()))
-                }
-            }
-        }
-    }
-    
-    @Test(
-        "BinaryInteger/integers/sign-magnitude: trapping BinaryInteger vs Sign & Magnitude",
-        Tag.List.tags(.generic, .random),
-        arguments: fuzzers
-    )   func trappingBinaryIntegerVersusSignMagnitude(randomness: consuming FuzzerInt) throws {
-        for source in typesAsBinaryInteger {
-            for destination in typesAsBinaryInteger {
-                try whereIs(source: source, destination: destination)
-            }
-        }
-        
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws
-        where A: BinaryInteger, B: BinaryInteger {
-            for _ in 0 ..< conditional(debug: 8, release: 32) {
-                let source = A.entropic(in: B.self, or: 256, using: &randomness)
-                let destination = B(source)
-                
-                let sign = Sign(source.isNegative)
-                let magnitude = source.magnitude()
-                
-                try #require(destination == B(sign: sign, magnitude: magnitude))
-                
-                if  sign == Sign.plus {
-                    try #require(destination == B(magnitude: magnitude))
+                try random.withUnsafeBinaryIntegerElements {
+                    let data: DataInt<some SystemsIntegerAsUnsigned> = $0
+                    try #require(    random == T.init(data))
+                    try #require(try random == #require(T.exactly(data).optional()))
                 }
             }
         }
