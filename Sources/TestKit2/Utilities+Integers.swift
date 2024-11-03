@@ -16,6 +16,26 @@ import CoreKit
 extension BinaryInteger {
     
     //=------------------------------------------------------------------------=
+    // MARK: Metadata
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static var isCompact: Bool {
+        (Self.isSigned, Self.isArbitrary) == (true,  false)
+    }
+    
+    @inlinable public static var isNatural: Bool {
+        (Self.isSigned, Self.isArbitrary) == (false, false)
+    }
+    
+    @inlinable public static var isLenient: Bool {
+        (Self.isSigned, Self.isArbitrary) == (true,  true)
+    }
+    
+    @inlinable public static var isMaximal: Bool {
+        (Self.isSigned, Self.isArbitrary) == (false, true)
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     

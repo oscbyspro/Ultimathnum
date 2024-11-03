@@ -19,7 +19,7 @@ extension BinaryInteger {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func debug() -> String {
+    @inlinable public func bitstring() -> String {
         self.withUnsafeBinaryIntegerElements { data in
             var capacity = Swift.Int(data.body.size().natural().unwrap())
             

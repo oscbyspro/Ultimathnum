@@ -103,14 +103,12 @@ import TestKit2
                         require(destination.error == !isSameAppendixRange)
                         
                     }   else if Bool(destination.value.appendix) {
-                        let masked = source | (mask01)
-                        require(backtracked == masked)
-                        require(destination.error == ((source != masked) || !isSameAppendixRange))
-                        
+                        require(backtracked == source | mask01)
+                        require(destination.error == !isSameAppendixRange || (backtracked != source))
+
                     }   else {
-                        let masked = source & (mask10)
-                        require(backtracked == masked)
-                        require(destination.error == ((source != masked) || !isSameAppendixRange))
+                        require(backtracked == source & mask10)
+                        require(destination.error == !isSameAppendixRange || (backtracked != source))
                     }
                     
                     if !source.isNegative {
@@ -246,9 +244,8 @@ import TestKit2
         throws where A: BinaryInteger, B: EdgyInteger {
             let source: Fallible<A> = A.exactly(B.max).map{$0.incremented()}
             switch (A.mode, A.size.compared(to: B.size), B.mode) {
-            case (.u, .z, .s): fallthrough
-            case (.u, .p,  _): fallthrough
-            case (.s, .p,  _): try #require(B.exactly(#require(source.optional())) == B.max.incremented())
+            case ( _, .p,  _): fallthrough
+            case (.u, .z, .s): try #require(B.exactly(#require(source.optional())) == B.max.incremented())
             default:           try #require(source.error)
             }
         }
