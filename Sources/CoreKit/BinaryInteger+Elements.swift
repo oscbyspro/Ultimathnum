@@ -420,7 +420,8 @@ extension SystemsInteger {
     ///
     /// - Note: This is the generic version of `BinaryInteger/load(as:)`.
     ///
-    @inlinable public init<Other>(load source: borrowing Other) where Other: BinaryInteger, BitPattern == UX.BitPattern {
+    @inlinable public init<Other>(load source: borrowing Other)
+    where Other: BinaryInteger, BitPattern == UX.BitPattern {
         self.init(raw: source.load(as: BitPattern.self))
     }
     
@@ -428,7 +429,8 @@ extension SystemsInteger {
     ///
     /// - Note: This is the generic version of `BinaryInteger/load(as:)`.
     ///
-    @inlinable public init<Other>(load source: borrowing Other) where Other: BinaryInteger, BitPattern == Other.Element.BitPattern {
+    @inlinable public init<Other>(load source: borrowing Other)
+    where Other: BinaryInteger, BitPattern == Other.Element.BitPattern {
         self.init(raw: source.load(as: BitPattern.self))
     }
     
@@ -436,7 +438,8 @@ extension SystemsInteger {
     ///
     /// - Note: This is the generic version of `BinaryInteger/load(as:)`.
     ///
-    @inlinable public init<Other>(load source: borrowing Other) where Other: BinaryInteger, BitPattern == Other.Element.BitPattern, BitPattern == UX.BitPattern {
+    @inlinable public init<Other>(load source: borrowing Other)
+    where Other: BinaryInteger, BitPattern == Other.Element.BitPattern, BitPattern == UX.BitPattern {
         let source: some BinaryInteger = copy source
         self.init(raw: source.load(as: BitPattern.self))
     }

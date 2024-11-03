@@ -35,6 +35,15 @@ extension BinaryInteger {
         (Self.isSigned, Self.isArbitrary) == (false, true)
     }
     
+    @inlinable public static var appendices: Array<Bit> {
+        if  Self.isNatural {
+            Bit.nonpositives
+            
+        }   else {
+            Bit.all
+        }
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
