@@ -22,10 +22,10 @@ import TestKit2
     //=------------------------------------------------------------------------=
     
     @Test("DataInt/division(_:) - 0-by-1 [uniform]", arguments: typesAsCoreIntegersAsUnsigned, fuzzers)
-    func division01(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    func division01(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
                 let dividend = [] as [T]
                 let divisor  = Nonzero(T.random(in: T.positives, using: &randomness))
@@ -35,10 +35,10 @@ import TestKit2
     }
     
     @Test("DataInt/division(_:) - 1-by-1 [uniform]", arguments: typesAsCoreIntegersAsUnsigned, fuzzers)
-    func division11(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    func division11(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
                 let divisor   = Nonzero(T.random(in: T.positives, using: &randomness))
                 let remainder = (T).random(in: 0..<divisor.value, using: &randomness)!
@@ -55,10 +55,10 @@ import TestKit2
     }
     
     @Test("DataInt/division(_:) - X-by-1 [uniform]", arguments: typesAsCoreIntegersAsUnsigned, fuzzers)
-    func divisionX1(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    func divisionX1(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
                 let divisor   = Nonzero(T.random(in: T.positives, using: &randomness))
                 let remainder = (T).random(in: 0..<divisor.value, using: &randomness)!

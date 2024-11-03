@@ -13,7 +13,8 @@ import CoreKit
 // MARK: * Infini Int Storage
 //*============================================================================*
 
-@frozen @usableFromInline struct InfiniIntStorage<Element> where Element: SystemsInteger & UnsignedInteger {
+@frozen @usableFromInline struct InfiniIntStorage<Element> where
+Element: SystemsInteger & UnsignedInteger, Element.Element == Element {
     
     @usableFromInline typealias Body = ContiguousArray<Element.Magnitude>
     

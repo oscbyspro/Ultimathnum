@@ -102,6 +102,7 @@ extension BinaryInteger {
             self = source.reinterpret(as: U8.self, perform: Self.init(load:))
         }
     }
+    
     /// Loads the `source` by trapping on `error`.
     ///
     /// - Note: The `error` is set if the operation is `lossy`.
@@ -204,7 +205,9 @@ extension BinaryInteger {
     )   where Body.Element: SystemsInteger & UnsignedInteger {
         
         self = body.withUnsafeBufferPointer {
-            Self(load: DataInt($0, repeating: appendix)!)
+            $0.withMemoryRebound(to: Body.Element.Element.self) {
+                Self(load: DataInt($0, repeating: appendix)!)
+            }
         }
     }
     
@@ -221,7 +224,9 @@ extension BinaryInteger {
     )   where Body.Element: SystemsInteger & UnsignedInteger {
         
         self = body.withUnsafeBufferPointer {
-            Self(DataInt($0, repeating: appendix)!, mode: signedness)
+            $0.withMemoryRebound(to: Body.Element.Element.self) {
+                Self(DataInt($0, repeating: appendix)!, mode: signedness)
+            }
         }
     }
     
@@ -238,7 +243,9 @@ extension BinaryInteger {
     )   -> Fallible<Self> where Body.Element: SystemsInteger & UnsignedInteger {
         
         body.withUnsafeBufferPointer {
-            Self.exactly(DataInt($0, repeating: appendix)!, mode: signedness)
+            $0.withMemoryRebound(to: Body.Element.Element.self) {
+                Self.exactly(DataInt($0, repeating: appendix)!, mode: signedness)
+            }
         }
     }
     

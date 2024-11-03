@@ -22,21 +22,27 @@ import TestKit2
     //=------------------------------------------------------------------------=
     
     /// - Note: The increment must be zero if the combined input size is zero.
-    @Test("DataInt/initialize(to:times:plus:) - none-by-none-plus-none", .tags(.exhaustive), arguments: typesAsCoreIntegersAsUnsigned)
-    func multiplicationOfNoneByNonePlusNone(type: any SystemsIntegerAsUnsigned.Type) throws {
+    @Test(
+        "DataInt/initialize(to:times:plus:) - none-by-none-plus-none",
+        Tag.List.tags(.exhaustive, .generic),
+        arguments: typesAsCoreIntegersAsUnsigned
+    )   func multiplicationOfNoneByNonePlusNone(type: any CoreIntegerAsUnsigned.Type) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             try Ɣexpect(squared:          [] as [T], plus: T.zero, is: [] as [T])
             try Ɣexpect([] as [T], times: [] as [T], plus: T.zero, is: [] as [T])
         }
     }
     
-    @Test("DataInt/initialize(to:times:plus:) - some-by-none-plus-some [uniform]", arguments: typesAsCoreIntegersAsUnsigned, fuzzers)
-    func multiplicationOfSomeByNonePlusSome(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "DataInt/initialize(to:times:plus:) - some-by-none-plus-some [uniform]",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+    )   func multiplicationOfSomeByNonePlusSome(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
                 let mul = (T).random(using: &randomness)
                 let add = (T).random(using: &randomness)
@@ -46,11 +52,14 @@ import TestKit2
         }
     }
     
-    @Test("DataInt/initialize(to:times:plus:) - some-by-some-plus-some [uniform]", arguments: typesAsCoreIntegersAsUnsigned, fuzzers)
-    func multiplicationOfSomeBySomePlusSome(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "DataInt/initialize(to:times:plus:) - some-by-some-plus-some [uniform]",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+    )   func multiplicationOfSomeBySomePlusSome(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
                 let lhs = (T).random(using: &randomness)
                 let rhs = (T).random(using: &randomness)
@@ -70,11 +79,14 @@ import TestKit2
         }
     }
     
-    @Test("DataInt/initialize(to:times:plus:) - many-by-some-plus-some [uniform]", arguments: typesAsCoreIntegersAsUnsigned, fuzzers)
-    func multiplicationOfManyBySomePlusSome(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "DataInt/initialize(to:times:plus:) - many-by-some-plus-some [uniform]",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+    )   func multiplicationOfManyBySomePlusSome(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
                 let lhs = [T].random(count: 0...32, using: &randomness)
                 let rhs = (T).random(using: &randomness)
@@ -92,11 +104,14 @@ import TestKit2
     }
     
     /// - Note: The increment must be zero if the combined input size is zero.
-    @Test("DataInt/initialize(to:times:plus:) - many-by-many-plus-some [uniform]", arguments: typesAsCoreIntegersAsUnsigned, fuzzers)
-    func multiplicationOfManyByManyPlusSome(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "DataInt/initialize(to:times:plus:) - many-by-many-plus-some [uniform]",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+    )   func multiplicationOfManyByManyPlusSome(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 08, release: 1024) {
                 let lhs = [T].random(count: 0...32, using: &randomness)
                 let rhs = [T].random(count: 0...32, using: &randomness)

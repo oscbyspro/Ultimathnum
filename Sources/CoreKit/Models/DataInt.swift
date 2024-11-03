@@ -12,7 +12,8 @@
 //*============================================================================*
 
 /// A binary integer `body` and `appendix` view.
-@frozen public struct DataInt<Element>: BitCountable, Recoverable where Element: SystemsInteger & UnsignedInteger {
+@frozen public struct DataInt<Element>: BitCountable, Recoverable where
+Element: SystemsInteger & UnsignedInteger, Element.Element == Element {
         
     public typealias Element = Element
         
@@ -155,8 +156,9 @@
 /// destination memory is uninitialized or that the pointee is a trivial type.
 /// In this case, the latter is always true.
 ///
-@frozen public struct MutableDataInt<Element>: BitCountable, Recoverable where Element: SystemsInteger & UnsignedInteger {
-        
+@frozen public struct MutableDataInt<Element>: BitCountable, Recoverable
+where Element: SystemsInteger & UnsignedInteger, Element.Element == Element {
+    
     public typealias Element = Element
     
     public typealias Immutable = DataInt<Element>

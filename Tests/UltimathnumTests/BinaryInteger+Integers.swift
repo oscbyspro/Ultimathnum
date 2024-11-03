@@ -323,9 +323,11 @@ import TestKit2
                 }
                 
                 try random.withUnsafeBinaryIntegerElements {
-                    let data: DataInt<some SystemsIntegerAsUnsigned> = $0
-                    try #require(    random == T.init(data))
-                    try #require(try random == #require(T.exactly(data).optional()))
+                    try  opaque($0)
+                    func opaque<E>(_ data: DataInt<E>) throws {
+                        try #require(    random == T.init(data))
+                        try #require(try random == #require(T.exactly(data).optional()))
+                    }
                 }
             }
         }

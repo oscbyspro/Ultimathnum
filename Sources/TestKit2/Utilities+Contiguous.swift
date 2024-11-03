@@ -13,25 +13,31 @@ import CoreKit
 // MARK: * Utilities x Contiguous
 //*============================================================================*
 
-extension Contiguous {
+extension Contiguous where Element: SystemsInteger & UnsignedInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
 
     @inlinable public borrowing func withUnsafeBinaryIntegerBody<T>(
-        _ action: (DataInt<Element>.Body) throws -> T
+        _ action: (DataInt<Element.Element>.Body) throws -> T
     )   rethrows -> T {
+        
         try self.withUnsafeBufferPointer {
-            try action(DataInt.Body($0)!)
+            try $0.withMemoryRebound(to: Element.Element.self) {
+                try action(DataInt.Body($0)!)
+            }
         }
     }
 
     @inlinable public mutating func withUnsafeMutableBinaryIntegerBody<T>(
-        _ action: (MutableDataInt<Element>.Body) throws -> T
+        _ action: (MutableDataInt<Element.Element>.Body) throws -> T
     )   rethrows -> T where Self: MutableContiguous {
+        
         try self.withUnsafeMutableBufferPointer {
-            try action(MutableDataInt.Body($0)!)
+            try $0.withMemoryRebound(to: Element.Element.self) {
+                try action(MutableDataInt.Body($0)!)
+            }
         }
     }
 }

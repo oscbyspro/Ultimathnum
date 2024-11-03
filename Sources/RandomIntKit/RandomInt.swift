@@ -49,7 +49,11 @@ import CoreKit
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public mutating func next() -> some SystemsInteger & UnsignedInteger {
+    /// ### Development
+    ///
+    /// - TODO: Consider `ElementalInteger` to make it opaque again (`#123`).
+    ///
+    @inlinable public mutating func next() -> U64 {
         U64(self.base.next())
     }
 }

@@ -143,7 +143,7 @@ import CoreKit
     plus increment: Element,
     is expectation: [Element],
     at location: SourceLocation = #_sourceLocation
-)   throws where Element: SystemsIntegerAsUnsigned {
+)   throws where Element: SystemsIntegerAsUnsigned, Element.Element == Element {
     //=------------------------------------------=
     try #require(expectation.count == integer.count  + multiplier.count)
     try #require(expectation.count >= 0000000000001 || increment.isZero)
@@ -236,7 +236,7 @@ import CoreKit
     plus increment: Element,
     is expectation: [Element],
     at location: SourceLocation = #_sourceLocation
-)   throws where Element: SystemsIntegerAsUnsigned {
+)   throws where Element: SystemsIntegerAsUnsigned, Element.Element == Element {
     //=------------------------------------------=
     try #require(expectation.count == integer.count  + integer   .count)
     try #require(expectation.count >= 0000000000001 || increment.isZero)

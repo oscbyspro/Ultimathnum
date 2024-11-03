@@ -21,10 +21,10 @@ import TestKit2
     //=------------------------------------------------------------------------=
     
     @Test("DataInt/size()", arguments: typesAsCoreIntegersAsUnsigned)
-    func size(type: any SystemsIntegerAsUnsigned.Type) {
+    func size(type: any CoreIntegerAsUnsigned.Type) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: CoreIntegerAsUnsigned {
             whereIs(DXL([          ] as [T]), is: 0 * IX(size: T.self))
             whereIs(DXL([11        ] as [T]), is: 1 * IX(size: T.self))
             whereIs(DXL([11, 22    ] as [T]), is: 2 * IX(size: T.self))
@@ -49,10 +49,10 @@ import TestKit2
     }
     
     @Test("DataInt/count(_:)", arguments: typesAsCoreIntegersAsUnsigned)
-    func count(type: any SystemsIntegerAsUnsigned.Type) {
+    func count(type: any CoreIntegerAsUnsigned.Type) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: CoreIntegerAsUnsigned {
             whereIs(DXL([          ] as [T]), is: 0 as IX)
             whereIs(DXL([11        ] as [T]), is: 3 as IX)
             whereIs(DXL([11, 22    ] as [T]), is: 6 as IX)
@@ -85,10 +85,10 @@ import TestKit2
     }
     
     @Test("DataInt/ascending(_:)", arguments: typesAsCoreIntegersAsUnsigned)
-    func ascending(type: any SystemsIntegerAsUnsigned.Type) {
+    func ascending(type: any CoreIntegerAsUnsigned.Type) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: CoreIntegerAsUnsigned {
             let size = IX(size: T.self)
 
             for bit in Bit.all {
@@ -135,10 +135,10 @@ import TestKit2
     }
     
     @Test("DataInt/descending(_:)", arguments: typesAsCoreIntegersAsUnsigned)
-    func descending(type: any SystemsIntegerAsUnsigned.Type) {
+    func descending(type: any CoreIntegerAsUnsigned.Type) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: CoreIntegerAsUnsigned {
             let size = IX(size: T.self)
             
             for bit in Bit.all {

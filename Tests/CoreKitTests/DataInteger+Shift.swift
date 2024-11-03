@@ -21,11 +21,14 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt/upshift(major:minor:environment:) - [uniform]", arguments: typesAsCoreIntegersAsUnsigned, fuzzers)
-    func upshift(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "DataInt/shift: upshift(major:minor:environment:)",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+    )   func upshift(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug:     64, release: 1024) {
                 let value = [T].random(count: 1...32, using: &randomness)
                 let major = (IX.random(in: 0..<IX(value.count), using: &randomness)!)
@@ -38,7 +41,7 @@ import TestKit2
             }
         }
         
-        func whereIs<T>(_ value: [T], major: IX, minor: IX, environment: T) throws where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ value: [T], major: IX, minor: IX, environment: T) throws where T: CoreIntegerAsUnsigned {
             var expectation = value
             expectation.removeLast(Swift.Int(major))
             expectation.insert(contentsOf: repeatElement(environment, count: Swift.Int(major + 1)), at: 0)
@@ -52,11 +55,14 @@ import TestKit2
         }
     }
     
-    @Test("DataInt/downshift(major:minor:environment:) - [uniform]", arguments: typesAsCoreIntegersAsUnsigned, fuzzers)
-    func downshift(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "DataInt/shift: downshift(major:minor:environment:)",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+    )   func downshift(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug:     64, release: 1024) {
                 let value = [T].random(count: 1...32, using: &randomness)
                 let major = (IX.random(in: 0..<IX(value.count), using: &randomness)!)
@@ -69,7 +75,7 @@ import TestKit2
             }
         }
         
-        func whereIs<T>(_ value: [T], major: IX, minor: IX, environment: T) throws where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ value: [T], major: IX, minor: IX, environment: T) throws where T: CoreIntegerAsUnsigned {
             var expectation = value
             expectation.removeFirst(Swift.Int(major))
             expectation.append(contentsOf: repeatElement(environment, count: Swift.Int(major + 1)))

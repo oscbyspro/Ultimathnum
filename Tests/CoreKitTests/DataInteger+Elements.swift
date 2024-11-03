@@ -22,10 +22,10 @@ import TestKit2
     //=------------------------------------------------------------------------=
     
     @Test("DataInt/buffer()", arguments: typesAsCoreIntegersAsUnsigned)
-    func buffer(type: any SystemsIntegerAsUnsigned.Type) throws {
+    func buffer(type: any CoreIntegerAsUnsigned.Type) throws {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) where T: CoreIntegerAsUnsigned {
             #expect(DataInt<T>(UnsafeBufferPointer(start: nil, count: 0)) == nil)
             #expect(DataInt<T>.Body(UnsafeBufferPointer(start: nil, count: 0)) == nil)
             #expect(MutableDataInt<T>(UnsafeMutableBufferPointer(start: nil, count: 0)) == nil)
@@ -76,10 +76,10 @@ import TestKit2
     }
     
     @Test("DataInt/subscript(_:) - [uniform]", arguments: typesAsCoreIntegersAsUnsigned, fuzzers)
-    func element(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) {
+    func element(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger & UnsignedInteger {
+        func whereIs<T>(_ type: T.Type) where T: CoreIntegerAsUnsigned {
             for count in UX.zero..<8 {
                 let body = [T](count: Swift.Int(IX(count))) {
                     T.random(using: &randomness)

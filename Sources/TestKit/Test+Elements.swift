@@ -175,7 +175,7 @@ extension Test {
         _ body: [Element],
         _ signedness:  Signedness,
         _ expectation: Fallible<Integer>
-    )   where Integer: BinaryInteger, Element: SystemsInteger & UnsignedInteger {
+    )   where Integer: BinaryInteger, Element: SystemsInteger & UnsignedInteger, Element.Element == Element {
         //=--------------------------------------=
         let appendix = Bit(signedness == Signedness.signed && body.last?.msb == Bit.one)
         //=--------------------------------------=

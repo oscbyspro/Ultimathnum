@@ -171,13 +171,13 @@ import CoreKit
 // MARK: * Expect x Division x Data Integer
 //*============================================================================*
 
-@inlinable public func Ɣexpect<T>(
-    _  dividend: [T],
-    division divisor: Nonzero<T>,
-    is quotient: [T],
-    and remainder: T,
+@inlinable public func Ɣexpect<Element>(
+    _  dividend: [Element],
+    division divisor: Nonzero<Element>,
+    is quotient: [Element],
+    and remainder: Element,
     at location: SourceLocation = #_sourceLocation
-)   throws where T: SystemsIntegerAsUnsigned {
+)   throws where Element: SystemsIntegerAsUnsigned, Element.Element == Element {
     //=--------------------------------------=
     try #require(dividend.count >= quotient.count, sourceLocation: location)
     //=--------------------------------------=

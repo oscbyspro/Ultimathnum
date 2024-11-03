@@ -20,11 +20,11 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt.capacity", arguments: typesAsCoreIntegersAsUnsigned)
-    func capacity(_ type: any SystemsIntegerAsUnsigned.Type) throws {
+    @Test("DataInt.capacity", .tags(.generic), arguments: typesAsCoreIntegersAsUnsigned)
+    func capacity(_ type: any CoreIntegerAsUnsigned.Type) throws {
         try  whereIs(type)
-        
-        func whereIs<T>(_ element: T.Type) throws where T: SystemsIntegerAsUnsigned {
+
+        func whereIs<T>(_ element: T.Type) throws where T: CoreIntegerAsUnsigned {
             try check(       DataInt<T>     .capacity)
             try check(       DataInt<T>.Body.capacity)
             try check(MutableDataInt<T>     .capacity)

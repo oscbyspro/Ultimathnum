@@ -19,7 +19,7 @@
 ///
 public protocol Randomness {
     
-    associatedtype Element: SystemsInteger & UnsignedInteger
+    associatedtype Element: SystemsInteger & UnsignedInteger where Element.Element == Element
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities

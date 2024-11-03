@@ -21,21 +21,27 @@ import TestKit2
     // MARK: Tests x None + Some
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt/increment(by:plus:) - 0-by-0-plus-bit", .tags(.exhaustive), arguments: typesAsCoreIntegersAsUnsigned)
-    func incrementByNonePlusBit(type: any SystemsIntegerAsUnsigned.Type) throws {
+    @Test(
+        "DataInt/increment(by:plus:) - 0-by-0-plus-bit",
+        Tag.List.tags(.exhaustive, .generic),
+        arguments: typesAsCoreIntegersAsUnsigned
+    )   func incrementByNonePlusBit(type: any CoreIntegerAsUnsigned.Type) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             try Ɣexpect([] as [T], increment: [] as [T], plus: false, is: Fallible([] as [T]))
             try Ɣexpect([] as [T], increment: [] as [T], plus: true,  is: Fallible([] as [T], error: true))
         }
     }
     
-    @Test("DataInt/decrement(by:plus:) - 0-by-0-plus-bit", .tags(.exhaustive), arguments: typesAsCoreIntegersAsUnsigned)
-    func decrementByNonePlusBit(type: any SystemsIntegerAsUnsigned.Type) throws {
+    @Test(
+        "DataInt/decrement(by:plus:) - 0-by-0-plus-bit",
+        Tag.List.tags(.exhaustive, .generic),
+        arguments: typesAsCoreIntegersAsUnsigned
+    )   func decrementByNonePlusBit(type: any CoreIntegerAsUnsigned.Type) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             try Ɣexpect([] as [T], decrement: [] as [T], plus: false, is: Fallible([] as [T]))
             try Ɣexpect([] as [T], decrement: [] as [T], plus: true,  is: Fallible([] as [T], error: true))
         }
@@ -45,11 +51,14 @@ import TestKit2
     // MARK: Tests x Many + Some
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt/decrement(by:plus:) - [bidirectional][uniform]", arguments: typesAsCoreIntegersAsUnsigned, fuzzers)
-    func incrementByManyPlusBit(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "DataInt/decrement(by:plus:) - [bidirectional][uniform]",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+    )   func incrementByManyPlusBit(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
                 let bit = Bool.random(using: &randomness.stdlib)
                 
@@ -74,11 +83,14 @@ import TestKit2
         }
     }
     
-    @Test("DataInt/decrement(by:plus:) - [bidirectional][uniform]", arguments: typesAsCoreIntegersAsUnsigned, fuzzers)
-    func decrementByManyPlusBit(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "DataInt/decrement(by:plus:) - [bidirectional][uniform]",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+    )   func decrementByManyPlusBit(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
                 let bit = Bool.random(using: &randomness.stdlib)
                 
@@ -107,11 +119,14 @@ import TestKit2
     // MARK: Tests x Many × Some + Some
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt/increment(by:times:plus:) - [bidirectional][uniform]", arguments: typesAsCoreIntegersAsUnsigned, fuzzers)
-    func incrementByManyTimesSomePlusSome(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "DataInt/increment(by:times:plus:) - [bidirectional][uniform]",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+    )   func incrementByManyTimesSomePlusSome(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
                 let lhs = Array(count: Swift.Int(IX.random(in: 1...0000000000032, using: &randomness))) {
                     T.random(using: &randomness)
@@ -141,11 +156,14 @@ import TestKit2
         }
     }
     
-    @Test("DataInt/decrement(by:times:plus:) - [bidirectional][uniform]", arguments: typesAsCoreIntegersAsUnsigned, fuzzers)
-    func decrementByManyTimesSomePlusSome(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "DataInt/decrement(by:times:plus:) - [bidirectional][uniform]",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+    )   func decrementByManyTimesSomePlusSome(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
                 let lhs = Array(count: Swift.Int(IX.random(in: 1...0000000000032, using: &randomness))) {
                     T.random(using: &randomness)
@@ -179,11 +197,14 @@ import TestKit2
     // MARK: Tests x Reps × Bit
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt/incrementSameSize(repeating:plus:) - [bidirectional][uniform]", arguments: typesAsCoreIntegersAsUnsigned, fuzzers)
-    func incrementByRepsPlusBit(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "DataInt/incrementSameSize(repeating:plus:) - [bidirectional][uniform]",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+    )   func incrementByRepsPlusBit(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
                 let lhs = Array(count: Swift.Int(IX.random(in: 0...32, using: &randomness) )) {
                     T.random(using: &randomness)
@@ -205,11 +226,14 @@ import TestKit2
         }
     }
     
-    @Test("DataInt/decrementSameSize(repeating:plus:) - [bidirectional][uniform]", arguments: typesAsCoreIntegersAsUnsigned, fuzzers)
-    func decrementByRepsPlusBit(type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "DataInt/decrementSameSize(repeating:plus:) - [bidirectional][uniform]",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+    )   func decrementByRepsPlusBit(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
+        func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
                 let lhs = Array(count: Swift.Int(IX.random(in: 0...32, using: &randomness) )) {
                     T.random(using: &randomness)

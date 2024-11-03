@@ -17,7 +17,8 @@ import CoreKit
 ///
 /// - Note: Optional values indicate agnostic behavior.
 ///
-@frozen public struct DXL<Element>: CustomTestStringConvertible where Element: SystemsInteger & UnsignedInteger {
+@frozen public struct DXL<Element>: CustomTestStringConvertible where
+Element: SystemsInteger & UnsignedInteger, Element.Element == Element {
     
     //=------------------------------------------------------------------------=
     // MARK: State
