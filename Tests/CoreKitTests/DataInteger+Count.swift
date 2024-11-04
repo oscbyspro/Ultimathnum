@@ -20,7 +20,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt/size()", arguments: typesAsCoreIntegersAsUnsigned)
+    @Test("DataInt/size()", arguments: typesAsCoreIntegerAsUnsigned)
     func size(type: any CoreIntegerAsUnsigned.Type) {
         whereIs(type)
         
@@ -48,7 +48,7 @@ import TestKit2
         }
     }
     
-    @Test("DataInt/count(_:)", arguments: typesAsCoreIntegersAsUnsigned)
+    @Test("DataInt/count(_:)", arguments: typesAsCoreIntegerAsUnsigned)
     func count(type: any CoreIntegerAsUnsigned.Type) {
         whereIs(type)
         
@@ -84,7 +84,7 @@ import TestKit2
         }
     }
     
-    @Test("DataInt/ascending(_:)", arguments: typesAsCoreIntegersAsUnsigned)
+    @Test("DataInt/ascending(_:)", arguments: typesAsCoreIntegerAsUnsigned)
     func ascending(type: any CoreIntegerAsUnsigned.Type) {
         whereIs(type)
         
@@ -134,7 +134,7 @@ import TestKit2
         }
     }
     
-    @Test("DataInt/descending(_:)", arguments: typesAsCoreIntegersAsUnsigned)
+    @Test("DataInt/descending(_:)", arguments: typesAsCoreIntegerAsUnsigned)
     func descending(type: any CoreIntegerAsUnsigned.Type) {
         whereIs(type)
         

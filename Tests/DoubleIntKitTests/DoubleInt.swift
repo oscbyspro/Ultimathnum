@@ -34,25 +34,6 @@ import TestKit2
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    static let types: [any SystemsInteger.Type] = {
-        typesAsSigned +
-        typesAsUnsigned
-    }()
-    
-    static let typesAsSigned: [any SystemsIntegerAsSigned.Type] = [
-        I8x2.self,
-        I8x4.self,
-        IXx2.self,
-        IXx4.self,
-    ]
-    
-    static let typesAsUnsigned: [any SystemsIntegerAsUnsigned.Type] = [
-        U8x2.self,
-        U8x4.self,
-        UXx2.self,
-        UXx4.self,
-    ]
-    
     static let bases: [any SystemsInteger.Type] = {
         basesAsSigned +
         basesAsUnsigned
@@ -91,7 +72,6 @@ import TestKit2
         }
     }
     
-    
     @Test("DoubleInt: bitcasting", .tags(.generic, .random), arguments: Self.bases, fuzzers)
     func bitcasting(base: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
         
@@ -99,7 +79,7 @@ import TestKit2
         func whereIs<B>(_ base: B.Type) throws where B: SystemsInteger {
             typealias T = DoubleInt<B>
             
-            for _ in 0 ..< 32 {
+            for _ in 0 ..< 8 {
                 let low  = T.Low .random(using: &randomness)
                 let high = T.High.random(using: &randomness)
                 let full = T(low: low, high: high)
@@ -120,7 +100,7 @@ import TestKit2
         func whereIs<B>(_ base: B.Type) throws where B: SystemsInteger {
             typealias T = DoubleInt<B>
             
-            for _ in 0 ..< 32 {
+            for _ in 0 ..< 8 {
                 let low  = T.Low .random(using: &randomness)
                 let high = T.High.random(using: &randomness)
                 

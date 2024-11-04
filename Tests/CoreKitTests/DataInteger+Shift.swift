@@ -24,7 +24,7 @@ import TestKit2
     @Test(
         "DataInt/shift: upshift(major:minor:environment:)",
         Tag.List.tags(.generic, .random),
-        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+        arguments: typesAsCoreIntegerAsUnsigned, fuzzers
     )   func upshift(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
@@ -58,7 +58,7 @@ import TestKit2
     @Test(
         "DataInt/shift: downshift(major:minor:environment:)",
         Tag.List.tags(.generic, .random),
-        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+        arguments: typesAsCoreIntegerAsUnsigned, fuzzers
     )   func downshift(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         

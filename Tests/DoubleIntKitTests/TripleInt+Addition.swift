@@ -15,7 +15,7 @@ import TestKit
 // MARK: * Triple Int x Addition
 //*============================================================================*
 
-extension TripleIntTests {
+final class TripleIntTestsOnAddition: XCTestCase {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -56,11 +56,11 @@ extension TripleIntTests {
             Test().same(Y(low: ~3, mid: ~5, high: ~0).plus(X(low:  4, high:  5)), F(Y(low:  0, mid:  0, high:  0), error: true))
         }
         
-        for base in Self.basesAsSigned {
+        for base in TripleIntTests.basesAsSigned {
             whereTheBaseIsSigned(base)
         }
         
-        for base in Self.basesAsUnsigned {
+        for base in TripleIntTests.basesAsUnsigned {
             whereTheBaseIsUnsigned(base)
         }
     }
@@ -100,11 +100,11 @@ extension TripleIntTests {
             Test().same(Y(low: ~3, mid: ~5, high: ~6).plus(Y(low:  4, mid:  5, high:  6)), F(Y(low:  0, mid:  0, high:  0), error: true))
         }
         
-        for base in Self.basesAsSigned {
+        for base in TripleIntTests.basesAsSigned {
             whereTheBaseIsSigned(base)
         }
         
-        for base in Self.basesAsUnsigned {
+        for base in TripleIntTests.basesAsUnsigned {
             whereTheBaseIsUnsigned(base)
         }
     }

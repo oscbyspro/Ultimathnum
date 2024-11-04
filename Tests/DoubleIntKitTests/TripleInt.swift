@@ -9,16 +9,15 @@
 
 import CoreKit
 import DoubleIntKit
-import TestKit
+import RandomIntKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Triple Int
 //*============================================================================*
 
-final class TripleIntTests: XCTestCase {
-    
-    typealias X3<Base> = TripleInt<Base> where Base: SystemsInteger
-    
+@Suite struct TripleIntTests {
+        
     typealias I8x3 = TripleInt<I8>
     typealias U8x3 = TripleInt<U8>
     
@@ -34,11 +33,11 @@ final class TripleIntTests: XCTestCase {
         basesAsUnsigned
     }()
     
-    static let basesAsSigned: [any (SystemsInteger & SignedInteger).Type] = {
+    static let basesAsSigned: [any SystemsIntegerAsSigned.Type] = {
         typesAsCoreIntegerAsSigned
     }()
     
-    static let basesAsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = {
+    static let basesAsUnsigned: [any SystemsIntegerAsUnsigned.Type] = {
         typesAsCoreIntegerAsUnsigned
     }()
     
@@ -46,131 +45,117 @@ final class TripleIntTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testInvariants() {
-        func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias T = TripleInt<B>
-            typealias M = TripleInt<B>.Magnitude
-            
-            Test().same(T.mode, B.mode)
-            Test().same(T.size, Count(3 * IX(size: B.self)))
-        }
+    @Test("TripleInt: invariants", .tags(.generic), arguments: Self.bases)
+    func invariants(base: any SystemsInteger.Type) throws {
         
-        for base in Self.bases {
-            whereTheBaseIs(base)
+        try  whereIs(base)
+        func whereIs<B>(_ type: B.Type) throws where B: SystemsInteger {
+            typealias T = TripleInt<B>
+            
+            #expect(T.mode == B.mode)
+            #expect(T.size == Count(3 * IX(size: B.self)))
         }
     }
     
-    func testComponents() {
-        func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
+    @Test("TripleInt: layout", .tags(.generic), arguments: Self.bases)
+    func layout(base: any SystemsInteger.Type) throws {
+        
+        try  whereIs(base)
+        func whereIs<B>(_ base: B.Type) throws where B: SystemsInteger {
+            typealias T = TripleInt<B>
+            typealias U = (B, B, B)
+            
+            #expect(MemoryLayout<T>.size      == 3 * MemoryLayout<B>.size)
+            #expect(MemoryLayout<T>.stride    == 3 * MemoryLayout<B>.stride)
+            #expect(MemoryLayout<T>.alignment == 1 * MemoryLayout<B>.alignment)
+            Ɣexpect(MemoryLayout<T>.self, equals:    MemoryLayout<U>.self)
+        }
+    }
+    
+    @Test("TripleInt: bitcasting", .tags(.generic, .random), arguments: Self.bases, fuzzers)
+    func bitcasting(base: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
+        
+        try  whereIs(base)
+        func whereIs<B>(_ base: B.Type) throws where B: SystemsInteger {
             typealias T = TripleInt<B>
             
-            Test().same(T(                       ).low,  0 as B.Magnitude)
-            Test().same(T(                       ).mid,  0 as B.Magnitude)
-            Test().same(T(                       ).high, 0 as B)
-            Test().same(T(                       ).low,  0 as B.Magnitude)
-            Test().same(T(                       ).mid,  0 as B.Magnitude)
-            Test().same(T(                       ).high, 0 as B)
-            Test().same(T(low: 0                 ).low,  0 as B.Magnitude)
-            Test().same(T(low: 0                 ).mid,  0 as B.Magnitude)
-            Test().same(T(low: 0                 ).high, 0 as B)
-            Test().same(T(low: 1                 ).low,  1 as B.Magnitude)
-            Test().same(T(low: 1                 ).mid,  0 as B.Magnitude)
-            Test().same(T(low: 1                 ).high, 0 as B)
-            Test().same(T(low: 0, mid: 0         ).low,  0 as B.Magnitude)
-            Test().same(T(low: 0, mid: 0         ).mid,  0 as B.Magnitude)
-            Test().same(T(low: 0, mid: 0         ).high, 0 as B)
-            Test().same(T(low: 1, mid: 2         ).low,  1 as B.Magnitude)
-            Test().same(T(low: 1, mid: 2         ).mid,  2 as B.Magnitude)
-            Test().same(T(low: 1, mid: 2         ).high, 0 as B)
-            Test().same(T(low: 0, mid: 0, high: 0).low,  0 as B.Magnitude)
-            Test().same(T(low: 0, mid: 0, high: 0).mid,  0 as B.Magnitude)
-            Test().same(T(low: 0, mid: 0, high: 0).high, 0 as B)
-            Test().same(T(low: 1, mid: 2, high: 3).low,  1 as B.Magnitude)
-            Test().same(T(low: 1, mid: 2, high: 3).mid,  2 as B.Magnitude)
-            Test().same(T(low: 1, mid: 2, high: 3).high, 3 as B)
-            
-            Test().same(T(low: 0, high: Doublet(low: 0, high: 0)).low,  0 as B.Magnitude)
-            Test().same(T(low: 0, high: Doublet(low: 0, high: 0)).mid,  0 as B.Magnitude)
-            Test().same(T(low: 0, high: Doublet(low: 0, high: 0)).high, 0 as B)
-            Test().same(T(low: 1, high: Doublet(low: 2, high: 3)).low,  1 as B.Magnitude)
-            Test().same(T(low: 1, high: Doublet(low: 2, high: 3)).mid,  2 as B.Magnitude)
-            Test().same(T(low: 1, high: Doublet(low: 2, high: 3)).high, 3 as B)
-            
-            Test().same(T(low: Doublet(low: 0, high: 0)         ).low,  0 as B.Magnitude)
-            Test().same(T(low: Doublet(low: 0, high: 0)         ).mid,  0 as B.Magnitude)
-            Test().same(T(low: Doublet(low: 0, high: 0)         ).high, 0 as B)
-            Test().same(T(low: Doublet(low: 1, high: 2)         ).low,  1 as B.Magnitude)
-            Test().same(T(low: Doublet(low: 1, high: 2)         ).mid,  2 as B.Magnitude)
-            Test().same(T(low: Doublet(low: 1, high: 2)         ).high, 0 as B)
-            Test().same(T(low: Doublet(low: 0, high: 0), high: 0).low,  0 as B.Magnitude)
-            Test().same(T(low: Doublet(low: 0, high: 0), high: 0).mid,  0 as B.Magnitude)
-            Test().same(T(low: Doublet(low: 0, high: 0), high: 0).high, 0 as B)
-            Test().same(T(low: Doublet(low: 1, high: 2), high: 3).low,  1 as B.Magnitude)
-            Test().same(T(low: Doublet(low: 1, high: 2), high: 3).mid,  2 as B.Magnitude)
-            Test().same(T(low: Doublet(low: 1, high: 2), high: 3).high, 3 as B)
-            
-            setters: do {
-                let rhs  = T(low: 1, mid: 2, high: 3)
-                var lhs  = T(low: 0, mid: 0, high: 0)
+            for _ in 0 ..< 8 {
+                let low  = T.Low .random(using: &randomness)
+                let mid  = T.Mid .random(using: &randomness)
+                let high = T.High.random(using: &randomness)
+                let full = T(low: low, mid: mid, high: high)
                 
-                lhs.low  = rhs.low
-                lhs.mid  = rhs.mid
-                lhs.high = rhs.high
+                try #require(full == T(raw: T.Magnitude(raw: full)))
+                try #require(full == T(raw: T.Signitude(raw: full)))
                 
-                Test().same(lhs, rhs)
-            }
-            
-            components: do {
-                var low:  B.Magnitude
-                var mid:  B.Magnitude
-                var high: B
-                
-                (low, mid, high)  = T(low: 0, mid: 0, high: 0).components()
-                Test().same(low,  0 as B.Magnitude)
-                Test().same(mid,  0 as B.Magnitude)
-                Test().same(high, 0 as B)
-                
-                (low, mid, high)  = T(low: 1, mid: 2, high: 3).components()
-                Test().same(low,  1 as B.Magnitude)
-                Test().same(mid,  2 as B.Magnitude)
-                Test().same(high, 3 as B)
+                try #require(full == T(raw: T.Magnitude(low: low, mid: mid, high: B.Magnitude(raw: high))))
+                try #require(full == T(raw: T.Signitude(low: low, mid: mid, high: B.Signitude(raw: high))))
             }
         }
-        
-        for base in Self.bases {
-            whereTheBaseIs(base)
-        }
     }
     
-    func testBitCast() {
-        func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias T = TripleInt<B>
-            typealias S = T.Signitude
-            typealias M = T.Magnitude
-            
-            Test().same(M(raw: T(low:  1, mid:  2, high:  3)), M(low:  1, mid:  2, high:  3))
-            Test().same(S(raw: T(low:  1, mid:  2, high:  3)), S(low:  1, mid:  2, high:  3))
-            Test().same(M(raw: T(low: ~1, mid: ~2, high: ~3)), M(low: ~1, mid: ~2, high: ~3))
-            Test().same(S(raw: T(low: ~1, mid: ~2, high: ~3)), S(low: ~1, mid: ~2, high: ~3))
-        }
+    @Test("TripleInt: components", .tags(.generic, .random), arguments: Self.bases, fuzzers)
+    func components(base: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
         
-        for base in Self.bases {
-            whereTheBaseIs(base)
-        }
-    }
-    
-    func testMemoryLayout() {
-        func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
+        try  whereIs(base)
+        func whereIs<B>(_ base: B.Type) throws where B: SystemsInteger {
             typealias T = TripleInt<B>
             
-            Test().same(MemoryLayout<T>.self, MemoryLayout<(B, B, B)>.self)
-            Test().same(MemoryLayout<T>.size,      3 * MemoryLayout<B>.size)
-            Test().same(MemoryLayout<T>.stride,    3 * MemoryLayout<B>.stride)
-            Test().same(MemoryLayout<T>.alignment, 1 * MemoryLayout<B>.alignment)
-        }
-        
-        for base in Self.bases {
-            whereTheBaseIs(base)
+            for _ in 0 ..< 8 {
+                let low  = T.Low .random(using: &randomness)
+                let mid  = T.Mid .random(using: &randomness)
+                let high = T.High.random(using: &randomness)
+                
+                always: do {
+                    try #require(T().low .isZero)
+                    try #require(T().mid .isZero)
+                    try #require(T().high.isZero)
+                }
+                
+                always: do {
+                    try #require(T(low: low).low  == low)
+                    try #require(T(low: low).mid .isZero)
+                    try #require(T(low: low).high.isZero)
+                }
+                
+                always: do {
+                    try #require(T(low: low, mid: mid).low  == low)
+                    try #require(T(low: low, mid: mid).mid  == mid)
+                    try #require(T(low: low, mid: mid).high.isZero)
+                }
+                
+                always: do {
+                    try #require(T(low: low, mid: mid, high: high).low  == low )
+                    try #require(T(low: low, mid: mid, high: high).mid  == mid )
+                    try #require(T(low: low, mid: mid, high: high).high == high)
+                }
+                
+                always: do {
+                    try #require(T(low: Doublet(low: low, high: mid), high: high).low  == low )
+                    try #require(T(low: Doublet(low: low, high: mid), high: high).mid  == mid )
+                    try #require(T(low: Doublet(low: low, high: mid), high: high).high == high)
+                }
+                
+                always: do {
+                    try #require(T(low: low, high: Doublet(low: mid, high: high)).low  == low )
+                    try #require(T(low: low, high: Doublet(low: mid, high: high)).mid  == mid )
+                    try #require(T(low: low, high: Doublet(low: mid, high: high)).high == high)
+                }
+                
+                getter: do {
+                    try #require(T(low: low, mid: mid, high: high).components() == (low, mid, high))
+                }
+                
+                setter: do {
+                    var full  = T()
+                    full.low  = low
+                    full.mid  = mid
+                    full.high = high
+                    try #require(full.low  == low )
+                    try #require(full.mid  == mid )
+                    try #require(full.high == high)
+                }
+            }
         }
     }
 }

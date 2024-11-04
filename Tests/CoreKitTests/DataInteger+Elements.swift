@@ -21,7 +21,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt/buffer()", arguments: typesAsCoreIntegersAsUnsigned)
+    @Test("DataInt/buffer()", arguments: typesAsCoreIntegerAsUnsigned)
     func buffer(type: any CoreIntegerAsUnsigned.Type) throws {
         whereIs(type)
         
@@ -75,7 +75,7 @@ import TestKit2
         }
     }
     
-    @Test("DataInt/subscript(_:) - [uniform]", arguments: typesAsCoreIntegersAsUnsigned, fuzzers)
+    @Test("DataInt/subscript(_:) - [uniform]", arguments: typesAsCoreIntegerAsUnsigned, fuzzers)
     func element(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) {
         whereIs(type)
         

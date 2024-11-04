@@ -21,7 +21,7 @@ import TestKit2
     // MARK: Tests x Many ÷ Some
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt/division(_:) - 0-by-1 [uniform]", arguments: typesAsCoreIntegersAsUnsigned, fuzzers)
+    @Test("DataInt/division(_:) - 0-by-1 [uniform]", arguments: typesAsCoreIntegerAsUnsigned, fuzzers)
     func division01(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
@@ -34,7 +34,7 @@ import TestKit2
         }
     }
     
-    @Test("DataInt/division(_:) - 1-by-1 [uniform]", arguments: typesAsCoreIntegersAsUnsigned, fuzzers)
+    @Test("DataInt/division(_:) - 1-by-1 [uniform]", arguments: typesAsCoreIntegerAsUnsigned, fuzzers)
     func division11(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
@@ -54,7 +54,7 @@ import TestKit2
         }
     }
     
-    @Test("DataInt/division(_:) - X-by-1 [uniform]", arguments: typesAsCoreIntegersAsUnsigned, fuzzers)
+    @Test("DataInt/division(_:) - X-by-1 [uniform]", arguments: typesAsCoreIntegerAsUnsigned, fuzzers)
     func divisionX1(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         

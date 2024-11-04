@@ -24,7 +24,7 @@ import TestKit2
     @Test(
         "DataInt/increment(by:plus:) - 0-by-0-plus-bit",
         Tag.List.tags(.exhaustive, .generic),
-        arguments: typesAsCoreIntegersAsUnsigned
+        arguments: typesAsCoreIntegerAsUnsigned
     )   func incrementByNonePlusBit(type: any CoreIntegerAsUnsigned.Type) throws {
         try  whereIs(type)
         
@@ -37,7 +37,7 @@ import TestKit2
     @Test(
         "DataInt/decrement(by:plus:) - 0-by-0-plus-bit",
         Tag.List.tags(.exhaustive, .generic),
-        arguments: typesAsCoreIntegersAsUnsigned
+        arguments: typesAsCoreIntegerAsUnsigned
     )   func decrementByNonePlusBit(type: any CoreIntegerAsUnsigned.Type) throws {
         try  whereIs(type)
         
@@ -54,7 +54,7 @@ import TestKit2
     @Test(
         "DataInt/decrement(by:plus:) - [bidirectional][uniform]",
         Tag.List.tags(.generic, .random),
-        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+        arguments: typesAsCoreIntegerAsUnsigned, fuzzers
     )   func incrementByManyPlusBit(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
@@ -86,7 +86,7 @@ import TestKit2
     @Test(
         "DataInt/decrement(by:plus:) - [bidirectional][uniform]",
         Tag.List.tags(.generic, .random),
-        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+        arguments: typesAsCoreIntegerAsUnsigned, fuzzers
     )   func decrementByManyPlusBit(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
@@ -122,7 +122,7 @@ import TestKit2
     @Test(
         "DataInt/increment(by:times:plus:) - [bidirectional][uniform]",
         Tag.List.tags(.generic, .random),
-        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+        arguments: typesAsCoreIntegerAsUnsigned, fuzzers
     )   func incrementByManyTimesSomePlusSome(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
@@ -159,7 +159,7 @@ import TestKit2
     @Test(
         "DataInt/decrement(by:times:plus:) - [bidirectional][uniform]",
         Tag.List.tags(.generic, .random),
-        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+        arguments: typesAsCoreIntegerAsUnsigned, fuzzers
     )   func decrementByManyTimesSomePlusSome(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
@@ -200,7 +200,7 @@ import TestKit2
     @Test(
         "DataInt/incrementSameSize(repeating:plus:) - [bidirectional][uniform]",
         Tag.List.tags(.generic, .random),
-        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+        arguments: typesAsCoreIntegerAsUnsigned, fuzzers
     )   func incrementByRepsPlusBit(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
@@ -229,7 +229,7 @@ import TestKit2
     @Test(
         "DataInt/decrementSameSize(repeating:plus:) - [bidirectional][uniform]",
         Tag.List.tags(.generic, .random),
-        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+        arguments: typesAsCoreIntegerAsUnsigned, fuzzers
     )   func decrementByRepsPlusBit(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         

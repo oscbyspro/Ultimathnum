@@ -17,8 +17,8 @@ import CoreKit
 //=----------------------------------------------------------------------------=
 
 public let typesAsCoreInteger: [any CoreInteger.Type] = {
-    typesAsCoreIntegersAsSigned +
-    typesAsCoreIntegersAsUnsigned
+    typesAsCoreIntegerAsSigned +
+    typesAsCoreIntegerAsUnsigned
 }()
 
 public let typesAsCoreIntegerAsByte: [any CoreInteger.Type] = [
@@ -26,11 +26,11 @@ public let typesAsCoreIntegerAsByte: [any CoreInteger.Type] = [
     U8.self,
 ]
 
-public let typesAsCoreIntegersAsSigned: [any CoreIntegerAsSigned.Type] = [
+public let typesAsCoreIntegerAsSigned: [any CoreIntegerAsSigned.Type] = [
     IX.self, I8.self, I16.self, I32.self, I64.self,
 ]
 
-public let typesAsCoreIntegersAsUnsigned: [any CoreIntegerAsUnsigned.Type] = [
+public let typesAsCoreIntegerAsUnsigned: [any CoreIntegerAsUnsigned.Type] = [
     UX.self, U8.self, U16.self, U32.self, U64.self,
 ]
 

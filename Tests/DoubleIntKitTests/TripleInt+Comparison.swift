@@ -15,8 +15,8 @@ import TestKit
 // MARK: * Triple Int x Comparison
 //*============================================================================*
 
-extension TripleIntTests {
-    
+final class TripleIntTestsOnComparison: XCTestCase {
+
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
@@ -141,7 +141,7 @@ extension TripleIntTests {
             Test().comparison(T(low: ~2, mid: ~2, high: ~2), b1,  Signum.negative)
         }
         
-        for base in Self.bases {
+        for base in TripleIntTests.bases {
             whereTheBaseIs(base)
         }
     }

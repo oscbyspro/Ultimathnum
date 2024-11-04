@@ -20,7 +20,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt/split(at:)", .tags(.generic), arguments: typesAsCoreIntegersAsUnsigned)
+    @Test("DataInt/split(at:)", .tags(.generic), arguments: typesAsCoreIntegerAsUnsigned)
     func split(_ type: any CoreIntegerAsUnsigned.Type) {
         whereIs(type)
         
@@ -68,7 +68,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt/body", .tags(.generic), arguments: typesAsCoreIntegersAsUnsigned)
+    @Test("DataInt/body", .tags(.generic), arguments: typesAsCoreIntegerAsUnsigned)
     func body(_ type: any CoreIntegerAsUnsigned.Type) {
         whereIs(type)
         
@@ -92,7 +92,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt/normalized()", .tags(.generic), arguments: typesAsCoreIntegersAsUnsigned)
+    @Test("DataInt/normalized()", .tags(.generic), arguments: typesAsCoreIntegerAsUnsigned)
     func normalized(_ type: any CoreIntegerAsUnsigned.Type) {
         whereIs(type)
         
@@ -150,7 +150,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt/prefix(_:)", .tags(.generic), arguments: typesAsCoreIntegersAsUnsigned)
+    @Test("DataInt/prefix(_:)", .tags(.generic), arguments: typesAsCoreIntegerAsUnsigned)
     func prefix(_ type: any CoreIntegerAsUnsigned.Type) {
         whereIs(type)
         

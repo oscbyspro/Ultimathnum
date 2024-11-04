@@ -20,7 +20,7 @@ import TestKit2
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt.capacity", .tags(.generic), arguments: typesAsCoreIntegersAsUnsigned)
+    @Test("DataInt.capacity", .tags(.generic), arguments: typesAsCoreIntegerAsUnsigned)
     func capacity(_ type: any CoreIntegerAsUnsigned.Type) throws {
         try  whereIs(type)
 

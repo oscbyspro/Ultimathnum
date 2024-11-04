@@ -25,7 +25,7 @@ import TestKit2
     @Test(
         "DataInt/initialize(to:times:plus:) - none-by-none-plus-none",
         Tag.List.tags(.exhaustive, .generic),
-        arguments: typesAsCoreIntegersAsUnsigned
+        arguments: typesAsCoreIntegerAsUnsigned
     )   func multiplicationOfNoneByNonePlusNone(type: any CoreIntegerAsUnsigned.Type) throws {
         try  whereIs(type)
         
@@ -38,7 +38,7 @@ import TestKit2
     @Test(
         "DataInt/initialize(to:times:plus:) - some-by-none-plus-some [uniform]",
         Tag.List.tags(.generic, .random),
-        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+        arguments: typesAsCoreIntegerAsUnsigned, fuzzers
     )   func multiplicationOfSomeByNonePlusSome(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
@@ -55,7 +55,7 @@ import TestKit2
     @Test(
         "DataInt/initialize(to:times:plus:) - some-by-some-plus-some [uniform]",
         Tag.List.tags(.generic, .random),
-        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+        arguments: typesAsCoreIntegerAsUnsigned, fuzzers
     )   func multiplicationOfSomeBySomePlusSome(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
@@ -82,7 +82,7 @@ import TestKit2
     @Test(
         "DataInt/initialize(to:times:plus:) - many-by-some-plus-some [uniform]",
         Tag.List.tags(.generic, .random),
-        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+        arguments: typesAsCoreIntegerAsUnsigned, fuzzers
     )   func multiplicationOfManyBySomePlusSome(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         
@@ -107,7 +107,7 @@ import TestKit2
     @Test(
         "DataInt/initialize(to:times:plus:) - many-by-many-plus-some [uniform]",
         Tag.List.tags(.generic, .random),
-        arguments: typesAsCoreIntegersAsUnsigned, fuzzers
+        arguments: typesAsCoreIntegerAsUnsigned, fuzzers
     )   func multiplicationOfManyByManyPlusSome(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
         try  whereIs(type)
         

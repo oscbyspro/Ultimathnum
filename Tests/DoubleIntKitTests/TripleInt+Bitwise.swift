@@ -15,8 +15,8 @@ import TestKit
 // MARK: * Triple Int x Bitwise
 //*============================================================================*
 
-extension TripleIntTests {
-    
+final class TripleIntTestsOnBitwise: XCTestCase {
+
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
@@ -37,7 +37,7 @@ extension TripleIntTests {
             Test().complement(T(low:  0, mid:  0, high:  B.msb), true,  F(T(low:  0, mid:  0, high:  B.msb), error:  B.isSigned))
         }
         
-        for base in Self.bases {
+        for base in TripleIntTests.bases {
             whereTheBaseIs(base)
         }
     }

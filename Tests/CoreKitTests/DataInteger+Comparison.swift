@@ -23,7 +23,7 @@ import TestKit2
     @Test(
         "DataInt/signum()",
         Tag.List.tags(.generic),
-        arguments: typesAsCoreIntegersAsUnsigned
+        arguments: typesAsCoreIntegerAsUnsigned
     )   func signum(_ type: any CoreIntegerAsUnsigned.Type) {
         whereIs(type)
         
@@ -93,7 +93,7 @@ import TestKit2
     @Test(
         "DataInt/compared(to:) - ignores body appendix extensions",
         Tag.List.tags(.generic),
-        arguments: typesAsCoreIntegersAsUnsigned
+        arguments: typesAsCoreIntegerAsUnsigned
     )   func comparisonIgnoresBodyAppendixExtensions(_ type: any CoreIntegerAsUnsigned.Type) {
         whereIs(type)
         
