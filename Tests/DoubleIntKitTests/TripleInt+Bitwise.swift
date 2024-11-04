@@ -9,64 +9,38 @@
 
 import CoreKit
 import DoubleIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Triple Int x Bitwise
 //*============================================================================*
 
-final class TripleIntTestsOnBitwise: XCTestCase {
+@Suite struct TripleIntTestsOnBitwise {
 
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testComplement() {
-        func whereTheBaseIs<B>(_ base: B.Type) where B: SystemsInteger {
+    @Test(
+        "TripleInt: complement (#124)",
+        Tag.List.tags(.todo),
+        arguments: TripleIntTests.bases
+    )   func complement(base: any SystemsInteger.Type) throws {
+        
+        try  whereIs(base)
+        func whereIs<B>(_ base: B.Type) throws where B: SystemsInteger {
             typealias T = TripleInt<B>
             typealias F = Fallible<T>
             
-            Test().complement(T(low:  0, mid:  0, high:  00000), false, F(T(low: ~0, mid: ~0, high: ~00000)))
-            Test().complement(T(low:  0, mid:  0, high:  00000), true,  F(T(low:  0, mid:  0, high:  00000), error: !B.isSigned))
-            Test().complement(T(low:  1, mid:  2, high:  00003), false, F(T(low: ~1, mid: ~2, high: ~00003)))
-            Test().complement(T(low:  1, mid:  2, high:  00003), true,  F(T(low: ~0, mid: ~2, high: ~00003)))
+            try #require(T(low:  0, mid:  0, high:  00000).complement(false) == F(T(low: ~0, mid: ~0, high: ~00000)))
+            try #require(T(low:  0, mid:  0, high:  00000).complement(true ) == F(T(low:  0, mid:  0, high:  00000), error: !B.isSigned))
+            try #require(T(low:  1, mid:  2, high:  00003).complement(false) == F(T(low: ~1, mid: ~2, high: ~00003)))
+            try #require(T(low:  1, mid:  2, high:  00003).complement(true ) == F(T(low: ~0, mid: ~2, high: ~00003)))
             
-            Test().complement(T(low: ~0, mid: ~0, high: ~B.msb), false, F(T(low:  0, mid:  0, high:  B.msb)))
-            Test().complement(T(low: ~0, mid: ~0, high: ~B.msb), true,  F(T(low:  1, mid:  0, high:  B.msb)))
-            Test().complement(T(low:  0, mid:  0, high:  B.msb), false, F(T(low: ~0, mid: ~0, high: ~B.msb)))
-            Test().complement(T(low:  0, mid:  0, high:  B.msb), true,  F(T(low:  0, mid:  0, high:  B.msb), error:  B.isSigned))
-        }
-        
-        for base in TripleIntTests.bases {
-            whereTheBaseIs(base)
-        }
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Assertions
-//=----------------------------------------------------------------------------=
-
-private extension Test {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    func complement<B>(_ instance: TripleInt<B>, _ increment: Bool, _ expectation: Fallible<TripleInt<B>>) {
-        same(instance.complement(increment), expectation, "complement [0]")
-        
-        if  increment {
-            same(instance.complement(), expectation.value, "complement [1]")
-        }   else {
-            let roundtrip = instance.complement(increment).value.complement(increment).value
-            same(roundtrip, instance, "complement [2]")
-        }
-        
-        if  increment, instance.high.isNegative {
-            same(TripleInt(raw: instance.magnitude()), expectation.value, "complement [3]")
-        }   else {
-            same(TripleInt(raw: instance.magnitude()), instance, "complement [4]")
+            try #require(T(low: ~0, mid: ~0, high: ~B.msb).complement(false) == F(T(low:  0, mid:  0, high:  B.msb)))
+            try #require(T(low: ~0, mid: ~0, high: ~B.msb).complement(true ) == F(T(low:  1, mid:  0, high:  B.msb)))
+            try #require(T(low:  0, mid:  0, high:  B.msb).complement(false) == F(T(low: ~0, mid: ~0, high: ~B.msb)))
+            try #require(T(low:  0, mid:  0, high:  B.msb).complement(true ) == F(T(low:  0, mid:  0, high:  B.msb), error:  B.isSigned))
         }
     }
 }

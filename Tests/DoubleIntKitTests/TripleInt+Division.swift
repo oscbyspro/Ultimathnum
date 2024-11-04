@@ -9,73 +9,60 @@
 
 import CoreKit
 import DoubleIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Triple Int x Division
 //*============================================================================*
 
-final class TripleIntTestsOnDivision: XCTestCase {
+@Suite struct TripleIntTestsOnDivision {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testDivision3212MSB() {
-        func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger & UnsignedInteger {
+    @Test(
+        "TripleInt: division 3212MSB (#124)",
+        Tag.List.tags(.todo),
+        arguments: TripleIntTests.basesAsUnsigned
+    )   func division3212MSB(_ base: any SystemsIntegerAsUnsigned.Type) throws {
+        
+        try  whereIs(base)
+        func whereIs<B>(_ type: B.Type) throws where B: SystemsIntegerAsUnsigned {
             typealias X = DoubleInt<B>
             typealias Y = TripleInt<B>
             typealias D = Division<B, DoubleInt<B>>
+            //=----------------------------------=
+            let x = B.msb
+            //=----------------------------------=
+            try Ɣrequire(Y(low:  0, mid:  0, high: ~0), by: X(low:  1, high: ~0), is: D(quotient: ~0 as B, remainder: X(low:  1, high: ~1)))
+            try Ɣrequire(Y(low:  0, mid:  0, high: ~0), by: X(low: ~1, high: ~0), is: D(quotient: ~0 as B, remainder: X(low: ~1, high:  1)))
+            try Ɣrequire(Y(low: ~0, mid: ~0, high: ~1), by: X(low:  0, high: ~0), is: D(quotient: ~0 as B, remainder: X(low: ~0, high: ~1)))
+            try Ɣrequire(Y(low: ~0, mid: ~0, high: ~1), by: X(low: ~0, high: ~0), is: D(quotient: ~0 as B, remainder: X(low: ~1, high:  0)))
             
-            Test().division3212MSB(Y(low:  0, mid:  0, high: ~0), X(low:  1, high: ~0), D(quotient: ~0 as B, remainder: X(low:  1, high: ~1)))
-            Test().division3212MSB(Y(low:  0, mid:  0, high: ~0), X(low: ~1, high: ~0), D(quotient: ~0 as B, remainder: X(low: ~1, high:  1)))
-            Test().division3212MSB(Y(low: ~0, mid: ~0, high: ~1), X(low:  0, high: ~0), D(quotient: ~0 as B, remainder: X(low: ~0, high: ~1)))
-            Test().division3212MSB(Y(low: ~0, mid: ~0, high: ~1), X(low: ~0, high: ~0), D(quotient: ~0 as B, remainder: X(low: ~1, high:  0)))
+            try Ɣrequire(Y(low:  0, mid:  0, high: ~x), by: X(low: ~0, high:  x), is: D(quotient: ~3 as B, remainder: X(low: ~3, high: 4))) // 2
+            try Ɣrequire(Y(low: ~0, mid:  0, high: ~x), by: X(low: ~0, high:  x), is: D(quotient: ~3 as B, remainder: X(low: ~4, high: 5))) // 2
+            try Ɣrequire(Y(low:  0, mid: ~0, high: ~x), by: X(low: ~0, high:  x), is: D(quotient: ~1 as B, remainder: X(low: ~1, high: 1))) // 1
+            try Ɣrequire(Y(low: ~0, mid: ~0, high: ~x), by: X(low: ~0, high:  x), is: D(quotient: ~1 as B, remainder: X(low: ~2, high: 2))) // 1
             
-            Test().division3212MSB(Y(low:  0, mid:  0, high: B.msb - 1), X(low: ~0, high: B.msb), D(quotient: ~3 as B, remainder: X(low: ~3, high: 4))) // 2
-            Test().division3212MSB(Y(low: ~0, mid:  0, high: B.msb - 1), X(low: ~0, high: B.msb), D(quotient: ~3 as B, remainder: X(low: ~4, high: 5))) // 2
-            Test().division3212MSB(Y(low:  0, mid: ~0, high: B.msb - 1), X(low: ~0, high: B.msb), D(quotient: ~1 as B, remainder: X(low: ~1, high: 1))) // 1
-            Test().division3212MSB(Y(low: ~0, mid: ~0, high: B.msb - 1), X(low: ~0, high: B.msb), D(quotient: ~1 as B, remainder: X(low: ~2, high: 2))) // 1
+            
+            func Ɣrequire(_ dividend: Y, by divisor: X, is expectation: D) throws {
+                try #require(Bool(divisor.msb))
+                
+                let result: D = dividend.division3212(normalized: Nonzero(divisor))
+                try #require(result == expectation)
+                
+                recover: do {
+                    let remainder = TripleInt(
+                        low:  result.remainder.low,
+                        mid:  result.remainder.high,
+                        high: B.zero
+                    )
+                    
+                    let recovered = divisor.multiplication(result.quotient).plus(remainder)
+                    try #require(Fallible(dividend) == recovered)
+                }
+            }
         }
-        
-        for base in TripleIntTests.basesAsUnsigned {
-            whereTheBaseIs(base)
-        }
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Assertions
-//=----------------------------------------------------------------------------=
-
-private extension Test {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    func division3212MSB<B>(
-        _ dividend: TripleInt<B>,
-        _ divisor:  DoubleInt<B>,
-        _ expectation: Division<B, DoubleInt<B>>?
-    )   where B: SystemsInteger & UnsignedInteger {
-        //=--------------------------------------=
-        guard let expectation else {
-            return same(divisor, 0,  "division by zero is undefined [0]")
-        }
-        
-        guard let divisor = Nonzero(exactly: divisor) else {
-            return none(expectation, "division by zero is undefined [1]")
-        }
-        //=--------------------------------------=
-        let result: Division<B, DoubleInt<B>> = dividend.division3212(normalized: divisor)
-        //=--------------------------------------=
-        recover: do {
-            let remainder = TripleInt(low: result.remainder.low, mid: result.remainder.high, high: B.zero)
-            let recovered = divisor.value.multiplication(result.quotient).plus(remainder)
-            same(Fallible(dividend), recovered, "dividend != divisor * quotient + remainder")
-        }
-        //=--------------------------------------=
-        same(result, expectation, "3 by 2 division")
     }
 }

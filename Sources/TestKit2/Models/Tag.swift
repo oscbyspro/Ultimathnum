@@ -38,11 +38,14 @@ extension Tag {
     /// Inspired by an open-source project.
     @Tag public static var opensource: Self
     
+    /// Happening, done, or chosen by chance.
+    @Tag public static var random: Self
+    
     /// Something that may be regained.
     @Tag public static var recoverable: Self
     
-    /// Happening, done, or chosen by chance.
-    @Tag public static var random: Self
+    /// A task.
+    @Tag public static var todo: Self
     
     /// Not officially authorized or confirmed.
     @Tag public static var unofficial: Self

@@ -9,157 +9,150 @@
 
 import CoreKit
 import DoubleIntKit
-import TestKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Triple Int x Comparison
 //*============================================================================*
 
-final class TripleIntTestsOnComparison: XCTestCase {
+@Suite struct TripleIntTestsOnComparison {
 
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testComparison() {
-        func whereTheBaseIs<B>(_ base: B.Type) where B: SystemsInteger {
+    @Test(
+        "TripleInt: comparison (#124)",
+        Tag.List.tags(.todo),
+        arguments: TripleIntTests.bases
+    )   func comparison(base: any SystemsInteger.Type) throws {
+        
+        try  whereIs(base)
+        func whereIs<B>(_ base: B.Type) throws where B: SystemsInteger {
             typealias T = TripleInt<B>
             //=----------------------------------=
-            let a1 =  T(low:  1, mid:  1, high:  1)
-            let b1 =  T(low: ~1, mid: ~1, high: ~1)
+            let a1 = T(low:  1, mid:  1, high:  1)
+            let b1 = T(low: ~1, mid: ~1, high: ~1)
             //=----------------------------------=
-            Test().comparison(T(low:  0, mid:  0, high:  0), a1,  Signum.negative)
-            Test().comparison(T(low:  1, mid:  0, high:  0), a1,  Signum.negative)
-            Test().comparison(T(low:  2, mid:  0, high:  0), a1,  Signum.negative)
-            Test().comparison(T(low:  0, mid:  1, high:  0), a1,  Signum.negative)
-            Test().comparison(T(low:  1, mid:  1, high:  0), a1,  Signum.negative)
-            Test().comparison(T(low:  2, mid:  1, high:  0), a1,  Signum.negative)
-            Test().comparison(T(low:  0, mid:  2, high:  0), a1,  Signum.negative)
-            Test().comparison(T(low:  1, mid:  2, high:  0), a1,  Signum.negative)
-            Test().comparison(T(low:  2, mid:  2, high:  0), a1,  Signum.negative)
-            Test().comparison(T(low:  0, mid:  0, high:  1), a1,  Signum.negative)
-            Test().comparison(T(low:  1, mid:  0, high:  1), a1,  Signum.negative)
-            Test().comparison(T(low:  2, mid:  0, high:  1), a1,  Signum.negative)
-            Test().comparison(T(low:  0, mid:  1, high:  1), a1,  Signum.negative)
-            Test().comparison(T(low:  1, mid:  1, high:  1), a1,  Signum.zero)
-            Test().comparison(T(low:  2, mid:  1, high:  1), a1,  Signum.positive)
-            Test().comparison(T(low:  0, mid:  2, high:  1), a1,  Signum.positive)
-            Test().comparison(T(low:  1, mid:  2, high:  1), a1,  Signum.positive)
-            Test().comparison(T(low:  2, mid:  2, high:  1), a1,  Signum.positive)
-            Test().comparison(T(low:  0, mid:  0, high:  2), a1,  Signum.positive)
-            Test().comparison(T(low:  1, mid:  0, high:  2), a1,  Signum.positive)
-            Test().comparison(T(low:  2, mid:  0, high:  2), a1,  Signum.positive)
-            Test().comparison(T(low:  0, mid:  1, high:  2), a1,  Signum.positive)
-            Test().comparison(T(low:  1, mid:  1, high:  2), a1,  Signum.positive)
-            Test().comparison(T(low:  2, mid:  1, high:  2), a1,  Signum.positive)
-            Test().comparison(T(low:  0, mid:  2, high:  2), a1,  Signum.positive)
-            Test().comparison(T(low:  1, mid:  2, high:  2), a1,  Signum.positive)
-            Test().comparison(T(low:  2, mid:  2, high:  2), a1,  Signum.positive)
+            try Ɣrequire(T(low:  0, mid:  0, high:  0), equals: a1, is:  Signum.negative)
+            try Ɣrequire(T(low:  1, mid:  0, high:  0), equals: a1, is:  Signum.negative)
+            try Ɣrequire(T(low:  2, mid:  0, high:  0), equals: a1, is:  Signum.negative)
+            try Ɣrequire(T(low:  0, mid:  1, high:  0), equals: a1, is:  Signum.negative)
+            try Ɣrequire(T(low:  1, mid:  1, high:  0), equals: a1, is:  Signum.negative)
+            try Ɣrequire(T(low:  2, mid:  1, high:  0), equals: a1, is:  Signum.negative)
+            try Ɣrequire(T(low:  0, mid:  2, high:  0), equals: a1, is:  Signum.negative)
+            try Ɣrequire(T(low:  1, mid:  2, high:  0), equals: a1, is:  Signum.negative)
+            try Ɣrequire(T(low:  2, mid:  2, high:  0), equals: a1, is:  Signum.negative)
+            try Ɣrequire(T(low:  0, mid:  0, high:  1), equals: a1, is:  Signum.negative)
+            try Ɣrequire(T(low:  1, mid:  0, high:  1), equals: a1, is:  Signum.negative)
+            try Ɣrequire(T(low:  2, mid:  0, high:  1), equals: a1, is:  Signum.negative)
+            try Ɣrequire(T(low:  0, mid:  1, high:  1), equals: a1, is:  Signum.negative)
+            try Ɣrequire(T(low:  1, mid:  1, high:  1), equals: a1, is:  Signum.zero)
+            try Ɣrequire(T(low:  2, mid:  1, high:  1), equals: a1, is:  Signum.positive)
+            try Ɣrequire(T(low:  0, mid:  2, high:  1), equals: a1, is:  Signum.positive)
+            try Ɣrequire(T(low:  1, mid:  2, high:  1), equals: a1, is:  Signum.positive)
+            try Ɣrequire(T(low:  2, mid:  2, high:  1), equals: a1, is:  Signum.positive)
+            try Ɣrequire(T(low:  0, mid:  0, high:  2), equals: a1, is:  Signum.positive)
+            try Ɣrequire(T(low:  1, mid:  0, high:  2), equals: a1, is:  Signum.positive)
+            try Ɣrequire(T(low:  2, mid:  0, high:  2), equals: a1, is:  Signum.positive)
+            try Ɣrequire(T(low:  0, mid:  1, high:  2), equals: a1, is:  Signum.positive)
+            try Ɣrequire(T(low:  1, mid:  1, high:  2), equals: a1, is:  Signum.positive)
+            try Ɣrequire(T(low:  2, mid:  1, high:  2), equals: a1, is:  Signum.positive)
+            try Ɣrequire(T(low:  0, mid:  2, high:  2), equals: a1, is:  Signum.positive)
+            try Ɣrequire(T(low:  1, mid:  2, high:  2), equals: a1, is:  Signum.positive)
+            try Ɣrequire(T(low:  2, mid:  2, high:  2), equals: a1, is:  Signum.positive)
             //=----------------------------------=
-            Test().comparison(T(low:  0, mid:  0, high:  0), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  1, mid:  0, high:  0), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  2, mid:  0, high:  0), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  0, mid:  1, high:  0), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  1, mid:  1, high:  0), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  2, mid:  1, high:  0), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  0, mid:  2, high:  0), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  1, mid:  2, high:  0), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  2, mid:  2, high:  0), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  0, mid:  0, high:  1), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  1, mid:  0, high:  1), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  2, mid:  0, high:  1), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  0, mid:  1, high:  1), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  1, mid:  1, high:  1), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  2, mid:  1, high:  1), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  0, mid:  2, high:  1), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  1, mid:  2, high:  1), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  2, mid:  2, high:  1), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  0, mid:  0, high:  2), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  1, mid:  0, high:  2), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  2, mid:  0, high:  2), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  0, mid:  1, high:  2), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  1, mid:  1, high:  2), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  2, mid:  1, high:  2), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  0, mid:  2, high:  2), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  1, mid:  2, high:  2), b1, -Signum(Sign(B.isSigned)))
-            Test().comparison(T(low:  2, mid:  2, high:  2), b1, -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  0, mid:  0, high:  0), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  1, mid:  0, high:  0), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  2, mid:  0, high:  0), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  0, mid:  1, high:  0), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  1, mid:  1, high:  0), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  2, mid:  1, high:  0), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  0, mid:  2, high:  0), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  1, mid:  2, high:  0), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  2, mid:  2, high:  0), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  0, mid:  0, high:  1), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  1, mid:  0, high:  1), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  2, mid:  0, high:  1), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  0, mid:  1, high:  1), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  1, mid:  1, high:  1), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  2, mid:  1, high:  1), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  0, mid:  2, high:  1), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  1, mid:  2, high:  1), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  2, mid:  2, high:  1), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  0, mid:  0, high:  2), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  1, mid:  0, high:  2), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  2, mid:  0, high:  2), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  0, mid:  1, high:  2), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  1, mid:  1, high:  2), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  2, mid:  1, high:  2), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  0, mid:  2, high:  2), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  1, mid:  2, high:  2), equals: b1, is: -Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low:  2, mid:  2, high:  2), equals: b1, is: -Signum(Sign(B.isSigned)))
             //=----------------------------------=
-            Test().comparison(T(low: ~0, mid: ~0, high: ~0), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~1, mid: ~0, high: ~0), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~2, mid: ~0, high: ~0), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~0, mid: ~1, high: ~0), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~1, mid: ~1, high: ~0), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~2, mid: ~1, high: ~0), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~0, mid: ~2, high: ~0), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~1, mid: ~2, high: ~0), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~2, mid: ~2, high: ~0), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~0, mid: ~0, high: ~1), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~1, mid: ~0, high: ~1), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~2, mid: ~0, high: ~1), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~0, mid: ~1, high: ~1), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~1, mid: ~1, high: ~1), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~2, mid: ~1, high: ~1), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~0, mid: ~2, high: ~1), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~1, mid: ~2, high: ~1), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~2, mid: ~2, high: ~1), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~0, mid: ~0, high: ~2), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~1, mid: ~0, high: ~2), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~2, mid: ~0, high: ~2), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~0, mid: ~1, high: ~2), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~1, mid: ~1, high: ~2), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~2, mid: ~1, high: ~2), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~0, mid: ~2, high: ~2), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~1, mid: ~2, high: ~2), a1,  Signum(Sign(B.isSigned)))
-            Test().comparison(T(low: ~2, mid: ~2, high: ~2), a1,  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~0, mid: ~0, high: ~0), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~1, mid: ~0, high: ~0), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~2, mid: ~0, high: ~0), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~0, mid: ~1, high: ~0), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~1, mid: ~1, high: ~0), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~2, mid: ~1, high: ~0), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~0, mid: ~2, high: ~0), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~1, mid: ~2, high: ~0), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~2, mid: ~2, high: ~0), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~0, mid: ~0, high: ~1), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~1, mid: ~0, high: ~1), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~2, mid: ~0, high: ~1), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~0, mid: ~1, high: ~1), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~1, mid: ~1, high: ~1), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~2, mid: ~1, high: ~1), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~0, mid: ~2, high: ~1), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~1, mid: ~2, high: ~1), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~2, mid: ~2, high: ~1), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~0, mid: ~0, high: ~2), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~1, mid: ~0, high: ~2), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~2, mid: ~0, high: ~2), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~0, mid: ~1, high: ~2), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~1, mid: ~1, high: ~2), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~2, mid: ~1, high: ~2), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~0, mid: ~2, high: ~2), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~1, mid: ~2, high: ~2), equals: a1, is:  Signum(Sign(B.isSigned)))
+            try Ɣrequire(T(low: ~2, mid: ~2, high: ~2), equals: a1, is:  Signum(Sign(B.isSigned)))
             //=----------------------------------=
-            Test().comparison(T(low: ~0, mid: ~0, high: ~0), b1,  Signum.positive)
-            Test().comparison(T(low: ~1, mid: ~0, high: ~0), b1,  Signum.positive)
-            Test().comparison(T(low: ~2, mid: ~0, high: ~0), b1,  Signum.positive)
-            Test().comparison(T(low: ~0, mid: ~1, high: ~0), b1,  Signum.positive)
-            Test().comparison(T(low: ~1, mid: ~1, high: ~0), b1,  Signum.positive)
-            Test().comparison(T(low: ~2, mid: ~1, high: ~0), b1,  Signum.positive)
-            Test().comparison(T(low: ~0, mid: ~2, high: ~0), b1,  Signum.positive)
-            Test().comparison(T(low: ~1, mid: ~2, high: ~0), b1,  Signum.positive)
-            Test().comparison(T(low: ~2, mid: ~2, high: ~0), b1,  Signum.positive)
-            Test().comparison(T(low: ~0, mid: ~0, high: ~1), b1,  Signum.positive)
-            Test().comparison(T(low: ~1, mid: ~0, high: ~1), b1,  Signum.positive)
-            Test().comparison(T(low: ~2, mid: ~0, high: ~1), b1,  Signum.positive)
-            Test().comparison(T(low: ~0, mid: ~1, high: ~1), b1,  Signum.positive)
-            Test().comparison(T(low: ~1, mid: ~1, high: ~1), b1,  Signum.zero)
-            Test().comparison(T(low: ~2, mid: ~1, high: ~1), b1,  Signum.negative)
-            Test().comparison(T(low: ~0, mid: ~2, high: ~1), b1,  Signum.negative)
-            Test().comparison(T(low: ~1, mid: ~2, high: ~1), b1,  Signum.negative)
-            Test().comparison(T(low: ~2, mid: ~2, high: ~1), b1,  Signum.negative)
-            Test().comparison(T(low: ~0, mid: ~0, high: ~2), b1,  Signum.negative)
-            Test().comparison(T(low: ~1, mid: ~0, high: ~2), b1,  Signum.negative)
-            Test().comparison(T(low: ~2, mid: ~0, high: ~2), b1,  Signum.negative)
-            Test().comparison(T(low: ~0, mid: ~1, high: ~2), b1,  Signum.negative)
-            Test().comparison(T(low: ~1, mid: ~1, high: ~2), b1,  Signum.negative)
-            Test().comparison(T(low: ~2, mid: ~1, high: ~2), b1,  Signum.negative)
-            Test().comparison(T(low: ~0, mid: ~2, high: ~2), b1,  Signum.negative)
-            Test().comparison(T(low: ~1, mid: ~2, high: ~2), b1,  Signum.negative)
-            Test().comparison(T(low: ~2, mid: ~2, high: ~2), b1,  Signum.negative)
+            try Ɣrequire(T(low: ~0, mid: ~0, high: ~0), equals: b1, is:  Signum.positive)
+            try Ɣrequire(T(low: ~1, mid: ~0, high: ~0), equals: b1, is:  Signum.positive)
+            try Ɣrequire(T(low: ~2, mid: ~0, high: ~0), equals: b1, is:  Signum.positive)
+            try Ɣrequire(T(low: ~0, mid: ~1, high: ~0), equals: b1, is:  Signum.positive)
+            try Ɣrequire(T(low: ~1, mid: ~1, high: ~0), equals: b1, is:  Signum.positive)
+            try Ɣrequire(T(low: ~2, mid: ~1, high: ~0), equals: b1, is:  Signum.positive)
+            try Ɣrequire(T(low: ~0, mid: ~2, high: ~0), equals: b1, is:  Signum.positive)
+            try Ɣrequire(T(low: ~1, mid: ~2, high: ~0), equals: b1, is:  Signum.positive)
+            try Ɣrequire(T(low: ~2, mid: ~2, high: ~0), equals: b1, is:  Signum.positive)
+            try Ɣrequire(T(low: ~0, mid: ~0, high: ~1), equals: b1, is:  Signum.positive)
+            try Ɣrequire(T(low: ~1, mid: ~0, high: ~1), equals: b1, is:  Signum.positive)
+            try Ɣrequire(T(low: ~2, mid: ~0, high: ~1), equals: b1, is:  Signum.positive)
+            try Ɣrequire(T(low: ~0, mid: ~1, high: ~1), equals: b1, is:  Signum.positive)
+            try Ɣrequire(T(low: ~1, mid: ~1, high: ~1), equals: b1, is:  Signum.zero)
+            try Ɣrequire(T(low: ~2, mid: ~1, high: ~1), equals: b1, is:  Signum.negative)
+            try Ɣrequire(T(low: ~0, mid: ~2, high: ~1), equals: b1, is:  Signum.negative)
+            try Ɣrequire(T(low: ~1, mid: ~2, high: ~1), equals: b1, is:  Signum.negative)
+            try Ɣrequire(T(low: ~2, mid: ~2, high: ~1), equals: b1, is:  Signum.negative)
+            try Ɣrequire(T(low: ~0, mid: ~0, high: ~2), equals: b1, is:  Signum.negative)
+            try Ɣrequire(T(low: ~1, mid: ~0, high: ~2), equals: b1, is:  Signum.negative)
+            try Ɣrequire(T(low: ~2, mid: ~0, high: ~2), equals: b1, is:  Signum.negative)
+            try Ɣrequire(T(low: ~0, mid: ~1, high: ~2), equals: b1, is:  Signum.negative)
+            try Ɣrequire(T(low: ~1, mid: ~1, high: ~2), equals: b1, is:  Signum.negative)
+            try Ɣrequire(T(low: ~2, mid: ~1, high: ~2), equals: b1, is:  Signum.negative)
+            try Ɣrequire(T(low: ~0, mid: ~2, high: ~2), equals: b1, is:  Signum.negative)
+            try Ɣrequire(T(low: ~1, mid: ~2, high: ~2), equals: b1, is:  Signum.negative)
+            try Ɣrequire(T(low: ~2, mid: ~2, high: ~2), equals: b1, is:  Signum.negative)
+            
+            func Ɣrequire(_ lhs: T, equals rhs: T, is expectation: Signum) throws {
+                Ɣexpect(lhs, equals: rhs, is: expectation)
+                Ɣexpect(rhs, equals: lhs, is: expectation.negated())
+                
+                try #require(lhs.compared(to: rhs) == expectation)
+                try #require(rhs.compared(to: lhs) == expectation.negated())
+            }
         }
-        
-        for base in TripleIntTests.bases {
-            whereTheBaseIs(base)
-        }
-    }
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + Assertions
-//=----------------------------------------------------------------------------=
-
-private extension Test {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    func comparison<B>(_ lhs: TripleInt<B>, _ rhs: TripleInt<B>, _ expectation: Signum) {
-        same(lhs.compared(to: rhs), expectation)
-        same(rhs.compared(to: lhs), expectation.negated())
-        comparison(lhs, rhs, expectation, id: ComparableID())
     }
 }

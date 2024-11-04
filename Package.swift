@@ -68,7 +68,7 @@ let package = Package(
         ),
         .testTarget(
             name: "CoreKitTests",
-            dependencies: ["CoreKit", "TestKit", "TestKit2"]
+            dependencies: ["CoreKit", "TestKit2"]
         ),
         .target(
             name: "DoubleIntKit",
@@ -76,7 +76,7 @@ let package = Package(
         ),
         .testTarget(
             name: "DoubleIntKitTests",
-            dependencies: ["DoubleIntKit", "TestKit", "TestKit2"]
+            dependencies: ["DoubleIntKit", "TestKit2"]
         ),
         .target(
             name: "FibonacciKit",
@@ -84,7 +84,7 @@ let package = Package(
         ),
         .testTarget(
             name: "FibonacciKitTests",
-            dependencies: ["DoubleIntKit", "FibonacciKit", "InfiniIntKit", "TestKit"]
+            dependencies: ["DoubleIntKit", "FibonacciKit", "InfiniIntKit", "TestKit", "TestKit2"]
         ),
         .target(
             name: "InfiniIntKit",
@@ -108,7 +108,7 @@ let package = Package(
         ),
         .testTarget(
             name: "RandomIntKitTests",
-            dependencies: ["RandomIntKit", "TestKit", "TestKit2"]
+            dependencies: ["RandomIntKit", "TestKit2"]
         ),
         .target(
             name: "StdlibIntKit",
