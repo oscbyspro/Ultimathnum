@@ -9,102 +9,40 @@
 
 import CoreKit
 import DoubleIntKit
-import TestKit
+import RandomIntKit
+import TestKit2
 
 //*============================================================================*
-// MARK: * Double Int x Addition
+// MARK: * Double Int x Addition x Not In Protocol
 //*============================================================================*
 
-extension DoubleIntTests {
+@Suite struct DoubleIntTestsOnAdditionNotInProtocol {
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests x 2 by 1
+    // MARK: Tests x 2 by 1 as 2
     //=------------------------------------------------------------------------=
     // TODO: HalveableInteger/plus (_:) would let us hoist these tests
     // TODO: HalveableInteger/minus(_:) would let us hoist these tests
     //=------------------------------------------------------------------------=
     
-    func testAddition21() {
-        func whereTheBaseIsSigned<B>(_ type: B.Type) where B: SystemsInteger & SignedInteger {
+    @Test(
+        "DoubleInt/addition/not-in-protocol: random 212 vs 222",
+        Tag.List.tags(.generic, .random),
+        arguments: DoubleIntTests.bases, fuzzers
+    )   func random212vs222(base: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
+        
+        try  whereIs(base)
+        func whereIs<B>(_ base: B.Type) throws where B: SystemsInteger {
             typealias T = DoubleInt<B>
-            typealias F = Fallible<T>
-            //=----------------------------------=
-            let x = B.msb
-            //=----------------------------------=
-            Test().same(T(low:  0, high:  0).plus(B.Magnitude(~3)), F(T(low: ~3, high:  0)))
-            Test().same(T(low:  1, high:  2).plus(B.Magnitude(~3)), F(T(low: ~2, high:  2)))
-            Test().same(T(low: ~1, high: ~2).plus(B.Magnitude( 3)), F(T(low:  1, high: ~1)))
-            Test().same(T(low: ~0, high: ~0).plus(B.Magnitude( 3)), F(T(low:  2, high:  0)))
             
-            Test().same(T(low:  3, high:  x).plus(B.Magnitude(~3)), F(T(low: ~0, high:  x)))
-            Test().same(T(low:  4, high:  x).plus(B.Magnitude(~3)), F(T(low:  0, high:  x ^ 1)))
-            Test().same(T(low: ~3, high: ~x).plus(B.Magnitude( 3)), F(T(low: ~0, high: ~x)))
-            Test().same(T(low: ~2, high: ~x).plus(B.Magnitude( 3)), F(T(low:  0, high:  x), error: true))
-        }
-        
-        func whereTheBaseIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger & UnsignedInteger {
-            typealias T = DoubleInt<B>
-            typealias F = Fallible<T>
-
-            Test().same(T(low:  0, high:  0).plus(B.Magnitude(~3)), F(T(low: ~3, high:  0)))
-            Test().same(T(low:  1, high:  2).plus(B.Magnitude(~3)), F(T(low: ~2, high:  2)))
-            Test().same(T(low: ~1, high: ~2).plus(B.Magnitude( 3)), F(T(low:  1, high: ~1)))
-            Test().same(T(low: ~0, high: ~0).plus(B.Magnitude( 3)), F(T(low:  2, high:  0), error: true))
-            
-            Test().same(T(low:  3, high: ~0).plus(B.Magnitude(~3)), F(T(low: ~0, high: ~0)))
-            Test().same(T(low:  4, high: ~0).plus(B.Magnitude(~3)), F(T(low:  0, high:  0), error: true))
-            Test().same(T(low: ~3, high: ~0).plus(B.Magnitude( 3)), F(T(low: ~0, high: ~0)))
-            Test().same(T(low: ~2, high: ~0).plus(B.Magnitude( 3)), F(T(low:  0, high:  0), error: true))
-        }
-        
-        for base in Self.basesWhereIsSigned {
-            whereTheBaseIsSigned(base)
-        }
-        
-        for base in Self.basesWhereIsUnsigned {
-            whereTheBaseIsUnsigned(base)
-        }
-    }
-    
-    func testSubtraction21() {
-        func whereTheBaseIsSigned<B>(_ type: B.Type) where B: SystemsInteger & SignedInteger {
-            typealias T = DoubleInt<B>
-            typealias F = Fallible<DoubleInt<B>>
-            //=----------------------------------=
-            let x = B.msb
-            //=----------------------------------=
-            Test().same(T(low:  0, high:  0).minus(B.Magnitude(~3)), F(T(low:  4, high: ~0)))
-            Test().same(T(low:  1, high:  2).minus(B.Magnitude(~3)), F(T(low:  5, high:  1)))
-            Test().same(T(low: ~1, high: ~2).minus(B.Magnitude( 3)), F(T(low: ~4, high: ~2)))
-            Test().same(T(low: ~0, high: ~0).minus(B.Magnitude( 3)), F(T(low: ~3, high: ~0)))
-            
-            Test().same(T(low: ~3, high: ~x).minus(B.Magnitude(~3)), F(T(low:  0, high: ~x)))
-            Test().same(T(low: ~4, high: ~x).minus(B.Magnitude(~3)), F(T(low: ~0, high: ~x ^ 1)))
-            Test().same(T(low:  3, high:  x).minus(B.Magnitude( 3)), F(T(low:  0, high:  x)))
-            Test().same(T(low:  2, high:  x).minus(B.Magnitude( 3)), F(T(low: ~0, high: ~x), error: true))
-        }
-        
-        func whereTheBaseIsUnsigned<B>(_ type: B.Type) where B: SystemsInteger & UnsignedInteger {
-            typealias T = DoubleInt<B>
-            typealias F = Fallible<DoubleInt<B>>
-            
-            Test().same(T(low:  0, high:  0).minus(B.Magnitude(~3)), F(T(low:  4, high: ~0), error: true))
-            Test().same(T(low:  1, high:  2).minus(B.Magnitude(~3)), F(T(low:  5, high:  1)))
-            Test().same(T(low: ~1, high: ~2).minus(B.Magnitude( 3)), F(T(low: ~4, high: ~2)))
-            Test().same(T(low: ~0, high: ~0).minus(B.Magnitude( 3)), F(T(low: ~3, high: ~0)))
-            
-            Test().same(T(low: ~3, high:  0).minus(B.Magnitude(~3)), F(T(low:  0, high:  0)))
-            Test().same(T(low: ~4, high:  0).minus(B.Magnitude(~3)), F(T(low: ~0, high: ~0), error: true))
-            Test().same(T(low:  3, high:  0).minus(B.Magnitude( 3)), F(T(low:  0, high:  0)))
-            Test().same(T(low:  2, high:  0).minus(B.Magnitude( 3)), F(T(low: ~0, high: ~0), error: true))
-        }
-        
-        for base in Self.basesWhereIsSigned {
-            whereTheBaseIsSigned(base)
-        }
-        
-        for base in Self.basesWhereIsUnsigned {
-            whereTheBaseIsUnsigned(base)
+            for _ in 0 ..< 1024 {
+                let lhs2 = T.entropic(using: &randomness)
+                let rhs1 = B.Magnitude.entropic(using: &randomness)
+                let rhs2 = T(load: rhs1)
+                                
+                try #require(lhs2.plus (rhs1) == lhs2.plus (rhs2))
+                try #require(lhs2.minus(rhs1) == lhs2.minus(rhs2))
+            }
         }
     }
 }

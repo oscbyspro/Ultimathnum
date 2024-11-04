@@ -9,15 +9,14 @@
 
 import CoreKit
 import DoubleIntKit
-import TestKit
+import RandomIntKit
+import TestKit2
 
 //*============================================================================*
 // MARK: * Double Int
 //*============================================================================*
 
-final class DoubleIntTests: XCTestCase {
-    
-    typealias X2<Base> = DoubleInt<Base> where Base: SystemsInteger
+@Suite struct DoubleIntTests {
     
     typealias I8x2 = DoubleInt<I8>
     typealias U8x2 = DoubleInt<U8>
@@ -36,18 +35,18 @@ final class DoubleIntTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     static let types: [any SystemsInteger.Type] = {
-        typesWhereIsSigned +
-        typesWhereIsUnsigned
+        typesAsSigned +
+        typesAsUnsigned
     }()
     
-    static let typesWhereIsSigned: [any (SystemsInteger & SignedInteger).Type] = [
+    static let typesAsSigned: [any SystemsIntegerAsSigned.Type] = [
         I8x2.self,
         I8x4.self,
         IXx2.self,
         IXx4.self,
     ]
     
-    static let typesWhereIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = [
+    static let typesAsUnsigned: [any SystemsIntegerAsUnsigned.Type] = [
         U8x2.self,
         U8x4.self,
         UXx2.self,
@@ -55,18 +54,18 @@ final class DoubleIntTests: XCTestCase {
     ]
     
     static let bases: [any SystemsInteger.Type] = {
-        basesWhereIsSigned +
-        basesWhereIsUnsigned
+        basesAsSigned +
+        basesAsUnsigned
     }()
     
-    static let basesWhereIsSigned: [any (SystemsInteger & SignedInteger).Type] = [
+    static let basesAsSigned: [any SystemsIntegerAsSigned.Type] = [
         I8x2.High.self,
         I8x4.High.self,
         IXx2.High.self,
         IXx4.High.self,
     ]
     
-    static let basesWhereIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = [
+    static let basesAsUnsigned: [any SystemsIntegerAsUnsigned.Type] = [
         U8x2.High.self,
         U8x4.High.self,
         UXx2.High.self,
@@ -77,108 +76,81 @@ final class DoubleIntTests: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    func testComponents() {
-        func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
+    @Test("DoubleInt: layout", .tags(.generic), arguments: Self.bases)
+    func layout(base: any SystemsInteger.Type) throws {
+        
+        try  whereIs(base)
+        func whereIs<B>(_ base: B.Type) throws where B: SystemsInteger {
+            typealias T = DoubleInt<B>
+            typealias U = (B, B)
+            
+            #expect(MemoryLayout<T>.size      == 2 * MemoryLayout<B>.size)
+            #expect(MemoryLayout<T>.stride    == 2 * MemoryLayout<B>.stride)
+            #expect(MemoryLayout<T>.alignment == 1 * MemoryLayout<B>.alignment)
+            Ɣexpect(MemoryLayout<T>.self, equals:    MemoryLayout<U>.self)
+        }
+    }
+    
+    
+    @Test("DoubleInt: bitcasting", .tags(.generic, .random), arguments: Self.bases, fuzzers)
+    func bitcasting(base: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
+        
+        try  whereIs(base)
+        func whereIs<B>(_ base: B.Type) throws where B: SystemsInteger {
             typealias T = DoubleInt<B>
             
-            Test().same(T(               ).low,  0 as B.Magnitude)
-            Test().same(T(               ).high, 0 as B)
-            Test().same(T(low: 0         ).low,  0 as B.Magnitude)
-            Test().same(T(low: 0         ).high, 0 as B)
-            Test().same(T(low: 1         ).low,  1 as B.Magnitude)
-            Test().same(T(low: 1         ).high, 0 as B)
-            Test().same(T(low: 0, high: 0).low,  0 as B.Magnitude)
-            Test().same(T(low: 0, high: 0).high, 0 as B)
-            Test().same(T(low: 1, high: 2).low,  1 as B.Magnitude)
-            Test().same(T(low: 1, high: 2).high, 2 as B)
-            
-            setters: do {
-                let rhs  = T(low: 1, high: 2)
-                var lhs  = T(low: 0, high: 0)
+            for _ in 0 ..< 32 {
+                let low  = T.Low .random(using: &randomness)
+                let high = T.High.random(using: &randomness)
+                let full = T(low: low, high: high)
                 
-                lhs.low  = rhs.low
-                lhs.high = rhs.high
+                try #require(full == T(raw: T.Magnitude(raw: full)))
+                try #require(full == T(raw: T.Signitude(raw: full)))
                 
-                Test().same(lhs, rhs)
-            }
-            
-            components: do {
-                var low:  B.Magnitude
-                var high: B
-                
-                (low, high) = T(low: 0, high: 0).components()
-                Test().same(low,  0 as B.Magnitude)
-                Test().same(high, 0 as B)
-                
-                (low, high) = T(low: 1, high: 2).components()
-                Test().same(low,  1 as B.Magnitude)
-                Test().same(high, 2 as B)
+                try #require(full == T(raw: T.Magnitude(low: low, high: B.Magnitude(raw: high))))
+                try #require(full == T(raw: T.Signitude(low: low, high: B.Signitude(raw: high))))
             }
         }
-        
-        for base in Self.bases {
-            whereTheBaseIs(base)
-        }
     }
     
-    func testBitCast() {
-        func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
-            typealias T = DoubleInt<B>
-            typealias S = T.Signitude
-            typealias M = T.Magnitude
-            
-            Test().same(M(raw: T(low:  1, high:  2)), M(low:  1, high:  2))
-            Test().same(S(raw: T(low:  1, high:  2)), S(low:  1, high:  2))
-            Test().same(M(raw: T(low: ~1, high: ~2)), M(low: ~1, high: ~2))
-            Test().same(S(raw: T(low: ~1, high: ~2)), S(low: ~1, high: ~2))
-        }
-        
-        for base in Self.bases {
-            whereTheBaseIs(base)
-        }
-    }
-    
-    func testMemoryLayout() {
-        func whereTheBaseIs<B>(_ type: B.Type) where B: SystemsInteger {
+    @Test("DoubleInt: components", .tags(.generic, .random), arguments: Self.bases, fuzzers)
+    func components(base: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
+
+        try  whereIs(base)
+        func whereIs<B>(_ base: B.Type) throws where B: SystemsInteger {
             typealias T = DoubleInt<B>
             
-            Test().same(MemoryLayout<T>.self, MemoryLayout<(B, B)>.self)
-            Test().same(MemoryLayout<T>.size,      2 * MemoryLayout<B>.size)
-            Test().same(MemoryLayout<T>.stride,    2 * MemoryLayout<B>.stride)
-            Test().same(MemoryLayout<T>.alignment, 1 * MemoryLayout<B>.alignment)
-        }
-        
-        for base in Self.bases {
-            whereTheBaseIs(base)
-        }
-    }
-        
-    //*========================================================================*
-    // MARK: * Case
-    //*========================================================================*
-    
-    struct Case<Base: SystemsInteger> {
-        
-        typealias Item = DoubleInt<Base>
-        
-        //=--------------------------------------------------------------------=
-        // MARK: State
-        //=--------------------------------------------------------------------=
-
-        var test: Test
-        var item: Item
-        
-        //=--------------------------------------------------------------------=
-        // MARK: Initializers
-        //=--------------------------------------------------------------------=
-
-        init(_ item: Item, test: Test) {
-            self.test = test
-            self.item = item
-        }
-        
-        init(_ item: Item, file: StaticString = #file, line: UInt = #line) {
-            self.init(item, test: Test(file: file, line: line))
+            for _ in 0 ..< 32 {
+                let low  = T.Low .random(using: &randomness)
+                let high = T.High.random(using: &randomness)
+                
+                always: do {
+                    try #require(T().low .isZero)
+                    try #require(T().high.isZero)
+                }
+                
+                always: do {
+                    try #require(T(low: low).low  == low)
+                    try #require(T(low: low).high.isZero)
+                }
+                
+                always: do {
+                    try #require(T(low: low, high: high).low  == low )
+                    try #require(T(low: low, high: high).high == high)
+                }
+                
+                getter: do {
+                    try #require(T(low: low, high: high).components() == (low, high))
+                }
+                
+                setter: do {
+                    var full  = T()
+                    full.low  = low
+                    full.high = high
+                    try #require(full.low  == low )
+                    try #require(full.high == high)
+                }
+            }
         }
     }
 }

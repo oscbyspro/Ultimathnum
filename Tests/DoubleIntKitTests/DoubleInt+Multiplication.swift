@@ -13,11 +13,10 @@ import RandomIntKit
 import TestKit2
 
 //*============================================================================*
-// MARK: * Double Int x Multiplication
+// MARK: * Double Int x Multiplication x Not In Protocol
 //*============================================================================*
 
-@Suite("DoubleInt/multiplication - not in protocol")
-struct DoubleIntTestsOnMultiplicationNotInProtocol {
+@Suite struct DoubleIntTestsOnMultiplicationNotInProtocol {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests x 2 by 1 as 3
@@ -25,24 +24,28 @@ struct DoubleIntTestsOnMultiplicationNotInProtocol {
     // TODO: HalveableInteger/multiplication(_:) would let us hoist these tests
     //=------------------------------------------------------------------------=
     
-    @Test("DoubleInt/multiplication - 213 vs 224 [entropic]", arguments: typesAsCoreInteger, fuzzers)
-    func multiplication213vs224(base: any CoreInteger.Type, randomness: consuming FuzzerInt) {
-        whereIs(base)
+    @Test(
+        "DoubleInt/multiplication/not-in-protocol: random 213 vs 224",
+        Tag.List.tags(.generic, .random),
+        arguments: DoubleIntTests.bases, fuzzers
+    )   func random213vs224(base: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
         
-        func whereIs<B>(_ base: B.Type) where B: SystemsInteger {
+        try  whereIs(base)
+        func whereIs<B>(_ base: B.Type) throws where B: SystemsInteger {
             typealias T = DoubleInt<B>
             
             for _ in 0 ..< 1024 {
-                let lhs = T.entropic(using: &randomness)
-                let rhs = B.entropic(using: &randomness)
+                let lhs2 = T.entropic(using: &randomness)
+                let rhs1 = B.entropic(using: &randomness)
+                let rhs2 = T(load: rhs1)
                 
-                let result3 = lhs.multiplication(rhs)
-                let result4 = lhs.multiplication(T(load: rhs))
+                let result3 = lhs2.multiplication(rhs1)
+                let result4 = lhs2.multiplication(rhs2)
                 
-                #expect(result4.low.low   == result3.low)
-                #expect(result4.low.high  == result3.mid)
-                #expect(result4.high.low  == B.Magnitude.init(raw: result3.high))
-                #expect(result4.high.high == B(repeating: result3.high.appendix))
+                try #require(result4.low.low   == result3.low)
+                try #require(result4.low.high  == result3.mid)
+                try #require(result4.high.low  == B.Magnitude.init(raw: result3.high))
+                try #require(result4.high.high == B(repeating: result3.high.appendix))
             }
         }
     }

@@ -30,15 +30,15 @@ final class TripleIntTests: XCTestCase {
     //=------------------------------------------------------------------------=
     
     static let bases: [any SystemsInteger.Type] = {
-        basesWhereIsSigned +
-        basesWhereIsUnsigned
+        basesAsSigned +
+        basesAsUnsigned
     }()
     
-    static let basesWhereIsSigned: [any (SystemsInteger & SignedInteger).Type] = {
+    static let basesAsSigned: [any (SystemsInteger & SignedInteger).Type] = {
         typesAsCoreIntegerAsSigned
     }()
     
-    static let basesWhereIsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = {
+    static let basesAsUnsigned: [any (SystemsInteger & UnsignedInteger).Type] = {
         typesAsCoreIntegerAsUnsigned
     }()
     

@@ -38,7 +38,7 @@ extension TripleIntTests {
             Test().division3212MSB(Y(low: ~0, mid: ~0, high: B.msb - 1), X(low: ~0, high: B.msb), D(quotient: ~1 as B, remainder: X(low: ~2, high: 2))) // 1
         }
         
-        for base in Self.basesWhereIsUnsigned {
+        for base in Self.basesAsUnsigned {
             whereTheBaseIs(base)
         }
     }
