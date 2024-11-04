@@ -92,7 +92,7 @@ let package = Package(
         ),
         .testTarget(
             name: "InfiniIntKitTests",
-            dependencies: ["InfiniIntKit", "TestKit"]
+            dependencies: ["InfiniIntKit", "TestKit2"]
         ),
         .target(
             name: "PrototypeKit",
