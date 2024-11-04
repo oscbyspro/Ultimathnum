@@ -20,7 +20,7 @@ extension BinaryInteger {
     /// Loads the bit pattern of `body` and `appendix` that fits.
     @inlinable public init<Body: Contiguous>(
         load body: borrowing Body,
-        repeating appendix: Bit = .zero
+        repeating appendix: Bit = Bit.zero
     )   where Body.Element: SystemsInteger & UnsignedInteger {
         
         self = body.withUnsafeBufferPointer {

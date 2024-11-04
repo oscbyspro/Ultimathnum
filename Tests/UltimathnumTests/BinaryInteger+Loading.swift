@@ -32,10 +32,13 @@ import TestKit2
     /// - Note: The `junk` part starts at the end of the type's body.
     ///
     @Test(
-        "BinaryInteger/loading: random",
+        "BinaryInteger/loading: random payload-extension-junk",
         Tag.List.tags(.forwarding, .generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func random(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func randomPayloadExtensionJunk(
+        type: any BinaryInteger.Type,
+        randomness: consuming FuzzerInt
+    )   throws {
         
         for element in typesAsSystemsIntegerAsUnsigned {
             try whereIs(type, element: element)
@@ -117,22 +120,43 @@ import TestKit2
                     try Ɣrequire(other, matches: body[..<capacity], repeating: appendix)
                 }
             }
-            
-            func Ɣrequire(_ instance: T, matches body: ArraySlice<E>, repeating appendix: Bit) throws {
-                try withOnlyOneCallToRequire((instance, body)) { require in
-                    instance.withUnsafeBinaryIntegerElements(as: U8.self) { instance in
-                        require(instance.appendix == appendix)
-                        body.withUnsafeBytes { body in
-                            for index: Swift.Int in body.indices {
-                                let lhs = instance[UX(IX(index))]
-                                let rhs = body.load(fromByteOffset: index, as: U8.self)
-                                require(lhs == rhs)
-                            }
+        }
+    }
+    
+    func Ɣrequire<Integer, Body>(
+        _ integer: Integer,
+        matches body: Body,
+        repeating appendix: Bit
+    )   throws where Integer: BinaryInteger, Body: Contiguous, Body.Element: SystemsIntegerAsUnsigned {
+        try withOnlyOneCallToRequire((integer, body)) { require in
+            integer.withUnsafeBinaryIntegerElements(as: U8.self) { integer in
+                require(integer.appendix == appendix)
+                body.withUnsafeBufferPointer { body in
+                    body.withMemoryRebound(to: U8.self) { body in
+                        for index in body.indices {
+                            require(integer[UX(IX(index))] == body[index])
                         }
                     }
                 }
             }
         }
+    }
+}
+
+//*============================================================================*
+// MARK: * Binary Integer x Loading x Conveniences
+//*============================================================================*
+
+@Suite struct BinaryIntegerTestsOnLoadingConveniences {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    @Test("BinaryInteger/loading/conveniences: default appendix is zero")
+    func defaultAppendixIsZero() {
+        #expect(IX(load: [] as [U8]) == IX.zero)
+        #expect(UX(load: [] as [U8]) == UX.zero)
     }
 }
 
