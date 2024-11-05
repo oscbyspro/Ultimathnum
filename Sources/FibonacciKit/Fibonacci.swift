@@ -99,7 +99,7 @@ import CoreKit
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Accessors
+    // MARK: Utilities
     //=------------------------------------------------------------------------=
     
     /// The sequence `index`.
@@ -115,6 +115,10 @@ import CoreKit
     /// The sequence `element` at `index + 1`.
     @inlinable public var next: Value {
         self.b
+    }
+    
+    @inlinable public consuming func components() -> (index: Value, element: Value, next: Value) {
+        (index: self.i, element: self.a, next: self.b)
     }
     
     //=------------------------------------------------------------------------=
