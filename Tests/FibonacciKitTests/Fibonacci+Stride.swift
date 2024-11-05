@@ -23,7 +23,7 @@ import TestKit2
     //=------------------------------------------------------------------------=
     
     @Test(
-        "Fibonacci: for each (index, increment, decrement) in range",
+        "Fibonacci/stride: for each (index, increment, decrement) in range",
         Tag.List.tags(.generic, .exhaustive),
         arguments: FibonacciTests.metadata
     )   func forEachIndexIncrementDecrementInRange(
@@ -84,8 +84,7 @@ import TestKit2
         Tag.List.tags(.generic, .random),
         arguments: FibonacciTests.metadata, fuzzers
     )   func randomJumpInRange(
-        metadata:  FibonacciTests.Metadata,
-        randomness: consuming FuzzerInt
+        metadata:  FibonacciTests.Metadata, randomness: consuming FuzzerInt
     )   throws {
         
         try  whereIs(metadata.type)
@@ -130,7 +129,6 @@ import TestKit2
                 }
             }
             
-            /// Two random indices and their sum in [low, high].
             func next() -> (T, T, T) {
                 var a = low, b = high
                 
@@ -152,8 +150,7 @@ import TestKit2
         Tag.List.tags(.generic, .todo, .random),
         arguments: FibonacciTests.metadataAsSystemsInteger, fuzzers
     )   func randomJumpOutOfBoundsThrowsError(
-        metadata: FibonacciTests.Metadata,
-        randomness: consuming FuzzerInt
+        metadata: FibonacciTests.Metadata, randomness: consuming FuzzerInt
     )   throws {
         
         try  whereIs(metadata.type)

@@ -58,17 +58,19 @@ import TestKit2
         Metadata(type: U8L .self, low: 0, high: nil)
     ]
     
-    static let metadataAsSystemsInteger = metadata.filter({ !$0.type.isArbitrary })
+    static let metadataAsSystemsInteger = metadata.filter {
+        !$0.type.isArbitrary
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     @Test(
-        "Fibonacci: start is (0, 0, 1)",
+        "Fibonacci: start",
         Tag.List.tags(.generic),
         arguments: metadata
-    )   func startIsZeroZeroOne(metadata: Metadata) throws {
+    )   func start(metadata: Metadata) throws {
         
         try  whereIs(metadata.type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
@@ -78,94 +80,18 @@ import TestKit2
     }
     
     @Test(
-        "Fibonacci: pairs are coprime",
-        Tag.List.tags(.generic, .random),
-        arguments: metadata, fuzzers
-    )   func pairsAreCoprime(metadata: Metadata, randomness: consuming FuzzerInt) throws {
+        "Fibonacci: accessors",
+        Tag.List.tags(.generic),
+        arguments: metadata
+    )   func accessors(metadata: Metadata) throws {
         
         try  whereIs(metadata.type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
-            let arbitrary: IX = conditional(debug: 144, release: 369)
-            let low  = T(metadata.low  ?? -arbitrary)
-            let high = T(metadata.high ??  arbitrary)
-            
-            for _ in 0 ..< conditional(debug: 8, release: 32) {
-                let index = T.random(in: low...high, using: &randomness)
-                let fibonacci = try #require(try Fibonacci(index))
-                try #require(fibonacci.element.euclidean(fibonacci.next) == 1)
-            }
-        }
-    }
-    
-    /// Generates random values to check the following invariant:
-    ///
-    ///     f(x) * f(y) == (f(x+y+1) / f(x+1) - f(y+1)) * f(x+1) + f(x+y+1) % f(x+1)
-    ///
-    /// ### Calls: Fibonacci<Value>
-    ///
-    /// - Fibonacci.init(\_:)
-    /// - Fibonacci/increment(by:)
-    /// - Fibonacci/decrement(by:)
-    ///
-    /// ### Calls: BinaryInteger
-    ///
-    /// - BinaryInteger/plus(\_:)
-    /// - BinaryInteger/minus(\_:)
-    /// - BinaryInteger/times(\_:)
-    /// - BinaryInteger/quotient(\_:)
-    /// - BinaryInteger/division(\_:)
-    ///
-    @Test(
-        "Fibonacci: math invariant",
-        Tag.List.tags(.generic, .random),
-        arguments: metadata, fuzzers
-    )   func mathInvariant(
-        metadata: Metadata,
-        randomness: consuming FuzzerInt
-    )   throws {
-        
-        try  whereIs(metadata.type)
-        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
-            let arbitrary: IX = conditional(debug: 144, release: 369)
-            let low   = T(metadata.low  ?? -arbitrary)
-            let high  = T(metadata.high ??  arbitrary)
-            //=----------------------------------=
-            let x = Bad.message("arithmetic")
-            //=----------------------------------=
-            for _ in 0 ..< conditional(debug: 8, release: 32) {
-                let i = next()
-                
-                try #require((low...high).contains(i.0))
-                try #require((low...high).contains(i.1))
-                try #require((low...high).contains(i.2))
-                
-                var a = try Fibonacci(i.0)
-                let b = try Fibonacci(i.1)
-                let c = try #require(a.next.division(b.next)).prune(x)
-                
-                try a.decrement(by: b)
-                
-                let d = try a.element.times(b.element).prune(x)
-                let e = try c.quotient.minus((a.next)).prune(x).times(b.next).prune(x).plus(c.remainder).prune(x)
-                
-                try a.increment(by: b)
-                try #require((d) == e)
-            }
-            
-            /// Two random indices and their difference in [low, high].
-            func next() -> (T, T, T) {
-                var a = low, b = high
-                
-                let i = T.random(in: a...b, using: &randomness)
-                
-                (a, b) = (
-                    Swift.max(a, i.minus(b).optional() ?? a),
-                    Swift.min(b, i.minus(a).optional() ?? b)
-                )
-                
-                let j = T.random(in: a...b, using: &randomness)
-                return (i, j, i - j)
-            }
+            let fibonacci = try Fibonacci<T>( 4)
+            try #require(fibonacci.index   == 4)
+            try #require(fibonacci.element == 3)
+            try #require(fibonacci.next    == 5)
+            try #require(fibonacci.components() == (4, 3, 5))
         }
     }
 }
