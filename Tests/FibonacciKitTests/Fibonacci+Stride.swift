@@ -176,7 +176,7 @@ import TestKit2
                     let b = try Fibonacci(j)
                     
                     try #require(low.isNegative, "todo: index < 0")
-                    try #require(throws: Fibonacci<T>.Error.indexOutOfBounds) {
+                    try #require(throws: Fibonacci<T>.Error.overflow) {
                         try a.decrement(by: b) // i - j > high
                     }
                 }
@@ -190,7 +190,7 @@ import TestKit2
                         try a.decrement(by: b) // i + j < low
                     }
                 }
-                                
+                
                 if  let k = (high+1).minus(i).optional(), k <= high {
                     let j = T.random(in: k...high, using: &randomness)
                     let b = try Fibonacci(j)

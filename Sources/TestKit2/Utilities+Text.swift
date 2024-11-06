@@ -70,3 +70,20 @@ extension Bit {
         U8(Bool(self) ? UInt8(ascii: "1") : UInt8(ascii: "0"))
     }
 }
+
+//*============================================================================*
+// MARK: * Utilities x Text Int
+//*============================================================================*
+
+extension TextInt {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func random(using randomness: inout some Randomness) -> Self {
+        let radix = UX.random(in: 2...36, using: &randomness)
+        let letters = Letters(uppercase: Bool(U8.random(using: &randomness).lsb))
+        return Self.radix(radix).letters(letters)
+    }
+}

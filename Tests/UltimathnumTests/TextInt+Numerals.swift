@@ -134,25 +134,31 @@ private let letters: [TextInt.Letters] = [.lowercase, .uppercase]
     }
     
     @Test(
-        "TextInt.Numerals/initialization: each radix in [0, 36] is valid",
+        "TextInt.Numerals/initialization: from each radix in [0, 36]",
         Tag.List.tags(.generic, .exhaustive),
         arguments: typesAsBinaryInteger
-    )   func eachRadixFromZeroThrough36IsValid(type: any BinaryInteger.Type) throws {
+    )   func fromEachRadixFromZeroThrough36(type: any BinaryInteger.Type) throws {
         
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for radix in radices.lazy.map(T.init) {
                 for letters in letters {
-                    let numerals = try TextInt.Numerals(radix:      (radix), letters: letters)
+                    let instance = try TextInt.Numerals(radix:      (radix), letters: letters)
                     let concrete = try TextInt.Numerals(radix: Radix(radix), letters: letters)
-                    try #require(numerals == concrete)
+                    try #require(instance == concrete)
                     
-                    try #require(numerals.radix   == radix)
-                    try #require(numerals.letters == letters)
-                    try #require(numerals.lowercased().letters == TextInt.Letters.lowercase)
-                    try #require(numerals.uppercased().letters == TextInt.Letters.uppercase)
-                    try #require(numerals.letters(.lowercase).letters == TextInt.Letters.lowercase)
-                    try #require(numerals.letters(.uppercase).letters == TextInt.Letters.uppercase)
+                    try #require(instance.radix   == radix)
+                    try #require(instance.letters == letters)
+                    
+                    try #require(instance.lowercased().radix   == radix)
+                    try #require(instance.lowercased().letters == TextInt.Letters.lowercase)
+                    try #require(instance.uppercased().radix   == radix)
+                    try #require(instance.uppercased().letters == TextInt.Letters.uppercase)
+                    
+                    try #require(instance.letters(.lowercase).radix   == radix)
+                    try #require(instance.letters(.lowercase).letters == TextInt.Letters.lowercase)
+                    try #require(instance.letters(.uppercase).radix   == radix)
+                    try #require(instance.letters(.uppercase).letters == TextInt.Letters.uppercase)
                 }
             }
         }
