@@ -79,6 +79,14 @@ extension BinaryInteger {
             return Self(repeating: Bit.one).up(Count(((size)))).toggled()
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var isNatural: Bool {
+        self.appendix.isZero
+    }
 }
 
 //*============================================================================*

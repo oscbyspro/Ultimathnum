@@ -63,14 +63,15 @@ import TestKit
         "BinaryInteger/logarithm: ilog2() of random",
         Tag.List.tags(.random, .generic),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func ilog2OfRandomPositive(
+    )   func ilog2OfRandom(
         type: any BinaryInteger.Type, randomness: consuming FuzzerInt
     )   throws {
         
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< conditional(debug: 32, release: 256) {
-                let value = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                let index = Shift<T.Magnitude>.max(or: 255)
+                let value = T.entropic(through: index, using: &randomness)
                 try Ɣrequire(validating: value, ilog2: value.ilog2())
             }
         }
@@ -86,21 +87,20 @@ import TestKit
         at location: SourceLocation = #_sourceLocation
     )   throws where T: BinaryInteger {
         
+        try #require((expectation == nil) == !value.isPositive, sourceLocation: location)
+        
         if  let expectation {
-            #expect(expectation < T.size, sourceLocation: location)
-            #expect(expectation.isInfinite == value.isInfinite, sourceLocation: location)
+            try #require(expectation < T.size, sourceLocation: location)
+            try #require(expectation.isInfinite == value.isInfinite, sourceLocation: location)
             
             if !expectation.isInfinite {
                 let low = T.lsb.up(expectation)
-                #expect(value >= low, sourceLocation: location)
+                try #require(value >= low, sourceLocation: location)
                 
                 if  let high = low.times(2).optional() {
-                    #expect(value < high, sourceLocation: location)
+                    try #require(value < high, sourceLocation: location)
                 }
             }
-            
-        }   else {
-            try #require(!value.isPositive, sourceLocation: location)
         }
     }
 }
@@ -138,7 +138,8 @@ import TestKit
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: SignedInteger {
             for _ in 0 ..< 32 {
-                let value = T.entropic(through: Shift.max(or: 255), as: Domain.natural, using: &randomness).toggled()
+                let index = Shift<T.Magnitude>.max(or: 255)
+                let value = T.entropic(through: index, as: Domain.natural, using: &randomness).toggled()
                 try #require(value.isNegative)
                 try #require(value.ilog2() == nil)
             }
@@ -156,7 +157,8 @@ import TestKit
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsUnsigned {
             for _ in 0 ..< 32 {
-                let value = T.entropic(through: Shift.max(or: 255), as: Domain.natural, using: &randomness).toggled()
+                let index = Shift<T.Magnitude>.max(or: 255)
+                let value = T.entropic(through: index, as: Domain.natural, using: &randomness).toggled()
                 try #require(value.isInfinite)
                 try #require(value.ilog2() == Count(raw: -2))
             }
@@ -185,7 +187,8 @@ import TestKit
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: UnsignedInteger {
             for _ in 0 ..< 32 {
-                let value = T.entropic(through: Shift.max(or: 255), as: Domain.natural, using: &randomness)
+                let index = Shift<T.Magnitude>.max(or: 255)
+                let value = T.entropic(through: index, as: Domain.natural, using: &randomness)
                 if  let nonzero = Nonzero(exactly: value) {
                     try #require(value.isPositive)
                     let expectation = value.ilog2() as Count?
