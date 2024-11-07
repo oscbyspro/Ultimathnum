@@ -20,20 +20,21 @@ extension BinaryInteger {
     /// The binary logarithm of `self` rounded towards zero.
     ///
     /// ```swift
+    /// I8( 8).ilog2() // 3
+    /// I8( 7).ilog2() // 2
+    /// I8( 6).ilog2() // 2
+    /// I8( 4).ilog2() // 2
     /// I8( 4).ilog2() // 2
     /// I8( 3).ilog2() // 1
     /// I8( 2).ilog2() // 1
     /// I8( 1).ilog2() // 0
     /// I8( 0).ilog2() // nil
     /// I8(-1).ilog2() // nil
-    /// I8(-2).ilog2() // nil
-    /// I8(-3).ilog2() // nil
-    /// I8(-4).ilog2() // nil
     /// ```
     ///
     /// - Note: `Nonzero<T.Magnitude>` guarantees nonoptional results.
     ///
-    @inlinable public /*borrowing*/ func ilog2() -> Optional<Count> {
+    @inlinable public borrowing func ilog2() -> Optional<Count> {
         guard self.isPositive else { return nil }
         let positive = Nonzero(unchecked: Magnitude(raw: copy self))
         return positive.ilog2() as Count
@@ -56,15 +57,16 @@ extension Nonzero where Value: UnsignedInteger {
     /// The binary logarithm of `self` rounded towards zero.
     ///
     /// ```swift
+    /// I8( 8).ilog2() // 3
+    /// I8( 7).ilog2() // 2
+    /// I8( 6).ilog2() // 2
+    /// I8( 4).ilog2() // 2
     /// I8( 4).ilog2() // 2
     /// I8( 3).ilog2() // 1
     /// I8( 2).ilog2() // 1
     /// I8( 1).ilog2() // 0
     /// I8( 0).ilog2() // nil
     /// I8(-1).ilog2() // nil
-    /// I8(-2).ilog2() // nil
-    /// I8(-3).ilog2() // nil
-    /// I8(-4).ilog2() // nil
     /// ```
     ///
     /// - Note: `Nonzero<T.Magnitude>` guarantees nonoptional results.

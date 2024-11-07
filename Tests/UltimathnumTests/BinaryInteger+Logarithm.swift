@@ -20,26 +20,87 @@ import TestKit
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/logarithm: ilog2() of examples",
+        Tag.List.tags(.documentation, .generic),
+        ParallelizationTrait.serialized,
+        arguments: Array<(I8, Count?)>([
         
-    @Test("BinaryInteger/ilog2() - [entropic]", arguments: typesAsBinaryInteger, fuzzers)
-    func binaryIntegerLogarithm(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+            (value: -1 as I8, ilog2: nil),
+            (value:  0 as I8, ilog2: nil),
+            (value:  1 as I8, ilog2: Count(0)),
+            (value:  2 as I8, ilog2: Count(1)),
+            (value:  3 as I8, ilog2: Count(1)),
+            (value:  4 as I8, ilog2: Count(2)),
+            (value:  5 as I8, ilog2: Count(2)),
+            (value:  6 as I8, ilog2: Count(2)),
+            (value:  7 as I8, ilog2: Count(2)),
+            (value:  8 as I8, ilog2: Count(3)),
+            (value:  9 as I8, ilog2: Count(3)),
+            (value: 10 as I8, ilog2: Count(3)),
+            (value: 11 as I8, ilog2: Count(3)),
+            (value: 12 as I8, ilog2: Count(3)),
+            (value: 13 as I8, ilog2: Count(3)),
+            (value: 14 as I8, ilog2: Count(3)),
+            (value: 15 as I8, ilog2: Count(3)),
+            (value: 16 as I8, ilog2: Count(4)),
+        
+    ])) func ilog2OfExamples(value: I8, ilog2: Count?) throws {
+        for type in typesAsBinaryInteger {
+            try whereIs(type)
+        }
         
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            if  let value = T.exactly(value).optional() {
+                try #require(value.ilog2()  ==  ilog2)
+                try Ɣrequire(validating: value, ilog2: ilog2)
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/logarithm: ilog2() of random",
+        Tag.List.tags(.random, .generic),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func ilog2OfRandomPositive(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< conditional(debug: 32, release: 256) {
-                let random = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                if !random.isPositive {
-                    #expect(random.ilog2() == nil)
-                    
-                }   else {
-                    let nonzero = try #require(Nonzero(exactly:  random))
-                    let expectation = try #require(nonzero.value.ilog2())
-                    let magnitude: Nonzero<T.Magnitude> = nonzero.magnitude()
-                    #expect(expectation == magnitude.ilog2())
-                    #expect(expectation == magnitude.value.ilog2())
-                    try Ɣexpect(nonzero.value, ilog2: expectation)
+                let value = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                try Ɣrequire(validating: value, ilog2: value.ilog2())
+            }
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    private func Ɣrequire<T>(
+        validating  value: T,
+        ilog2 expectation: Optional<Count>,
+        at location: SourceLocation = #_sourceLocation
+    )   throws where T: BinaryInteger {
+        
+        if  let expectation {
+            #expect(expectation < T.size, sourceLocation: location)
+            #expect(expectation.isInfinite == value.isInfinite, sourceLocation: location)
+            
+            if !expectation.isInfinite {
+                let low = T.lsb.up(expectation)
+                #expect(value >= low, sourceLocation: location)
+                
+                if  let high = low.times(2).optional() {
+                    #expect(value < high, sourceLocation: location)
                 }
             }
+            
+        }   else {
+            try #require(!value.isPositive, sourceLocation: location)
         }
     }
 }
@@ -48,87 +109,88 @@ import TestKit
 // MARK: * Binary Integer x Logarithm x Edge Cases
 //*============================================================================*
 
-@Suite(.tags(.documentation)) struct BinaryIntegerTestsOnLogarithmEdgeCases {
+@Suite struct BinaryIntegerTestsOnLogarithmEdgeCases {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("BinaryInteger/ilog2() - small positive", .serialized, arguments: [
+    @Test(
+        "BinaryInteger/logarithm/edge-cases: ilog2 of zero is nil",
+        Tag.List.tags(.documentation, .exhaustive, .generic),
+        arguments: typesAsBinaryInteger
+    )   func ilog2OfZeroIsNil(type: any BinaryInteger.Type) throws {
         
-        Some( 1 as U8, yields: Count(0)),
-        Some( 2 as U8, yields: Count(1)),
-        Some( 3 as U8, yields: Count(1)),
-        Some( 4 as U8, yields: Count(2)),
-        Some( 5 as U8, yields: Count(2)),
-        Some( 6 as U8, yields: Count(2)),
-        Some( 7 as U8, yields: Count(2)),
-        Some( 8 as U8, yields: Count(3)),
-        Some( 9 as U8, yields: Count(3)),
-        Some(10 as U8, yields: Count(3)),
-        Some(11 as U8, yields: Count(3)),
-        Some(12 as U8, yields: Count(3)),
-        Some(13 as U8, yields: Count(3)),
-        Some(14 as U8, yields: Count(3)),
-        Some(15 as U8, yields: Count(3)),
-        Some(16 as U8, yields: Count(4)),
-        
-    ] as [Some<U8, Count>])
-    func binaryIntegerLogarithmOfSmallPositive(expectation: Some<U8, Count>) throws {
-        for type in typesAsBinaryInteger {
-            try whereIs(type)
-        }
-        
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
-            try Ɣexpect(T(expectation.input), ilog2: expectation.output)
-        }
-    }
-    
-    @Test("BinaryInteger/ilog2() - zero is nil [uniform]", arguments: typesAsBinaryIntegerAsSigned)
-    func binaryIntegerLogarithmOfZeroIsNil(type: any BinaryInteger.Type) {
-        whereIs(type)
-        
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             #expect(T.zero.ilog2() == nil)
         }
     }
     
-    @Test("BinaryInteger/ilog2() - negative is nil [uniform]", arguments: typesAsBinaryIntegerAsSigned, fuzzers)
-    func binaryIntegerLogarithmOfNegativeIsNil(type: any SignedInteger.Type, randomness: consuming FuzzerInt) throws {
-        try whereIs(type)
+    @Test(
+        "BinaryInteger/logarithm/edge-cases: ilog2 of negative is nil",
+        Tag.List.tags(.documentation, .generic,.random),
+        arguments: typesAsBinaryIntegerAsSigned, fuzzers
+    )   func ilog2OfNegativeIsNil(
+        type: any SignedInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: SignedInteger {
-            let low  = T(repeating: Bit.one).up(Shift.max(or: 255))
-            let high = T(repeating: Bit.one)
-            
-            #expect(low .ilog2() == nil)
-            #expect(high.ilog2() == nil)
-            
             for _ in 0 ..< 32 {
-                let random = T.random(in: low...high, using: &randomness)
-                #expect(random.isNegative)
-                #expect(random.ilog2() == nil)
+                let value = T.entropic(through: Shift.max(or: 255), as: Domain.natural, using: &randomness).toggled()
+                try #require(value.isNegative)
+                try #require(value.ilog2() == nil)
             }
         }
     }
     
-    @Test("BinaryInteger/ilog2() - infinite is one less than size [uniform]", arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers)
-    func binaryIntegerLogarithmOfInfiniteIsOneLessThanSize(type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
-        try whereIs(type)
+    @Test(
+        "BinaryInteger/logarithm/edge-cases: log2() of infinite is size - 1",
+        Tag.List.tags(.documentation, .generic, .random),
+        arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers
+    )   func ilog2OfInfiniteIsOneLessThanSize(
+        type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsUnsigned {
-            let low  = T(repeating: Bit.one).up(Shift.max(or: 255))
-            let high = T(repeating: Bit.one)
-            let expectation = Count(raw: -2)
-            
-            #expect(expectation  == Count(raw: IX(raw: T.size) - 1))
-            #expect(low .ilog2() == expectation)
-            #expect(high.ilog2() == expectation)
-            
             for _ in 0 ..< 32 {
-                let random = T.random(in: low...high, using: &randomness)
-                #expect(random.isInfinite)
-                #expect(random.ilog2() == expectation)
+                let value = T.entropic(through: Shift.max(or: 255), as: Domain.natural, using: &randomness).toggled()
+                try #require(value.isInfinite)
+                try #require(value.ilog2() == Count(raw: -2))
+            }
+        }
+    }
+}
+
+//*============================================================================*
+// MARK: * Binary Integer x Logarithm x Conveniences
+//*============================================================================*
+
+@Suite struct BinaryIntegerTestsOnLogarithmConveniences {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/logarithm/conveniences: ilog2() as Nonzero<Magnitude>",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryIntegerAsUnsigned, fuzzers
+    )   func ilog2AsNonzeroMagnitude(
+        type: any UnsignedInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: UnsignedInteger {
+            for _ in 0 ..< 32 {
+                let value = T.entropic(through: Shift.max(or: 255), as: Domain.natural, using: &randomness)
+                if  let nonzero = Nonzero(exactly: value) {
+                    try #require(value.isPositive)
+                    let expectation = value.ilog2() as Count?
+                    try #require(expectation == nonzero.ilog2() as Count)
+                }
             }
         }
     }
