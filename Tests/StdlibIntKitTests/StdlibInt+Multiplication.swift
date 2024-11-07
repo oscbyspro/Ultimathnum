@@ -33,20 +33,18 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt/multiplication: vs StdlibInt.Base", .tags(.forwarding, .random), arguments: fuzzers)
-    func forwarding(_ randomness: consuming FuzzerInt) throws {
-        for _ in 0 ..< conditional(debug: 64, release: 128) {
-            let lhs = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
-            let rhs = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
+    @Test(
+        "StdlibInt/multiplication: vs StdlibInt.Base",
+        Tag.List.tags(.forwarding, .random),
+        arguments: fuzzers
+    )   func forwarding(_ randomness: consuming FuzzerInt) throws {
+        for _ in 0 ..< conditional(debug: 64,  release: 128) {
+            let a = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
+            let b = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
+            let c = a.times(b) as IXL
             
-            let a = StdlibInt(lhs)
-            let b = StdlibInt(rhs)
-            let c = a * b
-            
-            try #require(c == ( a * b ))
-            try #require(c == { var x = a; x *= b; return x }())
-            
-            Ɣexpect(lhs, times: rhs, is: Fallible(IXL(c)))
+            try #require(StdlibInt(c) == reduce(StdlibInt(a), *,  StdlibInt(b)))
+            try #require(StdlibInt(c) == reduce(StdlibInt(a), *=, StdlibInt(b)))
         }
     }
 }

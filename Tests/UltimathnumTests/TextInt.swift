@@ -68,8 +68,8 @@ import TestKit
             let generic: some BinaryInteger = radix
             try #require(try TextInt(radix:   radix).letters == TextInt.Letters.lowercase)
             try #require(try TextInt(radix: generic).letters == TextInt.Letters.lowercase)
-            try #require(try TextInt.radix(   radix).letters == TextInt.Letters.lowercase)
-            try #require(try TextInt.radix( generic).letters == TextInt.Letters.lowercase)
+            try #require(    TextInt.radix(   radix).letters == TextInt.Letters.lowercase)
+            try #require(    TextInt.radix( generic).letters == TextInt.Letters.lowercase)
         }
     }
     

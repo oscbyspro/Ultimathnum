@@ -48,6 +48,12 @@ extension BinaryInteger {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    @inlinable public static func exactly(_ source: Doublet<Self>) -> Fallible<Self> {
+        let value = Self(raw: source.low)
+        let error = Self(repeating: Bit(value.isNegative)) != source.high
+        return value.veto(error)
+    }
+    
     @inlinable public static func minLikeSystemsInteger(size: IX) -> Optional<Self> {
         guard !size.isZero, Count(size) <= Self.size else {
             return nil
