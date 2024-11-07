@@ -60,7 +60,7 @@ let package = Package(
         ),
         .testTarget(
             name: "UltimathnumTests",
-            dependencies: ["Ultimathnum", "TestKit", "TestKit2"]
+            dependencies: ["Ultimathnum", "TestKit2"]
         ),
         .target(
             name: "CoreKit",
@@ -84,7 +84,7 @@ let package = Package(
         ),
         .testTarget(
             name: "FibonacciKitTests",
-            dependencies: ["DoubleIntKit", "FibonacciKit", "InfiniIntKit", "TestKit", "TestKit2"]
+            dependencies: ["DoubleIntKit", "FibonacciKit", "InfiniIntKit", "TestKit2"]
         ),
         .target(
             name: "InfiniIntKit",
@@ -117,10 +117,6 @@ let package = Package(
         .testTarget(
             name: "StdlibIntKitTests",
             dependencies: ["StdlibIntKit", "TestKit2"]
-        ),
-        .target(
-            name: "TestKit",
-            dependencies: ["CoreKit", "RandomIntKit"]
         ),
         .target(
             name: "TestKit2",
