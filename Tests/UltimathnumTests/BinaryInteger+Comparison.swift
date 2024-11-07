@@ -10,7 +10,7 @@
 import CoreKit
 import InfiniIntKit
 import RandomIntKit
-import TestKit2
+import TestKit
 
 //*============================================================================*
 // MARK: * Binary Integer x Comparison

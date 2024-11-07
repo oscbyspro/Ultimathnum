@@ -9,7 +9,7 @@
 
 import CoreKit
 import RandomIntKit
-import TestKit2
+import TestKit
 
 //*============================================================================*
 // MARK: * Data Integer x Multiplication

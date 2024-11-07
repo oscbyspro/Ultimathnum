@@ -9,7 +9,7 @@
 
 import CoreKit
 import PrototypeKit
-import TestKit2
+import TestKit
 
 //*============================================================================*
 // MARK: * Prototype

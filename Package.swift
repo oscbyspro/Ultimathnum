@@ -60,7 +60,7 @@ let package = Package(
         ),
         .testTarget(
             name: "UltimathnumTests",
-            dependencies: ["Ultimathnum", "TestKit2"]
+            dependencies: ["Ultimathnum", "TestKit"]
         ),
         .target(
             name: "CoreKit",
@@ -68,7 +68,7 @@ let package = Package(
         ),
         .testTarget(
             name: "CoreKitTests",
-            dependencies: ["CoreKit", "TestKit2"]
+            dependencies: ["CoreKit", "TestKit"]
         ),
         .target(
             name: "DoubleIntKit",
@@ -76,7 +76,7 @@ let package = Package(
         ),
         .testTarget(
             name: "DoubleIntKitTests",
-            dependencies: ["DoubleIntKit", "TestKit2"]
+            dependencies: ["DoubleIntKit", "TestKit"]
         ),
         .target(
             name: "FibonacciKit",
@@ -84,7 +84,7 @@ let package = Package(
         ),
         .testTarget(
             name: "FibonacciKitTests",
-            dependencies: ["DoubleIntKit", "FibonacciKit", "InfiniIntKit", "TestKit2"]
+            dependencies: ["DoubleIntKit", "FibonacciKit", "InfiniIntKit", "TestKit"]
         ),
         .target(
             name: "InfiniIntKit",
@@ -92,7 +92,7 @@ let package = Package(
         ),
         .testTarget(
             name: "InfiniIntKitTests",
-            dependencies: ["InfiniIntKit", "TestKit2"]
+            dependencies: ["InfiniIntKit", "TestKit"]
         ),
         .target(
             name: "PrototypeKit",
@@ -100,7 +100,7 @@ let package = Package(
         ),
         .testTarget(
             name: "PrototypeKitTests",
-            dependencies: ["PrototypeKit", "TestKit2"]
+            dependencies: ["PrototypeKit", "TestKit"]
         ),
         .target(
             name: "RandomIntKit",
@@ -108,7 +108,7 @@ let package = Package(
         ),
         .testTarget(
             name: "RandomIntKitTests",
-            dependencies: ["RandomIntKit", "TestKit2"]
+            dependencies: ["RandomIntKit", "TestKit"]
         ),
         .target(
             name: "StdlibIntKit",
@@ -116,15 +116,15 @@ let package = Package(
         ),
         .testTarget(
             name: "StdlibIntKitTests",
-            dependencies: ["StdlibIntKit", "TestKit2"]
+            dependencies: ["StdlibIntKit", "TestKit"]
         ),
         .target(
-            name: "TestKit2",
+            name: "TestKit",
             dependencies: ["CoreKit", "RandomIntKit"]
         ),
         .testTarget(
             name: "Benchmarks",
-            dependencies: ["Ultimathnum", "TestKit2"]
+            dependencies: ["Ultimathnum", "TestKit"]
         ),
     ]
 )

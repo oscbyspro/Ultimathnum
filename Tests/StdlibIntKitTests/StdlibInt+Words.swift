@@ -9,7 +9,7 @@
 
 import CoreKit
 import StdlibIntKit
-import TestKit2
+import TestKit
 
 //*============================================================================*
 // MARK: * Stdlib Int x Words

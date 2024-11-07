@@ -11,7 +11,7 @@ import CoreKit
 import RandomIntKit
 import InfiniIntKit
 import StdlibIntKit
-import TestKit2
+import TestKit
 
 //*============================================================================*
 // MARK: * Stdlib Int x Multiplication

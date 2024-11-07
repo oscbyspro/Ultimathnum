@@ -10,7 +10,7 @@
 import CoreKit
 import FibonacciKit
 import RandomIntKit
-import TestKit2
+import TestKit
 
 //*============================================================================*
 // MARK: * Fibonacci x Stride

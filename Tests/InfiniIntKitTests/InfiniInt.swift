@@ -9,7 +9,7 @@
 
 import CoreKit
 import InfiniIntKit
-import TestKit2
+import TestKit
 
 //*============================================================================*
 // MARK: * Infini Int

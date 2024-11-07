@@ -11,7 +11,7 @@ import CoreKit
 import InfiniIntKit
 import RandomIntKit
 import StdlibIntKit
-import TestKit2
+import TestKit
 
 //*============================================================================*
 // MARK: * Stdlib Int

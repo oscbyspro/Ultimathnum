@@ -12,7 +12,7 @@ import DoubleIntKit
 import FibonacciKit
 import InfiniIntKit
 import RandomIntKit
-import TestKit2
+import TestKit
 
 //*============================================================================*
 // MARK: * Fibonacci

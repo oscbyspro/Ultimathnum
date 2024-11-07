@@ -11,7 +11,7 @@ import CoreKit
 import DoubleIntKit
 import InfiniIntKit
 import RandomIntKit
-import TestKit2
+import TestKit
 
 //*============================================================================*
 // MARK: * Binary Integer x Loading

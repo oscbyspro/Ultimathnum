@@ -10,7 +10,7 @@
 import CoreKit
 import RandomIntKit
 import InfiniIntKit
-import TestKit2
+import TestKit
 
 //*============================================================================*
 // MARK: * Binary Integer x Factorization

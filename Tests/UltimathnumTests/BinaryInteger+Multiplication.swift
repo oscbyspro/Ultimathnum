@@ -10,7 +10,7 @@
 import CoreKit
 import DoubleIntKit
 import RandomIntKit
-import TestKit2
+import TestKit
 
 //*============================================================================*
 // MARK: * Binary Integer x Multiplication

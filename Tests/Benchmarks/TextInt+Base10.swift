@@ -11,7 +11,7 @@ import CoreKit
 import DoubleIntKit
 import FibonacciKit
 import InfiniIntKit
-import TestKit2
+import TestKit
 
 //*============================================================================*
 // MARK: * Text Int x Radix 10
