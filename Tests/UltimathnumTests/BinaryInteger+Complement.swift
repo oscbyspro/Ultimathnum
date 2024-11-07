@@ -21,38 +21,6 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    /// Here we check that the following invariants hold for all values:
-    ///
-    /// ```swift
-    /// x.complement(false) == x.toggled().value
-    /// x.complement(true ) == x.toggled().value.incremented()
-    /// x.complement(     ) == x.toggled().value.incremented().value
-    /// ```
-    ///
-    @Test(
-        "BinaryInteger/complement: 1's and 2's",
-        Tag.List.tags(.generic, .random),
-        arguments: typesAsBinaryInteger, fuzzers
-    )   func complement(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
-        whereIs(type)
-        
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            for _ in 0 ..< conditional(debug: 256, release: 1024) {
-                let instance = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                let ones = instance.toggled()
-                let twos = ones.incremented()
-                Ɣexpect(instance, complement: false, is: ones)
-                Ɣexpect(instance, complement: true,  is: twos)
-            }
-        }
-    }
-    
-    /// Here we check that the following invariants hold for all values:
-    ///
-    /// ```swift
-    /// x.magnitude() == T.Magnitude(raw: x.isNegative ? x.complement() : x)
-    /// ```
-    ///
     @Test(
         "BinaryInteger/complement: magnitude",
         Tag.List.tags(.generic, .random),
@@ -61,11 +29,91 @@ import TestKit
         try  whereIs(type)
         
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
-            for _ in 0 ..< conditional(debug: 256, release: 1024) {
-                let instance = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                let result = instance.magnitude()
-                let expectation = T.Magnitude(raw: instance.isNegative ? instance.complement() : instance)
-                try #require(result == expectation)
+            for _ in 0 ..<  conditional(debug:  256, release: 1024) {
+                let value = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                if  value.isNegative {
+                    try #require(value.magnitude() == T.Magnitude(raw: value.complement()))
+                }   else {
+                    try #require(value.magnitude() == T.Magnitude(raw: value))
+                }
+            }
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/complement: complement vs toggle-increment",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func complementVersusToggleIncrement(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..<  conditional(debug:  256, release: 1024) {
+                let value = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                for increment in Bool.all {
+                    let result = value.complement(increment)
+                    let expectation = value.toggled().incremented(increment)
+                    try #require(result == expectation)
+                }
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/complement: complement is reversible",
+        Tag.List.tags(.documentation, .generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func complementIsReversible(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..<  conditional(debug:  256, release: 1024) {
+                let value = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                for increment in Bool.all {
+                    let (complement, error) = value.complement(increment).components()
+                    try #require(complement.toggled().incremented(increment) == value.veto(error))
+                }
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/complement: complement is well-behaved",
+        Tag.List.tags(.documentation, .generic),
+        arguments: typesAsBinaryInteger
+    )   func complementIsWellBehaved(type: any BinaryInteger.Type) throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            let usmol: Bool = !T.isSigned && T.size == T.Element.size
+            
+            #expect(z([      ]).complement(false) == o([      ]).veto(false))
+            #expect(z([      ]).complement(true ) == z([      ]).veto(!T.isSigned))
+            
+            #expect(z([~0    ]).complement(false) == o([ 0    ]).veto(false))
+            #expect(z([~0    ]).complement(true ) == o([ 1    ]).veto(false))
+            #expect(o([ 1    ]).complement(false) == z([~1    ]).veto(false))
+            #expect(o([ 1    ]).complement(true ) == z([~0    ]).veto(false))
+            
+            #expect(o([ 0    ]).complement(false) == z([~0    ]).veto(false))
+            #expect(o([ 0    ]).complement(true ) == z([ 0,  1]).veto(usmol))
+            #expect(z([ 0,  1]).complement(false) == o([~0, ~1]).veto(false))
+            #expect(z([ 0,  1]).complement(true ) == o([ 0    ]).veto(usmol))
+            
+            func z(_ body: [T.Element.Magnitude]) -> T {
+                T(load: body, repeating: Bit.zero)
+            }
+            
+            func o(_ body: [T.Element.Magnitude]) -> T {
+                T(load: body, repeating: Bit.one)
             }
         }
     }
@@ -81,7 +129,27 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    /// Here we check that the following invariants hold for all edgy integers:
+    /// Checks the following invariants for all edgy integers:
+    ///
+    ///     T.zero.complement(false) == T.zero.toggled()
+    ///     T.zero.complement(true ) == T.zero.veto(!T.isSigned)
+    ///
+    /// - Note: `T.min.complement(true)` is the only `error` case.
+    ///
+    @Test(
+        "BinaryInteger/complement/edge-cases: min and max",
+        Tag.List.tags(.documentation, .exhaustive, .generic),
+        arguments: typesAsBinaryInteger
+    )   func complementOfZero(type: any BinaryInteger.Type) throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            #expect(T.zero.complement(false) == T.zero.toggled().veto(false))
+            #expect(T.zero.complement(true ) == T.zero.veto(((!T.isSigned))))
+        }
+    }
+    
+    /// Checks the following invariants for all edgy integers:
     ///
     ///     T.min.complement(false) == T.max
     ///     T.min.complement(true ) == T.min.veto() // (!)
@@ -92,64 +160,44 @@ import TestKit
     ///
     @Test(
         "BinaryInteger/complement/edge-cases: min and max",
-        Tag.List.tags(.generic),
+        Tag.List.tags(.documentation, .exhaustive, .generic),
         arguments: typesAsEdgyInteger
-    )   func complementOfEdges(type: any EdgyInteger.Type) {
-        whereIs(type)
+    )   func complementOfEdges(type: any EdgyInteger.Type) throws {
         
-        func whereIs<T>(_ type: T.Type) where T: EdgyInteger {
-            Ɣexpect(T.min, complement: false, is: T.max)
-            Ɣexpect(T.min, complement: true,  is: T.min.veto())
-            Ɣexpect(T.max, complement: false, is: T.min)
-            Ɣexpect(T.max, complement: true,  is: T.min.incremented())
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: EdgyInteger {
+            #expect(T.min.complement(false) == T.max.veto(false))
+            #expect(T.min.complement(true ) == T.min.veto(true ))
+            #expect(T.max.complement(false) == T.min.veto(false))
+            #expect(T.max.complement(true ) == T.min.incremented())
         }
     }
+}
+
+//*============================================================================*
+// MARK: * Binary Integer x Complement x Conveniences
+//*============================================================================*
+
+@Suite struct BinaryIntegerTestsOnComplementConveniences {
     
-    /// Here we check that the following invariants hold for all values:
-    ///
-    /// ```swift
-    /// T(load: [      ] as [T.Element.Magnitude], repeating: Bit.zero) //  a
-    /// T(load: [      ] as [T.Element.Magnitude], repeating: Bit.one ) // ~a
-    /// T(load: [      ] as [T.Element.Magnitude], repeating: Bit.zero) // ~a &+ 1 == b
-    /// T(load: [      ] as [T.Element.Magnitude], repeating: Bit.one ) // ~b
-    /// T(load: [      ] as [T.Element.Magnitude], repeating: Bit.zero) // ~b &+ 1 == b
-    ///
-    /// T(load: [~0    ] as [T.Element.Magnitude], repeating: Bit.zero) //  a
-    /// T(load: [ 0    ] as [T.Element.Magnitude], repeating: Bit.one ) // ~a
-    /// T(load: [ 1    ] as [T.Element.Magnitude], repeating: Bit.one ) // ~a &+ 1 == b
-    /// T(load: [~1    ] as [T.Element.Magnitude], repeating: Bit.zero) // ~b
-    /// T(load: [~0    ] as [T.Element.Magnitude], repeating: Bit.zero) // ~b &+ 1 == a
-    ///
-    /// T(load: [ 0    ] as [T.Element.Magnitude], repeating: Bit.one ) //  a
-    /// T(load: [~0    ] as [T.Element.Magnitude], repeating: Bit.zero) // ~a
-    /// T(load: [ 0,  1] as [T.Element.Magnitude], repeating: Bit.zero) // ~a &+ 1 == b
-    /// T(load: [~0, ~1] as [T.Element.Magnitude], repeating: Bit.one ) // ~b
-    /// T(load: [ 0    ] as [T.Element.Magnitude], repeating: Bit.one ) // ~b &+ 1 == a
-    /// ```
-    ///
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
     @Test(
-        "BinaryInteger/complement/edge-cases: is well-behaved",
-        Tag.List.tags(.generic),
-        arguments: typesAsBinaryInteger
-    )   func complementIsWellBehaved(type: any BinaryInteger.Type) {
-        whereIs(type)
+        "BinaryInteger/complement/conveniences: complement() vs complement(_:)",
+        Tag.List.tags(.forwarding, .generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func complementVersusComplementWithIncrement(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            typealias  Body = [T.Element.Magnitude]
-            let usmol: Bool = !T.isSigned && T.size == T.Element.size
-            
-            Ɣexpect(T(load: [      ] as Body, repeating: Bit.zero), complement: false, is: T(load: [      ] as Body, repeating: Bit.one ))
-            Ɣexpect(T(load: [      ] as Body, repeating: Bit.zero), complement: true,  is: T(load: [      ] as Body, repeating: Bit.zero), error: !T.isSigned)
-            
-            Ɣexpect(T(load: [~0    ] as Body, repeating: Bit.zero), complement: false, is: T(load: [ 0    ] as Body, repeating: Bit.one ))
-            Ɣexpect(T(load: [~0    ] as Body, repeating: Bit.zero), complement: true,  is: T(load: [ 1    ] as Body, repeating: Bit.one ))
-            Ɣexpect(T(load: [ 1    ] as Body, repeating: Bit.one ), complement: false, is: T(load: [~1    ] as Body, repeating: Bit.zero))
-            Ɣexpect(T(load: [ 1    ] as Body, repeating: Bit.one ), complement: true,  is: T(load: [~0    ] as Body, repeating: Bit.zero))
-            
-            Ɣexpect(T(load: [ 0    ] as Body, repeating: Bit.one ), complement: false, is: T(load: [~0    ] as Body, repeating: Bit.zero))
-            Ɣexpect(T(load: [ 0    ] as Body, repeating: Bit.one ), complement: true,  is: T(load: [ 0,  1] as Body, repeating: Bit.zero), error: usmol)
-            Ɣexpect(T(load: [ 0,  1] as Body, repeating: Bit.zero), complement: false, is: T(load: [~0, ~1] as Body, repeating: Bit.one ))
-            Ɣexpect(T(load: [ 0,  1] as Body, repeating: Bit.zero), complement: true,  is: T(load: [ 0    ] as Body, repeating: Bit.one ), error: usmol)
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< 32 {
+                let value = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                try #require(value.complement() == value.complement(true).value)
+            }
         }
     }
 }
