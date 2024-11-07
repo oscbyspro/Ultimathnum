@@ -20,29 +20,85 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test func instances() {
-        Ɣdivider(07 as U8,  mul: 00000000000000000146, add: true,  shr: 08 + 2) // shr: 10
-        Ɣdivider(07 as U16, mul: 00000000000000037449, add: true,  shr: 16 + 2) // shr: 18
-        Ɣdivider(07 as U32, mul: 00000000002454267026, add: true,  shr: 32 + 2) // shr: 34
-        Ɣdivider(07 as U64, mul: 10540996613548315209, add: true,  shr: 64 + 2) // shr: 66
+    @Test(
+        "Divider: exampels from 1 through 12",
+        ParallelizationTrait.serialized,
+        arguments: [
+            
+            (div: U8 ( 1), mul: U64(                 255), add: true,  shr: U64( 8 + 0)),
+            (div: U16( 1), mul: U64(               65535), add: true,  shr: U64(16 + 0)),
+            (div: U32( 1), mul: U64(          4294967295), add: true,  shr: U64(32 + 0)),
+            (div: U64( 1), mul: U64(18446744073709551615), add: true,  shr: U64(64 + 0)),
+            
+            (div: U8 ( 2), mul: U64(                 255), add: true,  shr: U64( 8 + 1)),
+            (div: U16( 2), mul: U64(               65535), add: true,  shr: U64(16 + 1)),
+            (div: U32( 2), mul: U64(          4294967295), add: true,  shr: U64(32 + 1)),
+            (div: U64( 2), mul: U64(18446744073709551615), add: true,  shr: U64(64 + 1)),
+            
+            (div: U8 ( 3), mul: U64(                 171), add: false, shr: U64( 8 + 1)),
+            (div: U16( 3), mul: U64(               43691), add: false, shr: U64(16 + 1)),
+            (div: U32( 3), mul: U64(          2863311531), add: false, shr: U64(32 + 1)),
+            (div: U64( 3), mul: U64(12297829382473034411), add: false, shr: U64(64 + 1)),
+            
+            (div: U8 ( 4), mul: U64(                 255), add: true,  shr: U64( 8 + 2)),
+            (div: U16( 4), mul: U64(               65535), add: true,  shr: U64(16 + 2)),
+            (div: U32( 4), mul: U64(          4294967295), add: true,  shr: U64(32 + 2)),
+            (div: U64( 4), mul: U64(18446744073709551615), add: true,  shr: U64(64 + 2)),
+            
+            (div: U8 ( 5), mul: U64(                 205), add: false, shr: U64( 8 + 2)),
+            (div: U16( 5), mul: U64(               52429), add: false, shr: U64(16 + 2)),
+            (div: U32( 5), mul: U64(          3435973837), add: false, shr: U64(32 + 2)),
+            (div: U64( 5), mul: U64(14757395258967641293), add: false, shr: U64(64 + 2)),
+            
+            (div: U8 ( 6), mul: U64(                 171), add: false, shr: U64( 8 + 2)),
+            (div: U16( 6), mul: U64(               43691), add: false, shr: U64(16 + 2)),
+            (div: U32( 6), mul: U64(          2863311531), add: false, shr: U64(32 + 2)),
+            (div: U64( 6), mul: U64(12297829382473034411), add: false, shr: U64(64 + 2)),
+            
+            (div: U8 ( 7), mul: U64(                 146), add: true,  shr: U64( 8 + 2)),
+            (div: U16( 7), mul: U64(               37449), add: true,  shr: U64(16 + 2)),
+            (div: U32( 7), mul: U64(          2454267026), add: true,  shr: U64(32 + 2)),
+            (div: U64( 7), mul: U64(10540996613548315209), add: true,  shr: U64(64 + 2)),
+            
+            (div: U8 ( 8), mul: U64(                 255), add: true,  shr: U64( 8 + 3)),
+            (div: U16( 8), mul: U64(               65535), add: true,  shr: U64(16 + 3)),
+            (div: U32( 8), mul: U64(          4294967295), add: true,  shr: U64(32 + 3)),
+            (div: U64( 8), mul: U64(18446744073709551615), add: true,  shr: U64(64 + 3)),
+            
+            (div: U8 ( 9), mul: U64(                 227), add: true,  shr: U64( 8 + 3)),
+            (div: U16( 9), mul: U64(               58254), add: true,  shr: U64(16 + 3)),
+            (div: U32( 9), mul: U64(          3817748707), add: true,  shr: U64(32 + 3)),
+            (div: U64( 9), mul: U64(16397105843297379214), add: true,  shr: U64(64 + 3)),
+            
+            (div: U8 (10), mul: U64(                 205), add: false, shr: U64( 8 + 3)),
+            (div: U16(10), mul: U64(               52429), add: false, shr: U64(16 + 3)),
+            (div: U32(10), mul: U64(          3435973837), add: false, shr: U64(32 + 3)),
+            (div: U64(10), mul: U64(14757395258967641293), add: false, shr: U64(64 + 3)),
+            
+            (div: U8 (11), mul: U64(                 186), add: true,  shr: U64( 8 + 3)),
+            (div: U16(11), mul: U64(               47662), add: true,  shr: U64(16 + 3)),
+            (div: U32(11), mul: U64(          3123612579), add: false, shr: U64(32 + 3)),
+            (div: U64(11), mul: U64(13415813871788764811), add: true,  shr: U64(64 + 3)),
+            
+            (div: U8 (12), mul: U64(                 171), add: false, shr: U64( 8 + 3)),
+            (div: U16(12), mul: U64(               43691), add: false, shr: U64(16 + 3)),
+            (div: U32(12), mul: U64(          2863311531), add: false, shr: U64(32 + 3)),
+            (div: U64(12), mul: U64(12297829382473034411), add: false, shr: U64(64 + 3)),
+            
+        ] as [(
+        div: any SystemsIntegerAsUnsigned, mul: U64, add: Bool, shr: U64
+    )]) func examplesFrom1Through12(
+        div: any SystemsIntegerAsUnsigned, mul: U64, add: Bool, shr: U64
+    )   throws {
         
-        Ɣdivider(10 as U8,  mul: 00000000000000000205, add: false, shr: 08 + 3) // shr: 11
-        Ɣdivider(10 as U16, mul: 00000000000000052429, add: false, shr: 16 + 3) // shr: 19
-        Ɣdivider(10 as U32, mul: 00000000003435973837, add: false, shr: 32 + 3) // shr: 35
-        Ɣdivider(10 as U64, mul: 14757395258967641293, add: false, shr: 64 + 3) // shr: 67
-        
-        for distance: IX in 0 ..< 8 {
-            Ɣdivider(U8 .lsb << distance, mul: U8 .max, add: true,  shr: 08 + U8 (distance))
-            Ɣdivider(U16.lsb << distance, mul: U16.max, add: true,  shr: 16 + U16(distance))
-            Ɣdivider(U32.lsb << distance, mul: U32.max, add: true,  shr: 32 + U32(distance))
-            Ɣdivider(U64.lsb << distance, mul: U64.max, add: true,  shr: 64 + U64(distance))
-        }
-        
-        func Ɣdivider<T>(_ divisor: T, mul: T, add: Bool, shr: T, location: SourceLocation = #_sourceLocation) where T: SystemsInteger & UnsignedInteger {
-            let divider = Divider(exactly: divisor)!
-            #expect(divider.mul == (mul),                sourceLocation: location)
-            #expect(divider.add == (add ? mul : T.zero), sourceLocation: location)
-            #expect(divider.shr == (shr),                sourceLocation: location)
+        try  whereIs(div)
+        func whereIs<T>(_ div: T) throws where T: SystemsIntegerAsUnsigned {
+            let divider = try #require(Divider(exactly: div))
+            
+            #expect(divider.div == (div))
+            #expect(divider.mul == (mul))
+            #expect(divider.add == (add ? mul : 0))
+            #expect(divider.shr == (shr))
         }
     }
 }
@@ -52,34 +108,92 @@ import TestKit
 //*============================================================================*
 
 @Suite struct DividerTests21 {
-    
+        
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test func instances() throws {
-        Ɣdivider21(07 as U8,  mul: Doublet(low: 00000000000000000073, high: 00000000000000000146), add: true,  shr: 2 * 08 + 2) // shr:  18
-        Ɣdivider21(07 as U16, mul: Doublet(low: 00000000000000009362, high: 00000000000000037449), add: true,  shr: 2 * 16 + 2) // shr:  34
-        Ɣdivider21(07 as U32, mul: Doublet(low: 00000000001227133513, high: 00000000002454267026), add: true,  shr: 2 * 32 + 2) // shr:  66
-        Ɣdivider21(07 as U64, mul: Doublet(low: 02635249153387078802, high: 10540996613548315209), add: true,  shr: 2 * 64 + 2) // shr: 130
+    @Test(
+        "Divider: exampels from 1 through 12",
+        ParallelizationTrait.serialized,
+        arguments: [
+            
+            (div: U8 ( 1), mul: Doublet<U64>(low:                  255, high:                  255), add: true,  shr: U64( 16 + 0)),
+            (div: U16( 1), mul: Doublet<U64>(low:                65535, high:                65535), add: true,  shr: U64( 32 + 0)),
+            (div: U32( 1), mul: Doublet<U64>(low:           4294967295, high:           4294967295), add: true,  shr: U64( 64 + 0)),
+            (div: U64( 1), mul: Doublet<U64>(low: 18446744073709551615, high: 18446744073709551615), add: true,  shr: U64(128 + 0)),
+            
+            (div: U8 ( 2), mul: Doublet<U64>(low:                  255, high:                  255), add: true,  shr: U64( 16 + 1)),
+            (div: U16( 2), mul: Doublet<U64>(low:                65535, high:                65535), add: true,  shr: U64( 32 + 1)),
+            (div: U32( 2), mul: Doublet<U64>(low:           4294967295, high:           4294967295), add: true,  shr: U64( 64 + 1)),
+            (div: U64( 2), mul: Doublet<U64>(low: 18446744073709551615, high: 18446744073709551615), add: true,  shr: U64(128 + 1)),
+
+            (div: U8 ( 3), mul: Doublet<U64>(low:                  171, high:                  170), add: false, shr: U64( 16 + 1)),
+            (div: U16( 3), mul: Doublet<U64>(low:                43691, high:                43690), add: false, shr: U64( 32 + 1)),
+            (div: U32( 3), mul: Doublet<U64>(low:           2863311531, high:           2863311530), add: false, shr: U64( 64 + 1)),
+            (div: U64( 3), mul: Doublet<U64>(low: 12297829382473034411, high: 12297829382473034410), add: false, shr: U64(128 + 1)),
+            
+            (div: U8 ( 4), mul: Doublet<U64>(low:                  255, high:                  255), add: true,  shr: U64( 16 + 2)),
+            (div: U16( 4), mul: Doublet<U64>(low:                65535, high:                65535), add: true,  shr: U64( 32 + 2)),
+            (div: U32( 4), mul: Doublet<U64>(low:           4294967295, high:           4294967295), add: true,  shr: U64( 64 + 2)),
+            (div: U64( 4), mul: Doublet<U64>(low: 18446744073709551615, high: 18446744073709551615), add: true,  shr: U64(128 + 2)),
+
+            (div: U8 ( 5), mul: Doublet<U64>(low:                  205, high:                  204), add: false, shr: U64( 16 + 2)),
+            (div: U16( 5), mul: Doublet<U64>(low:                52429, high:                52428), add: false, shr: U64( 32 + 2)),
+            (div: U32( 5), mul: Doublet<U64>(low:           3435973837, high:           3435973836), add: false, shr: U64( 64 + 2)),
+            (div: U64( 5), mul: Doublet<U64>(low: 14757395258967641293, high: 14757395258967641292), add: false, shr: U64(128 + 2)),
+            
+            (div: U8 ( 6), mul: Doublet<U64>(low:                  171, high:                  170), add: false, shr: U64( 16 + 2)),
+            (div: U16( 6), mul: Doublet<U64>(low:                43691, high:                43690), add: false, shr: U64( 32 + 2)),
+            (div: U32( 6), mul: Doublet<U64>(low:           2863311531, high:           2863311530), add: false, shr: U64( 64 + 2)),
+            (div: U64( 6), mul: Doublet<U64>(low: 12297829382473034411, high: 12297829382473034410), add: false, shr: U64(128 + 2)),
+            
+            (div: U8 ( 7), mul: Doublet<U64>(low:                   73, high:                  146), add: true,  shr: U64( 16 + 2)),
+            (div: U16( 7), mul: Doublet<U64>(low:                 9362, high:                37449), add: true,  shr: U64( 32 + 2)),
+            (div: U32( 7), mul: Doublet<U64>(low:           1227133513, high:           2454267026), add: true,  shr: U64( 64 + 2)),
+            (div: U64( 7), mul: Doublet<U64>(low:  2635249153387078802, high: 10540996613548315209), add: true,  shr: U64(128 + 2)),
+            
+            (div: U8 ( 8), mul: Doublet<U64>(low:                  255, high:                  255), add: true,  shr: U64( 16 + 3)),
+            (div: U16( 8), mul: Doublet<U64>(low:                65535, high:                65535), add: true,  shr: U64( 32 + 3)),
+            (div: U32( 8), mul: Doublet<U64>(low:           4294967295, high:           4294967295), add: true,  shr: U64( 64 + 3)),
+            (div: U64( 8), mul: Doublet<U64>(low: 18446744073709551615, high: 18446744073709551615), add: true,  shr: U64(128 + 3)),
+            
+            (div: U8 ( 9), mul: Doublet<U64>(low:                  142, high:                  227), add: true,  shr: U64( 16 + 3)),
+            (div: U16( 9), mul: Doublet<U64>(low:                14563, high:                58254), add: true,  shr: U64( 32 + 3)),
+            (div: U32( 9), mul: Doublet<U64>(low:           2386092942, high:           3817748707), add: true,  shr: U64( 64 + 3)),
+            (div: U64( 9), mul: Doublet<U64>(low:  4099276460824344803, high: 16397105843297379214), add: true,  shr: U64(128 + 3)),
+            
+            (div: U8 (10), mul: Doublet<U64>(low:                  205, high:                  204), add: false, shr: U64( 16 + 3)),
+            (div: U16(10), mul: Doublet<U64>(low:                52429, high:                52428), add: false, shr: U64( 32 + 3)),
+            (div: U32(10), mul: Doublet<U64>(low:           3435973837, high:           3435973836), add: false, shr: U64( 64 + 3)),
+            (div: U64(10), mul: Doublet<U64>(low: 14757395258967641293, high: 14757395258967641292), add: false, shr: U64(128 + 3)),
+            
+            (div: U8 (11), mul: Doublet<U64>(low:                   46, high:                  186), add: true,  shr: U64( 16 + 3)),
+            (div: U16(11), mul: Doublet<U64>(low:                35747, high:                47662), add: false, shr: U64( 32 + 3)),
+            (div: U32(11), mul: Doublet<U64>(low:           3904515723, high:           3123612578), add: true,  shr: U64( 64 + 3)),
+            (div: U64(11), mul: Doublet<U64>(low: 11738837137815169210, high: 13415813871788764811), add: true,  shr: U64(128 + 3)),
+            
+            (div: U8 (12), mul: Doublet<U64>(low:                  171, high:                  170), add: false, shr: U64( 16 + 3)),
+            (div: U16(12), mul: Doublet<U64>(low:                43691, high:                43690), add: false, shr: U64( 32 + 3)),
+            (div: U32(12), mul: Doublet<U64>(low:           2863311531, high:           2863311530), add: false, shr: U64( 64 + 3)),
+            (div: U64(12), mul: Doublet<U64>(low: 12297829382473034411, high: 12297829382473034410), add: false, shr: U64(128 + 3)),
+            
+        ] as [(
+        div: any SystemsIntegerAsUnsigned, mul: Doublet<U64>, add: Bool, shr: U64
+    )]) func examplesFrom1Through12(
+        div: any SystemsIntegerAsUnsigned, mul: Doublet<U64>, add: Bool, shr: U64
+    )   throws {
         
-        Ɣdivider21(10 as U8,  mul: Doublet(low: 00000000000000000205, high: 00000000000000000204), add: false, shr: 2 * 08 + 3) // shr:  21
-        Ɣdivider21(10 as U16, mul: Doublet(low: 00000000000000052429, high: 00000000000000052428), add: false, shr: 2 * 16 + 3) // shr:  35
-        Ɣdivider21(10 as U32, mul: Doublet(low: 00000000003435973837, high: 00000000003435973836), add: false, shr: 2 * 32 + 3) // shr:  67
-        Ɣdivider21(10 as U64, mul: Doublet(low: 14757395258967641293, high: 14757395258967641292), add: false, shr: 2 * 64 + 3) // shr: 131
-        
-        for distance: IX in 0 ..< 8 {
-            Ɣdivider21(U8 .lsb << distance, mul: Doublet(low: U8 .max, high: U8 .max), add: true, shr: 2 * 08 + U8 (distance))
-            Ɣdivider21(U16.lsb << distance, mul: Doublet(low: U16.max, high: U16.max), add: true, shr: 2 * 16 + U16(distance))
-            Ɣdivider21(U32.lsb << distance, mul: Doublet(low: U32.max, high: U32.max), add: true, shr: 2 * 32 + U32(distance))
-            Ɣdivider21(U64.lsb << distance, mul: Doublet(low: U64.max, high: U64.max), add: true, shr: 2 * 64 + U64(distance))
-        }
-                
-        func Ɣdivider21<T>(_ divisor: T, mul: Doublet<T>, add: Bool, shr: T, location: SourceLocation = #_sourceLocation) where T: SystemsInteger & UnsignedInteger {
-            let divider = Divider21(exactly: divisor)!
-            #expect(divider.mul == (mul),                   sourceLocation: location)
-            #expect(divider.add == (add ? mul : Doublet()), sourceLocation: location)
-            #expect(divider.shr == (shr),                   sourceLocation: location)
+        try  whereIs(div)
+        func whereIs<T>(_ div: T) throws where T: SystemsIntegerAsUnsigned {
+            let divider = try #require(Divider21(exactly: div))
+            
+            #expect(divider.div      == (div))
+            #expect(divider.mul.low  == (mul).low )
+            #expect(divider.mul.high == (mul).high)
+            #expect(divider.add.low  == (add ? mul.low  : 0))
+            #expect(divider.add.high == (add ? mul.high : 0))
+            #expect(divider.shr      == (shr))
         }
     }
 }

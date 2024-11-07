@@ -140,34 +140,6 @@ import CoreKit
 }
 
 //*============================================================================*
-// MARK: * Expect x Division x Divider
-//*============================================================================*
-
-@inlinable public func Ɣexpect<T>(
-    _  dividend: T,
-    division divider: Divider<T>,
-    is expectation: Division<T, T>,
-    at location: SourceLocation = #_sourceLocation
-)   where T: SystemsIntegerAsUnsigned {
-    
-    let quotient: T = expectation.quotient
-    #expect(dividend.division(divider) == expectation, "T/division(_:)", sourceLocation: location)
-    #expect(dividend.quotient(divider) == quotient,    "T/quotient(_:)", sourceLocation: location)
-}
-
-@inlinable public func Ɣexpect<T>(
-    _  dividend: Doublet<T>,
-    division divider: Divider21<T>,
-    is expectation: Fallible<Division<T, T>>,
-    at location: SourceLocation = #_sourceLocation
-)   where T: SystemsIntegerAsUnsigned {
-    
-    let quotient: Fallible<T> = expectation.map({ $0.quotient })
-    #expect(divider.division(dividing: dividend) == expectation, "Divider21/division(dividing:)", sourceLocation: location)
-    #expect(divider.quotient(dividing: dividend) == quotient,    "Divider21/quotient(dividing:)", sourceLocation: location)
-}
-
-//*============================================================================*
 // MARK: * Expect x Division x Data Integer
 //*============================================================================*
 

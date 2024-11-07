@@ -21,17 +21,24 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Divider.init - [entropic]", arguments: typesAsSystemsIntegerAsUnsigned, fuzzers)
-    func initByFuzzingEntropies(_ type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) {
-        whereIs(type)
-
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
+    @Test(
+        "Divider/validation: initialization",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsSystemsIntegerAsUnsigned, fuzzers
+    )   func initialization(
+        _ type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
             for _ in 0 ..< 32 {
                 let random = T.entropic(using: &randomness)
-                Ɣexpect(random, as: Divider.self, if: !random.isZero)
+                
                 if  let result = Divider(exactly: random) {
-                    #expect(result.div == random)
+                    try #require(result.div == random)
                 }
+                
+                Ɣexpect(random, as: Divider.self, if: !random.isZero)
             }
         }
     }
@@ -47,17 +54,24 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Divider21.init - [entropic]", arguments: typesAsSystemsIntegerAsUnsigned, fuzzers)
-    func initByFuzzingEntropies(_ type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) {
-        whereIs(type)
-
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsUnsigned {
+    @Test(
+        "Divider21/validation: initialization",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsSystemsIntegerAsUnsigned, fuzzers
+    )   func initialization(
+        _ type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
             for _ in 0 ..< 32 {
                 let random = T.entropic(using: &randomness)
-                Ɣexpect(random, as: Divider21.self, if: !random.isZero)
+                
                 if  let result = Divider21(exactly: random) {
-                    #expect(result.div == random)
+                    try #require(result.div == random)
                 }
+                
+                Ɣexpect(random, as: Divider21.self, if: !random.isZero)
             }
         }
     }
