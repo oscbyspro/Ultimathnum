@@ -45,7 +45,6 @@ import TestKit
             try Ɣrequire(Y(low:  0, mid: ~0, high: ~x), by: X(low: ~0, high:  x), is: D(quotient: ~1 as B, remainder: X(low: ~1, high: 1))) // 1
             try Ɣrequire(Y(low: ~0, mid: ~0, high: ~x), by: X(low: ~0, high:  x), is: D(quotient: ~1 as B, remainder: X(low: ~2, high: 2))) // 1
             
-            
             func Ɣrequire(_ dividend: Y, by divisor: X, is expectation: D) throws {
                 try #require(Bool(divisor.msb))
                 
