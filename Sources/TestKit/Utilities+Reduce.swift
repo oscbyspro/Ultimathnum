@@ -18,12 +18,31 @@
     try transform(rhs)
 }
 
+@inlinable public func reduce<A, B>(
+    _ lhs: A,
+    _ transform: (consuming A) throws -> B
+)   rethrows -> B {
+    try transform(lhs)
+}
+
 @inlinable public func reduce<A, B, C>(
     _ lhs: consuming A,
     _ transform: (consuming A, borrowing B) throws -> C,
     _ rhs: borrowing B
 )   rethrows -> C {
     try transform(lhs, rhs)
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Inout
+//=----------------------------------------------------------------------------=
+
+@inlinable public func reduce<A>(
+    _ lhs: consuming A,
+    _ transform: (inout A) throws -> Void
+)   rethrows -> A {
+    try transform(&lhs)
+    return lhs
 }
 
 @inlinable public func reduce<A, B>(

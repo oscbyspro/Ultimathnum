@@ -14,51 +14,72 @@ import TestKit
 // MARK: * Bit x Bitwise
 //*============================================================================*
 
-@Suite struct BitTestsOnBitwise {
+@Suite(.serialized) struct BitTestsOnBitwise {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
 
-    @Test("Bit.~(_:)", .serialized, arguments: [
+    @Test(
+        "Bit/bitwise: ~(_:)",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Bit, Bit)>([
         
-        Some(Bit.zero, yields: Bit.one ),
-        Some(Bit.one,  yields: Bit.zero),
+        (Bit.zero, Bit.one ),
+        (Bit.one,  Bit.zero),
         
-    ])  func not(_ argument: Some<Bit, Bit>) {
-        Ɣexpect(not: argument.input, is: argument.output)
+    ])) func not(instance: Bit, expectation: Bit) {
+        #expect(expectation == reduce(instance) { ~$0 })
+        #expect(expectation == reduce(instance) {  $0.toggle () })
+        #expect(expectation == reduce(instance) {  $0.toggled() })
     }
     
-    @Test("Bit.&(_:_:)", .serialized, arguments: [
+    @Test(
+        "Bit/bitwise: &(_:_:)",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Bit, Bit, Bit)>([
         
-        Some(Bit.zero, Bit.zero, yields: Bit.zero),
-        Some(Bit.zero, Bit.one,  yields: Bit.zero),
-        Some(Bit.one,  Bit.zero, yields: Bit.zero),
-        Some(Bit.one,  Bit.one,  yields: Bit.one ),
-    
-    ])  func and(_ argument: Some<Bit, Bit, Bit>) {
-        Ɣexpect(argument.0, and: argument.1, is: argument.output)
+        (Bit.zero, Bit.zero, Bit.zero),
+        (Bit.zero, Bit.one,  Bit.zero),
+        (Bit.one,  Bit.zero, Bit.zero),
+        (Bit.one,  Bit.one,  Bit.one ),
+        
+    ])) func and(lhs: Bit, rhs: Bit, expectation: Bit) {
+        #expect(expectation == reduce(lhs, &,  rhs))
+        #expect(expectation == reduce(lhs, &=, rhs))
     }
     
-    @Test("Bit.|(_:_:)", .serialized, arguments: [
+    @Test(
+        "Bit/bitwise: |(_:_:)",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Bit, Bit, Bit)>([
         
-        Some(Bit.zero, Bit.zero, yields: Bit.zero),
-        Some(Bit.zero, Bit.one,  yields: Bit.one ),
-        Some(Bit.one,  Bit.zero, yields: Bit.one ),
-        Some(Bit.one,  Bit.one,  yields: Bit.one ),
+        (Bit.zero, Bit.zero, Bit.zero),
+        (Bit.zero, Bit.one,  Bit.one ),
+        (Bit.one,  Bit.zero, Bit.one ),
+        (Bit.one,  Bit.one,  Bit.one ),
         
-    ])  func or(_ argument: Some<Bit, Bit, Bit>) {
-        Ɣexpect(argument.0,  or: argument.1, is: argument.output)
+    ])) func or(lhs: Bit, rhs: Bit, expectation: Bit) {
+        #expect(expectation == reduce(lhs, |,  rhs))
+        #expect(expectation == reduce(lhs, |=, rhs))
     }
     
-    @Test("Bit.^(_:_:)", .serialized, arguments: [
+    @Test(
+        "Bit/bitwise: ^(_:_:)",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Bit, Bit, Bit)>([
         
-        Some(Bit.zero, Bit.zero, yields: Bit.zero),
-        Some(Bit.zero, Bit.one,  yields: Bit.one ),
-        Some(Bit.one,  Bit.zero, yields: Bit.one ),
-        Some(Bit.one,  Bit.one,  yields: Bit.zero),
+        (Bit.zero, Bit.zero, Bit.zero),
+        (Bit.zero, Bit.one,  Bit.one ),
+        (Bit.one,  Bit.zero, Bit.one ),
+        (Bit.one,  Bit.one,  Bit.zero),
         
-    ])  func xor(_ argument: Some<Bit, Bit, Bit>) {
-        Ɣexpect(argument.0, xor: argument.1, is: argument.output)
+    ])) func xor(lhs: Bit, rhs: Bit, expectation: Bit) {
+        #expect(expectation == reduce(lhs, ^,  rhs))
+        #expect(expectation == reduce(lhs, ^=, rhs))
     }
 }

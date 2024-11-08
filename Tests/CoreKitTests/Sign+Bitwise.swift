@@ -14,51 +14,72 @@ import TestKit
 // MARK: * Sign x Bitwise
 //*============================================================================*
 
-@Suite struct SignTestsOnBitwise {
+@Suite(.serialized) struct SignTestsOnBitwise {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
 
-    @Test("Sign.~(_:)", .serialized, arguments: [
+    @Test(
+        "Sign/bitwise: ~(_:)",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Sign, Sign)>([
         
-        Some(Sign.plus,  yields: Sign.minus),
-        Some(Sign.minus, yields: Sign.plus ),
+        (Sign.plus,  Sign.minus),
+        (Sign.minus, Sign.plus ),
         
-    ])  func not(_ argument: Some<Sign, Sign>) {
-        Ɣexpect(not: argument.input, is: argument.output)
+    ])) func not(instance: Sign, expectation: Sign) {
+        #expect(expectation == reduce(instance) { ~$0 })
+        #expect(expectation == reduce(instance) {  $0.toggle () })
+        #expect(expectation == reduce(instance) {  $0.toggled() })
     }
     
-    @Test("Sign.&(_:_:)", .serialized, arguments: [
+    @Test(
+        "Sign/bitwise: &(_:_:)",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Sign, Sign, Sign)>([
         
-        Some(Sign.plus,  Sign.plus,  yields: Sign.plus ),
-        Some(Sign.plus,  Sign.minus, yields: Sign.plus ),
-        Some(Sign.minus, Sign.plus,  yields: Sign.plus ),
-        Some(Sign.minus, Sign.minus, yields: Sign.minus),
+        (Sign.plus,  Sign.plus,  Sign.plus ),
+        (Sign.plus,  Sign.minus, Sign.plus ),
+        (Sign.minus, Sign.plus,  Sign.plus ),
+        (Sign.minus, Sign.minus, Sign.minus),
         
-    ])  func and(_ argument: Some<Sign, Sign, Sign>) {
-        Ɣexpect(argument.0, and: argument.1, is: argument.output)
+    ])) func and(lhs: Sign, rhs: Sign, expectation: Sign) {
+        #expect(expectation == reduce(lhs, &,  rhs))
+        #expect(expectation == reduce(lhs, &=, rhs))
     }
     
-    @Test("Sign.|(_:_:)", .serialized, arguments: [
+    @Test(
+        "Sign/bitwise: |(_:_:)",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Sign, Sign, Sign)>([
         
-        Some(Sign.plus,  Sign.plus,  yields: Sign.plus ),
-        Some(Sign.plus,  Sign.minus, yields: Sign.minus),
-        Some(Sign.minus, Sign.plus,  yields: Sign.minus),
-        Some(Sign.minus, Sign.minus, yields: Sign.minus),
+        (Sign.plus,  Sign.plus,  Sign.plus ),
+        (Sign.plus,  Sign.minus, Sign.minus),
+        (Sign.minus, Sign.plus,  Sign.minus),
+        (Sign.minus, Sign.minus, Sign.minus),
         
-    ])  func or(_ argument: Some<Sign, Sign, Sign>) {
-        Ɣexpect(argument.0,  or: argument.1, is: argument.output)
+    ])) func or(lhs: Sign, rhs: Sign, expectation: Sign) {
+        #expect(expectation == reduce(lhs, |,  rhs))
+        #expect(expectation == reduce(lhs, |=, rhs))
     }
     
-    @Test("Sign.^(_:_:)", .serialized, arguments: [
+    @Test(
+        "Sign/bitwise: ^(_:_:)",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Sign, Sign, Sign)>([
         
-        Some(Sign.plus,  Sign.plus,  yields: Sign.plus ),
-        Some(Sign.plus,  Sign.minus, yields: Sign.minus),
-        Some(Sign.minus, Sign.plus,  yields: Sign.minus),
-        Some(Sign.minus, Sign.minus, yields: Sign.plus ),
+        (Sign.plus,  Sign.plus,  Sign.plus ),
+        (Sign.plus,  Sign.minus, Sign.minus),
+        (Sign.minus, Sign.plus,  Sign.minus),
+        (Sign.minus, Sign.minus, Sign.plus ),
         
-    ])  func xor(_ argument: Some<Sign, Sign, Sign>) {
-        Ɣexpect(argument.0, xor: argument.1, is: argument.output)
+    ])) func xor(lhs: Sign, rhs: Sign, expectation: Sign) {
+        #expect(expectation == reduce(lhs, ^,  rhs))
+        #expect(expectation == reduce(lhs, ^=, rhs))
     }
 }
