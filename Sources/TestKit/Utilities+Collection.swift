@@ -20,7 +20,7 @@ extension RangeReplaceableCollection {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(count: Int, next: () -> Element) where Self: RangeReplaceableCollection {
+    @inlinable public init(count: Int, next: () -> Element) {
         self.init()
         self.reserveCapacity(count)
         for _ in 0 ..< count {
@@ -42,7 +42,7 @@ extension BidirectionalCollection where Element: SystemsIntegerAsUnsigned {
     @inlinable public borrowing func asBinaryIntegerBodyNormalized() -> SubSequence {
         var subsequence: SubSequence = self[...]
         
-        trimming: while subsequence.last == Element.zero {
+        while let last = subsequence.last, last.isZero {
             subsequence.removeLast()
         }
         
@@ -60,10 +60,14 @@ extension RangeReplaceableCollection where Element: SystemsIntegerAsUnsigned {
         Self.random(count: count...count, using: &randomness)
     }
     
+    @inlinable public static func random(count: Range<Swift.Int>, using randomness: inout some Randomness) -> Self {
+        Self.random(count: ClosedRange(count), using: &randomness)
+    }
+    
     @inlinable public static func random(count: ClosedRange<Swift.Int>, using randomness: inout some Randomness) -> Self {
-        let range = IX(count.lowerBound)...IX(count.upperBound)
-        let count = IX.random(in: range, using: &randomness)
-        
+        let min = IX(count.lowerBound)
+        let max = IX(count.upperBound)
+        let count = IX.random(in: min...max, using: &randomness)
         return Self(count: Swift.Int(count)) {
             Element.random(using: &randomness)
         }
