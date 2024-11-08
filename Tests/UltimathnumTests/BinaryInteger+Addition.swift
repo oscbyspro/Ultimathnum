@@ -217,8 +217,8 @@ import TestKit
                 try #require(c == b.negated())
                 try #require(c.value == b.complement())
                 
-                if  let c = c.optional() {
-                    try #require(c == reduce(-, b))
+                if !c.error {
+                    try #require(c.value == -b)
                 }
             }
         }

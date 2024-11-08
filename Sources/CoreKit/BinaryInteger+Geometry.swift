@@ -20,15 +20,17 @@ extension BinaryInteger {
     /// Returns the integer square root of `self`.
     ///
     /// ```swift
+    /// I8( 9).isqrt() // 3
+    /// I8( 8).isqrt() // 2
+    /// I8( 7).isqrt() // 2
+    /// I8( 6).isqrt() // 2
+    /// I8( 5).isqrt() // 2
     /// I8( 4).isqrt() // 2
     /// I8( 3).isqrt() // 1
     /// I8( 2).isqrt() // 1
     /// I8( 1).isqrt() // 1
     /// I8( 0).isqrt() // 0
     /// I8(-1).isqrt() // nil
-    /// I8(-2).isqrt() // nil
-    /// I8(-3).isqrt() // nil
-    /// I8(-4).isqrt() // nil
     /// ```
     ///
     /// - Note: `Natural<T>` guarantees nonoptional results.
@@ -57,15 +59,17 @@ extension BinaryInteger where Self: UnsignedInteger & SystemsInteger {
     /// Returns the integer square root of `self`.
     ///
     /// ```swift
+    /// I8( 9).isqrt() // 3
+    /// I8( 8).isqrt() // 2
+    /// I8( 7).isqrt() // 2
+    /// I8( 6).isqrt() // 2
+    /// I8( 5).isqrt() // 2
     /// I8( 4).isqrt() // 2
     /// I8( 3).isqrt() // 1
     /// I8( 2).isqrt() // 1
     /// I8( 1).isqrt() // 1
     /// I8( 0).isqrt() // 0
     /// I8(-1).isqrt() // nil
-    /// I8(-2).isqrt() // nil
-    /// I8(-3).isqrt() // nil
-    /// I8(-4).isqrt() // nil
     /// ```
     ///
     /// - Note: `Natural<T>` guarantees nonoptional results.
@@ -87,18 +91,24 @@ extension BinaryInteger where Self: UnsignedInteger & SystemsInteger {
 
 extension Natural {
     
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
     /// Returns the integer square root of `self`.
     ///
     /// ```swift
+    /// I8( 9).isqrt() // 3
+    /// I8( 8).isqrt() // 2
+    /// I8( 7).isqrt() // 2
+    /// I8( 6).isqrt() // 2
+    /// I8( 5).isqrt() // 2
     /// I8( 4).isqrt() // 2
     /// I8( 3).isqrt() // 1
     /// I8( 2).isqrt() // 1
     /// I8( 1).isqrt() // 1
     /// I8( 0).isqrt() // 0
     /// I8(-1).isqrt() // nil
-    /// I8(-2).isqrt() // nil
-    /// I8(-3).isqrt() // nil
-    /// I8(-4).isqrt() // nil
     /// ```
     ///
     /// - Note: `Natural<T>` guarantees nonoptional results.

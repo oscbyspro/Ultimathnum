@@ -12,13 +12,6 @@
 //*============================================================================*
 
 @inlinable public func reduce<A, B>(
-    _ transform: (consuming A) throws -> B,
-    _ rhs: A
-)   rethrows -> B {
-    try transform(rhs)
-}
-
-@inlinable public func reduce<A, B>(
     _ lhs: A,
     _ transform: (consuming A) throws -> B
 )   rethrows -> B {

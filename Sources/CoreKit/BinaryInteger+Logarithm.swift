@@ -23,7 +23,7 @@ extension BinaryInteger {
     /// I8( 8).ilog2() // 3
     /// I8( 7).ilog2() // 2
     /// I8( 6).ilog2() // 2
-    /// I8( 4).ilog2() // 2
+    /// I8( 5).ilog2() // 2
     /// I8( 4).ilog2() // 2
     /// I8( 3).ilog2() // 1
     /// I8( 2).ilog2() // 1
@@ -60,7 +60,7 @@ extension Nonzero where Value: UnsignedInteger {
     /// I8( 8).ilog2() // 3
     /// I8( 7).ilog2() // 2
     /// I8( 6).ilog2() // 2
-    /// I8( 4).ilog2() // 2
+    /// I8( 5).ilog2() // 2
     /// I8( 4).ilog2() // 2
     /// I8( 3).ilog2() // 1
     /// I8( 2).ilog2() // 1
