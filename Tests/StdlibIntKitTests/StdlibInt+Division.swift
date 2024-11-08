@@ -27,32 +27,30 @@ import TestKit
 ///
 /// - TODO: Test `StdlibInt` forwarding in generic `BinaryInteger` tests.
 ///
-@Suite("StdlibInt/division") struct StdlibIntTestsOnDivision {
+@Suite struct StdlibIntTestsOnDivision {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt/division: vs StdlibInt.Base", .tags(.forwarding, .random), arguments: fuzzers)
-    func forwarding(_ randomness: consuming FuzzerInt) {
-        for _ in 0 ..< conditional(debug: 64, release: 128) {
-            let dividend = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
-            let divisor  = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
+    @Test(
+        "StdlibInt/division: vs StdlibInt.Base",
+        Tag.List.tags(.forwarding, .random),
+        arguments: fuzzers
+    )   func forwarding(_ randomness: consuming FuzzerInt) throws {
+        for _ in 0 ..< conditional(debug: 64,  release: 128) {
+            let a = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
+            let b = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
             
-            if  let divisor = Nonzero(exactly: divisor) {
-                let a = StdlibInt(dividend)
-                let b = StdlibInt(divisor.value)
-                let c = a.quotientAndRemainder(dividingBy: b)
+            if !b.isZero {
+                let (q, r) = try #require(a.division(b)).components()
                 
-                #expect(c.quotient  == ( a / b ))
-                #expect(c.remainder == ( a % b ))
-                #expect(c.quotient  == { var x = a; x /= b; return x }())
-                #expect(c.remainder == { var x = a; x %= b; return x }())
-                
-                let division = Fallible(Division(quotient: IXL(c.quotient), remainder: IXL(c.remainder)))
-                Ɣexpect(bidirectional: dividend, by: divisor, is: division)
-            }   else {
-                Ɣexpect(bidirectional: dividend, by: divisor, is: nil)
+                try #require(StdlibInt(q) == reduce(StdlibInt(a), /,  StdlibInt(b)))
+                try #require(StdlibInt(q) == reduce(StdlibInt(a), /=, StdlibInt(b)))
+                try #require(StdlibInt(q) == StdlibInt(a).quotientAndRemainder(dividingBy: StdlibInt(b)).quotient)
+                try #require(StdlibInt(r) == reduce(StdlibInt(a), %,  StdlibInt(b)))
+                try #require(StdlibInt(r) == reduce(StdlibInt(a), %=, StdlibInt(b)))
+                try #require(StdlibInt(r) == StdlibInt(a).quotientAndRemainder(dividingBy: StdlibInt(b)).remainder)
             }
         }
     }
