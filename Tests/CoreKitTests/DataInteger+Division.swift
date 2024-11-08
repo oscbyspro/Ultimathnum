@@ -18,26 +18,35 @@ import TestKit
 @Suite struct DataIntegerTestsOnDivision {
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests x Many ÷ Some
+    // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("DataInt/division(_:) - 0-by-1 [uniform]", arguments: typesAsCoreIntegerAsUnsigned, fuzzers)
-    func division01(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    @Test(
+        "DataInt/division: none ÷ some",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsCoreIntegerAsUnsigned, fuzzers
+    )   func noneBySome(
+        type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
                 let dividend = [] as [T]
                 let divisor  = Nonzero(T.random(in: T.positives, using: &randomness))
-                try Ɣexpect(dividend, division: divisor, is: [], and: T())
+                try Ɣrequire(dividend, division: divisor, is: [], and: T())
             }
         }
     }
     
-    @Test("DataInt/division(_:) - 1-by-1 [uniform]", arguments: typesAsCoreIntegerAsUnsigned, fuzzers)
-    func division11(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    @Test(
+        "DataInt/division: some ÷ some",
+        arguments: typesAsCoreIntegerAsUnsigned, fuzzers
+    )   func someBySome(
+        type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
                 let divisor   = Nonzero(T.random(in: T.positives, using: &randomness))
@@ -49,15 +58,19 @@ import TestKit
                     try #require(product.multiply(by: divisor.value, add: remainder).isZero)
                 }
                 
-                try Ɣexpect(dividend, division: divisor, is: quotient, and: remainder)
+                try Ɣrequire(dividend, division: divisor, is: quotient, and: remainder)
             }
         }
     }
     
-    @Test("DataInt/division(_:) - X-by-1 [uniform]", arguments: typesAsCoreIntegerAsUnsigned, fuzzers)
-    func divisionX1(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "DataInt/division: many ÷ some",
+        arguments: typesAsCoreIntegerAsUnsigned, fuzzers
+    )   func manyBySome(
+        type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
                 let divisor   = Nonzero(T.random(in: T.positives, using: &randomness))
@@ -69,8 +82,69 @@ import TestKit
                     try #require(product.multiply(by: divisor.value, add: remainder).isZero)
                 }
                 
-                try Ɣexpect(dividend, division: divisor, is: quotient, and: remainder)
+                try Ɣrequire(dividend, division: divisor, is: quotient, and: remainder)
             }
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    private func Ɣrequire<Element>(
+        _   dividend: [Element],
+        division divisor: Nonzero<Element>,
+        is  quotient: [Element],
+        and remainder: Element,
+        at  location: SourceLocation = #_sourceLocation
+    )   throws where Element: SystemsIntegerAsUnsigned, Element.Element == Element {
+        //=--------------------------------------=
+        let divider21 = Divider21(divisor)
+        //=--------------------------------------=
+        if  dividend.count == 1 {
+            let expectation: Division = try #require(dividend.first).division(divisor)
+            try #require([expectation.quotient ] == quotient,  "division(_:)", sourceLocation: location)
+            try #require((expectation.remainder) == remainder, "division(_:)", sourceLocation: location)
+        }
+        
+        remainder: do {
+            var i = dividend
+            let o = i.withUnsafeMutableBinaryIntegerBody {
+                $0.remainder(divisor)
+            }
+            
+            try #require(i == dividend,  "remainder(_:)", sourceLocation: location)
+            try #require(o == remainder, "remainder(_:)", sourceLocation: location)
+        }
+        
+        remainder: do {
+            var i = dividend
+            let o = i.withUnsafeMutableBinaryIntegerBody {
+                $0.remainder(divider21)
+            }
+            
+            try #require(i == dividend,  "remainder(_:) - Divider21", sourceLocation: location)
+            try #require(o == remainder, "remainder(_:) - Divider21", sourceLocation: location)
+        }
+        
+        division: do {
+            var i = dividend
+            let o = i.withUnsafeMutableBinaryIntegerBody {
+                $0.divisionSetQuotientGetRemainder(divisor)
+            }
+            
+            try #require(i == quotient,  "divisionSetQuotientGetRemainder(_:)", sourceLocation: location)
+            try #require(o == remainder, "divisionSetQuotientGetRemainder(_:)", sourceLocation: location)
+        }
+        
+        division: do {
+            var i = dividend
+            let o = i.withUnsafeMutableBinaryIntegerBody {
+                $0.divisionSetQuotientGetRemainder(divider21)
+            }
+            
+            try #require(i == quotient,  "divisionSetQuotientGetRemainder(_:) - Divider21", sourceLocation: location)
+            try #require(o == remainder, "divisionSetQuotientGetRemainder(_:) - Divider21", sourceLocation: location)
         }
     }
 }

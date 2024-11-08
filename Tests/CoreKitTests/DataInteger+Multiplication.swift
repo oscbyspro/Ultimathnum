@@ -71,8 +71,8 @@ import TestKit
                 let rhs = (T).random(using: &randomness)
                 let add = (T).random(using: &randomness)
                 let res = lhs.multiplication(rhs, plus: add)
-                try Ɣrequire([lhs], times:  [rhs], plus: add, is: [res.low, res.high])
-                try Ɣrequire([rhs], times:  [lhs], plus: add, is: [res.low, res.high])
+                try Ɣrequire([lhs], times: [rhs], plus: add, is: [res.low, res.high])
+                try Ɣrequire([rhs], times: [lhs], plus: add, is: [res.low, res.high])
             }
             
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
