@@ -22,12 +22,14 @@ import TestKit
     //=------------------------------------------------------------------------=
     
     @Test(
-        "DataInt/shift: upshift(major:minor:environment:)",
+        "DataInt/shift: upshift",
         Tag.List.tags(.generic, .random),
         arguments: typesAsCoreIntegerAsUnsigned, fuzzers
-    )   func upshift(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    )   func upshift(
+        type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug:     64, release: 1024) {
                 let value = [T].random(count: 1...32, using: &randomness)
@@ -51,17 +53,19 @@ import TestKit
             }
             
             expectation.removeFirst()
-            try Ɣexpect(value, up: IX(size: T.self) * major + minor, environment: environment, is: expectation)
+            try Ɣrequire(value, up: IX(size: T.self) * major + minor, environment: environment, is: expectation)
         }
     }
     
     @Test(
-        "DataInt/shift: downshift(major:minor:environment:)",
+        "DataInt/shift: downshift",
         Tag.List.tags(.generic, .random),
         arguments: typesAsCoreIntegerAsUnsigned, fuzzers
-    )   func downshift(type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    )   func downshift(
+        type: any CoreIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: CoreIntegerAsUnsigned {
             for _ in 0 ..< conditional(debug:     64, release: 1024) {
                 let value = [T].random(count: 1...32, using: &randomness)
@@ -85,7 +89,145 @@ import TestKit
             }
             
             expectation.removeLast()
-            try Ɣexpect(value, down: IX(size: T.self) * major + minor, environment: environment, is: expectation)
+            try Ɣrequire(value, down: IX(size: T.self) * major + minor, environment: environment, is: expectation)
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    private func Ɣrequire<Element>(
+        _  integer: [Element],
+        up distance: IX,
+        environment: Element,
+        is expectation: [Element],
+        at location: SourceLocation = #_sourceLocation
+    )   throws where Element: SystemsIntegerAsUnsigned, Element.Element == Element {
+        //=--------------------------------------=
+        try #require(integer.count == expectation.count)
+        try #require(distance <    IX(expectation.count) *   IX(size: Element.self))
+        let (major, minor) = Natural(distance).division(Nonzero(size: Element.self)).components()
+        //=--------------------------------------=
+        // upshift: any
+        //=--------------------------------------=
+        always: do {
+            var result = integer; result.withUnsafeMutableBinaryIntegerBody {
+                $0.upshift(major: major, minor: minor, environment: environment)
+            }
+            
+            try #require(result == expectation, sourceLocation: location)
+        }
+        
+        if  environment.isZero {
+            var result = integer; result.withUnsafeMutableBinaryIntegerBody {
+                $0.upshift(major: major, minor: minor)
+            }
+            
+            try #require(result == expectation, sourceLocation: location)
+        }
+        //=--------------------------------------=
+        // upshift: major >= 1, minor == 0
+        //=--------------------------------------=
+        if  major >= 1, minor == 0 {
+            var result = integer; result.withUnsafeMutableBinaryIntegerBody {
+                $0.upshift(majorAtLeastOne: major, minor: (( )), environment: environment)
+            }
+            
+            try #require(result == expectation, sourceLocation: location)
+        }
+        
+        if  major >= 1, minor == 0, environment.isZero {
+            var result = integer; result.withUnsafeMutableBinaryIntegerBody {
+                $0.upshift(majorAtLeastOne: major, minor: (( )))
+            }
+            
+            try #require(result == expectation, sourceLocation: location)
+        }
+        //=--------------------------------------=
+        // upshift: major >= 0, minor >= 1
+        //=--------------------------------------=
+        if  major >= 0, minor >= 1 {
+            var result = integer; result.withUnsafeMutableBinaryIntegerBody {
+                $0.upshift(major: major, minorAtLeastOne: minor, environment: environment)
+            }
+            
+            try #require(result == expectation, sourceLocation: location)
+        }
+        
+        if  major >= 0, minor >= 1, environment.isZero {
+            var result = integer; result.withUnsafeMutableBinaryIntegerBody {
+                $0.upshift(major: major, minorAtLeastOne: minor)
+            }
+            
+            try #require(result == expectation, sourceLocation: location)
+        }
+    }
+
+    private func Ɣrequire<Element>(
+        _  integer: [Element],
+        down distance: IX,
+        environment: Element,
+        is expectation: [Element],
+        at location: SourceLocation = #_sourceLocation
+    )   throws where Element: SystemsIntegerAsUnsigned, Element.Element == Element {
+        //=--------------------------------------=
+        try #require(integer.count == expectation.count)
+        try #require(distance <    IX(expectation.count) *   IX(size: Element.self))
+        let (major, minor) = Natural(distance).division(Nonzero(size: Element.self)).components()
+        //=--------------------------------------=
+        // downshift: any
+        //=--------------------------------------=
+        always: do {
+            var result = integer; result.withUnsafeMutableBinaryIntegerBody {
+                $0.downshift(major: major, minor: minor, environment: environment)
+            }
+            
+            try #require(result == expectation, sourceLocation: location)
+        }
+        
+        if  environment.isZero {
+            var result = integer; result.withUnsafeMutableBinaryIntegerBody {
+                $0.downshift(major: major, minor: minor)
+            }
+            
+            try #require(result == expectation, sourceLocation: location)
+        }
+        //=--------------------------------------=
+        // downshift: major >= 1, minor == 0
+        //=--------------------------------------=
+        if  major >= 1, minor == 0 {
+            var result = integer; result.withUnsafeMutableBinaryIntegerBody {
+                $0.downshift(majorAtLeastOne: major, minor: (( )), environment: environment)
+            }
+            
+            try #require(result == expectation, sourceLocation: location)
+        }
+        
+        if  major >= 1, minor == 0, environment.isZero {
+            var result = integer; result.withUnsafeMutableBinaryIntegerBody {
+                $0.downshift(majorAtLeastOne: major, minor: (( )))
+            }
+            
+            try #require(result == expectation, sourceLocation: location)
+        }
+        //=--------------------------------------=
+        // downshift: major >= 0, minor >= 1
+        //=--------------------------------------=
+        if  major >= 0, minor >= 1 {
+            var result = integer; result.withUnsafeMutableBinaryIntegerBody {
+                $0.downshift(major: major, minorAtLeastOne: minor, environment: environment)
+            }
+            
+            try #require(result == expectation, sourceLocation: location)
+        }
+        
+        if  major >= 0, minor >= 1, environment.isZero {
+            var result = integer; result.withUnsafeMutableBinaryIntegerBody {
+                $0.downshift(major: major, minorAtLeastOne: minor)
+            }
+            
+            try #require(result == expectation, sourceLocation: location)
         }
     }
 }
