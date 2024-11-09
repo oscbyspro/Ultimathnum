@@ -70,8 +70,7 @@ import TestKit
         #expect(type(of: source).init(     destination) == source)
         #expect(type(of: source).init(raw: destination) == source)
         
-        #warning("todo")
-//      #expect(type(of: destination).init(     source) == destination)
+        #expect(type(of: destination).init(     source) == destination)
         #expect(type(of: destination).init(raw: source) == destination)
     }
     
@@ -107,8 +106,7 @@ import TestKit
         #expect(type(of: source).init(     destination) == source)
         #expect(type(of: source).init(raw: destination) == source)
         
-        #warning("todo")
-//      #expect(type(of: destination).init(     source) == destination)
+        #expect(type(of: destination).init(     source) == destination)
         #expect(type(of: destination).init(raw: source) == destination)
     }
 }

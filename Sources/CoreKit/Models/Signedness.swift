@@ -56,6 +56,10 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    @inlinable public init(_ source: Bit) {
+        self.init(raw: source)
+    }
+    
     @inlinable public init(raw source: BitPattern) {
         self.init(signed: source)
     }
