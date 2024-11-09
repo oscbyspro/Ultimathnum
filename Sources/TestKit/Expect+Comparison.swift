@@ -17,31 +17,31 @@ import CoreKit
     _      lhs: T,
     equals rhs: T,
     is     expectation: Signum = .zero,
-    using  strategy: ƔComparable.Type = Ɣcomparable,
     at     location: SourceLocation = #_sourceLocation
 )   where  T: Comparable {
     
-    #expect((lhs <  rhs) == (expectation == Signum.negative), "Comparable.< (_:_:)", sourceLocation: location)
-    #expect((lhs >= rhs) == (expectation != Signum.negative), "Comparable.>=(_:_:)", sourceLocation: location)
-    #expect((lhs >  rhs) == (expectation == Signum.positive), "Comparable.> (_:_:)", sourceLocation: location)
-    #expect((lhs <= rhs) == (expectation != Signum.positive), "Comparable.<=(_:_:)", sourceLocation: location)
+    #expect((lhs <  rhs) == (expectation == Signum.negative), sourceLocation: location)
+    #expect((lhs >= rhs) == (expectation != Signum.negative), sourceLocation: location)
+    #expect((lhs >  rhs) == (expectation == Signum.positive), sourceLocation: location)
+    #expect((lhs <= rhs) == (expectation != Signum.positive), sourceLocation: location)
     
-    Ɣexpect(lhs, equals: rhs, is: expectation.isZero, using: Ɣequatable, at: location)
+    Ɣexpect(lhs, equals: rhs, is: expectation.isZero, at: location)
 }
 
 @inlinable public func Ɣexpect<T>(
     _      lhs: T,
     equals rhs: T,
     is     expectation: Bool =  true,
-    using  strategy: ƔEquatable.Type  = Ɣequatable,
     at     location: SourceLocation = #_sourceLocation
 )   where  T: Equatable {
     
-    #expect((lhs == rhs) ==  expectation, "Equatable.==(_:_:)", sourceLocation: location)
-    #expect((lhs != rhs) == !expectation, "Equatable.!=(_:_:)", sourceLocation: location)
+    #expect((lhs == rhs) ==  expectation, sourceLocation: location)
+    #expect((lhs != rhs) == !expectation, sourceLocation: location)
     
-    if  expectation, let lhs = lhs as? any Hashable, let rhs = rhs as? any Hashable {
-        #expect(lhs.hashValue == rhs.hashValue, "Hashable/hashValue", sourceLocation: location)
+    invariant: if expectation {
+        guard let lhs = lhs as? any Hashable else { break invariant }
+        guard let rhs = rhs as? any Hashable else { break invariant }
+        #expect(lhs.hashValue == rhs.hashValue, sourceLocation: location)
     }
 }
 
@@ -55,7 +55,7 @@ import CoreKit
     at     location: SourceLocation = #_sourceLocation
 ) {
     
-    #expect(lhs.size      == rhs.size,      "MemoryLayout<T>.size",      sourceLocation: location)
-    #expect(lhs.stride    == rhs.stride,    "MemoryLayout<T>.stride",    sourceLocation: location)
-    #expect(lhs.alignment == rhs.alignment, "MemoryLayout<T>.alignment", sourceLocation: location)
+    #expect(lhs.size      == rhs.size,      sourceLocation: location)
+    #expect(lhs.stride    == rhs.stride,    sourceLocation: location)
+    #expect(lhs.alignment == rhs.alignment, sourceLocation: location)
 }
