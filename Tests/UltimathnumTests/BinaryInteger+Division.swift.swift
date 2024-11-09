@@ -52,10 +52,6 @@ import TestKit
         }
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
     @Test(
         "BinaryInteger/division: for each 8-bit integer pair",
         Tag.List.tags(.exhaustive, .generic),
@@ -274,17 +270,17 @@ import TestKit
 }
 
 //*============================================================================*
-// MARK: * Binary Integer x Division x Composition
+// MARK: * Binary Integer x Division x 2 by 1
 //*============================================================================*
 
-@Suite struct BinaryIntegerTestsOnDivisionComposition {
+@Suite struct BinaryIntegerTestsOnDivision21 {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     @Test(
-        "BinaryInteger/division/composition: random by nonzero",
+        "BinaryInteger/division/2-by-1: random by nonzero",
         Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsInteger, fuzzers
     )   func randomByRandom(
@@ -306,7 +302,7 @@ import TestKit
     }
     
     @Test(
-        "BinaryInteger/division/composition: random by power-of-2-esque",
+        "BinaryInteger/division/2-by-1: random by power-of-2-esque",
         Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsInteger, fuzzers
     )   func randomByPowerOf2Esque(
@@ -333,7 +329,7 @@ import TestKit
     }
     
     @Test(
-        "BinaryInteger/division/composition: ascending zeros by ascending zeros",
+        "BinaryInteger/division/2-by-1: ascending zeros by ascending zeros",
         Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsInteger, fuzzers
     )   func ascendingZerosByAscendingZeros(
@@ -362,7 +358,7 @@ import TestKit
     }
     
     @Test(
-        "BinaryInteger/division: one half by nonzero",
+        "BinaryInteger/division/2-by-1: one half by nonzero",
         Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsInteger, fuzzers
     )   func oneHalfByRandom(
@@ -409,28 +405,18 @@ import TestKit
         
         invariant: do {
             let lhs = dividend
-            var rhs = product
-            var carry = false
-            
-            rhs.low  = rhs.low .plus(T.Magnitude.init(raw: remainder), plus: carry).sink(&carry)
-            rhs.high = rhs.high.plus(T(repeating: remainder.appendix), plus: carry).sink(&carry)
-            
-            try #require(lhs.low  == rhs.low,  "a == b * q + r [0]", sourceLocation: location)
+            let rhs = product.plus(Doublet(remainder))
+            try #require(lhs.low  == rhs.value.low,  "a == b * q + r [0]", sourceLocation: location)
             guard !division.error else { break invariant }
-            try #require(lhs.high == rhs.high, "a == b * q + r [1]", sourceLocation: location)
+            try #require(lhs.high == rhs.value.high, "a == b * q + r [1]", sourceLocation: location)
         }
         
         invariant: do {
-            var lhs = dividend
+            let lhs = dividend.minus(Doublet(remainder))
             let rhs = product
-            var carry = false
-            
-            lhs.low  = lhs.low .minus(T.Magnitude.init(raw: remainder), plus: carry).sink(&carry)
-            lhs.high = lhs.high.minus(T(repeating: remainder.appendix), plus: carry).sink(&carry)
-            
-            try #require(lhs.low  == rhs.low,  "a - r == b * q [0]", sourceLocation: location)
+            try #require(lhs.value.low  == rhs.low,  "a - r == b * q [0]", sourceLocation: location)
             guard !division.error else { break invariant }
-            try #require(lhs.high == rhs.high, "a - r == b * q [1]", sourceLocation: location)
+            try #require(lhs.value.high == rhs.high, "a - r == b * q [1]", sourceLocation: location)
         }
         
         if  division.error, !T.isSigned {
@@ -523,6 +509,149 @@ import TestKit
                 let divisor  = T.entropic(through: index, as: Domain.binary,  using: &randomness)
                 try #require(dividend.isInfinite)
                 try #require(dividend.division(divisor) == nil)
+            }
+        }
+    }
+}
+
+//*============================================================================*
+// MARK: * Binary Integer x Division x Edge Cases x 2 by 1
+//*============================================================================*
+
+@Suite struct BinaryIntegerTestsOnDivisionEdgeCases21 {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/division/edge-cases/2-by-1: edges of (+) by (+)",
+        Tag.List.tags(.generic, .important, .random),
+        arguments: typesAsSystemsInteger, fuzzers
+    )   func edgesOfPositiveByPositive(
+        type: any SystemsInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsInteger {
+            for _ in 0 ..< conditional(debug: 32, release: 256) {
+                let divisor   = Nonzero(T.random(in: T.positives))
+                let quotient  = T.max
+                let remainder = divisor.value - 1
+                var dividend  = divisor.value.multiplication(quotient).plus(Doublet(remainder))
+                var division  = T.division(dividend.value, by: divisor) as Fallible<Division<T, T>>
+                
+                try #require(dividend.error == false)
+                try #require(division.error == false)
+                try #require(division.value.quotient  == quotient )
+                try #require(division.value.remainder == remainder)
+                
+                dividend = dividend.value.plus(Doublet(T.lsb))
+                division = T.division(dividend.value, by: divisor)
+                
+                try #require(dividend.error == false)
+                try #require(division.error == true)
+                try #require(division.value.quotient == T.min)
+                try #require(division.value.remainder .isZero)
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/division/edge-cases/2-by-1: edges of (-) by (+)",
+        Tag.List.tags(.generic, .important, .random),
+        arguments: typesAsSystemsIntegerAsSigned, fuzzers
+    )   func edgesOfNegativeByPositive(
+        type: any SystemsIntegerAsSigned.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsSigned {
+            for _ in 0 ..< conditional(debug: 32, release: 256) {
+                let divisor   = Nonzero(T.random(in: T.positives))
+                let quotient  = T.min
+                let remainder = 1 - divisor.value
+                var dividend  = divisor.value.multiplication(quotient).plus(Doublet(remainder))
+                var division  = T.division(dividend.value, by: divisor) as Fallible<Division<T, T>>
+                
+                try #require(dividend.error == false)
+                try #require(division.error == false)
+                try #require(division.value.quotient  == quotient )
+                try #require(division.value.remainder == remainder)
+                
+                dividend = dividend.value.minus(Doublet(T.lsb))
+                division = T.division(dividend.value, by: divisor)
+                
+                try #require(dividend.error == false)
+                try #require(division.error == true)
+                try #require(division.value.quotient == T.max)
+                try #require(division.value.remainder .isZero)
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/division/edge-cases/2-by-1: edges of (+) by (-)",
+        Tag.List.tags(.generic, .important, .random),
+        arguments: typesAsSystemsIntegerAsSigned, fuzzers
+    )   func edgesOfPositiveByNegative(
+        type: any SystemsIntegerAsSigned.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsSigned {
+            for _ in 0 ..< conditional(debug: 32, release: 256) {
+                let divisor   = Nonzero(T.random(in: T.negatives)!)
+                let quotient  = T.max
+                let remainder = divisor.value + 1
+                var dividend  = divisor.value.multiplication(quotient).plus(Doublet(remainder))
+                var division  = T.division(dividend.value, by: divisor) as Fallible<Division<T, T>>
+                
+                try #require(dividend.error == false)
+                try #require(division.error == false)
+                try #require(division.value.quotient  == quotient )
+                try #require(division.value.remainder == remainder)
+                
+                dividend = dividend.value.minus(Doublet(T.lsb))
+                division = T.division(dividend.value, by: divisor)
+                
+                try #require(dividend.error == false)
+                try #require(division.error == true)
+                try #require(division.value.quotient == T.min)
+                try #require(division.value.remainder .isZero)
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/division/edge-cases/2-by-1: edges of (+) by (-)",
+        Tag.List.tags(.generic, .important, .random),
+        arguments: typesAsSystemsIntegerAsSigned, fuzzers
+    )   func edgesOfNegativeByNegative(
+        type: any SystemsIntegerAsSigned.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsSigned {
+            for _ in 0 ..< conditional(debug: 32, release: 256) {
+                let divisor   = Nonzero(T.random(in: T.negatives)!)
+                let quotient  = T.min
+                let remainder = T(-1) - divisor.value
+                var dividend  = divisor.value.multiplication(quotient).plus(Doublet(remainder))
+                var division  = T.division(dividend.value, by: divisor) as Fallible<Division<T, T>>
+                
+                try #require(dividend.error == false)
+                try #require(division.error == false)
+                try #require(division.value.quotient  == quotient )
+                try #require(division.value.remainder == remainder)
+                
+                dividend = dividend.value.plus(Doublet(T.lsb))
+                division = T.division(dividend.value, by: divisor)
+                
+                try #require(dividend.error == false)
+                try #require(division.error == true)
+                try #require(division.value.quotient == T.max)
+                try #require(division.value.remainder .isZero)
             }
         }
     }
