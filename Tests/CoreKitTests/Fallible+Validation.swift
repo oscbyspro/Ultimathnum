@@ -63,7 +63,11 @@ import TestKit
         Some(Fallible(Bit.one,  error: true ), Bad.error, yields: Result<Bit, Bad>.failure(Bad.error)),
             
     ])  func result(_ argument: Some<Fallible<Bit>, Bad, Result<Bit, Bad>>) throws {
-        Ɣexpect(try argument.0.prune (argument.1), is: argument.output)
-        #expect(    argument.0.result(argument.1)  ==  argument.output)
+        #expect(argument.0.result(argument.1) == argument.output)
+
+        switch argument.output {
+        case let Result.success(x): #expect(try     x ==     argument.0.prune(argument.1) )
+        case let Result.failure(x): #expect(throws: x ){ try argument.0.prune(argument.1) }
+        }
     }
 }
