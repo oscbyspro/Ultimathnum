@@ -19,22 +19,17 @@ import TestKit
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
-        
-    @Test("Signedness.init(raw:)", .serialized, arguments: [
-        
-        Some(Bit.zero, yields: Signedness.unsigned),
-        Some(Bit.one,  yields: Signedness  .signed),
-        
-    ])  func initBit(_ argument: Some<Bit, Signedness>) {
-        #expect(Signedness(raw: argument.input) == argument.output)
-    }
     
-    @Test("Signedness.init(signed:)", .serialized, arguments: [
+    @Test(
+        "Signedness: signed",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Signedness, Bool)>([
       
-        Some(false, yields: Signedness.unsigned),
-        Some(true,  yields: Signedness  .signed),
+        (Signedness.unsigned, false),
+        (Signedness  .signed, true ),
         
-    ])  func initSigned(_ argument: Some<Bool, Signedness>) {
-        #expect(Signedness(signed: argument.input) == argument.output)
+    ])) func signed(instance: Signedness, expectation: Bool) {
+        #expect(instance == Signedness(signed: expectation))
     }
 }

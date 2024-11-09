@@ -26,13 +26,13 @@ import TestKit
         ParallelizationTrait.serialized,
         arguments: Array<(Bit, Bit)>([
         
-        (Bit.zero, Bit.one ),
-        (Bit.one,  Bit.zero),
-        
+        (instance: Bit.zero, expectation: Bit.one ),
+        (instance: Bit.one,  expectation: Bit.zero),
+    
     ])) func not(instance: Bit, expectation: Bit) {
-        #expect(expectation == reduce(instance) { ~$0 })
-        #expect(expectation == reduce(instance) {  $0.toggle () })
-        #expect(expectation == reduce(instance) {  $0.toggled() })
+        #expect(reduce(instance, { ~$0           }) == expectation)
+        #expect(reduce(instance, {  $0.toggle () }) == expectation)
+        #expect(reduce(instance, {  $0.toggled() }) == expectation)
     }
     
     @Test(
@@ -41,14 +41,14 @@ import TestKit
         ParallelizationTrait.serialized,
         arguments: Array<(Bit, Bit, Bit)>([
         
-        (Bit.zero, Bit.zero, Bit.zero),
-        (Bit.zero, Bit.one,  Bit.zero),
-        (Bit.one,  Bit.zero, Bit.zero),
-        (Bit.one,  Bit.one,  Bit.one ),
+        (lhs: Bit.zero, rhs: Bit.zero, expectation: Bit.zero),
+        (lhs: Bit.zero, rhs: Bit.one,  expectation: Bit.zero),
+        (lhs: Bit.one,  rhs: Bit.zero, expectation: Bit.zero),
+        (lhs: Bit.one,  rhs: Bit.one,  expectation: Bit.one ),
         
     ])) func and(lhs: Bit, rhs: Bit, expectation: Bit) {
-        #expect(expectation == reduce(lhs, &,  rhs))
-        #expect(expectation == reduce(lhs, &=, rhs))
+        #expect(reduce(lhs, &,  rhs) == expectation)
+        #expect(reduce(lhs, &=, rhs) == expectation)
     }
     
     @Test(
@@ -57,14 +57,14 @@ import TestKit
         ParallelizationTrait.serialized,
         arguments: Array<(Bit, Bit, Bit)>([
         
-        (Bit.zero, Bit.zero, Bit.zero),
-        (Bit.zero, Bit.one,  Bit.one ),
-        (Bit.one,  Bit.zero, Bit.one ),
-        (Bit.one,  Bit.one,  Bit.one ),
+        (lhs: Bit.zero, rhs: Bit.zero, expectation: Bit.zero),
+        (lhs: Bit.zero, rhs: Bit.one,  expectation: Bit.one ),
+        (lhs: Bit.one,  rhs: Bit.zero, expectation: Bit.one ),
+        (lhs: Bit.one,  rhs: Bit.one,  expectation: Bit.one ),
         
     ])) func or(lhs: Bit, rhs: Bit, expectation: Bit) {
-        #expect(expectation == reduce(lhs, |,  rhs))
-        #expect(expectation == reduce(lhs, |=, rhs))
+        #expect(reduce(lhs, |,  rhs) == expectation)
+        #expect(reduce(lhs, |=, rhs) == expectation)
     }
     
     @Test(
@@ -73,13 +73,13 @@ import TestKit
         ParallelizationTrait.serialized,
         arguments: Array<(Bit, Bit, Bit)>([
         
-        (Bit.zero, Bit.zero, Bit.zero),
-        (Bit.zero, Bit.one,  Bit.one ),
-        (Bit.one,  Bit.zero, Bit.one ),
-        (Bit.one,  Bit.one,  Bit.zero),
+        (lhs: Bit.zero, rhs: Bit.zero, expectation: Bit.zero),
+        (lhs: Bit.zero, rhs: Bit.one,  expectation: Bit.one ),
+        (lhs: Bit.one,  rhs: Bit.zero, expectation: Bit.one ),
+        (lhs: Bit.one,  rhs: Bit.one,  expectation: Bit.zero),
         
     ])) func xor(lhs: Bit, rhs: Bit, expectation: Bit) {
-        #expect(expectation == reduce(lhs, ^,  rhs))
-        #expect(expectation == reduce(lhs, ^=, rhs))
+        #expect(reduce(lhs, ^,  rhs) == expectation)
+        #expect(reduce(lhs, ^=, rhs) == expectation)
     }
 }

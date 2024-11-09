@@ -20,29 +20,33 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("LiteralInt/entropy()", .serialized, arguments: [
+    @Test(
+        "LiteralInt/count: entropy()",
+        Tag.List.tags(.documentation),
+        ParallelizationTrait.serialized,
+        arguments: Array<(LiteralInt, Count)>([
         
-        Some(-8 as LiteralInt, yields: Count(4)), // 000....1
-        Some(-7 as LiteralInt, yields: Count(4)), // 100....1
-        Some(-6 as LiteralInt, yields: Count(4)), // 010....1
-        Some(-5 as LiteralInt, yields: Count(4)), // 110....1
-        Some(-4 as LiteralInt, yields: Count(3)), // 00.....1
-        Some(-3 as LiteralInt, yields: Count(3)), // 10.....1
-        Some(-2 as LiteralInt, yields: Count(2)), // 0......1
-        Some(-1 as LiteralInt, yields: Count(1)), // .......1
-        Some( 0 as LiteralInt, yields: Count(1)), // .......0
-        Some( 1 as LiteralInt, yields: Count(2)), // 1......0
-        Some( 2 as LiteralInt, yields: Count(3)), // 01.....0
-        Some( 3 as LiteralInt, yields: Count(3)), // 11.....0
-        Some( 4 as LiteralInt, yields: Count(4)), // 001....0
-        Some( 5 as LiteralInt, yields: Count(4)), // 101....0
-        Some( 6 as LiteralInt, yields: Count(4)), // 011....0
-        Some( 7 as LiteralInt, yields: Count(4)), // 111....0
+        (LiteralInt(-8), Count(4)), // 000....1
+        (LiteralInt(-7), Count(4)), // 100....1
+        (LiteralInt(-6), Count(4)), // 010....1
+        (LiteralInt(-5), Count(4)), // 110....1
+        (LiteralInt(-4), Count(3)), // 00.....1
+        (LiteralInt(-3), Count(3)), // 10.....1
+        (LiteralInt(-2), Count(2)), // 0......1
+        (LiteralInt(-1), Count(1)), // .......1
+        (LiteralInt( 0), Count(1)), // .......0
+        (LiteralInt( 1), Count(2)), // 1......0
+        (LiteralInt( 2), Count(3)), // 01.....0
+        (LiteralInt( 3), Count(3)), // 11.....0
+        (LiteralInt( 4), Count(4)), // 001....0
+        (LiteralInt( 5), Count(4)), // 101....0
+        (LiteralInt( 6), Count(4)), // 011....0
+        (LiteralInt( 7), Count(4)), // 111....0
         
-        Some(-0x80000000000000000000000000000000 as LiteralInt, yields: Count(128)),
-        Some( 0x7fffffffffffffffffffffffffffffff as LiteralInt, yields: Count(128)),
+        (LiteralInt(-0x80000000000000000000000000000000), Count(128)),
+        (LiteralInt( 0x7fffffffffffffffffffffffffffffff), Count(128)),
         
-    ])  func éntropy(_ argument: Some<LiteralInt, Count>) {
-        #expect(argument.input.entropy() == argument.output)
+    ])) func entropy(instance: LiteralInt, expectation: Count) {
+        #expect(instance.entropy() == expectation)
     }
 }

@@ -20,14 +20,18 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test(.serialized, arguments: [
+    @Test(
+        "Signedness/comparison: Self vs Self",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Signedness, Signedness, Bool)>([
         
-        Some(Signedness.unsigned, Signedness.unsigned, yields: true ),
-        Some(Signedness.unsigned, Signedness  .signed, yields: false),
-        Some(Signedness  .signed, Signedness.unsigned, yields: false),
-        Some(Signedness  .signed, Signedness  .signed, yields: true ),
+        (Signedness.unsigned, Signedness.unsigned, true ),
+        (Signedness.unsigned, Signedness  .signed, false),
+        (Signedness  .signed, Signedness.unsigned, false),
+        (Signedness  .signed, Signedness  .signed, true ),
         
-    ])  func compare(_ argument: Some<Signedness, Signedness, Bool>) {
-        Ɣexpect(argument.0, equals: argument.1, is: argument.output)
+    ])) func comparison(lhs: Signedness, rhs: Signedness, expectation: Bool) {
+        Ɣexpect(lhs, equals: rhs, is: expectation)
     }
 }

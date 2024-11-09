@@ -14,33 +14,41 @@ import TestKit
 // MARK: * Count x Text
 //*============================================================================*
 
-@Suite struct CountTestsOnText {
+@Suite(.serialized) struct CountTestsOnText {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Count/description - natural", .serialized, arguments: [
+    @Test(
+        "Count/text: description of natural",
+        Tag.List.tags(.documentation),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Count, String)>([
         
-        Some(Count(IX( 0)), yields: "0"),
-        Some(Count(IX( 1)), yields: "1"),
-        Some(Count(IX( 2)), yields: "2"),
-        Some(Count(IX( 3)), yields: "3"),
-        Some(Count(IX.max), yields: "\(IX.max)"),
+        (Count(IX( 0)), "0"),
+        (Count(IX( 1)), "1"),
+        (Count(IX( 2)), "2"),
+        (Count(IX( 3)), "3"),
+        (Count(IX.max), "\(IX.max)"),
         
-    ])  func descriptionAsNatural(_ argument: Some<Count, String>) {
-        Ɣexpect(argument.input, description: argument.output)
+    ])) func descriptionOfNatural(instance: Count, expectation: String) {
+        Ɣexpect(instance, description: expectation)
     }
     
-    @Test("Count/description - infinite", .serialized, arguments: [
+    @Test(
+        "Count/text: description of infinite",
+        Tag.List.tags(.documentation),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Count, String)>([
         
-        Some(Count(raw: IX(~0)), yields: "log2(&0+1)"  ),
-        Some(Count(raw: IX(~1)), yields: "log2(&0+1)-1"),
-        Some(Count(raw: IX(~2)), yields: "log2(&0+1)-2"),
-        Some(Count(raw: IX(~3)), yields: "log2(&0+1)-3"),
-        Some(Count(raw: IX.min), yields: "log2(&0+1)-\(IX.max)"),
+        (Count(raw: IX(~0)), "log2(&0+1)"  ),
+        (Count(raw: IX(~1)), "log2(&0+1)-1"),
+        (Count(raw: IX(~2)), "log2(&0+1)-2"),
+        (Count(raw: IX(~3)), "log2(&0+1)-3"),
+        (Count(raw: IX.min), "log2(&0+1)-\(IX.max)"),
         
-    ])  func descriptionAsInfinite(_ argument: Some<Count, String>) {
-        Ɣexpect(argument.input, description: argument.output)
+    ])) func descriptionOfInfinite(instance: Count, expectation: String) {
+        Ɣexpect(instance, description: expectation)
     }
 }

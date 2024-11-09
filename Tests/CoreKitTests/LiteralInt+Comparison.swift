@@ -20,29 +20,33 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("LiteralInt/signum()", .serialized, arguments: [
+    @Test(
+        "LiteralInt/comparison: signum()",
+        Tag.List.tags(.documentation),
+        ParallelizationTrait.serialized,
+        arguments: Array<(LiteralInt, Signum)>([
         
-        Some(-8 as LiteralInt, yields: Signum.negative), // 000....1
-        Some(-7 as LiteralInt, yields: Signum.negative), // 100....1
-        Some(-6 as LiteralInt, yields: Signum.negative), // 010....1
-        Some(-5 as LiteralInt, yields: Signum.negative), // 110....1
-        Some(-4 as LiteralInt, yields: Signum.negative), // 00.....1
-        Some(-3 as LiteralInt, yields: Signum.negative), // 10.....1
-        Some(-2 as LiteralInt, yields: Signum.negative), // 0......1
-        Some(-1 as LiteralInt, yields: Signum.negative), // .......1
-        Some( 0 as LiteralInt, yields: Signum.zero    ), // .......0
-        Some( 1 as LiteralInt, yields: Signum.positive), // 1......0
-        Some( 2 as LiteralInt, yields: Signum.positive), // 01.....0
-        Some( 3 as LiteralInt, yields: Signum.positive), // 11.....0
-        Some( 4 as LiteralInt, yields: Signum.positive), // 001....0
-        Some( 5 as LiteralInt, yields: Signum.positive), // 101....0
-        Some( 6 as LiteralInt, yields: Signum.positive), // 011....0
-        Some( 7 as LiteralInt, yields: Signum.positive), // 111....0
+        (LiteralInt(-8), Signum.negative), // 000....1
+        (LiteralInt(-7), Signum.negative), // 100....1
+        (LiteralInt(-6), Signum.negative), // 010....1
+        (LiteralInt(-5), Signum.negative), // 110....1
+        (LiteralInt(-4), Signum.negative), // 00.....1
+        (LiteralInt(-3), Signum.negative), // 10.....1
+        (LiteralInt(-2), Signum.negative), // 0......1
+        (LiteralInt(-1), Signum.negative), // .......1
+        (LiteralInt( 0), Signum.zero    ), // .......0
+        (LiteralInt( 1), Signum.positive), // 1......0
+        (LiteralInt( 2), Signum.positive), // 01.....0
+        (LiteralInt( 3), Signum.positive), // 11.....0
+        (LiteralInt( 4), Signum.positive), // 001....0
+        (LiteralInt( 5), Signum.positive), // 101....0
+        (LiteralInt( 6), Signum.positive), // 011....0
+        (LiteralInt( 7), Signum.positive), // 111....0
         
-        Some(-0x80000000000000000000000000000000 as LiteralInt, yields: Signum.negative),
-        Some( 0x7fffffffffffffffffffffffffffffff as LiteralInt, yields: Signum.positive),
+        (LiteralInt(-0x80000000000000000000000000000000), Signum.negative),
+        (LiteralInt( 0x7fffffffffffffffffffffffffffffff), Signum.positive),
         
-    ])  func signum(_ argument: Some<LiteralInt, Signum>) {
-        #expect(argument.input.signum() == argument.output)
+    ])) func signum(instance: LiteralInt, expectation: Signum) {
+        #expect(instance.signum() == expectation)
     }
 }

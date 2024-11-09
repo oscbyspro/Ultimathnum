@@ -21,12 +21,34 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Equatable vs memeq(_:_:)", .serialized, arguments:
+    @Test(
+        "Fallible/comparison: Fallible<Bit> vs Fallible<Bit>",
+        Tag.List.tags(.exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Fallible<Bit>, Fallible<Bit>, Bool)>([
         
-        Fallible<Bit>.all,
-        Fallible<Bit>.all
-          
-    )   func compare(_ lhs: Fallible<Bit>, _ rhs: Fallible<Bit>) {
-        Ɣexpect(lhs, equals: rhs, is: memeq(lhs, rhs))
+        (Fallible(Bit.zero, error: false), Fallible(Bit.zero, error: false), true ),
+        (Fallible(Bit.zero, error: false), Fallible(Bit.zero, error: true ), false),
+        (Fallible(Bit.zero, error: false), Fallible(Bit.one,  error: false), false),
+        (Fallible(Bit.zero, error: false), Fallible(Bit.one,  error: true ), false),
+            
+        (Fallible(Bit.zero, error: true ), Fallible(Bit.zero, error: false), false),
+        (Fallible(Bit.zero, error: true ), Fallible(Bit.zero, error: true ), true ),
+        (Fallible(Bit.zero, error: true ), Fallible(Bit.one,  error: false), false),
+        (Fallible(Bit.zero, error: true ), Fallible(Bit.one,  error: true ), false),
+            
+        (Fallible(Bit.one,  error: false), Fallible(Bit.zero, error: false), false),
+        (Fallible(Bit.one,  error: false), Fallible(Bit.zero, error: true ), false),
+        (Fallible(Bit.one,  error: false), Fallible(Bit.one,  error: false), true ),
+        (Fallible(Bit.one,  error: false), Fallible(Bit.one,  error: true ), false),
+            
+        (Fallible(Bit.one,  error: true ), Fallible(Bit.zero, error: false), false),
+        (Fallible(Bit.one,  error: true ), Fallible(Bit.zero, error: true ), false),
+        (Fallible(Bit.one,  error: true ), Fallible(Bit.one,  error: false), false),
+        (Fallible(Bit.one,  error: true ), Fallible(Bit.one,  error: true ), true ),
+            
+    ])) func compare(lhs: Fallible<Bit>, rhs: Fallible<Bit>, expectation: Bool) {
+        #expect(memeq(lhs,   rhs) ==  expectation)
+        Ɣexpect(lhs, equals: rhs, is: expectation)
     }
 }

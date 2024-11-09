@@ -14,35 +14,24 @@ import TestKit
 // MARK: * Fallible x Text
 //*============================================================================*
 
-@Suite struct FallibleTestsOnText {
+@Suite(.serialized) struct FallibleTestsOnText {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Fallible/description - x1", .serialized, arguments: [
+    @Test(
+        "Fallible/text: description",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Bit, Bool, String)>([
         
-        Some(Bit.zero, false, yields: "0[-]"),
-        Some(Bit.zero, true,  yields: "0[x]"),
-        Some(Bit.one,  false, yields: "1[-]"),
-        Some(Bit.one,  true,  yields: "1[x]"),
+        (Bit.zero, false, "0[-]"),
+        (Bit.zero, true,  "0[x]"),
+        (Bit.one,  false, "1[-]"),
+        (Bit.one,  true,  "1[x]"),
         
-    ])  func description1(_ argument: Some<Bit, Bool, String>) {
-        Ɣexpect(Fallible(argument.0, error: argument.1), description: argument.output)
-    }
-    
-    @Test("Fallible/description - x2", .serialized, arguments: [
-        
-        Some(Bit.zero, false, false, yields: "0[-][-]"),
-        Some(Bit.zero, false, true,  yields: "0[-][x]"),
-        Some(Bit.zero, true,  false, yields: "0[x][-]"),
-        Some(Bit.zero, true,  true,  yields: "0[x][x]"),
-        Some(Bit.one,  false, false, yields: "1[-][-]"),
-        Some(Bit.one,  false, true,  yields: "1[-][x]"),
-        Some(Bit.one,  true,  false, yields: "1[x][-]"),
-        Some(Bit.one,  true,  true,  yields: "1[x][x]"),
-        
-    ])  func description2(_ argument: Some<Bit, Bool, Bool, String>) {
-        Ɣexpect(Fallible(Fallible(argument.0, error: argument.1), error: argument.2), description: argument.output)
+    ])) func description(value: Bit, error: Bool, expectation: String) {
+        Ɣexpect(Fallible(value, error: error), description: expectation)
     }
 }

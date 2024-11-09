@@ -14,49 +14,101 @@ import TestKit
 // MARK: * Bit
 //*============================================================================*
 
-@Suite struct BitTests {
+@Suite(.serialized) struct BitTests {
         
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Bit ← Bool", .serialized, arguments: [
+    @Test(
+        "Bit: as Bit",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Bit, Bit)>([
         
-        Some(false, yields: Bit.zero),
-        Some(true,  yields: Bit.one ),
+        (Bit.zero, Bit.zero),
+        (Bit.one,  Bit.one ),
         
-    ])  func initBool(_ argument: Some<Bool, Bit>) {
-        #expect(Bit(     argument.input) == argument.output)
-        #expect(Bit(raw: argument.input) == argument.output)
+    ])) func bit(source: Bit, destination: Bit) {
+        
+        #expect(type(of: source).init(     destination) == source)
+        #expect(type(of: source).init(raw: destination) == source)
+        
+        #expect(type(of: destination).init(     source) == destination)
+        #expect(type(of: destination).init(raw: source) == destination)
     }
     
-    @Test("Bit → Bool", .serialized, arguments: [
+    @Test(
+        "Bit: as Bool",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Bit, Bool)>([
         
-        Some(Bit.zero, yields: false),
-        Some(Bit.one,  yields: true ),
+        (Bit.zero, false),
+        (Bit.one,  true ),
         
-    ])  func makeBool(_ argument: Some<Bit, Bool>) {
-        #expect(Bool(     argument.input) == argument.output)
-        #expect(Bool(raw: argument.input) == argument.output)
+    ])) func bool(source: Bit, destination: Bool) {
+        
+        #expect(type(of: source).init(     destination) == source)
+        #expect(type(of: source).init(raw: destination) == source)
+        
+        #expect(type(of: destination).init(     source) == destination)
+        #expect(type(of: destination).init(raw: source) == destination)
     }
     
-    @Test("Bit ← Sign", .serialized, arguments: [
+    @Test(
+        "Bit: as Order",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Bit, Order)>([
         
-        Some(Sign.plus,  yields: Bit.zero),
-        Some(Sign.minus, yields: Bit.one ),
+        (Bit.zero, Order.ascending ),
+        (Bit.one,  Order.descending),
         
-    ])  func initSign(_ argument: Some<Sign, Bit>) {
-        #expect(Bit(     argument.input) == argument.output)
-        #expect(Bit(raw: argument.input) == argument.output)
+    ])) func sign(source: Bit, destination: Order) {
+        
+        #expect(type(of: source).init(     destination) == source)
+        #expect(type(of: source).init(raw: destination) == source)
+        
+        #warning("todo")
+//      #expect(type(of: destination).init(     source) == destination)
+        #expect(type(of: destination).init(raw: source) == destination)
     }
     
-    @Test("Bit → Sign", .serialized, arguments: [
+    @Test(
+        "Bit: as Sign",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Bit, Sign)>([
         
-        Some(Bit.zero, yields: Sign.plus ),
-        Some(Bit.one,  yields: Sign.minus),
+        (Bit.zero, Sign.plus ),
+        (Bit.one,  Sign.minus),
         
-    ])  func makeSign(_ argument: Some<Bit, Sign>) {
-        #expect(Sign(     argument.input) == argument.output)
-        #expect(Sign(raw: argument.input) == argument.output)
+    ])) func sign(source: Bit, destination: Sign) {
+        
+        #expect(type(of: source).init(     destination) == source)
+        #expect(type(of: source).init(raw: destination) == source)
+        
+        #expect(type(of: destination).init(     source) == destination)
+        #expect(type(of: destination).init(raw: source) == destination)
+    }
+    
+    @Test(
+        "Bit: as Signedness",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Bit, Signedness)>([
+        
+        (Bit.zero, Signedness.unsigned),
+        (Bit.one,  Signedness  .signed),
+        
+    ])) func signedness(source: Bit, destination: Signedness) {
+        
+        #expect(type(of: source).init(     destination) == source)
+        #expect(type(of: source).init(raw: destination) == source)
+        
+        #warning("todo")
+//      #expect(type(of: destination).init(     source) == destination)
+        #expect(type(of: destination).init(raw: source) == destination)
     }
 }

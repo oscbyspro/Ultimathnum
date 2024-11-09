@@ -14,18 +14,21 @@ import TestKit
 // MARK: * Bit x Text
 //*============================================================================*
 
-@Suite struct BitTestsOnText {
+@Suite(.serialized) struct BitTestsOnText {
     
     //=------------------------------------------------------------------------=
     // MARK: Test
     //=------------------------------------------------------------------------=
     
-    @Test("Bit/description", .serialized, arguments: [
+    @Test(
+        "Bit/text: description",
+        Tag.List.tags(.documentation, .exhaustive),
+        arguments: Array<(Bit, String)>([
         
-        Some(Bit.zero, yields: "0"),
-        Some(Bit.one,  yields: "1"),
-        
-    ])  func description(_ argument: Some<Bit, String>) {
-        Ɣexpect(argument.input, description: argument.output)
+        (Bit.zero, "0"),
+        (Bit.one,  "1"),
+            
+    ])) func description(instance: Bit, expectation: String) {
+        Ɣexpect(instance, description: expectation)
     }
 }

@@ -14,32 +14,42 @@ import TestKit
 // MARK: * Signum
 //*============================================================================*
 
-@Suite struct SignumTests {
+@Suite(.serialized) struct SignumTests {
         
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Signum ← Bit", .serialized, arguments: [
+    @Test(
+        "Signum: from Bit",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Bit, Signum)>([
         
-        Some(Bit.zero, yields: Signum.zero    ),
-        Some(Bit.one,  yields: Signum.positive),
+        (Bit.zero, Signum.zero    ),
+        (Bit.one,  Signum.positive),
         
-    ])  func initBit(_ argument: Some<Bit, Signum>) {
-        #expect(Signum(argument.input) == argument.output)
+    ])) func bit(source: Bit, destination: Signum) {
+        #expect(Signum(source) == destination)
     }
     
-    
-    @Test("Signum ← Sign or Sign?", .serialized, arguments: [
+    @Test(
+        "Signum: from Sign or Sign?",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Sign?, Signum)>([
         
-        Some(Optional<Sign>(nil ), yields: Signum.zero),
-        Some(Optional(Sign.plus ), yields: Signum.positive),
-        Some(Optional(Sign.minus), yields: Signum.negative),
+        (Optional<Sign>(nil ), Signum.zero),
+        (Optional(Sign.plus ), Signum.positive),
+        (Optional(Sign.minus), Signum.negative),
         
-    ])  func initSignOrOptionalSign(_ argument: Some<Sign?, Signum>) {
-        #expect(Signum(argument.input) == argument.output)
-        if  let sign = argument.input {
-            #expect(Signum(sign) == argument.output)
+    ])) func sign(source: Sign?, destination: Signum) {
+        always: do {
+            #expect(Signum(source) == destination)
+        }
+        
+        if  let source = source {
+            #expect(Signum(source) == destination)
         }
     }
 }

@@ -20,14 +20,18 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test(.serialized, arguments: [
+    @Test(
+        "Order/comparison: Order vs Order",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Order, Order, Bool)>([
         
-        Some(Order.ascending,  Order.ascending,  yields: true ),
-        Some(Order.ascending,  Order.descending, yields: false),
-        Some(Order.descending, Order.ascending,  yields: false),
-        Some(Order.descending, Order.descending, yields: true ),
+        (Order.ascending,  Order.ascending,  true ),
+        (Order.ascending,  Order.descending, false),
+        (Order.descending, Order.ascending,  false),
+        (Order.descending, Order.descending, true ),
         
-    ])  func compare(_ argument: Some<Order, Order, Bool>) {
-        Ɣexpect(argument.0, equals: argument.1, is: argument.output)
+    ])) func comparison(lhs: Order, rhs: Order, expectation: Bool) {
+        Ɣexpect(lhs, equals: rhs, is: expectation)
     }
 }

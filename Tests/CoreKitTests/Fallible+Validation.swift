@@ -15,59 +15,59 @@ import TestKit
 // MARK: * Fallible x Validation
 //*============================================================================*
 
-@Suite struct FallibleTestsOnValidation {
+@Suite(.serialized) struct FallibleTestsOnValidation {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     @Test(
-        "Fallible/veto(_:)",
-        Tag.List.tags(.exhaustive),
+        "Fallible/validation: veto(_:)",
+        Tag.List.tags(.documentation, .exhaustive),
         ParallelizationTrait.serialized,
         arguments: Fallible<Bit>.all
-    )   func veto(argument: Fallible<Bit>) {
+    )   func veto(instance: Fallible<Bit>) {
         
-        let invalid = Fallible(argument.value, error: true)
-        #expect(argument.veto(              )  ==  invalid)
-        #expect(argument.veto(       false  )  == argument)
-        #expect(argument.veto(       true   )  ==  invalid)
-        #expect(argument.veto({ _ in false })  == argument)
-        #expect(argument.veto({ _ in true  })  ==  invalid)
+        let invalid = Fallible(instance.value, error: true)
+        #expect(instance.veto(              )  ==  invalid)
+        #expect(instance.veto(       false  )  == instance)
+        #expect(instance.veto(       true   )  ==  invalid)
+        #expect(instance.veto({ _ in false })  == instance)
+        #expect(instance.veto({ _ in true  })  ==  invalid)
     }
     
     @Test(
-        "Fallible/optional(_:)",
-        Tag.List.tags(.exhaustive),
+        "Fallible/validation: optional()",
+        Tag.List.tags(.documentation, .exhaustive),
         ParallelizationTrait.serialized,
-        arguments: [
+        arguments: Array<(Fallible<Bit>, Optional<Bit>)>([
 
-        Some(Fallible(Bit.zero, error: false), yields: Optional(Bit.zero)),
-        Some(Fallible(Bit.zero, error: true ), yields: Optional<Bit>(nil)),
-        Some(Fallible(Bit.one,  error: false), yields: Optional(Bit.one )),
-        Some(Fallible(Bit.one,  error: true ), yields: Optional<Bit>(nil)),
+        (Fallible(Bit.zero, error: false), Optional(Bit.zero)),
+        (Fallible(Bit.zero, error: true ), Optional<Bit>(nil)),
+        (Fallible(Bit.one,  error: false), Optional(Bit.one )),
+        (Fallible(Bit.one,  error: true ), Optional<Bit>(nil)),
             
-    ])  func optional(_ argument: Some<Fallible<Bit>, Bit?>) throws {
-        #expect(argument.input.optional() == argument.output)
+    ])) func optional(instance: Fallible<Bit>, expectation: Optional<Bit>) {
+        #expect(instance.optional() == expectation)
     }
     
     @Test(
-        "Fallible/prune(_:) and /result(_:)",
-        Tag.List.tags(.exhaustive),
+        "Fallible/validation: prune(_:) and result(_:)",
+        Tag.List.tags(.documentation, .exhaustive),
         ParallelizationTrait.serialized,
-        arguments: [
+        arguments: Array<(Fallible<Bit>, Bad, Result<Bit, Bad>)>([
 
-        Some(Fallible(Bit.zero, error: false), Bad.error, yields: Result<Bit, Bad>.success(Bit.zero )),
-        Some(Fallible(Bit.zero, error: true ), Bad.error, yields: Result<Bit, Bad>.failure(Bad.error)),
-        Some(Fallible(Bit.one,  error: false), Bad.error, yields: Result<Bit, Bad>.success(Bit.one  )),
-        Some(Fallible(Bit.one,  error: true ), Bad.error, yields: Result<Bit, Bad>.failure(Bad.error)),
+        (Fallible(Bit.zero, error: false), Bad.error, Result<Bit, Bad>.success(Bit.zero )),
+        (Fallible(Bit.zero, error: true ), Bad.error, Result<Bit, Bad>.failure(Bad.error)),
+        (Fallible(Bit.one,  error: false), Bad.error, Result<Bit, Bad>.success(Bit.one  )),
+        (Fallible(Bit.one,  error: true ), Bad.error, Result<Bit, Bad>.failure(Bad.error)),
             
-    ])  func result(_ argument: Some<Fallible<Bit>, Bad, Result<Bit, Bad>>) throws {
-        #expect(argument.0.result(argument.1) == argument.output)
-
-        switch argument.output {
-        case let Result.success(x): #expect(try     x ==     argument.0.prune(argument.1) )
-        case let Result.failure(x): #expect(throws: x ){ try argument.0.prune(argument.1) }
+    ])) func result(instance: Fallible<Bit>, argument: Bad, expectation: Result<Bit, Bad>) throws {
+        #expect(instance.result(argument) == expectation)
+        
+        switch expectation {
+        case let Result.success(x): #expect(try     x ==     instance.prune(argument) )
+        case let Result.failure(x): #expect(throws: x ){ try instance.prune(argument) }
         }
     }
 }

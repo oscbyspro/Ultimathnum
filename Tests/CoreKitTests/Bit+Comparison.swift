@@ -20,24 +20,30 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Bit/isZero", .serialized, arguments: [
+    @Test(
+        "Bit/comparison: is 0",
+        Tag.List.tags(.documentation, .exhaustive),
+        arguments: Array<(Bit, Bool)>([
         
-        Some(Bit.zero, yields: true ),
-        Some(Bit.one,  yields: false),
+        (Bit.zero, true ),
+        (Bit.one,  false),
         
-    ])  func isZero(_ argument: Some<Bit, Bool>) {
-        #expect(argument.input.isZero == argument.output)
+    ])) func isZero(instance: Bit, expectation: Bool) {
+        #expect(instance.isZero == expectation)
     }
     
-    @Test("Bit/compared(to:)", .serialized, arguments: [
+    @Test(
+        "Bit/comparison: Bit vs Bit",
+        Tag.List.tags(.documentation, .exhaustive),
+        arguments: Array<(Bit, Bit, Signum)>([
         
-        Some(Bit.zero, Bit.zero, yields: Signum.zero),
-        Some(Bit.zero, Bit.one,  yields: Signum.negative),
-        Some(Bit.one,  Bit.zero, yields: Signum.positive),
-        Some(Bit.one,  Bit.one,  yields: Signum.zero),
+        (Bit.zero, Bit.zero, Signum.zero),
+        (Bit.zero, Bit.one,  Signum.negative),
+        (Bit.one,  Bit.zero, Signum.positive),
+        (Bit.one,  Bit.one,  Signum.zero),
         
-    ])  func compare(_ argument: Some<Bit, Bit, Signum>) {
-        Ɣexpect(argument.0, equals: argument.1, is:    argument.output)
-        #expect(argument.0.compared(to: argument.1) == argument.output)
+    ])) func comparison(lhs: Bit, rhs: Bit, expectation: Signum) {
+        Ɣexpect(lhs, equals: rhs, is:    expectation)
+        #expect(lhs.compared(to: rhs) == expectation)
     }
 }

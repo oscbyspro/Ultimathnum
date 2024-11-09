@@ -20,14 +20,18 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test(.serialized, arguments: [
+    @Test(
+        "Sign/comparison: Sign vs Sign",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Sign, Sign, Bool)>([
         
-        Some(Sign.plus,  Sign.plus,  yields: true ),
-        Some(Sign.plus,  Sign.minus, yields: false),
-        Some(Sign.minus, Sign.plus,  yields: false),
-        Some(Sign.minus, Sign.minus, yields: true ),
+        (Sign.plus,  Sign.plus,  true ),
+        (Sign.plus,  Sign.minus, false),
+        (Sign.minus, Sign.plus,  false),
+        (Sign.minus, Sign.minus, true ),
         
-    ])  func compare(_ argument: Some<Sign, Sign, Bool>) {
-        Ɣexpect(argument.0, equals: argument.1, is: argument.output)
+    ])) func comparison(lhs: Sign, rhs: Sign, expectation: Bool) {
+        Ɣexpect(lhs, equals: rhs, is: expectation)
     }
 }

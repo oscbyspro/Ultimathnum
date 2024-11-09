@@ -20,30 +20,41 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test(.serialized, arguments: [
+    @Test(
+        "Order: descending",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Order, Bool)>([
         
-        Some(Order.ascending,  yields: false),
-        Some(Order.descending, yields: true ),
+        (Order.ascending,  false),
+        (Order.descending, true ),
         
-    ])  func descending(_ argument: Some<Order, Bool>) {
-        #expect(argument.input == Order(descending: argument.output))
+    ])) func descending(instance: Order, expectation: Bool) {
+        #expect(instance == Order(descending: expectation))
     }
     
-    #if _endian(little)
-    @Test("Order.endianness (↑)", arguments: CollectionOfOne(Order.ascending ))
-    #else
-    @Test("Order.endianness (↓)", arguments: CollectionOfOne(Order.descending))
-    #endif
-    func endianness(_ argument: Order) {
-        #expect(Order.endianess == argument)
+    @Test(
+        "Order: endianness",
+        Tag.List.tags(.documentation, .exhaustive),
+        arguments: CollectionOfOne(Order.endianess)
+    )   func endianness(instance: Order) {
+        #if _endian(little)
+        #expect(Order.endianess == Order.ascending)
+        #else
+        #expect(Order.endianess == Order.descending)
+        #endif
     }
     
-    @Test(.serialized, arguments: [
+    @Test(
+        "Order: reversed",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Order, Order)>([
         
-        Some(Order.ascending,  yields: Order.descending),
-        Some(Order.descending, yields: Order.ascending ),
+        (Order.ascending,  Order.descending),
+        (Order.descending, Order.ascending ),
         
-    ])  func reversed(_ argument: Some<Order, Order>) {
-        #expect(argument.input.reversed() == argument.output)
+    ])) func reversed(instance: Order, expectation: Order) {
+        #expect(instance.reversed() == expectation)
     }
 }

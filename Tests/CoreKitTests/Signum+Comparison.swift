@@ -14,56 +14,72 @@ import TestKit
 // MARK: * Signum x Comparison
 //*============================================================================*
 
-@Suite struct SignumTestsOnComparison {
+@Suite(.serialized) struct SignumTestsOnComparison {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Signum/isNegative", .serialized, arguments: [
+    @Test(
+        "Signum/comparison: is negative",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Signum, Bool)>([
         
-        Some(Signum.negative, yields: true ),
-        Some(Signum.zero,     yields: false),
-        Some(Signum.positive, yields: false),
+        (Signum.negative, true ),
+        (Signum.zero,     false),
+        (Signum.positive, false),
         
-    ])  func isNegative(_ arguments: Some<Signum, Bool>) {
-        #expect(arguments.input.isNegative == arguments.output)
+    ])) func isNegative(instance: Signum, expectation: Bool) {
+        #expect(instance.isNegative == expectation)
     }
     
-    @Test("Signum/isZero", .serialized, arguments: [
+    @Test(
+        "Signum/comparison: is zero",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Signum, Bool)>([
         
-        Some(Signum.negative, yields: false),
-        Some(Signum.zero,     yields: true ),
-        Some(Signum.positive, yields: false),
+        (Signum.negative, false),
+        (Signum.zero,     true ),
+        (Signum.positive, false),
         
-    ])  func isZero(_ arguments: Some<Signum, Bool>) {
-        #expect(arguments.input.isZero == arguments.output)
+    ])) func isZero(instance: Signum, expectation: Bool) {
+        #expect(instance.isZero == expectation)
     }
     
-    @Test("Signum/isPositive", .serialized, arguments: [
+    @Test(
+        "Signum/comparison: is positive",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Signum, Bool)>([
         
-        Some(Signum.negative, yields: false),
-        Some(Signum.zero,     yields: false),
-        Some(Signum.positive, yields: true ),
+        (Signum.negative, false),
+        (Signum.zero,     false),
+        (Signum.positive, true ),
         
-    ])  func isPositive(_ argument: Some<Signum, Bool>) {
-        #expect(argument.input.isPositive == argument.output)
+    ])) func isPositive(instance: Signum, expectation: Bool) {
+        #expect(instance.isPositive == expectation)
     }
     
-    @Test("Signum/compared(to:)", .serialized, arguments: [
+    @Test(
+        "Signum/comparison: Self vs Self",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Signum, Signum, Signum)>([
         
-        Some(Signum.negative, Signum.negative, yields: Signum.zero),
-        Some(Signum.negative, Signum.zero,     yields: Signum.negative),
-        Some(Signum.negative, Signum.positive, yields: Signum.negative),
-        Some(Signum.zero,     Signum.negative, yields: Signum.positive),
-        Some(Signum.zero,     Signum.zero,     yields: Signum.zero),
-        Some(Signum.zero,     Signum.positive, yields: Signum.negative),
-        Some(Signum.positive, Signum.negative, yields: Signum.positive),
-        Some(Signum.positive, Signum.zero,     yields: Signum.positive),
-        Some(Signum.positive, Signum.positive, yields: Signum.zero),
+        (Signum.negative, Signum.negative, Signum.zero),
+        (Signum.negative, Signum.zero,     Signum.negative),
+        (Signum.negative, Signum.positive, Signum.negative),
+        (Signum.zero,     Signum.negative, Signum.positive),
+        (Signum.zero,     Signum.zero,     Signum.zero),
+        (Signum.zero,     Signum.positive, Signum.negative),
+        (Signum.positive, Signum.negative, Signum.positive),
+        (Signum.positive, Signum.zero,     Signum.positive),
+        (Signum.positive, Signum.positive, Signum.zero),
         
-    ])  func compare(_ argument: Some<Signum, Signum, Signum>) {
-        Ɣexpect(argument.0, equals: argument.1, is:    argument.output)
-        #expect(argument.0.compared(to: argument.1) == argument.output)
+    ])) func comparison(lhs: Signum, rhs: Signum, expectation: Signum) {
+        Ɣexpect(lhs, equals: rhs, is:    expectation)
+        #expect(lhs.compared(to: rhs) == expectation)
     }
 }

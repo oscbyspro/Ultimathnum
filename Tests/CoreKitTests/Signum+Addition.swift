@@ -20,15 +20,19 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Signum/negated()", .serialized, arguments: [
+    @Test(
+        "Signum/addition: negated()",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: Array<(Signum, Signum)>([
         
-        Some(Signum.negative, yields: Signum.positive),
-        Some(Signum.zero,     yields: Signum.zero    ),
-        Some(Signum.positive, yields: Signum.negative),
+        (Signum.negative, Signum.positive),
+        (Signum.zero,     Signum.zero    ),
+        (Signum.positive, Signum.negative),
         
-    ])  func negation(_ argument: Some<Signum, Signum>) {
-        #expect(-argument.input == argument.output)
-        #expect((argument.input.negated() == argument.output))
-        #expect({ var x = argument.input; x.negate(); return x }() == argument.output)
+    ])) func negation(instance: Signum, expectation: Signum) {
+        #expect(reduce(instance, { -$0           }) == expectation)
+        #expect(reduce(instance, {  $0.negate () }) == expectation)
+        #expect(reduce(instance, {  $0.negated() }) == expectation)
     }
 }

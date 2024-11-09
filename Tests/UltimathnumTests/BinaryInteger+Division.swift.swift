@@ -29,10 +29,10 @@ import TestKit
         ParallelizationTrait.serialized,
         arguments: Array<(I8, I8, I8, I8)>([
         
-        (dividend:  7 as I8, divisor:  3 as I8, quotient:  2 as I8, remainder:  1 as I8),
-        (dividend:  7 as I8, divisor: -3 as I8, quotient: -2 as I8, remainder:  1 as I8),
-        (dividend: -7 as I8, divisor:  3 as I8, quotient: -2 as I8, remainder: -1 as I8),
-        (dividend: -7 as I8, divisor: -3 as I8, quotient:  2 as I8, remainder: -1 as I8),
+        ( 7 as I8,  3 as I8,  2 as I8,  1 as I8),
+        ( 7 as I8, -3 as I8, -2 as I8,  1 as I8),
+        (-7 as I8,  3 as I8, -2 as I8, -1 as I8),
+        (-7 as I8, -3 as I8,  2 as I8, -1 as I8),
         
     ])) func signs(
         dividend: I8, divisor: I8, quotient: I8, remainder: I8
