@@ -45,7 +45,8 @@ import TestKit
                     require(destination == B(load: source))
                     
                     if !source.isNegative {
-                        require(destination == B(magnitude: magnitude))
+                        require(destination == B(                 magnitude: magnitude))
+                        require(destination == B(sign: Sign.plus, magnitude: magnitude))
                     }
                     
                     if !source.isPositive {
@@ -55,11 +56,13 @@ import TestKit
                     source.withUnsafeBinaryIntegerElements {
                         require(destination == B(load: $0))
                         require(destination == B($0, mode: A.mode))
+                        require(destination == B($0.body.buffer(), repeating: $0.appendix, mode: A.mode))
                     }
                     
                     source.withUnsafeBinaryIntegerElements(as: U8.self) {
                         require(destination == B(load: $0))
                         require(destination == B($0, mode: A.mode))
+                        require(destination == B($0.body.buffer(), repeating: $0.appendix, mode: A.mode))
                     }
                 }
             }
@@ -112,7 +115,8 @@ import TestKit
                     }
                     
                     if !source.isNegative {
-                        require(destination == B.exactly(magnitude: magnitude))
+                        require(destination == B.exactly(                 magnitude: magnitude))
+                        require(destination == B.exactly(sign: Sign.plus, magnitude: magnitude))
                     }
                     
                     if !source.isPositive {
@@ -122,11 +126,13 @@ import TestKit
                     source.withUnsafeBinaryIntegerElements {
                         require(destination.value == B(load: $0))
                         require(destination == B.exactly($0, mode: A.mode))
+                        require(destination == B.exactly($0.body.buffer(), repeating: $0.appendix, mode: A.mode))
                     }
                     
                     source.withUnsafeBinaryIntegerElements(as: U8.self) {
                         require(destination.value == B(load: $0))
                         require(destination == B.exactly($0, mode: A.mode))
+                        require(destination == B.exactly($0.body.buffer(), repeating: $0.appendix, mode: A.mode))
                     }
                 }
             }
@@ -285,18 +291,57 @@ import TestKit
         arguments: fuzzers
     )   func defaultSignIsPlus(randomness: consuming FuzzerInt) throws {
         for source in typesAsBinaryIntegerAsUnsigned {
-            for destination in typesAsBinaryIntegerAsUnsigned {
+            for destination in typesAsBinaryInteger {
                 try whereIs(source: source, destination: destination)
             }
         }
         
         func whereIs<A, B>(source: A.Type, destination: B.Type) throws where A: UnsignedInteger, B: BinaryInteger {
             for _ in 0 ..< 8 {
-                let random = A.entropic(in: B.self, or: 256, using: &randomness)
-                try #require(    random == A(magnitude: random))
-                try #require(try random == #require(A.exactly(magnitude: random).optional()))
-                try #require(    random == B(magnitude: random))
-                try #require(try random == #require(B.exactly(magnitude: random).optional()))
+                let value = A.entropic(in: B.self, or: 256, using: &randomness)
+                try #require(    value == A(magnitude: value))
+                try #require(try value == #require(A.exactly(magnitude: value).optional()))
+                try #require(    value == B(magnitude: value))
+                try #require(try value == #require(B.exactly(magnitude: value).optional()))
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/integers/conveniences: default appendix is Bit.zero",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func defaultAppendixIsZero(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            for _ in 0 ..< 8 {
+                let index = Shift<T.Magnitude>.max(or: 255)
+                let value = T.entropic(through: index, as: Domain.natural, using: &randomness)
+                try #require(value.appendix.isZero)
+                
+                try value.withUnsafeBinaryIntegerElements { data in
+                    let body: UnsafeBufferPointer = data.body.buffer()
+                    try #require(    value == T.init(body))
+                    try #require(try value == #require(T.exactly(body).optional()))
+                }
+                
+                try value.withUnsafeBinaryIntegerElements(as: U8.self) { data in
+                    let body: UnsafeBufferPointer = data.body.buffer()
+                    try #require(    value == T.init(body))
+                    try #require(try value == #require(T.exactly(body).optional()))
+                }
+                
+                try value.withUnsafeBinaryIntegerElements {
+                    try  opaque($0)
+                    func opaque<E>(_ data: DataInt<E>) throws {
+                        let body: UnsafeBufferPointer = data.body.buffer()
+                        try #require(    value == T.init(body))
+                        try #require(try value == #require(T.exactly(body).optional()))
+                    }
+                }
             }
         }
     }
@@ -305,28 +350,40 @@ import TestKit
         "BinaryInteger/integers/conveniences: default mode is Self.mode",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func defaultModeIsMode(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func defaultModeIsMode(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 8 {
-                let random = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                
-                try random.withUnsafeBinaryIntegerElements { data in
-                    try #require(    random == T.init(data))
-                    try #require(try random == #require(T.exactly(data).optional()))
+                let index = Shift<T.Magnitude>.max(or: 255)
+                let value = T.entropic(through: index, as: Domain.natural, using: &randomness).toggled()
+                if !T.isNatural {
+                    try #require(value.appendix == Bit.one)
                 }
                 
-                try random.withUnsafeBinaryIntegerElements(as: U8.self) { data in
-                    try #require(    random == T.init(data))
-                    try #require(try random == #require(T.exactly(data).optional()))
+                try value.withUnsafeBinaryIntegerElements { data in
+                    try #require(value == T.init   (data))
+                    try #require(value == T.exactly(data).optional())
+                    try #require(value == T.init   (data.body.buffer(), repeating: data.appendix))
+                    try #require(value == T.exactly(data.body.buffer(), repeating: data.appendix).optional())
                 }
                 
-                try random.withUnsafeBinaryIntegerElements {
+                try value.withUnsafeBinaryIntegerElements(as: U8.self) { data in
+                    try #require(value == T.init   (data))
+                    try #require(value == T.exactly(data).optional())
+                    try #require(value == T.init   (data.body.buffer(), repeating: data.appendix))
+                    try #require(value == T.exactly(data.body.buffer(), repeating: data.appendix).optional())
+                }
+                
+                try value.withUnsafeBinaryIntegerElements {
                     try  opaque($0)
                     func opaque<E>(_ data: DataInt<E>) throws {
-                        try #require(    random == T.init(data))
-                        try #require(try random == #require(T.exactly(data).optional()))
+                        try #require(value == T.init   (data))
+                        try #require(value == T.exactly(data).optional())
+                        try #require(value == T.init   (data.body.buffer(), repeating: data.appendix))
+                        try #require(value == T.exactly(data.body.buffer(), repeating: data.appendix).optional())
                     }
                 }
             }
