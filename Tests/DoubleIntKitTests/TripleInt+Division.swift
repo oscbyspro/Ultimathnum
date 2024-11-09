@@ -46,10 +46,10 @@ import TestKit
             try Ɣrequire(Y(low: ~0, mid: ~0, high: ~x), by: X(low: ~0, high:  x), is: D(quotient: ~1 as B, remainder: X(low: ~2, high: 2))) // 1
             
             func Ɣrequire(_ dividend: Y, by divisor: X, is expectation: D) throws {
-                try #require(Bool(divisor.msb))
+                #expect(Bool(divisor.msb))
                 
                 let result: D = dividend.division3212(normalized: Nonzero(divisor))
-                try #require(result == expectation)
+                #expect(result == expectation)
                 
                 recover: do {
                     let remainder = TripleInt(
@@ -59,7 +59,7 @@ import TestKit
                     )
                     
                     let recovered = divisor.multiplication(result.quotient).plus(remainder)
-                    try #require(Fallible(dividend) == recovered)
+                    #expect(Fallible(dividend) == recovered)
                 }
             }
         }

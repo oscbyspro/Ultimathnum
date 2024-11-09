@@ -150,8 +150,8 @@ import TestKit
                 Ɣexpect(lhs, equals: rhs, is: expectation)
                 Ɣexpect(rhs, equals: lhs, is: expectation.negated())
                 
-                try #require(lhs.compared(to: rhs) == expectation)
-                try #require(rhs.compared(to: lhs) == expectation.negated())
+                #expect(lhs.compared(to: rhs) == expectation)
+                #expect(rhs.compared(to: lhs) == expectation.negated())
             }
         }
     }
