@@ -172,7 +172,7 @@ extension BinaryInteger {
         var success  = appendix == source.appendix
         
         if  success, signedness != Self.mode {
-            success  = appendix == Bit .zero
+            success  = appendix.isZero
         }
         
         if  success, let size = UX(size: Self.self) {
@@ -199,7 +199,7 @@ extension BinaryInteger {
         var success  = appendix == source.appendix
         
         if  success, signedness != Self.mode {
-            success  = appendix == Bit .zero
+            success  = appendix.isZero
         }
         
         if  success, let size = UX(size: Self.self) {

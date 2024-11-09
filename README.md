@@ -82,7 +82,7 @@ Run performance tests with the following terminal command(s):
 xcodebuild test -scheme Ultimathnum-Performance -destination 'platform=macOS'
 ```
 
-This setup enables optimizations and omits unrelated metrics. These steps are critical since the project is both abstracted and modularized. Omitting compiler optimizations reduces performance by up to two orders of magnitude. Similarly, failing to omit code coverage reduces performance by another order of magnitude. If your measurements show poor results for reasonable inputs, feel free to open an issue about it or ask any questions you may have.
+This setup enables optimizations and omits unrelated metrics. These steps are critical since the project is both abstracted and modularized. Omitting compiler optimizations degrades performance by up to two orders of magnitude. Similarly, failing to omit code coverage degrades performance by another order of magnitude. If your measurements show poor results for reasonable inputs, feel free to open an issue about it or ask any questions you may have.
 
 <a name="overview"/>
 
