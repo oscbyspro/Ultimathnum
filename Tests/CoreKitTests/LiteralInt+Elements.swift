@@ -51,23 +51,22 @@ import TestKit
     }
     
     @Test(
-        "LiteralInt/elements: subscript(_:) byte prefix",
+        "LiteralInt/elements: byte sequence prefix",
         Tag.List.tags(.documentation),
         ParallelizationTrait.serialized,
-        arguments: Array<Many<LiteralInt, U8>>([
+        arguments: Array<(LiteralInt, [U8])>([
         
-        Many(LiteralInt(-0000000000000000000000000000000001), yields:                [U8](repeating: U8.max, count: 32)),
-        Many(LiteralInt( 0000000000000000000000000000000000), yields:                [U8](repeating: U8.min, count: 32)),
-        Many(LiteralInt(-0xf0f1f2f3f4f5f6f7f8f9fafbfcfdff00), yields: [U8](0...15) + [U8](repeating: U8.max, count: 16)),
-        Many(LiteralInt( 0x0f0e0d0c0b0a09080706050403020100), yields: [U8](0...15) + [U8](repeating: U8.min, count: 16)),
+        (LiteralInt(-0000000000000000000000000000000001),                [U8](repeating: U8.max, count: 32)),
+        (LiteralInt( 0000000000000000000000000000000000),                [U8](repeating: U8.min, count: 32)),
+        (LiteralInt(-0xf0f1f2f3f4f5f6f7f8f9fafbfcfdff00), [U8](0...15) + [U8](repeating: U8.max, count: 16)),
+        (LiteralInt( 0x0f0e0d0c0b0a09080706050403020100), [U8](0...15) + [U8](repeating: U8.min, count: 16)),
         
-    ])) func elements(argument: Many<LiteralInt, U8>) {
+    ])) func byteSequencePrefix(instance: LiteralInt, expectation: [U8]) {
         let ratio: IX =  IX(size: UX.self) / IX(size: U8.self)
-        for index: IX in IX.zero ..< IX(argument.output.count) {
-            let word: UX = argument.input[UX(index / ratio)]
+        for index: IX in IX.zero ..< IX(expectation.count) {
+            let word: UX = instance[UX(index / ratio)]
             let byte: U8 = U8(load: word >> (index % ratio * 8))
-            let expectation: U8 = argument.output[Swift.Int(index)]
-            #expect(byte == expectation)
+            #expect(byte == expectation[Swift.Int(index)])
         }
     }
 }
