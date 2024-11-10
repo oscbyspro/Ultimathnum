@@ -28,27 +28,9 @@ import TestKit
 /// - TODO: Test `StdlibInt` forwarding in generic `BinaryInteger` tests.
 ///
 @Suite struct StdlibIntTestsOnIntegers {
-        
+    
     //=------------------------------------------------------------------------=
     // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    @Test(
-        "StdlibInt/integers: magnitude",
-        Tag.List.tags(.forwarding, .random),
-        arguments: fuzzers
-    )   func magnitude(
-        randomness: consuming FuzzerInt
-    )   throws {
-        for _ in 0 ..< 32 {
-            let random = IXL.entropic(size: 256, using: &randomness)
-            let expectation = IXL(random.magnitude())
-            try #require(StdlibInt(random).magnitude == StdlibInt(expectation))
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests x Swift.BinaryInteger
     //=------------------------------------------------------------------------=
     
     @Test(

@@ -11,37 +11,13 @@ import CoreKit
 import InfiniIntKit
 
 //*============================================================================*
-// MARK: * Stdlib Int x Validation
+// MARK: * Stdlib Int x Floats
 //*============================================================================*
 
 extension StdlibInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers x Swift.BinaryInteger
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(_ source: some Swift.BinaryInteger) {
-        self.init(truncatingIfNeeded: source)
-    }
-    
-    @inlinable public init(clamping source: some Swift.BinaryInteger) {
-        self.init(truncatingIfNeeded: source)
-    }
-    
-    @inlinable public init?(exactly source: some Swift.BinaryInteger) {
-        self.init(truncatingIfNeeded: source)
-    }
-    
-    @inlinable public init<Other>(truncatingIfNeeded source: Other) where Other: Swift.BinaryInteger {
-        self = Namespace.withUnsafeBufferPointerOrCopy(of: source.words) {
-            $0.withMemoryRebound(to: UX.self) {
-                Self(Base(load: DataInt($0, repeating: Bit(Other.isSigned && $0.last?.msb == Bit.one))!))
-            }
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers x Swift.BinaryFloatingPoint
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
     @inlinable public init(_ source: some Swift.BinaryFloatingPoint) {

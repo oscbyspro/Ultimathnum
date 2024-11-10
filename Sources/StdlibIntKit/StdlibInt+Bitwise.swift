@@ -47,14 +47,4 @@ extension StdlibInt {
     @inlinable public static func ^=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs ^ rhs
     }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public var magnitude: Self {
-        consuming get {
-            Self(raw: self.base.magnitude())            
-        }
-    }
 }
