@@ -26,9 +26,11 @@ import TestKit
         Tag.List.tags(.generic, .random),
         TimeLimitTrait.timeLimit(.minutes(3)),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func randomThroughBitIndex(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func randomThroughBitIndex(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             let size = IX(size: T.self) ?? 128
             for index in 0 ..< size {
@@ -60,9 +62,11 @@ import TestKit
         Tag.List.tags(.generic, .random),
         TimeLimitTrait.timeLimit(.minutes(3)),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func randomThroughBitIndexHasKnownBounds(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func randomThroughBitIndexHasKnownBounds(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             try require(Shift(Count(0)), T.isSigned ? -001...000 : 000...001)
             try require(Shift(Count(1)), T.isSigned ? -002...001 : 000...003)
@@ -102,9 +106,11 @@ import TestKit
         Tag.List.tags(.generic, .random),
         TimeLimitTrait.timeLimit(.minutes(3)),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func randomInRange(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func randomInRange(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             let size = IX(size: T.self) ?? 256
             let min: T = T.minLikeSystemsInteger(size: size)!
@@ -142,9 +148,11 @@ import TestKit
         Tag.List.tags(.generic, .random),
         TimeLimitTrait.timeLimit(.minutes(3)),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func randomInRangeHasKnownBounds(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    )   func randomInRangeHasKnownBounds(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for index: IX in 0 ... 7 {
                 let min = T.random(through: Shift(Count(index)), using: &randomness)
@@ -180,9 +188,11 @@ import TestKit
         Tag.List.tags(.generic, .random),
         TimeLimitTrait.timeLimit(.minutes(3)),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func randomInClosedRange(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    )   func randomInClosedRange(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             let size = IX(size: T.self) ?? 256
             let min: T = T.minLikeSystemsInteger(size: size)!
@@ -216,9 +226,11 @@ import TestKit
         Tag.List.tags(.generic, .random),
         TimeLimitTrait.timeLimit(.minutes(3)),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func randomInClosedRangeHasKnownBounds(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func randomInClosedRangeHasKnownBounds(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for index: IX in 0 ... 7 {
                 let min = T.random(through: Shift(Count(index)), using: &randomness)
@@ -258,9 +270,11 @@ import TestKit
         Tag.List.tags(.generic, .random),
         TimeLimitTrait.timeLimit(.minutes(3)),
         arguments: typesAsCoreIntegerAsByte, randomnesses
-    )   func randomAsByteHitsAllValues(type: any SystemsInteger.Type, randomness: any Randomness) throws {
+    )   func randomAsByteHitsAllValues(
+        type: any SystemsInteger.Type, randomness: any Randomness & Sendable
+    )   throws {
+       
         try  whereIs(type, randomness)
-        
         func whereIs<T>(_ type: T.Type, _ randomness: consuming some Randomness) throws where T: SystemsInteger {
             var matches: Set<T> = []
             matches.reserveCapacity(T.all.count)
@@ -278,9 +292,11 @@ import TestKit
         Tag.List.tags(.generic, .random),
         TimeLimitTrait.timeLimit(.minutes(3)),
         arguments: typesAsCoreIntegerAsByte, randomnesses
-    )   func randomAsByteHitsAllValuesInRange(type: any SystemsInteger.Type, randomness: any Randomness) throws {
+    )   func randomAsByteHitsAllValuesInRange(
+        type: any SystemsInteger.Type, randomness: any Randomness & Sendable
+    )   throws {
+       
         try  whereIs(type, randomness)
-        
         func whereIs<T>(_ type: T.Type, _ randomness: consuming some Randomness) throws where T: SystemsInteger {
             var matches: Set<T> = []
             matches.reserveCapacity(T.all.count)
@@ -305,9 +321,11 @@ import TestKit
         Tag.List.tags(.generic, .random),
         TimeLimitTrait.timeLimit(.minutes(3)),
         arguments: typesAsCoreIntegerAsByte, randomnesses
-    )   func randomAsByteHitsAllValuesInClosedRange(type: any SystemsInteger.Type, randomness: any Randomness) throws {
-        try  whereIs(type, randomness)
+    )   func randomAsByteHitsAllValuesInClosedRange(
+        type: any SystemsInteger.Type, randomness: any Randomness & Sendable
+    )   throws {
         
+        try  whereIs(type, randomness)
         func whereIs<T>(_ type: T.Type, _ randomness: consuming some Randomness) throws where T: SystemsInteger {
             var matches: Set<T> = []
             matches.reserveCapacity(T.all.count)

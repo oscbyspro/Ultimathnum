@@ -26,8 +26,7 @@ import TestKit
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryIntegerAsUnsigned, randomnesses
     )   func nextUpTo(
-        type: any UnsignedInteger.Type,
-        randomness: any Randomness
+        type: any UnsignedInteger.Type, randomness: any Randomness & Sendable
     )   throws {
         
         try  whereIs(type, randomness)
@@ -44,8 +43,7 @@ import TestKit
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryIntegerAsUnsigned, randomnesses
     )   func nextThrough(
-        type: any UnsignedInteger.Type,
-        randomness: any Randomness
+        type: any UnsignedInteger.Type, randomness: any Randomness & Sendable
     )   throws {
         
         try  whereIs(type, randomness)
@@ -66,8 +64,7 @@ import TestKit
         Tag.List.tags(.documentation, .generic, .random, .unofficial),
         arguments: typesAsSystemsIntegerAsUnsigned, fuzzers
     )   func nextIsSimilarToFillAsSystemsInteger(
-        type: any SystemsIntegerAsUnsigned.Type,
-        randomness: FuzzerInt
+        type: any SystemsIntegerAsUnsigned.Type, randomness: FuzzerInt
     )   throws {
         
         try  whereIs(type)
@@ -93,8 +90,7 @@ import TestKit
         Tag.List.tags(.documentation, .generic, .random, .unofficial),
         arguments: typesAsSystemsIntegerAsUnsigned, fuzzers
     )   func nextUpToIsSimilarToNextThroughAsSystemsInteger(
-        type: any SystemsIntegerAsUnsigned.Type,
-        randomness: FuzzerInt
+        type: any SystemsIntegerAsUnsigned.Type, randomness: FuzzerInt
     )   throws {
         
         try  whereIs(type)

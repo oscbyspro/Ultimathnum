@@ -28,30 +28,22 @@ import TestKit
 /// - TODO: Test `StdlibInt` forwarding in generic `BinaryInteger` tests.
 ///
 @Suite struct StdlibIntTestsOnIntegers {
-    
+        
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt/magnitude", .serialized, arguments: [
-        
-        (-2 as StdlibInt, 2 as StdlibInt),
-        (-1 as StdlibInt, 1 as StdlibInt),
-        ( 0 as StdlibInt, 0 as StdlibInt),
-        ( 1 as StdlibInt, 1 as StdlibInt),
-        ( 2 as StdlibInt, 2 as StdlibInt),
-        
-    ] as [(StdlibInt, StdlibInt)])
-    func magnitude(instance: StdlibInt, expectation: StdlibInt) {
-        #expect(instance.magnitude == expectation)
-    }
-    
-    @Test("StdlibInt/magnitude - [forwarding][entropic]", arguments: fuzzers)
-    func magnitude(randomness: consuming FuzzerInt) {
+    @Test(
+        "StdlibInt/integers: magnitude",
+        Tag.List.tags(.forwarding, .random),
+        arguments: fuzzers
+    )   func magnitude(
+        randomness: consuming FuzzerInt
+    )   throws {
         for _ in 0 ..< 32 {
             let random = IXL.entropic(size: 256, using: &randomness)
             let expectation = IXL(random.magnitude())
-            #expect(StdlibInt(random).magnitude == StdlibInt(expectation))
+            try #require(StdlibInt(random).magnitude == StdlibInt(expectation))
         }
     }
     
@@ -59,70 +51,84 @@ import TestKit
     // MARK: Tests x Swift.BinaryInteger
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt.init(some Swift.BinaryInteger)", .serialized, arguments: [
+    @Test(
+        "StdlibInt/integers: init(some Swift.BinaryInteger)",
+        Tag.List.tags(.forwarding),
+        ParallelizationTrait.serialized,
+        arguments: Array<(any Swift.BinaryInteger & Sendable, StdlibInt)>([
         
-        (  Int8.min,               -0x80 as StdlibInt),
-        (  Int8.max,                0x7f as StdlibInt),
-        ( UInt8.min,                0x00 as StdlibInt),
-        ( UInt8.max,                0xff as StdlibInt),
-        ( Int16.min,             -0x8000 as StdlibInt),
-        ( Int16.max,              0x7fff as StdlibInt),
-        (UInt16.min,              0x0000 as StdlibInt),
-        (UInt16.max,              0xffff as StdlibInt),
-        ( Int32.min,         -0x80000000 as StdlibInt),
-        ( Int32.max,          0x7fffffff as StdlibInt),
-        (UInt32.min,          0x00000000 as StdlibInt),
-        (UInt32.max,          0xffffffff as StdlibInt),
-        ( Int64.min, -0x8000000000000000 as StdlibInt),
-        ( Int64.max,  0x7fffffffffffffff as StdlibInt),
-        (UInt64.min,  0x0000000000000000 as StdlibInt),
-        (UInt64.max,  0xffffffffffffffff as StdlibInt),
+        (  Int8.min as any (Swift.BinaryInteger & Sendable),               -0x80 as StdlibInt),
+        (  Int8.max as any (Swift.BinaryInteger & Sendable),                0x7f as StdlibInt),
+        ( UInt8.min as any (Swift.BinaryInteger & Sendable),                0x00 as StdlibInt),
+        ( UInt8.max as any (Swift.BinaryInteger & Sendable),                0xff as StdlibInt),
+        ( Int16.min as any (Swift.BinaryInteger & Sendable),             -0x8000 as StdlibInt),
+        ( Int16.max as any (Swift.BinaryInteger & Sendable),              0x7fff as StdlibInt),
+        (UInt16.min as any (Swift.BinaryInteger & Sendable),              0x0000 as StdlibInt),
+        (UInt16.max as any (Swift.BinaryInteger & Sendable),              0xffff as StdlibInt),
+        ( Int32.min as any (Swift.BinaryInteger & Sendable),         -0x80000000 as StdlibInt),
+        ( Int32.max as any (Swift.BinaryInteger & Sendable),          0x7fffffff as StdlibInt),
+        (UInt32.min as any (Swift.BinaryInteger & Sendable),          0x00000000 as StdlibInt),
+        (UInt32.max as any (Swift.BinaryInteger & Sendable),          0xffffffff as StdlibInt),
+        ( Int64.min as any (Swift.BinaryInteger & Sendable), -0x8000000000000000 as StdlibInt),
+        ( Int64.max as any (Swift.BinaryInteger & Sendable),  0x7fffffffffffffff as StdlibInt),
+        (UInt64.min as any (Swift.BinaryInteger & Sendable),  0x0000000000000000 as StdlibInt),
+        (UInt64.max as any (Swift.BinaryInteger & Sendable),  0xffffffffffffffff as StdlibInt),
         
-    ] as [(any Swift.BinaryInteger, StdlibInt)])
-    func initSwiftBinaryInteger(source: any Swift.BinaryInteger, destination: StdlibInt) throws {
-        try Ɣexpect(source, is: destination)
+    ])) func initSwiftBinaryInteger(
+        source: any Swift.BinaryInteger & Sendable, destination: StdlibInt
+    )   throws {
+        try Ɣrequire(source, is: destination)
     }
     
-    @Test("StdlibInt.init(some Swift.BinaryInteger) - [entropic]", arguments: fuzzers)
-    func initSwiftBinaryInteger(randomness: consuming FuzzerInt) throws {
+    @Test(
+        "StdlibInt/integes: init(some Swift.BinaryInteger)",
+        Tag.List.tags(.forwarding, .random),
+        arguments: fuzzers
+    )   func initSwiftBinaryInteger(
+        randomness: consuming FuzzerInt
+    )   throws {
         for _ in 0 ..<   conditional(debug: 032, release: 1024) {
             let random = IXL.entropic(size: 256, using: &randomness)
-            #expect(IXL(StdlibInt(random))  ==   random)
-            try Ɣexpect(StdlibInt(random),  is:  StdlibInt(random))
+            try #require(IXL(StdlibInt(random)) == random)
+            try Ɣrequire(StdlibInt(random), is: StdlibInt(random))
         }
     }
     
-    func Ɣexpect<T>(
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    func Ɣrequire<T>(
         _  source: T,
         is destination: StdlibInt,
         at location: SourceLocation = #_sourceLocation
     )   throws where T: Swift.BinaryInteger {
         
-        #expect(StdlibInt(                    source) == destination, sourceLocation: location)
-        #expect(StdlibInt(exactly:            source) == destination, sourceLocation: location)
-        #expect(StdlibInt(clamping:           source) == destination, sourceLocation: location)
-        #expect(StdlibInt(truncatingIfNeeded: source) == destination, sourceLocation: location)
-        #expect(StdlibInt(InfiniInt<IX>(destination)) == destination, sourceLocation: location)
+        try #require(StdlibInt(                    source) == destination, sourceLocation: location)
+        try #require(StdlibInt(exactly:            source) == destination, sourceLocation: location)
+        try #require(StdlibInt(clamping:           source) == destination, sourceLocation: location)
+        try #require(StdlibInt(truncatingIfNeeded: source) == destination, sourceLocation: location)
+        try #require(StdlibInt(InfiniInt<IX>(destination)) == destination, sourceLocation: location)
         
         if  T.isSigned == StdlibInt.isSigned, destination.bitWidth <= source.bitWidth {
-            #expect(T(                    destination)  == source, sourceLocation: location)
-            #expect(T(exactly:            destination)! == source, sourceLocation: location)
-            #expect(T(clamping:           destination)  == source, sourceLocation: location)
-            #expect(T(truncatingIfNeeded: destination)  == source, sourceLocation: location)
+            try #require(T(                    destination)  == source, sourceLocation: location)
+            try #require(T(exactly:            destination)! == source, sourceLocation: location)
+            try #require(T(clamping:           destination)  == source, sourceLocation: location)
+            try #require(T(truncatingIfNeeded: destination)  == source, sourceLocation: location)
         }
         
         description: do {
             let radix10 = destination.description(as:     .decimal)
             let radix16 = destination.description(as: .hexadecimal)
             
-            #expect(radix10 ==      source.description,        sourceLocation: location)
-            #expect(radix10 == destination.description,        sourceLocation: location)
-            #expect(radix10 == String(destination, radix: 10), sourceLocation: location)
-            #expect(radix16 == String(destination, radix: 16), sourceLocation: location)
+            try #require(radix10 ==      source.description,        sourceLocation: location)
+            try #require(radix10 == destination.description,        sourceLocation: location)
+            try #require(radix10 == String(destination, radix: 10), sourceLocation: location)
+            try #require(radix16 == String(destination, radix: 16), sourceLocation: location)
             
-            #expect(    StdlibInt(radix10) ==                   destination, sourceLocation: location)
-            #expect(try StdlibInt(radix10, as:     .decimal) == destination, sourceLocation: location)
-            #expect(try StdlibInt(radix16, as: .hexadecimal) == destination, sourceLocation: location)
+            try #require(    StdlibInt(radix10) ==                   destination, sourceLocation: location)
+            try #require(try StdlibInt(radix10, as:     .decimal) == destination, sourceLocation: location)
+            try #require(try StdlibInt(radix16, as: .hexadecimal) == destination, sourceLocation: location)
         }
     }
 }

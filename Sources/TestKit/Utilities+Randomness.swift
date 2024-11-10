@@ -11,13 +11,21 @@ import CoreKit
 import RandomIntKit
 
 //*============================================================================*
-// MARK: * Global x Randomness
+// MARK: * Utilities x Randomness
 //*============================================================================*
 
-public let random = RandomInt()
-
-public let fuzzer = FuzzerInt.random()
-
-public let fuzzers: [FuzzerInt] = [fuzzer]
-
-public let randomnesses: [any Randomness & Sendable] = [random, fuzzer]
+extension FuzzerInt {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func random() -> Self {
+        var randomness = RandomInt()
+        return Self.random(using: &randomness)
+    }
+    
+    @inlinable public static func random(using randomness: inout some Randomness) -> Self {
+        Self(seed: randomness.next())
+    }
+}

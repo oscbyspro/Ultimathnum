@@ -22,12 +22,14 @@ import TestKit
     // MARK: Tests x Metadata
     //=------------------------------------------------------------------------=
     
-    static let regex: Regex = #/^(?<sign>\+|-)?(?<mask>#|&)?(?<body>[0-9A-Za-z]+)$/#
-    
     static let coders: [TextInt] = (U8(2)...36).reduce(into: []) {
         let coder = TextInt.radix($1)
         $0.append(coder.lowercased())
         $0.append(coder.uppercased())
+    }
+    
+    static var regex: Regex<(Substring, sign: Substring?, mask: Substring?, body: Substring)> {
+        #/^(?<sign>\+|-)?(?<mask>#|&)?(?<body>[0-9A-Za-z]+)$/#
     }
     
     //=------------------------------------------------------------------------=
