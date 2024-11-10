@@ -602,39 +602,6 @@ import TestKit
         func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsSigned {
             for _ in 0 ..< conditional(debug: 32, release: 256) {
                 let divisor   = Nonzero(T.random(in: T.negatives)!)
-                let quotient  = T.max
-                let remainder = divisor.value + 1
-                var dividend  = divisor.value.multiplication(quotient).plus(Doublet(remainder))
-                var division  = T.division(dividend.value, by: divisor) as Fallible<Division<T, T>>
-                
-                try #require(dividend.error == false)
-                try #require(division.error == false)
-                try #require(division.value.quotient  == quotient )
-                try #require(division.value.remainder == remainder)
-                
-                dividend = dividend.value.minus(Doublet(T.lsb))
-                division = T.division(dividend.value, by: divisor)
-                
-                try #require(dividend.error == false)
-                try #require(division.error == true)
-                try #require(division.value.quotient == T.min)
-                try #require(division.value.remainder .isZero)
-            }
-        }
-    }
-    
-    @Test(
-        "BinaryInteger/division/edge-cases/2-by-1: edges of (+) by (-)",
-        Tag.List.tags(.generic, .important, .random),
-        arguments: typesAsSystemsIntegerAsSigned, fuzzers
-    )   func edgesOfNegativeByNegative(
-        type: any SystemsIntegerAsSigned.Type, randomness: consuming FuzzerInt
-    )   throws {
-        
-        try  whereIs(type)
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsSigned {
-            for _ in 0 ..< conditional(debug: 32, release: 256) {
-                let divisor   = Nonzero(T.random(in: T.negatives)!)
                 let quotient  = T.min
                 let remainder = T(-1) - divisor.value
                 var dividend  = divisor.value.multiplication(quotient).plus(Doublet(remainder))
@@ -651,6 +618,39 @@ import TestKit
                 try #require(dividend.error == false)
                 try #require(division.error == true)
                 try #require(division.value.quotient == T.max)
+                try #require(division.value.remainder .isZero)
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/division/edge-cases/2-by-1: edges of (-) by (-)",
+        Tag.List.tags(.generic, .important, .random),
+        arguments: typesAsSystemsIntegerAsSigned, fuzzers
+    )   func edgesOfNegativeByNegative(
+        type: any SystemsIntegerAsSigned.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsSigned {
+            for _ in 0 ..< conditional(debug: 32, release: 256) {
+                let divisor   = Nonzero(T.random(in: T.negatives)!)
+                let quotient  = T.max
+                let remainder = divisor.value + 1
+                var dividend  = divisor.value.multiplication(quotient).plus(Doublet(remainder))
+                var division  = T.division(dividend.value, by: divisor) as Fallible<Division<T, T>>
+                
+                try #require(dividend.error == false)
+                try #require(division.error == false)
+                try #require(division.value.quotient  == quotient )
+                try #require(division.value.remainder == remainder)
+                
+                dividend = dividend.value.minus(Doublet(T.lsb))
+                division = T.division(dividend.value, by: divisor)
+                
+                try #require(dividend.error == false)
+                try #require(division.error == true)
+                try #require(division.value.quotient == T.min)
                 try #require(division.value.remainder .isZero)
             }
         }
