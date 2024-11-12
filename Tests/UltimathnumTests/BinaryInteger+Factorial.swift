@@ -178,18 +178,18 @@ import TestKit
         }
         
         for type in typesAsSystemsIntegerAsUnsigned {
-            AsUnsignedInteger(type)
+            whereIsUnsigned(type)
         }
         
         whereIs(IXL.self)
         whereIs(UXL.self)
-        AsUnsignedInteger(UXL.self)
+        whereIsUnsigned(UXL.self)
                 
         func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
             #expect(T(clamping: index).factorial() as Optional == T.exactly(element))
         }
                 
-        func AsUnsignedInteger<T>(_ type: T.Type) where T: UnsignedInteger {
+        func whereIsUnsigned<T>(_ type: T.Type) where T: UnsignedInteger {
             #expect(T(clamping: index).factorial() as Fallible == T.exactly(element))
         }
     }

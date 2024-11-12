@@ -38,28 +38,32 @@ import TestKit
     }
     
     static let metadata: [Metadata] = [
-        Metadata(type: I8  .self, low: 0, high: 10),
-        Metadata(type: U8  .self, low: 0, high: 12),
-        Metadata(type: I16 .self, low: 0, high: 22),
-        Metadata(type: U16 .self, low: 0, high: 23),
-        Metadata(type: I32 .self, low: 0, high: 45),
-        Metadata(type: U32 .self, low: 0, high: 46),
-        Metadata(type: I64 .self, low: 0, high: 91),
-        Metadata(type: U64 .self, low: 0, high: 92),
+        Metadata(type: I8  .self, low: -11, high: 10),
+        Metadata(type: U8  .self, low:   0, high: 12),
+        Metadata(type: I16 .self, low: -23, high: 22),
+        Metadata(type: U16 .self, low:   0, high: 23),
+        Metadata(type: I32 .self, low: -46, high: 45),
+        Metadata(type: U32 .self, low:   0, high: 46),
+        Metadata(type: I64 .self, low: -92, high: 91),
+        Metadata(type: U64 .self, low:   0, high: 92),
         
-        Metadata(type: I8x2.self, low: 0, high: 22),
-        Metadata(type: U8x2.self, low: 0, high: 23),
-        Metadata(type: I8x4.self, low: 0, high: 45),
-        Metadata(type: U8x4.self, low: 0, high: 46),
-        Metadata(type: I8x8.self, low: 0, high: 91),
-        Metadata(type: U8x8.self, low: 0, high: 92),
+        Metadata(type: I8x2.self, low: -23, high: 22),
+        Metadata(type: U8x2.self, low:   0, high: 23),
+        Metadata(type: I8x4.self, low: -46, high: 45),
+        Metadata(type: U8x4.self, low:   0, high: 46),
+        Metadata(type: I8x8.self, low: -92, high: 91),
+        Metadata(type: U8x8.self, low:   0, high: 92),
         
-        Metadata(type: I8L .self, low: 0, high: nil),
-        Metadata(type: U8L .self, low: 0, high: nil)
+        Metadata(type: I8L .self, low: nil, high: nil),
+        Metadata(type: U8L .self, low:   0, high: nil)
     ]
     
     static let metadataAsSystemsInteger = metadata.filter {
-        !$0.type.isArbitrary
+        $0.type.isArbitrary == false
+    }
+    
+    static let metadataAsMaximalInteger = metadata.filter {
+        $0.type.isMaximal
     }
     
     //=------------------------------------------------------------------------=
@@ -74,8 +78,9 @@ import TestKit
         
         try  whereIs(metadata.type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
-            try #require(Fibonacci<T>(      ).components() == (0, 0, 1))
-            try #require(Fibonacci<T>(T.zero).components() == (0, 0, 1))
+            let components = Indexacci<T>(minor: 0, major: 1, index: 0)
+            try #require(try #require(Fibonacci<T>(      )).components() == components)
+            try #require(try #require(Fibonacci<T>(T.zero)).components() == components)
         }
     }
     
@@ -87,11 +92,40 @@ import TestKit
         
         try  whereIs(metadata.type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
-            let fibonacci = try Fibonacci<T>( 4)
-            try #require(fibonacci.index   == 4)
-            try #require(fibonacci.element == 3)
-            try #require(fibonacci.next    == 5)
-            try #require(fibonacci.components() == (4, 3, 5))
+            let instance = try #require(Fibonacci<T>(4))
+            let components = Indexacci<T>(minor: 3, major: 5, index: 4)
+            try #require(instance.index == 4)
+            try #require(instance.minor == 3)
+            try #require(instance.major == 5)
+            try #require(instance.components() == components)
+        }
+    }
+}
+
+//*============================================================================*
+// MARK: * Fibonacci x Edge Cases
+//*============================================================================*
+
+@Suite struct FibonacciEdgeCase {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "Fibonacci/edge-cases: from infinite index is nil",
+        Tag.List.tags(.generic, .random),
+        arguments: FibonacciTests.metadataAsMaximalInteger, fuzzers
+    )   func fromInfiniteIndexIsNil(
+        metadata: FibonacciTests.Metadata, randomness: consuming FuzzerInt
+    )   throws {
+        
+        try  whereIs(metadata.type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            let index = T.entropic(size: 256, as: Domain.natural, using: &randomness).toggled()
+            try #require(index.isInfinite)
+            try #require(Fibonacci<T>(index) == nil)
+            try #require(T.fibonacci (index) == nil)
         }
     }
 }

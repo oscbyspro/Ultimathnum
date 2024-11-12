@@ -24,9 +24,9 @@ final class FibonacciBenchmarks: XCTestCase {
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    static let fib1e6 = try! Fibonacci<UXL>(1_000_000)
-    static let fib1e6r10 = fib1e6.element.description(as:     .decimal)
-    static let fib1e6r16 = fib1e6.element.description(as: .hexadecimal)
+    static let fib1e6 = IXL.fibonacci(1_000_000)
+    static let fib1e6r10 = fib1e6.description(as:     .decimal)
+    static let fib1e6r16 = fib1e6.description(as: .hexadecimal)
     
     //=------------------------------------------------------------------------=
     // MARK: Initialization
@@ -39,12 +39,12 @@ final class FibonacciBenchmarks: XCTestCase {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests x UXL
+    // MARK: Tests x IXL
     //=------------------------------------------------------------------------=
     
-    func testFibonacciUXL1e5() throws {
-        let index:   UXL = blackHoleIdentity(100_000)
-        let element: UXL = try Fibonacci<UXL>(index).element
+    func testFibonacciIXL1e5() throws {
+        let index:   IXL = blackHoleIdentity(100_000)
+        let element: IXL = IXL.fibonacci(index)
         XCTAssertEqual(element.entropy(), Count(69_425))
     }
     
@@ -53,9 +53,9 @@ final class FibonacciBenchmarks: XCTestCase {
     ///     0.04 seconds
     ///     0.02 seconds after (#84)
     ///
-    func testFibonacciUXL1e6() throws {
-        let index:   UXL = blackHoleIdentity(1_000_000)
-        let element: UXL = try Fibonacci<UXL>(index).element
+    func testFibonacciIXL1e6() throws {
+        let index:   IXL = blackHoleIdentity(1_000_000)
+        let element: IXL = IXL.fibonacci(index)
         XCTAssertEqual(element.entropy(), Count(694_242))
     }
     
@@ -64,9 +64,9 @@ final class FibonacciBenchmarks: XCTestCase {
     ///     1.65 seconds
     ///     0.50 seconds after (#84)
     ///
-    func testFibonacciUXL1e7() throws {
-        let index:   UXL = blackHoleIdentity(10_000_000)
-        let element: UXL = try Fibonacci<UXL>(index).element
+    func testFibonacciIXL1e7() throws {
+        let index:   IXL = blackHoleIdentity(10_000_000)
+        let element: IXL = IXL.fibonacci(index)
         XCTAssertEqual(element.entropy(), Count(6_942_419))
     }
     
@@ -75,31 +75,31 @@ final class FibonacciBenchmarks: XCTestCase {
     /// - `0.99 seconds`
     /// - `0.30 seconds` with `Divider21`
     ///
-    func testFibonacciUXL1e6ToTextAsDecimal() throws {
-        let data = blackHoleIdentity(Self.fib1e6.element)
+    func testFibonacciIXL1e6ToTextAsDecimal() throws {
+        let data = blackHoleIdentity(Self.fib1e6)
         let format = blackHoleIdentity(TextInt.decimal)
         let text = data.description(as: format)
         XCTAssertEqual(text.utf8.count, 208988)
     }
     
-    func testFibonacciUXL1e6ToTextAsHexadecimal() throws {
-        let data = blackHoleIdentity(Self.fib1e6.element)
+    func testFibonacciIXL1e6ToTextAsHexadecimal() throws {
+        let data = blackHoleIdentity(Self.fib1e6)
         let format = blackHoleIdentity(TextInt.hexadecimal)
         let text = data.description(as: format)
         XCTAssertEqual(text.utf8.count, 173561)
     }
     
-    func testFibonacciUXL1e6FromTextAsDecimal() throws {
+    func testFibonacciIXL1e6FromTextAsDecimal() throws {
         let text = blackHoleIdentity(Self.fib1e6r10)
         let format = blackHoleIdentity(TextInt.decimal)
-        let data = try UXL.init(text, as: format)
-        XCTAssertEqual(data, Self.fib1e6.element)
+        let data = try IXL.init(text, as: format)
+        XCTAssertEqual(data, Self.fib1e6)
     }
     
-    func testFibonacciUXL1e6FromTextAsHexadecimal() throws {
+    func testFibonacciIXL1e6FromTextAsHexadecimal() throws {
         let text = blackHoleIdentity(Self.fib1e6r16)
         let format = blackHoleIdentity(TextInt.hexadecimal)
-        let data = try UXL.init(text, as: format)
-        XCTAssertEqual(data, Self.fib1e6.element)
+        let data = try IXL.init(text, as: format)
+        XCTAssertEqual(data, Self.fib1e6)
     }
 }

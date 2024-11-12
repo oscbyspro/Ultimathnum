@@ -13,210 +13,149 @@ import CoreKit
 // MARK: * Fibonacci
 //*============================================================================*
 
-/// The Fibonacci [sequence](https://en.wikipedia.org/wiki/fibonacci_sequence)\.
+/// The [Fibonacci][info] sequence.
 ///
-/// It is represented by an index and two consecutive elements.
+///     F(x) == F(x-1) + F(x-2) where F(0) == 0 and F(1) == 1
 ///
-/// ```swift
-/// Fibonacci(0) // (index: 0, element: 0, next: 1)
-/// Fibonacci(1) // (index: 1, element: 1, next: 1)
-/// Fibonacci(2) // (index: 2, element: 1, next: 2)
-/// Fibonacci(3) // (index: 3, element: 2, next: 3)
-/// Fibonacci(4) // (index: 4, element: 3, next: 5)
-/// Fibonacci(5) // (index: 5, element: 5, next: 8)
-/// ```
-///
-/// ### Fast double-and-add algorithm
-///
-/// The fast double-and-add algorithm is powered by this observation:
+/// It is represented by two consecutive elements and an index.
 ///
 /// ```swift
-/// f(x + 1 + 0) == f(x) * 0000 + f(x + 1) * 00000001
-/// f(x + 1 + 1) == f(x) * 0001 + f(x + 1) * 00000001
-/// f(x + 1 + 2) == f(x) * 0001 + f(x + 1) * 00000002
-/// f(x + 1 + 3) == f(x) * 0002 + f(x + 1) * 00000003
-/// f(x + 1 + 4) == f(x) * 0003 + f(x + 1) * 00000005
-/// f(x + 1 + 5) == f(x) * 0005 + f(x + 1) * 00000008
-/// -------------------------------------------------
-/// f(x + 1 + y) == f(x) * f(y) + f(x + 1) * f(y + 1)
+/// Fibonacci<I8>(-12) // (nil)
+/// Fibonacci<I8>(-11) // (minor:  89, major: -55, index: -11)
+/// Fibonacci<I8>(-10) // (minor: -55, major:  34, index: -10)
+/// Fibonacci<I8>( -9) // (minor:  34, major: -21, index:  -9)
+/// Fibonacci<I8>( -8) // (minor: -21, major:  13, index:  -8)
+/// Fibonacci<I8>( -7) // (minor:  13, major:  -8, index:  -7)
+/// Fibonacci<I8>( -6) // (minor:  -8, major:   5, index:  -6)
+/// Fibonacci<I8>( -5) // (minor:   5, major:  -3, index:  -5)
+/// Fibonacci<I8>( -4) // (minor:  -3, major:   2, index:  -4)
+/// Fibonacci<I8>( -3) // (minor:   2, major:  -1, index:  -3)
+/// Fibonacci<I8>( -2) // (minor:  -1, major:   1, index:  -2)
+/// Fibonacci<I8>( -1) // (minor:   1, major:   0, index:  -1)
+/// Fibonacci<I8>(  0) // (minor:   0, major:   1, index:   0)
+/// Fibonacci<I8>(  1) // (minor:   1, major:   1, index:   1)
+/// Fibonacci<I8>(  2) // (minor:   1, major:   2, index:   2)
+/// Fibonacci<I8>(  3) // (minor:   2, major:   3, index:   3)
+/// Fibonacci<I8>(  4) // (minor:   3, major:   5, index:   4)
+/// Fibonacci<I8>(  5) // (minor:   5, major:   8, index:   5)
+/// Fibonacci<I8>(  6) // (minor:   8, major:  13, index:   6)
+/// Fibonacci<I8>(  7) // (minor:  13, major:  21, index:   7)
+/// Fibonacci<I8>(  8) // (minor:  21, major:  34, index:   8)
+/// Fibonacci<I8>(  9) // (minor:  34, major:  55, index:   9)
+/// Fibonacci<I8>( 10) // (minor:  55, major:  89, index:  10)
+/// Fibonacci<I8>( 11) // (nil)
+///
+/// Fibonacci<U8>( 11) // (minor:  89, major: 144, index:  11)
+/// Fibonacci<U8>( 12) // (minor: 144, major: 233, index:  12)
+/// Fibonacci<U8>( 13) // (nil)
 /// ```
 ///
-/// Going the other direction is a bit more complicated, but not much:
+/// [info]: https://en.wikipedia.org/wiki/fibonacci_sequence
 ///
-/// ```swift
-/// f(x - 0) == + f(x) * 00000001 - f(x + 1) * 0000
-/// f(x - 1) == - f(x) * 00000001 + f(x + 1) * 0001
-/// f(x - 2) == + f(x) * 00000002 - f(x + 1) * 0001
-/// f(x - 3) == - f(x) * 00000003 + f(x + 1) * 0002
-/// f(x - 4) == + f(x) * 00000005 - f(x + 1) * 0003
-/// f(x - 5) == - f(x) * 00000008 + f(x + 1) * 0005
-/// -----------------------------------------------
-/// f(x - y) == ± f(x) * f(y + 1) ± f(x + 1) * f(y)
-/// ```
-///
-/// ### Un/signed vs Magnitude
-///
-/// It permits both signed and unsigned values for testing purposes.
-///
-@frozen public struct Fibonacci<Value> where Value: BinaryInteger {
+@frozen public struct Fibonacci<Element>: CustomStringConvertible, Equatable where Element: BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
-    @usableFromInline var i: Value
-    @usableFromInline var a: Value
-    @usableFromInline var b: Value
+    @usableFromInline var base: Indexacci<Element>
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Creates the first sequence pair.
     @inlinable public init() {
-        self.i = 0
-        self.a = 0
-        self.b = 1
+        self.base = Indexacci.fibonacci()
     }
     
-    /// Creates the sequence pair at the given `index`.
-    @inlinable public init(_ index: Value) throws {
-        if  Bool(index.appendix) {
-            throw Value.isSigned ? Error.indexOutOfBounds : Error.overflow
-        }
-        
-        self.init()
-        
-        try index.withUnsafeBinaryIntegerBody(as: U8.self) {
-            for i in (0 ..< IX(raw: $0.nondescending(Bit.zero))).reversed() {
-                try self.double()
-                
-                if  $0[unchecked: i &>> 3] &>> U8(load: i) & 1 != 0 {
-                    try self.increment()
-                }
-            }
-        }
+    @inlinable public init(unsafe base: Indexacci<Element>) {
+        self.base = base
     }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// The sequence element at `index`.
+    @inlinable public var minor: Element {
+        self.base.tuple.minor
+    }
+    
+    /// The sequence element at `index + 1`.
+    @inlinable public var major: Element {
+        self.base.tuple.major
+    }
+    
     /// The sequence `index`.
-    @inlinable public var index: Value {
-        self.i
+    @inlinable public var index: Element {
+        self.base.index
     }
     
-    /// The sequence `element` at `index`.
-    @inlinable public var element: Value {
-        self.a
-    }
-    
-    /// The sequence `element` at `index + 1`.
-    @inlinable public var next: Value {
-        self.b
-    }
-    
-    @inlinable public consuming func components() -> (index: Value, element: Value, next: Value) {
-        (index: self.i, element: self.a, next: self.b)
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    /// Forms the sequence pair at `index + 1`.
-    @inlinable public mutating func increment() throws {
-        let ix = try i.plus(1).prune(Error.overflow)
-        let bx = try a.plus(b).prune(Error.overflow)
-        
-        self.i = consume ix
-        self.a = b
-        self.b = consume bx
-    }
-    
-    /// Forms the sequence pair at `index - 1`.
-    @inlinable public mutating func decrement() throws {
-        let ix = try i.minus(1).veto({$0.isNegative}).prune(Error.indexOutOfBounds)
-        let ax = try b.minus(a).prune(Error.overflow)
-        
-        self.i = consume ix
-        self.b = a
-        self.a = consume ax
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
-    /// Forms the sequence pair at `index * 2`.
-    @inlinable public mutating func double() throws {
-        let ex = Self.Error.overflow
-        let ix = try i.doubled().prune(ex)
-        let ax = try b.doubled().prune(ex).minus(a).prune(ex).times(a).prune(ex)
-        let bx = try b.squared().prune(ex).plus(a.squared().prune(ex)).prune(ex)
-        
-        self.i = consume ix
-        self.a = consume ax
-        self.b = consume bx
-    }
-    
-    /// Forms the sequence pair at `index + x.index`.
-    @inlinable public mutating func increment(by x: borrowing Self) throws {
-        let ex = Self.Error.overflow
-        let ix = try i.plus (x.i).prune(ex)
-        let ax = try a.times(x.b).prune(ex).plus(b.minus(a).prune(ex).times(x.a).prune(ex)).prune(ex)
-        let bx = try b.times(x.b).prune(ex).plus(((((((((a   )))))))).times(x.a).prune(ex)).prune(ex)
-
-        self.i = consume ix
-        self.a = consume ax
-        self.b = consume bx
-    }
-    
-    /// Forms the sequence pair at `index - x.index`.
-    @inlinable public mutating func decrement(by x: borrowing Self) throws {
-        let ix = try i.minus(x.i).veto({ $0.isNegative }).prune(Error.indexOutOfBounds)
-        
-        var a0 = b.times(x.a).value
-        var a1 = a.times(x.b).value
-        var b0 = b.plus(a).value.times(x.a).value
-        var b1 = b.times(x.b).value
-        
-        if  Bool(x.i.lsb) {
-            Swift.swap(&a0, &a1)
-            Swift.swap(&b0, &b1)
-        }
-        
-        self.i = consume ix
-        self.a = a1.minus(a0).value
-        self.b = b1.minus(b0).value
-    }
-    
-    //*========================================================================*
-    // MARK: * Error
-    //*========================================================================*
-    
-    public enum Error: Swift.Error {
-        
-        /// Tried to form a sequence pair that cannot be represented.
-        case overflow
-        
-        /// Tried to form a sequence pair at an index less than zero.
-        case indexOutOfBounds
+    @inlinable public consuming func components() -> Indexacci<Element> {
+        self.base
     }
 }
 
-//=----------------------------------------------------------------------------=
-// MARK: + Text
-//=----------------------------------------------------------------------------=
+//*============================================================================*
+// MARK: * Fibonacci x Binary Integer
+//*============================================================================*
 
-extension Fibonacci: CustomStringConvertible {
+extension BinaryInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public var description: String {
-        String(describing: self.element)
+    /// Returns the `Fibonacci<Self>` sequence element at `index` and an `error` indicator, or `nil`.
+    ///
+    /// - Note: It ignores `major` element `error` indicators.
+    ///
+    /// ### Fibonacci
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    /// - Note: It produces `nil` if the `index` is `infinite`.
+    ///
+    @inlinable public static func fibonacci(_ index: consuming Self) -> Optional<Fallible<Self>> {
+        let major = index.isPositive
+        if  major {
+            index = index.decremented().value
+        }
+        
+        guard let result = Fibonacci.exactly(index, as: Tupleacci.self) else { return nil }
+        
+        if  major {
+            return result.map({ $0.major })
+        }   else {
+            return result.map({ $0.minor })
+        }
     }
+    
+    /// Returns the `Fibonacci<Self>` sequence element at `index` and an `error` indicator.
+    ///
+    /// - Note: It ignores `major` element `error` indicators.
+    ///
+    /// ### Fibonacci
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    /// - Note: It produces `nil` if the `index` is `infinite`.
+    ///
+    @inlinable public static func fibonacci(_ index: consuming Self) -> Fallible<Self> where Self: FiniteInteger {
+        (Self.fibonacci(index) as Optional).unchecked()
+    }
+    
+    /// Returns the `Fibonacci<Self>` sequence element at `index`.
+    ///
+    /// - Note: It ignores `major` element `error` indicators.
+    ///
+    /// ### Fibonacci
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    /// - Note: It produces `nil` if the `index` is `infinite`.
+    ///
+    @inlinable public static func fibonacci(_ index: consuming Self) -> Self where Self: ArbitraryInteger & SignedInteger {
+        (Self.fibonacci(index) as Fallible).unchecked()
+    }    
 }
