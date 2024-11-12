@@ -152,8 +152,8 @@ import CoreKit
     /// Forms the sequence pair at `index * 2`.
     @inlinable public mutating func double() throws {
         let ex = Self.Error.overflow
-        let ix = try i.times(2) .prune(ex)
-        let ax = try b.times(2) .prune(ex).minus(a).prune(ex).times(a).prune(ex)
+        let ix = try i.doubled().prune(ex)
+        let ax = try b.doubled().prune(ex).minus(a).prune(ex).times(a).prune(ex)
         let bx = try b.squared().prune(ex).plus(a.squared().prune(ex)).prune(ex)
         
         self.i = consume ix

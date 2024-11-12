@@ -25,9 +25,11 @@ import TestKit
         "BinaryInteger/addition: 0 ± x",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func additionOfZeroByRandom(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    )   func additionOfZeroByRandom(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in IX.zero ..< conditional(debug: 64, release: 256) {
                 let a = T.zero
@@ -37,7 +39,7 @@ import TestKit
                 
                 try #require(c.value.plus (b) == a.veto(c.error))
                 try #require(d.value.minus(b) == a.veto(d.error))
-                try #require(d.value.minus(c.value).value == b.times(2).value)
+                try #require(d.value.minus(c.value).value == b.doubled().value)
                 
                 if  let c = c.optional(), let d = d.optional() {
                     Ɣexpect(c, equals: d, is: b.signum().negated())
@@ -50,9 +52,11 @@ import TestKit
         "BinaryInteger/addition: x ± y",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func subtractionOfRandomByRandom(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func subtractionOfRandomByRandom(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in IX.zero ..< conditional(debug: 64, release: 256) {
                 let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -67,7 +71,7 @@ import TestKit
                 try #require(b.veto(d.error) == d.value.minus(a))
                 
                 try #require(d.value.minus(c.value).value == b.plus (b).value)
-                try #require(d.value.minus(c.value).value == b.times(2).value)
+                try #require(d.value.minus(c.value).value == b.doubled().value)
             }
         }
     }
@@ -76,9 +80,11 @@ import TestKit
         "BinaryInteger/addition: x ± x",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func additionOfRandomBySelf(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func additionOfRandomBySelf(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in IX.zero ..< conditional(debug: 64, release: 256) {
                 let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -89,7 +95,16 @@ import TestKit
                 try #require(b.error == false)
                 
                 try #require(c == a.times(2))
+                try #require(c == a.doubled())
                 try #require(c.value.minus(a) == a.veto(c.error))
+                
+                if !T.isSigned, !a.msb.isZero {
+                    try #require(c.error)
+                }
+                
+                if  T.isSigned, a.descending(a.appendix) == Count(1) {
+                    try #require(c.error)
+                }
             }
         }
     }
@@ -98,9 +113,11 @@ import TestKit
         "BinaryInteger/addition: x ± 0 or 1",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func additionOfRandomByBool(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func additionOfRandomByBool(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in IX.zero ..< conditional(debug: 64, release: 256) {
                 let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -113,7 +130,7 @@ import TestKit
                 
                 try #require(c.value.incremented(b) == a.veto(c.error))
                 try #require(d.value.decremented(b) == a.veto(d.error))
-                try #require(d.value.minus(c.value).value == T(Bit(b)).times(2).value)
+                try #require(d.value.minus(c.value).value == T(Bit(b)).doubled().value)
                 
                 if  let c = c.optional(), let d = d.optional() {
                     Ɣexpect(c, equals: d, is: Signum(Bit(b)).negated())
@@ -126,9 +143,11 @@ import TestKit
         "BinaryInteger/addition: versus linear expression",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func additionVersusLinearExpression(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func additionVersusLinearExpression(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in IX.zero ..< conditional(debug: 16, release: 64) {
                 let base = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -201,9 +220,11 @@ import TestKit
         "BinaryInteger/addition/conveniences: 0 ± x",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func additionOfZeroByRandom(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func additionOfZeroByRandom(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 32 {
                 let a = T.zero
@@ -228,9 +249,11 @@ import TestKit
         "BinaryInteger/addition/conveniences: x ± 0",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func additionOfRandomByZero(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func additionOfRandomByZero(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 32 {
                 let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -249,9 +272,11 @@ import TestKit
         "BinaryInteger/addition/conveniences: x ± 0 or 1",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func additionOfRandomByZeroOrOne(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func additionOfRandomByZeroOrOne(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 32 {
                 let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -277,9 +302,11 @@ import TestKit
         "BinaryInteger/addition/conveniences: x ± y",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func additionOfRandomByRandom(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    )   func additionOfRandomByRandom(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 32 {
                 let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -299,9 +326,11 @@ import TestKit
         "BinaryInteger/addition/conveniences: -x as LenientInteger",
         Tag.List.tags(.generic, .random),
         arguments: typesAsArbitraryIntegerAsSigned, fuzzers
-    )   func additionInverseAsLenientInteger(type: any ArbitraryIntegerAsSigned.Type, randomness: consuming FuzzerInt) throws {
+    )   func additionInverseAsLenientInteger(
+        type: any ArbitraryIntegerAsSigned.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsSigned {
             for _ in 0 ..< 32 {
                 let a = T.entropic(size: 256, using: &randomness)
@@ -324,12 +353,35 @@ import TestKit
     }
     
     @Test(
+        "BinaryInteger/addition/conveniences: x + x as LenientInteger",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsArbitraryIntegerAsSigned, fuzzers
+    )   func additionOfRandomBySelfAsLenientInteger(
+        type: any ArbitraryIntegerAsSigned.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsSigned {
+            for _ in 0 ..< 32 {
+                let a = T.entropic(size: 256, using: &randomness)
+                let b = a.times(2).optional() as Optional<T>
+                
+                try #require(b == a.times(02) as T)
+                try #require(b == a.plus((a)) as T)
+                try #require(b == a.doubled() as T)
+            }
+        }
+    }
+    
+    @Test(
         "BinaryInteger/addition/conveniences: x ± y as LenientInteger",
         Tag.List.tags(.generic, .random),
         arguments: typesAsArbitraryIntegerAsSigned, fuzzers
-    )   func additionOfRandomByRandomAsLenientInteger(type: any ArbitraryIntegerAsSigned.Type, randomness: consuming FuzzerInt) throws {
+    )   func additionOfRandomByRandomAsLenientInteger(
+        type: any ArbitraryIntegerAsSigned.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsSigned {
             for _ in 0 ..< 32 {
                 let a = T.entropic(size: 256, using: &randomness)
@@ -345,9 +397,11 @@ import TestKit
         "BinaryInteger/addition/conveniences: x ± 0 or 1 as LenientInteger",
         Tag.List.tags(.generic, .random),
         arguments: typesAsArbitraryIntegerAsSigned, fuzzers
-    )   func additionOfRandomByZeroOrOneAsLenientInteger(type: any ArbitraryIntegerAsSigned.Type, randomness: consuming FuzzerInt) throws {
+    )   func additionOfRandomByZeroOrOneAsLenientInteger(
+        type: any ArbitraryIntegerAsSigned.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsSigned {
             for _ in 0 ..< 32 {
                 let a = T.entropic(size: 256, using: &randomness)

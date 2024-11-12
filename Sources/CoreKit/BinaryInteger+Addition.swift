@@ -151,6 +151,22 @@ extension BinaryInteger {
     @inlinable public consuming func decremented(_ condition: Bool = true) -> Fallible<Self> {
         self.minus(Self(Bit(condition)))
     }
+    
+    /// Returns `self + self` and an `error` indicator.
+    ///
+    /// ### Addition & Subtraction
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    @inlinable public consuming func doubled() -> Fallible<Self> {
+        if !Self.isArbitrary {
+            return self.times(2)
+            
+        }   else {
+            let error: Bool = ((self.isInfinite))
+            return self.up(Shift.one).veto(error)
+        }
+    }
 }
 
 //*============================================================================*
@@ -221,6 +237,16 @@ extension BinaryInteger where Self: ArbitraryInteger & SignedInteger {
     ///
     @inlinable public consuming func decremented(_ condition: Bool = true) -> Self {
         self.decremented(condition).unchecked()
+    }
+        
+    /// Returns `self + self`.
+    ///
+    /// ### Addition & Subtraction
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    @inlinable public consuming func doubled() -> Self {
+        self.doubled().unchecked()
     }
 }
 
