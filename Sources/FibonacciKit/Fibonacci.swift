@@ -52,7 +52,7 @@ import CoreKit
 ///
 /// [info]: https://en.wikipedia.org/wiki/fibonacci_sequence
 ///
-@frozen public struct Fibonacci<Element>: CustomStringConvertible, Equatable where Element: BinaryInteger {
+@frozen public struct Fibonacci<Element>: CustomStringConvertible, Hashable, Sendable where Element: BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: State

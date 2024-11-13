@@ -13,7 +13,7 @@ import CoreKit
 // MARK: * Indexacci
 //*============================================================================*
 
-@frozen public struct Indexacci<Element>: CustomStringConvertible, Equatable, Recoverable where Element: BinaryInteger {
+@frozen public struct Indexacci<Element>: CustomStringConvertible, Hashable, Recoverable, Sendable where Element: BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Metadata

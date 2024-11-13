@@ -13,7 +13,7 @@ import CoreKit
 // MARK: * Tupleacci
 //*============================================================================*
 
-@frozen public struct Tupleacci<Element>: CustomStringConvertible, Equatable, Recoverable where Element: BinaryInteger {
+@frozen public struct Tupleacci<Element>: CustomStringConvertible, Hashable, Recoverable, Sendable where Element: BinaryInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Metadata
