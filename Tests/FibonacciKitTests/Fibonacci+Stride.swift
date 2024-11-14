@@ -17,11 +17,11 @@ import TestKit
 //*============================================================================*
 
 @Suite struct FibonacciTestsOnStride {
-    
+
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
-    
+
     @Test(
         "Fibonacci/stride: for each (index, increment, decrement) in range",
         Tag.List.tags(.generic, .exhaustive),
@@ -29,56 +29,68 @@ import TestKit
     )   func forEachIndexIncrementDecrementInRange(
         metadata:  FibonacciTests.Metadata
     )   throws {
-        
+
         try  whereIs(metadata.type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             let arbitrary: IX = conditional(debug: 144, release: 369)
             let low:  IX = metadata.low  ?? -arbitrary
             let high: IX = metadata.high ??  arbitrary
-            var fibonacci = try #require(try Fibonacci(T(low)))
-            
-            scope: if let _ = metadata.low {
-                try #require(throws: Fibonacci<T>.Error.indexOutOfBounds) {
-                    try fibonacci.decrement()
-                }
+            var fibonacci = try #require(Fibonacci(T(low)))
+
+            if  let _ = metadata.low {
+                try #require(fibonacci.decremented() == nil)
                 
-                guard T.isSigned else { break scope }
-                try #require(throws: Fibonacci<T>.Error.indexOutOfBounds) {
-                    try Fibonacci(T(fibonacci.index - 1))
+                if  let index = fibonacci.index.decremented().optional() {
+                    try #require(Fibonacci(index) == nil)
                 }
             }
-            
+
             while fibonacci.index < high {
-                let (i, a, b) =  fibonacci.components()
-                try #require(try fibonacci.increment())
-                try #require(fibonacci.components() == (i + 1, b, b + a))
+                let minor = fibonacci.minor
+                let major = fibonacci.major
+                let index = fibonacci.index
+                fibonacci = try #require(fibonacci.incremented())
                 
-                let (indexed) = try Fibonacci(fibonacci.index)
-                try #require(fibonacci.components() == indexed.components())
-            }
-            
-            scope: if let _ = metadata.high {
-                try #require(throws: Fibonacci<T>.Error.overflow) {
-                    try fibonacci.increment()
-                }
+                let expectation = Indexacci(
+                    minor: major,
+                    major: major + minor,
+                    index: index + 1
+                )
                 
-                try #require(throws: Fibonacci<T>.Error.overflow) {
-                    try Fibonacci(T(fibonacci.index + 1))
+                try #require(expectation == fibonacci.components())
+                try #require(expectation == Fibonacci(expectation.index)?.components())
+            }
+
+            if  let _ = metadata.high {
+                try #require(fibonacci.incremented() == nil)
+                
+                if  let index = fibonacci.index.incremented().optional() {
+                    try #require(Fibonacci(index) == nil)
                 }
             }
-            
+
             while fibonacci.index > low {
-                let (i, a, b) =  fibonacci.components()
-                try #require(try fibonacci.decrement())
-                try #require(fibonacci.components() == (i - 1, b - a, a))
+                let minor = fibonacci.minor
+                let major = fibonacci.major
+                let index = fibonacci.index
+                fibonacci = try #require(fibonacci.decremented())
+                
+                let expectation = Indexacci(
+                    minor: major - minor,
+                    major: minor,
+                    index: index - 1
+                )
+                
+                try #require(expectation == fibonacci.components())
+                try #require(expectation == Fibonacci(expectation.index)?.components())
             }
         }
     }
-    
+
     //=------------------------------------------------------------------------=
     // MARK: Tests x Jump
     //=------------------------------------------------------------------------=
-    
+
     @Test(
         "Fibonacci/stride: random jump in range",
         Tag.List.tags(.generic, .random),
@@ -91,63 +103,43 @@ import TestKit
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             let low  = T(metadata.low  ?? -369)
             let high = T(metadata.high ??  369)
-            
+
             for _ in 0 ..< conditional(debug: 8, release: 32) {
                 let i = next()
-                
+
                 try #require((low...high).contains(i.0))
                 try #require((low...high).contains(i.1))
                 try #require((low...high).contains(i.2))
-                
-                let a = try #require(try Fibonacci(i.0))
-                let b = try #require(try Fibonacci(i.1))
-                let c = try #require(try Fibonacci(i.2))
-                
-                always: do {
-                    var x: Fibonacci<T> = a
-                    try #require(try x.increment(by: b))
-                    try #require(x.components() == c.components())
-                }
-                   
-                always: do {
-                    var x: Fibonacci<T> = b
-                    try #require(try x.increment(by: a))
-                    try #require(x.components() == c.components())
-                }
-                
-                always: do {
-                    var x: Fibonacci<T> = c
-                    try #require(try x.decrement(by: b))
-                    try #require(x.components() == a.components())
 
-                }
+                let a = try #require(Fibonacci(i.0))
+                let b = try #require(Fibonacci(i.1))
+                let c = try #require(Fibonacci(i.2))
                 
-                always: do {
-                    var x: Fibonacci<T> = c
-                    try #require(try x.decrement(by: a))
-                    try #require(x.components() == b.components())
-                }
+                try #require(a.incremented(by: b)?.components() == c.components())
+                try #require(b.incremented(by: a)?.components() == c.components())
+                try #require(c.decremented(by: a)?.components() == b.components())
+                try #require(c.decremented(by: b)?.components() == a.components())
             }
-            
+
             func next() -> (T, T, T) {
                 var a = low, b = high
-                
+
                 let i = T.random(in: a...b, using: &randomness)
-                
+
                 (a, b) = (
                     Swift.max(a, a.minus(i).optional() ?? a),
                     Swift.min(b, b.minus(i).optional() ?? b)
                 )
-                
+
                 let j = T.random(in: a...b, using: &randomness)
                 return (i, j, i + j)
             }
         }
     }
-    
+
     @Test(
         "Fibonacci/stride: random jump out of bounds throws error",
-        Tag.List.tags(.generic, .todo, .random),
+        Tag.List.tags(.generic, .random),
         arguments: FibonacciTests.metadataAsSystemsInteger, fuzzers
     )   func randomJumpOutOfBoundsThrowsError(
         metadata: FibonacciTests.Metadata, randomness: consuming FuzzerInt
@@ -157,47 +149,33 @@ import TestKit
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             let low  = try T(#require(metadata.low ))
             let high = try T(#require(metadata.high))
-            
+
             for _ in 0 ..< conditional(debug: 8, release: 32) {
                 let i = T.random(in: low...high, using: &randomness)
-                var a = try Fibonacci(i)
-                
+                let a = try #require(Fibonacci(i))
+
                 if  let k = (i+1).minus(low).optional(),  k <= high {
                     let j = T.random(in: k...high, using: &randomness)
-                    let b = try Fibonacci(j)
-                    
-                    try #require(throws: Fibonacci<T>.Error.indexOutOfBounds) {
-                        try a.decrement(by: b) // i - j < low
-                    }
+                    let b = try #require(Fibonacci(j))
+                    try #require(a.decremented(by: b) == nil, "i - j < low")
                 }
-                
+
                 if  let k = i.minus(high+1).optional(),  k >= low {
                     let j = T.random(in: low...k, using: &randomness)
-                    let b = try Fibonacci(j)
-                    
-                    try #require(low.isNegative, "todo: index < 0")
-                    try #require(throws: Fibonacci<T>.Error.overflow) {
-                        try a.decrement(by: b) // i - j > high
-                    }
+                    let b = try #require(Fibonacci(j))
+                    try #require(a.decremented(by: b) == nil, "i - j > high")
                 }
-                
+
                 if  let k = low.minus(i+1).optional(),   k >= low {
                     let j = T.random(in: low...k, using: &randomness)
-                    let b = try Fibonacci(j)
-                    
-                    try #require(low.isNegative, "todo: index < 0")
-                    try #require(throws: Fibonacci<T>.Error.indexOutOfBounds) {
-                        try a.decrement(by: b) // i + j < low
-                    }
+                    let b = try #require(Fibonacci(j))
+                    try #require(a.incremented(by: b) == nil, "i + j < low")
                 }
-                
+
                 if  let k = (high+1).minus(i).optional(), k <= high {
                     let j = T.random(in: k...high, using: &randomness)
-                    let b = try Fibonacci(j)
-                    
-                    try #require(throws: Fibonacci<T>.Error.overflow) {
-                        try a.increment(by: b) // i + j > high
-                    }
+                    let b = try #require(Fibonacci(j))
+                    try #require(a.incremented(by: b) == nil, "i + j > high")
                 }
             }
         }

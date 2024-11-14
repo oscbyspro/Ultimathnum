@@ -25,7 +25,7 @@ final class BinaryIntegerBenchmarksOnGeometry: XCTestCase {
     
     func testSquareRootsAsU64() {
         typealias T = U64
-                
+        
         for power: UX in 0 ..< 1_000_000 {
             blackHole(T(load: power).isqrt())
         }

@@ -38,15 +38,15 @@ import TestKit
             
             for _ in 0 ..< conditional(debug: 8, release: 32) {
                 let index = T.random(in: low...high, using: &randomness)
-                let fibonacci = try #require(try Fibonacci(index))
-                try #require(fibonacci.element.euclidean(fibonacci.next) == 1)
+                let fibonacci = try #require(Fibonacci(index))
+                try #require(fibonacci.minor.euclidean(fibonacci.major) == 1)
             }
         }
     }
     
     /// Generates random values to check the following invariant:
     ///
-    ///     f(a) * f(b) == (f(a+b+1) / f(a+1) - f(b+1)) * f(a+1) + f(a+b+1) % f(a+1)
+    ///     f(a) * f(b) == (f(a+b+1) / f(a+1) - f(b+1)) * f(a+1) + f(a+b+1) % f(a+1) where (a != -1)
     ///
     /// ### Calls: Fibonacci
     ///
@@ -75,9 +75,7 @@ import TestKit
             let arbitrary: IX = conditional(debug: 144, release: 369)
             let low   = T(metadata.low  ?? -arbitrary)
             let high  = T(metadata.high ??  arbitrary)
-            //=----------------------------------=
-            let x = Bad.message("arithmetic")
-            //=----------------------------------=
+            
             for _ in 0 ..< conditional(debug: 32, release: 128) {
                 let i = next()
                 
@@ -85,17 +83,19 @@ import TestKit
                 try #require((low...high).contains(i.1))
                 try #require((low...high).contains(i.2))
                 
-                var a = try Fibonacci(i.0)
-                let b = try Fibonacci(i.1)
-                let c = try #require(a.next.division(b.next)).prune(x)
+                guard i.1 != IX(-1) else { continue }
                 
-                try a.decrement(by: b)
+                let a = try #require(Fibonacci(i.0))
+                let b = try #require(Fibonacci(i.1))
+                let c = try #require(a.major.division(b.major)?.optional())
+                let d = try #require(a.decremented(by: b))
+                let e = try #require(d.incremented(by: b))
                 
-                let d = try a.element.times(b.element).prune(x)
-                let e = try c.quotient.minus((a.next)).prune(x).times(b.next).prune(x).plus(c.remainder).prune(x)
+                let x = (d.minor    &* b.minor)
+                let y = (c.quotient &- d.major) &* b.major &+ c.remainder
                 
-                try a.increment(by: b)
-                try #require((d) == e)
+                try #require(a == e)
+                try #require(x == y)
             }
             
             func next() -> (T, T, T) {
