@@ -58,11 +58,11 @@ import TestKit
         Metadata(type: U8L .self, low:   0, high: nil)
     ]
     
-    static let metadataAsSystemsInteger = metadata.filter {
+    static let metadataAsSystemsInteger: [Metadata] = metadata.filter {
         $0.type.isArbitrary == false
     }
     
-    static let metadataAsMaximalInteger = metadata.filter {
+    static let metadataAsMaximalInteger: [Metadata] = metadata.filter {
         $0.type.isMaximal
     }
     

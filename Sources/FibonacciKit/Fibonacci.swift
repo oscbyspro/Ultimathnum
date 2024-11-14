@@ -64,12 +64,17 @@ import CoreKit
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Returns a new instance at `index` zero.
     @inlinable public init() {
         self.base = Indexacci.fibonacci()
     }
     
-    @inlinable public init(unsafe base: Indexacci<Element>) {
-        self.base = base
+    /// Returns a new instance using the given `components`.
+    ///
+    /// - Important: The `components` must belong to this sequence.
+    ///
+    @inlinable public init(unsafe components: consuming Indexacci<Element>) {
+        self.base = components
     }
     
     //=------------------------------------------------------------------------=
@@ -78,19 +83,26 @@ import CoreKit
     
     /// The sequence element at `index`.
     @inlinable public var minor: Element {
-        self.base.tuple.minor
+        _read {
+            yield self.base.tuple.minor
+        }
     }
     
     /// The sequence element at `index + 1`.
     @inlinable public var major: Element {
-        self.base.tuple.major
+        _read {
+            yield self.base.tuple.major
+        }
     }
     
     /// The sequence `index`.
     @inlinable public var index: Element {
-        self.base.index
+        _read {
+            yield self.base.index
+        }
     }
     
+    /// Returns the `components` of this instance.
     @inlinable public consuming func components() -> Indexacci<Element> {
         self.base
     }

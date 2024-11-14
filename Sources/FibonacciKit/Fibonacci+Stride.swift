@@ -25,23 +25,15 @@ extension Fibonacci {
     ///
     /// - Note: It produces `nil` of the operation is `lossy`.
     ///
-    /// ### Development
-    ///
-    /// - Todo: Measure versus `components()` approach.
-    ///
     @inlinable public consuming func incremented() -> Optional<Self> {
         self.base.incremented().map(Self.init(unsafe:)).optional()
     }
     
-    /// Returns the sequence pair at `index - 1`, or `nil`..
+    /// Returns the sequence pair at `index - 1`, or `nil`.
     ///
     /// ### Fibonacci
     ///
     /// - Note: It produces `nil` of the operation is `lossy`.
-    ///
-    /// ### Development
-    ///
-    /// - Todo: Measure versus `components()` approach.
     ///
     @inlinable public consuming func decremented() -> Optional<Self> {
         self.base.decremented().map(Self.init(unsafe:)).optional()
@@ -57,10 +49,6 @@ extension Fibonacci {
     ///
     /// - Note: It produces `nil` of the operation is `lossy`.
     ///
-    /// ### Development
-    ///
-    /// - Todo: Measure versus `components()` approach.
-    ///
     @inlinable public consuming func doubled() -> Optional<Self> {
         Self.doubled(self.base).map(Self.init(unsafe:)).optional()
     }
@@ -71,10 +59,6 @@ extension Fibonacci {
     ///
     /// - Note: It produces `nil` of the operation is `lossy`.
     ///
-    /// ### Development
-    ///
-    /// - Todo: Measure versus `components()` approach.
-    ///
     @inlinable public consuming func incremented(by other: borrowing Self) -> Optional<Self> {
         Self.incremented(self.base, by: other.base).map(Self.init(unsafe:)).optional()
     }
@@ -84,10 +68,6 @@ extension Fibonacci {
     /// ### Fibonacci
     ///
     /// - Note: It produces `nil` of the operation is `lossy`.
-    ///
-    /// ### Development
-    ///
-    /// - Todo: Measure versus `components()` approach.
     ///
     @inlinable public consuming func decremented(by other: borrowing Self) -> Optional<Self> {
         Self.decremented(self.base, by: other.base).map(Self.init(unsafe:)).optional()

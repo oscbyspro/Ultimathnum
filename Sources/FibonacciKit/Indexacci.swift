@@ -47,6 +47,26 @@ import CoreKit
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    @inlinable public var minor: Element {
+        _read {
+            yield  self.tuple.minor
+        }
+        
+        _modify {
+            yield &self.tuple.minor
+        }
+    }
+    
+    @inlinable public var major: Element {
+        _read {
+            yield  self.tuple.major
+        }
+        
+        _modify {
+            yield &self.tuple.major
+        }
+    }
+    
     @inlinable public consuming func components() -> (tuple: Tupleacci<Element>, index: Element) {
         (tuple: self.tuple, index: self.index)
     }

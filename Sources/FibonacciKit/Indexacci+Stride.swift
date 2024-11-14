@@ -20,11 +20,6 @@ extension Indexacci {
     //=------------------------------------------------------------------------=
     
     /// Returns the sequence pair at `index + 1`.
-    ///
-    /// ### Development
-    ///
-    /// - Todo: Measure versus `components()` approach.
-    ///
     @inlinable public consuming func incremented() -> Fallible<Self> {
         var  error = false
         self.tuple = self.tuple.incremented().sink(&error)
@@ -33,11 +28,6 @@ extension Indexacci {
     }
     
     /// Returns the sequence pair at `index - 1`.
-    ///
-    /// ### Development
-    ///
-    /// - Todo: Measure versus `components()` approach.
-    ///
     @inlinable public consuming func decremented() -> Fallible<Self> {
         var  error = false
         self.tuple = self.tuple.decremented().sink(&error)

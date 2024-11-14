@@ -20,11 +20,6 @@ extension Tupleacci {
     //=------------------------------------------------------------------------=
     
     /// Returns the sequence pair at `index + 1`.
-    ///
-    /// ### Development
-    ///
-    /// - Todo: Measure versus `components()` approach.
-    ///
     @inlinable public consuming func incremented() -> Fallible<Self> {
         var  error = false
         let  major = major
@@ -34,11 +29,6 @@ extension Tupleacci {
     }
     
     /// Returns the sequence pair at `index - 1`.
-    ///
-    /// ### Development
-    ///
-    /// - Todo: Measure versus `components()` approach.
-    ///
     @inlinable public consuming func decremented() -> Fallible<Self> {
         var  error = false
         let  minor = minor

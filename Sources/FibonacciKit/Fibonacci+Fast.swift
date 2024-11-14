@@ -25,6 +25,8 @@ extension Fibonacci {
     ///
     /// - Note: It produces `nil` of the operation is `lossy`.
     ///
+    /// - Note: It produces `nil` if the `index` is `infinite`.
+    ///
     @inlinable public init?(_ index: consuming Element) {
         let base = Self.exactly(index, as: Indexacci.self)
         guard let base =  base?.optional() else { return nil }

@@ -25,10 +25,6 @@ extension Fibonacci {
     ///
     /// - Note: It produces `nil` of the operation is `lossy`.
     ///
-    /// ### Development
-    ///
-    /// - Todo: Measure versus `components()` approach.
-    ///
     @inlinable public consuming func toggled() -> Optional<Self> {
         Self.toggled(self.base).map(Self.init(unsafe:)).optional()
     }
