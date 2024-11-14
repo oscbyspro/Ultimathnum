@@ -29,7 +29,7 @@ import TestKit
     //=------------------------------------------------------------------------=
     
     @Test(
-        "Tupleacci: start",
+        "Indexacci: start",
         Tag.List.tags(.generic),
         arguments: types
     )   func start(type: any BinaryInteger.Type) throws {
@@ -41,7 +41,7 @@ import TestKit
     }
     
     @Test(
-        "Tupleacci: accessors",
+        "Indexacci: accessors",
         Tag.List.tags(.generic, .random),
         arguments: types, fuzzers
     )   func accessors(
