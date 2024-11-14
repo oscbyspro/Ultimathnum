@@ -35,7 +35,7 @@ import TestKit
             let arbitrary: IX = conditional(debug: 144, release: 369)
             let low:  IX = metadata.low  ?? -arbitrary
             let high: IX = metadata.high ??  arbitrary
-            var fibonacci = try #require(try Fibonacci(T(low)))
+            var fibonacci = try #require(Fibonacci(T(low)))
 
             if  let _ = metadata.low {
                 try #require(fibonacci.decremented() == nil)
@@ -111,9 +111,9 @@ import TestKit
                 try #require((low...high).contains(i.1))
                 try #require((low...high).contains(i.2))
 
-                let a = try #require(try Fibonacci(i.0))
-                let b = try #require(try Fibonacci(i.1))
-                let c = try #require(try Fibonacci(i.2))
+                let a = try #require(Fibonacci(i.0))
+                let b = try #require(Fibonacci(i.1))
+                let c = try #require(Fibonacci(i.2))
                 
                 try #require(a.incremented(by: b)?.components() == c.components())
                 try #require(b.incremented(by: a)?.components() == c.components())

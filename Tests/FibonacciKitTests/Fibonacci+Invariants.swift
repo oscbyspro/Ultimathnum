@@ -38,7 +38,7 @@ import TestKit
             
             for _ in 0 ..< conditional(debug: 8, release: 32) {
                 let index = T.random(in: low...high, using: &randomness)
-                let fibonacci = try #require(try Fibonacci(index))
+                let fibonacci = try #require(Fibonacci(index))
                 try #require(fibonacci.minor.euclidean(fibonacci.major) == 1)
             }
         }
