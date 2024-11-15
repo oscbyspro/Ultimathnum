@@ -100,8 +100,8 @@ import TestKit
         }
         
         description: do {
-            let radix10 = destination.description(as:     .decimal)
-            let radix16 = destination.description(as: .hexadecimal)
+            let radix10 = destination.description(using:     .decimal)
+            let radix16 = destination.description(using: .hexadecimal)
             
             try #require(radix10 ==      source.description,        sourceLocation: location)
             try #require(radix10 == destination.description,        sourceLocation: location)

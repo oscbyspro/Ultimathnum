@@ -62,8 +62,8 @@ import TestKit
             }
             
             func whereIs(_ value: T, using coder: TextInt, at location: SourceLocation = #_sourceLocation) throws {
-                let encoded = value.description(as: coder)
-                let decoded = try T(((encoded)),as: coder)
+                let encoded = value.description(using: coder)
+                let decoded = try T(((encoded)),using: coder)
                 try #require(decoded == value, sourceLocation: location)
             }
         }
@@ -85,8 +85,8 @@ import TestKit
                 let coder = TextInt.random(using: &randomness)
                 let value = T.entropic(size: size, using: &randomness)
                 
-                let lowercased: String = value.description(as: coder.lowercased())
-                let uppercased: String = value.description(as: coder.uppercased())
+                let lowercased: String = value.description(using: coder.lowercased())
+                let uppercased: String = value.description(using: coder.uppercased())
                 
                 if  coder.radix <= 10 {
                     try #require(lowercased == uppercased)
@@ -112,7 +112,7 @@ import TestKit
                 let regex = BinaryIntegerTestsOnText.regex
                 let coder = TextInt.random(using: &randomness)
                 let value = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                let description = value.description(as: coder)
+                let description = value.description(using: coder)
                 let match = try #require(try regex.wholeMatch(in: description))
                 try #require(match.output.0 == description)
                 try #require(match.output.sign == (value.isNegative ? "-" : nil))
@@ -135,7 +135,7 @@ import TestKit
                 let coder = TextInt.random(using: &randomness)
                 let value = T.entropic(through: Shift.max(or: 255), using: &randomness)
                 let magnitude: T.Magnitude = value.magnitude()
-                let description: String  = value.description(as: coder)
+                let description: String  = value.description(using: coder)
                 
                 always: do {
                     let result = coder.encode(value)
@@ -175,7 +175,7 @@ import TestKit
                     let uppercase = Bool.random(using: &randomness.stdlib)
                     let letters   = TextInt.Letters(uppercase:  uppercase)
                     let coder = try TextInt(radix: radix,letters: letters)
-                    try #require(negative.description(as: coder) == "-\(positive.description(as: coder))")
+                    try #require(negative.description(using: coder) == "-\(positive.description(using: coder))")
                 }
             }
         }
@@ -201,7 +201,7 @@ import TestKit
                     let uppercase = Bool.random(using: &randomness.stdlib)
                     let letters   = TextInt.Letters(uppercase:  uppercase)
                     let coder = try TextInt(radix: radix,letters: letters)
-                    try #require(infinite.description(as: coder) == "&\(finite.description(as: coder))")
+                    try #require(infinite.description(using: coder) == "&\(finite.description(using: coder))")
                 }
             }
         }
@@ -235,7 +235,7 @@ import TestKit
                 for sign in signs {
                     for mask in masks {
                         try #require(throws: TextInt.Error.invalid) {
-                            try T(sign + mask, as: coder)
+                            try T(sign + mask, using: coder)
                         }
                     }
                 }
@@ -283,19 +283,19 @@ import TestKit
                     
                     always: do {
                         try #require(throws: TextInt.Error.invalid) {
-                            try T("0" + scalar, as: coder)
+                            try T("0" + scalar, using: coder)
                         }
                     }
                     
                     if !prefix.contains(element) {
                         try #require(throws: TextInt.Error.invalid) {
-                            try T(scalar + "0", as: coder)
+                            try T(scalar + "0", using: coder)
                         }
                     }
                     
                     always: do {
                         try #require(throws: TextInt.Error.invalid) {
-                            try T("0" + scalar + "0", as: coder)
+                            try T("0" + scalar + "0", using: coder)
                         }
                     }
                 }
@@ -319,7 +319,7 @@ import TestKit
             for _ in 0 ..< conditional(debug: 8, release: 32) {
                 let coder = coders.randomElement(using: &randomness.stdlib)!
                 let value = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                let description = value.description(as: coder)
+                let description = value.description(using: coder)
                 let match = try #require(try regex.firstMatch(in: description)).output
                 
                 for _ in 0 ..< 4 {
@@ -340,7 +340,7 @@ import TestKit
                     let zeros = IX.random(in: 0...12, using: &randomness)
                     modified.append(contentsOf: repeatElement("0", count: Swift.Int(zeros)))
                     modified.append(contentsOf: try #require(match.body))
-                    try #require(try T(modified, as: coder) == value)
+                    try #require(try T(modified, using: coder) == value)
                 }
             }
         }
@@ -369,8 +369,8 @@ import TestKit
         func whereIs<T>(_ type: T.Type) throws where T: EdgyInteger {
             for coder in BinaryIntegerTestsOnText.coders {
                 for value in [T.min, T.max] {
-                    let description: String = value.description(as: coder)
-                    try #require(try T(description, as: coder)  ==  value)
+                    let description: String = value.description(using: coder)
+                    try #require(try T(description, using: coder)  ==  value)
                 }
             }
         }
@@ -389,9 +389,9 @@ import TestKit
             let value = IXL(T.min).decremented()
             
             for coder in BinaryIntegerTestsOnText.coders {
-                let description = value.description(as: coder)
+                let description = value.description(using: coder)
                 try #require(throws: TextInt.Error.lossy) {
-                    try T(description, as: coder)
+                    try T(description, using: coder)
                 }
             }
         }
@@ -410,9 +410,9 @@ import TestKit
             let value = IXL(T.max).incremented()
             
             for coder in BinaryIntegerTestsOnText.coders {
-                let description = value.description(as: coder)
+                let description = value.description(using: coder)
                 try #require(throws: TextInt.Error.lossy) {
-                    try T(description, as: coder)
+                    try T(description, using: coder)
                 }
             }
         }
@@ -434,9 +434,9 @@ import TestKit
             for _ in 0 ..< 64 {
                 let coder = coders.randomElement(using: &randomness.stdlib)!
                 let natural = IXL.entropic(size: 256, as: Domain.natural, using: &randomness)
-                let description: String = base.minus(natural).description(as: coder)
+                let description: String = base.minus(natural).description(using: coder)
                 try #require(throws: TextInt.Error.lossy) {
-                    try T(description, as: coder)
+                    try T(description, using: coder)
                 }
             }
         }
@@ -458,9 +458,9 @@ import TestKit
             for _ in 0 ..< 64 {
                 let coder = coders.randomElement(using: &randomness.stdlib)!
                 let natural = IXL.entropic(size: 256, as: Domain.natural, using: &randomness)
-                let description: String = base.plus(natural).description(as: coder)
+                let description: String = base.plus(natural).description(using: coder)
                 try #require(throws: TextInt.Error.lossy) {
-                    try T(description, as: coder)
+                    try T(description, using: coder)
                 }
             }
         }
@@ -481,10 +481,10 @@ import TestKit
             for _ in 0 ..< 64 {
                 let coder = coders.randomElement(using: &randomness.stdlib)!
                 let value = UXL.entropic(size: 256, as: Domain.natural, using: &randomness).toggled()
-                let description: String = value.description(as: coder)
+                let description: String = value.description(using: coder)
                 try #require(value.isInfinite)
                 try #require(throws: TextInt.Error.lossy) {
-                    try T(description, as: coder)
+                    try T(description, using: coder)
                 }
             }
         }
@@ -534,8 +534,8 @@ import TestKit
                 
                 for _ in 0 ..< 64 {
                     if  decoded.error { break }
-                    try #require(encoded == decoded.value.description(as: coder))
-                    try #require(try decoded.value == T.init(encoded, as: coder))
+                    try #require(encoded == decoded.value.description(using: coder))
+                    try #require(try decoded.value == T.init(encoded, using: coder))
                     
                     encoded.append("0")
                     decoded = decoded.value.times(radix)
@@ -574,8 +574,8 @@ import TestKit
                     encoded.append(String(UnicodeScalar(UInt8(numeral))))
                     
                     if  decoded.error { break }
-                    try #require(encoded == decoded.value.description(as: coder))
-                    try #require(try decoded.value == T.init(encoded, as: coder))
+                    try #require(encoded == decoded.value.description(using: coder))
+                    try #require(try decoded.value == T.init(encoded, using: coder))
                 }
             }
         }
@@ -611,8 +611,8 @@ import TestKit
                     encoded.append(String(UnicodeScalar(UInt8(numeral))))
                     
                     if  decoded.error { break }
-                    try #require(encoded == decoded.value.description(as: coder))
-                    try #require(try decoded.value == T.init(encoded, as: coder))
+                    try #require(encoded == decoded.value.description(using: coder))
+                    try #require(try decoded.value == T.init(encoded, using: coder))
                 }
             }
         }
@@ -649,7 +649,7 @@ import TestKit
             
             for _ in  0 ..< 32 {
                 let decoded = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                let encoded = decoded.description(as: TextInt.decimal)
+                let encoded = decoded.description(using: TextInt.decimal)
                 
                 try #require(decoded == T(encoded))
                 try #require(encoded == decoded.description)

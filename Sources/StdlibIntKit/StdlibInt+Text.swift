@@ -37,7 +37,7 @@ extension StdlibInt {
     /// - Note: This method uses `TextInt`.
     ///
     @inlinable public init(_ description: some StringProtocol, as format: TextInt) throws {
-        try self.init(Base(description, as: format))
+        try self.init(Base(description, using: format))
     }
     
     //=------------------------------------------------------------------------=
@@ -58,7 +58,7 @@ extension StdlibInt {
     ///
     /// - Note: `String.init(_:radix:)` does not use `TextInt`.
     ///
-    @inlinable public func description(as format: TextInt) -> String {
-        self.base.description(as: format)
+    @inlinable public func description(using format: TextInt) -> String {
+        self.base.description(using: format)
     }
 }

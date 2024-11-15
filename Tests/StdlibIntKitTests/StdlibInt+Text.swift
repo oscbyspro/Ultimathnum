@@ -42,14 +42,14 @@ import TestKit
             let value = IXL.entropic(size: 256, using: &randomness)
             let radix = IX .random(in: 02...36, using: &randomness)
             let coder = try TextInt(radix: radix)
-            let lowercase = value.description(as: coder.lowercased())
-            let uppercase = value.description(as: coder.uppercased())
+            let lowercase = value.description(using: coder.lowercased())
+            let uppercase = value.description(using: coder.uppercased())
             
             try #require(try StdlibInt(lowercase,  as: coder) == StdlibInt(value))
             try #require(try StdlibInt(uppercase,  as: coder) == StdlibInt(value))
             
-            try #require(StdlibInt(value).description(as: coder.lowercased()) == lowercase)
-            try #require(StdlibInt(value).description(as: coder.uppercased()) == uppercase)
+            try #require(StdlibInt(value).description(using: coder.lowercased()) == lowercase)
+            try #require(StdlibInt(value).description(using: coder.uppercased()) == uppercase)
             
             try #require(String(StdlibInt(value),  radix: Swift.Int(radix), uppercase: false) == lowercase)
             try #require(String(StdlibInt(value),  radix: Swift.Int(radix), uppercase: true ) == uppercase)

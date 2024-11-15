@@ -28,7 +28,7 @@
         }
     }
     
-    @inlinable public init(_ description: some StringProtocol, as format: TextInt) throws {
+    @inlinable public init(_ description: some StringProtocol, using format: TextInt) throws {
         self = try format.decode(description)
     }
     
@@ -37,10 +37,10 @@
     //=------------------------------------------------------------------------=
     
     @inlinable public var description: String {
-        self.description(as: .decimal)
+        self.description(using: TextInt.decimal)
     }
     
-    @inlinable public func description(as format: TextInt) -> String {
+    @inlinable public func description(using format: TextInt) -> String {
         format.encode(self)
     }
 }

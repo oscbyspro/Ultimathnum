@@ -25,8 +25,8 @@ final class FibonacciBenchmarks: XCTestCase {
     //=------------------------------------------------------------------------=
     
     static let fib1e6 = IXL.fibonacci(1_000_000)
-    static let fib1e6r10 = fib1e6.description(as:     .decimal)
-    static let fib1e6r16 = fib1e6.description(as: .hexadecimal)
+    static let fib1e6r10 = fib1e6.description(using:     .decimal)
+    static let fib1e6r16 = fib1e6.description(using: .hexadecimal)
     
     //=------------------------------------------------------------------------=
     // MARK: Initialization
@@ -78,28 +78,28 @@ final class FibonacciBenchmarks: XCTestCase {
     func testFibonacciIXL1e6ToTextAsDecimal() throws {
         let data = blackHoleIdentity(Self.fib1e6)
         let format = blackHoleIdentity(TextInt.decimal)
-        let text = data.description(as: format)
+        let text = data.description(using: format)
         XCTAssertEqual(text.utf8.count, 208988)
     }
     
     func testFibonacciIXL1e6ToTextAsHexadecimal() throws {
         let data = blackHoleIdentity(Self.fib1e6)
         let format = blackHoleIdentity(TextInt.hexadecimal)
-        let text = data.description(as: format)
+        let text = data.description(using: format)
         XCTAssertEqual(text.utf8.count, 173561)
     }
     
     func testFibonacciIXL1e6FromTextAsDecimal() throws {
         let text = blackHoleIdentity(Self.fib1e6r10)
         let format = blackHoleIdentity(TextInt.decimal)
-        let data = try IXL.init(text, as: format)
+        let data = try IXL.init(text, using: format)
         XCTAssertEqual(data, Self.fib1e6)
     }
     
     func testFibonacciIXL1e6FromTextAsHexadecimal() throws {
         let text = blackHoleIdentity(Self.fib1e6r16)
         let format = blackHoleIdentity(TextInt.hexadecimal)
-        let data = try IXL.init(text, as: format)
+        let data = try IXL.init(text, using: format)
         XCTAssertEqual(data, Self.fib1e6)
     }
 }
