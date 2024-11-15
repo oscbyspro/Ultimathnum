@@ -22,7 +22,15 @@ extension StdlibInt {
     
     /// Decodes the decimal `description`, if possible.
     ///
-    /// - Note: This method uses `TextInt`.
+    /// ### Binary Integer Description
+    ///
+    /// - Note: The default format is `TextInt.decimal`.
+    ///
+    /// - Note: Decoding failures throw `TextInt.Error`.
+    ///
+    /// ### Binary Integer Description (StdlibInt)
+    ///
+    /// - Note: `String.init(_:radix:)` does not use `TextInt`.
     ///
     @inlinable public init?(_ description: String) {
         if  let base = Base(description) {
@@ -32,9 +40,17 @@ extension StdlibInt {
         }
     }
     
-    /// Decodes the `format` `description`, if possible.
+    /// Decodes the `description` using the given `format`, if possible.
     ///
-    /// - Note: This method uses `TextInt`.
+    /// ### Binary Integer Description
+    ///
+    /// - Note: The default format is `TextInt.decimal`.
+    ///
+    /// - Note: Decoding failures throw `TextInt.Error`.
+    ///
+    /// ### Binary Integer Description (StdlibInt)
+    ///
+    /// - Note: `String.init(_:radix:)` does not use `TextInt`.
     ///
     @inlinable public init(_ description: some StringProtocol, as format: TextInt) throws {
         try self.init(Base(description, using: format))
@@ -44,17 +60,31 @@ extension StdlibInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// Returns the decimal `description` of `self`.
+    /// Returns the `description` of `self`.
     ///
-    /// - Note: This method uses `TextInt`.
+    /// ### Binary Integer Description
+    ///
+    /// - Note: The default format is `TextInt.decimal`.
+    ///
+    /// - Note: Decoding failures throw `TextInt.Error`.
+    ///
+    /// ### Binary Integer Description (StdlibInt)
+    ///
+    /// - Note: `String.init(_:radix:)` does not use `TextInt`.
     ///
     @inlinable public var description: String {
         self.base.description
     }
     
-    /// Returns the `format` `description` of `self`.
+    /// Returns the `description` of `self` using the given `format`.
     ///
-    /// - Note: This method uses `TextInt`.
+    /// ### Binary Integer Description
+    ///
+    /// - Note: The default format is `TextInt.decimal`.
+    ///
+    /// - Note: Decoding failures throw `TextInt.Error`.
+    ///
+    /// ### Binary Integer Description (StdlibInt)
     ///
     /// - Note: `String.init(_:radix:)` does not use `TextInt`.
     ///
