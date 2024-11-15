@@ -11,13 +11,22 @@
 // MARK: * Text Int
 //*============================================================================*
 
-/// A common text de/encoder for all binary integers.
+/// A lone description coder for all binary integers types.
 ///
-/// ### Tradeoffs
+/// ### Format
 ///
-/// This coder unifies all binary integer types and all radices (`2...36`)
-/// with non-generic and non-inlinable algorithms. This design favors code
-/// size over performance.
+/// The baseline binary integer description starts with a conditional sign,
+/// then a conditional mask, followed by a mandatory sequence of radix-appropriate
+/// numerals. In other words, it matches the following regular expression:
+///
+/// ```swift
+/// let regex: Regex = #/^(\+|-)?(#|&)?([0-9A-Za-z]+)$/#
+/// ```
+///
+/// Negative values must contain a minus sign (`-`) and infinite values must
+/// contain a toggle mask (`&`). Natural values may contain a plus sign (`+`)
+/// and/or a neutral mask (`#`). The numerals of infinite values represent a
+/// distance away from a maximum infinite magnitude.
 ///
 @frozen public struct TextInt: Equatable, Sendable {
     
