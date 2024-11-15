@@ -24,7 +24,7 @@ final class FibonacciBenchmarks: XCTestCase {
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    static let fib1e6 = IXL.fibonacci(1_000_000)
+    static let fib1e6    = IXL.fibonacci(1_000_000)
     static let fib1e6r10 = fib1e6.description(using:     .decimal)
     static let fib1e6r16 = fib1e6.description(using: .hexadecimal)
     

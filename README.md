@@ -131,6 +131,21 @@ let x = I32.random()
 #expect(x.hashValue == IXL(x).hashValue)
 ```
 
+#### Lone description coder
+
+You may need to convert binary integers to human-readable text. In that case, `description(using:)` and `init(_:using:)` let you perform dynamic radix conversions using the given coder. It uses a fixed number of non-generic and non-inlinable algorithms to encode and decode all binary integer types.
+
+##### MacBook Pro, 13-inch, M1, 2020, -O, code coverage disabled.
+
+```swift
+let fib1e6    = IXL.fibonacci(1_000_000)                // 0.015s
+let fib1e6r10 = fib1e6.description(using:     .decimal) // 0.297s (208988 digits)
+let fib1e6r16 = fib1e6.description(using: .hexadecimal) // 0.002s (173561 digits)
+
+try IXL(fib1e6r10, using:     .decimal) // 0.040s (208988 digits)
+try IXL(fib1e6r16, using: .hexadecimal) // 0.002s (173561 digits)
+```
+
 <a name="overview-the-fallible-redemption-arc"/>
 
 ### The `Fallible<T>` redemption arc
