@@ -8,18 +8,29 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import FibonacciKit
+import TestKit
 
 //*============================================================================*
-// MARK: * Indexacci x Text
+// MARK: * Tupleacci x Text
 //*============================================================================*
 
-extension Indexacci {
+@Suite struct TupleacciTestsOnText {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @inlinable public var description: String {
-        "(\(self.index): \(self.minor), \(self.major))"
+    @Test(
+        "Tupleacci/text: description",
+        Tag.List.tags(.documentation, .unofficial),
+        ParallelizationTrait.serialized,
+        arguments: Array<(I8, I8, String)>([
+        
+        (I8(0), I8(0), "(0, 0)"),
+        (I8(3), I8(5), "(3, 5)"),
+        
+    ])) func description(minor: I8, major: I8, expectation: String) {
+        Ɣexpect(Tupleacci(minor: minor, major: major), description: expectation)
     }
 }
