@@ -179,7 +179,7 @@ Now that you know the basics of error propagation, let's equip you with the mean
 func sumsquare<T: UnsignedInteger>(a: T, b: T) -> Fallible<T> {
     var w: Bool = false
     let x: T = a.squared().sink(&w)
-    let y: T = a.times(b ).sink(&w).times(2).sink(&w)
+    let y: T = a.times(b ).sink(&w).doubled().sink(&w)
     let z: T = b.squared().sink(&w)
     return x.plus(y).sink(&w).plus(z).veto(w)
 }
@@ -194,9 +194,9 @@ enum Oops: Error { case such, error, much, wow, very, impressive }
 
 func sumsquare<T: UnsignedInteger>(a: T, b: T) throws -> T {
     let x: T = try a.squared().prune(Oops.such)
-    let y: T = try a.times(b ).prune(Oops.error).times(2).prune(Oops.much)
+    let y: T = try a.times(b ).prune(Oops.error).doubled().prune(Oops.much)
     let z: T = try b.squared().prune(Oops.wow)
-    return try x.plus(y).prune((Oops.very)).plus(z).prune(Oops.impressive)
+    return try x.plus(y).prune(Oops.very).plus(z).prune(Oops.impressive)
 }
 ```
 

@@ -59,15 +59,27 @@ extension BinaryInteger {
         !Self.isArbitrary || Self.isSigned
     }
     
-    /// Indicates the role of the `appendix` bit.
+    /// Indicates whether this is a signed integer type.
     ///
-    ///                ┌───────────────┬───────────────┐
-    ///                │ appendix == 0 │ appendix == 1 │
-    ///     ┌──────────┼───────────────┤───────────────┤
-    ///     │   Signed │     self >= 0 │     self <  0 │
-    ///     ├──────────┼───────────────┤───────────────┤
-    ///     │ Unsigned │     self <  ∞ │     self >= ∞ │
-    ///     └──────────┴───────────────┴───────────────┘
+    ///                ┌───────────┬───────────┐
+    ///                │  Systems  │ Arbitrary │
+    ///     ┌──────────┼───────────┤───────────┤
+    ///     │   Signed │     X     │     X     │
+    ///     ├──────────┼───────────┤───────────┤
+    ///     │ Unsigned │           │           │
+    ///     └──────────┴───────────┴───────────┘
+    ///
+    /// ### Appendix
+    ///
+    /// Signedness determines the role of the `appendix` bit.
+    ///
+    ///                ┌───────────┬───────────┐
+    ///                │ Bit.zero  │ Bit.one   │
+    ///     ┌──────────┼───────────┤───────────┤
+    ///     │   Signed │ self >= 0 │ self <  0 │
+    ///     ├──────────┼───────────┤───────────┤
+    ///     │ Unsigned │ self <  ∞ │ self >= ∞ │
+    ///     └──────────┴───────────┴───────────┘
     ///
     @inlinable public static var isSigned: Bool {
         Self.mode == .signed
