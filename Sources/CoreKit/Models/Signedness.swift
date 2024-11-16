@@ -56,6 +56,14 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Returns a new instance equal to `unsigned`.
+    ///
+    /// - Note: The `BitCastable<Bit.BitPattern>` default is `Bit.zero`.
+    ///
+    @inlinable public init() {
+        self = Self.unsigned
+    }
+    
     @inlinable public init(_ source: Bit) {
         self.init(raw: source)
     }

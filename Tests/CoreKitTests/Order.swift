@@ -21,6 +21,16 @@ import TestKit
     //=------------------------------------------------------------------------=
     
     @Test(
+        "Order: init()",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: [Order.ascending]
+    )   func unspecified(expectation: Order) {
+        #expect(Order() == expectation)
+        #expect(Order(raw: Bit.zero) == expectation)
+    }
+    
+    @Test(
         "Order: descending",
         Tag.List.tags(.documentation, .exhaustive),
         ParallelizationTrait.serialized,

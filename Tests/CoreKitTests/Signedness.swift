@@ -21,6 +21,16 @@ import TestKit
     //=------------------------------------------------------------------------=
     
     @Test(
+        "Signedness: init()",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: [Signedness.unsigned]
+    )   func unspecified(expectation: Signedness) {
+        #expect(Signedness() == expectation)
+        #expect(Signedness(raw: Bit.zero) == expectation)
+    }
+    
+    @Test(
         "Signedness: signed",
         Tag.List.tags(.documentation, .exhaustive),
         ParallelizationTrait.serialized,

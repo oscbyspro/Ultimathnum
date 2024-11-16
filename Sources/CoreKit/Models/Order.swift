@@ -65,6 +65,14 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Returns a new instance equal to `ascending`.
+    ///
+    /// - Note: The `BitCastable<Bit.BitPattern>` default is `Bit.zero`.
+    ///
+    @inlinable public init() {
+        self = Self.ascending
+    }
+    
     @inlinable public init(_ source: Bit) {
         self.init(raw: source)
     }

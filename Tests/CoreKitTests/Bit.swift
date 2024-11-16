@@ -21,6 +21,16 @@ import TestKit
     //=------------------------------------------------------------------------=
     
     @Test(
+        "Bit: init()",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: [Bit.zero]
+    )   func unspecified(expectation: Bit) {
+        #expect(Bit() == expectation)
+        #expect(Bit(raw: Bit.zero) == expectation)
+    }
+    
+    @Test(
         "Bit: as Bit",
         Tag.List.tags(.documentation, .exhaustive),
         ParallelizationTrait.serialized,

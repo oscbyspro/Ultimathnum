@@ -20,36 +20,55 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Sign as Bit", .serialized, arguments: [
+    @Test(
+        "Sign: init()",
+        Tag.List.tags(.documentation, .exhaustive),
+        ParallelizationTrait.serialized,
+        arguments: [Sign.plus]
+    )   func unspecified(expectation: Sign) {
+        #expect(Sign() == expectation)
+        #expect(Sign(raw: Bit.zero) == expectation)
+    }
+    
+    @Test(
+        "Sign: as Bit",
+        ParallelizationTrait.serialized,
+        arguments: Array<(Sign, Bit)>([
         
         (sign: Sign.plus,  bit: Bit.zero),
         (sign: Sign.minus, bit: Bit.one ),
         
-    ])  func bit(_ argument: (sign: Sign, bit: Bit)) {
+    ])) func bit(_ argument: (sign: Sign, bit: Bit)) {
         #expect(Bit (     argument.sign) == argument.bit )
         #expect(Bit (raw: argument.sign) == argument.bit )
         #expect(Sign(     argument.bit ) == argument.sign)
         #expect(Sign(raw: argument.bit ) == argument.sign)
     }
     
-    @Test("Sign as Bool", .serialized, arguments: [
+    @Test(
+        "Sign: as Bool",
+        ParallelizationTrait.serialized,
+        arguments: Array<(Sign, Bool)>([
         
         (sign: Sign.plus,  bool: false),
         (sign: Sign.minus, bool: true ),
         
-    ])  func bool(_ argument: (sign: Sign, bool: Bool)) {
+    ])) func bool(_ argument: (sign: Sign, bool: Bool)) {
         #expect(Bool(     argument.sign) == argument.bool)
         #expect(Bool(raw: argument.sign) == argument.bool)
         #expect(Sign(     argument.bool) == argument.sign)
         #expect(Sign(raw: argument.bool) == argument.sign)
     }
     
-    @Test("Sign as Stdlib", .serialized, arguments: [
+    @Test(
+        "Sign: as Stdlib",
+        ParallelizationTrait.serialized,
+        arguments: Array<(Sign, FloatingPointSign)>([
         
         (sign: Sign.plus,  stdlib: FloatingPointSign.plus ),
         (sign: Sign.minus, stdlib: FloatingPointSign.minus),
         
-    ])  func stdlib(_ argument: (sign: Sign, stdlib: FloatingPointSign)) {
+    ])) func stdlib(_ argument: (sign: Sign, stdlib: FloatingPointSign)) {
         #expect(argument.sign.stdlib()                == argument.stdlib)
         #expect(FloatingPointSign(     argument.sign) == argument.stdlib)
         #expect(FloatingPointSign(raw: argument.sign) == argument.stdlib)

@@ -55,6 +55,14 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Returns a new instance equal to `zero`.
+    ///
+    /// - Note: The `BitCastable<Bit.BitPattern>` default is `Bit.zero`.
+    ///
+    @inlinable public init() {
+        self.base = false
+    }
+    
     /// Reinterprets the given `source` as an instance of `Self`.
     @inlinable public init(_ source: some BitCastable<BitPattern>) {
         self.base = source.load(as: BitPattern.self)
