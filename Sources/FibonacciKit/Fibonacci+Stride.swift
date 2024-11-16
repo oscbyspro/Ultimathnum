@@ -99,9 +99,9 @@ extension Fibonacci {
     )   -> Fallible<Tupleacci<Element>> {
         
         var (error) = false
-        let (extra) = value.major.doubled().sink(&error).minus(value.minor).sink(&error).times(value.minor).sink(&error)
-        value.major = value.major.squared().sink(&error).plus((value.minor).squared().sink(&((((error)))))).sink(&error)
-        value.minor = extra
+        let (extra) = value.major.squared().sink(&error).plus((value.minor).squared().sink(&((((error)))))).sink(&error)
+        value.minor = value.major.doubled().sink(&error).minus(value.minor).sink(&error).times(value.minor).sink(&error)
+        value.major = extra
         return value.veto(error)
     }
     
