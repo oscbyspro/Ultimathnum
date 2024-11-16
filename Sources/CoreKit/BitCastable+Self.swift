@@ -8,17 +8,21 @@
 //=----------------------------------------------------------------------------=
 
 //*============================================================================*
-// MARK: * Bit Castable x Cast
+// MARK: * Bit Castable x Self
 //*============================================================================*
 
-extension BitCastable {
+extension BitCastable where BitPattern == Self {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Reinterprets the `source` as an instance of this type.
-    @inline(__always) @inlinable public init(raw source: consuming some BitCastable<BitPattern>) {
-        self.init(raw: source.load(as: BitPattern.self))
+    @inlinable public init(raw source: consuming BitPattern) {
+        self = source
+    }
+    
+    @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
+        self
     }
 }
+

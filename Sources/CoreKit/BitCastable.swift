@@ -11,34 +11,24 @@
 // MARK: * Bit Castable
 //*============================================================================*
 
+/// A type that supports type-safe reinterpretation.
+///
+/// Models that share the same `BitPattern` type are bitwise compatible, and you
+/// may reinterpret an instance of either type as an instance of the other using
+/// the generic `init(raw:)` initializer.
+///
 public protocol BitCastable<BitPattern> {
     
+    /// The bit pattern representation used by this type.
     associatedtype BitPattern: BitCastable<BitPattern> & Sendable
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Reinterprets the `source` as an instance of this type.
     @inlinable init(raw source: consuming BitPattern)
     
+    /// Reinterprets `self` as an instance of the given `type`.
     @inlinable consuming func load(as type: BitPattern.Type) -> BitPattern
-}
-
-//=----------------------------------------------------------------------------=
-// MARK: + where Bit Pattern is Self
-//=----------------------------------------------------------------------------=
-
-extension BitCastable where BitPattern == Self {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(raw source: consuming BitPattern) {
-        self = source
-    }
-    
-    @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
-        self
-    }
 }

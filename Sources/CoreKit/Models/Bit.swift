@@ -55,14 +55,17 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
+    /// Reinterprets the given `source` as an instance of `Self`.
     @inlinable public init(_ source: some BitCastable<BitPattern>) {
         self.base = source.load(as: BitPattern.self)
     }
     
+    /// Reinterprets the given `source` as an instance of `Self`.
     @inlinable public init(raw source: BitPattern) {
         self.base = source
     }
     
+    /// Reinterprets the given `source` as an instance of `BitPattern`.
     @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
         self.base
     }
