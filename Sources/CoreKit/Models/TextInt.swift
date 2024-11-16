@@ -25,8 +25,14 @@
 ///
 /// Negative values must contain a minus sign (`-`) and infinite values must
 /// contain a toggle mask (`&`). Natural values may contain a plus sign (`+`)
-/// and/or a neutral mask (`#`). The numerals of infinite values represent a
-/// distance away from a maximum infinite magnitude.
+/// and/or a neutral mask (`#`). Zero may alternatively contain a minus sign.
+/// Redundant zeros are also allowed.
+///
+/// - Note: The default encoding strategy omits redundant elements.
+///
+/// - Note: The numerals of infinite values represent some distance from the
+///   maximum infinite magnitude of an unsigned and arbitrary binary integer.
+///   As such, `&1` is equivalent to `UXL.max-1`.
 ///
 @frozen public struct TextInt: Equatable, Sendable {
     
