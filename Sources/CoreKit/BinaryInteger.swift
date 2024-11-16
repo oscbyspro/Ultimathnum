@@ -28,38 +28,13 @@
 ///      X)    SignedInteger: F
 ///      Y)  UnsignedInteger: E
 ///
-/// ### Infinity
-///
-/// The binary integer domain now includes infinite values! This lets you
-/// bit cast all kinds of binary integers and recover from bitwise negation.
-///
-/// ```swift
-/// UXL(repeating: Bit.zero).toggled() == UXL(repeating: Bit.one )
-/// ```
-///
-/// - Important: Infinite values take on the order of their host type.
-///
-/// ### Stride
-///
-/// Its stride type is Swift.Int so that you may use Swift's range models.
-///
-/// ### Type-agnostic binary integer hashes
-///
-/// Binary integers hash their normalized 8-bit data integer elements, so
-/// equal values produce equal hashes regardless of their underlying types.
-///
-/// ```swift
-/// #expect(random.hashValue == IXL(load: random).hashValue)
-/// #expect(random.hashValue == UXL(load: random).hashValue)
-/// ```
+/// - Seealso: https://github.com/oscbyspro/Ultimathnum
 ///
 /// ### Requirements
 ///
-/// - Requires: Its `body` and `appendix` must fit in `IX.max` bits.
+/// - Requires: Signed integers must use 2's complement format.
 ///
-/// - Requires: `Infinite` values must use binary 2's complement form.
-///
-/// - Requires: `Negative` values must use binary 2's complement form.
+/// - Requires: The `body` and `appendix` must fit in `IX.max` bits.
 ///
 public protocol BinaryInteger<BitPattern>:
     BitCastable,

@@ -15,7 +15,6 @@
 ///
 /// An edgy binary integer has `min` and `max` values.
 ///
-///
 ///                ┌───────────┬───────────┐
 ///                │  Systems  │ Arbitrary |
 ///     ┌──────────┼───────────┤───────────┤
@@ -23,6 +22,5 @@
 ///     ├──────────┼───────────┤───────────┤
 ///     │ Unsigned │     X     │     X     │
 ///     └──────────┴───────────┴───────────┘
-///
 ///
 public protocol EdgyInteger: BinaryInteger { }

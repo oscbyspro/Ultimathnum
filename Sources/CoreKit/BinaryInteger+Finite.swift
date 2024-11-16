@@ -15,7 +15,6 @@
 ///
 /// A finite binary integer represents a value in the countable domain.
 ///
-///
 ///                ┌───────────┬───────────┐
 ///                │  Systems  │ Arbitrary |
 ///     ┌──────────┼───────────┤───────────┤
@@ -23,6 +22,5 @@
 ///     ├──────────┼───────────┤───────────┤
 ///     │ Unsigned │     X     │           │
 ///     └──────────┴───────────┴───────────┘
-///
 ///
 public protocol FiniteInteger: BinaryInteger { }

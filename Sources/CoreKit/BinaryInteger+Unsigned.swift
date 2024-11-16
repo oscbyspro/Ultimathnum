@@ -16,7 +16,6 @@
 /// An unsigned binary integer represents a nonnegative value. The appendix bit of
 /// an unsigned binary integer indicates whether it is finite (`0`) or infinite (`1`).
 ///
-///
 ///                ┌───────────┬───────────┐
 ///                │  Systems  │ Arbitrary │
 ///     ┌──────────┼───────────┤───────────┤
@@ -24,6 +23,5 @@
 ///     ├──────────┼───────────┤───────────┤
 ///     │ Unsigned │     X     │     X     │
 ///     └──────────┴───────────┴───────────┘
-///
 ///
 public protocol UnsignedInteger: EdgyInteger, Namespace.Foo, Namespace.Bar where Element: UnsignedInteger, Magnitude == Self { }
