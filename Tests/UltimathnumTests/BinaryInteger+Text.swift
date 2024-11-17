@@ -286,7 +286,7 @@ import TestKit
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             var banned = Set(U8.all)
-            var prefix = Set("+-&".utf8.lazy.map(U8.init(_:)))
+            let prefix = Set("+-&".utf8.lazy.map(U8.init(_:)))
             
             for element in U8(UInt8(ascii: "0"))...U8(UInt8(ascii: "1")) {
                 banned.remove(element)
