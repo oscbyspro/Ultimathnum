@@ -17,55 +17,53 @@ extension TextInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func encode<T: BinaryInteger>(_ integer: T) -> String {
-        var integer  = integer // await consuming fix
-        let appendix = Bool(integer.appendix)
+    /// Returns the binary integer description of `integer`.
+    @inlinable public func encode<Integer>(
+        _ integer: consuming Integer
+    )   -> String where Integer: BinaryInteger {
         
-        let sign = ( T.isSigned && appendix) ? Sign.minus : nil
-        let mask = (!T.isSigned && appendix) ? Bit .one   : nil
+        var data  = U8.zero
+        var size  = IX.zero
         
-        if  appendix {
-            // form magnitude or 1s complement bit pattern
-            integer = integer.complement(T.isSigned).value
+        if  Bool(integer.appendix) {
+            integer = integer.complement(Integer.isSigned).value
+            data  = U8(UInt8(ascii: Integer.isSigned ? "-" : "&"))
+            size  = 1
         }
         
-        //  both paths reinterpret the integer as unsigned
-        if  T.size <= UX.size {
-            var small = UX(load: T.Magnitude(raw: integer))
-            let range = PartialRangeUpTo(IX(Bit(!small.isZero)))
-            return small.withUnsafeMutableBinaryIntegerBody {
-                self.encode(sign: sign, mask: mask, normalized: $0[unchecked: range])
-            }
-            
-        }   else {
-            return integer.withUnsafeBinaryIntegerBody(as: U8.self) {
-                self.encode(sign: sign, mask: mask, body: $0)
-            }
-        }
+        return self.encode(
+            info: data,
+            size: size,
+            body: Finite(unchecked: Integer.Magnitude(raw: integer))
+        )
     }
     
-    @inlinable public func encode<T: UnsignedInteger>(sign: Sign, magnitude: consuming T) -> String {
-        let appendix = Bool(magnitude.appendix)
+    /// Returns the binary integer description of `sign` and `magnitude`.
+    @inlinable public func encode<Integer>(
+        sign: Sign, magnitude: consuming Integer
+    )   -> String where Integer: UnsignedInteger {
         
-        let sign = Bool(sign) && !magnitude.isZero ? sign : nil
-        let mask = appendix ? Bit.one : nil
+        var data  = U16.zero
+        var size  = IX .zero
+        let mask  = Bool(magnitude.appendix)
         
-        if  appendix {
+        if  mask {
             magnitude.toggle()
+            data  = U16(load: U8(UInt8(ascii: "&")))
+            size  = 1
         }
         
-        if  T.size <= UX.size {
-            var small = UX(load: magnitude)
-            let range = PartialRangeUpTo(IX(Bit(!small.isZero)))
-            return small.withUnsafeMutableBinaryIntegerBody {
-                self.encode(sign: sign, mask: mask, normalized: $0[unchecked: range])
-            }
-            
-        }   else {
-            return magnitude.withUnsafeBinaryIntegerBody(as: U8.self) {
-                self.encode(sign: sign, mask: mask, body: $0)
-            }
+        if  sign == Sign.minus, mask || !magnitude.isZero {
+            data  = data.up(U8.size)
+            data |= U16(load: U8(UInt8(ascii: "-")))
+            size  = size.incremented().unchecked()
         }
+        
+        return self.encode(
+            info: data,
+            size: size,
+            body: Finite(unchecked: magnitude)
+        )
     }
 }
 
@@ -79,20 +77,62 @@ extension TextInt {
     // MARK: Utilities
     //=--------------------------------------------------------------------=
     
-    @usableFromInline package func encode(sign: Sign?, mask: Bit?, body: consuming DataInt<U8>.Body) -> String {
-        //=--------------------------------------=
-        // body: normalization
-        //=--------------------------------------=
+    @inlinable package func encode<Info, Integer>(
+        info: consuming Info,
+        size: consuming IX,
+        body: consuming Finite<Integer>
+    )   -> String where Integer: UnsignedInteger, Info: SystemsInteger {
+        
+        let body = consume body // await ownership fix
+        
+        return Swift.withUnsafePointer(to: info.endianness(Order.ascending)) {
+            $0.withMemoryRebound(to: UInt8.self, capacity: MemoryLayout<Info>.size) {
+                self.encode(
+                    info: UnsafeBufferPointer(start: $0, count: size.stdlib()),
+                    body: body
+                )
+            }
+        }
+    }
+    
+    @inlinable package func encode<Integer>(
+        info: consuming UnsafeBufferPointer<UInt8>,
+        body: consuming Finite<Integer>
+    )   -> String where Integer: UnsignedInteger {
+        
+        let body = (consume body).value
+        
+        if  Integer.size <= UX.size {
+            var small = UX(load: body)
+            let range = PartialRangeUpTo(IX(Bit(!small.isZero)))
+            return small.withUnsafeMutableBinaryIntegerBody {
+                self.encode(info: info, normalized: $0[unchecked: range])
+            }
+            
+        }   else {
+            return body.withUnsafeBinaryIntegerBody(as: U8.self) {
+                self.encode(info: info, body: $0)
+            }
+        }
+    }
+    
+    @usableFromInline package func encode(
+        info: consuming UnsafeBufferPointer<UInt8>,
+        body: consuming DataInt<U8>.Body
+    )   -> String {
+        
         body = body.normalized()
+        
         let count = body.count(as: UX.self)
-        //=--------------------------------------=
-        return Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(count)) {
+        
+        return  Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Swift.Int(count)) {
             let words = MutableDataInt.Body($0.baseAddress!, count: count)
             //=----------------------------------=
             // pointee: initialization
             //=----------------------------------=
-            for index in words.indices {
-                words[unchecked: index] = DataInt(body[unchecked:(index &* IX(MemoryLayout<UX>.stride))...]).load(as: UX.self)
+            for index: IX  in words.indices {
+                let start: IX =  index.times(IX(MemoryLayout<UX>.stride)).unchecked()
+                words[unchecked: index] = DataInt(body[unchecked: start...]).load(as: UX.self)
             }
             //=----------------------------------=
             // pointee: deferred deinitialization
@@ -101,12 +141,15 @@ extension TextInt {
                 words.deinitialize()
             }
             //=----------------------------------=
-            return self.encode(sign: sign, mask: mask, normalized: words)
+            return self.encode(info: info, normalized: words)
         }
     }
     
-    @usableFromInline package func encode(sign: Sign?, mask: Bit?, normalized body: consuming MutableDataInt<UX>.Body) -> String {
-        //=--------------------------------------=
+    @usableFromInline package func encode(
+        info: consuming  UnsafeBufferPointer<UInt8>,
+        normalized body: consuming MutableDataInt<UX>.Body
+    )   -> String {
+        
         Swift.assert(body.isNormal)
         //=--------------------------------------=
         // text: capacity upper bound
@@ -121,14 +164,13 @@ extension TextInt {
         capacity /= speed
         capacity += 1
         capacity *= self.exponent
-        capacity += IX(Bit(sign != nil))
-        capacity += IX(Bit(mask != nil))
+        capacity += IX(info.count)
         //=--------------------------------------=
         return Swift.withUnsafeTemporaryAllocation(of: UInt8.self, capacity: Int(capacity)) { ascii in
             //=----------------------------------=
-            // pointee: initialization, 48 == "0"
+            // pointee: initialization
             //=----------------------------------=
-            ascii.initialize(repeating: 48)
+            ascii.initialize(repeating: UInt8(ascii: "0"))
             //=----------------------------------=
             var chunk: UX = 000 // must be zero
             var asciiIndex: Int = ascii.endIndex
@@ -158,9 +200,9 @@ extension TextInt {
                     asciiIndex = ascii.index(before: asciiIndex)
                     ascii.initializeElement(at: asciiIndex, to: UInt8(element))
                     
-                } while !chunk.isZero
+                }   while !chunk.isZero
                 //=------------------------------=
-                if body.isEmpty { break }
+                if  body.isEmpty { break }
                 //=------------------------------=
                 // note preinitialization to 48s
                 //=------------------------------=
@@ -170,16 +212,10 @@ extension TextInt {
             //=----------------------------------=
             // text: set sign and/or mask
             //=----------------------------------=
-            if  let mask {
-                precondition(asciiIndex > ascii.startIndex)
+            for element in info.reversed() {
+                precondition(asciiIndex >  ascii.startIndex)
                 asciiIndex = ascii.index(before: asciiIndex)
-                ascii.initializeElement(at: asciiIndex, to: Self.encode(mask))
-            }
-            
-            if  let sign {
-                precondition(asciiIndex > ascii.startIndex)
-                asciiIndex = ascii.index(before: asciiIndex)
-                ascii.initializeElement(at: asciiIndex, to: Self.encode(sign))
+                ascii.initializeElement(at: asciiIndex, to: UInt8(element))
             }
             //=----------------------------------=
             // pointee: move de/initialization
@@ -190,8 +226,7 @@ extension TextInt {
             prefix.deinitialize()
             
             return String(unsafeUninitializedCapacity: suffix.count) {
-                _  = $0.moveInitialize(fromContentsOf: suffix)
-                return suffix.count as Int as Int as Int as Int as Int
+                _  = $0.moveInitialize(fromContentsOf: suffix); return suffix.count
             }
         }
     }

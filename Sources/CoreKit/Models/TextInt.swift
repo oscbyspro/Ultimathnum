@@ -20,15 +20,15 @@
 /// numerals. In other words, it matches the following regular expression:
 ///
 /// ```swift
-/// let regex: Regex = #/^(\+|-)?(#|&)?([0-9A-Za-z]+)$/#
+/// let regex: Regex = #/^(\+|-)?(&)?([0-9A-Za-z]+)$/#
 /// ```
 ///
-/// Negative values must contain a minus sign (`-`) and infinite values must
-/// contain a toggle mask (`&`). Natural values may contain a plus sign (`+`)
-/// and/or a neutral mask (`#`). Zero may alternatively contain a minus sign.
-/// Redundant zeros are also allowed.
+/// Negative values must contain a minus sign (`"-"`) and infinite values must
+/// contain a binary integer infinity mask (`"&"`). Natural values may contain
+/// a plus sign (`"+"`). Zero may contain either sign, or no sign. The numeral
+/// part may also contain redundant leading zeros.
 ///
-/// - Note: The default encoding strategy omits redundant elements.
+/// - Note: The default encoding strategy only includes essential elements.
 ///
 /// - Note: The numerals of infinite values represent some distance from the
 ///   maximum infinite magnitude of an unsigned and arbitrary binary integer.

@@ -41,7 +41,7 @@ final class TextIntBenchmarksOnRadix16: XCTestCase {
     func testDecodingOneMillionTimesBinaryIntegerAsUX() throws {
         let encoded = blackHoleIdentity(Self.formatter.encode(UX.max))
         
-        for _ in 0 as UX ..<  1_000_000 {
+        for _ in 0 as UX ..< blackHoleIdentity(1_000_000) {
             precondition((try? Self.formatter.decode(encoded) as UX) != nil)
         }
     }
@@ -49,7 +49,7 @@ final class TextIntBenchmarksOnRadix16: XCTestCase {
     func testDecodingOneMillionTimesBinaryIntegerAsUXL() throws {
         let encoded = blackHoleIdentity(Self.formatter.encode(UX.max))
         
-        for _ in 0 as UX ..<  1_000_000 {
+        for _ in 0 as UX ..< blackHoleIdentity(1_000_000) {
             precondition((try? Self.formatter.decode(encoded) as UXL) != nil)
         }
     }
@@ -61,42 +61,42 @@ final class TextIntBenchmarksOnRadix16: XCTestCase {
     func testEncodingFirstOneMillionBinaryIntegerAsUX() throws {
         var counter = UX.zero
         
-        for value in 0 as UX ..< 1_000_000 {
+        for value in 0 as UX ..< blackHoleIdentity(1_000_000) {
             counter += UX(Bit(!Self.formatter.encode(value).isEmpty))
         }
         
-        XCTAssertEqual(counter, 1_000_000)
+        XCTAssertEqual(counter,  blackHoleIdentity(1_000_000))
     }
     
     func testEncodingFirstOneMillionBinaryIntegerAsUXL() throws {
-        var counter = UX.zero, value = UXL(0), increment = UXL(1)
-        
-        for _ in 0 as UX ..< 1_000_000 {
-            value  &+= increment
+        var counter = UX.zero, value = UXL.zero, one = UXL.lsb
+
+        for _ in 0 as UX ..< blackHoleIdentity(1_000_000) {
+            value  &+= one
             counter += UX(Bit(!Self.formatter.encode(value).isEmpty))
         }
         
-        XCTAssertEqual(counter, 1_000_000)
+        XCTAssertEqual(counter,  blackHoleIdentity(1_000_000))
     }
     
     func testEncodingFirstOneMillionSignMagnitudeAsUX() throws {
         var counter = UX.zero
         
-        for value in 0 as UX ..< 1_000_000 {
+        for value in 0 as UX ..< blackHoleIdentity(1_000_000) {
             counter += UX(Bit(!Self.formatter.encode(sign: .plus, magnitude: value).isEmpty))
         }
         
-        XCTAssertEqual(counter, 1_000_000)
+        XCTAssertEqual(counter,  blackHoleIdentity(1_000_000))
     }
     
     func testEncodingFirstOneMillionSignMagnitudeAsUXL() throws {
-        var counter = UX.zero, value = UXL(0), increment = UXL(1)
+        var counter = UX.zero, value = UXL.zero, one = UXL.lsb
         
-        for _ in 0 as UX ..< 1_000_000 {
-            value  &+= increment
+        for _ in 0 as UX ..< blackHoleIdentity(1_000_000) {
+            value  &+= one
             counter += UX(Bit(!Self.formatter.encode(sign: .plus, magnitude: value).isEmpty))
         }
         
-        XCTAssertEqual(counter, 1_000_000)
+        XCTAssertEqual(counter,  blackHoleIdentity(1_000_000))
     }
 }

@@ -31,17 +31,20 @@ extension TextInt {
     }
     
     @inlinable public func decode<T: BinaryInteger>(_ description: UnsafeBufferPointer<UInt8>) throws -> T {
-        let components = TextInt.decompose(description)
-        let numerals   = UnsafeBufferPointer(rebasing: components.body)
-        var magnitude  = Fallible(T.Magnitude.zero, error: true)
+        var magnitude = Fallible(T.Magnitude.zero, error: true)
+        var body = description[...]
+        let sign = TextInt.remove(from: &body, prefix: Self.sign) ?? Sign.plus
+        let mask = TextInt.remove(from: &body, prefix: Self.mask) != nil
+        
+        //  TODO: consider simpler error handling, only checking mask if infinite
         
         if  self.power.div == 1 {
-            try self.words16(numerals: numerals) {
+            try self.words16(numerals: UnsafeBufferPointer(rebasing: body)) {
                 magnitude = T.Magnitude.exactly($0, mode: .unsigned)
             }
             
         }   else {
-            try self.words10(numerals: numerals) {
+            try self.words10(numerals: UnsafeBufferPointer(rebasing: body)) {
                 magnitude = T.Magnitude.exactly($0, mode: .unsigned)
             }
         }
@@ -50,15 +53,15 @@ extension TextInt {
             throw Error.lossy
         }
         
-        if  Bool(components.mask) {
-            if  T.isArbitrary {
-                magnitude.value.toggle()
-            }   else {
-                throw Error.lossy
-            }
+        if  mask, T.isFinite {
+            throw Error.lossy
         }
         
-        return try T.exactly(sign: components.sign, magnitude: magnitude.value).prune(Error.lossy)
+        if  mask {
+            magnitude.value.toggle()
+        }
+        
+        return try T.exactly(sign: sign, magnitude: magnitude.value).prune(Error.lossy)
     }
 }
 
@@ -95,7 +98,7 @@ extension TextInt {
         if  (stride).isZero {
             (stride) = self.exponent
         }   else {
-            capacity = capacity.plus(1).unchecked()
+            capacity = capacity.incremented().unchecked()
         }
         //=--------------------------------------=
         return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
@@ -154,7 +157,7 @@ extension TextInt {
         if  (stride).isZero {
             (stride) = self.exponent
         }   else {
-            capacity = capacity.plus(1).unchecked()
+            capacity = capacity.incremented().unchecked()
         }
         //=--------------------------------------=
         return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {

@@ -29,7 +29,7 @@ import TestKit
     }
     
     static var regex: Regex<(Substring, sign: Substring?, mask: Substring?, body: Substring)> {
-        #/^(?<sign>\+|-)?(?<mask>#|&)?(?<body>[0-9A-Za-z]+)$/#
+        #/^(?<sign>\+|-)?(?<mask>&)?(?<body>[0-9A-Za-z]+)$/#
     }
     
     //=------------------------------------------------------------------------=
@@ -135,7 +135,7 @@ import TestKit
                 let coder = TextInt.random(using: &randomness)
                 let value = T.entropic(through: Shift.max(or: 255), using: &randomness)
                 let magnitude: T.Magnitude = value.magnitude()
-                let description: String  = value.description(using: coder)
+                let description: String = value.description(using: coder)
                 
                 always: do {
                     let result = coder.encode(value)
@@ -159,9 +159,11 @@ import TestKit
         "BinaryInteger/text: description of negative vs positive",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryIntegerAsSigned, fuzzers
-    )   func descriptionOfNegativeVersusPositive(type: any SignedInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func descriptionOfNegativeVersusPositive(
+        type: any SignedInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: SignedInteger {
             for _ in 0 ..< 32 {
                 let negative = T.entropic(through: Shift.max(or: 255), as: Domain.natural, using: &randomness).toggled()
@@ -185,9 +187,11 @@ import TestKit
         "BinaryInteger/text: description of infinite vs finite",
         Tag.List.tags(.generic, .random),
         arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers
-    )   func descriptionOfInfiniteVersusFinite(type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    )   func descriptionOfInfiniteVersusFinite(
+        type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsUnsigned {
             for _ in 0 ..< 32 {
                 let (finite) = T.entropic(size: 256, as: Domain.finite, using: &randomness)
@@ -202,6 +206,34 @@ import TestKit
                     let letters   = TextInt.Letters(uppercase:  uppercase)
                     let coder = try TextInt(radix: radix,letters: letters)
                     try #require(infinite.description(using: coder) == "&\(finite.description(using: coder))")
+                }
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/text: description of negative and infinite vs finite",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers
+    )   func descriptionOfNegativeAndInfiniteVersusFinite(
+        type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsUnsigned {
+            for _ in 0 ..< 32 {
+                let (finite) = T.entropic(size: 256, as: Domain.finite, using: &randomness)
+                let infinite = finite.toggled()
+                
+                try #require(!(finite).isInfinite)
+                try #require( infinite.isInfinite)
+                
+                for _ in 0 ..< 8 {
+                    let radix = UX.random(in: 02...36, using: &randomness)
+                    let uppercase = Bool.random(using: &randomness.stdlib)
+                    let letters   = TextInt.Letters(uppercase:  uppercase)
+                    let coder = try TextInt(radix: radix,letters: letters)
+                    try #require(coder.encode(sign: Sign.minus, magnitude: infinite) == "-&\(finite.description(using: coder))")
                 }
             }
         }
@@ -229,7 +261,7 @@ import TestKit
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             let signs = ["", "+", "-"]
-            let masks = ["", "#", "&"]
+            let masks = ["", "&"]
             
             for coder in BinaryIntegerTestsOnText.coders {
                 for sign in signs {
@@ -254,7 +286,7 @@ import TestKit
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             var banned = Set(U8.all)
-            let prefix = Set("+-#&".utf8.lazy.map(U8.init(_:)))
+            var prefix = Set("+-&".utf8.lazy.map(U8.init(_:)))
             
             for element in U8(UInt8(ascii: "0"))...U8(UInt8(ascii: "1")) {
                 banned.remove(element)
@@ -333,8 +365,6 @@ import TestKit
                     
                     if  let mask = match.mask {
                         modified.append(contentsOf: mask)
-                    }   else if Bool.random(using: &randomness.stdlib) {
-                        modified.append("#")
                     }
                     
                     let zeros = IX.random(in: 0...12, using: &randomness)
@@ -489,8 +519,6 @@ import TestKit
             }
         }
     }
-    
-    
 }
 
 //*============================================================================*
