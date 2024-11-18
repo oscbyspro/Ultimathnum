@@ -22,12 +22,12 @@ extension TextInt {
         _ integer: consuming Integer
     )   -> String where Integer: BinaryInteger {
         
-        var data  = U8.zero
-        var size  = IX.zero
+        var data  = U32.zero
+        var size  = IX .zero
         
         if  Bool(integer.appendix) {
             integer = integer.complement(Integer.isSigned).value
-            data  = U8(UInt8(ascii: Integer.isSigned ? "-" : "&"))
+            data  = U32(load: U8(UInt8(ascii: Integer.isSigned ? "-" : "&")))
             size  = 1
         }
         
@@ -43,19 +43,20 @@ extension TextInt {
         sign: Sign, magnitude: consuming Integer
     )   -> String where Integer: UnsignedInteger {
         
-        var data  = U16.zero
+        var data  = U32.zero
         var size  = IX .zero
         let mask  = Bool(magnitude.appendix)
+        let sign  = Bool(sign == Sign.minus)
         
         if  mask {
             magnitude.toggle()
-            data  = U16(load: U8(UInt8(ascii: "&")))
+            data  = U32(load: U8(UInt8(ascii: "&")))
             size  = 1
         }
         
-        if  sign == Sign.minus, mask || !magnitude.isZero {
+        if  sign, mask || !magnitude.isZero {
             data  = data.up(U8.size)
-            data |= U16(load: U8(UInt8(ascii: "-")))
+            data |= U32(load: U8(UInt8(ascii: "-")))
             size  = size.incremented().unchecked()
         }
         
@@ -77,16 +78,20 @@ extension TextInt {
     // MARK: Utilities
     //=--------------------------------------------------------------------=
     
-    @inlinable package func encode<Info, Integer>(
-        info: consuming Info,
+    /// A minor small-prefix unification.
+    ///
+    /// - Note: `U32` is big enough for `-0x&` (infinitely negative hexadecimal).
+    ///
+    @inlinable package func encode<Integer>(
+        info: consuming U32,
         size: consuming IX,
         body: consuming Finite<Integer>
-    )   -> String where Integer: UnsignedInteger, Info: SystemsInteger {
+    )   -> String where Integer: UnsignedInteger {
         
         let body = consume body // await ownership fix
         
         return Swift.withUnsafePointer(to: info.endianness(Order.ascending)) {
-            $0.withMemoryRebound(to: UInt8.self, capacity: MemoryLayout<Info>.size) {
+            $0.withMemoryRebound(to: UInt8.self, capacity: 4) {
                 self.encode(
                     info: UnsafeBufferPointer(start: $0, count: size.stdlib()),
                     body: body
