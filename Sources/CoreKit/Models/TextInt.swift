@@ -16,7 +16,7 @@
 /// ### Format
 ///
 /// The baseline binary integer description starts with a conditional sign,
-/// then a conditional mask, followed by a mandatory sequence of radix-appropriate
+/// followed by a conditional mask, and then a mandatory sequence of radix-appropriate
 /// numerals. In other words, it matches the following regular expression:
 ///
 /// ```swift
@@ -32,7 +32,7 @@
 ///
 /// - Note: The numerals of infinite values represent some distance from the
 ///   maximum infinite magnitude of an unsigned and arbitrary binary integer.
-///   As such, `&1` is equivalent to `UXL.max-1`.
+///   As such, `&1` translates to `UXL.max-1`.
 ///
 @frozen public struct TextInt: Equatable, Sendable {
     
