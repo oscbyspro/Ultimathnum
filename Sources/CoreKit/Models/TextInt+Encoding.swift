@@ -126,8 +126,6 @@ extension TextInt {
         body: consuming DataInt<U8>.Body
     )   -> String {
         
-        body = body.normalized()
-        
         let count = body.count(as: UX.self)
         
         return  Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Swift.Int(count)) {
@@ -146,7 +144,7 @@ extension TextInt {
                 words.deinitialize()
             }
             //=----------------------------------=
-            return self.encode(info: info, normalized: words)
+            return self.encode(info: info, normalized: words.normalized())
         }
     }
     
