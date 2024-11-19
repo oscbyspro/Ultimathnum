@@ -23,8 +23,7 @@ import TestKit
     @Test(
         "Sign/bitwise: ~(_:)",
         Tag.List.tags(.documentation, .exhaustive),
-        ParallelizationTrait.serialized,
-        arguments: Array<(Sign, Sign)>([
+        arguments: Array<(Sign, Sign)>.infer([
         
         (Sign.plus,  Sign.minus),
         (Sign.minus, Sign.plus ),
@@ -38,8 +37,7 @@ import TestKit
     @Test(
         "Sign/bitwise: &(_:_:)",
         Tag.List.tags(.documentation, .exhaustive),
-        ParallelizationTrait.serialized,
-        arguments: Array<(Sign, Sign, Sign)>([
+        arguments: Array<(Sign, Sign, Sign)>.infer([
         
         (Sign.plus,  Sign.plus,  Sign.plus ),
         (Sign.plus,  Sign.minus, Sign.plus ),
@@ -54,8 +52,7 @@ import TestKit
     @Test(
         "Sign/bitwise: |(_:_:)",
         Tag.List.tags(.documentation, .exhaustive),
-        ParallelizationTrait.serialized,
-        arguments: Array<(Sign, Sign, Sign)>([
+        arguments: Array<(Sign, Sign, Sign)>.infer([
         
         (Sign.plus,  Sign.plus,  Sign.plus ),
         (Sign.plus,  Sign.minus, Sign.minus),
@@ -70,8 +67,7 @@ import TestKit
     @Test(
         "Sign/bitwise: ^(_:_:)",
         Tag.List.tags(.documentation, .exhaustive),
-        ParallelizationTrait.serialized,
-        arguments: Array<(Sign, Sign, Sign)>([
+        arguments: Array<(Sign, Sign, Sign)>.infer([
         
         (Sign.plus,  Sign.plus,  Sign.plus ),
         (Sign.plus,  Sign.minus, Sign.minus),

@@ -23,7 +23,7 @@ import TestKit
     @Test(
         "Bit/text: description",
         Tag.List.tags(.documentation, .exhaustive),
-        arguments: Array<(Bit, String)>([
+        arguments: Array<(Bit, String)>.infer([
         
         (Bit.zero, "0"),
         (Bit.one,  "1"),

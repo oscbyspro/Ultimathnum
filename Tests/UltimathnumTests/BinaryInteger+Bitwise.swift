@@ -25,10 +25,10 @@ import TestKit
         "BinaryInteger/bitwise: from bit",
         Tag.List.tags(.generic, .exhaustive),
         arguments: typesAsBinaryInteger
-    )   func fromBit(type: any BinaryInteger.Type) {
-        whereIs(type)
+    )   func fromBit(type: any BinaryInteger.Type) throws {
         
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             #expect(T(Bit.zero) == (0 as T))
             #expect(T(Bit.one ) == (1 as T))
         }
@@ -38,10 +38,10 @@ import TestKit
         "BinaryInteger/bitwise: from repeating bit",
         Tag.List.tags(.generic, .exhaustive),
         arguments: typesAsBinaryInteger
-    )   func fromRepeatingBit(type: any BinaryInteger.Type) {
-        whereIs(type)
+    )   func fromRepeatingBit(type: any BinaryInteger.Type) throws {
         
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             #expect(T(repeating: Bit.zero) == ( 0 as T))
             #expect(T(repeating: Bit.one ) == (~0 as T))
         }
@@ -55,9 +55,11 @@ import TestKit
         "BinaryInteger/bitwise: least significant bit",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func lsb(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    )   func lsb(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..<  4 {
                 var value = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -79,9 +81,11 @@ import TestKit
         "BinaryInteger/bitwise: most significant bit",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func msb(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    )   func msb(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 32 {
                 let value = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -100,9 +104,11 @@ import TestKit
         "BinaryInteger/bitwise: NOT(x)",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func not(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func not(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< conditional(debug: 64,release: 256) {
                 let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -118,9 +124,11 @@ import TestKit
         "BinaryInteger/bitwise: x AND y",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func and(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func and(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< conditional(debug: 64,release: 256) {
                 let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -134,9 +142,11 @@ import TestKit
         "BinaryInteger/bitwise: x OR y",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func or(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func or(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< conditional(debug: 64,release: 256) {
                 let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -150,9 +160,11 @@ import TestKit
         "BinaryInteger/bitwise: x XOR y",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func xor(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func xor(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< conditional(debug: 64,release: 256) {
                 let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -193,9 +205,11 @@ import TestKit
         "BinaryInteger/bitwise: byte swapped",
         Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsInteger, fuzzers
-    )   func byteSwapped(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func byteSwapped(
+        type: any SystemsInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: SystemsInteger {
             for _ in 0 ..< conditional(debug: 64,release: 256) {
                 let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -219,9 +233,11 @@ import TestKit
         "BinaryInteger/bitwise: get/set bit at index",
         Tag.List.tags(.generic),
         arguments: typesAsSystemsInteger
-    )   func getSetBitAtIndex(type: any SystemsInteger.Type) throws {
+    )   func getSetBitAtIndex(
+        type: any SystemsInteger.Type
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: SystemsInteger {
             var result: T   = T.zero
             var expectation = T.Magnitude.zero
@@ -280,9 +296,11 @@ import TestKit
         "BinaryInteger/bitwise/conveniences: NOT(x)",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func not(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func not(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 64 {
                 let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -300,9 +318,11 @@ import TestKit
         "BinaryInteger/bitwise/conveniences: x AND y",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func and(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func and(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 64 {
                 let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -318,9 +338,11 @@ import TestKit
         "BinaryInteger/bitwise/conveniences: x OR y",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func or(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func or(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 64 {
                 let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -336,9 +358,11 @@ import TestKit
         "BinaryInteger/bitwise/conveniences: x XOR y",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func xor(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func xor(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 64 {
                 let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -358,9 +382,11 @@ import TestKit
         "BinaryInteger/bitwise: x.reversed(U8.self)",
         Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsInteger, fuzzers
-    )   func reversed(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func reversed(
+        type: any SystemsInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: SystemsInteger {
             for _ in 0 ..< 64 {
                 let a = T.entropic(through: Shift.max(or: 255), using: &randomness)

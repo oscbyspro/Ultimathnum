@@ -22,21 +22,27 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("BinaryInteger - mode", arguments: typesAsBinaryInteger)
-    func modes(type: any BinaryInteger.Type) {
-        whereIs(type)
+    @Test(
+        "BinaryInteger/metadata: mode",
+        Tag.List.tags(.generic),
+        arguments: typesAsBinaryInteger
+    )   func modes(type: any BinaryInteger.Type) throws {
         
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             #expect( T.isSigned == (T.mode == Signedness  .signed))
             #expect(!T.isSigned == (T.mode == Signedness.unsigned))
         }
     }
     
-    @Test("BinaryInteger - size", arguments: typesAsBinaryInteger)
-    func sizes(type: any BinaryInteger.Type) {
-        whereIs(type)
+    @Test(
+        "BinaryInteger/metadata: size",
+        Tag.List.tags(.generic),
+        arguments: typesAsBinaryInteger
+    )   func sizes(type: any BinaryInteger.Type) throws {
         
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             #expect(T.size.isPowerOf2)
             #expect(T.size >= T.Element  .size)
             #expect(T.size == T.Magnitude.size)
@@ -58,11 +64,14 @@ import TestKit
         }
     }
     
-    @Test("BinaryInteger - quadrants", arguments: typesAsBinaryInteger)
-    func quadrants(type: any BinaryInteger.Type) {
-        whereIs(type)
+    @Test(
+        "BinaryInteger/metadata: quadrants",
+        Tag.List.tags(.generic),
+        arguments: typesAsBinaryInteger
+    )   func quadrants(type: any BinaryInteger.Type) throws {
         
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             #expect( T.isArbitrary == (T.self is any  ArbitraryInteger.Type))
             #expect(!T.isArbitrary == (T.self is any    SystemsInteger.Type))
             #expect( T.isEdgy      == (T.self is any       EdgyInteger.Type))

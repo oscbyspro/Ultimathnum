@@ -22,18 +22,15 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    /// Here we check that the following invariants hold for all values:
-    ///
-    ///     integer.hashValue == IXL(load: integer).hashValue
-    ///     integer.hashValue == UXL(load: integer).hashValue
-    ///
     @Test(
         "BinaryInteger/comparison: hash value is type agnostic",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func hashValueIsTypeAgnostic(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    )   func hashValueIsTypeAgnostic(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             try withOnlyOneCallToRequire(type) { require in
                 for _ in 0 ..< conditional(debug: 64, release: 256) {
@@ -54,14 +51,18 @@ import TestKit
         "BinaryInteger/comparison: x vs 0",
         Tag.List.tags(.generic, .random),
         arguments: fuzzers
-    )   func comparisonVersusGenericZero(randomness: consuming FuzzerInt) throws {
+    )   func comparisonVersusGenericZero(
+        randomness: consuming FuzzerInt
+    )   throws {
+       
         for lhs in typesAsBinaryInteger {
             for rhs in typesAsBinaryInteger {
                 try whereIs(lhs, rhs)
             }
         }
         
-        func whereIs<T, U>(_ lhs: T.Type, _ rhs: U.Type) throws where T: BinaryInteger, U: BinaryInteger {
+        func whereIs<T, U>(_ lhs: T.Type, _ rhs: U.Type)
+        throws where T: BinaryInteger, U: BinaryInteger {
             try withOnlyOneCallToRequire((lhs, rhs)) { require in
                 for _ in 0 ..< conditional(debug: 16,  release: 256) {
                     let lhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -89,14 +90,18 @@ import TestKit
         "BinaryInteger/comparison: x vs x.elements",
         Tag.List.tags(.generic, .random),
         arguments: fuzzers
-    )   func comparisonIsLikeDataIntegerComparison(randomness: consuming FuzzerInt) throws {
+    )   func comparisonIsLikeDataIntegerComparison(
+        randomness: consuming FuzzerInt
+    )   throws {
+       
         for lhs in typesAsBinaryInteger {
             for rhs in typesAsBinaryInteger {
                 try whereIs(lhs, rhs)
             }
         }
         
-        func whereIs<T, U>(_ lhs: T.Type, _ rhs: U.Type) throws where T: BinaryInteger, U: BinaryInteger {
+        func whereIs<T, U>(_ lhs: T.Type, _ rhs: U.Type)
+        throws where T: BinaryInteger, U: BinaryInteger {
             try withOnlyOneCallToRequire((lhs, rhs)) { require in
                 for _ in 0 ..< conditional(debug: 16,  release: 256) {
                     let lhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -120,8 +125,7 @@ import TestKit
 // MARK: * Binary Integer x Comparison x Edge Cases
 //*============================================================================*
 
-@Suite(.tags(.documentation, .important), .serialized)
-struct BinaryIntegerTestsOnComparisonEdgeCases {
+@Suite(.serialized) struct BinaryIntegerTestsOnComparisonEdgeCases {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -130,37 +134,40 @@ struct BinaryIntegerTestsOnComparisonEdgeCases {
     @Test(
         "BinaryInteger/comparison/edge-cases: ℕ vs ℕ",
         Tag.List.tags(.generic),
-        arguments: [
+        arguments: Array<(I8, I8, Signum)>.infer([
             
-            (lhs: 0 as I8, rhs: 0 as I8, expectation: Signum.zero),
-            (lhs: 0 as I8, rhs: 1 as I8, expectation: Signum.negative),
-            (lhs: 0 as I8, rhs: 2 as I8, expectation: Signum.negative),
-            (lhs: 0 as I8, rhs: 3 as I8, expectation: Signum.negative),
+            (0 as I8, 0 as I8, Signum.zero),
+            (0 as I8, 1 as I8, Signum.negative),
+            (0 as I8, 2 as I8, Signum.negative),
+            (0 as I8, 3 as I8, Signum.negative),
             
-            (lhs: 1 as I8, rhs: 0 as I8, expectation: Signum.positive),
-            (lhs: 1 as I8, rhs: 1 as I8, expectation: Signum.zero),
-            (lhs: 1 as I8, rhs: 2 as I8, expectation: Signum.negative),
-            (lhs: 1 as I8, rhs: 3 as I8, expectation: Signum.negative),
+            (1 as I8, 0 as I8, Signum.positive),
+            (1 as I8, 1 as I8, Signum.zero),
+            (1 as I8, 2 as I8, Signum.negative),
+            (1 as I8, 3 as I8, Signum.negative),
             
-            (lhs: 2 as I8, rhs: 0 as I8, expectation: Signum.positive),
-            (lhs: 2 as I8, rhs: 1 as I8, expectation: Signum.positive),
-            (lhs: 2 as I8, rhs: 2 as I8, expectation: Signum.zero),
-            (lhs: 2 as I8, rhs: 3 as I8, expectation: Signum.negative),
+            (2 as I8, 0 as I8, Signum.positive),
+            (2 as I8, 1 as I8, Signum.positive),
+            (2 as I8, 2 as I8, Signum.zero),
+            (2 as I8, 3 as I8, Signum.negative),
             
-            (lhs: 3 as I8, rhs: 0 as I8, expectation: Signum.positive),
-            (lhs: 3 as I8, rhs: 1 as I8, expectation: Signum.positive),
-            (lhs: 3 as I8, rhs: 2 as I8, expectation: Signum.positive),
-            (lhs: 3 as I8, rhs: 3 as I8, expectation: Signum.zero),
+            (3 as I8, 0 as I8, Signum.positive),
+            (3 as I8, 1 as I8, Signum.positive),
+            (3 as I8, 2 as I8, Signum.positive),
+            (3 as I8, 3 as I8, Signum.zero),
             
-    ] as [(lhs: I8, rhs: I8, expectation: Signum)])
-    func comparisonOfNaturalVersusNatural(lhs: I8, rhs: I8, expectation: Signum) throws {
+    ])) func comparisonOfNaturalVersusNatural(
+        lhs: I8, rhs: I8, expectation: Signum
+    )   throws {
+       
         for lhs in typesAsBinaryInteger {
             for rhs in typesAsBinaryInteger {
-                whereIs(lhs, rhs)
+                try whereIs(lhs, rhs)
             }
         }
         
-        func whereIs<T, U>(_ first: T.Type, _ second: U.Type) where T: BinaryInteger, U: BinaryInteger {
+        func whereIs<T, U>(_ first: T.Type, _ second: U.Type)
+        throws where T: BinaryInteger, U: BinaryInteger {
             let lhs = T(load: lhs)
             let rhs = U(load: rhs)
             
@@ -175,11 +182,12 @@ struct BinaryIntegerTestsOnComparisonEdgeCases {
     )   func comparisonOfNaturalVersusNegative(lhs: I8, rhs: I8) throws {
         for lhs in typesAsBinaryInteger {
             for rhs in typesAsBinaryIntegerAsSigned {
-                whereIs(lhs, rhs)
+                try whereIs(lhs, rhs)
             }
         }
         
-        func whereIs<T, U>(_ first: T.Type, _ second: U.Type) where T: BinaryInteger, U: SignedInteger {
+        func whereIs<T, U>(_ first: T.Type, _ second: U.Type)
+        throws where T: BinaryInteger, U: SignedInteger {
             let lhs = T(load: lhs)
             let rhs = U(load: rhs)
             
@@ -195,11 +203,12 @@ struct BinaryIntegerTestsOnComparisonEdgeCases {
     )   func comparisonOfNaturalVersusInfinite(lhs: I8, rhs: I8) throws {
         for lhs in typesAsBinaryInteger {
             for rhs in typesAsArbitraryIntegerAsUnsigned {
-                whereIs(lhs, rhs)
+                try whereIs(lhs, rhs)
             }
         }
         
-        func whereIs<T, U>(_ first: T.Type, _ second: U.Type) where T: BinaryInteger, U: UnsignedInteger {
+        func whereIs<T, U>(_ first: T.Type, _ second: U.Type)
+        throws where T: BinaryInteger, U: UnsignedInteger {
             let lhs = T(load: lhs)
             let rhs = U(load: rhs)
             
@@ -215,11 +224,12 @@ struct BinaryIntegerTestsOnComparisonEdgeCases {
     )   func comparisonOfNegativeVersusNegative(lhs: I8, rhs: I8) throws {
         for lhs in typesAsBinaryIntegerAsSigned {
             for rhs in typesAsBinaryIntegerAsSigned {
-                whereIs(lhs, rhs)
+                try whereIs(lhs, rhs)
             }
         }
         
-        func whereIs<T, U>(_ first: T.Type, _ second: U.Type) where T: SignedInteger, U: SignedInteger {
+        func whereIs<T, U>(_ first: T.Type, _ second: U.Type)
+        throws where T: SignedInteger, U: SignedInteger {
             let expectation = lhs.compared(to: rhs)
             
             let lhs = T(load: lhs)
@@ -237,11 +247,12 @@ struct BinaryIntegerTestsOnComparisonEdgeCases {
     )   func comparisonOfNegativeVersusInfinite(lhs: I8, rhs: I8) throws {
         for lhs in typesAsBinaryIntegerAsSigned {
             for rhs in typesAsArbitraryIntegerAsUnsigned {
-                whereIs(lhs, rhs)
+                try whereIs(lhs, rhs)
             }
         }
         
-        func whereIs<T, U>(_ first: T.Type, _ second: U.Type) where T: SignedInteger, U: UnsignedInteger {
+        func whereIs<T, U>(_ first: T.Type, _ second: U.Type)
+        throws where T: SignedInteger, U: UnsignedInteger {
             let lhs = T(load: lhs)
             let rhs = U(load: rhs)
             
@@ -257,11 +268,12 @@ struct BinaryIntegerTestsOnComparisonEdgeCases {
     )   func comparisonOfInfiniteVersusInfinite(lhs: I8, rhs: I8) throws {
         for lhs in typesAsArbitraryIntegerAsUnsigned {
             for rhs in typesAsArbitraryIntegerAsUnsigned {
-                whereIs(lhs, rhs)
+                try whereIs(lhs, rhs)
             }
         }
         
-        func whereIs<T, U>(_ first: T.Type, _ second: U.Type) where T: UnsignedInteger, U: UnsignedInteger {
+        func whereIs<T, U>(_ first: T.Type, _ second: U.Type)
+        throws where T: UnsignedInteger, U: UnsignedInteger {
             let expectation = lhs.compared(to: rhs)
             
             let lhs = T(load: lhs)
@@ -280,14 +292,18 @@ struct BinaryIntegerTestsOnComparisonEdgeCases {
         "BinaryInteger/comparison/edge-cases: x vs x with one bit changed",
         Tag.List.tags(.generic, .random),
         arguments: fuzzers
-    )   func comparisonOfRandomVersusSelfWithOneBitChanged(randomness: consuming FuzzerInt) throws {
+    )   func comparisonOfRandomVersusSelfWithOneBitChanged(
+        randomness: consuming FuzzerInt
+    )   throws {
+       
         for lhs in typesAsBinaryInteger {
             for rhs in typesAsBinaryInteger where lhs.mode == rhs.mode && lhs.size <= rhs.size {
                 try whereIs(lhs, rhs)
             }
         }
         
-        func whereIs<T, U>(_ first: T.Type, _ second: U.Type) throws where T: BinaryInteger, U: BinaryInteger {
+        func whereIs<T, U>(_ first: T.Type, _ second: U.Type)
+        throws where T: BinaryInteger, U: BinaryInteger {
             for _ in 0 ..< conditional(debug: 16,  release: 64) {
                 let lhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
                 var expectation = Signum.zero
@@ -314,14 +330,18 @@ struct BinaryIntegerTestsOnComparisonEdgeCases {
         "BinaryInteger/comparison/edge-cases: x vs y, different appendix",
         Tag.List.tags(.generic, .random),
         arguments: fuzzers
-    )   func comparisonOfRandomVersusRandomWithDifferentAppendix(randomness: consuming FuzzerInt) throws {
+    )   func comparisonOfRandomVersusRandomWithDifferentAppendix(
+        randomness: consuming FuzzerInt
+    )   throws {
+       
         for lhs in typesAsBinaryInteger {
             for rhs in typesAsBinaryIntegerAsAppendix {
                 try whereIs(lhs, rhs)
             }
         }
         
-        func whereIs<T, U>(_ first: T.Type, _ second: U.Type) throws where T: BinaryInteger, U: BinaryInteger {
+        func whereIs<T, U>(_ first: T.Type, _ second: U.Type)
+        throws where T: BinaryInteger, U: BinaryInteger {
             for _ in 0 ..< conditional(debug: 16,  release: 64) {
                 let lhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
                 var rhs = U.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -347,14 +367,18 @@ struct BinaryIntegerTestsOnComparisonEdgeCases {
         "BinaryInteger/comparison/edge-cases: x vs y, same signedness, same appendix, different normal byte count",
         Tag.List.tags(.generic, .random),
         arguments: fuzzers
-    )   func comparisonOfRandomVersusRandomWithSameSignednessSameAppendixButDifferentNormalByteCount(randomness: consuming FuzzerInt) throws {
+    )   func comparisonOfRandomVersusRandomWithSameSignednessSameAppendixButDifferentNormalByteCount(
+        randomness: consuming FuzzerInt
+    )   throws {
+        
         for lhs in typesAsBinaryInteger {
             for rhs in typesAsBinaryInteger where lhs.mode == rhs.mode {
                 try whereIs(lhs, rhs)
             }
         }
         
-        func whereIs<T, U>(_ first: T.Type, _ second: U.Type) throws where T: BinaryInteger, U: BinaryInteger {
+        func whereIs<T, U>(_ first: T.Type, _ second: U.Type)
+        throws where T: BinaryInteger, U: BinaryInteger {
             for _ in 0 ..< conditional(debug: 16,  release: 64) {
                 var lhs = T.entropic(through: Shift.max(or: 255), using: &randomness)
                 var rhs = U.entropic(through: Shift.max(or: 255), using: &randomness)

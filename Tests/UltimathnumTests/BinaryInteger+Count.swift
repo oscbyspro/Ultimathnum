@@ -25,9 +25,11 @@ import TestKit
         "BinaryInteger/count: size",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func size(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func size(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< conditional(debug: 64, release: 256) {
                 let random = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -40,9 +42,11 @@ import TestKit
         "BinaryInteger/count: count",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func count(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    )   func count(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< conditional(debug: 64, release: 256) {
                 let random = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -67,9 +71,11 @@ import TestKit
         "BinaryInteger/count: ascending",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func ascending(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func ascending(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< conditional(debug: 64, release: 256) {
                 let random = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -96,9 +102,11 @@ import TestKit
         "BinaryInteger/count: descending",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func descending(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func descending(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< conditional(debug: 64, release: 256) {
                 let random = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -143,9 +151,11 @@ import TestKit
         "BinaryInteger/count/conveniences: entropy",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func entropy(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func entropy(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 64 {
                 let random = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -161,9 +171,11 @@ import TestKit
         "BinaryInteger/count/conveniences: nonascending",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func nonascending(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func nonascending(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 64 {
                 let random = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -181,9 +193,11 @@ import TestKit
         "BinaryInteger/count/conveniences: nondescending",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func nondescending(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func nondescending(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 64 {
                 let random = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -212,9 +226,11 @@ import TestKit
         "BinaryInteger/count/edge-cases: systems integer is like data integer body",
         Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsInteger, fuzzers
-    )   func systemsIntegerIsLikeDataIntegerBody(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func systemsIntegerIsLikeDataIntegerBody(
+        type: any SystemsInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: SystemsInteger {
             for _ in 0 ..< 64 {
                 let random = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -289,9 +305,11 @@ import TestKit
         "BinaryInteger/count/edge-cases: arbitrary integer is like data integer elements",
         Tag.List.tags(.generic, .random),
         arguments: typesAsArbitraryInteger, fuzzers
-    )   func arbitraryIntegerIsLikeDataIntegerElements(type: any ArbitraryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func arbitraryIntegerIsLikeDataIntegerElements(
+        type: any ArbitraryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: ArbitraryInteger {
             for _ in 0 ..< 64 {
                 let random = T.entropic(through: Shift.max(or: 255), using: &randomness)

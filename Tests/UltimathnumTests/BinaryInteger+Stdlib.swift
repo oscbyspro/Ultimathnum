@@ -25,9 +25,11 @@ import TestKit
         "BinaryInteger/stdlib: conversions",
         Tag.List.tags(.generic, .random),
         arguments: typesAsCoreInteger, fuzzers
-    )   func conversions(type: any CoreInteger.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    )   func conversions(
+        type: any CoreInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: CoreInteger {
             for _  in 0 ..< 16 {
                 var a = T.random(using: &randomness)

@@ -29,7 +29,9 @@ import TestKit
         "DoubleInt/addition/not-in-protocol: random 212 vs 222",
         Tag.List.tags(.generic, .random),
         arguments: DoubleIntTests.bases, fuzzers
-    )   func random212vs222(base: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func random212vs222(
+        base: any SystemsInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
         try  whereIs(base)
         func whereIs<B>(_ base: B.Type) throws where B: SystemsInteger {

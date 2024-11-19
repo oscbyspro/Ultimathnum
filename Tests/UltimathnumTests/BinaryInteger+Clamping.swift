@@ -25,16 +25,18 @@ import TestKit
         "BinaryInteger/clamping: comparisons as EdgyInteger",
         Tag.List.tags(.generic, .random),
         arguments: fuzzers
-    )   func comparisonsAsEdgyInteger(randomness: consuming FuzzerInt) throws {
-        
+    )   func comparisonsAsEdgyInteger(
+        randomness: consuming FuzzerInt
+    )   throws {
+       
         for source in typesAsBinaryInteger {
             for destination in typesAsEdgyInteger {
                 try whereIs(source: source, destination: destination)
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws
-        where A: BinaryInteger, B: EdgyInteger {
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: BinaryInteger, B: EdgyInteger {
             try withOnlyOneCallToRequire((source, destination)) { require in
                 for _ in 0 ..< 32 {
                     let random = A.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -65,7 +67,9 @@ import TestKit
         "BinaryInteger/clamping/edge-cases: finite value as LenientInteger is argument",
         Tag.List.tags(.generic, .random),
         arguments: fuzzers
-    )   func finiteValueAsLenientIntegerIsArgument(randomness: consuming FuzzerInt) throws {
+    )   func finiteValueAsLenientIntegerIsArgument(
+        randomness: consuming FuzzerInt
+    )   throws {
         
         for source in typesAsBinaryInteger {
             for destination in typesAsArbitraryIntegerAsSigned {
@@ -73,8 +77,8 @@ import TestKit
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws
-        where A: BinaryInteger, B: ArbitraryIntegerAsSigned {
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: BinaryInteger, B: ArbitraryIntegerAsSigned {
             for _ in 0 ..< 32 {
                 let random = A.entropic(through: Shift.max(or: 255), as: Domain.finite, using: &randomness)
                 try #require(!random.isInfinite)
@@ -92,7 +96,9 @@ import TestKit
         "BinaryInteger/clamping/edge-cases: negative value as UnsignedInteger is zero",
         Tag.List.tags(.generic, .random),
         arguments: fuzzers
-    )   func negativeValueAsUnsignedIntegerIsZero(randomness: consuming FuzzerInt) throws {
+    )   func negativeValueAsUnsignedIntegerIsZero(
+        randomness: consuming FuzzerInt
+    )   throws {
         
         for source in typesAsBinaryIntegerAsSigned {
             for destination in typesAsBinaryIntegerAsUnsigned {
@@ -100,8 +106,8 @@ import TestKit
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws
-        where A: SignedInteger, B: UnsignedInteger {
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: SignedInteger, B: UnsignedInteger {
             for _ in 0 ..< 32 {
                 let random = A.entropic(through: Shift.max(or: 255), as: Domain.natural, using: &randomness).toggled()
                 try #require(random.isNegative)
@@ -118,7 +124,9 @@ import TestKit
         "BinaryInteger/clamping/edge-cases: infinite value as SystemsInteger is max",
         Tag.List.tags(.generic, .random),
         arguments: fuzzers
-    )   func infiniteValueAsSystemsIntegerIsMaxValue(randomness: consuming FuzzerInt) throws {
+    )   func infiniteValueAsSystemsIntegerIsMaxValue(
+        randomness: consuming FuzzerInt
+    )   throws {
         
         for source in typesAsArbitraryIntegerAsUnsigned {
             for destination in typesAsSystemsInteger {
@@ -126,8 +134,8 @@ import TestKit
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws
-        where A: ArbitraryIntegerAsUnsigned, B: SystemsInteger {
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: ArbitraryIntegerAsUnsigned, B: SystemsInteger {
             for _ in 0 ..< 32 {
                 let random = A.entropic(size: 256, as: Domain.natural, using: &randomness).toggled()
                 try #require(random.isInfinite)
@@ -140,7 +148,9 @@ import TestKit
         "BinaryInteger/clamping/edge-cases: infinite value as LenientInteger is nil",
         Tag.List.tags(.generic, .random),
         arguments: fuzzers
-    )   func infiniteValueAsLenientIntegerIsNil(randomness: consuming FuzzerInt) throws {
+    )   func infiniteValueAsLenientIntegerIsNil(
+        randomness: consuming FuzzerInt
+    )   throws {
         
         for source in typesAsArbitraryIntegerAsUnsigned {
             for destination in typesAsArbitraryIntegerAsSigned {
@@ -148,8 +158,8 @@ import TestKit
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws
-        where A: ArbitraryIntegerAsUnsigned, B: ArbitraryIntegerAsSigned {
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: ArbitraryIntegerAsUnsigned, B: ArbitraryIntegerAsSigned {
             for _ in 0 ..< 32 {
                 let random = A.entropic(size: 256, as: Domain.natural, using: &randomness).toggled()
                 try #require(random.isInfinite)
@@ -162,7 +172,9 @@ import TestKit
         "BinaryInteger/clamping/edge-cases: infinite value as MaximumInteger is argument",
         Tag.List.tags(.generic, .random),
         arguments: fuzzers
-    )   func infiniteValueAsMaximumIntegerIsArgument(randomness: consuming FuzzerInt) throws {
+    )   func infiniteValueAsMaximumIntegerIsArgument(
+        randomness: consuming FuzzerInt
+    )   throws {
         
         for source in typesAsArbitraryIntegerAsUnsigned {
             for destination in typesAsArbitraryIntegerAsUnsigned {
@@ -170,8 +182,8 @@ import TestKit
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws
-        where A: ArbitraryIntegerAsUnsigned, B: ArbitraryIntegerAsUnsigned {
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: ArbitraryIntegerAsUnsigned, B: ArbitraryIntegerAsUnsigned {
             for _ in 0 ..< 32 {
                 let random = A.entropic(size: 256, as: Domain.natural, using: &randomness).toggled()
                 try #require(random.isInfinite)
@@ -195,7 +207,9 @@ import TestKit
         "BinaryInteger/clamping/conveniences: random FiniteInteger as BinaryInteger",
         Tag.List.tags(.generic, .random),
         arguments: fuzzers
-    )   func randomFiniteIntegerAsBinaryInteger(randomness: consuming FuzzerInt) throws {
+    )   func randomFiniteIntegerAsBinaryInteger(
+        randomness: consuming FuzzerInt
+    )   throws {
         
         for source in typesAsFiniteInteger {
             for destination in typesAsBinaryInteger {
@@ -203,7 +217,8 @@ import TestKit
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws where A: FiniteInteger, B: BinaryInteger {
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: FiniteInteger, B: BinaryInteger {
             try withOnlyOneCallToRequire((source, destination)) { require in
                 for _ in 0 ..< 32 {
                     let finite = A.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -226,7 +241,8 @@ import TestKit
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws where A: BinaryInteger, B: EdgyInteger {
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: BinaryInteger, B: EdgyInteger {
             try withOnlyOneCallToRequire((source, destination)) { require in
                 for _ in 0 ..< 32 {
                     let binary = A.entropic(through: Shift.max(or: 255), using: &randomness)

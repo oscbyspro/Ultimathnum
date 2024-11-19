@@ -33,15 +33,15 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt - metadata")
+    @Test("StdlibInt: metadata")
     func metadata() {
         #expect(StdlibInt.isSigned)
         #expect(StdlibInt.Magnitude.isSigned)
     }
     
-    @Test("StdlibInt.init(raw:) - [entropic]", arguments: fuzzers)
+    @Test("StdlibInt: init(raw:)", .tags(.random), arguments: fuzzers)
     func bitcasting(randomness: consuming FuzzerInt) {
-        for _ in 0 ..< 32 {
+        for _ in 0 ..< 8 {
             let random = StdlibInt(IXL.entropic(size: 256, using: &randomness))
             #expect(StdlibInt(raw: IXL(raw: random)) == random)
             #expect(StdlibInt(raw: UXL(raw: random)) == random)

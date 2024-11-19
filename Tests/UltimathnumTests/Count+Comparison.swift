@@ -21,8 +21,13 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test(arguments: fuzzers)
-    func comparisonIsLikeUnsignedIntegerComparison(_ randomness: consuming FuzzerInt) {
+    @Test(
+        "Count/comparison: compared(to:) is UnsignedInteger/compared(to:)",
+        Tag.List.tags(.random),
+        arguments: fuzzers
+    )   func comparisonIsLikeUnsignedIntegerComparison(
+        randomness: consuming FuzzerInt
+    )   throws {
         for _ in 0 ..< 256 {
             let lhs = UX.entropic(using: &randomness)
             let rhs = UX.entropic(using: &randomness)
@@ -30,24 +35,37 @@ import TestKit
         }
     }
     
-    @Test(arguments: fuzzers)
-    func isZeroIsLikeBinaryIntegerIsZero(_ randomness: consuming FuzzerInt) {
+    @Test(
+        "Count/comparison: isZero is BinaryInteger/isZero",
+        Tag.List.tags(.random),
+        arguments: fuzzers
+    )   func isZeroIsLikeBinaryIntegerIsZero(
+        randomness: consuming FuzzerInt
+    )   throws {
         for _ in 0 ..< 256 {
             let random = IX.entropic(using: &randomness)
-            #expect(Count(raw: random).isZero == random.isZero)
+            try #require(Count(raw: random).isZero == random.isZero)
         }
     }
     
-    @Test(arguments: fuzzers)
-    func isInfiniteIsLikeSignedIntegerIsNegative(_ randomness: consuming FuzzerInt) {
+    @Test(
+        "Count/comparison: isInfinite is BinaryInteger/isNegative",
+        Tag.List.tags(.random),
+        arguments: fuzzers
+    )   func isInfiniteIsLikeSignedIntegerIsNegative(
+        randomness: consuming FuzzerInt
+    )   throws {
         for _ in 0 ..< 256 {
             let random = IX.entropic(using: &randomness)
-            #expect(Count(raw: random).isInfinite == random.isNegative)
+            try #require(Count(raw: random).isInfinite == random.isNegative)
         }
     }
     
-    @Test(arguments: fuzzers)
-    func isPowerOf2IsNormalExceptMaxIsPowerOf2(_ randomness: consuming FuzzerInt) {
+    @Test(
+        "Count/comparison: isPowerOf2 is BinaryInteger/isPowerOf2 or log2(&0+1)",
+        Tag.List.tags(.random),
+        arguments: fuzzers
+    )   func isPowerOf2IsNormalExceptMaxIsPowerOf2(randomness: consuming FuzzerInt) {
         #expect( Count(raw: UX.max).isPowerOf2)
         #expect(!Count(raw: IX.min).isPowerOf2)
         #expect(!Count(raw: IX.max).isPowerOf2)

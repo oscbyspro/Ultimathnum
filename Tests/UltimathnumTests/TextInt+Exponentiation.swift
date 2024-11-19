@@ -20,8 +20,10 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("TextInt.Exponentiation: each radix < 2 is nil", .tags(.exhaustive))
-    func eachRadixLessThanTwoIsNil() throws {
+    @Test(
+        "TextInt/exponentiation: each radix < 2 is nil",
+        Tag.List.tags(.exhaustive)
+    )   func eachRadixLessThanTwoIsNil() throws {
         for radix: UX in 0 ..< 2 {
             #expect(throws: TextInt.Error.invalid) {
                 try TextInt.Exponentiation(radix)
@@ -29,8 +31,9 @@ import TestKit
         }
     }
     
-    @Test("TextInt.Exponentiation: each radix in [2, 1024]")
-    func eachRadixFromTwoThrough1024() throws {
+    @Test(
+        "TextInt/exponentiation: each radix in [2, 1024]"
+    )   func eachRadixFromTwoThrough1024() throws {
         for radix: UX in 2...1024 {
             let radixLog2: UX = UX(raw: try #require(radix    .ilog2()))
             let radixLog2Log2 = UX(raw: try #require(radixLog2.ilog2()))

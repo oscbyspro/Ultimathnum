@@ -33,8 +33,11 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt/count: vs StdlibInt.Base", .tags(.forwarding, .random), arguments: fuzzers)
-    func forwarding(_ randomness: consuming FuzzerInt) throws {
+    @Test(
+        "StdlibInt/count: Self vs Base",
+        Tag.List.tags(.forwarding, .random),
+        arguments: fuzzers
+    )   func forwarding(_ randomness: consuming FuzzerInt) throws {
         for _ in 0 ..< 1024 {
             let random = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
             
@@ -63,8 +66,10 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt/count/edge-cases: 0.trailingZeroBitCount", .tags(.exhaustive))
-    func trailingZeroBitCountOfZero() {
+    @Test(
+        "StdlibInt/count/edge-cases: 0.trailingZeroBitCount",
+        Tag.List.tags(.exhaustive, .important)
+    )   func trailingZeroBitCountOfZero() {
         #expect(IXL.zero.ascending(Bit.zero) == Count.infinity)
         #expect(StdlibInt(IXL.zero).trailingZeroBitCount == 1)
         #expect(StdlibInt(IXL.zero).trailingZeroBitCount == StdlibInt.zero.bitWidth)

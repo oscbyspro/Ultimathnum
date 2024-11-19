@@ -23,8 +23,7 @@ import TestKit
     @Test(
         "Signum: from Bit",
         Tag.List.tags(.documentation, .exhaustive),
-        ParallelizationTrait.serialized,
-        arguments: Array<(Bit, Signum)>([
+        arguments: Array<(Bit, Signum)>.infer([
         
         (Bit.zero, Signum.zero    ),
         (Bit.one,  Signum.positive),
@@ -36,8 +35,7 @@ import TestKit
     @Test(
         "Signum: from Sign or Sign?",
         Tag.List.tags(.documentation, .exhaustive),
-        ParallelizationTrait.serialized,
-        arguments: Array<(Sign?, Signum)>([
+        arguments: Array<(Sign?, Signum)>.infer([
         
         (Optional<Sign>(nil ), Signum.zero),
         (Optional(Sign.plus ), Signum.positive),
@@ -48,7 +46,7 @@ import TestKit
             #expect(Signum(source) == destination)
         }
         
-        if  let source = source {
+        if  let source {
             #expect(Signum(source) == destination)
         }
     }

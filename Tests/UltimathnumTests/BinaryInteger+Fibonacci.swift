@@ -25,24 +25,25 @@ import TestKit
     
     /// - Seealso: https://www.wolframalpha.com/input?i=fibonacci%281000%29
     /// - Seealso: https://www.wolframalpha.com/input?i=fibonacci%281024%29
-    @Test("BinaryInteger/fibonacci: element at large natural index", arguments: [
+    @Test(
+        "BinaryInteger/fibonacci: element at large natural index",
+        arguments: Array<(IXL, IXL)>.infer([
         
-        (index: IXL(1000), element: IXL("""
+        (IXL(1000), IXL("""
         0000000000000000000000000000000000000000000000043466557686937456\
         4356885276750406258025646605173717804024817290895365554179490518\
         9040387984007925516929592259308032263477520968962323987332247116\
         1642996440906533187938298969649928516003704476137795166849228875
         """)!),
         
-        (index: IXL(1024), element: IXL("""
+        (IXL(1024), IXL("""
         0000000000000000000000000000000000000000004506699633677819813104\
         3832357288860493678605962186048308030231496000306457087213962487\
         9260914103039624487326658034501121953020936742558101987106764609\
         4200262285202346655868899711089246778413354004103631553925405243
         """)!),
         
-    ] as [(index: IXL, element: IXL)])
-    func elementAtLargeNaturalIndex(index: IXL, element: IXL) throws {
+    ])) func elementAtLargeNaturalIndex(index: IXL, element: IXL) throws {
         for type in typesAsBinaryInteger {
             try whereIs(type)
         }

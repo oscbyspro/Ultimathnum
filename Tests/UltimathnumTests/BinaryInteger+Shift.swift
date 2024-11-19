@@ -26,9 +26,11 @@ import TestKit
         "BinaryInteger/shift: down(Shift<T.Magnitude>)",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func down(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    )   func down(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             let size = IX(size: T.self) ?? 256
             
@@ -56,9 +58,11 @@ import TestKit
         "BinaryInteger/shift: up(Shift<T.Magnitude>)",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func up(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func up(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             let size = IX(size: T.self) ?? 256
             
@@ -98,7 +102,7 @@ import TestKit
 // MARK: * Binary Integer x Shift x Conveniences
 //*============================================================================*
 
-@Suite(.tags(.forwarding)) struct BinaryIntegerTestsOnShiftConveniences {
+@Suite struct BinaryIntegerTestsOnShiftConveniences {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -106,9 +110,12 @@ import TestKit
     
     @Test(
         "BinaryInteger/shift/conveniences: masking",
-        Tag.List.tags(.generic, .random),
+        Tag.List.tags(.forwarding, .generic, .random),
         arguments: typesAsSystemsInteger, fuzzers
-    )   func masking(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func masking(
+        type: any SystemsInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
         for distance in typesAsBinaryInteger {
             try whereIs(type, distance)
         }
@@ -135,14 +142,17 @@ import TestKit
     
     @Test(
         "BinaryInteger/shift/conveniences: down(Shift<T.Magnitude>) vs positive distance in ±[0, size)",
-        Tag.List.tags(.generic, .random),
+        Tag.List.tags(.forwarding, .generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func downVersusPositiveDistanceFromZeroUpToSize(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func downVersusPositiveDistanceFromZeroUpToSize(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         for distance in typesAsBinaryInteger {
             try whereIs(type, distance)
         }
         
-        func whereIs<T, U>(_ type: T.Type, _ other: U.Type) throws where T: BinaryInteger, U: BinaryInteger {
+        func whereIs<T, U>(_ type: T.Type, _ other: U.Type)
+        throws where T: BinaryInteger, U: BinaryInteger {
             let size =  IX(size: T.self) ?? 256
             let clamped = IX(U(clamping: size - 1))
             
@@ -158,14 +168,18 @@ import TestKit
     
     @Test(
         "BinaryInteger/shift/conveniences: down(Shift<T.Magnitude>) vs negative distance in ±[0, size)",
-        Tag.List.tags(.generic, .random),
+        Tag.List.tags(.forwarding, .generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func downVersusNegativeDistanceFromZeroUpToSize(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func downVersusNegativeDistanceFromZeroUpToSize(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
         for distance in typesAsBinaryIntegerAsSigned {
             try whereIs(type, distance)
         }
         
-        func whereIs<T, U>(_ type: T.Type, _ other: U.Type) throws where T: BinaryInteger, U: SignedInteger {
+        func whereIs<T, U>(_ type: T.Type, _ other: U.Type)
+        throws where T: BinaryInteger, U: SignedInteger {
             let size =  IX(size: T.self) ?? 256
             let clamped = IX(U(clamping: size - 1))
             
@@ -181,9 +195,12 @@ import TestKit
     
     @Test(
         "BinaryInteger/shift/conveniences: up(Shift<T.Magnitude>) vs positive distance in ±[0, size)",
-        Tag.List.tags(.generic, .random),
+        Tag.List.tags(.forwarding, .generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func upVersusPositiveDistanceFromZeroUpToSize(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func upVersusPositiveDistanceFromZeroUpToSize(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
         for distance in typesAsBinaryInteger {
             try whereIs(type, distance)
         }
@@ -205,14 +222,18 @@ import TestKit
     
     @Test(
         "BinaryInteger/shift/conveniences: up(Shift<T.Magnitude>) vs negative distance in ±[0, size)",
-        Tag.List.tags(.generic, .random),
+        Tag.List.tags(.forwarding, .generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func upVersusNegativeDistanceFromZeroUpToSize(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func upVersusNegativeDistanceFromZeroUpToSize(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         for distance in typesAsBinaryIntegerAsSigned {
             try whereIs(type, distance)
         }
         
-        func whereIs<T, U>(_ type: T.Type, _ other: U.Type) throws where T: BinaryInteger, U: SignedInteger {
+        func whereIs<T, U>(_ type: T.Type, _ other: U.Type)
+        throws where T: BinaryInteger, U: SignedInteger {
             let size =  IX(size: T.self) ?? 256
             let clamped = IX(U(clamping: size - 1))
             let arbitrary = IX(Bit(T.isArbitrary))
@@ -242,9 +263,11 @@ import TestKit
         "BinaryInteger/shift/edge-cases: distance of zero yields input",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func distanceOfZeroYieldsInput(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    )   func distanceOfZeroYieldsInput(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 32 {
                 let random = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -260,9 +283,11 @@ import TestKit
         "BinaryInteger/shift/edge-cases: down by distance near nonappendix count",
         Tag.List.tags(.generic, .important, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func downByDistanceNearNonappendixCount(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    )   func downByDistanceNearNonappendixCount(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 256 {
                 let random = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -283,9 +308,11 @@ import TestKit
         "BinaryInteger/shift/edge-cases: up by distance to start of next element",
         Tag.List.tags(.generic, .important, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func upByDistanceToStartOfNextElement(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    )   func upByDistanceToStartOfNextElement(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< conditional(debug: 8, release: 32) {
                 let random = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -307,9 +334,11 @@ import TestKit
         "BinaryInteger/shift/edge-cases: overshift by Count or Shift in ±[size, IX.max]",
         Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsInteger, fuzzers
-    )   func overshiftByCountOrShiftFromSizeThroughLimit(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func overshiftByCountOrShiftFromSizeThroughLimit(
+        type: any SystemsInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: SystemsInteger {
             let size = IX(size: T.self)
             
@@ -332,12 +361,16 @@ import TestKit
         "BinaryInteger/shift/edge-cases: overshift by positive distance in ±[size, IX.max]",
         Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsInteger, fuzzers
-    )   func overshiftByPositiveDistanceFromSizeThroughLimit(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func overshiftByPositiveDistanceFromSizeThroughLimit(
+        type: any SystemsInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
         for distance in typesAsBinaryInteger {
             try whereIs(type, distance)
         }
         
-        func whereIs<T, U>(_ type: T.Type, _ other: U.Type) throws where T: SystemsInteger, U: BinaryInteger {
+        func whereIs<T, U>(_ type: T.Type, _ other: U.Type)
+        throws where T: SystemsInteger, U: BinaryInteger {
             guard let min = U.exactly(IX(size: T.self)).optional() else { return }
             let max = U(clamping: IX.max)
             
@@ -358,12 +391,16 @@ import TestKit
         "BinaryInteger/shift/edge-cases: overshift by negative distance in ±[size, IX.max]",
         Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsInteger, fuzzers
-    )   func overshiftByNegativeDistanceFromSizeThroughLimit(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func overshiftByNegativeDistanceFromSizeThroughLimit(
+        type: any SystemsInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
         for distance in typesAsBinaryInteger {
             try whereIs(type, distance)
         }
         
-        func whereIs<T, U>(_ type: T.Type, _ other: U.Type) throws where T: SystemsInteger, U: BinaryInteger {
+        func whereIs<T, U>(_ type: T.Type, _ other: U.Type)
+        throws where T: SystemsInteger, U: BinaryInteger {
             guard let max = U.exactly(-IX(size: T.self)).optional() else { return }
             let min = U(clamping: -IX.max)
             
@@ -388,12 +425,16 @@ import TestKit
         "BinaryInteger/shift/edge-cases: overshift by positive distance in ±(IX.max, ∞)",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func overshiftByPositiveDistanceGreaterThanLimit(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func overshiftByPositiveDistanceGreaterThanLimit(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
         for distance in typesAsBinaryInteger {
             try whereIs(type, distance)
         }
         
-        func whereIs<T, U>(_ type: T.Type, _ other: U.Type) throws where T: BinaryInteger, U: BinaryInteger {
+        func whereIs<T, U>(_ type: T.Type, _ other: U.Type)
+        throws where T: BinaryInteger, U: BinaryInteger {
             guard let min = U.exactly(UX.msb).optional() else { return }
             let max = U(clamping: IXL(Array(repeating: U64.max, count: 4)))
             
@@ -413,7 +454,10 @@ import TestKit
         "BinaryInteger/shift/edge-cases: overshift by negative distance in ±(IX.max, ∞)",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func overshiftByNegativeDistanceGreaterThanLimit(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func overshiftByNegativeDistanceGreaterThanLimit(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
         for distance in typesAsBinaryInteger {
             try whereIs(type, distance)
         }
@@ -442,9 +486,11 @@ import TestKit
         "BinaryInteger/shift/edge-cases: overshift by infinite Count or Shift",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func overshiftByInfiniteCountOrShift(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func overshiftByInfiniteCountOrShift(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 32 {
                 let random   = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -468,12 +514,16 @@ import TestKit
         "BinaryInteger/shift/edge-cases: overshift by infinite ArbitraryInteger",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func overshiftByInfiniteArbitraryInteger(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func overshiftByInfiniteArbitraryInteger(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
         for distance in typesAsArbitraryIntegerAsUnsigned {
             try whereIs(type, distance)
         }
 
-        func whereIs<T, U>(_ type: T.Type, _ other: U.Type) throws where T: BinaryInteger, U: ArbitraryIntegerAsUnsigned {
+        func whereIs<T, U>(_ type: T.Type, _ other: U.Type)
+        throws where T: BinaryInteger, U: ArbitraryIntegerAsUnsigned {
             for _ in 0 ..< 32 {
                 let random   = T.entropic(through: Shift.max(or: 255), using: &randomness)
                 let distance = U.entropic(through: Shift.max(or: 255), as: Domain.natural, using: &randomness).toggled()
@@ -490,7 +540,7 @@ import TestKit
 // MARK: * Binary Integer x Shift x Disambiguation
 //*============================================================================*
 
-@Suite(.tags(.disambiguation)) struct BinaryIntegerTestsOnShiftDisambiguation {
+@Suite struct BinaryIntegerTestsOnShiftDisambiguation {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -498,7 +548,7 @@ import TestKit
     
     @Test(
         "BinaryInteger/exponentiation/disambiguation: literals",
-        Tag.List.tags(.generic)
+        Tag.List.tags(.disambiguation, .generic)
     )   func literals() {
         func build<T>(_ x: inout T) where T: BinaryInteger {
             x <<= 0
@@ -523,11 +573,13 @@ import TestKit
     
     @Test(
         "BinaryInteger/exponentiation/disambiguation: smart shift by IX vs Swift.Int",
-        Tag.List.tags(.generic, .random),
+        Tag.List.tags(.disambiguation, .generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func smartByTokenVersusSwiftToken(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func smartByTokenVersusSwiftToken(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
         try  whereIs(type)
-                
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 32 {
                 var distance = IX.entropic(using: &randomness)
@@ -547,11 +599,13 @@ import TestKit
     
     @Test(
         "BinaryInteger/exponentiation/disambiguation: masking swift as IX vs Swift.Int",
-        Tag.List.tags(.generic, .random),
+        Tag.List.tags(.disambiguation, .generic, .random),
         arguments: typesAsSystemsInteger, fuzzers
-    )   func maskingByTokenVersusSwiftToken(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    )   func maskingByTokenVersusSwiftToken(
+        type: any SystemsInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: SystemsInteger {
             for _ in 0 ..< 32 {
                 let distance = IX.entropic(using: &randomness)

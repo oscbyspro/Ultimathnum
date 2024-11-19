@@ -183,10 +183,12 @@ import TestKit
         "BinaryInteger/addition/edge-cases: additive inverse of T.min as signed is error",
         Tag.List.tags(.generic, .exhaustive),
         arguments: typesAsSystemsIntegerAsSigned
-    )   func additiveInverseOfMinValueAsSignedIsError(type: any SystemsIntegerAsSigned.Type) {
-        whereIs(type)
+    )   func additiveInverseOfMinValueAsSignedIsError(
+        type: any SystemsIntegerAsSigned.Type
+    )   throws {
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsIntegerAsSigned {
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsSigned {
             #expect(T.min.negated()        == T.min.veto())
             #expect(T.min.complement(true) == T.min.veto())
         }
@@ -196,10 +198,12 @@ import TestKit
         "BinaryInteger/addition/edge-cases: additive inverse of T.min as unsigned is not error",
         Tag.List.tags(.generic, .exhaustive),
         arguments: typesAsBinaryIntegerAsUnsigned
-    )   func additiveInverseOfMinValueAsUnsignedIsNotError(type: any UnsignedInteger.Type) {
-        whereIs(type)
+    )   func additiveInverseOfMinValueAsUnsignedIsNotError(
+        type: any UnsignedInteger.Type
+    )   throws {
         
-        func whereIs<T>(_ type: T.Type) where T: UnsignedInteger {
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: UnsignedInteger {
             #expect(T.min.negated()        == T.min.veto(false))
             #expect(T.min.complement(true) == T.min.veto())
         }
@@ -223,7 +227,7 @@ import TestKit
     )   func additionOfZeroByRandom(
         type: any BinaryInteger.Type, randomness: consuming FuzzerInt
     )   throws {
-       
+        
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 32 {

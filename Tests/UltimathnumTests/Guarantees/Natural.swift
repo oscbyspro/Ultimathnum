@@ -23,17 +23,25 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Natural.init - [entropic]", arguments: typesAsBinaryInteger, fuzzers)
-    func initByFuzzingEntropies(_ type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
-        whereIs(type)
-
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+    @Test(
+        "Natural: validation",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func validation(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 128 {
-                let random = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                Ɣexpect(random, as: Natural.self, if: !random.isInfinite && !random.isNegative)
-                if  let result = Natural(exactly: random) {
-                    #expect(result.value == random)
-                    #expect(result.magnitude().value == random.magnitude())
+                let index = Shift<T.Magnitude>.max(or: 255)
+                let value = T.entropic(through: index, using: &randomness)
+                
+                Ɣexpect(value, as: Natural.self, if: !value.isInfinite && !value.isNegative)
+                
+                if  let result = Natural(exactly: value) {
+                    try #require(result.value ==  value)
+                    try #require(result.magnitude().value == value.magnitude())
                 }
             }
         }

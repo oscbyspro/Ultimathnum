@@ -14,7 +14,7 @@ import TestKit
 // MARK: * Literal Int x Elements
 //*============================================================================*
 
-@Suite struct LiteralIntTestsOnElements {
+@Suite(.serialized) struct LiteralIntTestsOnElements {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -23,8 +23,7 @@ import TestKit
     @Test(
         "LiteralInt/elements: appendix",
         Tag.List.tags(.documentation),
-        ParallelizationTrait.serialized,
-        arguments: Array<(LiteralInt, Bit)>([
+        arguments: Array<(LiteralInt, Bit)>.infer([
         
         (LiteralInt(-8), Bit.one ), // 000....1
         (LiteralInt(-7), Bit.one ), // 100....1
@@ -53,20 +52,22 @@ import TestKit
     @Test(
         "LiteralInt/elements: byte sequence prefix",
         Tag.List.tags(.documentation),
-        ParallelizationTrait.serialized,
-        arguments: Array<(LiteralInt, [U8])>([
+        arguments: Array<(LiteralInt, [U8])>.infer([
         
         (LiteralInt(-0000000000000000000000000000000001),                [U8](repeating: U8.max, count: 32)),
         (LiteralInt( 0000000000000000000000000000000000),                [U8](repeating: U8.min, count: 32)),
         (LiteralInt(-0xf0f1f2f3f4f5f6f7f8f9fafbfcfdff00), [U8](0...15) + [U8](repeating: U8.max, count: 16)),
         (LiteralInt( 0x0f0e0d0c0b0a09080706050403020100), [U8](0...15) + [U8](repeating: U8.min, count: 16)),
         
-    ])) func byteSequencePrefix(instance: LiteralInt, expectation: [U8]) {
+    ])) func byteSequencePrefix(
+        instance: LiteralInt, expectation: [U8]
+    )   throws {
+        
         let ratio: IX =  IX(size: UX.self) / IX(size: U8.self)
         for index: IX in IX.zero ..< IX(expectation.count) {
             let word: UX = instance[UX(index / ratio)]
             let byte: U8 = U8(load: word >> (index % ratio * 8))
-            #expect(byte == expectation[Swift.Int(index)])
+            try #require(byte == expectation[Swift.Int(index)])
         }
     }
 }

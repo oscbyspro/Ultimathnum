@@ -15,7 +15,7 @@ import TestKit
 // MARK: * Tupleacci x Text
 //*============================================================================*
 
-@Suite struct TupleacciTestsOnText {
+@Suite(.serialized) struct TupleacciTestsOnText {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -24,8 +24,7 @@ import TestKit
     @Test(
         "Tupleacci/text: description",
         Tag.List.tags(.documentation, .unofficial),
-        ParallelizationTrait.serialized,
-        arguments: Array<(I8, I8, String)>([
+        arguments: Array<(I8, I8, String)>.infer([
         
         (I8(0), I8(0), "(0, 0)"),
         (I8(3), I8(5), "(3, 5)"),

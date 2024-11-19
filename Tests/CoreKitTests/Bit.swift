@@ -24,7 +24,7 @@ import TestKit
         "Bit: init()",
         Tag.List.tags(.documentation, .exhaustive),
         ParallelizationTrait.serialized,
-        arguments: [Bit.zero]
+        arguments: CollectionOfOne(Bit.zero)
     )   func unspecified(expectation: Bit) {
         #expect(Bit() == expectation)
         #expect(Bit(raw: Bit.zero) == expectation)
@@ -34,7 +34,7 @@ import TestKit
         "Bit: as Bit",
         Tag.List.tags(.documentation, .exhaustive),
         ParallelizationTrait.serialized,
-        arguments: Array<(Bit, Bit)>([
+        arguments: Array<(Bit, Bit)>.infer([
         
         (Bit.zero, Bit.zero),
         (Bit.one,  Bit.one ),
@@ -52,7 +52,7 @@ import TestKit
         "Bit: as Bool",
         Tag.List.tags(.documentation, .exhaustive),
         ParallelizationTrait.serialized,
-        arguments: Array<(Bit, Bool)>([
+        arguments: Array<(Bit, Bool)>.infer([
         
         (Bit.zero, false),
         (Bit.one,  true ),
@@ -70,7 +70,7 @@ import TestKit
         "Bit: as Order",
         Tag.List.tags(.documentation, .exhaustive),
         ParallelizationTrait.serialized,
-        arguments: Array<(Bit, Order)>([
+        arguments: Array<(Bit, Order)>.infer([
         
         (Bit.zero, Order.ascending ),
         (Bit.one,  Order.descending),
@@ -88,7 +88,7 @@ import TestKit
         "Bit: as Sign",
         Tag.List.tags(.documentation, .exhaustive),
         ParallelizationTrait.serialized,
-        arguments: Array<(Bit, Sign)>([
+        arguments: Array<(Bit, Sign)>.infer([
         
         (Bit.zero, Sign.plus ),
         (Bit.one,  Sign.minus),
@@ -106,7 +106,7 @@ import TestKit
         "Bit: as Signedness",
         Tag.List.tags(.documentation, .exhaustive),
         ParallelizationTrait.serialized,
-        arguments: Array<(Bit, Signedness)>([
+        arguments: Array<(Bit, Signedness)>.infer([
         
         (Bit.zero, Signedness.unsigned),
         (Bit.one,  Signedness  .signed),

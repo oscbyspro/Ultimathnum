@@ -14,18 +14,21 @@ import TestKit
 // MARK: * Sign x Text
 //*============================================================================*
 
-@Suite struct SignTestsOnText {
+@Suite(.serialized) struct SignTestsOnText {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Sign/description", .serialized, arguments: [
+    @Test(
+        "Sign/text: description",
+        Tag.List.tags(.documentation, .exhaustive),
+        arguments: Array<(Sign, String)>.infer([
         
-        (sign: Sign.plus,  description: "+"),
-        (sign: Sign.minus, description: "-"),
+        (Sign.plus,  "+"),
+        (Sign.minus, "-"),
         
-    ])  func description(sign: Sign, description: String) {
-        Ɣexpect(sign, description: description)
+    ])) func description(instance: Sign, description: String) {
+        Ɣexpect(instance, description: description)
     }
 }

@@ -14,7 +14,7 @@ import TestKit
 // MARK: * Literal Int x Comparison
 //*============================================================================*
 
-@Suite struct LiteralIntTestsOnComparison {
+@Suite(.serialized) struct LiteralIntTestsOnComparison {
         
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -23,8 +23,7 @@ import TestKit
     @Test(
         "LiteralInt/comparison: signum()",
         Tag.List.tags(.documentation),
-        ParallelizationTrait.serialized,
-        arguments: Array<(LiteralInt, Signum)>([
+        arguments: Array<(LiteralInt, Signum)>.infer([
         
         (LiteralInt(-8), Signum.negative), // 000....1
         (LiteralInt(-7), Signum.negative), // 100....1

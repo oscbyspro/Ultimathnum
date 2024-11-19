@@ -34,7 +34,7 @@ import TestKit
     //=------------------------------------------------------------------------=
     
     @Test(
-        "StdlibInt/floats: from SwiftIEEE754 vs StdlibInt.Base",
+        "StdlibInt/floats: from SwiftIEEE754 of Self vs Base",
         Tag.List.tags(.forwarding, .generic, .random),
         arguments: fuzzers
     )   func forwarding(randomness: consuming FuzzerInt) throws {

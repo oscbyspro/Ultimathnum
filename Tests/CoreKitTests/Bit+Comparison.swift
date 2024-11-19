@@ -23,7 +23,7 @@ import TestKit
     @Test(
         "Bit/comparison: is 0",
         Tag.List.tags(.documentation, .exhaustive),
-        arguments: Array<(Bit, Bool)>([
+        arguments: Array<(Bit, Bool)>.infer([
         
         (Bit.zero, true ),
         (Bit.one,  false),
@@ -35,7 +35,7 @@ import TestKit
     @Test(
         "Bit/comparison: Bit vs Bit",
         Tag.List.tags(.documentation, .exhaustive),
-        arguments: Array<(Bit, Bit, Signum)>([
+        arguments: Array<(Bit, Bit, Signum)>.infer([
         
         (Bit.zero, Bit.zero, Signum.zero),
         (Bit.zero, Bit.one,  Signum.negative),

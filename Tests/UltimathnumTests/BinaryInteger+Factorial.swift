@@ -23,44 +23,45 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("BinaryInteger/factorial: element at small natural index", arguments: [
+    @Test(
+        "BinaryInteger/factorial: element at small natural index",
+        arguments: Array<(U8, IXL)>.infer([
         
-        (index:  0 as U8, element:                                    1 as IXL),
-        (index:  1 as U8, element:                                    1 as IXL),
-        (index:  2 as U8, element:                                    2 as IXL),
-        (index:  3 as U8, element:                                    6 as IXL),
-        (index:  4 as U8, element:                                   24 as IXL),
-        (index:  5 as U8, element:                                  120 as IXL),
-        (index:  6 as U8, element:                                  720 as IXL),
-        (index:  7 as U8, element:                                 5040 as IXL),
-        (index:  8 as U8, element:                                40320 as IXL),
-        (index:  9 as U8, element:                               362880 as IXL),
-        (index: 10 as U8, element:                              3628800 as IXL),
-        (index: 11 as U8, element:                             39916800 as IXL),
-        (index: 12 as U8, element:                            479001600 as IXL),
-        (index: 13 as U8, element:                           6227020800 as IXL),
-        (index: 14 as U8, element:                          87178291200 as IXL),
-        (index: 15 as U8, element:                        1307674368000 as IXL),
-        (index: 16 as U8, element:                       20922789888000 as IXL),
-        (index: 17 as U8, element:                      355687428096000 as IXL),
-        (index: 18 as U8, element:                     6402373705728000 as IXL),
-        (index: 19 as U8, element:                   121645100408832000 as IXL),
-        (index: 20 as U8, element:                  2432902008176640000 as IXL),
-        (index: 21 as U8, element:                 51090942171709440000 as IXL),
-        (index: 22 as U8, element:               1124000727777607680000 as IXL),
-        (index: 23 as U8, element:              25852016738884976640000 as IXL),
-        (index: 24 as U8, element:             620448401733239439360000 as IXL),
-        (index: 25 as U8, element:           15511210043330985984000000 as IXL),
-        (index: 26 as U8, element:          403291461126605635584000000 as IXL),
-        (index: 27 as U8, element:        10888869450418352160768000000 as IXL),
-        (index: 28 as U8, element:       304888344611713860501504000000 as IXL),
-        (index: 29 as U8, element:      8841761993739701954543616000000 as IXL),
-        (index: 30 as U8, element:    265252859812191058636308480000000 as IXL),
-        (index: 31 as U8, element:   8222838654177922817725562880000000 as IXL),
-        (index: 32 as U8, element: 263130836933693530167218012160000000 as IXL),
+        (U8( 0), IXL(                                   1)),
+        (U8( 1), IXL(                                   1)),
+        (U8( 2), IXL(                                   2)),
+        (U8( 3), IXL(                                   6)),
+        (U8( 4), IXL(                                  24)),
+        (U8( 5), IXL(                                 120)),
+        (U8( 6), IXL(                                 720)),
+        (U8( 7), IXL(                                5040)),
+        (U8( 8), IXL(                               40320)),
+        (U8( 9), IXL(                              362880)),
+        (U8(10), IXL(                             3628800)),
+        (U8(11), IXL(                            39916800)),
+        (U8(12), IXL(                           479001600)),
+        (U8(13), IXL(                          6227020800)),
+        (U8(14), IXL(                         87178291200)),
+        (U8(15), IXL(                       1307674368000)),
+        (U8(16), IXL(                      20922789888000)),
+        (U8(17), IXL(                     355687428096000)),
+        (U8(18), IXL(                    6402373705728000)),
+        (U8(19), IXL(                  121645100408832000)),
+        (U8(20), IXL(                 2432902008176640000)),
+        (U8(21), IXL(                51090942171709440000)),
+        (U8(22), IXL(              1124000727777607680000)),
+        (U8(23), IXL(             25852016738884976640000)),
+        (U8(24), IXL(            620448401733239439360000)),
+        (U8(25), IXL(          15511210043330985984000000)),
+        (U8(26), IXL(         403291461126605635584000000)),
+        (U8(27), IXL(       10888869450418352160768000000)),
+        (U8(28), IXL(      304888344611713860501504000000)),
+        (U8(29), IXL(     8841761993739701954543616000000)),
+        (U8(30), IXL(   265252859812191058636308480000000)),
+        (U8(31), IXL(  8222838654177922817725562880000000)),
+        (U8(32), IXL(263130836933693530167218012160000000)),
         
-    ] as [(index: U8, element: IXL)])
-    func elementAtSmallNaturalIndex(index: U8, element: IXL) throws {
+    ])) func elementAtSmallNaturalIndex(index: U8, element: IXL) throws {
         for type in typesAsBinaryInteger {
             whereIs(type)
         }
@@ -80,9 +81,11 @@ import TestKit
     
     /// - Seealso: https://www.wolframalpha.com/input?i=1000%21
     /// - Seealso: https://www.wolframalpha.com/input?i=1024%21
-    @Test("BinaryInteger/factorial: element at large natural index", arguments: [
+    @Test(
+        "BinaryInteger/factorial: element at large natural index",
+        arguments: Array<(IXL, IXL)>.infer([
         
-        (index: IXL(1000), element: IXL("""
+        (IXL(1000), IXL("""
         0000000000000000000000000000000000000000000000000000000040238726\
         0077093773543702433923003985719374864210714632543799910429938512\
         3986290205920442084869694048004799886101971960586316668729948085\
@@ -126,7 +129,7 @@ import TestKit
         0000000000000000000000000000000000000000000000000000000000000000
         """)!),
         
-        (index: IXL(1024), element: IXL("""
+        (IXL(1024), IXL("""
         0000000000000000000000000000000000000000000000005418528796058857\
         2830769219446838547380015539635380134444828702706832106120733766\
         0373314098413621458671907918845708980753931994165770187368260454\
@@ -171,26 +174,25 @@ import TestKit
         0000000000000000000000000000000000000000000000000000000000000000
         """)!),
         
-    ] as [(index: IXL, element: IXL)])
-    func elementAtLargeNaturalIndex(index: IXL, element: IXL) {
+    ])) func elementAtLargeNaturalIndex(index: IXL, element: IXL) throws {
         for type in typesAsSystemsInteger {
-            whereIs(type)
+            try whereIs(type)
         }
         
         for type in typesAsSystemsIntegerAsUnsigned {
-            whereIsUnsigned(type)
+            try whereIsUnsigned(type)
         }
         
-        whereIs(IXL.self)
-        whereIs(UXL.self)
-        whereIsUnsigned(UXL.self)
+        try whereIs(IXL.self)
+        try whereIs(UXL.self)
+        try whereIsUnsigned(UXL.self)
                 
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
-            #expect(T(clamping: index).factorial() as Optional == T.exactly(element))
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            try #require(T(clamping: index).factorial() as Optional == T.exactly(element))
         }
                 
-        func whereIsUnsigned<T>(_ type: T.Type) where T: UnsignedInteger {
-            #expect(T(clamping: index).factorial() as Fallible == T.exactly(element))
+        func whereIsUnsigned<T>(_ type: T.Type) throws where T: UnsignedInteger {
+            try #require(T(clamping: index).factorial() as Fallible == T.exactly(element))
         }
     }
 }
@@ -199,7 +201,7 @@ import TestKit
 // MARK: * Binary Integer x Factorial x Edge Cases
 //*============================================================================*
 
-@Suite(.tags(.documentation)) struct BinaryIntegerTestsOnFactorialEdgeCases {
+@Suite struct BinaryIntegerTestsOnFactorialEdgeCases {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -210,8 +212,7 @@ import TestKit
         Tag.List.tags(.random),
         arguments: typesAsBinaryIntegerAsSigned, fuzzers
     )   func elementAtNegativeIndexIsNil(
-        type: any SignedInteger.Type,
-        randomness: consuming FuzzerInt
+        type: any SignedInteger.Type, randomness: consuming FuzzerInt
     )   throws {
         
         try  whereIs(type)
@@ -236,8 +237,7 @@ import TestKit
         Tag.List.tags(.random),
         arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers
     )   func elementAtInfiniteIndexIsZeroWithError(
-        type: any ArbitraryIntegerAsUnsigned.Type,
-        randomness: consuming FuzzerInt
+        type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
     )   throws {
         
         try  whereIs(type)
@@ -273,8 +273,7 @@ import TestKit
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryIntegerAsUnsigned, fuzzers
     )   func elementIsNeverNilAsUnsignedInteger(
-        type: any UnsignedInteger.Type,
-        randomness: consuming FuzzerInt
+        type: any UnsignedInteger.Type, randomness: consuming FuzzerInt
     )   throws {
         
         try  whereIs(type)
@@ -295,8 +294,7 @@ import TestKit
         Tag.List.tags(.generic, .random),
         arguments: typesAsArbitraryIntegerAsSigned, fuzzers
     )   func elementIsNeverLossyAsLenientInteger(
-        type: any ArbitraryIntegerAsSigned.Type,
-        randomness: consuming FuzzerInt
+        type: any ArbitraryIntegerAsSigned.Type, randomness: consuming FuzzerInt
     )   throws {
         
         try  whereIs(type)

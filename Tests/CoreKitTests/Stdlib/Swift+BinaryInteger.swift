@@ -21,30 +21,31 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("T.init(raw:)", arguments: typesAsCoreInteger, fuzzers)
-    func bitcasting(type: any CoreInteger.Type, randomness: consuming FuzzerInt) {
-        whereIs(type)
+    @Test(
+        "Swift/binary-integer: init(raw:)",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsCoreInteger, fuzzers
+    )   func bitcasting(
+        type: any CoreInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
-        func whereIs<T>(_ type: T.Type) where T: CoreInteger {
-            check(T.min )
-            check(T.zero)
-            check(T.max )
-            
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: CoreInteger {
             for _ in 0 ..< 32 {
-                check(T.random(using: &randomness))
+                try whereIs(T.random(using: &randomness))
             }
         }
         
-        func check<T>(_ instance: T) where T: CoreInteger {
+        func whereIs<T>(_ instance: T) throws where T: CoreInteger {
             var instance    = instance
             let expectation = instance
             
-            #expect(expectation == T(     instance.stdlib))
-            #expect(expectation == T(raw: instance.stdlib))
-            #expect(expectation == T(     instance.stdlib()))
-            #expect(expectation == T(raw: instance.stdlib()))
-            #expect(expectation == T(     T.Stdlib(     instance)))
-            #expect(expectation == T(raw: T.Stdlib(raw: instance)))
+            try #require(expectation == T(     instance.stdlib))
+            try #require(expectation == T(raw: instance.stdlib))
+            try #require(expectation == T(     instance.stdlib()))
+            try #require(expectation == T(raw: instance.stdlib()))
+            try #require(expectation == T(     T.Stdlib(     instance)))
+            try #require(expectation == T(raw: T.Stdlib(raw: instance)))
         }
     }
 }

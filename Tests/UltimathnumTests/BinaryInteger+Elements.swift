@@ -28,8 +28,7 @@ import TestKit
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func systemsIsLikeInitLoadOrNil(
-        type: any BinaryInteger.Type,
-        randomness: consuming FuzzerInt
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
     )   throws {
         
         try  whereIs(type)
@@ -60,8 +59,7 @@ import TestKit
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func arbitraryIsLikeInitLoadOrNil(
-        type: any BinaryInteger.Type,
-        randomness: consuming FuzzerInt
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
     )   throws {
         
         try  whereIs(type)
@@ -132,8 +130,7 @@ import TestKit
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func arbitraryWhereCountIsInvalidIsNil(
-        type: any BinaryInteger.Type,
-        randomness: consuming FuzzerInt
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
     )   throws {
         
         try  whereIs(type)

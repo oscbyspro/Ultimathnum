@@ -39,14 +39,15 @@ import TestKit
         "TextInt: named instances",
         Tag.List.tags(.documentation, .exhaustive),
         ParallelizationTrait.serialized,
-        arguments: [
+        arguments: Array<(TextInt, U8, TextInt.Letters)>.infer([
             
-            (TextInt.binary,      02 as U8, TextInt.Letters.lowercase),
-            (TextInt.decimal,     10 as U8, TextInt.Letters.lowercase),
-            (TextInt.hexadecimal, 16 as U8, TextInt.Letters.lowercase),
+            (TextInt.binary,      U8(02), TextInt.Letters.lowercase),
+            (TextInt.decimal,     U8(10), TextInt.Letters.lowercase),
+            (TextInt.hexadecimal, U8(16), TextInt.Letters.lowercase),
             
-        ] as [(TextInt, U8, TextInt.Letters)]
-    )   func namedInstances(instance: TextInt, radix: U8, letters: TextInt.Letters) throws {
+    ])) func namedInstances(
+        instance: TextInt, radix: U8, letters: TextInt.Letters
+    )   throws {
         #expect(instance.radix   == radix)
         #expect(instance.letters == letters)
     }
@@ -77,7 +78,9 @@ import TestKit
         "TextInt: from each radix in [2, 36]",
         Tag.List.tags(.exhaustive, .generic),
         arguments: typesAsBinaryInteger
-    )   func fromEachRadixFromTwoThrough36(type: any BinaryInteger.Type) throws {
+    )   func fromEachRadixFromTwoThrough36(
+        type: any BinaryInteger.Type
+    )   throws {
         
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
@@ -109,7 +112,9 @@ import TestKit
         Tag.List.tags(.generic, .random),
         TimeLimitTrait.timeLimit(TimeLimitTrait.Duration.minutes(3)),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func throwsErrorIfRadixIsInvalid(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func throwsErrorIfRadixIsInvalid(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
@@ -137,7 +142,9 @@ import TestKit
         "TextInt: throws error if radix is one past limit",
         Tag.List.tags(.generic, .exhaustive),
         arguments: typesAsBinaryInteger, [1, 37] as [I8]
-    )   func throwsErrorIfRadixIsOnePastLimit(type: any BinaryInteger.Type, radix: I8) throws {
+    )   func throwsErrorIfRadixIsOnePastLimit(
+        type: any BinaryInteger.Type, radix: I8
+    )   throws {
         
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {

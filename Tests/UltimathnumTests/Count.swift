@@ -21,13 +21,18 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test func instances() {
+    @Test(
+        "Count: instances"
+    )   func instances() {
         #expect(Count.zero     == Count(raw:  0 as IX))
         #expect(Count.infinity == Count(raw: -1 as IX))
     }
     
-    @Test("Count.init(raw:)",  arguments: fuzzers)
-    func pattern(_ randomness: consuming FuzzerInt) {
+    @Test(
+        "Count: init(raw:)",
+        Tag.List.tags(.random),
+        arguments: fuzzers
+    )   func bitcasting(randomness: consuming FuzzerInt) {
         for _ in 0 ..< 256 {
             let random = IX.entropic(using: &randomness)
             let result = IX(raw: Count(raw: random))
@@ -35,8 +40,11 @@ import TestKit
         }
     }
     
-    @Test("Count/natural", arguments: fuzzers)
-    func natural(_ randomness: consuming FuzzerInt) {
+    @Test(
+        "Count/natural",
+        Tag.List.tags(.random),
+        arguments: fuzzers
+    )   func natural(randomness: consuming FuzzerInt) {
         for _ in 0 ..< 256 {
             let random = IX.entropic(using: &randomness)
             let result = Count(raw: random).natural()

@@ -14,7 +14,7 @@ import TestKit
 // MARK: * Signum x Addition
 //*============================================================================*
 
-@Suite struct SignumTestsOnAddition {
+@Suite(.serialized) struct SignumTestsOnAddition {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -23,8 +23,7 @@ import TestKit
     @Test(
         "Signum/addition: negated()",
         Tag.List.tags(.documentation, .exhaustive),
-        ParallelizationTrait.serialized,
-        arguments: Array<(Signum, Signum)>([
+        arguments: Array<(Signum, Signum)>.infer([
         
         (Signum.negative, Signum.positive),
         (Signum.zero,     Signum.zero    ),

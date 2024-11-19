@@ -34,7 +34,7 @@ import TestKit
     //=------------------------------------------------------------------------=
     
     @Test(
-        "StdlibInt/multiplication: vs StdlibInt.Base",
+        "StdlibInt/multiplication: Self vs Base",
         Tag.List.tags(.forwarding, .random),
         arguments: fuzzers
     )   func forwarding(_ randomness: consuming FuzzerInt) throws {

@@ -23,20 +23,28 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Nonzero.init - [entropic]", arguments: typesAsBinaryInteger, fuzzers)
-    func initByFuzzingEntropies(_ type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
-        whereIs(type)
+    @Test(
+        "Nonzero: validation",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func validation(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 128 {
-                let random = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                Ɣexpect(random, as: Nonzero.self, if: !random.isZero)
-                if  let result = Nonzero(exactly: random) {
-                    #expect(result.value == random)
-                    #expect(result.complement().value == random.complement())
-                    #expect(result.magnitude ().value == random.magnitude ())
-                    #expect(Nonzero<T>(raw: Nonzero(T.Signitude(raw: random))).value == random)
-                    #expect(Nonzero<T>(raw: Nonzero(T.Magnitude(raw: random))).value == random)
+                let index = Shift<T.Magnitude>.max(or: 255)
+                let value = T.entropic(through: index, using: &randomness)
+                
+                Ɣexpect(value, as: Nonzero.self, if: !value.isZero)
+                
+                if  let result = Nonzero(exactly: value) {
+                    try #require(result.value ==  value)
+                    try #require(result.complement().value == value.complement())
+                    try #require(result.magnitude ().value == value.magnitude ())
+                    try #require(Nonzero<T>(raw: Nonzero(T.Signitude(raw: value))).value == value)
+                    try #require(Nonzero<T>(raw: Nonzero(T.Magnitude(raw: value))).value == value)
                 }
             }
         }

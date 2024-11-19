@@ -43,7 +43,7 @@ import TestKit
         Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsIntegerAsUnsigned, fuzzers
     )   func values(
-        _ type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
+        type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
     )   throws {
         
         try  whereIs(type)
@@ -62,7 +62,7 @@ import TestKit
         Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsIntegerAsUnsigned, fuzzers
     )   func entropies(
-        _ type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
+        type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
     )   throws {
         
         try  whereIs(type)
@@ -82,7 +82,7 @@ import TestKit
         Tag.List.tags(.generic, .important, .random),
         arguments: typesAsSystemsIntegerAsUnsigned, fuzzers
     )   func whereDivisorIsPowersOf2(
-        _ type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
+        type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
     )   throws {
         
         try  whereIs(type)
@@ -127,7 +127,7 @@ import TestKit
         Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsIntegerAsUnsigned, fuzzers
     )   func values(
-        _ type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
+        type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
     )   throws {
         
         try  whereIs(type)
@@ -148,7 +148,7 @@ import TestKit
         Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsIntegerAsUnsigned, fuzzers
     )   func entropies(
-        _ type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
+        type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
     )   throws {
         
         try  whereIs(type)
@@ -170,7 +170,7 @@ import TestKit
         Tag.List.tags(.generic, .important, .random),
         arguments: typesAsSystemsIntegerAsUnsigned, fuzzers
     )   func whereDivisorIsPowersOf2(
-        _ type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
+        type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
     )   throws {
         
         try  whereIs(type)

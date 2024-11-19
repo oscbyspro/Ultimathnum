@@ -36,7 +36,7 @@ private let letters: [TextInt.Letters] = [.lowercase, .uppercase]
     //=------------------------------------------------------------------------=
     
     @Test(
-        "TextInt.Numerals: decode each byte for each instance",
+        "TextInt/numerals: decode each byte for each instance",
         Tag.List.tags(.exhaustive)
     )   func decodeEachByteForEachInstance() throws {
         var expectation: [U8: U8] = [:]
@@ -78,15 +78,17 @@ private let letters: [TextInt.Letters] = [.lowercase, .uppercase]
     }
     
     @Test(
-        "TextInt.Numerals: encode each byte for each instance",
+        "TextInt/numerals: encode each byte for each instance",
         Tag.List.tags(.exhaustive),
-        arguments: [
+        arguments: Array<(TextInt.Letters, [U8])>.infer([
+        
+        (TextInt.Letters.lowercase, [U8](48...57) + [U8](97...122)),
+        (TextInt.Letters.uppercase, [U8](48...57) + [U8](65...090)),
             
-            (TextInt.Letters.lowercase, [U8](48...57) + [U8](97...122)),
-            (TextInt.Letters.uppercase, [U8](48...57) + [U8](65...090)),
-            
-    ] as [(TextInt.Letters, [U8])])
-    func encodeEachByteForEachInstance(letters: TextInt.Letters, expectation: [U8]) throws {
+    ])) func encodeEachByteForEachInstance(
+        letters: TextInt.Letters, expectation: [U8]
+    )   throws {
+        
         for radix in radices {
             let numerals = try TextInt.Numerals(radix: radix, letters: letters)
             
@@ -137,7 +139,9 @@ private let letters: [TextInt.Letters] = [.lowercase, .uppercase]
         "TextInt.Numerals/initialization: from each radix in [0, 36]",
         Tag.List.tags(.generic, .exhaustive),
         arguments: typesAsBinaryInteger
-    )   func fromEachRadixFromZeroThrough36(type: any BinaryInteger.Type) throws {
+    )   func fromEachRadixFromZeroThrough36(
+        type: any BinaryInteger.Type
+    )   throws {
         
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
@@ -169,7 +173,9 @@ private let letters: [TextInt.Letters] = [.lowercase, .uppercase]
         Tag.List.tags(.generic, .random),
         TimeLimitTrait.timeLimit(TimeLimitTrait.Duration.minutes(3)),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func throwsErrorIfRadixIsInvalid(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func throwsErrorIfRadixIsInvalid(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
@@ -197,7 +203,9 @@ private let letters: [TextInt.Letters] = [.lowercase, .uppercase]
         "TextInt.Numerals/initialization: throws error if radix is one past limit",
         Tag.List.tags(.generic, .exhaustive),
         arguments: typesAsBinaryInteger, [-1, 37] as [I8]
-    )   func throwsErrorIfRadixIsOnePastLimit(type: any BinaryInteger.Type, radix: I8) throws {
+    )   func throwsErrorIfRadixIsOnePastLimit(
+        type: any BinaryInteger.Type, radix: I8
+    )   throws {
         
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {

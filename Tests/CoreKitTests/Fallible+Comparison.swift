@@ -25,7 +25,7 @@ import TestKit
         "Fallible/comparison: Fallible<Bit> vs Fallible<Bit>",
         Tag.List.tags(.exhaustive),
         ParallelizationTrait.serialized,
-        arguments: Array<(Fallible<Bit>, Fallible<Bit>, Bool)>([
+        arguments: Array<(Fallible<Bit>, Fallible<Bit>, Bool)>.infer([
         
         (Fallible(Bit.zero, error: false), Fallible(Bit.zero, error: false), true ),
         (Fallible(Bit.zero, error: false), Fallible(Bit.zero, error: true ), false),

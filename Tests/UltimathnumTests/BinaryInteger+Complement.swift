@@ -25,9 +25,11 @@ import TestKit
         "BinaryInteger/complement: magnitude",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func magnitude(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func magnitude(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..<  conditional(debug:  256, release: 1024) {
                 let value = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -123,7 +125,7 @@ import TestKit
 // MARK: * Binary Integer x Complement x Edge Cases
 //*============================================================================*
 
-@Suite(.tags(.documentation)) struct BinaryIntegerTestsOnComplementEdgeCases {
+@Suite struct BinaryIntegerTestsOnComplementEdgeCases {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests

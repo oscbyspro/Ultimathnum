@@ -26,53 +26,51 @@ import TestKit
         "BinaryInteger/multiplication: 1-by-1-as-2 for low entropies as signed",
         Tag.List.tags(.generic),
         ParallelizationTrait.serialized,
-        arguments: [
+        arguments: Array<(I8, I8, I8, I8)>.infer([
         
-            (lhs: ~2 as I8, rhs: ~2 as I8, low:  9 as I8, high:  0 as I8),
-            (lhs: ~2 as I8, rhs: ~1 as I8, low:  6 as I8, high:  0 as I8),
-            (lhs: ~2 as I8, rhs: ~0 as I8, low:  3 as I8, high:  0 as I8),
-            (lhs: ~2 as I8, rhs:  0 as I8, low:  0 as I8, high:  0 as I8),
-            (lhs: ~2 as I8, rhs:  1 as I8, low: ~2 as I8, high: ~0 as I8),
-            (lhs: ~2 as I8, rhs:  2 as I8, low: ~5 as I8, high: ~0 as I8),
-            
-            (lhs: ~1 as I8, rhs: ~2 as I8, low:  6 as I8, high:  0 as I8),
-            (lhs: ~1 as I8, rhs: ~1 as I8, low:  4 as I8, high:  0 as I8),
-            (lhs: ~1 as I8, rhs: ~0 as I8, low:  2 as I8, high:  0 as I8),
-            (lhs: ~1 as I8, rhs:  0 as I8, low:  0 as I8, high:  0 as I8),
-            (lhs: ~1 as I8, rhs:  1 as I8, low: ~1 as I8, high: ~0 as I8),
-            (lhs: ~1 as I8, rhs:  2 as I8, low: ~3 as I8, high: ~0 as I8),
-            
-            (lhs: ~0 as I8, rhs: ~2 as I8, low:  3 as I8, high:  0 as I8),
-            (lhs: ~0 as I8, rhs: ~1 as I8, low:  2 as I8, high:  0 as I8),
-            (lhs: ~0 as I8, rhs: ~0 as I8, low:  1 as I8, high:  0 as I8),
-            (lhs: ~0 as I8, rhs:  0 as I8, low:  0 as I8, high:  0 as I8),
-            (lhs: ~0 as I8, rhs:  1 as I8, low: ~0 as I8, high: ~0 as I8),
-            (lhs: ~0 as I8, rhs:  2 as I8, low: ~1 as I8, high: ~0 as I8),
-            
-            (lhs:  0 as I8, rhs: ~2 as I8, low:  0 as I8, high:  0 as I8),
-            (lhs:  0 as I8, rhs: ~1 as I8, low:  0 as I8, high:  0 as I8),
-            (lhs:  0 as I8, rhs: ~0 as I8, low:  0 as I8, high:  0 as I8),
-            (lhs:  0 as I8, rhs:  0 as I8, low:  0 as I8, high:  0 as I8),
-            (lhs:  0 as I8, rhs:  1 as I8, low:  0 as I8, high:  0 as I8),
-            (lhs:  0 as I8, rhs:  2 as I8, low:  0 as I8, high:  0 as I8),
-            
-            (lhs:  1 as I8, rhs: ~2 as I8, low: ~2 as I8, high: ~0 as I8),
-            (lhs:  1 as I8, rhs: ~1 as I8, low: ~1 as I8, high: ~0 as I8),
-            (lhs:  1 as I8, rhs: ~0 as I8, low: ~0 as I8, high: ~0 as I8),
-            (lhs:  1 as I8, rhs:  0 as I8, low:  0 as I8, high:  0 as I8),
-            (lhs:  1 as I8, rhs:  1 as I8, low:  1 as I8, high:  0 as I8),
-            (lhs:  1 as I8, rhs:  2 as I8, low:  2 as I8, high:  0 as I8),
-            
-            (lhs:  2 as I8, rhs: ~2 as I8, low: ~5 as I8, high: ~0 as I8),
-            (lhs:  2 as I8, rhs: ~1 as I8, low: ~3 as I8, high: ~0 as I8),
-            (lhs:  2 as I8, rhs: ~0 as I8, low: ~1 as I8, high: ~0 as I8),
-            (lhs:  2 as I8, rhs:  0 as I8, low:  0 as I8, high:  0 as I8),
-            (lhs:  2 as I8, rhs:  1 as I8, low:  2 as I8, high:  0 as I8),
-            (lhs:  2 as I8, rhs:  2 as I8, low:  4 as I8, high:  0 as I8),
+        (I8(~2), I8(~2), I8( 9), I8( 0)),
+        (I8(~2), I8(~1), I8( 6), I8( 0)),
+        (I8(~2), I8(~0), I8( 3), I8( 0)),
+        (I8(~2), I8( 0), I8( 0), I8( 0)),
+        (I8(~2), I8( 1), I8(~2), I8(~0)),
+        (I8(~2), I8( 2), I8(~5), I8(~0)),
         
-        ] as [(
-        lhs: I8, rhs: I8, low: I8, high: I8
-    )]) func someLowEntropiesAsFullWidthAsSigned(
+        (I8(~1), I8(~2), I8( 6), I8( 0)),
+        (I8(~1), I8(~1), I8( 4), I8( 0)),
+        (I8(~1), I8(~0), I8( 2), I8( 0)),
+        (I8(~1), I8( 0), I8( 0), I8( 0)),
+        (I8(~1), I8( 1), I8(~1), I8(~0)),
+        (I8(~1), I8( 2), I8(~3), I8(~0)),
+        
+        (I8(~0), I8(~2), I8( 3), I8( 0)),
+        (I8(~0), I8(~1), I8( 2), I8( 0)),
+        (I8(~0), I8(~0), I8( 1), I8( 0)),
+        (I8(~0), I8( 0), I8( 0), I8( 0)),
+        (I8(~0), I8( 1), I8(~0), I8(~0)),
+        (I8(~0), I8( 2), I8(~1), I8(~0)),
+        
+        (I8( 0), I8(~2), I8( 0), I8( 0)),
+        (I8( 0), I8(~1), I8( 0), I8( 0)),
+        (I8( 0), I8(~0), I8( 0), I8( 0)),
+        (I8( 0), I8( 0), I8( 0), I8( 0)),
+        (I8( 0), I8( 1), I8( 0), I8( 0)),
+        (I8( 0), I8( 2), I8( 0), I8( 0)),
+        
+        (I8( 1), I8(~2), I8(~2), I8(~0)),
+        (I8( 1), I8(~1), I8(~1), I8(~0)),
+        (I8( 1), I8(~0), I8(~0), I8(~0)),
+        (I8( 1), I8( 0), I8( 0), I8( 0)),
+        (I8( 1), I8( 1), I8( 1), I8( 0)),
+        (I8( 1), I8( 2), I8( 2), I8( 0)),
+        
+        (I8( 2), I8(~2), I8(~5), I8(~0)),
+        (I8( 2), I8(~1), I8(~3), I8(~0)),
+        (I8( 2), I8(~0), I8(~1), I8(~0)),
+        (I8( 2), I8( 0), I8( 0), I8( 0)),
+        (I8( 2), I8( 1), I8( 2), I8( 0)),
+        (I8( 2), I8( 2), I8( 4), I8( 0)),
+        
+    ])) func someLowEntropiesAsFullWidthAsSigned(
         lhs: I8, rhs: I8, low: I8, high: I8
     )   throws {
         
@@ -95,48 +93,46 @@ import TestKit
         "BinaryInteger/multiplication: 1-by-1-as-2 for low entropies as unsigned",
         Tag.List.tags(.generic),
         ParallelizationTrait.serialized,
-        arguments: [
+        arguments: Array<(I8, I8, I8, I8, Bool)>.infer([
             
-            (lhs: ~5 as I8, rhs: ~5 as I8, low:  36 as I8, high: ~11 as I8, error: true ),
-            (lhs: ~5 as I8, rhs: ~4 as I8, low:  30 as I8, high: ~10 as I8, error: true ),
-            (lhs: ~5 as I8, rhs: ~3 as I8, low:  24 as I8, high:  ~9 as I8, error: true ),
-            (lhs: ~5 as I8, rhs: ~2 as I8, low:  18 as I8, high:  ~8 as I8, error: true ),
-            (lhs: ~5 as I8, rhs: ~1 as I8, low:  12 as I8, high:  ~7 as I8, error: true ),
-            (lhs: ~5 as I8, rhs: ~0 as I8, low:   6 as I8, high:  ~6 as I8, error: true ),
-            (lhs: ~5 as I8, rhs:  0 as I8, low:   0 as I8, high:   0 as I8, error: false),
-            (lhs: ~5 as I8, rhs:  1 as I8, low:  ~5 as I8, high:   0 as I8, error: false),
-            (lhs: ~5 as I8, rhs:  2 as I8, low: ~11 as I8, high:   1 as I8, error: true ),
-            (lhs: ~5 as I8, rhs:  3 as I8, low: ~17 as I8, high:   2 as I8, error: true ),
-            (lhs: ~5 as I8, rhs:  4 as I8, low: ~23 as I8, high:   3 as I8, error: true ),
-            (lhs: ~5 as I8, rhs:  5 as I8, low: ~29 as I8, high:   4 as I8, error: true ),
-            
-            (lhs:  0 as I8, rhs: ~5 as I8, low:   0 as I8, high:   0 as I8, error: false),
-            (lhs:  0 as I8, rhs: ~3 as I8, low:   0 as I8, high:   0 as I8, error: false),
-            (lhs:  0 as I8, rhs: ~2 as I8, low:   0 as I8, high:   0 as I8, error: false),
-            (lhs:  0 as I8, rhs: ~1 as I8, low:   0 as I8, high:   0 as I8, error: false),
-            (lhs:  0 as I8, rhs: ~0 as I8, low:   0 as I8, high:   0 as I8, error: false),
-            (lhs:  0 as I8, rhs:  0 as I8, low:   0 as I8, high:   0 as I8, error: false),
-            (lhs:  0 as I8, rhs:  1 as I8, low:   0 as I8, high:   0 as I8, error: false),
-            (lhs:  0 as I8, rhs:  2 as I8, low:   0 as I8, high:   0 as I8, error: false),
-            (lhs:  0 as I8, rhs:  4 as I8, low:   0 as I8, high:   0 as I8, error: false),
-            (lhs:  0 as I8, rhs:  5 as I8, low:   0 as I8, high:   0 as I8, error: false),
-            
-            (lhs:  5 as I8, rhs: ~5 as I8, low: ~29 as I8, high:   4 as I8, error: true ),
-            (lhs:  5 as I8, rhs: ~4 as I8, low: ~24 as I8, high:   4 as I8, error: true ),
-            (lhs:  5 as I8, rhs: ~3 as I8, low: ~19 as I8, high:   4 as I8, error: true ),
-            (lhs:  5 as I8, rhs: ~2 as I8, low: ~14 as I8, high:   4 as I8, error: true ),
-            (lhs:  5 as I8, rhs: ~1 as I8, low:  ~9 as I8, high:   4 as I8, error: true ),
-            (lhs:  5 as I8, rhs: ~0 as I8, low:  ~4 as I8, high:   4 as I8, error: true ),
-            (lhs:  5 as I8, rhs:  0 as I8, low:   0 as I8, high:   0 as I8, error: false),
-            (lhs:  5 as I8, rhs:  1 as I8, low:   5 as I8, high:   0 as I8, error: false),
-            (lhs:  5 as I8, rhs:  2 as I8, low:  10 as I8, high:   0 as I8, error: false),
-            (lhs:  5 as I8, rhs:  3 as I8, low:  15 as I8, high:   0 as I8, error: false),
-            (lhs:  5 as I8, rhs:  4 as I8, low:  20 as I8, high:   0 as I8, error: false),
-            (lhs:  5 as I8, rhs:  5 as I8, low:  25 as I8, high:   0 as I8, error: false),
+        (I8(~5), I8(~5), I8( 36), I8(~11), true ),
+        (I8(~5), I8(~4), I8( 30), I8(~10), true ),
+        (I8(~5), I8(~3), I8( 24), I8( ~9), true ),
+        (I8(~5), I8(~2), I8( 18), I8( ~8), true ),
+        (I8(~5), I8(~1), I8( 12), I8( ~7), true ),
+        (I8(~5), I8(~0), I8(  6), I8( ~6), true ),
+        (I8(~5), I8( 0), I8(  0), I8(  0), false),
+        (I8(~5), I8( 1), I8( ~5), I8(  0), false),
+        (I8(~5), I8( 2), I8(~11), I8(  1), true ),
+        (I8(~5), I8( 3), I8(~17), I8(  2), true ),
+        (I8(~5), I8( 4), I8(~23), I8(  3), true ),
+        (I8(~5), I8( 5), I8(~29), I8(  4), true ),
         
-        ] as [(
-        lhs: I8, rhs: I8, low: I8, high: I8, error: Bool
-    )]) func someLowEntropiesAsFullWidthAsUnsigned(
+        (I8( 0), I8(~5), I8(  0), I8(  0), false),
+        (I8( 0), I8(~3), I8(  0), I8(  0), false),
+        (I8( 0), I8(~2), I8(  0), I8(  0), false),
+        (I8( 0), I8(~1), I8(  0), I8(  0), false),
+        (I8( 0), I8(~0), I8(  0), I8(  0), false),
+        (I8( 0), I8( 0), I8(  0), I8(  0), false),
+        (I8( 0), I8( 1), I8(  0), I8(  0), false),
+        (I8( 0), I8( 2), I8(  0), I8(  0), false),
+        (I8( 0), I8( 4), I8(  0), I8(  0), false),
+        (I8( 0), I8( 5), I8(  0), I8(  0), false),
+        
+        (I8( 5), I8(~5), I8(~29), I8(  4), true ),
+        (I8( 5), I8(~4), I8(~24), I8(  4), true ),
+        (I8( 5), I8(~3), I8(~19), I8(  4), true ),
+        (I8( 5), I8(~2), I8(~14), I8(  4), true ),
+        (I8( 5), I8(~1), I8( ~9), I8(  4), true ),
+        (I8( 5), I8(~0), I8( ~4), I8(  4), true ),
+        (I8( 5), I8( 0), I8(  0), I8(  0), false),
+        (I8( 5), I8( 1), I8(  5), I8(  0), false),
+        (I8( 5), I8( 2), I8( 10), I8(  0), false),
+        (I8( 5), I8( 3), I8( 15), I8(  0), false),
+        (I8( 5), I8( 4), I8( 20), I8(  0), false),
+        (I8( 5), I8( 5), I8( 25), I8(  0), false),
+        
+    ])) func someLowEntropiesAsFullWidthAsUnsigned(
         lhs: I8, rhs: I8, low: I8, high: I8, error: Bool
     )   throws {
         
@@ -338,7 +334,9 @@ import TestKit
         "BinaryInteger/multiplication: (0s, 1s) * (0s, 1s)",
         Tag.List.tags(.generic, .important),
         arguments: typesAsArbitraryIntegerAsByte
-    )   func for0s1sBy0s1s(type: any ArbitraryInteger.Type) throws {
+    )   func for0s1sBy0s1s(
+        type: any ArbitraryInteger.Type
+    )   throws {
         
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: ArbitraryInteger {
@@ -372,25 +370,24 @@ import TestKit
         "BinaryInteger/multiplication: full 8-bit is half 16-bit",
         Tag.List.tags(.exhaustive, .generic),
         ConditionTrait.disabled(if: isDebug),
-        arguments: [
+        arguments: Array<(any SystemsInteger.Type, any SystemsInteger.Type)>.infer([
         
-        (x08: I8.self, x16: I16.self),
-        (x08: I8.self, x16: DoubleInt<I8>.self),
-        (x08: U8.self, x16: U16.self),
-        (x08: U8.self, x16: DoubleInt<U8>.self),
+        (I8.self, I16.self),
+        (I8.self, DoubleInt<I8>.self),
+        (U8.self, U16.self),
+        (U8.self, DoubleInt<U8>.self),
         
-    ] as [(
-        x08: any SystemsInteger.Type, x16: any SystemsInteger.Type
-    )]) func full8BitIsHalf16Bit(
+    ])) func full8BitIsHalf16Bit(
         x08: any SystemsInteger.Type, x16: any SystemsInteger.Type
     )   throws {
         
-        try  whereIs(x08, x16)
-        func whereIs<A, B>(_ x08: A.Type, _ x16: B.Type) throws where A: SystemsInteger, B: SystemsInteger {
+        try  whereIs(x08: x08, x16: x16)
+        func whereIs<A, B>(x08: A.Type, x16: B.Type)
+        throws where A: SystemsInteger, B: SystemsInteger {
             try #require(A.size == Count(08))
             try #require(B.size == Count(16))
-            try #require(A.isSigned == B.isSigned)
-            try withOnlyOneCallToRequire((x08,x16)) { require in
+            try #require(A.isSigned == (B.isSigned))
+            try withOnlyOneCallToRequire((x08, x16)) { require in
                 for lhs in A.all {
                     for rhs in A.all {
                         let result = lhs.multiplication((rhs))
@@ -454,8 +451,7 @@ import TestKit
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func randomByZeroIsZero(
-        type: any BinaryInteger.Type,
-        randomness: consuming FuzzerInt
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
     )   throws {
         
         try  whereIs(type)
@@ -546,7 +542,7 @@ import TestKit
 // MARK: * Binary Integer x Multiplication x Conveniences
 //*============================================================================*
 
-@Suite(.tags(.forwarding)) struct BinaryIntegerTestsOnMultiplicationConveniences {
+@Suite struct BinaryIntegerTestsOnMultiplicationConveniences {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -554,7 +550,7 @@ import TestKit
     
     @Test(
         "BinaryInteger/multiplication/conveniences: x * y as BinaryInteger",
-        Tag.List.tags(.generic, .random),
+        Tag.List.tags(.forwarding, .generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func randomByRandomAsBinaryInteger(
         type: any BinaryInteger.Type, randomness: consuming FuzzerInt
@@ -577,7 +573,7 @@ import TestKit
     
     @Test(
         "BinaryInteger/multiplication/conveniences: x * x as BinaryInteger",
-        Tag.List.tags(.generic, .random),
+        Tag.List.tags(.forwarding, .generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func randomByItselfAsBinaryInteger(
         type: any BinaryInteger.Type, randomness: consuming FuzzerInt
@@ -603,11 +599,10 @@ import TestKit
     
     @Test(
         "BinaryInteger/multiplication/conveniences: x * y as LenientInteger",
-        Tag.List.tags(.generic, .random),
+        Tag.List.tags(.forwarding, .generic, .random),
         arguments: typesAsArbitraryIntegerAsSigned, fuzzers
     )   func randomByRandomAsLenientInteger(
-        type: any ArbitraryIntegerAsSigned.Type,
-        randomness: consuming FuzzerInt
+        type: any ArbitraryIntegerAsSigned.Type, randomness: consuming FuzzerInt
     )   throws {
         
         try  whereIs(type)
@@ -629,7 +624,7 @@ import TestKit
     
     @Test(
         "BinaryInteger/multiplication/conveniences: x * x as LenientInteger",
-        Tag.List.tags(.generic, .random),
+        Tag.List.tags(.forwarding, .generic, .random),
         arguments: typesAsArbitraryIntegerAsSigned, fuzzers
     )   func randomByItselfAsLenientInteger(
         type: any ArbitraryIntegerAsSigned.Type, randomness: consuming FuzzerInt

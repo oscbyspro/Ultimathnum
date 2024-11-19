@@ -14,7 +14,7 @@ import TestKit
 // MARK: * Order
 //*============================================================================*
 
-@Suite struct OrderTests {
+@Suite(.serialized) struct OrderTests {
         
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -23,18 +23,16 @@ import TestKit
     @Test(
         "Order: init()",
         Tag.List.tags(.documentation, .exhaustive),
-        ParallelizationTrait.serialized,
-        arguments: [Order.ascending]
+        arguments: CollectionOfOne(Order.ascending)
     )   func unspecified(expectation: Order) {
         #expect(Order() == expectation)
         #expect(Order(raw: Bit.zero) == expectation)
     }
     
     @Test(
-        "Order: descending",
+        "Order: init(descending:)",
         Tag.List.tags(.documentation, .exhaustive),
-        ParallelizationTrait.serialized,
-        arguments: Array<(Order, Bool)>([
+        arguments: Array<(Order, Bool)>.infer([
         
         (Order.ascending,  false),
         (Order.descending, true ),
@@ -56,10 +54,9 @@ import TestKit
     }
     
     @Test(
-        "Order: reversed",
+        "Order: reversed()",
         Tag.List.tags(.documentation, .exhaustive),
-        ParallelizationTrait.serialized,
-        arguments: Array<(Order, Order)>([
+        arguments: Array<(Order, Order)>.infer([
         
         (Order.ascending,  Order.descending),
         (Order.descending, Order.ascending ),

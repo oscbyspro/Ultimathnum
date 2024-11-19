@@ -33,8 +33,11 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt/comparison: vs StdlibInt.Base", .tags(.forwarding, .random), arguments: fuzzers)
-    func forwarding(_ randomness: consuming FuzzerInt) throws {
+    @Test(
+        "StdlibInt/comparison: Self vs Base",
+        Tag.List.tags(.forwarding, .random),
+        arguments: fuzzers
+    )   func forwarding(_ randomness: consuming FuzzerInt) throws {
         for _ in 0 ..< conditional(debug: 64, release: 128) {
             let lhs = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
             let rhs = IXL.entropic(through: Shift.max(or: 255), using: &randomness)

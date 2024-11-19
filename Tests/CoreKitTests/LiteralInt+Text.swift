@@ -14,7 +14,7 @@ import TestKit
 // MARK: * Literal Int x Text
 //*============================================================================*
 
-@Suite struct LiteralIntTestsOnText {
+@Suite(.serialized) struct LiteralIntTestsOnText {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -23,8 +23,7 @@ import TestKit
     @Test(
         "LiteralInt/text: description",
         Tag.List.tags(.documentation, .unofficial),
-        ParallelizationTrait.serialized,
-        arguments: Array<(LiteralInt, String)>([
+        arguments: Array<(LiteralInt, String)>.infer([
         
         (LiteralInt(-8), "-0x8"), // 000....1
         (LiteralInt(-7), "-0x7"), // 100....1

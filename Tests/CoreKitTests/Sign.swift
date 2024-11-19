@@ -14,7 +14,7 @@ import TestKit
 // MARK: * Sign
 //*============================================================================*
 
-@Suite struct SignTests {
+@Suite(.serialized) struct SignTests {
         
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -23,8 +23,7 @@ import TestKit
     @Test(
         "Sign: init()",
         Tag.List.tags(.documentation, .exhaustive),
-        ParallelizationTrait.serialized,
-        arguments: [Sign.plus]
+        arguments: CollectionOfOne(Sign.plus)
     )   func unspecified(expectation: Sign) {
         #expect(Sign() == expectation)
         #expect(Sign(raw: Bit.zero) == expectation)
@@ -32,47 +31,47 @@ import TestKit
     
     @Test(
         "Sign: as Bit",
-        ParallelizationTrait.serialized,
-        arguments: Array<(Sign, Bit)>([
+        Tag.List.tags(.documentation, .exhaustive),
+        arguments: Array<(Sign, Bit)>.infer([
         
         (sign: Sign.plus,  bit: Bit.zero),
         (sign: Sign.minus, bit: Bit.one ),
         
-    ])) func bit(_ argument: (sign: Sign, bit: Bit)) {
-        #expect(Bit (     argument.sign) == argument.bit )
-        #expect(Bit (raw: argument.sign) == argument.bit )
-        #expect(Sign(     argument.bit ) == argument.sign)
-        #expect(Sign(raw: argument.bit ) == argument.sign)
+    ])) func bit(source: Sign, destination: Bit) {
+        #expect(type(of: destination).init(     source) == destination)
+        #expect(type(of: destination).init(raw: source) == destination)
+        #expect(type(of: source).init(     destination) == source)
+        #expect(type(of: source).init(raw: destination) == source)
     }
     
     @Test(
         "Sign: as Bool",
-        ParallelizationTrait.serialized,
-        arguments: Array<(Sign, Bool)>([
+        Tag.List.tags(.documentation, .exhaustive),
+        arguments: Array<(Sign, Bool)>.infer([
         
         (sign: Sign.plus,  bool: false),
         (sign: Sign.minus, bool: true ),
         
-    ])) func bool(_ argument: (sign: Sign, bool: Bool)) {
-        #expect(Bool(     argument.sign) == argument.bool)
-        #expect(Bool(raw: argument.sign) == argument.bool)
-        #expect(Sign(     argument.bool) == argument.sign)
-        #expect(Sign(raw: argument.bool) == argument.sign)
+    ])) func bool(source: Sign, destination: Bool) {
+        #expect(type(of: destination).init(     source) == destination)
+        #expect(type(of: destination).init(raw: source) == destination)
+        #expect(type(of: source).init(     destination) == source)
+        #expect(type(of: source).init(raw: destination) == source)
     }
     
     @Test(
         "Sign: as Stdlib",
-        ParallelizationTrait.serialized,
-        arguments: Array<(Sign, FloatingPointSign)>([
+        Tag.List.tags(.documentation, .exhaustive),
+        arguments: Array<(Sign, FloatingPointSign)>.infer([
         
         (sign: Sign.plus,  stdlib: FloatingPointSign.plus ),
         (sign: Sign.minus, stdlib: FloatingPointSign.minus),
         
-    ])) func stdlib(_ argument: (sign: Sign, stdlib: FloatingPointSign)) {
-        #expect(argument.sign.stdlib()                == argument.stdlib)
-        #expect(FloatingPointSign(     argument.sign) == argument.stdlib)
-        #expect(FloatingPointSign(raw: argument.sign) == argument.stdlib)
-        #expect(Sign(     argument.stdlib) == argument.sign)
-        #expect(Sign(raw: argument.stdlib) == argument.sign)
+    ])) func stdlib(source: Sign,  destination: FloatingPointSign) {
+        #expect(source.stdlib() == destination)
+        #expect(type(of: destination).init(     source) == destination)
+        #expect(type(of: destination).init(raw: source) == destination)
+        #expect(type(of: source).init(     destination) == source)
+        #expect(type(of: source).init(raw: destination) == source)
     }
 }

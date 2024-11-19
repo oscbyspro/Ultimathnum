@@ -14,7 +14,7 @@ import TestKit
 // MARK: * Sign x Comparison
 //*============================================================================*
 
-@Suite struct SignTestsOnComparison {
+@Suite(.serialized) struct SignTestsOnComparison {
         
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -23,8 +23,7 @@ import TestKit
     @Test(
         "Sign/comparison: Sign vs Sign",
         Tag.List.tags(.documentation, .exhaustive),
-        ParallelizationTrait.serialized,
-        arguments: Array<(Sign, Sign, Bool)>([
+        arguments: Array<(Sign, Sign, Bool)>.infer([
         
         (Sign.plus,  Sign.plus,  true ),
         (Sign.plus,  Sign.minus, false),

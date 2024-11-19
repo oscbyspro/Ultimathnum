@@ -14,34 +14,42 @@ import TestKit
 // MARK: * Text Int x Letters
 //*============================================================================*
 
-@Suite(Tag.List.tags(.exhaustive), ParallelizationTrait.serialized)
-struct TextIntTestsOnLetters {
+@Suite(.serialized) struct TextIntTestsOnLetters {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("TextInt.Letters: start", arguments: [
+    @Test(
+        "TextInt/letters: start",
+        Tag.List.tags(.exhaustive),
+        arguments: Array<(TextInt.Letters, U8)>.infer([
             
-        (instance: TextInt.Letters.lowercase, start: 97 as U8),
-        (instance: TextInt.Letters.uppercase, start: 65 as U8),
+        (TextInt.Letters.lowercase, U8(97)),
+        (TextInt.Letters.uppercase, U8(65)),
             
-    ] as [(TextInt.Letters, U8)])
-    func start(instance: TextInt.Letters, start: U8) throws {
-        #expect(instance.start == start)
+    ])) func start(
+        instance: TextInt.Letters, start: U8
+    )   throws {
         
+        #expect(instance.start == start)
         let numerals = try TextInt.Numerals(radix: 36, letters: instance)
         #expect(try numerals.decode(start) == 10)
         #expect(try numerals.encode(10) == start)
     }
     
-    @Test("TextInt.Letters: uppercase", arguments: [
+    @Test(
+        "TextInt/letters: init(uppercase:)",
+        Tag.List.tags(.exhaustive),
+        arguments: Array<(TextInt.Letters, Bool)>.infer([
             
-        (instance: TextInt.Letters.lowercase, uppercase: false),
-        (instance: TextInt.Letters.uppercase, uppercase: true ),
+        (TextInt.Letters.lowercase, false),
+        (TextInt.Letters.uppercase, true ),
             
-    ] as [(TextInt.Letters, Bool)])
-    func uppercase(instance: TextInt.Letters, uppercase: Bool) {
+    ])) func uppercase(
+        instance: TextInt.Letters, uppercase: Bool
+    )   throws {
+        
         #expect((instance == TextInt.Letters (uppercase:    uppercase)))
         #expect((instance == TextInt.Letters .uppercase) == uppercase)
     }

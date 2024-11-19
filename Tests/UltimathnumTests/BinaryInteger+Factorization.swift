@@ -87,9 +87,11 @@ import TestKit
         "BinaryInteger/factorization: GCD(a, b) vs prime multiplication",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func greatestCommonDivisorVersusPrimeMultiplication(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func greatestCommonDivisorVersusPrimeMultiplication(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             let primes = primes54.compactMap{T.exactly($0).optional()}
             for _ in 0 ..< conditional(debug: 16, release: 64) {
@@ -151,9 +153,11 @@ import TestKit
         "BinaryInteger/factorization/edge-cases: GCD(x, ∞) == nil",
         Tag.List.tags(.generic, .random),
         arguments: typesAsArbitraryIntegerAsUnsigned, fuzzers
-    )   func greatestCommonDivisorOfInfiniteIsNil(type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt) throws {
+    )   func greatestCommonDivisorOfInfiniteIsNil(
+        type: any ArbitraryIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsUnsigned {
             for _ in 0 ..< 32 {
                 let a = T.entropic(through: Shift.max(or: 127), as: Domain.finite, using: &randomness)
@@ -176,9 +180,11 @@ import TestKit
         "BinaryInteger/factorization/edge-cases: GCD(x, x) == |x|",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func greatestCommonDivisorOfDuplicateIsMagnitude(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func greatestCommonDivisorOfDuplicateIsMagnitude(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 32 {
                 let random = T.entropic(through: Shift.max(or: 127), as: Domain.finite, using: &randomness)
@@ -194,9 +200,11 @@ import TestKit
         "BinaryInteger/factorization/edge-cases: GCD(x, 0) == |x|",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func greatestCommonDivisorOfZeroAndOtherIsMagnitudeOfOther(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func greatestCommonDivisorOfZeroAndOtherIsMagnitudeOfOther(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 32 {
                 let random = T.entropic(through: Shift.max(or: 127), as: Domain.finite, using: &randomness)
@@ -215,9 +223,11 @@ import TestKit
         "BinaryInteger/factorization/edge-cases: GCD(x, 1) == 1",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func greatestCommonDivisorOfOneAndOtherIsOne(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    )   func greatestCommonDivisorOfOneAndOtherIsOne(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 32 {
                 let random = T.entropic(through: Shift.max(or: 127), as: Domain.finite, using: &randomness)
@@ -236,9 +246,11 @@ import TestKit
         "BinaryInteger/factorization/edge-cases: GCD(a, b) == GCD(b, a)",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func greatestCommonDivisorIsCommutative(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func greatestCommonDivisorIsCommutative(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 32 {
                 let lhs = T.entropic(through: Shift.max(or: 127), as: Domain.finite, using: &randomness)
@@ -254,9 +266,11 @@ import TestKit
         "BinaryInteger/factorization/edge-cases: GCD(a, b) == GCD(±a, ±b)",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryIntegerAsSigned, fuzzers
-    )   func greatestCommonDivisorIsSignAgnostic(type: any SignedInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func greatestCommonDivisorIsSignAgnostic(
+        type: any SignedInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: SignedInteger {
             for _ in 0 ..< 32 {
                 let lhs = T.entropic(through: Shift.max(or: 127), using: &randomness)
@@ -272,9 +286,11 @@ import TestKit
         "BinaryInteger/factorization/edge-cases: GCD(a, b) == GCD(a, b % a)",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func greatestCommonDivisorRemainderInvariant(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func greatestCommonDivisorRemainderInvariant(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 8 {
                 let lhs = T.entropic(through: Shift.max(or: 127), as: Domain.finite, using: &randomness)
@@ -304,9 +320,11 @@ import TestKit
         "BinaryInteger/factorization/edge-cases: bezout(_:) as Finite<T>",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func bezoutAsFinite(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    )   func bezoutAsFinite(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 4 {
                 let lhs = T.entropic(through: Shift.max(or: 127), as: Domain.finite, using: &randomness)
@@ -321,9 +339,11 @@ import TestKit
         "BinaryInteger/factorization/edge-cases: bezout(_:) as FiniteInteger",
         Tag.List.tags(.generic, .random),
         arguments: typesAsFiniteInteger, fuzzers
-    )   func bezoutAsFiniteInteger(type: any FiniteInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func bezoutAsFiniteInteger(
+        type: any FiniteInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: FiniteInteger {
             for _ in 0 ..< 4 {
                 let lhs = T.entropic(through: Shift.max(or: 127), using: &randomness)
@@ -338,9 +358,11 @@ import TestKit
         "BinaryInteger/factorization/edge-cases: euclidean(_:) as Finite<T>",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func greatestCommonDivisorAsFinite(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func greatestCommonDivisorAsFinite(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 4 {
                 let lhs = T.entropic(through: Shift.max(or: 127), as: Domain.finite, using: &randomness)
@@ -355,9 +377,11 @@ import TestKit
         "BinaryInteger/factorization/edge-cases: euclidean(_:) as FiniteInteger",
         Tag.List.tags(.generic, .random),
         arguments: typesAsFiniteInteger, fuzzers
-    )   func greatestCommonDivisorAsFiniteInteger(type: any FiniteInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func greatestCommonDivisorAsFiniteInteger(
+        type: any FiniteInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: FiniteInteger {
             for _ in 0 ..< 4 {
                 let lhs = T.entropic(through: Shift.max(or: 127), using: &randomness)

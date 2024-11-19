@@ -14,7 +14,7 @@ import TestKit
 // MARK: * Signedness
 //*============================================================================*
 
-@Suite struct SignednessTests {
+@Suite(.serialized) struct SignednessTests {
         
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -23,18 +23,16 @@ import TestKit
     @Test(
         "Signedness: init()",
         Tag.List.tags(.documentation, .exhaustive),
-        ParallelizationTrait.serialized,
-        arguments: [Signedness.unsigned]
+        arguments: CollectionOfOne(Signedness.unsigned)
     )   func unspecified(expectation: Signedness) {
         #expect(Signedness() == expectation)
         #expect(Signedness(raw: Bit.zero) == expectation)
     }
     
     @Test(
-        "Signedness: signed",
+        "Signedness: init(signed:)",
         Tag.List.tags(.documentation, .exhaustive),
-        ParallelizationTrait.serialized,
-        arguments: Array<(Signedness, Bool)>([
+        arguments: Array<(Signedness, Bool)>.infer([
       
         (Signedness.unsigned, false),
         (Signedness  .signed, true ),

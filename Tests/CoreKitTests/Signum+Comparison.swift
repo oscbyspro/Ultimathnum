@@ -23,8 +23,7 @@ import TestKit
     @Test(
         "Signum/comparison: is negative",
         Tag.List.tags(.documentation, .exhaustive),
-        ParallelizationTrait.serialized,
-        arguments: Array<(Signum, Bool)>([
+        arguments: Array<(Signum, Bool)>.infer([
         
         (Signum.negative, true ),
         (Signum.zero,     false),
@@ -37,8 +36,7 @@ import TestKit
     @Test(
         "Signum/comparison: is zero",
         Tag.List.tags(.documentation, .exhaustive),
-        ParallelizationTrait.serialized,
-        arguments: Array<(Signum, Bool)>([
+        arguments: Array<(Signum, Bool)>.infer([
         
         (Signum.negative, false),
         (Signum.zero,     true ),
@@ -51,8 +49,7 @@ import TestKit
     @Test(
         "Signum/comparison: is positive",
         Tag.List.tags(.documentation, .exhaustive),
-        ParallelizationTrait.serialized,
-        arguments: Array<(Signum, Bool)>([
+        arguments: Array<(Signum, Bool)>.infer([
         
         (Signum.negative, false),
         (Signum.zero,     false),
@@ -65,8 +62,7 @@ import TestKit
     @Test(
         "Signum/comparison: Self vs Self",
         Tag.List.tags(.documentation, .exhaustive),
-        ParallelizationTrait.serialized,
-        arguments: Array<(Signum, Signum, Signum)>([
+        arguments: Array<(Signum, Signum, Signum)>.infer([
         
         (Signum.negative, Signum.negative, Signum.zero),
         (Signum.negative, Signum.zero,     Signum.negative),

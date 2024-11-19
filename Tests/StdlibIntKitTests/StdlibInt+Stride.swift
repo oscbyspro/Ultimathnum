@@ -33,8 +33,11 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt/stride: vs StdlibInt.Base", .tags(.forwarding, .random), arguments: fuzzers)
-    func forwarding(randomness: consuming FuzzerInt) throws {
+    @Test(
+        "StdlibInt/stride: Self vs Base",
+        Tag.List.tags(.forwarding, .random),
+        arguments: fuzzers
+    )   func forwarding(randomness: consuming FuzzerInt) throws {
         for _ in 0 ..< 256 {
             let start    = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
             let distance = IX .entropic(through: Shift.max(or: 255), using: &randomness)

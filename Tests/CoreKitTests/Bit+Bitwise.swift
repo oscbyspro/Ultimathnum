@@ -24,10 +24,10 @@ import TestKit
         "Bit/bitwise: ~(_:)",
         Tag.List.tags(.documentation, .exhaustive),
         ParallelizationTrait.serialized,
-        arguments: Array<(Bit, Bit)>([
+        arguments: Array<(Bit, Bit)>.infer([
         
-        (instance: Bit.zero, expectation: Bit.one ),
-        (instance: Bit.one,  expectation: Bit.zero),
+        (Bit.zero, Bit.one ),
+        (Bit.one,  Bit.zero),
     
     ])) func not(instance: Bit, expectation: Bit) {
         #expect(reduce(instance, { ~$0           }) == expectation)
@@ -39,12 +39,12 @@ import TestKit
         "Bit/bitwise: &(_:_:)",
         Tag.List.tags(.documentation, .exhaustive),
         ParallelizationTrait.serialized,
-        arguments: Array<(Bit, Bit, Bit)>([
+        arguments: Array<(Bit, Bit, Bit)>.infer([
         
-        (lhs: Bit.zero, rhs: Bit.zero, expectation: Bit.zero),
-        (lhs: Bit.zero, rhs: Bit.one,  expectation: Bit.zero),
-        (lhs: Bit.one,  rhs: Bit.zero, expectation: Bit.zero),
-        (lhs: Bit.one,  rhs: Bit.one,  expectation: Bit.one ),
+        (Bit.zero, Bit.zero, Bit.zero),
+        (Bit.zero, Bit.one,  Bit.zero),
+        (Bit.one,  Bit.zero, Bit.zero),
+        (Bit.one,  Bit.one,  Bit.one ),
         
     ])) func and(lhs: Bit, rhs: Bit, expectation: Bit) {
         #expect(reduce(lhs, &,  rhs) == expectation)
@@ -55,12 +55,12 @@ import TestKit
         "Bit/bitwise: |(_:_:)",
         Tag.List.tags(.documentation, .exhaustive),
         ParallelizationTrait.serialized,
-        arguments: Array<(Bit, Bit, Bit)>([
+        arguments: Array<(Bit, Bit, Bit)>.infer([
         
-        (lhs: Bit.zero, rhs: Bit.zero, expectation: Bit.zero),
-        (lhs: Bit.zero, rhs: Bit.one,  expectation: Bit.one ),
-        (lhs: Bit.one,  rhs: Bit.zero, expectation: Bit.one ),
-        (lhs: Bit.one,  rhs: Bit.one,  expectation: Bit.one ),
+        (Bit.zero, Bit.zero, Bit.zero),
+        (Bit.zero, Bit.one,  Bit.one ),
+        (Bit.one,  Bit.zero, Bit.one ),
+        (Bit.one,  Bit.one,  Bit.one ),
         
     ])) func or(lhs: Bit, rhs: Bit, expectation: Bit) {
         #expect(reduce(lhs, |,  rhs) == expectation)
@@ -71,12 +71,12 @@ import TestKit
         "Bit/bitwise: ^(_:_:)",
         Tag.List.tags(.documentation, .exhaustive),
         ParallelizationTrait.serialized,
-        arguments: Array<(Bit, Bit, Bit)>([
+        arguments: Array<(Bit, Bit, Bit)>.infer([
         
-        (lhs: Bit.zero, rhs: Bit.zero, expectation: Bit.zero),
-        (lhs: Bit.zero, rhs: Bit.one,  expectation: Bit.one ),
-        (lhs: Bit.one,  rhs: Bit.zero, expectation: Bit.one ),
-        (lhs: Bit.one,  rhs: Bit.one,  expectation: Bit.zero),
+        (Bit.zero, Bit.zero, Bit.zero),
+        (Bit.zero, Bit.one,  Bit.one ),
+        (Bit.one,  Bit.zero, Bit.one ),
+        (Bit.one,  Bit.one,  Bit.zero),
         
     ])) func xor(lhs: Bit, rhs: Bit, expectation: Bit) {
         #expect(reduce(lhs, ^,  rhs) == expectation)

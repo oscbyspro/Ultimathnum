@@ -21,9 +21,9 @@ import TestKit
     //=------------------------------------------------------------------------=
     
     @Test(
-        "Optional<Fallible<T>> has same memory layout as Fallible<T>",
+        "Fallible: Optional<Self> has same memory layout as Self",
         Tag.List.tags(.documentation, .important)
-    )   func optionalFallibleHasSameMemoryLayoutAsFallible() {
+    )   func optionalInstanceHasSameMemoryLayoutAsInstance() {
         
         whereIs(Bool.self)
         whereIs(Void.self)
@@ -50,8 +50,8 @@ import TestKit
         Tag.List.tags(.disambiguation, .exhaustive)
     )   func initAsVoid() {
         
-        #expect(Fallible      ().value == ())
-        #expect(Fallible      ().error == false)
+        #expect(Fallible.init ().value == ())
+        #expect(Fallible.init ().error == false)
         #expect(Fallible<Void>().value == ())
         #expect(Fallible<Void>().error == false)
     }

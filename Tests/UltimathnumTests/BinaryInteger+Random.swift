@@ -275,7 +275,8 @@ import TestKit
     )   throws {
        
         try  whereIs(type, randomness)
-        func whereIs<T>(_ type: T.Type, _ randomness: consuming some Randomness) throws where T: SystemsInteger {
+        func whereIs<T>(_ type: T.Type, _ randomness: consuming some Randomness)
+        throws where T: SystemsInteger {
             var matches: Set<T> = []
             matches.reserveCapacity(T.all.count)
             
@@ -297,7 +298,8 @@ import TestKit
     )   throws {
        
         try  whereIs(type, randomness)
-        func whereIs<T>(_ type: T.Type, _ randomness: consuming some Randomness) throws where T: SystemsInteger {
+        func whereIs<T>(_ type: T.Type, _ randomness: consuming some Randomness)
+        throws where T: SystemsInteger {
             var matches: Set<T> = []
             matches.reserveCapacity(T.all.count)
             
@@ -326,7 +328,8 @@ import TestKit
     )   throws {
         
         try  whereIs(type, randomness)
-        func whereIs<T>(_ type: T.Type, _ randomness: consuming some Randomness) throws where T: SystemsInteger {
+        func whereIs<T>(_ type: T.Type, _ randomness: consuming some Randomness)
+        throws where T: SystemsInteger {
             var matches: Set<T> = []
             matches.reserveCapacity(T.all.count)
             

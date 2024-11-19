@@ -16,7 +16,7 @@ import TestKit
 // MARK: * Utilities x Text
 //*============================================================================*
 
-@Suite struct UtilitiesTestsOnText {
+@Suite(.serialized) struct UtilitiesTestsOnText {
     
     typealias I8L = InfiniInt<I8>
     typealias U8L = InfiniInt<I8>
@@ -25,46 +25,64 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Utilities/text: BinaryInteger/bitstring()")
-    func bitstring() {
-        #expect(I8 ( 2).bitstring() == "01000000")
-        #expect(I8 ( 1).bitstring() == "10000000")
-        #expect(I8 ( 0).bitstring() == "00000000")
-        #expect(I8 (~0).bitstring() == "11111111")
-        #expect(I8 (~1).bitstring() == "01111111")
-        #expect(I8 (~2).bitstring() == "10111111")
-        
-        #expect(U8 ( 2).bitstring() == "01000000")
-        #expect(U8 ( 1).bitstring() == "10000000")
-        #expect(U8 ( 0).bitstring() == "00000000")
-        #expect(U8 (~0).bitstring() == "11111111")
-        #expect(U8 (~1).bitstring() == "01111111")
-        #expect(U8 (~2).bitstring() == "10111111")
-        
-        #expect(I8L( 2).bitstring() == "01000000...0")
-        #expect(I8L( 1).bitstring() == "10000000...0")
-        #expect(I8L( 0).bitstring() ==         "...0")
-        #expect(I8L(~0).bitstring() ==         "...1")
-        #expect(I8L(~1).bitstring() == "01111111...1")
-        #expect(I8L(~2).bitstring() == "10111111...1")
-        
-        #expect(U8L( 2).bitstring() == "01000000...0")
-        #expect(U8L( 1).bitstring() == "10000000...0")
-        #expect(U8L( 0).bitstring() ==         "...0")
-        #expect(U8L(~0).bitstring() ==         "...1")
-        #expect(U8L(~1).bitstring() == "01111111...1")
-        #expect(U8L(~2).bitstring() == "10111111...1")
-        
-        #expect(I32( 0x55555555).bitstring() == "10101010101010101010101010101010")
-        #expect(I32(~0x55555555).bitstring() == "01010101010101010101010101010101")
-        
-        #expect(U32( 0x55555555).bitstring() == "10101010101010101010101010101010")
-        #expect(U32(~0x55555555).bitstring() == "01010101010101010101010101010101")
+    @Test(
+        "Utilities/text: Bit/ascii",
+        Tag.List.tags(.exhaustive),
+        arguments: Array<(Bit, U8)>.infer([
+            
+        (Bit.zero, U8(UInt8(ascii: "0"))),
+        (Bit.one,  U8(UInt8(ascii: "1"))),
+            
+    ])) func ascii(instance: Bit, expectation: U8) {
+        #expect(instance.ascii == expectation)
     }
     
-    @Test("Utilities/text: Bit/ascii")
-    func ascii() {
-        #expect(Bit.zero.ascii == U8(UInt8(ascii: "0")))
-        #expect(Bit.one .ascii == U8(UInt8(ascii: "1")))
+    @Test(
+        "Utilities/text: BinaryInteger/bitstring()",
+        Tag.List.tags(.generic),
+        arguments: Array<(any BinaryInteger.Type, IXL, String)>.infer([
+            
+        (I8 .self, IXL( 2), String("01000000")),
+        (I8 .self, IXL( 1), String("10000000")),
+        (I8 .self, IXL( 0), String("00000000")),
+        (I8 .self, IXL(~0), String("11111111")),
+        (I8 .self, IXL(~1), String("01111111")),
+        (I8 .self, IXL(~2), String("10111111")),
+        
+        (U8 .self, IXL( 2), String("01000000")),
+        (U8 .self, IXL( 1), String("10000000")),
+        (U8 .self, IXL( 0), String("00000000")),
+        (U8 .self, IXL(~0), String("11111111")),
+        (U8 .self, IXL(~1), String("01111111")),
+        (U8 .self, IXL(~2), String("10111111")),
+        
+        (I8L.self, IXL( 2), String("01000000...0")),
+        (I8L.self, IXL( 1), String("10000000...0")),
+        (I8L.self, IXL( 0), String(        "...0")),
+        (I8L.self, IXL(~0), String(        "...1")),
+        (I8L.self, IXL(~1), String("01111111...1")),
+        (I8L.self, IXL(~2), String("10111111...1")),
+        
+        (U8L.self, IXL( 2), String("01000000...0")),
+        (U8L.self, IXL( 1), String("10000000...0")),
+        (U8L.self, IXL( 0), String(        "...0")),
+        (U8L.self, IXL(~0), String(        "...1")),
+        (U8L.self, IXL(~1), String("01111111...1")),
+        (U8L.self, IXL(~2), String("10111111...1")),
+        
+        (I32.self, IXL( 0x55555555), String("10101010101010101010101010101010")),
+        (I32.self, IXL(~0x55555555), String("01010101010101010101010101010101")),
+        
+        (U32.self, IXL( 0x55555555), String("10101010101010101010101010101010")),
+        (U32.self, IXL(~0x55555555), String("01010101010101010101010101010101")),
+            
+    ])) func bitstring(
+        type: any BinaryInteger.Type, source: IXL, expectation: String
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            try #require(T(load: source).bitstring() == expectation)
+        }
     }
 }

@@ -34,7 +34,7 @@ import TestKit
     //=------------------------------------------------------------------------=
     
     @Test(
-        "StdlibInt/division: vs StdlibInt.Base",
+        "StdlibInt/division: Self vs Base",
         Tag.List.tags(.forwarding, .random),
         arguments: fuzzers
     )   func forwarding(_ randomness: consuming FuzzerInt) throws {
@@ -44,7 +44,6 @@ import TestKit
             
             if !b.isZero {
                 let (q, r) = try #require(a.division(b)).components()
-                
                 try #require(StdlibInt(q) == reduce(StdlibInt(a), /,  StdlibInt(b)))
                 try #require(StdlibInt(q) == reduce(StdlibInt(a), /=, StdlibInt(b)))
                 try #require(StdlibInt(q) == StdlibInt(a).quotientAndRemainder(dividingBy: StdlibInt(b)).quotient)

@@ -21,36 +21,44 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Division/init(raw:) - T.init(load:)", .serialized, arguments: I8(-2)...I8(2), I8(-2)...I8(2))
-    func pattern(quotient: I8, remainder: I8) {
+    @Test(
+        "Division: init(raw:)",
+        Tag.List.tags(.generic),
+        ParallelizationTrait.serialized,
+        arguments: I8(-2)...I8(2), I8(-2)...I8(2)
+    )   func pattern(quotient: I8, remainder: I8) throws {
         for quotient in typesAsCoreInteger {
             for remainder in typesAsCoreInteger {
-                whereIs(quotient, remainder)
+                try whereIs(quotient, remainder)
             }
         }
         
-        func whereIs<Q, R>(_ first: Q.Type,  _ second: R.Type) where Q: BinaryInteger, R: BinaryInteger {
+        func whereIs<Q, R>(_ first: Q.Type,  _ second: R.Type) throws where Q: BinaryInteger, R: BinaryInteger {
             let normal    = Division(quotient: Q          (load: quotient), remainder: R          (load: remainder))
             let magnitude = Division(quotient: Q.Magnitude(load: quotient), remainder: R.Magnitude(load: remainder))
             let signitude = Division(quotient: Q.Signitude(load: quotient), remainder: R.Signitude(load: remainder))
-            #expect(normal == Division<Q, R>(raw: magnitude))
-            #expect(normal == Division<Q, R>(raw: signitude))
+            try #require(normal == Division<Q, R>(raw: magnitude))
+            try #require(normal == Division<Q, R>(raw: signitude))
         }
     }
     
-    @Test("Division/components() - T.init(load:)", .serialized, arguments: I8(-2)...I8(2), I8(-2)...I8(2))
-    func components(quotient: I8, remainder: I8) {
+    @Test(
+        "Division: components()",
+        Tag.List.tags(.generic),
+        ParallelizationTrait.serialized,
+        arguments: I8(-2)...I8(2), I8(-2)...I8(2)
+    )   func components(quotient: I8, remainder: I8) throws {
         for quotient in typesAsCoreInteger {
             for remainder in typesAsCoreInteger {
-                whereIs(quotient, remainder)
+                try whereIs(quotient, remainder)
             }
         }
         
-        func whereIs<Q, R>(_ first: Q.Type,  _ second: R.Type) where Q: BinaryInteger, R: BinaryInteger {
+        func whereIs<Q, R>(_ first: Q.Type,  _ second: R.Type) throws where Q: BinaryInteger, R: BinaryInteger {
             let quotient  = Q(load: quotient )
             let remainder = R(load: remainder)
             let division  = Division(quotient: quotient, remainder: remainder)
-            #expect(division.components() ==  (quotient, remainder))
+            try #require(division.components() ==  (quotient, remainder))
         }
     }
 }

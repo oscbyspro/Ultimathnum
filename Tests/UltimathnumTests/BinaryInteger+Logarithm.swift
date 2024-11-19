@@ -25,7 +25,7 @@ import TestKit
         "BinaryInteger/logarithm: ilog2() of examples",
         Tag.List.tags(.documentation, .generic),
         ParallelizationTrait.serialized,
-        arguments: Array<(I8, Count?)>([
+        arguments: Array<(I8, Count?)>.infer([
         
             (value: -1 as I8, ilog2: nil),
             (value:  0 as I8, ilog2: nil),

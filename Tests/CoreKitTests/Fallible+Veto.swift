@@ -15,7 +15,7 @@ import TestKit
 // MARK: * Fallible x Veto
 //*============================================================================*
 
-@Suite("Fallible/veto") struct FallibleTestsOnVeto {
+@Suite(.serialized) struct FallibleTestsOnVeto {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -24,7 +24,6 @@ import TestKit
     @Test(
         "Fallible/veto: for each Bit",
         Tag.List.tags(.exhaustive),
-        ParallelizationTrait.serialized,
         arguments: Fallible<Bit>.all
     )   func veto(argument: Fallible<Bit>) {
         

@@ -21,73 +21,72 @@ import TestKit
     //=------------------------------------------------------------------------=
     
     @Test(
-        "Divider: exampels from 1 through 12",
+        "Divider: examples",
+        Tag.List.tags(.generic),
         ParallelizationTrait.serialized,
-        arguments: [
-            
-            (div: U8 ( 1), mul: U64(                 255), add: true,  shr: U64( 8 + 0)),
-            (div: U16( 1), mul: U64(               65535), add: true,  shr: U64(16 + 0)),
-            (div: U32( 1), mul: U64(          4294967295), add: true,  shr: U64(32 + 0)),
-            (div: U64( 1), mul: U64(18446744073709551615), add: true,  shr: U64(64 + 0)),
-            
-            (div: U8 ( 2), mul: U64(                 255), add: true,  shr: U64( 8 + 1)),
-            (div: U16( 2), mul: U64(               65535), add: true,  shr: U64(16 + 1)),
-            (div: U32( 2), mul: U64(          4294967295), add: true,  shr: U64(32 + 1)),
-            (div: U64( 2), mul: U64(18446744073709551615), add: true,  shr: U64(64 + 1)),
-            
-            (div: U8 ( 3), mul: U64(                 171), add: false, shr: U64( 8 + 1)),
-            (div: U16( 3), mul: U64(               43691), add: false, shr: U64(16 + 1)),
-            (div: U32( 3), mul: U64(          2863311531), add: false, shr: U64(32 + 1)),
-            (div: U64( 3), mul: U64(12297829382473034411), add: false, shr: U64(64 + 1)),
-            
-            (div: U8 ( 4), mul: U64(                 255), add: true,  shr: U64( 8 + 2)),
-            (div: U16( 4), mul: U64(               65535), add: true,  shr: U64(16 + 2)),
-            (div: U32( 4), mul: U64(          4294967295), add: true,  shr: U64(32 + 2)),
-            (div: U64( 4), mul: U64(18446744073709551615), add: true,  shr: U64(64 + 2)),
-            
-            (div: U8 ( 5), mul: U64(                 205), add: false, shr: U64( 8 + 2)),
-            (div: U16( 5), mul: U64(               52429), add: false, shr: U64(16 + 2)),
-            (div: U32( 5), mul: U64(          3435973837), add: false, shr: U64(32 + 2)),
-            (div: U64( 5), mul: U64(14757395258967641293), add: false, shr: U64(64 + 2)),
-            
-            (div: U8 ( 6), mul: U64(                 171), add: false, shr: U64( 8 + 2)),
-            (div: U16( 6), mul: U64(               43691), add: false, shr: U64(16 + 2)),
-            (div: U32( 6), mul: U64(          2863311531), add: false, shr: U64(32 + 2)),
-            (div: U64( 6), mul: U64(12297829382473034411), add: false, shr: U64(64 + 2)),
-            
-            (div: U8 ( 7), mul: U64(                 146), add: true,  shr: U64( 8 + 2)),
-            (div: U16( 7), mul: U64(               37449), add: true,  shr: U64(16 + 2)),
-            (div: U32( 7), mul: U64(          2454267026), add: true,  shr: U64(32 + 2)),
-            (div: U64( 7), mul: U64(10540996613548315209), add: true,  shr: U64(64 + 2)),
-            
-            (div: U8 ( 8), mul: U64(                 255), add: true,  shr: U64( 8 + 3)),
-            (div: U16( 8), mul: U64(               65535), add: true,  shr: U64(16 + 3)),
-            (div: U32( 8), mul: U64(          4294967295), add: true,  shr: U64(32 + 3)),
-            (div: U64( 8), mul: U64(18446744073709551615), add: true,  shr: U64(64 + 3)),
-            
-            (div: U8 ( 9), mul: U64(                 227), add: true,  shr: U64( 8 + 3)),
-            (div: U16( 9), mul: U64(               58254), add: true,  shr: U64(16 + 3)),
-            (div: U32( 9), mul: U64(          3817748707), add: true,  shr: U64(32 + 3)),
-            (div: U64( 9), mul: U64(16397105843297379214), add: true,  shr: U64(64 + 3)),
-            
-            (div: U8 (10), mul: U64(                 205), add: false, shr: U64( 8 + 3)),
-            (div: U16(10), mul: U64(               52429), add: false, shr: U64(16 + 3)),
-            (div: U32(10), mul: U64(          3435973837), add: false, shr: U64(32 + 3)),
-            (div: U64(10), mul: U64(14757395258967641293), add: false, shr: U64(64 + 3)),
-            
-            (div: U8 (11), mul: U64(                 186), add: true,  shr: U64( 8 + 3)),
-            (div: U16(11), mul: U64(               47662), add: true,  shr: U64(16 + 3)),
-            (div: U32(11), mul: U64(          3123612579), add: false, shr: U64(32 + 3)),
-            (div: U64(11), mul: U64(13415813871788764811), add: true,  shr: U64(64 + 3)),
-            
-            (div: U8 (12), mul: U64(                 171), add: false, shr: U64( 8 + 3)),
-            (div: U16(12), mul: U64(               43691), add: false, shr: U64(16 + 3)),
-            (div: U32(12), mul: U64(          2863311531), add: false, shr: U64(32 + 3)),
-            (div: U64(12), mul: U64(12297829382473034411), add: false, shr: U64(64 + 3)),
-            
-        ] as [(
-        div: any SystemsIntegerAsUnsigned, mul: U64, add: Bool, shr: U64
-    )]) func examplesFrom1Through12(
+        arguments: Array<(any SystemsIntegerAsUnsigned, U64, Bool, U64)>.infer([
+        
+        (U8 ( 1), U64(                 255), true,  U64( 8 + 0)),
+        (U16( 1), U64(               65535), true,  U64(16 + 0)),
+        (U32( 1), U64(          4294967295), true,  U64(32 + 0)),
+        (U64( 1), U64(18446744073709551615), true,  U64(64 + 0)),
+        
+        (U8 ( 2), U64(                 255), true,  U64( 8 + 1)),
+        (U16( 2), U64(               65535), true,  U64(16 + 1)),
+        (U32( 2), U64(          4294967295), true,  U64(32 + 1)),
+        (U64( 2), U64(18446744073709551615), true,  U64(64 + 1)),
+        
+        (U8 ( 3), U64(                 171), false, U64( 8 + 1)),
+        (U16( 3), U64(               43691), false, U64(16 + 1)),
+        (U32( 3), U64(          2863311531), false, U64(32 + 1)),
+        (U64( 3), U64(12297829382473034411), false, U64(64 + 1)),
+        
+        (U8 ( 4), U64(                 255), true,  U64( 8 + 2)),
+        (U16( 4), U64(               65535), true,  U64(16 + 2)),
+        (U32( 4), U64(          4294967295), true,  U64(32 + 2)),
+        (U64( 4), U64(18446744073709551615), true,  U64(64 + 2)),
+        
+        (U8 ( 5), U64(                 205), false, U64( 8 + 2)),
+        (U16( 5), U64(               52429), false, U64(16 + 2)),
+        (U32( 5), U64(          3435973837), false, U64(32 + 2)),
+        (U64( 5), U64(14757395258967641293), false, U64(64 + 2)),
+        
+        (U8 ( 6), U64(                 171), false, U64( 8 + 2)),
+        (U16( 6), U64(               43691), false, U64(16 + 2)),
+        (U32( 6), U64(          2863311531), false, U64(32 + 2)),
+        (U64( 6), U64(12297829382473034411), false, U64(64 + 2)),
+        
+        (U8 ( 7), U64(                 146), true,  U64( 8 + 2)),
+        (U16( 7), U64(               37449), true,  U64(16 + 2)),
+        (U32( 7), U64(          2454267026), true,  U64(32 + 2)),
+        (U64( 7), U64(10540996613548315209), true,  U64(64 + 2)),
+        
+        (U8 ( 8), U64(                 255), true,  U64( 8 + 3)),
+        (U16( 8), U64(               65535), true,  U64(16 + 3)),
+        (U32( 8), U64(          4294967295), true,  U64(32 + 3)),
+        (U64( 8), U64(18446744073709551615), true,  U64(64 + 3)),
+        
+        (U8 ( 9), U64(                 227), true,  U64( 8 + 3)),
+        (U16( 9), U64(               58254), true,  U64(16 + 3)),
+        (U32( 9), U64(          3817748707), true,  U64(32 + 3)),
+        (U64( 9), U64(16397105843297379214), true,  U64(64 + 3)),
+        
+        (U8 (10), U64(                 205), false, U64( 8 + 3)),
+        (U16(10), U64(               52429), false, U64(16 + 3)),
+        (U32(10), U64(          3435973837), false, U64(32 + 3)),
+        (U64(10), U64(14757395258967641293), false, U64(64 + 3)),
+        
+        (U8 (11), U64(                 186), true,  U64( 8 + 3)),
+        (U16(11), U64(               47662), true,  U64(16 + 3)),
+        (U32(11), U64(          3123612579), false, U64(32 + 3)),
+        (U64(11), U64(13415813871788764811), true,  U64(64 + 3)),
+        
+        (U8 (12), U64(                 171), false, U64( 8 + 3)),
+        (U16(12), U64(               43691), false, U64(16 + 3)),
+        (U32(12), U64(          2863311531), false, U64(32 + 3)),
+        (U64(12), U64(12297829382473034411), false, U64(64 + 3)),
+        
+    ])) func examples(
         div: any SystemsIntegerAsUnsigned, mul: U64, add: Bool, shr: U64
     )   throws {
         
@@ -114,73 +113,72 @@ import TestKit
     //=------------------------------------------------------------------------=
     
     @Test(
-        "Divider: exampels from 1 through 12",
+        "Divider21: examples",
+        Tag.List.tags(.generic),
         ParallelizationTrait.serialized,
-        arguments: [
+        arguments: Array<(any SystemsIntegerAsUnsigned, Doublet<U64>, Bool, U64)>.infer([
             
-            (div: U8 ( 1), mul: Doublet<U64>(low:                  255, high:                  255), add: true,  shr: U64( 16 + 0)),
-            (div: U16( 1), mul: Doublet<U64>(low:                65535, high:                65535), add: true,  shr: U64( 32 + 0)),
-            (div: U32( 1), mul: Doublet<U64>(low:           4294967295, high:           4294967295), add: true,  shr: U64( 64 + 0)),
-            (div: U64( 1), mul: Doublet<U64>(low: 18446744073709551615, high: 18446744073709551615), add: true,  shr: U64(128 + 0)),
-            
-            (div: U8 ( 2), mul: Doublet<U64>(low:                  255, high:                  255), add: true,  shr: U64( 16 + 1)),
-            (div: U16( 2), mul: Doublet<U64>(low:                65535, high:                65535), add: true,  shr: U64( 32 + 1)),
-            (div: U32( 2), mul: Doublet<U64>(low:           4294967295, high:           4294967295), add: true,  shr: U64( 64 + 1)),
-            (div: U64( 2), mul: Doublet<U64>(low: 18446744073709551615, high: 18446744073709551615), add: true,  shr: U64(128 + 1)),
+        (U8 ( 1), Doublet<U64>(low:                  255, high:                  255), true,  U64( 16 + 0)),
+        (U16( 1), Doublet<U64>(low:                65535, high:                65535), true,  U64( 32 + 0)),
+        (U32( 1), Doublet<U64>(low:           4294967295, high:           4294967295), true,  U64( 64 + 0)),
+        (U64( 1), Doublet<U64>(low: 18446744073709551615, high: 18446744073709551615), true,  U64(128 + 0)),
+        
+        (U8 ( 2), Doublet<U64>(low:                  255, high:                  255), true,  U64( 16 + 1)),
+        (U16( 2), Doublet<U64>(low:                65535, high:                65535), true,  U64( 32 + 1)),
+        (U32( 2), Doublet<U64>(low:           4294967295, high:           4294967295), true,  U64( 64 + 1)),
+        (U64( 2), Doublet<U64>(low: 18446744073709551615, high: 18446744073709551615), true,  U64(128 + 1)),
 
-            (div: U8 ( 3), mul: Doublet<U64>(low:                  171, high:                  170), add: false, shr: U64( 16 + 1)),
-            (div: U16( 3), mul: Doublet<U64>(low:                43691, high:                43690), add: false, shr: U64( 32 + 1)),
-            (div: U32( 3), mul: Doublet<U64>(low:           2863311531, high:           2863311530), add: false, shr: U64( 64 + 1)),
-            (div: U64( 3), mul: Doublet<U64>(low: 12297829382473034411, high: 12297829382473034410), add: false, shr: U64(128 + 1)),
-            
-            (div: U8 ( 4), mul: Doublet<U64>(low:                  255, high:                  255), add: true,  shr: U64( 16 + 2)),
-            (div: U16( 4), mul: Doublet<U64>(low:                65535, high:                65535), add: true,  shr: U64( 32 + 2)),
-            (div: U32( 4), mul: Doublet<U64>(low:           4294967295, high:           4294967295), add: true,  shr: U64( 64 + 2)),
-            (div: U64( 4), mul: Doublet<U64>(low: 18446744073709551615, high: 18446744073709551615), add: true,  shr: U64(128 + 2)),
+        (U8 ( 3), Doublet<U64>(low:                  171, high:                  170), false, U64( 16 + 1)),
+        (U16( 3), Doublet<U64>(low:                43691, high:                43690), false, U64( 32 + 1)),
+        (U32( 3), Doublet<U64>(low:           2863311531, high:           2863311530), false, U64( 64 + 1)),
+        (U64( 3), Doublet<U64>(low: 12297829382473034411, high: 12297829382473034410), false, U64(128 + 1)),
+        
+        (U8 ( 4), Doublet<U64>(low:                  255, high:                  255), true,  U64( 16 + 2)),
+        (U16( 4), Doublet<U64>(low:                65535, high:                65535), true,  U64( 32 + 2)),
+        (U32( 4), Doublet<U64>(low:           4294967295, high:           4294967295), true,  U64( 64 + 2)),
+        (U64( 4), Doublet<U64>(low: 18446744073709551615, high: 18446744073709551615), true,  U64(128 + 2)),
 
-            (div: U8 ( 5), mul: Doublet<U64>(low:                  205, high:                  204), add: false, shr: U64( 16 + 2)),
-            (div: U16( 5), mul: Doublet<U64>(low:                52429, high:                52428), add: false, shr: U64( 32 + 2)),
-            (div: U32( 5), mul: Doublet<U64>(low:           3435973837, high:           3435973836), add: false, shr: U64( 64 + 2)),
-            (div: U64( 5), mul: Doublet<U64>(low: 14757395258967641293, high: 14757395258967641292), add: false, shr: U64(128 + 2)),
+        (U8 ( 5), Doublet<U64>(low:                  205, high:                  204), false, U64( 16 + 2)),
+        (U16( 5), Doublet<U64>(low:                52429, high:                52428), false, U64( 32 + 2)),
+        (U32( 5), Doublet<U64>(low:           3435973837, high:           3435973836), false, U64( 64 + 2)),
+        (U64( 5), Doublet<U64>(low: 14757395258967641293, high: 14757395258967641292), false, U64(128 + 2)),
+        
+        (U8 ( 6), Doublet<U64>(low:                  171, high:                  170), false, U64( 16 + 2)),
+        (U16( 6), Doublet<U64>(low:                43691, high:                43690), false, U64( 32 + 2)),
+        (U32( 6), Doublet<U64>(low:           2863311531, high:           2863311530), false, U64( 64 + 2)),
+        (U64( 6), Doublet<U64>(low: 12297829382473034411, high: 12297829382473034410), false, U64(128 + 2)),
+        
+        (U8 ( 7), Doublet<U64>(low:                   73, high:                  146), true,  U64( 16 + 2)),
+        (U16( 7), Doublet<U64>(low:                 9362, high:                37449), true,  U64( 32 + 2)),
+        (U32( 7), Doublet<U64>(low:           1227133513, high:           2454267026), true,  U64( 64 + 2)),
+        (U64( 7), Doublet<U64>(low:  2635249153387078802, high: 10540996613548315209), true,  U64(128 + 2)),
+        
+        (U8 ( 8), Doublet<U64>(low:                  255, high:                  255), true,  U64( 16 + 3)),
+        (U16( 8), Doublet<U64>(low:                65535, high:                65535), true,  U64( 32 + 3)),
+        (U32( 8), Doublet<U64>(low:           4294967295, high:           4294967295), true,  U64( 64 + 3)),
+        (U64( 8), Doublet<U64>(low: 18446744073709551615, high: 18446744073709551615), true,  U64(128 + 3)),
+        
+        (U8 ( 9), Doublet<U64>(low:                  142, high:                  227), true,  U64( 16 + 3)),
+        (U16( 9), Doublet<U64>(low:                14563, high:                58254), true,  U64( 32 + 3)),
+        (U32( 9), Doublet<U64>(low:           2386092942, high:           3817748707), true,  U64( 64 + 3)),
+        (U64( 9), Doublet<U64>(low:  4099276460824344803, high: 16397105843297379214), true,  U64(128 + 3)),
+        
+        (U8 (10), Doublet<U64>(low:                  205, high:                  204), false, U64( 16 + 3)),
+        (U16(10), Doublet<U64>(low:                52429, high:                52428), false, U64( 32 + 3)),
+        (U32(10), Doublet<U64>(low:           3435973837, high:           3435973836), false, U64( 64 + 3)),
+        (U64(10), Doublet<U64>(low: 14757395258967641293, high: 14757395258967641292), false, U64(128 + 3)),
+        
+        (U8 (11), Doublet<U64>(low:                   46, high:                  186), true,  U64( 16 + 3)),
+        (U16(11), Doublet<U64>(low:                35747, high:                47662), false, U64( 32 + 3)),
+        (U32(11), Doublet<U64>(low:           3904515723, high:           3123612578), true,  U64( 64 + 3)),
+        (U64(11), Doublet<U64>(low: 11738837137815169210, high: 13415813871788764811), true,  U64(128 + 3)),
+        
+        (U8 (12), Doublet<U64>(low:                  171, high:                  170), false, U64( 16 + 3)),
+        (U16(12), Doublet<U64>(low:                43691, high:                43690), false, U64( 32 + 3)),
+        (U32(12), Doublet<U64>(low:           2863311531, high:           2863311530), false, U64( 64 + 3)),
+        (U64(12), Doublet<U64>(low: 12297829382473034411, high: 12297829382473034410), false, U64(128 + 3)),
             
-            (div: U8 ( 6), mul: Doublet<U64>(low:                  171, high:                  170), add: false, shr: U64( 16 + 2)),
-            (div: U16( 6), mul: Doublet<U64>(low:                43691, high:                43690), add: false, shr: U64( 32 + 2)),
-            (div: U32( 6), mul: Doublet<U64>(low:           2863311531, high:           2863311530), add: false, shr: U64( 64 + 2)),
-            (div: U64( 6), mul: Doublet<U64>(low: 12297829382473034411, high: 12297829382473034410), add: false, shr: U64(128 + 2)),
-            
-            (div: U8 ( 7), mul: Doublet<U64>(low:                   73, high:                  146), add: true,  shr: U64( 16 + 2)),
-            (div: U16( 7), mul: Doublet<U64>(low:                 9362, high:                37449), add: true,  shr: U64( 32 + 2)),
-            (div: U32( 7), mul: Doublet<U64>(low:           1227133513, high:           2454267026), add: true,  shr: U64( 64 + 2)),
-            (div: U64( 7), mul: Doublet<U64>(low:  2635249153387078802, high: 10540996613548315209), add: true,  shr: U64(128 + 2)),
-            
-            (div: U8 ( 8), mul: Doublet<U64>(low:                  255, high:                  255), add: true,  shr: U64( 16 + 3)),
-            (div: U16( 8), mul: Doublet<U64>(low:                65535, high:                65535), add: true,  shr: U64( 32 + 3)),
-            (div: U32( 8), mul: Doublet<U64>(low:           4294967295, high:           4294967295), add: true,  shr: U64( 64 + 3)),
-            (div: U64( 8), mul: Doublet<U64>(low: 18446744073709551615, high: 18446744073709551615), add: true,  shr: U64(128 + 3)),
-            
-            (div: U8 ( 9), mul: Doublet<U64>(low:                  142, high:                  227), add: true,  shr: U64( 16 + 3)),
-            (div: U16( 9), mul: Doublet<U64>(low:                14563, high:                58254), add: true,  shr: U64( 32 + 3)),
-            (div: U32( 9), mul: Doublet<U64>(low:           2386092942, high:           3817748707), add: true,  shr: U64( 64 + 3)),
-            (div: U64( 9), mul: Doublet<U64>(low:  4099276460824344803, high: 16397105843297379214), add: true,  shr: U64(128 + 3)),
-            
-            (div: U8 (10), mul: Doublet<U64>(low:                  205, high:                  204), add: false, shr: U64( 16 + 3)),
-            (div: U16(10), mul: Doublet<U64>(low:                52429, high:                52428), add: false, shr: U64( 32 + 3)),
-            (div: U32(10), mul: Doublet<U64>(low:           3435973837, high:           3435973836), add: false, shr: U64( 64 + 3)),
-            (div: U64(10), mul: Doublet<U64>(low: 14757395258967641293, high: 14757395258967641292), add: false, shr: U64(128 + 3)),
-            
-            (div: U8 (11), mul: Doublet<U64>(low:                   46, high:                  186), add: true,  shr: U64( 16 + 3)),
-            (div: U16(11), mul: Doublet<U64>(low:                35747, high:                47662), add: false, shr: U64( 32 + 3)),
-            (div: U32(11), mul: Doublet<U64>(low:           3904515723, high:           3123612578), add: true,  shr: U64( 64 + 3)),
-            (div: U64(11), mul: Doublet<U64>(low: 11738837137815169210, high: 13415813871788764811), add: true,  shr: U64(128 + 3)),
-            
-            (div: U8 (12), mul: Doublet<U64>(low:                  171, high:                  170), add: false, shr: U64( 16 + 3)),
-            (div: U16(12), mul: Doublet<U64>(low:                43691, high:                43690), add: false, shr: U64( 32 + 3)),
-            (div: U32(12), mul: Doublet<U64>(low:           2863311531, high:           2863311530), add: false, shr: U64( 64 + 3)),
-            (div: U64(12), mul: Doublet<U64>(low: 12297829382473034411, high: 12297829382473034410), add: false, shr: U64(128 + 3)),
-            
-        ] as [(
-        div: any SystemsIntegerAsUnsigned, mul: Doublet<U64>, add: Bool, shr: U64
-    )]) func examplesFrom1Through12(
+    ])) func examplesFrom1Through12(
         div: any SystemsIntegerAsUnsigned, mul: Doublet<U64>, add: Bool, shr: U64
     )   throws {
         

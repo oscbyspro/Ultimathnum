@@ -33,8 +33,11 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt.<<(_:_:)", .tags(.forwarding, .random), arguments: fuzzers)
-    func shift(_ randomness: consuming FuzzerInt) throws {
+    @Test(
+        "StdlibInt/shift: bidirectional <<(_:_:) of Self vs Base",
+        Tag.List.tags(.forwarding, .random),
+        arguments: fuzzers
+    )   func shift(randomness: consuming FuzzerInt) throws {
         for _ in 0 ..< 128 {
             let random   = IXL.entropic(size: 000256, using: &randomness)
             let distance = IXL.random(in: -128...127, using: &randomness)
@@ -43,8 +46,10 @@ import TestKit
         }
     }
     
-    @Test("StdlibInt.<<(_:_:) - Int.max", .tags(.forwarding))
-    func shiftByDistancesNearMaxInt() throws {
+    @Test(
+        "StdlibInt/shift: bidirectional <<(_:_:) near Int.max of Self vs Base",
+        Tag.List.tags(.forwarding)
+    )   func shiftByDistancesNearMaxInt() throws {
         try Ɣrequire(StdlibInt.zero, up: StdlibInt(Int.max) + 2, is: StdlibInt.zero)
         try Ɣrequire(StdlibInt.zero, up: StdlibInt(Int.max) + 1, is: StdlibInt.zero)
         try Ɣrequire(StdlibInt.zero, up: StdlibInt(Int.max),     is: StdlibInt.zero)
@@ -52,8 +57,11 @@ import TestKit
         try Ɣrequire(StdlibInt.zero, up: StdlibInt(Int.max) - 2, is: StdlibInt.zero)
     }
     
-    @Test("StdlibInt.<<(_:_:) - Int.min", .tags(.forwarding, .random), arguments: fuzzers)
-    func shiftByDistancesNearMinInt(_ randomness: consuming FuzzerInt) throws {
+    @Test(
+        "StdlibInt/shift: bidirectional <<(_:_:) near Int.min of Self vs Base",
+        Tag.List.tags(.forwarding, .random),
+        arguments: fuzzers
+    )   func shiftByDistancesNearMinInt(randomness: consuming FuzzerInt) throws {
         for _ in 0 ..< 32 {
             let random = StdlibInt(IXL.entropic(size: 256, using: &randomness))
             let expectation = StdlibInt(IXL(repeating: Bit(random < 0)))
@@ -65,10 +73,17 @@ import TestKit
         }
     }
     
-    func Ɣrequire(_ instance: StdlibInt, up distance: StdlibInt, is expectation: StdlibInt, at location: SourceLocation = #_sourceLocation) throws {
-        //=--------------------------------------=
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    func Ɣrequire(
+        _  instance: StdlibInt, up distance: StdlibInt, is expectation: StdlibInt,
+        at location: SourceLocation = #_sourceLocation
+    )   throws {
+        
         let opposite: StdlibInt = -distance
-        //=--------------------------------------=
+        
         if  instance != 0, distance >= 0 {
             try #require((instance.bitWidth + Int(distance)) == expectation.bitWidth, sourceLocation: location)
         }

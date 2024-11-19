@@ -85,7 +85,8 @@ import TestKit
         try whereIs(source: type, destination: IX.self)
         try whereIs(source: type, destination: UX.self)
         
-        func whereIs<T, U>(source: T.Type, destination: U.Type) throws where T: BinaryInteger, U: SystemsInteger<UX.BitPattern> {
+        func whereIs<T, U>(source: T.Type, destination: U.Type)
+        throws where T: BinaryInteger, U: SystemsInteger<UX.BitPattern> {
             if  T.isArbitrary {
                 try #require(U(size: T.self) == nil)
             }   else {
@@ -103,7 +104,8 @@ import TestKit
         try whereIs(source: type, destination: IX.self)
         try whereIs(source: type, destination: UX.self)
         
-        func whereIs<T, U>(source: T.Type, destination: U.Type) throws where T: SystemsInteger, U: SystemsInteger<UX.BitPattern> {
+        func whereIs<T, U>(source: T.Type, destination: U.Type)
+        throws where T: SystemsInteger, U: SystemsInteger<UX.BitPattern> {
             try #require(Count(raw: U(size: T.self)) == T.size)
         }
     }

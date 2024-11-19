@@ -23,22 +23,28 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Shift.instance", arguments: typesAsBinaryIntegerAsUnsigned)
-    func instances(_ type: any UnsignedInteger.Type) {
-        whereIs(type)
+    @Test(
+        "Shift: instances",
+        Tag.List.tags(.generic),
+        arguments: typesAsBinaryIntegerAsUnsigned
+    )   func instances(type: any UnsignedInteger.Type) throws {
         
-        func whereIs<T>(_ type: T.Type) where T: UnsignedInteger {
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: UnsignedInteger {
             #expect(Shift<T>.min == Shift<T>(Count(raw: 0 as IX)))
             #expect(Shift<T>.one == Shift<T>(Count(raw: 1 as IX)))
             #expect(Shift<T>.max == Shift<T>(Count(raw: IX(raw: T.size) - 1)))
         }
     }
     
-    @Test("Shift.predicate(_:)", arguments: typesAsBinaryIntegerAsUnsigned)
-    func predicate(_ type: any UnsignedInteger.Type) {
-        whereIs(type)
+    @Test(
+        "Shift: predicate(_:)",
+        Tag.List.tags(.generic),
+        arguments: typesAsBinaryIntegerAsUnsigned
+    )   func predicate(type: any UnsignedInteger.Type) throws {
         
-        func whereIs<T>(_ type: T.Type) where T: UnsignedInteger {
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: UnsignedInteger {
             always: do {
                 #expect( Shift<T>.predicate(Count(raw:  0 as IX)))
                 #expect( Shift<T>.predicate(Count(raw:  1 as IX)))
@@ -63,15 +69,16 @@ import TestKit
         }
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    @Test("Shift.init - [entropic]", arguments: typesAsBinaryInteger, fuzzers)
-    func initByFuzzingEntropies(_ type: any BinaryInteger.Type, randomness: consuming FuzzerInt) {
-        whereIs(type)
+    @Test(
+        "Shift: validation",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func validation(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 128 {
                 let random = Count(raw: IX.entropic(using: &randomness))
                 Ɣexpect(random, as: Shift<T.Magnitude>.self, if: random < T.size)
@@ -83,27 +90,32 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("Shift/isZero - load each I8", arguments: typesAsBinaryIntegerAsUnsigned)
-    func isZero(_ type: any UnsignedInteger.Type) {
-        whereIs(type)
-
-        func whereIs<T>(_ type: T.Type) where T: UnsignedInteger {
+    @Test(
+        "Shift: isZero - loading each I8",
+        Tag.List.tags(.generic),
+        arguments: typesAsBinaryIntegerAsUnsigned
+    )   func isZero(type: any UnsignedInteger.Type) throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: UnsignedInteger {
             for relative: IX in I8.all.lazy.map(IX.init) {
                 if  let shift = Shift<T>(exactly: Count(raw: relative)) {
-                    #expect(shift.isZero == relative.isZero)
+                    try #require(shift.isZero == relative.isZero)
                 }
             }
         }
     }
     
-    @Test("Shift/isInfinite - load each I8", arguments: typesAsBinaryIntegerAsUnsigned)
-    func isInfinite(_ type: any UnsignedInteger.Type) {
-        whereIs(type)
-
-        func whereIs<T>(_ type: T.Type) where T: UnsignedInteger {
+    @Test(
+        "Shift: isInfinite - loading each I8",
+        arguments: typesAsBinaryIntegerAsUnsigned
+    )   func isInfinite(_ type: any UnsignedInteger.Type) throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: UnsignedInteger {
             for relative: IX in I8.all.lazy.map(IX.init) {
                 if  let shift = Shift<T>(exactly: Count(raw: relative)) {
-                    #expect(shift.isInfinite == relative.isNegative)
+                    try #require(shift.isInfinite == relative.isNegative)
                 }
             }
         }
@@ -113,15 +125,16 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    /// - 2024-06-15: Checks that the inverse of zero is nil.
-    @Test("Shift/inverse()", arguments: typesAsBinaryIntegerAsUnsigned)
-    func inverse(_ type: any UnsignedInteger.Type) {
-        whereIs(type)
+    @Test(
+        "Shift: inverse()",
+        Tag.List.tags(.generic),
+        arguments: typesAsBinaryIntegerAsUnsigned
+    )   func inverse(_ type: any UnsignedInteger.Type) throws {
         
-        func whereIs<T>(_ type: T.Type) where T: UnsignedInteger {
-            //=----------------------------------=
-            let size = IX(raw: T.size)
-            //=----------------------------------=
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: UnsignedInteger {
+            let size = IX(raw:  T.size)
+            
             #expect(Shift<T>(Count(0 as IX)).inverse() == nil)
             #expect(Shift<T>(Count(1 as IX)).inverse() == Shift(Count(raw: size - 1)))
             #expect(Shift<T>(Count(2 as IX)).inverse() == Shift(Count(raw: size - 2)))
@@ -149,14 +162,16 @@ import TestKit
         }
     }
 
-    @Test("Shift/natural()", arguments: typesAsBinaryIntegerAsUnsigned)
-    func natural(_ type: any UnsignedInteger.Type) {
-        whereIs(type)
+    @Test(
+        "Shift: natural()",
+        Tag.List.tags(.generic),
+        arguments: typesAsBinaryIntegerAsUnsigned
+    )   func natural(type: any UnsignedInteger.Type) throws {
         
-        func whereIs<T>(_ type: T.Type) where T: UnsignedInteger {
-            //=----------------------------------=
-            let size = IX(raw: T.size)
-            //=----------------------------------=
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: UnsignedInteger {
+            let size = IX(raw:  T.size)
+            
             #expect(Shift<T>(Count(0 as IX)).natural() == Fallible(0 as IX))
             #expect(Shift<T>(Count(1 as IX)).natural() == Fallible(1 as IX))
             #expect(Shift<T>(Count(2 as IX)).natural() == Fallible(2 as IX))

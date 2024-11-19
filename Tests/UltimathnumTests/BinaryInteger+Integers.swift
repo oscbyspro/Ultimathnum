@@ -32,7 +32,8 @@ import TestKit
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws where A: BinaryInteger, B: BinaryInteger {
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: BinaryInteger, B: BinaryInteger {
             try withOnlyOneCallToRequire((source, destination)) { require in
                 for _ in 0 ..< conditional(debug: 32, release: 256) {
                     let source: A  = A.entropic(in: B.self,or: 255, using: &randomness)
@@ -80,7 +81,8 @@ import TestKit
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws where A: BinaryInteger, B: BinaryInteger {
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: BinaryInteger, B: BinaryInteger {
             try withOnlyOneCallToRequire((source, destination)) { require in
                 let size = IX(size: B.self) ?? (1 + 256)
                 let min: B = B(repeating: Bit(B.isSigned)).up(Count(size - 1))
@@ -160,7 +162,8 @@ import TestKit
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws where A: UnsignedInteger, B: BinaryInteger {
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: UnsignedInteger, B: BinaryInteger {
             for sign in Sign.all {
                 try #require(B(sign: sign, magnitude: A.Magnitude.zero).isZero)
             }
@@ -296,7 +299,8 @@ import TestKit
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws where A: UnsignedInteger, B: BinaryInteger {
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: UnsignedInteger, B: BinaryInteger {
             for _ in 0 ..< 8 {
                 let value = A.entropic(in: B.self, or: 256, using: &randomness)
                 try #require(    value == A(magnitude: value))
@@ -423,7 +427,8 @@ import TestKit
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws where A: BinaryInteger, B: BinaryInteger {
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: BinaryInteger, B: BinaryInteger {
             try withOnlyOneCallToRequire((source, destination)) { require in
                 var a = A.zero, x = A.lsb
                 var b = B.zero, y = B.lsb
@@ -467,7 +472,8 @@ import TestKit
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws where A: BinaryInteger, B: BinaryInteger {
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: BinaryInteger, B: BinaryInteger {
             try withOnlyOneCallToRequire((source, destination)) { require in
                 var mask = B(repeating: Bit.one)
     
@@ -524,7 +530,8 @@ import TestKit
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws where A: BinaryInteger, B: BinaryInteger {
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: BinaryInteger, B: BinaryInteger {
             try withOnlyOneCallToRequire((source, destination)) { require in
                 var mask = B(repeating: Bit.one)
 
@@ -592,7 +599,8 @@ import TestKit
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws where A: BinaryInteger, B: BinaryInteger {
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: BinaryInteger, B: BinaryInteger {
             try withOnlyOneCallToRequire((source, destination)) { require in
                 let mask = B(load: A.Magnitude(repeating: Bit.one))
 

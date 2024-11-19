@@ -15,7 +15,7 @@ import TestKit
 // MARK: * Fuzzer Int
 //*============================================================================*
 
-@Suite struct FuzzerIntTests {
+@Suite(.serialized) struct FuzzerIntTests {
         
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -29,8 +29,7 @@ import TestKit
     @Test(
         "FuzzerInt: prefix",
         Tag.List.tags(.documentation, .unofficial),
-        ParallelizationTrait.serialized,
-        arguments: Array<(I64, [U64])>([
+        arguments: Array<(I64, [U64])>.infer([
         
         ( 0 as I64, [0xe220a8397b1dcdaf, 0x6e789e6aa1b965f4, 0x06c45d188009454f, 0xf88bb8a8724c81ec] as [U64]),
         ( 1 as I64, [0x910a2dec89025cc1, 0xbeeb8da1658eec67, 0xf893a2eefb32555e, 0x71c18690ee42c90b] as [U64]),

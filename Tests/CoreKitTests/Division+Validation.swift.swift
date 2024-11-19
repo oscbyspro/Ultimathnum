@@ -22,7 +22,8 @@ import TestKit
     //=------------------------------------------------------------------------=
  
     @Test(
-        "Division/exactly: T.init(load:)",
+        "Division/validation: exactly()",
+        Tag.List.tags(.generic),
         ParallelizationTrait.serialized,
         arguments: I8(-2)...I8(2), I8(-2)...I8(2)
     )   func exactly(quotient: I8, remainder: I8) throws {

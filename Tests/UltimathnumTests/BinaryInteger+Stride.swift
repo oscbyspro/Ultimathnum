@@ -26,14 +26,18 @@ import TestKit
         "BinaryInteger/stride: advanced(by:) vs ArbitraryInteger.±(_:_:)",
         Tag.List.tags(.generic, .random),
         arguments: fuzzers
-    )   func advancedByVersusArbitraryInteger(randomness: consuming FuzzerInt) throws {
+    )   func advancedByVersusArbitraryInteger(
+        randomness: consuming FuzzerInt
+    )   throws {
+        
         for type in typesAsBinaryInteger {
             for distance in typesAsBinaryIntegerAsSigned {
                 try whereIs(type: type, distance: distance)
             }
         }
         
-        func whereIs<A, B>(type: A.Type, distance: B.Type) throws where A: BinaryInteger, B: SignedInteger {
+        func whereIs<A, B>(type: A.Type, distance: B.Type)
+        throws where A: BinaryInteger, B: SignedInteger {
             for _ in 0 ..< conditional(debug: 32, release: 256) {
                 let start    = A.entropic(through: Shift.max(or: 255), using: &randomness)
                 let distance = B.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -57,14 +61,18 @@ import TestKit
         "BinaryInteger/stride: distance(to:) vs ArbitraryInteger.±(_:_:)",
         Tag.List.tags(.generic, .random),
         arguments: fuzzers
-    )   func distanceToVersusArbitraryInteger(randomness: consuming FuzzerInt) throws {
+    )   func distanceToVersusArbitraryInteger(
+        randomness: consuming FuzzerInt
+    )   throws {
+        
         for type in typesAsBinaryInteger {
             for distance in typesAsBinaryIntegerAsSigned {
                 try whereIs(type: type, distance: distance)
             }
         }
         
-        func whereIs<A, B>(type: A.Type, distance: B.Type) throws where A: BinaryInteger, B: SignedInteger {
+        func whereIs<A, B>(type: A.Type, distance: B.Type)
+        throws where A: BinaryInteger, B: SignedInteger {
             for _ in 0 ..< conditional(debug: 32, release: 256) {
                 let start    = A.entropic(through: Shift.max(or: 255), using: &randomness)
                 let end      = A.entropic(through: Shift.max(or: 255), using: &randomness)

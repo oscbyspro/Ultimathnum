@@ -260,8 +260,8 @@ import TestKit
         
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
-            let signs = ["", "+", "-"]
-            let masks = ["", "&"]
+            let signs: [String] = ["", "+", "-"]
+            let masks: [String] = ["", "&"]
             
             for coder in BinaryIntegerTestsOnText.coders {
                 for sign in signs {
@@ -381,7 +381,7 @@ import TestKit
 // MARK: * Binary Integer x Text x Edge Cases
 //*============================================================================*
 
-@Suite(.tags(.important)) struct BinaryIntegerTestsOnTextEdgeCases {
+@Suite struct BinaryIntegerTestsOnTextEdgeCases {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -389,7 +389,7 @@ import TestKit
     
     @Test(
         "BinaryInteger/text/validation: decoding edges works",
-        Tag.List.tags(.generic),
+        Tag.List.tags(.generic, .important),
         arguments: typesAsEdgyInteger
     )   func decodingEdgesWorks(
         type: any EdgyInteger.Type
@@ -408,7 +408,7 @@ import TestKit
     
     @Test(
         "BinaryInteger/text/validation: decoding one past min is error",
-        Tag.List.tags(.generic),
+        Tag.List.tags(.generic, .important),
         arguments: typesAsEdgyInteger
     )   func decodingOnePastMinIsError(
         type: any EdgyInteger.Type
@@ -429,7 +429,7 @@ import TestKit
     
     @Test(
         "BinaryInteger/text/validation: decoding one past max is error",
-        Tag.List.tags(.generic),
+        Tag.List.tags(.generic, .important),
         arguments: typesAsSystemsInteger
     )   func decodingOnePastMaxIsError(
         type: any SystemsInteger.Type
@@ -450,7 +450,7 @@ import TestKit
     
     @Test(
         "BinaryInteger/text/validation: decoding random past min is error",
-        Tag.List.tags(.generic, .random),
+        Tag.List.tags(.generic, .random, .important),
         arguments: typesAsEdgyInteger, fuzzers
     )   func decodingOnePastMinIsError(
         type: any EdgyInteger.Type, randomness: consuming FuzzerInt
@@ -474,7 +474,7 @@ import TestKit
     
     @Test(
         "BinaryInteger/text/validation: decoding random past max is error",
-        Tag.List.tags(.generic, .random),
+        Tag.List.tags(.generic, .random, .important),
         arguments: typesAsSystemsInteger, fuzzers
     )   func decodingOnePastMaxIsError(
         type: any SystemsInteger.Type, randomness: consuming FuzzerInt
@@ -498,7 +498,7 @@ import TestKit
     
     @Test(
         "BinaryInteger/text/validation: decoding infinite as finite is error",
-        Tag.List.tags(.generic, .random),
+        Tag.List.tags(.generic, .random, .important),
         arguments: typesAsFiniteInteger, fuzzers
     )   func decodingInfiniteAsFiniteIsError(
         type: any FiniteInteger.Type, randomness: consuming FuzzerInt
@@ -525,7 +525,7 @@ import TestKit
 // MARK: * Binary Integer x Text x Pyramids
 //*============================================================================*
 
-@Suite(.tags(.important)) struct BinaryIntegerTestsOnTextPyramids {
+@Suite struct BinaryIntegerTestsOnTextPyramids {
     
     //=------------------------------------------------------------------------=
     // MARK: Metadata
@@ -549,11 +549,13 @@ import TestKit
     ///
     @Test(
         "BinaryInteger/text/pyramids: one followed by zeros",
-        Tag.List.tags(.generic),
+        Tag.List.tags(.generic, .important),
         arguments: typesAsBinaryInteger
-    )   func pyramidOfOneFollowedByZeros(type: any BinaryInteger.Type) throws {
-        try  whereIs(type)
+    )   func pyramidOfOneFollowedByZeros(
+        type: any BinaryInteger.Type
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for coder: TextInt in Self.coders {
                 var encoded = String("1")
@@ -582,11 +584,13 @@ import TestKit
     ///
     @Test(
         "BinaryInteger/text/pyramids: ascending numeral cycle",
-        Tag.List.tags(.generic),
+        Tag.List.tags(.generic, .important),
         arguments: typesAsBinaryInteger
-    )   func pyramidOfAscendingNumeralCycle(type: any BinaryInteger.Type) throws {
+    )   func pyramidOfAscendingNumeralCycle(
+        type: any BinaryInteger.Type
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for coder: TextInt in Self.coders {
                 var encoded = String()
@@ -620,11 +624,13 @@ import TestKit
     ///
     @Test(
         "BinaryInteger/text/pyramids: repeating highest numeral",
-        Tag.List.tags(.generic),
+        Tag.List.tags(.generic, .important),
         arguments: typesAsBinaryInteger
-    )   func pyramidOfRepeatingHighestNumeral(type: any BinaryInteger.Type) throws {
-        try  whereIs(type)
+    )   func pyramidOfRepeatingHighestNumeral(
+        type: any BinaryInteger.Type
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for coder: TextInt in Self.coders {
                 var encoded = String()
@@ -651,7 +657,7 @@ import TestKit
 // MARK: * Binary Integer x Text x Conveniences
 //*============================================================================*
 
-@Suite(.tags(.forwarding)) struct BinaryIntegerTestsOnTextConveniences {
+@Suite struct BinaryIntegerTestsOnTextConveniences {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -659,11 +665,13 @@ import TestKit
     
     @Test(
         "BinaryInteger/text/conveniences: decimal",
-        Tag.List.tags(.generic, .random),
+        Tag.List.tags(.forwarding, .generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func decimal(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func decimal(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             try #require(T(String()) == nil)
             

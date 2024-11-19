@@ -15,7 +15,7 @@ import TestKit
 // MARK: * Fallible x Sink
 //*============================================================================*
 
-@Suite struct FallibleTestsOnSink {
+@Suite(.serialized) struct FallibleTestsOnSink {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -24,7 +24,6 @@ import TestKit
     @Test(
         "Fallible/sink: from inout Bool as Bit",
         Tag.List.tags(.exhaustive),
-        ParallelizationTrait.serialized,
         arguments: Bit.all
     )   func fromInoutBoolAsBit(value: Bit) {
         
@@ -39,7 +38,6 @@ import TestKit
     @Test(
         "Fallible/sink: from inout Bool as Fallible<Bit>",
         Tag.List.tags(.exhaustive),
-        ParallelizationTrait.serialized,
         arguments: Fallible<Bit>.all
     )   func fromInoutBoolAsFallibleBit(instance: Fallible<Bit>) {
                 
@@ -54,7 +52,6 @@ import TestKit
     @Test(
         "Fallible/sink: into Bool",
         Tag.List.tags(.exhaustive),
-        ParallelizationTrait.serialized,
         arguments: Fallible<Bit>.all
     )   func sink(instance: Fallible<Bit>) {
         

@@ -26,19 +26,19 @@ import TestKit
         Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsIntegerAsUnsigned, fuzzers
     )   func initialization(
-        _ type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
+        type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
     )   throws {
         
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
             for _ in 0 ..< 32 {
-                let random = T.entropic(using: &randomness)
+                let value = T.entropic(using: &randomness)
                 
-                if  let result = Divider(exactly: random) {
-                    try #require(result.div == random)
+                if  let result = Divider(exactly: value) {
+                    try #require((result).div ==  value)
                 }
                 
-                Ɣexpect(random, as: Divider.self, if: !random.isZero)
+                Ɣexpect(value, as: Divider.self, if: !value.isZero)
             }
         }
     }
@@ -59,7 +59,7 @@ import TestKit
         Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsIntegerAsUnsigned, fuzzers
     )   func initialization(
-        _ type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
+        type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
     )   throws {
         
         try  whereIs(type)

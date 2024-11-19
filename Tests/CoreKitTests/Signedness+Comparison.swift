@@ -14,7 +14,7 @@ import TestKit
 // MARK: * Signedness x Comparison
 //*============================================================================*
 
-@Suite struct SignednessTestsOnComparison {
+@Suite(.serialized) struct SignednessTestsOnComparison {
         
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -23,8 +23,7 @@ import TestKit
     @Test(
         "Signedness/comparison: Self vs Self",
         Tag.List.tags(.documentation, .exhaustive),
-        ParallelizationTrait.serialized,
-        arguments: Array<(Signedness, Signedness, Bool)>([
+        arguments: Array<(Signedness, Signedness, Bool)>.infer([
         
         (Signedness.unsigned, Signedness.unsigned, true ),
         (Signedness.unsigned, Signedness  .signed, false),

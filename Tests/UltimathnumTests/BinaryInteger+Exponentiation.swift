@@ -27,7 +27,7 @@ import TestKit
     @Test(
         "BinaryInteger/exponentiation: examples",
         Tag.List.tags(.generic),
-        arguments: [
+        arguments: Array<(IXL, UXL, IXL)>.infer([
         
         (base: 2 as IXL, exponent: 1399 as UXL, power: IXL("""
         0000000000000000000000000013834514851379060073245971093437442064\
@@ -59,8 +59,7 @@ import TestKit
         6036250169540192297202679456092601217013126286587177412655204267
         """)!),
             
-    ] as [(base: IXL, exponent: UXL, power: IXL)])
-    func examples(base: IXL, exponent: UXL, power: IXL) throws {
+    ])) func examples(base: IXL, exponent: UXL, power: IXL) throws {
         for type in typesAsBinaryInteger {
             try whereIs(type)
         }
@@ -76,9 +75,11 @@ import TestKit
         "BinaryInteger/exponentiation: vs multiplication loop for small exponents",
         Tag.List.tags(.generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func exponentiationVersusMultiplicationLoopForSmallExponents(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
-        try  whereIs(type)
+    )   func exponentiationVersusMultiplicationLoopForSmallExponents(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
+        try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             let size = IX(size: T.self) ?? conditional(debug: 32, release: 256)
             
@@ -123,8 +124,8 @@ import TestKit
         Tag.List.tags(.generic),
         arguments: typesAsBinaryInteger
     )   func coefficientIsOneByDefault(type: any BinaryInteger.Type) throws {
+        
         try  whereIs(type)
-
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             try #require(I8(2).power(U8(3)) == Fallible(I8(8)))
             try #require(U8(2).power(U8(3)) == Fallible(U8(8)))
@@ -137,9 +138,11 @@ import TestKit
         "BinaryInteger/exponentiation/conveniences: exponent as SystemsInteger.Magnitude vs UXL",
         Tag.List.tags(.generic, .random),
         arguments: typesAsSystemsInteger, fuzzers
-    )   func exponentAsSystemsIntegerMagnitudeVersusUXL(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func exponentAsSystemsIntegerMagnitudeVersusUXL(
+        type: any SystemsInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-
         func whereIs<T>(_ type: T.Type) throws where T: SystemsInteger {
             typealias M = T.Magnitude
             
@@ -169,9 +172,11 @@ import TestKit
         "BinaryInteger/exponentiation/edge-cases: base is 1 → coefficient",
         Tag.List.tags(.documentation, .generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func baseIsOneYieldsCoefficient(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func baseIsOneYieldsCoefficient(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             typealias M = T.Magnitude
             
@@ -187,9 +192,11 @@ import TestKit
         "BinaryInteger/exponentiation/edge-cases: base is 0 → 0 or coefficient",
         Tag.List.tags(.documentation, .generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func baseIsZeroYieldsZeroOrCoefficient(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func baseIsZeroYieldsZeroOrCoefficient(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             typealias M = T.Magnitude
             
@@ -207,9 +214,11 @@ import TestKit
         "BinaryInteger/exponentiation/edge-cases: base is NOT(0) → coefficient * (1 or ~0)",
         Tag.List.tags(.documentation, .generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func baseIsRepeatingOnesYieldsCoefficietExpression(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func baseIsRepeatingOnesYieldsCoefficietExpression(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             typealias M = T.Magnitude
             
@@ -227,9 +236,11 @@ import TestKit
         "BinaryInteger/exponentiation/edge-cases: exponent is 0 → coefficient",
         Tag.List.tags(.documentation, .generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func exponentIsZeroYieldsCoefficientNoError(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func exponentIsZeroYieldsCoefficientNoError(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 32 {
                 let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -243,9 +254,11 @@ import TestKit
         "BinaryInteger/exponentiation/edge-cases: coefficient is 0 → 0",
         Tag.List.tags(.documentation, .generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
-    )   func coefficientIsZeroYieldsZeroNoError(type: any BinaryInteger.Type, randomness: consuming FuzzerInt) throws {
+    )   func coefficientIsZeroYieldsZeroNoError(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
         try  whereIs(type)
-        
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 32 {
                 let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
@@ -263,14 +276,18 @@ import TestKit
         "BinaryInteger/exponentiation/edge-cases: exponent > Magnitude.max",
         Tag.List.tags(.generic, .random),
         arguments: fuzzers
-    )   func exponentsThatDontFitInMagnitude(randomness: consuming FuzzerInt) throws {
+    )   func exponentsThatDontFitInMagnitude(
+        randomness: consuming FuzzerInt
+    )   throws {
+       
         for small in typesAsSystemsInteger {
             for large in typesAsSystemsInteger {
                 try whereIs(small: small, large: large)
             }
         }
         
-        func whereIs<A, B>(small: A.Type, large: B.Type) throws where A: SystemsInteger, B: SystemsInteger {
+        func whereIs<A, B>(small: A.Type, large: B.Type)
+        throws where A: SystemsInteger, B: SystemsInteger {
             guard A.size < B.size, A.isSigned == B.isSigned else { return }
             
             let min = B.Magnitude(A.Magnitude.max) + 1

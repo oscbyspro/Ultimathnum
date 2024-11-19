@@ -16,7 +16,7 @@ import TestKit
 // MARK: * Binary Integer x Floats x Samples
 //*============================================================================*
 
-@Suite(.serialized, .tags(.generic)) struct BinaryIntegerTestsOnFloatsSamples {
+@Suite(.serialized) struct BinaryIntegerTestsOnFloatsSamples {
     
     //=------------------------------------------------------------------------=
     // MARK: Metadata
@@ -119,16 +119,20 @@ import TestKit
     
     @Test(
         "BinaryInteger/floats/samples: none",
+        Tag.List.tags(.generic),
         arguments: Self.nonresults
-    )   func nonresults(float: Float64) throws {
+    )   func nonresults(
+        float: Float64
+    )   throws {
+        
         for source in typesAsSwiftBinaryFloatingPoint {
             for destination in typesAsBinaryInteger {
                 try whereIs(source: source, destination: destination)
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws
-        where A: Swift.BinaryFloatingPoint, B: BinaryInteger {
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: Swift.BinaryFloatingPoint, B: BinaryInteger {
             if  let source = A(exactly: float) {
                 try Ɣrequire(source,is: Optional<Fallible<B>>.none)
             }
@@ -137,16 +141,20 @@ import TestKit
     
     @Test(
         "BinaryInteger/floats/samples: integers",
+        Tag.List.tags(.generic),
         arguments: Self.integers
-    )   func integers(float: Float64, integer: IXL) throws {
+    )   func integers(
+        float: Float64, integer: IXL
+    )   throws {
+       
         for source in typesAsSwiftBinaryFloatingPoint {
             for destination in typesAsBinaryInteger {
                 try whereIs(source: source, destination: destination)
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws
-        where A: Swift.BinaryFloatingPoint, B: BinaryInteger {
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: Swift.BinaryFloatingPoint, B: BinaryInteger {
             if  let source = A(exactly: float) {
                 try Ɣrequire(source,is: integer.veto(false), as: B.self)
             }
@@ -155,16 +163,20 @@ import TestKit
     
     @Test(
         "BinaryInteger/floats/samples: integers but one fractional step away from zero",
+        Tag.List.tags(.generic),
         arguments: Self.integersButOneFractionalStepAwayFromZero
-    )   func integersButOneFractionalStepAwayFromZero(float: Float64, integer: Fallible<IXL>) throws {
+    )   func integersButOneFractionalStepAwayFromZero(
+        float: Float64, integer: Fallible<IXL>
+    )   throws {
+        
         for source in typesAsSwiftBinaryFloatingPoint {
             for destination in typesAsBinaryInteger {
                 try whereIs(source: source, destination: destination)
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws
-        where A: Swift.BinaryFloatingPoint, B: BinaryInteger {
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: Swift.BinaryFloatingPoint, B: BinaryInteger {
             if  let source = A(exactly: float) {
                 try Ɣrequire(source,is: integer, as: B.self)
             }
@@ -174,15 +186,18 @@ import TestKit
     @Test(
         "BinaryInteger/floats/samples: integers but one fractional step towards zero",
         arguments: Self.integersButOneFractionalStepTowardsZero
-    )   func integersButOneFractionalStepTowardsZero(float: Float64, integer: Fallible<IXL>) throws {
+    )   func integersButOneFractionalStepTowardsZero(
+        float: Float64, integer: Fallible<IXL>
+    )   throws {
+        
         for source in typesAsSwiftBinaryFloatingPoint {
             for destination in typesAsBinaryInteger {
                 try whereIs(source: source, destination: destination)
             }
         }
         
-        func whereIs<A, B>(source: A.Type, destination: B.Type) throws
-        where A: Swift.BinaryFloatingPoint, B: BinaryInteger {
+        func whereIs<A, B>(source: A.Type, destination: B.Type)
+        throws where A: Swift.BinaryFloatingPoint, B: BinaryInteger {
             if  let source = A(exactly: float) {
                 try Ɣrequire(source,is: integer, as: B.self)
             }
@@ -231,7 +246,9 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
 
-    @Test func fromPureExponentFloats() throws {
+    @Test(
+        "BinaryInteger/floats/generators: from pure exponent floats"
+    )   func fromPureExponentFloats() throws {
         for source in typesAsSwiftBinaryFloatingPoint {
             for destination in typesAsBinaryInteger {
                 try whereIs(source: source, destination: destination)
@@ -281,7 +298,9 @@ import TestKit
     ///     1111111111111111111111111111111111111111111111111110110011000011 →
     ///     1111111111111111111111111111111111111111111111111111110011000011 →
     ///
-    @Test func fromLargeNegativeFloats() throws {
+    @Test(
+        "BinaryInteger/floats/generators: from large negative floats"
+    )   func fromLargeNegativeFloats() throws {
         for source in typesAsSwiftBinaryFloatingPoint {
             try whereIs(source: source, destination: InfiniInt<IX>.self)
             try whereIs(source: source, destination: InfiniInt<UX>.self)
@@ -330,7 +349,12 @@ import TestKit
     ///     0110000000000000000000000000000000000000000000000000110011000011 →
     ///     1110000000000000000000000000000000000000000000000000110011000011 →
     ///
-    @Test func fromLargeNegativeFloatsNearMinSignificandBitPattern() throws {
+    @Test(
+        """
+        BinaryInteger/floats/generators: \
+        from large negative floats near min significand bit pattern"
+        """
+    )   func fromLargeNegativeFloatsNearMinSignificandBitPattern() throws {
         for source in typesAsSwiftBinaryFloatingPoint {
             try whereIs(source: source, destination: InfiniInt<IX>.self)
             try whereIs(source: source, destination: InfiniInt<UX>.self)
@@ -378,7 +402,12 @@ import TestKit
     ///     1001111111111111111111111111111111111111111111111111110011000011 →
     ///     0001111111111111111111111111111111111111111111111111110011000011 →
     ///
-    @Test func fromLargeNegativeFloatsNearMaxSignificandBitPattern() throws {
+    @Test(
+        """
+        BinaryInteger/floats/generators: \
+        from large negative floats near max significand bit pattern"
+        """
+    )   func fromLargeNegativeFloatsNearMaxSignificandBitPattern() throws {
         for source in typesAsSwiftBinaryFloatingPoint {
             try whereIs(source: source, destination: InfiniInt<IX>.self)
             try whereIs(source: source, destination: InfiniInt<UX>.self)
@@ -427,7 +456,9 @@ import TestKit
     ///     1111111111111111111111111111111111111111111111111110110011000010 →
     ///     1111111111111111111111111111111111111111111111111111110011000010 →
     ///
-    @Test func fromLargePositiveFloats() throws {
+    @Test(
+        "BinaryInteger/floats/generators: from large positive floats"
+    )   func fromLargePositiveFloats() throws {
         for source in typesAsSwiftBinaryFloatingPoint {
             try whereIs(source: source, destination: InfiniInt<IX>.self)
             try whereIs(source: source, destination: InfiniInt<UX>.self)
@@ -476,7 +507,12 @@ import TestKit
     ///     0110000000000000000000000000000000000000000000000000110011000010 →
     ///     1110000000000000000000000000000000000000000000000000110011000010 →
     ///
-    @Test func fromLargePositiveFloatsNearMinSignificandBitPattern() throws {
+    @Test(
+        """
+        BinaryInteger/floats/generators: \
+        from large positive floats near min significand bit pattern"
+        """
+    )   func fromLargePositiveFloatsNearMinSignificandBitPattern() throws {
         for source in typesAsSwiftBinaryFloatingPoint {
             try whereIs(source: source, destination: InfiniInt<IX>.self)
             try whereIs(source: source, destination: InfiniInt<UX>.self)
@@ -524,7 +560,12 @@ import TestKit
     ///     1001111111111111111111111111111111111111111111111111110011000010 →
     ///     0001111111111111111111111111111111111111111111111111110011000010 →
     ///
-    @Test func fromLargePositiveFloatsNearMaxSignificandBitPattern() throws {
+    @Test(
+        """
+        BinaryInteger/floats/generators: \
+        from large positive floats near max significand bit pattern"
+        """
+    )   func fromLargePositiveFloatsNearMaxSignificandBitPattern() throws {
         for source in typesAsSwiftBinaryFloatingPoint {
             try whereIs(source: source, destination: InfiniInt<IX>.self)
             try whereIs(source: source, destination: InfiniInt<UX>.self)

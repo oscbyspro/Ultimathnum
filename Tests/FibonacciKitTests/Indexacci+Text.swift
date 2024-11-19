@@ -15,7 +15,7 @@ import TestKit
 // MARK: * Indexacci x Text
 //*============================================================================*
 
-@Suite struct IndexacciTestsOnText {
+@Suite(.serialized) struct IndexacciTestsOnText {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -24,8 +24,7 @@ import TestKit
     @Test(
         "Indexacci/text: description",
         Tag.List.tags(.documentation, .unofficial),
-        ParallelizationTrait.serialized,
-        arguments: Array<(I8, I8, I8, String)>([
+        arguments: Array<(I8, I8, I8, String)>.infer([
         
         (I8(0), I8(0), I8(0), "(0: 0, 0)"),
         (I8(3), I8(5), I8(4), "(4: 3, 5)"),

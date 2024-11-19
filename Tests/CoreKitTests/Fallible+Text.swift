@@ -23,8 +23,7 @@ import TestKit
     @Test(
         "Fallible/text: description",
         Tag.List.tags(.documentation, .exhaustive),
-        ParallelizationTrait.serialized,
-        arguments: Array<(Bit, Bool, String)>([
+        arguments: Array<(Bit, Bool, String)>.infer([
         
         (Bit.zero, false, "0[-]"),
         (Bit.zero, true,  "0[x]"),

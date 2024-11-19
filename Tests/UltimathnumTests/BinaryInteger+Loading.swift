@@ -36,8 +36,7 @@ import TestKit
         Tag.List.tags(.forwarding, .generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func randomPayloadExtensionJunk(
-        type: any BinaryInteger.Type,
-        randomness: consuming FuzzerInt
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
     )   throws {
         
         for element in typesAsSystemsIntegerAsUnsigned {
@@ -123,11 +122,9 @@ import TestKit
         }
     }
     
-    func Ɣrequire<Integer, Body>(
-        _ integer: Integer,
-        matches body: Body,
-        repeating appendix: Bit
-    )   throws where Integer: BinaryInteger, Body: Contiguous, Body.Element: SystemsIntegerAsUnsigned {
+    func Ɣrequire<Integer: BinaryInteger, Body: Contiguous>(
+        _ integer: Integer, matches body: Body, repeating appendix: Bit
+    )   throws where Body.Element: SystemsIntegerAsUnsigned {
         try withOnlyOneCallToRequire((integer, body)) { require in
             integer.withUnsafeBinaryIntegerElements(as: U8.self) { integer in
                 require(integer.appendix == appendix)
@@ -153,8 +150,9 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("BinaryInteger/loading/conveniences: default appendix is zero")
-    func defaultAppendixIsZero() {
+    @Test(
+        "BinaryInteger/loading/conveniences: default appendix is zero"
+    )   func defaultAppendixIsZero() {
         #expect(IX(load: [] as [U8]) == IX.zero)
         #expect(UX(load: [] as [U8]) == UX.zero)
     }
@@ -171,7 +169,7 @@ import TestKit
     //=------------------------------------------------------------------------=
     
     @Test(
-        "BinaryInteger/loading/disambiguation: { IX, UX } from T where T.Element is { IX, UX }"
+        "BinaryInteger/loading/disambiguation: ?X from T where T.Element is ?X"
     )   func tokenFromBinaryIntegerWhereElementIsToken() {
         
         let ix = IX.random()

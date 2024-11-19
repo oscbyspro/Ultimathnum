@@ -33,9 +33,9 @@ import TestKit
     //=------------------------------------------------------------------------=
     
     @Test(
-        "StdlibInt/literals: vs StdlibInt.Base",
+        "StdlibInt/literals: Self vs Base",
         Tag.List.tags(.forwarding),
-        arguments: [
+        arguments: Array<StaticBigInt>.infer([
             
             StaticBigInt(-129),
             StaticBigInt(-128),
@@ -79,8 +79,7 @@ import TestKit
             StaticBigInt( 57896044618658097711785492504343953926634992332820282019728792003956564819967),
             StaticBigInt( 57896044618658097711785492504343953926634992332820282019728792003956564819968),
         
-    ] as [StaticBigInt])
-    func forwarding(_ literal: StaticBigInt) throws {
+    ])) func forwarding(literal: StaticBigInt) throws {
         typealias Base = IXL
         
         let base   = Base.init(integerLiteral: literal)

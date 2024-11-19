@@ -7,30 +7,23 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreKit
-import TestKit
-
 //*============================================================================*
-// MARK: * Order x Comparison
+// MARK: * Utilities x Literals
 //*============================================================================*
 
-@Suite(.serialized) struct OrderTestsOnComparison {
-        
+extension ExpressibleByArrayLiteral {
+    
     //=------------------------------------------------------------------------=
-    // MARK: Tests
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @Test(
-        "Order/comparison: Self vs Self",
-        Tag.List.tags(.documentation, .exhaustive),
-        arguments: Array<(Order, Order, Bool)>.infer([
-        
-        (Order.ascending,  Order.ascending,  true ),
-        (Order.ascending,  Order.descending, false),
-        (Order.descending, Order.ascending,  false),
-        (Order.descending, Order.descending, true ),
-        
-    ])) func comparison(lhs: Order, rhs: Order, expectation: Bool) {
-        Ɣexpect(lhs, equals: rhs, is: expectation)
+    /// An initializer that helps infer the type of a literal.
+    @inlinable public static func infer(_ instance: consuming Self) -> Self {
+        instance
+    }
+    
+    /// An initializer that helps infer the type of a literal.
+    @inlinable public static func group(_ instance: consuming Self) -> CollectionOfOne<Self> {
+        CollectionOfOne(instance)
     }
 }

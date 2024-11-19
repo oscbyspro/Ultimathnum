@@ -21,34 +21,32 @@ import TestKit
     //=------------------------------------------------------------------------=
     
     @Test(
-        "Count/text: description of natural",
+        "Count/text: finite",
         Tag.List.tags(.documentation),
-        ParallelizationTrait.serialized,
-        arguments: Array<(Count, String)>([
+        arguments: Array<(IX, String)>.infer([
         
-        (Count(IX( 0)), "0"),
-        (Count(IX( 1)), "1"),
-        (Count(IX( 2)), "2"),
-        (Count(IX( 3)), "3"),
-        (Count(IX.max), "\(IX.max)"),
+        (IX( 0), String("0")),
+        (IX( 1), String("1")),
+        (IX( 2), String("2")),
+        (IX( 3), String("3")),
+        (IX.max, String("\(IX.max)")),
         
-    ])) func descriptionOfNatural(instance: Count, expectation: String) {
-        Ɣexpect(instance, description: expectation)
+    ])) func finite(pattern: IX, expectation: String) {
+        Ɣexpect(Count(raw: pattern), description: expectation)
     }
     
     @Test(
-        "Count/text: description of infinite",
+        "Count/text: infinite",
         Tag.List.tags(.documentation),
-        ParallelizationTrait.serialized,
-        arguments: Array<(Count, String)>([
+        arguments: Array<(IX, String)>.infer([
         
-        (Count(raw: IX(~0)), "log2(&0+1)"  ),
-        (Count(raw: IX(~1)), "log2(&0+1)-1"),
-        (Count(raw: IX(~2)), "log2(&0+1)-2"),
-        (Count(raw: IX(~3)), "log2(&0+1)-3"),
-        (Count(raw: IX.min), "log2(&0+1)-\(IX.max)"),
+        (IX(~0), String("log2(&0+1)"  )),
+        (IX(~1), String("log2(&0+1)-1")),
+        (IX(~2), String("log2(&0+1)-2")),
+        (IX(~3), String("log2(&0+1)-3")),
+        (IX.min, String("log2(&0+1)-\(IX.max)")),
         
-    ])) func descriptionOfInfinite(instance: Count, expectation: String) {
-        Ɣexpect(instance, description: expectation)
+    ])) func infinite(pattern: IX, expectation: String) {
+        Ɣexpect(Count(raw: pattern), description: expectation)
     }
 }

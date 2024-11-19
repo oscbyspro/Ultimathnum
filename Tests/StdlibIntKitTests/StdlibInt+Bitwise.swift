@@ -27,14 +27,17 @@ import TestKit
 ///
 /// - TODO: Test `StdlibInt` forwarding in generic `BinaryInteger` tests.
 ///
-@Suite(.tags(.forwarding)) struct StdlibIntTestsOnBitwise {
+@Suite struct StdlibIntTestsOnBitwise {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt.~(_:)", .tags(.random), arguments: fuzzers)
-    func not(_ randomness: consuming FuzzerInt) throws {
+    @Test(
+        "StdlibInt/bitwise: ~(_:) of Self vs Base",
+        Tag.List.tags(.forwarding, .random),
+        arguments: fuzzers
+    )   func not(_ randomness: consuming FuzzerInt) throws {
         for _ in 0 ..< 32 {
             let random = IXL.entropic(size: 256, using: &randomness)
             let expectation = random.toggled()
@@ -44,8 +47,11 @@ import TestKit
         }
     }
     
-    @Test("StdlibInt.&(_:_:)", .tags(.random), arguments: fuzzers)
-    func and(_ randomness: consuming FuzzerInt) throws {
+    @Test(
+        "StdlibInt/bitwise: &(_:_:) of Self vs Base",
+        Tag.List.tags(.forwarding, .random),
+        arguments: fuzzers
+    )   func and(_ randomness: consuming FuzzerInt) throws {
         for _ in 0 ..< 32 {
             let lhs = IXL.entropic(size: 256, using: &randomness)
             let rhs = IXL.entropic(size: 256, using: &randomness)
@@ -56,8 +62,11 @@ import TestKit
         }
     }
     
-    @Test("StdlibInt.|(_:_:)", .tags(.random), arguments: fuzzers)
-    func or(_ randomness: consuming FuzzerInt) throws {
+    @Test(
+        "StdlibInt/bitwise: |(_:_:) of Self vs Base",
+        Tag.List.tags(.forwarding, .random),
+        arguments: fuzzers
+    )   func or(_ randomness: consuming FuzzerInt) throws {
         for _ in 0 ..< 32 {
             let lhs = IXL.entropic(size: 256, using: &randomness)
             let rhs = IXL.entropic(size: 256, using: &randomness)
@@ -68,8 +77,11 @@ import TestKit
         }
     }
     
-    @Test("StdlibInt.^(_:_:)", .tags(.random), arguments: fuzzers)
-    func xor(_ randomness: consuming FuzzerInt) throws {
+    @Test(
+        "StdlibInt/bitwise: ^(_:_:) of Self vs Base",
+        Tag.List.tags(.forwarding, .random),
+        arguments: fuzzers
+    )   func xor(_ randomness: consuming FuzzerInt) throws {
         for _ in 0 ..< 32 {
             let lhs = IXL.entropic(size: 256, using: &randomness)
             let rhs = IXL.entropic(size: 256, using: &randomness)

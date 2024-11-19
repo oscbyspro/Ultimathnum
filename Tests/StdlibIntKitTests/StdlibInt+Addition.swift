@@ -8,6 +8,8 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import InfiniIntKit
+import RandomIntKit
 import StdlibIntKit
 import TestKit
 
@@ -31,41 +33,47 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("StdlibInt - addition [forwarding]", arguments: [
-        
-        ( 0 as StdlibInt,  0 as StdlibInt,  0 as StdlibInt),
-        ( 3 as StdlibInt,  5 as StdlibInt,  8 as StdlibInt),
-        ( 3 as StdlibInt, -5 as StdlibInt, -2 as StdlibInt),
-        (-3 as StdlibInt,  5 as StdlibInt,  2 as StdlibInt),
-        (-3 as StdlibInt, -5 as StdlibInt, -8 as StdlibInt),
-        
-    ]   as [(StdlibInt, StdlibInt, StdlibInt)]) func addition(lhs: StdlibInt, rhs: StdlibInt, expectation: StdlibInt) {
-        #expect(lhs + rhs == expectation)
-        #expect(rhs + lhs == expectation)
-        
-        #expect({ var x = lhs; x += rhs; return x }() == expectation)
-        #expect({ var x = rhs; x += lhs; return x }() == expectation)
-        
-        #expect(expectation - lhs == rhs)
-        #expect(expectation - rhs == lhs)
-        
-        #expect({ var x = expectation; x -= lhs; return x }() == rhs)
-        #expect({ var x = expectation; x -= rhs; return x }() == lhs)
+    @Test(
+        "StdlibInt/addition: -(_:) of Self vs Base",
+        Tag.List.tags(.forwarding, .random),
+        arguments: fuzzers
+    )   func negation(randomness: consuming FuzzerInt) throws {
+        for _ in 0 ..< conditional(debug: 64,  release: 128) {
+            let x = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
+            let y = x.negated() as IXL
+            
+            try #require(StdlibInt(x) == -StdlibInt(y))
+            try #require(StdlibInt(y) == -StdlibInt(x))
+        }
     }
     
-    @Test("StdlibInt - negation [forwarding]", arguments: [
-        
-        (-2 as StdlibInt,  2 as StdlibInt),
-        (-1 as StdlibInt,  1 as StdlibInt),
-        ( 0 as StdlibInt,  0 as StdlibInt),
-        ( 1 as StdlibInt, -1 as StdlibInt),
-        ( 2 as StdlibInt, -2 as StdlibInt),
-        
-    ]   as [(StdlibInt, StdlibInt)]) func negation(instance: StdlibInt, expectation: StdlibInt) {
-        #expect(-instance == expectation)
-        #expect(-expectation == instance)
-        
-        #expect({ var x = instance; x.negate(); return x }() == expectation)
-        #expect({ var x = expectation; x.negate(); return x }() == instance)
+    @Test(
+        "StdlibInt/addition: +(_:_:) of Self vs Base",
+        Tag.List.tags(.forwarding, .random),
+        arguments: fuzzers
+    )   func addition(randomness: consuming FuzzerInt) throws {
+        for _ in 0 ..< conditional(debug: 64,  release: 128) {
+            let a = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
+            let b = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
+            let c = a.plus(b) as IXL
+            
+            try #require(StdlibInt(c) == reduce(StdlibInt(a), +,  StdlibInt(b)))
+            try #require(StdlibInt(c) == reduce(StdlibInt(a), +=, StdlibInt(b)))
+        }
+    }
+    
+    @Test(
+        "StdlibInt/addition: -(_:_:) of Self vs Base",
+        Tag.List.tags(.forwarding, .random),
+        arguments: fuzzers
+    )   func subtraction(randomness: consuming FuzzerInt) throws {
+        for _ in 0 ..< conditional(debug: 64,  release: 128) {
+            let a = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
+            let b = IXL.entropic(through: Shift.max(or: 255), using: &randomness)
+            let c = a.minus(b) as IXL
+            
+            try #require(StdlibInt(c) == reduce(StdlibInt(a), -,  StdlibInt(b)))
+            try #require(StdlibInt(c) == reduce(StdlibInt(a), -=, StdlibInt(b)))
+        }
     }
 }

@@ -27,7 +27,7 @@ import TestKit
         "BinaryInteger/division: signs",
         Tag.List.tags(.documentation, .generic),
         ParallelizationTrait.serialized,
-        arguments: Array<(I8, I8, I8, I8)>([
+        arguments: Array<(I8, I8, I8, I8)>.infer([
         
         ( 7 as I8,  3 as I8,  2 as I8,  1 as I8),
         ( 7 as I8, -3 as I8, -2 as I8,  1 as I8),
@@ -941,10 +941,10 @@ import TestKit
     //=------------------------------------------------------------------------=
     
     @Test(
-        "BinaryInteger/division/open-source: issues",
+        "BinaryInteger/division/open-source: non-issues",
         Tag.List.tags(.generic, .opensource),
         ParallelizationTrait.serialized,
-        arguments: Array<(IXL, IXL, IXL, IXL, String)>([
+        arguments: Array<(IXL, IXL, IXL, IXL, String)>.infer([
         (
             dividend:  IXL(3) << 96,
             divisor:   IXL(2) << 96,
@@ -982,7 +982,7 @@ import TestKit
             remainder: IXL("000000000000000000000000000000000000000016136758413064865246015978698186666775")!,
             source: "https://github.com/oscbyspro/Numberick/issues/101"
         ),
-    ])) func issues(
+    ])) func nonissues(
         dividend: IXL, divisor: IXL, quotient: IXL, remainder: IXL, source: String
     )   throws {
        

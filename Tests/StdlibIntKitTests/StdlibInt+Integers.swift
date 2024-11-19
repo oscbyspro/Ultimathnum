@@ -34,36 +34,36 @@ import TestKit
     //=------------------------------------------------------------------------=
     
     @Test(
-        "StdlibInt/integers: init(some Swift.BinaryInteger)",
+        "StdlibInt/integers: init(_:)",
         Tag.List.tags(.forwarding),
         ParallelizationTrait.serialized,
-        arguments: Array<(any Swift.BinaryInteger & Sendable, StdlibInt)>([
+        arguments: Array<(any Swift.BinaryInteger & Sendable, StdlibInt)>.infer([
         
-        (  Int8.min as any (Swift.BinaryInteger & Sendable),               -0x80 as StdlibInt),
-        (  Int8.max as any (Swift.BinaryInteger & Sendable),                0x7f as StdlibInt),
-        ( UInt8.min as any (Swift.BinaryInteger & Sendable),                0x00 as StdlibInt),
-        ( UInt8.max as any (Swift.BinaryInteger & Sendable),                0xff as StdlibInt),
-        ( Int16.min as any (Swift.BinaryInteger & Sendable),             -0x8000 as StdlibInt),
-        ( Int16.max as any (Swift.BinaryInteger & Sendable),              0x7fff as StdlibInt),
-        (UInt16.min as any (Swift.BinaryInteger & Sendable),              0x0000 as StdlibInt),
-        (UInt16.max as any (Swift.BinaryInteger & Sendable),              0xffff as StdlibInt),
-        ( Int32.min as any (Swift.BinaryInteger & Sendable),         -0x80000000 as StdlibInt),
-        ( Int32.max as any (Swift.BinaryInteger & Sendable),          0x7fffffff as StdlibInt),
-        (UInt32.min as any (Swift.BinaryInteger & Sendable),          0x00000000 as StdlibInt),
-        (UInt32.max as any (Swift.BinaryInteger & Sendable),          0xffffffff as StdlibInt),
-        ( Int64.min as any (Swift.BinaryInteger & Sendable), -0x8000000000000000 as StdlibInt),
-        ( Int64.max as any (Swift.BinaryInteger & Sendable),  0x7fffffffffffffff as StdlibInt),
-        (UInt64.min as any (Swift.BinaryInteger & Sendable),  0x0000000000000000 as StdlibInt),
-        (UInt64.max as any (Swift.BinaryInteger & Sendable),  0xffffffffffffffff as StdlibInt),
+        (  Int8.min, StdlibInt(              -0x80)),
+        (  Int8.max, StdlibInt(               0x7f)),
+        ( UInt8.min, StdlibInt(               0x00)),
+        ( UInt8.max, StdlibInt(               0xff)),
+        ( Int16.min, StdlibInt(            -0x8000)),
+        ( Int16.max, StdlibInt(             0x7fff)),
+        (UInt16.min, StdlibInt(             0x0000)),
+        (UInt16.max, StdlibInt(             0xffff)),
+        ( Int32.min, StdlibInt(        -0x80000000)),
+        ( Int32.max, StdlibInt(         0x7fffffff)),
+        (UInt32.min, StdlibInt(         0x00000000)),
+        (UInt32.max, StdlibInt(         0xffffffff)),
+        ( Int64.min, StdlibInt(-0x8000000000000000)),
+        ( Int64.max, StdlibInt( 0x7fffffffffffffff)),
+        (UInt64.min, StdlibInt( 0x0000000000000000)),
+        (UInt64.max, StdlibInt( 0xffffffffffffffff)),
         
-    ])) func initSwiftBinaryInteger(
+    ])) func initSwiftBinaryIntegerSamples(
         source: any Swift.BinaryInteger & Sendable, destination: StdlibInt
     )   throws {
         try Ɣrequire(source, is: destination)
     }
     
     @Test(
-        "StdlibInt/integes: init(some Swift.BinaryInteger)",
+        "StdlibInt/integers: init(_:)",
         Tag.List.tags(.forwarding, .random),
         arguments: fuzzers
     )   func initSwiftBinaryInteger(

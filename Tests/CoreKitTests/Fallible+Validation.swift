@@ -40,7 +40,7 @@ import TestKit
         "Fallible/validation: optional()",
         Tag.List.tags(.documentation, .exhaustive),
         ParallelizationTrait.serialized,
-        arguments: Array<(Fallible<Bit>, Optional<Bit>)>([
+        arguments: Array<(Fallible<Bit>, Optional<Bit>)>.infer([
 
         (Fallible(Bit.zero, error: false), Optional(Bit.zero)),
         (Fallible(Bit.zero, error: true ), Optional<Bit>(nil)),
@@ -55,7 +55,7 @@ import TestKit
         "Fallible/validation: prune(_:) and result(_:)",
         Tag.List.tags(.documentation, .exhaustive),
         ParallelizationTrait.serialized,
-        arguments: Array<(Fallible<Bit>, Bad, Result<Bit, Bad>)>([
+        arguments: Array<(Fallible<Bit>, Bad, Result<Bit, Bad>)>.infer([
 
         (Fallible(Bit.zero, error: false), Bad.error, Result<Bit, Bad>.success(Bit.zero )),
         (Fallible(Bit.zero, error: true ), Bad.error, Result<Bit, Bad>.failure(Bad.error)),

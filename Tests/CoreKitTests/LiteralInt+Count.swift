@@ -14,7 +14,7 @@ import TestKit
 // MARK: * Literal Int x Count
 //*============================================================================*
 
-@Suite struct LiteralIntTestsOnCount {
+@Suite(.serialized) struct LiteralIntTestsOnCount {
         
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -23,8 +23,7 @@ import TestKit
     @Test(
         "LiteralInt/count: entropy()",
         Tag.List.tags(.documentation),
-        ParallelizationTrait.serialized,
-        arguments: Array<(LiteralInt, Count)>([
+        arguments: Array<(LiteralInt, Count)>.infer([
         
         (LiteralInt(-8), Count(4)), // 000....1
         (LiteralInt(-7), Count(4)), // 100....1

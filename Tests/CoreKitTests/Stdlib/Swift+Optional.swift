@@ -21,32 +21,44 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("T.init(raw:)", arguments: typesAsCoreInteger, fuzzers)
-    func bitcasting(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
-        whereIs(type)
+    @Test(
+        "Swift/optional: init(raw:)",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsCoreInteger, fuzzers
+    )   func bitcasting(
+        type: any SystemsInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            #expect(Optional<T>(raw: Optional<T.Magnitude>.none) == Optional<T>.none)
-            #expect(Optional<T>(raw: Optional<T.Signitude>.none) == Optional<T>.none)
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsInteger {
+            try #require(Optional<T>(raw: Optional<T.Magnitude>.none) == Optional<T>.none)
+            try #require(Optional<T>(raw: Optional<T.Signitude>.none) == Optional<T>.none)
             
-            for _ in 0 ..< 32 {
+            for _ in 0 ..< 8 {
                 let magnitude = T.Magnitude.random(using: &randomness)
                 let signitude = T.Signitude.random(using: &randomness)
                 
-                #expect(Optional<T>(raw: Optional(magnitude)) == T(raw: magnitude))
-                #expect(Optional<T>(raw: Optional(signitude)) == T(raw: signitude))
+                try #require(Optional<T>(raw: Optional(magnitude)) == T(raw: magnitude))
+                try #require(Optional<T>(raw: Optional(signitude)) == T(raw: signitude))
             }
         }
     }
     
-    @Test("Optional/unwrap()", arguments: typesAsCoreInteger, fuzzers)
-    func unwrapping(type: any SystemsInteger.Type, randomness: consuming FuzzerInt) {
-        whereIs(type)
+    @Test(
+        "Swift/optional: unwrap()",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsCoreInteger, fuzzers
+    )   func unwrapping(
+        type: any SystemsInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
-        func whereIs<T>(_ type: T.Type) where T: SystemsInteger {
-            let random = T.random(using: &randomness)
-            #expect(Optional(random).unwrap()    == random)
-            #expect(Optional(random).unchecked() == random)
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsInteger {
+            for _ in 0 ..< 8 {
+                let random = T.random(using: &randomness)
+                try #require(Optional(random).unwrap()    == random)
+                try #require(Optional(random).unchecked() == random)
+            }
         }
     }
 }

@@ -36,7 +36,7 @@ import TestKit
     @Test(
         "BinaryInteger/literals: from LiteralInt near zero",
         Tag.List.tags(.generic),
-        arguments: [
+        arguments: Array<(LiteralInt, IXL)>.infer([
             
             (LiteralInt(-4), IXL.zero - 4),
             (LiteralInt(-3), IXL.zero - 3),
@@ -47,8 +47,10 @@ import TestKit
             (LiteralInt( 2), IXL.zero + 2),
             (LiteralInt( 3), IXL.zero + 3),
             
-    ] as [(LiteralInt, IXL)])
-    func fromLiteralIntNearZero(literal: LiteralInt, expectation: IXL) throws {
+    ])) func fromLiteralIntNearZero(
+        literal: LiteralInt, expectation: IXL
+    )   throws {
+        
         for type in typesAsBinaryInteger {
             try whereIs(type)
         }
@@ -61,7 +63,7 @@ import TestKit
     @Test(
         "BinaryInteger/literals: from LiteralInt near edges of signed",
         Tag.List.tags(.generic),
-        arguments: [
+        arguments: Array<(LiteralInt, IXL)>.infer([
     
             (LiteralInt(-129), IXL(I8.min) - 1),
             (LiteralInt(-128), IXL(I8.min)    ),
@@ -91,22 +93,24 @@ import TestKit
             (LiteralInt( 9223372036854775807), IXL(I64.max)    ),
             (LiteralInt( 9223372036854775808), IXL(I64.max) + 1),
             
-            (LiteralInt(-170141183460469231731687303715884105729), BinaryIntegerTestsOnLiterals.minI128 - 1),
-            (LiteralInt(-170141183460469231731687303715884105728), BinaryIntegerTestsOnLiterals.minI128    ),
-            (LiteralInt(-170141183460469231731687303715884105727), BinaryIntegerTestsOnLiterals.minI128 + 1),
-            (LiteralInt( 170141183460469231731687303715884105726), BinaryIntegerTestsOnLiterals.maxI128 - 1),
-            (LiteralInt( 170141183460469231731687303715884105727), BinaryIntegerTestsOnLiterals.maxI128    ),
-            (LiteralInt( 170141183460469231731687303715884105728), BinaryIntegerTestsOnLiterals.maxI128 + 1),
+            (LiteralInt(-170141183460469231731687303715884105729), Self.minI128 - 1),
+            (LiteralInt(-170141183460469231731687303715884105728), Self.minI128    ),
+            (LiteralInt(-170141183460469231731687303715884105727), Self.minI128 + 1),
+            (LiteralInt( 170141183460469231731687303715884105726), Self.maxI128 - 1),
+            (LiteralInt( 170141183460469231731687303715884105727), Self.maxI128    ),
+            (LiteralInt( 170141183460469231731687303715884105728), Self.maxI128 + 1),
             
-            (LiteralInt(-57896044618658097711785492504343953926634992332820282019728792003956564819969), BinaryIntegerTestsOnLiterals.minI256 - 1),
-            (LiteralInt(-57896044618658097711785492504343953926634992332820282019728792003956564819968), BinaryIntegerTestsOnLiterals.minI256    ),
-            (LiteralInt(-57896044618658097711785492504343953926634992332820282019728792003956564819967), BinaryIntegerTestsOnLiterals.minI256 + 1),
-            (LiteralInt( 57896044618658097711785492504343953926634992332820282019728792003956564819966), BinaryIntegerTestsOnLiterals.maxI256 - 1),
-            (LiteralInt( 57896044618658097711785492504343953926634992332820282019728792003956564819967), BinaryIntegerTestsOnLiterals.maxI256    ),
-            (LiteralInt( 57896044618658097711785492504343953926634992332820282019728792003956564819968), BinaryIntegerTestsOnLiterals.maxI256 + 1),
+            (LiteralInt(-57896044618658097711785492504343953926634992332820282019728792003956564819969), Self.minI256 - 1),
+            (LiteralInt(-57896044618658097711785492504343953926634992332820282019728792003956564819968), Self.minI256    ),
+            (LiteralInt(-57896044618658097711785492504343953926634992332820282019728792003956564819967), Self.minI256 + 1),
+            (LiteralInt( 57896044618658097711785492504343953926634992332820282019728792003956564819966), Self.maxI256 - 1),
+            (LiteralInt( 57896044618658097711785492504343953926634992332820282019728792003956564819967), Self.maxI256    ),
+            (LiteralInt( 57896044618658097711785492504343953926634992332820282019728792003956564819968), Self.maxI256 + 1),
             
-    ] as [(LiteralInt, IXL)])
-    func fromLiteralIntNearEdgesOfSignedIntegers(literal: LiteralInt, expectation: IXL) throws {
+    ])) func fromLiteralIntNearEdgesOfSignedIntegers(
+        literal: LiteralInt, expectation: IXL
+    )   throws {
+        
         for type in typesAsBinaryInteger {
             try whereIs(type)
         }
@@ -119,7 +123,7 @@ import TestKit
     @Test(
         "BinaryInteger/literals: from LiteralInt near size edges of unsigned",
         Tag.List.tags(.generic),
-        arguments: [
+        arguments: Array<(LiteralInt, IXL)>.infer([
             
             (LiteralInt( 254), IXL(U8.max) - 1),
             (LiteralInt( 255), IXL(U8.max)    ),
@@ -137,16 +141,18 @@ import TestKit
             (LiteralInt( 18446744073709551615), IXL(U64.max)    ),
             (LiteralInt( 18446744073709551616), IXL(U64.max) + 1),
             
-            (LiteralInt( 340282366920938463463374607431768211454), BinaryIntegerTestsOnLiterals.maxU128 - 1),
-            (LiteralInt( 340282366920938463463374607431768211455), BinaryIntegerTestsOnLiterals.maxU128    ),
-            (LiteralInt( 340282366920938463463374607431768211456), BinaryIntegerTestsOnLiterals.maxU128 + 1),
+            (LiteralInt( 340282366920938463463374607431768211454), Self.maxU128 - 1),
+            (LiteralInt( 340282366920938463463374607431768211455), Self.maxU128    ),
+            (LiteralInt( 340282366920938463463374607431768211456), Self.maxU128 + 1),
 
-            (LiteralInt( 115792089237316195423570985008687907853269984665640564039457584007913129639934), BinaryIntegerTestsOnLiterals.maxU256 - 1),
-            (LiteralInt( 115792089237316195423570985008687907853269984665640564039457584007913129639935), BinaryIntegerTestsOnLiterals.maxU256    ),
-            (LiteralInt( 115792089237316195423570985008687907853269984665640564039457584007913129639936), BinaryIntegerTestsOnLiterals.maxU256 + 1),
+            (LiteralInt( 115792089237316195423570985008687907853269984665640564039457584007913129639934), Self.maxU256 - 1),
+            (LiteralInt( 115792089237316195423570985008687907853269984665640564039457584007913129639935), Self.maxU256    ),
+            (LiteralInt( 115792089237316195423570985008687907853269984665640564039457584007913129639936), Self.maxU256 + 1),
             
-    ] as [(LiteralInt, IXL)])
-    func fromLiteralIntNearSizeEdgesOfUnsigned(literal: LiteralInt, expectation: IXL) throws {
+    ])) func fromLiteralIntNearSizeEdgesOfUnsigned(
+        literal: LiteralInt, expectation: IXL
+    )   throws {
+        
         for type in typesAsBinaryInteger {
             try whereIs(type)
         }
@@ -179,10 +185,10 @@ import TestKit
         "BinaryInteger/literals/edge-cases: generic type inference",
         Tag.List.tags(.generic, .important),
         arguments: typesAsArbitraryInteger
-    )   func genericTypeInference(type: any ArbitraryInteger.Type) {
-        whereIs(type)
+    )   func genericTypeInference(type: any ArbitraryInteger.Type) throws {
         
-        func whereIs<T>(_ type: T.Type) where T: BinaryInteger {
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             let expectation = T.init(BinaryIntegerTestsOnLiterals.maxI256)
             
             let a: T =          (57896044618658097711785492504343953926634992332820282019728792003956564819967)
