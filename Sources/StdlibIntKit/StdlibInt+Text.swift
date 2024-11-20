@@ -20,7 +20,7 @@ extension StdlibInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Decodes the decimal `description`, if possible.
+    /// Returns the exact `value` of `description`, or `nil`.
     ///
     /// ```swift
     /// format.decode(description)?.optional()
@@ -46,7 +46,7 @@ extension StdlibInt {
         }
     }
     
-    /// Decodes the `description` using the given `format`, if possible.
+    /// Returns the exact `value` of `description`, or `nil`.
     ///
     /// ```swift
     /// format.decode(description)?.optional()

@@ -140,10 +140,9 @@ You may need to convert binary integers to human-readable text. In that case, `d
 
 let fib1e6    = IXL.fibonacci(1_000_000)                // 0.015s
 let fib1e6r10 = fib1e6.description(using:     .decimal) // 0.297s (208988 numerals)
+let fib1e6s10 = IXL(((fib1e6r10)), using:     .decimal) // 0.040s (208988 numerals)
 let fib1e6r16 = fib1e6.description(using: .hexadecimal) // 0.002s (173561 numerals)
-
-try IXL(fib1e6r10, using:     .decimal) // 0.040s (208988 numerals)
-try IXL(fib1e6r16, using: .hexadecimal) // 0.002s (173561 numerals)
+let fib1e6s16 = IXL(((fib1e6r16)), using: .hexadecimal) // 0.002s (173561 numerals)
 ```
 
 <a name="overview-the-fallible-redemption-arc"/>

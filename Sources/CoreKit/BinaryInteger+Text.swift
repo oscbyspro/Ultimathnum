@@ -20,7 +20,7 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Returns the `value` of `description`, or `nil`.
+    /// Returns the exact `value` of `description`, or `nil`.
     ///
     /// ```swift
     /// format.decode(description)?.optional()
@@ -38,7 +38,7 @@
         self.init(description, using: TextInt.decimal)
     }
     
-    /// Returns the `value` of `description`, or `nil`.
+    /// Returns the exact `value` of `description`, or `nil`.
     ///
     /// ```swift
     /// format.decode(description)?.optional()
