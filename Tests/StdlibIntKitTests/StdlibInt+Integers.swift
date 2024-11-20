@@ -92,7 +92,7 @@ import TestKit
         try #require(StdlibInt(truncatingIfNeeded: source) == destination, sourceLocation: location)
         try #require(StdlibInt(InfiniInt<IX>(destination)) == destination, sourceLocation: location)
         
-        if  T.isSigned == StdlibInt.isSigned, destination.bitWidth <= source.bitWidth {
+        if  T.isSigned == StdlibInt.isSigned,  destination.bitWidth <=  source.bitWidth {
             try #require(T(                    destination)  == source, sourceLocation: location)
             try #require(T(exactly:            destination)! == source, sourceLocation: location)
             try #require(T(clamping:           destination)  == source, sourceLocation: location)
@@ -108,9 +108,9 @@ import TestKit
             try #require(radix10 == String(destination, radix: 10), sourceLocation: location)
             try #require(radix16 == String(destination, radix: 16), sourceLocation: location)
             
-            try #require(    StdlibInt(radix10) ==                   destination, sourceLocation: location)
-            try #require(try StdlibInt(radix10, as:     .decimal) == destination, sourceLocation: location)
-            try #require(try StdlibInt(radix16, as: .hexadecimal) == destination, sourceLocation: location)
+            try #require(StdlibInt(radix10) ==                      destination, sourceLocation: location)
+            try #require(StdlibInt(radix10, using:     .decimal) == destination, sourceLocation: location)
+            try #require(StdlibInt(radix16, using: .hexadecimal) == destination, sourceLocation: location)
         }
     }
 }

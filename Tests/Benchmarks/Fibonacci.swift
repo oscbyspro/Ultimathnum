@@ -92,14 +92,14 @@ final class FibonacciBenchmarks: XCTestCase {
     func testFibonacciIXL1e6FromTextAsDecimal() throws {
         let text = blackHoleIdentity(Self.fib1e6r10)
         let format = blackHoleIdentity(TextInt.decimal)
-        let data = try IXL.init(text, using: format)
+        let data = try IXL(text, using: format).prune(Bad.error)
         XCTAssertEqual(data, Self.fib1e6)
     }
     
     func testFibonacciIXL1e6FromTextAsHexadecimal() throws {
         let text = blackHoleIdentity(Self.fib1e6r16)
         let format = blackHoleIdentity(TextInt.hexadecimal)
-        let data = try IXL.init(text, using: format)
+        let data = try IXL(text, using: format).prune(Bad.error)
         XCTAssertEqual(data, Self.fib1e6)
     }
 }

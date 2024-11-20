@@ -76,14 +76,21 @@ extension Bit {
 //*============================================================================*
 
 extension TextInt {
-    
+        
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func random(using randomness: inout some Randomness) -> Self {
-        let radix = UX.random(in: 2...36, using: &randomness)
-        let letters = Letters(uppercase: Bool(U8.random(using: &randomness).lsb))
-        return Self.radix(radix).letters(letters)
+    public static let radices: ClosedRange<UX> = 2...36
+    
+    public static let letters: [Letters] = [Letters.lowercase, Letters.uppercase]
+    
+    public static let all: [Self] =  Self.radices.reduce(into: []) {
+        $0.append(TextInt(radix: $1, letters: Letters.lowercase)!)
+        $0.append(TextInt(radix: $1, letters: Letters.uppercase)!)
+    }
+    
+    @inlinable public static func regex() -> Regex<(Substring, sign: Substring?, mask: Substring?, body: Substring)> {
+        #/^(?<sign>\+|-)?(?<mask>&)?(?<body>[0-9A-Za-z]+)$/#
     }
 }

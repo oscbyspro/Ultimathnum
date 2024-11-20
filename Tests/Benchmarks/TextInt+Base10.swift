@@ -24,14 +24,14 @@ final class TextIntBenchmarksOnRadix10: XCTestCase {
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    static let formatter = blackHoleIdentity(TextInt.decimal)
+    static let coder = blackHoleIdentity(TextInt.decimal)
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
     override static func setUp() {
-        blackHole(formatter)
+        blackHole(coder)
     }
     
     //=------------------------------------------------------------------------=
@@ -39,18 +39,18 @@ final class TextIntBenchmarksOnRadix10: XCTestCase {
     //=------------------------------------------------------------------------=
     
     func testDecodingOneMillionTimesBinaryIntegerAsUX() throws {
-        let encoded = blackHoleIdentity(Self.formatter.encode(UX.max))
+        let encoded = blackHoleIdentity(Self.coder.encode(UX.max))
         
         for _ in 0 as UX ..< blackHoleIdentity(1_000_000) {
-            precondition((try? Self.formatter.decode(encoded) as UX) != nil)
+            precondition(Self.coder.decode(encoded, as: UX.self) != nil)
         }
     }
     
     func testDecodingOneMillionTimesBinaryIntegerAsUXL() throws {
-        let encoded = blackHoleIdentity(Self.formatter.encode(UX.max))
+        let encoded = blackHoleIdentity(Self.coder.encode(UX.max))
         
         for _ in 0 as UX ..< blackHoleIdentity(1_000_000) {
-            precondition((try? Self.formatter.decode(encoded) as UXL) != nil)
+            precondition(Self.coder.decode(encoded, as: UXL.self) != nil)
         }
     }
     
@@ -62,7 +62,7 @@ final class TextIntBenchmarksOnRadix10: XCTestCase {
         var counter = UX.zero
         
         for value in 0 as UX ..< blackHoleIdentity(1_000_000) {
-            counter += UX(Bit(!Self.formatter.encode(value).isEmpty))
+            counter += UX(Bit(!Self.coder.encode(value).isEmpty))
         }
         
         XCTAssertEqual(counter,  blackHoleIdentity(1_000_000))
@@ -73,7 +73,7 @@ final class TextIntBenchmarksOnRadix10: XCTestCase {
         
         for _ in 0 as UX ..< blackHoleIdentity(1_000_000) {
             value  &+= one
-            counter += UX(Bit(!Self.formatter.encode(value).isEmpty))
+            counter += UX(Bit(!Self.coder.encode(value).isEmpty))
         }
         
         XCTAssertEqual(counter,  blackHoleIdentity(1_000_000))
@@ -83,7 +83,7 @@ final class TextIntBenchmarksOnRadix10: XCTestCase {
         var counter = UX.zero
         
         for value in 0 as UX ..< blackHoleIdentity(1_000_000) {
-            counter += UX(Bit(!Self.formatter.encode(sign: .plus, magnitude: value).isEmpty))
+            counter += UX(Bit(!Self.coder.encode(sign: .plus, magnitude: value).isEmpty))
         }
         
         XCTAssertEqual(counter,  blackHoleIdentity(1_000_000))
@@ -94,7 +94,7 @@ final class TextIntBenchmarksOnRadix10: XCTestCase {
         
         for _ in 0 as UX ..< blackHoleIdentity(1_000_000) {
             value  &+= increment
-            counter += UX(Bit(!Self.formatter.encode(sign: .plus, magnitude: value).isEmpty))
+            counter += UX(Bit(!Self.coder.encode(sign: .plus, magnitude: value).isEmpty))
         }
         
         XCTAssertEqual(counter,  blackHoleIdentity(1_000_000))
