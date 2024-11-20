@@ -80,7 +80,7 @@ extension TextInt {
     
     /// A minor small-prefix unification.
     ///
-    /// - Note: `U32` is big enough for `-0x&` (infinitely negative hexadecimal).
+    /// - Note: `U32` is big enough for `-&0x` (negative infinite hexadecimal).
     ///
     @inlinable package func encode<Integer>(
         info: consuming U32,
@@ -106,20 +106,25 @@ extension TextInt {
     )   -> String where Integer: UnsignedInteger {
         
         let body = (consume body).value
-        
+                
         if  Integer.size <= UX.size {
             var small = UX(load: body)
-            let range = PartialRangeUpTo(IX(Bit(!small.isZero)))
-            return small.withUnsafeMutableBinaryIntegerBody {
-                self.encode(info: info, normalized: $0[unchecked: range])
+            let count = IX(Bit(!small.isZero))
+            return Swift.withUnsafeMutablePointer(to: &small) {
+                let normalized = MutableDataInt.Body($0, count: count)
+                return self.encode(info: info, normalized: normalized)
             }
             
         }   else {
             return body.withUnsafeBinaryIntegerBody(as: U8.self) {
-                self.encode(info: info, body: $0)
+                return self.encode(info: info, body: $0)
             }
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities x Non-generic & Non-inlinable
+    //=------------------------------------------------------------------------=
     
     @usableFromInline package func encode(
         info: consuming UnsafeBufferPointer<UInt8>,
@@ -129,61 +134,58 @@ extension TextInt {
         let count = body.count(as: UX.self)
         
         return  Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Swift.Int(count)) {
-            let words = MutableDataInt.Body($0.baseAddress!, count: count)
-            //=----------------------------------=
-            // pointee: initialization
-            //=----------------------------------=
+            let words = MutableDataInt.Body($0.baseAddress.unchecked(), count: count)
+            
             for index: IX  in words.indices {
                 let start: IX =  index.times(IX(MemoryLayout<UX>.stride)).unchecked()
                 words[unchecked: index] = DataInt(body[unchecked: start...]).load(as: UX.self)
             }
-            //=----------------------------------=
-            // pointee: deferred deinitialization
-            //=----------------------------------=
+
             defer {
                 words.deinitialize()
             }
-            //=----------------------------------=
+            
             return self.encode(info: info, normalized: words.normalized())
         }
     }
     
+    /// ### Development
+    ///
+    /// - TODO: Better size approximation.
+    ///
     @usableFromInline package func encode(
         info: consuming  UnsafeBufferPointer<UInt8>,
         normalized body: consuming MutableDataInt<UX>.Body
     )   -> String {
         
         Swift.assert(body.isNormal)
-        //=--------------------------------------=
-        // text: capacity upper bound
-        //=--------------------------------------=
+        
         var capacity = IX(raw: body.nondescending(Bit.zero))
-        let speed = if self.power.div == 1 {
-            IX(raw: self.power.div.size())
-        }   else  {
-            IX(raw: self.power.div.nondescending(Bit.zero)).decremented().unchecked()
+        let speed: Nonzero<IX>
+        
+        if  self.power.div == 1 {
+            speed = Nonzero(unchecked: IX(raw: self.power.div.size()))
+        }   else {
+            let x = IX(raw: self.power.div.nondescending(Bit.zero))
+            speed = Nonzero(unchecked: x.decremented().unchecked())
         }
         
-        capacity /= speed
-        capacity += 1
+        Swift.assert(speed.value > 1)
+        capacity  = capacity.quotient(speed).unchecked("speed > 1")
+        capacity  = capacity.incremented(  ).unchecked("speed > 1")
         capacity *= self.exponent
         capacity += IX(info.count)
-        //=--------------------------------------=
+        
         return Swift.withUnsafeTemporaryAllocation(of: UInt8.self, capacity: Int(capacity)) { ascii in
-            //=----------------------------------=
-            // pointee: initialization
-            //=----------------------------------=
-            ascii.initialize(repeating: UInt8(ascii: "0"))
-            //=----------------------------------=
-            var chunk: UX = 000 // must be zero
             var asciiIndex: Int = ascii.endIndex
             var chunkIndex: Int = ascii.endIndex
+            
+            ascii.initialize(repeating: UInt8(ascii: "0"))
+            
+            var chunk:  UX = 0
             let radix = Nonzero(unchecked: UX(load: self.radix as U8))
-            //=----------------------------------=
-            // text: set numerals
-            //=----------------------------------=
-            major: while true {
-                
+            
+            major:  while true {
                 if  self.power.div != 1 {
                     chunk = (body).divisionSetQuotientGetRemainder(self.power)
                     body  = (body).normalized()
@@ -194,35 +196,26 @@ extension TextInt {
                     Swift.assert(chunk.isZero)
                 }
                 
-                minor: repeat {
-                
-                    let lowest: UX
-                    (chunk, lowest) =  chunk.division(radix).components()
-                    let element = try! self.numerals.encode(U8(load: lowest))
+                minor:  repeat {
+                    let value: UX
+                    (chunk, value) = chunk.division(radix).components()
+                    let element = self.numerals.encode(U8(load: value)).unchecked()
                     precondition(asciiIndex > ascii .startIndex)
                     asciiIndex = ascii.index(before: asciiIndex)
                     ascii.initializeElement(at: asciiIndex, to: UInt8(element))
-                    
                 }   while !chunk.isZero
-                //=------------------------------=
-                if  body.isEmpty { break }
-                //=------------------------------=
-                // note preinitialization to 48s
-                //=------------------------------=
+                
+                if body.isEmpty { break }
                 chunkIndex = chunkIndex - Int(self.exponent)
                 asciiIndex = chunkIndex
             }
-            //=----------------------------------=
-            // text: set sign and/or mask
-            //=----------------------------------=
+            
             for element in info.reversed() {
                 precondition(asciiIndex >  ascii.startIndex)
                 asciiIndex = ascii.index(before: asciiIndex)
                 ascii.initializeElement(at: asciiIndex, to: UInt8(element))
             }
-            //=----------------------------------=
-            // pointee: move de/initialization
-            //=----------------------------------=
+            
             let prefix = UnsafeMutableBufferPointer(rebasing: ascii[..<asciiIndex])
             let suffix = UnsafeMutableBufferPointer(rebasing: ascii[asciiIndex...])
             

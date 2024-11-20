@@ -20,32 +20,41 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Decodes the `description`, if possible.
+    /// Returns the `value` of `description`, or `nil`.
+    ///
+    /// ```swift
+    /// format.decode(description)?.optional()
+    /// ```
     ///
     /// ### Binary Integer Description
     ///
-    /// - Note: The default format is `TextInt.decimal`.
+    /// - Note: The `error` is set if the operation is `lossy`.
     ///
-    /// - Note: Decoding failures throw `TextInt.Error`.
+    /// - Note: It produces `nil` if the `description` is `invalid`.
     ///
-    @inlinable public init?(_ description: String) {
-        always: do {
-            self = try TextInt.decimal.decode(description)
-        }   catch  {
-            return nil
-        }
+    /// - Note: The default `format` is `TextInt.decimal`.
+    ///
+    @inlinable public init?(_ description: consuming String) {
+        self.init(description, using: TextInt.decimal)
     }
     
-    /// Decodes the `description` using the given `format`, if possible.
+    /// Returns the `value` of `description`, or `nil`.
+    ///
+    /// ```swift
+    /// format.decode(description)?.optional()
+    /// ```
     ///
     /// ### Binary Integer Description
     ///
-    /// - Note: The default format is `TextInt.decimal`.
+    /// - Note: The `error` is set if the operation is `lossy`.
     ///
-    /// - Note: Decoding failures throw `TextInt.Error`.
+    /// - Note: It produces `nil` if the `description` is `invalid`.
     ///
-    @inlinable public init(_ description: some StringProtocol, using format: TextInt) throws {
-        self = try format.decode(description)
+    /// - Note: The default `format` is `TextInt.decimal`.
+    ///
+    @inlinable public init?(_ description: consuming String, using format: borrowing TextInt) {
+        guard let instance: Self = format.decode(description)?.optional() else { return nil }
+        self  = ((instance))
     }
     
     //=------------------------------------------------------------------------=
@@ -58,8 +67,6 @@
     ///
     /// - Note: The default format is `TextInt.decimal`.
     ///
-    /// - Note: Decoding failures throw `TextInt.Error`.
-    ///
     @inlinable public var description: String {
         self.description(using: TextInt.decimal)
     }
@@ -70,9 +77,7 @@
     ///
     /// - Note: The default format is `TextInt.decimal`.
     ///
-    /// - Note: Decoding failures throw `TextInt.Error`.
-    ///
-    @inlinable public func description(using format: TextInt) -> String {
+    @inlinable public func description(using format: borrowing TextInt) -> String {
         format.encode(self)
     }
 }

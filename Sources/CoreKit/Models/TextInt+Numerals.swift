@@ -52,36 +52,23 @@ extension TextInt {
         
         /// Creates a new instance with a radix of `10`.
         @inlinable public init() {
-            try! self.init(radix: 10)
+            self.init(radix: 10)!
         }
         
         /// Creates a new instance using the given `radix` and `letters`.
         ///
         /// - Requires: `0 ≤ radix ≤ 36`
         ///
-        /// - Throws: `TextInt.Error.invalid` if the `radix` is invalid.
-        ///
-        @inlinable public init(
-            radix: some BinaryInteger,
-            letters: Letters = .lowercase
-        )   throws {
-            try self.init(
-                radix: try UX.exactly(radix).prune(Error.invalid),
-                letters: letters
-            )
+        @inlinable public init?(radix: some BinaryInteger, letters: Letters = .lowercase) {
+            guard let radix = UX.exactly(radix).optional() else { return nil }
+            self.init(radix:  radix, letters: letters)
         }
 
         /// Creates a new instance using the given `radix` and `letters`.
         ///
         /// - Requires: `0 ≤ radix ≤ 36`
         ///
-        /// - Throws: `TextInt.Error.invalid` if the `radix` is invalid.
-        ///
-        @inlinable public init(
-            radix: UX,
-            letters: Letters = .lowercase
-        )   throws {
-            
+        @inlinable public init?(radix: UX,letters: Letters = .lowercase) {
             if  radix <= 10 {
                 self.i00x10 = U8(load: radix)
                 self.i10x36 = U8.zero
@@ -89,7 +76,7 @@ extension TextInt {
                 self.i00x10 = 0000010
                 self.i10x36 = U8(load: radix).minus(10).unchecked()
             }   else {
-                throw TextInt.Error.invalid
+                return nil
             }
             
             self.o00x10 = 48
@@ -144,7 +131,7 @@ extension TextInt {
         ///
         /// - Note: This conversion is case-insensitive.
         ///
-        @inlinable public func decode(_ data: U8) throws -> U8 {
+        @inlinable public func decode(_ data: U8) -> Optional<U8> {
             var next = data &- 48
             
             if  next < self.i00x10 {
@@ -157,7 +144,7 @@ extension TextInt {
                 return next &+ 10
             }
             
-            throw TextInt.Error.invalid
+            return nil
         }
         
         /// An integer to ASCII numeral conversion.
@@ -170,7 +157,7 @@ extension TextInt {
         ///
         /// - Note: This conversion is case-sensitive.
         ///
-        @inlinable public func encode(_ data: U8) throws -> U8 {
+        @inlinable public func encode(_ data: U8) -> Optional<U8> {
             if  data < self.i00x10 {
                 return data &+ self.o00x10
             }
@@ -181,24 +168,28 @@ extension TextInt {
                 return next &+ self.o10x36
             }
             
-            throw TextInt.Error.invalid
+            return nil
         }
         
         //=--------------------------------------------------------------------=
         // MARK: Utilities
         //=--------------------------------------------------------------------=
         
-        /// Decodes the given `numerals` and truncates the result if it is too big.
-        @inlinable internal func load(_ numerals: borrowing UnsafeBufferPointer<UInt8>, as type: UX.Type) throws -> UX {
+        /// Decodes the given `numerals` and returns the bit pattern that fits.
+        @inlinable package func load(
+            _ numerals: UnsafeBufferPointer<UInt8>, as type: UX.Type = UX.self
+        )   -> Optional<UX> {
+            
             var value = UX.zero
             let radix = UX(load: self.radix)
             
             for numeral:  UInt8 in numerals {
+                guard let increment = self.decode(U8(numeral)) else { return nil }
                 value &*= radix
-                value &+= UX(load: try self.decode(U8(numeral)))
+                value &+= UX(load: increment)
             }
             
-            return value as UX
+            return value
         }
     }
 }

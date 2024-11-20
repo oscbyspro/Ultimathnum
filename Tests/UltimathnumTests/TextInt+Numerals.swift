@@ -62,15 +62,15 @@ private let letters: [TextInt.Letters] = [.lowercase, .uppercase]
         
         for radix in radices {
             for letters in letters {
-                let numerals = try TextInt.Numerals(radix: radix, letters: letters)
+                let numerals = try #require(
+                    TextInt.Numerals(radix: radix, letters: letters)
+                )
 
                 for key in U8.min...U8.max {
                     if  let value = expectation[key], value < radix {
-                        try #require(try numerals.decode(key) == value)
+                        try #require(numerals.decode(key) == value)
                     }   else {
-                        try #require(throws: TextInt.Error.invalid) {
-                            try numerals.decode(key)
-                        }
+                        try #require(numerals.decode(key) == (nil))
                     }
                 }
             }
@@ -90,16 +90,16 @@ private let letters: [TextInt.Letters] = [.lowercase, .uppercase]
     )   throws {
         
         for radix in radices {
-            let numerals = try TextInt.Numerals(radix: radix, letters: letters)
+            let numerals = try #require(
+                TextInt.Numerals(radix: radix, letters: letters)
+            )
             
             for data in U8.min..<U8(numerals.radix) {
                 try #require(numerals.encode(data) == expectation[Int(IX(data))])
             }
             
             for data in U8(numerals.radix)..<U8.max {
-                try #require(throws: TextInt.Error.invalid) {
-                    try numerals.encode(data)
-                }
+                try #require(numerals.encode(data) == nil)
             }
         }
     }
@@ -130,8 +130,8 @@ private let letters: [TextInt.Letters] = [.lowercase, .uppercase]
         
         for radix: Radix in radices {
             let generic: some BinaryInteger = radix
-            try #require(try TextInt.Numerals(radix: (radix)).letters == TextInt.Letters.lowercase)
-            try #require(try TextInt.Numerals(radix: generic).letters == TextInt.Letters.lowercase)
+            try #require(TextInt.Numerals(radix: (radix))?.letters == TextInt.Letters.lowercase)
+            try #require(TextInt.Numerals(radix: generic)?.letters == TextInt.Letters.lowercase)
         }
     }
     
@@ -147,8 +147,8 @@ private let letters: [TextInt.Letters] = [.lowercase, .uppercase]
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for radix in radices.lazy.map(T.init) {
                 for letters in letters {
-                    let instance = try TextInt.Numerals(radix:      (radix), letters: letters)
-                    let concrete = try TextInt.Numerals(radix: Radix(radix), letters: letters)
+                    let instance = try #require(TextInt.Numerals(radix:      (radix), letters: letters))
+                    let concrete = try #require(TextInt.Numerals(radix: Radix(radix), letters: letters))
                     try #require(instance == concrete)
                     
                     try #require(instance.radix   == radix)
@@ -185,14 +185,12 @@ private let letters: [TextInt.Letters] = [.lowercase, .uppercase]
                 if  0 <= radix, radix <= 36 { continue } else { counter += 1 }
                 
                 for letters in letters {
-                    try #require(throws: TextInt.Error.invalid) {
-                        try TextInt.Numerals(radix: radix, letters: letters)
+                    if  let radix = T.exactly(radix).optional() {
+                        try #require(TextInt.Numerals(radix: radix, letters: letters) == nil)
                     }
                     
                     if  let radix = Radix.exactly(radix).optional() {
-                        try #require(throws: TextInt.Error.invalid) {
-                            try TextInt.Numerals(radix: radix, letters: letters)
-                        }
+                        try #require(TextInt.Numerals(radix: radix, letters: letters) == nil)
                     }
                 }
             }
@@ -211,15 +209,11 @@ private let letters: [TextInt.Letters] = [.lowercase, .uppercase]
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for letters in letters {
                 if  let radix = T.exactly(radix).optional() {
-                    try #require(throws: TextInt.Error.invalid) {
-                        try TextInt.Numerals(radix: radix, letters: letters)
-                    }
+                    try #require(TextInt.Numerals(radix: radix, letters: letters) == nil)
                 }
                 
                 if  let radix = Radix.exactly(radix).optional() {
-                    try #require(throws: TextInt.Error.invalid) {
-                        try TextInt.Numerals(radix: radix, letters: letters)
-                    }
+                    try #require(TextInt.Numerals(radix: radix, letters: letters) == nil)
                 }
             }
         }

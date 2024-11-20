@@ -67,10 +67,10 @@ import TestKit
         
         for radix: Radix in Self.radices {
             let generic: some BinaryInteger = radix
-            try #require(try TextInt(radix:   radix).letters == TextInt.Letters.lowercase)
-            try #require(try TextInt(radix: generic).letters == TextInt.Letters.lowercase)
-            try #require(    TextInt.radix(   radix).letters == TextInt.Letters.lowercase)
-            try #require(    TextInt.radix( generic).letters == TextInt.Letters.lowercase)
+            try #require(TextInt(radix:   radix)?.letters == TextInt.Letters.lowercase)
+            try #require(TextInt(radix: generic)?.letters == TextInt.Letters.lowercase)
+            try #require(TextInt.radix(   radix)?.letters == TextInt.Letters.lowercase)
+            try #require(TextInt.radix( generic)?.letters == TextInt.Letters.lowercase)
         }
     }
     
@@ -86,8 +86,8 @@ import TestKit
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for radix in Self.radices.lazy.map(T.init) {
                 for letters in Self.letters {
-                    let instance = try TextInt(radix:      (radix), letters: letters)
-                    let concrete = try TextInt(radix: Radix(radix), letters: letters)
+                    let instance = try #require(TextInt(radix:      (radix), letters: letters))
+                    let concrete = try #require(TextInt(radix: Radix(radix), letters: letters))
                     try #require(instance == concrete)
                     
                     try #require(instance.radix   == radix)
@@ -124,14 +124,12 @@ import TestKit
                 if  2 <= radix, radix <= 36 { continue } else { counter += 1 }
                 
                 for letters in Self.letters {
-                    try #require(throws: TextInt.Error.invalid) {
-                        try TextInt(radix: radix, letters: letters)
+                    if  let radix = T.exactly(radix).optional() {
+                        try #require(TextInt(radix: radix, letters: letters) == nil)
                     }
                     
                     if  let radix = Radix.exactly(radix).optional() {
-                        try #require(throws: TextInt.Error.invalid) {
-                            try TextInt(radix: radix, letters: letters)
-                        }
+                        try #require(TextInt(radix: radix, letters: letters) == nil)
                     }
                 }
             }
@@ -150,15 +148,11 @@ import TestKit
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for letters in Self.letters {
                 if  let radix = T.exactly(radix).optional() {
-                    try #require(throws: TextInt.Error.invalid) {
-                        try TextInt(radix: radix, letters: letters)
-                    }
+                    try #require(TextInt(radix: radix, letters: letters) == nil)
                 }
                 
                 if  let radix = Radix.exactly(radix).optional() {
-                    try #require(throws: TextInt.Error.invalid) {
-                        try TextInt(radix: radix, letters: letters)
-                    }
+                    try #require(TextInt(radix: radix, letters: letters) == nil)
                 }
             }
         }

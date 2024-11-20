@@ -17,51 +17,62 @@ extension TextInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable public func decode<T: BinaryInteger>(_ description: StaticString) -> T {
-        description.withUTF8Buffer {
-            try! self.decode($0)
+    /// Returns the `value` of `description` and an `error` indicator, or `nil`.
+    ///
+    /// ### Binary Integer Description
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    /// - Note: It produces `nil` if the `description` is `invalid`.
+    ///
+    /// - Note: The default `format` is `TextInt.decimal`.
+    ///
+    @inlinable public func decode<Integer>(
+        _  description: consuming String,
+        as type: Integer.Type = Integer.self
+    )   -> Optional<Fallible<Integer>> where Integer: BinaryInteger {
+        
+        description.withUTF8 {
+            self.decode($0, as: Integer.self)
         }
     }
     
-    @inlinable public func decode<T: BinaryInteger>(_ description: some StringProtocol) throws -> T {
-        var description = String(description)
-        return try description.withUTF8 {
-            try self.decode($0)
-        }
-    }
-    
-    @inlinable public func decode<T: BinaryInteger>(_ description: UnsafeBufferPointer<UInt8>) throws -> T {
-        var magnitude = Fallible(T.Magnitude.zero, error: true)
+    /// Returns the `value` of `description` and an `error` indicator, or `nil`.
+    ///
+    /// ### Binary Integer Description
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    /// - Note: It produces `nil` if the `description` is `invalid`.
+    ///
+    /// - Note: The default `format` is `TextInt.decimal`.
+    ///
+    @inlinable public func decode<Integer>(
+        _  description: UnsafeBufferPointer<UInt8>,
+        as type: Integer.Type = Integer.self
+    )   -> Optional<Fallible<Integer>> where Integer: BinaryInteger {
+        
         var body = description[...]
         let sign = TextInt.remove(from: &body, prefix: Self.sign) ?? Sign.plus
         let mask = TextInt.remove(from: &body, prefix: Self.mask) != nil
         
-        //  TODO: consider simpler error handling, only checking mask if infinite
+        var magnitude: Optional<Fallible<Integer.Magnitude>> = nil
         
-        if  self.power.div == 1 {
-            try self.words16(numerals: UnsafeBufferPointer(rebasing: body)) {
-                magnitude = T.Magnitude.exactly($0, mode: .unsigned)
-            }
-            
-        }   else {
-            try self.words10(numerals: UnsafeBufferPointer(rebasing: body)) {
-                magnitude = T.Magnitude.exactly($0, mode: .unsigned)
-            }
+        self.decode(body: UnsafeBufferPointer(rebasing: body)) {
+            magnitude = Integer.Magnitude.exactly($0, mode: Signedness.unsigned)
         }
         
-        if  magnitude.error {
-            throw Error.lossy
-        }
-        
-        if  mask, T.isFinite {
-            throw Error.lossy
-        }
+        guard var magnitude = consume magnitude else { return nil }
         
         if  mask {
             magnitude.value.toggle()
         }
         
-        return try T.exactly(sign: sign, magnitude: magnitude.value).prune(Error.lossy)
+        if  mask, Integer.isFinite {
+            magnitude.error = true
+        }
+        
+        return Integer.exactly(sign: sign, magnitude: magnitude.value).veto(magnitude.error)
     }
 }
 
@@ -75,118 +86,110 @@ extension TextInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @usableFromInline package func words10(
-        numerals: consuming UnsafeBufferPointer<UInt8>, success: (DataInt<UX>) -> Void
-    )   throws {
-        //=--------------------------------------=
-        Swift.assert(self.power.div != 1)
-        //=--------------------------------------=
-        // text must contain at least one numeral
-        //=--------------------------------------=
-        if  numerals.isEmpty {
-            throw Error.invalid
-        }   else {
-            numerals = UnsafeBufferPointer(rebasing: numerals.drop(while:{ $0 == 48 }))
-        }
-        //=--------------------------------------=
-        // capacity is measured in radix powers
-        //=--------------------------------------=
-        let divisor = Nonzero(unchecked: self.exponent)
-        var (stride): IX = IX(numerals.count).remainder(divisor)
-        var capacity: IX = IX(numerals.count).quotient (divisor).unchecked()
+    @inlinable package func decode(
+        body: consuming UnsafeBufferPointer<UInt8>,
+        callback: (DataInt<UX>) -> Void
+    )   -> Void {
         
-        if  (stride).isZero {
-            (stride) = self.exponent
+        if  self.power.div == 1 {
+            self.decode16(body: body, callback: callback)
+            
         }   else {
-            capacity = capacity.incremented().unchecked()
-        }
-        //=--------------------------------------=
-        return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
-            let words = MutableDataInt<UX>.Body($0)![unchecked: ..<capacity]
-            var index = IX.zero
-            //=----------------------------------=
-            // pointee: deferred deinitialization
-            //=----------------------------------=
-            defer {
-                                
-                words[unchecked: ..<index].deinitialize()
-                
-            }
-            //=----------------------------------=
-            // pointee: initialization
-            //=----------------------------------=
-            forwards: while !numerals.isEmpty {
-                let part = UnsafeBufferPointer(rebasing: numerals[..<Int(stride)])
-                numerals = UnsafeBufferPointer(rebasing: numerals[Int(stride)...])
-                let element = try self.numerals.load(part, as: UX.self)
-                // note that the index advances faster than the product
-                words[unchecked: index] = words[unchecked: ..<index].multiply(by: self.power.div, add: element)
-                stride = self.exponent
-                index  = index.incremented().unchecked()
-            }
-            //=----------------------------------=
-            // path: success
-            //=----------------------------------=
-            Swift.assert(numerals.isEmpty)
-            Swift.assert(index == (words).count)
-            return success(DataInt(words))
+            self.decode10(body: body, callback: callback)
         }
     }
     
-    @usableFromInline package func words16(
-        numerals: consuming UnsafeBufferPointer<UInt8>, success: (DataInt<UX>) -> Void
-    )   throws {
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities x Non-generic & Non-inlinable
+    //=------------------------------------------------------------------------=
+    
+    @usableFromInline package func decode10(
+        body: consuming UnsafeBufferPointer<UInt8>,
+        callback: (DataInt<UX>) -> Void
+    )   -> Void {
+        
+        Swift.assert(self.power.div != 1)
         //=--------------------------------------=
-        Swift.assert(self.power.div == 1)
-        Swift.assert(self.exponent.count(Bit.one) == Count(1))
+        if  body.isEmpty { return }
         //=--------------------------------------=
-        // text must contain at least one numeral
-        //=--------------------------------------=
-        if  numerals.isEmpty {
-            throw Error.invalid
-        }   else {
-            numerals = UnsafeBufferPointer(rebasing: numerals.drop(while:{ $0 == 48 }))
-        }
-        //=--------------------------------------=
-        // capacity is measured in radix powers
+        body = UnsafeBufferPointer(rebasing: body.drop(while:{ $0 == 48 }))
         //=--------------------------------------=
         let divisor = Nonzero(unchecked: self.exponent)
-        var (stride): IX = IX(numerals.count).remainder(divisor)
-        var capacity: IX = IX(numerals.count).quotient (divisor).unchecked()
+        var steps:    IX = IX(body.count).remainder(divisor)
+        var capacity: IX = IX(body.count).quotient (divisor).unchecked()
         
-        if  (stride).isZero {
-            (stride) = self.exponent
+        if  steps.isZero {
+            steps = self.exponent
         }   else {
             capacity = capacity.incremented().unchecked()
         }
         //=--------------------------------------=
-        return try Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
-            let words = MutableDataInt<UX>.Body($0)![unchecked:  ..<capacity]
-            var index = words.count
-            //=----------------------------------=
-            // pointee: deferred deinitialization
-            //=----------------------------------=
+        Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
+            let words = MutableDataInt<UX>.Body($0)![unchecked: ..<capacity]
+            var index = IX.zero
+            
             defer {
-                                
-                words[unchecked: index...].deinitialize()
+                words[unchecked: ..<index].deinitialize()
+            }
+            
+            forwards: while !body.isEmpty {
+                let part = UnsafeBufferPointer(rebasing: body[..<Int(steps)])
+                ((body)) = UnsafeBufferPointer(rebasing: body[Int(steps)...])
+                guard let element: UX = self.numerals.load(part) else { return }
+                words[unchecked: index] = words[unchecked: ..<index].multiply(by: self.power.div, add: element)
+                steps = (self.exponent)
+                index = index.incremented().unchecked()
                 
             }
-            //=----------------------------------=
-            // pointee: initialization
-            //=----------------------------------=
-            backwards: while !numerals.isEmpty {
-                let part = UnsafeBufferPointer(rebasing: numerals[..<Int(stride)])
-                numerals = UnsafeBufferPointer(rebasing: numerals[Int(stride)...])
-                index  = index.decremented().unchecked()
-                words[unchecked: index] = try self.numerals.load(part, as: UX.self)
-                stride = self.exponent
+            
+            Swift.assert(body.isEmpty)
+            Swift.assert(index == words.count)
+            callback(DataInt((words)))
+        }
+    }
+    
+    @usableFromInline package func decode16(
+        body: consuming UnsafeBufferPointer<UInt8>,
+        callback: (DataInt<UX>) -> Void
+    )   -> Void {
+        
+        Swift.assert(self.power.div == 1)
+        Swift.assert(self.exponent.count(Bit.one) == Count(1))
+        //=--------------------------------------=
+        if  body.isEmpty { return }
+        //=--------------------------------------=
+        body = UnsafeBufferPointer(rebasing: body.drop(while:{ $0 == 48 }))
+        //=--------------------------------------=
+        let divisor = Nonzero(unchecked: self.exponent)
+        var steps:    IX = IX(body.count).remainder(divisor)
+        var capacity: IX = IX(body.count).quotient (divisor).unchecked()
+        
+        if  steps.isZero {
+            steps = self.exponent
+        }   else {
+            capacity = capacity.incremented().unchecked()
+        }
+        //=--------------------------------------=
+        Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Swift.Int(capacity)) {
+            let words = MutableDataInt<UX>.Body($0)![unchecked: ..<capacity]
+            var index = words.count
+            
+            defer {
+                words[unchecked: index...].deinitialize()
             }
-            //=----------------------------------=
-            // path: success
-            //=----------------------------------=
-            Swift.assert(numerals.isEmpty)
-            Swift.assert(index == IX.zero)
-            return success(DataInt(words))
+            
+            backwards: while !body.isEmpty {
+                let part = UnsafeBufferPointer(rebasing: body[..<Int(steps)])
+                ((body)) = UnsafeBufferPointer(rebasing: body[Int(steps)...])
+                guard let element: UX = self.numerals.load(part) else { return }
+                steps = (self.exponent)
+                index = index.decremented().unchecked()
+                words[unchecked: index] = element
+            }
+            
+            Swift.assert(body.isEmpty)
+            Swift.assert(index.isZero)
+            callback(DataInt((words)))
         }
     }
 }

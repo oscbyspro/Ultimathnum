@@ -44,19 +44,19 @@
     ///
     /// - Note: This value caches the result of `radix(2)`.
     ///
-    public static let binary = Self.radix(2)
+    public static let binary = Self.radix(2)!
     
     /// A `TextInt` instance with a radix of `10`.
     ///
     /// - Note: This value caches the result of `radix(10)`.
     ///
-    public static let decimal = Self.radix(10)
+    public static let decimal = Self.radix(10)!
     
     /// A `TextInt` instance with a radix of `16`.
     ///
     /// - Note: This value caches the result of `radix(16)`.
     ///
-    public static let hexadecimal = Self.radix(16)
+    public static let hexadecimal = Self.radix(16)!
     
     //=------------------------------------------------------------------------=
     // MARK: State
@@ -101,9 +101,7 @@
     ///
     /// - Requires: `2 ≤ radix ≤ 36`
     ///
-    /// - Note: Use `init(radix:letters:)` to recover from invalid radices.
-    ///
-    @inlinable public static func radix(_ radix: some BinaryInteger) -> Self {
+    @inlinable public static func radix(_ radix: some BinaryInteger) -> Optional<Self> {
         Self.radix(UX(radix))
     }
     
@@ -111,40 +109,28 @@
     ///
     /// - Requires: `2 ≤ radix ≤ 36`
     ///
-    /// - Note: Use `init(radix:letters:)` to recover from invalid radices.
-    ///
-    @inlinable public static func radix(_ radix: UX) -> Self {
-        try! Self(radix: radix)
+    @inlinable public static func radix(_ radix: UX) -> Optional<Self> {
+        Self(radix: radix)
     }
     
     /// Creates a new instance using the given `radix` and `letters`.
     ///
     /// - Requires: `2 ≤ radix ≤ 36`
     ///
-    /// - Throws: `TextInt.Error.invalid` if the `radix` is invalid.
-    ///
-    @inlinable public init(
-        radix: some BinaryInteger,
-        letters: Letters = .lowercase
-    )   throws {
-        try self.init(
-            radix: try UX.exactly(radix).prune(Error.invalid),
-            letters: letters
-        )
+    @inlinable public init?(radix: some BinaryInteger, letters: Letters = .lowercase) {
+        guard let radix = UX.exactly(radix).optional() else { return nil }
+        self.init(radix:  radix, letters: letters)
     }
     
     /// Creates a new instance using the given `radix` and `letters`.
     ///
     /// - Requires: `2 ≤ radix ≤ 36`
     ///
-    /// - Throws: `TextInt.Error.invalid` if the `radix` is invalid.
-    ///
-    @inlinable public init(
-        radix: UX,
-        letters: Letters = .lowercase
-    )   throws {
-        self.base = try Numerals(radix: radix, letters: letters)
-        let exponentiation = try Exponentiation(radix)
+    @inlinable public init?(radix: UX, letters: Letters = .lowercase) {
+        guard let base = Numerals(radix: radix, letters: letters) else { return nil }
+        guard let exponentiation = Exponentiation.init(((radix))) else { return nil }
+        
+        self.base = base
         self.exponent = exponentiation.exponent as IX
         self.power = Divider21(Swift.max(1, exponentiation.power))
     }

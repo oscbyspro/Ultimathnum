@@ -76,6 +76,33 @@ extension Bit {
 //*============================================================================*
 
 extension TextInt {
+        
+    //=------------------------------------------------------------------------=
+    // MARK: Metadata
+    //=------------------------------------------------------------------------=
+    
+    public static let all: [Self] = {
+        Self.lowercase +
+        Self.uppercase
+    }()
+    
+    public static let lowercase: [Self] = Self.radices.compactMap {
+        Self.radix($0)?.lowercased()
+    }
+    
+    public static let uppercase: [Self] = Self.radices.compactMap {
+        Self.radix($0)?.uppercased()
+    }
+    
+    public static let radices: ClosedRange<UX> = 2...36
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Metadata
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static var regex: Regex<(Substring, sign: Substring?, mask: Substring?, body: Substring)> {
+        #/^(?<sign>\+|-)?(?<mask>&)?(?<body>[0-9A-Za-z]+)$/#
+    }
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -84,6 +111,6 @@ extension TextInt {
     @inlinable public static func random(using randomness: inout some Randomness) -> Self {
         let radix = UX.random(in: 2...36, using: &randomness)
         let letters = Letters(uppercase: Bool(U8.random(using: &randomness).lsb))
-        return Self.radix(radix).letters(letters)
+        return Self(radix: radix, letters: letters)!
     }
 }

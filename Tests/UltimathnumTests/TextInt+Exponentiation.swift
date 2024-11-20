@@ -25,9 +25,7 @@ import TestKit
         Tag.List.tags(.exhaustive)
     )   func eachRadixLessThanTwoIsNil() throws {
         for radix: UX in 0 ..< 2 {
-            #expect(throws: TextInt.Error.invalid) {
-                try TextInt.Exponentiation(radix)
-            }
+            try #require(TextInt.Exponentiation(radix) == nil)
         }
     }
     
@@ -38,7 +36,7 @@ import TestKit
             let radixLog2: UX = UX(raw: try #require(radix    .ilog2()))
             let radixLog2Log2 = UX(raw: try #require(radixLog2.ilog2()))
             
-            let instance = try TextInt.Exponentiation(radix)
+            let instance = try #require(TextInt.Exponentiation(radix))
             if  radix == UX.lsb << (UX.lsb << radixLog2Log2) {
                 try #require(instance.power.isZero)
                 try #require(instance.exponent == IX(size: UX.self) >> IX(radixLog2Log2))

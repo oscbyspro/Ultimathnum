@@ -27,9 +27,9 @@ extension TextInt {
         //=--------------------------------------------------------------------=
         
         /// - Requires: `radix >= 2`
-        @inlinable public init(_ radix: UX) throws {
+        @inlinable public init?(_ radix: UX) {
             if  radix < 2 {
-                throw Error.invalid
+                return nil
             }
             
             var power = radix as UX

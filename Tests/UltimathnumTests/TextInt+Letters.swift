@@ -33,9 +33,9 @@ import TestKit
     )   throws {
         
         #expect(instance.start == start)
-        let numerals = try TextInt.Numerals(radix: 36, letters: instance)
-        #expect(try numerals.decode(start) == 10)
-        #expect(try numerals.encode(10) == start)
+        let numerals = try #require(TextInt.Numerals(radix: 36, letters: instance))
+        #expect(numerals.decode(start) == 10)
+        #expect(numerals.encode(10) == start)
     }
     
     @Test(

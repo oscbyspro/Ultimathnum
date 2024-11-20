@@ -22,17 +22,23 @@ extension StdlibInt {
     
     /// Decodes the decimal `description`, if possible.
     ///
+    /// ```swift
+    /// format.decode(description)?.optional()
+    /// ```
+    ///
     /// ### Binary Integer Description
     ///
-    /// - Note: The default format is `TextInt.decimal`.
+    /// - Note: The `error` is set if the operation is `lossy`.
     ///
-    /// - Note: Decoding failures throw `TextInt.Error`.
+    /// - Note: It produces `nil` if the `description` is `invalid`.
+    ///
+    /// - Note: The default format is `TextInt.decimal`.
     ///
     /// ### Binary Integer Description (StdlibInt)
     ///
     /// - Note: `String.init(_:radix:)` does not use `TextInt`.
     ///
-    @inlinable public init?(_ description: String) {
+    @inlinable public init?(_ description: consuming String) {
         if  let base = Base(description) {
             self.init(base)
         }   else {
@@ -42,18 +48,25 @@ extension StdlibInt {
     
     /// Decodes the `description` using the given `format`, if possible.
     ///
+    /// ```swift
+    /// format.decode(description)?.optional()
+    /// ```
+    ///
     /// ### Binary Integer Description
     ///
-    /// - Note: The default format is `TextInt.decimal`.
+    /// - Note: The `error` is set if the operation is `lossy`.
     ///
-    /// - Note: Decoding failures throw `TextInt.Error`.
+    /// - Note: It produces `nil` if the `description` is `invalid`.
+    ///
+    /// - Note: The default format is `TextInt.decimal`.
     ///
     /// ### Binary Integer Description (StdlibInt)
     ///
     /// - Note: `String.init(_:radix:)` does not use `TextInt`.
     ///
-    @inlinable public init(_ description: some StringProtocol, as format: TextInt) throws {
-        try self.init(Base(description, using: format))
+    @inlinable public init?(_ description: consuming String, using format: borrowing TextInt) {
+        guard let base = Base(description, using: format) else { return nil }
+        self.init(base)
     }
     
     //=------------------------------------------------------------------------=
@@ -65,8 +78,6 @@ extension StdlibInt {
     /// ### Binary Integer Description
     ///
     /// - Note: The default format is `TextInt.decimal`.
-    ///
-    /// - Note: Decoding failures throw `TextInt.Error`.
     ///
     /// ### Binary Integer Description (StdlibInt)
     ///
@@ -82,13 +93,11 @@ extension StdlibInt {
     ///
     /// - Note: The default format is `TextInt.decimal`.
     ///
-    /// - Note: Decoding failures throw `TextInt.Error`.
-    ///
     /// ### Binary Integer Description (StdlibInt)
     ///
     /// - Note: `String.init(_:radix:)` does not use `TextInt`.
     ///
-    @inlinable public func description(using format: TextInt) -> String {
+    @inlinable public func description(using format: borrowing TextInt) -> String {
         self.base.description(using: format)
     }
 }
