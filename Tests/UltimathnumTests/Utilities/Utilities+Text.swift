@@ -86,3 +86,51 @@ import TestKit
         }
     }
 }
+
+//*============================================================================*
+// MARK: * Utilities x Text x Metadata
+//*============================================================================*
+
+@Suite(.serialized) struct UtilitiesTestsOnTextMetadata {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "Utilities/text/metadata: TextInt.radices",
+        Tag.List.tags(.exhaustive),
+        arguments: CollectionOfOne(TextInt.radices)
+    )   func allTextIntRadices(coders: ClosedRange<UX>) {
+        #expect(coders.count      == 35)
+        #expect(coders.lowerBound == 02)
+        #expect(coders.upperBound == 36)
+    }
+    
+    @Test(
+        "Utilities/text/metadata: TextInt.letters",
+        Tag.List.tags(.exhaustive),
+        arguments: CollectionOfOne(TextInt.letters)
+    )   func allTextIntLetters(coders: [TextInt.Letters]) {
+        #expect(coders.count == 2)
+        #expect(coders.contains(.lowercase))
+        #expect(coders.contains(.uppercase))
+    }
+    
+    @Test(
+        "Utilities/text/metadata: TextInt.all",
+        Tag.List.tags(.exhaustive),
+        arguments: CollectionOfOne(TextInt.all)
+    )   func allTextInt(coders: [TextInt]) {
+        
+        let radices   = [U8](2...36)
+        let lowercase = coders.filter({ $0.letters == .lowercase })
+        let uppercase = coders.filter({ $0.letters == .uppercase })
+        
+        #expect(coders   .count == 70)
+        #expect(lowercase.count == 35)
+        #expect(uppercase.count == 35)
+        #expect(lowercase.map(\.radix).sorted() == radices)
+        #expect(uppercase.map(\.radix).sorted() == radices)
+    }
+}

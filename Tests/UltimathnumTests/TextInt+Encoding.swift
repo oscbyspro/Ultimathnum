@@ -31,7 +31,7 @@ import TestKit
         
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
-            let regex = TextInt.regex
+            let regex = TextInt.regex()
             
             for _ in 0 ..< 64 {
                 let coder = TextInt.all.randomElement(using: &randomness.stdlib)!

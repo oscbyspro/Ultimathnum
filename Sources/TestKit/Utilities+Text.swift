@@ -81,36 +81,16 @@ extension TextInt {
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    public static let all: [Self] = {
-        Self.lowercase +
-        Self.uppercase
-    }()
-    
-    public static let lowercase: [Self] = Self.radices.compactMap {
-        Self.radix($0)?.lowercased()
-    }
-    
-    public static let uppercase: [Self] = Self.radices.compactMap {
-        Self.radix($0)?.uppercased()
-    }
-    
     public static let radices: ClosedRange<UX> = 2...36
     
-    //=------------------------------------------------------------------------=
-    // MARK: Metadata
-    //=------------------------------------------------------------------------=
+    public static let letters: [Letters] = [Letters.lowercase, Letters.uppercase]
     
-    @inlinable public static var regex: Regex<(Substring, sign: Substring?, mask: Substring?, body: Substring)> {
-        #/^(?<sign>\+|-)?(?<mask>&)?(?<body>[0-9A-Za-z]+)$/#
+    public static let all: [Self] =  Self.radices.reduce(into: []) {
+        $0.append(TextInt(radix: $1, letters: Letters.lowercase)!)
+        $0.append(TextInt(radix: $1, letters: Letters.uppercase)!)
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public static func random(using randomness: inout some Randomness) -> Self {
-        let radix = UX.random(in: 2...36, using: &randomness)
-        let letters = Letters(uppercase: Bool(U8.random(using: &randomness).lsb))
-        return Self(radix: radix, letters: letters)!
+    @inlinable public static func regex() -> Regex<(Substring, sign: Substring?, mask: Substring?, body: Substring)> {
+        #/^(?<sign>\+|-)?(?<mask>&)?(?<body>[0-9A-Za-z]+)$/#
     }
 }

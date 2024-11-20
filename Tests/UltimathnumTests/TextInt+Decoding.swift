@@ -35,7 +35,7 @@ import TestKit
             let size = IX(size: T.self) ?? conditional(debug: 256, release: 4096)
             
             for _ in 0 ..< conditional(debug: 64, release: 1024) {
-                let coder = TextInt.random(using: &randomness)
+                let coder = TextInt.all.randomElement(using: &randomness.stdlib)!
                 let value = T.entropic(size: size, using: &randomness)
                 try whereIs(value, using: coder)
             }
@@ -300,7 +300,7 @@ import TestKit
         
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
-            let regex = TextInt.regex
+            let regex = TextInt.regex()
             
             for _ in 0 ..< conditional(debug: 8, release: 32) {
                 let coder = TextInt.all.randomElement(using: &randomness.stdlib)!

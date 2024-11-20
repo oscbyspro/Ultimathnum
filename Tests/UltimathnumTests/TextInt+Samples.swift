@@ -279,4 +279,28 @@ import TestKit
             }
         }
     }
+    
+    @Test(
+        "TextInt/samples: -&? as binary integer is lossy",
+        Tag.List.tags(.generic, .important),
+        arguments: Array<(Fallible<IXL>, String)>.infer([
+        
+        (Fallible(IXL(1), error: true), String("-&0")),
+        (Fallible(IXL(2), error: true), String("-&1")),
+        
+    ])) func negativeInfinityAsBinaryIntegerIsLossy(
+        result: Fallible<IXL>, description: String
+    )   throws {
+        
+        for type in typesAsBinaryInteger {
+            try  whereIs(type)
+        }
+        
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            let expectation = result.map(T.init(load:))
+            for coder in TextInt.all {
+                try #require(coder.decode(description) == expectation)
+            }
+        }
+    }
 }
