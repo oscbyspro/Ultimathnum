@@ -46,10 +46,6 @@
     },
     {
       "parallelizable" : true,
-      "skippedTests" : [
-        "BenchmarksAboutDoubleInt",
-        "FibonacciBenchmarks"
-      ],
       "target" : {
         "containerPath" : "container:",
         "identifier" : "UltimathnumTests",
