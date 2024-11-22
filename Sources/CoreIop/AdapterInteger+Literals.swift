@@ -7,14 +7,19 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Exports
+// MARK: * Binary Integer x Adapter x Literals
 //*============================================================================*
 
-@_exported import CoreIop
-@_exported import CoreKit
-@_exported import DoubleIntKit
-@_exported import FibonacciKit
-@_exported import InfiniIntIop
-@_exported import InfiniIntKit
-@_exported import RandomIntKit
+extension AdapterInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(integerLiteral: consuming Base.IntegerLiteralType) {
+        self.init(Base(integerLiteral: integerLiteral))
+    }
+}

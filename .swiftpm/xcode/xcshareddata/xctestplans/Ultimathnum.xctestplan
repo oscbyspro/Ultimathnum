@@ -16,8 +16,8 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "CoreKitTests",
-        "name" : "CoreKitTests"
+        "identifier" : "RandomIntKitTests",
+        "name" : "RandomIntKitTests"
       }
     },
     {
@@ -26,6 +26,22 @@
         "containerPath" : "container:",
         "identifier" : "DoubleIntKitTests",
         "name" : "DoubleIntKitTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "FibonacciKitTests",
+        "name" : "FibonacciKitTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "CoreKitTests",
+        "name" : "CoreKitTests"
       }
     },
     {
@@ -44,32 +60,24 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
+        "identifier" : "InfiniIntIopTests",
+        "name" : "InfiniIntIopTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "CoreIopTests",
+        "name" : "CoreIopTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
         "identifier" : "InfiniIntKitTests",
         "name" : "InfiniIntKitTests"
-      }
-    },
-    {
-      "parallelizable" : true,
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "FibonacciKitTests",
-        "name" : "FibonacciKitTests"
-      }
-    },
-    {
-      "parallelizable" : true,
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "StdlibIntKitTests",
-        "name" : "StdlibIntKitTests"
-      }
-    },
-    {
-      "parallelizable" : true,
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "RandomIntKitTests",
-        "name" : "RandomIntKitTests"
       }
     }
   ],

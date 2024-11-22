@@ -7,14 +7,23 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Exports
+// MARK: * Adapter Integer x Multiplication
 //*============================================================================*
 
-@_exported import CoreIop
-@_exported import CoreKit
-@_exported import DoubleIntKit
-@_exported import FibonacciKit
-@_exported import InfiniIntIop
-@_exported import InfiniIntKit
-@_exported import RandomIntKit
+extension AdapterInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public static func *(lhs: borrowing Self, rhs: borrowing Self) -> Self {
+        Self(lhs.base * rhs.base)
+    }
+    
+    @inlinable public static func *=(lhs: inout Self, rhs: borrowing Self) {
+        lhs.base *= rhs.base
+    }
+}

@@ -7,14 +7,18 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-//*============================================================================*
-// MARK: * Exports
-//*============================================================================*
+import CoreIop
+import CoreKit
+import InfiniIntIop
+import InfiniIntKit
 
-@_exported import CoreIop
-@_exported import CoreKit
-@_exported import DoubleIntKit
-@_exported import FibonacciKit
-@_exported import InfiniIntIop
-@_exported import InfiniIntKit
-@_exported import RandomIntKit
+//*============================================================================*
+// MARK: * Globals
+//*============================================================================*
+// Imagine an array of chosen types and a bunch of type filters...
+//=----------------------------------------------------------------------------=
+
+let typesAsInfiniIntStdlib: [any (AdapterInteger & Swift.SignedInteger).Type] = [
+    InfiniInt<I8>.Stdlib.self,
+    InfiniInt<IX>.Stdlib.self,
+]
