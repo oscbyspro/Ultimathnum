@@ -33,7 +33,7 @@ extension AdapterInteger {
     ///
     /// - Note: The default format is `TextInt.decimal`.
     ///
-    /// ### Binary Integer Description (InfiniInt.Stdlib)
+    /// ### Binary Integer Description – Adapter
     ///
     /// - Note: `String.init(_:radix:)` does not use `TextInt`.
     ///
@@ -59,7 +59,7 @@ extension AdapterInteger {
     ///
     /// - Note: The default format is `TextInt.decimal`.
     ///
-    /// ### Binary Integer Description (InfiniInt.Stdlib)
+    /// ### Binary Integer Description – Adapter
     ///
     /// - Note: `String.init(_:radix:)` does not use `TextInt`.
     ///
@@ -78,7 +78,7 @@ extension AdapterInteger {
     ///
     /// - Note: The default format is `TextInt.decimal`.
     ///
-    /// ### Binary Integer Description (InfiniInt.Stdlib)
+    /// ### Binary Integer Description – Adapter
     ///
     /// - Note: `String.init(_:radix:)` does not use `TextInt`.
     ///
@@ -92,7 +92,7 @@ extension AdapterInteger {
     ///
     /// - Note: The default format is `TextInt.decimal`.
     ///
-    /// ### Binary Integer Description (InfiniInt.Stdlib)
+    /// ### Binary Integer Description – Adapter
     ///
     /// - Note: `String.init(_:radix:)` does not use `TextInt`.
     ///
