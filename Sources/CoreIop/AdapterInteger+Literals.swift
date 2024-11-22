@@ -10,7 +10,7 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Binary Integer x Adapter x Literals
+// MARK: * Adapter Integer x Literals
 //*============================================================================*
 
 extension AdapterInteger {

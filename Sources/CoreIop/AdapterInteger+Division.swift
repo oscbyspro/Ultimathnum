@@ -35,12 +35,8 @@ extension AdapterInteger {
         lhs.base %= rhs.base
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations
-    //=------------------------------------------------------------------------=
-    
     @inlinable public consuming func quotientAndRemainder(dividingBy divisor: borrowing Self) -> (quotient: Self, remainder: Self) {
-        let division = Base(self).division(Nonzero(divisor.base)).unwrap().unwrap()
+        let division = Base(self).division(divisor.base).unwrap().unwrap()
         return (quotient: Self(division.quotient), remainder: Self(division.remainder))
     }
 }
