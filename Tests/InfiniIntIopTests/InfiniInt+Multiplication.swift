@@ -26,7 +26,7 @@ import TestKit
     
     @Test(
         "InfiniInt.Stdlib/multiplication: Self vs Base",
-        Tag.List.tags(.forwarding, .random, .todo),
+        Tag.List.tags(.forwarding, .generic, .random, .todo),
         arguments: fuzzers
     )   func forwarding(
         randomness: consuming FuzzerInt

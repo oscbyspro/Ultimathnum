@@ -26,7 +26,7 @@ import TestKit
     
     @Test(
         "InfiniInt.Stdlib/bitwise: ~(_:) of Self vs Base",
-        Tag.List.tags(.forwarding, .random, .todo),
+        Tag.List.tags(.forwarding, .generic, .random, .todo),
         arguments: fuzzers
     )   func not(
         randomness: consuming FuzzerInt
@@ -51,7 +51,7 @@ import TestKit
     
     @Test(
         "InfiniInt.Stdlib/bitwise: &(_:_:) of Self vs Base",
-        Tag.List.tags(.forwarding, .random, .todo),
+        Tag.List.tags(.forwarding, .generic, .random, .todo),
         arguments: fuzzers
     )   func and(
         randomness: consuming FuzzerInt
@@ -77,7 +77,7 @@ import TestKit
     
     @Test(
         "InfiniInt.Stdlib/bitwise: |(_:_:) of Self vs Base",
-        Tag.List.tags(.forwarding, .random, .todo),
+        Tag.List.tags(.forwarding, .generic, .random, .todo),
         arguments: fuzzers
     )   func or(
         randomness: consuming FuzzerInt
@@ -103,7 +103,7 @@ import TestKit
     
     @Test(
         "InfiniInt.Stdlib/bitwise: ^(_:_:) of Self vs Base",
-        Tag.List.tags(.forwarding, .random, .todo),
+        Tag.List.tags(.forwarding, .generic, .random, .todo),
         arguments: fuzzers
     )   func xor(
         randomness: consuming FuzzerInt

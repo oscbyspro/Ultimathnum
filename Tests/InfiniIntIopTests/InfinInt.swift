@@ -26,7 +26,7 @@ import TestKit
     
     @Test(
         "InfiniInt.Stdlib: metadata",
-        Tag.List.tags(.forwarding, .generic)
+        Tag.List.tags(.forwarding, .generic, .todo)
     )   func metadata() throws {
 
         for type in typesAsInfiniIntStdlib {
@@ -42,7 +42,7 @@ import TestKit
     
     @Test(
         "InfiniInt.Stdlib: init(raw:)",
-        Tag.List.tags(.forwarding, .generic, .random),
+        Tag.List.tags(.forwarding, .generic, .random, .todo),
         arguments: fuzzers
     )   func bitcasting(
         randomness: consuming FuzzerInt

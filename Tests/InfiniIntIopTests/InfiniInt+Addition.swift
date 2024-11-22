@@ -26,7 +26,7 @@ import TestKit
     
     @Test(
         "InfiniInt.Stdlib/addition: -(_:) of Self vs Base",
-        Tag.List.tags(.forwarding, .random, .todo),
+        Tag.List.tags(.forwarding, .generic, .random, .todo),
         arguments: fuzzers
     )   func negation(
         randomness: consuming FuzzerInt
@@ -55,7 +55,7 @@ import TestKit
     
     @Test(
         "InfiniInt.Stdlib/addition: +(_:_:) of Self vs Base",
-        Tag.List.tags(.forwarding, .random, .todo),
+        Tag.List.tags(.forwarding, .generic, .random, .todo),
         arguments: fuzzers
     )   func addition(
         randomness: consuming FuzzerInt
@@ -85,7 +85,7 @@ import TestKit
     
     @Test(
         "InfiniInt.Stdlib/addition: -(_:_:) of Self vs Base",
-        Tag.List.tags(.forwarding, .random, .todo),
+        Tag.List.tags(.forwarding, .generic, .random, .todo),
         arguments: fuzzers
     )   func subtraction(
         randomness: consuming FuzzerInt

@@ -26,7 +26,7 @@ import TestKit
     
     @Test(
         "StdlibInt/complement: magnitude",
-        Tag.List.tags(.forwarding, .random, .todo),
+        Tag.List.tags(.forwarding, .generic, .random, .todo),
         arguments: fuzzers
     )   func magnitude(
         randomness: consuming FuzzerInt

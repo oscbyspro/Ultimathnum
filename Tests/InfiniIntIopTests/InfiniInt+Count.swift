@@ -26,7 +26,7 @@ import TestKit
     
     @Test(
         "InfiniInt.Stdlib/count: Self vs Base",
-        Tag.List.tags(.forwarding, .random, .todo),
+        Tag.List.tags(.forwarding, .generic, .random, .todo),
         arguments: fuzzers
     )   func forwarding(
         randomness: consuming FuzzerInt
@@ -70,7 +70,7 @@ import TestKit
     
     @Test(
         "InfiniInt.Stdlib/count/edge-cases: 0.trailingZeroBitCount",
-        Tag.List.tags(.exhaustive, .important, .todo)
+        Tag.List.tags(.exhaustive, .generic, .important, .todo)
     )   func trailingZeroBitCountOfZero() throws {
         
         for type in typesAsInfiniIntStdlib {
