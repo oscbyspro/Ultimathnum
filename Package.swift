@@ -29,6 +29,10 @@ let package = Package(
             targets: ["Ultimathnum"]
         ),
         .library(
+            name: "CoreIop",
+            targets: ["CoreIop"]
+        ),
+        .library(
             name: "CoreKit",
             targets: ["CoreKit"]
         ),
@@ -41,6 +45,10 @@ let package = Package(
             targets: ["FibonacciKit"]
         ),
         .library(
+            name: "InfiniIntIop",
+            targets: ["InfiniIntIop"]
+        ),
+        .library(
             name: "InfiniIntKit",
             targets: ["InfiniIntKit"]
         ),
@@ -48,15 +56,11 @@ let package = Package(
             name: "RandomIntKit",
             targets: ["RandomIntKit"]
         ),
-        .library(
-            name: "StdlibIntKit",
-            targets: ["StdlibIntKit"]
-        ),
     ],
     targets: [
         .target(
             name: "Ultimathnum",
-            dependencies: ["CoreKit", "DoubleIntKit", "FibonacciKit", "InfiniIntKit", "RandomIntKit", "StdlibIntKit"]
+            dependencies: ["CoreIop", "DoubleIntKit", "FibonacciKit", "InfiniIntIop", "RandomIntKit"]
         ),
         .testTarget(
             name: "UltimathnumTests",
@@ -69,6 +73,14 @@ let package = Package(
         .testTarget(
             name: "CoreKitTests",
             dependencies: ["CoreKit", "TestKit"]
+        ),
+        .target(
+            name: "CoreIop",
+            dependencies: ["CoreKit"]
+        ),
+        .testTarget(
+            name: "CoreIopTests",
+            dependencies: ["CoreIop", "TestKit"]
         ),
         .target(
             name: "DoubleIntKit",
@@ -85,6 +97,14 @@ let package = Package(
         .testTarget(
             name: "FibonacciKitTests",
             dependencies: ["DoubleIntKit", "FibonacciKit", "InfiniIntKit", "TestKit"]
+        ),
+        .target(
+            name: "InfiniIntIop",
+            dependencies: ["CoreIop", "InfiniIntKit"]
+        ),
+        .testTarget(
+            name: "InfiniIntIopTests",
+            dependencies: ["InfiniIntIop", "TestKit"]
         ),
         .target(
             name: "InfiniIntKit",
@@ -109,14 +129,6 @@ let package = Package(
         .testTarget(
             name: "RandomIntKitTests",
             dependencies: ["RandomIntKit", "TestKit"]
-        ),
-        .target(
-            name: "StdlibIntKit",
-            dependencies: ["CoreKit", "InfiniIntKit"]
-        ),
-        .testTarget(
-            name: "StdlibIntKitTests",
-            dependencies: ["StdlibIntKit", "TestKit"]
         ),
         .target(
             name: "TestKit",

@@ -7,14 +7,23 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Exports
+// MARK: * Adapter Integer x Stride
 //*============================================================================*
 
-@_exported import CoreIop
-@_exported import CoreKit
-@_exported import DoubleIntKit
-@_exported import FibonacciKit
-@_exported import InfiniIntIop
-@_exported import InfiniIntKit
-@_exported import RandomIntKit
+extension AdapterInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public func advanced(by distance: Swift.Int) -> Self {
+        Self(self.base.advanced(by: distance))
+    }
+    
+    @inlinable public func distance(to other: Self) -> Swift.Int {
+        self.base.distance(to: other.base)
+    }
+}

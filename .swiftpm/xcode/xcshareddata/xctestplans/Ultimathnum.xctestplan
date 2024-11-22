@@ -16,8 +16,8 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "CoreKitTests",
-        "name" : "CoreKitTests"
+        "identifier" : "RandomIntKitTests",
+        "name" : "RandomIntKitTests"
       }
     },
     {
@@ -26,26 +26,6 @@
         "containerPath" : "container:",
         "identifier" : "DoubleIntKitTests",
         "name" : "DoubleIntKitTests"
-      }
-    },
-    {
-      "parallelizable" : true,
-      "skippedTests" : [
-        "BenchmarksAboutDoubleInt",
-        "FibonacciBenchmarks"
-      ],
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "UltimathnumTests",
-        "name" : "UltimathnumTests"
-      }
-    },
-    {
-      "parallelizable" : true,
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "InfiniIntKitTests",
-        "name" : "InfiniIntKitTests"
       }
     },
     {
@@ -60,16 +40,40 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "StdlibIntKitTests",
-        "name" : "StdlibIntKitTests"
+        "identifier" : "CoreKitTests",
+        "name" : "CoreKitTests"
       }
     },
     {
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "RandomIntKitTests",
-        "name" : "RandomIntKitTests"
+        "identifier" : "UltimathnumTests",
+        "name" : "UltimathnumTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "InfiniIntIopTests",
+        "name" : "InfiniIntIopTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "CoreIopTests",
+        "name" : "CoreIopTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "InfiniIntKitTests",
+        "name" : "InfiniIntKitTests"
       }
     }
   ],

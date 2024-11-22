@@ -7,14 +7,24 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Exports
+// MARK: * Adapter Integer x Floats
 //*============================================================================*
 
-@_exported import CoreIop
-@_exported import CoreKit
-@_exported import DoubleIntKit
-@_exported import FibonacciKit
-@_exported import InfiniIntIop
-@_exported import InfiniIntKit
-@_exported import RandomIntKit
+extension AdapterInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(_ source: some Swift.BinaryFloatingPoint) {
+        self.init(Base(source))
+    }
+    
+    @inlinable public init?(exactly source: some Swift.BinaryFloatingPoint) {
+        guard let base = Base.exactly(source) else { return nil }
+        self.init(base)
+    }
+}

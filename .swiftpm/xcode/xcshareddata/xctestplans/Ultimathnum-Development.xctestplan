@@ -54,6 +54,14 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
+        "identifier" : "RandomIntKitTests",
+        "name" : "RandomIntKitTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
         "identifier" : "CoreKitTests",
         "name" : "CoreKitTests"
       }
@@ -86,16 +94,16 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "RandomIntKitTests",
-        "name" : "RandomIntKitTests"
+        "identifier" : "InfiniIntIopTests",
+        "name" : "InfiniIntIopTests"
       }
     },
     {
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "StdlibIntKitTests",
-        "name" : "StdlibIntKitTests"
+        "identifier" : "CoreIopTests",
+        "name" : "CoreIopTests"
       }
     },
     {
