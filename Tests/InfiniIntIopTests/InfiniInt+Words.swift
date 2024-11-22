@@ -46,9 +46,9 @@ import TestKit
         func whereIs<T>(_ type: T.Type) throws where T: AdapterInteger {
             try #require(T.Base.isArbitrary)
             
-            let instance: T = words.reversed().reduce(into: 0) {
+            let instance: T = words.reversed().reduce(into: T.zero) {
                 $0 <<= UInt.bitWidth
-                $0  |= T.init($1)
+                $0  |= T($1)
             }
             
             try #require(Array(instance.words) == words)
