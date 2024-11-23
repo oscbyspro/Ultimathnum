@@ -43,7 +43,7 @@ import TestKit
             try whereIs(type) // TODO: await parameterized tests fix
         }
         
-        func whereIs<T>(_ type: T.Type) throws where T: AdapterInteger {
+        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib {
             try #require(T.Base.isArbitrary)
             
             let instance: T = words.reversed().reduce(into: T.zero) {
@@ -72,7 +72,7 @@ import TestKit
             try whereIs(type) // TODO: await parameterized tests fix
         }
         
-        func whereIs<T>(_ type: T.Type) throws where T: AdapterInteger {
+        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib {
             let size = IX(size: T.Base.self) ?? 256
             
             for _ in 0 ..< 8 {
@@ -127,13 +127,14 @@ import TestKit
             try whereIs(type) // TODO: await parameterized tests fix
         }
         
-        func whereIs<T>(_ type: T.Type) throws where T: AdapterInteger {
+        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib {
             try #require(T.Base.isArbitrary)
             let base = try #require(T.Base.exactly(value).optional())
             
             let stdlib = T(base)
             let result = stdlib.words
-            try #require(Array(result) == words)
+            try #require(Array(result)   == words)
+            try #require(stdlib._lowWord == words.first)
             
             let division = IX(stdlib.bitWidth).division(IX(size: UX.self))
             try #require(IX(result.count) == division!.unwrap().ceil().unwrap())

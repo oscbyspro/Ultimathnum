@@ -33,7 +33,7 @@ import TestKit
             try whereIs(type) // TODO: await parameterized tests fix
         }
         
-        func whereIs<T>(_ type: T.Type) throws where T: AdapterInteger {
+        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib {
             #expect(T.isSigned)
             #expect(T.Base.isSigned)
             #expect(T.Magnitude.isSigned)
@@ -52,7 +52,7 @@ import TestKit
             try whereIs(type) // TODO: await parameterized tests fix
         }
         
-        func whereIs<T>(_ type: T.Type) throws where T: AdapterInteger {
+        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib {
             for _ in 0 ..< 8 {
                 let value = T(T.Base.entropic(through: Shift.max(or: 255), using: &randomness))
                 try #require(T(raw: T.Base.Signitude(raw: value)) == value)

@@ -8,38 +8,28 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import InfiniIntKit
 
 //*============================================================================*
-// MARK: * Adapter Integer
+// MARK: * Infini Int x Text x Stdlib
 //*============================================================================*
 
-/// A binary integer adapter.
-public protocol AdapterInteger:
-    BitCastable,
-    Swift.BinaryInteger,
-    Swift.LosslessStringConvertible,
-    Swift.Sendable
-where
-    Base.Stdlib == Self,
-    Base.BitPattern == BitPattern,
-    Base.IntegerLiteralType == IntegerLiteralType,
-    Magnitude: AdapterInteger,
-    Magnitude: BitCastable,
-    Magnitude.BitPattern == BitPattern,
-    Stride == Swift.Int
-{
-    
-    associatedtype Base: FiniteInteger & Interoperable
-    
-    //=------------------------------------------------------------------------=
-    // MARK: State
-    //=------------------------------------------------------------------------=
-    
-    @inlinable var base: Base { get set } // TODO: read & modify
+extension InfiniInt.Stdlib {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable init(_ base: consuming Base)
+    @inlinable public init?(_ description: consuming String) {
+        guard let base = Base(description) else { return nil }
+        self.init(base)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var description: String {
+        self.base.description
+    }
 }

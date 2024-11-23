@@ -8,12 +8,13 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import InfiniIntKit
 
 //*============================================================================*
-// MARK: * Adapter Integer x Comparison
+// MARK: * Infini Int x Comparison x Stdlib
 //*============================================================================*
 
-extension AdapterInteger {
+extension InfiniInt.Stdlib {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

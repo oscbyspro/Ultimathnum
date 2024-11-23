@@ -8,23 +8,24 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import InfiniIntKit
 
 //*============================================================================*
-// MARK: * Adapter Integer x Bitwise
+// MARK: * Infini Int x Bitwise x Stdlib
 //*============================================================================*
 
-extension AdapterInteger {
+extension InfiniInt.Stdlib {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     @inlinable public static prefix func ~(instance: consuming Self) -> Self {
-        Self(~Base(instance))
+        Self(~instance.base)
     }
     
     @inlinable public static func &(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(Base(lhs) & rhs.base)
+        Self(lhs.base & rhs.base)
     }
     
     @inlinable public static func &=(lhs: inout Self, rhs: borrowing Self) {
@@ -32,7 +33,7 @@ extension AdapterInteger {
     }
     
     @inlinable public static func |(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(Base(lhs) | rhs.base)
+        Self(lhs.base | rhs.base)
     }
     
     @inlinable public static func |=(lhs: inout Self, rhs: borrowing Self) {
@@ -40,7 +41,7 @@ extension AdapterInteger {
     }
     
     @inlinable public static func ^(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(Base(lhs) ^ rhs.base)
+        Self(lhs.base ^ rhs.base)
     }
     
     @inlinable public static func ^=(lhs: inout Self, rhs: borrowing Self) {

@@ -8,22 +8,23 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import InfiniIntKit
 
 //*============================================================================*
-// MARK: * Adapter Integer x Stride
+// MARK: * Infini Int x Multiplication x Stdlib
 //*============================================================================*
 
-extension AdapterInteger {
+extension InfiniInt.Stdlib {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public func advanced(by distance: Swift.Int) -> Self {
-        Self(self.base.advanced(by: distance))
+    @inlinable public static func *=(lhs: inout Self, rhs: borrowing Self) {
+        lhs.base *= rhs.base
     }
     
-    @inlinable public func distance(to other: Self) -> Swift.Int {
-        self.base.distance(to: other.base)
+    @inlinable public static func *(lhs: borrowing Self, rhs: borrowing Self) -> Self {
+        Self(lhs.base * rhs.base)
     }
 }

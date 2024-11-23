@@ -39,7 +39,7 @@ import TestKit
         }
         
         func whereIs<A, B>(source: A.Type, destination: B.Type)
-        throws where A: SwiftIEEE754, B: AdapterInteger {
+        throws where A: SwiftIEEE754, B: InfiniIntStdlib {
             
             try #require(B.Base.isArbitrary)
             
@@ -49,7 +49,7 @@ import TestKit
                 for _ in 0 ..< 64 {
                     let float   = A.random(in: bounds, using: &randomness.stdlib)
                     let rounded = float.rounded(FloatingPointRoundingRule.towardZero)
-                    let integer = try #require(B.Base.leniently(float)?.map(B.init))
+                    let integer = try #require(B.Base.leniently(float)?.map(B.init(_:)))
                     
                     try #require(B(         (float)) == integer.value)
                     try #require(B(exactly: (float)) == integer.optional())
@@ -75,7 +75,7 @@ import TestKit
         }
         
         func whereIs<A, B>(source: A.Type, destination: B.Type)
-        throws where A: SwiftIEEE754, B: AdapterInteger {
+        throws where A: SwiftIEEE754, B: InfiniIntStdlib {
             
             try #require(B.Base.isArbitrary)
             

@@ -8,12 +8,13 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import InfiniIntKit
 
 //*============================================================================*
-// MARK: * Adapter Integer x Complement
+// MARK: * Infini Int x Complement x Stdlib
 //*============================================================================*
 
-extension AdapterInteger {
+extension InfiniInt.Stdlib {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -21,7 +22,7 @@ extension AdapterInteger {
     
     @inlinable public var magnitude: Magnitude {
         consuming get {
-            Magnitude(raw: Base(self).magnitude())
+            Magnitude(raw: self.base.magnitude())
         }
     }
 }

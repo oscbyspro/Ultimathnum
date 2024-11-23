@@ -36,7 +36,7 @@ import TestKit
             try whereIs(type) // TODO: await parameterized tests fix
         }
         
-        func whereIs<T>(_ type: T.Type) throws where T: AdapterInteger {
+        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib {
             let size = IX(size: T.Base.self) ?? 256
             
             for _ in 0 ..< 128 {
@@ -57,7 +57,7 @@ import TestKit
             try whereIs(type) // TODO: await parameterized tests fix
         }
         
-        func whereIs<T>(_ type: T.Type) throws where T: AdapterInteger {
+        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib {
             try Ɣrequire(T.zero, up: IXL.Stdlib(Int.min) + 2, is: T.zero)
             try Ɣrequire(T.zero, up: IXL.Stdlib(Int.max) + 1, is: T.zero)
             try Ɣrequire(T.zero, up: IXL.Stdlib(Int.max),     is: T.zero)
@@ -78,7 +78,7 @@ import TestKit
             try whereIs(type) // TODO: await parameterized tests fix
         }
         
-        func whereIs<T>(_ type: T.Type) throws where T: AdapterInteger {
+        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib {
             let size = IX(size: T.Base.self) ?? 256
             
             for _ in 0 ..< 32 {
@@ -100,7 +100,7 @@ import TestKit
     func Ɣrequire<T>(
         _  instance: T, up distance: IXL.Stdlib, is expectation: T,
         at location: SourceLocation = #_sourceLocation
-    )   throws where T: AdapterInteger {
+    )   throws where T: InfiniIntStdlib {
         
         let opposite: IXL.Stdlib = -distance
         

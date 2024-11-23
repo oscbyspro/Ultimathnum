@@ -36,7 +36,7 @@ import TestKit
             try whereIs(type) // TODO: await parameterized tests fix
         }
         
-        func whereIs<T>(_ type: T.Type) throws where T: AdapterInteger {
+        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib {
             let size = IX(size: T.Base.self) ?? 256
             
             for _ in 0  ..< 128 {
@@ -45,12 +45,6 @@ import TestKit
                 let coder = try #require(TextInt(radix:  radix))
                 let lowercase = value.description(using: coder.lowercased())
                 let uppercase = value.description(using: coder.uppercased())
-                
-                try #require(T(lowercase, using: coder)  == T(value))
-                try #require(T(uppercase, using: coder)  == T(value))
-                
-                try #require(T(value).description(using: coder.lowercased()) == lowercase)
-                try #require(T(value).description(using: coder.uppercased()) == uppercase)
                 
                 try #require(String(T(value), radix: Swift.Int(radix), uppercase: false) == lowercase)
                 try #require(String(T(value), radix: Swift.Int(radix), uppercase: true ) == uppercase)

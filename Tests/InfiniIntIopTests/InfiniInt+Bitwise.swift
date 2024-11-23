@@ -36,7 +36,7 @@ import TestKit
             try whereIs(type) // TODO: await parameterized tests fix
         }
         
-        func whereIs<T>(_ type: T.Type) throws where T: AdapterInteger {
+        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib {
             let size = IX(size: T.Base.self) ?? 256
             
             for _ in 0 ..< 32 {
@@ -61,7 +61,7 @@ import TestKit
             try whereIs(type) // TODO: await parameterized tests fix
         }
         
-        func whereIs<T>(_ type: T.Type) throws where T: AdapterInteger {
+        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib {
             let size = IX(size: T.Base.self) ?? 256
             
             for _ in 0 ..< 32 {
@@ -87,7 +87,7 @@ import TestKit
             try whereIs(type) // TODO: await parameterized tests fix
         }
         
-        func whereIs<T>(_ type: T.Type) throws where T: AdapterInteger {
+        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib {
             let size = IX(size: T.Base.self) ?? 256
             
             for _ in 0 ..< 32 {
@@ -113,7 +113,7 @@ import TestKit
             try whereIs(type) // TODO: await parameterized tests fix
         }
         
-        func whereIs<T>(_ type: T.Type) throws where T: AdapterInteger {
+        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib {
             let size = IX(size: T.Base.self) ?? 256
             
             for _ in 0 ..< 32 {

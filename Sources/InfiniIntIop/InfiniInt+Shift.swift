@@ -8,12 +8,13 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import InfiniIntKit
 
 //*============================================================================*
-// MARK: * Adapter Integer x Shift
+// MARK: * Infini Int x Shift x Stdlib
 //*============================================================================*
 
-extension AdapterInteger {
+extension InfiniInt.Stdlib {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
@@ -24,7 +25,7 @@ extension AdapterInteger {
     }
     
     @inlinable public static func <<(instance: consuming Self, distance: some Swift.BinaryInteger) -> Self {
-        Self(Base(instance) << IX(Swift.Int(clamping: distance)))
+        Self(instance.base << IX(Swift.Int(clamping: distance)))
     }
     
     @inlinable public static func >>=(instance: inout Self, distance: some Swift.BinaryInteger) {
@@ -32,6 +33,6 @@ extension AdapterInteger {
     }
     
     @inlinable public static func >>(instance: consuming Self, distance: some Swift.BinaryInteger) -> Self {
-        Self(Base(instance) >> IX(Swift.Int(clamping: distance)))
+        Self(instance.base >> IX(Swift.Int(clamping: distance)))
     }
 }

@@ -33,27 +33,22 @@ extension InfiniInt: Interoperable where Self: FiniteInteger {
     // MARK: * Stdlib
     //*========================================================================*
     
-    @frozen public struct Stdlib: AdapterInteger, Swift.SignedInteger {
+    @frozen public struct Stdlib:
+        BitCastable,
+        Swift.LosslessStringConvertible,
+        Swift.Sendable,
+        Swift.SignedInteger
+    {
         
         public typealias Base = InfiniInt
         
-        public typealias IntegerLiteralType = Base.IntegerLiteralType
-        
         public typealias Magnitude = Self
-        
-        //=--------------------------------------------------------------------=
-        // MARK: Metadata
-        //=--------------------------------------------------------------------=
-        
-        @inlinable public static var isSigned: Bool {
-            Base.isSigned
-        }
         
         //=--------------------------------------------------------------------=
         // MARK: State
         //=--------------------------------------------------------------------=
         
-        public var base: Base
+        @usableFromInline var base: Base
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers
@@ -69,6 +64,14 @@ extension InfiniInt: Interoperable where Self: FiniteInteger {
         
         @inlinable public consuming func load(as type: Base.BitPattern.Type) -> Base.BitPattern {
             self.base.load(as: Base.BitPattern.self)
+        }
+        
+        //=------------------------------------------------------------------------=
+        // MARK: Initializers
+        //=------------------------------------------------------------------------=
+        
+        @inlinable public init(integerLiteral: Base.IntegerLiteralType) {
+            self.init(Base(integerLiteral: integerLiteral))
         }
     }
 }

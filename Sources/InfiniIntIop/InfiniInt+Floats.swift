@@ -8,34 +8,24 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import InfiniIntKit
 
 //*============================================================================*
-// MARK: * Adapter Integer x Integers
+// MARK: * Infini Int x Floats x Stdlib
 //*============================================================================*
 
-extension AdapterInteger {
+extension InfiniInt.Stdlib {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public init(_ source: some Swift.BinaryInteger) {
-        self.init(truncatingIfNeeded: source)
+    @inlinable public init(_ source: some Swift.BinaryFloatingPoint) {
+        self.init(Base(source))
     }
     
-    @inlinable public init(clamping source: some Swift.BinaryInteger) {
-        self.init(truncatingIfNeeded: source)
-    }
-    
-    @inlinable public init?(exactly source: some Swift.BinaryInteger) {
-        self.init(truncatingIfNeeded: source)
-    }
-    
-    @inlinable public init<Other>(truncatingIfNeeded source: Other) where Other: Swift.BinaryInteger {
-        self = Namespace.withUnsafeBufferPointerOrCopy(of: source.words) {
-            $0.withMemoryRebound(to: UX.self) {
-                Self(Base(load: DataInt($0, repeating: Bit(Other.isSigned && $0.last?.msb == Bit.one))!))
-            }
-        }
+    @inlinable public init?(exactly source: some Swift.BinaryFloatingPoint) {
+        guard let base = Base.exactly(source) else { return nil }
+        self.init(base)
     }
 }

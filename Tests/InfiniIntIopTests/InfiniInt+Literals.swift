@@ -75,7 +75,7 @@ import TestKit
         try  whereIs(InfiniInt<I8>.Stdlib.self)
         try  whereIs(InfiniInt<IX>.Stdlib.self)
         
-        func whereIs<T>(_ type: T.Type) throws where T: AdapterInteger, T.IntegerLiteralType == StaticBigInt {
+        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib, T.IntegerLiteralType == StaticBigInt {
             let base   = T.Base(integerLiteral: literal)
             let stdlib = T.init(integerLiteral: literal)
             

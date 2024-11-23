@@ -7,18 +7,37 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
-import CoreIop
 import CoreKit
 import InfiniIntIop
 import InfiniIntKit
 
 //*============================================================================*
-// MARK: * Utilities x Globals
+// MARK: * Utilities x Infini Int Stdlib
 //*============================================================================*
-// Imagine an array of chosen types and a bunch of type filters...
+
+/// ### Development
+///
+/// - Note: We need this protocol absent existential generic types.
+///
+protocol InfiniIntStdlib:
+    BitCastable,
+    Swift.SignedInteger,
+    Swift.LosslessStringConvertible,
+    Swift.Sendable
+where
+    Base.Stdlib == Self,
+    Base.BitPattern == Self.BitPattern,
+    Base.IntegerLiteralType == StaticBigInt,
+    Self.Magnitude == Self,
+    Self.Stride == Swift.Int,
+    Self.IntegerLiteralType == StaticBigInt
+{
+    
+    associatedtype Base: FiniteInteger & Interoperable
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Models
 //=----------------------------------------------------------------------------=
 
-let typesAsInfiniIntStdlib: [any InfiniIntStdlib.Type] = [
-    InfiniInt<I8>.Stdlib.self,
-    InfiniInt<IX>.Stdlib.self,
-]
+extension InfiniInt.Stdlib: InfiniIntStdlib { }

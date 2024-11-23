@@ -55,13 +55,13 @@ import TestKit
             try whereIs(type) // TODO: await parameterized tests fix
         }
         
-        func whereIs<T>(_ type: T.Type) throws where T: AdapterInteger {
-            try Ɣrequire(source, is: T.Base.exactly(destination).map(T.init))
+        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib {
+            try Ɣrequire(source, is: T.Base.exactly(destination).map(T.init(_:)))
         }
     }
     
     @Test(
-        "StdlibInt/integers: init(_:) - some Swift.BinaryInteger",
+        "InfiniInt.Stdlib/integers: init(_:) - some Swift.BinaryInteger",
         Tag.List.tags(.forwarding, .generic, .todo),
         arguments: fuzzers
     )   func initSwiftBinaryInteger(
@@ -75,18 +75,18 @@ import TestKit
         }
 
         func whereIs<A, B>(source: A.Type, destination: B.Type)
-        throws where A: CoreInteger, B: AdapterInteger {
+        throws where A: CoreInteger, B: InfiniIntStdlib {
             
             for _ in 0 ..< conditional(debug: 032, release: 1024) {
                 let source = A.entropic(using: &randomness)
                 let destination = B.Base.exactly(source)
-                try Ɣrequire(A.Stdlib(source), is: destination.map(B.init))
+                try Ɣrequire(A.Stdlib(source), is: destination.map(B.init(_:)))
             }
         }
     }
     
     @Test(
-        "StdlibInt/integers: init(_:) - some Swift.BinaryInteger as Self",
+        "InfiniInt.Stdlib/integers: init(_:) - some Swift.BinaryInteger as Self",
         Tag.List.tags(.forwarding, .generic, .todo),
         arguments: fuzzers
     )   func initSwiftBinaryIntegerAsSelf(
@@ -97,7 +97,7 @@ import TestKit
             try whereIs(type) // TODO: await parameterized tests fix
         }
         
-        func whereIs<T>(_ type: T.Type) throws where T: AdapterInteger {
+        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib {
             let size = IX(size: T.Base.self) ?? 256
             
             for _ in 0 ..< conditional(debug: 32, release: 1024) {
@@ -115,7 +115,7 @@ import TestKit
         _  source: A,
         is destination: Fallible<B>,
         at location: SourceLocation = #_sourceLocation
-    )   throws where A: Swift.BinaryInteger, B: AdapterInteger {
+    )   throws where A: Swift.BinaryInteger, B: InfiniIntStdlib {
                 
         always: do {
             try #require(B(destination.value)          == destination.value, sourceLocation: location)
@@ -136,18 +136,16 @@ import TestKit
         }
         
         if  let destination: B = destination.optional() {
-            let radix10 = destination.description(using:     .decimal)
-            let radix16 = destination.description(using: .hexadecimal)
+            let radix10 = B.Base(destination).description(using:     .decimal)
+            let radix16 = B.Base(destination).description(using: .hexadecimal)
+            
+            try #require(B(radix10) == destination, sourceLocation: location)
             
             try #require(radix10 ==      source.description, sourceLocation: location)
             try #require(radix10 == destination.description, sourceLocation: location)
             
             try #require(radix10 == String(destination, radix: 10), sourceLocation: location)
             try #require(radix16 == String(destination, radix: 16), sourceLocation: location)
-
-            try #require(B(radix10)                      == destination, sourceLocation: location)
-            try #require(B(radix10, using:     .decimal) == destination, sourceLocation: location)
-            try #require(B(radix16, using: .hexadecimal) == destination, sourceLocation: location)
         }
     }
 }

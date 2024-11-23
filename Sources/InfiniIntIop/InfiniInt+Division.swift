@@ -8,19 +8,20 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
+import InfiniIntKit
 
 //*============================================================================*
-// MARK: * Adapter Integer x Division
+// MARK: * Infini Int x Division x Stdlib
 //*============================================================================*
 
-extension AdapterInteger {
+extension InfiniInt.Stdlib {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
     @inlinable public static func /(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(Base(lhs) / rhs.base)
+        Self(lhs.base / rhs.base)
     }
     
     @inlinable public static func /=(lhs: inout Self, rhs: borrowing Self) {
@@ -28,7 +29,7 @@ extension AdapterInteger {
     }
     
     @inlinable public static func %(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(Base(lhs) % rhs.base)
+        Self(lhs.base % rhs.base)
     }
     
     @inlinable public static func %=(lhs: inout Self, rhs: borrowing Self) {
@@ -36,7 +37,7 @@ extension AdapterInteger {
     }
     
     @inlinable public consuming func quotientAndRemainder(dividingBy divisor: borrowing Self) -> (quotient: Self, remainder: Self) {
-        let division = Base(self).division(divisor.base).unwrap().unwrap()
+        let division: Division = self.base.division(Nonzero(divisor.base))
         return (quotient: Self(division.quotient), remainder: Self(division.remainder))
     }
 }

@@ -27,6 +27,16 @@ extension InfiniInt.Stdlib {
         }
     }
     
+    /// The least significant word.
+    ///
+    /// ### Development
+    ///
+    /// - Note: This is a requirement of `Swift.BinaryInteger`.
+    ///
+    @inlinable public var _lowWord: Swift.UInt {
+        Swift.UInt(Words.element(of: self.base, at: IX.zero))
+    }
+    
     //*========================================================================*
     // MARK: * Words
     //*========================================================================*
@@ -38,13 +48,15 @@ extension InfiniInt.Stdlib {
         //=--------------------------------------------------------------------=
         
         @usableFromInline let base: Base
+        public let count: Swift.Int
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
         @inlinable internal init(_ base: consuming Base) {
-            self.base = base
+            self.count = Swift.Int(Self.count(of: base))
+            self.base  = base
         }
         
         //=--------------------------------------------------------------------=
@@ -52,7 +64,7 @@ extension InfiniInt.Stdlib {
         //=--------------------------------------------------------------------=
         
         @inlinable public var description: String {
-            "[\(self.lazy.map({ $0.description }).joined(separator: ", "))]"
+            "[\(self.lazy.map(String.init(describing:)).joined(separator: ", "))]"
         }
         
         @inlinable public var startIndex: Swift.Int {
@@ -63,39 +75,55 @@ extension InfiniInt.Stdlib {
             self.count as Swift.Int
         }
         
-        @inlinable public var count: Swift.Int {
-            if  Base.Element.size >= UX.size {
-                self.base.withUnsafeBinaryIntegerElements(as: UX.self) {
-                    Swift.Int($0.body.count + IX(Bit($0.body.last?.msb != $0.appendix)))
+        @inlinable public subscript(index: Swift.Int) -> Swift.UInt {
+            Swift.UInt(Self.element(of: self.base, at: IX(index)))
+        }
+    }
+}
+
+//=----------------------------------------------------------------------------=
+// MARK: + Algorithms
+//=----------------------------------------------------------------------------=
+
+extension InfiniInt.Stdlib.Words {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable internal static func count(of base: borrowing InfiniInt) -> IX {
+        if  InfiniInt.Element.size >= UX.size {
+            base.withUnsafeBinaryIntegerElements(as: UX.self) {
+                $0.body.count + IX(Bit($0.body.last?.msb != $0.appendix))
+            }
+            
+        }   else {
+            base.withUnsafeBinaryIntegerElements(as: U8.self) {
+                let divisor = Nonzero(unchecked: UX(raw: MemoryLayout<UX>.size))
+                var division: Division = UX(raw: $0.body.count).division(divisor)
+                
+                if !division.remainder.isZero {
+                    division.quotient &+= 1
+                }   else {
+                    division.quotient &+= UX(Bit($0.body.last?.msb != $0.appendix))
                 }
                 
-            }   else {
-                self.base.withUnsafeBinaryIntegerElements(as: U8.self) {
-                    let divisor = Nonzero(unchecked: UX(raw: MemoryLayout<UX>.size))
-                    var division: Division = UX(raw: $0.body.count).division(divisor)
-                    if !division.remainder.isZero {
-                        division.quotient &+= 1
-                    }   else {
-                        division.quotient &+= UX(Bit($0.body.last?.msb != $0.appendix))
-                    }
-                    
-                    return Swift.Int(raw: division.quotient)
-                }
+                return IX(raw: division.quotient)
             }
         }
-        
-        @inlinable public subscript(index: Swift.Int) -> Swift.UInt {
-            if  Base.Element.size >= UX.size {
-                self.base.withUnsafeBinaryIntegerElements(as: UX.self) {
-                    Swift.UInt($0[UX(IX(index))])
-                }
-                
-            }   else {
-                self.base.withUnsafeBinaryIntegerElements(as: U8.self) {
-                    let ratio = UX(raw: MemoryLayout<UX>.size)
-                    let start = UX(IX(index)).times(ratio).optional() ?? UX.max
-                    return Swift.UInt($0[start...].load(as: UX.self))
-                }
+    }
+    
+    @inlinable internal static func element(of base: borrowing InfiniInt, at index: IX) -> UX {
+        if  InfiniInt.Element.size >= UX.size {
+            base.withUnsafeBinaryIntegerElements(as: UX.self) {
+                $0[UX(index)]
+            }
+            
+        }   else {
+            base.withUnsafeBinaryIntegerElements(as: U8.self) {
+                let ratio = UX(raw: MemoryLayout<UX>.size)
+                let start = UX(index).times(ratio).optional() ?? UX.max
+                return $0[start...].load(as: UX.self)
             }
         }
     }
