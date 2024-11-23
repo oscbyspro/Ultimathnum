@@ -12,28 +12,28 @@
 //*============================================================================*
 
 /// An integer split into 2 parts.
-@frozen public struct Doublet<Base>: BitCastable, Comparable, Sendable where Base: BinaryInteger {
+@frozen public struct Doublet<High>: BitCastable, Comparable, Sendable where High: BinaryInteger {
     
-    public typealias High = Base
+    public typealias High = High
     
-    public typealias Low  = Base.Magnitude
+    public typealias Low  = High.Magnitude
     
-    public typealias BitPattern = Doublet<Base.Magnitude>
+    public typealias BitPattern = Doublet<High.Magnitude>
     
-    public typealias Magnitude  = Doublet<Base.Magnitude>
+    public typealias Magnitude  = Doublet<High.Magnitude>
     
-    public typealias Signitude  = Doublet<Base.Signitude>
+    public typealias Signitude  = Doublet<High.Signitude>
     
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
     #if _endian(big)
-    public var high: Base
-    public var low:  Base.Magnitude
+    public var high: High
+    public var low:  High.Magnitude
     #else
-    public var low:  Base.Magnitude
-    public var high: Base
+    public var low:  High.Magnitude
+    public var high: High
     #endif
     
     //=------------------------------------------------------------------------=
@@ -44,7 +44,7 @@
     ///
     /// - Note: The `high` part of an unsigned `source` is always `0`.
     ///
-    @inlinable public init(_ source: consuming Base) {
+    @inlinable public init(_ source: consuming High) {
         let x = Bit(source.isNegative)
         self.low  = Low (raw:  source)
         self.high = High(repeating: x)
@@ -57,13 +57,13 @@
     }
     
     /// Creates a new instance from the given components.
-    @inlinable public init(low: consuming Base.Magnitude) {
+    @inlinable public init(low: consuming High.Magnitude) {
         self.low  = low
         self.high = High.zero
     }
     
     /// Creates a new instance from the given components.
-    @inlinable public init(low: consuming Base.Magnitude, high: consuming Base) {
+    @inlinable public init(low: consuming High.Magnitude, high: consuming High) {
         self.low  = low
         self.high = high
     }
@@ -75,14 +75,14 @@
     @inlinable public init(raw source: consuming BitPattern) {
         self.init(
             low:  source.low,
-            high: Base(raw: source.high)
+            high: High(raw: source.high)
         )
     }
     
     @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
         BitPattern(
             low:  self.low,
-            high: Base.Magnitude(raw: self.high)
+            high: High.Magnitude(raw: self.high)
         )
     }
     

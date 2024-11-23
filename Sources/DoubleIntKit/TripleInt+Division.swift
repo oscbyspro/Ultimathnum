@@ -13,16 +13,16 @@ import CoreKit
 // MARK: * Triple Int x Division x Unsigned
 //*============================================================================*
 
-extension TripleInt where Base == Base.Magnitude {
+extension TripleInt where High == High.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x 3 by 1 as 2 and 1
     //=------------------------------------------------------------------------=
     
-    @inlinable package consuming func division3121(unchecked divisor: Nonzero<Base>) -> Division<DoubleInt<Base>, Base> {
+    @inlinable package consuming func division3121(unchecked divisor: Nonzero<High>) -> Division<DoubleInt<High>, High> {
         Swift.assert(divisor.value > self.high, "quotient must fit in two halves")
-        let high = Base.division( Doublet(low: self.mid, high: self.high     ), by:  divisor).unchecked()
-        let low  = Base.division( Doublet(low: self.low, high: high.remainder), by:  divisor).unchecked()
+        let high = High.division( Doublet(low: self.mid, high: self.high     ), by:  divisor).unchecked()
+        let low  = High.division( Doublet(low: self.low, high: high.remainder), by:  divisor).unchecked()
         return Division(quotient: DoubleInt(low: low.quotient, high: high.quotient), remainder: low.remainder)
     }
     
@@ -30,15 +30,15 @@ extension TripleInt where Base == Base.Magnitude {
     // MARK: Transformation x 3 by 2 as 1 and 2
     //=------------------------------------------------------------------------=
     
-    @inlinable package consuming func division3212(normalized divisor: Nonzero<DoubleInt<Base>>) -> Division<Base, DoubleInt<Base>> {
+    @inlinable package consuming func division3212(normalized divisor: Nonzero<DoubleInt<High>>) -> Division<High, DoubleInt<High>> {
         //=--------------------------------------=
-        Swift.assert(divisor.value.high >= Base.msb, "the divisor must be normalized")
+        Swift.assert(divisor.value.high >= High.msb, "the divisor must be normalized")
         Swift.assert(DoubleInt(low: self.mid, high: self.high) < divisor.value, "the quotient must fit in one half")
         //=--------------------------------------=
-        var quotient: Base = if divisor.value.high == self.high {
-            Base.max // the quotient must fit in one part
+        var quotient: High = if divisor.value.high == self.high {
+            High.max // the quotient must fit in one part
         }   else {
-            Base.division(Doublet(low: self.mid, high: self.high), by: Nonzero(unchecked: divisor.value.high)).unchecked().quotient
+            High.division(Doublet(low: self.mid, high: self.high), by: Nonzero(unchecked: divisor.value.high)).unchecked().quotient
         }
         //=--------------------------------------=
         // decrement when overestimated (max 2)

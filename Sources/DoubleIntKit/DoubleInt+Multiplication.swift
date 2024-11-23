@@ -45,9 +45,9 @@ extension DoubleInt {
     // MARK: Transformations x 2 by 1 as 3
     //=------------------------------------------------------------------------=
 
-    @inlinable package func multiplication(_ multiplier: Base) -> TripleInt<Base> {
+    @inlinable package func multiplication(_ multiplier: High) -> TripleInt<High> {
         let minus  = self.isNegative != multiplier.isNegative
-        let result = TripleInt<Base>(raw: self.magnitude().multiplication(multiplier.magnitude()))
+        let result = TripleInt<High>(raw: self.magnitude().multiplication(multiplier.magnitude()))
         return minus ? result.complement() : result
     }
 
@@ -66,13 +66,13 @@ extension DoubleInt {
 // MARK: * Double Int x Multiplication x Unsigned
 //*============================================================================*
 
-extension DoubleInt where Base == Base.Magnitude {
+extension DoubleInt where High == High.Magnitude {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x 2 by 1 as 3
     //=------------------------------------------------------------------------=
     
-    @inlinable func multiplication(_ multiplier: Base) -> TripleInt<Base> {
+    @inlinable func multiplication(_ multiplier: High) -> TripleInt<High> {
         let ax = Self(self.low .multiplication(multiplier))
         let bx = Self(self.high.multiplication(multiplier))
         return TripleInt(low: ax.low, high: bx.plus(ax.high).unchecked().storage)

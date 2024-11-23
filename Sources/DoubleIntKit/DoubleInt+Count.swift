@@ -33,7 +33,7 @@ extension DoubleInt {
 
         scope: do {
             count   = IX(raw: self.storage.low .ascending(bit))
-            guard count == IX(size: Base.self) else { break scope }
+            guard count == IX(size: High.self) else { break scope }
             count &+= IX(raw: self.storage.high.ascending(bit))
         }
         
@@ -45,7 +45,7 @@ extension DoubleInt {
 
         scope: do {
             count   = IX(raw: self.storage.high.descending(bit))
-            guard count == IX(size: Base.self) else { break scope }
+            guard count == IX(size: High.self) else { break scope }
             count &+= IX(raw: self.storage.low .descending(bit))
         }
         

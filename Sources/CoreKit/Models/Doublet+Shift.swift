@@ -23,7 +23,7 @@ extension Doublet {
     ///
     ///  - Note: The `0` bit fills the void.
     ///
-    @inlinable public consuming func up(_ distance: Shift<Base.Magnitude>) -> Self {
+    @inlinable public consuming func up(_ distance: Shift<Low>) -> Self {
         //  TODO: await consuming fixes
         if  let nondistance = distance.inverse() {
             var high = self.high.up(distance)
@@ -41,7 +41,7 @@ extension Doublet {
     ///
     /// - Note: The `appendix` fills the void.
     ///
-    @inlinable public consuming func down(_ distance: Shift<Base.Magnitude>) -> Self {
+    @inlinable public consuming func down(_ distance: Shift<Low>) -> Self {
         //  TODO: await consuming fixes
         if  let nondistance = distance.inverse() {
             var low  = self.low .down(distance)

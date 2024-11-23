@@ -13,7 +13,7 @@ import CoreKit
 // MARK: * Utilities x Doublet
 //*============================================================================*
 
-extension Doublet where Base: SystemsInteger {
+extension Doublet where High: SystemsInteger {
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations

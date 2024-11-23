@@ -19,7 +19,7 @@ extension TripleInt {
     // MARK: Transformations x 3 by 2
     //=------------------------------------------------------------------------=
     
-    @inlinable package consuming func minus(_ decrement: borrowing DoubleInt<Base.Magnitude>) -> Fallible<Self> {
+    @inlinable package consuming func minus(_ decrement: borrowing DoubleInt<Low>) -> Fallible<Self> {
         let low  = self.storage.low .minus(decrement.storage.low)
         let mid  = self.storage.mid .minus(Mid(raw: decrement.storage.high), plus: low.error)
         let high = self.storage.high.decremented((mid.error))

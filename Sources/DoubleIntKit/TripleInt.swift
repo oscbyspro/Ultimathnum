@@ -13,23 +13,23 @@ import CoreKit
 // MARK: * Triple Int
 //*============================================================================*
 
-@frozen public struct TripleInt<Base: SystemsInteger>: BitCastable, Comparable {
+@frozen public struct TripleInt<High: SystemsInteger>: BitCastable, Comparable {
+        
+    public typealias High = High
     
-    public typealias Storage = Triplet<Base>
+    public typealias Mid  = High.Magnitude
     
-    public typealias High = Base
+    public typealias Low  = High.Magnitude
     
-    public typealias Mid  = Base.Magnitude
-    
-    public typealias Low  = Base.Magnitude
+    public typealias Storage = Triplet<High>
     
     public typealias BitPattern = Storage.BitPattern
     
-    public typealias Element = Base.Element
+    public typealias Element = High.Element
     
-    public typealias Magnitude = TripleInt<Base.Magnitude>
+    public typealias Magnitude = TripleInt<High.Magnitude>
     
-    public typealias Signitude = TripleInt<Base.Signitude>
+    public typealias Signitude = TripleInt<High.Signitude>
     
     public typealias IntegerLiteralType = StaticBigInt
     
@@ -38,11 +38,11 @@ import CoreKit
     //=------------------------------------------------------------------------=
     
     @inlinable public static var mode: Signedness {
-        Base.mode
+        High.mode
     }
     
     @inlinable public static var size: Count {
-        Count(raw: IX(size: Base.self) * 3)
+        Count(raw: IX(size: High.self) * 3)
     }
     
     //=------------------------------------------------------------------------=
@@ -69,17 +69,17 @@ import CoreKit
     }
     
     /// Creates a new instance from the given components.
-    @inlinable public init(low: consuming Base.Magnitude) {
+    @inlinable public init(low: consuming High.Magnitude) {
         self.init(Storage(low: low))
     }
     
     /// Creates a new instance from the given components.
-    @inlinable public init(low: consuming Base.Magnitude, mid: consuming Base.Magnitude) {
+    @inlinable public init(low: consuming High.Magnitude, mid: consuming High.Magnitude) {
         self.init(Storage(low: low, mid: mid))
     }
     
     /// Creates a new instance from the given components.
-    @inlinable public init(low: consuming Base.Magnitude, mid: consuming Base.Magnitude, high: consuming Base) {
+    @inlinable public init(low: consuming High.Magnitude, mid: consuming High.Magnitude, high: consuming High) {
         self.init(Storage(low: low, mid: mid, high: high))
     }
     
@@ -88,17 +88,17 @@ import CoreKit
     //=------------------------------------------------------------------------=
     
     /// Creates a new instance from the given components.
-    @inlinable public init(low: consuming Base.Magnitude, high: consuming Doublet<Base>) {
+    @inlinable public init(low: consuming High.Magnitude, high: consuming Doublet<High>) {
         self.init(Storage(low: low, high: high))
     }
     
     /// Creates a new instance from the given components.
-    @inlinable public init(low: consuming Doublet<Base.Magnitude>) {
+    @inlinable public init(low: consuming Doublet<High.Magnitude>) {
         self.init(Storage(low: low))
     }
     
     /// Creates a new instance from the given components.
-    @inlinable public init(low: consuming Doublet<Base.Magnitude>, high: consuming Base) {
+    @inlinable public init(low: consuming Doublet<High.Magnitude>, high: consuming High) {
         self.init(Storage(low: low, high: high))
     }
     

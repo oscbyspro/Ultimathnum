@@ -30,21 +30,21 @@ import CoreKit
 /// This means `Int64` for `I256` and `UInt64` for `U256`. `Swift.StaticBigInt` is a
 /// more appropriate integer literal type, but it is also more expensive as of `Swift 5.9`.
 ///
-@frozen public struct DoubleInt<Base: SystemsInteger>: SystemsInteger, Namespace.Foo, Namespace.Bar {
+@frozen public struct DoubleInt<High: SystemsInteger>: SystemsInteger, Namespace.Foo, Namespace.Bar {
     
-    public typealias Storage = Doublet<Base>
-    
-    public typealias High = Base
-    
-    public typealias Low  = Base.Magnitude
+    public typealias High = High
             
+    public typealias Low  = High.Magnitude
+    
+    public typealias Storage = Doublet<High>
+    
     public typealias BitPattern = Storage.BitPattern
     
-    public typealias Element = Base.Element
+    public typealias Element = High.Element
     
-    public typealias Magnitude = DoubleInt<Base.Magnitude>
+    public typealias Magnitude = DoubleInt<High.Magnitude>
     
-    public typealias Signitude = DoubleInt<Base.Signitude>
+    public typealias Signitude = DoubleInt<High.Signitude>
     
     public typealias IntegerLiteralType = Element.IntegerLiteralType
     
@@ -53,11 +53,11 @@ import CoreKit
     //=------------------------------------------------------------------------=
     
     @inlinable public static var mode: Signedness {
-        Base.mode
+        High.mode
     }
     
     @inlinable public static var size: Count {
-        Count(raw: IX(size: Base.self) * 2)
+        Count(raw: IX(size: High.self) * 2)
     }
     
     //=------------------------------------------------------------------------=
@@ -147,8 +147,8 @@ import CoreKit
 // MARK: + Un/signed
 //=----------------------------------------------------------------------------=
 
-extension DoubleInt:   SignedInteger where Base:   SignedInteger { }
-extension DoubleInt: UnsignedInteger where Base: UnsignedInteger { }
+extension DoubleInt:   SignedInteger where High:   SignedInteger { }
+extension DoubleInt: UnsignedInteger where High: UnsignedInteger { }
 
 //=----------------------------------------------------------------------------=
 // MARK: + Aliases

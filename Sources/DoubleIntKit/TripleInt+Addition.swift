@@ -19,7 +19,7 @@ extension TripleInt {
     // MARK: Transformations x 3 by 2
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func plus(_ increment: borrowing DoubleInt<Base.Magnitude>) -> Fallible<Self> {
+    @inlinable public consuming func plus(_ increment: borrowing DoubleInt<Low>) -> Fallible<Self> {
         let low  = self.storage.low .plus(increment.storage.low)
         let mid  = self.storage.mid .plus(Mid(raw: increment.storage.high), plus: low.error)
         let high = self.storage.high.incremented((mid.error))

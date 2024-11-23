@@ -12,32 +12,32 @@
 //*============================================================================*
 
 /// An integer split into 3 parts.
-@frozen public struct Triplet<Base>: BitCastable, Comparable, Sendable where Base: BinaryInteger {
+@frozen public struct Triplet<High>: BitCastable, Comparable, Sendable where High: BinaryInteger {
     
-    public typealias High = Base
+    public typealias High = High
     
-    public typealias Mid  = Base.Magnitude
+    public typealias Mid  = High.Magnitude
     
-    public typealias Low  = Base.Magnitude
+    public typealias Low  = High.Magnitude
     
-    public typealias BitPattern = Triplet<Base.Magnitude>
+    public typealias BitPattern = Triplet<High.Magnitude>
         
-    public typealias Magnitude  = Triplet<Base.Magnitude>
+    public typealias Magnitude  = Triplet<High.Magnitude>
     
-    public typealias Signitude  = Triplet<Base.Signitude>
+    public typealias Signitude  = Triplet<High.Signitude>
     
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
     
     #if _endian(big)
-    public var high: Base
-    public var mid:  Base.Magnitude
-    public var low:  Base.Magnitude
+    public var high: High
+    public var mid:  High.Magnitude
+    public var low:  High.Magnitude
     #else
-    public var low:  Base.Magnitude
-    public var mid:  Base.Magnitude
-    public var high: Base
+    public var low:  High.Magnitude
+    public var mid:  High.Magnitude
+    public var high: High
     #endif
     
     //=------------------------------------------------------------------------=
@@ -48,7 +48,7 @@
     ///
     /// - Note: The `mid` and `high` parts of an unsigned `source` are always `0`.
     ///
-    @inlinable public init(_ source: consuming Base) {
+    @inlinable public init(_ source: consuming High) {
         let x = Bit(source.isNegative)
         self.low  = Low (raw:  source)
         self.mid  = Mid (repeating: x)
@@ -63,21 +63,21 @@
     }
     
     /// Creates a new instance from the given components.
-    @inlinable public init(low: consuming Base.Magnitude) {
+    @inlinable public init(low: consuming High.Magnitude) {
         self.low  = low
         self.mid  = Mid .zero
         self.high = High.zero
     }
     
     /// Creates a new instance from the given components.
-    @inlinable public init(low: consuming Base.Magnitude, mid: consuming Base.Magnitude) {
+    @inlinable public init(low: consuming High.Magnitude, mid: consuming High.Magnitude) {
         self.low  = low
         self.mid  = mid
         self.high = High.zero
     }
     
     /// Creates a new instance from the given components.
-    @inlinable public init(low: consuming Base.Magnitude, mid: consuming Base.Magnitude, high: consuming Base) {
+    @inlinable public init(low: consuming High.Magnitude, mid: consuming High.Magnitude, high: consuming High) {
         self.low  = low
         self.mid  = mid
         self.high = high
@@ -88,21 +88,21 @@
     //=------------------------------------------------------------------------=
     
     /// Creates a new instance from the given components.
-    @inlinable public init(low: consuming Base.Magnitude, high: consuming Doublet<Base>) {
+    @inlinable public init(low: consuming High.Magnitude, high: consuming Doublet<High>) {
         self.low  = low
         self.mid  = high.low
         self.high = high.high
     }
     
         /// Creates a new instance from the given components.
-    @inlinable public init(low: consuming Doublet<Base.Magnitude>) {
+    @inlinable public init(low: consuming Doublet<High.Magnitude>) {
         self.low  = low.low
         self.mid  = low.high
         self.high = High.zero
     }
     
     /// Creates a new instance from the given components.
-    @inlinable public init(low: consuming Doublet<Base.Magnitude>, high: consuming Base) {
+    @inlinable public init(low: consuming Doublet<High.Magnitude>, high: consuming High) {
         self.low  = low.low
         self.mid  = low.high
         self.high = high
@@ -116,7 +116,7 @@
         self.init(
             low:  source.low,
             mid:  source.mid,
-            high: Base(raw: source.high)
+            high: High(raw: source.high)
         )
     }
     
@@ -124,7 +124,7 @@
         BitPattern(
             low:  self.low,
             mid:  self.mid,
-            high: Base.Magnitude(raw: self.high)
+            high: High.Magnitude(raw: self.high)
         )
     }
     

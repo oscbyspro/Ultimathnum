@@ -19,11 +19,11 @@ extension DoubleInt {
     // MARK: Transformations x 2 by 1 as 2
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func up(_ distance: Shift<Base.Magnitude>) -> Self {
+    @inlinable public consuming func up(_ distance: Shift<Low>) -> Self {
         Self(self.storage.up(distance))
     }
     
-    @inlinable public consuming func down(_ distance: Shift<Base.Magnitude>) -> Self {
+    @inlinable public consuming func down(_ distance: Shift<Low>) -> Self {
         Self(self.storage.down(distance))
     }
     
@@ -32,7 +32,7 @@ extension DoubleInt {
     //=------------------------------------------------------------------------=
     
     @inlinable public consuming func up(_ distance: Shift<Magnitude>) -> Self {
-        let difference = UX(raw: distance.value).minus(UX(raw: Base.size))
+        let difference = UX(raw: distance.value).minus(UX(raw: High.size))
         if  difference.error {
             return Self(self.storage.up(Shift(unchecked: distance.value)))
             
@@ -43,7 +43,7 @@ extension DoubleInt {
     }
     
     @inlinable public consuming func down(_ distance: Shift<Magnitude>) -> Self {
-        let difference = UX(raw: distance.value).minus(UX(raw: Base.size))
+        let difference = UX(raw: distance.value).minus(UX(raw: High.size))
         if  difference.error {
             return Self(self.storage.down(Shift(unchecked: distance.value)))
             
