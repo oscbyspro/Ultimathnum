@@ -55,6 +55,7 @@ Choose target dependencies from this list of products.
 .product(name: "Ultimathnum",  package: "Ultimathnum"), // umbrella
 .product(name: "CoreIop",      package: "Ultimathnum"),
 .product(name: "CoreKit",      package: "Ultimathnum"),
+.product(name: "DoubleIntIop", package: "Ultimathnum"),
 .product(name: "DoubleIntKit", package: "Ultimathnum"),
 .product(name: "FibonacciKit", package: "Ultimathnum"),
 .product(name: "InfiniIntIop", package: "Ultimathnum"),

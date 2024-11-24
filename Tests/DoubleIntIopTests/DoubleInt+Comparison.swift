@@ -9,34 +9,31 @@
 
 import CoreIop
 import CoreKit
-import InfiniIntIop
-import InfiniIntKit
+import DoubleIntIop
+import DoubleIntKit
 import RandomIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Infini Int x Stdlib x Comparison
+// MARK: * Double Int x Stdlib x Comparison
 //*============================================================================*
 
-@Suite struct InfiniIntStdlibTestsOnComparison {
+@Suite struct DoubleIntStdlibTestsOnComparison {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     @Test(
-        "InfiniInt.Stdlib/comparison: Self vs Base",
-        Tag.List.tags(.forwarding, .generic, .random, .todo),
-        arguments: fuzzers
-    )   func forwarding(
-        randomness: consuming FuzzerInt
+        "DoubleInt.Stdlib/comparison: Self vs Base",
+        Tag.List.tags(.forwarding, .generic, .random),
+        arguments: typesAsDoubleIntStdlibAsWorkaround, fuzzers
+    )   func comparison(
+        type: AnyDoubleIntStdlibType, randomness: consuming FuzzerInt
     )   throws {
         
-        for type in typesAsInfiniIntStdlib {
-            try whereIs(type) // TODO: await parameterized tests fix
-        }
-        
-        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib {
+        try  whereIs(type.base)
+        func whereIs<T>(_ type: T.Type) throws where T: DoubleIntStdlib {
             let size = IX(size: T.Base.self) ?? 256
             
             for _ in 0 ..< conditional(debug: 64, release: 128) {
@@ -48,18 +45,15 @@ import TestKit
     }
     
     @Test(
-        "InfiniInt.Stdlib/comparison: hashValue of Self vs Base",
-        Tag.List.tags(.forwarding, .generic, .random, .todo),
-        arguments: fuzzers
+        "DoubleInt.Stdlib/comparison: hashValue of Self vs Base",
+        Tag.List.tags(.forwarding, .generic, .random),
+        arguments: typesAsDoubleIntStdlibAsWorkaround, fuzzers
     )   func hashValue(
-        randomness: consuming FuzzerInt
+        type: AnyDoubleIntStdlibType, randomness: consuming FuzzerInt
     )   throws {
         
-        for type in typesAsInfiniIntStdlib {
-            try whereIs(type) // TODO: await parameterized tests fix
-        }
-        
-        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib {
+        try  whereIs(type.base)
+        func whereIs<T>(_ type: T.Type) throws where T: DoubleIntStdlib {
             let size = IX(size: T.Base.self) ?? 256
             
             for _ in 0 ..< conditional(debug: 64, release: 128) {

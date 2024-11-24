@@ -9,13 +9,13 @@
 
 import CoreIop
 import CoreKit
-import InfiniIntKit
+import DoubleIntKit
 
 //*============================================================================*
 // MARK: * Infini Int x Stdlib
 //*============================================================================*
 
-extension InfiniInt: Interoperable where Self: FiniteInteger {
+extension DoubleInt: Interoperable {
     
     //=------------------------------------------------------------------------=
     // MARK: Initializers
@@ -35,14 +35,34 @@ extension InfiniInt: Interoperable where Self: FiniteInteger {
     
     @frozen public struct Stdlib:
         BitCastable,
+        Swift.FixedWidthInteger,
         Swift.LosslessStringConvertible,
-        Swift.Sendable,
-        Swift.SignedInteger
+        Swift.Sendable
     {
         
-        public typealias Base = InfiniInt
+        public typealias Base = DoubleInt
         
-        public typealias Magnitude = Self
+        public typealias Magnitude = Base.Magnitude.Stdlib
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Metadata
+        //=--------------------------------------------------------------------=
+        
+        @inlinable public static var isSigned: Bool {
+            Base.isSigned
+        }
+        
+        @inlinable public static var bitWidth: Swift.Int {
+            Swift.Int(IX(size: Base.self))
+        }
+        
+        @inlinable public static var max: Self {
+            Base.max.stdlib()
+        }
+        
+        @inlinable public static var min: Self {
+            Base.min.stdlib()
+        }
         
         //=--------------------------------------------------------------------=
         // MARK: State
@@ -71,3 +91,11 @@ extension InfiniInt: Interoperable where Self: FiniteInteger {
         }
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Conditional
+//=----------------------------------------------------------------------------=
+
+extension DoubleInt.Stdlib: Swift  .SignedNumeric where Base:   SignedInteger { }
+extension DoubleInt.Stdlib: Swift  .SignedInteger where Base:   SignedInteger { }
+extension DoubleInt.Stdlib: Swift.UnsignedInteger where Base: UnsignedInteger { }

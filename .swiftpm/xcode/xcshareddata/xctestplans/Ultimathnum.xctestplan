@@ -16,16 +16,24 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "RandomIntKitTests",
-        "name" : "RandomIntKitTests"
+        "identifier" : "InfiniIntKitTests",
+        "name" : "InfiniIntKitTests"
       }
     },
     {
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "DoubleIntKitTests",
-        "name" : "DoubleIntKitTests"
+        "identifier" : "InfiniIntIopTests",
+        "name" : "InfiniIntIopTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "UltimathnumTests",
+        "name" : "UltimathnumTests"
       }
     },
     {
@@ -48,16 +56,24 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "UltimathnumTests",
-        "name" : "UltimathnumTests"
+        "identifier" : "DoubleIntKitTests",
+        "name" : "DoubleIntKitTests"
       }
     },
     {
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "InfiniIntIopTests",
-        "name" : "InfiniIntIopTests"
+        "identifier" : "RandomIntKitTests",
+        "name" : "RandomIntKitTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "DoubleIntIopTests",
+        "name" : "DoubleIntIopTests"
       }
     },
     {
@@ -66,14 +82,6 @@
         "containerPath" : "container:",
         "identifier" : "CoreIopTests",
         "name" : "CoreIopTests"
-      }
-    },
-    {
-      "parallelizable" : true,
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "InfiniIntKitTests",
-        "name" : "InfiniIntKitTests"
       }
     }
   ],
