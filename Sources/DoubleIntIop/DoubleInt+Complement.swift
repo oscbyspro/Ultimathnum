@@ -7,15 +7,22 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+import DoubleIntKit
+
 //*============================================================================*
-// MARK: * Exports
+// MARK: * Double Int x Complement x Stdlib
 //*============================================================================*
 
-@_exported import CoreIop
-@_exported import CoreKit
-@_exported import DoubleIntIop
-@_exported import DoubleIntKit
-@_exported import FibonacciKit
-@_exported import InfiniIntIop
-@_exported import InfiniIntKit
-@_exported import RandomIntKit
+extension DoubleInt.Stdlib {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public var magnitude: Magnitude {
+        consuming get {
+            Magnitude(raw: self.base.magnitude())
+        }
+    }
+}

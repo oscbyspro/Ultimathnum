@@ -54,16 +54,8 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "RandomIntKitTests",
-        "name" : "RandomIntKitTests"
-      }
-    },
-    {
-      "parallelizable" : true,
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "CoreKitTests",
-        "name" : "CoreKitTests"
+        "identifier" : "DoubleIntIopTests",
+        "name" : "DoubleIntIopTests"
       }
     },
     {
@@ -80,6 +72,30 @@
         "containerPath" : "container:",
         "identifier" : "FibonacciKitTests",
         "name" : "FibonacciKitTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "UltimathnumTests",
+        "name" : "UltimathnumTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "RandomIntKitTests",
+        "name" : "RandomIntKitTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "CoreKitTests",
+        "name" : "CoreKitTests"
       }
     },
     {
@@ -104,14 +120,6 @@
         "containerPath" : "container:",
         "identifier" : "CoreIopTests",
         "name" : "CoreIopTests"
-      }
-    },
-    {
-      "parallelizable" : true,
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "UltimathnumTests",
-        "name" : "UltimathnumTests"
       }
     }
   ],

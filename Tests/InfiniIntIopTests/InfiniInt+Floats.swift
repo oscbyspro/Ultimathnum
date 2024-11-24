@@ -91,7 +91,6 @@ import TestKit
                     try #require(integer == B((float)), "integer ← float")
                 }
             }
-            
         }
     }
 }

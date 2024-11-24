@@ -32,9 +32,7 @@ extension InfiniInt.Stdlib {
         self.init(truncatingIfNeeded: source)
     }
     
-    @inlinable public init<Other>(
-        truncatingIfNeeded source: Other
-    )   where Other: Swift.BinaryInteger {
+    @inlinable public init<Other: Swift.BinaryInteger>(truncatingIfNeeded source: Other) {
         self = Namespace.withUnsafeBufferPointerOrCopy(of: source.words) {
             $0.withMemoryRebound(to: UX.self) {
                 let appendix = Bit(Other.isSigned && $0.last?.msb == Bit.one)

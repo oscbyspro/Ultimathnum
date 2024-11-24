@@ -9,34 +9,31 @@
 
 import CoreIop
 import CoreKit
-import InfiniIntIop
-import InfiniIntKit
+import DoubleIntIop
+import DoubleIntKit
 import RandomIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Infini Int x Stdlib x Addition
+// MARK: * Double Int x Stdlib x Addition
 //*============================================================================*
 
-@Suite struct InfiniIntStdlibTestsOnAddition {
+@Suite struct DoubleIntStdlibTestsOnAddition {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     @Test(
-        "InfiniInt.Stdlib/addition: -(_:) of Self vs Base",
+        "DoubleInt.Stdlib/addition: -(_:) of Self vs Base",
         Tag.List.tags(.forwarding, .generic, .random, .todo),
-        arguments: fuzzers
+        arguments: typesAsDoubleIntStdlibAsSignedAsWorkaround, fuzzers
     )   func negation(
-        randomness: consuming FuzzerInt
+        type: AnyDoubleIntStdlibTypeAsSigned, randomness: consuming FuzzerInt
     )   throws {
         
-        for type in typesAsInfiniIntStdlib {
-            try whereIs(type) // TODO: await parameterized tests fix
-        }
-        
-        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib & Swift.SignedInteger {
+        try  whereIs(type.base)
+        func whereIs<T>(_ type: T.Type) throws where T: DoubleIntStdlib & Swift.SignedInteger {
             let size = IX(size: T.Base.self) ?? 256
             
             for _ in 0 ..< conditional(debug: 64, release: 128) {
@@ -56,18 +53,15 @@ import TestKit
     }
     
     @Test(
-        "InfiniInt.Stdlib/addition: +(_:_:) of Self vs Base",
-        Tag.List.tags(.forwarding, .generic, .random, .todo),
-        arguments: fuzzers
+        "DoubleInt.Stdlib/addition: +(_:_:) of Self vs Base",
+        Tag.List.tags(.forwarding, .generic, .random),
+        arguments: typesAsDoubleIntStdlibAsWorkaround, fuzzers
     )   func addition(
-        randomness: consuming FuzzerInt
+        type: AnyDoubleIntStdlibType, randomness: consuming FuzzerInt
     )   throws {
         
-        for type in typesAsInfiniIntStdlib {
-            try whereIs(type) // TODO: await parameterized tests fix
-        }
-        
-        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib {
+        try  whereIs(type.base)
+        func whereIs<T>(_ type: T.Type) throws where T: DoubleIntStdlib {
             let size = IX(size: T.Base.self) ?? 256
             
             for _ in 0 ..< conditional(debug: 64, release: 128) {
@@ -81,23 +75,23 @@ import TestKit
                 }   else {
                     try #require(!T.Base.isArbitrary)
                 }
+                
+                try #require(T(c.value) == T(a).addingReportingOverflow(T(b)).partialValue)
+                try #require( (c.error) == T(a).addingReportingOverflow(T(b)).overflow)
             }
         }
     }
     
     @Test(
-        "InfiniInt.Stdlib/addition: -(_:_:) of Self vs Base",
-        Tag.List.tags(.forwarding, .generic, .random, .todo),
-        arguments: fuzzers
+        "DoubleInt.Stdlib/addition: -(_:_:) of Self vs Base",
+        Tag.List.tags(.forwarding, .generic, .random),
+        arguments: typesAsDoubleIntStdlibAsWorkaround, fuzzers
     )   func subtraction(
-        randomness: consuming FuzzerInt
+        type: AnyDoubleIntStdlibType, randomness: consuming FuzzerInt
     )   throws {
         
-        for type in typesAsInfiniIntStdlib {
-            try whereIs(type) // TODO: await parameterized tests fix
-        }
-        
-        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib {
+        try  whereIs(type.base)
+        func whereIs<T>(_ type: T.Type) throws where T: DoubleIntStdlib {
             let size = IX(size: T.Base.self) ?? 256
             
             for _ in 0 ..< conditional(debug: 64, release: 128) {
@@ -111,6 +105,9 @@ import TestKit
                 }   else {
                     try #require(!T.Base.isArbitrary)
                 }
+                
+                try #require(T(c.value) == T(a).subtractingReportingOverflow(T(b)).partialValue)
+                try #require( (c.error) == T(a).subtractingReportingOverflow(T(b)).overflow)
             }
         }
     }

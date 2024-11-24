@@ -9,34 +9,31 @@
 
 import CoreIop
 import CoreKit
-import InfiniIntIop
-import InfiniIntKit
+import DoubleIntIop
+import DoubleIntKit
 import RandomIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Infini Int x Stdlib x Complement
+// MARK: * Double Int x Stdlib x Complement
 //*============================================================================*
 
-@Suite struct InfiniIntStdlibTestsOnComplement {
+@Suite struct DoubleIntStdlibTestsOnComplement {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     @Test(
-        "InfiniInt.Stdlib/complement: magnitude",
-        Tag.List.tags(.forwarding, .generic, .random, .todo),
-        arguments: fuzzers
+        "DoubleInt.Stdlib/complement: magnitude",
+        Tag.List.tags(.forwarding, .generic, .random),
+        arguments: typesAsDoubleIntStdlibAsWorkaround, fuzzers
     )   func magnitude(
-        randomness: consuming FuzzerInt
+        type: AnyDoubleIntStdlibType, randomness: consuming FuzzerInt
     )   throws {
         
-        for type in typesAsInfiniIntStdlib {
-            try whereIs(type) // TODO: await parameterized tests fix
-        }
-        
-        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib {
+        try  whereIs(type.base)
+        func whereIs<T>(_ type: T.Type) throws where T: DoubleIntStdlib {
             let size = IX(size: T.Base.self) ?? 256
             
             for _ in 0 ..< 32 {

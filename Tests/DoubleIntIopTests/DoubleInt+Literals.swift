@@ -9,23 +9,25 @@
 
 import CoreIop
 import CoreKit
+import DoubleIntIop
+import DoubleIntKit
 import InfiniIntIop
 import InfiniIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Infini Int x Stdlib x Literals
+// MARK: * Double Int x Stdlib x Literals
 //*============================================================================*
 
-@Suite(.serialized) struct InfiniIntStdlibTestsOnLiterals {
+@Suite(.serialized) struct DoubleIntStdlibTestsOnLiterals {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     @Test(
-        "InfiniInt.Stdlib/literals: Self vs Base",
-        Tag.List.tags(.forwarding, .generic, .todo),
+        "DoubleInt.Stdlib/literals: Self vs Base",
+        Tag.List.tags(.forwarding, .generic),
         arguments: Array<StaticBigInt>.infer([
         
         StaticBigInt(-129),
@@ -71,16 +73,21 @@ import TestKit
         StaticBigInt( 57896044618658097711785492504343953926634992332820282019728792003956564819968),
         
     ])) func forwarding(literal: StaticBigInt) throws {
-
-        try  whereIs(InfiniInt<I8>.Stdlib.self)
-        try  whereIs(InfiniInt<IX>.Stdlib.self)
         
-        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib, T.IntegerLiteralType == StaticBigInt {
-            let base   = T.Base(integerLiteral: literal)
-            let stdlib = T.init(integerLiteral: literal)
-            
-            try #require(base == T.Base(stdlib))
-            try #require(base == T.Base.exactly(LiteralInt(literal)).optional())
+        try  whereIs(DoubleInt<I8>.Stdlib.self)
+        try  whereIs(DoubleInt<U8>.Stdlib.self)
+        try  whereIs(DoubleInt<IX>.Stdlib.self)
+        try  whereIs(DoubleInt<UX>.Stdlib.self)
+        
+        try  whereIs(DoubleInt<DoubleInt<I8>>.Stdlib.self)
+        try  whereIs(DoubleInt<DoubleInt<U8>>.Stdlib.self)
+        try  whereIs(DoubleInt<DoubleInt<IX>>.Stdlib.self)
+        try  whereIs(DoubleInt<DoubleInt<UX>>.Stdlib.self)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: DoubleIntStdlib, T.IntegerLiteralType: Swift.FixedWidthInteger {
+            guard let expectation =  T.Base.exactly(LiteralInt(literal)).optional() else { return }
+            guard let literal = T.IntegerLiteralType(exactly: expectation.stdlib()) else { return }
+            try #require(T(integerLiteral: literal) == T(expectation))
         }
     }
 }

@@ -25,16 +25,16 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "Ultimathnum",
-            targets: ["Ultimathnum"]
-        ),
-        .library(
             name: "CoreIop",
             targets: ["CoreIop"]
         ),
         .library(
             name: "CoreKit",
             targets: ["CoreKit"]
+        ),
+        .library(
+            name: "DoubleIntIop",
+            targets: ["DoubleIntIop"]
         ),
         .library(
             name: "DoubleIntKit",
@@ -56,15 +56,23 @@ let package = Package(
             name: "RandomIntKit",
             targets: ["RandomIntKit"]
         ),
+        .library(
+            name: "Ultimathnum",
+            targets: ["Ultimathnum"]
+        ),
     ],
     targets: [
+        .testTarget(
+            name: "Benchmarks",
+            dependencies: ["Ultimathnum", "TestKit"]
+        ),
         .target(
-            name: "Ultimathnum",
-            dependencies: ["CoreIop", "DoubleIntKit", "FibonacciKit", "InfiniIntIop", "RandomIntKit"]
+            name: "CoreIop",
+            dependencies: ["CoreKit"]
         ),
         .testTarget(
-            name: "UltimathnumTests",
-            dependencies: ["Ultimathnum", "TestKit"]
+            name: "CoreIopTests",
+            dependencies: ["CoreIop", "TestKit"]
         ),
         .target(
             name: "CoreKit",
@@ -75,12 +83,12 @@ let package = Package(
             dependencies: ["CoreKit", "TestKit"]
         ),
         .target(
-            name: "CoreIop",
-            dependencies: ["CoreKit"]
+            name: "DoubleIntIop",
+            dependencies: ["CoreIop", "DoubleIntKit"]
         ),
         .testTarget(
-            name: "CoreIopTests",
-            dependencies: ["CoreIop", "TestKit"]
+            name: "DoubleIntIopTests",
+            dependencies: ["DoubleIntIop", "TestKit", "InfiniIntIop"]
         ),
         .target(
             name: "DoubleIntKit",
@@ -134,8 +142,12 @@ let package = Package(
             name: "TestKit",
             dependencies: ["CoreKit", "RandomIntKit"]
         ),
+        .target(
+            name: "Ultimathnum",
+            dependencies: ["CoreIop", "DoubleIntIop", "FibonacciKit", "InfiniIntIop", "RandomIntKit"]
+        ),
         .testTarget(
-            name: "Benchmarks",
+            name: "UltimathnumTests",
             dependencies: ["Ultimathnum", "TestKit"]
         ),
     ]

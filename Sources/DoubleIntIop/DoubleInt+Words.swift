@@ -9,13 +9,13 @@
 
 import CoreIop
 import CoreKit
-import InfiniIntKit
+import DoubleIntKit
 
 //*============================================================================*
-// MARK: * Infini Int x Words x Stdlib
+// MARK: * Double Int x Words x Stdlib
 //*============================================================================*
 
-extension InfiniInt.Stdlib {
+extension DoubleInt.Stdlib {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
@@ -41,6 +41,10 @@ extension InfiniInt.Stdlib {
     // MARK: * Words
     //*========================================================================*
     
+    /// ### Development
+    ///
+    /// - todo: Remove un/signed distinction.
+    ///
     @frozen public struct Words: Swift.RandomAccessCollection {
         
         //=--------------------------------------------------------------------=
@@ -48,15 +52,13 @@ extension InfiniInt.Stdlib {
         //=--------------------------------------------------------------------=
         
         @usableFromInline let base: Base
-        public let count: Swift.Int
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers
         //=--------------------------------------------------------------------=
         
         @inlinable internal init(_ base: consuming Base) {
-            self.count = Swift.Int(Self.count(of: base))
-            self.base  = base
+            self.base = base
         }
         
         //=--------------------------------------------------------------------=
@@ -71,6 +73,10 @@ extension InfiniInt.Stdlib {
             self.count as Swift.Int
         }
         
+        @inlinable public var count: Swift.Int {
+            Swift.Int(Self.count(of: self.base))
+        }
+        
         @inlinable public subscript(index: Swift.Int) -> Swift.UInt {
             Swift.UInt(Self.element(of: self.base, at: IX(index)))
         }
@@ -81,36 +87,22 @@ extension InfiniInt.Stdlib {
 // MARK: + Algorithms
 //=----------------------------------------------------------------------------=
 
-extension InfiniInt.Stdlib.Words {
+extension DoubleInt.Stdlib.Words {
     
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable internal static func count(of base: borrowing InfiniInt) -> IX {
-        if  InfiniInt.Element.size >= UX.size {
-            base.withUnsafeBinaryIntegerElements(as: UX.self) {
-                $0.body.count + IX(Bit($0.body.last?.msb != $0.appendix))
-            }
-            
+    @inlinable internal static func count(of base: borrowing DoubleInt) -> IX {
+        if  DoubleInt.size <= UX.size {
+            return 1
         }   else {
-            base.withUnsafeBinaryIntegerElements(as: U8.self) {
-                let divisor = Nonzero(unchecked: UX(raw: MemoryLayout<UX>.size))
-                var division: Division = UX(raw: $0.body.count).division(divisor)
-                
-                if !division.remainder.isZero {
-                    division.quotient &+= 1
-                }   else {
-                    division.quotient &+= UX(Bit($0.body.last?.msb != $0.appendix))
-                }
-                
-                return IX(raw: division.quotient)
-            }
-        }
+            return IX(raw: UX(size: DoubleInt.self).quotient(Nonzero(size: UX.self)))
+        }        
     }
     
-    @inlinable internal static func element(of base: borrowing InfiniInt, at index: IX) -> UX {
-        if  InfiniInt.Element.size >= UX.size {
+    @inlinable internal static func element(of base: borrowing DoubleInt, at index: IX) -> UX {
+        if  DoubleInt.Element.size >= UX.size {
             base.withUnsafeBinaryIntegerElements(as: UX.self) {
                 $0[UX(index)]
             }

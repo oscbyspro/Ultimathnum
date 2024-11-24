@@ -25,42 +25,6 @@ import TestKit
     //=------------------------------------------------------------------------=
     
     @Test(
-        "InfiniInt.Stdlib/words: description is an array",
-        Tag.List.tags(.generic, .todo),
-        arguments: Array<([UInt], String)>.infer([
-        
-        ([1            ] as [UInt], "[1]"            ),
-        ([1, 3         ] as [UInt], "[1, 3]"         ),
-        ([1, 3, 5      ] as [UInt], "[1, 3, 5]"      ),
-        ([1, 3, 5, 7   ] as [UInt], "[1, 3, 5, 7]"   ),
-        ([1, 3, 5, 7, 9] as [UInt], "[1, 3, 5, 7, 9]"),
-        
-    ])) func descriptionIsAnArray(
-        words: [UInt], description: String
-    )   throws {
-        
-        for type in typesAsInfiniIntStdlib {
-            try whereIs(type) // TODO: await parameterized tests fix
-        }
-        
-        func whereIs<T>(_ type: T.Type) throws where T: InfiniIntStdlib {
-            try #require(T.Base.isArbitrary)
-            
-            let instance: T = words.reversed().reduce(into: T.zero) {
-                $0 <<= UInt.bitWidth
-                $0  |= T($1)
-            }
-            
-            try #require(Array(instance.words) == words)
-            try #require(String(describing: instance.words) == description)
-        }
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    @Test(
         "InfiniInt.Stdlib/words: subscript is lenient",
         Tag.List.tags(.documentation, .generic, .random, .todo),
         arguments: fuzzers
@@ -90,7 +54,7 @@ import TestKit
     }
     
     @Test(
-        "StdlibInt/words: 64-bit",
+        "InfiniInt.Stdlib/words: 64-bit",
         Tag.List.tags(.generic, .todo),
         ConditionTrait.disabled(if: UInt.bitWidth != 64),
         arguments: Array<(IXL, [UInt])>.infer([
