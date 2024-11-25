@@ -68,6 +68,11 @@ import TestKit
                 let x = T.entropic(using: &randomness)
                 
                 always: do {
+                    let expectation = Swift.Int(IX(IX(raw: x.count(Bit.one)).magnitude()))
+                    try #require(expectation == T.Stdlib(x).nonzeroBitCount)
+                }
+                
+                always: do {
                     let expectation = Swift.Int(IX(IX(raw: x.descending(Bit.zero)).magnitude()))
                     try #require(expectation == T.Stdlib(x).leadingZeroBitCount)
                 }
