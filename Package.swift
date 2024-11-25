@@ -57,6 +57,10 @@ let package = Package(
             targets: ["RandomIntKit"]
         ),
         .library(
+            name: "Ultimathiop",
+            targets: ["Ultimathiop"]
+        ),
+        .library(
             name: "Ultimathnum",
             targets: ["Ultimathnum"]
         ),
@@ -143,8 +147,16 @@ let package = Package(
             dependencies: ["CoreKit", "RandomIntKit"]
         ),
         .target(
-            name: "Ultimathnum",
+            name: "Ultimathiop",
             dependencies: ["CoreIop", "DoubleIntIop", "FibonacciKit", "InfiniIntIop", "RandomIntKit"]
+        ),
+        .testTarget(
+            name: "UltimathiopTests",
+            dependencies: ["Ultimathiop", "TestKit"]
+        ),
+        .target(
+            name: "Ultimathnum",
+            dependencies: ["CoreKit", "DoubleIntKit", "FibonacciKit", "InfiniIntKit", "RandomIntKit"]
         ),
         .testTarget(
             name: "UltimathnumTests",

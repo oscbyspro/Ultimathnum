@@ -9,43 +9,41 @@
 
 import CoreIop
 import CoreKit
-import DoubleIntIop
-import DoubleIntKit
 import RandomIntKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Double Int x Stdlib x Stride
+// MARK: * Binary Integer x Stdlib x Stride
 //*============================================================================*
 
-@Suite struct DoubleIntStdlibTestsOnStride {
+@Suite struct BinaryIntegerStdlibTestsOnStride {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     @Test(
-        "DoubleInt.Stdlib/stride: Self vs Base",
+        "BinaryInteger.Stdlib/stride: as Swift.BinaryInteger",
         Tag.List.tags(.forwarding, .generic, .random),
-        arguments: typesAsDoubleIntStdlibAsWorkaround, fuzzers
-    )   func forwarding(
-        type: AnyDoubleIntStdlibType, randomness: consuming FuzzerInt
+        arguments: typesAsFiniteIntegerInteroperable, fuzzers
+    )   func asSwiftBinaryInteger(
+        type: any FiniteIntegerInteroperable.Type, randomness: consuming FuzzerInt
     )   throws {
         
-        try  whereIs(type.base)
-        func whereIs<T>(_ type: T.Type) throws where T: DoubleIntStdlib {
-            let size = IX(size: T.Base.self) ?? 256
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: FiniteIntegerInteroperable {
+            let size = IX(size: T.self) ?? 256
             
             for _ in 0 ..< 256 {
-                let start    = T.Base.entropic(size: size, using: &randomness)
-                let distance = ((IX)).entropic(using: &randomness)
-                let end      = start .advanced(by: distance) as Fallible<T.Base>
+                let a = T .entropic(size:  size, using: &randomness)
+                let b = IX.entropic(using: &randomness)
+                let c = a.advanced(by: b) as Fallible<T>
                 
-                if  let end: T.Base = end.optional() {
-                    try #require(T(start).advanced(by: Swift.Int(distance)) == T(end))
-                    try #require(T(start).distance(to: T(end)) == Swift.Int(distance))
+                if  let end: T = c.optional() {
+                    try #require(T.Stdlib(a).advanced(by: Swift.Int(b)) == T.Stdlib(end))
+                    try #require(T.Stdlib(a).distance(to: T.Stdlib(end)) == Swift.Int(b))
                 }   else {
-                    try #require(!T.Base.isArbitrary)
+                    try #require(!T.isArbitrary)
                 }
             }
         }

@@ -25,15 +25,16 @@ extension DoubleInt.Stdlib {
     }
     
     @inlinable public static func /=(lhs: inout Self, rhs: borrowing Self) {
-        lhs.base /= rhs.base
+        lhs = lhs / rhs
     }
     
     @inlinable public static func %(lhs: consuming Self, rhs: borrowing Self) -> Self {
-        Self(lhs.base % rhs.base)
+        let result = lhs.remainderReportingOverflow(dividingBy: rhs)
+        return Fallible(result.partialValue, error: result.overflow).unwrap()
     }
     
     @inlinable public static func %=(lhs: inout Self, rhs: borrowing Self) {
-        lhs.base %= rhs.base
+        lhs = lhs % rhs
     }
     
     @inlinable public consuming func quotientAndRemainder(
@@ -70,8 +71,14 @@ extension DoubleInt.Stdlib {
         dividingBy other: borrowing Self
     )   -> (partialValue: Self, overflow: Bool) {
         
-        if  let result = self.base.remainder(other.base) {
-            return (partialValue: result.stdlib(), overflow: false)
+        if  let divisor =  Nonzero(exactly: other.base) {
+            //=----------------------------------=
+            // note: standard library semantics
+            //=----------------------------------=
+            let overflow:  Bool = Self.isSigned && self == Self.min && divisor.value == -1
+            let remainder: Base = self.base.remainder(divisor)
+            return (partialValue: remainder.stdlib(), overflow: overflow)
+            
         }   else {
             return (partialValue: self, overflow: true)
         }

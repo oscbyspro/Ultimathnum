@@ -96,6 +96,12 @@ extension DoubleInt: Interoperable {
 // MARK: + Conditional
 //=----------------------------------------------------------------------------=
 
+extension DoubleInt: CompactIntegerInteroperable where High: CompactIntegerInteroperable { }
+extension DoubleInt:  FiniteIntegerInteroperable where High: SystemsIntegerInteroperable { }
+extension DoubleInt: NaturalIntegerInteroperable where High: NaturalIntegerInteroperable { }
+extension DoubleInt:  SignedIntegerInteroperable where High: CompactIntegerInteroperable { }
+extension DoubleInt: SystemsIntegerInteroperable where High: SystemsIntegerInteroperable { }
+
 extension DoubleInt.Stdlib: Swift  .SignedNumeric where Base:   SignedInteger { }
 extension DoubleInt.Stdlib: Swift  .SignedInteger where Base:   SignedInteger { }
 extension DoubleInt.Stdlib: Swift.UnsignedInteger where Base: UnsignedInteger { }
