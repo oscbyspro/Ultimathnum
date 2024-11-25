@@ -11,8 +11,11 @@
 // MARK: * Exports
 //*============================================================================*
 
+@_exported import CoreIop
 @_exported import CoreKit
+@_exported import DoubleIntIop
 @_exported import DoubleIntKit
 @_exported import FibonacciKit
+@_exported import InfiniIntIop
 @_exported import InfiniIntKit
 @_exported import RandomIntKit

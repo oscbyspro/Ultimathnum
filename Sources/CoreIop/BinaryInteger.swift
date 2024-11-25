@@ -7,12 +7,20 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreKit
+
 //*============================================================================*
-// MARK: * Exports
+// MARK: * Binary Integer
 //*============================================================================*
 
-@_exported import CoreKit
-@_exported import DoubleIntKit
-@_exported import FibonacciKit
-@_exported import InfiniIntKit
-@_exported import RandomIntKit
+extension IX:  CompactIntegerInteroperable { }
+extension I8:  CompactIntegerInteroperable { }
+extension I16: CompactIntegerInteroperable { }
+extension I32: CompactIntegerInteroperable { }
+extension I64: CompactIntegerInteroperable { }
+
+extension UX:  NaturalIntegerInteroperable { }
+extension U8:  NaturalIntegerInteroperable { }
+extension U16: NaturalIntegerInteroperable { }
+extension U32: NaturalIntegerInteroperable { }
+extension U64: NaturalIntegerInteroperable { }

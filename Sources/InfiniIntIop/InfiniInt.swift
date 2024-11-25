@@ -71,3 +71,11 @@ extension InfiniInt: Interoperable where Self: FiniteInteger {
         }
     }
 }
+
+//=----------------------------------------------------------------------------=
+// MARK: + Conditional
+//=----------------------------------------------------------------------------=
+
+extension InfiniInt:  FiniteIntegerInteroperable where Element: CompactIntegerInteroperable { }
+extension InfiniInt:  SignedIntegerInteroperable where Element: CompactIntegerInteroperable { }
+extension InfiniInt: LenientIntegerInteroperable where Element: CompactIntegerInteroperable { }
