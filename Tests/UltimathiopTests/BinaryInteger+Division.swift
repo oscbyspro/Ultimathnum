@@ -68,14 +68,14 @@ import TestKit
         
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerInteroperable {
+            for _ in 0 ..< 32 {
+                let x = T.entropic(using: &randomness)
+                try whereIs(x, by: 0, is: nil)
+            }
+            
             if  T.isSigned {
                 let x = Division(quotient: T.min, remainder: T.zero).veto()
                 try whereIs(T.min, by: -1, is: x)
-            }
-            
-            for _ in 0 ..< 32 {
-                let x = T.entropic(using: &randomness)
-                try whereIs(x, by: T.zero, is: nil)
             }
             
             for _ in 0 ..< 32 {
