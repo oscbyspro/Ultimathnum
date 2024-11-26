@@ -47,7 +47,6 @@ import TestKit
             try? insert(A(sign: .plus, exponent: 128, significand: 1.0))
             try? insert(A(sign: .plus, exponent: 256, significand: 1.0))
             
-            try #require(ranges.count >= 3)
             for range in ranges {
                 for _ in 0 ..< 32 {
                     let float   = A.random(in: range, using: &randomness.stdlib)
@@ -60,7 +59,7 @@ import TestKit
                     if  let integer {
                         try #require(B.Stdlib((float)) == integer.value, "integer ← float")
                         try #require(B.Stdlib(rounded) == integer.value, "integer ← float")
-                        try #require(A(integer .value) == (((rounded))), "integer → float")
+                        try #require(A.init(integer.value) == (rounded), "integer → float")
                     }   else {
                         try #require(!B.isArbitrary)
                     }

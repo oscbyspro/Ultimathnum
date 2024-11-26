@@ -42,7 +42,7 @@ extension InfiniInt.Stdlib {
         let distance =  Swift.Int(clamping: distance)
         if  distance == Swift.Int.min {
             //=----------------------------------=
-            // note: base flushes |x| > IX.max
+            // note: base flushes past ±IX.max
             //=----------------------------------=
             precondition(instance.base.isZero, String.overallocation())
         }
