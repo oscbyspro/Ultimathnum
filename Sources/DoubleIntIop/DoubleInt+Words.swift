@@ -41,10 +41,6 @@ extension DoubleInt.Stdlib {
     // MARK: * Words
     //*========================================================================*
     
-    /// ### Development
-    ///
-    /// - todo: Remove un/signed distinction.
-    ///
     @frozen public struct Words: Swift.RandomAccessCollection {
         
         //=--------------------------------------------------------------------=

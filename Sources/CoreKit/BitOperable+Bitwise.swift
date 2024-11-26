@@ -29,15 +29,15 @@ extension BitOperable {
     // MARK: Transformations x Inout
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func &=(lhs: inout Self, rhs: Self) {
+    @inlinable public static func &=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs & rhs
     }
 
-    @inlinable public static func |=(lhs: inout Self, rhs: Self) {
+    @inlinable public static func |=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs | rhs
     }
     
-    @inlinable public static func ^=(lhs: inout Self, rhs: Self) {
+    @inlinable public static func ^=(lhs: inout Self, rhs: borrowing Self) {
         lhs = lhs ^ rhs
     }
 }

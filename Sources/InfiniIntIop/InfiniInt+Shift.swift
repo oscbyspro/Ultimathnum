@@ -37,12 +37,12 @@ extension InfiniInt.Stdlib {
     
     @inlinable public static func >>(instance: consuming Self, distance: some Swift.BinaryInteger) -> Self {
         //=--------------------------------------=
-        // unknown: standard library semantics
+        // note: standard library semantics
         //=--------------------------------------=
         let distance =  Swift.Int(clamping: distance)
         if  distance == Swift.Int.min {
             //=----------------------------------=
-            // note: base flushes past ±IX.max
+            // note: base semantics (#140)
             //=----------------------------------=
             precondition(instance.base.isZero, String.overallocation())
         }
