@@ -92,7 +92,7 @@ let package = Package(
         ),
         .testTarget(
             name: "DoubleIntIopTests",
-            dependencies: ["DoubleIntIop", "TestKit", "InfiniIntIop"]
+            dependencies: ["DoubleIntIop", "TestKit"]
         ),
         .target(
             name: "DoubleIntKit",

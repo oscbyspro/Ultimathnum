@@ -31,8 +31,8 @@ public protocol FiniteIntegerInteroperable:
 where
 
     Element:  SystemsIntegerInteroperable,
-    Signitude: FiniteIntegerInteroperable,
-
+    Signitude: SignedIntegerInteroperable,
+    
     Stdlib: BitCastable<BitPattern>,
     Stdlib: Swift.BinaryInteger,
     Stdlib: Swift.LosslessStringConvertible,

@@ -30,6 +30,7 @@ public protocol NaturalIntegerInteroperable:
 
 where
 
-    Stdlib: Swift.UnsignedInteger
+    Element: NaturalIntegerInteroperable,
+    Stdlib:  Swift.UnsignedInteger
 
 { }

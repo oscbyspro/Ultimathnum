@@ -30,6 +30,7 @@ public protocol SignedIntegerInteroperable:
 
 where
 
-    Stdlib: Swift.SignedInteger
+    Element: CompactIntegerInteroperable,
+    Stdlib:  Swift.SignedInteger
 
 { }

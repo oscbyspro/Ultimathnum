@@ -19,15 +19,15 @@ import TestKit
 // MARK: * Double Int x Stdlib x Literals
 //*============================================================================*
 
-@Suite(.serialized) struct DoubleIntStdlibTestsOnLiterals {
+@Suite(.serialized) struct BinaryIntegerStdlibTestsOnLiterals {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     @Test(
-        "DoubleInt.Stdlib/literals: Self vs Base",
-        Tag.List.tags(.forwarding, .generic),
+        "BinaryInteger.Stdlib/literals: as Swift.BinaryInteger",
+        Tag.List.tags(.generic, .todo),
         arguments: Array<StaticBigInt>.infer([
         
         StaticBigInt(-129),
@@ -72,22 +72,42 @@ import TestKit
         StaticBigInt( 57896044618658097711785492504343953926634992332820282019728792003956564819967),
         StaticBigInt( 57896044618658097711785492504343953926634992332820282019728792003956564819968),
         
-    ])) func forwarding(literal: StaticBigInt) throws {
+    ])) func asSwiftBinaryInteger(literal: StaticBigInt) throws {
         
-        try  whereIs(DoubleInt<I8>.Stdlib.self)
-        try  whereIs(DoubleInt<U8>.Stdlib.self)
-        try  whereIs(DoubleInt<IX>.Stdlib.self)
-        try  whereIs(DoubleInt<UX>.Stdlib.self)
+        // TODO: IntegerLiteralType protocol requirements..?
         
-        try  whereIs(DoubleInt<DoubleInt<I8>>.Stdlib.self)
-        try  whereIs(DoubleInt<DoubleInt<U8>>.Stdlib.self)
-        try  whereIs(DoubleInt<DoubleInt<IX>>.Stdlib.self)
-        try  whereIs(DoubleInt<DoubleInt<UX>>.Stdlib.self)
+        let value = IXL.Stdlib(IXL(integerLiteral: literal))
         
-        func whereIs<T>(_ type: T.Type) throws where T: DoubleIntStdlib, T.IntegerLiteralType: Swift.FixedWidthInteger {
-            guard let expectation =  T.Base.exactly(LiteralInt(literal)).optional() else { return }
-            guard let literal = T.IntegerLiteralType(exactly: expectation.stdlib()) else { return }
-            try #require(T(integerLiteral: literal) == T(expectation))
+        try whereIs(IX .Stdlib.self)
+        try whereIs(I8 .Stdlib.self)
+        try whereIs(I16.Stdlib.self)
+        try whereIs(I32.Stdlib.self)
+        try whereIs(I64.Stdlib.self)
+        
+        try whereIs(UX .Stdlib.self)
+        try whereIs(U8 .Stdlib.self)
+        try whereIs(U16.Stdlib.self)
+        try whereIs(U32.Stdlib.self)
+        try whereIs(U64.Stdlib.self)
+        
+        try whereIs(DoubleInt<I8>.Stdlib.self)
+        try whereIs(DoubleInt<U8>.Stdlib.self)
+        
+        try whereIs(DoubleInt<DoubleInt<I8>>.Stdlib.self)
+        try whereIs(DoubleInt<DoubleInt<U8>>.Stdlib.self)
+        
+        try whereIs(InfiniInt<I8>.Stdlib.self)
+        try whereIs(InfiniInt<IX>.Stdlib.self)
+        
+        func whereIs<T>(_ type: T.Type) throws where T: Swift.BinaryInteger, T.IntegerLiteralType == StaticBigInt {
+            guard let expectation = T(exactly: value) else { return }
+            try #require(expectation == T(integerLiteral: literal))
+        }
+        
+        func whereIs<T>(_ type: T.Type) throws where T: Swift.BinaryInteger, T.IntegerLiteralType: Swift.BinaryInteger {
+            guard let expectation = T(exactly: value) else { return }
+            guard let literal = T.IntegerLiteralType(exactly: value) else { return }
+            try #require(expectation == T(integerLiteral: literal))
         }
     }
 }
