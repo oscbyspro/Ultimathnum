@@ -40,8 +40,8 @@ import TestKit
                 let c = a.times(b) as Fallible<T>
                 
                 if  let c: T = c.optional() {
-                    try #require(T(c) == reduce(T(a), *,  T(b)))
-                    try #require(T(c) == reduce(T(a), *=, T(b)))
+                    try #require(T.Stdlib(c) == reduce(T.Stdlib(a), *,  T.Stdlib(b)))
+                    try #require(T.Stdlib(c) == reduce(T.Stdlib(a), *=, T.Stdlib(b)))
                 }   else {
                     try #require(!T.isArbitrary)
                 }

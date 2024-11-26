@@ -11,14 +11,10 @@ import CoreIop
 import CoreKit
 import InfiniIntIop
 import InfiniIntKit
+import TestKit
 
 //*============================================================================*
-// MARK: * Utilities x Globals
+// MARK: * Infini Int x Stdlib
 //*============================================================================*
-// Imagine an array of chosen types and a bunch of type filters...
-//=----------------------------------------------------------------------------=
 
-let typesAsInfiniIntStdlib: [any InfiniIntStdlib.Type] = [
-    InfiniInt<I8>.Stdlib.self,
-    InfiniInt<IX>.Stdlib.self,
-]
+@Suite struct InfiniIntStdlibTests { }

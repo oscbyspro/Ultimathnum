@@ -80,6 +80,19 @@ extension DoubleInt.Stdlib {
         @inlinable public subscript(index: Swift.Int) -> Swift.UInt {
             Swift.UInt(Self.element(of: self.base, at: IX(index)))
         }
+        
+        @inlinable public borrowing func withContiguousStorageIfAvailable<T>(
+            _ action: (UnsafeBufferPointer<UInt>) throws -> T
+        )   rethrows -> T? {
+            
+            guard Base.Element.size >= UX.size else {
+                return nil
+            }
+            
+            return try self.base.withUnsafeBinaryIntegerBody(as: UX.self) {
+                try $0.buffer().withMemoryRebound(to: Swift.UInt.self, action)
+            }
+        }
     }
 }
 
