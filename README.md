@@ -63,6 +63,7 @@ Choose target dependencies from this list of products.
 .product(name: "CoreIop",      package: "Ultimathnum"),
 .product(name: "DoubleIntIop", package: "Ultimathnum"),
 .product(name: "InfiniIntIop", package: "Ultimathnum"),
+.product(name: "RandomIntIop", package: "Ultimathnum"),
 ```
 
 <a name="installation-how-to-run-unit-tests"/>

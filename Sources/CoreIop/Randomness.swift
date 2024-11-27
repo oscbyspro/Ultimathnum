@@ -8,22 +8,10 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import RandomIntKit
-import TestKit
 
 //*============================================================================*
-// MARK: * Fuzzer Int x Stdlib
+// MARK: * Randomness
 //*============================================================================*
 
-@Suite struct FuzzerIntTestsOnStdlib {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    @Test func metadata() {
-        #expect(FuzzerInt.Stdlib.self as Any is any Swift.RandomNumberGenerator.Type)
-        #expect(MemoryLayout<FuzzerInt.Stdlib>.size == 8)
-    }
-}
-
+/// An interoperable source of uniformly distributed random data.
+public protocol RandomnessInteroperable: Interoperable, Randomness where Stdlib: Swift.RandomNumberGenerator { }

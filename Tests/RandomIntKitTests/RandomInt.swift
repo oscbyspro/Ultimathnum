@@ -21,8 +21,27 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test func metadata() {
-        #expect(RandomInt.self as Any is any Randomness.Type)
+    @Test(
+        "RandomInt: metadata",
+        Tag.List.tags(.documentation)
+    )   func metadata() {
         #expect(MemoryLayout<RandomInt>.size == 0)
+        #expect(MemoryLayout<RandomInt.Element>.size == 8)
+        #expect(RandomInt.self as Any is any Randomness.Type)
+    }
+    
+    @Test(
+        "RandomInt: prefix",
+        Tag.List.tags(.documentation),
+        TimeLimitTrait.timeLimit(.minutes(1)),
+        arguments: CollectionOfOne(32)
+    )   func prefix(count: Swift.Int) {
+        
+        var stdlib = RandomInt()
+        var uniques: Set<U64> = []
+        
+        while uniques.count < 32 {
+            uniques.insert(stdlib.next())
+        }
     }
 }

@@ -10,6 +10,7 @@
 import CoreIop
 import CoreKit
 import InfiniIntKit
+import RandomIntIop
 import RandomIntKit
 import TestKit
 

@@ -7,16 +7,12 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreIop
+import CoreKit
+import RandomIntKit
+
 //*============================================================================*
-// MARK: * Exports
+// MARK: * Random Int x Stdlib
 //*============================================================================*
 
-@_exported import CoreIop
-@_exported import CoreKit
-@_exported import DoubleIntIop
-@_exported import DoubleIntKit
-@_exported import FibonacciKit
-@_exported import InfiniIntIop
-@_exported import InfiniIntKit
-@_exported import RandomIntIop
-@_exported import RandomIntKit
+extension RandomInt: RandomnessInteroperable { }
