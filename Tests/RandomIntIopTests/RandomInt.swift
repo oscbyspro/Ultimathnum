@@ -7,7 +7,9 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for license information.
 //=----------------------------------------------------------------------------=
 
+import CoreIop
 import CoreKit
+import RandomIntIop
 import RandomIntKit
 import TestKit
 
@@ -15,22 +17,32 @@ import TestKit
 // MARK: * Random Int x Stdlib
 //*============================================================================*
 
-@Suite struct RandomIntTestsOnStdlib {
+@Suite struct RandomIntStdlibTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test func metadata() {
-        #expect(RandomInt.Stdlib.self as Any is any Swift.RandomNumberGenerator.Type)
+    @Test(
+        "RandomInt.Stdlib: metadata",
+        Tag.List.tags(.documentation)
+    )   func metadata() {
         #expect(MemoryLayout<RandomInt.Stdlib>.size == 0)
+        #expect(RandomInt.Stdlib.self as Any is any Swift.RandomNumberGenerator.Type)
     }
     
-    @Test func stdlib() {
-        let custom = RandomInt(Swift.SystemRandomNumberGenerator())
-        let stdlib: Swift.SystemRandomNumberGenerator = custom.stdlib()
-        #expect(MemoryLayout.size(ofValue: custom) == Swift.Int.zero)
-        #expect(MemoryLayout.size(ofValue: stdlib) == Swift.Int.zero)
+    @Test(
+        "RandomInt.Stdlib: prefix",
+        Tag.List.tags(.documentation),
+        TimeLimitTrait.timeLimit(.minutes(1)),
+        arguments: CollectionOfOne(32)
+    )   func prefix(count: Swift.Int) {
+        
+        var stdlib = RandomInt().stdlib()
+        var uniques: Set<Swift.UInt64> = []
+        
+        while uniques.count < count {
+            uniques.insert(stdlib.next())
+        }
     }
 }
-

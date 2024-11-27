@@ -21,9 +21,13 @@ import TestKit
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test func metadata() {
-        #expect(FuzzerInt.self as Any is any Randomness.Type)
+    @Test(
+        "FuzzerInt: metadata",
+        Tag.List.tags(.documentation)
+    )   func metadata() {
         #expect(MemoryLayout<FuzzerInt>.size == 8)
+        #expect(MemoryLayout<FuzzerInt.Element>.size == 8)
+        #expect(FuzzerInt.self as Any is any Randomness.Type)
     }
     
     @Test(
@@ -36,23 +40,13 @@ import TestKit
         (~1 as I64, [0xf3203e9039f4a821, 0xba56949915dcf9e9, 0xd0d5127a96e8d90d, 0x1ef156bb76650c37] as [U64]),
         (~0 as I64, [0xe4d971771b652c20, 0xe99ff867dbf682c9, 0x382ff84cb27281e9, 0x6d1db36ccba982d2] as [U64]),
         
-    ])) func prefix(seed: I64, expectation: [U64]) {
+    ])) func prefix(
+        seed: I64, expectation: [U64]
+    )   throws {
+        
         var randomness = FuzzerInt(seed: U64(raw: seed))
         for element in expectation {
-            var copy    = randomness
-            var stdlibX = randomness.stdlib
-            var stdlibY = randomness.stdlib()
-            
-            #expect(randomness == copy)
-            #expect(stdlibX == stdlibY)
-            
-            #expect(randomness .next() ==             (element), "normal")
-            #expect(copy.stdlib.next() == Swift.UInt64(element), "stdlib modify")
-            #expect(((stdlibX)).next() == Swift.UInt64(element), "stdlib read")
-            #expect(((stdlibY)).next() == Swift.UInt64(element), "stdlib consuming")
-            
-            #expect(randomness == copy)
-            #expect(stdlibX == stdlibY)
+            try #require(randomness.next() == element)
         }
     }
 }

@@ -8,8 +8,9 @@
 //=----------------------------------------------------------------------------=
 
 import CoreKit
-import RandomIntKit
 import InfiniIntKit
+import RandomIntIop
+import RandomIntKit
 import TestKit
 
 //*============================================================================*
