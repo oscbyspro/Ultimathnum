@@ -28,7 +28,10 @@ extension InfiniInt {
             return self as Self as Self as Self
             
         }   else {
-            return Self.zero // flush >= IX.max as per protocol
+            let zeros = UX(raw: self.ascending(Bit.zero))
+            let index = UX(raw: distance.value).toggled()
+            precondition(zeros  >= index, String.overallocation())
+            return Self.zero // overshift of all nonzero bits
         }
     }
     
@@ -41,7 +44,7 @@ extension InfiniInt {
             return self as Self as Self as Self
             
         }   else {
-            return Self(repeating: self.appendix) // flush >= IX.max as per protocol
+            return Self(repeating: self.appendix)
         }
     }
 }

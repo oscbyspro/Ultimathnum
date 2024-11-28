@@ -284,21 +284,17 @@ where
     
     /// Performs an ascending shift.
     ///
-    /// - Parameter distance: A shift in the range of `0 ..< Self.size`.
+    /// ### Binary Integer Shift
     ///
     /// - Note: The filler bit is either `0` (up) or `appendix` (down).
-    ///
-    /// - Note: A `distance` greater than `IX.max` is a directional flush.
     ///
     @inlinable consuming func up(_ distance: Shift<Magnitude>) -> Self
     
     /// Performs a decending shift.
     ///
-    /// - Parameter distance: A shift in the range of `0 ..< Self.size`.
+    /// ### Binary Integer Shift
     ///
     /// - Note: The filler bit is either `0` (up) or `appendix` (down).
-    ///
-    /// - Note: A `distance` greater than `IX.max` is a directional flush.
     ///
     @inlinable consuming func down(_ distance: Shift<Magnitude>) -> Self
     

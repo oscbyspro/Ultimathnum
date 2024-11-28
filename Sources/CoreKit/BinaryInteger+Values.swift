@@ -108,7 +108,7 @@ extension SystemsInteger where BitPattern == UX.BitPattern {
     /// - Important: A binary integer's `size` is measured in bits.
     ///
     @inlinable public init?<Other>(size type: Other.Type) where Other: BinaryInteger {
-        if  Other.size.isInfinite {
+        if  Other.isArbitrary {
             return nil
         }   else {
             self.init(load: UX(raw: Other.size))
