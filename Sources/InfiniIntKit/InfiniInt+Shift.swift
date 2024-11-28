@@ -28,7 +28,12 @@ extension InfiniInt {
             return self as Self as Self as Self
             
         }   else {
-            return Self.zero // flush >= IX.max as per protocol
+            // compute how many bits stay in the low part
+            let (low) = UX(raw: distance.value).toggled()
+            let zeros = UX(raw: self.ascending(Bit.zero))
+            Swift.assert(low <= IX.max)
+            precondition(low <= zeros, String.overallocation())
+            return Self.zero // overshift of all nonzero bits
         }
     }
     
@@ -41,7 +46,7 @@ extension InfiniInt {
             return self as Self as Self as Self
             
         }   else {
-            return Self(repeating: self.appendix) // flush >= IX.max as per protocol
+            return Self(repeating: self.appendix)
         }
     }
 }

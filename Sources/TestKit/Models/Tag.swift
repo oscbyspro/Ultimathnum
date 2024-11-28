@@ -16,7 +16,7 @@ extension Tag {
     //=------------------------------------------------------------------------=
     // MARK: Metadata
     //=------------------------------------------------------------------------=
-    
+        
     /// Removing uncertainty of meaning.
     @Tag public static var disambiguation: Self
     
@@ -25,6 +25,9 @@ extension Tag {
     
     /// Including or considering all arguments.
     @Tag public static var exhaustive: Self
+    
+    /// Process or program termination.
+    @Tag public static var exit: Self
     
     /// Sending to another destination.
     @Tag public static var forwarding: Self

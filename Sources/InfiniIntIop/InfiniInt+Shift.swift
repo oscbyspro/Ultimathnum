@@ -25,9 +25,6 @@ extension InfiniInt.Stdlib {
     }
     
     @inlinable public static func <<(instance: consuming Self, distance: some Swift.BinaryInteger) -> Self {
-        //=--------------------------------------=
-        // note: Int.min is down so this is fine
-        //=--------------------------------------=
         Self(instance.base << IX(Swift.Int(clamping: distance)))
     }
     
@@ -36,17 +33,6 @@ extension InfiniInt.Stdlib {
     }
     
     @inlinable public static func >>(instance: consuming Self, distance: some Swift.BinaryInteger) -> Self {
-        //=--------------------------------------=
-        // note: standard library semantics
-        //=--------------------------------------=
-        let distance =  Swift.Int(clamping: distance)
-        if  distance == Swift.Int.min {
-            //=----------------------------------=
-            // note: base semantics (#140)
-            //=----------------------------------=
-            precondition(instance.base.isZero, String.overallocation())
-        }
-        
-        return Self(instance.base >> IX(distance))
+        Self(instance.base >> IX(Swift.Int(clamping: distance)))
     }
 }
