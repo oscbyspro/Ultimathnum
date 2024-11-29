@@ -224,13 +224,13 @@ import TestKit
     )   func distanceIsInfiniteCountOrShift(
         type: any BinaryInteger.Type, randomness: consuming FuzzerInt
     )   throws {
-       
+        
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 32 {
                 let value = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                let zeros = UX(raw:  value.ascending(Bit.zero))
-                let limit = UX.max - zeros
+                let zeros = UX(raw: value.ascending(Bit.zero))
+                let limit = Swift.max(UX.msb, UX.max -  zeros)
                 let distance = Count(raw: UX.random(in: limit...UX.max, using: &randomness))
                 
                 try #require(distance.isInfinite)
