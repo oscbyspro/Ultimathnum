@@ -221,3 +221,17 @@ pair.value.append(", World")
 pair.error.toggle()
 let (value, error) = pair.components()
 ```
+
+#### Conveniences: `error(_:)`, `init(_:setup:)`
+
+With sufficient hands-on experience, you may notice a few recurring usage patterns. For example, the ever-so-useful `sink(_:)` method requires a mutable error indicator that you usually want to merge at the end. The static `error(_:)` initializer covers you on both fronts. At other times, you may want to consume an initial value. In that case, you should consider using `init(_:setup:)`. Note that you may set the initial error indicator using alternative overloads.
+
+```swift
+let x0 = Fallible.error {
+    U8.zero.decremented().sink(&$0)
+}   // value: 255, error: true
+
+let x1 = Fallible(U8.zero) {
+    $0 = $0.decremented().sink(&$1)
+}   // value: 255, error: true
+```
