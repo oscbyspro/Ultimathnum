@@ -224,7 +224,7 @@ let (value, error) = pair.components()
 
 #### Conveniences: `error(...)`, `init(_:error:setup:)`
 
-With sufficient hands-on experience, you may notice a few recurring usage patterns. For example, the ever-so-useful `sink(_:)` method requires a mutable error indicator that you usually want to merge at the end. The static `error(...)` functions cover you on both fronts. At other times, you may want to consume an initial value. In that case, you should consider using `init(_:error:setup:)`.
+With sufficient hands-on experience, you may notice a few recurring usage patterns. The ever-so-useful `sink(_:)` method requires a mutable error indicator that you usually want to merge at the end—for example. The static `error(...)` functions cover you on both fronts. At other times, you may want to consume an initial value. In that case, you should consider using `init(_:error:setup:)`.
 
 ```swift
 let x0 = Fallible.error {
