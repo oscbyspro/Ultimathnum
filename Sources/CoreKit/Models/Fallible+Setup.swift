@@ -27,6 +27,8 @@ extension Fallible {
     /// }   // value: 255, error: true
     /// ```
     ///
+    /// - Note: The default `error` indicator is `false`.
+    ///
     @inlinable public init<Error>(
         _
         value: consuming Value,
@@ -51,7 +53,7 @@ extension Fallible {
     /// }   // value: 255, error: true
     /// ```
     ///
-    /// - Note: You may set the initial `error` indicator using one of the overloads.
+    /// - Note: The default `error` indicator is `false`.
     ///
     @inlinable public static func error<Error>(
         _ setup: (inout Bool) throws(Error) -> Value
@@ -69,10 +71,10 @@ extension Fallible {
     /// }   // value: 255, error: true
     /// ```
     ///
-    /// - Note: You may set the initial `error` indicator using one of the overloads.
+    /// - Note: The default `error` indicator is `false`.
     ///
     @inlinable public static func error<Error>(
-        _ error: consuming Bool = false, setup: (inout Bool) throws(Error) -> Value
+        _ error: consuming Bool, setup: (inout Bool) throws(Error) -> Value
     )   throws(Error) -> Self {
         
         let value = try    setup(&error)
