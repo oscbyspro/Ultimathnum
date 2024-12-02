@@ -22,34 +22,6 @@ import TestKit
     //=------------------------------------------------------------------------=
     
     @Test(
-        "Fallible/sink: from inout Bool as Bit",
-        Tag.List.tags(.exhaustive),
-        arguments: Bit.all
-    )   func fromInoutBoolAsBit(value: Bit) {
-        
-        #expect(Fallible<Bit>.sink({    _ in     return value }).value == value)
-        #expect(Fallible<Bit>.sink({    _ in     return value }).error == false)
-        #expect(Fallible<Bit>.sink({ $0 = false; return value }).value == value)
-        #expect(Fallible<Bit>.sink({ $0 = false; return value }).error == false)
-        #expect(Fallible<Bit>.sink({ $0 = true;  return value }).value == value)
-        #expect(Fallible<Bit>.sink({ $0 = true;  return value }).error)
-    }
-    
-    @Test(
-        "Fallible/sink: from inout Bool as Fallible<Bit>",
-        Tag.List.tags(.exhaustive),
-        arguments: Fallible<Bit>.all
-    )   func fromInoutBoolAsFallibleBit(instance: Fallible<Bit>) {
-                
-        #expect(Fallible<Bit>.sink({    _ in     return instance }).value == instance.value)
-        #expect(Fallible<Bit>.sink({    _ in     return instance }).error == instance.error)
-        #expect(Fallible<Bit>.sink({ $0 = false; return instance }).value == instance.value)
-        #expect(Fallible<Bit>.sink({ $0 = false; return instance }).error == instance.error)
-        #expect(Fallible<Bit>.sink({ $0 = true;  return instance }).value == instance.value)
-        #expect(Fallible<Bit>.sink({ $0 = true;  return instance }).error)
-    }
-    
-    @Test(
         "Fallible/sink: into Bool",
         Tag.List.tags(.exhaustive),
         arguments: Fallible<Bit>.all

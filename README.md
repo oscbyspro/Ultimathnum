@@ -178,8 +178,6 @@ func sumsquare<T: UnsignedInteger>(a: T, b: T) -> Fallible<T> {
 Now that you know the basics of error propagation, let's equip you with the means to take on the world. While `map(_:)` is fantastic, at times, you may have noticed that it sometimes devolves into a pyramid of doom. In other words, it doesn't scale to fit the needs of more complex problems. But do not worry, the `sink(_:)` method has arrived! It lets you offload error indicators between operations. Let's rewrite our example by using another formula.
 
 ```swift
-// tip: Fallible.sink(_:) creates the Bool and calls veto(_:)
-
 func sumsquare<T: UnsignedInteger>(a: T, b: T) -> Fallible<T> {
     var w: Bool = false
     let x: T = a.squared().sink(&w)

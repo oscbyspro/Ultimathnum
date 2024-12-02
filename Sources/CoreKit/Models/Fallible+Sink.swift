@@ -14,24 +14,6 @@
 extension Fallible {
     
     //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    /// Generates an `error` indicator then combines it at the end of the `action`.
-    @inlinable public static func sink(_ action: (inout Bool) throws -> Self) rethrows -> Self {
-        var error = false
-        let value = try action(&error)
-        return (((value))).veto(error)
-    }
-    
-    /// Generates an `error` indicator then combines it at the end of the `action`.
-    @inlinable public static func sink(_ action: (inout Bool) throws -> Value) rethrows -> Self {
-        var error = false
-        let value = try action(&error)
-        return Self(value,error:error)
-    }
-    
-    //=------------------------------------------------------------------------=
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     

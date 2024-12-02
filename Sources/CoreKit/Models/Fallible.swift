@@ -41,11 +41,6 @@
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    /// Creates an unset `error` indicator.
-    @inlinable public init() where Value == Void {
-        self.init(())
-    }
-    
     /// Creates a new instance from the given `value` and `error`.
     @inlinable public init(_ value: consuming Value, error: consuming Bool = false) {
         self.value = value
