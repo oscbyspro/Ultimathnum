@@ -181,21 +181,23 @@ import TestKit
                 let c = T.entropic(size: size, using: &randomness)
                 let d = T.entropic(size: size, using: &randomness)
                 
-                let x = Fallible<T>.sink {
-                    let e: T = a.plus(b).sink(&$0)
-                    let f: T = c.plus(d).sink(&$0)
-                    return e.times(f)
+                let x = Fallible.error {
+                    let e: T = a.plus( b).sink(&$0)
+                    let f: T = c.plus( d).sink(&$0)
+                    return     e.times(f).sink(&$0)
                 }
                 
-                let y = Fallible<T>.sink {
+                let y = Fallible.error {
                     let e: T = a.times(c).sink(&$0)
                     let f: T = a.times(d).sink(&$0)
                     let g: T = b.times(c).sink(&$0)
                     let h: T = b.times(d).sink(&$0)
-                    return e.plus(f).sink(&$0).plus(g).sink(&$0).plus(h)
+                    return e.plus(f).sink(&$0).plus(g).sink(&$0).plus(h).sink(&$0)
                 }
-                    
-                try #require(x.value == y.value)
+                
+                always: do {
+                    try #require(x.value == y.value)
+                }
                 
                 if !T.isSigned, !x.value.isZero {
                     try #require(x.error == y.error)
@@ -228,18 +230,20 @@ import TestKit
                 let a = T.entropic(size: size, using: &randomness)
                 let b = T.entropic(size: size, using: &randomness)
                 
-                let x = Fallible<T>.sink {
-                    a.plus(b).sink(&$0).squared()
+                let x = Fallible.error {
+                    a.plus(b).sink(&$0).squared().sink(&$0)
                 }
                 
-                let y = Fallible<T>.sink {
+                let y = Fallible.error {
                     let c: T = a.squared().sink(&$0)
-                    let d: T = a.times(b ).sink(&$0).times(2).sink(&$0)
+                    let d: T = a.times(b ).sink(&$0).doubled().sink(&$0)
                     let e: T = b.squared().sink(&$0)
-                    return c.plus(d).sink(&$0).plus(e)
+                    return c.plus(d).sink(&$0).plus(e).sink(&$0)
                 }
                 
-                try #require(x.value == y.value)
+                always: do {
+                    try #require(x.value == y.value)
+                }
                 
                 if  a.isNegative == b.isNegative {
                     try #require(x.error == y.error)
