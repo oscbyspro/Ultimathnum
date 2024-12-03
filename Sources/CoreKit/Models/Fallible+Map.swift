@@ -17,11 +17,29 @@ extension Fallible {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func map<T, E>(_ map: (Value) throws(E) -> T) throws(E) -> Fallible<T> {
-        Fallible<T>(try map(self.value), error: self.error)
+    /// Transforms the `value` using the given `map` function and merges the
+    /// result with the current `error` indicator as well as any `error` indicators
+    /// returned by the given `map` function.
+    ///
+    @inlinable public consuming func map<Mapped, Error>(
+        _ map: (Value) throws(Error) -> Mapped
+    )   throws (Error) -> Fallible<Mapped> {
+        Fallible<Mapped>(try map(self.value), error: self.error)
     }
     
-    @inlinable public consuming func map<T, E>(_ map: (Value) throws(E) -> Fallible<T>) throws(E) -> Fallible<T> {
+    /// Transforms the `value` using the given `map` function and merges the
+    /// result with the current `error` indicator as well as any `error` indicators
+    /// returned by the given `map` function.
+    ///
+    /// ### Development
+    ///
+    /// `Optional<T>` calls this operations `flatMap(_:)`. The distinction lets
+    /// you return `Optional<Optional<T>>` from the ordinary `map(_:)`. I'm not
+    /// yet convinced that's desirable, however. Still, I may rename it.
+    ///
+    @inlinable public consuming func map<Mapped, Error>(
+        _ map: (Value) throws(Error) -> Fallible<Mapped>
+    )   throws (Error) -> Fallible<Mapped> {
         try map(self.value).veto(self.error)
     }
 }

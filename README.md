@@ -194,7 +194,7 @@ The value-error pair has important properties for writing expressive library cod
 ```swift
 enum Oops: Error { case such, error, much, wow, very, impressive }
 
-func sumsquare<T: UnsignedInteger>(a: T, b: T) throws -> T {
+func sumsquare<T: UnsignedInteger>(a: T, b: T) throws(Oops) -> T {
     let x: T = try a.squared().prune(Oops.such)
     let y: T = try a.times(b ).prune(Oops.error).doubled().prune(Oops.much)
     let z: T = try b.squared().prune(Oops.wow)
@@ -224,7 +224,7 @@ let (value, error) = pair.components()
 
 #### Conveniences: `error(...)`, `init(_:error:setup:)`
 
-With sufficient hands-on experience, you may notice a few recurring usage patterns. The ever-so-useful `sink(_:)` method requires a mutable error indicator that you usually want to merge at the end—for example. The static `error(...)` functions cover you on both fronts. At other times, you may want to consume an initial value. In that case, you should consider using `init(_:error:setup:)`.
+With sufficient hands-on experience, you may notice some recurring usage patterns. The ever-so-useful `sink(_:)` method requires a mutable error indicator that you usually want to merge at the end—for example. The static `error(...)` functions cover you on both fronts. At other times, you may want to consume an initial value. In that case, you should consider using `init(_:error:setup:)`.
 
 ```swift
 let x0 = Fallible.error {

@@ -37,7 +37,7 @@ extension Fallible {
     )   throws(Error) {
         
         try setup(&value, &error)
-        self.init(value, error: error)
+        self.init((value), error: error)
     }
     
     //=------------------------------------------------------------------------=

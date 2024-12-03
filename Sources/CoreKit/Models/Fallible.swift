@@ -14,6 +14,12 @@
 /// A `value` and an `error` indicator.
 @frozen public struct Fallible<Value>: CustomStringConvertible {
     
+    /// The type of `value` wrapped by instances of `Self`.
+    ///
+    /// - Note: Ideally, it should have well-behaved failure modes.
+    ///
+    public typealias Value = Value
+    
     //=------------------------------------------------------------------------=
     // MARK: State
     //=------------------------------------------------------------------------=
