@@ -10,6 +10,8 @@
 //*============================================================================*
 // MARK: * Binary Integer x Exponentiation
 //*============================================================================*
+// TODO: We need default generic parameter types <T = Magnitude> to deduplicate.
+//=----------------------------------------------------------------------------=
 
 extension BinaryInteger {
     
@@ -31,7 +33,7 @@ extension BinaryInteger {
         _ base: borrowing Self,
         power exponent: borrowing Natural<some UnsignedInteger>,
         coefficient: borrowing Nonzero<Self>
-    ) -> Fallible<Self> {
+    )   -> Fallible<Self> {
         
         var error: Bool = false
         var power: Self = (copy coefficient).value
@@ -57,7 +59,7 @@ extension BinaryInteger {
         _ base: borrowing Self,
         power exponent: borrowing some UnsignedInteger,
         coefficient: borrowing Self
-    ) -> Fallible<Self> {
+    )   -> Fallible<Self> {
         
         guard let coefficient = Nonzero(exactly: copy coefficient) else {
             return Fallible(Self.zero)
@@ -95,9 +97,16 @@ extension BinaryInteger {
     /// I8(3).power(U8(5), coefficient: I8(7)) // I8.exactly(1701)
     /// ```
     ///
+    /// ### Exponentiation
+    ///
     /// - Note: The default `coefficient` is `1`.
     ///
-    @inlinable public borrowing func power(_ exponent: borrowing Magnitude, coefficient: borrowing Self = 1) -> Fallible<Self> {
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    @inlinable public borrowing func power(
+        _  exponent:  borrowing Magnitude,
+        coefficient:  borrowing Self = 1
+    )   -> Fallible<Self> {
         Self.resolve(self, power: exponent, coefficient: coefficient)
     }
     
@@ -112,9 +121,75 @@ extension BinaryInteger {
     /// I8(3).power(U8(5), coefficient: I8(7)) // I8.exactly(1701)
     /// ```
     ///
+    /// ### Exponentiation
+    ///
     /// - Note: The default `coefficient` is `1`.
     ///
-    @inlinable public borrowing func power(_ exponent: borrowing some UnsignedInteger, coefficient: borrowing Self = 1) -> Fallible<Self> {
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    @inlinable public borrowing func power(
+        _  exponent:  borrowing some UnsignedInteger,
+        coefficient:  borrowing Self = 1
+    )   -> Fallible<Self> {
         Self.resolve(self, power: exponent, coefficient: coefficient)
+    }
+}
+
+//*============================================================================*
+// MARK: * Binary Integer x Exponentiation x Lenient
+//*============================================================================*
+
+extension BinaryInteger where Self: ArbitraryInteger & SignedInteger {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations
+    //=------------------------------------------------------------------------=
+    
+    /// Returns a `power`.
+    ///
+    /// - Returns: `pow(self, exponent) * coefficient`
+    ///
+    /// ```swift
+    /// I8(0).power(U8(1), coefficient: I8(2)) // I8.exactly(   0)
+    /// I8(1).power(U8(2), coefficient: I8(3)) // I8.exactly(   3)
+    /// I8(2).power(U8(3), coefficient: I8(5)) // I8.exactly(  40)
+    /// I8(3).power(U8(5), coefficient: I8(7)) // I8.exactly(1701)
+    /// ```
+    ///
+    /// ### Exponentiation
+    ///
+    /// - Note: The default `coefficient` is `1`.
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    @inlinable public borrowing func power(
+        _  exponent:  borrowing Magnitude,
+        coefficient:  borrowing Self = 1
+    )   -> Self {
+        self.power(exponent, coefficient: coefficient).unchecked()
+    }
+    
+    /// Returns a `power`.
+    ///
+    /// - Returns: `pow(self, exponent) * coefficient`
+    ///
+    /// ```swift
+    /// I8(0).power(U8(1), coefficient: I8(2)) // I8.exactly(   0)
+    /// I8(1).power(U8(2), coefficient: I8(3)) // I8.exactly(   3)
+    /// I8(2).power(U8(3), coefficient: I8(5)) // I8.exactly(  40)
+    /// I8(3).power(U8(5), coefficient: I8(7)) // I8.exactly(1701)
+    /// ```
+    ///
+    /// ### Exponentiation
+    ///
+    /// - Note: The default `coefficient` is `1`.
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    @inlinable public borrowing func power(
+        _  exponent:  borrowing some UnsignedInteger,
+        coefficient:  borrowing Self = 1
+    )   -> Self {
+        self.power(exponent, coefficient: coefficient).unchecked()
     }
 }

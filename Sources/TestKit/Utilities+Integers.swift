@@ -153,6 +153,28 @@ extension BinaryInteger {
     //=------------------------------------------------------------------------=
     
     /// Picks a random value with focus on `BinaryInteger/entropy()`.
+    ///
+    /// ### Examples: (index: one, domain: binary)
+    ///
+    /// ```
+    /// ..signed: [-2, -1,  0,  1        ]
+    /// unsigned: [         0,  1, ~1, ~0]
+    /// ```
+    ///
+    /// ### Examples: (index: one, domain: finite)
+    ///
+    /// ```
+    /// ..signed: [-2, -1,  0,  1        ]
+    /// unsigned: [         0,  1,  2,  3]
+    /// ```
+    ///
+    /// ### Examples: (index: one, domain: natural)
+    ///
+    /// ```
+    /// ..signed: [         0,  1        ]
+    /// unsigned: [         0,  1,  2,  3]
+    /// ```
+    ///
     @inlinable public static func entropic(
         as domain: Domain = Domain.binary,
         using randomness: inout some Randomness
@@ -162,6 +184,28 @@ extension BinaryInteger {
     }
     
     /// Picks a random value with focus on `BinaryInteger/entropy()`.
+    ///
+    /// ### Examples: (index: one, domain: binary)
+    ///
+    /// ```
+    /// ..signed: [-2, -1,  0,  1        ]
+    /// unsigned: [         0,  1, ~1, ~0]
+    /// ```
+    ///
+    /// ### Examples: (index: one, domain: finite)
+    ///
+    /// ```
+    /// ..signed: [-2, -1,  0,  1        ]
+    /// unsigned: [         0,  1,  2,  3]
+    /// ```
+    ///
+    /// ### Examples: (index: one, domain: natural)
+    ///
+    /// ```
+    /// ..signed: [         0,  1        ]
+    /// unsigned: [         0,  1,  2,  3]
+    /// ```
+    ///
     @inlinable public static func entropic(
         size: IX,
         as domain: Domain = Domain.binary,
@@ -213,6 +257,10 @@ extension BinaryInteger {
             return Self(raw: Self.isSigned ? random.down(Shift.one) : random)
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
     
     /// Picks an `entropic` value that also fits in the `destination` type.
     @inlinable public static func entropic<Other>(

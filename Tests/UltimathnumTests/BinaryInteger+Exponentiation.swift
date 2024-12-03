@@ -98,67 +98,6 @@ import TestKit
 }
 
 //*============================================================================*
-// MARK: * Binary Integer x Exponentiation x Conveniences
-//*============================================================================*
-
-@Suite struct BinaryIntegerTestsOnExponentiationConveniences {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Tests
-    //=------------------------------------------------------------------------=
-    
-    @Test(
-        "BinaryInteger/exponentiation/conveniences: disambiguation",
-        Tag.List.tags(.disambiguation, .generic)
-    )   func disambiguation() {
-        func build<T>(_ x: inout T) where T: BinaryInteger {
-            _ = x.power(0)
-            _ = x.power(0 as UX)
-            _ = x.power(0,       coefficient: 0)
-            _ = x.power(0 as UX, coefficient: 0)
-        }
-    }
-    
-    @Test(
-        "BinaryInteger/exponentiation/conveniences: coefficient is one by default",
-        Tag.List.tags(.generic),
-        arguments: typesAsBinaryInteger
-    )   func coefficientIsOneByDefault(type: any BinaryInteger.Type) throws {
-        
-        try  whereIs(type)
-        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
-            try #require(I8(2).power(U8(3)) == Fallible(I8(8)))
-            try #require(U8(2).power(U8(3)) == Fallible(U8(8)))
-            try #require(I8(2).power(UX(3)) == Fallible(I8(8)))
-            try #require(U8(2).power(UX(3)) == Fallible(U8(8)))
-        }
-    }
-    
-    @Test(
-        "BinaryInteger/exponentiation/conveniences: exponent as SystemsInteger.Magnitude vs UXL",
-        Tag.List.tags(.generic, .random),
-        arguments: typesAsSystemsInteger, fuzzers
-    )   func exponentAsSystemsIntegerMagnitudeVersusUXL(
-        type: any SystemsInteger.Type, randomness: consuming FuzzerInt
-    )   throws {
-       
-        try  whereIs(type)
-        func whereIs<T>(_ type: T.Type) throws where T: SystemsInteger {
-            typealias M = T.Magnitude
-            
-            for _ in 0 ..< 4 {
-                let a = T.entropic(using: &randomness)
-                let b = M.entropic(using: &randomness)
-                let c = T.entropic(using: &randomness)
-                let x = a.power(   (b), coefficient:c)
-                let y = a.power(UXL(b), coefficient:c)
-                try #require((((((((((x == y))))))))))
-            }
-        }
-    }
-}
-
-//*============================================================================*
 // MARK: * Binary Integer x Exponentiation x Edge Cases
 //*============================================================================*
 
@@ -300,6 +239,137 @@ import TestKit
                 let small = A(base).power(exponent, coefficient: A(coefficient))
                 let large = B(base).power(exponent, coefficient: B(coefficient))
                 try #require(small == large.map(A.exactly))
+            }
+        }
+    }
+}
+
+//*============================================================================*
+// MARK: * Binary Integer x Exponentiation x Conveniences
+//*============================================================================*
+
+@Suite struct BinaryIntegerTestsOnExponentiationConveniences {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/exponentiation/conveniences: disambiguation",
+        Tag.List.tags(.disambiguation, .generic)
+    )   func disambiguation() {
+        func build<T>(_ x: inout T) where T: BinaryInteger {
+            _ = x.power(0)
+            _ = x.power(0 as UX)
+            _ = x.power(0,       coefficient: 0)
+            _ = x.power(0 as UX, coefficient: 0)
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/exponentiation/conveniences: coefficient is one by default",
+        Tag.List.tags(.generic),
+        arguments: typesAsBinaryInteger
+    )   func coefficientIsOneByDefault(type: any BinaryInteger.Type) throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            try #require(I8(2).power(U8(3)) == Fallible(I8(8)))
+            try #require(U8(2).power(U8(3)) == Fallible(U8(8)))
+            try #require(I8(2).power(UX(3)) == Fallible(I8(8)))
+            try #require(U8(2).power(UX(3)) == Fallible(U8(8)))
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/exponentiation/conveniences: exponent as SystemsInteger.Magnitude vs UXL",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsSystemsInteger, fuzzers
+    )   func exponentAsSystemsIntegerMagnitudeVersusUXL(
+        type: any SystemsInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+       
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsInteger {
+            typealias M = T.Magnitude
+            
+            for _ in 0 ..< 4 {
+                let a = T.entropic(using: &randomness)
+                let b = M.entropic(using: &randomness)
+                let c = T.entropic(using: &randomness)
+                let x = a.power(   (b), coefficient:c)
+                let y = a.power(UXL(b), coefficient:c)
+                try #require((((((((((x == y))))))))))
+            }
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Lenient
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/exponentiation/conveniences: as LenientInteger",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsArbitraryIntegerAsSigned, fuzzers
+    )   func asLenientInteger(
+        type: any ArbitraryIntegerAsSigned.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
+        for exponent in typesAsBinaryIntegerAsUnsigned {
+            try whereIs(type, exponent: exponent)
+        }
+        
+        func whereIs<T, U>(_ type: T.Type, exponent: U.Type)
+        throws where T: ArbitraryIntegerAsSigned, U: UnsignedInteger {
+            for _ in 0 ..< 4 {
+                let a = T.entropic(size: 032, as: Domain.binary,  using: &randomness)
+                let b = U.entropic(size: 004, as: Domain.natural, using: &randomness)
+                let c = T.entropic(size: 256, as: Domain.binary,  using: &randomness)
+                
+                always: do {
+                    let x = a.power(b) as Fallible<T>
+                    let y = a.power(b) as T
+                    try #require(x.optional() == y)
+                }
+                
+                always: do {
+                    let x = a.power(b, coefficient: c) as Fallible<T>
+                    let y = a.power(b, coefficient: c) as T
+                    try #require(x.optional() == y)
+                }
+            }
+        }
+    }
+    
+    @Test(
+        "BinaryInteger/exponentiation/conveniences: as LenientInteger where Exponent is Magnitude",
+        Tag.List.tags(.generic, .random, .todo),
+        arguments: typesAsArbitraryIntegerAsSigned, fuzzers
+    )   func asLenientIntegerWhereExponentIsMagnitude(
+        type: any ArbitraryIntegerAsSigned.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: ArbitraryIntegerAsSigned {
+            typealias U = T.Magnitude
+            
+            for _ in 0 ..< 4 {
+                let a = T.entropic(size: 032, as: Domain.binary,  using: &randomness)
+                let b = U.entropic(size: 004, as: Domain.natural, using: &randomness)
+                let c = T.entropic(size: 256, as: Domain.binary,  using: &randomness)
+                
+                always: do {
+                    let x = a.power(b) as Fallible<T>
+                    let y = a.power(b) as T
+                    try #require(x.optional() == y)
+                }
+                
+                always: do {
+                    let x = a.power(b, coefficient: c) as Fallible<T>
+                    let y = a.power(b, coefficient: c) as T
+                    try #require(x.optional() == y)
+                }
             }
         }
     }
