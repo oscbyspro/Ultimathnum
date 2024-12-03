@@ -17,11 +17,11 @@ extension Fallible {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    @inlinable public consuming func map<T>(_ map: (Value) throws -> T) rethrows -> Fallible<T> {
+    @inlinable public consuming func map<T, E>(_ map: (Value) throws(E) -> T) throws(E) -> Fallible<T> {
         Fallible<T>(try map(self.value), error: self.error)
     }
     
-    @inlinable public consuming func map<T>(_ map: (Value) throws -> Fallible<T>) rethrows -> Fallible<T> {
+    @inlinable public consuming func map<T, E>(_ map: (Value) throws(E) -> Fallible<T>) throws(E) -> Fallible<T> {
         try map(self.value).veto(self.error)
     }
 }

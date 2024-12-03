@@ -32,7 +32,7 @@ extension Fallible {
     }
     
     /// Tries to return its `value` but throws `failure()` on `error`.
-    @inlinable public consuming func prune<Error>(_ failure: @autoclosure () -> Error) throws -> Value where Error: Swift.Error {
+    @inlinable public consuming func prune<Error>(_ failure: @autoclosure () -> Error) throws(Error) -> Value {
         if  self.error {
             throw  failure()
         }   else {
