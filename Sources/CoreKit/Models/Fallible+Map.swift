@@ -33,7 +33,7 @@ extension Fallible {
     ///
     /// ### Development
     ///
-    /// `Optional<T>` calls this operations `flatMap(_:)`. The distinction lets
+    /// `Optional<T>` calls this operation `flatMap(_:)`. This distinction lets
     /// you return `Optional<Optional<T>>` from the ordinary `map(_:)`. I'm not
     /// yet convinced that's desirable, however. Still, I may rename it.
     ///
