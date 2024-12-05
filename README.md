@@ -12,6 +12,7 @@
   - [How to run unit tests](#installation-how-to-run-unit-tests)
   - [How to run performance tests](#installation-how-to-run-performance-tests)
 * [Overview](#overview)
+  - [The grateful guest](#overview-the-grateful-guest)
   - [The overpowered `BinaryInteger`](#overview-the-overpowered-binary-integer)
   - [The `Fallible<T>` redemption arc](#overview-the-fallible-redemption-arc)
 
@@ -92,6 +93,19 @@ This setup enables optimizations and omits unrelated metrics. These steps are cr
 <a name="overview"/>
 
 ## Overview
+
+<a name="overview-the-grateful-guest"/>
+
+### The grateful guest
+
+In this project, we build custom abstractions on top of Swift's powerful type system. In gratitude, we extend our functionality to Swift-proper through various interoperability modules. Importing these modules grants you access types conforming to the appropriate protocols.
+
+```swift
+var randomness = RandomInt() // from RandomIntKit
+let random = Bool.random(using: &randomness.stdlib)
+```
+
+Some models, like the core binary integer types and the system random number generator, interoperate naturally with Swift. In that case, the various `stdlib()` functions will return the appropriate standard library types. As such, the interoperability features of the `Interoperable` protocol do not introduce any unnecessary monomorphization.
 
 <a name="overview-the-overpowered-binary-integer"/>
 
