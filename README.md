@@ -98,14 +98,14 @@ This setup enables optimizations and omits unrelated metrics. These steps are cr
 
 ### The grateful guest
 
-In this project, we build custom abstractions on top of Swift's powerful type system. In gratitude, we extend our functionality to Swift-proper through various interoperability modules. Importing these modules grants you access types conforming to the appropriate protocols.
+In this project, we build custom abstractions using Swift's powerful type system. In gratitude, we extend our functionality to Swift-proper through various interoperability modules. Importing these modules lets you access types conforming to the appropriate protocols.
 
 ```swift
 var randomness = RandomInt() // from RandomIntKit
 let random = Bool.random(using: &randomness.stdlib)
 ```
 
-Some models, like the core binary integer types and the system random number generator, interoperate naturally with Swift. In that case, the various `stdlib()` functions will return the appropriate standard library types. As such, the interoperability features of the `Interoperable` protocol do not introduce any unnecessary monomorphization.
+Some models, like the core binary integer types and the system random number generator, interoperate naturally so their various `stdlib()` functions return the appropriate standard library types. As such, the interoperability features of the `Interoperable` protocol do not introduce any unnecessary monomorphization.
 
 <a name="overview-the-overpowered-binary-integer"/>
 
