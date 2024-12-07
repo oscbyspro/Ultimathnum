@@ -6,13 +6,13 @@
 
 * [Prelude](#prelude)
   - [The abstract symphony](#prelude-the-abstract-symphony)
+  - [The grateful guest](#prelude-the-grateful-guest)
 * [Installation](#installation)
   - [SemVer 2.0.0](#installation-semver)
   - [Using Swift Package Manager](#installation-swift-package-manager)
   - [How to run unit tests](#installation-how-to-run-unit-tests)
   - [How to run performance tests](#installation-how-to-run-performance-tests)
 * [Overview](#overview)
-  - [The grateful guest](#overview-the-grateful-guest)
   - [The overpowered `BinaryInteger`](#overview-the-overpowered-binary-integer)
   - [The `Fallible<T>` redemption arc](#overview-the-fallible-redemption-arc)
 
@@ -24,7 +24,20 @@
 
 ### The abstract symphony
 
-This work seeks to unify the various concepts of low-level arithmetic. It streamlines error handling and introduces arbitrary binary integer infinities, among other things. But, the emphasis is not on the diversity of ideas but on the orchestration of scalable abstractions. Imagine an oasis of harmony in a world of discord. It's more of a symphony than a library.
+This work seeks to unify the various concepts of low-level arithmetic. It streamlines error handling and introduces arbitrary binary integer infinities, among other things. But, the emphasis is not on the diversity of ideas but on the orchestration of scalable abstractions. It's more of a symphony than a library.
+
+<a name="prelude-the-grateful-guest"/>
+
+### The grateful guest
+
+In this project, we build custom abstractions using Swift's powerful type system. In gratitude, we extend our functionality to Swift-proper through various interoperability modules. Importing these modules gives you access types conforming to the appropriate protocols.
+
+```swift
+var randomness = RandomInt() // from RandomIntKit
+let random = Bool.random(using: &randomness.stdlib) // from Swift
+```
+
+Some models—like the core binary integer types and the system random number generator—are intrinsically interoperable, meaning their `stdlib()` functions return appropriate standard library types. As a result, the interoperability features of the `Interoperable` protocol do not introduce any unnecessary monomorphization.
 
 <a name="installation"/>
 
@@ -93,19 +106,6 @@ This setup enables optimizations and omits unrelated metrics. These steps are cr
 <a name="overview"/>
 
 ## Overview
-
-<a name="overview-the-grateful-guest"/>
-
-### The grateful guest
-
-In this project, we build custom abstractions using Swift's powerful type system. In gratitude, we extend our functionality to Swift-proper through various interoperability modules. Importing these modules lets you access types conforming to the appropriate protocols.
-
-```swift
-var randomness = RandomInt() // from RandomIntKit
-let random = Bool.random(using: &randomness.stdlib)
-```
-
-Some models—like the core binary integer types and the system random number generator—are intrinsically interoperable, meaning their `stdlib()` functions return appropriate standard library types. As such, the interoperability features of the `Interoperable` protocol do not introduce any unnecessary monomorphization.
 
 <a name="overview-the-overpowered-binary-integer"/>
 
