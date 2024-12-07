@@ -15,7 +15,8 @@
 * [Overview](#overview)
   - [The overpowered `BinaryInteger`](#overview-the-overpowered-binary-integer)
   - [The `Fallible<T>` redemption arc](#overview-the-fallible-redemption-arc)
-
+  - [The precondition `Guarantee` types](#overview-the-precondition-guarantee-types)
+ 
 <a name="prelude"/>
 
 ## Prelude
@@ -248,4 +249,26 @@ let x0 = Fallible.error {
 let x1 = Fallible(U8.zero) {
     $0 = $0.decremented().sink(&$1)
 }   // value: 255, error: true
+```
+
+<a name="overview-the-precondition-guarantee-types"/>
+
+#### The precondition `Guarantee` types
+
+| Type         | Guarantee          |
+|:-------------|:-------------------|
+| Divider      | x ≠ 0              |
+| Finite       | x ∈ ℤ              |
+| Natural      | x ∈ ℕ              |
+| Nonzero      | x ≠ 0              |
+| Shift        | x ∈ 0 up to T.size |
+
+Guarantee types encode their preconditions into the type system. You may leverage their semantics to compose complex types with less overhead or reduce the number of failure modes in your algorithms. Additionally, the type system will prompt you to accept or reject their arguments using one of the following methods.
+
+```swift
+init(_:prune:)   // error: throws
+init(exactly:)   // error: nil
+init(_:)         // error: precondition
+init(unchecked:) // error: assert
+init(unsafe:)    // error: %%%%%%
 ```
