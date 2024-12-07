@@ -16,7 +16,7 @@
   - [The overpowered `BinaryInteger`](#overview-the-overpowered-binary-integer)
   - [The `Fallible<T>` redemption arc](#overview-the-fallible-redemption-arc)
   - [The precondition `Guarantee` types](#overview-the-precondition-guarantee-types)
- 
+
 <a name="prelude"/>
 
 ## Prelude
@@ -253,7 +253,7 @@ let x1 = Fallible(U8.zero) {
 
 <a name="overview-the-precondition-guarantee-types"/>
 
-#### The precondition `Guarantee` types
+### The precondition `Guarantee` types
 
 | Type         | Guarantee          |
 |:-------------|:-------------------|
