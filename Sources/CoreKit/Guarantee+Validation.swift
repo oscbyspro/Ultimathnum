@@ -48,7 +48,7 @@ extension Guarantee {
     ///
     /// - Requires: The given `value` must satisfy the `predicate` of this type.
     ///
-    @inlinable public init<Error>(_ value: consuming Value, prune error: @autoclosure () -> Error) throws where Error: Swift.Error {
+    @inlinable public init<Error>(_ value: consuming Value, prune error: @autoclosure () -> Error) throws(Error) {
         guard Self.predicate(value) else { throw error() }
         self.init(unsafe:/**/value)
     }

@@ -31,19 +31,19 @@ extension Fallible {
         }
     }
     
-    /// Tries to return its `value` but throws `failure()` on `error`.
-    @inlinable public consuming func prune<Error>(_ failure: @autoclosure () -> Error) throws(Error) -> Value {
+    /// Tries to return its `value` but throws `error()` on `error`.
+    @inlinable public consuming func prune<Error>(_ error: @autoclosure () -> Error) throws(Error) -> Value {
         if  self.error {
-            throw  failure()
+            throw  error()
         }   else {
             return self.value
         }
     }
     
-    /// Tries to return its `value` but returns `failure()` on `error`.
-    @inlinable public consuming func result<Error>(_ failure: @autoclosure () -> Error) -> Result<Value, Error> {
+    /// Tries to return its `value` but returns `error()` on `error`.
+    @inlinable public consuming func result<Error>(_ error: @autoclosure () -> Error) -> Result<Value, Error> {
         if  self.error {
-            return Result.failure(failure())
+            return Result.failure(error())
         }   else {
             return Result.success(self.value)
         }
