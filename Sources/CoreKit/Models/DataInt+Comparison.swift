@@ -17,6 +17,11 @@ extension DataInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// Indicates whether the `body` is free of `appendix` extensions.
+    @inlinable public var isNormal: Bool {
+        self.body.last != self.last
+    }
+    
     /// Indicates whether this value is equal to zero.
     ///
     /// - Note: This comparison is performed backwards.
@@ -25,9 +30,13 @@ extension DataInt {
         !Bool(self.appendix) && self.body.isZero
     }
     
-    /// Indicates whether the `body` is free of `appendix` extensions.
-    @inlinable public var isNormal: Bool {
-        self.body.last != self.last
+    /// Indicates whether this value is a power of `2`
+    @inlinable public var isPowerOf2: Bool {
+        if  Bool(self.appendix) {
+            return false
+        }   else {
+            return self.body.isPowerOf2
+        }
     }
 }
 
@@ -174,12 +183,14 @@ extension DataInt.Body {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    /// Indicates whether this value is equal to zero.
+    /// Indicates whether this buffer is empty.
     ///
-    /// - Note: This comparison is performed backwards.
+    /// An empty buffer lacks valid subscript arguments.
     ///
-    @inlinable public var isZero: Bool {
-        self.buffer().reversed().allSatisfy({ $0.isZero })
+    /// - Invariant: `self.isEmpty == self.count.isZero`
+    ///
+    @inlinable public var isEmpty: Bool {
+        self.count.isZero
     }
     
     /// Indicates whether the `body` is free of `appendix` extensions.
@@ -190,14 +201,25 @@ extension DataInt.Body {
         DataInt(self).isNormal
     }
     
-    /// Indicates whether this buffer is empty.
+    /// Indicates whether this value is equal to zero.
     ///
-    /// An empty buffer lacks valid subscript arguments.
+    /// - Note: This comparison is performed backwards.
     ///
-    /// - Invariant: `self.isEmpty == self.count.isZero`
-    ///
-    @inlinable public var isEmpty: Bool {
-        self.count.isZero
+    @inlinable public var isZero: Bool {
+        self.buffer().reversed().allSatisfy({ $0.isZero })
+    }
+    
+    /// Indicates whether this value is a power of `2`
+    @inlinable public var isPowerOf2: Bool {
+        var element = Element()
+        
+        for next in self.buffer() {
+            guard !(next).isZero else { continue }
+            guard element.isZero else { return false }
+            element = next
+        }
+        
+        return element.isPowerOf2
     }
     
     /// Performs a three-way comparison of `self` versus `zero`.
@@ -229,14 +251,19 @@ extension MutableDataInt {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
+    /// Indicates whether the `body` is free of `appendix` extensions.
+    @inlinable public var isNormal: Bool {
+        Immutable(self).isNormal
+    }
+    
     /// Indicates whether this value is equal to zero.
     @inlinable public var isZero: Bool {
         Immutable(self).isZero
     }
     
-    /// Indicates whether the `body` is free of `appendix` extensions.
-    @inlinable public var isNormal: Bool {
-        Immutable(self).isNormal
+    /// Indicates whether this value is a power of `2`
+    @inlinable public var isPowerOf2: Bool {
+        Immutable(self).isPowerOf2
     }
 }
 
@@ -249,19 +276,6 @@ extension MutableDataInt.Body {
     //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
-        
-    /// Indicates whether this value is equal to zero.
-    @inlinable public var isZero: Bool {
-        Immutable(self).isZero
-    }
-    
-    /// Indicates whether the `body` is free of `appendix` extensions.
-    ///
-    /// - Note: The `appendix` of a binary integer `body` is always `zero`.
-    ///
-    @inlinable public var isNormal: Bool {
-        Immutable(self).isNormal
-    }
     
     /// Indicates whether this buffer is empty.
     ///
@@ -271,6 +285,24 @@ extension MutableDataInt.Body {
     ///
     @inlinable public var isEmpty: Bool {
         Immutable(self).isEmpty
+    }
+    
+    /// Indicates whether the `body` is free of `appendix` extensions.
+    ///
+    /// - Note: The `appendix` of a binary integer `body` is always `zero`.
+    ///
+    @inlinable public var isNormal: Bool {
+        Immutable(self).isNormal
+    }
+        
+    /// Indicates whether this value is equal to zero.
+    @inlinable public var isZero: Bool {
+        Immutable(self).isZero
+    }
+    
+    /// Indicates whether this value is a power of `2`
+    @inlinable public var isPowerOf2: Bool {
+        Immutable(self).isPowerOf2
     }
     
     //=------------------------------------------------------------------------=
