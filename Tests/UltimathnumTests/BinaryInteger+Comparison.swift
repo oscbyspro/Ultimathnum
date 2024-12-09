@@ -43,6 +43,56 @@ import TestKit
         }
     }
     
+    @Test(
+        "BinaryInteger/comparison: isPowerOf2",
+        Tag.List.tags(.generic, .random),
+        arguments: typesAsBinaryInteger, fuzzers
+    )   func isPowerOf2(
+        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
+            let size = IX(size: T.self) ?? 256
+            
+            for index in 0 ..< size {
+                let value = T.lsb.up(Count(index))
+                try whereIs( value, expectation: !T.isCompact || (index + 1 < size))
+                try whereIs(~value, expectation: false)
+            }
+            
+            for _ in 0 ..< 32 {
+                let value = T.entropic(size: size, using: &randomness)
+                let expectation = value.isPositive && value.count(Bit.one) == Count(1)
+                try whereIs(value, expectation: expectation)
+            }
+            
+            func whereIs(_ value: consuming T, expectation: Bool) throws {
+                try #require(expectation == value.isPowerOf2)
+                
+                try value.withUnsafeBinaryIntegerElements {
+                    try #require(expectation == ($0.isPowerOf2))
+                    try #require(expectation == ($0.appendix.isZero && $0.body.isPowerOf2))
+                }
+                
+                try value.withUnsafeBinaryIntegerElements(as: U8.self) {
+                    try #require(expectation == ($0.isPowerOf2))
+                    try #require(expectation == ($0.appendix.isZero && $0.body.isPowerOf2))
+                }
+                
+                try value.withUnsafeMutableBinaryIntegerElements {
+                    try #require(expectation == ($0.isPowerOf2))
+                    try #require(expectation == ($0.appendix.isZero && $0.body.isPowerOf2))
+                }
+                
+                try value.withUnsafeMutableBinaryIntegerElements(as: U8.self) {
+                    try #require(expectation == ($0.isPowerOf2))
+                    try #require(expectation == ($0.appendix.isZero && $0.body.isPowerOf2))
+                }
+            }
+        }
+    }
+    
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=

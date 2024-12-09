@@ -68,6 +68,18 @@ extension BinaryInteger {
         }
     }
     
+    /// Indicates whether this value is a power of `2`
+    @inlinable public var isPowerOf2: Bool {
+        if  Self.size == Element.size {
+            return self.isPositive && (self & (self &- 1)).isZero
+            
+        }   else {
+            return self.withUnsafeBinaryIntegerElements {
+                $0.isPowerOf2
+            }
+        }
+    }
+    
     /// Performs a three-way comparison of `self` versus `zero`.
     ///
     /// - Note: Big integers evaluate it in place, cf. `compared(to: 0)`.
@@ -82,6 +94,10 @@ extension BinaryInteger {
             }
         }
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
     
     /// Hashes the normalized 8-bit data integer elements of `self`.
     ///
