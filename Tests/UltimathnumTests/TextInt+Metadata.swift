@@ -38,8 +38,7 @@ import TestKit
     @Test(
         "TextInt/metadata: magicLog2x32 max length",
         Tag.List.tags(.documentation, .important, .unofficial),
-        ConditionTrait.enabled(if: IX.size == Count(64)),
-        arguments: IX(2)...IX(36), CollectionOfOne(IX(load: 288230376151711743 as I64))
+        arguments: IX(2)...IX(36), CollectionOfOne(IX.max / 32)
     )   func magicLog2x32MaxLength(radix: IX, length: IX) {
         
         #expect(TextInt.capacity(radix, length: Natural(length + 0)) != nil)
