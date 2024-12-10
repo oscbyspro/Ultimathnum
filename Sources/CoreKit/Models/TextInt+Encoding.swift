@@ -209,8 +209,9 @@ extension TextInt {
                 pointer.initialize(to: element)
             }
             
-            Swift.assert(start <= pointer)
-            let count  = pointer.distance(to: end)
+            Swift.assert(pointer >= start)
+            let count  = pointer.distance(to:  end)
+            Swift.assert(capacity - count <= count)
             if  count != capacity {
                 //  move to start index
                 var destination = start
