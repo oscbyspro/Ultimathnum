@@ -149,10 +149,6 @@ extension TextInt {
         }
     }
     
-    /// ### Development
-    ///
-    /// - TODO: Better size approximation.
-    ///
     @usableFromInline package func encode(
         info: consuming  UnsafeBufferPointer<UInt8>,
         normalized body: consuming MutableDataInt<UX>.Body
@@ -160,70 +156,74 @@ extension TextInt {
         
         Swift.assert(body.isNormal)
         
-        var capacity = IX(raw: body.nondescending(Bit.zero))
-        let speed: Nonzero<IX>
+        let (length) = Natural.init(unchecked: IX(raw:  body.nondescending(Bit.zero)))
+        var capacity = Swift.Int(Self.capacity(IX(load: self.radix), length: length)!)
         
-        if  self.power.div == 1 {
-            speed = Nonzero(unchecked: IX(raw: self.power.div.size()))
-        }   else {
-            let x = IX(raw: self.power.div.nondescending(Bit.zero))
-            speed = Nonzero(unchecked: x.decremented().unchecked())
-        }
+        capacity += info.count
         
-        Swift.assert(speed.value > 1)
-        capacity  = capacity.quotient(speed).unchecked("speed > 1")
-        capacity  = capacity.incremented(  ).unchecked("speed > 1")
-        capacity *= self.exponent
-        capacity += IX(info.count)
-        
-        return Swift.withUnsafeTemporaryAllocation(of: UInt8.self, capacity: Int(capacity)) { ascii in
-            var asciiIndex: Int = ascii.endIndex
-            var chunkIndex: Int = ascii.endIndex
-            
-            ascii.initialize(repeating: UInt8(ascii: "0"))
+        return String(unsafeUninitializedCapacity: capacity) {
+            //  note that we use capacity and not $0.count
+            let (start): UnsafeMutablePointer<Swift.UInt8> = $0.baseAddress.unchecked()
+            let ((end)): UnsafeMutablePointer<Swift.UInt8> = start.advanced(by: capacity)
+            var pointer: UnsafeMutablePointer<Swift.UInt8> = end
+            var chunked: UnsafeMutablePointer<Swift.UInt8> = end
+            //  note that we use capacity and not $0.count
+            start.initialize(repeating: UInt8(ascii: "0"), count: capacity)
             
             var chunk:  UX = 0
             let radix = Nonzero(unchecked: UX(load: self.radix as U8))
             
             major:  while true {
+                
                 if  self.power.div != 1 {
                     chunk = (body).divisionSetQuotientGetRemainder(self.power)
                     body  = (body).normalized()
+                    
                 }   else if !body .isEmpty {
                     chunk = (body)[unchecked: (  )]
                     body  = (body)[unchecked: 1...]
+                    
                 }   else {
                     Swift.assert(chunk.isZero)
                 }
                 
                 minor:  repeat {
+                    
                     let value: UX
                     (chunk, value) = chunk.division(radix).components()
-                    let element = self.numerals.encode(U8(load: value)).unchecked()
-                    precondition(asciiIndex > ascii .startIndex)
-                    asciiIndex = ascii.index(before: asciiIndex)
-                    ascii.initializeElement(at: asciiIndex, to: UInt8(element))
+                    let element = Swift.UInt8(self.numerals.encode(U8(load: value)).unchecked())
+                    precondition(pointer > start)
+                    pointer = pointer.predecessor()
+                    pointer.initialize(to: element)
+                    
                 }   while !chunk.isZero
                 
                 if body.isEmpty { break }
-                chunkIndex = chunkIndex - Int(self.exponent)
-                asciiIndex = chunkIndex
+                chunked = chunked - Swift.Int(self.exponent)
+                pointer = chunked
             }
             
             for element in info.reversed() {
-                precondition(asciiIndex >  ascii.startIndex)
-                asciiIndex = ascii.index(before: asciiIndex)
-                ascii.initializeElement(at: asciiIndex, to: UInt8(element))
+                precondition(pointer > start)
+                pointer = pointer.predecessor()
+                pointer.initialize(to: element)
             }
             
-            let prefix = UnsafeMutableBufferPointer(rebasing: ascii[..<asciiIndex])
-            let suffix = UnsafeMutableBufferPointer(rebasing: ascii[asciiIndex...])
-            
-            prefix.deinitialize()
-            
-            return String(unsafeUninitializedCapacity: suffix.count) {
-                _  = $0.moveInitialize(fromContentsOf: suffix); return suffix.count
+            Swift.assert(start <= pointer)
+            let count  = pointer.distance(to: end)
+            if  count != capacity {
+                //  move the description so it starts at 0
+                let alignment = pointer.distance(to: start)
+                while pointer < end {
+                    let destination = pointer + alignment
+                    Swift.assert(destination >= start)
+                    Swift.assert(destination <  pointer)
+                    destination.initialize(to: pointer.move())
+                    pointer = pointer.successor()
+                }
             }
+            
+            return count // as Swift.Int as Swift.Int
         }
     }
 }
