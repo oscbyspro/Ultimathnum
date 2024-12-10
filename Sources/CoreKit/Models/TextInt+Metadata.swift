@@ -29,12 +29,12 @@ extension TextInt {
     ///
     /// - Note: `37` bytes is a good price for good results.
     ///
-    /// - Note: Good precision lets us fit more (small) numbers on the stack.
+    /// - Note: Good results let us fit more (small) numbers on the stack.
     ///
     /// ### Capacity
     ///
     /// ```swift
-    /// ceil(32 * length / magicLog2x32[radix])
+    /// ceil(32 * length / magicLog2x32[radix]) // floating-point
     /// ```
     ///
     /// ### Comments
