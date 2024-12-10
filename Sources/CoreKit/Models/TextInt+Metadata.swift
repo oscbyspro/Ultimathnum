@@ -21,7 +21,7 @@ extension TextInt {
     ///
     ///     000000: 32 // multiplier
     ///     000001: 05 // multiplier shift
-    ///     2...32: floor(32 * log2(radix))
+    ///     2...36: floor(32 * log2(radix))
     ///
     /// - Note: The `multiplier` adds `5` bits of precision.
     ///
