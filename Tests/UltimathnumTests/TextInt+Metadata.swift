@@ -47,32 +47,32 @@ import TestKit
     }
     
     @Test(
-        "TextInt/metadata: magicLog2x32 decimals",
+        "TextInt/metadata: magicLog2x32 radix 10",
         Tag.List.tags(.documentation, .important, .unofficial),
         ConditionTrait.enabled(if: IX.size == Count(64)),
         arguments: Array<(U64, IX, IX)>.infer([
             
         (U64(00000000000000000000), IX( 1), IX( 1)),
         (U64(1                   ), IX( 1), IX( 1)),
-        (U64(12                  ), IX( 2), IX( 2)),
-        (U64(123                 ), IX( 3), IX( 3)),
-        (U64(1234                ), IX( 4), IX( 4)),
-        (U64(12345               ), IX( 5), IX( 5)),
-        (U64(123456              ), IX( 6), IX( 6)),
-        (U64(1234567             ), IX( 7), IX( 7)),
-        (U64(12345678            ), IX( 8), IX( 8)),
-        (U64(123456789           ), IX( 9), IX( 9)),
-        (U64(1234567890          ), IX(10), IX(10)),
-        (U64(12345678901         ), IX(11), IX(11)),
-        (U64(123456789012        ), IX(12), IX(12)),
-        (U64(1234567890123       ), IX(13), IX(13)),
-        (U64(12345678901234      ), IX(14), IX(14)),
-        (U64(123456789012345     ), IX(15), IX(15)),
-        (U64(1234567890123456    ), IX(16), IX(16)),
-        (U64(12345678901234567   ), IX(17), IX(17)),
-        (U64(123456789012345678  ), IX(18), IX(18)),
-        (U64(1234567890123456789 ), IX(19), IX(19)),
-        (U64(12345678901234567890), IX(20), IX(20)),
+        (U64(10                  ), IX( 2), IX( 2)),
+        (U64(100                 ), IX( 3), IX( 3)),
+        (U64(1000                ), IX( 4), IX( 4)),
+        (U64(10000               ), IX( 5), IX( 5)),
+        (U64(100000              ), IX( 6), IX( 6)),
+        (U64(1000000             ), IX( 7), IX( 7)),
+        (U64(10000000            ), IX( 8), IX( 8)),
+        (U64(100000000           ), IX( 9), IX( 9)),
+        (U64(1000000000          ), IX(10), IX(10)),
+        (U64(10000000000         ), IX(11), IX(11)),
+        (U64(100000000000        ), IX(12), IX(12)),
+        (U64(1000000000000       ), IX(13), IX(13)),
+        (U64(10000000000000      ), IX(14), IX(14)),
+        (U64(100000000000000     ), IX(15), IX(15)),
+        (U64(1000000000000000    ), IX(16), IX(16)),
+        (U64(10000000000000000   ), IX(17), IX(17)),
+        (U64(100000000000000000  ), IX(18), IX(18)),
+        (U64(1000000000000000000 ), IX(19), IX(19)),
+        (U64(10000000000000000000), IX(20), IX(20)),
         (U64(9                   ), IX( 1), IX( 2)), // 1
         (U64(99                  ), IX( 2), IX( 3)), // 1
         (U64(999                 ), IX( 3), IX( 4)), // 1
@@ -93,12 +93,61 @@ import TestKit
         (U64(999999999999999999  ), IX(18), IX(19)), // 1
         (U64(9999999999999999999 ), IX(19), IX(20)), // 1
         
-    ])) func magicLog2x32MaxLength(value: U64, count: IX, expectation: IX) {
+    ])) func magicLog2x32Radix10(value: U64, count: IX, capacity: IX) throws {
         
-        let length = IX(raw: value.nondescending(Bit.zero))
-        let result = TextInt.capacity(10, length: Natural(length))
+        let radix: IX = 10
+        let coder: TextInt = try #require(TextInt.radix(radix))
+        let length = IX(raw: value.nondescending(((Bit.zero))))
+        #expect(count == IX( value.description(using: coder).utf8.count))
+        #expect(capacity == TextInt.capacity(radix, length: Natural(length)))
+    }
+    
+    @Test(
+        "TextInt/metadata: magicLog2x32 radix 16",
+        Tag.List.tags(.documentation, .important, .unofficial),
+        ConditionTrait.enabled(if: IX.size == Count(64)),
+        arguments: Array<(U64, IX, IX)>.infer([
+            
+        (U64(0x0000000000000000), IX( 1), IX( 1)),
+        (U64(0x1               ), IX( 1), IX( 1)),
+        (U64(0x10              ), IX( 2), IX( 2)),
+        (U64(0x100             ), IX( 3), IX( 3)),
+        (U64(0x1000            ), IX( 4), IX( 4)),
+        (U64(0x10000           ), IX( 5), IX( 5)),
+        (U64(0x100000          ), IX( 6), IX( 6)),
+        (U64(0x1000000         ), IX( 7), IX( 7)),
+        (U64(0x10000000        ), IX( 8), IX( 8)),
+        (U64(0x100000000       ), IX( 9), IX( 9)),
+        (U64(0x1000000000      ), IX(10), IX(10)),
+        (U64(0x10000000000     ), IX(11), IX(11)),
+        (U64(0x100000000000    ), IX(12), IX(12)),
+        (U64(0x1000000000000   ), IX(13), IX(13)),
+        (U64(0x10000000000000  ), IX(14), IX(14)),
+        (U64(0x100000000000000 ), IX(15), IX(15)),
+        (U64(0x1000000000000000), IX(16), IX(16)),
+        (U64(0xf               ), IX( 1), IX( 1)),
+        (U64(0xff              ), IX( 2), IX( 2)),
+        (U64(0xfff             ), IX( 3), IX( 3)),
+        (U64(0xffff            ), IX( 4), IX( 4)),
+        (U64(0xfffff           ), IX( 5), IX( 5)),
+        (U64(0xffffff          ), IX( 6), IX( 6)),
+        (U64(0xfffffff         ), IX( 7), IX( 7)),
+        (U64(0xffffffff        ), IX( 8), IX( 8)),
+        (U64(0xfffffffff       ), IX( 9), IX( 9)),
+        (U64(0xffffffffff      ), IX(10), IX(10)),
+        (U64(0xfffffffffff     ), IX(11), IX(11)),
+        (U64(0xffffffffffff    ), IX(12), IX(12)),
+        (U64(0xfffffffffffff   ), IX(13), IX(13)),
+        (U64(0xffffffffffffff  ), IX(14), IX(14)),
+        (U64(0xfffffffffffffff ), IX(15), IX(15)),
+        (U64(0xffffffffffffffff), IX(16), IX(16)),
         
-        #expect(result == expectation)
-        #expect(IX(value.description.utf8.count) == count)
+    ])) func magicLog2x32Radix16(value: U64, count: IX, capacity: IX) throws {
+        
+        let radix: IX = 16
+        let coder: TextInt = try #require(TextInt.radix(radix))
+        let length = IX(raw: value.nondescending(((Bit.zero))))
+        #expect(count == IX( value.description(using: coder).utf8.count))
+        #expect(capacity == TextInt.capacity(radix, length: Natural(length)))
     }
 }
