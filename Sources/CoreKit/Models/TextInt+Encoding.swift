@@ -212,14 +212,13 @@ extension TextInt {
             Swift.assert(start <= pointer)
             let count  = pointer.distance(to: end)
             if  count != capacity {
-                //  move the description so it starts at 0
-                let alignment = pointer.distance(to: start)
-                while pointer < end {
-                    let destination = pointer + alignment
+                //  move description so it starts at index zero
+                let alignment: Swift.Int = pointer.distance(to: start)
+                for source in stride(from: pointer,to: end, by: 1) {
+                    let destination = source + alignment
                     Swift.assert(destination >= start)
-                    Swift.assert(destination <  pointer)
-                    destination.initialize(to: pointer.move())
-                    pointer = pointer.successor()
+                    Swift.assert(destination < source)
+                    destination.initialize(to: source.move())
                 }
             }
             
