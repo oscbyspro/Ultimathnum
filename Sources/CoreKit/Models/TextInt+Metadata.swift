@@ -44,6 +44,10 @@ extension TextInt {
     /// at the time of writing. In any case, the equivalent run-time computation
     /// is straightforward (but less performant).
     ///
+    /// ### Development
+    ///
+    /// - Todo: Consider computing magic instance variables on initialization.
+    ///
     @usableFromInline package static let magicLog2x32: [U8] = [
         032, 005, 032, 050, 064, 074, 082, 089,
         096, 101, 106, 110, 114, 118, 121, 125,
