@@ -67,11 +67,11 @@ extension TextInt {
     @inlinable package static func capacity(_ radix: IX, length: Natural<IX>) -> Optional<IX> {
         Swift.assert(radix >= 02)
         Swift.assert(radix <= 36)
-
+        
         if  length.value.isZero { return 1 }
-        let dividend = length.value.times(IX(Self.magicLog2x32[Swift.Int(00000)]))
+        let dividend = length.value.times(IX(load: Self.magicLog2x32[Swift.Int(00000)]))
         guard let dividend = dividend.optional() else { return nil }
-        let divisor  = Nonzero(unchecked: IX(Self.magicLog2x32[Swift.Int(radix)]))
+        let divisor  = Nonzero(unchecked: IX(load: Self.magicLog2x32[Swift.Int(radix)]))
         return dividend.division(divisor).unchecked().ceil().unchecked()
     }
 }

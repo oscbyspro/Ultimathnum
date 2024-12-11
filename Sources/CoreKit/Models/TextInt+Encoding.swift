@@ -167,8 +167,6 @@ extension TextInt {
             let ((end)): UnsafeMutablePointer<Swift.UInt8> = start.advanced(by: capacity)
             var pointer: UnsafeMutablePointer<Swift.UInt8> = end
             var segment: UnsafeMutablePointer<Swift.UInt8> = end
-            //  note that we use capacity and not $0.count
-            start.initialize(repeating: UInt8(ascii: "0"), count: capacity)
             
             var chunk:  UX = 0
             let radix = Nonzero(unchecked: UX(load: self.radix as U8))
@@ -178,11 +176,9 @@ extension TextInt {
                 if  self.power.div != 1 {
                     chunk = (body).divisionSetQuotientGetRemainder(self.power)
                     body  = (body).normalized()
-                    
                 }   else if !body .isEmpty {
                     chunk = (body)[unchecked: (  )]
                     body  = (body)[unchecked: 1...]
-                    
                 }   else {
                     Swift.assert(chunk.isZero)
                 }
@@ -199,8 +195,14 @@ extension TextInt {
                 }   while !chunk.isZero
                 
                 if body.isEmpty { break }
+                
                 segment = segment - Swift.Int(self.exponent)
-                pointer = segment
+                
+                while pointer >  segment {
+                    precondition(pointer > start)
+                    pointer = pointer.predecessor()
+                    pointer.initialize(to: 0x30)
+                }
             }
             
             for element in info.reversed() {
