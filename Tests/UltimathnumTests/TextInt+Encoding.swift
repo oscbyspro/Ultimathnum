@@ -31,16 +31,22 @@ import TestKit
         
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
-            let regex = TextInt.regex()
+            let patterns: [TextInt.Pattern] = [
+                TextInt.regexForDecodingRadix36(),
+                TextInt.regexForEncodingRadix36(),
+            ]
             
             for _ in 0 ..< 64 {
                 let coder = TextInt.all.randomElement(using: &randomness.stdlib)!
                 let value = T.entropic(through: Shift.max(or: 255), using: &randomness)
                 let description = value.description(using: coder)
-                let match = try #require(try regex.wholeMatch(in: description))
-                try #require(match.output.0    == (description))
-                try #require(match.output.sign == (value.isNegative ? "-" : nil))
-                try #require(match.output.mask == (value.isInfinite ? "&" : nil))
+                
+                for pattern: TextInt.Pattern in  patterns {
+                    let match = try #require(try pattern.wholeMatch(in: description))
+                    try #require(match.output.0    == (description))
+                    try #require(match.output.sign == (value.isNegative ? "-" : nil))
+                    try #require(match.output.mask == (value.isInfinite ? "&" : nil))
+                }
             }
         }
     }

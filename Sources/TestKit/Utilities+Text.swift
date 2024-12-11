@@ -76,7 +76,9 @@ extension Bit {
 //*============================================================================*
 
 extension TextInt {
-        
+    
+    public typealias Pattern = Regex<(Substring, sign: Substring?, mask: Substring?, body: Substring)>
+    
     //=------------------------------------------------------------------------=
     // MARK: Metadata
     //=------------------------------------------------------------------------=
@@ -90,7 +92,11 @@ extension TextInt {
         $0.append(TextInt(radix: $1, letters: Letters.uppercase)!)
     }
     
-    @inlinable public static func regex() -> Regex<(Substring, sign: Substring?, mask: Substring?, body: Substring)> {
+    @inlinable public static func regexForDecodingRadix36() -> Pattern {
         #/^(?<sign>\+|-)?(?<mask>&)?(?<body>[0-9A-Za-z]+)$/#
+    }
+    
+    @inlinable public static func regexForEncodingRadix36() -> Pattern {
+        #/^(?<sign>\+|-)?(?<mask>&)?(?<body>(?:0|[1-9A-Za-z][0-9A-Za-z]*))$/#
     }
 }

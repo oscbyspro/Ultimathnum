@@ -300,13 +300,13 @@ import TestKit
         
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
-            let regex = TextInt.regex()
+            let pattern: TextInt.Pattern = TextInt.regexForDecodingRadix36()
             
             for _ in 0 ..< conditional(debug: 8, release: 32) {
                 let coder = TextInt.all.randomElement(using: &randomness.stdlib)!
                 let value = T.entropic(through: Shift.max(or: 255), using: &randomness)
                 let description = value.description(using: coder)
-                let match = try #require(try regex.firstMatch(in: description)).output
+                let match = try #require(try pattern.firstMatch(in: description)).output
                 
                 for _ in 0 ..< 4 {
                     var modified = String()
