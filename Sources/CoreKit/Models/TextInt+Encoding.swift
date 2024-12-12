@@ -232,7 +232,7 @@ extension TextInt.Numerals {
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
-    @inlinable package func backwards(
+    @inline(__always) @inlinable package func backwards(
         _ magnitude: consuming UX,
         start: Swift.UnsafeMutablePointer<Swift.UInt8>,
         end:   inout UnsafeMutablePointer<Swift.UInt8>

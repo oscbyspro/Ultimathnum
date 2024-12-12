@@ -139,7 +139,6 @@ extension TextInt {
                 words[unchecked: index] = words[unchecked: ..<index].multiply(by: self.power.div, add: element)
                 steps = (self.exponent)
                 index = index.incremented().unchecked()
-                
             }
             
             Swift.assert(body.isEmpty)
@@ -205,12 +204,12 @@ extension TextInt.Numerals {
     //=------------------------------------------------------------------------=
     
     /// Decodes the given `numerals` and returns the bit pattern that fits.
-    @inlinable package func load(
+    @inline(__always) @inlinable package func load(
         _ numerals: UnsafeBufferPointer<UInt8>, as type: UX.Type = UX.self
     )   -> Optional<UX> {
         
         var value = UX.zero
-        let radix = UX(load: self.radix)
+        let radix = UX(load: self.radix as U8)
         
         for numeral:  UInt8 in numerals {
             guard let increment = self.decode(U8(numeral)) else { return nil }
