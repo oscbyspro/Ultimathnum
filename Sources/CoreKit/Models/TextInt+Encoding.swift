@@ -149,7 +149,7 @@ extension TextInt {
     
     /// Returns the contents of `info` followed by the contents of `body`.
     ///
-    /// - parameter body: It must must be normalized or contain exactly one element.
+    /// - parameter body: It must be normalized or contain exactly one element.
     /// 
     @usableFromInline package func encode(
         info: consuming UnsafeBufferPointer<UInt8>,
