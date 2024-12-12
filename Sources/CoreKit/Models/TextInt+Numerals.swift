@@ -52,7 +52,7 @@ extension TextInt {
         
         /// Creates a new instance with a radix of `10`.
         @inlinable public init() {
-            self.init(radix: 10)!
+            self = Self(radix: 10).unchecked()
         }
         
         /// Creates a new instance using the given `radix` and `letters`.
