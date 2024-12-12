@@ -204,7 +204,7 @@ extension TextInt.Numerals {
     //=------------------------------------------------------------------------=
     
     /// Decodes the given `numerals` and returns the bit pattern that fits.
-    @inline(__always) @inlinable package func load(
+    @inlinable package func load(
         _ numerals: UnsafeBufferPointer<UInt8>, as type: UX.Type = UX.self
     )   -> Optional<UX> {
         
