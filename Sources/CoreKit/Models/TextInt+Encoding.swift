@@ -158,8 +158,9 @@ extension TextInt {
         //=--------------------------------------=
         Swift.assert(body.isNormal || (body.count == 1))
         //=--------------------------------------=
-        let (length) = Natural.init(unchecked: IX(raw:  body.nondescending(Bit.zero)))
-        var capacity = Swift.Int(Self.capacity(IX(load: self.radix), length: length)!)
+        let radix    = Nonzero(unchecked: UX(load: self.radix as U8))
+        let length   = Natural.init(unchecked: IX(raw: body .nondescending(Bit.zero)))
+        var capacity = Swift.Int(Self.capacity(IX(raw: radix.value), length: length)!)
         
         capacity += info.count
         
@@ -170,10 +171,13 @@ extension TextInt {
             var pointer: UnsafeMutablePointer<Swift.UInt8> = end
             var segment: UnsafeMutablePointer<Swift.UInt8> = end
             
-            large: while body.count > 1 {
-                var part: UX
-
-                if  self.power.div == 1 {
+            loop: while true {
+                var part: UX, remainder: UX
+                
+                if  body.count <= 1 {
+                    part = body.first ?? UX.zero
+                    body = body[unchecked: ..<0]
+                }   else if self.power.div == 1 {
                     part = body[unchecked: (  )]
                     body = body[unchecked: 1...]
                 }   else {
@@ -181,22 +185,26 @@ extension TextInt {
                     body = body.normalized()
                 }
                 
-                self.numerals.backwards(
-                    part, start: start, end: &pointer
-                )
+                repeat {
+                    (part, remainder) = part.division(radix).components()
+                    let element = self.numerals.encode(U8(load: remainder)).unchecked()
+                    precondition(pointer > start)
+                    pointer = pointer.predecessor()
+                    pointer.initialize(to: Swift.UInt8(element))
+                }   while !part.isZero
+                
+                finished: if body.isEmpty {
+                    break loop
+                }
                 
                 segment -= Swift.Int(self.exponent)
-                
+                Swift.precondition(segment >= start)
                 while pointer >  segment {
-                    precondition(pointer > start)
+                    Swift.assert(pointer > start)
                     pointer = pointer.predecessor()
                     pointer.initialize(to: 0x30)
                 }
             }
-            
-            self.numerals.backwards(
-                body.first ?? UX.zero, start: start, end: &pointer
-            )
             
             for element in info.reversed() {
                 precondition(pointer > start)
@@ -219,35 +227,5 @@ extension TextInt {
             
             return count // as Swift.Int as Swift.Int
         }
-    }
-}
-
-//*============================================================================*
-// MARK: * Text Int x Encoding x Numerals
-//*============================================================================*
-
-extension TextInt.Numerals {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Utilities
-    //=------------------------------------------------------------------------=
-    
-    @inlinable package func backwards(
-        _ magnitude: consuming UX,
-        start: Swift.UnsafeMutablePointer<Swift.UInt8>,
-        end:   inout UnsafeMutablePointer<Swift.UInt8>
-    ) {
-        
-        var remainder: UX
-        let radix = Nonzero(unchecked: UX(load: self.radix as U8))
-        repeat {
-            
-            (magnitude, remainder) = magnitude.division(radix).components()
-            let element = self.encode(U8.init(load: remainder)).unchecked()
-            precondition(start < end)
-            end = end.predecessor()
-            end.initialize(to: Swift.UInt8(element))
-            
-        }   while !magnitude.isZero
     }
 }

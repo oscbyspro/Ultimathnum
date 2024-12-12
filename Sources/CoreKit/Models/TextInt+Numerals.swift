@@ -164,5 +164,23 @@ extension TextInt {
             
             return nil
         }
+        
+        //=--------------------------------------------------------------------=
+        // MARK: Utilities x Package
+        //=--------------------------------------------------------------------=
+        
+        /// Decodes the given `numerals` and returns the bit pattern that fits.
+        @inlinable package func load(_ numerals: UnsafeBufferPointer<UInt8>) -> Optional<UX> {
+            var value = UX.zero
+            let radix = UX(load: self.radix as U8)
+            
+            for numeral:  UInt8 in numerals {
+                guard let increment = self.decode(U8(numeral)) else { return nil }
+                value &*= radix
+                value &+= UX(load: increment)
+            }
+            
+            return value
+        }
     }
 }
