@@ -20,23 +20,23 @@ extension TextInt {
         // MARK: State
         //=--------------------------------------------------------------------=
         
+        /// The radix of its number system.
+        ///
+        /// - Note: It is an integer in `2...36`.
+        ///
+        public let radix: U8
+        
         /// The number of numerals in the range `0..<10`.
         ///
         /// - Note: It equals `min(10, radix)`.
         ///
-        @usableFromInline let i00x10: U8
+        @usableFromInline let i0010: U8
         
         /// The number of numerals in the range `10..<36`.
         ///
         /// - Note: It equals `max(0, radix - 10)`.
         ///
-        @usableFromInline let i10x36: U8
-        
-        /// The start for numerals in the range `0..<10`
-        ///
-        /// - Note: The `decimal` start is `48`.
-        ///
-        @usableFromInline let o00x10: U8
+        @usableFromInline let i1036: U8
         
         /// The start for numerals in the range `10..<36`
         ///
@@ -44,7 +44,7 @@ extension TextInt {
         ///
         /// - Note: The lowercase start is `97`.
         ///
-        @usableFromInline var o10x36: U8
+        @usableFromInline var o1036: U8
         
         //=--------------------------------------------------------------------=
         // MARK: Initializers
@@ -52,7 +52,7 @@ extension TextInt {
         
         /// Creates a new instance with a radix of `10`.
         @inlinable public init() {
-            self.init(radix: 10)!
+            self = Self(radix: 10).unchecked()
         }
         
         /// Creates a new instance using the given `radix` and `letters`.
@@ -68,19 +68,21 @@ extension TextInt {
         ///
         /// - Requires: `0 ≤ radix ≤ 36`
         ///
-        @inlinable public init?(radix: UX,letters: Letters = .lowercase) {
-            if  radix <= 10 {
-                self.i00x10 = U8(load: radix)
-                self.i10x36 = U8.zero
+        @inlinable public init?(radix: UX, letters: Letters = .lowercase) {
+            self.radix = U8(load: radix)
+            self.o1036 = (letters.start)
+            
+            if  radix <=  10 {
+                self.i0010 = self.radix
+                self.i1036 = 0000000000
+                
             }   else if radix <= 36 {
-                self.i00x10 = 0000010
-                self.i10x36 = U8(load: radix).minus(10).unchecked()
+                self.i0010 = 0000000010
+                self.i1036 = self.radix.minus(10).unchecked()
+                
             }   else {
                 return nil
             }
-            
-            self.o00x10 = 48
-            self.o10x36 = letters.start
         }
         
         //=--------------------------------------------------------------------=
@@ -99,7 +101,7 @@ extension TextInt {
         
         /// Returns an similar instance that encodes the given `letters`.
         @inlinable public consuming func letters(_ letters: Letters) -> Self {
-            self.o10x36 = letters.start
+            self.o1036 = letters.start
             return self
         }
         
@@ -107,20 +109,12 @@ extension TextInt {
         // MARK: Utilities
         //=--------------------------------------------------------------------=
         
-        /// The radix of its number system.
-        ///
-        /// - Returns: A integer in `2...36`.
-        ///
-        @inlinable public var radix: U8 {
-            self.i00x10 &+ self.i10x36
-        }
-        
         /// The kind of letters produced by its encoding methods.
         @inlinable public var letters: Letters {
-            if  self.o10x36 == Letters.uppercase.start {
+            if  self.o1036 == Letters.uppercase.start {
                 return Letters.uppercase
             }   else {
-                Swift.assert(self.o10x36 == Letters.lowercase.start)
+                Swift.assert(self.o1036 == Letters.lowercase.start)
                 return Letters.lowercase
             }
         }
@@ -134,13 +128,13 @@ extension TextInt {
         @inlinable public func decode(_ data: U8) -> Optional<U8> {
             var next = data &- 48
             
-            if  next < self.i00x10 {
+            if  next < self.i0010 {
                 return next
             }
             
             next = (data | 32) &- 97
             
-            if  next < self.i10x36 {
+            if  next < self.i1036 {
                 return next &+ 10
             }
             
@@ -158,38 +152,17 @@ extension TextInt {
         /// - Note: This conversion is case-sensitive.
         ///
         @inlinable public func encode(_ data: U8) -> Optional<U8> {
-            if  data < self.i00x10 {
-                return data &+ self.o00x10
+            if  data < self.i0010 {
+                return data &+ 48
             }
             
             let next = data &- 10
             
-            if  next < self.i10x36 {
-                return next &+ self.o10x36
+            if  next < self.i1036 {
+                return next &+ self.o1036
             }
             
             return nil
-        }
-        
-        //=--------------------------------------------------------------------=
-        // MARK: Utilities
-        //=--------------------------------------------------------------------=
-        
-        /// Decodes the given `numerals` and returns the bit pattern that fits.
-        @inlinable package func load(
-            _ numerals: UnsafeBufferPointer<UInt8>, as type: UX.Type = UX.self
-        )   -> Optional<UX> {
-            
-            var value = UX.zero
-            let radix = UX(load: self.radix)
-            
-            for numeral:  UInt8 in numerals {
-                guard let increment = self.decode(U8(numeral)) else { return nil }
-                value &*= radix
-                value &+= UX(load: increment)
-            }
-            
-            return value
         }
     }
 }

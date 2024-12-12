@@ -69,7 +69,7 @@ extension TextInt {
 }
 
 //=------------------------------------------------------------------------=
-// MARK: Algorithms
+// MARK: + Algorithms
 //=------------------------------------------------------------------------=
 
 extension TextInt {
@@ -109,10 +109,8 @@ extension TextInt {
                 
         if  Integer.size <= UX.size {
             var small = UX(load: body)
-            let count = IX(Bit(!small.isZero))
-            return Swift.withUnsafeMutablePointer(to: &small) {
-                let normalized = MutableDataInt.Body($0, count: count)
-                return self.encode(info: info, normalized: normalized)
+            return small.withUnsafeMutableBinaryIntegerBody {
+                return self.encode(info: info, quasinormalized: $0)
             }
             
         }   else {
@@ -145,17 +143,21 @@ extension TextInt {
                 words.deinitialize()
             }
             
-            return self.encode(info: info, normalized: words.normalized())
+            return self.encode(info: info, quasinormalized: words.normalized())
         }
     }
     
+    /// Returns the contents of `info` followed by the contents of `body`.
+    ///
+    /// - parameter body: It must be normalized or contain exactly one element.
+    /// 
     @usableFromInline package func encode(
-        info: consuming  UnsafeBufferPointer<UInt8>,
-        normalized body: consuming MutableDataInt<UX>.Body
+        info: consuming UnsafeBufferPointer<UInt8>,
+        quasinormalized body: consuming MutableDataInt<UX>.Body
     )   -> String {
-        
-        Swift.assert(body.isNormal)
-        
+        //=--------------------------------------=
+        Swift.assert(body.isNormal || (body.count == 1))
+        //=--------------------------------------=
         let (length) = Natural.init(unchecked: IX(raw:  body.nondescending(Bit.zero)))
         var capacity = Swift.Int(Self.capacity(IX(load: self.radix), length: length)!)
         
@@ -168,35 +170,22 @@ extension TextInt {
             var pointer: UnsafeMutablePointer<Swift.UInt8> = end
             var segment: UnsafeMutablePointer<Swift.UInt8> = end
             
-            var chunk:  UX = 0
-            let radix = Nonzero(unchecked: UX(load: self.radix as U8))
-            
-            major:  while true {
-                
-                if  self.power.div != 1 {
-                    chunk = (body).divisionSetQuotientGetRemainder(self.power)
-                    body  = (body).normalized()
-                }   else if !body .isEmpty {
-                    chunk = (body)[unchecked: (  )]
-                    body  = (body)[unchecked: 1...]
+            large: while body.count > 1 {
+                var part: UX
+
+                if  self.power.div == 1 {
+                    part = body[unchecked: (  )]
+                    body = body[unchecked: 1...]
                 }   else {
-                    Swift.assert(chunk.isZero)
+                    part = body.divisionSetQuotientGetRemainder(self.power)
+                    body = body.normalized()
                 }
                 
-                minor:  repeat {
-                    
-                    let value: UX
-                    (chunk, value) = chunk.division(radix).components()
-                    let element = Swift.UInt8(self.numerals.encode(U8(load: value)).unchecked())
-                    precondition(pointer > start)
-                    pointer = pointer.predecessor()
-                    pointer.initialize(to: element)
-                    
-                }   while !chunk.isZero
+                self.numerals.backwards(
+                    part, start: start, end: &pointer
+                )
                 
-                if body.isEmpty { break }
-                
-                segment = segment - Swift.Int(self.exponent)
+                segment -= Swift.Int(self.exponent)
                 
                 while pointer >  segment {
                     precondition(pointer > start)
@@ -204,6 +193,10 @@ extension TextInt {
                     pointer.initialize(to: 0x30)
                 }
             }
+            
+            self.numerals.backwards(
+                body.first ?? UX.zero, start: start, end: &pointer
+            )
             
             for element in info.reversed() {
                 precondition(pointer > start)
@@ -226,5 +219,35 @@ extension TextInt {
             
             return count // as Swift.Int as Swift.Int
         }
+    }
+}
+
+//*============================================================================*
+// MARK: * Text Int x Encoding x Numerals
+//*============================================================================*
+
+extension TextInt.Numerals {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Utilities
+    //=------------------------------------------------------------------------=
+    
+    @inlinable package func backwards(
+        _ magnitude: consuming UX,
+        start: Swift.UnsafeMutablePointer<Swift.UInt8>,
+        end:   inout UnsafeMutablePointer<Swift.UInt8>
+    ) {
+        
+        var remainder: UX
+        let radix = Nonzero(unchecked: UX(load: self.radix as U8))
+        repeat {
+            
+            (magnitude, remainder) = magnitude.division(radix).components()
+            let element = self.encode(U8.init(load: remainder)).unchecked()
+            precondition(start < end)
+            end = end.predecessor()
+            end.initialize(to: Swift.UInt8(element))
+            
+        }   while !magnitude.isZero
     }
 }
