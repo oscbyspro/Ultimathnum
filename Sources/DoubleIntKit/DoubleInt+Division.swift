@@ -254,9 +254,8 @@ extension DoubleInt where High == High.Magnitude {
         let divQ0 = divisor.low .multiplication(quotient)
         var divQ1 = divisor.high.multiplication(quotient)
         
-        (divQ1.low,   error) = divQ1.low .plus((divQ0.high)).components()
-        (divQ1.high,  error) = divQ1.high.incremented(error).components()
-        Swift.assert(!error)
+        (divQ1.low,  error) = divQ1.low .plus((divQ0.high)).components()
+        (divQ1.high, error) = divQ1.high.incremented(error).components()
         
         (low,  error) = low .minus(divQ0.low).components()
         (mid,  error) = mid .minus(divQ1.low,  plus: error).components()
@@ -265,7 +264,6 @@ extension DoubleInt where High == High.Magnitude {
         overestimated: while error {
             quotient = quotient.decremented().unchecked()
             
-            error = false
             (low,  error) = low .plus(divisor.low ).components()
             (mid,  error) = mid .plus(divisor.high, plus: error).components()
             (high, error) = high.incremented(error).components()
