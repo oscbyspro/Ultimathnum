@@ -146,13 +146,13 @@ extension DoubleInt where High == High.Magnitude {
         // normalization
         //=--------------------------------------=
         let top = normalization.inverse().map({ self.high.down($0) }) ?? High.zero
-        let lhs = self.up(normalization).storage
-        let rhs = Nonzero(unchecked: divisor.value.up(normalization))
+        let lhs = self.storage.up(normalization)
+        let rhs = Nonzero(unchecked: Self(divisor.value.storage.up(normalization)))
         //=--------------------------------------=
         // division: 3212 (normalized)
         //=--------------------------------------=
         let result: Division<High, Self> = Self.division3212MSB(lhs.low, lhs.high, top, by: rhs.value)
-        return Division(quotient: Self(low: result.quotient), remainder: result.remainder.down(normalization))
+        return Division(quotient: Self(low: result.quotient), remainder: Self(result.remainder.storage.down(normalization)))
     }
     
     //=------------------------------------------------------------------------=
@@ -205,8 +205,8 @@ extension DoubleInt where High == High.Magnitude {
         //=--------------------------------------=
         // normalization
         //=--------------------------------------=
-        let lhs = lhs .up(Shift(unchecked:  normalization.value))
-        let rhs = Nonzero(unchecked: rhs.value.up(normalization))
+        let lhs = lhs.up(Shift(unchecked: normalization.value))
+        let rhs = Nonzero(unchecked: Self(rhs.value.storage.up(normalization)))
         //=--------------------------------------=
         // division: 3212 (normalized)
         //=--------------------------------------=
@@ -215,7 +215,7 @@ extension DoubleInt where High == High.Magnitude {
             Swift.assert(rhs.value.high >= High.msb, "divisor must be normalized")
             Swift.assert(rhs.value > Self(low: lhs.low.high, high: lhs.high.low), "quotient must fit in one half")
             let result = Self.division3212MSB(lhs.low.low, lhs.low.high, lhs.high.low, by: rhs.value)
-            return Division(quotient: Self(low: result.quotient), remainder: result.remainder.down(normalization))
+            return Division(quotient: Self(low: result.quotient), remainder: Self(result.remainder.storage.down(normalization)))
         }
         //=--------------------------------------=
         // division: 4222 (normalized)
@@ -223,7 +223,7 @@ extension DoubleInt where High == High.Magnitude {
         Swift.assert(rhs.value.high >= High.msb, "divisor must be normalized")
         let high = Self.division3212MSB(lhs.low.high,      lhs.high.low,       lhs.high.high, by: rhs.value)
         let low  = Self.division3212MSB(lhs.low.low, high.remainder.low, high.remainder.high, by: rhs.value)
-        return Division(quotient: Self(low: low.quotient, high: high.quotient), remainder: low.remainder.down(normalization))
+        return Division(quotient: Self(low: low.quotient, high: high.quotient), remainder: Self(low.remainder.storage.down(normalization)))
     }
     
     //=------------------------------------------------------------------------=
