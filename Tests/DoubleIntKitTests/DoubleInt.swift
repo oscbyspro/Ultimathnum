@@ -18,47 +18,36 @@ import TestKit
 
 @Suite struct DoubleIntTests {
     
-    typealias I8x2 = DoubleInt<I8>
-    typealias U8x2 = DoubleInt<U8>
-    
-    typealias I8x4 = DoubleInt<I8x2>
-    typealias U8x4 = DoubleInt<U8x2>
-    
-    typealias IXx2 = DoubleInt<IX>
-    typealias UXx2 = DoubleInt<UX>
-    
-    typealias IXx4 = DoubleInt<IXx2>
-    typealias UXx4 = DoubleInt<UXx2>
-    
     //=------------------------------------------------------------------------=
     // MARK: Metadata
     //=------------------------------------------------------------------------=
     
-    static let bases: [any SystemsInteger.Type] = {
-        basesAsSigned +
-        basesAsUnsigned
+    static let halves: [any SystemsInteger.Type] = {
+        halvesAsSigned +
+        halvesAsUnsigned
     }()
     
-    static let basesAsSigned: [any SystemsIntegerAsSigned.Type] = [
-        I8x2.High.self,
-        I8x4.High.self,
-        IXx2.High.self,
-        IXx4.High.self,
+    static let halvesAsSigned: [any SystemsIntegerAsSigned.Type] = [
+        I8.self, DoubleInt<I8>.self,
+        IX.self, DoubleInt<IX>.self,
     ]
     
-    static let basesAsUnsigned: [any SystemsIntegerAsUnsigned.Type] = [
-        U8x2.High.self,
-        U8x4.High.self,
-        UXx2.High.self,
-        UXx4.High.self,
+    static let halvesAsUnsigned: [any SystemsIntegerAsUnsigned.Type] = [
+        U8.self, DoubleInt<U8>.self,
+        UX.self, DoubleInt<UX>.self,
     ]
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    @Test("DoubleInt: layout", .tags(.generic), arguments: Self.bases)
-    func layout(base: any SystemsInteger.Type) throws {
+    @Test(
+        "DoubleInt: layout",
+        Tag.List.tags(.generic),
+        arguments: Self.halves
+    )   func layout(
+        base: any SystemsInteger.Type
+    )   throws {
         
         try  whereIs(base)
         func whereIs<B>(_ base: B.Type) throws where B: SystemsInteger {
@@ -72,8 +61,13 @@ import TestKit
         }
     }
     
-    @Test("DoubleInt: bitcasting", .tags(.generic, .random), arguments: Self.bases, fuzzers)
-    func bitcasting(base: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "DoubleInt: bitcasting",
+        Tag.List.tags(.generic, .random),
+        arguments: Self.halves, fuzzers
+    )   func bitcasting(
+        base: any SystemsInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
         
         try  whereIs(base)
         func whereIs<B>(_ base: B.Type) throws where B: SystemsInteger {
@@ -93,8 +87,13 @@ import TestKit
         }
     }
     
-    @Test("DoubleInt: components", .tags(.generic, .random), arguments: Self.bases, fuzzers)
-    func components(base: any SystemsInteger.Type, randomness: consuming FuzzerInt) throws {
+    @Test(
+        "DoubleInt: components",
+        Tag.List.tags(.generic, .random),
+        arguments: Self.halves, fuzzers
+    )   func components(
+        base: any SystemsInteger.Type, randomness: consuming FuzzerInt
+    )   throws {
 
         try  whereIs(base)
         func whereIs<B>(_ base: B.Type) throws where B: SystemsInteger {

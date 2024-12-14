@@ -136,6 +136,7 @@ extension MutableDataInt.Body {
             self.count >= 1 && self.count == dividend.count - divisor.count,
             "the dividend must be wider than the divisor"
         )
+        
         Swift.assert(
             dividend[unchecked: self.count...].compared(to: divisor).isNegative,
             "the quotient must fit in dividend.count - divisor.count elements"
@@ -164,11 +165,13 @@ extension MutableDataInt.Body {
             divisor.last! >= Element.msb,
             "the divisor must be normalized"
         )
+        
         Swift.assert(
             self.count == divisor.count + 1,
             "the dividend must be one element wider than the divisor"
         )
-        Swift.assert(            
+        
+        Swift.assert(
             self[unchecked: 1...].compared(to: divisor).isNegative,
             "the quotient of each iteration must fit in one element"
         )
@@ -194,7 +197,7 @@ extension MutableDataInt.Body {
         
         var overflow = self.decrementSubSequence(by: divisor, times: quotient).error
         
-        decrementQuotientAtMostTwice: while overflow {
+        overestimated: while overflow {
             quotient = quotient.decremented().unchecked()
             overflow = !self.increment(by: divisor).error
         }

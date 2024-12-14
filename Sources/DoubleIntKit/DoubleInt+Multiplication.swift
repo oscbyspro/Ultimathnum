@@ -42,17 +42,7 @@ extension DoubleInt {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x 2 by 1 as 3
-    //=------------------------------------------------------------------------=
-
-    @inlinable package func multiplication(_ multiplier: High) -> TripleInt<High> {
-        let minus  = self.isNegative != multiplier.isNegative
-        let result = TripleInt<High>(raw: self.magnitude().multiplication(multiplier.magnitude()))
-        return minus ? result.complement() : result
-    }
-
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x 2 by 2 as 4 (nonrecursive)
+    // MARK: Transformations x 2 by 2 as 4
     //=------------------------------------------------------------------------=
     
     @inlinable public func multiplication(_ multiplier: Self) -> Doublet<Self> {
@@ -67,16 +57,6 @@ extension DoubleInt {
 //*============================================================================*
 
 extension DoubleInt where High == High.Magnitude {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x 2 by 1 as 3
-    //=------------------------------------------------------------------------=
-    
-    @inlinable func multiplication(_ multiplier: High) -> TripleInt<High> {
-        let ax = Self(self.low .multiplication(multiplier))
-        let bx = Self(self.high.multiplication(multiplier))
-        return TripleInt(low: ax.low, high: bx.plus(ax.high).unchecked().storage)
-    }
     
     //=------------------------------------------------------------------------=
     // MARK: Transformations x 2 by 2 as 2
@@ -99,11 +79,10 @@ extension DoubleInt where High == High.Magnitude {
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x 2 by 2 as 4 (nonrecursive)
+    // MARK: Transformations x 2 by 2 as 4
     //=------------------------------------------------------------------------=
     
     @inlinable func multiplication(_ multiplier: Self) -> Doublet<Self> {
-        //=--------------------------------------=
         var ax = Self(self.low .multiplication(multiplier.low ))
         let ay = Self(self.low .multiplication(multiplier.high))
         let bx = Self(self.high.multiplication(multiplier.low ))
