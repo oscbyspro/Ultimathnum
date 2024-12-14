@@ -16,22 +16,6 @@ import CoreKit
 extension DoubleInt {
     
     //=------------------------------------------------------------------------=
-    // MARK: Transformations x 2 by 1
-    //=------------------------------------------------------------------------=
-        
-    @inlinable public consuming func plus(_ other: Low) -> Fallible<Self> {
-        let low  = self.low .plus(Low(raw:  other))
-        let high = self.high.incremented(low.error)
-        return Self(low: low.value, high: high.value).veto(high.error)
-    }
-    
-    @inlinable public consuming func minus(_ other: Low) -> Fallible<Self> {
-        let low  = self.low .minus(Low(raw: other))
-        let high = self.high.decremented(low.error)
-        return Self(low: low.value, high: high.value).veto(high.error)
-    }
-    
-    //=------------------------------------------------------------------------=
     // MARK: Transformations x 2 by 2
     //=------------------------------------------------------------------------=
     

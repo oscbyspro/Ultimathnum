@@ -10,24 +10,17 @@
 import CoreKit
 
 //*============================================================================*
-// MARK: * Triple Int x Comparison
+// MARK: * Doublet x Systems Integer
 //*============================================================================*
 
-extension TripleInt {
+extension Doublet where High: SystemsInteger {
     
     //=------------------------------------------------------------------------=
-    // MARK: Utilities
+    // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @inlinable public static func ==(lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.storage == rhs.storage
-    }
-    
-    @inlinable public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
-        lhs.storage <  rhs.storage
-    }
-    
-    @inlinable public borrowing func compared(to other: borrowing Self) -> Signum {
-        self.storage.compared(to: other.storage)
+    /// Creates a new instance from the given components.
+    @inlinable public init(_ other: consuming DoubleInt<High>) {
+        self = other.storage
     }
 }

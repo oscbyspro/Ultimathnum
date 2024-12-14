@@ -14,19 +14,7 @@ import CoreKit
 //*============================================================================*
 
 extension DoubleInt {
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Transformations x 2 by 1 as 2
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public consuming func up(_ distance: Shift<Low>) -> Self {
-        Self(self.storage.up(distance))
-    }
-    
-    @inlinable public consuming func down(_ distance: Shift<Low>) -> Self {
-        Self(self.storage.down(distance))
-    }
-    
+        
     //=------------------------------------------------------------------------=
     // MARK: Transformations x 2 by 2 as 2
     //=------------------------------------------------------------------------=

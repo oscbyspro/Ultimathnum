@@ -57,7 +57,6 @@ extension Divider21 {
     /// - TODO: Consider DoubleableInteger deduplication.
     ///
     @inlinable public borrowing func quotient(dividing dividend: borrowing Doublet<Value>) -> Fallible<Value> {
-        //=--------------------------------------=
         var ax = dividend.low .multiplication(self.mul.low )
         let ay = dividend.low .multiplication(self.mul.high)
         let bx = dividend.high.multiplication(self.mul.low )
