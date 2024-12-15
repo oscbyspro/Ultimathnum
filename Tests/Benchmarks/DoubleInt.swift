@@ -21,11 +21,12 @@ final class DoubleIntBenchmarks: XCTestCase {
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
-    /// ###### 2024-07-05 (MacBook Pro, 13-inch, M1, 2020):
+    /// ###### MacBook Pro, 13-inch, M1, 2020
     ///
     /// - `1.67 seconds`
     /// - `0.88 seconds` with pointer-bit shifts
     /// - `0.30 seconds` with pointer-bit shifts and literals
+    /// - `0.25 seconds` with faster 3-by-2 division
     ///
     func testGreatestCommonDivisorOfFibonacciSequencePair369() {
         let fib369 = U256("58472848379039952684853851736901133239741266891456844557261755914039063645794")!
