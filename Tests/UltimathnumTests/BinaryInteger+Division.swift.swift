@@ -381,15 +381,15 @@ import TestKit
     }
     
     //=------------------------------------------------------------------------=
-    // MARK: Tests x Unsigned
+    // MARK: Tests x Natural
     //=------------------------------------------------------------------------=
     
     /// - Note: The idea is to hit lhs[2] == rhs[1] in unsigned 3-by-2 more often.
     @Test(
-        "BinaryInteger/division/2-by-1: where high is almost divisor as UnsignedInteger",
+        "BinaryInteger/division/2-by-1: where high is almost divisor as NaturalInteger",
         Tag.List.tags(.generic, .important, .random),
         arguments: typesAsSystemsIntegerAsUnsigned, fuzzers
-    )   func whereHighIsAlmostDivisorAsUnsignedInteger(
+    )   func whereHighIsAlmostDivisorAsNaturalInteger(
         type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
     )   throws {
         
