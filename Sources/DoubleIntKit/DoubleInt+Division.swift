@@ -146,12 +146,12 @@ extension DoubleInt where High == High.Magnitude {
         // normalization
         //=--------------------------------------=
         let top = normalization.inverse().map({ self.high.down($0) }) ?? High.zero
-        let lhs = self.storage.up(normalization)
+        let lhs = Self(self.storage.up(normalization))
         let rhs = Nonzero(unchecked: Self(divisor.value.storage.up(normalization)))
         //=--------------------------------------=
         // division: 3212 (normalized)
         //=--------------------------------------=
-        let result: Division<High, Self> = Self.division3212MSB(lhs.low, lhs.high, top, by: rhs.value)
+        let result: Division<High, Self> = Self.division3212MSB(lhs, top, by: rhs.value)
         return Division(quotient: Self(low: result.quotient), remainder: Self(result.remainder.storage.down(normalization)))
     }
     
@@ -212,17 +212,17 @@ extension DoubleInt where High == High.Magnitude {
         //=--------------------------------------=
         if  lhs.high.high.isZero, rhs.value > Self(low: lhs.low.high, high: lhs.high.low) {
             Swift.assert(lhs.high .high.isZero, "dividend must fit in three halves")
-            Swift.assert(rhs.value.high >= High.msb, "divisor must be normalized")
+            Swift.assert(rhs.value.high >= High.msb, "divisor msb must be set")
             Swift.assert(rhs.value > Self(low: lhs.low.high, high: lhs.high.low), "quotient must fit in one half")
-            let result = Self.division3212MSB(lhs.low.low, lhs.low.high, lhs.high.low, by: rhs.value)
+            let result = Self.division3212MSB(lhs.low, lhs.high.low, by: rhs.value)
             return Division(quotient: Self(low: result.quotient), remainder: Self(result.remainder.storage.down(normalization)))
         }
         //=--------------------------------------=
         // division: 4222 (normalized)
         //=--------------------------------------=
-        Swift.assert(rhs.value.high >= High.msb, "divisor must be normalized")
-        let high = Self.division3212MSB(lhs.low.high,      lhs.high.low,       lhs.high.high, by: rhs.value)
-        let low  = Self.division3212MSB(lhs.low.low, high.remainder.low, high.remainder.high, by: rhs.value)
+        Swift.assert(rhs.value.high >= High.msb, "divisor msb must be set")
+        let high = Self.division3212MSB(Self(low: lhs.low.high, high:       lhs.high.low),       lhs.high.high, by: rhs.value)
+        let low  = Self.division3212MSB(Self(low: lhs.low.low,  high: high.remainder.low), high.remainder.high, by: rhs.value)
         return Division(quotient: Self(low: low.quotient, high: high.quotient), remainder: Self(low.remainder.storage.down(normalization)))
     }
     
@@ -230,48 +230,51 @@ extension DoubleInt where High == High.Magnitude {
     // MARK: Transformations x 3 by 2 as 1 and 2
     //=------------------------------------------------------------------------=
     
-    /// ### Development
+    /// Performs an unchecked 3-by-2 division.
     ///
-    /// - Todo: Use 2-by-2 remainder computations instead of 3-by-3.
+    /// - parameter remainder: The `dividend`'s 1st and 2nd part, then the `remainder`.
+    /// - parameter quotient:  The `dividend`'s 3rd part, then the `quotient`.
+    /// - parameter divisor:   The msb must be set and the quotient must fit in 1 part.
+    ///
+    /// - Seealso: The paper "Fast Recursive Division" by Christoph Burnikel and
+    ///   Joachim Ziegler explains the 3-by-2 division mathematically. We leverage
+    ///   some overflow indicator information, but the idea is otherwise similar.
     ///
     @inlinable internal static func division3212MSB(
-        _ low:  consuming Low,
-        _ mid:  consuming Low,
-        _ high: consuming High,
-        by divisor: Self
+        _  remainder: consuming Self,
+        _  quotient:  consuming High,
+        by divisor:   Self
     )   -> Division<High, Self> {
         
-        Swift.assert(divisor.high >= High.msb, "the divisor must be normalized")
-        Swift.assert(Self(low: copy mid, high: copy high) < divisor, "the quotient must fit in one half")
+        Swift.assert(divisor.high >= High.msb, "divisor msb must be set")
+        Swift.assert(Self(low: remainder.high, high: copy quotient) < divisor, "quotient must fit in one half")
         
-        var quotient: High = if divisor.high == high {
-            High.max // must fit in one part
-        }   else {
-            High.division(Doublet(low: mid, high: high), by: Nonzero(unchecked: divisor.high)).unchecked().quotient
-        }
-        
-        var error = false
-        let divQ0 = divisor.low .multiplication(quotient)
-        var divQ1 = divisor.high.multiplication(quotient)
-        
-        (divQ1.low,  error) = divQ1.low .plus((divQ0.high)).components()
-        (divQ1.high, error) = divQ1.high.incremented(error).components()
-        
-        (low,  error) = low .minus(divQ0.low).components()
-        (mid,  error) = mid .minus(divQ1.low,  plus: error).components()
-        (high, error) = high.minus(divQ1.high, plus: error).components()
-        
-        overestimated: while error {
-            quotient = quotient.decremented().unchecked()
+        var overflow: Bool, underflow: Bool
+        overflow = quotient == divisor.high
+        //  note that == is >= in this case
+        if  (overflow) {
+            (remainder.high, overflow) = remainder.high.plus(divisor.high).components()
+            (quotient) = High.max // max * [0, x] is [0, 0, x] - [0, x]
             
-            (low,  error) = low .plus(divisor.low ).components()
-            (mid,  error) = mid .plus(divisor.high, plus: error).components()
-            (high, error) = high.incremented(error).components()
-            error.toggle()
+        }   else {
+            let lhs = Doublet(low: remainder.high, high: quotient)
+            let rhs = Nonzero(unchecked: divisor.high)
+            (quotient, remainder.high) = High.division(lhs, by: rhs).unchecked().components()
+        }
+        //  note that divisor.high times quotient was subtracted above
+        let product: Self = Self(divisor.low.multiplication(quotient))
+        (remainder, underflow) = remainder.minus(product).components()
+        
+        if  overflow {
+            Swift.assert(underflow, "remainder must be less than divisor")
         }
         
-        Swift.assert((copy high).isZero, "remainder must fit in two halves")
-        Swift.assert(Self(low: copy low, high: copy mid) < divisor, "remainder must be less than divisor")
-        return Division(quotient: quotient, remainder: Self(low: low, high: mid))
+        overestimated:  while overflow != underflow {
+            (quotient)  = quotient.decremented().unchecked() // max 2
+            (remainder, overflow) = remainder.plus(divisor).components()
+        }
+        
+        Swift.assert(remainder <  divisor, "remainder must be less than divisor")
+        return Division(quotient: quotient, remainder: remainder)
     }
 }

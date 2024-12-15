@@ -381,6 +381,43 @@ import TestKit
     }
     
     //=------------------------------------------------------------------------=
+    // MARK: Tests x Natural
+    //=------------------------------------------------------------------------=
+    
+    /// - Note: The idea is to hit lhs[2] == rhs[1] in unsigned 3-by-2 more often.
+    @Test(
+        "BinaryInteger/division/2-by-1: where high is almost divisor as NaturalInteger",
+        Tag.List.tags(.generic, .important, .random),
+        arguments: typesAsSystemsIntegerAsUnsigned, fuzzers
+    )   func whereHighIsAlmostDivisorAsNaturalInteger(
+        type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
+            let size = IX(size: T.self)
+            let mask = T.max >> (size / 2)
+            
+            for _ in 0 ..< conditional(debug: 128, release: 1024) {
+                var divisor = T.entropic(using: &randomness)
+                var (limit) = divisor & mask
+                
+                if  (limit).isZero {
+                    (limit) += 1
+                    divisor += 1
+                }
+                
+                let step = T.random(in: 1...limit, using: &randomness)
+                let low  = T.entropic(using: &randomness)
+                let dividend = Doublet(low: low,  high: divisor - step)
+                let division = T.division(dividend, by: Nonzero(divisor))
+                try Ɣrequire(validating:  dividend, by: Nonzero(divisor), is: division)
+                try #require(!division.error)
+            }
+        }
+    }
+    
+    //=------------------------------------------------------------------------=
     // MARK: Utilities
     //=------------------------------------------------------------------------=
     
