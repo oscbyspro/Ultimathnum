@@ -237,8 +237,8 @@ extension DoubleInt where High == High.Magnitude {
     /// - parameter divisor:   The msb must be set and the quotient must fit in 1 part.
     ///
     /// - Seealso: The paper "Fast Recursive Division" by Christoph Burnikel and
-    ///   Joachim Ziegler explains 3-by-2 division in the mathematical sense. We
-    ///   leverage some overflow indicator information, but the algorithm is similar.
+    ///   Joachim Ziegler explains the 3-by-2 division mathematically. We leverage
+    ///   some overflow indicator information, but the idea is otherwise similar.
     ///
     @inlinable internal static func division3212MSB(
         _  remainder: consuming Self,
