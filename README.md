@@ -278,7 +278,7 @@ init(unsafe:)    // error: %%%%%%
 
 ### The magic `Divider<T>` constants
 
-You know how the compiler sometimes replaces division with multiplication, right? Great, now it is your turn to be a wizard! `Divider<T>` and `Divider21<T>` find magic constants that can divide numbers using only multiplication, addition, and shifts. Note that the latter divides numbers twice the size of the corresponding divisor.
+You know how the compiler sometimes replaces division with multiplication, right? Great, now you can be a wizard too! `Divider<T>` and `Divider21<T>` find magic constants and divide numbers using only multiplication, addition, and shifts. Note that the latter divides numbers twice the size of the corresponding divisor.
 
 ```swift
 let random  = U8.random()
