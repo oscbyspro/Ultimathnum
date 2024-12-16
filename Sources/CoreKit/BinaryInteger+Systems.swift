@@ -38,6 +38,11 @@ public protocol SystemsInteger<BitPattern>: EdgyInteger, FiniteInteger where Mag
     /// Returns the byte swapped version of `self`.
     @inlinable consuming func reversed(_ type: U8.Type) -> Self
     
-    /// Returns the result of dividing the `dividend` by the `divisor`.
+    /// Returns the `quotient`, `remainder` and `error` of dividing the `dividend` by the `divisor`.
+    ///
+    /// ### Division of 2 by 1
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
     @inlinable static func division(_ dividend: consuming Doublet<Self>, by divisor: borrowing Nonzero<Self>) -> Fallible<Division<Self, Self>>
 }

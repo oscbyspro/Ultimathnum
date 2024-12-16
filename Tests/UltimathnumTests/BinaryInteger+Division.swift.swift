@@ -968,6 +968,43 @@ import TestKit
 }
 
 //*============================================================================*
+// MARK: * Binary Integer x Division x Conveniences x 2 by 1
+//*============================================================================*
+
+@Suite struct BinaryIntegerTestsOnDivisionConveniences21 {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests x Natural
+    //=------------------------------------------------------------------------=
+    
+    @Test(
+        "BinaryInteger/division/conveniences/2-by-1: as NaturalInteger",
+        Tag.List.tags(.forwarding, .generic, .random),
+        arguments: typesAsSystemsIntegerAsUnsigned, fuzzers
+    )   func asNaturalInteger(
+        type: any SystemsIntegerAsUnsigned.Type, randomness: consuming FuzzerInt
+    )   throws {
+        
+        try  whereIs(type)
+        func whereIs<T>(_ type: T.Type) throws where T: SystemsIntegerAsUnsigned {
+            for _ in 0 ..< 32 {
+                let low      = T.entropic(using: &randomness)
+                let high     = T.entropic(using: &randomness)
+                let dividend = Doublet(low: low, high:  high)
+                let divisor  = T.entropic(using: &randomness)
+                
+                guard let divisor = Nonzero(exactly: divisor) else { continue }
+                let divider = Divider21(divisor) as Divider21 as Divider21 as Divider21
+                
+                let typical: Fallible = T.division(dividend, by: divisor)
+                let magical: Fallible = T.division(dividend, by: divider)
+                try #require(typical == magical)
+            }
+        }
+    }
+}
+
+//*============================================================================*
 // MARK: * Binary Integer x Division x Open Source Issues
 //*============================================================================*
 

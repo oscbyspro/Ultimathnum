@@ -405,6 +405,23 @@ extension BinaryInteger where Self: SystemsInteger & UnsignedInteger {
     @inlinable public consuming func division(_ divider: borrowing Divider<Self>) -> Division<Self, Self> {
         divider.division(dividing: self)
     }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Transformations x Divider x 2-by-1
+    //=------------------------------------------------------------------------=
+    
+    /// Returns the `quotient`, `remainder` and `error` of dividing the `dividend` by the `divider`.
+    ///
+    /// ### Division of 2 by 1
+    ///
+    /// - Note: The `error` is set if the operation is `lossy`.
+    ///
+    @inlinable public static func division(
+        _ dividend: consuming Doublet<Self>,
+        by divider: borrowing Divider21<Self>
+    )   -> Fallible<Division<Self, Self>> {
+        divider.division(dividing: dividend)
+    }
 }
 
 //=----------------------------------------------------------------------------=

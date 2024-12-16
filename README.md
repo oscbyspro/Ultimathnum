@@ -16,6 +16,7 @@
   - [The overpowered `BinaryInteger`](#overview-the-overpowered-binary-integer)
   - [The `Fallible<T>` redemption arc](#overview-the-fallible-redemption-arc)
   - [The precondition `Guarantee` types](#overview-the-precondition-guarantee-types)
+  - [The magic `Divider<T>` constants](#overview-the-magic-divider-constants)
 
 <a name="prelude"/>
 
@@ -271,4 +272,28 @@ init(exactly:)   // error: nil
 init(_:)         // error: precondition
 init(unchecked:) // error: assert
 init(unsafe:)    // error: %%%%%%
+```
+
+<a name="overview-the-magic-divider-constants"/>
+
+### The magic `Divider<T>` constants
+
+You know how the compiler sometimes replaces division with multiplication, right? Great, now it is your turn to be a wizard! `Divider<T>` and `Divider21<T>` find magic constants that let us perform divisions using multiplication, addition, and shifts. Note that the latter divides numbers twice the size of the divisor.
+
+```swift
+let random  = U8.random()
+let divisor = Nonzero(U8.random(in: 1...255))
+let divider = Divider(divisor)
+let typical = random.division(divisor) as Division<U8, U8> // div
+let magical = random.division(divider) as Division<U8, U8> // mul-add-shr
+precondition(typical == magical) // quotient and remainder
+```
+
+```swift
+let random  = Doublet(low: U8.random(), high: U8.random())
+let divisor = Nonzero(U8.random(in: 1...255))
+let divider = Divider21(divisor)
+let typical = U8.division(random, by: divisor) as Fallible<Division<U8, U8>>
+let magical = U8.division(random, by: divider) as Fallible<Division<U8, U8>>
+precondition(typical == magical) // quotient, remainder, and error indicator
 ```
