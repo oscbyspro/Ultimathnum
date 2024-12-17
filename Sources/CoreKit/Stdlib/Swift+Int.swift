@@ -101,3 +101,24 @@ extension Int64: BitCastable {
         Magnitude(bitPattern: self)
     }
 }
+
+//*============================================================================*
+// MARK: * Swift x Int128
+//*============================================================================*
+
+@available(*, unavailable)
+@available(iOS 18.0, macOS 15.0, tvOS 18.0, visionOS 2.0, watchOS 11.0, *)
+extension Int128: BitCastable {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(raw source: consuming Magnitude) {
+        self.init(bitPattern: source)
+    }
+    
+    @inlinable public consuming func load(as type: Magnitude.Type) -> Magnitude {
+        Magnitude(bitPattern: self)
+    }
+}

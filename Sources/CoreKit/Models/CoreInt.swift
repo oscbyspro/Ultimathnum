@@ -235,6 +235,57 @@
 }
 
 //*============================================================================*
+// MARK: * Core Int x I128
+//*============================================================================*
+
+/// A 128-bit signed binary integer.
+///
+/// ### Development
+///
+/// - Todo: Remove `typealias I128 = DoubleInt<I64>` in `DoubleIntKit`.
+///
+@available(*, unavailable)
+@available(iOS 18.0, macOS 15.0, tvOS 18.0, visionOS 2.0, watchOS 11.0, *)
+@frozen public struct I128: CoreInteger, SignedInteger, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
+    
+    public typealias Stdlib = Swift.Int128
+    
+    public typealias BitPattern = Stdlib.BitPattern
+    
+    public typealias Element = Self
+        
+    public typealias Signitude = Self
+    
+    public typealias Magnitude = U128
+    
+    //=------------------------------------------------------------------------=
+    // MARK: State
+    //=------------------------------------------------------------------------=
+    
+    @usableFromInline var base: Stdlib
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(_ source: Stdlib) {
+        self.base = source
+    }
+    
+    @inlinable public init(raw source: BitPattern) {
+        self.base = Stdlib(bitPattern: source)
+    }
+    
+    @inlinable public init(integerLiteral source: Stdlib) {
+        self.base = source
+    }
+    
+    @inlinable public consuming func stdlib() -> Stdlib {
+        self.base
+    }
+}
+
+//*============================================================================*
 // MARK: * Core Int x UX
 //*============================================================================*
 
@@ -424,6 +475,57 @@
     public typealias Element = Self
             
     public typealias Signitude = I64
+    
+    public typealias Magnitude = Self
+    
+    //=------------------------------------------------------------------------=
+    // MARK: State
+    //=------------------------------------------------------------------------=
+    
+    @usableFromInline var base: Stdlib
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(_ source: Stdlib) {
+        self.base = source
+    }
+    
+    @inlinable public init(raw source: BitPattern) {
+        self.base = source
+    }
+    
+    @inlinable public init(integerLiteral source: Stdlib) {
+        self.base = source
+    }
+    
+    @inlinable public consuming func stdlib() -> Stdlib {
+        self.base
+    }
+}
+
+//*============================================================================*
+// MARK: * Core Int x U128
+//*============================================================================*
+
+/// A 128-bit unsigned binary integer.
+///
+/// ### Development
+///
+/// - Todo: Remove `typealias U128 = DoubleInt<U64>` in `DoubleIntKit`.
+///
+@available(*, unavailable)
+@available(iOS 18.0, macOS 15.0, tvOS 18.0, visionOS 2.0, watchOS 11.0, *)
+@frozen public struct U128: CoreInteger, UnsignedInteger, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
+    
+    public typealias Stdlib = Swift.UInt128
+    
+    public typealias BitPattern = Stdlib.BitPattern
+    
+    public typealias Element = Self
+            
+    public typealias Signitude = I128
     
     public typealias Magnitude = Self
     
