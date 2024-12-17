@@ -111,7 +111,7 @@ let typesAsSystemsIntegerAsSigned: [any SystemsIntegerAsSigned.Type] = reduce([]
     
     #if false
     if  #available(iOS 18.0, macOS 15.0, tvOS 18.0, visionOS 2.0, watchOS 11.0, *) {
-        $0.append(I128.self)
+        $0.append(CoreKit.I128.self)
     }
     #endif
     
@@ -137,7 +137,6 @@ let typesAsSystemsIntegerAsUnsigned: [any SystemsIntegerAsUnsigned.Type] = reduc
     
     $0.append(DoubleInt<U8>.self)
     $0.append(DoubleInt<UX>.self)
-    
     $0.append(DoubleInt<DoubleInt<U8>>.self)
     $0.append(DoubleInt<DoubleInt<UX>>.self)
 }

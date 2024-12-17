@@ -51,13 +51,12 @@ let typesAsCompactIntegerInteroperable: [any CompactIntegerInteroperable.Type] =
     
     #if false
     if  #available(iOS 18.0, macOS 15.0, tvOS 18.0, visionOS 2.0, watchOS 11.0, *) {
-        $0.append(I128.self)
+        $0.append(CoreKit.I128.self)
     }
     #endif
     
     $0.append(DoubleInt<I8>.self)
     $0.append(DoubleInt<IX>.self)
-    
     $0.append(DoubleInt<DoubleInt<I8>>.self)
     $0.append(DoubleInt<DoubleInt<IX>>.self)
 }
@@ -77,7 +76,6 @@ let typesAsNaturalIntegerInteroperable: [any NaturalIntegerInteroperable.Type] =
     
     $0.append(DoubleInt<U8>.self)
     $0.append(DoubleInt<UX>.self)
-    
     $0.append(DoubleInt<DoubleInt<U8>>.self)
     $0.append(DoubleInt<DoubleInt<UX>>.self)
 }
