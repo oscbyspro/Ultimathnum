@@ -50,7 +50,7 @@ let typesAsCompactIntegerInteroperable: [any CompactIntegerInteroperable.Type] =
     $0.append(I64.self)
     
     #if false
-    if  #available(iOS 18.0, macOS 15.0, tvOS 18.0, visionOS 2.0, watchOS 11.0, *) {
+    if #available(iOS 18.0, macOS 15.0, tvOS 18.0, visionOS 2.0, watchOS 11.0, *) {
         $0.append(CoreKit.I128.self)
     }
     #endif
