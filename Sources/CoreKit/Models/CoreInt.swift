@@ -239,6 +239,11 @@
 //*============================================================================*
 
 /// A 128-bit signed binary integer.
+///
+/// ### Development
+///
+/// - Todo: Remove `typealias I128 = DoubleInt<I64>` in `DoubleIntKit`.
+///
 @available(*, unavailable)
 @available(iOS 18.0, macOS 15.0, tvOS 18.0, visionOS 2.0, watchOS 11.0, *)
 @frozen public struct I128: CoreInteger, SignedInteger, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
@@ -505,6 +510,11 @@
 //*============================================================================*
 
 /// A 128-bit unsigned binary integer.
+///
+/// ### Development
+///
+/// - Todo: Remove `typealias U128 = DoubleInt<U64>` in `DoubleIntKit`.
+///
 @available(*, unavailable)
 @available(iOS 18.0, macOS 15.0, tvOS 18.0, visionOS 2.0, watchOS 11.0, *)
 @frozen public struct U128: CoreInteger, UnsignedInteger, CoreIntegerWhereIsNotByte, CoreIntegerWhereIsNotToken {
