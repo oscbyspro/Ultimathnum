@@ -102,14 +102,42 @@ let typesAsSystemsInteger: [any SystemsInteger.Type] = {
     typesAsSystemsIntegerAsUnsigned
 }()
 
-let typesAsSystemsIntegerAsSigned: [any SystemsIntegerAsSigned.Type] = [
-    IX.self,  I8 .self, I16.self, I32.self, I64 .self,
-    DoubleInt<I8>.self, DoubleInt<DoubleInt<I8>>.self,
-    DoubleInt<IX>.self, DoubleInt<DoubleInt<IX>>.self,
-]
+let typesAsSystemsIntegerAsSigned: [any SystemsIntegerAsSigned.Type] = reduce([]) {
+    $0.append(IX .self)
+    $0.append(I8 .self)
+    $0.append(I16.self)
+    $0.append(I32.self)
+    $0.append(I64.self)
+    
+    #if false
+    if  #available(iOS 18.0, macOS 15.0, tvOS 18.0, visionOS 2.0, watchOS 11.0, *) {
+        $0.append(I128.self)
+    }
+    #endif
+    
+    $0.append(DoubleInt<I8>.self)
+    $0.append(DoubleInt<IX>.self)
+    
+    $0.append(DoubleInt<DoubleInt<I8>>.self)
+    $0.append(DoubleInt<DoubleInt<IX>>.self)
+}
 
-let typesAsSystemsIntegerAsUnsigned: [any SystemsIntegerAsUnsigned.Type] = [
-    UX.self,  U8 .self, U16.self, U32.self, U64 .self,
-    DoubleInt<U8>.self, DoubleInt<DoubleInt<U8>>.self,
-    DoubleInt<UX>.self, DoubleInt<DoubleInt<UX>>.self,
-]
+let typesAsSystemsIntegerAsUnsigned: [any SystemsIntegerAsUnsigned.Type] = reduce([]) {
+    $0.append(UX .self)
+    $0.append(U8 .self)
+    $0.append(U16.self)
+    $0.append(U32.self)
+    $0.append(U64.self)
+    
+    #if false
+    if #available(iOS 18.0, macOS 15.0, tvOS 18.0, visionOS 2.0, watchOS 11.0, *) {
+        $0.append(CoreKit.U128.self)
+    }
+    #endif
+    
+    $0.append(DoubleInt<U8>.self)
+    $0.append(DoubleInt<UX>.self)
+    
+    $0.append(DoubleInt<DoubleInt<U8>>.self)
+    $0.append(DoubleInt<DoubleInt<UX>>.self)
+}

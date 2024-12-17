@@ -36,3 +36,11 @@ extension UInt32: BitCastable { public typealias BitPattern = Magnitude }
 //*============================================================================*
 
 extension UInt64: BitCastable { public typealias BitPattern = Magnitude }
+
+//*============================================================================*
+// MARK: * Swift x UInt128
+//*============================================================================*
+
+@available(*, unavailable)
+@available(iOS 18.0, macOS 15.0, tvOS 18.0, visionOS 2.0, watchOS 11.0, *)
+extension UInt128: BitCastable { public typealias BitPattern = Magnitude }

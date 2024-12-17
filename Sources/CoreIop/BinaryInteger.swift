@@ -13,14 +13,22 @@ import CoreKit
 // MARK: * Binary Integer
 //*============================================================================*
 
-extension IX:  CompactIntegerInteroperable { }
-extension I8:  CompactIntegerInteroperable { }
-extension I16: CompactIntegerInteroperable { }
-extension I32: CompactIntegerInteroperable { }
-extension I64: CompactIntegerInteroperable { }
+extension IX:   CompactIntegerInteroperable { }
+extension I8:   CompactIntegerInteroperable { }
+extension I16:  CompactIntegerInteroperable { }
+extension I32:  CompactIntegerInteroperable { }
+extension I64:  CompactIntegerInteroperable { }
 
-extension UX:  NaturalIntegerInteroperable { }
-extension U8:  NaturalIntegerInteroperable { }
-extension U16: NaturalIntegerInteroperable { }
-extension U32: NaturalIntegerInteroperable { }
-extension U64: NaturalIntegerInteroperable { }
+@available(*, unavailable)
+@available(iOS 18.0, macOS 15.0, tvOS 18.0, visionOS 2.0, watchOS 11.0, *)
+extension I128: CompactIntegerInteroperable { }
+
+extension UX:   NaturalIntegerInteroperable { }
+extension U8:   NaturalIntegerInteroperable { }
+extension U16:  NaturalIntegerInteroperable { }
+extension U32:  NaturalIntegerInteroperable { }
+extension U64:  NaturalIntegerInteroperable { }
+
+@available(*, unavailable)
+@available(iOS 18.0, macOS 15.0, tvOS 18.0, visionOS 2.0, watchOS 11.0, *)
+extension U128: NaturalIntegerInteroperable { }
