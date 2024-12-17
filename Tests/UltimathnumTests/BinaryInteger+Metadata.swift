@@ -16,7 +16,7 @@ import TestKit
 // MARK: * Binary Integer x Metadata
 //*============================================================================*
 
-@Suite(.tags(.documentation)) struct BinaryIntegerTestsOnMetadata {
+@Suite struct BinaryIntegerTestsOnMetadata {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
@@ -24,7 +24,7 @@ import TestKit
     
     @Test(
         "BinaryInteger/metadata: mode",
-        Tag.List.tags(.generic),
+        Tag.List.tags(.documentation, .generic),
         arguments: typesAsBinaryInteger
     )   func modes(type: any BinaryInteger.Type) throws {
         
@@ -37,7 +37,7 @@ import TestKit
     
     @Test(
         "BinaryInteger/metadata: size",
-        Tag.List.tags(.generic),
+        Tag.List.tags(.documentation, .generic),
         arguments: typesAsBinaryInteger
     )   func sizes(type: any BinaryInteger.Type) throws {
         
@@ -66,7 +66,7 @@ import TestKit
     
     @Test(
         "BinaryInteger/metadata: quadrants",
-        Tag.List.tags(.generic),
+        Tag.List.tags(.documentation, .generic),
         arguments: typesAsBinaryInteger
     )   func quadrants(type: any BinaryInteger.Type) throws {
         
@@ -91,6 +91,42 @@ import TestKit
             #expect( T.isEdgy      == isEdgy     )
             #expect( T.isFinite    == isFinite   )
             #expect( T.isSigned    == isSigned   )
+        }
+    }
+}
+
+//*============================================================================*
+// MARK: * Binary Integer x Metadata x Elements
+//*============================================================================*
+
+@Suite struct BinaryIntegerTestsOnMetadataAboutElements {
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Tests
+    //=------------------------------------------------------------------------=
+    
+    /// - Seealso: https://github.com/oscbyspro/Ultimathnum/pull/152
+    @Test(
+        "BinaryInteger/metadata/elements: A.alignment vs B.alignment",
+        Tag.List.tags(.documentation, .generic),
+        arguments: CollectionOfOne(typesAsCoreInteger)
+    )   func heterogeneousAlignmentComparisons(list: [any CoreInteger.Type]) throws {
+        
+        for type in list {
+            for other in list {
+                try whereIs(type, versus: other)
+            }
+        }
+        
+        func whereIs<A, B>(_ type: A.Type, versus other: B.Type) throws where A: CoreInteger, B: CoreInteger {
+            let a = MemoryLayout<A>.self
+            let b = MemoryLayout<B>.self
+            
+            switch A.size.compared(to: B.size) {
+            case Signum.negative: try #require(a.alignment <= b.alignment)
+            case Signum.zero:     try #require(a.alignment == b.alignment)
+            case Signum.positive: try #require(a.alignment >= b.alignment)
+            }
         }
     }
 }
