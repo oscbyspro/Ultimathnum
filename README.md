@@ -17,6 +17,7 @@
   - [The `Fallible<T>` redemption arc](#overview-the-fallible-redemption-arc)
   - [The precondition `Guarantee` types](#overview-the-precondition-guarantee-types)
   - [The magic `Divider<T>` constants](#overview-the-magic-divider-constants)
+  - [The arbitrary bit `Count` unification](#overview-the-arbitrary-bit-count-unification)
 
 <a name="prelude"/>
 
@@ -112,8 +113,6 @@ This setup enables optimizations and omits unrelated metrics. These steps are cr
 <a name="overview-the-overpowered-binary-integer"/>
 
 ### The overpowered `BinaryInteger`
-
-👨‍💻🛠️🚧🧱🧱🏗️🧱🧱🚧⏳
 
 ```
            ┌───────────┬───────────┐
@@ -296,4 +295,18 @@ let divider = Divider21(divisor)
 let typical = U8.division(random, by: divisor) as Fallible<Division<U8, U8>>
 let magical = U8.division(random, by: divider) as Fallible<Division<U8, U8>>
 precondition(typical == magical) // quotient, remainder, and error indicator
+```
+
+<a name="overview-the-arbitrary-bit-count-unification"/>
+
+### The arbitrary bit `Count` unification
+
+> Please roll a D20 arcana check.
+
+An arbitrary integer's bit pattern extends infinitely, yet its bit pattern has an end. It must be this way, or it would not behave like its systems integer friends. As such, we need a different model to represent arbitrary integer sizes. `Count` fulfills our need by reinterpreting the last bit of a machine word as logarithmically infinite.
+
+```
+UXL.max = &0
+min ..< msb: [0,  IX.max + 0]
+msb ... max: [∞ - IX.max,  ∞] ≤ log2(&0+1)
 ```
