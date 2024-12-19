@@ -43,7 +43,7 @@ final class BinaryIntegerBenchmarksOnExponentiation: XCTestCase {
         }
     }
     
-    /// ###### 2024-09-09 (MacBook Pro, 13-inch, M1, 2020):
+    /// ###### MacBook Pro, 13-inch, M1, 2020
     ///
     ///     0.44 seconds
     ///     0.24 seconds after (#84)

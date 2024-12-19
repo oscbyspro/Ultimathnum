@@ -84,12 +84,11 @@ import TestKit
             let size = IX(size: T.self) ?? conditional(debug: 32, release: 256)
             
             for _  in 0 ..< conditional(debug: 4, release: 16) {
-                let base = T.entropic(size: size, using: &randomness)
-                let coefficient = T.entropic(size: size, using: &randomness)
-                var power = Fallible(coefficient)
+                let base  = T.entropic(size: size, using: &randomness)
+                var power = Fallible(T.lsb)
                 
                 for exponent: T.Magnitude in 0 ..< 16 {
-                    try #require(base.power(exponent, coefficient: coefficient) == power)
+                    try #require(base.power(exponent) == power)
                     power = power.map{$0.times(base)}
                 }
             }
@@ -108,7 +107,7 @@ import TestKit
     //=------------------------------------------------------------------------=
     
     @Test(
-        "BinaryInteger/exponentiation/edge-cases: base is 1 → coefficient",
+        "BinaryInteger/exponentiation/edge-cases: base is 1 → 1",
         Tag.List.tags(.documentation, .generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func baseIsOneYieldsCoefficient(
@@ -120,15 +119,14 @@ import TestKit
             typealias M = T.Magnitude
             
             for _ in 0 ..< 32 {
-                let a = M.entropic(through: Shift.max(or: 255), using: &randomness)
-                let b = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                try #require(T.lsb.power(a, coefficient: b) == Fallible(b))
+                let x = M.entropic(through: Shift.max(or: 255), using: &randomness)
+                try #require(T.lsb.power(x) == Fallible(T.lsb))
             }
         }
     }
 
     @Test(
-        "BinaryInteger/exponentiation/edge-cases: base is 0 → 0 or coefficient",
+        "BinaryInteger/exponentiation/edge-cases: base is 0 → 0 or 1",
         Tag.List.tags(.documentation, .generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func baseIsZeroYieldsZeroOrCoefficient(
@@ -142,15 +140,14 @@ import TestKit
             for _ in 0 ..< 32 {
                 let a = T.zero
                 let b = M.entropic(through: Shift.max(or: 255), using: &randomness)
-                let c = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                let d = Fallible(b.isZero ? c : T.zero)
-                try #require(a.power(b, coefficient: c) == d)
+                let c = Fallible(b.isZero ? T.lsb : T.zero)
+                try #require(a.power(b) == c)
             }
         }
     }
 
     @Test(
-        "BinaryInteger/exponentiation/edge-cases: base is NOT(0) → coefficient * (1 or ~0)",
+        "BinaryInteger/exponentiation/edge-cases: base is NOT(0) → 1 or NOT(0)",
         Tag.List.tags(.documentation, .generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func baseIsRepeatingOnesYieldsCoefficietExpression(
@@ -164,15 +161,14 @@ import TestKit
             for _ in 0 ..< 32 {
                 let a = T(repeating: Bit.one)
                 let b = M.entropic(through: Shift.max(or: 255), using: &randomness)
-                let c = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                let d = c.times(Bool(b.lsb) ? ~0 : 1).veto(!T.isSigned && b >= 2 && !c.isZero)
-                try #require(a.power(b, coefficient: c) == d)
+                let c = (b.lsb.isZero ? T.lsb : T.zero.toggled()).veto(!T.isSigned && b >= 2)
+                try #require(a.power(b) == c)
             }
         }
     }
     
     @Test(
-        "BinaryInteger/exponentiation/edge-cases: exponent is 0 → coefficient",
+        "BinaryInteger/exponentiation/edge-cases: exponent is 0 → 1",
         Tag.List.tags(.documentation, .generic, .random),
         arguments: typesAsBinaryInteger, fuzzers
     )   func exponentIsZeroYieldsCoefficientNoError(
@@ -182,27 +178,8 @@ import TestKit
         try  whereIs(type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             for _ in 0 ..< 32 {
-                let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                let b = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                try #require(a.power(T.Magnitude.zero, coefficient: b) == Fallible(b))
-            }
-        }
-    }
-    
-    @Test(
-        "BinaryInteger/exponentiation/edge-cases: coefficient is 0 → 0",
-        Tag.List.tags(.documentation, .generic, .random),
-        arguments: typesAsBinaryInteger, fuzzers
-    )   func coefficientIsZeroYieldsZeroNoError(
-        type: any BinaryInteger.Type, randomness: consuming FuzzerInt
-    )   throws {
-       
-        try  whereIs(type)
-        func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
-            for _ in 0 ..< 32 {
-                let a = T.entropic(through: Shift.max(or: 255), using: &randomness)
-                let b = T.Magnitude.entropic(through: Shift.max(or: 255), using: &randomness)
-                try #require(a.power(b, coefficient: T.zero) == Fallible(T.zero))
+                let x = T.entropic(through: Shift.max(or: 255), using: &randomness)
+                try #require(x.power(T.Magnitude.zero) == Fallible(T.lsb))
             }
         }
     }
@@ -235,9 +212,8 @@ import TestKit
             for _ in 0 ..< 4 {
                 let base = A.random(using: &randomness)
                 let exponent = B.Magnitude.random(in: min...max, using: &randomness)
-                let coefficient = A.random(using: &randomness)
-                let small = A(base).power(exponent, coefficient: A(coefficient))
-                let large = B(base).power(exponent, coefficient: B(coefficient))
+                let small = A(base).power(exponent)
+                let large = B(base).power(exponent)
                 try #require(small == large.map(A.exactly))
             }
         }
@@ -261,8 +237,6 @@ import TestKit
         func build<T>(_ x: inout T) where T: BinaryInteger {
             _ = x.power(0)
             _ = x.power(0 as UX)
-            _ = x.power(0,       coefficient: 0)
-            _ = x.power(0 as UX, coefficient: 0)
         }
     }
     
@@ -296,10 +270,9 @@ import TestKit
             for _ in 0 ..< 4 {
                 let a = T.entropic(using: &randomness)
                 let b = M.entropic(using: &randomness)
-                let c = T.entropic(using: &randomness)
-                let x = a.power(   (b), coefficient:c)
-                let y = a.power(UXL(b), coefficient:c)
-                try #require((((((((((x == y))))))))))
+                let x = a.power(   (b))
+                let y = a.power(UXL(b))
+                try #require((x ==  y))
             }
         }
     }
@@ -325,17 +298,10 @@ import TestKit
             for _ in 0 ..< 4 {
                 let a = T.entropic(size: 032, as: Domain.binary,  using: &randomness)
                 let b = U.entropic(size: 004, as: Domain.natural, using: &randomness)
-                let c = T.entropic(size: 256, as: Domain.binary,  using: &randomness)
                 
                 always: do {
                     let x = a.power(b) as Fallible<T>
                     let y = a.power(b) as T
-                    try #require(x.optional() == y)
-                }
-                
-                always: do {
-                    let x = a.power(b, coefficient: c) as Fallible<T>
-                    let y = a.power(b, coefficient: c) as T
                     try #require(x.optional() == y)
                 }
             }
@@ -357,17 +323,10 @@ import TestKit
             for _ in 0 ..< 4 {
                 let a = T.entropic(size: 032, as: Domain.binary,  using: &randomness)
                 let b = U.entropic(size: 004, as: Domain.natural, using: &randomness)
-                let c = T.entropic(size: 256, as: Domain.binary,  using: &randomness)
                 
                 always: do {
                     let x = a.power(b) as Fallible<T>
                     let y = a.power(b) as T
-                    try #require(x.optional() == y)
-                }
-                
-                always: do {
-                    let x = a.power(b, coefficient: c) as Fallible<T>
-                    let y = a.power(b, coefficient: c) as T
                     try #require(x.optional() == y)
                 }
             }
