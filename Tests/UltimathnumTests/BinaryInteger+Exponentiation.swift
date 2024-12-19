@@ -161,7 +161,7 @@ import TestKit
             for _ in 0 ..< 32 {
                 let a = T(repeating: Bit.one)
                 let b = M.entropic(through: Shift.max(or: 255), using: &randomness)
-                let c = (b.lsb.isZero ? T.lsb : T.zero.toggled()).veto(!T.isSigned && b >= 2)
+                let c = Fallible(b.lsb.isZero ? T.lsb : a, error: !T.isSigned && b >= 2)
                 try #require(a.power(b) == c)
             }
         }
