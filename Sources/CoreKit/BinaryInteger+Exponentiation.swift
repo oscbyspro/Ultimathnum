@@ -84,8 +84,6 @@ extension BinaryInteger {
     
     /// Returns `self` to the power of `exponent` and an `error` indiactor.
     ///
-    /// - Returns: `pow(self, exponent) * coefficient`
-    ///
     /// ```swift
     /// I8(0).power(U8(1), coefficient: I8(2)) // I8.exactly(   0)
     /// I8(1).power(U8(2), coefficient: I8(3)) // I8.exactly(   3)
