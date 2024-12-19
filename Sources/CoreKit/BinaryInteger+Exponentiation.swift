@@ -21,7 +21,7 @@ extension BinaryInteger {
     
     /// A square-and-multiply exponentiation algorithm.
     ///
-    /// - Note: All operations on `base` are `borrowing` so `copy` is ideal.
+    /// - Note: All operations on `base` are `borrowing`.
     ///
     /// ### Development
     ///
@@ -31,20 +31,13 @@ extension BinaryInteger {
     ///     Magnitude.size ≤ IX.max.: Magnitude
     ///     Magnitude.size > IX.max.: UX
     ///
-    /// ### Development 2
-    ///
-    /// Using `power(_:)` instead of `power(_:coefficient:)` kind of requires
-    /// that the initial power is on the stack in the arbitrary integer case.
-    ///
-    /// - Todo: Small arbitrary integer optimization (#44).
-    ///
-    /// - Seealso: https://github.com/oscbyspro/Ultimathnum/issues/153
+    /// - Todo: Small arbitrary integer optimization (#44) (#153).
     ///
     @inlinable internal static func perform(
         _         base: consuming Self,
         power exponent: consuming Natural<some UnsignedInteger>
     )   -> Fallible<Self> {
-                
+        
         var error: Bool = false
         var power: Self = Self(load: Element.lsb)
         
