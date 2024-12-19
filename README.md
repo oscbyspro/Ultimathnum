@@ -303,7 +303,7 @@ precondition(typical == magical) // quotient, remainder, and error indicator
 
 > Please roll a D20 arcana check.
 
-An arbitrary integer's bit pattern extends infinitely—yet it has an end. It must be this way, or it would not behave like its systems integer friends. As such, we need a different model to represent arbitrary integer sizes. `Count` fulfills our need by reinterpreting the last bit of a machine word as logarithmically infinite.
+An arbitrary integer's bit pattern extends infinitely—yet it has an end. It must be this way, or it would be unlike its systems integer brothers and sisters. As such, we need a different model to represent arbitrary integer sizes. `Count` satisfies our need by reinterpreting the last bit of a machine word as logarithmically infinite.
 
 ```
 UXL.max = &0
