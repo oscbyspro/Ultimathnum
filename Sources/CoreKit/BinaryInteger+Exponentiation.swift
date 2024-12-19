@@ -19,6 +19,10 @@ extension BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
+    /// A square-and-multiply exponentiation algorithm.
+    ///
+    /// - Note: All operations on `base` are `borrowing`.
+    ///
     /// ### Development
     ///
     /// Use `1` systems integer `exponent` type per type of `Self`.
@@ -27,43 +31,35 @@ extension BinaryInteger {
     ///     Magnitude.size ≤ IX.max.: Magnitude
     ///     Magnitude.size > IX.max.: UX
     ///
-    /// - Note: The nonzero `coefficient` simplifies `error` reporting.
+    /// - Todo: Small arbitrary integer optimization (#44) (#153).
     ///
-    @inlinable internal static func resolve(
-        _ base: borrowing Self,
-        power exponent: borrowing Natural<some UnsignedInteger>,
-        coefficient: borrowing Nonzero<Self>
+    @inlinable internal static func perform(
+        _         base: consuming Self,
+        power exponent: consuming Natural<some UnsignedInteger>
     )   -> Fallible<Self> {
         
         var error: Bool = false
-        var power: Self = (copy coefficient).value
-        var multiplier: Self = copy base
-        var exponent: some UnsignedInteger = (copy exponent).value
+        var power: Self = Self(load: Element.lsb)
         
         exponentiation: while true {
-            if  Bool(exponent.lsb) {
-                power = power.times(multiplier).sink(&error)
+            if  Bool(exponent.value.lsb) {
+                power = power.times(base).sink(&error)
             }
             
-            exponent = exponent.down(Shift.one)
+            exponent = Natural(unchecked: exponent.value.down(Shift.one))
             
-            if  exponent.isZero {
+            if  exponent.value.isZero {
                 return (power).veto(error)
             }
             
-            multiplier = multiplier.squared().sink(&error)
+            base = base.squared().sink(&error)
         }
     }
     
     @inlinable internal static func resolve(
-        _ base: borrowing Self,
-        power exponent: borrowing some UnsignedInteger,
-        coefficient: borrowing Self
+        _         base: borrowing Self,
+        power exponent: borrowing some UnsignedInteger
     )   -> Fallible<Self> {
-        
-        guard let coefficient = Nonzero(exactly: copy coefficient) else {
-            return Fallible(Self.zero)
-        }
         
         if !Self.isArbitrary {
             var (magic, error) = Magnitude.exactly(exponent).components()
@@ -74,11 +70,11 @@ extension BinaryInteger {
                 }
             }
             
-            return Self.resolve(base, power: Natural(unchecked: magic), coefficient: coefficient).veto(error)
+            return Self.perform(copy base, power: Natural(unchecked: magic)).veto(error)
         }   else {
             var (magic) = UX(clamping:(((exponent)))) // the allocation limit is IX.max
             (((((magic)))))[Shift.min] = exponent.lsb // preserves the lsb to toggle ~0
-            return Self.resolve(base, power: Natural(unchecked: magic), coefficient: coefficient)
+            return Self.perform(copy base, power: Natural(unchecked: magic))
         }
     }
     
@@ -86,9 +82,7 @@ extension BinaryInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Returns a `power` and an `error` indiactor.
-    ///
-    /// - Returns: `pow(self, exponent) * coefficient`
+    /// Returns `self` to the power of `exponent` and an `error` indiactor.
     ///
     /// ```swift
     /// I8(0).power(U8(1), coefficient: I8(2)) // I8.exactly(   0)
@@ -99,20 +93,13 @@ extension BinaryInteger {
     ///
     /// ### Exponentiation
     ///
-    /// - Note: The default `coefficient` is `1`.
-    ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
-    @inlinable public borrowing func power(
-        _  exponent:  borrowing Magnitude,
-        coefficient:  borrowing Self = 1
-    )   -> Fallible<Self> {
-        Self.resolve(self, power: exponent, coefficient: coefficient)
+    @inlinable public borrowing func power(_ exponent: borrowing Magnitude) -> Fallible<Self> {
+        Self.resolve(self, power: exponent)
     }
     
-    /// Returns a `power` and an `error` indiactor.
-    ///
-    /// - Returns: `pow(self, exponent) * coefficient`
+    /// Returns `self` to the power of `exponent` and an `error` indiactor.
     ///
     /// ```swift
     /// I8(0).power(U8(1), coefficient: I8(2)) // I8.exactly(   0)
@@ -123,15 +110,10 @@ extension BinaryInteger {
     ///
     /// ### Exponentiation
     ///
-    /// - Note: The default `coefficient` is `1`.
-    ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
-    @inlinable public borrowing func power(
-        _  exponent:  borrowing some UnsignedInteger,
-        coefficient:  borrowing Self = 1
-    )   -> Fallible<Self> {
-        Self.resolve(self, power: exponent, coefficient: coefficient)
+    @inlinable public borrowing func power(_ exponent: borrowing some UnsignedInteger) -> Fallible<Self> {
+        Self.resolve(self, power: exponent)
     }
 }
 
@@ -145,9 +127,7 @@ extension BinaryInteger where Self: ArbitraryInteger & SignedInteger {
     // MARK: Transformations
     //=------------------------------------------------------------------------=
     
-    /// Returns a `power`.
-    ///
-    /// - Returns: `pow(self, exponent) * coefficient`
+    /// Returns `self` to the power of `exponent`.
     ///
     /// ```swift
     /// I8(0).power(U8(1), coefficient: I8(2)) // I8.exactly(   0)
@@ -158,20 +138,13 @@ extension BinaryInteger where Self: ArbitraryInteger & SignedInteger {
     ///
     /// ### Exponentiation
     ///
-    /// - Note: The default `coefficient` is `1`.
-    ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
-    @inlinable public borrowing func power(
-        _  exponent:  borrowing Magnitude,
-        coefficient:  borrowing Self = 1
-    )   -> Self {
-        self.power(exponent, coefficient: coefficient).unchecked()
+    @inlinable public borrowing func power(_ exponent: borrowing Magnitude) -> Self {
+        self.power(exponent).unchecked()
     }
     
-    /// Returns a `power`.
-    ///
-    /// - Returns: `pow(self, exponent) * coefficient`
+    /// Returns `self` to the power of `exponent`.
     ///
     /// ```swift
     /// I8(0).power(U8(1), coefficient: I8(2)) // I8.exactly(   0)
@@ -182,14 +155,9 @@ extension BinaryInteger where Self: ArbitraryInteger & SignedInteger {
     ///
     /// ### Exponentiation
     ///
-    /// - Note: The default `coefficient` is `1`.
-    ///
     /// - Note: The `error` is set if the operation is `lossy`.
     ///
-    @inlinable public borrowing func power(
-        _  exponent:  borrowing some UnsignedInteger,
-        coefficient:  borrowing Self = 1
-    )   -> Self {
-        self.power(exponent, coefficient: coefficient).unchecked()
+    @inlinable public borrowing func power(_ exponent: borrowing some UnsignedInteger) -> Self {
+        self.power(exponent).unchecked()
     }
 }

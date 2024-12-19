@@ -128,7 +128,7 @@ import TestKit
                     let exponent = Swift.min(lhsCount[index], rhsCount[index])
                     if !exponent.isZero {
                         let base: T.Magnitude = primes[index].magnitude()
-                        let power = base.power(exponent, coefficient: divisor)
+                        let power = base.power(exponent).map{$0.times(divisor)}
                         divisor = try #require(power.optional())
                     }
                 }
