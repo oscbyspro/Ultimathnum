@@ -135,7 +135,7 @@ import TestKit
     //=------------------------------------------------------------------------=
     
     @Test(
-        "StaticBigInt/text: description",
+        "Swift.StaticBigInt/text: description",
         Tag.List.tags(.documentation, .unofficial),
         arguments: Array<(StaticBigInt, String)>.infer([
         
