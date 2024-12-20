@@ -15,14 +15,14 @@ import TestKit
 // MARK: * Swift x Optional
 //*============================================================================*
 
-@Suite struct SwiftTestsOnOptional {
-        
+@Suite struct SwiftOptionalTests {
+    
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     @Test(
-        "Swift/optional: init(raw:)",
+        "Swift.Optional: init(raw:)",
         Tag.List.tags(.generic, .random),
         arguments: typesAsCoreInteger, fuzzers
     )   func bitcasting(
@@ -45,7 +45,7 @@ import TestKit
     }
     
     @Test(
-        "Swift/optional: unwrap()",
+        "Swift.Optional: unwrap()",
         Tag.List.tags(.generic, .random),
         arguments: typesAsCoreInteger, fuzzers
     )   func unwrapping(

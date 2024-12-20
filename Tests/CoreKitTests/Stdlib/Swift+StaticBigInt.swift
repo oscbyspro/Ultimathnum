@@ -11,17 +11,17 @@ import CoreKit
 import TestKit
 
 //*============================================================================*
-// MARK: * Static Big Int x Comparison
+// MARK: * Swift x Static Big Int x Comparison
 //*============================================================================*
 
-@Suite(.serialized) struct StaticBigIntTestsOnComparison {
+@Suite(.serialized) struct SwiftStaticBigIntTestsOnComparison {
         
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     @Test(
-        "StaticBigInt/comparison: signum()",
+        "Swift.StaticBigInt/comparison: signum()",
         Tag.List.tags(.documentation),
         arguments: Array<(StaticBigInt, Int)>.infer([
         
@@ -51,17 +51,17 @@ import TestKit
 }
 
 //*============================================================================*
-// MARK: * Static Big Int x Count
+// MARK: * Swift x Static Big Int x Count
 //*============================================================================*
 
-@Suite(.serialized) struct StaticBigIntTestsOnCount {
+@Suite(.serialized) struct SwiftStaticBigIntTestsOnCount {
         
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     @Test(
-        "StaticBigInt/count: bitWidth",
+        "Swift.StaticBigInt/count: bitWidth",
         Tag.List.tags(.documentation),
         arguments: Array<(StaticBigInt, Int)>.infer([
         
@@ -91,17 +91,17 @@ import TestKit
 }
 
 //*============================================================================*
-// MARK: * Literal Int x Elements
+// MARK: * Swift x Static Big Int x Elements
 //*============================================================================*
 
-@Suite(.serialized) struct StaticBigIntTestsOnElements {
+@Suite(.serialized) struct SwiftStaticBigIntTestsOnElements {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     @Test(
-        "StaticBigInt/elements: byte sequence prefix",
+        "Swift.StaticBigInt/elements: byte sequence prefix",
         Tag.List.tags(.documentation),
         arguments: Array<(StaticBigInt, [UInt8])>.infer([
         
@@ -125,10 +125,10 @@ import TestKit
 }
 
 //*============================================================================*
-// MARK: * Static Big Int x Text
+// MARK: * Swift x Static Big Int x Text
 //*============================================================================*
 
-@Suite(.serialized) struct StaticBigIntTestsOnText {
+@Suite(.serialized) struct SwiftStaticBigIntTestsOnText {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
