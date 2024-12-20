@@ -15,14 +15,14 @@ import TestKit
 // MARK: * Swift x Binary Integer
 //*============================================================================*
 
-@Suite struct SwiftTestsOnBinaryInteger {
+@Suite struct SwiftBinaryIntegerTests {
     
     //=------------------------------------------------------------------------=
     // MARK: Tests
     //=------------------------------------------------------------------------=
     
     @Test(
-        "Swift/binary-integer: init(raw:)",
+        "Swift.BinaryInteger: init(raw:)",
         Tag.List.tags(.generic, .random),
         arguments: typesAsCoreInteger, fuzzers
     )   func bitcasting(

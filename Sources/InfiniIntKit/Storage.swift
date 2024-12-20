@@ -36,8 +36,8 @@ Element: SystemsInteger & UnsignedInteger, Element.Element == Element {
     }
     
     @inlinable internal init(_ element: Element, at index: IX, repeating appendix: Bit) {
+        self.body = Body(repeating: 0, count: Swift.Int(index) + 1)
+        self.body[Swift.Int(index)] = element
         self.appendix = appendix
-        self.body = Body.init(repeating: .zero, count: Int(index) + 1)
-        self.body[Int(index)] = element
     }
 }

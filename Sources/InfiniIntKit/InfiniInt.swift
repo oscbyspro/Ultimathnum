@@ -64,24 +64,51 @@ where Element: SystemsInteger, Element.Element == Element {
         self.storage = storage
     }
     
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
-    @inlinable public init(integerLiteral: LiteralInt.IntegerLiteralType) {
-        self = Self.exactly(LiteralInt(integerLiteral: integerLiteral)).unwrap()
-    }
-    
-    //=------------------------------------------------------------------------=
-    // MARK: Initializers
-    //=------------------------------------------------------------------------=
-    
     @inlinable public init(raw source: consuming BitPattern) {
         self.init(unchecked: source.storage)
     }
     
     @inlinable public consuming func load(as type: BitPattern.Type) -> BitPattern {
         Magnitude(unchecked: self.storage)
+    }
+    
+    //=------------------------------------------------------------------------=
+    // MARK: Initializers
+    //=------------------------------------------------------------------------=
+    
+    @inlinable public init(integerLiteral source: StaticBigInt) {
+        self.init(raw: Signitude(source))
+        precondition(!self.isInfinite, String.overflow())
+    }
+    
+    /// ### Development
+    ///
+    /// - Note: It is nontrivial because `StaticBigInt` does not point to memory.
+    ///
+    @inline(never) @inlinable internal init(_ source: StaticBigInt) where Self: SignedInteger {
+        let size  = UX(raw:  source.bitWidth)
+        if  size <= UX(size: IX.self) {
+            self.init(load:  IX(raw: source[Swift.Int.zero]))
+            return
+        }
+        
+        let signum   = source.signum() as Swift.Int
+        let appendix = Bit((signum < Swift.Int.zero))
+        let bits     = size.decremented().unchecked()
+        let elements = Swift.Int(raw: bits.division(Nonzero(size: UX.self)).ceil().unchecked())
+        let body = IXL.Storage.Body(unsafeUninitializedCapacity: elements) { body, index in
+            
+            initialize: while index < elements {
+                body.initializeElement(at: index, to: UX(source[index]))
+                index =  body.index(after: index)
+            }
+        }
+        
+        if  Swift.type(of: body) == Storage.Body.self {
+            self.init(unchecked: Storage(Swift.unsafeBitCast(body, to: Storage.Body.self), repeating: appendix))
+        }   else {
+            self.init(load: body, repeating: appendix)
+        }
     }
 }
 
