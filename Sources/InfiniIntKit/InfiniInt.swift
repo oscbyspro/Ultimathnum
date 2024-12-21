@@ -26,7 +26,7 @@ import CoreKit
 ///
 /// - TODO: Precondition resizing `DataInt<Element>.capacity`.
 ///
-@frozen public struct InfiniInt<Element>: ArbitraryInteger, Namespace.Foo, Namespace.Bar 
+@frozen public struct InfiniInt<Element>: ArbitraryInteger, Namespace.Foo, Namespace.Bar
 where Element: SystemsInteger, Element.Element == Element {
     
     public typealias BitPattern = InfiniInt<Element.Magnitude>
@@ -92,13 +92,12 @@ where Element: SystemsInteger, Element.Element == Element {
             return
         }
         
-        let signum   = source.signum() as Swift.Int
-        let appendix = Bit((signum < Swift.Int.zero))
-        let bits     = size.decremented().unchecked()
-        let elements = Swift.Int(raw: bits.division(Nonzero(size: UX.self)).ceil().unchecked())
-        let body = IXL.Storage.Body(unsafeUninitializedCapacity: elements) { body, index in
+        let appendix = Bit(source.signum() < Swift.Int.zero)
+        let bits  = size.decremented().unchecked()
+        let words = Swift.Int(raw: bits.division(Nonzero(size: UX.self)).ceil().unchecked())
+        let body  = IXL.Storage.Body(unsafeUninitializedCapacity: words) { body, index in
             
-            initialize: while index < elements {
+            initialize: while index < words {
                 body.initializeElement(at: index, to: UX(source[index]))
                 index =  body.index(after: index)
             }

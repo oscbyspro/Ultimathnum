@@ -19,20 +19,35 @@ extension InfiniInt {
     // MARK: Initializers
     //=------------------------------------------------------------------------=
     
-    @_disfavoredOverload // this is needed when Element is UX or IX
-    @inlinable public init(load source: consuming  UX.Signitude) {
-        self = source.withUnsafeBinaryIntegerElements(as: U8.self, perform: Self.init(load:))
+    @_disfavoredOverload // we need this when Element is UX or IX
+    @inlinable public init(load source: consuming UX.Signitude) {
+        if  Element.size >= UX.size {
+            self.init(load: Element.Signitude(load: source))
+        }   else {
+            self = source.withUnsafeBinaryIntegerElements(as: U8.self, perform: Self.init(load:))
+        }
     }
     
-    @_disfavoredOverload // this is needed when Element is UX or IX
-    @inlinable public init(load source: consuming  UX.Magnitude) {
-        self = source.withUnsafeBinaryIntegerElements(as: U8.self, perform: Self.init(load:))
+    @_disfavoredOverload // we need this when Element is UX or IX
+    @inlinable public init(load source: consuming UX.Magnitude) {
+        if  Element.size >= UX.size {
+            self.init(load: Element.Magnitude(load: source))
+        }   else {
+            self = source.withUnsafeBinaryIntegerElements(as: U8.self, perform: Self.init(load:))
+        }
     }
     
-    @_disfavoredOverload // this is needed when Element is UX or IX
+    @_disfavoredOverload // we need this when Element is UX or IX
     @inlinable public borrowing func load(as type: UX.BitPattern.Type) -> UX.BitPattern {
-        self.withUnsafeBinaryIntegerElements(as: U8.self) {
-            $0.load(as: UX.self).load(as: UX.BitPattern.self)
+        if  Element.size >= UX.size {
+            self.withUnsafeBinaryIntegerElements(as: UX.self) {
+                $0.first.load(as: UX.BitPattern.self)
+            }
+            
+        }   else {
+            self.withUnsafeBinaryIntegerElements(as: U8.self) {
+                $0.load(as: UX.self).load(as: UX.BitPattern.self)
+            }
         }
     }
     
