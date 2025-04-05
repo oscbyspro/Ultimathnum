@@ -79,7 +79,7 @@ import TestKit
         try  whereIs(metadata.type)
         func whereIs<T>(_ type: T.Type) throws where T: BinaryInteger {
             let components = Indexacci<T>(minor: 0, major: 1, index: 0)
-            try #require(try #require(Fibonacci<T>(      )).components() == components)
+            try #require(            (Fibonacci<T>(      )).components() == components)
             try #require(try #require(Fibonacci<T>(T.zero)).components() == components)
         }
     }

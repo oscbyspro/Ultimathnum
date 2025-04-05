@@ -125,6 +125,7 @@ extension TextInt {
         }
         //=--------------------------------------=
         Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Int(capacity)) {
+            var body  = consume body // or nonzero exit code
             let words = MutableDataInt<UX>.Body($0)![unchecked: ..<capacity]
             var index = IX.zero
             
@@ -170,6 +171,7 @@ extension TextInt {
         }
         //=--------------------------------------=
         Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Swift.Int(capacity)) {
+            var body  = consume body // or nonzero exit code
             let words = MutableDataInt<UX>.Body($0)![unchecked: ..<capacity]
             var index = words.count
             

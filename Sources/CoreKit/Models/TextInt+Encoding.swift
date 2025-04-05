@@ -132,8 +132,9 @@ extension TextInt {
         let count = body.count(as: UX.self)
         
         return  Swift.withUnsafeTemporaryAllocation(of: UX.self, capacity: Swift.Int(count)) {
+            let body  = consume body // or nonzero exit
             let words = MutableDataInt.Body($0.baseAddress.unchecked(), count: count)
-            
+
             for index: IX  in words.indices {
                 let start: IX =  index.times(IX(MemoryLayout<UX>.stride)).unchecked()
                 words[unchecked: index] = DataInt(body[unchecked: start...]).load(as: UX.self)
@@ -150,14 +151,16 @@ extension TextInt {
     /// Returns the contents of `info` followed by the contents of `body`.
     ///
     /// - parameter body: It must be normalized or contain exactly one element.
-    /// 
+    ///
     @usableFromInline package func encode(
         info: consuming UnsafeBufferPointer<UInt8>,
         quasinormalized body: consuming MutableDataInt<UX>.Body
     )   -> String {
-        //=--------------------------------------=
-        Swift.assert(body.isNormal || (body.count == 1))
-        //=--------------------------------------=
+        
+        if !body.isNormal, body.count != 1 {
+            Swift.assertionFailure("req. quasinormalized")
+        }
+        
         let radix    = Nonzero(unchecked: UX(load: self.radix as U8))
         let length   = Natural.init(unchecked: IX(raw: body .nondescending(Bit.zero)))
         var capacity = Swift.Int(Self.capacity(IX(raw: radix.value), length: length)!)
@@ -170,6 +173,7 @@ extension TextInt {
             let ((end)): UnsafeMutablePointer<Swift.UInt8> = start.advanced(by: capacity)
             var pointer: UnsafeMutablePointer<Swift.UInt8> = end
             var segment: UnsafeMutablePointer<Swift.UInt8> = end
+            var ((body)) = consume body // or nonzero exit
             
             loop: while true {
                 var part: UX, remainder: UX

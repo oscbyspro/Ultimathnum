@@ -115,8 +115,14 @@ extension DataInt.Body {
     ///
     @inlinable public subscript(unchecked range: Range<IX>) -> Self {
         consuming get {
-            Swift.assert(range.lowerBound >= 0000000000, String.indexOutOfBounds())
-            Swift.assert(range.upperBound <= self.count, String.indexOutOfBounds())
+            
+            if  range.lowerBound < 0000000000 {
+                Swift.assertionFailure(String.indexOutOfBounds())
+            }
+            
+            if  range.upperBound > self.count {
+                Swift.assertionFailure(String.indexOutOfBounds())
+            }
             
             let start = self.start.advanced(by: Int(range.lowerBound))
             return Self(start, count: IX(range.count))
@@ -129,8 +135,14 @@ extension DataInt.Body {
     ///
     @inlinable public subscript(unchecked range: PartialRangeFrom<IX>) -> Self {
         consuming get {
-            Swift.assert(range.lowerBound >= 0000000000, String.indexOutOfBounds())
-            Swift.assert(range.lowerBound <= self.count, String.indexOutOfBounds())
+            
+            if  range.lowerBound < 0000000000 {
+                Swift.assertionFailure(String.indexOutOfBounds())
+            }
+            
+            if  range.lowerBound > self.count {
+                Swift.assertionFailure(String.indexOutOfBounds())
+            }
             
             let start = self.start.advanced(by: Int(range.lowerBound))
             let count = self.count.minus(range.lowerBound).unchecked()
@@ -144,8 +156,14 @@ extension DataInt.Body {
     ///
     @inlinable public subscript(unchecked range: PartialRangeUpTo<IX>) -> Self {
         consuming get {
-            Swift.assert(range.upperBound >= 0000000000, String.indexOutOfBounds())
-            Swift.assert(range.upperBound <= self.count, String.indexOutOfBounds())
+            
+            if  range.upperBound < 0000000000 {
+                Swift.assertionFailure(String.indexOutOfBounds())
+            }
+            
+            if  range.upperBound > self.count {
+                Swift.assertionFailure(String.indexOutOfBounds())
+            }
             
             return Self(self.start, count: range.upperBound)
         }

@@ -121,7 +121,7 @@ import TestKit
         "BinaryInteger/floats/samples: none",
         Tag.List.tags(.generic),
         arguments: Self.nonresults
-    )   func nonresults(
+    )   func nonresultsTest(
         float: Float64
     )   throws {
         
@@ -143,7 +143,7 @@ import TestKit
         "BinaryInteger/floats/samples: integers",
         Tag.List.tags(.generic),
         arguments: Self.integers
-    )   func integers(
+    )   func integersTest(
         float: Float64, integer: IXL
     )   throws {
        
@@ -165,7 +165,7 @@ import TestKit
         "BinaryInteger/floats/samples: integers but one fractional step away from zero",
         Tag.List.tags(.generic),
         arguments: Self.integersButOneFractionalStepAwayFromZero
-    )   func integersButOneFractionalStepAwayFromZero(
+    )   func integersButOneFractionalStepAwayFromZeroTest(
         float: Float64, integer: Fallible<IXL>
     )   throws {
         
@@ -186,7 +186,7 @@ import TestKit
     @Test(
         "BinaryInteger/floats/samples: integers but one fractional step towards zero",
         arguments: Self.integersButOneFractionalStepTowardsZero
-    )   func integersButOneFractionalStepTowardsZero(
+    )   func integersButOneFractionalStepTowardsZeroTest(
         float: Float64, integer: Fallible<IXL>
     )   throws {
         

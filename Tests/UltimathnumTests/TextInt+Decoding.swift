@@ -323,8 +323,8 @@ import TestKit
                     
                     let zeros = IX.random(in: 0...12, using: &randomness)
                     modified.append(contentsOf: repeatElement("0", count: Swift.Int(zeros)))
-                    modified.append(contentsOf: try #require(match.body))
-                    try #require(T(modified, using: coder) == value)
+                    modified.append(contentsOf: match.body)
+                    try #require(T(modified, using:  coder) == value)
                 }
             }
         }

@@ -101,8 +101,13 @@ extension MutableDataInt.Body {
         to lhs: consuming Immutable, times rhs: consuming Immutable, plus increment: consuming Element = .zero
     ) {
         
-        Swift.assert(self.count == lhs.count + rhs.count, String.indexOutOfBounds())
-        Swift.assert(self.count >= 1 || increment.isZero, String.indexOutOfBounds())
+        if  self.count != lhs.count + rhs.count {
+            Swift.assertionFailure(String.indexOutOfBounds())
+        }
+        
+        if  self.count.isZero, !increment.isZero {
+            Swift.assertionFailure(String.indexOutOfBounds())
+        }
         //=--------------------------------------=
         var pointer: UnsafeMutablePointer<Element> = self.start
         //=--------------------------------------=
@@ -124,7 +129,9 @@ extension MutableDataInt.Body {
             self = (consume self)[unchecked: 1...]
         }
         
-        Swift.assert(IX(self.start.distance(to: pointer)) == lhs.count)
+        if  IX(self.start.distance(to: pointer)) != lhs.count {
+            Swift.assertionFailure(String.indexOutOfBounds())
+        }
         //=--------------------------------------=
         // pointee: initialization 2
         //=--------------------------------------=
@@ -135,8 +142,10 @@ extension MutableDataInt.Body {
             rhs  = (consume rhs )[unchecked: 1...]
             self = (consume self)[unchecked: 1...]
         }
-
-        Swift.assert(IX(self.start.distance(to: pointer)) == lhs.count)
+        
+        if  IX(self.start.distance(to: pointer)) != lhs.count {
+            Swift.assertionFailure(String.indexOutOfBounds())
+        }
     }
     
     /// Initializes `self` to the square [long][algorithm] product of `elements` plus `increment`.
@@ -151,8 +160,13 @@ extension MutableDataInt.Body {
          toSquareProductOf elements: Immutable, plus increment: Element = .zero
     ) {
         
-        Swift.assert(self.count == 2  * (elements.count), String.indexOutOfBounds())
-        Swift.assert(self.count >= 1 || increment.isZero, String.indexOutOfBounds())
+        if  self.count != 2 * elements.count {
+            Swift.assertionFailure(String.indexOutOfBounds())
+        }
+        
+        if  self.count.isZero, !increment.isZero {
+            Swift.assertionFailure(String.indexOutOfBounds())
+        }
         //=--------------------------------------=
         // pointee: initialization
         //=--------------------------------------=
@@ -216,12 +230,16 @@ extension MutableDataInt.Body {
     /// [algorithm]: https://en.wikipedia.org/wiki/karatsuba_algorithm
     ///
     @inline(never) @inlinable public consuming func initializeByKaratsubaAlgorithm(to lhs: Immutable, times rhs: Immutable) {
-        //=--------------------------------------=
-        Swift.assert(self.count == lhs.count + rhs.count, String.indexOutOfBounds())
-        //=--------------------------------------=
-        let i: IX = (self.count &>> 2)
-        let j: IX = (((((i))))) &<< 1
-        Swift.assert(self.count >=  2 * j)
+        if  self.count != lhs.count + rhs.count {
+            Swift.assertionFailure(String.indexOutOfBounds())
+        }
+        
+        let i: IX = self.count &>> 2
+        let j: IX = ((((i )))) &<< 1
+        
+        if  self.count <  2 * j {
+            Swift.assertionFailure(String.indexOutOfBounds())
+        }
         
         var (a,b) = lhs.split(unchecked: Swift.min(i, lhs.count))
         a = a.normalized()
@@ -240,6 +258,7 @@ extension MutableDataInt.Body {
         Swift.assert(maxSize >= axCount)
         Swift.assert(maxSize >= byCount)
         Swift.withUnsafeTemporaryAllocation(of: Element.self, capacity: Int(request)) {
+            let `self` = consume self // or nonzero exit code
             let buffer = UnsafeMutableBufferPointer(rebasing: $0[..<Int(request)])
             //=----------------------------------=
             // pointee: deferred deinitialization
@@ -253,7 +272,7 @@ extension MutableDataInt.Body {
             let u = Self(buffer)![unchecked: ..<maxSize]
             let v = Self(buffer)![unchecked: maxSize...]
             //=----------------------------------=
-            let vjCount = Swift.min(v.count, self.count - j)
+            let vjCount = Swift.min(v.count, `self`.count - j)
             //=----------------------------------=
             // set (a * x) and (b * y)
             //=----------------------------------=
@@ -265,12 +284,12 @@ extension MutableDataInt.Body {
             //=----------------------------------=
             // set (a * x) and (b * y)
             //=----------------------------------=
-            self[unchecked: ..<j].initialize(load: Immutable(u[unchecked: ..<axCount]))
-            self[unchecked: j...].initialize(load: Immutable(v[unchecked: ..<vjCount]))
+            `self`[unchecked: ..<j].initialize(load: Immutable(u[unchecked: ..<axCount]))
+            `self`[unchecked: j...].initialize(load: Immutable(v[unchecked: ..<vjCount]))
             //=----------------------------------=
             // add (a * x) and (b * y)
             //=----------------------------------=
-            let suffix = self[unchecked: i...]
+            let suffix = `self`[unchecked: i...]
             suffix.increment(by: Immutable(u[unchecked: ..<axCount])).discard()
             suffix.increment(by: Immutable(v[unchecked: ..<vjCount])).discard()
             //=----------------------------------=
@@ -335,16 +354,20 @@ extension MutableDataInt.Body {
     /// - TODO: Add a test case where `elements` has redundant zeros.
     ///
     @inline(never) @inlinable public consuming func initializeByKaratsubaAlgorithm(toSquareProductOf elements: Immutable) {
-        //=--------------------------------------=
-        Swift.assert(self.count ==  2 * elements.count, String.indexOutOfBounds())
-        //=--------------------------------------=
-        let i: IX = (self.count &>> 2)
-        let j: IX = (((((i))))) &<< 1
-        Swift.assert(self.count >=  2 * j)
+        if  self.count != 2 * elements.count {
+            Swift.assertionFailure(String.indexOutOfBounds())
+        }
+        
+        let i: IX = self.count &>> 2
+        let j: IX = ((((i )))) &<< 1
+        
+        if  self.count <  2 * j {
+            Swift.assertionFailure(String.indexOutOfBounds())
+        }
         
         var a: Immutable = elements[unchecked: ..<i].normalized()
         var b: Immutable = elements[unchecked: i...].normalized()
-
+        
         let axCount: IX = 2 * a.count
         let byCount: IX = 2 * b.count
         let maxSize: IX = Swift.max(axCount, byCount)
@@ -354,6 +377,7 @@ extension MutableDataInt.Body {
         Swift.assert(maxSize >= axCount)
         Swift.assert(maxSize >= byCount)
         Swift.withUnsafeTemporaryAllocation(of: Element.self, capacity: Int(request)) {
+            let `self` = consume self // or nonzero exit code
             let buffer = UnsafeMutableBufferPointer(rebasing: $0[..<Int(request)])
             //=----------------------------------=
             // pointee: deferred deinitialization
@@ -376,12 +400,12 @@ extension MutableDataInt.Body {
             //=----------------------------------=
             // set (a * x) and (b * y)
             //=----------------------------------=
-            self[unchecked: ..<j].initialize(load: Immutable(u[unchecked: ..<axCount]))
-            self[unchecked: j...].initialize(load: Immutable(v[unchecked: ..<byCount]))
+            `self`[unchecked: ..<j].initialize(load: Immutable(u[unchecked: ..<axCount]))
+            `self`[unchecked: j...].initialize(load: Immutable(v[unchecked: ..<byCount]))
             //=----------------------------------=
             // add (a * x) and (b * y)
             //=----------------------------------=
-            let suffix = self[unchecked: i...]
+            let suffix = `self`[unchecked: i...]
             suffix.increment(by: Immutable(u[unchecked: ..<axCount])).discard()
             suffix.increment(by: Immutable(v[unchecked: ..<byCount])).discard()
             //=----------------------------------=
